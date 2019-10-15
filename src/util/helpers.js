@@ -1,3 +1,8 @@
+/**
+ * Takes an multidimensional array and generates
+ * an array of objects using the values in the first
+ * index as keys
+ */
 export function arraysToObjects(arr) {
   var jsonObj = [];
   var headers = arr[0];
@@ -12,6 +17,9 @@ export function arraysToObjects(arr) {
   return jsonObj;
 }
 
+/**
+ * Takes an array of grouped data and returns a nested object
+ */
 export function nest(data) {
   const products = data.Products;
 

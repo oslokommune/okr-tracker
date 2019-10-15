@@ -65,7 +65,20 @@ export default new Vuex.Store({
         });
     },
 
-    addProduct({ state }, payload) {
+    // Appends the provided data to the spreadsheet based on the provided options
+    appendData({ state }, { options, values }) {
+      return new Promise((res, rej) => {
+        state.gapi.values.append(options, { values }).then(response => {
+          if (response.status === 200) {
+            res();
+          } else {
+            rej();
+          }
+        });
+      });
+    },
+
+    addProduct({ dispatch }, payload) {
       const options = {
         spreadsheetId: sheetOptions.id,
         valueInputOption: "RAW",
@@ -82,18 +95,10 @@ export default new Vuex.Store({
         ]
       ];
 
-      return new Promise((res, rej) => {
-        state.gapi.values.append(options, { values }).then(response => {
-          if (response.status === 200) {
-            res();
-          } else {
-            rej();
-          }
-        });
-      });
+      return dispatch("appendData", { options, values });
     },
 
-    addObjective({ state }, payload) {
+    addObjective({ dispatch }, payload) {
       const options = {
         spreadsheetId: sheetOptions.id,
         valueInputOption: "RAW",
@@ -103,18 +108,10 @@ export default new Vuex.Store({
 
       const values = [[payload.id, payload.product_id, payload.objective]];
 
-      return new Promise((res, rej) => {
-        state.gapi.values.append(options, { values }).then(response => {
-          if (response.status === 200) {
-            res();
-          } else {
-            rej();
-          }
-        });
-      });
+      return dispatch("appendData", { options, values });
     },
 
-    addKeyResult({ state }, payload) {
+    addKeyResult({ dispatch }, payload) {
       const options = {
         spreadsheetId: sheetOptions.id,
         valueInputOption: "RAW",
@@ -134,15 +131,7 @@ export default new Vuex.Store({
         ]
       ];
 
-      return new Promise((res, rej) => {
-        state.gapi.values.append(options, { values }).then(response => {
-          if (response.status === 200) {
-            res();
-          } else {
-            rej();
-          }
-        });
-      });
+      return dispatch("appendData", { options, values });
     }
   }
 });
