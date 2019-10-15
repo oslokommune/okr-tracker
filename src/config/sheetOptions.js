@@ -1,4 +1,4 @@
-export const id = "1hJG2fBPkboL6cbouqpbFCmMiLtOv8uOI5QBVECKxhdc";
+export const sheetid = "1hJG2fBPkboL6cbouqpbFCmMiLtOv8uOI5QBVECKxhdc";
 
 export const ranges = {
   orgs: "'Orgs'!A:C",

@@ -56,7 +56,7 @@ export default new Vuex.Store({
     getAllData({ commit, state }) {
       state.gapi.values
         .batchGet({
-          spreadsheetId: sheetOptions.id,
+          spreadsheetId: sheetOptions.sheetid,
           ranges: sheetOptions.allRanges
         })
         .then(response => response.result.valueRanges)
@@ -79,12 +79,7 @@ export default new Vuex.Store({
     },
 
     addProduct({ dispatch }, payload) {
-      const options = {
-        spreadsheetId: sheetOptions.id,
-        valueInputOption: "RAW",
-        insertDataOption: "OVERWRITE",
-        range: "'Products'!A1"
-      };
+      const options = helpers.generateAppendDataOptions("Products");
 
       const values = [
         [
@@ -99,12 +94,7 @@ export default new Vuex.Store({
     },
 
     addObjective({ dispatch }, payload) {
-      const options = {
-        spreadsheetId: sheetOptions.id,
-        valueInputOption: "RAW",
-        insertDataOption: "OVERWRITE",
-        range: "'Objectives'!A1"
-      };
+      const options = helpers.generateAppendDataOptions("Objectives");
 
       const values = [[payload.id, payload.product_id, payload.objective]];
 
@@ -112,12 +102,7 @@ export default new Vuex.Store({
     },
 
     addKeyResult({ dispatch }, payload) {
-      const options = {
-        spreadsheetId: sheetOptions.id,
-        valueInputOption: "RAW",
-        insertDataOption: "OVERWRITE",
-        range: "'KeyRes'!A1"
-      };
+      const options = helpers.generateAppendDataOptions("KeyRes");
 
       const values = [
         [

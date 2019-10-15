@@ -1,3 +1,5 @@
+import * as sheetOptions from "@/config/sheetOptions";
+
 /**
  * Takes an multidimensional array and generates
  * an array of objects using the values in the first
@@ -39,4 +41,16 @@ export function nest(data) {
   });
 
   return orgs;
+}
+
+/**
+ * Options for the values.append() call
+ */
+export function generateAppendDataOptions(sheetName) {
+  return {
+    spreadsheetId: sheetOptions.sheetid,
+    valueInputOption: "RAW",
+    insertDataOption: "OVERWRITE",
+    range: `'${sheetName}'!A1`
+  };
 }
