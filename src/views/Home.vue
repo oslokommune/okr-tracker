@@ -5,6 +5,8 @@
 
     <add-objective></add-objective>
 
+    <add-key-result></add-key-result>
+
     <hr />
   </div>
 </template>
@@ -14,11 +16,13 @@ import { mapState } from "vuex";
 
 import addProduct from "@/components/addProduct";
 import addObjective from "@/components/addObjective";
+import addKeyResult from "@/components/addKeyResult";
 
 export default {
   components: {
     addProduct,
-    addObjective
+    addObjective,
+    addKeyResult
   },
   computed: {
     ...mapState(["data"])

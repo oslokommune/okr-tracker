@@ -20,6 +20,10 @@ export default new Vuex.Store({
 
     products(state) {
       return state.data && state.data.Products ? state.data.Products : [];
+    },
+
+    objectives(state) {
+      return state.data && state.data.Objectives ? state.data.Objectives : [];
     }
   },
 
@@ -98,6 +102,37 @@ export default new Vuex.Store({
       };
 
       const values = [[payload.id, payload.product_id, payload.objective]];
+
+      return new Promise((res, rej) => {
+        state.gapi.values.append(options, { values }).then(response => {
+          if (response.status === 200) {
+            res();
+          } else {
+            rej();
+          }
+        });
+      });
+    },
+
+    addKeyResult({ state }, payload) {
+      const options = {
+        spreadsheetId: sheetOptions.id,
+        valueInputOption: "RAW",
+        insertDataOption: "OVERWRITE",
+        range: "'KeyRes'!A1"
+      };
+
+      const values = [
+        [
+          payload.id,
+          payload.objective_id,
+          payload.key_result,
+          payload.start_value,
+          payload.target_value,
+          payload.target_type,
+          payload.quarter
+        ]
+      ];
 
       return new Promise((res, rej) => {
         state.gapi.values.append(options, { values }).then(response => {
