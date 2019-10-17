@@ -18,11 +18,14 @@
 
       <li>
         <label>
-          <span>Team</span><br />
-          <select v-model="newProduct.team_id">
-            <option v-for="team in teams" :value="team.id" :key="team.id">{{
-              team.Team
-            }}</option>
+          <span>Avdeling</span><br />
+          <select v-model="newProduct.department_id">
+            <option
+              v-for="department in departments"
+              :value="department.id"
+              :key="department.id"
+              >{{ department.department }}</option
+            >
           </select>
         </label>
       </li>
@@ -40,13 +43,13 @@ export default {
     newProduct: {
       id: uniqid(),
       product: "",
-      team_id: null,
+      department_id: null,
       mission_statement: ""
     }
   }),
 
   computed: {
-    ...mapGetters(["teams"])
+    ...mapGetters(["departments"])
   },
 
   methods: {

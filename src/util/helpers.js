@@ -23,20 +23,31 @@ export function arraysToObjects(arr) {
  * Takes an array of grouped data and returns a nested object
  */
 export function nest(data) {
-  const products = data.Products;
+  const keyres = data.KeyRes;
 
-  const teams = data.Teams.map(team => {
-    team.products = products.find(prod => prod.team_id === team.id);
-    return team;
+  const objectives = data.Objectives.map(objective => {
+    objective.children = keyres.filter(
+      keyresult => keyresult.objective_id === objective.id
+    );
+    return objective;
+  });
+
+  const products = data.Products.map(product => {
+    product.children = objectives.filter(
+      objective => objective.product_id === product.id
+    );
+    return product;
   });
 
   const depts = data.Depts.map(dept => {
-    dept.teams = teams.find(team => team.department_id === dept.id);
+    dept.children = products.filter(
+      product => product.department_id === dept.id
+    );
     return dept;
   });
 
   const orgs = data.Orgs.map(org => {
-    org.departments = depts.find(dept => dept.organisation_id === org.id);
+    org.children = depts.filter(dept => dept.organisation_id === org.id);
     return org;
   });
 
@@ -52,5 +63,16 @@ export function generateAppendDataOptions(sheetName) {
     valueInputOption: "RAW",
     insertDataOption: "OVERWRITE",
     range: `'${sheetName}'!A1`
+  };
+}
+
+/**
+ * Options for the values.update() call
+ */
+export function generateUpdateDataOptions(sheetName, rowNumber) {
+  return {
+    spreadsheetId: sheetOptions.sheetid,
+    valueInputOption: "RAW",
+    range: `'${sheetName}'!A${rowNumber}`
   };
 }

@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
+import Product from "./views/Product.vue";
+import EditProduct from "./views/EditProduct.vue";
 
 Vue.use(Router);
 
@@ -12,6 +14,18 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+
+    {
+      path: "/product/:id",
+      name: "product",
+      component: Product
+    },
+
+    {
+      path: "/product/:id/endre",
+      name: "edit-product",
+      component: EditProduct
     }
   ]
 });

@@ -4,10 +4,9 @@ export const ranges = {
   orgs: "'Orgs'!A:C",
   users: "'Users'!A:C",
   depts: "'Depts'!A:D",
-  teams: "'Teams'!A:D",
   products: "'Products'!A:D",
-  objectives: "'Objectives'!A:C",
-  keyres: "'KeyRes'!A:G",
+  objectives: "'Objectives'!A:D",
+  keyres: "'KeyRes'!A:H",
   tracker: "'Tracker'!A:D"
 };
 

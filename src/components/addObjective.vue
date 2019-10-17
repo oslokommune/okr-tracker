@@ -1,30 +1,24 @@
 <template>
   <div>
-    <h2>Legg til nytt mål</h2>
+    <button @click="expand = true">Legg til nytt mål</button>
 
-    <ul>
-      <li>
-        <label>
-          <span>Produkt</span><br />
-          <select v-model="newObjective.product_id">
-            <option
-              v-for="product in products"
-              :value="product.id"
-              :key="product.id"
-              >{{ product.product }}</option
-            >
-          </select>
-        </label>
-      </li>
-
-      <li>
-        <label>
-          <span>Mål</span><br />
-          <textarea v-model="newObjective.objective"></textarea>
-        </label>
-      </li>
-    </ul>
-    <button @click="send">Legg til</button>
+    <div v-if="expand">
+      <ul>
+        <li>
+          <label>
+            <span>Tittel</span><br />
+            <input type="text" v-model="title" />
+          </label>
+        </li>
+        <li>
+          <label>
+            <span>Beskrivelse</span><br />
+            <textarea v-model="body"></textarea>
+          </label>
+        </li>
+      </ul>
+      <button @click="send">Legg til</button>
+    </div>
   </div>
 </template>
 
@@ -34,15 +28,24 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
-    newObjective: {
-      id: uniqid(),
-      objective: "",
-      product_id: null
-    }
+    expand: false,
+    title: "",
+    body: ""
   }),
 
+  props: ["product_id"],
+
   computed: {
-    ...mapGetters(["products"])
+    ...mapGetters(["products"]),
+
+    newObjective() {
+      return {
+        id: uniqid(),
+        objective_title: this.title,
+        objective_body: this.body,
+        product_id: this.product_id
+      };
+    }
   },
 
   methods: {
@@ -50,11 +53,9 @@ export default {
     send() {
       this.addObjective(this.newObjective)
         .then(() => {
-          this.newObjective = {
-            id: uniqid(),
-            objective: "",
-            product_id: null
-          };
+          this.expand = false;
+          this.title = "";
+          this.body = "";
         })
         .catch(e => {
           throw new Error(e);
