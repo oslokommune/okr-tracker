@@ -5,8 +5,8 @@ export const ranges = {
   users: "'Users'!A:C",
   depts: "'Depts'!A:D",
   products: "'Products'!A:D",
-  objectives: "'Objectives'!A:D",
-  keyres: "'KeyRes'!A:H",
+  objectives: "'Objectives'!A:E",
+  keyres: "'KeyRes'!A:G",
   tracker: "'Tracker'!A:D",
 };
 

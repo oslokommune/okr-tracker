@@ -130,7 +130,6 @@ export default new Vuex.Store({
           payload.start_value,
           payload.target_value,
           payload.target_type,
-          payload.quarter,
           payload.unit,
         ],
       ];
@@ -153,7 +152,9 @@ export default new Vuex.Store({
 
       const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
 
-      const values = [[payload.id, payload.product_id, payload.objective_title, payload.objective_body]];
+      const values = [
+        [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter],
+      ];
 
       return dispatch('updateData', { options, values });
     },
