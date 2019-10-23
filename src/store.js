@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-import * as sheetOptions from "@/config/sheetOptions";
-import * as helpers from "@/util/helpers";
-import { findFirst } from "obj-traverse/lib/obj-traverse";
+import { findFirst } from 'obj-traverse/lib/obj-traverse';
+import * as sheetOptions from '@/config/sheetOptions';
+import * as helpers from '@/util/helpers';
 
 Vue.use(Vuex);
 
@@ -11,7 +11,7 @@ export default new Vuex.Store({
   state: {
     gapi: null,
     data: null,
-    nest: []
+    nest: [],
   },
 
   getters: {
@@ -28,8 +28,8 @@ export default new Vuex.Store({
     },
 
     getObjectById(state) {
-      return id => findFirst({ children: state.nest }, "children", { id });
-    }
+      return id => findFirst({ children: state.nest }, 'children', { id });
+    },
   },
 
   mutations: {
@@ -41,24 +41,24 @@ export default new Vuex.Store({
 
       // splits the groups into key/value pairs
       payload.forEach(g => {
-        const groupName = g.range.split("!")[0];
+        const groupName = g.range.split('!')[0];
         res[groupName] = helpers.arraysToObjects(g.values);
       });
 
       state.data = res;
       state.nest = helpers.nest(res);
-    }
+    },
   },
   actions: {
     // Store the gapi object so that every component can access it
     initGapi({ commit }, self) {
-      let localData = localStorage.getItem("okr-data");
+      let localData = localStorage.getItem('okr-data');
       if (localData) {
-        commit("setData", JSON.parse(localData));
+        commit('setData', JSON.parse(localData));
       }
 
       return self.$getGapiClient().then(gapi => {
-        commit("setGapi", gapi.client.sheets.spreadsheets);
+        commit('setGapi', gapi.client.sheets.spreadsheets);
         return true;
       });
     },
@@ -67,13 +67,13 @@ export default new Vuex.Store({
       state.gapi.values
         .batchGet({
           spreadsheetId: sheetOptions.sheetid,
-          ranges: sheetOptions.allRanges
+          ranges: sheetOptions.allRanges,
         })
         .then(response => response.result.valueRanges)
         .then(data => {
-          commit("setData", data);
+          commit('setData', data);
 
-          localStorage.setItem("okr-data", JSON.stringify(data));
+          localStorage.setItem('okr-data', JSON.stringify(data));
         });
     },
 
@@ -104,37 +104,23 @@ export default new Vuex.Store({
     },
 
     addProduct({ dispatch }, payload) {
-      const options = helpers.generateAppendDataOptions("Products");
+      const options = helpers.generateAppendDataOptions('Products');
 
-      const values = [
-        [
-          payload.id,
-          payload.product,
-          payload.department_id,
-          payload.mission_statement
-        ]
-      ];
+      const values = [[payload.id, payload.product, payload.department_id, payload.mission_statement]];
 
-      return dispatch("appendData", { options, values });
+      return dispatch('appendData', { options, values });
     },
 
     addObjective({ dispatch }, payload) {
-      const options = helpers.generateAppendDataOptions("Objectives");
+      const options = helpers.generateAppendDataOptions('Objectives');
 
-      const values = [
-        [
-          payload.id,
-          payload.product_id,
-          payload.objective_title,
-          payload.objective_body
-        ]
-      ];
+      const values = [[payload.id, payload.product_id, payload.objective_title, payload.objective_body]];
 
-      return dispatch("appendData", { options, values });
+      return dispatch('appendData', { options, values });
     },
 
     addKeyResult({ dispatch }, payload) {
-      const options = helpers.generateAppendDataOptions("KeyRes");
+      const options = helpers.generateAppendDataOptions('KeyRes');
 
       const values = [
         [
@@ -145,61 +131,41 @@ export default new Vuex.Store({
           payload.target_value,
           payload.target_type,
           payload.quarter,
-          payload.unit
-        ]
+          payload.unit,
+        ],
       ];
 
-      return dispatch("appendData", { options, values });
+      return dispatch('appendData', { options, values });
     },
 
     updateProductDetails({ state, dispatch }, payload) {
       const index = state.data.Products.findIndex(d => d.id === payload.id);
 
-      const options = helpers.generateUpdateDataOptions("Products", index + 2);
+      const options = helpers.generateUpdateDataOptions('Products', index + 2);
 
-      const values = [
-        [
-          payload.id,
-          payload.product,
-          payload.department_id,
-          payload.mission_statement
-        ]
-      ];
+      const values = [[payload.id, payload.product, payload.department_id, payload.mission_statement]];
 
-      return dispatch("updateData", { options, values });
+      return dispatch('updateData', { options, values });
     },
 
     updateObjective({ state, dispatch }, payload) {
       const index = state.data.Objectives.findIndex(d => d.id === payload.id);
 
-      const options = helpers.generateUpdateDataOptions(
-        "Objectives",
-        index + 2
-      );
+      const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
 
-      const values = [
-        [
-          payload.id,
-          payload.product_id,
-          payload.objective_title,
-          payload.objective_body
-        ]
-      ];
+      const values = [[payload.id, payload.product_id, payload.objective_title, payload.objective_body]];
 
-      return dispatch("updateData", { options, values });
+      return dispatch('updateData', { options, values });
     },
 
     deleteObjective({ state, dispatch }, payload) {
       const index = state.data.Objectives.findIndex(d => d.id === payload.id);
 
-      const options = helpers.generateUpdateDataOptions(
-        "Objectives",
-        index + 2
-      );
+      const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
 
-      const values = [["", "", "", ""]];
+      const values = [['', '', '', '']];
 
-      return dispatch("updateData", { options, values });
-    }
-  }
+      return dispatch('updateData', { options, values });
+    },
+  },
 });

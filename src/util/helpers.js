@@ -1,4 +1,4 @@
-import * as sheetOptions from "@/config/sheetOptions";
+import * as sheetOptions from '@/config/sheetOptions';
 
 /**
  * Takes an multidimensional array and generates
@@ -6,12 +6,12 @@ import * as sheetOptions from "@/config/sheetOptions";
  * index as keys
  */
 export function arraysToObjects(arr) {
-  var jsonObj = [];
-  var headers = arr[0];
-  for (var i = 1; i < arr.length; i++) {
-    var data = arr[i];
-    var obj = {};
-    for (var j = 0; j < data.length; j++) {
+  let jsonObj = [];
+  let headers = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    const data = arr[i];
+    let obj = {};
+    for (let j = 0; j < data.length; j++) {
       obj[headers[j].trim()] = data[j].trim();
     }
     jsonObj.push(obj);
@@ -26,23 +26,17 @@ export function nest(data) {
   const keyres = data.KeyRes;
 
   const objectives = data.Objectives.map(objective => {
-    objective.children = keyres.filter(
-      keyresult => keyresult.objective_id === objective.id
-    );
+    objective.children = keyres.filter(keyresult => keyresult.objective_id === objective.id);
     return objective;
   });
 
   const products = data.Products.map(product => {
-    product.children = objectives.filter(
-      objective => objective.product_id === product.id
-    );
+    product.children = objectives.filter(objective => objective.product_id === product.id);
     return product;
   });
 
   const depts = data.Depts.map(dept => {
-    dept.children = products.filter(
-      product => product.department_id === dept.id
-    );
+    dept.children = products.filter(product => product.department_id === dept.id);
     return dept;
   });
 
@@ -60,9 +54,9 @@ export function nest(data) {
 export function generateAppendDataOptions(sheetName) {
   return {
     spreadsheetId: sheetOptions.sheetid,
-    valueInputOption: "RAW",
-    insertDataOption: "OVERWRITE",
-    range: `'${sheetName}'!A1`
+    valueInputOption: 'RAW',
+    insertDataOption: 'OVERWRITE',
+    range: `'${sheetName}'!A1`,
   };
 }
 
@@ -72,7 +66,7 @@ export function generateAppendDataOptions(sheetName) {
 export function generateUpdateDataOptions(sheetName, rowNumber) {
   return {
     spreadsheetId: sheetOptions.sheetid,
-    valueInputOption: "RAW",
-    range: `'${sheetName}'!A${rowNumber}`
+    valueInputOption: 'RAW',
+    range: `'${sheetName}'!A${rowNumber}`,
   };
 }

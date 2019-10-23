@@ -1,0 +1,6 @@
+/build/
+/config/
+/dist/
+/docs/
+/src/coverageReport
+/server/server.js

@@ -3,9 +3,7 @@
     <router-link :to="{ name: 'home' }">Tilbake</router-link>
     <h1>{{ product.product }}</h1>
 
-    <router-link
-      :to="{ name: 'edit-product', params: { id: $route.params.id } }"
-    >
+    <router-link :to="{ name: 'edit-product', params: { id: $route.params.id } }">
       Endre produkt
     </router-link>
 
@@ -27,7 +25,7 @@
 
     <div v-for="objective in product.children" :key="objective.id">
       <ul>
-        <li v-for="keyres in objective.children">
+        <li v-for="keyres in objective.children" :key="keyres.id">
           <p>
             <strong>{{ objective.objective_title }}</strong>
             {{ keyres.key_result }}
@@ -40,12 +38,12 @@
 
 <script>
 export default {
-  name: "Product",
+  name: 'Product',
 
   computed: {
     product() {
       return this.$store.getters.getObjectById(this.$route.params.id);
-    }
-  }
+    },
+  },
 };
 </script>

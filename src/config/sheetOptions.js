@@ -1,4 +1,4 @@
-export const sheetid = "1hJG2fBPkboL6cbouqpbFCmMiLtOv8uOI5QBVECKxhdc";
+export const sheetid = '1hJG2fBPkboL6cbouqpbFCmMiLtOv8uOI5QBVECKxhdc';
 
 export const ranges = {
   orgs: "'Orgs'!A:C",
@@ -7,7 +7,7 @@ export const ranges = {
   products: "'Products'!A:D",
   objectives: "'Objectives'!A:D",
   keyres: "'KeyRes'!A:H",
-  tracker: "'Tracker'!A:D"
+  tracker: "'Tracker'!A:D",
 };
 
 export const allRanges = Object.values(ranges);

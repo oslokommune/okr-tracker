@@ -23,44 +23,49 @@
 </template>
 
 <script>
-import uniqid from "uniqid";
-import { mapActions, mapGetters } from "vuex";
+import uniqid from 'uniqid';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
     expand: false,
-    title: "",
-    body: ""
+    title: '',
+    body: '',
   }),
 
-  props: ["product_id"],
+  props: {
+    productId: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
-    ...mapGetters(["products"]),
+    ...mapGetters(['products']),
 
     newObjective() {
       return {
         id: uniqid(),
         objective_title: this.title,
         objective_body: this.body,
-        product_id: this.product_id
+        product_id: this.product_id,
       };
-    }
+    },
   },
 
   methods: {
-    ...mapActions(["addObjective"]),
+    ...mapActions(['addObjective']),
     send() {
       this.addObjective(this.newObjective)
         .then(() => {
           this.expand = false;
-          this.title = "";
-          this.body = "";
+          this.title = '';
+          this.body = '';
         })
         .catch(e => {
           throw new Error(e);
         });
-    }
-  }
+    },
+  },
 };
 </script>

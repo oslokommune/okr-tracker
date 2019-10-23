@@ -1,8 +1,6 @@
 <template>
   <div v-if="product">
-    <router-link :to="{ name: 'product', params: { id: product.id } }"
-      >Tilbake</router-link
-    >
+    <router-link :to="{ name: 'product', params: { id: product.id } }">Tilbake</router-link>
     <h1>Endre {{ product.product }}</h1>
 
     <ul>
@@ -16,10 +14,7 @@
       <li>
         <label>
           <span>Oppdrag</span><br />
-          <textarea
-            @input="edited = true"
-            v-model="product.mission_statement"
-          ></textarea>
+          <textarea @input="edited = true" v-model="product.mission_statement"></textarea>
         </label>
       </li>
     </ul>
@@ -36,27 +31,17 @@
           <li>
             <label>
               <span>Tittel</span><br />
-              <input
-                @input="objective.edited = true"
-                type="text"
-                v-model="objective.objective_title"
-              />
+              <input @input="objective.edited = true" type="text" v-model="objective.objective_title" />
             </label>
           </li>
           <li>
             <label>
               <span>Beskrivelse</span><br />
-              <textarea
-                @input="objective.edited = true"
-                v-model="objective.objective_body"
-              ></textarea>
+              <textarea @input="objective.edited = true" v-model="objective.objective_body"></textarea>
             </label>
           </li>
         </ul>
-        <button
-          :disabled="!objective.edited"
-          @click="updateObjective(objective)"
-        >
+        <button :disabled="!objective.edited" @click="updateObjective(objective)">
           Lagre endringer
         </button>
         <button @click="deleteObjective(objective)">Slett mål</button>
@@ -71,7 +56,7 @@
 
     <div v-for="objective in product.children" :key="objective.id">
       <ul>
-        <li v-for="keyres in objective.children">
+        <li v-for="keyres in objective.children" :key="keyres.id">
           <edit-keyres :id="keyres.id"></edit-keyres>
         </li>
       </ul>
@@ -82,43 +67,43 @@
 </template>
 
 <script>
-import AddObjective from "@/components/addObjective";
-import EditKeyres from "@/components/editKeyres";
-import AddKeyres from "@/components/addKeyres";
+import AddObjective from '@/components/addObjective.vue';
+import EditKeyres from '@/components/editKeyres.vue';
+import AddKeyres from '@/components/addKeyres.vue';
 
 export default {
-  name: "Product",
+  name: 'Product',
 
   data: () => ({
-    edited: false
+    edited: false,
   }),
 
   components: {
     AddObjective,
     AddKeyres,
-    EditKeyres
+    EditKeyres,
   },
 
   computed: {
     product() {
       return this.$store.getters.getObjectById(this.$route.params.id);
-    }
+    },
   },
 
   methods: {
     updateProductDetails() {
-      this.$store.dispatch("updateProductDetails", this.product).then(d => {
-        this.$router.push({ name: "product", params: { id: this.product.id } });
+      this.$store.dispatch('updateProductDetails', this.product).then(() => {
+        this.$router.push({ name: 'product', params: { id: this.product.id } });
       });
     },
 
     updateObjective(objective) {
-      this.$store.dispatch("updateObjective", objective);
+      this.$store.dispatch('updateObjective', objective);
     },
 
     deleteObjective(objective) {
-      this.$store.dispatch("deleteObjective", objective);
-    }
-  }
+      this.$store.dispatch('deleteObjective', objective);
+    },
+  },
 };
 </script>

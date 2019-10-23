@@ -7,12 +7,9 @@
         <label>
           <span>Mål</span><br />
           <select v-model="newKeyResult.objective_id">
-            <option
-              v-for="objective in objectives"
-              :value="objective.id"
-              :key="objective.id"
-              >{{ objective.objective }}</option
-            >
+            <option v-for="objective in objectives" :value="objective.id" :key="objective.id">{{
+              objective.objective
+            }}</option>
           </select>
         </label>
       </li>
@@ -61,45 +58,45 @@
 </template>
 
 <script>
-import uniqid from "uniqid";
-import { mapActions, mapGetters } from "vuex";
+import uniqid from 'uniqid';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
     newKeyResult: {
       id: uniqid(),
       objective_id: null,
-      key_result: "",
+      key_result: '',
       start_value: 0,
       target_value: 0,
-      target_type: "greater_than",
-      quarter: ""
-    }
+      target_type: 'greater_than',
+      quarter: '',
+    },
   }),
 
   computed: {
-    ...mapGetters(["objectives"])
+    ...mapGetters(['objectives']),
   },
 
   methods: {
-    ...mapActions(["addKeyResult"]),
+    ...mapActions(['addKeyResult']),
     send() {
       this.addKeyResult(this.newKeyResult)
         .then(() => {
           this.newKeyResult = {
             id: uniqid(),
             objective_id: null,
-            key_result: "",
+            key_result: '',
             start_value: 0,
             target_value: 0,
-            target_type: "greater_than",
-            quarter: ""
+            target_type: 'greater_than',
+            quarter: '',
           };
         })
         .catch(e => {
           throw new Error(e);
         });
-    }
-  }
+    },
+  },
 };
 </script>

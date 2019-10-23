@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
   computed: {
     isLoggedIn() {
       return this.$isAuthenticated();
-    }
+    },
   },
 
   mounted() {
@@ -28,7 +28,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["initGapi", "getAllData"]),
+    ...mapActions(['initGapi', 'getAllData']),
 
     logout() {
       this.$logout().then(() => {
@@ -45,16 +45,16 @@ export default {
     async init() {
       await this.initGapi(this);
       await this.getAllData();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  color: #2c3e50;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
 }
 </style>
