@@ -56,13 +56,11 @@ button,
 input,
 textarea,
 #app {
-  font-family: 'OsloSans', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   color: $color-purple;
   font-size: 16px;
+  font-family: 'OsloSans', Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 </style>
-
-

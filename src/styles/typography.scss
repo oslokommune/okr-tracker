@@ -1,24 +1,27 @@
 .title-1 {
-  font-size: 2.25rem;
-  font-weight: 500;
   margin-bottom: 0.75rem;
+
+  font-weight: 500;
+  font-size: 2.25rem;
   letter-spacing: -0.03rem;
 }
 
 .title-2 {
-  font-size: 1.75rem;
-  font-weight: 500;
   margin: 1.5rem 0 1rem;
+
+  font-weight: 500;
+  font-size: 1.75rem;
 }
 
 .title-3 {
-  font-size: 1.35rem;
-  font-weight: 500;
   margin: 1.5rem 0 1rem;
+
+  font-weight: 500;
+  font-size: 1.35rem;
 }
 
 a {
+  color: $color-link;
   font-weight: 500;
   text-decoration: none;
-  color: $color-link;
 }

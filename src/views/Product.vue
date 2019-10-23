@@ -64,14 +64,14 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 @import '../styles/colors';
 
 .product-header {
-  background: $color-yellow;
   height: 14rem;
   margin: 0;
   padding: 1rem 0;
+
+  background: $color-yellow;
 }
 </style>

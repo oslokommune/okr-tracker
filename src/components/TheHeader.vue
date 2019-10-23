@@ -6,13 +6,12 @@
   </header>
 </template>
 
-
 <script>
 export default {
   computed: {
     isLoggedIn() {
       return this.$isAuthenticated();
-    }
+    },
   },
 
   methods: {
@@ -20,8 +19,8 @@ export default {
       this.$logout().then(() => {
         location.reload();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

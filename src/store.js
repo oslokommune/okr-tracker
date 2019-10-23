@@ -52,13 +52,13 @@ export default new Vuex.Store({
   actions: {
     // Store the gapi object so that every component can access it
     initGapi({ commit }) {
-      let localData = localStorage.getItem("okr-data");
+      let localData = localStorage.getItem('okr-data');
       if (localData) {
         commit('setData', JSON.parse(localData));
       }
 
       return this._vm.$getGapiClient().then(gapi => {
-        commit("setGapi", gapi.client.sheets.spreadsheets);
+        commit('setGapi', gapi.client.sheets.spreadsheets);
         return true;
       });
     },
