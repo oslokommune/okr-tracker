@@ -22,13 +22,6 @@
 
         <li>
           <label>
-            <span>Kvartal</span><br />
-            <input type="text " v-model="quarter" />
-          </label>
-        </li>
-
-        <li>
-          <label>
             <span>Beskrivelse</span><br />
             <textarea v-model="key_result"></textarea>
           </label>

@@ -144,7 +144,6 @@ export default new Vuex.Store({
           payload.start_value,
           payload.target_value,
           payload.target_type,
-          payload.quarter,
           payload.unit
         ]
       ];
@@ -182,7 +181,8 @@ export default new Vuex.Store({
           payload.id,
           payload.product_id,
           payload.objective_title,
-          payload.objective_body
+          payload.objective_body,
+          payload.quarter
         ]
       ];
 

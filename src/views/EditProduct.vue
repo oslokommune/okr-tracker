@@ -32,34 +32,7 @@
 
     <ul>
       <li v-for="objective in product.children" :key="objective.id">
-        <ul>
-          <li>
-            <label>
-              <span>Tittel</span><br />
-              <input
-                @input="objective.edited = true"
-                type="text"
-                v-model="objective.objective_title"
-              />
-            </label>
-          </li>
-          <li>
-            <label>
-              <span>Beskrivelse</span><br />
-              <textarea
-                @input="objective.edited = true"
-                v-model="objective.objective_body"
-              ></textarea>
-            </label>
-          </li>
-        </ul>
-        <button
-          :disabled="!objective.edited"
-          @click="updateObjective(objective)"
-        >
-          Lagre endringer
-        </button>
-        <button @click="deleteObjective(objective)">Slett mål</button>
+        <edit-objective :objective="objective"></edit-objective>
       </li>
     </ul>
 
@@ -83,6 +56,7 @@
 
 <script>
 import AddObjective from "@/components/addObjective";
+import EditObjective from "@/components/editObjective";
 import EditKeyres from "@/components/editKeyres";
 import AddKeyres from "@/components/addKeyres";
 
@@ -95,6 +69,7 @@ export default {
 
   components: {
     AddObjective,
+    EditObjective,
     AddKeyres,
     EditKeyres
   },
@@ -110,14 +85,6 @@ export default {
       this.$store.dispatch("updateProductDetails", this.product).then(d => {
         this.$router.push({ name: "product", params: { id: this.product.id } });
       });
-    },
-
-    updateObjective(objective) {
-      this.$store.dispatch("updateObjective", objective);
-    },
-
-    deleteObjective(objective) {
-      this.$store.dispatch("deleteObjective", objective);
     }
   }
 };
