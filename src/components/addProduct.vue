@@ -20,12 +20,9 @@
         <label>
           <span>Avdeling</span><br />
           <select v-model="newProduct.department_id">
-            <option
-              v-for="department in departments"
-              :value="department.id"
-              :key="department.id"
-              >{{ department.department }}</option
-            >
+            <option v-for="department in departments" :value="department.id" :key="department.id">{{
+              department.department
+            }}</option>
           </select>
         </label>
       </li>
@@ -35,35 +32,35 @@
 </template>
 
 <script>
-import uniqid from "uniqid";
-import { mapActions, mapGetters } from "vuex";
+import uniqid from 'uniqid';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
     newProduct: {
       id: uniqid(),
-      product: "",
+      product: '',
       department_id: null,
-      mission_statement: ""
-    }
+      mission_statement: '',
+    },
   }),
 
   computed: {
-    ...mapGetters(["departments"])
+    ...mapGetters(['departments']),
   },
 
   methods: {
-    ...mapActions(["addProduct"]),
+    ...mapActions(['addProduct']),
     send() {
       this.addProduct(this.newProduct).then(() => {
         this.newProduct = {
           id: null,
-          product: "",
+          product: '',
           team_id: null,
-          mission_statement: ""
+          mission_statement: '',
         };
       });
-    }
-  }
+    },
+  },
 };
 </script>

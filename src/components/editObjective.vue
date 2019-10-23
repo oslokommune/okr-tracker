@@ -4,31 +4,20 @@
       <li>
         <label>
           <span>Tittel</span><br />
-          <input
-            @input="objective.edited = true"
-            type="text"
-            v-model="objective.objective_title"
-          />
+          <input @input="objective.edited = true" type="text" v-model="objective.objective_title" />
         </label>
       </li>
       <li>
         <label>
           <span>Beskrivelse</span><br />
-          <textarea
-            @input="objective.edited = true"
-            v-model="objective.objective_body"
-          ></textarea>
+          <textarea @input="objective.edited = true" v-model="objective.objective_body"></textarea>
         </label>
       </li>
 
       <li>
         <label>
           <span>Kvartal</span><br />
-          <input
-            @input="objective.edited = true"
-            type="text"
-            v-model="objective.quarter"
-          />
+          <input @input="objective.edited = true" type="text" v-model="objective.quarter" />
         </label>
       </li>
     </ul>
@@ -42,16 +31,21 @@
 
 <script>
 export default {
-  props: ["objective"],
+  props: {
+    objective: {
+      type: Object,
+      required: true,
+    },
+  },
 
   methods: {
     updateObjective(objective) {
-      this.$store.dispatch("updateObjective", objective);
+      this.$store.dispatch('updateObjective', objective);
     },
 
     deleteObjective(objective) {
-      this.$store.dispatch("deleteObjective", objective);
-    }
-  }
+      this.$store.dispatch('deleteObjective', objective);
+    },
+  },
 };
 </script>

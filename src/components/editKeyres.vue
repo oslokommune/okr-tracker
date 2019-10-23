@@ -8,14 +8,19 @@
 
 <script>
 export default {
-  name: "edit-keyres",
+  name: 'EditKeyres',
 
-  props: ["id"],
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
     keyres() {
       return this.$store.getters.getObjectById(this.id);
-    }
-  }
+    },
+  },
 };
 </script>

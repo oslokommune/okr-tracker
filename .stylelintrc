@@ -1,0 +1,19 @@
+{
+  "plugins": [
+    "stylelint-order",
+    "stylelint-config-rational-order/plugin",
+    "stylelint-scss"
+  ],
+  "rules": {
+    "color-hex-length": "long",
+    "indentation": 2,
+    "order/properties-order": [ ],
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "no-descending-specificity": null,
+    "plugin/rational-order": [true, {
+      "border-in-box-model": false,
+      "empty-line-between-groups": true
+    }]
+  }
+}

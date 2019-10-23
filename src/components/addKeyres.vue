@@ -10,10 +10,7 @@
           <label>
             <span>Tilnyttet mål</span><br />
             <select v-model="objective_id">
-              <option
-                v-for="objective in product.children"
-                :value="objective.id"
-              >
+              <option v-for="objective in product.children" :value="objective.id" :key="objective.id">
                 {{ objective.objective_title }}
               </option>
             </select>
@@ -55,21 +52,26 @@
 </template>
 
 <script>
-import uniqid from "uniqid";
+import uniqid from 'uniqid';
 
 export default {
   data: () => ({
     expand: false,
-    quarter: "",
+    quarter: '',
     objective_id: null,
     start_value: 0,
     target_value: 100,
-    target_type: "greater_than",
-    key_result: "",
-    unit: ""
+    target_type: 'greater_than',
+    key_result: '',
+    unit: '',
   }),
 
-  props: ["product_id"],
+  props: {
+    productId: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
     product() {
@@ -85,29 +87,29 @@ export default {
         start_value: this.start_value,
         target_value: this.target_value,
         target_type: this.target_type,
-        unit: this.unit
+        unit: this.unit,
       };
-    }
+    },
   },
 
   methods: {
     send() {
       this.$store
-        .dispatch("addKeyResult", this.newKeyRes)
+        .dispatch('addKeyResult', this.newKeyRes)
         .then(() => {
           this.expand = false;
-          this.quarter = "";
+          this.quarter = '';
           this.objective_id = null;
           this.start_value = 0;
           this.target_value = 100;
-          this.target_type = "greater_than";
-          this.key_result = "";
-          this.unit = "";
+          this.target_type = 'greater_than';
+          this.key_result = '';
+          this.unit = '';
         })
         .catch(e => {
           throw new Error(e);
         });
-    }
-  }
+    },
+  },
 };
 </script>

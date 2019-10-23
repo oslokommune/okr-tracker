@@ -14,9 +14,7 @@
             <h2>{{ dept.department }}</h2>
             <ul>
               <li v-for="product in dept.children" :key="product.id">
-                <router-link
-                  :to="{ name: 'product', params: { id: product.id } }"
-                >
+                <router-link :to="{ name: 'product', params: { id: product.id } }">
                   <h3>{{ product.product }}</h3>
                 </router-link>
               </li>
@@ -32,20 +30,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
-import addProduct from "@/components/addProduct";
-import addObjective from "@/components/addObjective";
-import addKeyResult from "@/components/addKeyResult";
+import { mapState } from 'vuex';
 
 export default {
-  components: {
-    addProduct,
-    addObjective,
-    addKeyResult
-  },
   computed: {
-    ...mapState(["nest"])
-  }
+    ...mapState(['nest']),
+  },
 };
 </script>
