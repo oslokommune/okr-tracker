@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <button @click="expand = true">Legg til nytt mål</button>
+  <div class="add">
+    <button class="btn" @click="expand = true" :disabled="expand">Legg til nytt mål</button>
 
-    <div v-if="expand">
+    <div v-if="expand" class="popout">
       <ul>
         <li>
           <label>
@@ -17,7 +17,8 @@
           </label>
         </li>
       </ul>
-      <button @click="send">Legg til</button>
+      <button class="btn" @click="send">Legg til</button>
+      <button class="btn" @click="expand = false">Lukk</button>
     </div>
   </div>
 </template>
@@ -69,3 +70,30 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '../styles/colors';
+
+.add {
+  position: relative;
+
+  margin: 2rem 0;
+}
+
+.popout {
+  position: absolute;
+  bottom: 0.5rem;
+  left: -2rem;
+
+  width: 100%;
+  max-width: 500px;
+
+  margin-bottom: 3rem;
+
+  padding: 2rem;
+
+  background: #fafafa;
+  border: 3px solid $color-border;
+  box-shadow: 0 0.5rem 1rem rgba(black, 0.2);
+}
+</style>

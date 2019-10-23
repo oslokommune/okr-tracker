@@ -45,8 +45,8 @@
           </label>
         </li>
       </ul>
-      <button @click="send">Legg til</button>
-      <button @click="expand = false">Lukk</button>
+      <button class="btn" @click="send">Legg til</button>
+      <button class="btn" @click="expand = false">Lukk</button>
     </div>
   </div>
 </template>

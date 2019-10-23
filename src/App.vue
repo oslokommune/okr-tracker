@@ -27,7 +27,7 @@ export default {
   },
 
   mounted() {
-    if (this.$isAuthenticated()) {
+    if (this.isLoggedIn) {
       this.init();
     }
   },

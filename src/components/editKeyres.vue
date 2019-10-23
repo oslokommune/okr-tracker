@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h3>Endre {{ id }}</h3>
-
-    <p>{{ keyres }}</p>
+    <h3>Endre {{ keyres.key_result }}</h3>
   </div>
 </template>
 

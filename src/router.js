@@ -3,6 +3,9 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Product from './views/Product.vue';
 import EditProduct from './views/EditProduct.vue';
+import EditProductBasic from './views/EditProduct/BasicInfo.vue';
+import EditProductObjectives from './views/EditProduct/Objectives.vue';
+import EditProductKeyres from './views/EditProduct/KeyResults.vue';
 import NotFound from './views/NotFound.vue';
 
 Vue.use(Router);
@@ -24,9 +27,13 @@ export default new Router({
     },
 
     {
-      path: '/product/:id/endre',
-      name: 'edit-product',
+      path: '/product/:id/edit',
       component: EditProduct,
+      children: [
+        { path: '/', name: 'edit-product', component: EditProductBasic },
+        { path: 'objectives', name: 'edit-product-objectives', component: EditProductObjectives },
+        { path: 'key-results', name: 'edit-product-keyres', component: EditProductKeyres },
+      ],
     },
 
     {

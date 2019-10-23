@@ -39,6 +39,7 @@ export default {
 
   &__text {
     grid-area: text;
+    padding-right: 1.5rem;
 
     h3 {
       margin: 0 0 0.25rem;

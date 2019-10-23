@@ -2,16 +2,19 @@
   <div>
     <header class="product-header">
       <div class="container">
-        <h1 class="title-1">{{ product.product }}</h1>
         <router-link :to="{ name: 'home' }">Tilbake</router-link>
-
+        <h1 class="title-1">{{ product.product }}</h1>
         <router-link :to="{ name: 'edit-product', params: { id: $route.params.id } }">
           Endre produkt
         </router-link>
       </div>
     </header>
 
-    <div class="container">
+    <nav class="container">
+      <!-- select quarters here? -->
+    </nav>
+
+    <div class="page container">
       <section class="section">
         <h2 class="title-2">Oppdrag</h2>
         <p>
@@ -58,7 +61,11 @@ export default {
 
   computed: {
     product() {
-      return this.$store.getters.getObjectById(this.$route.params.id);
+      let product = this.$store.getters.getObjectById(this.$route.params.id);
+
+      // filter objectives by quarter here?
+
+      return product;
     },
   },
 };

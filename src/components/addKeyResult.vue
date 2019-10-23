@@ -53,7 +53,7 @@
         </label>
       </li>
     </ul>
-    <button @click="send">Legg til</button>
+    <button class="btn" @click="send">Legg til</button>
   </div>
 </template>
 

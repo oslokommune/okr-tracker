@@ -1,0 +1,57 @@
+@import 'colors';
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.6rem 0.75rem;
+
+  color: $color-purple;
+
+  border: 2.5px solid $color-border;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.25rem;
+
+  font-weight: 500;
+}
+
+.form-group {
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.btn {
+  display: inline-block;
+  height: 3rem;
+  padding: 0 1rem;
+
+  color: $color-purple;
+  font-weight: 500;
+
+  background: $color-blue;
+
+  border: 0;
+  border-radius: 6px;
+
+  &--ghost {
+    background: transparent;
+    border: 1px solid $color-purple;
+  }
+
+  &--danger {
+    color: darken($color-red, 10%);
+
+    // background: lighten($color-red, 20%);
+    background: transparent;
+    border: 1px solid darken($color-red, 10%);
+    border: 1px solid transparent;
+  }
+
+  &:disabled {
+    color: #aaaaaa;
+
+    background: #dedede;
+  }
+}

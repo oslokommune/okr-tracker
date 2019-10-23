@@ -3,6 +3,7 @@
 @import 'fonts';
 @import 'typography';
 @import 'grid';
+@import 'forms';
 
 html,
 body {
@@ -20,8 +21,17 @@ body {
   max-width: 1410px;
   margin: 0 auto;
   padding: 0 1rem;
+
+  @media screen and (min-width: 768px) {
+    padding: 0 2rem;
+  }
 }
 
 .section {
   padding: 0.5rem 0 1rem;
+}
+
+.page {
+  padding-top: 1rem;
+  padding-bottom: 5rem;
 }
