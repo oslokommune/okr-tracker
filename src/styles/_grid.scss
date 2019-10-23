@@ -1,0 +1,9 @@
+.grid-3 {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+
+  @media screen and (min-width: 600px) {
+    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  }
+}

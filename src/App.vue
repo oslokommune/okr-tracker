@@ -1,11 +1,11 @@
 <template>
   <div id="app">
+    <the-header></the-header>
     <div v-if="!isLoggedIn">
       <h1>Du er ikke logget inn</h1>
       <button @click="login()">Logg inn</button>
     </div>
     <div v-else>
-      <button @click="logout()">Logg ut</button>
       <router-view></router-view>
     </div>
   </div>
@@ -13,8 +13,13 @@
 
 <script>
 import { mapActions } from 'vuex';
+import TheHeader from '@/components/TheHeader.vue';
 
 export default {
+  components: {
+    TheHeader,
+  },
+
   computed: {
     isLoggedIn() {
       return this.$isAuthenticated();
@@ -30,12 +35,6 @@ export default {
   methods: {
     ...mapActions(['initGapi', 'getAllData']),
 
-    logout() {
-      this.$logout().then(() => {
-        location.reload();
-      });
-    },
-
     login() {
       this.$login().then(() => {
         location.reload();
@@ -43,7 +42,7 @@ export default {
     },
 
     async init() {
-      await this.initGapi(this);
+      await this.initGapi();
       await this.getAllData();
     },
   },
@@ -51,10 +50,19 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/styles/main.scss';
+
+button,
+input,
+textarea,
 #app {
-  color: #2c3e50;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'OsloSans', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: $color-purple;
+  font-size: 16px;
+  line-height: 1.5;
 }
 </style>
+
+

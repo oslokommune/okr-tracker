@@ -1,0 +1,27 @@
+@import 'reset';
+@import 'colors';
+@import 'fonts';
+@import 'typography';
+@import 'grid';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1410px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section {
+  padding: 0.5rem 0 1rem;
+}
