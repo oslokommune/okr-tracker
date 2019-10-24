@@ -114,7 +114,9 @@ export default new Vuex.Store({
     addObjective({ dispatch }, payload) {
       const options = helpers.generateAppendDataOptions('Objectives');
 
-      const values = [[payload.id, payload.product_id, payload.objective_title, payload.objective_body]];
+      const values = [
+        [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter],
+      ];
 
       return dispatch('appendData', { options, values });
     },
@@ -164,9 +166,9 @@ export default new Vuex.Store({
 
       const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
 
-      const emptyValues = [Array.from(Array(10)).map(() => '')];
+      const values = [Array.from(Array(10)).map(() => '')];
 
-      return dispatch('updateData', { options, emptyValues });
+      return dispatch('updateData', { options, values });
     },
   },
 });

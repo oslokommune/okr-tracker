@@ -3,20 +3,18 @@
     <button class="btn" @click="expand = true" :disabled="expand">Legg til nytt mål</button>
 
     <div v-if="expand" class="popout">
-      <ul>
-        <li>
-          <label>
-            <span>Tittel</span><br />
-            <input type="text" v-model="title" />
-          </label>
-        </li>
-        <li>
-          <label>
-            <span>Beskrivelse</span><br />
-            <textarea v-model="body"></textarea>
-          </label>
-        </li>
-      </ul>
+      <label class="form-group">
+        <span class="form-label">Kvartal</span>
+        <input type="text" v-model="quarter" />
+      </label>
+      <label class="form-group">
+        <span class="form-label">Tittel</span>
+        <input type="text" v-model="title" />
+      </label>
+      <label class="form-group">
+        <span class="form-label">Beskrivelse</span>
+        <textarea v-model="body" rows="4"></textarea>
+      </label>
       <button class="btn" @click="send">Legg til</button>
       <button class="btn" @click="expand = false">Lukk</button>
     </div>
@@ -31,6 +29,7 @@ export default {
   data: () => ({
     expand: false,
     title: '',
+    quarter: '',
     body: '',
   }),
 
@@ -49,7 +48,8 @@ export default {
         id: uniqid(),
         objective_title: this.title,
         objective_body: this.body,
-        product_id: this.product_id,
+        quarter: this.quarter,
+        product_id: this.productId,
       };
     },
   },
@@ -62,6 +62,7 @@ export default {
           this.expand = false;
           this.title = '';
           this.body = '';
+          this.quarter = '';
         })
         .catch(e => {
           throw new Error(e);
@@ -78,22 +79,5 @@ export default {
   position: relative;
 
   margin: 2rem 0;
-}
-
-.popout {
-  position: absolute;
-  bottom: 0.5rem;
-  left: -2rem;
-
-  width: 100%;
-  max-width: 500px;
-
-  margin-bottom: 3rem;
-
-  padding: 2rem;
-
-  background: #fafafa;
-  border: 3px solid $color-border;
-  box-shadow: 0 0.5rem 1rem rgba(black, 0.2);
 }
 </style>

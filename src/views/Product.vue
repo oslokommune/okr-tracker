@@ -10,6 +10,12 @@
       </div>
     </header>
 
+    <nav class="sub-nav">
+      <div class="container">
+        <router-link class="sub-nav__element" :to="{ name: 'product' }">Q3 2019</router-link>
+      </div>
+    </nav>
+
     <nav class="container">
       <!-- select quarters here? -->
     </nav>
@@ -24,6 +30,14 @@
 
       <section class="section">
         <h2 class="title-2">Mål</h2>
+
+        <p v-if="!product.children">
+          <strong>Oops! Det finnes ingen mål akkurat nå! </strong>
+          <router-link :to="{ name: 'edit-product-objectives', params: { id: product.id } }"
+            >Legg til et mål</router-link
+          >
+        </p>
+
         <ul class="grid-3">
           <li v-for="objective in product.children" :key="objective.id">
             <the-objective :objective="objective"></the-objective>
@@ -31,7 +45,7 @@
         </ul>
       </section>
 
-      <section class="section">
+      <section class="section" v-if="product.children">
         <h2 class="title-2">Nøkkelresultater</h2>
 
         <div v-for="objective in product.children" :key="objective.id">
