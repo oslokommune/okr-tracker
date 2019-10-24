@@ -36,3 +36,16 @@ a {
   font-weight: 500;
   text-decoration: none;
 }
+
+.pill {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.25em 0.65em 0.15em;
+
+  font-weight: 500;
+
+  font-size: 0.85rem;
+
+  background: $color-light-blue;
+  border-radius: 3px;
+}

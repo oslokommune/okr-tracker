@@ -17,7 +17,6 @@ body {
   box-sizing: border-box;
 }
 
-
 /* When mouse is detected, ALL focused elements have outline removed. */
 
 /* You could apply this selector only to buttons, if you wanted. */
@@ -109,4 +108,10 @@ body.using-mouse :focus {
       }
     }
   }
+}
+
+.card {
+  padding: 1.5rem;
+
+  border: 1px solid $color-border;
 }

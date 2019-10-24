@@ -4,11 +4,9 @@
 
     <add-keyres :product-id="product.id"></add-keyres>
     <div class="content" v-for="objective in product.children" :key="objective.id">
-      <ul>
-        <li v-for="keyres in objective.children" :key="keyres.id">
-          <edit-keyres :id="keyres.id"></edit-keyres>
-        </li>
-      </ul>
+      <div class="grid-3">
+        <edit-keyres v-for="keyres in objective.children" :key="keyres.id" :id="keyres.id"></edit-keyres>
+      </div>
     </div>
   </div>
 </template>

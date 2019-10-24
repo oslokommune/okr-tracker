@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "core-js": "^3.3.3",
+    "d3": "^5.12.0",
     "date-fns": "^2.6.0",
     "lodash": "^4.17.15",
     "obj-traverse": "^1.0.0",
