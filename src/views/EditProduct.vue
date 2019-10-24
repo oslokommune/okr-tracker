@@ -10,11 +10,7 @@
             <h1 class="title-1">Endre «{{ product.product }}»</h1>
           </div>
 
-          <img
-            src="https://source.unsplash.com/random"
-            :alt="`Profilbilde for ${product.product}`"
-            class="profile-image"
-          />
+          <img :src="getProductImage" :alt="`Profilbilde for ${product.product}`" class="profile-image" />
         </div>
       </div>
     </header>
@@ -40,6 +36,9 @@ export default {
   computed: {
     product() {
       return this.$store.getters.getObjectById(this.$route.params.id);
+    },
+    getProductImage() {
+      return this.product.product_image ? this.product.product_image : '/placeholder-image.svg';
     },
   },
 };

@@ -8,11 +8,7 @@
             <h1 class="title-1">{{ product.product }}</h1>
           </div>
 
-          <img
-            src="https://source.unsplash.com/random"
-            :alt="`Profilbilde for ${product.product}`"
-            class="profile-image"
-          />
+          <img :src="getProductImage" :alt="`Profilbilde for ${product.product}`" class="profile-image" />
           <router-link class="edit" :to="{ name: 'edit-product', params: { id: $route.params.id } }">
             Endre produkt
           </router-link>
@@ -48,7 +44,7 @@
       <section class="section">
         <h2 class="title-2">Mål</h2>
 
-        <p v-if="!product.children">
+        <p v-if="!product.children || !product.children.length">
           <strong>Oops! Det finnes ingen mål akkurat nå! </strong>
           <router-link :to="{ name: 'edit-product-objectives', params: { id: product.id } }"
             >Legg til et mål</router-link
@@ -62,7 +58,7 @@
         </ul>
       </section>
 
-      <section class="section" v-if="product.children">
+      <section class="section" v-if="product.children && product.children.length">
         <h2 class="title-2">Nøkkelresultater</h2>
 
         <div v-for="objective in product.children" :key="objective.id">
@@ -109,6 +105,10 @@ export default {
       };
     },
 
+    getProductImage() {
+      return this.product.product_image ? this.product.product_image : '/placeholder-image.svg';
+    },
+
     quarters() {
       const product = this.getObjectById(this.$route.params.id);
 
@@ -131,50 +131,88 @@ export default {
 @import '../styles/colors';
 
 .product-header {
-  height: 11rem;
+  height: 30rem;
+
+  text-align: center;
+
+  @media screen and (min-width: 768px) {
+    height: 11rem;
+
+    text-align: left;
+  }
 
   background: $color-yellow;
 
   &__container {
     display: grid;
     grid-gap: 0.5rem 1rem;
-    grid-template-rows: 3rem 2rem 1fr;
-    grid-template-columns: 13rem 1fr auto;
+
+    grid-template-rows: 4rem 3fr 14rem 3rem 1fr;
+    grid-template-columns: 1fr;
+
+    @media screen and (min-width: 768px) {
+      grid-template-rows: 3rem 2rem 1fr;
+      grid-template-columns: 13rem 1fr auto;
+    }
   }
 
   &__name {
-    grid-row: 3;
-    grid-column: 2 / span 2;
+    grid-row: 4;
+
+    @media screen and (min-width: 768px) {
+      grid-row: 3;
+      grid-column: 2 / span 2;
+    }
   }
 
   .edit {
-    grid-row: 1;
-    grid-column: 3;
+    grid-row: 2;
+    grid-column: 1;
     padding: 1rem 0;
+
+    @media screen and (min-width: 768px) {
+      grid-row: 1;
+      grid-column: 3;
+      padding: 1rem 0;
+    }
   }
 
   .back {
     display: block;
     grid-row: 1;
-    grid-column: 1 / span 2;
+    grid-column: 1;
     padding: 1rem 0;
+
+    @media screen and (min-width: 768px) {
+      grid-row: 1;
+      grid-column: 1 / span 2;
+      padding: 1rem 0;
+    }
   }
 
   .profile-image {
     z-index: 2;
 
     display: block;
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 1;
+    justify-self: center;
     box-sizing: content-box;
     width: 12rem;
     height: 12rem;
+    object-fit: cover;
 
     background: #eeeeee;
 
     border: 6px solid white;
     box-shadow: 0 3px 5px rgba(black, 0.2);
-    transform: translateX(-6px);
+
+    @media screen and (min-width: 768px) {
+      grid-row: 2;
+      grid-column: 1;
+
+      transform: translateX(-6px);
+    }
   }
 }
 
@@ -186,8 +224,9 @@ export default {
 
   color: $color-purple;
 
-  border: none;
   background: none;
+
+  border: none;
 
   &.active {
     position: relative;

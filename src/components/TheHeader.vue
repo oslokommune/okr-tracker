@@ -6,9 +6,12 @@
           OKR-tracker
         </router-link>
       </h2>
-      <!-- <div class="right"> -->
-      <button class="btn btn--ghost logout" v-if="isLoggedIn" @click="logout()">Logg ut</button>
-      <!-- </div> -->
+      <div class="right">
+        <router-link v-if="isHomePage" class="btn btn--ghost" :to="{ name: 'add-product' }"
+          >+ Legg til nytt produkt</router-link
+        >
+        <button class="btn btn--ghost" v-if="isLoggedIn" @click="logout()">Logg ut</button>
+      </div>
     </div>
   </header>
 </template>
@@ -18,6 +21,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$isAuthenticated();
+    },
+    isHomePage() {
+      return this.$route.name === 'home';
     },
   },
 
@@ -47,7 +53,7 @@ export default {
     margin: 0;
   }
 
-  .logout {
+  .right {
     margin-left: auto;
   }
 }
