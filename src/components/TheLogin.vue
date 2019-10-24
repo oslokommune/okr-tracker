@@ -1,5 +1,5 @@
 <template>
-  <div class="container page">
+  <div class="container content">
     <div class="login">
       <h1 class="title-1">Du er ikke logget inn</h1>
       <p>Logg inn med organisasjonskonto for å bruke denne applikasjonen.</p>

@@ -35,8 +35,6 @@ export default {
 .header {
   width: 100%;
   height: 5rem;
-
-  border-bottom: 1px solid grey;
 }
 
 .navbar {
