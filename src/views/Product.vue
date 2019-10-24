@@ -22,7 +22,18 @@
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
-        <router-link class="sub-nav__element" :to="{ name: 'product' }">Q3 2019</router-link>
+        <div class="tabs">
+          <template v-for="(quarter, index) in quarters">
+            <button
+              class="button"
+              :class="{ active: chosenQuarter === quarter }"
+              :key="`${quarter}-${index}`"
+              @click="activeQuarter(quarter)"
+            >
+              {{ quarter }}
+            </button>
+          </template>
+        </div>
       </div>
     </nav>
 
@@ -70,22 +81,47 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { getYear, getQuarter } from 'date-fns';
 import TheObjective from '@/components/TheObjective.vue';
 
 export default {
   name: 'Product',
+
+  data: () => ({
+    chosenQuarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
+  }),
 
   components: {
     TheObjective,
   },
 
   computed: {
+    ...mapGetters(['getObjectById']),
     product() {
-      let product = this.$store.getters.getObjectById(this.$route.params.id);
+      let product = this.getObjectById(this.$route.params.id);
 
-      // filter objectives by quarter here?
+      if (product === false) return {};
 
-      return product;
+      return {
+        ...product,
+        children: product.children.filter(x => x.quarter === this.chosenQuarter),
+      };
+    },
+
+    quarters() {
+      const product = this.getObjectById(this.$route.params.id);
+
+      if (product === false) return {};
+
+      const distinctQuarters = [...new Set(product.children.map(i => i.quarter))].filter(Boolean);
+      return distinctQuarters;
+    },
+  },
+
+  methods: {
+    activeQuarter(quarter) {
+      this.chosenQuarter = quarter;
     },
   },
 };
@@ -139,6 +175,37 @@ export default {
     border: 6px solid white;
     box-shadow: 0 3px 5px rgba(black, 0.2);
     transform: translateX(-6px);
+  }
+}
+
+.button {
+  position: relative;
+
+  display: inline-block;
+  padding: 0.75rem 0.5rem;
+
+  color: $color-purple;
+
+  border: none;
+  background: none;
+
+  &.active {
+    position: relative;
+
+    cursor: default;
+
+    &::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      height: 4px;
+
+      background-color: $color-purple;
+
+      content: '';
+    }
   }
 }
 </style>
