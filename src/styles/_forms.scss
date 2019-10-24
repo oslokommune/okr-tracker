@@ -1,11 +1,14 @@
 @import 'colors';
 
 input,
+select,
+option,
 textarea {
   width: 100%;
   padding: 0.75rem 0.75rem 0.6rem 0.75rem;
 
   color: $color-purple;
+  font-size: 1rem;
 
   border: 2.5px solid $color-border;
 }
@@ -38,6 +41,10 @@ textarea {
   &--ghost {
     background: transparent;
     border: 1px solid $color-purple;
+  }
+
+  & + & {
+    margin-left: 1rem;
   }
 
   &--danger {

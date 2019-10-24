@@ -1,52 +1,40 @@
 <template>
-  <div>
-    <button v-if="!expand" @click="expand = true">
+  <div class="row">
+    <button class="btn" v-if="!expand" @click="expand = true">
       Legg til nytt nøkkelresultat
     </button>
 
-    <div v-if="expand">
-      <ul>
-        <li>
-          <label>
-            <span>Tilnyttet mål</span><br />
-            <select v-model="objective_id">
-              <option v-for="objective in product.children" :value="objective.id" :key="objective.id">
-                {{ objective.objective_title }}
-              </option>
-            </select>
-          </label>
-        </li>
+    <div v-if="expand" class="narrow create">
+      <label class="form-group">
+        <span class="form-label">Tilnyttet mål</span>
+        <select v-model="objective_id">
+          <option v-for="objective in product.children" :value="objective.id" :key="objective.id">
+            {{ objective.objective_title }}
+          </option>
+        </select>
+      </label>
 
-        <li>
-          <label>
-            <span>Beskrivelse</span><br />
-            <textarea v-model="key_result"></textarea>
-          </label>
-        </li>
+      <label class="form-group">
+        <span class="form-label">Beskrivelse</span>
+        <textarea v-model="key_result" rows="4"></textarea>
+      </label>
 
-        <li>
-          <label>
-            <span>Startverdi</span><br />
-            <input type="number" v-model="start_value" />
-          </label>
-        </li>
+      <label class="form-group">
+        <span class="form-label">Startverdi</span>
+        <input type="number" v-model="start_value" />
+      </label>
 
-        <li>
-          <label>
-            <span>Målverdi</span><br />
-            <input type="number" v-model="target_value" />
-          </label>
-        </li>
+      <label class="form-group">
+        <span class="form-label">Målverdi</span>
+        <input type="number" v-model="target_value" />
+      </label>
 
-        <li>
-          <label>
-            <span>Måleenhet</span><br />
-            <input type="text " v-model="unit" />
-          </label>
-        </li>
-      </ul>
-      <button class="btn" @click="send">Legg til</button>
-      <button class="btn" @click="expand = false">Lukk</button>
+      <label class="form-group">
+        <span class="form-label">Måleenhet</span>
+        <input type="text " v-model="unit" />
+      </label>
+      <button class="btn" @click="send">Lagre nytt nøkkelresultat</button>
+      <button class="btn btn--ghost" @click="expand = false">Avbryt</button>
     </div>
   </div>
 </template>
@@ -56,8 +44,7 @@ import uniqid from 'uniqid';
 
 export default {
   data: () => ({
-    expand: false,
-    quarter: '',
+    expand: true,
     objective_id: null,
     start_value: 0,
     target_value: 100,
@@ -75,13 +62,12 @@ export default {
 
   computed: {
     product() {
-      return this.$store.getters.getObjectById(this.product_id);
+      return this.$store.getters.getObjectById(this.productId);
     },
 
     newKeyRes() {
       return {
         id: uniqid(),
-        quarter: this.quarter,
         objective_id: this.objective_id,
         key_result: this.key_result,
         start_value: this.start_value,
@@ -98,7 +84,6 @@ export default {
         .dispatch('addKeyResult', this.newKeyRes)
         .then(() => {
           this.expand = false;
-          this.quarter = '';
           this.objective_id = null;
           this.start_value = 0;
           this.target_value = 100;
@@ -113,3 +98,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '../styles/colors';
+
+.create {
+  margin: 1rem 0;
+  padding: 2rem;
+
+  background: $color-bg;
+}
+</style>
