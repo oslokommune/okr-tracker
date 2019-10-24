@@ -2,13 +2,13 @@
   <div>
     <h2 class="title-2">Mål</h2>
 
+    <add-objective :product-id="product.id"></add-objective>
+
     <ul class="grid-3">
       <li v-for="objective in product.children" :key="objective.id">
         <edit-objective :objective="objective"></edit-objective>
       </li>
     </ul>
-
-    <add-objective :product-id="product.id"></add-objective>
   </div>
 </template>
 

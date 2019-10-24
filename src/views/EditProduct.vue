@@ -9,13 +9,15 @@
       </div>
     </header>
 
-    <div class="page container">
-      <nav class="nav">
-        <router-link :to="{ name: 'edit-product' }">Profil</router-link>
-        <router-link :to="{ name: 'edit-product-objectives' }">Mål</router-link>
-        <router-link :to="{ name: 'edit-product-keyres' }">Nøkkelresultater</router-link>
-      </nav>
+    <nav class="sub-nav">
+      <div class="container">
+        <router-link class="sub-nav__element" :to="{ name: 'edit-product' }">Detaljer</router-link>
+        <router-link class="sub-nav__element" :to="{ name: 'edit-product-objectives' }">Mål</router-link>
+        <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">Nøkkelresultater</router-link>
+      </div>
+    </nav>
 
+    <div class="page container">
       <router-view :product="product"></router-view>
     </div>
   </div>
@@ -34,12 +36,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.nav {
-  display: flex;
+@import '../styles/colors';
 
-  a {
-    display: block;
-    padding: 0.5rem;
-  }
+.product-header {
+  height: 14rem;
+
+  background: #cccccc;
 }
 </style>

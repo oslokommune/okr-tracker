@@ -1,8 +1,6 @@
 <template>
   <div class="container page">
-    <!-- <add-product></add-product>
-    <add-objective></add-objective>
-    <add-key-result></add-key-result> -->
+    <router-link class="btn" :to="{ name: 'add-product' }">+ Legg til nytt produkt</router-link>
 
     <ul>
       <li v-for="org in nest" :key="org.id">

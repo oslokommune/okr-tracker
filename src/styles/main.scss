@@ -18,6 +18,7 @@ body {
 }
 
 .container {
+  width: 100%;
   max-width: 1410px;
   margin: 0 auto;
   padding: 0 1rem;
@@ -42,4 +43,56 @@ body {
 
 .row {
   margin: 1.5rem 0;
+}
+
+.popout {
+  position: absolute;
+  top: 3.5rem;
+  left: -2rem;
+
+  width: 100%;
+  max-width: 500px;
+
+  margin-bottom: 3rem;
+
+  padding: 2rem;
+
+  background: #fafafa;
+  border: 3px solid $color-border;
+  box-shadow: 0 0.5rem 1rem rgba(black, 0.2);
+}
+
+.sub-nav {
+  display: flex;
+  width: 100%;
+
+  background: $color-bg;
+
+  &__element {
+    position: relative;
+
+    display: inline-block;
+    padding: 0.75rem 0.5rem;
+
+    color: $color-purple;
+
+    // outline: 1px solid red
+
+    &.router-link-exact-active {
+      // background: $color-blue;
+
+      &::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        height: 4px;
+
+        background: $color-purple;
+
+        content: '';
+      }
+    }
+  }
 }

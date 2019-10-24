@@ -7,7 +7,7 @@ export const ranges = {
   products: "'Products'!A:D",
   objectives: "'Objectives'!A:E",
   keyres: "'KeyRes'!A:G",
-  tracker: "'Tracker'!A:D",
+  keyrestracker: "'KeyResTracker'!A:D",
 };
 
 export const allRanges = Object.values(ranges);

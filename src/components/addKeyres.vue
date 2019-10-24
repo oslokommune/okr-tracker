@@ -1,10 +1,8 @@
 <template>
-  <div class="row">
-    <button class="btn" v-if="!expand" @click="expand = true">
-      Legg til nytt nøkkelresultat
-    </button>
+  <div class="row add">
+    <button class="btn" @click="expand = true" :disabled="expand">Legg til nytt nøkkelresultat</button>
 
-    <div v-if="expand" class="narrow create">
+    <div v-if="expand" class="popout">
       <label class="form-group">
         <span class="form-label">Tilnyttet mål</span>
         <select v-model="objective_id">
@@ -44,7 +42,7 @@ import uniqid from 'uniqid';
 
 export default {
   data: () => ({
-    expand: true,
+    expand: false,
     objective_id: null,
     start_value: 0,
     target_value: 100,
@@ -102,10 +100,9 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/colors';
 
-.create {
-  margin: 1rem 0;
-  padding: 2rem;
+.add {
+  position: relative;
 
-  background: $color-bg;
+  margin: 2rem 0;
 }
 </style>
