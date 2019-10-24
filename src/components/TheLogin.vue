@@ -2,8 +2,8 @@
   <div class="container page">
     <div class="login">
       <h1 class="title-1">Du er ikke logget inn</h1>
-      <p>Logg inn med BYR-konto (Google) for å bruke denne applikasjonen.</p>
-      <button class="btn" @click="login()">Logg inn</button>
+      <p>Logg inn med organisasjonskonto for å bruke denne applikasjonen.</p>
+      <button class="btn" @click="login()">Logg inn med Google</button>
     </div>
   </div>
 </template>
