@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'EditKeyres',
+  name: 'updateKeyres',
 
   data: () => ({
     value: 0,

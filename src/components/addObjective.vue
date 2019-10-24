@@ -1,6 +1,6 @@
 <template>
   <div class="add">
-    <button class="btn" @click="expand = true" :disabled="expand">Legg til nytt mål</button>
+    <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
 
     <div v-if="expand" class="popout">
       <label class="form-group">

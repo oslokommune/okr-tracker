@@ -1,6 +1,6 @@
 <template>
   <div class="row add">
-    <button class="btn" @click="expand = true" :disabled="expand">Legg til nytt nøkkelresultat</button>
+    <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt nøkkelresultat</button>
 
     <div v-if="expand" class="popout">
       <label class="form-group">

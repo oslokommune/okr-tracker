@@ -10,12 +10,12 @@
     </div>
 
     <button v-if="edit" class="close" @click="edit = false">X</button>
-    <edit-keyres v-if="edit" :id="keyres.id"></edit-keyres>
+    <update-keyres v-if="edit" :id="keyres.id"></update-keyres>
   </div>
 </template>
 
 <script>
-import EditKeyres from '@/components/editKeyres.vue';
+import UpdateKeyres from '@/components/updateKeyres.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
@@ -31,7 +31,7 @@ export default {
   },
 
   components: {
-    EditKeyres,
+    UpdateKeyres,
     ProgressBar,
   },
 
