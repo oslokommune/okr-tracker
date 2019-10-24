@@ -34,9 +34,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.narrow {
-  max-width: 500px;
-}
-</style>

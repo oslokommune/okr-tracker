@@ -164,9 +164,9 @@ export default new Vuex.Store({
 
       const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
 
-      const values = [['', '', '', '']];
+      const emptyValues = [Array.from(Array(10)).map(() => '')];
 
-      return dispatch('updateData', { options, values });
+      return dispatch('updateData', { options, emptyValues });
     },
   },
 });

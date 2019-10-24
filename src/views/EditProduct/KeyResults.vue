@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Nøkkelresultater</h2>
+    <h2 class="title-2">Nøkkelresultater</h2>
 
     <div v-for="objective in product.children" :key="objective.id">
       <ul>
