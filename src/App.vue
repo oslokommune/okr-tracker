@@ -1,23 +1,20 @@
 <template>
   <div id="app">
     <the-header></the-header>
-    <div v-if="!isLoggedIn">
-      <h1>Du er ikke logget inn</h1>
-      <button @click="login()">Logg inn</button>
-    </div>
-    <div v-else>
-      <router-view></router-view>
-    </div>
+    <the-login v-if="!isLoggedIn"></the-login>
+    <router-view v-else></router-view>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import TheHeader from '@/components/TheHeader.vue';
+import TheLogin from '@/components/TheLogin.vue';
 
 export default {
   components: {
     TheHeader,
+    TheLogin,
   },
 
   computed: {
@@ -34,12 +31,6 @@ export default {
 
   methods: {
     ...mapActions(['initGapi', 'getAllData']),
-
-    login() {
-      this.$login().then(() => {
-        location.reload();
-      });
-    },
 
     async init() {
       await this.initGapi();
