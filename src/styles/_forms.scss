@@ -38,6 +38,7 @@ textarea {
 
   border: 0;
   border-radius: 6px;
+  cursor: pointer;
 
   &--ghost {
     background: transparent;
@@ -61,5 +62,6 @@ textarea {
     color: #aaaaaa;
 
     background: #dedede;
+    cursor: default;
   }
 }

@@ -9,6 +9,11 @@
       </label>
 
       <label class="form-group">
+        <span class="form-label">Produktbilde</span>
+        <input @input="edited = true" type="text" v-model="product.product_image" />
+      </label>
+
+      <label class="form-group">
         <span class="form-label">Oppdrag</span>
         <textarea @input="edited = true" v-model="product.mission_statement"></textarea>
       </label>

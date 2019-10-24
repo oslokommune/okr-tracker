@@ -144,7 +144,9 @@ export default new Vuex.Store({
 
       const options = helpers.generateUpdateDataOptions('Products', index + 2);
 
-      const values = [[payload.id, payload.product, payload.department_id, payload.mission_statement]];
+      const values = [
+        [payload.id, payload.product, payload.department_id, payload.mission_statement, payload.product_image],
+      ];
 
       return dispatch('updateData', { options, values });
     },
