@@ -2,25 +2,31 @@
   <div>
     <header class="product-header">
       <div class="container">
-        <router-link :to="{ name: 'home' }">Tilbake</router-link>
-        <h1 class="title-1">{{ product.product }}</h1>
-        <router-link :to="{ name: 'edit-product', params: { id: $route.params.id } }">
-          Endre produkt
-        </router-link>
+        <div class="product-header__container">
+          <router-link class="back" :to="{ name: 'home' }">Tilbake</router-link>
+          <div class="product-header__name">
+            <h1 class="title-1">{{ product.product }}</h1>
+          </div>
+
+          <img
+            src="https://source.unsplash.com/random"
+            :alt="`Profilbilde for ${product.product}`"
+            class="profile-image"
+          />
+          <router-link class="edit" :to="{ name: 'edit-product', params: { id: $route.params.id } }">
+            Endre produkt
+          </router-link>
+        </div>
       </div>
     </header>
 
     <nav class="sub-nav">
-      <div class="container">
+      <div class="container container--sidebar">
         <router-link class="sub-nav__element" :to="{ name: 'product' }">Q3 2019</router-link>
       </div>
     </nav>
 
-    <nav class="container">
-      <!-- select quarters here? -->
-    </nav>
-
-    <div class="page container">
+    <div class="content container container--sidebar">
       <section class="section">
         <h2 class="title-2">Oppdrag</h2>
         <p>
@@ -85,14 +91,54 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../styles/colors';
 
 .product-header {
-  height: 14rem;
-  margin: 0;
-  padding: 1rem 0;
+  height: 11rem;
 
   background: $color-yellow;
+
+  &__container {
+    display: grid;
+    grid-gap: 0.5rem 1rem;
+    grid-template-rows: 3rem 2rem 1fr;
+    grid-template-columns: 13rem 1fr auto;
+  }
+
+  &__name {
+    grid-row: 3;
+    grid-column: 2 / span 2;
+  }
+
+  .edit {
+    grid-row: 1;
+    grid-column: 3;
+    padding: 1rem 0;
+  }
+
+  .back {
+    display: block;
+    grid-row: 1;
+    grid-column: 1 / span 2;
+    padding: 1rem 0;
+  }
+
+  .profile-image {
+    z-index: 2;
+
+    display: block;
+    grid-row: 2;
+    grid-column: 1;
+    box-sizing: content-box;
+    width: 12rem;
+    height: 12rem;
+
+    background: #eeeeee;
+
+    border: 6px solid white;
+    box-shadow: 0 3px 5px rgba(black, 0.2);
+    transform: translateX(-6px);
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container page">
+  <div class="container content">
     <router-link class="btn" :to="{ name: 'add-product' }">+ Legg til nytt produkt</router-link>
 
     <ul>

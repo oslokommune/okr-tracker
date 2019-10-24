@@ -1,5 +1,5 @@
 <template>
-  <div class="container page">
+  <div class="container content">
     <h1 class="title-1">Legg til nytt produkt</h1>
 
     <div class="narrow">

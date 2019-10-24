@@ -2,7 +2,7 @@
   <div>
     <h1 class="title-2">Detaljer</h1>
 
-    <div class="narrow">
+    <div class="narrow content">
       <label class="form-group">
         <span class="form-label">Produktnavn</span>
         <input @input="edited = true" type="text" v-model="product.product" />

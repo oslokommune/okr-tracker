@@ -23,6 +23,10 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
 
+  &--sidebar {
+    padding: 0 2rem 0 16rem !important;
+  }
+
   @media screen and (min-width: 768px) {
     padding: 0 2rem;
   }
@@ -32,7 +36,7 @@ body {
   padding: 0.5rem 0 1rem;
 }
 
-.page {
+.content {
   padding-top: 1rem;
   padding-bottom: 5rem;
 }
