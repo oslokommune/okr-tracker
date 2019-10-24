@@ -17,6 +17,14 @@ body {
   box-sizing: border-box;
 }
 
+
+/* When mouse is detected, ALL focused elements have outline removed. */
+
+/* You could apply this selector only to buttons, if you wanted. */
+body.using-mouse :focus {
+  outline: none;
+}
+
 .container {
   width: 100%;
   max-width: 1410px;
