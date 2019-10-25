@@ -62,8 +62,10 @@ body.using-mouse :focus {
   position: absolute;
   top: 3.5rem;
   left: -2rem;
+  z-index: 100;
 
   width: 100%;
+  min-width: 320px;
   max-width: 500px;
 
   margin-bottom: 3rem;
@@ -73,6 +75,10 @@ body.using-mouse :focus {
   background: #fafafa;
   border: 3px solid $color-border;
   box-shadow: 0 0.5rem 1rem rgba(black, 0.2);
+
+  @media screen and (min-width: 400px) {
+    min-width: 400px;
+  }
 }
 
 .sub-nav {

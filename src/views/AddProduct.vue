@@ -11,15 +11,13 @@
         <span class="form-label">Mission statement</span>
         <textarea v-model="newProduct.mission_statement"></textarea>
       </label>
-
-      <label class="form-group">
-        <span class="form-label">Avdeling</span>
-        <select v-model="newProduct.department_id">
-          <option v-for="department in departments" :value="department.id" :key="department.id">{{
-            department.department
-          }}</option>
-        </select>
-      </label>
+      <span class="form-label">Avdeling</span>
+      <v-select
+        class="form-group objective__select"
+        v-model="newProduct.department_id"
+        label="id"
+        :options="departments"
+      ></v-select>
       <button class="btn" @click="send">Legg til</button>
     </div>
   </div>

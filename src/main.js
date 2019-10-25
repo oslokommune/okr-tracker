@@ -1,10 +1,13 @@
 import Vue from 'vue';
 import VueGAPI from 'vue-gapi';
+import VueSelect from 'vue-select';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
-// import the plugin
+import 'vue-select/dist/vue-select.css';
+
+Vue.component('v-select', VueSelect);
 
 // create the 'options' object
 const apiConfig = {

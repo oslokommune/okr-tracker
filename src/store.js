@@ -30,6 +30,29 @@ export default new Vuex.Store({
     getObjectById(state) {
       return id => findFirst({ children: state.nest }, 'children', { id });
     },
+
+    getDistinctQuarters(state, getters) {
+      return id => {
+        const product = getters.getObjectById(id);
+
+        if (product === false) return {};
+
+        return [...new Set(product.children.map(i => i.quarter))].filter(Boolean);
+      };
+    },
+
+    getProductWithDistinctObjectives(state, getters) {
+      return (id, quarter) => {
+        const product = getters.getObjectById(id);
+
+        if (product === false) return {};
+
+        return {
+          ...product,
+          children: product.children.filter(x => x.quarter === quarter),
+        };
+      };
+    },
   },
 
   mutations: {
