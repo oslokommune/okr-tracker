@@ -61,15 +61,10 @@
       <section class="section" v-if="product.children && product.children.length">
         <h2 class="title-2">Nøkkelresultater</h2>
 
-        <div v-for="objective in product.children" :key="objective.id">
-          <ul>
-            <li v-for="keyres in objective.children" :key="keyres.id">
-              <p>
-                <strong>{{ objective.objective_title }}</strong>
-                {{ keyres.key_result }}
-              </p>
-            </li>
-          </ul>
+        <div class="grid-3">
+          <template v-for="objective in product.children">
+            <the-key-result v-for="keyres in objective.children" :key="keyres.id" :id="keyres.id"></the-key-result>
+          </template>
         </div>
       </section>
     </div>
@@ -80,6 +75,7 @@
 import { mapGetters } from 'vuex';
 import { getYear, getQuarter } from 'date-fns';
 import TheObjective from '@/components/TheObjective.vue';
+import TheKeyResult from '@/components/TheKeyResult.vue';
 
 export default {
   name: 'Product',
@@ -90,6 +86,7 @@ export default {
 
   components: {
     TheObjective,
+    TheKeyResult,
   },
 
   computed: {
