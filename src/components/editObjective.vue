@@ -22,6 +22,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { getYear, getQuarter } from 'date-fns';
 
 export default {
   props: {
@@ -34,6 +35,11 @@ export default {
   data: () => ({
     quarter: '',
   }),
+
+  mounted() {
+    if (this.objective === undefined) return;
+    this.quarter = this.objective.quarter;
+  },
 
   computed: {
     ...mapGetters(['getDistinctQuarters']),
