@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import uniqid from 'uniqid';
 
 export default {
@@ -59,8 +60,10 @@ export default {
   },
 
   computed: {
+    ...mapState(['chosenQuarter']),
+    ...mapGetters(['getProductWithDistinctObjectives']),
     product() {
-      return this.$store.getters.getObjectById(this.productId);
+      return this.getProductWithDistinctObjectives(this.productId, this.chosenQuarter);
     },
 
     newKeyRes() {

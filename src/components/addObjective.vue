@@ -22,7 +22,7 @@
 <script>
 import { addQuarters, getYear, getQuarter } from 'date-fns';
 import uniqid from 'uniqid';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -39,8 +39,13 @@ export default {
     },
   },
 
+  updated() {
+    if (this.quarter !== this.chosenQuarter) this.quarter = this.chosenQuarter;
+  },
+
   computed: {
     ...mapGetters(['products']),
+    ...mapState(['chosenQuarter']),
 
     newObjective() {
       return {

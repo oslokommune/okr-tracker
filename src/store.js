@@ -2,16 +2,22 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { findFirst } from 'obj-traverse/lib/obj-traverse';
+import { getYear, getQuarter } from 'date-fns';
 import * as sheetOptions from '@/config/sheetOptions';
 import * as helpers from '@/util/helpers';
 
 Vue.use(Vuex);
+
+const initialState = () => ({
+  chosenQuarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
+});
 
 export default new Vuex.Store({
   state: {
     gapi: null,
     data: null,
     nest: [],
+    chosenQuarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
   },
 
   getters: {
@@ -37,7 +43,7 @@ export default new Vuex.Store({
 
         if (product === false) return {};
 
-        return [...new Set(product.children.map(i => i.quarter))].filter(Boolean);
+        return [...new Set(product.children.map(i => i.quarter))].filter(Boolean).sort((a, b) => (a > b ? -1 : 1));
       };
     },
 
@@ -56,10 +62,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    setGapi(state, payload) {
+    SET_GAPI(state, payload) {
       state.gapi = payload;
     },
-    setData(state, payload) {
+    SET_DATA(state, payload) {
       let res = {};
 
       // splits the groups into key/value pairs
@@ -71,17 +77,29 @@ export default new Vuex.Store({
       state.data = res;
       state.nest = helpers.nest(res);
     },
+    SET_CHOSEN_QUARTER(state, payload) {
+      state.chosenQuarter = payload;
+    },
+    RESET_STATE(state) {
+      Object.assign(state, initialState());
+    },
   },
   actions: {
+    setChosenQuarter({ commit }, payload) {
+      commit('SET_CHOSEN_QUARTER', payload);
+    },
+    resetState({ commit }) {
+      commit('RESET_STATE');
+    },
     // Store the gapi object so that every component can access it
     initGapi({ commit }) {
       let localData = localStorage.getItem('okr-data');
       if (localData) {
-        commit('setData', JSON.parse(localData));
+        commit('SET_DATA', JSON.parse(localData));
       }
 
       return this._vm.$getGapiClient().then(gapi => {
-        commit('setGapi', gapi.client.sheets.spreadsheets);
+        commit('SET_GAPI', gapi.client.sheets.spreadsheets);
         return true;
       });
     },
@@ -94,7 +112,7 @@ export default new Vuex.Store({
         })
         .then(response => response.result.valueRanges)
         .then(data => {
-          commit('setData', data);
+          commit('SET_DATA', data);
 
           localStorage.setItem('okr-data', JSON.stringify(data));
         });

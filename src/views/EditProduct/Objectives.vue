@@ -7,9 +7,9 @@
         <span class="form-label">Kvartal</span>
         <v-select
           class="form-group objective__select"
-          v-model="quarter"
-          :value="quarter"
+          :value="chosenQuarter"
           :options="quarters"
+          @input="setSelectedQuarter"
         ></v-select>
       </div>
       <add-objective :product-id="product.id"></add-objective>
@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { getYear, getQuarter } from 'date-fns';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import AddObjective from '@/components/addObjective.vue';
 import EditObjective from '@/components/editObjective.vue';
 
@@ -36,17 +35,14 @@ export default {
     EditObjective,
   },
 
-  data: () => ({
-    quarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
-  }),
-
   computed: {
     ...mapGetters(['getDistinctQuarters', 'getProductWithDistinctObjectives']),
+    ...mapState(['chosenQuarter']),
     product() {
-      if (this.quarter === '') {
+      if (this.chosenQuarter === '') {
         return this.$store.getters.getObjectById(this.$route.params.id);
       } else {
-        return this.getProductWithDistinctObjectives(this.$route.params.id, this.quarter);
+        return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
       }
     },
 
@@ -55,10 +51,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['setChosenQuarter']),
     updateProductDetails() {
       this.$store.dispatch('updateProductDetails', this.product).then(() => {
         this.$router.push({ name: 'product', params: { id: this.product.id } });
       });
+    },
+    setSelectedQuarter(value) {
+      this.setChosenQuarter(value);
     },
   },
 };
