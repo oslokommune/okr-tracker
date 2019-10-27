@@ -90,16 +90,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getObjectById']),
+    ...mapGetters(['getObjectById', 'getDistinctQuarters', 'getProductWithDistinctObjectives']),
     product() {
-      let product = this.getObjectById(this.$route.params.id);
-
-      if (product === false) return {};
-
-      return {
-        ...product,
-        children: product.children.filter(x => x.quarter === this.chosenQuarter),
-      };
+      return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
     },
 
     getProductImage() {
@@ -107,12 +100,7 @@ export default {
     },
 
     quarters() {
-      const product = this.getObjectById(this.$route.params.id);
-
-      if (product === false) return {};
-
-      const distinctQuarters = [...new Set(product.children.map(i => i.quarter))].filter(Boolean);
-      return distinctQuarters;
+      return this.getDistinctQuarters(this.$route.params.id);
     },
   },
 

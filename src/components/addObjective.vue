@@ -3,10 +3,8 @@
     <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
 
     <div v-if="expand" class="popout">
-      <label class="form-group">
-        <span class="form-label">Kvartal</span>
-        <input type="text" v-model="quarter" />
-      </label>
+      <span class="form-label">Kvartal</span>
+      <v-select class="form-group" v-model="quarter" :options="availableQuarters"></v-select>
       <label class="form-group">
         <span class="form-label">Tittel</span>
         <input type="text" v-model="title" />
@@ -22,6 +20,7 @@
 </template>
 
 <script>
+import { addQuarters, getYear, getQuarter } from 'date-fns';
 import uniqid from 'uniqid';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -51,6 +50,26 @@ export default {
         quarter: this.quarter,
         product_id: this.productId,
       };
+    },
+
+    availableQuarters() {
+      let from = new Date(2019, 1, 1);
+      const to = new Date();
+      let quarters = [];
+      // TODO: write less shit code
+      while (to > from) {
+        const year = getYear(from);
+        const quarter = getQuarter(from);
+
+        quarters.push(`${year} Q${quarter}`);
+        from = addQuarters(from, 1);
+      }
+
+      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
+      from = addQuarters(from, 1);
+      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
+
+      return quarters;
     },
   },
 

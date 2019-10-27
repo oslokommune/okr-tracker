@@ -8,10 +8,9 @@
       <span class="form-label">Beskrivelse</span>
       <textarea @input="objective.edited = true" v-model="objective.objective_body" rows="4"></textarea>
     </label>
-    <label class="form-group">
-      <span class="form-label">Kvartal</span>
-      <input @input="objective.edited = true" type="text" v-model="objective.quarter" />
-    </label>
+    <span class="form-label">Kvartal</span>
+    <v-select class="form-group" v-model="quarter" :options="quarters" @input="objective.edited = true"></v-select>
+
     <div class="item__footer">
       <button class="btn" :disabled="!objective.edited" @click="updateObjective(objective)">
         Lagre endringer
@@ -22,11 +21,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { getYear, getQuarter } from 'date-fns';
+
 export default {
   props: {
     objective: {
       type: Object,
       required: true,
+    },
+  },
+
+  data: () => ({
+    quarter: '',
+  }),
+
+  mounted() {
+    if (this.objective === undefined) return;
+    this.quarter = this.objective.quarter;
+  },
+
+  computed: {
+    ...mapGetters(['getDistinctQuarters']),
+    quarters() {
+      return this.getDistinctQuarters(this.$route.params.id);
     },
   },
 

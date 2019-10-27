@@ -3,14 +3,14 @@
     <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt nøkkelresultat</button>
 
     <div v-if="expand" class="popout">
-      <label class="form-group">
-        <span class="form-label">Tilnyttet mål</span>
-        <select v-model="objective_id">
-          <option v-for="objective in product.children" :value="objective.id" :key="objective.id">
-            {{ objective.objective_title }}
-          </option>
-        </select>
-      </label>
+      <span class="form-label">Tilknyttet mål</span>
+      <v-select
+        class="form-group objective__select"
+        label="objective_title"
+        v-model="objective_id"
+        :value="objective_id"
+        :options="product.children"
+      ></v-select>
 
       <label class="form-group">
         <span class="form-label">Beskrivelse</span>
