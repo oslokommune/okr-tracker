@@ -42,6 +42,11 @@
       </section>
 
       <section class="section">
+        <h2 class="title-2">Fremdrift denne perioden</h2>
+        <pie-chart :product="product"></pie-chart>
+      </section>
+
+      <section class="section">
         <h2 class="title-2">Mål</h2>
 
         <p v-if="!product.children || !product.children.length">
@@ -76,6 +81,7 @@ import { mapGetters } from 'vuex';
 import { getYear, getQuarter } from 'date-fns';
 import TheObjective from '@/components/TheObjective.vue';
 import TheKeyResult from '@/components/TheKeyResult.vue';
+import PieChart from '@/components/PieChart.vue';
 
 export default {
   name: 'Product',
@@ -87,6 +93,7 @@ export default {
   components: {
     TheObjective,
     TheKeyResult,
+    PieChart,
   },
 
   computed: {
