@@ -69,7 +69,7 @@ export default {
     newKeyRes() {
       return {
         id: uniqid(),
-        objective_id: this.objective_id,
+        objective_id: this.objective_id.id,
         key_result: this.key_result,
         start_value: this.start_value,
         target_value: this.target_value,
