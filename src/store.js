@@ -76,12 +76,35 @@ export default new Vuex.Store({
 
       state.data = res;
       state.nest = helpers.nest(res);
+
+      helpers.storeObjectInLocalStorage(res);
+    },
+    LOAD_DATA(state, payload) {
+      state.data = payload;
+      state.nest = helpers.nest(payload);
     },
     SET_CHOSEN_QUARTER(state, payload) {
       state.chosenQuarter = payload;
     },
     RESET_STATE(state) {
       Object.assign(state, initialState());
+    },
+    ADD_OBJECT(state, payload) {
+      state.data[payload.key].push(payload.data);
+      state.nest = helpers.nest(state.data);
+      helpers.storeObjectInLocalStorage(state.data);
+    },
+    UPDATE_OBJECT(state, payload) {
+      const objIndex = state.data[payload.key].findIndex(obj => obj.id === payload.data.id);
+      state.data[payload.key][objIndex] = payload.data;
+      state.nest = helpers.nest(state.data);
+      helpers.storeObjectInLocalStorage(state.data);
+    },
+    DELETE_OBJECT(state, payload) {
+      const objIndex = state.data[payload.key].findIndex(obj => obj.id === payload.data.id);
+      state.data[payload.key].splice(objIndex, 1);
+      state.nest = helpers.nest(state.data);
+      helpers.storeObjectInLocalStorage(state.data);
     },
   },
   actions: {
@@ -91,11 +114,20 @@ export default new Vuex.Store({
     resetState({ commit }) {
       commit('RESET_STATE');
     },
+    addObject({ commit }, payload) {
+      commit('ADD_OBJECT', payload);
+    },
+    updateObject({ commit }, payload) {
+      commit('UPDATE_OBJECT', payload);
+    },
+    deleteObject({ commit }, payload) {
+      commit('DELETE_OBJECT', payload);
+    },
     // Store the gapi object so that every component can access it
     initGapi({ commit }) {
       let localData = localStorage.getItem('okr-data');
       if (localData) {
-        commit('SET_DATA', JSON.parse(localData));
+        commit('LOAD_DATA', JSON.parse(localData));
       }
 
       return this._vm.$getGapiClient().then(gapi => {
@@ -113,8 +145,6 @@ export default new Vuex.Store({
         .then(response => response.result.valueRanges)
         .then(data => {
           commit('SET_DATA', data);
-
-          localStorage.setItem('okr-data', JSON.stringify(data));
         });
     },
 

@@ -79,9 +79,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addObjective']),
+    ...mapActions(['addObjective', 'addObject']),
     send() {
       this.addObjective(this.newObjective)
+        .then(() => {
+          this.addObject({
+            key: 'Objectives',
+            data: this.newObjective,
+          });
+        })
         .then(() => {
           this.expand = false;
           this.title = '';

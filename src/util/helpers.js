@@ -70,3 +70,12 @@ export function generateUpdateDataOptions(sheetName, rowNumber) {
     range: `'${sheetName}'!A${rowNumber}`,
   };
 }
+
+
+/**
+ * Method to store state-object in localstorage
+ * @param obj object to store in localstorage
+ */
+export function storeObjectInLocalStorage(obj) {
+  localStorage.setItem('okr-data', JSON.stringify(obj));
+}

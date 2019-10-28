@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data: () => ({
     edited: false,
@@ -35,10 +37,19 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['updateObject']),
     updateProductDetails() {
-      this.$store.dispatch('updateProductDetails', this.product).then(() => {
-        this.$router.push({ name: 'product', params: { id: this.product.id } });
-      });
+      this.$store
+        .dispatch('updateProductDetails', this.product)
+        .then(() => {
+          this.updateObject({
+            key: 'Products',
+            data: this.product,
+          });
+        })
+        .then(() => {
+          this.$router.push({ name: 'product', params: { id: this.product.id } });
+        });
     },
   },
 };

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import uniqid from 'uniqid';
 
 export default {
@@ -80,9 +80,16 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addObject']),
     send() {
       this.$store
         .dispatch('addKeyResult', this.newKeyRes)
+        .then(() => {
+          this.addObject({
+            key: 'KeyRes',
+            data: this.newKeyRes,
+          });
+        })
         .then(() => {
           this.expand = false;
           this.objective_id = null;
