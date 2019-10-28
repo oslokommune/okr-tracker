@@ -42,11 +42,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addProduct']),
+    ...mapActions(['addProduct', 'addObject']),
     send() {
-      this.addProduct(this.newProduct).then(() => {
-        this.$router.push({ name: 'product', params: { id: this.newProduct.id } });
-      });
+      this.addProduct(this.newProduct)
+        .then(() => {
+          this.addObject({
+            key: 'Products',
+            data: this.newProduct,
+          });
+        })
+        .then(() => {
+          this.$router.push({ name: 'product', params: { id: this.newProduct.id } });
+        });
     },
   },
 };

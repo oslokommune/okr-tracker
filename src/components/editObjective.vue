@@ -12,16 +12,16 @@
     <v-select class="form-group" v-model="quarter" :options="quarters" @input="objective.edited = true"></v-select>
 
     <div class="item__footer">
-      <button class="btn" :disabled="!objective.edited" @click="updateObjective(objective)">
+      <button class="btn" :disabled="!objective.edited" @click="updateObj(objective)">
         Lagre endringer
       </button>
-      <button class="btn btn--danger" @click="deleteObjective(objective)">Slett mål</button>
+      <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
@@ -48,12 +48,23 @@ export default {
   },
 
   methods: {
-    updateObjective(objective) {
-      this.$store.dispatch('updateObjective', objective);
+    ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject']),
+    updateObj(objective) {
+      this.updateObjective(objective).then(() => {
+        this.updateObject({
+          key: 'Objectives',
+          data: objective,
+        });
+      });
     },
 
-    deleteObjective(objective) {
-      this.$store.dispatch('deleteObjective', objective);
+    deleteObj(objective) {
+      this.deleteObjective(objective).then(() => {
+        this.deleteObject({
+          key: 'Objectives',
+          data: objective,
+        });
+      });
     },
   },
 };
