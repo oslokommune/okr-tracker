@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import AddKeyres from '@/components/addKeyres.vue';
 import UpdateKeyres from '@/components/updateKeyres.vue';
 
@@ -22,8 +23,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['getProductWithDistinctObjectives']),
+    ...mapState(['chosenQuarter']),
     product() {
-      return this.$store.getters.getObjectById(this.$route.params.id);
+      return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
     },
   },
 };

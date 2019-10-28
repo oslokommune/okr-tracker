@@ -11,6 +11,10 @@ body {
   padding: 0;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 *,
 *::before,
 *::after {

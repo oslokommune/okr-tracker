@@ -77,8 +77,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { getYear, getQuarter } from 'date-fns';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import TheObjective from '@/components/TheObjective.vue';
 import TheKeyResult from '@/components/TheKeyResult.vue';
 import PieChart from '@/components/PieChart.vue';
@@ -86,17 +85,18 @@ import PieChart from '@/components/PieChart.vue';
 export default {
   name: 'Product',
 
-  data: () => ({
-    chosenQuarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
-  }),
-
   components: {
     TheObjective,
     TheKeyResult,
     PieChart,
   },
 
+  mounted() {
+    this.resetState();
+  },
+
   computed: {
+    ...mapState(['chosenQuarter']),
     ...mapGetters(['getObjectById', 'getDistinctQuarters', 'getProductWithDistinctObjectives']),
     product() {
       return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
@@ -112,8 +112,9 @@ export default {
   },
 
   methods: {
+    ...mapActions(['resetState', 'setChosenQuarter']),
     activeQuarter(quarter) {
-      this.chosenQuarter = quarter;
+      this.setChosenQuarter(quarter);
     },
   },
 };

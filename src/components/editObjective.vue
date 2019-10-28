@@ -22,7 +22,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getYear, getQuarter } from 'date-fns';
 
 export default {
   props: {
