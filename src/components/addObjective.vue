@@ -40,7 +40,7 @@ export default {
   },
 
   updated() {
-    if (this.quarter !== this.chosenQuarter) this.quarter = this.chosenQuarter;
+    this.quarter = this.chosenQuarter;
   },
 
   computed: {
