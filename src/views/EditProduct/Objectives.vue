@@ -72,7 +72,6 @@ export default {
   &__select {
     min-width: 200px;
     margin-right: 1rem;
-
     transform: translateY(-3px);
   }
 }

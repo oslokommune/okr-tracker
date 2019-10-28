@@ -13,7 +13,7 @@
     "no-descending-specificity": null,
     "plugin/rational-order": [true, {
       "border-in-box-model": false,
-      "empty-line-between-groups": true
+      "empty-line-between-groups": false
     }]
   }
 }

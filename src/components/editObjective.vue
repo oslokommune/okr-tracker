@@ -62,7 +62,6 @@ export default {
 <style lang="scss" scoped>
 .item {
   padding: 2rem;
-
   background: #fbfbfb;
   border: 1px solid #eaeaea;
 

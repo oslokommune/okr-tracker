@@ -101,7 +101,6 @@ export default {
 
 .add {
   position: relative;
-
   margin: 2rem 0;
 }
 </style>

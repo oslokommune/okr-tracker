@@ -67,7 +67,6 @@ body.using-mouse :focus {
   top: 3.5rem;
   left: -2rem;
   z-index: 100;
-
   width: 100%;
   min-width: 320px;
   max-width: 500px;
@@ -75,7 +74,6 @@ body.using-mouse :focus {
   margin-bottom: 3rem;
 
   padding: 2rem;
-
   background: #fafafa;
   border: 3px solid $color-border;
   box-shadow: 0 0.5rem 1rem rgba(black, 0.2);
@@ -88,15 +86,12 @@ body.using-mouse :focus {
 .sub-nav {
   display: flex;
   width: 100%;
-
   background: $color-bg;
 
   &__element {
     position: relative;
-
     display: inline-block;
     padding: 0.75rem 0.5rem;
-
     color: $color-purple;
 
     // outline: 1px solid red
@@ -109,11 +104,8 @@ body.using-mouse :focus {
         right: 0;
         bottom: 0;
         left: 0;
-
         height: 4px;
-
         background: $color-purple;
-
         content: '';
       }
     }
@@ -122,6 +114,5 @@ body.using-mouse :focus {
 
 .card {
   padding: 1.5rem;
-
   border: 1px solid $color-border;
 }
