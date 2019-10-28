@@ -54,12 +54,10 @@ export default {
   width: 4rem;
   height: 4rem;
   padding: 1rem;
-
   background: $color-yellow;
 
   svg {
     width: 100%;
-
     fill: $color-purple;
   }
 }

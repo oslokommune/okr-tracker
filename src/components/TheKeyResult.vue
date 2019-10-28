@@ -62,10 +62,8 @@ export default {
   top: 1px;
   right: 1px;
   z-index: 2;
-
   width: 2.5rem;
   height: 2.5rem;
-
   background: #eeeeee;
 
   border: 1px solid transparent;

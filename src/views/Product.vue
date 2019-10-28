@@ -125,12 +125,10 @@ export default {
 
 .product-header {
   height: 30rem;
-
   text-align: center;
 
   @media screen and (min-width: 768px) {
     height: 11rem;
-
     text-align: left;
   }
 
@@ -185,7 +183,6 @@ export default {
 
   .profile-image {
     z-index: 2;
-
     display: block;
     grid-row: 3;
     grid-column: 1;
@@ -194,7 +191,6 @@ export default {
     width: 12rem;
     height: 12rem;
     object-fit: cover;
-
     background: #eeeeee;
 
     border: 6px solid white;
@@ -203,7 +199,6 @@ export default {
     @media screen and (min-width: 768px) {
       grid-row: 2;
       grid-column: 1;
-
       transform: translateX(-6px);
     }
   }
@@ -211,19 +206,15 @@ export default {
 
 .button {
   position: relative;
-
   display: inline-block;
   padding: 0.75rem 0.5rem;
-
   color: $color-purple;
-
   background: none;
 
   border: none;
 
   &.active {
     position: relative;
-
     cursor: default;
 
     &::after {
@@ -231,11 +222,8 @@ export default {
       right: 0;
       bottom: 0;
       left: 0;
-
       height: 4px;
-
       background-color: $color-purple;
-
       content: '';
     }
   }
