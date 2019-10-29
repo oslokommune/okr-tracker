@@ -4,6 +4,7 @@
 
 <script>
 import Pie from '@/util/piechart';
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -18,9 +19,7 @@ export default {
   },
 
   computed: {
-    chosenQuarter() {
-      return this.$store.state.chosenQuarter;
-    },
+    ...mapState(['chosenQuarter']),
   },
 
   mounted() {
