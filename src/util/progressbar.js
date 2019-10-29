@@ -7,16 +7,17 @@ import {
   initSvg,
   initTargetVal,
   initUnit,
+  setWidth,
   width,
   barPadding,
 } from './graph-helpers';
 
 export default class Progressbar {
   constructor(svg) {
-    this.svg = select(svg).call(initSvg);
-    this.bg = this.svg.append('rect').call(initBackground);
-    this.bar = this.svg.append('rect').call(initBar);
-    this.unit = this.svg.append('text').call(initUnit);
+    this.svg = select(svg).call(initSvg.bind(this));
+    this.bg = this.svg.append('rect').call(initBackground.bind(this));
+    this.bar = this.svg.append('rect').call(initBar.bind(this));
+    this.unit = this.svg.append('text').call(initUnit.bind(this));
     this.startVal = this.svg.append('text').call(initStartVal);
     this.targetVal = this.svg.append('text').call(initTargetVal);
     this.currentVal = this.svg.append('g').call(initCurrentVal);
@@ -44,6 +45,6 @@ export default class Progressbar {
 
     this.currentVal.attr('transform', `translate(${this.x(val)}, 0)`);
 
-    this.bar.attr('width', this.x(val));
+    this.bar.call(setWidth.bind(this), val);
   }
 }
