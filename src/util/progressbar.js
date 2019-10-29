@@ -33,7 +33,7 @@ export default class Progressbar {
 
     this.x.domain([obj.start_value, obj.target_value]);
 
-    const val = 89; // this value should come from argument
+    const val = +obj.current_value || obj.start_value || 0;
 
     this.currentVal
       .select('text')
