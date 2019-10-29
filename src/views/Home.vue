@@ -20,6 +20,10 @@
         </li>
       </ul>
     </div>
+
+    <hr />
+
+    <button @click="mock">Inject mock data!</button>
   </div>
 </template>
 
@@ -29,6 +33,12 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState(['nest']),
+  },
+
+  methods: {
+    mock() {
+      this.$store.dispatch('addMockData');
+    },
   },
 };
 </script>

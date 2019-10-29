@@ -4,6 +4,7 @@
 
 <script>
 import Pie from '@/util/piechart';
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -17,14 +18,18 @@ export default {
     },
   },
 
+  computed: {
+    ...mapState(['chosenQuarter']),
+  },
+
   mounted() {
     this.pie = new Pie(this.$refs.svg);
-    this.pie.render(this.product);
+    this.pie.render(this.product, this.chosenQuarter);
   },
 
   watch: {
     product() {
-      this.pie.render(this.product);
+      this.pie.render(this.product, this.chosenQuarter);
     },
   },
 };

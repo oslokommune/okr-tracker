@@ -1,3 +1,5 @@
+import { scaleTime, scaleLinear, mean } from 'd3';
+import { endOfQuarter } from 'date-fns';
 import * as sheetOptions from '@/config/sheetOptions';
 
 /**
@@ -23,7 +25,13 @@ export function arraysToObjects(arr) {
  * Takes an array of grouped data and returns a nested object
  */
 export function nest(data) {
-  const keyres = data.KeyRes;
+  const values = data.KeyResTracker;
+
+  const keyres = data.KeyRes.map(keyres => {
+    keyres.children = values.filter(val => val.key_result_id === keyres.id);
+    keyres.current_value = findCurrentValue(keyres.children) || keyres.start_value;
+    return keyres;
+  });
 
   const objectives = data.Objectives.map(objective => {
     objective.children = keyres.filter(keyresult => keyresult.objective_id === objective.id);
@@ -71,11 +79,52 @@ export function generateUpdateDataOptions(sheetName, rowNumber) {
   };
 }
 
-
 /**
  * Method to store state-object in localstorage
  * @param obj object to store in localstorage
  */
 export function storeObjectInLocalStorage(obj) {
   localStorage.setItem('okr-data', JSON.stringify(obj));
+}
+
+function findCurrentValue(list) {
+  if (!list || !list.length) return false;
+  list.sort((a, b) => (a.timestamp > b.timestamp ? -1 : a.timestamp < b.timestamp ? 1 : 0));
+  return list[0].value;
+}
+
+export function getDateSpanFromQuarter(quarter) {
+  const year = quarter.split(' ')[0];
+  const q = +quarter.split('Q')[1];
+
+  const startDate = new Date(year, (q - 1) * 3, 1);
+  const endDate = endOfQuarter(startDate);
+
+  return { startDate, endDate };
+}
+
+export function getTimeProgression(quarter) {
+  const { startDate, endDate } = getDateSpanFromQuarter(quarter);
+
+  const timeScale = scaleTime()
+    .domain([startDate, endDate])
+    .clamp(true);
+
+  return timeScale(new Date());
+}
+
+export function getProgression(objectives) {
+  if (!objectives) return 0;
+
+  return (
+    mean(
+      objectives
+        .map(objective => objective.children)
+        .flat()
+        .map(keyres => {
+          const scale = scaleLinear().domain([+keyres.start_value, +keyres.target_value]);
+          return scale(+keyres.current_value);
+        })
+    ) || 0
+  );
 }

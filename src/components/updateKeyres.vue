@@ -16,34 +16,67 @@
         <span class="form-help">Hvilken dato gjelder verdien for?</span>
         <input type="date" v-model="date" />
       </label>
-      <button class="btn">Oppdater</button>
-      <button class="btn btn--ghost">Endre</button>
+      <button class="btn" @click="addKeyResValue">Oppdater</button>
+      <router-link :to="{ name: 'keyres-value-details', params: { keyresId } }" class="btn btn--ghost">
+        Detaljer
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
+import uniqid from 'uniqid';
+
 export default {
   name: 'UpdateKeyres',
 
   data: () => ({
-    value: 0,
     date: new Date().toISOString().split('T')[0],
+    newValue: 0,
   }),
 
   props: {
-    id: {
+    keyresId: {
       type: String,
       required: true,
     },
   },
 
+  methods: {
+    addKeyResValue() {
+      this.$store
+        .dispatch('addKeyResValue', {
+          id: uniqid(),
+          key_result_id: this.keyresId,
+          value: +this.newValue,
+          timestamp: this.date,
+        })
+        .then(() => {
+          this.$router.push({
+            name: 'keyres-value-details',
+            params: {
+              keyresId: this.keyresId,
+            },
+          });
+        });
+    },
+  },
+
   computed: {
     keyres() {
-      return this.$store.getters.getObjectById(this.id);
+      return this.$store.getters.getObjectById(this.keyresId);
     },
     objective() {
       return this.$store.getters.getObjectById(this.keyres.objective_id);
+    },
+
+    value: {
+      set(val) {
+        this.newValue = val;
+      },
+      get() {
+        return this.keyres.current_value;
+      },
     },
   },
 };

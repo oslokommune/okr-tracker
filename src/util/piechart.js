@@ -1,4 +1,5 @@
 import { select, pie } from 'd3';
+
 import {
   initSvg,
   initGroup,
@@ -10,6 +11,8 @@ import {
   updateTodayTextPosition,
   updatePercentText,
 } from './pie-helpers';
+
+import { getTimeProgression, getProgression } from './helpers';
 
 export default class Pie {
   /**
@@ -27,10 +30,9 @@ export default class Pie {
   /**
    * Update the visualisation using the provided data
    */
-  render(/* obj */) {
-    // The following values need to be dynamically set using the data from its caller
-    const progress = Math.random();
-    const time = Math.random();
+  render(obj, quarter) {
+    const progress = getProgression(obj.children);
+    const time = getTimeProgression(quarter);
 
     // Set up the data for the inner and outer arcs
     const innerArcs = this.pie([progress, 1 - progress]);

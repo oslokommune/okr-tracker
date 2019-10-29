@@ -7,6 +7,7 @@ import EditProduct from './views/EditProduct.vue';
 import EditProductBasic from './views/EditProduct/BasicInfo.vue';
 import EditProductObjectives from './views/EditProduct/Objectives.vue';
 import EditProductKeyres from './views/EditProduct/KeyResults.vue';
+import KeyResDetails from './views/EditProduct/KeyResultDetails.vue';
 import NotFound from './views/NotFound.vue';
 
 Vue.use(Router);
@@ -39,7 +40,8 @@ export default new Router({
       children: [
         { path: '/', name: 'edit-product', component: EditProductBasic },
         { path: 'objectives', name: 'edit-product-objectives', component: EditProductObjectives },
-        { path: 'key-results', name: 'edit-product-keyres', component: EditProductKeyres },
+        { path: 'key-results/', name: 'edit-product-keyres', component: EditProductKeyres },
+        { path: 'key-results/:keyresId', name: 'keyres-value-details', component: KeyResDetails },
       ],
     },
 
