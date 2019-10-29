@@ -6,6 +6,8 @@ import { getYear, getQuarter } from 'date-fns';
 import * as sheetOptions from '@/config/sheetOptions';
 import * as helpers from '@/util/helpers';
 
+import injectMockData from '@/test/mock';
+
 Vue.use(Vuex);
 
 const initialState = () => ({
@@ -210,6 +212,16 @@ export default new Vuex.Store({
       return dispatch('appendData', { options, values });
     },
 
+    addKeyResValue({ dispatch }, payload) {
+      const options = helpers.generateAppendDataOptions('KeyResTracker');
+
+      const values = [[payload.id, payload.timestamp, payload.key_result_id, payload.value]];
+
+      return dispatch('appendData', { options, values }).then(() => {
+        dispatch('addObject', { key: 'KeyResTracker', data: payload });
+      });
+    },
+
     updateProductDetails({ state, dispatch }, payload) {
       const index = state.data.Products.findIndex(d => d.id === payload.id);
 
@@ -242,6 +254,22 @@ export default new Vuex.Store({
       const values = [Array.from(Array(10)).map(() => '')];
 
       return dispatch('updateData', { options, values });
+    },
+
+    deleteKeyResValue({ state, dispatch }, payload) {
+      const index = state.data.KeyResTracker.findIndex(d => d.id === payload.id);
+
+      const options = helpers.generateUpdateDataOptions('KeyResTracker', index + 2);
+
+      const values = [Array.from(Array(10)).map(() => '')];
+
+      return dispatch('updateData', { options, values }).then(() => {
+        dispatch('deleteObject', { key: 'KeyResTracker', data: payload });
+      });
+    },
+
+    addMockData(context) {
+      injectMockData(context);
     },
   },
 });

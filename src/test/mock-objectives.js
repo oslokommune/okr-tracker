@@ -1,0 +1,51 @@
+export default [
+  {
+    id: 'obj001',
+    product_id: 'veiviser',
+    objective_title: 'God løsning på problemet',
+    objective_body: 'Vi skal vite hva det er som kan gjøre veiviser 60+ til en god løsning på problemet',
+    quarter: '2019 Q4',
+  },
+  {
+    id: 'obj002',
+    product_id: 'veiviser',
+    objective_title: 'Teknisk bunnsolid',
+    objective_body: 'Veiviser 60+ er et teknisk bunnsolid produkt',
+    quarter: '2019 Q4',
+  },
+  {
+    id: 'obj003',
+    product_id: 'veiviser',
+    objective_title: 'Enkelt å oppdatere',
+    objective_body: 'Det er forrykende enkelt å holde informasjonen i veiviser 60+ oppdatert',
+    quarter: '2019 Q4',
+  },
+  {
+    id: 'obj004',
+    product_id: 'veiviser',
+    objective_title: 'Transparent team',
+    objective_body: 'Vi skal bli det mest transparente teamet i verden',
+    quarter: '2019 Q4',
+  },
+  {
+    id: 'obj005',
+    product_id: 'veiviser',
+    objective_title: 'Begreistrer',
+    objective_body: 'Publisere en tilbudsveiviser for de over 60 år som begeistrer.',
+    quarter: '2019 Q3',
+  },
+  {
+    id: 'obj006',
+    product_id: 'veiviser',
+    objective_title: 'Reagere og iterere',
+    objective_body: 'Vi skal ha supereffektive løsninger for å kunne reagere og iterere på produktet.',
+    quarter: '2019 Q3',
+  },
+  {
+    id: 'obj007',
+    product_id: 'veiviser',
+    objective_title: 'Sammesveiset team',
+    objective_body: 'Vi skal bli det mest sammensveisede teamet.',
+    quarter: '2019 Q3',
+  },
+];
