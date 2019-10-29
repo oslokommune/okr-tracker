@@ -1,35 +1,42 @@
 <template>
-  <div class="add">
-    <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
-
-    <div v-if="expand" class="popout">
-      <span class="form-label">Kvartal</span>
-      <v-select class="form-group" v-model="quarter" :options="availableQuarters"></v-select>
-      <label class="form-group">
-        <span class="form-label">Tittel</span>
-        <input type="text" v-model="title" />
-      </label>
-      <label class="form-group">
-        <span class="form-label">Beskrivelse</span>
-        <textarea v-model="body" rows="4"></textarea>
-      </label>
-      <button class="btn" @click="send">Legg til</button>
-      <button class="btn" @click="expand = false">Lukk</button>
-    </div>
+  <div v-if="expand" class="popout">
+    <span class="form-label">Kvartal</span>
+    <v-select
+      class="form-group"
+      :class="{ 'form-group--error': $v.quarter.$error }"
+      :value="quarter"
+      :options="availableQuarters"
+      @input="setSelectedQuarter"
+    ></v-select>
+    <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+    <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
+      <span class="form-label">Tittel</span>
+      <input type="text" v-model="$v.title.$model" />
+    </label>
+    <div class="form-group--error" v-if="$v.title.$error">Kan ikke være tom</div>
+    <label class="form-group" :class="{ 'form-group--error': $v.body.$error }">
+      <span class="form-label">Beskrivelse</span>
+      <textarea v-model="$v.body.$model" rows="4"></textarea>
+    </label>
+    <div class="form-group--error" v-if="$v.body.$error">Kan ikke være tom</div>
+    <button class="btn" @click="send">Legg til</button>
+    <button class="btn" @click="$emit('close-menu', false)">Lukk</button>
+    <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
   </div>
 </template>
 
 <script>
 import { addQuarters, getYear, getQuarter } from 'date-fns';
+import { required } from 'vuelidate/lib/validators';
 import uniqid from 'uniqid';
 import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   data: () => ({
-    expand: false,
     title: '',
     quarter: '',
     body: '',
+    submitButton: '',
   }),
 
   props: {
@@ -37,9 +44,25 @@ export default {
       type: String,
       required: true,
     },
+    expand: {
+      type: Boolean,
+      required: true,
+    },
   },
 
-  updated() {
+  validations: {
+    title: {
+      required,
+    },
+    quarter: {
+      required,
+    },
+    body: {
+      required,
+    },
+  },
+
+  mounted() {
     this.quarter = this.chosenQuarter;
   },
 
@@ -80,33 +103,34 @@ export default {
 
   methods: {
     ...mapActions(['addObjective', 'addObject']),
+    setSelectedQuarter(value) {
+      this.$v.quarter.$touch();
+      this.quarter = value;
+    },
     send() {
-      this.addObjective(this.newObjective)
-        .then(() => {
-          this.addObject({
-            key: 'Objectives',
-            data: this.newObjective,
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.submitButton = 'ERROR';
+      } else {
+        this.submitButton = 'OK';
+        this.addObjective(this.newObjective)
+          .then(() => {
+            this.addObject({
+              key: 'Objectives',
+              data: this.newObjective,
+            });
+          })
+          .then(() => {
+            this.$emit('close-menu', false);
+            this.title = '';
+            this.body = '';
+            this.quarter = '';
+          })
+          .catch(e => {
+            throw new Error(e);
           });
-        })
-        .then(() => {
-          this.expand = false;
-          this.title = '';
-          this.body = '';
-          this.quarter = '';
-        })
-        .catch(e => {
-          throw new Error(e);
-        });
+      }
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '../styles/colors';
-
-.add {
-  position: relative;
-  margin: 2rem 0;
-}
-</style>

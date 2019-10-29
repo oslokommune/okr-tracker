@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueGAPI from 'vue-gapi';
 import VueSelect from 'vue-select';
+import Vuelidate from "vuelidate";
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -19,6 +20,7 @@ const apiConfig = {
 
 // Use the plugin and pass along the configuration
 Vue.use(VueGAPI, apiConfig);
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 

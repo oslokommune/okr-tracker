@@ -20,6 +20,11 @@ textarea {
 .form-group {
   display: block;
   margin-bottom: 1.25rem;
+
+  &--error {
+    color: $color-red;
+    margin-bottom: 0;
+  }
 }
 
 .form-help {

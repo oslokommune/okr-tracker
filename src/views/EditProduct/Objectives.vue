@@ -12,7 +12,16 @@
           @input="setSelectedQuarter"
         ></v-select>
       </div>
-      <add-objective :product-id="product.id"></add-objective>
+      <div class="add">
+        <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
+        <add-objective
+          :chosen-quarter="chosenQuarter"
+          v-if="expand"
+          :expand="expand"
+          @close-menu="closeMenu"
+          :product-id="product.id"
+        ></add-objective>
+      </div>
     </div>
     <div class="content">
       <ul class="grid-3">
@@ -34,6 +43,10 @@ export default {
     AddObjective,
     EditObjective,
   },
+
+  data: () => ({
+    expand: false,
+  }),
 
   computed: {
     ...mapGetters(['getDistinctQuarters', 'getProductWithDistinctObjectives']),
@@ -60,6 +73,9 @@ export default {
     setSelectedQuarter(value) {
       this.setChosenQuarter(value);
     },
+    closeMenu(value) {
+      this.expand = value;
+    },
   },
 };
 </script>
@@ -74,5 +90,10 @@ export default {
     margin-right: 1rem;
     transform: translateY(-3px);
   }
+}
+
+.add {
+  position: relative;
+  margin: 2rem 0;
 }
 </style>
