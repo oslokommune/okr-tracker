@@ -10,7 +10,7 @@
     </div>
 
     <button v-if="edit" class="close" @click="edit = false">X</button>
-    <update-keyres v-if="edit" :id="keyres.id"></update-keyres>
+    <update-keyres v-if="edit" :keyres-id="keyres.id"></update-keyres>
   </div>
 </template>
 

@@ -33,45 +33,47 @@
       </div>
     </nav>
 
-    <div class="content container container--sidebar">
-      <section class="section">
-        <h2 class="title-2">Oppdrag</h2>
-        <p>
-          {{ product.mission_statement }}
-        </p>
-      </section>
+    <div class="content">
+      <div class="container container--sidebar">
+        <section class="section">
+          <h2 class="title-2">Oppdrag</h2>
+          <p>
+            {{ product.mission_statement }}
+          </p>
+        </section>
 
-      <section class="section">
-        <h2 class="title-2">Fremdrift denne perioden</h2>
-        <pie-chart :product="product"></pie-chart>
-      </section>
+        <section class="section">
+          <h2 class="title-2">Fremdrift denne perioden</h2>
+          <pie-chart :product="product"></pie-chart>
+        </section>
 
-      <section class="section">
-        <h2 class="title-2">Mål</h2>
+        <section class="section">
+          <h2 class="title-2">Mål</h2>
 
-        <p v-if="!product.children || !product.children.length">
-          <strong>Oops! Det finnes ingen mål akkurat nå! </strong>
-          <router-link :to="{ name: 'edit-product-objectives', params: { id: product.id } }"
-            >Legg til et mål</router-link
-          >
-        </p>
+          <p v-if="!product.children || !product.children.length">
+            <strong>Oops! Det finnes ingen mål akkurat nå! </strong>
+            <router-link :to="{ name: 'edit-product-objectives', params: { id: product.id } }"
+              >Legg til et mål</router-link
+            >
+          </p>
 
-        <ul class="grid-3">
-          <li v-for="objective in product.children" :key="objective.id">
-            <the-objective :objective="objective"></the-objective>
-          </li>
-        </ul>
-      </section>
+          <ul class="grid-3">
+            <li v-for="objective in product.children" :key="objective.id">
+              <the-objective :objective="objective"></the-objective>
+            </li>
+          </ul>
+        </section>
 
-      <section class="section" v-if="product.children && product.children.length">
-        <h2 class="title-2">Nøkkelresultater</h2>
+        <section class="section" v-if="product.children && product.children.length">
+          <h2 class="title-2">Nøkkelresultater</h2>
 
-        <div class="grid-3">
-          <template v-for="objective in product.children">
-            <the-key-result v-for="keyres in objective.children" :key="keyres.id" :id="keyres.id"></the-key-result>
-          </template>
-        </div>
-      </section>
+          <div class="grid-3">
+            <template v-for="objective in product.children">
+              <the-key-result v-for="keyres in objective.children" :key="keyres.id" :id="keyres.id"></the-key-result>
+            </template>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
 </template>

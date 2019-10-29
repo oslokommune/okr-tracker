@@ -5,7 +5,7 @@
     <add-keyres :product-id="product.id"></add-keyres>
     <div class="content" v-for="objective in product.children" :key="objective.id">
       <div class="grid-3">
-        <update-keyres v-for="keyres in objective.children" :key="keyres.id" :id="keyres.id"></update-keyres>
+        <update-keyres v-for="keyres in objective.children" :key="keyres.id" :keyres-id="keyres.id"></update-keyres>
       </div>
     </div>
   </div>
