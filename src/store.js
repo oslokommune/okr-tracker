@@ -35,6 +35,10 @@ export default new Vuex.Store({
       return state.data && state.data.Objectives ? state.data.Objectives : [];
     },
 
+    keyres(state) {
+      return state.data && state.data.KeyRes ? state.data.KeyRes : [];
+    },
+
     getObjectById(state) {
       return id => findFirst({ children: state.nest }, 'children', { id });
     },
@@ -241,6 +245,26 @@ export default new Vuex.Store({
 
       const values = [
         [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter],
+      ];
+
+      return dispatch('updateData', { options, values });
+    },
+
+    updateKeyRes({ state, dispatch }, payload) {
+      const index = state.data.KeyRes.findIndex(k => k.id === payload.id);
+
+      const options = helpers.generateUpdateDataOptions('KeyRes', index + 2);
+
+      const values = [
+        [
+          payload.id,
+          payload.objective_id,
+          payload.key_result,
+          payload.start_value,
+          payload.target_value,
+          payload.target_type,
+          payload.unit,
+        ],
       ];
 
       return dispatch('updateData', { options, values });

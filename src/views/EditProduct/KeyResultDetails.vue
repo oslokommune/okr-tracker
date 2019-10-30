@@ -13,6 +13,7 @@
     </div>
 
     <h3 class="title-3">Registrerte målepunkter</h3>
+    <edit-keyres></edit-keyres>
     <table class="table">
       <thead>
         <th>Dato</th>
@@ -33,9 +34,11 @@
 <script>
 import TheObjective from '@/components/TheObjective.vue';
 import Linechart from '@/util/linechart';
+import EditKeyres from "@/components/editKeyres";
 
 export default {
   components: {
+    EditKeyres,
     TheObjective,
   },
 
