@@ -22,9 +22,9 @@
       <div class="form-group--error" v-if="$v.date.$error">
         Må være innenfor datoene: {{ formatDate(startDate) }} og {{ formatDate(endDate) }}
       </div>
-      <button :disabled="submitButton === 'LOADING'" class="btn" @click="addKeyResValue">Oppdater</button>
+      <button :disabled="submitButton === 'LOADING'" class="btn" @click="addKeyResValue">Oppdater fremdrift</button>
       <router-link :to="{ name: 'keyres-value-details', params: { keyresId } }" class="btn btn--ghost">
-        Detaljer
+        Endre
       </router-link>
       <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
       <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
