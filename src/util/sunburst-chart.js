@@ -1,14 +1,29 @@
-import { select, selectAll, partition, hierarchy, arc, scaleLinear, interpolatePlasma } from 'd3';
+import { select, partition, hierarchy, arc, scaleLinear, min } from 'd3';
 
-const labels = ['Origo', 'Produktområder', 'Produkter', 'Mål', 'Nøkkelresultater'];
+import {
+  initTooltip,
+  initArcs,
+  drawArcs,
+  drawArcBars,
+  handleMouseover,
+  showTooltip,
+  handleMouseLeave,
+} from './sunburst-helpers';
+
+const height = 600;
+const width = 900;
 
 export default class Sunburst {
   constructor(svg) {
     this.svg = select(svg)
-      .attr('width', 700)
-      .attr('height', 700);
+      .attr('width', width)
+      .attr('height', height);
 
-    this.canvas = this.svg.append('g').attr('transform', `translate(${350}, ${350})`);
+    this.canvas = this.svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+    this.tooltip = select('#app')
+      .append('div')
+      .call(initTooltip);
   }
 
   render(data) {
@@ -18,62 +33,28 @@ export default class Sunburst {
     const depth = root.height + 1;
 
     // Use the root
-    const partitionGenerator = partition().size([Math.PI * 1, depth]);
+    const partitionGenerator = partition().size([Math.PI * 2, depth]);
     partitionGenerator(root);
 
     const radius = scaleLinear()
-      .range([0, 300])
+      .range([0, min([width, height]) / 2])
       .domain([0, depth]);
 
-    const colors = interpolatePlasma;
-
-    const arcGenerator = arc()
+    this.arcGenerator = arc()
       .startAngle(d => d.x0 - Math.PI / 2)
       .endAngle(d => d.x1 - Math.PI / 2)
       .innerRadius(d => radius(d.y0))
       .outerRadius(d => radius(d.y1));
 
-    this.canvas
-      .selectAll('g.label')
-      .data(labels)
-      .join(enter => {
-        const g = enter.append('g');
-
-        g.attr('transform', (d, i) => {
-          return `translate(${radius(i + 1) - 20}, ${30})`;
-        });
-        g.append('text')
-          .text(d => d)
-          .attr('text-anchor', 'end')
-          .attr('transform', 'rotate(-30)');
-
-        return g;
-      })
-      .classed('label', true);
-
     const arcs = this.canvas
-      .selectAll('path')
+      .selectAll('g.arc')
       .data(root.descendants())
-      .join('path')
-      .attr('d', arcGenerator)
-      .style('stroke', '#fff')
-      // .attr('opacity', d => d.data.progression)
-      .attr('fill', d => colors(d.depth / depth));
+      .join(initArcs);
 
-    arcs.on('mouseover', (d, i, j) => {
-      selectAll(j).attr('opacity', 0.2);
-      const childIds = d.descendants().map(d => d.data.id);
-      const childNodes = j.filter(d => childIds.includes(d.__data__.data.id));
-      selectAll(childNodes).attr('opacity', 1);
-
-      const obj = d.data;
-      const name = obj.organisation || obj.department || obj.product || obj.objective_title || obj.key_result;
-
-      console.log(name); // display the name in tooltip?
-    });
-
-    arcs.on('mouseleave', (d, i, j) => {
-      selectAll(j).attr('opacity', 1);
-    });
+    arcs.call(drawArcs.bind(this));
+    arcs.filter(d => d.depth === depth - 2).call(drawArcBars.bind(this));
+    arcs.on('mouseover', handleMouseover.bind(this));
+    arcs.on('mousemove', showTooltip.bind(this));
+    arcs.on('mouseleave', handleMouseLeave.bind(this));
   }
 }
