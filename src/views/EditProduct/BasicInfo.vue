@@ -18,7 +18,10 @@
         <textarea @input="edited = true" v-model="product.mission_statement"></textarea>
       </label>
 
-      <button class="btn" :disabled="!edited" @click="updateProductDetails">Lagre endringer</button>
+      <button class="btn" :disabled="!edited || submitButton === 'LOADING'" @click="updateProductDetails">
+        Lagre endringer
+      </button>
+      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
     </div>
   </div>
 </template>
@@ -29,6 +32,7 @@ import { mapActions } from 'vuex';
 export default {
   data: () => ({
     edited: false,
+    submitButton: '',
   }),
 
   computed: {
@@ -39,6 +43,7 @@ export default {
   methods: {
     ...mapActions(['updateObject']),
     updateProductDetails() {
+      this.submitButton = 'LOADING';
       this.$store
         .dispatch('updateProductDetails', this.product)
         .then(() => {
@@ -48,7 +53,13 @@ export default {
           });
         })
         .then(() => {
+          this.edited = false;
+          this.submitButton = 'OK';
           this.$router.push({ name: 'product', params: { id: this.product.id } });
+        })
+        .catch(() => {
+          this.edited = false;
+          this.submitButton = 'FAILED';
         });
     },
   },

@@ -23,8 +23,9 @@
         :options="departments"
       ></v-select>
       <div class="form-group--error" v-if="$v.newProduct.department_id.$error">Avdeling må være valgt</div>
-      <button class="btn" @click="send">Legg til</button>
+      <button :disabled="submitButton === 'LOADING'" class="btn" @click="send">Legg til</button>
       <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
+      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
     </div>
   </div>
 </template>
@@ -72,7 +73,7 @@ export default {
       if (this.$v.$invalid) {
         this.submitButton = 'ERROR';
       } else {
-        this.submitButton = 'OK';
+        this.submitButton = 'LOADING';
         this.addProduct(this.newProduct)
           .then(() => {
             this.addObject({
@@ -81,7 +82,11 @@ export default {
             });
           })
           .then(() => {
+            this.submitButton = 'OK';
             this.$router.push({ name: 'product', params: { id: this.newProduct.id } });
+          })
+          .catch(() => {
+            this.submitButton = 'FAILED';
           });
       }
     },
