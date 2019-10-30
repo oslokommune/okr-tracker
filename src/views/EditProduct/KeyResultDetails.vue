@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import TheObjective from '@/components/Objective/TheObjective.vue';
+import TheObjective from '@/components/TheObjective.vue';
 import EditKeyres from '@/components/KeyRes/editKeyres.vue';
 import Linechart from '@/util/linechart';
 

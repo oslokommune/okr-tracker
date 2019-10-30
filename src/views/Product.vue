@@ -82,8 +82,8 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex';
-import TheObjective from '@/components/Objective/TheObjective.vue';
-import TheKeyResult from '@/components/KeyRes/TheKeyResult.vue';
+import TheObjective from '@/components/TheObjective.vue';
+import TheKeyResult from '@/components/TheKeyResult.vue';
 import PieChart from '@/components/PieChart.vue';
 
 export default {

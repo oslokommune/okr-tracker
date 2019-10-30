@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Progressbar from '../ProgressBar.vue';
+import Progressbar from './ProgressBar.vue';
 
 export default {
   components: {
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors';
+@import '../styles/colors';
 
 .item {
   display: grid;

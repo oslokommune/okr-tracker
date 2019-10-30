@@ -24,7 +24,7 @@
       ></v-select>
       <div class="form-group--error" v-if="$v.department.$error">Avdeling må være valgt</div>
       <button :disabled="submit" class="btn" @click="send">Legg til</button>
-      <p v-if="error">{{ submitInfo }}</p>
+      <p v-if="showInfo">{{ submitInfo }}</p>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
     department: null,
     mission_statement: '',
     submit: false,
-    error: false,
+    showInfo: false,
     submitInfo: '',
   }),
 
@@ -98,9 +98,9 @@ export default {
       }
     },
 
-    setSubmitInfo(submit, error, info) {
+    setSubmitInfo(submit, showInfo, info) {
       this.submit = submit;
-      this.error = error;
+      this.showInfo = showInfo;
       this.info = info;
     },
   },

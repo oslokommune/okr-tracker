@@ -21,34 +21,35 @@
       <button class="btn" :disabled="!edited || submit" @click="updateProductDetails">
         Lagre endringer
       </button>
-      <p v-if="error">{{ info }}</p>
+      <p v-if="showInfo">{{ info }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
     edited: false,
     submit: false,
-    error: false,
+    showInfo: false,
     info: '',
   }),
 
   computed: {
+    ...mapGetters(['getObjectById']),
+
     product() {
-      return this.$store.getters.getObjectById(this.$route.params.id);
+      return this.getObjectById(this.$route.params.id);
     },
   },
   methods: {
-    ...mapActions(['updateObject']),
+    ...mapActions(['updateObject', 'updateProductDetails']),
 
     updateProductDetails() {
       this.setSubmitInfo(true, false, '');
-      this.$store
-        .dispatch('updateProductDetails', this.product)
+      this.updateProductDetails(this.product)
         .then(() => {
           this.updateObject({
             key: 'Products',
@@ -66,9 +67,9 @@ export default {
         });
     },
 
-    setSubmitInfo(submit, error, info) {
+    setSubmitInfo(submit, showInfo, info) {
       this.submit = submit;
-      this.error = error;
+      this.showInfo = showInfo;
       this.info = info;
     },
   },
