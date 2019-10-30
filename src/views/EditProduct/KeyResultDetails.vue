@@ -12,29 +12,33 @@
       <svg class="graph" ref="graph"></svg>
     </div>
 
-    <h3 class="title-3">Registrerte målepunkter</h3>
-    <edit-keyres></edit-keyres>
-    <table class="table">
-      <thead>
-        <th>Dato</th>
-        <th class="value">Verdi</th>
-        <th class="delete"></th>
-      </thead>
-      <tbody>
-        <tr v-for="val in keyres.children" :key="val.id">
-          <td>{{ val.timestamp }}</td>
-          <td class="value">{{ val.value }}</td>
-          <td class="delete" @click="deleteValue(val)"><button class="btn btn--danger">Slett</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="keyres-details">
+      <edit-keyres :key-res-object="keyres" :product-object="product"></edit-keyres>
+      <div>
+        <h3 class="title-3">Registrerte målepunkter</h3>
+        <table class="table">
+          <thead>
+            <th>Dato</th>
+            <th class="value">Verdi</th>
+            <th class="delete"></th>
+          </thead>
+          <tbody>
+            <tr v-for="val in keyres.children" :key="val.id">
+              <td>{{ val.timestamp }}</td>
+              <td class="value">{{ val.value }}</td>
+              <td class="delete" @click="deleteValue(val)"><button class="btn btn--danger">Slett</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import TheObjective from '@/components/TheObjective.vue';
+import EditKeyres from '@/components/editKeyres.vue';
 import Linechart from '@/util/linechart';
-import EditKeyres from "@/components/editKeyres";
 
 export default {
   components: {
@@ -52,6 +56,12 @@ export default {
     },
     objective() {
       return this.$store.getters.getObjectById(this.keyres.objective_id);
+    },
+    product() {
+      return this.$store.getters.getProductWithDistinctObjectives(
+        this.objective.product_id,
+        this.$store.state.chosenQuarter
+      );
     },
   },
 
@@ -99,5 +109,11 @@ export default {
   tbody td {
     border-bottom: 1px solid $color-border;
   }
+}
+
+.keyres-details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 </style>
