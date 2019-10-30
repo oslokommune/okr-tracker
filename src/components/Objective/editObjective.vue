@@ -69,6 +69,7 @@ export default {
 
   computed: {
     ...mapGetters(['getDistinctQuarters']),
+
     quarters() {
       return this.getDistinctQuarters(this.$route.params.id);
     },
@@ -76,11 +77,13 @@ export default {
 
   methods: {
     ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject']),
+
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.objective.edited = true;
       this.quarter = value;
     },
+
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {

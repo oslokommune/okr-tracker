@@ -106,6 +106,7 @@ export default {
 
   methods: {
     ...mapActions(['addObjective', 'addObject']),
+
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.quarter = value;

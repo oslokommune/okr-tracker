@@ -103,9 +103,11 @@ export default {
   computed: {
     ...mapState(['chosenQuarter']),
     ...mapGetters(['getProductWithDistinctObjectives', 'getObjectById']),
+
     product() {
       return this.getProductWithDistinctObjectives(this.keyResObject.id, this.chosenQuarter);
     },
+
     getObjective() {
       return this.getObjectById(this.keyResObject.objective_id);
     },
@@ -124,15 +126,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateObject']),
+    ...mapActions(['updateObject', 'updateKeyRes']),
+
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.$store
-          .dispatch('updateKeyRes', this.updatedKeyRes)
+        this.updateKeyRes(this.updatedKeyRes)
           .then(() => {
             this.updateObject({
               key: 'KeyRes',

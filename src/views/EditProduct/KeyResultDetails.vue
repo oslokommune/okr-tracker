@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapState } from 'vuex';
 import TheObjective from '@/components/TheObjective.vue';
 import EditKeyres from '@/components/KeyRes/editKeyres.vue';
 import Linechart from '@/util/linechart';
@@ -51,19 +52,19 @@ export default {
   }),
 
   computed: {
+    ...mapGetters(['getObjectById', 'getProductWithDistinctObjectives']),
+    ...mapState(['chosenQuarter']),
+
     keyres() {
-      return this.$store.getters.getObjectById(this.$route.params.keyresId);
+      return this.getObjectById(this.$route.params.keyresId);
     },
 
     objective() {
-      return this.$store.getters.getObjectById(this.keyres.objective_id);
+      return this.getObjectById(this.keyres.objective_id);
     },
 
     product() {
-      return this.$store.getters.getProductWithDistinctObjectives(
-        this.objective.product_id,
-        this.$store.state.chosenQuarter
-      );
+      return this.getProductWithDistinctObjectives(this.objective.product_id, this.chosenQuarter);
     },
   },
 
@@ -77,8 +78,10 @@ export default {
   },
 
   methods: {
+    ...mapActions(['deleteKeyResValue']),
+
     deleteValue(val) {
-      this.$store.dispatch('deleteKeyResValue', val);
+      this.deleteKeyResValue(val);
     },
   },
 };

@@ -111,15 +111,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addObject']),
+    ...mapActions(['addObject', 'addKeyResult']),
+
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.$store
-          .dispatch('addKeyResult', this.newKeyRes)
+        this.addKeyResult(this.newKeyRes)
           .then(() => {
             this.addObject({
               key: 'KeyRes',

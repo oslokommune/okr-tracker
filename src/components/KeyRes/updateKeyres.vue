@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import uniqid from 'uniqid';
 import { required, minValue } from 'vuelidate/lib/validators';
 import { format } from 'date-fns';
@@ -78,20 +78,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addKeyResValue']),
+
     addKeyResValue() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'Nødvendige felt kan ikke være tomme';
-        this.setSubmitInfo(false, true, '');
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.$store
-          .dispatch('addKeyResValue', {
-            id: uniqid(),
-            key_result_id: this.keyresId,
-            value: +this.newValue,
-            timestamp: this.date,
-          })
+        this.addKeyResValue({
+          id: uniqid(),
+          key_result_id: this.keyresId,
+          value: +this.newValue,
+          timestamp: this.date,
+        })
           .then(() => {
             this.setSubmitInfo(false, false, '');
             this.$router.push({
@@ -120,6 +120,7 @@ export default {
 
   computed: {
     ...mapState(['chosenQuarter']),
+    ...mapGetters(['getObjectById', 'getProductWithDistinctObjectives']),
 
     startDate() {
       return getDateSpanFromQuarter(this.chosenQuarter).startDate;
@@ -130,11 +131,11 @@ export default {
     },
 
     keyres() {
-      return this.$store.getters.getObjectById(this.keyresId);
+      return this.getObjectById(this.keyresId);
     },
 
     objective() {
-      return this.$store.getters.getObjectById(this.keyres.objective_id);
+      return this.getObjectById(this.keyres.objective_id);
     },
   },
 };
