@@ -23,9 +23,8 @@
         :options="departments"
       ></v-select>
       <div class="form-group--error" v-if="$v.department.$error">Avdeling må være valgt</div>
-      <button :disabled="submitButton === 'LOADING'" class="btn" @click="send">Legg til</button>
-      <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
-      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+      <button :disabled="submit" class="btn" @click="send">Legg til</button>
+      <p v-if="error">{{ submitInfo }}</p>
     </div>
   </div>
 </template>
@@ -41,7 +40,9 @@ export default {
     product: '',
     department: null,
     mission_statement: '',
-    submitButton: '',
+    submit: false,
+    error: false,
+    submitInfo: '',
   }),
 
   validations: {
@@ -60,6 +61,7 @@ export default {
 
   computed: {
     ...mapGetters(['departments']),
+
     newProduct() {
       return {
         id: uniqid(),
@@ -72,12 +74,13 @@ export default {
 
   methods: {
     ...mapActions(['addProduct', 'addObject']),
+
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        this.submitButton = 'LOADING';
+        this.setSubmitInfo(true, false, '');
         this.addProduct(this.newProduct)
           .then(() => {
             this.addObject({
@@ -86,13 +89,19 @@ export default {
             });
           })
           .then(() => {
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, false, '');
             this.$router.push({ name: 'product', params: { id: this.newProduct.id } });
           })
           .catch(() => {
-            this.submitButton = 'FAILED';
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
           });
       }
+    },
+
+    setSubmitInfo(submit, error, info) {
+      this.submit = submit;
+      this.error = error;
+      this.info = info;
     },
   },
 };

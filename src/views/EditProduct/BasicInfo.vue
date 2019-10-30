@@ -18,10 +18,10 @@
         <textarea @input="edited = true" v-model="product.mission_statement"></textarea>
       </label>
 
-      <button class="btn" :disabled="!edited || submitButton === 'LOADING'" @click="updateProductDetails">
+      <button class="btn" :disabled="!edited || submit" @click="updateProductDetails">
         Lagre endringer
       </button>
-      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+      <p v-if="error">{{ info }}</p>
     </div>
   </div>
 </template>
@@ -32,7 +32,9 @@ import { mapActions } from 'vuex';
 export default {
   data: () => ({
     edited: false,
-    submitButton: '',
+    submit: false,
+    error: false,
+    info: '',
   }),
 
   computed: {
@@ -42,8 +44,9 @@ export default {
   },
   methods: {
     ...mapActions(['updateObject']),
+
     updateProductDetails() {
-      this.submitButton = 'LOADING';
+      this.setSubmitInfo(true, false, '');
       this.$store
         .dispatch('updateProductDetails', this.product)
         .then(() => {
@@ -54,13 +57,19 @@ export default {
         })
         .then(() => {
           this.edited = false;
-          this.submitButton = 'OK';
+          this.setSubmitInfo(false, false, '');
           this.$router.push({ name: 'product', params: { id: this.product.id } });
         })
         .catch(() => {
           this.edited = false;
-          this.submitButton = 'FAILED';
+          this.setSubmitInfo(false, true, 'Noe gikk galt');
         });
+    },
+
+    setSubmitInfo(submit, error, info) {
+      this.submit = submit;
+      this.error = error;
+      this.info = info;
     },
   },
 };

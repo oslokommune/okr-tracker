@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import UpdateKeyres from '@/components/updateKeyres.vue';
+import UpdateKeyres from '@/components/KeyRes/updateKeyres.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {

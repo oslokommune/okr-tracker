@@ -75,10 +75,6 @@ export default {
     this.newValue = this.keyres.current_value;
   },
 
-  updated() {
-    console.log(this.$v);
-  },
-
   methods: {
     addKeyResValue() {
       this.$v.$touch();

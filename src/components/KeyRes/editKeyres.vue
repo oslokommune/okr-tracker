@@ -157,7 +157,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
+@import '../../styles/colors';
 
 .edit-keyres {
   width: 450px;

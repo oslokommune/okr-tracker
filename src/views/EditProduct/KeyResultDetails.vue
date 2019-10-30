@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import TheObjective from '@/components/TheObjective.vue';
-import EditKeyres from '@/components/editKeyres.vue';
+import TheObjective from '@/components/Objective/TheObjective.vue';
+import EditKeyres from '@/components/KeyRes/editKeyres.vue';
 import Linechart from '@/util/linechart';
 
 export default {
@@ -54,9 +54,11 @@ export default {
     keyres() {
       return this.$store.getters.getObjectById(this.$route.params.keyresId);
     },
+
     objective() {
       return this.$store.getters.getObjectById(this.keyres.objective_id);
     },
+
     product() {
       return this.$store.getters.getProductWithDistinctObjectives(
         this.objective.product_id,
