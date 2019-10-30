@@ -65,11 +65,6 @@ export default {
   },
   methods: {
     ...mapActions(['setChosenQuarter']),
-    updateProductDetails() {
-      this.$store.dispatch('updateProductDetails', this.product).then(() => {
-        this.$router.push({ name: 'product', params: { id: this.product.id } });
-      });
-    },
     setSelectedQuarter(value) {
       this.setChosenQuarter(value);
     },

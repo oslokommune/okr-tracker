@@ -22,11 +22,12 @@
       <div class="form-group--error" v-if="$v.date.$error">
         Må være innenfor datoene: {{ formatDate(startDate) }} og {{ formatDate(endDate) }}
       </div>
-      <button class="btn" @click="addKeyResValue">Oppdater</button>
+      <button :disabled="submitButton === 'LOADING'" class="btn" @click="addKeyResValue">Oppdater</button>
       <router-link :to="{ name: 'keyres-value-details', params: { keyresId } }" class="btn btn--ghost">
         Detaljer
       </router-link>
       <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
+      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
     </div>
   </div>
 </template>
@@ -84,6 +85,7 @@ export default {
       if (this.$v.$invalid) {
         this.submitButton = 'ERROR';
       } else {
+        this.submitButton = 'LOADING';
         this.$store
           .dispatch('addKeyResValue', {
             id: uniqid(),
@@ -92,6 +94,7 @@ export default {
             timestamp: this.date,
           })
           .then(() => {
+            this.submitButton = 'OK';
             this.$router.push({
               name: 'keyres-value-details',
               params: {

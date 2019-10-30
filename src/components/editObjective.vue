@@ -20,18 +20,20 @@
     ></v-select>
 
     <div class="item__footer">
-      <button class="btn" :disabled="!objective.edited" @click="updateObj(objective)">
+      <button class="btn" :disabled="!objective.edited || submitButton === 'LOADING'" @click="updateObj(objective)">
         Lagre endringer
       </button>
       <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
     </div>
     <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
+    <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+    <p v-if="submitButton === 'OK'">Oppdatering vellykket!</p>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { required, minLength } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   props: {
@@ -45,11 +47,9 @@ export default {
     objective: {
       objective_title: {
         required,
-        minLength: minLength(4),
       },
       objective_body: {
         required,
-        minLength: minLength(4),
       },
     },
     quarter: {
@@ -86,13 +86,22 @@ export default {
       if (this.$v.$invalid) {
         this.submitButton = 'ERROR';
       } else {
-        this.submitButton = 'OK';
-        this.updateObjective(objective).then(() => {
-          this.updateObject({
-            key: 'Objectives',
-            data: objective,
+        this.submitButton = 'LOADING';
+        this.updateObjective(objective)
+          .then(() => {
+            this.updateObject({
+              key: 'Objectives',
+              data: objective,
+            });
+          })
+          .then(() => {
+            this.objective.edited = false;
+            this.submitButton = 'OK';
+          })
+          .catch(() => {
+            this.objective.edited = false;
+            this.submitButton = 'FAILED';
           });
-        });
       }
     },
 

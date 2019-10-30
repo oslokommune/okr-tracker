@@ -19,9 +19,10 @@
       <textarea v-model="$v.body.$model" rows="4"></textarea>
     </label>
     <div class="form-group--error" v-if="$v.body.$error">Kan ikke være tom</div>
-    <button class="btn" @click="send">Legg til</button>
+    <button :disabled="submitButton === 'LOADING'" class="btn" @click="send">Legg til</button>
     <button class="btn" @click="$emit('close-menu', false)">Lukk</button>
     <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
+    <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
   </div>
 </template>
 
@@ -112,7 +113,7 @@ export default {
       if (this.$v.$invalid) {
         this.submitButton = 'ERROR';
       } else {
-        this.submitButton = 'OK';
+        this.submitButton = 'LOADING';
         this.addObjective(this.newObjective)
           .then(() => {
             this.addObject({
@@ -121,12 +122,14 @@ export default {
             });
           })
           .then(() => {
+            this.submitButton = 'OK';
             this.$emit('close-menu', false);
             this.title = '';
             this.body = '';
             this.quarter = '';
           })
           .catch(e => {
+            this.submitButton = 'FAILED';
             throw new Error(e);
           });
       }
