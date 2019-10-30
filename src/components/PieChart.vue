@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import Pie from '@/util/piechart';
 import { mapState } from 'vuex';
+import Pie from '@/util/piechart';
 
 export default {
   data: () => ({

@@ -31,8 +31,9 @@
         <span class="form-label">Måleenhet</span>
         <input type="text " v-model="unit" />
       </label>
-      <button class="btn" @click="send">Lagre nytt nøkkelresultat</button>
+      <button :disabled="submitButton === 'LOADING'" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
       <button class="btn btn--ghost" @click="expand = false">Avbryt</button>
+      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
     </div>
   </div>
 </template>
@@ -50,6 +51,7 @@ export default {
     target_type: 'greater_than',
     key_result: '',
     unit: '',
+    submitButton: '',
   }),
 
   props: {
@@ -82,6 +84,7 @@ export default {
   methods: {
     ...mapActions(['addObject']),
     send() {
+      this.submitButton = 'LOADING';
       this.$store
         .dispatch('addKeyResult', this.newKeyRes)
         .then(() => {
@@ -91,6 +94,7 @@ export default {
           });
         })
         .then(() => {
+          this.submitButton = 'OK';
           this.expand = false;
           this.objective_id = null;
           this.start_value = 0;
@@ -100,6 +104,7 @@ export default {
           this.unit = '';
         })
         .catch(e => {
+          this.submitButton = 'FAILED';
           throw new Error(e);
         });
     },
