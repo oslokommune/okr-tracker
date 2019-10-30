@@ -4,6 +4,7 @@
 
 <script>
 import Progressbar from '../util/progressbar';
+import ProgressbarSmall from '../util/progressbar-small';
 
 export default {
   data: () => ({
@@ -11,6 +12,11 @@ export default {
   }),
 
   props: {
+    compressed: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     keyres: {
       type: Object,
       required: true,
@@ -18,7 +24,10 @@ export default {
   },
 
   mounted() {
-    this.progressbar = new Progressbar(this.$refs.progressbar);
+    this.progressbar = this.compressed
+      ? new ProgressbarSmall(this.$refs.progressbar)
+      : new Progressbar(this.$refs.progressbar);
+
     this.progressbar.render(this.keyres);
   },
 };

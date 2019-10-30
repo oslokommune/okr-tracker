@@ -30,26 +30,37 @@ export function nest(data) {
   const keyres = data.KeyRes.map(keyres => {
     keyres.children = values.filter(val => val.key_result_id === keyres.id);
     keyres.current_value = findCurrentValue(keyres.children) || keyres.start_value;
+
+    const scale = scaleLinear()
+      .domain([+keyres.start_value, +keyres.target_value])
+      .clamp(true);
+    keyres.progression = scale(+keyres.current_value);
+
     return keyres;
   });
 
   const objectives = data.Objectives.map(objective => {
     objective.children = keyres.filter(keyresult => keyresult.objective_id === objective.id);
+    objective.progression = mean(objective.children.map(obj => obj.progression)) || 0;
     return objective;
   });
 
   const products = data.Products.map(product => {
     product.children = objectives.filter(objective => objective.product_id === product.id);
+    // product.progression = getProgression(product.children);
+    product.progression = mean(product.children.map(obj => obj.progression)) || 0;
     return product;
   });
 
   const depts = data.Depts.map(dept => {
     dept.children = products.filter(product => product.department_id === dept.id);
+    dept.progression = mean(dept.children.map(product => product.progression)) || 0;
     return dept;
   });
 
   const orgs = data.Orgs.map(org => {
     org.children = depts.filter(dept => dept.organisation_id === org.id);
+    org.progression = mean(org.children.map(dept => dept.progression)) || 0;
     return org;
   });
 
@@ -122,7 +133,9 @@ export function getProgression(objectives) {
         .map(objective => objective.children)
         .flat()
         .map(keyres => {
-          const scale = scaleLinear().domain([+keyres.start_value, +keyres.target_value]);
+          const scale = scaleLinear()
+            .domain([+keyres.start_value, +keyres.target_value])
+            .clamp(true);
           return scale(+keyres.current_value);
         })
     ) || 0

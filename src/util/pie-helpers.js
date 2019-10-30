@@ -10,7 +10,7 @@ const colors = {
   grey: '#F2F2F2',
   yellow: '#F9C66B',
 };
-const formatPercent = format('.0%');
+export const formatPercent = format('.0%');
 
 function initSvg(el) {
   el.attr('height', size).attr('width', size);

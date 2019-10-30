@@ -22,6 +22,8 @@
     </div>
 
     <hr />
+    <sunburst></sunburst>
+    <hr />
 
     <button @click="mock">Inject mock data!</button>
   </div>
@@ -29,8 +31,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import Sunburst from '@/components/Sunburst.vue';
 
 export default {
+  components: {
+    Sunburst,
+  },
   computed: {
     ...mapState(['nest']),
   },
