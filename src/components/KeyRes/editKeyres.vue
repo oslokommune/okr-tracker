@@ -37,9 +37,8 @@
     </label>
     <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
 
-    <button :disabled="!edited || submitButton === 'LOADING'" class="btn" @click="send">Endre nøkkelresultat</button>
-    <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
-    <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+    <button :disabled="!edited || submit" class="btn" @click="send">Endre nøkkelresultat</button>
+    <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
@@ -55,7 +54,9 @@ export default {
     target_type: 'greater_than',
     key_result: '',
     unit: '',
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
     edited: false,
     objective: null,
   }),
@@ -127,9 +128,9 @@ export default {
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        this.submitButton = 'LOADING';
+        this.setSubmitInfo(true, false, '');
         this.$store
           .dispatch('updateKeyRes', this.updatedKeyRes)
           .then(() => {
@@ -139,10 +140,10 @@ export default {
             });
           })
           .then(() => {
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, false, '');
           })
           .catch(e => {
-            this.submitButton = 'FAILED';
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
             throw new Error(e);
           });
       }
@@ -151,6 +152,12 @@ export default {
       this.$v.objective.$touch();
       this.edited = true;
       this.objective_id = objective.id;
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 };

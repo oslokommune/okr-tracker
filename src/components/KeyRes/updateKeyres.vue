@@ -45,7 +45,9 @@ export default {
   data: () => ({
     date: new Date().toISOString().split('T')[0],
     newValue: 0,
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
   }),
 
   props: {
@@ -79,9 +81,10 @@ export default {
     addKeyResValue() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.submitButton = 'Nødvendige felt kan ikke være tomme';
+        this.setSubmitInfo(false, true, '');
       } else {
-        this.submitButton = 'LOADING';
+        this.setSubmitInfo(true, false, '');
         this.$store
           .dispatch('addKeyResValue', {
             id: uniqid(),
@@ -90,32 +93,46 @@ export default {
             timestamp: this.date,
           })
           .then(() => {
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, false, '');
             this.$router.push({
               name: 'keyres-value-details',
               params: {
                 keyresId: this.keyresId,
               },
             });
+          })
+          .catch(() => {
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
           });
       }
     },
+
     formatDate(value) {
       return format(value, 'd/M/y');
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 
   computed: {
     ...mapState(['chosenQuarter']),
+
     startDate() {
       return getDateSpanFromQuarter(this.chosenQuarter).startDate;
     },
+
     endDate() {
       return getDateSpanFromQuarter(this.chosenQuarter).endDate;
     },
+
     keyres() {
       return this.$store.getters.getObjectById(this.keyresId);
     },
+
     objective() {
       return this.$store.getters.getObjectById(this.keyres.objective_id);
     },

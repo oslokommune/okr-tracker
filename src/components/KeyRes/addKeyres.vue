@@ -6,40 +6,48 @@
       <span class="form-label">Tilknyttet mål</span>
       <v-select
         class="form-group objective__select"
+        :class="{ 'form-group--error': $v.objective_id.$error }"
         label="objective_title"
-        v-model="objective_id"
+        v-model="$v.objective_id.$model"
         :value="objective_id"
         :options="product.children"
       ></v-select>
+      <div class="form-group--error" v-if="$v.objective_id.$error">Kan ikke være tom</div>
 
-      <label class="form-group">
+      <label class="form-group" :class="{ 'form-group--error': $v.key_result.$error }">
         <span class="form-label">Beskrivelse</span>
-        <textarea v-model="key_result" rows="4"></textarea>
+        <textarea v-model="$v.key_result.$model" rows="4"></textarea>
       </label>
+      <div class="form-group--error" v-if="$v.key_result.$error">Kan ikke være tom</div>
 
-      <label class="form-group">
+      <label class="form-group" :class="{ 'form-group--error': $v.start_value.$error }">
         <span class="form-label">Startverdi</span>
-        <input type="number" v-model="start_value" />
+        <input type="number" v-model="$v.start_value.$model" />
       </label>
+      <div class="form-group--error" v-if="$v.start_value.$error">Kan ikke være tom</div>
 
-      <label class="form-group">
+      <label class="form-group" :class="{ 'form-group--error': $v.target_value.$error }">
         <span class="form-label">Målverdi</span>
-        <input type="number" v-model="target_value" />
+        <input type="number" v-model="$v.target_value.$model" />
       </label>
+      <div class="form-group--error" v-if="$v.target_value.$error">Kan ikke være tom</div>
 
-      <label class="form-group">
+      <label class="form-group" :class="{ 'form-group--error': $v.unit.$error }">
         <span class="form-label">Måleenhet</span>
-        <input type="text " v-model="unit" />
+        <input type="text" v-model="$v.unit.$model" />
       </label>
-      <button :disabled="submitButton === 'LOADING'" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
+      <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
+
+      <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
       <button class="btn btn--ghost" @click="expand = false">Avbryt</button>
-      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+      <p v-if="showInfo">{{ info }}</p>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import { required } from 'vuelidate/lib/validators';
 import uniqid from 'uniqid';
 
 export default {
@@ -51,7 +59,9 @@ export default {
     target_type: 'greater_than',
     key_result: '',
     unit: '',
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
   }),
 
   props: {
@@ -61,9 +71,28 @@ export default {
     },
   },
 
+  validations: {
+    objective_id: {
+      required,
+    },
+    key_result: {
+      required,
+    },
+    start_value: {
+      required,
+    },
+    target_value: {
+      required,
+    },
+    unit: {
+      required,
+    },
+  },
+
   computed: {
     ...mapState(['chosenQuarter']),
     ...mapGetters(['getProductWithDistinctObjectives']),
+
     product() {
       return this.getProductWithDistinctObjectives(this.productId, this.chosenQuarter);
     },
@@ -84,29 +113,40 @@ export default {
   methods: {
     ...mapActions(['addObject']),
     send() {
-      this.submitButton = 'LOADING';
-      this.$store
-        .dispatch('addKeyResult', this.newKeyRes)
-        .then(() => {
-          this.addObject({
-            key: 'KeyRes',
-            data: this.newKeyRes,
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
+      } else {
+        this.setSubmitInfo(true, false, '');
+        this.$store
+          .dispatch('addKeyResult', this.newKeyRes)
+          .then(() => {
+            this.addObject({
+              key: 'KeyRes',
+              data: this.newKeyRes,
+            });
+          })
+          .then(() => {
+            this.setSubmitInfo(false, false, '');
+            this.expand = false;
+            this.objective_id = null;
+            this.start_value = 0;
+            this.target_value = 100;
+            this.target_type = 'greater_than';
+            this.key_result = '';
+            this.unit = '';
+          })
+          .catch(e => {
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
+            throw new Error(e);
           });
-        })
-        .then(() => {
-          this.submitButton = 'OK';
-          this.expand = false;
-          this.objective_id = null;
-          this.start_value = 0;
-          this.target_value = 100;
-          this.target_type = 'greater_than';
-          this.key_result = '';
-          this.unit = '';
-        })
-        .catch(e => {
-          this.submitButton = 'FAILED';
-          throw new Error(e);
-        });
+      }
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 };

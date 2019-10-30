@@ -96,7 +96,7 @@ export default {
           })
           .then(() => {
             this.objective.edited = false;
-            this.setSubmitInfo(false, false, 'Oppdatering vellykket!');
+            this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
           })
           .catch(() => {
             this.objective.edited = false;
