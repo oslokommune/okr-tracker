@@ -47,9 +47,16 @@
 
           <section class="section">
             <h2 class="title-2">Team</h2>
-            <p>
-              Team-medlemmer
-            </p>
+            <ul class="team__list">
+              <li v-for="user in product.team" :key="user.id" class="team__member">
+                <img :src="user.photo ? user.photo : '/placeholder-user.svg'" :alt="user.name" class="team__image" />
+                <div class="team__name">
+                  <span>
+                    {{ user.name }}
+                  </span>
+                </div>
+              </li>
+            </ul>
           </section>
 
           <section class="section">
@@ -65,7 +72,7 @@
 
           <p v-if="!product.children || !product.children.length">
             <strong>Oops! Det finnes ingen mål akkurat nå! </strong>
-            <router-link :to="{ name: 'edit-product-objectives', params: { id: product.id } }"
+            <router-link :to="{ name: 'edit-product-objectives', params: { id: $route.params.id } }"
               >Legg til et mål</router-link
             >
           </p>
@@ -163,6 +170,54 @@ export default {
       height: 4px;
       background-color: $color-purple;
       content: '';
+    }
+  }
+}
+
+.team {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.25rem;
+  }
+
+  &__member {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem;
+    text-align: center;
+
+    &:hover .team__name {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  &__image {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 2.5rem;
+  }
+
+  &__name {
+    position: absolute;
+    top: 5rem;
+    left: -50%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    width: 200%;
+    color: white;
+    transform: translateY(-1rem);
+    opacity: 0;
+    transition: all 0.12s ease-in-out;
+    user-select: none;
+    pointer-events: none;
+
+    & > span {
+      padding: 0.25rem 0.5rem;
+      background: $color-purple;
     }
   }
 }

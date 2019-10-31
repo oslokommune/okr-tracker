@@ -4,7 +4,7 @@ export const ranges = {
   orgs: "'Orgs'!A:C",
   users: "'Users'!A:C",
   depts: "'Depts'!A:D",
-  products: "'Products'!A:E",
+  products: "'Products'!A:F",
   objectives: "'Objectives'!A:E",
   keyres: "'KeyRes'!A:G",
   keyrestracker: "'KeyResTracker'!A:D",

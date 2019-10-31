@@ -18,7 +18,20 @@
         <textarea @input="edited = true" v-model="product.mission_statement"></textarea>
       </label>
 
-      <button class="btn" :disabled="!edited || submit" @click="updateProductDetails">
+      <div class="form-group">
+        <span class="form-label">Team</span>
+        <v-select
+          @input="edited = true"
+          class="form-group objective__select"
+          label="name"
+          multiple
+          v-model="team"
+          :options="allUsers"
+        ></v-select>
+        <pre>{{ selectedUserIds }}</pre>
+      </div>
+
+      <button class="btn" :disabled="!edited || submit" @click="submitForm">
         Lagre endringer
       </button>
       <p v-if="showInfo">{{ info }}</p>
@@ -27,7 +40,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
@@ -35,25 +48,40 @@ export default {
     submit: false,
     showInfo: false,
     info: '',
+    team: [],
   }),
 
   computed: {
+    ...mapState(['data']),
     ...mapGetters(['getObjectById']),
+
+    allUsers() {
+      return this.data.Users;
+    },
+
+    selectedUserIds() {
+      return this.team.map(d => d.id).join(',');
+    },
 
     product() {
       return this.getObjectById(this.$route.params.id);
     },
   },
+
+  mounted() {
+    this.team = this.product.team;
+  },
+
   methods: {
     ...mapActions(['updateObject', 'updateProductDetails']),
 
-    updateProductDetails() {
+    submitForm() {
       this.setSubmitInfo(true, false, '');
-      this.updateProductDetails(this.product)
+      this.updateProductDetails({ ...this.product, team_members: this.selectedUserIds })
         .then(() => {
           this.updateObject({
             key: 'Products',
-            data: this.product,
+            data: { ...this.product, team_members: this.selectedUserIds },
           });
         })
         .then(() => {
