@@ -37,17 +37,28 @@
 
     <div class="content">
       <div class="container container--sidebar">
-        <section class="section">
-          <h2 class="title-2">Oppdrag</h2>
-          <p>
-            {{ product.mission_statement }}
-          </p>
-        </section>
+        <div class="grid-3">
+          <section class="section">
+            <h2 class="title-2">Oppdrag</h2>
+            <p>
+              {{ product.mission_statement }}
+            </p>
+          </section>
 
-        <section class="section">
-          <h2 class="title-2">Fremdrift denne perioden</h2>
-          <pie-chart :product="product"></pie-chart>
-        </section>
+          <section class="section">
+            <h2 class="title-2">Team</h2>
+            <p>
+              Team-medlemmer
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="title-2">Fremdrift denne perioden</h2>
+            <pie-chart :product="product"></pie-chart>
+          </section>
+        </div>
+
+        <hr />
 
         <section class="section">
           <h2 class="title-2">Mål</h2>
@@ -65,6 +76,8 @@
             </li>
           </ul>
         </section>
+
+        <hr />
 
         <section class="section" v-if="product.children && product.children.length">
           <h2 class="title-2">Nøkkelresultater</h2>
