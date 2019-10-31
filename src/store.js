@@ -97,7 +97,6 @@ export default new Vuex.Store({
       helpers.storeObjectInLocalStorage(state.data);
     },
     UPDATE_OBJECT(state, payload) {
-      console.log(payload);
       const objIndex = state.data[payload.key].findIndex(obj => obj.id === payload.data.id);
       state.data[payload.key][objIndex] = payload.data;
       state.nest = helpers.nest(state.data);

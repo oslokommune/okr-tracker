@@ -69,7 +69,6 @@ export default {
     ...mapState(['chosenQuarter']),
 
     newObjective() {
-      console.log(this.quarter);
       return {
         id: uniqid(),
         objective_title: this.title,
