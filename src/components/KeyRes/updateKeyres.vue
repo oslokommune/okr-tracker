@@ -22,7 +22,7 @@
       <div class="form-group--error" v-if="$v.date.$error">
         Må være innenfor datoene: {{ formatDate(startDate) }} og {{ formatDate(endDate) }}
       </div>
-      <button :disabled="submit" class="btn" @click="addKeyResValue">Oppdater fremdrift</button>
+      <button :disabled="submit" class="btn" @click="submitNewValue">Oppdater fremdrift</button>
       <router-link :to="{ name: 'keyres-value-details', params: { keyresId } }" class="btn btn--ghost">
         Endre
       </router-link>
@@ -79,7 +79,7 @@ export default {
   methods: {
     ...mapActions(['addKeyResValue']),
 
-    addKeyResValue() {
+    submitNewValue() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
