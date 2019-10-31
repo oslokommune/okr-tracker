@@ -26,6 +26,7 @@ export function arraysToObjects(arr) {
  */
 export function nest(data) {
   const values = data.KeyResTracker;
+  const users = data.Users;
 
   const keyres = data.KeyRes.map(keyres => {
     keyres.children = values.filter(val => val.key_result_id === keyres.id);
@@ -46,8 +47,11 @@ export function nest(data) {
   });
 
   const products = data.Products.map(product => {
+    const team = product.team_members ? product.team_members.split(',') : [];
+
     product.children = objectives.filter(objective => objective.product_id === product.id);
-    // product.progression = getProgression(product.children);
+    product.team = team.map(id => users.find(user => user.id === id));
+
     product.progression = mean(product.children.map(obj => obj.progression)) || 0;
     return product;
   });
