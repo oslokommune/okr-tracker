@@ -1,5 +1,5 @@
 <template>
-  <div v-if="expand" class="popout">
+  <div class="popout">
     <span class="form-label">Kvartal</span>
     <v-select
       class="form-group"
@@ -44,10 +44,6 @@ export default {
   props: {
     productId: {
       type: String,
-      required: true,
-    },
-    expand: {
-      type: Boolean,
       required: true,
     },
   },
