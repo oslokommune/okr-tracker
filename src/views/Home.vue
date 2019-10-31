@@ -23,9 +23,9 @@
 
     <sunburst></sunburst>
 
-    <div class="row">
+    <!-- <div class="row">
       <button @click="mock">Inject mock data!</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
