@@ -17,7 +17,6 @@
         <add-objective
           :chosen-quarter="chosenQuarter"
           v-if="expand"
-          :expand="expand"
           @close-menu="closeMenu"
           :product-id="product.id"
         ></add-objective>

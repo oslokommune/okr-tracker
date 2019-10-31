@@ -2,7 +2,10 @@
   <div>
     <h2 class="title-2">Nøkkelresultater</h2>
 
-    <add-keyres :product-id="product.id"></add-keyres>
+    <div class="row add">
+      <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt nøkkelresultat</button>
+      <add-keyres v-if="expand" :product-id="product.id" @close-menu="closeMenu"></add-keyres>
+    </div>
     <div class="content" v-for="objective in product.children" :key="objective.id">
       <div class="grid-3">
         <update-keyres v-for="keyres in objective.children" :key="keyres.id" :keyres-id="keyres.id"></update-keyres>
@@ -22,6 +25,10 @@ export default {
     UpdateKeyres,
   },
 
+  data: () => ({
+    expand: false,
+  }),
+
   computed: {
     ...mapGetters(['getProductWithDistinctObjectives']),
     ...mapState(['chosenQuarter']),
@@ -30,5 +37,18 @@ export default {
       return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
     },
   },
+
+  methods: {
+    closeMenu(value) {
+      this.expand = value;
+    },
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.add {
+  position: relative;
+  margin: 2rem 0;
+}
+</style>

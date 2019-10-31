@@ -4,12 +4,12 @@
 
     <div class="narrow">
       <label class="form-group" :class="{ 'form-group--error': $v.product.$error }">
-        <span class="form-label">Produktnavn*</span>
+        <span class="form-label">Produktnavn</span>
         <input type="text" v-model.trim="$v.product.$model" required />
       </label>
       <div class="form-group--error" v-if="$v.product.$error">Må være minimum 4 bokstaver</div>
       <label class="form-group" :class="{ 'form-group--error': $v.mission_statement.$error }">
-        <span class="form-label">Mission statement*</span>
+        <span class="form-label">Mission statement</span>
         <textarea v-model.trim="$v.mission_statement.$model"></textarea>
       </label>
       <div class="form-group--error" v-if="$v.mission_statement.$error">Må være minimum 4 bokstaver</div>

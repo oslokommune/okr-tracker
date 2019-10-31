@@ -1,47 +1,43 @@
 <template>
-  <div class="row add">
-    <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt nøkkelresultat</button>
+  <div class="popout">
+    <span class="form-label">Tilknyttet mål</span>
+    <v-select
+      class="form-group objective__select"
+      :class="{ 'form-group--error': $v.objective_id.$error }"
+      label="objective_title"
+      v-model="$v.objective_id.$model"
+      :value="objective_id"
+      :options="product.children"
+    ></v-select>
+    <div class="form-group--error" v-if="$v.objective_id.$error">Kan ikke være tom</div>
 
-    <div v-if="expand" class="popout">
-      <span class="form-label">Tilknyttet mål</span>
-      <v-select
-        class="form-group objective__select"
-        :class="{ 'form-group--error': $v.objective_id.$error }"
-        label="objective_title"
-        v-model="$v.objective_id.$model"
-        :value="objective_id"
-        :options="product.children"
-      ></v-select>
-      <div class="form-group--error" v-if="$v.objective_id.$error">Kan ikke være tom</div>
+    <label class="form-group" :class="{ 'form-group--error': $v.key_result.$error }">
+      <span class="form-label">Beskrivelse</span>
+      <textarea v-model="$v.key_result.$model" rows="4"></textarea>
+    </label>
+    <div class="form-group--error" v-if="$v.key_result.$error">Kan ikke være tom</div>
 
-      <label class="form-group" :class="{ 'form-group--error': $v.key_result.$error }">
-        <span class="form-label">Beskrivelse</span>
-        <textarea v-model="$v.key_result.$model" rows="4"></textarea>
-      </label>
-      <div class="form-group--error" v-if="$v.key_result.$error">Kan ikke være tom</div>
+    <label class="form-group" :class="{ 'form-group--error': $v.start_value.$error }">
+      <span class="form-label">Startverdi</span>
+      <input type="number" v-model="$v.start_value.$model" />
+    </label>
+    <div class="form-group--error" v-if="$v.start_value.$error">Kan ikke være tom</div>
 
-      <label class="form-group" :class="{ 'form-group--error': $v.start_value.$error }">
-        <span class="form-label">Startverdi</span>
-        <input type="number" v-model="$v.start_value.$model" />
-      </label>
-      <div class="form-group--error" v-if="$v.start_value.$error">Kan ikke være tom</div>
+    <label class="form-group" :class="{ 'form-group--error': $v.target_value.$error }">
+      <span class="form-label">Målverdi</span>
+      <input type="number" v-model="$v.target_value.$model" />
+    </label>
+    <div class="form-group--error" v-if="$v.target_value.$error">Kan ikke være tom</div>
 
-      <label class="form-group" :class="{ 'form-group--error': $v.target_value.$error }">
-        <span class="form-label">Målverdi</span>
-        <input type="number" v-model="$v.target_value.$model" />
-      </label>
-      <div class="form-group--error" v-if="$v.target_value.$error">Kan ikke være tom</div>
+    <label class="form-group" :class="{ 'form-group--error': $v.unit.$error }">
+      <span class="form-label">Måleenhet</span>
+      <input type="text" v-model="$v.unit.$model" />
+    </label>
+    <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
 
-      <label class="form-group" :class="{ 'form-group--error': $v.unit.$error }">
-        <span class="form-label">Måleenhet</span>
-        <input type="text" v-model="$v.unit.$model" />
-      </label>
-      <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
-
-      <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
-      <button class="btn btn--ghost" @click="expand = false">Avbryt</button>
-      <p v-if="showInfo">{{ info }}</p>
-    </div>
+    <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
+    <button class="btn btn--ghost" @click="$emit('close-menu', false)">Avbryt</button>
+    <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
@@ -52,7 +48,6 @@ import uniqid from 'uniqid';
 
 export default {
   data: () => ({
-    expand: false,
     objective_id: null,
     start_value: 0,
     target_value: 100,
@@ -128,7 +123,7 @@ export default {
           })
           .then(() => {
             this.setSubmitInfo(false, false, '');
-            this.expand = false;
+            this.$emit('close-menu', false);
             this.objective_id = null;
             this.start_value = 0;
             this.target_value = 100;
@@ -154,9 +149,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../styles/colors';
-
-.add {
-  position: relative;
-  margin: 2rem 0;
-}
 </style>
