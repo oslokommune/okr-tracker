@@ -2,23 +2,26 @@ import Vue from 'vue';
 import VueGAPI from 'vue-gapi';
 import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
+import VueResize from 'vue-resize';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
+// import plugin styles
 import 'vue-select/dist/vue-select.css';
+import 'vue-resize/dist/vue-resize.css';
 
-// create the 'options' object
+// create the 'options' object for google api
 const apiConfig = {
   clientId: process.env.VUE_APP_GOOGLE_API_CLIENT_SECRET,
   discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
   scope: 'https://www.googleapis.com/auth/spreadsheets',
-  // see all available scopes here: https://developers.google.com/identity/protocols/googlescopes'
 };
 
-// Use the plugin and pass along the configuration
+// Use plugins
 Vue.use(VueGAPI, apiConfig);
 Vue.use(Vuelidate);
+Vue.use(VueResize);
 
 // Global components
 Vue.component('v-select', VueSelect);

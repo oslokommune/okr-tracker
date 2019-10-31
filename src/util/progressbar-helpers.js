@@ -1,10 +1,6 @@
-export const height = 70;
-export const width = 350;
 export const fontSize = 15;
 export const radius = 4;
 export const barPadding = 5;
-
-export const paddingLeft = 72;
 
 export const colors = {
   purple: '#2A2859',
@@ -13,22 +9,15 @@ export const colors = {
 };
 
 export function initSvg(el) {
-  el.style('width', '100%')
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('height', height);
-}
+  this.paddingLeft = this.compressed ? 80 : 0;
+  this.height = this.compressed ? 26 : 70;
 
-export function initSvgSmall(el) {
-  const height = 26;
-
-  el.style('width', '100%')
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('height', height);
+  el.style('width', '100%').attr('height', this.height);
 }
 
 export function initBar(el) {
-  const y = this.compressed ? 5 : 20 + barPadding;
-  const x = this.compressed ? barPadding + paddingLeft : barPadding;
+  const y = this.compressed ? 5 : 22 + barPadding;
+  const x = barPadding + this.paddingLeft;
 
   el.attr('height', 16)
     .attr('x', x)
@@ -37,12 +26,10 @@ export function initBar(el) {
 }
 
 export function initBackground(el) {
-  const y = this.compressed ? 0 : 20;
-  const x = this.compressed ? paddingLeft : 0;
-  const w = this.compressed ? width - paddingLeft : width;
+  const y = this.compressed ? 0 : 22;
+  const x = this.paddingLeft;
 
   el.attr('height', 26)
-    .attr('width', w)
     .attr('fill', colors.grey)
     .attr('x', x)
     .attr('rx', radius)
@@ -50,17 +37,16 @@ export function initBackground(el) {
 }
 
 export function initUnit(el) {
-  el.attr('font-size', fontSize).attr('y', 10);
+  el.attr('font-size', fontSize).attr('y', 12);
 }
 
 export function initStartVal(el) {
-  el.attr('font-size', fontSize).attr('y', 64);
+  el.attr('font-size', fontSize).attr('y', 66);
 }
 
 export function initTargetVal(el) {
   el.attr('font-size', fontSize)
-    .attr('y', 64)
-    .attr('x', width)
+    .attr('y', 66)
     .attr('text-anchor', 'end');
 }
 
@@ -77,11 +63,28 @@ export function initCurrentVal(el) {
     .attr('font-size', fontSize)
     .style('font-weight', 'bold')
     .text('100')
-    .attr('y', 64);
+    .attr('y', 66);
 }
 
 export function setWidth(el, val) {
   const width = this.x(val);
-  const isDone = val / this.x.domain()[1] === 1;
-  el.attr('width', width).attr('fill', isDone ? colors.purple : colors.yellow);
+  this.isDone = val / this.x.domain()[1] >= 1;
+  el.attr('width', width).attr('fill', this.isDone ? colors.purple : colors.yellow);
+}
+
+export function resize() {
+  const width = this.width;
+  this.x.range([0, width - this.paddingLeft - barPadding * 2]);
+  this.svg.attr('viewBox', `0 0 ${width} ${this.height}`);
+  this.bg.attr('width', width - this.paddingLeft);
+
+  if (!this.compressed) {
+    this.targetVal.attr('x', width);
+  }
+}
+
+export function initValueText(el) {
+  el.attr('y', 18)
+    .attr('x', this.paddingLeft - 12)
+    .attr('text-anchor', 'end');
 }
