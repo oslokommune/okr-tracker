@@ -21,11 +21,11 @@
       </ul>
     </div>
 
-    <hr />
     <sunburst></sunburst>
-    <hr />
 
-    <button @click="mock">Inject mock data!</button>
+    <div class="row">
+      <button @click="mock">Inject mock data!</button>
+    </div>
   </div>
 </template>
 

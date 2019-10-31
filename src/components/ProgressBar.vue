@@ -1,5 +1,8 @@
 <template>
-  <svg ref="progressbar" class="progressbar"></svg>
+  <div>
+    <svg ref="progressbar" class="progressbar"></svg>
+    <resize-observer @notify="handleResize" />
+  </div>
 </template>
 
 <script>
@@ -20,6 +23,12 @@ export default {
     keyres: {
       type: Object,
       required: true,
+    },
+  },
+
+  methods: {
+    handleResize() {
+      this.progressbar.render(this.keyres);
     },
   },
 
