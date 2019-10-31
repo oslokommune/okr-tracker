@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import uniqid from 'uniqid';
 import { required, minValue } from 'vuelidate/lib/validators';
 import { format } from 'date-fns';
@@ -45,7 +45,9 @@ export default {
   data: () => ({
     date: new Date().toISOString().split('T')[0],
     newValue: 0,
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
   }),
 
   props: {
@@ -75,53 +77,65 @@ export default {
     this.newValue = this.keyres.current_value;
   },
 
-  updated() {
-    console.log(this.$v);
-  },
-
   methods: {
+    ...mapActions(['addKeyResValue']),
+
     addKeyResValue() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        this.submitButton = 'LOADING';
-        this.$store
-          .dispatch('addKeyResValue', {
-            id: uniqid(),
-            key_result_id: this.keyresId,
-            value: +this.newValue,
-            timestamp: this.date,
-          })
+        this.setSubmitInfo(true, false, '');
+        this.addKeyResValue({
+          id: uniqid(),
+          key_result_id: this.keyresId,
+          value: +this.newValue,
+          timestamp: this.date,
+        })
           .then(() => {
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, false, '');
             this.$router.push({
               name: 'keyres-value-details',
               params: {
                 keyresId: this.keyresId,
               },
             });
+          })
+          .catch(() => {
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
           });
       }
     },
+
     formatDate(value) {
       return format(value, 'd/M/y');
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 
   computed: {
     ...mapState(['chosenQuarter']),
+    ...mapGetters(['getObjectById', 'getProductWithDistinctObjectives']),
+
     startDate() {
       return getDateSpanFromQuarter(this.chosenQuarter).startDate;
     },
+
     endDate() {
       return getDateSpanFromQuarter(this.chosenQuarter).endDate;
     },
+
     keyres() {
-      return this.$store.getters.getObjectById(this.keyresId);
+      return this.getObjectById(this.keyresId);
     },
+
     objective() {
-      return this.$store.getters.getObjectById(this.keyres.objective_id);
+      return this.getObjectById(this.keyres.objective_id);
     },
   },
 };

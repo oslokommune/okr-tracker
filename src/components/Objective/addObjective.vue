@@ -19,10 +19,9 @@
       <textarea v-model="$v.body.$model" rows="4"></textarea>
     </label>
     <div class="form-group--error" v-if="$v.body.$error">Kan ikke være tom</div>
-    <button :disabled="submitButton === 'LOADING'" class="btn" @click="send">Legg til</button>
+    <button :disabled="submit" class="btn" @click="send">Legg til</button>
     <button class="btn" @click="$emit('close-menu', false)">Lukk</button>
-    <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
-    <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+    <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
@@ -37,7 +36,9 @@ export default {
     title: '',
     quarter: '',
     body: '',
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
   }),
 
   props: {
@@ -72,6 +73,7 @@ export default {
     ...mapState(['chosenQuarter']),
 
     newObjective() {
+      console.log(this.quarter);
       return {
         id: uniqid(),
         objective_title: this.title,
@@ -104,16 +106,18 @@ export default {
 
   methods: {
     ...mapActions(['addObjective', 'addObject']),
+
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.quarter = value;
     },
+
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        this.submitButton = 'LOADING';
+        this.setSubmitInfo(true, false, '');
         this.addObjective(this.newObjective)
           .then(() => {
             this.addObject({
@@ -122,17 +126,23 @@ export default {
             });
           })
           .then(() => {
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, false, '');
             this.$emit('close-menu', false);
             this.title = '';
             this.body = '';
             this.quarter = '';
           })
           .catch(e => {
-            this.submitButton = 'FAILED';
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
             throw new Error(e);
           });
       }
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 };

@@ -37,9 +37,8 @@
     </label>
     <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
 
-    <button :disabled="!edited || submitButton === 'LOADING'" class="btn" @click="send">Endre nøkkelresultat</button>
-    <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
-    <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+    <button :disabled="!edited || submit" class="btn" @click="send">Endre nøkkelresultat</button>
+    <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
@@ -55,7 +54,9 @@ export default {
     target_type: 'greater_than',
     key_result: '',
     unit: '',
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
     edited: false,
     objective: null,
   }),
@@ -102,9 +103,11 @@ export default {
   computed: {
     ...mapState(['chosenQuarter']),
     ...mapGetters(['getProductWithDistinctObjectives', 'getObjectById']),
+
     product() {
       return this.getProductWithDistinctObjectives(this.keyResObject.id, this.chosenQuarter);
     },
+
     getObjective() {
       return this.getObjectById(this.keyResObject.objective_id);
     },
@@ -123,15 +126,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateObject']),
+    ...mapActions(['updateObject', 'updateKeyRes']),
+
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        this.submitButton = 'LOADING';
-        this.$store
-          .dispatch('updateKeyRes', this.updatedKeyRes)
+        this.setSubmitInfo(true, false, '');
+        this.updateKeyRes(this.updatedKeyRes)
           .then(() => {
             this.updateObject({
               key: 'KeyRes',
@@ -139,10 +142,10 @@ export default {
             });
           })
           .then(() => {
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, false, '');
           })
           .catch(e => {
-            this.submitButton = 'FAILED';
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
             throw new Error(e);
           });
       }
@@ -152,12 +155,18 @@ export default {
       this.edited = true;
       this.objective_id = objective.id;
     },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
+@import '../../styles/colors';
 
 .edit-keyres {
   width: 450px;

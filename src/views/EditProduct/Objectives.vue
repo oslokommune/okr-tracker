@@ -35,8 +35,8 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex';
-import AddObjective from '@/components/addObjective.vue';
-import EditObjective from '@/components/editObjective.vue';
+import AddObjective from '@/components/Objective/addObjective.vue';
+import EditObjective from '@/components/Objective/editObjective.vue';
 
 export default {
   components: {
@@ -49,11 +49,12 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['getDistinctQuarters', 'getProductWithDistinctObjectives']),
+    ...mapGetters(['getDistinctQuarters', 'getProductWithDistinctObjectives', 'getObjectById']),
     ...mapState(['chosenQuarter']),
+
     product() {
       if (this.chosenQuarter === '') {
-        return this.$store.getters.getObjectById(this.$route.params.id);
+        return this.getObjectById(this.$route.params.id);
       } else {
         return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
       }
@@ -63,11 +64,14 @@ export default {
       return this.getDistinctQuarters(this.$route.params.id);
     },
   },
+
   methods: {
     ...mapActions(['setChosenQuarter']),
+
     setSelectedQuarter(value) {
       this.setChosenQuarter(value);
     },
+
     closeMenu(value) {
       this.expand = value;
     },

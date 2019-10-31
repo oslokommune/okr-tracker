@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import UpdateKeyres from '@/components/updateKeyres.vue';
+import { mapGetters } from 'vuex';
+import UpdateKeyres from '@/components/KeyRes/updateKeyres.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
@@ -36,11 +37,13 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['getObjectById']),
+
     keyres() {
-      return this.$store.getters.getObjectById(this.id);
+      return this.getObjectById(this.id);
     },
     objective() {
-      return this.$store.getters.getObjectById(this.keyres.objective_id);
+      return this.getObjectById(this.keyres.objective_id);
     },
   },
 };

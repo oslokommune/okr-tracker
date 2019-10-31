@@ -3,13 +3,17 @@
     <header class="product-header">
       <div class="container">
         <div class="product-header__container">
-          <router-link class="back" :to="{ name: 'home' }">Tilbake</router-link>
+          <router-link class="product-header__back" :to="{ name: 'home' }">Tilbake</router-link>
           <div class="product-header__name">
             <h1 class="title-1">{{ product.product }}</h1>
           </div>
 
-          <img :src="getProductImage" :alt="`Profilbilde for ${product.product}`" class="profile-image" />
-          <router-link class="edit" :to="{ name: 'edit-product', params: { id: $route.params.id } }">
+          <img
+            :src="getProductImage"
+            :alt="`Profilbilde for ${product.product}`"
+            class="product-header__profile-image"
+          />
+          <router-link class="product-header__edit" :to="{ name: 'edit-product', params: { id: $route.params.id } }">
             Endre produkt
           </router-link>
         </div>
@@ -18,18 +22,16 @@
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
-        <div class="tabs">
-          <template v-for="(quarter, index) in quarters">
-            <button
-              class="button"
-              :class="{ active: chosenQuarter === quarter }"
-              :key="`${quarter}-${index}`"
-              @click="activeQuarter(quarter)"
-            >
-              {{ quarter }}
-            </button>
-          </template>
-        </div>
+        <template v-for="(quarter, index) in quarters">
+          <button
+            class="button--tab"
+            :class="{ active: chosenQuarter === quarter }"
+            :key="`${quarter}-${index}`"
+            @click="activeQuarter(quarter)"
+          >
+            {{ quarter }}
+          </button>
+        </template>
       </div>
     </nav>
 
@@ -100,6 +102,7 @@ export default {
   computed: {
     ...mapState(['chosenQuarter']),
     ...mapGetters(['getObjectById', 'getDistinctQuarters', 'getProductWithDistinctObjectives']),
+
     product() {
       return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
     },
@@ -115,6 +118,7 @@ export default {
 
   methods: {
     ...mapActions(['resetState', 'setChosenQuarter']),
+
     activeQuarter(quarter) {
       this.setChosenQuarter(quarter);
     },
@@ -122,91 +126,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../styles/colors';
 
-.product-header {
-  height: 30rem;
-  text-align: center;
-
-  @media screen and (min-width: 768px) {
-    height: 11rem;
-    text-align: left;
-  }
-
-  background: $color-yellow;
-
-  &__container {
-    display: grid;
-    grid-gap: 0.5rem 1rem;
-
-    grid-template-rows: 4rem 3fr 14rem 3rem 1fr;
-    grid-template-columns: 1fr;
-
-    @media screen and (min-width: 768px) {
-      grid-template-rows: 3rem 2rem 1fr;
-      grid-template-columns: 13rem 1fr auto;
-    }
-  }
-
-  &__name {
-    grid-row: 4;
-
-    @media screen and (min-width: 768px) {
-      grid-row: 3;
-      grid-column: 2 / span 2;
-    }
-  }
-
-  .edit {
-    grid-row: 2;
-    grid-column: 1;
-    padding: 1rem 0;
-
-    @media screen and (min-width: 768px) {
-      grid-row: 1;
-      grid-column: 3;
-      padding: 1rem 0;
-    }
-  }
-
-  .back {
-    display: block;
-    grid-row: 1;
-    grid-column: 1;
-    padding: 1rem 0;
-
-    @media screen and (min-width: 768px) {
-      grid-row: 1;
-      grid-column: 1 / span 2;
-      padding: 1rem 0;
-    }
-  }
-
-  .profile-image {
-    z-index: 2;
-    display: block;
-    grid-row: 3;
-    grid-column: 1;
-    justify-self: center;
-    box-sizing: content-box;
-    width: 12rem;
-    height: 12rem;
-    object-fit: cover;
-    background: #eeeeee;
-
-    border: 6px solid white;
-    box-shadow: 0 3px 5px rgba(black, 0.2);
-
-    @media screen and (min-width: 768px) {
-      grid-row: 2;
-      grid-column: 1;
-      transform: translateX(-6px);
-    }
-  }
-}
-
-.button {
+.button--tab {
   position: relative;
   display: inline-block;
   padding: 0.75rem 0.5rem;

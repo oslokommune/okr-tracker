@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Sunburst from '@/components/Sunburst.vue';
 
 export default {
@@ -42,8 +42,10 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addMockData']),
+
     mock() {
-      this.$store.dispatch('addMockData');
+      this.addMockData();
     },
   },
 };

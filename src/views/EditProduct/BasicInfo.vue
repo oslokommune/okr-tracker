@@ -18,34 +18,38 @@
         <textarea @input="edited = true" v-model="product.mission_statement"></textarea>
       </label>
 
-      <button class="btn" :disabled="!edited || submitButton === 'LOADING'" @click="updateProductDetails">
+      <button class="btn" :disabled="!edited || submit" @click="updateProductDetails">
         Lagre endringer
       </button>
-      <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
+      <p v-if="showInfo">{{ info }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
     edited: false,
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
   }),
 
   computed: {
+    ...mapGetters(['getObjectById']),
+
     product() {
-      return this.$store.getters.getObjectById(this.$route.params.id);
+      return this.getObjectById(this.$route.params.id);
     },
   },
   methods: {
-    ...mapActions(['updateObject']),
+    ...mapActions(['updateObject', 'updateProductDetails']),
+
     updateProductDetails() {
-      this.submitButton = 'LOADING';
-      this.$store
-        .dispatch('updateProductDetails', this.product)
+      this.setSubmitInfo(true, false, '');
+      this.updateProductDetails(this.product)
         .then(() => {
           this.updateObject({
             key: 'Products',
@@ -54,13 +58,19 @@ export default {
         })
         .then(() => {
           this.edited = false;
-          this.submitButton = 'OK';
+          this.setSubmitInfo(false, false, '');
           this.$router.push({ name: 'product', params: { id: this.product.id } });
         })
         .catch(() => {
           this.edited = false;
-          this.submitButton = 'FAILED';
+          this.setSubmitInfo(false, true, 'Noe gikk galt');
         });
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 };

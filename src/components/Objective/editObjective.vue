@@ -20,14 +20,12 @@
     ></v-select>
 
     <div class="item__footer">
-      <button class="btn" :disabled="!objective.edited || submitButton === 'LOADING'" @click="updateObj(objective)">
+      <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
         Lagre endringer
       </button>
       <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
     </div>
-    <p v-if="submitButton === 'ERROR'">Nødvendige felt kan ikke være tomme</p>
-    <p v-if="submitButton === 'FAILED'">Noe gikk galt</p>
-    <p v-if="submitButton === 'OK'">Oppdatering vellykket!</p>
+    <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
@@ -59,7 +57,9 @@ export default {
 
   data: () => ({
     quarter: '',
-    submitButton: '',
+    submit: false,
+    showInfo: false,
+    info: '',
   }),
 
   mounted() {
@@ -69,6 +69,7 @@ export default {
 
   computed: {
     ...mapGetters(['getDistinctQuarters']),
+
     quarters() {
       return this.getDistinctQuarters(this.$route.params.id);
     },
@@ -76,17 +77,19 @@ export default {
 
   methods: {
     ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject']),
+
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.objective.edited = true;
       this.quarter = value;
     },
+
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.submitButton = 'ERROR';
+        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        this.submitButton = 'LOADING';
+        this.setSubmitInfo(true, false, '');
         this.updateObjective(objective)
           .then(() => {
             this.updateObject({
@@ -96,11 +99,11 @@ export default {
           })
           .then(() => {
             this.objective.edited = false;
-            this.submitButton = 'OK';
+            this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
           })
           .catch(() => {
             this.objective.edited = false;
-            this.submitButton = 'FAILED';
+            this.setSubmitInfo(false, true, 'Noe gikk galt');
           });
       }
     },
@@ -112,6 +115,12 @@ export default {
           data: objective,
         });
       });
+    },
+
+    setSubmitInfo(submit, showInfo, info) {
+      this.submit = submit;
+      this.showInfo = showInfo;
+      this.info = info;
     },
   },
 };
