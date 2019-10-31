@@ -14,7 +14,7 @@
       </label>
       <div class="form-group--error" v-if="$v.mission_statement.$error">Må være minimum 4 bokstaver</div>
 
-      <span class="form-label" :class="{ 'form-group--error': $v.department.$error }">Avdeling*</span>
+      <span class="form-label" :class="{ 'form-group--error': $v.department.$error }">Avdeling</span>
       <v-select
         class="form-group objective__select"
         :class="{ 'form-group--error': $v.department.$error }"

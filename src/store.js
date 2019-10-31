@@ -97,7 +97,6 @@ export default new Vuex.Store({
       helpers.storeObjectInLocalStorage(state.data);
     },
     UPDATE_OBJECT(state, payload) {
-      console.log(payload);
       const objIndex = state.data[payload.key].findIndex(obj => obj.id === payload.data.id);
       state.data[payload.key][objIndex] = payload.data;
       state.nest = helpers.nest(state.data);
@@ -229,7 +228,14 @@ export default new Vuex.Store({
       const options = helpers.generateUpdateDataOptions('Products', index + 2);
 
       const values = [
-        [payload.id, payload.product, payload.department_id, payload.mission_statement, payload.product_image],
+        [
+          payload.id,
+          payload.product,
+          payload.department_id,
+          payload.mission_statement,
+          payload.product_image,
+          payload.team_members,
+        ],
       ];
 
       return dispatch('updateData', { options, values });
