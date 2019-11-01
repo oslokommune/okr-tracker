@@ -64,7 +64,7 @@ export default class Sunburst {
     // Each node gets a <g> element holding all its components
     const nodes = this.canvas
       .selectAll('g.arc')
-      .data(root.descendants())
+      .data(root.descendants(), d => d.id)
       .join(initArcs);
 
     // Trigger all the stuff we want to happen on the nodes

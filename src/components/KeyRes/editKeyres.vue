@@ -1,6 +1,6 @@
 <template>
-  <div class="edit-keyres">
-    <h3 class="title-3">Oppdatere nøkkelresultat</h3>
+  <div class="edit-keyres content">
+    <h3 class="title-3">Endre detaljer</h3>
     <span class="form-label">Tilknyttet mål</span>
     <v-select
       class="form-group objective__select"
@@ -37,7 +37,8 @@
     </label>
     <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
 
-    <button :disabled="!edited || submit" class="btn" @click="send">Endre nøkkelresultat</button>
+    <button :disabled="!edited || submit" class="btn" @click="send">Oppdater</button>
+    <button class="btn btn--danger" @click="deleteObject">Slett nøkkelresultat</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
@@ -115,6 +116,7 @@ export default {
     updatedKeyRes() {
       return {
         id: this.keyResObject.id,
+        rowIndex: this.keyResObject.rowIndex,
         objective_id: this.objective_id,
         key_result: this.key_result,
         start_value: this.start_value,
@@ -126,7 +128,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateObject', 'updateKeyRes']),
+    ...mapActions(['getAllData', 'updateKeyRes', 'deleteKeyRes']),
 
     send() {
       this.$v.$touch();
@@ -136,12 +138,6 @@ export default {
         this.setSubmitInfo(true, false, '');
         this.updateKeyRes(this.updatedKeyRes)
           .then(() => {
-            this.updateObject({
-              key: 'KeyRes',
-              data: this.updatedKeyRes,
-            });
-          })
-          .then(() => {
             this.setSubmitInfo(false, false, '');
           })
           .catch(e => {
@@ -150,6 +146,32 @@ export default {
           });
       }
     },
+
+    deleteObject() {
+      this.$router.push({ name: 'edit-product-keyres' });
+      this.deleteKeyRes(this.keyResObject).then(() => {
+        this.$toasted.show(`Slettet nøkkelresultat`, {
+          action: [
+            {
+              text: 'Angre',
+              onClick: (e, toastObject) => {
+                this.updateKeyRes(this.keyResObject).then(() => {
+                  this.getAllData();
+                  toastObject.goAway(0);
+                });
+              },
+            },
+            {
+              text: 'Lukk',
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        });
+      });
+    },
+
     setSelectedObjective(objective) {
       this.$v.objective.$touch();
       this.edited = true;
@@ -169,7 +191,7 @@ export default {
 @import '../../styles/colors';
 
 .edit-keyres {
-  width: 450px;
+  width: 100%;
   margin-right: 1rem;
 }
 </style>

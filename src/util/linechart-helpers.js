@@ -1,9 +1,5 @@
-const height = 400;
-const width = 800;
+const height = 250;
 const padding = { left: 40, top: 20, right: 10, bottom: 40 };
-
-export const innerHeight = height - padding.top - padding.bottom;
-export const innerWidth = width - padding.left - padding.right;
 
 const colors = {
   purple: '#2A2859',
@@ -12,17 +8,16 @@ const colors = {
 };
 
 export function initSvg(svg) {
-  svg.attr('viewBox', `0 0 ${width} ${height}`).style('max-width', width);
+  this.svg = svg;
+
+  svg.style('width', '100%');
 
   this.canvas = svg
     .append('g')
     .classed('canvas', true)
     .attr('transform', `translate(${padding.left}, ${padding.top})`);
 
-  this.xAxis = this.canvas
-    .append('g')
-    .classed('axis x', true)
-    .attr('transform', `translate(0, ${innerHeight})`);
+  this.xAxis = this.canvas.append('g').classed('axis x', true);
 
   this.yAxis = this.canvas.append('g').classed('axis y', true);
   this.valueLine = this.canvas.append('path').call(styleValueLine);
@@ -35,4 +30,16 @@ function styleValueLine(el) {
     .attr('fill', 'none')
     .attr('stroke', colors.purple)
     .attr('stroke-width', 3);
+}
+
+export function resize() {
+  this.svg.attr('viewBox', `0 0 ${this.width} ${height}`);
+
+  this.innerHeight = height - padding.top - padding.bottom;
+  this.innerWidth = this.width - padding.left - padding.right;
+
+  this.xAxis.attr('transform', `translate(0, ${this.innerHeight})`);
+
+  this.x.range([0, this.innerWidth]);
+  this.y.range([this.innerHeight, 0]);
 }

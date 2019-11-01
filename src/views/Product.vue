@@ -3,7 +3,6 @@
     <header class="product-header">
       <div class="container">
         <div class="product-header__container">
-          <router-link class="product-header__back" :to="{ name: 'home' }">Tilbake</router-link>
           <div class="product-header__name">
             <h1 class="title-1">{{ product.product }}</h1>
           </div>

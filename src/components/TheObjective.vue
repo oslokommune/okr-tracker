@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="objective">
     <div class="item">
       <div class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -37,6 +37,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/colors';
+
+.objective {
+  max-width: 400px;
+  margin-top: 1rem;
+}
 
 .item {
   display: grid;

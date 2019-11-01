@@ -16,6 +16,7 @@ export function arraysToObjects(arr) {
     for (let j = 0; j < data.length; j++) {
       obj[headers[j].trim()] = data[j].trim();
     }
+    obj.rowIndex = i + 1;
     jsonObj.push(obj);
   }
   return jsonObj;
@@ -25,10 +26,10 @@ export function arraysToObjects(arr) {
  * Takes an array of grouped data and returns a nested object
  */
 export function nest(data) {
-  const values = data.KeyResTracker;
+  const values = data.KeyResTracker.filter(d => !d.archived);
   const users = data.Users;
 
-  const keyres = data.KeyRes.map(keyres => {
+  const keyres = data.KeyRes.filter(d => !d.archived).map(keyres => {
     keyres.children = values.filter(val => val.key_result_id === keyres.id);
     keyres.current_value = findCurrentValue(keyres.children) || keyres.start_value;
 
@@ -40,7 +41,7 @@ export function nest(data) {
     return keyres;
   });
 
-  const objectives = data.Objectives.map(objective => {
+  const objectives = data.Objectives.filter(d => !d.archived).map(objective => {
     objective.children = keyres.filter(keyresult => keyresult.objective_id === objective.id);
     objective.progression = mean(objective.children.map(obj => obj.progression)) || 0;
     return objective;
@@ -86,11 +87,11 @@ export function generateAppendDataOptions(sheetName) {
 /**
  * Options for the values.update() call
  */
-export function generateUpdateDataOptions(sheetName, rowNumber) {
+export function generateUpdateDataOptions(sheetName, obj) {
   return {
     spreadsheetId: sheetOptions.sheetid,
     valueInputOption: 'RAW',
-    range: `'${sheetName}'!A${rowNumber}`,
+    range: `'${sheetName}'!A${obj.rowIndex}`,
   };
 }
 

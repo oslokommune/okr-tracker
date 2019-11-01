@@ -23,11 +23,16 @@
       </div>
     </div>
     <div class="content">
-      <ul class="grid-3">
-        <li v-for="objective in product.children" :key="objective.id">
-          <edit-objective :objective="objective"></edit-objective>
-        </li>
-      </ul>
+      <!-- <ul class="grid-3"> -->
+      <transition-group name="grid-animation" tag="div" class="grid-3">
+        <edit-objective
+          v-for="objective in product.children"
+          :key="objective.id"
+          :objective="objective"
+          class="grid-animation-item"
+        ></edit-objective>
+      </transition-group>
+      <!-- </ul> -->
     </div>
   </div>
 </template>
@@ -93,5 +98,20 @@ export default {
 .add {
   position: relative;
   margin: 2rem 0;
+}
+
+.grid-animation-item {
+  display: inline-block;
+  margin-right: 10px;
+  transform: scaleX(1);
+  transition: all 0.5s;
+}
+.grid-animation-enter, .grid-animation-leave-to
+/* .list-complete-leave-active below version 2.1.8 */ {
+  transform: scaleX(0);
+  opacity: 0;
+}
+.grid-animation-leave-active {
+  position: absolute;
 }
 </style>
