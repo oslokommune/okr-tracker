@@ -54,7 +54,7 @@ document.body.addEventListener('keydown', function() {
 button,
 input,
 textarea,
-#app {
+body {
   color: $color-purple;
   font-size: 16px;
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;

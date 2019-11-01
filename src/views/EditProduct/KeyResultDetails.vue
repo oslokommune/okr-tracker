@@ -2,19 +2,20 @@
   <div>
     <h2 class="title-2">{{ keyres.key_result }}</h2>
 
-    <div class="row">
-      <h3 class="title-4">Del av mål</h3>
-      <the-objective :objective="objective"></the-objective>
-    </div>
+    <div class="grid">
+      <div class="objective">
+        <h3 class="title-4">Del av mål</h3>
+        <the-objective :objective="objective"></the-objective>
+      </div>
 
-    <div class="row">
-      <h3 class="title-4">Utvikling gjennom {{ objective.quarter }}</h3>
-      <svg class="graph" ref="graph"></svg>
-    </div>
+      <div class="progression">
+        <h3 class="title-4">Utvikling gjennom {{ objective.quarter }}</h3>
+        <svg class="graph" ref="graph"></svg>
+        <resize-observer @notify="handleResize" />
+      </div>
 
-    <div class="keyres-details">
-      <edit-keyres :key-res-object="keyres" :product-object="product"></edit-keyres>
-      <div>
+      <edit-keyres :key-res-object="keyres" :product-object="product" class="update"></edit-keyres>
+      <div class="values">
         <h3 class="title-3">Registrerte målepunkter</h3>
         <table class="table">
           <thead>
@@ -78,10 +79,34 @@ export default {
   },
 
   methods: {
-    ...mapActions(['deleteKeyResValue']),
+    ...mapActions(['deleteKeyResValue', 'undoKeyResValueDeletion']),
+
+    handleResize() {
+      this.chart.render(this.keyres, this.objective.quarter);
+    },
 
     deleteValue(val) {
-      this.deleteKeyResValue(val);
+      this.deleteKeyResValue(val).then(() => {
+        this.$toasted.show(`Slettet verdi`, {
+          action: [
+            {
+              text: 'Angre',
+              onClick: (e, toastObject) => {
+                val.archived = '';
+                this.undoKeyResValueDeletion(val).then(() => {
+                  toastObject.goAway(0);
+                });
+              },
+            },
+            {
+              text: 'Lukk',
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        });
+      });
     },
   },
 };
@@ -91,6 +116,7 @@ export default {
 @import '../../styles/_colors.scss';
 
 .table {
+  width: 100%;
   thead th {
     font-weight: bold;
     text-align: left;
@@ -116,10 +142,19 @@ export default {
   }
 }
 
-.keyres-details {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
+.grid {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.objective {
+  // grid-column: 3;
+}
+
+.progression {
+  grid-row: 1;
+  grid-column: 1 / -1;
 }
 </style>

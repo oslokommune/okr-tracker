@@ -1,11 +1,11 @@
-import { select, selectAll, scaleLinear, scaleThreshold, interpolatePuBu, event } from 'd3';
+import { select, selectAll, scaleLinear, scaleThreshold, interpolateGreens, event } from 'd3';
 import { legendColor } from 'd3-svg-legend';
 import { formatPercent } from './pie-helpers';
 
 const colorDomain = [0.01, 0.25, 0.5, 0.75, 0.99, 1];
 const colorRanges = [0.3, 0.6, 0.7, 0.8, 0.9, 1];
 
-const colorScale = interpolatePuBu;
+const colorScale = interpolateGreens;
 const colorIntensity = scaleThreshold()
   .range(colorRanges.map(d => colorScale(d)))
   .domain(colorDomain);

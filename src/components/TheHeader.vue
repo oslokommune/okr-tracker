@@ -7,7 +7,7 @@
         </router-link>
       </h2>
       <div class="right">
-        <router-link v-if="isHomePage" class="btn btn--ghost" :to="{ name: 'add-product' }"
+        <router-link v-if="isHomePage && isLoggedIn" class="btn btn--ghost" :to="{ name: 'add-product' }"
           >+ Legg til nytt produkt</router-link
         >
         <button class="btn btn--ghost" v-if="isLoggedIn" @click="logout()">Logg ut</button>

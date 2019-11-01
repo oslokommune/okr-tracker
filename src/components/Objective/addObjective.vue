@@ -115,12 +115,6 @@ export default {
         this.setSubmitInfo(true, false, '');
         this.addObjective(this.newObjective)
           .then(() => {
-            this.addObject({
-              key: 'Objectives',
-              data: this.newObjective,
-            });
-          })
-          .then(() => {
             this.setSubmitInfo(false, false, '');
             this.$emit('close-menu', false);
             this.title = '';

@@ -188,10 +188,15 @@ export default new Vuex.Store({
       const options = helpers.generateAppendDataOptions('Objectives');
 
       const values = [
-        [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter],
+        [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter, ''],
       ];
 
-      return dispatch('appendData', { options, values });
+      return dispatch('appendData', { options, values }).then(() => {
+        dispatch('addObject', {
+          key: 'Objectives',
+          data: payload,
+        });
+      });
     },
 
     addKeyResult({ dispatch }, payload) {
@@ -215,17 +220,15 @@ export default new Vuex.Store({
     addKeyResValue({ dispatch }, payload) {
       const options = helpers.generateAppendDataOptions('KeyResTracker');
 
-      const values = [[payload.id, payload.timestamp, payload.key_result_id, payload.value]];
+      const values = [[payload.id, payload.timestamp, payload.key_result_id, payload.value, '']];
 
       return dispatch('appendData', { options, values }).then(() => {
         dispatch('addObject', { key: 'KeyResTracker', data: payload });
       });
     },
 
-    updateProductDetails({ state, dispatch }, payload) {
-      const index = state.data.Products.findIndex(d => d.id === payload.id);
-
-      const options = helpers.generateUpdateDataOptions('Products', index + 2);
+    updateProductDetails({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('Products', payload);
 
       const values = [
         [
@@ -241,22 +244,26 @@ export default new Vuex.Store({
       return dispatch('updateData', { options, values });
     },
 
-    updateObjective({ state, dispatch }, payload) {
-      const index = state.data.Objectives.findIndex(d => d.id === payload.id);
-
-      const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
+    updateObjective({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('Objectives', payload);
 
       const values = [
-        [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter],
+        [
+          payload.id,
+          payload.product_id,
+          payload.objective_title,
+          payload.objective_body,
+          payload.quarter,
+          payload.archived,
+          '',
+        ],
       ];
 
       return dispatch('updateData', { options, values });
     },
 
-    updateKeyRes({ state, dispatch }, payload) {
-      const index = state.data.KeyRes.findIndex(k => k.id === payload.id);
-
-      const options = helpers.generateUpdateDataOptions('KeyRes', index + 2);
+    updateKeyRes({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('KeyRes', payload);
 
       const values = [
         [
@@ -267,31 +274,74 @@ export default new Vuex.Store({
           payload.target_value,
           payload.target_type,
           payload.unit,
+          '',
         ],
       ];
 
-      return dispatch('updateData', { options, values });
+      return dispatch('updateData', { options, values }).then(() => {
+        dispatch('updateObject', {
+          key: 'KeyRes',
+          data: payload,
+        });
+      });
     },
 
-    deleteObjective({ state, dispatch }, payload) {
-      const index = state.data.Objectives.findIndex(d => d.id === payload.id);
+    deleteObjective({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('Objectives', payload);
 
-      const options = helpers.generateUpdateDataOptions('Objectives', index + 2);
+      const values = [
+        [payload.id, payload.product_id, payload.objective_title, payload.objective_body, payload.quarter, true],
+      ];
 
-      const values = [Array.from(Array(10)).map(() => '')];
-
-      return dispatch('updateData', { options, values });
+      return dispatch('updateData', { options, values }).then(() => {
+        dispatch('deleteObject', {
+          key: 'Objectives',
+          data: payload,
+        });
+      });
     },
 
-    deleteKeyResValue({ state, dispatch }, payload) {
-      const index = state.data.KeyResTracker.findIndex(d => d.id === payload.id);
+    deleteKeyRes({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('KeyRes', payload);
 
-      const options = helpers.generateUpdateDataOptions('KeyResTracker', index + 2);
+      const values = [
+        [
+          payload.id,
+          payload.objective_id,
+          payload.key_result,
+          payload.start_value,
+          payload.target_value,
+          payload.target_type,
+          payload.unit,
+          true,
+        ],
+      ];
 
-      const values = [Array.from(Array(10)).map(() => '')];
+      return dispatch('updateData', { options, values }).then(() => {
+        dispatch('deleteObject', {
+          key: 'KeyRes',
+          data: payload,
+        });
+      });
+    },
+
+    deleteKeyResValue({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('KeyResTracker', payload);
+
+      const values = [[payload.id, payload.timestamp, payload.key_result_id, payload.value, true]];
 
       return dispatch('updateData', { options, values }).then(() => {
         dispatch('deleteObject', { key: 'KeyResTracker', data: payload });
+      });
+    },
+
+    undoKeyResValueDeletion({ dispatch }, payload) {
+      const options = helpers.generateUpdateDataOptions('KeyResTracker', payload);
+
+      const values = [[payload.id, payload.timestamp, payload.key_result_id, payload.value, '']];
+
+      return dispatch('updateData', { options, values }).then(() => {
+        return dispatch('getAllData');
       });
     },
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" :class="{ loading }">
     <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_title.$error }">
       <span class="form-label">Tittel</span>
       <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
@@ -60,6 +60,7 @@ export default {
     submit: false,
     showInfo: false,
     info: '',
+    loading: false,
   }),
 
   mounted() {
@@ -76,7 +77,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject']),
+    ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject', 'getAllData']),
 
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
@@ -109,12 +110,36 @@ export default {
     },
 
     deleteObj(objective) {
-      this.deleteObjective(objective).then(() => {
-        this.deleteObject({
-          key: 'Objectives',
-          data: objective,
+      this.loading = true;
+      this.deleteObjective(objective)
+        .then(() => {
+          this.$toasted.show(`Slettet «${objective.objective_title}»`, {
+            action: [
+              {
+                text: 'Angre',
+                onClick: (e, toastObject) => {
+                  objective.archived = '';
+                  this.updateObjective(objective)
+                    .then(() => {
+                      return this.getAllData();
+                    })
+                    .then(() => {
+                      toastObject.goAway(0);
+                    });
+                },
+              },
+              {
+                text: 'Lukk',
+                onClick: (e, toastObject) => {
+                  toastObject.goAway(0);
+                },
+              },
+            ],
+          });
+        })
+        .then(() => {
+          this.loading = false;
         });
-      });
     },
 
     setSubmitInfo(submit, showInfo, info) {
@@ -136,5 +161,18 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+
+  &.loading {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

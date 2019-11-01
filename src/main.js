@@ -3,6 +3,7 @@ import VueGAPI from 'vue-gapi';
 import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
+import Toasted from 'vue-toasted';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -22,6 +23,10 @@ const apiConfig = {
 Vue.use(VueGAPI, apiConfig);
 Vue.use(Vuelidate);
 Vue.use(VueResize);
+Vue.use(Toasted, {
+  position: 'bottom-right',
+  className: 'toast',
+});
 
 // Global components
 Vue.component('v-select', VueSelect);
