@@ -162,6 +162,11 @@ $duration: 20s;
   &__progress {
     grid-area: progress;
     align-self: end;
+    padding-right: 0.5em;
+    color: $color-yellow;
+    font-weight: 500;
+    font-size: 9em;
+    text-align: right;
   }
 }
 

@@ -14,7 +14,8 @@
       </div>
 
       <div class="team__progress">
-        <pie-chart :product="product"></pie-chart>
+        {{ product.progression | percent }}
+        <!-- <pie-chart :product="product"></pie-chart> -->
       </div>
     </header>
 
