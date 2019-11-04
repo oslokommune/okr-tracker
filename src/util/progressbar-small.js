@@ -24,4 +24,6 @@ export default class Progressbar {
 
     this.bar.call(setWidth.bind(this), val);
   }
+
+  darkmode() {}
 }

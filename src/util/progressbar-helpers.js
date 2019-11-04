@@ -69,7 +69,9 @@ export function initCurrentVal(el) {
 export function setWidth(el, val) {
   const width = this.x(val);
   this.isDone = val / this.x.domain()[1] >= 1;
-  el.attr('width', width).attr('fill', this.isDone ? colors.purple : colors.yellow);
+
+  const fill = this.darkmode ? '#777' : this.isDone ? colors.purple : colors.yellow;
+  el.attr('width', width).attr('fill', fill);
 }
 
 export function resize() {

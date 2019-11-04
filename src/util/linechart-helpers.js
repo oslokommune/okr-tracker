@@ -1,4 +1,3 @@
-const height = 250;
 const padding = { left: 40, top: 20, right: 10, bottom: 40 };
 
 const colors = {
@@ -33,9 +32,9 @@ function styleValueLine(el) {
 }
 
 export function resize() {
-  this.svg.attr('viewBox', `0 0 ${this.width} ${height}`);
+  this.svg.attr('viewBox', `0 0 ${this.width} ${this.height}`);
 
-  this.innerHeight = height - padding.top - padding.bottom;
+  this.innerHeight = this.height - padding.top - padding.bottom;
   this.innerWidth = this.width - padding.left - padding.right;
 
   this.xAxis.attr('transform', `translate(0, ${this.innerHeight})`);

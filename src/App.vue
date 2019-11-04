@@ -17,16 +17,21 @@ export default {
     TheLogin,
   },
 
-  computed: {
-    isLoggedIn() {
-      return this.$isAuthenticated();
-    },
-  },
+  data: () => ({
+    isLoggedIn: false,
+  }),
 
   mounted() {
+    this.isLoggedIn = this.$isAuthenticated();
     if (this.isLoggedIn) {
       this.init();
     }
+  },
+
+  watch: {
+    $route() {
+      this.isLoggedIn = this.$isAuthenticated();
+    },
   },
 
   methods: {

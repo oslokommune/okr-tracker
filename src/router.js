@@ -8,6 +8,7 @@ import EditProductBasic from './views/EditProduct/BasicInfo.vue';
 import EditProductObjectives from './views/EditProduct/Objectives.vue';
 import EditProductKeyres from './views/EditProduct/KeyResults.vue';
 import KeyResDetails from './views/EditProduct/KeyResultDetails.vue';
+import Dashboard from './views/Dashboard.vue';
 import NotFound from './views/NotFound.vue';
 
 Vue.use(Router);
@@ -40,6 +41,12 @@ const routes = [
       { path: 'key-results/', name: 'edit-product-keyres', component: EditProductKeyres },
       { path: 'key-results/:keyresId', name: 'keyres-value-details', component: KeyResDetails },
     ],
+  },
+
+  {
+    name: 'dashboard',
+    path: '/product/:id/dashboard',
+    component: Dashboard,
   },
 
   {
