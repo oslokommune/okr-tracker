@@ -15,7 +15,6 @@
 
       <div class="team__progress">
         {{ product.progression | percent }}
-        <!-- <pie-chart :product="product"></pie-chart> -->
       </div>
     </header>
 
@@ -88,7 +87,6 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import ProgressBar from '@/components/ProgressBar.vue';
-import PieChart from '@/components/PieChart.vue';
 import LineChart from '@/util/linechart';
 import { formatPercent } from '@/util/pie-helpers';
 
@@ -99,12 +97,11 @@ export default {
     autoplay: true,
     graph: null,
     interval: null,
-    duration: 1000, // ms
+    duration: 20000, // ms
   }),
 
   components: {
     ProgressBar,
-    PieChart,
   },
 
   mounted() {
