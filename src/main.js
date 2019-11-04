@@ -3,6 +3,7 @@ import VueGAPI from 'vue-gapi';
 import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
+import VueScrollTo from 'vue-scrollto';
 import Toasted from 'vue-toasted';
 import App from './App.vue';
 import router from './router';
@@ -27,6 +28,7 @@ Vue.use(Toasted, {
   position: 'bottom-right',
   className: 'toast',
 });
+Vue.use(VueScrollTo);
 
 // Global components
 Vue.component('v-select', VueSelect);

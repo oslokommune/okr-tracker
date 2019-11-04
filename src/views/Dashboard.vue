@@ -18,7 +18,7 @@
       </div>
     </header>
 
-    <div class="section--table">
+    <div class="section--table" id="dashboard-keyres">
       <table class="table" v-if="product.children">
         <template v-for="objective in product.children">
           <tr v-for="(key_result, i) in objective.children" :key="key_result.id">
@@ -30,6 +30,7 @@
               :class="{ active: active.id === key_result.id }"
               class="cell cell--key-result"
               @click="clickKeyRes(key_result)"
+              :id="`keyresult-${key_result.id}`"
             >
               {{ key_result.key_result }}
             </td>
@@ -97,7 +98,7 @@ export default {
     autoplay: true,
     graph: null,
     interval: null,
-    duration: 20000, // ms
+    duration: 1000, // ms
   }),
 
   components: {
@@ -147,6 +148,10 @@ export default {
   watch: {
     active() {
       if (!this.graph) return;
+      this.$scrollTo(`#keyresult-${this.active.id}`, 200, {
+        container: '#dashboard-keyres',
+        force: false,
+      });
       this.graph.render(this.active, this.currentQuarter);
     },
   },
@@ -160,9 +165,11 @@ export default {
   computed: {
     ...mapState(['currentQuarter']),
     ...mapGetters(['getProductWithDistinctObjectives']),
+
     product() {
       return this.getProductWithDistinctObjectives(this.$route.params.id, this.currentQuarter);
     },
+
     active() {
       if (!this.keyres) return;
       return this.keyres[this.activeIndex];
