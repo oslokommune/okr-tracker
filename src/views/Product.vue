@@ -12,9 +12,14 @@
             :alt="`Profilbilde for ${product.product}`"
             class="product-header__profile-image"
           />
-          <router-link class="product-header__edit" :to="{ name: 'edit-product', params: { id: $route.params.id } }">
-            Endre produkt
-          </router-link>
+          <span class="product-header__edit">
+            <router-link :to="{ name: 'edit-product', params: { id: $route.params.id } }">
+              Endre produkt
+            </router-link>
+            <router-link :to="{ name: 'dashboard', params: { id: $route.params.id } }">
+              Dashboard
+            </router-link>
+          </span>
         </div>
       </div>
     </header>

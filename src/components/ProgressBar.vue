@@ -20,6 +20,11 @@ export default {
       required: false,
       default: false,
     },
+    darkmode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     keyres: {
       type: Object,
       required: true,
@@ -36,6 +41,10 @@ export default {
     this.progressbar = this.compressed
       ? new ProgressbarSmall(this.$refs.progressbar)
       : new Progressbar(this.$refs.progressbar);
+
+    if (this.darkmode && !this.compressed) {
+      this.progressbar.darkmode();
+    }
 
     this.progressbar.render(this.keyres);
   },

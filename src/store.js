@@ -10,8 +10,11 @@ import injectMockData from '@/test/mock';
 
 Vue.use(Vuex);
 
+const currentQuarter = `${getYear(new Date())} Q${getQuarter(new Date())}`;
+
 const initialState = () => ({
-  chosenQuarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
+  chosenQuarter: currentQuarter,
+  currentQuarter,
 });
 
 export default new Vuex.Store({
@@ -19,7 +22,8 @@ export default new Vuex.Store({
     gapi: null,
     data: null,
     nest: [],
-    chosenQuarter: `${getYear(new Date())} Q${getQuarter(new Date())}`,
+    chosenQuarter: currentQuarter,
+    currentQuarter,
   },
 
   getters: {
