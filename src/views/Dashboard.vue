@@ -41,19 +41,20 @@
               <progress-bar :keyres="key_result" darkmode></progress-bar>
             </td>
             <td :class="{ active: active.id === key_result.id }" class="cell--indicator-container">
-              <div class="active-indicator"></div>
+              <div v-if="autoplay" class="active-indicator"></div>
             </td>
           </tr>
         </template>
       </table>
+      <button class="btn" @click="toggleAutoplay" :class="{ autoplay }">Spill av automatisk</button>
     </div>
     <div class="section--details details">
       <div class="details__header">
         <p class="details__lead">Nøkkelresultat</p>
         <h1 v-if="active" class="details__title title-1">{{ active.key_result }}</h1>
       </div>
-      <div class="details__info" v-if="active">
-        <div class="details__progression">{{ active.progression | percent }}</div>
+      <div class="details__info">
+        <div :class="{ details__progression: active }">{{ active.progression | percent }}</div>
       </div>
       <div class="details__graph">
         <svg class="graph" ref="graph"></svg>
@@ -76,6 +77,8 @@ export default {
     activeIndex: 0,
     autoplay: true,
     graph: null,
+    interval: null,
+    duration: 20000, // ms
   }),
 
   components: {
@@ -87,19 +90,33 @@ export default {
     this.graph = new LineChart(this.$refs.graph);
     this.graph.height = 400;
 
-    setInterval(() => {
-      if (!this.autoplay) return;
-      this.activeIndex++;
-      if (this.activeIndex >= this.keyres.length) {
-        this.activeIndex = 0;
-      }
-    }, 10000);
+    this.startAutoplay();
   },
 
   methods: {
     handleResize() {
       if (!this.graph) return;
       this.graph.render(this.active, this.currentQuarter);
+    },
+
+    toggleAutoplay(e) {
+      this.autoplay = !this.autoplay;
+      if (this.autoplay) {
+        this.startAutoplay();
+      }
+    },
+
+    startAutoplay() {
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+      this.interval = setInterval(() => {
+        if (!this.autoplay) return;
+        this.activeIndex++;
+        if (this.activeIndex >= this.keyres.length) {
+          this.activeIndex = 0;
+        }
+      }, this.duration);
     },
 
     clickKeyRes(keyres) {

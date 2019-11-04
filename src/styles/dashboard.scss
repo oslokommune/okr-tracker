@@ -2,7 +2,7 @@
 
 $dark-background: #020218;
 $dark-border: #262639;
-$duration: 10s;
+$duration: 20s;
 
 .table {
   width: 100%;
@@ -232,5 +232,14 @@ $duration: 10s;
 
   &::after {
     transform: rotate(45deg);
+  }
+}
+
+.btn {
+  color: rgba(white, 0.6) !important;
+  background: none;
+  &.autoplay {
+    color: $color-purple !important;
+    background: $color-blue;
   }
 }
