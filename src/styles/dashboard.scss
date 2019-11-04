@@ -12,7 +12,7 @@ $duration: 20s;
   border-bottom: 1px solid $dark-border;
 
   td {
-    padding: 1em 3em 1em 1em;
+    padding: 0.25em 3em 0.25em 1em;
     vertical-align: middle;
     border-top: 1px solid $dark-border;
 
@@ -70,7 +70,7 @@ $duration: 20s;
   min-height: 900px;
   overflow: scroll;
   color: rgba(white, 0.8);
-  font-size: 0.6vw;
+  font-size: 15px;
   line-height: 1.5;
   background: $dark-background;
 }
@@ -84,11 +84,13 @@ $duration: 20s;
     position: relative;
     grid-area: table;
     padding: 3em;
+    overflow: scroll;
     border-bottom: 2px solid rgba(black, 1);
   }
   &--details {
     grid-area: details;
     padding: 2em 4em;
+    overflow: scroll;
     border-bottom: 2px solid rgba(black, 1);
   }
 }
@@ -170,7 +172,11 @@ $duration: 20s;
   height: 100%;
 
   &__header {
-    // margin-bottom: auto;
+    height: 20em;
+  }
+
+  &__table {
+    border-right: 0;
   }
 
   &__lead {
@@ -188,7 +194,7 @@ $duration: 20s;
     margin-top: auto;
 
     /deep/ svg text {
-      font-size: 1rem;
+      font-size: 0.7rem;
     }
 
     /deep/ svg path.valueLine {

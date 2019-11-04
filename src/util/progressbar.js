@@ -20,6 +20,7 @@ export default class Progressbar {
     this.startVal = this.svg.append('text').call(initStartVal);
     this.targetVal = this.svg.append('text').call(initTargetVal);
     this.currentVal = this.svg.append('g').call(initCurrentVal);
+    this.isDark = false;
 
     this.x = scaleLinear().clamp(true);
   }
@@ -47,10 +48,8 @@ export default class Progressbar {
     this.bar.call(setWidth.bind(this), val);
   }
 
-  darkmode(bool) {
-    if (!bool) return;
-
-    this.darkmode = bool;
+  darkmode() {
+    this.isDark = true;
 
     this.bg.attr('fill', 'white').attr('fill-opacity', 0.2);
     this.bar.attr('fill', '#777777');

@@ -42,7 +42,9 @@ export default {
       ? new ProgressbarSmall(this.$refs.progressbar)
       : new Progressbar(this.$refs.progressbar);
 
-    this.progressbar.darkmode(this.darkmode);
+    if (this.darkmode && !this.compressed) {
+      this.progressbar.darkmode();
+    }
 
     this.progressbar.render(this.keyres);
   },

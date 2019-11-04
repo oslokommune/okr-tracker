@@ -54,7 +54,26 @@
         <h1 v-if="active" class="details__title title-1">{{ active.key_result }}</h1>
       </div>
       <div class="details__info">
-        <div :class="{ details__progression: active }">{{ active.progression | percent }}</div>
+        <table class="table details__table">
+          <tr>
+            <td>Startverdi</td>
+            <td>{{ active.start_value }} {{ active.unit }}</td>
+          </tr>
+          <tr>
+            <td>Nåværende verdi</td>
+            <td>{{ active.current_value }} {{ active.unit }}</td>
+          </tr>
+          <tr>
+            <td>Målverdi</td>
+            <td>{{ active.target_value }} {{ active.unit }}</td>
+          </tr>
+          <tr>
+            <td>
+              Nåværende progresjon
+            </td>
+            <td>{{ active.progression | percent }}</td>
+          </tr>
+        </table>
       </div>
       <div class="details__graph">
         <svg class="graph" ref="graph"></svg>
@@ -88,7 +107,7 @@ export default {
 
   mounted() {
     this.graph = new LineChart(this.$refs.graph);
-    this.graph.height = 400;
+    this.graph.height = 250;
 
     this.startAutoplay();
   },
@@ -99,7 +118,7 @@ export default {
       this.graph.render(this.active, this.currentQuarter);
     },
 
-    toggleAutoplay(e) {
+    toggleAutoplay() {
       this.autoplay = !this.autoplay;
       if (this.autoplay) {
         this.startAutoplay();
