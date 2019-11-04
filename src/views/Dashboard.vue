@@ -26,10 +26,18 @@
               <h3 class="objective-title">{{ objective.objective_title }}</h3>
               <p class="objective-body">{{ objective.objective_body }}</p>
             </td>
-            <td :class="{ active: active.id === key_result.id }" class="cell cell--key-result">
+            <td
+              :class="{ active: active.id === key_result.id }"
+              class="cell cell--key-result"
+              @click="clickKeyRes(key_result)"
+            >
               {{ key_result.key_result }}
             </td>
-            <td :class="{ active: active.id === key_result.id }" class="cell cell--progress-bar">
+            <td
+              :class="{ active: active.id === key_result.id }"
+              class="cell cell--progress-bar"
+              @click="clickKeyRes(key_result)"
+            >
               <progress-bar :keyres="key_result" darkmode></progress-bar>
             </td>
             <td :class="{ active: active.id === key_result.id }" class="cell--indicator-container">
@@ -93,6 +101,11 @@ export default {
       if (!this.graph) return;
       this.graph.render(this.active, this.currentQuarter);
     },
+
+    clickKeyRes(keyres) {
+      this.activeIndex = this.keyres.findIndex(k => k.id === keyres.id);
+      this.autoplay = false;
+    },
   },
 
   watch: {
@@ -118,6 +131,7 @@ export default {
       if (!this.keyres) return;
       return this.keyres[this.activeIndex];
     },
+
     keyres() {
       if (!this.product || !this.product.children || !this.product.children.length) return;
       return this.product.children.map(objective => objective.children).flat();
