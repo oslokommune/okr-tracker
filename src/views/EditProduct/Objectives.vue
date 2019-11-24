@@ -59,9 +59,8 @@ export default {
     product() {
       if (this.chosenQuarter === '') {
         return this.getObjectById(this.$route.params.id);
-      } else {
-        return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
       }
+      return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
     },
 
     quarters() {

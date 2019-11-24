@@ -55,7 +55,9 @@ function initPercentText(el) {
 // Updates the position and anchor-direction of the today text label
 function updateTodayTextPosition(el, targetAngle) {
   el.text(() => {
-    return targetAngle <= 0 ? 'Ikke startet' : targetAngle >= Math.PI * 2 ? 'Fullført' : 'I dag';
+    if (targetAngle <= 0) return 'Ikke startet';
+    if (targetAngle >= Math.PI * 2) return 'Fullført';
+    return 'I dag';
   })
     .transition()
     .duration(duration)
@@ -145,9 +147,9 @@ function arcTween(target, el, generator) {
 }
 
 // Converts an angle and radius to coordinates
-function getPosFromAngle(angle, radius = 1) {
-  const x = Math.cos(angle) * radius;
-  const y = Math.sin(angle) * radius;
+function getPosFromAngle(angle, radiusNumber = 1) {
+  const x = Math.cos(angle) * radiusNumber;
+  const y = Math.sin(angle) * radiusNumber;
 
   return [x, y];
 }

@@ -8,12 +8,12 @@ import * as sheetOptions from '@/config/sheetOptions';
  * index as keys
  */
 export function arraysToObjects(arr) {
-  let jsonObj = [];
-  let headers = arr[0];
-  for (let i = 1; i < arr.length; i++) {
+  const jsonObj = [];
+  const headers = arr[0];
+  for (let i = 1; i < arr.length; i += 1) {
     const data = arr[i];
-    let obj = {};
-    for (let j = 0; j < data.length; j++) {
+    const obj = {};
+    for (let j = 0; j < data.length; j += 1) {
       obj[headers[j].trim()] = data[j].trim();
     }
     obj.rowIndex = i + 1;
@@ -29,16 +29,16 @@ export function nest(data) {
   const values = data.KeyResTracker.filter(d => !d.archived);
   const users = data.Users;
 
-  const keyres = data.KeyRes.filter(d => !d.archived).map(keyres => {
-    keyres.children = values.filter(val => val.key_result_id === keyres.id);
-    keyres.current_value = findCurrentValue(keyres.children) || keyres.start_value;
+  const keyres = data.KeyRes.filter(d => !d.archived).map(kr => {
+    kr.children = values.filter(val => val.key_result_id === kr.id);
+    kr.current_value = findCurrentValue(kr.children) || kr.start_value;
 
     const scale = scaleLinear()
-      .domain([+keyres.start_value, +keyres.target_value])
+      .domain([+kr.start_value, +kr.target_value])
       .clamp(true);
-    keyres.progression = scale(+keyres.current_value);
+    kr.progression = scale(+kr.current_value);
 
-    return keyres;
+    return kr;
   });
 
   const objectives = data.Objectives.filter(d => !d.archived).map(objective => {
@@ -105,7 +105,11 @@ export function storeObjectInLocalStorage(obj) {
 
 function findCurrentValue(list) {
   if (!list || !list.length) return false;
-  list.sort((a, b) => (a.timestamp > b.timestamp ? -1 : a.timestamp < b.timestamp ? 1 : 0));
+  list.sort((a, b) => {
+    if (a.timestamp > b.timestamp) return -1;
+    if (a.timestamp < b.timestamp) return 1;
+    return 0;
+  });
   return list[0].value;
 }
 

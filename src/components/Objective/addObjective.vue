@@ -81,7 +81,7 @@ export default {
     availableQuarters() {
       let from = new Date(2019, 1, 1);
       const to = new Date();
-      let quarters = [];
+      const quarters = [];
       // TODO: write less shit code
       while (to > from) {
         const year = getYear(from);

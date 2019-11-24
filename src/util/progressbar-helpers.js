@@ -70,12 +70,16 @@ export function setWidth(el, val) {
   const width = this.x(val);
   this.isDone = val / this.x.domain()[1] >= 1;
 
-  const fill = this.isDark ? '#777' : this.isDone ? colors.purple : colors.yellow;
+  let fill = '';
+  if (this.isDark) fill = '#777';
+  else if (this.isDone) fill = colors.purple;
+  else fill = colors.yellow;
+
   el.attr('width', width).attr('fill', fill);
 }
 
 export function resize() {
-  const width = this.width;
+  const { width } = this;
   this.x.range([0, width - this.paddingLeft - barPadding * 2]);
   this.svg.attr('viewBox', `0 0 ${width} ${this.height}`);
   this.bg.attr('width', width - this.paddingLeft);

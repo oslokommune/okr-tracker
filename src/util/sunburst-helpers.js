@@ -14,7 +14,7 @@ function showTooltip(d) {
   const name = getNameFromObject(d);
 
   this.tooltip
-    .text(formatPercent(d.data.progression) + ': ' + name)
+    .text(`${formatPercent(d.data.progression)}: ${name}`)
     .style('opacity', 1)
     .style('transform', `translate(${event.clientX}px, ${event.clientY + 30}px)`);
 }
@@ -96,12 +96,12 @@ function handleMouseover(d, i, j) {
     .attr('fill', () => colorIntensity(-0.15));
 
   // Find the related child nodes and fade them back in
-  const childIds = d.descendants().map(d => d.data.id);
-  const childNodes = j.filter(d => childIds.includes(d.__data__.data.id));
+  const childIds = d.descendants().map(dj => dj.data.id);
+  const childNodes = j.filter(dj => childIds.includes(dj.__data__.data.id));
   selectAll(childNodes)
     .select('path.arc')
     .attr('opacity', 1)
-    .attr('fill', d => colorIntensity(d.data.progression));
+    .attr('fill', dj => colorIntensity(dj.data.progression));
 }
 
 function handleMouseLeave(d, i, j) {
@@ -111,7 +111,7 @@ function handleMouseLeave(d, i, j) {
   selectAll(j)
     .select('path.arc')
     .attr('opacity', 1)
-    .attr('fill', d => colorIntensity(d.data.progression));
+    .attr('fill', dj => colorIntensity(dj.data.progression));
 }
 
 function drawArcBars(el) {
@@ -152,9 +152,8 @@ function drawArcs(el) {
 
       if (angle < Math.PI / 2 || angle > Math.PI * 1.5) {
         return '25%';
-      } else {
-        return '75%';
       }
+      return '75%';
     });
 }
 
@@ -168,7 +167,7 @@ function drawTextPath(el) {
       y0: d.y0,
     })
       .split('A')
-      .filter((d, i) => i < 3)
+      .filter((dj, i) => i < 3)
       .join('A');
 
     return pathData;
@@ -179,7 +178,8 @@ function legendLabels({ i, genLength, generatedLabels, labelDelimiter }) {
   if (i === 0) {
     const values = generatedLabels[i].split(` ${labelDelimiter} `);
     return `Mindre enn ${values[1]}`;
-  } else if (i === genLength - 1) {
+  }
+  if (i === genLength - 1) {
     const values = generatedLabels[i].split(` ${labelDelimiter} `);
     return `${values[0]} eller mer`;
   }
@@ -194,7 +194,7 @@ function getNameFromObject(d) {
 }
 
 function handleClick(el, i, j) {
-  const id = el.data.id;
+  const { id } = el.data;
   this.highlight = this.highlight === id ? false : id;
 
   selectAll(j)
