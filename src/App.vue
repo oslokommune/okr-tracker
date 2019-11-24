@@ -21,15 +21,6 @@ export default {
     isLoggedIn: false,
   }),
 
-  created() {
-    try {
-      // prettier-ignore
-      window.setInterval(this.$refreshToken(), 2.7e+6);
-    } catch (e) {
-      console.log(e);
-    }
-  },
-
   mounted() {
     this.isLoggedIn = this.$isAuthenticated();
     if (this.isLoggedIn) {
