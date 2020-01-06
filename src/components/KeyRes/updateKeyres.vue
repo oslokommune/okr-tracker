@@ -77,7 +77,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addKeyResValue']),
+    ...mapActions(['addKeyResValue', 'getAllData']),
 
     submitNewValue() {
       this.$v.$touch();
@@ -93,6 +93,7 @@ export default {
         })
           .then(() => {
             this.setSubmitInfo(false, false, '');
+            this.getAllData();
             this.$router.push({
               name: 'keyres-value-details',
               params: {

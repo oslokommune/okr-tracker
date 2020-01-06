@@ -72,7 +72,7 @@ export default new Vuex.Store({
       state.gapi = payload;
     },
     SET_DATA(state, payload) {
-      let res = {};
+      const res = {};
 
       // splits the groups into key/value pairs
       payload.forEach(g => {
@@ -131,7 +131,7 @@ export default new Vuex.Store({
     },
     // Store the gapi object so that every component can access it
     initGapi({ commit }) {
-      let localData = localStorage.getItem('okr-data');
+      const localData = localStorage.getItem('okr-data');
       if (localData) {
         commit('LOAD_DATA', JSON.parse(localData));
       }

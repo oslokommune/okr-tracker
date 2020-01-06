@@ -10,13 +10,13 @@
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
   },
   "dependencies": {
-    "core-js": "^3.3.3",
-    "d3": "^5.12.0",
+    "core-js": "^3.4.2",
+    "d3": "^5.14.2",
     "d3-svg-legend": "^2.25.6",
-    "date-fns": "^2.6.0",
+    "date-fns": "^2.8.1",
     "lodash": "^4.17.15",
     "obj-traverse": "^1.0.0",
-    "uniqid": "^5.0.3",
+    "uniqid": "^5.1.0",
     "vue": "^2.6.10",
     "vue-gapi": "0.0.10",
     "vue-resize": "^0.4.5",
@@ -25,26 +25,26 @@
     "vue-select": "^3.2.0",
     "vue-toasted": "^1.1.27",
     "vuelidate": "^0.7.4",
-    "vuex": "^3.1.1"
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.5",
     "@vue/cli-plugin-eslint": "^4.0.5",
     "@vue/cli-service": "^4.0.5",
-    "@vue/eslint-config-airbnb": "^4.0.1",
-    "@vue/eslint-config-prettier": "^5.0.0",
+    "@vue/eslint-config-airbnb": "^5.0.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
+    "eslint": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-vue": "^5.2.3",
-    "node-sass": "^4.12.0",
-    "prettier": "^1.18.2",
+    "eslint-plugin-vue": "^6.0.1",
+    "node-sass": "^4.13.0",
+    "prettier": "^1.19.1",
     "sass-loader": "^8.0.0",
-    "stylelint": "^11.1.1",
+    "stylelint": "^12.0.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
-    "stylelint-scss": "^3.12.0",
+    "stylelint-scss": "^3.13.0",
     "vue-template-compiler": "^2.6.10"
   }
 }

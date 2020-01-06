@@ -130,7 +130,7 @@ export default {
       }
       this.interval = setInterval(() => {
         if (!this.autoplay) return;
-        this.activeIndex++;
+        this.activeIndex += 1;
         if (this.activeIndex >= this.keyres.length) {
           this.activeIndex = 0;
         }

@@ -40,7 +40,9 @@ export default class Progressbar {
       .select('text')
       .text(val)
       .attr('text-anchor', () => {
-        return this.x(val) < 50 ? 'start' : this.x(val) > this.width - 50 ? 'end' : 'middle';
+        if (this.x(val) < 50) return 'start';
+        if (this.x(val) > this.width - 50) return 'end';
+        return 'middle';
       });
 
     this.currentVal.attr('transform', `translate(${this.x(val)}, 0)`);

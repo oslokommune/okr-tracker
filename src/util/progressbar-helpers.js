@@ -75,7 +75,7 @@ export function setWidth(el, val) {
 }
 
 export function resize() {
-  const width = this.width;
+  const { width } = this;
   this.x.range([0, width - this.paddingLeft - barPadding * 2]);
   this.svg.attr('viewBox', `0 0 ${width} ${this.height}`);
   this.bg.attr('width', width - this.paddingLeft);
