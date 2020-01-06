@@ -31,6 +31,7 @@
 
     <label class="form-group" :class="{ 'form-group--error': $v.unit.$error }">
       <span class="form-label">Måleenhet</span>
+      <span class="form-help">Hva er det som måles (klikk/prosent/brukere etc)?</span>
       <input type="text" v-model="$v.unit.$model" />
     </label>
     <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
