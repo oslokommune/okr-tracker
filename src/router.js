@@ -1,15 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import Product from './views/Product.vue';
-import AddProduct from './views/AddProduct.vue';
-import EditProduct from './views/EditProduct.vue';
-import EditProductBasic from './views/EditProduct/BasicInfo.vue';
-import EditProductObjectives from './views/EditProduct/Objectives.vue';
-import EditProductKeyres from './views/EditProduct/KeyResults.vue';
-import KeyResDetails from './views/EditProduct/KeyResultDetails.vue';
-import Dashboard from './views/Dashboard.vue';
-import NotFound from './views/NotFound.vue';
+import TheLogin from './views/Login.vue';
+import TheAdmin from './views/Admin.vue';
+import TheProfile from './views/Profile.vue';
+
+import { auth } from './config/firebaseConfig';
 
 Vue.use(Router);
 
@@ -21,38 +17,21 @@ const routes = [
   },
 
   {
-    path: '/product/:id',
-    name: 'product',
-    component: Product,
+    path: '/login',
+    name: 'login',
+    component: TheLogin,
   },
 
   {
-    path: '/add-product',
-    name: 'add-product',
-    component: AddProduct,
+    path: '/profile',
+    name: 'profile',
+    component: TheProfile,
   },
 
   {
-    path: '/product/:id/edit',
-    component: EditProduct,
-    children: [
-      { path: '/', name: 'edit-product', component: EditProductBasic },
-      { path: 'objectives', name: 'edit-product-objectives', component: EditProductObjectives },
-      { path: 'key-results/', name: 'edit-product-keyres', component: EditProductKeyres },
-      { path: 'key-results/:keyresId', name: 'keyres-value-details', component: KeyResDetails },
-    ],
-  },
-
-  {
-    name: 'dashboard',
-    path: '/product/:id/dashboard',
-    component: Dashboard,
-  },
-
-  {
-    path: '*',
-    name: 'NotFound',
-    component: NotFound,
+    path: '/admin',
+    name: 'admin',
+    component: TheAdmin,
   },
 ];
 
@@ -64,7 +43,12 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   window.scroll(0, 0);
-  next();
+  if (!isAuthenticated() && to.path !== '/login') next('/login');
+  else next();
 });
 
 export default router;
+
+function isAuthenticated() {
+  return auth.currentUser;
+}

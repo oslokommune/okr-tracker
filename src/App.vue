@@ -1,46 +1,25 @@
 <template>
   <div id="app">
     <the-header></the-header>
-    <the-login v-if="!isLoggedIn"></the-login>
-    <router-view v-else></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import TheHeader from '@/components/TheHeader.vue';
-import TheLogin from '@/components/TheLogin.vue';
 
 export default {
   components: {
     TheHeader,
-    TheLogin,
-  },
-
-  data: () => ({
-    isLoggedIn: false,
-  }),
-
-  mounted() {
-    this.isLoggedIn = this.$isAuthenticated();
-    if (this.isLoggedIn) {
-      this.init();
-    }
-  },
-
-  watch: {
-    $route() {
-      this.isLoggedIn = this.$isAuthenticated();
-    },
   },
 
   methods: {
-    ...mapActions(['initGapi', 'getAllData']),
+    ...mapActions(['getUsersList']),
+  },
 
-    async init() {
-      await this.initGapi();
-      await this.getAllData();
-    },
+  mounted() {
+    this.getUsersList();
   },
 };
 

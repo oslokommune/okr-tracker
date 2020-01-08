@@ -6,31 +6,31 @@
           OKR-tracker
         </router-link>
       </h2>
-      <div class="right">
-        <router-link v-if="isHomePage && isLoggedIn" class="btn btn--ghost" :to="{ name: 'add-product' }"
-          >+ Legg til nytt produkt</router-link
-        >
-        <button class="btn btn--ghost" v-if="isLoggedIn" @click="logout()">Logg ut</button>
+      <div class="right" v-if="user">
+        <router-link class="menu-item" v-if="user" :to="{ name: 'profile' }">{{ user.displayName }}</router-link>
+        <router-link class="menu-item" v-if="user && user.admin" :to="{ name: 'admin' }">Admin</router-link>
+        <button @click="logout">Logg ut</button>
       </div>
     </div>
   </header>
 </template>
 
 <script>
-export default {
-  computed: {
-    isLoggedIn() {
-      return this.$isAuthenticated();
-    },
-    isHomePage() {
-      return this.$route.name === 'home';
-    },
-  },
+import { mapState } from 'vuex';
+import { auth } from '../config/firebaseConfig';
 
+export default {
+  data: () => ({
+    auth,
+  }),
+
+  computed: {
+    ...mapState(['user']),
+  },
   methods: {
     logout() {
-      this.$logout().then(() => {
-        location.reload();
+      auth.signOut().then(() => {
+        this.$router.push('/login');
       });
     },
   },
@@ -38,6 +38,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/_colors.scss';
+
 .header {
   width: 100%;
   height: 5rem;
@@ -55,6 +57,12 @@ export default {
 
   .right {
     margin-left: auto;
+  }
+
+  .menu-item {
+    display: inline-block;
+    margin: 0 0.25rem;
+    padding: 0.55rem 0.75rem;
   }
 }
 </style>
