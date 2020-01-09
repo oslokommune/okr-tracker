@@ -1,8 +1,5 @@
 <template>
-  <div class="container content">
-    <h1 class="title title-1">Admin</h1>
-
-    <h3 class="title title-3">Whitelist</h3>
+  <div>
     <table>
       <tr v-for="(user, key) in list" :key="key">
         <td><input type="checkbox" :checked="user.admin" @change="toggleAdmin(key, $event.target.checked)" /></td>
@@ -20,9 +17,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { validateEmail } from '../util/formValidation';
-import { db, usersCollection } from '../config/firebaseConfig';
+import { validateEmail } from '@/util/formValidation';
+import { db, usersCollection } from '@/config/firebaseConfig';
 
 export default {
   name: 'Admin',
@@ -30,10 +26,6 @@ export default {
   data: () => ({
     list: {},
   }),
-
-  computed: {
-    ...mapState(['user']),
-  },
 
   methods: {
     addEmails() {
@@ -56,16 +48,6 @@ export default {
 
     toggleAdmin(key, value) {
       usersCollection.doc(key).update({ admin: value });
-    },
-  },
-
-  watch: {
-    user(obj) {
-      if (!obj) return;
-
-      if (!this.user.admin) {
-        this.$router.push('/');
-      }
     },
   },
 

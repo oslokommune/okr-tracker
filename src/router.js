@@ -2,10 +2,13 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import TheLogin from './views/Login.vue';
-import TheAdmin from './views/Admin.vue';
 import TheProfile from './views/Profile.vue';
 
 import { auth } from './config/firebaseConfig';
+
+const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/admin/AdminHome.vue');
+const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/admin/AdminUsers.vue');
+const AdminObjects = () => import(/* webpackChunkName: "group-adin" */ './views/admin/AdminObjects.vue');
 
 Vue.use(Router);
 
@@ -31,7 +34,11 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: TheAdmin,
+    component: AdminHome,
+    children: [
+      { name: 'admin-users', path: '/', component: AdminUsers },
+      { name: 'admin-objects', path: 'data', component: AdminObjects },
+    ],
   },
 ];
 
