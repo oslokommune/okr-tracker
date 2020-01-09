@@ -8,7 +8,7 @@
       <div class="container">
         <nav class="nav">
           <router-link class="router-link" :to="{ name: 'admin-users' }">Brukere</router-link>
-          <router-link class="router-link" :to="{ name: 'admin-objects' }">Data</router-link>
+          <router-link class="router-link" :to="{ name: 'admin-objects' }">Produkter og produktområder</router-link>
         </nav>
       </div>
     </div>

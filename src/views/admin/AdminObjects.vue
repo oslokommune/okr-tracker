@@ -25,7 +25,7 @@
         >
           {{ dept.name }}
         </div>
-        <div v-if="selectedOrgId" class="miller__col__item miller__col__add">+ Legg til</div>
+        <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">+ Legg til</div>
       </div>
 
       <div class="miller__col">
@@ -119,6 +119,16 @@ export default {
         this.selectedProductId = doc.id;
       });
     },
+
+    addDepartment() {
+      const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/`);
+
+      deptRef.add({ name: 'Nytt produktområde' }).then(doc => {
+        this.selectedProductId = null;
+        this.products = [];
+        this.selectedDeptId = doc.id;
+      });
+    },
   },
 
   mounted() {
@@ -131,6 +141,9 @@ async function getOrgs() {
 
   ref.onSnapshot(snapshot => {
     this.orgs = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
+    this.selectedOrgId = this.orgs[0].id;
+
+    getDepartments.call(this);
   });
 }
 
@@ -195,7 +208,7 @@ async function getProducts() {
     }
 
     &__add {
-      margin-top: auto;
+      // margin-top: auto;
       margin-bottom: -1px;
       color: #666666;
       border-top: 1px solid #dddddd;

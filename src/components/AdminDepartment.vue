@@ -5,7 +5,8 @@
     <p>Mission statement</p>
     <textarea rows="4" v-model="obj.mission_statement"></textarea>
 
-    <button @click="save">Lagre</button>
+    <button @click="saveObject">Lagre</button>
+    <button @click="deleteObject">Slett</button>
   </div>
 </template>
 
@@ -29,8 +30,11 @@ export default {
   },
 
   methods: {
-    save() {
+    saveObject() {
       this.docref.update(this.obj);
+    },
+    deleteObject() {
+      this.docref.delete();
     },
   },
 };

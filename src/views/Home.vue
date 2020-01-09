@@ -1,11 +1,13 @@
 <template>
   <div class="container content">
-    <h1>OKR-tracker</h1>
+    <ProductList></ProductList>
   </div>
 </template>
 
 <script>
+import ProductList from '@/components/ProductList.vue';
+
 export default {
-  components: {},
+  components: { ProductList },
 };
 </script>

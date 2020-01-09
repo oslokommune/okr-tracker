@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { usersCollection } from './config/firebaseConfig';
+import getNestedData from './util/getNestedData';
 
 Vue.use(Vuex);
 
@@ -9,6 +10,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     userslist: {},
+    nest: [],
   },
 
   getters: {
@@ -26,6 +28,10 @@ export default new Vuex.Store({
       const [key, value] = Object.entries(payload)[0];
       state.userslist[key] = value;
     },
+
+    set_nested_data(state, payload) {
+      state.nest = payload;
+    },
   },
 
   actions: {
@@ -33,6 +39,11 @@ export default new Vuex.Store({
       usersCollection.onSnapshot(snapshot => {
         commit('set_userslist', snapshot);
       });
+    },
+
+    async getNestedProducts({ commit }) {
+      const list = await getNestedData();
+      commit('set_nested_data', list);
     },
   },
 });
