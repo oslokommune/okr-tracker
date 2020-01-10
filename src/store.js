@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import { addMonths, startOfQuarter, getQuarter } from 'date-fns';
 import { usersCollection } from './config/firebaseConfig';
 import getNestedData from './util/getNestedData';
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
     user: null,
     userslist: {},
     nest: [],
+    quarters: [],
   },
 
   getters: {
@@ -24,6 +26,10 @@ export default new Vuex.Store({
       state.user = payload;
     },
 
+    set_quarters(state, payload) {
+      state.quarters = payload;
+    },
+
     set_userslist(state, payload) {
       const [key, value] = Object.entries(payload)[0];
       state.userslist[key] = value;
@@ -35,15 +41,32 @@ export default new Vuex.Store({
   },
 
   actions: {
-    getUsersList({ commit }) {
+    async initializeApp({ commit }) {
       usersCollection.onSnapshot(snapshot => {
         commit('set_userslist', snapshot);
       });
-    },
 
-    async getNestedProducts({ commit }) {
-      const list = await getNestedData();
-      commit('set_nested_data', list);
+      commit('set_nested_data', await getNestedData());
+
+      commit('set_quarters', generateQuarters());
     },
   },
 });
+
+export function generateQuarters() {
+  const fromDate = new Date('2019-01-01');
+  const today = new Date();
+  const toDate = startOfQuarter(addMonths(today, 6));
+  const quarters = [];
+
+  let dateLoop = fromDate;
+  while (dateLoop < toDate) {
+    const year = dateLoop.getFullYear();
+    const quarter = getQuarter(dateLoop);
+    const isCurrent = dateLoop < today && dateLoop > startOfQuarter(today);
+    quarters.push({ name: `Q${quarter} ${year}`, isCurrent });
+    dateLoop = addMonths(dateLoop, 3);
+  }
+
+  return quarters.reverse();
+}

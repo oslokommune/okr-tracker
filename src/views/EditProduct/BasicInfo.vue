@@ -5,7 +5,7 @@
     <div class="narrow content">
       <label class="form-group">
         <span class="form-label">Produktnavn</span>
-        <input @input="edited = true" type="text" v-model="product.product" />
+        <input @input="edited = true" type="text" v-model="product.name" />
       </label>
 
       <label class="form-group">
@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-
 export default {
   data: () => ({
     edited: false,
@@ -51,54 +49,10 @@ export default {
     team: [],
   }),
 
-  computed: {
-    ...mapState(['data']),
-    ...mapGetters(['getObjectById']),
-
-    allUsers() {
-      return this.data.Users;
-    },
-
-    selectedUserIds() {
-      return this.team.map(d => d.id).join(',');
-    },
-
-    product() {
-      return this.getObjectById(this.$route.params.id);
-    },
-  },
-
-  mounted() {
-    this.team = this.product.team;
-  },
-
-  methods: {
-    ...mapActions(['updateObject', 'updateProductDetails']),
-
-    submitForm() {
-      this.setSubmitInfo(true, false, '');
-      this.updateProductDetails({ ...this.product, team_members: this.selectedUserIds })
-        .then(() => {
-          this.updateObject({
-            key: 'Products',
-            data: { ...this.product, team_members: this.selectedUserIds },
-          });
-        })
-        .then(() => {
-          this.edited = false;
-          this.setSubmitInfo(false, false, '');
-          this.$router.push({ name: 'product', params: { id: this.product.id } });
-        })
-        .catch(() => {
-          this.edited = false;
-          this.setSubmitInfo(false, true, 'Noe gikk galt');
-        });
-    },
-
-    setSubmitInfo(submit, showInfo, info) {
-      this.submit = submit;
-      this.showInfo = showInfo;
-      this.info = info;
+  props: {
+    product: {
+      type: Object,
+      required: true,
     },
   },
 };

@@ -4,6 +4,9 @@ import Home from './views/Home.vue';
 import TheLogin from './views/Login.vue';
 import TheProfile from './views/Profile.vue';
 import Product from './views/Product.vue';
+import EditProduct from './views/EditProduct.vue';
+import AdminProduct from './components/AdminProduct.vue';
+import AdminProductObjectives from './views/EditProduct/Objectives.vue';
 
 import { auth } from './config/firebaseConfig';
 
@@ -36,6 +39,15 @@ const routes = [
     path: '/product/:slug',
     name: 'product',
     component: Product,
+  },
+
+  {
+    path: '/product/:slug/edit',
+    component: EditProduct,
+    children: [
+      { name: 'edit-product', path: '/', component: AdminProduct },
+      { name: 'edit-product-objectives', path: 'objectives', component: AdminProductObjectives },
+    ],
   },
 
   {

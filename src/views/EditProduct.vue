@@ -4,15 +4,15 @@
       <div class="container">
         <div class="product-header__container">
           <router-link class="product-header__edit" :to="{ name: 'product', params: { id: $route.params.id } }">
-            Gå tilbake til {{ product.product }}
+            Gå tilbake til {{ product.name }}
           </router-link>
           <div class="product-header__name">
-            <h1 class="title-1">Endre «{{ product.product }}»</h1>
+            <h1 class="title-1">Endre «{{ product.name }}»</h1>
           </div>
 
           <img
-            :src="getProductImage"
-            :alt="`Profilbilde for ${product.product}`"
+            :src="product.photoURL || ''"
+            :alt="`Profilbilde for ${product.name}`"
             class="product-header__profile-image"
           />
         </div>
@@ -23,32 +23,45 @@
       <div class="container container--sidebar">
         <router-link class="sub-nav__element" exact :to="{ name: 'edit-product' }">Detaljer</router-link>
         <router-link class="sub-nav__element" :to="{ name: 'edit-product-objectives' }">Mål</router-link>
-        <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">Nøkkelresultater</router-link>
+        <!-- <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">Nøkkelresultater</router-link> -->
       </div>
     </nav>
 
     <div class="content container container--sidebar">
-      <router-view :product="product"></router-view>
+      <router-view :docref="docref"></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
+import { db } from '../config/firebaseConfig';
 
 export default {
   name: 'Product',
 
+  data: () => ({
+    product: null,
+  }),
+
   computed: {
-    ...mapGetters(['getObjectById']),
+    ...mapState(['user']),
+  },
 
-    product() {
-      return this.getObjectById(this.$route.params.id);
-    },
+  created() {
+    db.collectionGroup('products')
+      .where('slug', '==', this.$route.params.slug)
+      .onSnapshot(async d => {
+        const foo = await d.docs[0].ref.get();
+        this.product = foo.data();
+        this.docref = d.docs[0].ref;
 
-    getProductImage() {
-      return this.product.product_image ? this.product.product_image : '/placeholder-image.svg';
-    },
+        if (!this.product.team || !this.product.team.length) return;
+
+        if (!this.product.team.includes(user => user.id === this.user.email)) {
+          this.$router.push({ name: 'product', params: { slug: this.product.slug } });
+        }
+      });
   },
 };
 </script>

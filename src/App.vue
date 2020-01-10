@@ -15,12 +15,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getUsersList', 'getNestedProducts']),
+    ...mapActions(['initializeApp']),
   },
 
   mounted() {
-    this.getUsersList();
-    this.getNestedProducts();
+    this.initializeApp();
   },
 };
 

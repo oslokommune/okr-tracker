@@ -14,11 +14,8 @@
             class="product-header__profile-image"
           />
           <span class="product-header__edit">
-            <router-link :to="{ name: 'edit-product', params: { id: $route.params.id } }">
+            <router-link :to="{ name: 'edit-product', params: { slug: $route.params.slug } }">
               Endre produkt
-            </router-link>
-            <router-link :to="{ name: 'dashboard', params: { id: $route.params.id } }">
-              Dashboard
             </router-link>
           </span>
         </div>
@@ -27,15 +24,22 @@
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
-        <a class="sub-nav__element">Q2 2020</a>
-        <a class="sub-nav__element">Q1 2020</a>
-        <a class="sub-nav__element">Q4 2019</a>
+        <a
+          v-for="(quarter, i) in quarters"
+          :key="quarter.name"
+          class="sub-nav__element"
+          href="#"
+          :class="{ 'router-link-active': quarter.isCurrent }"
+          @click="setQuarter(i)"
+          >{{ quarter.name }}</a
+        >
       </div>
     </nav>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '../config/firebaseConfig';
 
 export default {
@@ -45,6 +49,10 @@ export default {
     product: null,
   }),
 
+  computed: {
+    ...mapState(['quarters']),
+  },
+
   mounted() {
     db.collectionGroup('products')
       .where('slug', '==', this.$route.params.slug)
@@ -53,6 +61,15 @@ export default {
         const foo = await d.docs[0].ref.get();
         this.product = foo.data();
       });
+  },
+
+  methods: {
+    setQuarter(targetIndex) {
+      this.quarters.forEach((quarter, i) => {
+        quarter.isCurrent = targetIndex === i;
+      });
+      // this.quarters[i].isCurrent = true;
+    },
   },
 };
 </script>

@@ -12,7 +12,7 @@
           @input="setSelectedQuarter"
         ></v-select>
       </div>
-      <div class="add">
+      <!-- <div class="add">
         <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
         <add-objective
           :chosen-quarter="chosenQuarter"
@@ -20,10 +20,10 @@
           @close-menu="closeMenu"
           :product-id="product.id"
         ></add-objective>
-      </div>
+      </div> -->
     </div>
-    <div class="content">
-      <!-- <ul class="grid-3"> -->
+    <!-- <div class="content">
+
       <transition-group name="grid-animation" tag="div" class="grid-3">
         <edit-objective
           v-for="objective in product.children"
@@ -32,13 +32,13 @@
           class="grid-animation-item"
         ></edit-objective>
       </transition-group>
-      <!-- </ul> -->
-    </div>
+
+    </div> -->
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import AddObjective from '@/components/Objective/addObjective.vue';
 import EditObjective from '@/components/Objective/editObjective.vue';
 
@@ -52,31 +52,10 @@ export default {
     expand: false,
   }),
 
-  computed: {
-    ...mapGetters(['getDistinctQuarters', 'getProductWithDistinctObjectives', 'getObjectById']),
-    ...mapState(['chosenQuarter']),
-
-    product() {
-      if (this.chosenQuarter === '') {
-        return this.getObjectById(this.$route.params.id);
-      }
-      return this.getProductWithDistinctObjectives(this.$route.params.id, this.chosenQuarter);
-    },
-
-    quarters() {
-      return this.getDistinctQuarters(this.$route.params.id);
-    },
-  },
-
-  methods: {
-    ...mapActions(['setChosenQuarter']),
-
-    setSelectedQuarter(value) {
-      this.setChosenQuarter(value);
-    },
-
-    closeMenu(value) {
-      this.expand = value;
+  props: {
+    docRef: {
+      type: Object,
+      required: true,
     },
   },
 };
