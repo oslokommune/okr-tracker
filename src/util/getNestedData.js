@@ -17,7 +17,7 @@ async function getDeptData(department) {
 }
 
 async function getProductData(product) {
-  return { id: product.id, ...product.data() };
+  return { id: product.id, ref: product.ref, ...product.data() };
 }
 
 async function getChildren(ref, collectionName, callback) {

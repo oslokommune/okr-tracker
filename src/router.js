@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import TheLogin from './views/Login.vue';
 import TheProfile from './views/Profile.vue';
+import Product from './views/Product.vue';
 
 import { auth } from './config/firebaseConfig';
 
@@ -29,6 +30,12 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: TheProfile,
+  },
+
+  {
+    path: '/product/:slug',
+    name: 'product',
+    component: Product,
   },
 
   {

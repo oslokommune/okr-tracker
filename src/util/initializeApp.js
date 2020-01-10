@@ -7,12 +7,9 @@ async function handleUserAuthStateChange(user) {
   if (!user) {
     store.commit('set_user', null);
   } else if (await isWhiteListed(user)) {
-    usersCollection
-      .doc(user.email)
-      .get()
-      .then(d => {
-        store.commit('set_user', d.data());
-      });
+    usersCollection.doc(user.email).onSnapshot(snapshot => {
+      store.commit('set_user', snapshot.data());
+    });
   } else {
     auth.signOut().then(() => {
       store.commit('set_user', null);
