@@ -13,7 +13,7 @@ async function handleUserAuthStateChange(user) {
   } else {
     auth.signOut().then(() => {
       store.commit('set_user', null);
-      router.push({ name: 'login', params: { error: true } });
+      router.push({ name: 'login', params: { error: 1 } });
     });
   }
 }

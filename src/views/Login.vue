@@ -1,12 +1,22 @@
 <template>
   <div class="container content">
     <div class="login">
-      <div v-if="error" class="error">
+      <div v-if="error === 1" class="error">
         Epost-adressen du forsøkte å logge inn med er ikke registrert. Kontakt systemadministrator for å få tilgang.
+      </div>
+      <div v-if="error === 2" class="error">
+        Klarte ikke å logge inn med Google. Kontakt systemadministrator.
+      </div>
+      <div v-if="error === 3" class="error">
+        Passordet er feil.
       </div>
       <h1 class="title-1">Du er ikke logget inn</h1>
       <p>Logg inn med organisasjonskonto for å bruke denne applikasjonen.</p>
       <button class="btn" @click="submit()">Logg inn med Google</button>
+      <div class="content" style="display: flex; flex-direction: column;">
+        <input type="password" v-model="password" />
+        <button class="btn" @click="submitPassword()">Logg inn med Dashboard</button>
+      </div>
     </div>
   </div>
 </template>
@@ -18,6 +28,7 @@ import { auth, loginProvider, updateUserObject } from '@/config/firebaseConfig';
 export default {
   data: () => ({
     error: true,
+    password: '',
   }),
 
   computed: {
@@ -32,8 +43,20 @@ export default {
           updateUserObject(res.user);
           this.$router.push('/');
         })
-        .catch(err => {
-          this.error = err.message;
+        .catch(() => {
+          this.error = 2;
+        });
+    },
+
+    submitPassword() {
+      auth
+        .signInWithEmailAndPassword(process.env.VUE_APP_DASHBOARD_USER, this.password)
+        .then(res => {
+          updateUserObject(res.user);
+          this.$router.push('/');
+        })
+        .catch(() => {
+          this.error = 3;
         });
     },
   },
