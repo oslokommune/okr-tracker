@@ -56,6 +56,7 @@ export default {
         this.product = foo.data();
         this.docref = d.docs[0].ref;
 
+        if (this.user.admin) return;
         if (!this.product.team || !this.product.team.length) return;
 
         if (!this.product.team.includes(user => user.id === this.user.email)) {
