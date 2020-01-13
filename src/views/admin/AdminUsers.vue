@@ -59,8 +59,4 @@ export default {
 table {
   width: 100%;
 }
-
-input[type='checkbox'] {
-  // margin-right: 10px;
-}
 </style>

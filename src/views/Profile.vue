@@ -112,7 +112,4 @@ export default {
     }
   }
 }
-
-.display-name {
-}
 </style>

@@ -70,6 +70,8 @@ export async function isTeamMemberOfProduct(slugOrRef) {
   const { email } = auth.currentUser;
   let teamMembers;
 
+  if (await isAdmin()) return true;
+
   if (typeof slugOrRef === 'string') {
     teamMembers = await db
       .collectionGroup('products')
@@ -100,6 +102,8 @@ export async function handleUserAuthStateChange(user) {
   if (!user) {
     store.commit('set_user', null);
   } else if (await isWhiteListed(user)) {
+    store.dispatch('initializeApp');
+
     updateUserObject(user);
     db.collection('users')
       .doc(user.email)

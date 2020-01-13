@@ -1,5 +1,7 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;
 
@@ -18,8 +20,8 @@ firebase.initializeApp(config);
 
 // firebase utils
 const db = firebase.firestore();
-const auth = firebase.auth();
-const storage = firebase.storage();
 const loginProvider = new firebase.auth.GoogleAuthProvider();
+const storage = firebase.storage();
+const auth = firebase.auth();
 
 export { db, auth, loginProvider, storage };
