@@ -1,72 +1,72 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { addMonths, startOfQuarter, getQuarter } from 'date-fns';
-import { usersCollection } from './config/firebaseConfig';
-import getNestedData from './util/getNestedData';
+import { db, dashboardUser } from './config/firebaseConfig';
+import generateQuarters from './util/utils';
+import { serializeDocument, getNestedData } from '@/util/db';
+
+export const actions = {
+  initializeApp({ commit, dispatch }) {
+    dispatch('watchUsers');
+    dispatch('watchProducts');
+    commit('set_quarters', generateQuarters());
+  },
+
+  watchProducts({ commit }) {
+    db.collectionGroup('products').onSnapshot(async () => {
+      commit('set_nested_data', await getNestedData());
+    });
+  },
+
+  watchUsers({ commit }) {
+    db.collection('users').onSnapshot(snapshot => {
+      const userList = snapshot.docs
+        .filter(d => d.id !== dashboardUser)
+        .map(serializeDocument)
+        .map(user => {
+          user.displayName = user.displayName || user.id;
+          return user;
+        });
+
+      commit('set_users', userList);
+    });
+  },
+};
 
 Vue.use(Vuex);
+
+export const getters = {
+  get_user_emails(state) {
+    return state.users.map(d => d.id);
+  },
+};
+
+export const mutations = {
+  set_user(state, payload) {
+    state.user = payload;
+  },
+
+  set_quarters(state, payload) {
+    state.quarters = payload;
+  },
+
+  set_users(state, payload) {
+    state.users = payload;
+  },
+
+  set_nested_data(state, payload) {
+    state.nest = payload;
+  },
+};
 
 export default new Vuex.Store({
   state: {
     user: null,
-    userslist: {},
+    users: [],
     nest: [],
     quarters: [],
   },
-
-  getters: {
-    get_user_emails(state) {
-      return Object.keys(state.userslist);
-    },
-  },
-
-  mutations: {
-    set_user(state, payload) {
-      state.user = payload;
-    },
-
-    set_quarters(state, payload) {
-      state.quarters = payload;
-    },
-
-    set_userslist(state, payload) {
-      const [key, value] = Object.entries(payload)[0];
-      state.userslist[key] = value;
-    },
-
-    set_nested_data(state, payload) {
-      state.nest = payload;
-    },
-  },
-
-  actions: {
-    async initializeApp({ commit }) {
-      usersCollection.onSnapshot(snapshot => {
-        commit('set_userslist', snapshot);
-      });
-
-      commit('set_nested_data', await getNestedData());
-
-      commit('set_quarters', generateQuarters());
-    },
-  },
+  getters,
+  mutations,
+  actions,
 });
-
-export function generateQuarters() {
-  const fromDate = new Date('2019-01-01');
-  const today = new Date();
-  const toDate = startOfQuarter(addMonths(today, 6));
-  const quarters = [];
-
-  let dateLoop = fromDate;
-  while (dateLoop < toDate) {
-    const year = dateLoop.getFullYear();
-    const quarter = getQuarter(dateLoop);
-    const isCurrent = dateLoop < today && dateLoop > startOfQuarter(today);
-    quarters.push({ name: `Q${quarter} ${year}`, isCurrent });
-    dateLoop = addMonths(dateLoop, 3);
-  }
-
-  return quarters.reverse();
-}

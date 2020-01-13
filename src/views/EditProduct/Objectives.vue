@@ -5,35 +5,24 @@
     <div class="objective">
       <div>
         <span class="form-label">Kvartal</span>
-        <v-select
-          class="form-group objective__select"
-          :value="chosenQuarter"
-          :options="quarters"
-          @input="setSelectedQuarter"
-        ></v-select>
+        <v-select class="form-group objective__select" label="name" :options="quarters"></v-select>
       </div>
-      <!-- <div class="add">
+      <div class="add">
         <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
-        <add-objective
-          :chosen-quarter="chosenQuarter"
-          v-if="expand"
-          @close-menu="closeMenu"
-          :product-id="product.id"
-        ></add-objective>
-      </div> -->
+        <add-objective v-if="expand" @close-menu="expand = false" :productref="docref"></add-objective>
+      </div>
     </div>
-    <!-- <div class="content">
 
+    <div class="content">
       <transition-group name="grid-animation" tag="div" class="grid-3">
         <edit-objective
-          v-for="objective in product.children"
-          :key="objective.id"
-          :objective="objective"
+          v-for="ref in objectiveRefs"
+          :key="ref.id"
+          :objective-ref="ref"
           class="grid-animation-item"
         ></edit-objective>
       </transition-group>
-
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -50,10 +39,21 @@ export default {
 
   data: () => ({
     expand: false,
+    objectiveRefs: [],
   }),
 
+  computed: {
+    ...mapState(['quarters']),
+  },
+
+  mounted() {
+    this.docref.collection('objectives').onSnapshot(snapshot => {
+      this.objectiveRefs = snapshot.docs;
+    });
+  },
+
   props: {
-    docRef: {
+    docref: {
       type: Object,
       required: true,
     },

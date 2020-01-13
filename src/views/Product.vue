@@ -29,7 +29,7 @@
           :key="quarter.name"
           class="sub-nav__element"
           href="#"
-          :class="{ 'router-link-active': quarter.isCurrent }"
+          :class="{ 'router-link-active': quarter.isActive }"
           @click="setQuarter(i)"
           >{{ quarter.name }}</a
         >
@@ -40,7 +40,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { db } from '../config/firebaseConfig';
+import { productListener } from '../util/db';
 
 export default {
   name: 'Product',
@@ -54,19 +54,13 @@ export default {
   },
 
   mounted() {
-    db.collectionGroup('products')
-      .where('slug', '==', this.$route.params.slug)
-      .get()
-      .then(async d => {
-        const foo = await d.docs[0].ref.get();
-        this.product = foo.data();
-      });
+    productListener.call(this, this.$route.params.slug);
   },
 
   methods: {
     setQuarter(targetIndex) {
       this.quarters.forEach((quarter, i) => {
-        quarter.isCurrent = targetIndex === i;
+        quarter.isActive = targetIndex === i;
       });
       // this.quarters[i].isCurrent = true;
     },

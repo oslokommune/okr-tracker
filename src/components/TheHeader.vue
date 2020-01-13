@@ -7,6 +7,7 @@
         </router-link>
       </h2>
       <div class="right" v-if="user">
+        <span v-if="user.isDashboardUser">Dashboard</span>
         <router-link class="menu-item" v-if="user" :to="{ name: 'profile' }">{{ user.displayName }}</router-link>
         <router-link class="menu-item" v-if="user && user.admin" :to="{ name: 'admin-users' }">Admin</router-link>
         <button @click="logout">Logg ut</button>

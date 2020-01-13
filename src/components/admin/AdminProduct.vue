@@ -39,8 +39,8 @@
         :options="users"
       >
         <template v-slot:option="option">
-          {{ option.displayName || option.email }}
-          <span v-if="option.displayName !== option.email">({{ option.email }})</span>
+          {{ option.displayName || option.id }}
+          <span v-if="option.displayName !== option.id">({{ option.id }})</span>
         </template>
       </v-select>
     </div>
@@ -51,14 +51,18 @@
 </template>
 
 <script>
-import { storage, usersCollection } from '../config/firebaseConfig';
-import slugify from '../util/slugify';
+import { mapState } from 'vuex';
+import { storage } from '@/config/firebaseConfig';
+import slugify from '@/util/slugify';
 
 export default {
   data: () => ({
     product: null,
-    users: [],
   }),
+
+  computed: {
+    ...mapState(['users']),
+  },
 
   props: {
     docref: { type: Object, required: true },
@@ -73,15 +77,6 @@ export default {
 
   async mounted() {
     this.docref.onSnapshot(getProductfromRef.bind(this));
-
-    usersCollection.onSnapshot(snapshot => {
-      this.users = snapshot.docs
-        .map(user => ({ email: user.id, ref: user.ref, ...user.data() }))
-        .map(user => {
-          user.displayName = user.displayName || user.email;
-          return user;
-        });
-    });
   },
 
   methods: {
@@ -92,7 +87,7 @@ export default {
       this.product.team = teamList;
     },
     deleteObject() {
-      this.docref.delete();
+      this.docref.update({ archived: true });
       this.product = null;
     },
 
@@ -128,9 +123,9 @@ async function getProductfromRef(snapshot) {
   const userRefs = await Promise.all(promises);
 
   this.product.team = userRefs
-    .map(user => ({ email: user.id, ref: user.ref, ...user.data() }))
+    .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))
     .map(user => {
-      user.displayName = user.displayName || user.email;
+      user.displayName = user.displayName || user.id;
       return user;
     });
 }

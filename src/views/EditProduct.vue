@@ -28,14 +28,14 @@
     </nav>
 
     <div class="content container container--sidebar">
-      <router-view :docref="docref"></router-view>
+      <router-view :docref="product.ref"></router-view>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { db } from '../config/firebaseConfig';
+import { productListener, isTeamMemberOfProduct } from '../util/db';
 
 export default {
   name: 'Product',
@@ -48,21 +48,17 @@ export default {
     ...mapState(['user']),
   },
 
+  async beforeRouteEnter(to, from, next) {
+    if (await isTeamMemberOfProduct(to.params.slug)) {
+      next();
+    } else {
+      next('/');
+      throw new Error('You do not have access to this page!');
+    }
+  },
+
   created() {
-    db.collectionGroup('products')
-      .where('slug', '==', this.$route.params.slug)
-      .onSnapshot(async d => {
-        const foo = await d.docs[0].ref.get();
-        this.product = foo.data();
-        this.docref = d.docs[0].ref;
-
-        if (this.user.admin) return;
-        if (!this.product.team || !this.product.team.length) return;
-
-        if (!this.product.team.includes(user => user.id === this.user.email)) {
-          this.$router.push({ name: 'product', params: { slug: this.product.slug } });
-        }
-      });
+    productListener.call(this, this.$route.params.slug);
   },
 };
 </script>

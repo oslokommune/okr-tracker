@@ -52,8 +52,9 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import AdminProduct from '@/components/AdminProduct.vue';
-import AdminDepartment from '@/components/AdminDepartment.vue';
+import { getOrgs, getDepartments, getProducts } from '@/util/db';
+import AdminProduct from '@/components/admin/AdminProduct.vue';
+import AdminDepartment from '@/components/admin/AdminDepartment.vue';
 
 export default {
   name: 'Admin',
@@ -99,13 +100,13 @@ export default {
       this.depts = [];
       this.products = [];
       this.selectedProductId = null;
-      getDepartments.call(this);
+      getDepartments.call(this, this.selectedOrgId);
     },
 
     selectDept(val) {
       this.selectedDeptId = val;
       this.selectedProductId = null;
-      getProducts.call(this);
+      getProducts.call(this, this.selectedOrgId, this.selectedDeptId);
     },
 
     selectProduct(val) {
@@ -115,7 +116,7 @@ export default {
     addProduct() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/${this.selectedDeptId}/products`);
 
-      deptRef.add({ name: 'Nytt produkt' }).then(doc => {
+      deptRef.add({ name: 'Nytt produkt', archived: false }).then(doc => {
         this.selectedProductId = doc.id;
       });
     },
@@ -123,7 +124,7 @@ export default {
     addDepartment() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/`);
 
-      deptRef.add({ name: 'Nytt produktområde' }).then(doc => {
+      deptRef.add({ name: 'Nytt produktområde', archived: false }).then(doc => {
         this.selectedProductId = null;
         this.products = [];
         this.selectedDeptId = doc.id;
@@ -135,36 +136,6 @@ export default {
     getOrgs.call(this);
   },
 };
-
-async function getOrgs() {
-  const ref = await db.collection('orgs');
-
-  ref.onSnapshot(snapshot => {
-    this.orgs = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
-    this.selectedOrgId = this.orgs[0].id;
-
-    getDepartments.call(this);
-  });
-}
-
-async function getDepartments() {
-  const ref = db.collection(`orgs/${this.selectedOrgId}/departments`);
-
-  ref.onSnapshot(snapshot => {
-    this.depts = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
-  });
-}
-
-async function getProducts() {
-  const org = this.selectedOrgId;
-  const dept = this.selectedDeptId;
-
-  const collectionRef = db.collection(`orgs/${org}/departments/${dept}/products`);
-
-  collectionRef.onSnapshot(snapshot => {
-    this.products = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
-  });
-}
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,11 @@
 <template>
   <div>
     <table>
-      <tr v-for="(user, key) in list" :key="key">
-        <td><input type="checkbox" :checked="user.admin" @change="toggleAdmin(key, $event.target.checked)" /></td>
-        <td>{{ key }}</td>
-        <td><button @click="deleteEmail(key)">Slett</button></td>
+      <tr v-for="user in users" :key="user.id">
+        <td><input type="checkbox" :checked="user.admin" @change="toggleAdmin(user, $event.target.checked)" /></td>
+        <td>{{ user.id }}</td>
+        <td>{{ user.displayName }}</td>
+        <td><button @click="deleteUser(user)">Slett</button></td>
       </tr>
     </table>
 
@@ -17,15 +18,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { validateEmail } from '@/util/formValidation';
-import { db, usersCollection } from '@/config/firebaseConfig';
+import { db } from '@/config/firebaseConfig';
 
 export default {
   name: 'Admin',
 
-  data: () => ({
-    list: {},
-  }),
+  computed: {
+    ...mapState(['users']),
+  },
 
   methods: {
     addEmails() {
@@ -42,23 +44,13 @@ export default {
       });
     },
 
-    deleteEmail(key) {
-      usersCollection.doc(key).delete();
+    deleteUser(user) {
+      user.ref.update();
     },
 
-    toggleAdmin(key, value) {
-      usersCollection.doc(key).update({ admin: value });
+    toggleAdmin(user, value) {
+      user.ref.update({ admin: value });
     },
-  },
-
-  mounted() {
-    usersCollection.onSnapshot(snapshot => {
-      const list = {};
-      snapshot.docs.forEach(doc => {
-        list[doc.id] = doc.data();
-      });
-      this.list = list;
-    });
   },
 };
 </script>

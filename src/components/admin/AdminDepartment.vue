@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { storage } from '../config/firebaseConfig';
+import { storage } from '@/config/firebaseConfig';
 
 export default {
   data: () => ({
@@ -53,7 +53,7 @@ export default {
       this.docref.update(this.obj);
     },
     deleteObject() {
-      this.docref.delete();
+      this.docref.update({ archived: true });
     },
 
     setImage(file) {

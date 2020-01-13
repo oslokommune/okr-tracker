@@ -23,7 +23,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { auth, loginProvider, updateUserObject } from '@/config/firebaseConfig';
+import { auth, loginProvider } from '@/config/firebaseConfig';
 
 export default {
   data: () => ({
@@ -39,8 +39,7 @@ export default {
     submit() {
       auth
         .signInWithPopup(loginProvider)
-        .then(res => {
-          updateUserObject(res.user);
+        .then(() => {
           this.$router.push('/');
         })
         .catch(() => {
@@ -48,16 +47,19 @@ export default {
         });
     },
 
-    submitPassword() {
-      auth
-        .signInWithEmailAndPassword(process.env.VUE_APP_DASHBOARD_USER, this.password)
-        .then(res => {
-          updateUserObject(res.user);
-          this.$router.push('/');
-        })
-        .catch(() => {
+    async submitPassword() {
+      const email = process.env.VUE_APP_DASHBOARD_USER;
+      const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
+        if (err.code === 'auth/wrong-password') {
           this.error = 3;
-        });
+        }
+      });
+
+      if (user) {
+        this.$router.push('/');
+      } else {
+        this.error = 3;
+      }
     },
   },
 

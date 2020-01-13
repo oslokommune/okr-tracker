@@ -28,8 +28,7 @@
 <script>
 import { addQuarters, getYear, getQuarter } from 'date-fns';
 import { required } from 'vuelidate/lib/validators';
-import uniqid from 'uniqid';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -42,8 +41,8 @@ export default {
   }),
 
   props: {
-    productId: {
-      type: String,
+    productref: {
+      type: Object,
       required: true,
     },
   },
@@ -65,16 +64,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['products']),
     ...mapState(['chosenQuarter']),
 
     newObjective() {
       return {
-        id: uniqid(),
         objective_title: this.title,
         objective_body: this.body,
         quarter: this.quarter,
-        product_id: this.productId,
       };
     },
 
@@ -82,7 +78,7 @@ export default {
       let from = new Date(2019, 1, 1);
       const to = new Date();
       const quarters = [];
-      // TODO: write less shit code
+
       while (to > from) {
         const year = getYear(from);
         const quarter = getQuarter(from);
@@ -100,8 +96,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addObjective', 'addObject']),
-
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.quarter = value;
@@ -113,17 +107,12 @@ export default {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.addObjective(this.newObjective)
+
+        this.productref
+          .collection('objectives')
+          .add(this.newObjective)
           .then(() => {
-            this.setSubmitInfo(false, false, '');
-            this.$emit('close-menu', false);
-            this.title = '';
-            this.body = '';
-            this.quarter = '';
-          })
-          .catch(e => {
-            this.setSubmitInfo(false, true, 'Noe gikk galt');
-            throw new Error(e);
+            this.$emit('close-menu');
           });
       }
     },

@@ -34,7 +34,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage, usersCollection } from '../config/firebaseConfig';
+import { storage } from '../config/firebaseConfig';
 
 export default {
   name: 'Profile',
@@ -56,13 +56,11 @@ export default {
 
     async uploadPhoto() {
       this.uploading = true;
-      const storageRef = storage.ref(`photos/${this.user.email}`);
-      const userRef = usersCollection.doc(this.user.email);
+      const storageRef = storage.ref(`photos/${this.user.id}`);
 
       const snapshot = await storageRef.put(this.file);
-
       const photoURL = await snapshot.ref.getDownloadURL().then(url => url);
-      await userRef.update({ photoURL });
+      await this.user.ref.update({ photoURL });
 
       this.user.photoURL = photoURL;
       this.uploading = false;
@@ -70,8 +68,7 @@ export default {
 
     updateName() {
       const displayName = this.$refs.name.innerHTML;
-      const userRef = usersCollection.doc(this.user.email);
-      userRef.update({ displayName });
+      this.user.ref.update({ displayName });
     },
   },
 };

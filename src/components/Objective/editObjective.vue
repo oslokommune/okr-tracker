@@ -1,5 +1,5 @@
 <template>
-  <div class="item" :class="{ loading }">
+  <div class="item" :class="{ loading }" v-if="objective">
     <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_title.$error }">
       <span class="form-label">Tittel</span>
       <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
@@ -30,12 +30,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 
 export default {
   props: {
-    objective: {
+    objectiveRef: {
       type: Object,
       required: true,
     },
@@ -64,21 +63,14 @@ export default {
   }),
 
   mounted() {
-    if (this.objective === undefined) return;
-    this.quarter = this.objective.quarter;
-  },
+    if (this.objectiveRef === undefined) return;
 
-  computed: {
-    ...mapGetters(['getDistinctQuarters']),
-
-    quarters() {
-      return this.getDistinctQuarters(this.$route.params.id);
-    },
+    this.objectiveRef.ref.onSnapshot(snapshot => {
+      this.objective = snapshot.data();
+    });
   },
 
   methods: {
-    ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject', 'getAllData']),
-
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.objective.edited = true;

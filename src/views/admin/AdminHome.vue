@@ -20,6 +20,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { isAdmin } from '@/util/db';
 
 export default {
   name: 'Admin',
@@ -27,14 +28,13 @@ export default {
   computed: {
     ...mapState(['user']),
   },
-  watch: {
-    user(obj) {
-      if (!obj) return;
 
-      if (!this.user.admin) {
-        this.$router.push('/');
-      }
-    },
+  async beforeRouteEnter(to, from, next) {
+    if (await isAdmin()) {
+      next();
+    } else {
+      next('/');
+    }
   },
 };
 </script>
