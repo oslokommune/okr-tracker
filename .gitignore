@@ -1,9 +1,11 @@
 .DS_Store
 node_modules
 /dist
+/docs
 
 # local env files
 .env.local
+.env.production
 .env.*.local
 
 # Log files

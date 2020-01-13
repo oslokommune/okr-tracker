@@ -52,7 +52,7 @@ export default {
     if (await isTeamMemberOfProduct(to.params.slug)) {
       next();
     } else {
-      next('/');
+      next(false);
       throw new Error('You do not have access to this page!');
     }
   },

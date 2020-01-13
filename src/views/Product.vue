@@ -13,7 +13,7 @@
             :alt="`Profilbilde for ${product.name}`"
             class="product-header__profile-image"
           />
-          <span class="product-header__edit">
+          <span class="product-header__edit" v-if="editPermissions">
             <router-link :to="{ name: 'edit-product', params: { slug: $route.params.slug } }">
               Endre produkt
             </router-link>
@@ -50,7 +50,11 @@ export default {
   }),
 
   computed: {
-    ...mapState(['quarters']),
+    ...mapState(['user', 'quarters']),
+    editPermissions() {
+      if (this.user.admin) return true;
+      return this.product.team.map(d => d.id).includes(this.user.id);
+    },
   },
 
   mounted() {
