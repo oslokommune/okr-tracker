@@ -1,9 +1,10 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ dev }">
     <div class="container navbar">
       <h2 class="title-3">
         <router-link to="/">
           OKR-tracker
+          <span v-if="dev">(DEV)</span>
         </router-link>
       </h2>
       <div class="right" v-if="user">
@@ -23,11 +24,13 @@ import { auth } from '../config/firebaseConfig';
 export default {
   data: () => ({
     auth,
+    dev: process.env.NODE_ENV === 'development',
   }),
 
   computed: {
     ...mapState(['user']),
   },
+
   methods: {
     logout() {
       auth.signOut().then(() => {
@@ -44,6 +47,10 @@ export default {
 .header {
   width: 100%;
   height: 5rem;
+
+  &.dev {
+    background: #eeeeee;
+  }
 }
 
 .navbar {
