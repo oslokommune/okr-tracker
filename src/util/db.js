@@ -225,3 +225,22 @@ const getChildren = async (ref, collectionName, callback) => {
   const promises = snapshot.docs.map(callback);
   return Promise.all(promises);
 };
+
+/**
+ * Binds all products that the current user is
+ * a member of to `this.products` on the caller
+ * @returns {void}
+ */
+export async function myProductsListener() {
+  const { email } = auth.currentUser;
+
+  const userRef = await db.collection('users').doc(email);
+
+  console.log(email);
+
+  return db
+    .collectionGroup('products')
+    .where('team', 'array-contains', userRef)
+    .get()
+    .then(d => d.docs.map(serializeDocument));
+}

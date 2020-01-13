@@ -12,11 +12,12 @@
     <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
     <span class="form-label">Kvartal</span>
     <v-select
-      :class="{ 'form-group--error': $v.quarter.$error }"
+      v-if="quarters"
+      :class="{ 'form-group--error': $v.objective.quarter.$error }"
       class="form-group"
-      :value="quarter"
+      label="name"
       :options="quarters"
-      @input="setSelectedQuarter"
+      v-model="objective.quarter"
     ></v-select>
 
     <div class="item__footer">
@@ -31,6 +32,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -48,19 +50,20 @@ export default {
       objective_body: {
         required,
       },
-    },
-    quarter: {
-      required,
+      quarter: { required },
     },
   },
 
   data: () => ({
-    quarter: '',
     submit: false,
     showInfo: false,
     info: '',
     loading: false,
+    objective: null,
   }),
+  computed: {
+    ...mapState(['quarters']),
+  },
 
   mounted() {
     if (this.objectiveRef === undefined) return;
@@ -71,25 +74,15 @@ export default {
   },
 
   methods: {
-    setSelectedQuarter(value) {
-      this.$v.quarter.$touch();
-      this.objective.edited = true;
-      this.quarter = value;
-    },
-
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.updateObjective(objective)
-          .then(() => {
-            this.updateObject({
-              key: 'Objectives',
-              data: objective,
-            });
-          })
+
+        this.objectiveRef.ref
+          .update(objective)
           .then(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
@@ -103,21 +96,19 @@ export default {
 
     deleteObj(objective) {
       this.loading = true;
-      this.deleteObjective(objective)
+      this.objectiveRef.ref
+        .update({ archived: true })
         .then(() => {
+          this.objective = null;
           this.$toasted.show(`Slettet «${objective.objective_title}»`, {
             action: [
               {
                 text: 'Angre',
                 onClick: (e, toastObject) => {
                   objective.archived = '';
-                  this.updateObjective(objective)
-                    .then(() => {
-                      return this.getAllData();
-                    })
-                    .then(() => {
-                      toastObject.goAway(0);
-                    });
+                  this.objectiveRef.ref.update({ archived: false }).then(() => {
+                    toastObject.goAway(0);
+                  });
                 },
               },
               {

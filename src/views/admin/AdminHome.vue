@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <h1 class="title title-1">Admin</h1>
+      <section class="section">
+        <h1 class="title title-1">Admin</h1>
+      </section>
     </div>
 
     <div class="nav-wrapper">

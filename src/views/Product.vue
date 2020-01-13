@@ -8,8 +8,7 @@
           </div>
 
           <img
-            v-if="product.photoURL"
-            :src="product.photoURL"
+            :src="product.photoURL || '/placeholder-image.svg'"
             :alt="`Profilbilde for ${product.name}`"
             class="product-header__profile-image"
           />
@@ -25,29 +24,71 @@
     <nav class="sub-nav">
       <div class="container container--sidebar">
         <a
-          v-for="(quarter, i) in quarters"
+          v-for="quarter in quarters"
           :key="quarter.name"
           class="sub-nav__element"
           href="#"
-          :class="{ 'router-link-active': quarter.isActive }"
-          @click="setQuarter(i)"
+          :class="{ 'router-link-active': quarter === activeQuarter }"
+          @click="activeQuarter = quarter"
           >{{ quarter.name }}</a
         >
       </div>
     </nav>
+
+    <div class="content">
+      <div class="container container--sidebar">
+        <div class="grid grid-3 section">
+          <section class="section">
+            <h2 class="title title-2">Oppdrag</h2>
+            <p>{{ product.mission_statement }}</p>
+          </section>
+          <section class="section">
+            <h2 class="title title-2">Team</h2>
+            <ul class="team__list">
+              <li class="team__member" v-for="user in team" :key="user.id">
+                <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
+                <div class="team__name">
+                  <span>{{ user.displayName }}</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2 class="title title-2">Denne perioden</h2>
+          </section>
+        </div>
+
+        <hr />
+        <section class="section">
+          <h2 class="title title-2">Mål</h2>
+          <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
+        </section>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { productListener } from '../util/db';
+import { productListener, serializeDocument } from '@/util/db';
+import TheObjective from '@/components/TheObjective.vue';
 
 export default {
   name: 'Product',
 
   data: () => ({
     product: null,
+    objectives: [],
+    team: [],
+    activeQuarter: {
+      name: null,
+      isActive: false,
+    },
   }),
+
+  components: {
+    TheObjective,
+  },
 
   computed: {
     ...mapState(['user', 'quarters']),
@@ -57,8 +98,31 @@ export default {
     },
   },
 
+  watch: {
+    quarters(list) {
+      this.activeQuarter = list[0];
+    },
+
+    activeQuarter(active) {
+      if (!this.product) return;
+      this.product.ref
+        .collection('objectives')
+        .where('archived', '==', false)
+        .where('quarter', '==', active.name)
+        .onSnapshot(snapshot => {
+          this.objectives = snapshot.docs.map(serializeDocument);
+        });
+    },
+
+    async product(prod) {
+      const teamPromises = prod.team.map(d => d.get());
+      this.team = await Promise.all(teamPromises).then(d => d.map(serializeDocument));
+    },
+  },
+
   mounted() {
     productListener.call(this, this.$route.params.slug);
+    this.activeQuarter = this.quarters[0];
   },
 
   methods: {
@@ -66,6 +130,7 @@ export default {
       this.quarters.forEach((quarter, i) => {
         quarter.isActive = targetIndex === i;
       });
+      this.activeQuarter = this.quarters.find(d => d.isActive);
       // this.quarters[i].isCurrent = true;
     },
   },

@@ -29,22 +29,45 @@
         </div>
       </div>
     </header>
+
+    <div class="container container--sidebar">
+      <section v-if="user.admin" class="section">
+        <h2 class="title title-2">Admin</h2>
+        <p>Har administratortilgang</p>
+      </section>
+      <section class="section">
+        <h2 class="title title-2">Mine produkter</h2>
+        <ul>
+          <li v-for="product in products" :key="product.id">
+            <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+          </li>
+        </ul>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '../config/firebaseConfig';
+import { storage } from '@/config/firebaseConfig';
+import { myProductsListener } from '@/util/db';
 
 export default {
   name: 'Profile',
 
   data: () => ({
     uploading: false,
+    products: [],
   }),
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'nest']),
+  },
+
+  mounted() {
+    myProductsListener().then(list => {
+      this.products = list;
+    });
   },
 
   methods: {

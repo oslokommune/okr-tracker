@@ -7,7 +7,7 @@ import { addMonths, startOfQuarter, getQuarter } from 'date-fns';
 const generateQuarters = () => {
   let fromDate = new Date('2019-01-01');
   const today = new Date();
-  const toDate = startOfQuarter(addMonths(today, 6));
+  const toDate = startOfQuarter(addMonths(today, 3));
   const quarters = [];
 
   while (fromDate < toDate) {

@@ -5,8 +5,10 @@
       class="form-group"
       :class="{ 'form-group--error': $v.quarter.$error }"
       :value="quarter"
-      :options="availableQuarters"
+      label="name"
+      :options="quarters"
       @input="setSelectedQuarter"
+      v-if="quarters"
     ></v-select>
     <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
     <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
@@ -26,7 +28,6 @@
 </template>
 
 <script>
-import { addQuarters, getYear, getQuarter } from 'date-fns';
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 
@@ -59,40 +60,37 @@ export default {
     },
   },
 
-  mounted() {
-    this.quarter = this.chosenQuarter;
-  },
-
   computed: {
-    ...mapState(['chosenQuarter']),
+    ...mapState(['quarters']),
 
     newObjective() {
       return {
         objective_title: this.title,
         objective_body: this.body,
-        quarter: this.quarter,
+        quarter: this.quarter.name,
+        archived: false,
       };
     },
 
-    availableQuarters() {
-      let from = new Date(2019, 1, 1);
-      const to = new Date();
-      const quarters = [];
+    // availableQuarters() {
+    //   let from = new Date(2019, 1, 1);
+    //   const to = new Date();
+    //   const quarters = [];
 
-      while (to > from) {
-        const year = getYear(from);
-        const quarter = getQuarter(from);
+    //   while (to > from) {
+    //     const year = getYear(from);
+    //     const quarter = getQuarter(from);
 
-        quarters.push(`${year} Q${quarter}`);
-        from = addQuarters(from, 1);
-      }
+    //     quarters.push(`${year} Q${quarter}`);
+    //     from = addQuarters(from, 1);
+    //   }
 
-      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-      from = addQuarters(from, 1);
-      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
+    //   quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
+    //   from = addQuarters(from, 1);
+    //   quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
 
-      return quarters;
-    },
+    //   return quarters;
+    // },
   },
 
   methods: {
