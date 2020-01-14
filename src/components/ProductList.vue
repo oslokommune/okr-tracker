@@ -2,10 +2,10 @@
   <div>
     <ul>
       <section v-for="org in nest" :key="org.id">
-        <header class="product-header">
+        <header class="page-header">
           <div class="container">
-            <div class="product-header__container">
-              <div class="product-header__name">
+            <div class="page-header__container">
+              <div class="page-header__name page-header__name--left">
                 <h1 class="title-1">{{ org.name }}</h1>
               </div>
             </div>
@@ -73,10 +73,6 @@ export default {
     height: 3rem;
     margin-right: 0.75rem;
     border-radius: 50%;
-  }
-
-  &-header__name {
-    grid-column: 1 / span 3;
   }
 
   &__name {

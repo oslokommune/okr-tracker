@@ -1,6 +1,6 @@
 @import './colors';
 
-.product-header {
+.page-header {
   height: 30rem;
   text-align: center;
 
@@ -10,6 +10,16 @@
   }
 
   background: $color-yellow;
+
+  &--admin {
+    color: $color-blue;
+    background: $color-purple;
+  }
+
+  &--edit {
+    color: $color-grey-900;
+    background: $color-grey-200;
+  }
 
   &__container {
     display: grid;
@@ -30,6 +40,10 @@
     @media screen and (min-width: 768px) {
       grid-row: 3;
       grid-column: 2 / span 2;
+    }
+
+    &--left {
+      grid-column: 1 / span 3;
     }
   }
 

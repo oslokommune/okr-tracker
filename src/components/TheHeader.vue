@@ -15,11 +15,14 @@
             {{ displayName }}
           </a>
           <div class="usernav__menu" v-if="isOpen" @click="isOpen = false">
-            <router-link class="menu-item" v-if="user && user.admin" :to="{ name: 'admin-users' }">Admin</router-link>
-            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'profile' }"
-              >Endre profil</router-link
+            <router-link class="menu-item" v-if="user && user.admin" :to="{ name: 'admin-users' }">
+              <i class="fa fa-fw fa-dashboard"></i>
+              Admin</router-link
             >
-            <span class="menu-item" @click="logout">Logg ut</span>
+            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'profile' }"
+              ><i class="fa fa-fw fa-user"></i>Endre profil</router-link
+            >
+            <span class="menu-item" @click="logout"><i class="fa fa-fw fa-sign-out"></i>Logg ut</span>
           </div>
         </div>
 
@@ -128,34 +131,56 @@ export default {
   &__menu {
     position: absolute;
     top: 3rem;
-    right: 0;
+    left: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-width: 100%;
+    // min-width: 100%;
+    width: 12rem;
     overflow: hidden;
     background: white;
     border: 1px solid $color-bg;
     border-radius: 1rem;
+    border-top-right-radius: 0;
     box-shadow: 0 2px 4px rgba($color-grey-400, 0.5);
   }
 
   .menu-item {
     width: 100%;
     margin: 0 !important;
-    padding: 1rem 2rem !important;
+    padding: 1rem 2rem 1rem 1rem !important;
     color: $color-link;
+    color: $color-purple !important;
     font-weight: 500;
-    text-align: right;
-    border-bottom: 1px solid $color-grey-50;
+    // text-align: right;
+    border-top: 1px solid $color-grey-50;
     cursor: pointer;
     user-select: none;
 
+    .fa {
+      margin-right: 0.5rem;
+      opacity: 0.8;
+    }
+
+    &:first-child {
+      border-top: none;
+    }
+
     &:last-child {
-      border-bottom: none;
+      background: $color-bg;
+      // border-bottom: none;
+      border-top: 1px solid $color-grey-300;
+      &:hover {
+        background: darken($color-bg, 3%);
+      }
     }
     &:hover {
       background: $color-bg;
+
+      .fa {
+        color: $color-purple;
+        opacity: 1;
+      }
     }
   }
 }

@@ -1,19 +1,19 @@
 <template>
   <div v-if="product">
-    <header class="product-header">
+    <header class="page-header page-header--edit">
       <div class="container">
-        <div class="product-header__container">
-          <router-link class="product-header__edit" :to="{ name: 'product', params: { id: $route.params.id } }">
+        <div class="page-header__container">
+          <router-link class="page-header__edit" :to="{ name: 'product', params: { id: $route.params.id } }">
             Gå tilbake til {{ product.name }}
           </router-link>
-          <div class="product-header__name">
+          <div class="page-header__name">
             <h1 class="title-1">Endre «{{ product.name }}»</h1>
           </div>
 
           <img
-            :src="product.photoURL || ''"
+            :src="product.photoURL || '/placeholder-image.svg'"
             :alt="`Profilbilde for ${product.name}`"
-            class="product-header__profile-image"
+            class="page-header__profile-image"
           />
         </div>
       </div>
@@ -63,10 +63,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import '../styles/colors';
-
-.product-header {
-  background: #cccccc;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -1,9 +1,9 @@
 <template>
   <div v-if="user">
-    <header class="product-header">
+    <header class="page-header">
       <div class="container">
-        <div class="product-header__container">
-          <div class="product-header__name" contenteditable @blur="updateName">
+        <div class="page-header__container">
+          <div class="page-header__name" contenteditable @blur="updateName">
             <h1 class="title-1" ref="name">{{ user.displayName }}</h1>
           </div>
 
@@ -11,8 +11,16 @@
             v-if="user.photoURL"
             :src="user.photoURL"
             :alt="`Profilbilde for ${user.name}`"
-            class="product-header__profile-image"
+            class="page-header__profile-image"
           />
+        </div>
+      </div>
+    </header>
+
+    <div class="container container--sidebar">
+      <section class="section page-menu">
+        <label class="form-group">
+          <span class="form-label">Endre bilde</span>
           <image-uploader
             class="image-uploader"
             :max-width="250"
@@ -26,11 +34,9 @@
             @input="setImage"
             @onUpload="uploadPhoto"
           ></image-uploader>
-        </div>
-      </div>
-    </header>
+        </label>
+      </section>
 
-    <div class="container container--sidebar">
       <section v-if="user.admin" class="section">
         <h2 class="title title-2">Admin</h2>
         <p>Har administratortilgang</p>
@@ -49,7 +55,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage, auth } from '@/config/firebaseConfig';
+import { storage } from '@/config/firebaseConfig';
 import { myProductsListener, isDashboardUser } from '@/util/db';
 
 export default {
@@ -110,11 +116,7 @@ export default {
   opacity: 0.2;
 }
 
-.image-uploader {
-  transform: translate(-6px, 16.5rem);
-}
-
-.product-header__name {
+.page-header__name {
   margin: -1rem -1rem 0;
   padding: 1rem 1rem 0;
 

@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div class="container">
-      <section class="section">
-        <h1 class="title title-1">Admin</h1>
-      </section>
-    </div>
+    <header class="page-header page-header--admin">
+      <div class="container">
+        <div class="page-header__container">
+          <div class="page-header__name page-header__name--left">
+            <h1 class="title-1">Admin</h1>
+          </div>
+        </div>
+      </div>
+    </header>
 
     <div class="nav-wrapper">
       <div class="container">
@@ -43,7 +47,6 @@ export default {
 
 <style lang="scss" scoped>
 .nav-wrapper {
-  margin-top: 2rem;
   background: #eeeeee;
 }
 
