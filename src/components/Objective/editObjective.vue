@@ -21,16 +21,18 @@
       <span class="form-label">Beskrivelse</span>
       <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
     </label>
-    <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
-    <span class="form-label">Kvartal</span>
-    <v-select
-      v-if="quarters"
-      :class="{ 'form-group--error': $v.objective.quarter.$error }"
-      class="form-group"
-      label="name"
-      :options="quarters"
-      v-model="objective.quarter"
-    ></v-select>
+
+    <div class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
+      <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
+      <span class="form-label">Kvartal</span>
+      <v-select
+        v-if="quarters"
+        :class="{ 'form-group--error': $v.objective.quarter.$error }"
+        label="name"
+        :options="quarters"
+        v-model="objective.quarter"
+      ></v-select>
+    </div>
 
     <div class="item__footer">
       <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
@@ -148,13 +150,14 @@ export default {
 
 <style lang="scss" scoped>
 .item {
-  padding: 2rem;
+  padding: 0.5rem 1.5rem 1.5rem;
   background: #fbfbfb;
   border: 1px solid #eaeaea;
 
   &__footer {
     display: flex;
     justify-content: space-between;
+    margin-top: 3rem;
   }
 
   &.loading {

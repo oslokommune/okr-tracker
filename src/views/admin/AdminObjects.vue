@@ -1,5 +1,13 @@
 <template>
   <div>
+    <section class="section">
+      <h2 class="title-2">Administrer produkter og produktområder</h2>
+      <p>
+        Legg til, endre eller slett produkter og produktområder. Utover admin-brukere har kun team-medlemmer av et
+        produkt mulighet til å redigere mål og nøkkelresultater.
+      </p>
+    </section>
+    <hr />
     <div class="miller">
       <div class="miller__col">
         <h3 class="miller__col__header">Velg organisasjon</h3>

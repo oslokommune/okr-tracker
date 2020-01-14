@@ -58,7 +58,8 @@ export default {
     },
     selectedQuarter: {
       type: Object,
-      required: true,
+      required: false,
+      default: null,
     },
   },
 

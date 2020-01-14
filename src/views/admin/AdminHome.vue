@@ -4,7 +4,10 @@
       <div class="container">
         <div class="page-header__container">
           <div class="page-header__name page-header__name--left">
-            <h1 class="title-1">Admin</h1>
+            <h1 class="title-1">
+              <i class="fa fas fa-fw fa-dashboard"></i>
+              Admin
+            </h1>
           </div>
         </div>
       </div>

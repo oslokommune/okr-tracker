@@ -1,6 +1,15 @@
 <template>
   <div>
-    <div class="whitelist">
+    <section class="section">
+      <h2 class="title-2">Brukeradministrasjon</h2>
+      <p>
+        Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang.
+        Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne
+        tilgangskontrollen.
+      </p>
+    </section>
+    <hr />
+    <div class="section whitelist">
       <div class="whitelist__header">
         <div class="whitelist__row">
           <div class="whitelist__cell whitelist__cell--email">E-post</div>
@@ -31,7 +40,6 @@
       </div>
     </div>
 
-    <hr />
     <h3 class="title title-3">Legg til e-post-adresser</h3>
     <p>Én adresse per rad</p>
     <textarea rows="10" ref="add"></textarea>

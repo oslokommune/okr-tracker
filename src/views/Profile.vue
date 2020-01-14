@@ -18,7 +18,7 @@
     </header>
 
     <div class="container container--sidebar">
-      <section class="section page-menu">
+      <section class="section page-menu content--sidebar">
         <label class="form-group">
           <span class="form-label">Endre bilde</span>
           <image-uploader
@@ -37,18 +37,20 @@
         </label>
       </section>
 
-      <section v-if="user.admin" class="section">
-        <h2 class="title title-2">Admin</h2>
-        <p>Har administratortilgang</p>
-      </section>
-      <section class="section">
-        <h2 class="title title-2">Mine produkter</h2>
-        <ul>
-          <li v-for="product in products" :key="product.id">
-            <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
-          </li>
-        </ul>
-      </section>
+      <main class="content--main">
+        <section v-if="user.admin" class="section">
+          <h2 class="title title-2">Admin</h2>
+          <p>Har administratortilgang</p>
+        </section>
+        <section class="section">
+          <h2 class="title title-2">Mine produkter</h2>
+          <ul>
+            <li v-for="product in products" :key="product.id">
+              <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+            </li>
+          </ul>
+        </section>
+      </main>
     </div>
   </div>
 </template>

@@ -12,56 +12,82 @@
             :alt="`Profilbilde for ${product.name}`"
             class="page-header__profile-image"
           />
-          <span class="page-header__edit" v-if="hasEditPermissions">
-            <router-link :to="{ name: 'edit-product', params: { slug: $route.params.slug } }">
-              Endre produkt
-            </router-link>
-          </span>
         </div>
       </div>
     </header>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
-        <span
-          v-for="quarter in quarters"
-          :key="quarter.name"
-          class="sub-nav__element"
-          :class="{ 'router-link-active': quarter === activeQuarter }"
-          @click="activeQuarter = quarter"
-          >{{ quarter.name }}</span
-        >
+        <div class="content--main">
+          <span
+            v-for="quarter in quarters"
+            :key="quarter.name"
+            class="sub-nav__element"
+            :class="{ 'router-link-active': quarter === activeQuarter }"
+            @click="activeQuarter = quarter"
+            >{{ quarter.name }}</span
+          >
+        </div>
       </div>
     </nav>
 
     <div class="content">
       <div class="container container--sidebar">
-        <div class="grid grid-3 section">
-          <section class="section">
-            <h2 class="title title-2">Oppdrag</h2>
-            <p>{{ product.mission_statement }}</p>
-          </section>
-          <section class="section">
-            <h2 class="title title-2">Team</h2>
-            <ul class="team__list">
-              <li class="team__member" v-for="user in team" :key="user.id">
-                <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
-                <div class="team__name">
-                  <span>{{ user.displayName }}</span>
+        <aside class="content--sidebar">
+          <nav class="sidebar-nav">
+            <template v-if="hasEditPermissions">
+              <router-link
+                :to="{ name: 'edit-product', params: { slug: $route.params.slug } }"
+                class="sidebar-nav__item"
+              >
+                <i class="fa fas fa-fw fa-edit"></i>Endre produkt</router-link
+              >
+              <div class="addObjective">
+                <div class="sidebar-nav__item" @click="expandAddObjective = true">
+                  <i class="fa fas fa-fw fa-plus"></i>Legg til mål
                 </div>
-              </li>
-            </ul>
-          </section>
-          <section class="section">
-            <h2 class="title title-2">Denne perioden</h2>
-          </section>
-        </div>
 
-        <hr />
-        <section class="section">
-          <h2 class="title title-2">Mål</h2>
-          <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
-        </section>
+                <add-objective
+                  v-if="expandAddObjective"
+                  :productref="product.ref"
+                  @close-menu="expandAddObjective = false"
+                ></add-objective>
+              </div>
+              <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat</div>
+              <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-chart-line"></i>Oppdater data</div>
+            </template>
+            <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
+            <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk</div>
+          </nav>
+        </aside>
+
+        <main class="content--main content--padding">
+          <div class="grid grid-3 section">
+            <div>
+              <h2 class="title title-2">Oppdrag</h2>
+              <p>{{ product.mission_statement }}</p>
+            </div>
+            <div>
+              <h2 class="title title-2">Team</h2>
+              <ul class="team__list">
+                <li class="team__member" v-for="user in team" :key="user.id">
+                  <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
+                  <div class="team__name">
+                    <span>{{ user.displayName }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h2 class="title title-2">Denne perioden</h2>
+            </div>
+          </div>
+          <hr />
+          <section class="section">
+            <h2 class="title title-2">Mål</h2>
+            <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
+          </section>
+        </main>
       </div>
     </div>
   </div>
@@ -70,6 +96,8 @@
 <script>
 import { mapState } from 'vuex';
 import { serializeDocument, productFromSlug } from '@/util/db';
+
+import AddObjective from '@/components/Objective/addObjective.vue';
 import TheObjective from '@/components/TheObjective.vue';
 
 export default {
@@ -80,9 +108,11 @@ export default {
     objectives: [],
     team: [],
     activeQuarter: null,
+    expandAddObjective: false,
   }),
 
   components: {
+    AddObjective,
     TheObjective,
   },
 
@@ -90,6 +120,7 @@ export default {
     ...mapState(['user', 'quarters']),
 
     hasEditPermissions() {
+      if (!this.user) return;
       if (this.user.admin) return true;
 
       return this.product.team.map(d => d.id).includes(this.user.id);
@@ -131,6 +162,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/colors';
+
+.addObjective {
+  position: relative;
+}
 
 .sub-nav__element {
   cursor: pointer;

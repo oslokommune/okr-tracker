@@ -23,7 +23,7 @@
 
   &__container {
     display: grid;
-    grid-gap: 0.5rem 1rem;
+    grid-gap: 0.5rem 3rem;
 
     grid-template-rows: 4rem 3fr 14rem 3rem 1fr;
     grid-template-columns: 1fr;
@@ -82,10 +82,9 @@
     display: block;
     grid-row: 3;
     grid-column: 1;
-    justify-self: center;
     box-sizing: content-box;
-    width: 12rem;
-    height: 12rem;
+    width: 13rem;
+    height: 13rem;
     object-fit: cover;
     background: #eeeeee;
 

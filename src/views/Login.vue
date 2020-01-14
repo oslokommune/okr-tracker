@@ -45,18 +45,26 @@
         <hr />
       </div>
     </div>
+
+    <the-spinner v-if="pending"></the-spinner>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
+import TheSpinner from '../components/TheSpinner.vue';
 
 export default {
   data: () => ({
     error: true,
     password: '',
+    pending: false,
   }),
+
+  components: {
+    TheSpinner,
+  },
 
   computed: {
     ...mapState(['user']),
@@ -64,19 +72,23 @@ export default {
 
   methods: {
     loginWithGoogle() {
+      this.pending = true;
       auth
         .signInWithPopup(loginProvider)
         .then(() => {
           this.$router.push('/');
         })
         .catch(() => {
+          this.pending = false;
           this.error = 2;
         });
     },
 
     async submitPassword() {
+      this.pending = true;
       const email = process.env.VUE_APP_DASHBOARD_USER;
       const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
+        this.pending = false;
         if (err.code === 'auth/wrong-password') {
           this.error = 3;
         }
@@ -100,6 +112,7 @@ export default {
 
   mounted() {
     this.error = this.$route.params.error;
+    // this.pending = false;
   },
 };
 </script>

@@ -50,7 +50,7 @@
     </div>
     <div class="section">
       <button class="btn" @click="saveObject">Lagre</button>
-      <button class="btn btn--borderless" @click="deleteObject">Slett</button>
+      <button v-if="isAdmin()" class="btn btn--borderless" @click="deleteObject">Slett</button>
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['users']),
+    ...mapState(['users', 'user']),
   },
 
   props: {
@@ -91,6 +91,11 @@ export default {
       await this.docref.update(this.product);
       this.product.team = teamList;
     },
+
+    isAdmin() {
+      return this.user && this.user.admin;
+    },
+
     deleteObject() {
       this.docref.update({ archived: true });
       this.product = null;

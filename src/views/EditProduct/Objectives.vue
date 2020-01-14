@@ -1,16 +1,6 @@
 <template>
-  <div class="section">
-    <h2 class="title-2">Administrer mål</h2>
-
-    <div class="objective">
-      <div class="form-row">
-        <v-select
-          class="form-group objective__select"
-          label="name"
-          v-model="selectedQuarter"
-          :options="quarters"
-        ></v-select>
-      </div>
+  <div class="container container--sidebar">
+    <aside class="content--sidebar">
       <div class="add">
         <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
         <add-objective
@@ -20,18 +10,32 @@
           :selected-quarter="selectedQuarter"
         ></add-objective>
       </div>
-    </div>
+    </aside>
+    <main class="content--main content--padding section">
+      <h2 class="title-2">Administrer mål</h2>
 
-    <div class="content">
-      <transition-group name="grid-animation" tag="div" class="grid-3">
-        <edit-objective
-          v-for="ref in objectiveRefs"
-          :key="ref.id"
-          :objective-ref="ref"
-          class="grid-animation-item"
-        ></edit-objective>
-      </transition-group>
-    </div>
+      <div class="objective">
+        <div class="form-row">
+          <v-select
+            class="form-group objective__select"
+            label="name"
+            v-model="selectedQuarter"
+            :options="quarters"
+          ></v-select>
+        </div>
+      </div>
+
+      <div class="content">
+        <transition-group name="grid-animation" tag="div" class="grid-3">
+          <edit-objective
+            v-for="ref in objectiveRefs"
+            :key="ref.id"
+            :objective-ref="ref"
+            class="grid-animation-item"
+          ></edit-objective>
+        </transition-group>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -97,7 +101,10 @@ export default {
 
 .add {
   position: relative;
-  margin: 2rem 0;
+
+  .btn {
+    width: 100%;
+  }
 }
 
 .grid-animation-item {
