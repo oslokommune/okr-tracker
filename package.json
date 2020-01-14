@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "npm run build && firebase deploy --project=production"
   },
   "dependencies": {
     "blueimp-canvas-to-blob": "^3.17.0",

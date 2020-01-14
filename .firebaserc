@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "okr-tracker-production"
+    "production": "okr-tracker-production",
+    "development": "origo-okr-tracker"
   }
 }
