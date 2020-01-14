@@ -88,9 +88,10 @@ export default {
 
   computed: {
     ...mapState(['user', 'quarters']),
+
     hasEditPermissions() {
-      if (!this.user || !this.user.admin) return false;
-      if (this.user && this.user.admin) return true;
+      if (this.user.admin) return true;
+
       return this.product.team.map(d => d.id).includes(this.user.id);
     },
   },
