@@ -116,7 +116,7 @@ export default {
     addProduct() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/${this.selectedDeptId}/products`);
 
-      deptRef.add({ name: 'Nytt produkt', archived: false }).then(doc => {
+      deptRef.add({ name: 'Nytt produkt', archived: false, team: [] }).then(doc => {
         this.selectedProductId = doc.id;
       });
     },

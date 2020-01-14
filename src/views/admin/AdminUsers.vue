@@ -1,13 +1,35 @@
 <template>
   <div>
-    <table>
-      <tr v-for="user in users" :key="user.id">
-        <td><input type="checkbox" :checked="user.admin" @change="toggleAdmin(user, $event.target.checked)" /></td>
-        <td>{{ user.id }}</td>
-        <td>{{ user.displayName }}</td>
-        <td><button @click="deleteUser(user)">Slett</button></td>
-      </tr>
-    </table>
+    <div class="whitelist">
+      <div class="whitelist__header">
+        <div class="whitelist__row">
+          <div class="whitelist__cell whitelist__cell--email">E-post</div>
+          <div class="whitelist__cell whitelist__cell--name">Navn</div>
+          <div class="whitelist__cell whitelist__cell--admin">Admin</div>
+          <div class="whitelist__cell whitelist__cell--action"></div>
+        </div>
+      </div>
+      <div class="whitelist__body">
+        <div class="whitelist__row" v-for="user in users" :key="user.id">
+          <div class="whitelist__cell whitelist__cell--email">{{ user.id }}</div>
+          <div class="whitelist__cell whitelist__cell--name">{{ user.displayName }}</div>
+          <div class="whitelist__cell whitelist__cell--admin">
+            <label class="toggle">
+              <input
+                class="toggle__input"
+                type="checkbox"
+                :checked="user.admin"
+                @change="toggleAdmin(user, $event.target.checked)"
+              />
+              <span class="toggle__switch"></span>
+            </label>
+          </div>
+          <div class="whitelist__cell whitelist__cell--action">
+            <button class="btn btn--borderless" @click="deleteUser(user)">Slett</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <hr />
     <h3 class="title title-3">Legg til e-post-adresser</h3>
@@ -56,7 +78,61 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-table {
-  width: 100%;
+@import '@/styles/_colors';
+
+.whitelist {
+  $w: &;
+
+  max-height: 50vh;
+  margin-bottom: 3rem;
+  overflow-y: scroll;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid $color-border;
+
+    &:last-child {
+      border-bottom: 1px solid $color-border;
+    }
+  }
+
+  &__header {
+    font-weight: 500;
+    #{$w}__row {
+      border: none;
+    }
+    #{$w}__cell {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+
+  &__cell {
+    padding: 0.25rem 0.5rem;
+
+    &--admin {
+      flex-basis: 10rem;
+    }
+
+    &--email {
+      flex-basis: 50%;
+    }
+
+    &--name {
+      flex-grow: 1;
+    }
+
+    &--action {
+      flex-basis: 100px;
+    }
+  }
+
+  // background: $color-bg;
+  // border: 1px solid $color-border;
 }
 </style>

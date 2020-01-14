@@ -1,24 +1,43 @@
 <template>
   <div>
-    <div class="content">
-      <ul>
-        <li v-for="org in nest" :key="org.id">
-          <h1 class="title-1">{{ org.name }}</h1>
+    <ul>
+      <section v-for="org in nest" :key="org.id">
+        <header class="product-header">
+          <div class="container">
+            <div class="product-header__container">
+              <div class="product-header__name">
+                <h1 class="title-1">{{ org.name }}</h1>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div class="container">
           <ul class="org">
             <li v-for="dept in org.departments" class="department" :key="dept.id">
-              <h2 class="department__name">{{ dept.name }}</h2>
-              <ul>
+              <h2 class="department__name title title-3">{{ dept.name }}</h2>
+              <ul class="product__list">
                 <li v-for="product in dept.products" class="product" :key="product.id">
-                  <router-link :to="{ name: 'product', params: { slug: product.slug, ref: product } }">
-                    <h3 class="product__name">{{ product.name }}</h3>
+                  <router-link
+                    v-if="product.slug"
+                    :to="{ name: 'product', params: { slug: product.slug, ref: product } }"
+                  >
+                    <h3 class="product__name">
+                      <img
+                        class="product__image"
+                        :src="product.photoURL || '/placeholder-image.svg'"
+                        :alt="product.name"
+                      />
+                      <span>{{ product.name }}</span>
+                      <i class="fa fa-arrow-right"></i>
+                    </h3>
                   </router-link>
                 </li>
               </ul>
             </li>
           </ul>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </section>
+    </ul>
   </div>
 </template>
 
@@ -33,6 +52,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors';
+
 .org {
   display: grid;
   grid-gap: 5rem 2rem;
@@ -42,32 +63,47 @@ export default {
 
 .department {
   &__name {
-    margin-bottom: 1rem;
-    padding: 1rem 0;
-    font-size: 1.25rem;
-    border-top: 5px solid rgba(black, 0.1);
-    border-bottom: 1px solid rgba(black, 0.1);
+    margin-bottom: 2rem;
   }
 }
 
 .product {
+  &__image {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.75rem;
+    border-radius: 50%;
+  }
+
+  &-header__name {
+    grid-column: 1 / span 3;
+  }
+
   &__name {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     margin: 0 -0.25rem;
-    padding: 0.25rem;
-    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 1rem;
 
     &:hover {
-      background: #f4f4f4;
+      background: $color-bg;
+
+      .fa {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
 
-    &::after {
-      position: absolute;
-      top: 0;
-      right: 0.5rem;
-      display: block;
-      font-family: Arial, Helvetica, sans-serif;
-      content: '→';
+    .fa {
+      margin-left: auto;
+      transform: translateX(-0.75rem);
+      opacity: 0;
+      transition: all 0.2s ease-out;
     }
   }
 }

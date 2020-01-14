@@ -1,5 +1,5 @@
 <template>
-  <div v-if="product">
+  <div v-if="product" class="section">
     <h2 class="title title-2">Administrer produkt</h2>
 
     <div class="section">
@@ -13,20 +13,23 @@
         <input type="text" v-model="product.slug" disabled />
       </label>
 
-      <img v-if="product.photoURL" :src="product.photoURL" />
+      <label class="form-group">
+        <span class="form-label">Bilde</span>
+        <img v-if="product.photoURL" :src="product.photoURL" />
 
-      <image-uploader
-        :max-width="250"
-        :max-height="250"
-        :quality="0.6"
-        :auto-rotate="true"
-        output-format="blob"
-        accept="image/*"
-        do-not-resize="['gif', 'svg']"
-        :preview="false"
-        @input="setImage"
-        @onUpload="uploadPhoto"
-      ></image-uploader>
+        <image-uploader
+          :max-width="250"
+          :max-height="250"
+          :quality="0.6"
+          :auto-rotate="true"
+          output-format="blob"
+          accept="image/*"
+          do-not-resize="['gif', 'svg']"
+          :preview="false"
+          @input="setImage"
+          @onUpload="uploadPhoto"
+        ></image-uploader>
+      </label>
 
       <div class="form-group">
         <label>
@@ -37,13 +40,7 @@
 
       <div class="form-group">
         <span class="form-label">Team</span>
-        <v-select
-          class="form-group objective__select"
-          label="displayName"
-          multiple
-          v-model="product.team"
-          :options="users"
-        >
+        <v-select class="objective__select" label="displayName" multiple v-model="product.team" :options="users">
           <template v-slot:option="option">
             {{ option.displayName || option.id }}
             <span v-if="option.displayName !== option.id">({{ option.id }})</span>
@@ -51,8 +48,10 @@
         </v-select>
       </div>
     </div>
-    <button @click="saveObject">Lagre</button>
-    <button @click="deleteObject">Slett</button>
+    <div class="section">
+      <button class="btn" @click="saveObject">Lagre</button>
+      <button class="btn btn--borderless" @click="deleteObject">Slett</button>
+    </div>
   </div>
 </template>
 

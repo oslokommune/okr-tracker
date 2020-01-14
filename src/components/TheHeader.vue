@@ -7,8 +7,9 @@
           <span v-if="dev">(DEV)</span>
         </router-link>
       </h2>
+
       <nav class="right" v-if="user">
-        <div class="usernav" :class="{ isOpen }">
+        <div class="usernav" :class="{ isOpen }" v-click-outside="closeMenu">
           <a class="usernav__name" @click="isOpen = !isOpen">
             <img class="usernav__photo" :src="user.photoURL || '/placeholder-user.svg'" :alt="displayName" />
             {{ displayName }}
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 import { dashboardUserName } from '@/config/applicationConfig';
@@ -43,6 +45,10 @@ export default {
     isDashboardUser,
   }),
 
+  directives: {
+    ClickOutside,
+  },
+
   computed: {
     ...mapState(['user']),
 
@@ -52,6 +58,9 @@ export default {
   },
 
   methods: {
+    closeMenu() {
+      this.isOpen = false;
+    },
     logout() {
       auth.signOut().then(() => {
         this.$router.push('/login');

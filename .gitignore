@@ -4,9 +4,7 @@ dist/
 docs/
 
 # local env files
-.env.local
-.env.production
-.env.*.local
+.env.*
 
 # Log files
 npm-debug.log*

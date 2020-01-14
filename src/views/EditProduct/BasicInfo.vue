@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="section">
     <h1 class="title-2">Detaljer</h1>
 
     <div class="narrow content">
@@ -31,10 +31,12 @@
         <pre>{{ selectedUserIds }}</pre>
       </div>
 
-      <button class="btn" :disabled="!edited || submit" @click="submitForm">
-        Lagre endringer
-      </button>
-      <p v-if="showInfo">{{ info }}</p>
+      <div class="section">
+        <button class="btn" :disabled="!edited || submit" @click="submitForm">
+          Lagre endringer
+        </button>
+        <p v-if="showInfo">{{ info }}</p>
+      </div>
     </div>
   </div>
 </template>

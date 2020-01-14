@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <h2 class="title-2">Mål</h2>
+  <div class="section">
+    <h2 class="title-2">Administrer mål</h2>
 
     <div class="objective">
-      <div>
-        <span class="form-label">Kvartal</span>
+      <div class="form-row">
         <v-select
           class="form-group objective__select"
           label="name"
