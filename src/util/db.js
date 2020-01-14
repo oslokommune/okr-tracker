@@ -168,7 +168,7 @@ export async function getOrgs() {
  * @returns {void}
  */
 export async function getDepartments(orgId) {
-  const ref = db.collection(`orgs/${orgId}/departments`);
+  const ref = db.collection(`orgs/${orgId}/departments`).where('archived', '==', false);
 
   ref.onSnapshot(snapshot => {
     this.depts = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));

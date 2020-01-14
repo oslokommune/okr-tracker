@@ -4,17 +4,23 @@
     <v-select
       class="form-group"
       :class="{ 'form-group--error': $v.quarter.$error }"
-      :value="quarter"
       label="name"
       :options="quarters"
-      @input="setSelectedQuarter"
-      v-if="quarters"
+      v-model="selectedQuarter"
     ></v-select>
-
-    <!-- <span class="form-label">Ikon</span>
-    <v-select class="form-group" :value="quarter" label="name" :options="['asdf']"></v-select> -->
-
     <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+
+    <div class="title title-3">
+      <i :class="`fas fa-${icon}`"></i>
+    </div>
+    <span class="form-label">Ikon</span>
+    <v-select class="form-group" :options="icons" v-model="icon">
+      <template v-slot:option="option">
+        <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+        <span>{{ option.label }}</span>
+      </template>
+    </v-select>
+
     <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
       <span class="form-label">Tittel</span>
       <input type="text" v-model="$v.title.$model" />
@@ -38,7 +44,7 @@ import { mapState } from 'vuex';
 export default {
   data: () => ({
     title: '',
-    quarter: '',
+    icon: 'trophy',
     body: '',
     submit: false,
     showInfo: false,
@@ -47,6 +53,10 @@ export default {
 
   props: {
     productref: {
+      type: Object,
+      required: true,
+    },
+    selectedQuarter: {
       type: Object,
       required: true,
     },
@@ -64,37 +74,23 @@ export default {
     },
   },
 
+  mounted() {
+    const [firstQuarter] = this.quarters;
+    this.quarter = firstQuarter;
+  },
+
   computed: {
-    ...mapState(['quarters']),
+    ...mapState(['quarters', 'icons']),
 
     newObjective() {
       return {
         objective_title: this.title,
         objective_body: this.body,
+        icon: this.icon || 'trophy',
         quarter: this.quarter.name,
         archived: false,
       };
     },
-
-    // availableQuarters() {
-    //   let from = new Date(2019, 1, 1);
-    //   const to = new Date();
-    //   const quarters = [];
-
-    //   while (to > from) {
-    //     const year = getYear(from);
-    //     const quarter = getQuarter(from);
-
-    //     quarters.push(`${year} Q${quarter}`);
-    //     from = addQuarters(from, 1);
-    //   }
-
-    //   quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-    //   from = addQuarters(from, 1);
-    //   quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-
-    //   return quarters;
-    // },
   },
 
   methods: {

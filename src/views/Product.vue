@@ -79,6 +79,7 @@ export default {
     product: null,
     objectives: [],
     team: [],
+    activeQuarter: null,
   }),
 
   components: {
@@ -95,11 +96,6 @@ export default {
   },
 
   watch: {
-    quarters(list) {
-      const [first] = list;
-      this.activeQuarter = first;
-    },
-
     activeQuarter() {
       if (!this.product) return;
       this.getObjectives();
@@ -134,6 +130,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/colors';
+
+.sub-nav__element {
+  cursor: pointer;
+  user-select: none;
+}
 
 .button--tab {
   position: relative;

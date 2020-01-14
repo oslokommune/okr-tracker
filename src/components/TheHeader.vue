@@ -29,7 +29,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { auth } from '../config/firebaseConfig';
+import { auth } from '@/config/firebaseConfig';
+import { dashboardUserName } from '@/config/applicationConfig';
 
 export default {
   data: () => ({
@@ -42,7 +43,7 @@ export default {
     ...mapState(['user']),
 
     displayName() {
-      return this.user.displayName || 'Dashboard';
+      return this.user.displayName || dashboardUserName;
     },
   },
 

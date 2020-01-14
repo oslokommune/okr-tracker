@@ -5,6 +5,18 @@
       <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
     </label>
     <div class="form-group--error" v-if="$v.objective.objective_title.$error">Kan ikke være tom</div>
+
+    <div class="title title-3">
+      <i :class="`fas fa-${objective.icon}`"></i>
+    </div>
+    <span class="form-label">Ikon</span>
+    <v-select class="form-group" :options="icons" v-model="objective.icon">
+      <template v-slot:option="option">
+        <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+        <span>{{ option.label }}</span>
+      </template>
+    </v-select>
+
     <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
       <span class="form-label">Beskrivelse</span>
       <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
@@ -62,7 +74,7 @@ export default {
     objective: null,
   }),
   computed: {
-    ...mapState(['quarters']),
+    ...mapState(['quarters', 'icons']),
   },
 
   mounted() {

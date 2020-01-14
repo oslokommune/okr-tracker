@@ -4,9 +4,10 @@ import Vuex from 'vuex';
 import { db, dashboardUser } from './config/firebaseConfig';
 import generateQuarters from './util/utils';
 import { serializeDocument, getNestedData } from '@/util/db';
+import icons from '@/config/icons';
 
 export const actions = {
-  async initializeApp({ commit, dispatch }) {
+  async initializeApp({ dispatch }) {
     dispatch('watchUsers');
     dispatch('watchProducts');
   },
@@ -64,6 +65,7 @@ export default new Vuex.Store({
     users: [],
     nest: [],
     quarters: generateQuarters(),
+    icons,
   },
   getters,
   mutations,

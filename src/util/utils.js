@@ -1,11 +1,12 @@
 import { addMonths, startOfQuarter, getQuarter } from 'date-fns';
+import { startDate } from '@/config/applicationConfig';
 
 /**
  * Generates a list of named quarters
  * @returns {Array} - List of quarters as objects
  */
 const generateQuarters = () => {
-  let fromDate = new Date('2019-01-01');
+  let fromDate = new Date(startDate);
   const today = new Date();
   const toDate = startOfQuarter(addMonths(today, 3));
   const quarters = [];

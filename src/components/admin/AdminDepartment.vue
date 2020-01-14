@@ -53,7 +53,9 @@ export default {
       this.docref.update(this.obj);
     },
     deleteObject() {
-      this.docref.update({ archived: true });
+      this.docref.update({ archived: true }).then(() => {
+        this.obj = null;
+      });
     },
 
     setImage(file) {

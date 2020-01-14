@@ -5,11 +5,21 @@
     <div class="objective">
       <div>
         <span class="form-label">Kvartal</span>
-        <v-select class="form-group objective__select" label="name" :options="quarters"></v-select>
+        <v-select
+          class="form-group objective__select"
+          label="name"
+          v-model="selectedQuarter"
+          :options="quarters"
+        ></v-select>
       </div>
       <div class="add">
         <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
-        <add-objective v-if="expand" @close-menu="expand = false" :productref="docref"></add-objective>
+        <add-objective
+          v-if="expand"
+          @close-menu="expand = false"
+          :productref="docref"
+          :selected-quarter="selectedQuarter"
+        ></add-objective>
       </div>
     </div>
 
@@ -40,16 +50,27 @@ export default {
   data: () => ({
     expand: false,
     objectiveRefs: [],
+    selectedQuarter: null,
   }),
 
   computed: {
     ...mapState(['quarters']),
   },
 
+  watch: {
+    selectedQuarter(quarter) {
+      this.docref
+        .collection('objectives')
+        .where('quarter', '==', quarter.name)
+        .onSnapshot(snapshot => {
+          this.objectiveRefs = snapshot.docs;
+        });
+    },
+  },
+
   mounted() {
-    this.docref.collection('objectives').onSnapshot(snapshot => {
-      this.objectiveRefs = snapshot.docs;
-    });
+    const [firstQuarter] = this.quarters;
+    this.selectedQuarter = firstQuarter;
   },
 
   props: {
@@ -63,6 +84,8 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
 
