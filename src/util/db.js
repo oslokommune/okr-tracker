@@ -271,3 +271,10 @@ export async function myProductsListener() {
 export function isDashboardUser() {
   return auth.currentUser.email === dashboardUser;
 }
+
+export async function unDelete(ref) {
+  return ref
+    .update({ archived: false })
+    .then(Toast.revertedDeletion)
+    .catch(Toast.error);
+}

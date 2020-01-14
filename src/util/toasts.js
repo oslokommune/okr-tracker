@@ -1,7 +1,13 @@
 import Vue from 'vue';
+import { unDelete } from '@/util/db';
 
-const standardOption = { duration: 2200 };
+const standardOption = { duration: 3500 };
+
 const show = (msg, options = standardOption) => Vue.toasted.show(msg, options);
+
+const close = (e, toastObject) => {
+  toastObject.goAway(0);
+};
 
 export function deleteKeyRes() {
   const options = {
@@ -66,10 +72,44 @@ export function addedProduct() {
   show('Lagt til nytt produkt');
 }
 
+export function addedObjective(quarterName) {
+  show(`Lagt til nytt mål for ${quarterName}`);
+}
+
 export function addedDepartment() {
   show('Lagt til nytt produktområde');
 }
 
 export function uploadedPhoto() {
   show('Lastet opp bilde');
+}
+
+export function deletedRegret(obj) {
+  const { name, ref, callback } = obj;
+
+  if (!ref && !callback) return;
+
+  const options = {
+    duration: 4000,
+    action: [
+      {
+        text: 'Angre',
+        onClick: callback || unDelete.bind(null, ref),
+      },
+      {
+        text: 'Lukk',
+        onClick: close,
+      },
+    ],
+  };
+
+  if (name) {
+    show(`Slettet «${name}»`, options);
+  } else {
+    show(`Slettet objekt`, options);
+  }
+}
+
+export function revertedDeletion() {
+  show('Gjenopprettet objekt');
 }

@@ -65,6 +65,7 @@ export default {
       this.docref
         .collection('objectives')
         .where('quarter', '==', quarter.name)
+        .where('archived', '==', false)
         .onSnapshot(snapshot => {
           this.objectiveRefs = snapshot.docs;
         });

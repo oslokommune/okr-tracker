@@ -6,7 +6,7 @@
       :class="{ 'form-group--error': $v.quarter.$error }"
       label="name"
       :options="quarters"
-      v-model="selectedQuarter"
+      v-model="quarter"
     ></v-select>
     <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
 
@@ -40,6 +40,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -49,6 +50,7 @@ export default {
     submit: false,
     showInfo: false,
     info: '',
+    quarter: null,
   }),
 
   props: {
@@ -112,7 +114,9 @@ export default {
           .add(this.newObjective)
           .then(() => {
             this.$emit('close-menu');
-          });
+            Toast.addedObjective(this.quarter.name);
+          })
+          .catch(Toast.error);
       }
     },
 

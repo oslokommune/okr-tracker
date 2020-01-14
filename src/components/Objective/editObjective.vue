@@ -47,6 +47,8 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
+import { serializeDocument } from '@/util/db';
 
 export default {
   props: {
@@ -83,7 +85,7 @@ export default {
     if (this.objectiveRef === undefined) return;
 
     this.objectiveRef.ref.onSnapshot(snapshot => {
-      this.objective = snapshot.data();
+      this.objective = serializeDocument(snapshot);
     });
   },
 
@@ -100,42 +102,32 @@ export default {
           .then(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
+            Toast.savedChanges();
           })
           .catch(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Noe gikk galt');
+            Toast.error();
           });
       }
     },
 
     deleteObj(objective) {
       this.loading = true;
-      this.objectiveRef.ref
+      this.objective.ref
         .update({ archived: true })
         .then(() => {
+          const { ref } = this.objectiveRef;
+
+          Toast.deletedRegret({ name: objective.objective_title, ref });
           this.objective = null;
-          this.$toasted.show(`Slettet «${objective.objective_title}»`, {
-            action: [
-              {
-                text: 'Angre',
-                onClick: (e, toastObject) => {
-                  objective.archived = '';
-                  this.objectiveRef.ref.update({ archived: false }).then(() => {
-                    toastObject.goAway(0);
-                  });
-                },
-              },
-              {
-                text: 'Lukk',
-                onClick: (e, toastObject) => {
-                  toastObject.goAway(0);
-                },
-              },
-            ],
-          });
+          return true;
         })
         .then(() => {
           this.loading = false;
+        })
+        .catch(err => {
+          throw new Error(err);
         });
     },
 
