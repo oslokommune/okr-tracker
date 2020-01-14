@@ -49,6 +49,21 @@ export function productListener(slug) {
     });
 }
 
+export async function productFromSlug(slug) {
+  const product = await db
+    .collectionGroup('products')
+    .where('slug', '==', slug)
+    .get()
+    .then(d => d.docs[0])
+    .then(d => serializeDocument(d));
+
+  product.ref.onSnapshot(async d => {
+    this.product = await serializeDocument(d);
+  });
+
+  return product;
+}
+
 /**
  * Converts a Firebase document to a serialized object with the id and
  * Firebase reference injected as properties
@@ -70,7 +85,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
   const { email } = auth.currentUser;
   let teamMembers;
 
-  if (await isAdmin()) return true;
+  if (isAdmin()) return true;
 
   if (typeof slugOrRef === 'string') {
     teamMembers = await db
@@ -85,7 +100,8 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       });
   } else {
     // 'ref'  be a
-    console.log(slugOrRef);
+    console.log({ slugOrRef });
+    return;
   }
 
   return teamMembers.includes(email);

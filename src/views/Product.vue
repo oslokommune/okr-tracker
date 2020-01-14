@@ -12,7 +12,7 @@
             :alt="`Profilbilde for ${product.name}`"
             class="product-header__profile-image"
           />
-          <span class="product-header__edit" v-if="editPermissions">
+          <span class="product-header__edit" v-if="hasEditPermissions">
             <router-link :to="{ name: 'edit-product', params: { slug: $route.params.slug } }">
               Endre produkt
             </router-link>
@@ -23,14 +23,13 @@
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
-        <a
+        <span
           v-for="quarter in quarters"
           :key="quarter.name"
           class="sub-nav__element"
-          href="#"
           :class="{ 'router-link-active': quarter === activeQuarter }"
           @click="activeQuarter = quarter"
-          >{{ quarter.name }}</a
+          >{{ quarter.name }}</span
         >
       </div>
     </nav>
@@ -70,7 +69,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { productListener, serializeDocument } from '@/util/db';
+import { serializeDocument, productFromSlug } from '@/util/db';
 import TheObjective from '@/components/TheObjective.vue';
 
 export default {
@@ -80,10 +79,6 @@ export default {
     product: null,
     objectives: [],
     team: [],
-    activeQuarter: {
-      name: null,
-      isActive: false,
-    },
   }),
 
   components: {
@@ -92,26 +87,22 @@ export default {
 
   computed: {
     ...mapState(['user', 'quarters']),
-    editPermissions() {
-      if (this.user.admin) return true;
+    hasEditPermissions() {
+      if (!this.user || !this.user.admin) return false;
+      if (this.user && this.user.admin) return true;
       return this.product.team.map(d => d.id).includes(this.user.id);
     },
   },
 
   watch: {
     quarters(list) {
-      this.activeQuarter = list[0];
+      const [first] = list;
+      this.activeQuarter = first;
     },
 
-    activeQuarter(active) {
+    activeQuarter() {
       if (!this.product) return;
-      this.product.ref
-        .collection('objectives')
-        .where('archived', '==', false)
-        .where('quarter', '==', active.name)
-        .onSnapshot(snapshot => {
-          this.objectives = snapshot.docs.map(serializeDocument);
-        });
+      this.getObjectives();
     },
 
     async product(prod) {
@@ -120,18 +111,22 @@ export default {
     },
   },
 
-  mounted() {
-    productListener.call(this, this.$route.params.slug);
-    this.activeQuarter = this.quarters[0];
+  async mounted() {
+    this.product = await productFromSlug.call(this, this.$route.params.slug);
+    const [first] = this.quarters;
+    this.activeQuarter = first;
+    this.getObjectives();
   },
 
   methods: {
-    setQuarter(targetIndex) {
-      this.quarters.forEach((quarter, i) => {
-        quarter.isActive = targetIndex === i;
-      });
-      this.activeQuarter = this.quarters.find(d => d.isActive);
-      // this.quarters[i].isCurrent = true;
+    getObjectives() {
+      this.product.ref
+        .collection('objectives')
+        .where('archived', '==', false)
+        .where('quarter', '==', this.activeQuarter.name)
+        .onSnapshot(snapshot => {
+          this.objectives = snapshot.docs.map(serializeDocument);
+        });
     },
   },
 };

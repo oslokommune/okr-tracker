@@ -6,10 +6,9 @@ import generateQuarters from './util/utils';
 import { serializeDocument, getNestedData } from '@/util/db';
 
 export const actions = {
-  initializeApp({ commit, dispatch }) {
+  async initializeApp({ commit, dispatch }) {
     dispatch('watchUsers');
     dispatch('watchProducts');
-    commit('set_quarters', generateQuarters());
   },
 
   watchProducts({ commit }) {
@@ -64,7 +63,7 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters: [],
+    quarters: generateQuarters(),
   },
   getters,
   mutations,

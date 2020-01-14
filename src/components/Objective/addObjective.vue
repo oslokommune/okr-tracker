@@ -10,6 +10,10 @@
       @input="setSelectedQuarter"
       v-if="quarters"
     ></v-select>
+
+    <!-- <span class="form-label">Ikon</span>
+    <v-select class="form-group" :value="quarter" label="name" :options="['asdf']"></v-select> -->
+
     <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
     <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
       <span class="form-label">Tittel</span>
