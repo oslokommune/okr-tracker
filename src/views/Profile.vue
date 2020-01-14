@@ -49,8 +49,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '@/config/firebaseConfig';
-import { myProductsListener } from '@/util/db';
+import { storage, auth } from '@/config/firebaseConfig';
+import { myProductsListener, isDashboardUser } from '@/util/db';
 
 export default {
   name: 'Profile',
@@ -59,6 +59,14 @@ export default {
     uploading: false,
     products: [],
   }),
+
+  beforeRouteEnter(to, from, next) {
+    if (isDashboardUser()) {
+      next(false);
+    } else {
+      next();
+    }
+  },
 
   computed: {
     ...mapState(['user', 'nest']),

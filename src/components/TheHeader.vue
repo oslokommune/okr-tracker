@@ -15,7 +15,9 @@
           </a>
           <div class="usernav__menu" v-if="isOpen" @click="isOpen = false">
             <router-link class="menu-item" v-if="user && user.admin" :to="{ name: 'admin-users' }">Admin</router-link>
-            <router-link class="menu-item" :to="{ name: 'profile' }">Endre profil</router-link>
+            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'profile' }"
+              >Endre profil</router-link
+            >
             <span class="menu-item" @click="logout">Logg ut</span>
           </div>
         </div>
@@ -31,12 +33,14 @@
 import { mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 import { dashboardUserName } from '@/config/applicationConfig';
+import { isDashboardUser } from '@/util/db';
 
 export default {
   data: () => ({
     auth,
     dev: process.env.NODE_ENV === 'development',
     isOpen: false,
+    isDashboardUser,
   }),
 
   computed: {

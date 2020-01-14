@@ -1,28 +1,39 @@
 <template>
   <div v-if="obj">
-    <p>Navn</p>
-    <input type="text" v-model="obj.name" />
+    <h2 class="title title-2">Administrer produktområde</h2>
 
-    <img v-if="obj.photoURL" :src="obj.photoURL" />
+    <div class="section">
+      <label class="form-group">
+        <span class="form-label">Navn</span>
+        <input type="text" v-model="obj.name" />
+      </label>
 
-    <image-uploader
-      :max-width="250"
-      :max-height="250"
-      :quality="0.6"
-      :auto-rotate="true"
-      output-format="blob"
-      accept="image/*"
-      do-not-resize="['gif', 'svg']"
-      :preview="false"
-      @input="setImage"
-      @onUpload="uploadPhoto"
-    ></image-uploader>
+      <label class="form-group">
+        <span class="form-label">Bilde</span>
+        <img v-if="obj.photoURL" :src="obj.photoURL" />
 
-    <p>Mission statement</p>
-    <textarea rows="4" v-model="obj.mission_statement"></textarea>
+        <image-uploader
+          :max-width="250"
+          :max-height="250"
+          :quality="0.6"
+          :auto-rotate="true"
+          output-format="blob"
+          accept="image/*"
+          do-not-resize="['gif', 'svg']"
+          :preview="false"
+          @input="setImage"
+          @onUpload="uploadPhoto"
+        ></image-uploader>
+      </label>
 
-    <button @click="saveObject">Lagre</button>
-    <button @click="deleteObject">Slett</button>
+      <label class="form-group">
+        <span class="form-label">Mission statement</span>
+        <textarea rows="4" v-model="obj.mission_statement"></textarea>
+      </label>
+    </div>
+
+    <button class="btn" @click="saveObject">Lagre</button>
+    <button class="btn btn--borderless" @click="deleteObject">Slett</button>
   </div>
 </template>
 

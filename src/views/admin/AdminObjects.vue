@@ -2,7 +2,7 @@
   <div>
     <div class="miller">
       <div class="miller__col">
-        <h3 class="miller__col__header">Organisasjon</h3>
+        <h3 class="miller__col__header">Velg organisasjon</h3>
         <div
           class="miller__col__item"
           v-for="org in orgs"
@@ -15,7 +15,7 @@
       </div>
 
       <div class="miller__col">
-        <h3 class="miller__col__header">Produktområde</h3>
+        <h3 class="miller__col__header">Velg produktområde</h3>
         <div
           class="miller__col__item"
           v-for="dept in depts"
@@ -29,7 +29,7 @@
       </div>
 
       <div class="miller__col">
-        <h3 class="miller__col__header">Produkt</h3>
+        <h3 class="miller__col__header">Velg produkt</h3>
         <div
           class="miller__col__item"
           v-for="product in products"
@@ -139,33 +139,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors';
+
 .miller {
   display: flex;
   min-height: 600px;
   margin: 2rem 0;
+  overflow-x: scroll;
   color: black;
-  background: #fafafa;
+  background: rgba($color-border, 0.075);
 
   &__col {
     display: flex;
     flex-direction: column;
-    width: auto;
-    min-width: 160px;
+    width: 260px;
     margin-right: -1px;
-    border: 1px solid #dddddd;
+    border: 1px solid $color-border;
 
     &__header {
       padding: 1rem 1rem;
       font-weight: 500;
       line-height: 1rem;
       background: #eeeeee;
-      border-bottom: 1px solid #dddddd;
+      border-bottom: 1px solid $color-border;
     }
 
     &__item {
       display: block;
       width: 100%;
       padding: 0.5rem 3rem 0.5rem 1rem;
+      border-bottom: 1px solid transparent;
       user-select: none;
 
       &:hover:not(.active) {
@@ -174,24 +177,38 @@ export default {
       }
 
       &.active {
-        background: #dddddd;
+        position: relative;
+        font-weight: 500;
+        background: rgba($color-blue, 0.3);
+
+        &::before {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -1px;
+          width: 3px;
+          background: $color-purple;
+          content: '';
+        }
       }
     }
 
     &__add {
-      // margin-top: auto;
       margin-bottom: -1px;
       color: #666666;
-      border-top: 1px solid #dddddd;
-      border-bottom: 1px solid #dddddd;
+      font-style: italic;
+      border-top: 1px solid $color-border;
+      border-bottom: 1px solid $color-border;
     }
   }
 
   &__main {
     flex-grow: 1;
+    min-width: 340px;
+    margin-left: -1px;
     padding: 2rem;
     background: white;
-    border: 1px solid #dddddd;
+    border: 1px solid $color-border;
   }
 
   &--list {

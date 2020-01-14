@@ -19,11 +19,30 @@ textarea {
 
 .form-group {
   display: block;
-  margin-bottom: 1.25rem;
+  margin: 1.25rem 0;
 
   &--error {
     margin-bottom: 0;
     color: $color-red;
+  }
+}
+
+.form-row {
+  display: flex;
+  align-content: center;
+  align-items: center;
+
+  input {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+  }
+
+  input,
+  .btn {
+    display: block;
+    width: auto;
+    height: 3rem;
+    margin: 0 !important;
   }
 }
 
@@ -41,10 +60,9 @@ textarea {
   padding: 0 1rem;
   color: $color-purple;
   font-weight: 500;
-  background: $color-blue;
-
+  background: $color-light-blue;
   border: 0;
-  border-radius: 6px;
+  border-radius: 1px;
   cursor: pointer;
 
   &--ghost {
@@ -52,8 +70,16 @@ textarea {
     border: 1px solid $color-purple;
   }
 
+  &--borderless {
+    background: transparent;
+    border: 0;
+    &:hover {
+      background: $color-bg;
+    }
+  }
+
   & + & {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
 
   &--danger {

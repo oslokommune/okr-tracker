@@ -252,11 +252,13 @@ export async function myProductsListener() {
 
   const userRef = await db.collection('users').doc(email);
 
-  console.log(email);
-
   return db
     .collectionGroup('products')
     .where('team', 'array-contains', userRef)
     .get()
     .then(d => d.docs.map(serializeDocument));
+}
+
+export function isDashboardUser() {
+  return auth.currentUser.email === dashboardUser;
 }

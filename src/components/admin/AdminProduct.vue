@@ -1,50 +1,56 @@
 <template>
   <div v-if="product">
-    <!-- <pre>{{ product }}</pre> -->
-    <p>Navn</p>
-    <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" />
+    <h2 class="title title-2">Administrer produkt</h2>
 
-    <p>Slug</p>
-    <input type="text" v-model="product.slug" disabled />
-
-    <img v-if="product.photoURL" :src="product.photoURL" />
-
-    <image-uploader
-      :max-width="250"
-      :max-height="250"
-      :quality="0.6"
-      :auto-rotate="true"
-      output-format="blob"
-      accept="image/*"
-      do-not-resize="['gif', 'svg']"
-      :preview="false"
-      @input="setImage"
-      @onUpload="uploadPhoto"
-    ></image-uploader>
-
-    <div class="form-group">
-      <label>
-        <span class="form-label">Mission statement</span>
-        <textarea rows="4" v-model="product.mission_statement"></textarea>
+    <div class="section">
+      <label class="form-group">
+        <span class="form-label">Produktnavn</span>
+        <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" />
       </label>
-    </div>
 
-    <div class="form-group">
-      <span class="form-label">Team</span>
-      <v-select
-        class="form-group objective__select"
-        label="displayName"
-        multiple
-        v-model="product.team"
-        :options="users"
-      >
-        <template v-slot:option="option">
-          {{ option.displayName || option.id }}
-          <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-        </template>
-      </v-select>
-    </div>
+      <label class="form-group">
+        <span class="form-label">Slug</span>
+        <input type="text" v-model="product.slug" disabled />
+      </label>
 
+      <img v-if="product.photoURL" :src="product.photoURL" />
+
+      <image-uploader
+        :max-width="250"
+        :max-height="250"
+        :quality="0.6"
+        :auto-rotate="true"
+        output-format="blob"
+        accept="image/*"
+        do-not-resize="['gif', 'svg']"
+        :preview="false"
+        @input="setImage"
+        @onUpload="uploadPhoto"
+      ></image-uploader>
+
+      <div class="form-group">
+        <label>
+          <span class="form-label">Mission statement</span>
+          <textarea rows="4" v-model="product.mission_statement"></textarea>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <span class="form-label">Team</span>
+        <v-select
+          class="form-group objective__select"
+          label="displayName"
+          multiple
+          v-model="product.team"
+          :options="users"
+        >
+          <template v-slot:option="option">
+            {{ option.displayName || option.id }}
+            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+          </template>
+        </v-select>
+      </div>
+    </div>
     <button @click="saveObject">Lagre</button>
     <button @click="deleteObject">Slett</button>
   </div>
