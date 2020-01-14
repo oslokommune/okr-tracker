@@ -63,6 +63,7 @@ import { db } from '@/config/firebaseConfig';
 import { getOrgs, getDepartments, getProducts } from '@/util/db';
 import AdminProduct from '@/components/admin/AdminProduct.vue';
 import AdminDepartment from '@/components/admin/AdminDepartment.vue';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Admin',
@@ -124,19 +125,28 @@ export default {
     addProduct() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/${this.selectedDeptId}/products`);
 
-      deptRef.add({ name: 'Nytt produkt', archived: false, team: [] }).then(doc => {
-        this.selectedProductId = doc.id;
-      });
+      deptRef
+        .add({ name: 'Nytt produkt', archived: false, team: [] })
+        .then(doc => {
+          this.selectedProductId = doc.id;
+        })
+        .then(Toast.addedProduct)
+        .catch(Toast.error);
     },
 
     addDepartment() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/`);
 
-      deptRef.add({ name: 'Nytt produktområde', archived: false }).then(doc => {
-        this.selectedProductId = null;
-        this.products = [];
-        this.selectedDeptId = doc.id;
-      });
+      deptRef
+        .add({ name: 'Nytt produktområde', archived: false })
+        .then(doc => {
+          this.selectedProductId = null;
+          this.products = [];
+          this.selectedDeptId = doc.id;
+          return doc;
+        })
+        .then(Toast.addedDepartment)
+        .catch(Toast.error);
     },
   },
 

@@ -39,6 +39,7 @@
 
 <script>
 import { storage } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -61,12 +62,19 @@ export default {
 
   methods: {
     saveObject() {
-      this.docref.update(this.obj);
+      this.docref
+        .update(this.obj)
+        .then(Toast.savedChanges)
+        .catch(Toast.error);
     },
     deleteObject() {
-      this.docref.update({ archived: true }).then(() => {
-        this.obj = null;
-      });
+      this.docref
+        .update({ archived: true })
+        .then(() => {
+          this.obj = null;
+        })
+        .then(Toast.deleted)
+        .catch(Toast.error);
     },
 
     setImage(file) {
@@ -76,12 +84,16 @@ export default {
     },
 
     async uploadPhoto() {
+      if (!this.file) return;
       this.uploading = true;
       const storageRef = storage.ref(`departments/${this.docref.id}`);
 
-      const snapshot = await storageRef.put(this.file);
+      const snapshot = await storageRef.put(this.file).catch(Toast.error);
+      Toast.uploadedPhoto();
+
       const photoURL = await snapshot.ref.getDownloadURL();
-      await this.docref.update({ photoURL });
+      await this.docref.update({ photoURL }).catch(Toast.error);
+      Toast.savedChanges();
 
       this.obj.photoURL = photoURL;
       this.uploading = false;

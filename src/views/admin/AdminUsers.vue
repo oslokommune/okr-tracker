@@ -42,7 +42,7 @@
 
     <h3 class="title title-3">Legg til e-post-adresser</h3>
     <p>Én adresse per rad</p>
-    <textarea rows="10" ref="add"></textarea>
+    <textarea rows="10" v-model="addUserList"></textarea>
     <button @click="addEmails">Legg til</button>
   </div>
 </template>
@@ -51,9 +51,14 @@
 import { mapState } from 'vuex';
 import { validateEmail } from '@/util/formValidation';
 import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Admin',
+
+  data: () => ({
+    addUserList: '',
+  }),
 
   computed: {
     ...mapState(['users']),
@@ -61,25 +66,38 @@ export default {
 
   methods: {
     addEmails() {
-      const list = this.$refs.add.value
+      const list = this.addUserList
         .trim()
         .split('\n')
         .filter(Boolean)
         .filter(validateEmail);
 
-      list.forEach(email => {
-        db.collection('users')
+      const promises = list.map(email => {
+        return db
+          .collection('users')
           .doc(email)
           .set({ admin: false });
       });
+
+      Promise.all(promises)
+        .then(() => {
+          Toast.successFullyAddedUsers(promises.length);
+          this.addUserList = '';
+        })
+        .catch(Toast.error);
     },
 
     deleteUser(user) {
-      user.ref.update();
+      user.ref
+        .delete()
+        .then(Toast.deletedUser)
+        .catch(Toast.error);
     },
 
     toggleAdmin(user, value) {
-      user.ref.update({ admin: value });
+      user.ref.update({ admin: value }).then(() => {
+        Toast.toggleAdmin(user, value);
+      });
     },
   },
 };
@@ -139,8 +157,5 @@ export default {
       flex-basis: 100px;
     }
   }
-
-  // background: $color-bg;
-  // border: 1px solid $color-border;
 }
 </style>

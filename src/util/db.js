@@ -2,6 +2,7 @@
 import store from '@/store';
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
 import router from '../router';
+import * as Toast from '@/util/toasts';
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -72,8 +73,12 @@ export async function productFromSlug(slug) {
  */
 export function serializeDocument(doc) {
   if (!doc) return;
-  const isDashboardUser = doc.id === dashboardUser;
-  return { id: doc.id, ref: doc.ref, isDashboardUser, ...doc.data() };
+  return {
+    id: doc.id,
+    ref: doc.ref,
+    isDashboardUser: isDashboardUser(),
+    ...doc.data(),
+  };
 }
 
 /**
@@ -120,6 +125,8 @@ export async function handleUserAuthStateChange(user) {
   } else if (await isWhiteListed(user)) {
     store.dispatch('initializeApp');
 
+    Toast.loggedIn(user);
+
     updateUserObject(user);
     db.collection('users')
       .doc(user.email)
@@ -128,6 +135,8 @@ export async function handleUserAuthStateChange(user) {
       });
   } else {
     auth.signOut().then(() => {
+      if (this) this.$toasted.show('Logget ut');
+
       store.commit('set_user', null);
       router.push({ name: 'login', params: { error: 1 } });
     });

@@ -24,7 +24,7 @@
           :auto-rotate="true"
           output-format="blob"
           accept="image/*"
-          do-not-resize="['gif', 'svg']"
+          do-not-resize="['gif']"
           :preview="false"
           @input="setImage"
           @onUpload="uploadPhoto"
@@ -59,6 +59,7 @@
 import { mapState } from 'vuex';
 import { storage } from '@/config/firebaseConfig';
 import slugify from '@/util/slugify';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -88,7 +89,10 @@ export default {
     async saveObject() {
       const teamList = this.product.team;
       this.product.team = teamList.map(d => d.ref);
-      await this.docref.update(this.product);
+      this.docref
+        .update(this.product)
+        .then(Toast.savedChanges)
+        .catch(Toast.somethingFailed);
       this.product.team = teamList;
     },
 
@@ -96,8 +100,12 @@ export default {
       return this.user && this.user.admin;
     },
 
-    deleteObject() {
-      this.docref.update({ archived: true });
+    async deleteObject() {
+      await this.docref
+        .update({ archived: true })
+        .then(Toast.deleted)
+        .catch(Toast.error);
+
       this.product = null;
     },
 
@@ -112,12 +120,19 @@ export default {
     },
 
     async uploadPhoto() {
-      this.uploading = true;
-      const storageRef = storage.ref(`products/${this.docref.id}`);
+      if (!this.file) return;
 
-      const snapshot = await storageRef.put(this.file);
+      this.uploading = true;
+      const storageRef = await storage.ref(`products/${this.docref.id}`);
+
+      const snapshot = await storageRef.put(this.file).catch(Toast.error);
+
+      Toast.uploadedPhoto();
+
       const photoURL = await snapshot.ref.getDownloadURL();
-      await this.docref.update({ photoURL });
+      await this.docref.update({ photoURL }).catch(Toast.error);
+
+      Toast.savedChanges();
 
       this.product.photoURL = photoURL;
       this.uploading = false;

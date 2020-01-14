@@ -112,7 +112,6 @@ export default {
 
   mounted() {
     this.error = this.$route.params.error;
-    // this.pending = false;
   },
 };
 </script>
