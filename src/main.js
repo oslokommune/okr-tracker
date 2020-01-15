@@ -9,7 +9,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import { handleUserAuthStateChange } from '@/util/db';
+import handleUserAuthStateChange from '@/util/authChangeHelper';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
