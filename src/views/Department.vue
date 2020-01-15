@@ -1,15 +1,15 @@
 <template>
-  <div v-if="product">
-    <header class="page-header">
+  <div v-if="department">
+    <header class="page-header page-header--department">
       <div class="container">
         <div class="page-header__container">
           <div class="page-header__name">
-            <h1 class="title-1">{{ product.name }}</h1>
+            <h1 class="title-1">{{ department.name }}</h1>
           </div>
 
           <img
-            :src="product.photoURL || '/placeholder-image.svg'"
-            :alt="`Profilbilde for ${product.name}`"
+            :src="department.photoURL || '/placeholder-image.svg'"
+            :alt="`Profilbilde for ${department.name}`"
             class="page-header__profile-image"
           />
         </div>
@@ -37,35 +37,23 @@
           <nav class="sidebar-nav">
             <template v-if="hasEditPermissions">
               <router-link
-                :to="{ name: 'edit-product', params: { slug: $route.params.slug } }"
+                :to="{ name: 'edit-departments', params: { slug: $route.params.slug } }"
                 class="sidebar-nav__item"
               >
                 <i class="fa fas fa-fw fa-edit"></i>Endre produkt</router-link
               >
-              <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
+              <div class="addObjective">
                 <div class="sidebar-nav__item" @click="expandAddObjective = true">
                   <i class="fa fas fa-fw fa-plus"></i>Legg til mål
                 </div>
 
                 <add-objective
                   v-if="expandAddObjective"
-                  :productref="product.ref"
+                  :productref="department.ref"
                   @close-menu="expandAddObjective = false"
                 ></add-objective>
               </div>
-
-              <div class="add-object-menu-wrapper" v-click-outside="closeAddKeyres">
-                <div class="sidebar-nav__item" @click="expandAddKeyRes = true">
-                  <i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat
-                </div>
-                <add-keyres
-                  v-if="expandAddKeyRes"
-                  @close-menu="expandAddKeyRes = false"
-                  :productref="product.ref"
-                  :selected-quarter-name="activeQuarter.name"
-                ></add-keyres>
-              </div>
-
+              <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat</div>
               <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-chart-line"></i>Oppdater data</div>
             </template>
             <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
@@ -77,16 +65,18 @@
           <div class="grid grid-3 section">
             <div>
               <h2 class="title title-2">Oppdrag</h2>
-              <p>{{ product.mission_statement }}</p>
+              <p>{{ department.mission_statement }}</p>
             </div>
             <div>
-              <h2 class="title title-2">Team</h2>
+              <h2 class="title title-2">Produkter</h2>
               <ul class="team__list">
-                <li class="team__member" v-for="user in team" :key="user.id">
-                  <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
-                  <div class="team__name">
-                    <span>{{ user.displayName }}</span>
-                  </div>
+                <li class="team__member" v-for="prod in products" :key="prod.id">
+                  <router-link :to="{ name: 'product', params: { slug: prod.slug } }">
+                    <img class="team__image" :src="prod.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
+                    <div class="team__name">
+                      <span>{{ prod.name }}</span>
+                    </div>
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -107,28 +97,25 @@
 
 <script>
 import { mapState } from 'vuex';
-import ClickOutside from 'vue-click-outside';
-import { serializeDocument, productFromSlug } from '@/util/db';
+import { serializeDocument, departmentFromSlug } from '@/util/db';
 
 import AddObjective from '@/components/Objective/addObjective.vue';
-import AddKeyres from '@/components/KeyRes/addKeyres.vue';
 import TheObjective from '@/components/TheObjective.vue';
 
 export default {
   name: 'Department',
 
   data: () => ({
-    product: null,
+    department: null,
+    products: null,
     objectives: [],
     team: [],
     activeQuarter: null,
     expandAddObjective: false,
-    expandAddKeyRes: false,
   }),
 
   components: {
     AddObjective,
-    AddKeyres,
     TheObjective,
   },
 
@@ -137,26 +124,23 @@ export default {
 
     hasEditPermissions() {
       if (!this.user) return;
-      if (this.user.admin) return true;
-
-      return this.product.team.map(d => d.id).includes(this.user.id);
+      return this.user.admin;
     },
   },
 
   watch: {
     activeQuarter() {
-      if (!this.product) return;
+      if (!this.department) return;
       this.getObjectives();
     },
 
-    async product(prod) {
-      const teamPromises = prod.team.map(d => d.get());
-      this.team = await Promise.all(teamPromises).then(d => d.map(serializeDocument));
+    products(prod) {
+      console.log(prod);
     },
   },
 
   async mounted() {
-    this.product = await productFromSlug.call(this, this.$route.params.slug);
+    this.department = await departmentFromSlug.call(this, this.$route.params.slug);
     const [first] = this.quarters;
     this.activeQuarter = first;
     this.getObjectives();
@@ -164,7 +148,7 @@ export default {
 
   methods: {
     getObjectives() {
-      this.product.ref
+      this.department.ref
         .collection('objectives')
         .where('archived', '==', false)
         .where('quarter', '==', this.activeQuarter.name)
@@ -172,16 +156,6 @@ export default {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
     },
-
-    closeAddObjective() {
-      this.expandAddObjective = false;
-    },
-    closeAddKeyres() {
-      this.expandAddKeyRes = false;
-    },
-  },
-  directives: {
-    ClickOutside,
   },
 };
 </script>
@@ -189,7 +163,7 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/colors';
 
-.add-object-menu-wrapper {
+.addObjective {
   position: relative;
 }
 

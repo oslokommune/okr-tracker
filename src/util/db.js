@@ -63,6 +63,45 @@ export async function productFromSlug(slug) {
 }
 
 /**
+ * Finds the product with the provided slug and
+ * adds a listener for changes on the object.
+ * Binds the changes to `this.product` on the caller.
+ * @param {String} slug - product slug
+ * @returns {void}
+ */
+export function departmentListener(slug) {
+  db.collectionGroup('departments')
+    .where('slug', '==', slug)
+    .onSnapshot(async d => {
+      if (!d.docs.length) return;
+      const departmentData = await d.docs[0].ref.get();
+      this.department = serializeDocument(departmentData);
+    });
+}
+
+export async function departmentFromSlug(slug) {
+  const department = await db
+    .collectionGroup('departments')
+    .where('slug', '==', slug)
+    .get()
+    .then(d => d.docs[0])
+    .then(d => serializeDocument(d));
+
+  department.ref
+    .collection('products')
+    .where('archived', '==', false)
+    .onSnapshot(async d => {
+      this.products = d.docs.map(serializeDocument);
+    });
+
+  department.ref.onSnapshot(async d => {
+    this.department = await serializeDocument(d);
+  });
+
+  return department;
+}
+
+/**
  * Converts a Firebase document to a serialized object with the id and
  * Firebase reference injected as properties
  * @param {FirebaseDoc} doc

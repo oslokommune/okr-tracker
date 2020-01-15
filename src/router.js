@@ -7,6 +7,7 @@ import Product from './views/Product.vue';
 import EditProduct from './views/EditProduct.vue';
 import AdminProductBasics from './views/EditProduct/BasicInfo.vue';
 import EditObjectivesAndKeyResults from './views/EditProduct/EditObjectivesAndKeyResults.vue';
+import Department from './views/Department.vue';
 
 import { auth } from './config/firebaseConfig';
 
@@ -48,6 +49,12 @@ const routes = [
       { name: 'edit-product', path: '/', component: AdminProductBasics },
       { name: 'edit-product-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
     ],
+  },
+
+  {
+    path: '/department/:slug',
+    component: Department,
+    name: 'department',
   },
 
   {

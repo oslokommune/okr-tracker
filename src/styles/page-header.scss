@@ -21,6 +21,11 @@
     background: $color-grey-200;
   }
 
+  &--department {
+    color: $color-grey-900;
+    background: $color-red;
+  }
+
   &__container {
     display: grid;
     grid-gap: 0.5rem 3rem;

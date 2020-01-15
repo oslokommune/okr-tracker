@@ -1,16 +1,21 @@
 <template>
-  <div v-if="obj">
+  <div v-if="department">
     <h2 class="title title-2">Administrer produktområde</h2>
 
     <div class="section">
       <label class="form-field">
         <span class="form-label">Navn</span>
-        <input type="text" v-model="obj.name" />
+        <input type="text" v-model="department.name" @input="updateSlug" />
+      </label>
+
+      <label>
+        <span class="form-group">Slug</span>
+        <input type="text" v-model="department.slug" disabled />
       </label>
 
       <label class="form-field">
         <span class="form-label">Bilde</span>
-        <img v-if="obj.photoURL" :src="obj.photoURL" />
+        <img v-if="department.photoURL" :src="department.photoURL" />
 
         <image-uploader
           :max-width="250"
@@ -28,7 +33,7 @@
 
       <label class="form-field">
         <span class="form-label">Mission statement</span>
-        <textarea rows="4" v-model="obj.mission_statement"></textarea>
+        <textarea rows="4" v-model="department.mission_statement"></textarea>
       </label>
     </div>
 
@@ -40,30 +45,31 @@
 <script>
 import { storage } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
+import slugify from '../../util/slugify';
 
 export default {
   data: () => ({
-    obj: null,
+    department: null,
     file: null,
   }),
   props: {
     docref: { type: Object, required: true },
   },
   async mounted() {
-    this.obj = await this.docref.get().then(d => d.data());
+    this.department = await this.docref.get().then(d => d.data());
   },
 
   watch: {
     async docref(newDocref) {
-      this.obj = null;
-      this.obj = await newDocref.get().then(d => d.data());
+      this.department = null;
+      this.department = await newDocref.get().then(d => d.data());
     },
   },
 
   methods: {
     saveObject() {
       this.docref
-        .update(this.obj)
+        .update(this.department)
         .then(Toast.savedChanges)
         .catch(Toast.error);
     },
@@ -71,7 +77,7 @@ export default {
       this.docref
         .update({ archived: true })
         .then(() => {
-          this.obj = null;
+          this.department = null;
         })
         .then(Toast.deleted)
         .catch(Toast.error);
@@ -95,8 +101,12 @@ export default {
       await this.docref.update({ photoURL }).catch(Toast.error);
       Toast.savedChanges();
 
-      this.obj.photoURL = photoURL;
+      this.department.photoURL = photoURL;
       this.uploading = false;
+    },
+
+    updateSlug() {
+      this.department.slug = slugify(this.department.name);
     },
   },
 };
