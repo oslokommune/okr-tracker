@@ -1,0 +1,95 @@
+@import '@/styles/_colors';
+
+.miller {
+  display: flex;
+  min-height: 600px;
+  margin: 2rem 0;
+  overflow-x: scroll;
+  color: black;
+  background: rgba($color-border, 0.075);
+
+  &__col {
+    display: flex;
+    flex-basis: 500px;
+    flex-direction: column;
+    margin-right: -1px;
+    border: 1px solid $color-border;
+
+    &.active .miller__col__item.active {
+      background: $color-blue;
+
+      &::after {
+        opacity: 0;
+      }
+    }
+
+    &__header {
+      padding: 1rem 1rem;
+      font-weight: 500;
+      line-height: 1rem;
+      background: #eeeeee;
+      border-bottom: 1px solid $color-border;
+    }
+
+    &__item {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 3rem 0.5rem 1rem;
+      border-bottom: 1px solid transparent;
+      user-select: none;
+
+      &:hover:not(.active) {
+        background: rgba(black, 0.03);
+        cursor: pointer;
+      }
+
+      &.active {
+        position: relative;
+        font-weight: 500;
+        background: rgba($color-blue, 0.2);
+
+        &::before {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 2px;
+          background: $color-purple;
+          content: '';
+        }
+
+        &::after {
+          position: absolute;
+          top: 50%;
+          right: 10px;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 6px solid $color-purple;
+          transform: translateY(-5px);
+          content: '';
+        }
+      }
+    }
+
+    &__add {
+      margin-bottom: -1px;
+      color: #666666;
+      font-style: italic;
+      border-top: 1px solid $color-border;
+      border-bottom: 1px solid $color-border;
+    }
+  }
+
+  &__main {
+    flex-basis: 100%;
+    margin-left: -1px;
+    padding: 2rem;
+    background: white;
+    border: 1px solid $color-border;
+  }
+
+  &--list {
+    padding: 0;
+    list-style-type: none;
+  }
+}

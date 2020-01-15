@@ -18,7 +18,7 @@
           Klarte ikke å logge inn med Google. Kontakt systemadministrator hvis feilen vedvarer.
         </div>
 
-        <div class="form-group">
+        <div class="form-field">
           <button class="btn" @click="loginWithGoogle">Logg inn med Google</button>
         </div>
       </div>
@@ -31,7 +31,7 @@
             Passordet er feil.
           </div>
           <form @submit.prevent="submitPassword()">
-            <label class="form-group">
+            <label class="form-field">
               <span class="form-label">Passord</span>
               <div class="form-row">
                 <input type="password" v-model="password" />

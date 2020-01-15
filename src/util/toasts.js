@@ -79,6 +79,10 @@ export function addedDepartment() {
   show('Lagt til nytt produktområde');
 }
 
+export function addedKeyResult() {
+  show('Lagt til nytt nøkkelresultat');
+}
+
 export function uploadedPhoto() {
   show('Lastet opp bilde');
 }

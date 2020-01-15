@@ -2,18 +2,18 @@
   <div v-if="product" class="section">
     <h2 class="title title-2">Administrer produkt</h2>
 
-    <div class="section">
-      <label class="form-group">
+    <div class="section form-group">
+      <label class="form-field">
         <span class="form-label">Produktnavn</span>
         <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" />
       </label>
 
-      <label class="form-group">
+      <label class="form-field">
         <span class="form-label">Slug</span>
         <input type="text" v-model="product.slug" disabled />
       </label>
 
-      <label class="form-group">
+      <label class="form-field">
         <span class="form-label">Bilde</span>
         <img v-if="product.photoURL" :src="product.photoURL" />
 
@@ -31,14 +31,14 @@
         ></image-uploader>
       </label>
 
-      <div class="form-group">
+      <div class="form-field">
         <label>
           <span class="form-label">Mission statement</span>
           <textarea rows="4" v-model="product.mission_statement"></textarea>
         </label>
       </div>
 
-      <div class="form-group">
+      <div class="form-field">
         <span class="form-label">Team</span>
         <v-select class="objective__select" label="displayName" multiple v-model="product.team" :options="users">
           <template v-slot:option="option">

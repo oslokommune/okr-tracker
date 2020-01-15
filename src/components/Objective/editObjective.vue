@@ -1,45 +1,46 @@
 <template>
-  <div class="item" :class="{ loading }" v-if="objective">
-    <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_title.$error }">
+  <div class="edit-objective" :class="{ loading }" v-if="objective">
+    <h3 class="title-3">Endre mål</h3>
+    <hr />
+    <label class="form-field" :class="{ 'form-field--error': $v.objective.objective_title.$error }">
       <span class="form-label">Tittel</span>
       <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
     </label>
-    <div class="form-group--error" v-if="$v.objective.objective_title.$error">Kan ikke være tom</div>
-
+    <div class="form-field--error" v-if="$v.objective.objective_title.$error">Kan ikke være tom</div>
     <div class="title title-3">
       <i :class="`fas fa-${objective.icon}`"></i>
     </div>
     <span class="form-label">Ikon</span>
-    <v-select class="form-group" :options="icons" v-model="objective.icon">
+    <v-select class="form-field" :options="icons" v-model="objective.icon">
       <template v-slot:option="option">
         <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
         <span>{{ option.label }}</span>
       </template>
     </v-select>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.objective.objective_body.$error }">
       <span class="form-label">Beskrivelse</span>
       <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
     </label>
 
-    <div class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
-      <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
+    <div class="form-field" :class="{ 'form-field--error': $v.objective.objective_body.$error }">
+      <div class="form-field--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
       <span class="form-label">Kvartal</span>
       <v-select
         v-if="quarters"
-        :class="{ 'form-group--error': $v.objective.quarter.$error }"
+        :class="{ 'form-field--error': $v.objective.quarter.$error }"
         label="name"
         :options="quarters"
         v-model="objective.quarter"
       ></v-select>
     </div>
 
-    <div class="item__footer">
-      <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
-        Lagre endringer
-      </button>
-      <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
-    </div>
+    <hr />
+    <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
+      Lagre endringer
+    </button>
+    <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
+
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
@@ -87,6 +88,16 @@ export default {
     this.objectiveRef.ref.onSnapshot(snapshot => {
       this.objective = serializeDocument(snapshot);
     });
+  },
+
+  watch: {
+    async objectiveRef() {
+      this.objective = await this.objectiveRef.ref.get().then(serializeDocument);
+
+      this.objectiveRef.ref.onSnapshot(snapshot => {
+        this.objective = serializeDocument(snapshot);
+      });
+    },
   },
 
   methods: {
@@ -141,11 +152,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-  padding: 0.5rem 1.5rem 1.5rem;
-  background: #fbfbfb;
-  border: 1px solid #eaeaea;
+.edit-objective {
+  width: 100%;
+  margin-top: -1.5rem;
+}
 
+.item {
   &__footer {
     display: flex;
     justify-content: space-between;

@@ -45,8 +45,12 @@ textarea {
 }
 
 .form-group {
+  max-width: 600px;
+}
+
+.form-field {
   display: block;
-  margin: 1rem 0;
+  padding: 1rem 0;
 
   &--error {
     margin-bottom: 0;
@@ -56,20 +60,10 @@ textarea {
 
 .form-row {
   display: flex;
-  align-content: center;
-  align-items: center;
+  margin: -1rem 0;
 
-  input {
-    flex-grow: 1;
-    margin-right: 0.5rem;
-  }
-
-  input,
-  .btn {
-    display: block;
-    width: auto;
-    height: 3rem;
-    margin: 0 !important;
+  .form-field + .form-field {
+    margin-left: 1rem;
   }
 }
 
@@ -103,6 +97,14 @@ textarea {
     &:hover {
       background: $color-bg;
     }
+  }
+
+  &--fw {
+    width: 100%;
+  }
+
+  & > .fa {
+    margin-right: 0.5rem;
   }
 
   & + & {
