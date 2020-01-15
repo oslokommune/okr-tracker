@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { unDelete } from '@/util/db';
 
 const standardOption = { duration: 3500 };
 
@@ -112,4 +111,11 @@ export function deletedRegret(obj) {
 
 export function revertedDeletion() {
   show('Gjenopprettet objekt');
+}
+
+async function unDelete(ref) {
+  return ref
+    .update({ archived: false })
+    .then(revertedDeletion)
+    .catch(error);
 }
