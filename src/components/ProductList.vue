@@ -50,10 +50,6 @@ export default {
   computed: {
     ...mapState(['nest']),
   },
-
-  updated() {
-    console.log(this.nest);
-  },
 };
 </script>
 

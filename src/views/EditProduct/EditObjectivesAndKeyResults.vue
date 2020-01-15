@@ -144,7 +144,6 @@ export default {
         .where('archived', '==', false)
         .onSnapshot(async snapshot => {
           this.key_results = await snapshot.docs.map(serializeDocument);
-          console.log(this.key_results);
         });
     },
 
