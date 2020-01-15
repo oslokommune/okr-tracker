@@ -9,6 +9,33 @@ textarea {
   color: $color-purple;
   font-size: 1rem;
   border: 2.5px solid $color-border;
+
+  &:disabled {
+    color: $color-grey-500;
+    background: $color-bg;
+    cursor: not-allowed;
+  }
+}
+
+.v-select:not(.vs--single) {
+  width: 100%;
+  .vs__selected-options {
+    padding: 0.25rem !important;
+  }
+
+  .vs__dropdown-toggle {
+    min-height: 3rem !important;
+    border: 2.5px solid $color-border !important;
+    border-radius: 0 !important;
+  }
+
+  .vs__selected {
+    margin-right: 0.25rem;
+    padding: 0.25rem 0.75rem !important;
+    background: rgba($color-bg, 0.5) !important;
+    border: 1px solid $color-border !important;
+    border-radius: 0 !important;
+  }
 }
 
 .form-label {
@@ -19,11 +46,30 @@ textarea {
 
 .form-group {
   display: block;
-  margin-bottom: 1.25rem;
+  margin: 1rem 0;
 
   &--error {
     margin-bottom: 0;
     color: $color-red;
+  }
+}
+
+.form-row {
+  display: flex;
+  align-content: center;
+  align-items: center;
+
+  input {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+  }
+
+  input,
+  .btn {
+    display: block;
+    width: auto;
+    height: 3rem;
+    margin: 0 !important;
   }
 }
 
@@ -41,10 +87,9 @@ textarea {
   padding: 0 1rem;
   color: $color-purple;
   font-weight: 500;
-  background: $color-blue;
-
+  background: $color-light-blue;
   border: 0;
-  border-radius: 6px;
+  border-radius: 1px;
   cursor: pointer;
 
   &--ghost {
@@ -52,8 +97,16 @@ textarea {
     border: 1px solid $color-purple;
   }
 
+  &--borderless {
+    background: transparent;
+    border: 0;
+    &:hover {
+      background: $color-bg;
+    }
+  }
+
   & + & {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
 
   &--danger {
@@ -69,5 +122,53 @@ textarea {
     color: #aaaaaa;
     background: #dedede;
     cursor: default;
+  }
+}
+
+.toggle {
+  position: relative;
+
+  $t: &;
+
+  &__input {
+    position: absolute;
+    left: -999999px;
+    width: 0;
+    height: 0;
+    background: none;
+
+    &:checked ~ #{$t}__switch {
+      background: $color-blue;
+
+      &::before {
+        left: 2.1rem;
+        background: $color-purple;
+      }
+    }
+  }
+
+  &__switch {
+    position: relative;
+    display: inline-block;
+    width: 4rem;
+    height: 1.5rem;
+    background: $color-bg;
+    border-radius: 0.75rem;
+    box-shadow: inset 0 1px 3px rgba($color-grey-600, 0.5);
+    transition: all 0.3s ease-in-out;
+
+    &::before {
+      position: absolute;
+      top: -0.2rem;
+      left: 0;
+      display: block;
+      width: 1.9rem;
+      height: 1.9rem;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba($color-grey-800, 0.7);
+      transition: all 0.3s ease-in-out;
+      content: '';
+    }
   }
 }

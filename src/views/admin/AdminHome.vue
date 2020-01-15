@@ -1,8 +1,17 @@
 <template>
   <div>
-    <div class="container">
-      <h1 class="title title-1">Admin</h1>
-    </div>
+    <header class="page-header page-header--admin">
+      <div class="container">
+        <div class="page-header__container">
+          <div class="page-header__name page-header__name--left">
+            <h1 class="title-1">
+              <i class="fa fas fa-fw fa-dashboard"></i>
+              Admin
+            </h1>
+          </div>
+        </div>
+      </div>
+    </header>
 
     <div class="nav-wrapper">
       <div class="container">
@@ -20,6 +29,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { isAdmin } from '@/util/db';
 
 export default {
   name: 'Admin',
@@ -27,21 +37,19 @@ export default {
   computed: {
     ...mapState(['user']),
   },
-  watch: {
-    user(obj) {
-      if (!obj) return;
 
-      if (!this.user.admin) {
-        this.$router.push('/');
-      }
-    },
+  async beforeRouteEnter(to, from, next) {
+    if (await isAdmin()) {
+      next();
+    } else {
+      next('/');
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .nav-wrapper {
-  margin-top: 2rem;
   background: #eeeeee;
 }
 

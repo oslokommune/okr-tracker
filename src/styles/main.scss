@@ -4,7 +4,8 @@
 @import 'typography';
 @import 'grid';
 @import 'forms';
-@import 'product';
+@import 'page-header';
+@import '_sidebar';
 
 html,
 body {
@@ -37,7 +38,11 @@ body.using-mouse :focus {
 
   &--sidebar {
     @media screen and (min-width: 768px) {
-      padding: 0 2rem 0 16rem !important;
+      display: grid;
+      grid-gap: 4rem;
+      grid-template-areas: 'sidebar main';
+      grid-template-columns: 12rem 1fr;
+      // padding: 0 2rem 0 16rem !important;
     }
   }
 
@@ -47,12 +52,28 @@ body.using-mouse :focus {
 }
 
 .section {
-  padding: 0.5rem 0 1rem;
+  padding: 0.5rem 0;
 }
 
 .content {
-  padding-top: 1rem;
-  padding-bottom: 5rem;
+  padding: 0.5rem 0;
+
+  &--padding {
+    @media screen and (min-width: 768px) {
+      margin-top: 1rem;
+    }
+  }
+
+  &--main {
+    grid-area: main;
+  }
+  &--sidebar {
+    grid-area: sidebar;
+
+    @media screen and (min-width: 768px) {
+      margin-top: 5.5rem;
+    }
+  }
 }
 
 .narrow {

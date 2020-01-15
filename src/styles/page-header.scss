@@ -1,6 +1,6 @@
 @import './colors';
 
-.product-header {
+.page-header {
   height: 30rem;
   text-align: center;
 
@@ -11,9 +11,19 @@
 
   background: $color-yellow;
 
+  &--admin {
+    color: $color-blue;
+    background: $color-purple;
+  }
+
+  &--edit {
+    color: $color-grey-900;
+    background: $color-grey-200;
+  }
+
   &__container {
     display: grid;
-    grid-gap: 0.5rem 1rem;
+    grid-gap: 0.5rem 3rem;
 
     grid-template-rows: 4rem 3fr 14rem 3rem 1fr;
     grid-template-columns: 1fr;
@@ -30,6 +40,10 @@
     @media screen and (min-width: 768px) {
       grid-row: 3;
       grid-column: 2 / span 2;
+    }
+
+    &--left {
+      grid-column: 1 / span 3;
     }
   }
 
@@ -68,10 +82,9 @@
     display: block;
     grid-row: 3;
     grid-column: 1;
-    justify-self: center;
     box-sizing: content-box;
-    width: 12rem;
-    height: 12rem;
+    width: 13rem;
+    height: 13rem;
     object-fit: cover;
     background: #eeeeee;
 

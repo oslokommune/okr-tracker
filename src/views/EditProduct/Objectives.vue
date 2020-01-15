@@ -1,39 +1,41 @@
 <template>
-  <div>
-    <h2 class="title-2">Mål</h2>
-
-    <div class="objective">
-      <div>
-        <span class="form-label">Kvartal</span>
-        <v-select
-          class="form-group objective__select"
-          :value="chosenQuarter"
-          :options="quarters"
-          @input="setSelectedQuarter"
-        ></v-select>
-      </div>
-      <!-- <div class="add">
+  <div class="container container--sidebar">
+    <aside class="content--sidebar">
+      <div class="add">
         <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
         <add-objective
-          :chosen-quarter="chosenQuarter"
           v-if="expand"
-          @close-menu="closeMenu"
-          :product-id="product.id"
+          @close-menu="expand = false"
+          :productref="docref"
+          :selected-quarter="selectedQuarter"
         ></add-objective>
-      </div> -->
-    </div>
-    <!-- <div class="content">
+      </div>
+    </aside>
+    <main class="content--main content--padding section">
+      <h2 class="title-2">Administrer mål</h2>
 
-      <transition-group name="grid-animation" tag="div" class="grid-3">
-        <edit-objective
-          v-for="objective in product.children"
-          :key="objective.id"
-          :objective="objective"
-          class="grid-animation-item"
-        ></edit-objective>
-      </transition-group>
+      <div class="objective">
+        <div class="form-row">
+          <v-select
+            class="form-group objective__select"
+            label="name"
+            v-model="selectedQuarter"
+            :options="quarters"
+          ></v-select>
+        </div>
+      </div>
 
-    </div> -->
+      <div class="content">
+        <transition-group name="grid-animation" tag="div" class="grid-3">
+          <edit-objective
+            v-for="ref in objectiveRefs"
+            :key="ref.id"
+            :objective-ref="ref"
+            class="grid-animation-item"
+          ></edit-objective>
+        </transition-group>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -50,10 +52,33 @@ export default {
 
   data: () => ({
     expand: false,
+    objectiveRefs: [],
+    selectedQuarter: null,
   }),
 
+  computed: {
+    ...mapState(['quarters']),
+  },
+
+  watch: {
+    selectedQuarter(quarter) {
+      this.docref
+        .collection('objectives')
+        .where('quarter', '==', quarter.name)
+        .where('archived', '==', false)
+        .onSnapshot(snapshot => {
+          this.objectiveRefs = snapshot.docs;
+        });
+    },
+  },
+
+  mounted() {
+    const [firstQuarter] = this.quarters;
+    this.selectedQuarter = firstQuarter;
+  },
+
   props: {
-    docRef: {
+    docref: {
       type: Object,
       required: true,
     },
@@ -63,6 +88,8 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
 
@@ -75,7 +102,10 @@ export default {
 
 .add {
   position: relative;
-  margin: 2rem 0;
+
+  .btn {
+    width: 100%;
+  }
 }
 
 .grid-animation-item {

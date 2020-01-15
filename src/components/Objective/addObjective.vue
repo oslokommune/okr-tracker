@@ -4,11 +4,23 @@
     <v-select
       class="form-group"
       :class="{ 'form-group--error': $v.quarter.$error }"
-      :value="quarter"
-      :options="availableQuarters"
-      @input="setSelectedQuarter"
+      label="name"
+      :options="quarters"
+      v-model="quarter"
     ></v-select>
     <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+
+    <div class="title title-3">
+      <i :class="`fas fa-${icon}`"></i>
+    </div>
+    <span class="form-label">Ikon</span>
+    <v-select class="form-group" :options="icons" v-model="icon">
+      <template v-slot:option="option">
+        <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+        <span>{{ option.label }}</span>
+      </template>
+    </v-select>
+
     <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
       <span class="form-label">Tittel</span>
       <input type="text" v-model="$v.title.$model" />
@@ -26,25 +38,30 @@
 </template>
 
 <script>
-import { addQuarters, getYear, getQuarter } from 'date-fns';
 import { required } from 'vuelidate/lib/validators';
-import uniqid from 'uniqid';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
     title: '',
-    quarter: '',
+    icon: 'trophy',
     body: '',
     submit: false,
     showInfo: false,
     info: '',
+    quarter: null,
   }),
 
   props: {
-    productId: {
-      type: String,
+    productref: {
+      type: Object,
       required: true,
+    },
+    selectedQuarter: {
+      type: Object,
+      required: false,
+      default: null,
     },
   },
 
@@ -61,47 +78,25 @@ export default {
   },
 
   mounted() {
-    this.quarter = this.chosenQuarter;
+    const [firstQuarter] = this.quarters;
+    this.quarter = firstQuarter;
   },
 
   computed: {
-    ...mapGetters(['products']),
-    ...mapState(['chosenQuarter']),
+    ...mapState(['quarters', 'icons']),
 
     newObjective() {
       return {
-        id: uniqid(),
         objective_title: this.title,
         objective_body: this.body,
-        quarter: this.quarter,
-        product_id: this.productId,
+        icon: this.icon || 'trophy',
+        quarter: this.quarter.name,
+        archived: false,
       };
-    },
-
-    availableQuarters() {
-      let from = new Date(2019, 1, 1);
-      const to = new Date();
-      const quarters = [];
-      // TODO: write less shit code
-      while (to > from) {
-        const year = getYear(from);
-        const quarter = getQuarter(from);
-
-        quarters.push(`${year} Q${quarter}`);
-        from = addQuarters(from, 1);
-      }
-
-      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-      from = addQuarters(from, 1);
-      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-
-      return quarters;
     },
   },
 
   methods: {
-    ...mapActions(['addObjective', 'addObject']),
-
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.quarter = value;
@@ -113,18 +108,15 @@ export default {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.addObjective(this.newObjective)
+
+        this.productref
+          .collection('objectives')
+          .add(this.newObjective)
           .then(() => {
-            this.setSubmitInfo(false, false, '');
-            this.$emit('close-menu', false);
-            this.title = '';
-            this.body = '';
-            this.quarter = '';
+            this.$emit('close-menu');
+            Toast.addedObjective(this.quarter.name);
           })
-          .catch(e => {
-            this.setSubmitInfo(false, true, 'Noe gikk galt');
-            throw new Error(e);
-          });
+          .catch(Toast.error);
       }
     },
 

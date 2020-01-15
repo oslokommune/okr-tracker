@@ -1,23 +1,38 @@
 <template>
-  <div class="item" :class="{ loading }">
+  <div class="item" :class="{ loading }" v-if="objective">
     <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_title.$error }">
       <span class="form-label">Tittel</span>
       <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
     </label>
     <div class="form-group--error" v-if="$v.objective.objective_title.$error">Kan ikke være tom</div>
+
+    <div class="title title-3">
+      <i :class="`fas fa-${objective.icon}`"></i>
+    </div>
+    <span class="form-label">Ikon</span>
+    <v-select class="form-group" :options="icons" v-model="objective.icon">
+      <template v-slot:option="option">
+        <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+        <span>{{ option.label }}</span>
+      </template>
+    </v-select>
+
     <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
       <span class="form-label">Beskrivelse</span>
       <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
     </label>
-    <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
-    <span class="form-label">Kvartal</span>
-    <v-select
-      :class="{ 'form-group--error': $v.quarter.$error }"
-      class="form-group"
-      :value="quarter"
-      :options="quarters"
-      @input="setSelectedQuarter"
-    ></v-select>
+
+    <div class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
+      <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
+      <span class="form-label">Kvartal</span>
+      <v-select
+        v-if="quarters"
+        :class="{ 'form-group--error': $v.objective.quarter.$error }"
+        label="name"
+        :options="quarters"
+        v-model="objective.quarter"
+      ></v-select>
+    </div>
 
     <div class="item__footer">
       <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
@@ -30,12 +45,14 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
+import { serializeDocument } from '@/util/db';
 
 export default {
   props: {
-    objective: {
+    objectiveRef: {
       type: Object,
       required: true,
     },
@@ -49,96 +66,68 @@ export default {
       objective_body: {
         required,
       },
-    },
-    quarter: {
-      required,
+      quarter: { required },
     },
   },
 
   data: () => ({
-    quarter: '',
     submit: false,
     showInfo: false,
     info: '',
     loading: false,
+    objective: null,
   }),
-
-  mounted() {
-    if (this.objective === undefined) return;
-    this.quarter = this.objective.quarter;
+  computed: {
+    ...mapState(['quarters', 'icons']),
   },
 
-  computed: {
-    ...mapGetters(['getDistinctQuarters']),
+  mounted() {
+    if (this.objectiveRef === undefined) return;
 
-    quarters() {
-      return this.getDistinctQuarters(this.$route.params.id);
-    },
+    this.objectiveRef.ref.onSnapshot(snapshot => {
+      this.objective = serializeDocument(snapshot);
+    });
   },
 
   methods: {
-    ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject', 'getAllData']),
-
-    setSelectedQuarter(value) {
-      this.$v.quarter.$touch();
-      this.objective.edited = true;
-      this.quarter = value;
-    },
-
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.updateObjective(objective)
-          .then(() => {
-            this.updateObject({
-              key: 'Objectives',
-              data: objective,
-            });
-          })
+
+        this.objectiveRef.ref
+          .update(objective)
           .then(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
+            Toast.savedChanges();
           })
           .catch(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Noe gikk galt');
+            Toast.error();
           });
       }
     },
 
     deleteObj(objective) {
       this.loading = true;
-      this.deleteObjective(objective)
+      this.objective.ref
+        .update({ archived: true })
         .then(() => {
-          this.$toasted.show(`Slettet «${objective.objective_title}»`, {
-            action: [
-              {
-                text: 'Angre',
-                onClick: (e, toastObject) => {
-                  objective.archived = '';
-                  this.updateObjective(objective)
-                    .then(() => {
-                      return this.getAllData();
-                    })
-                    .then(() => {
-                      toastObject.goAway(0);
-                    });
-                },
-              },
-              {
-                text: 'Lukk',
-                onClick: (e, toastObject) => {
-                  toastObject.goAway(0);
-                },
-              },
-            ],
-          });
+          const { ref } = this.objectiveRef;
+
+          Toast.deletedRegret({ name: objective.objective_title, ref });
+          this.objective = null;
+          return true;
         })
         .then(() => {
           this.loading = false;
+        })
+        .catch(err => {
+          throw new Error(err);
         });
     },
 
@@ -153,13 +142,14 @@ export default {
 
 <style lang="scss" scoped>
 .item {
-  padding: 2rem;
+  padding: 0.5rem 1.5rem 1.5rem;
   background: #fbfbfb;
   border: 1px solid #eaeaea;
 
   &__footer {
     display: flex;
     justify-content: space-between;
+    margin-top: 3rem;
   }
 
   &.loading {

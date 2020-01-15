@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
-    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
+    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
+    "deploy": "npm run build && firebase deploy --project=production"
   },
   "dependencies": {
     "blueimp-canvas-to-blob": "^3.17.0",
@@ -20,6 +21,7 @@
     "obj-traverse": "^1.0.0",
     "uniqid": "^5.1.0",
     "vue": "^2.6.10",
+    "vue-click-outside": "^1.0.7",
     "vue-gapi": "0.0.10",
     "vue-image-upload-resize": "^2.2.1",
     "vue-resize": "^0.4.5",
@@ -37,7 +39,7 @@
     "@vue/eslint-config-airbnb": "^5.0.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.0.3",
-    "eslint": "^6.7.0",
+    "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.0.1",
     "node-sass": "^4.13.0",

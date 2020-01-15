@@ -46,6 +46,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -149,27 +150,7 @@ export default {
 
     deleteObject() {
       this.$router.push({ name: 'edit-product-keyres' });
-      this.deleteKeyRes(this.keyResObject).then(() => {
-        this.$toasted.show(`Slettet nøkkelresultat`, {
-          action: [
-            {
-              text: 'Angre',
-              onClick: (e, toastObject) => {
-                this.updateKeyRes(this.keyResObject).then(() => {
-                  this.getAllData();
-                  toastObject.goAway(0);
-                });
-              },
-            },
-            {
-              text: 'Lukk',
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
-      });
+      this.deleteKeyRes(this.keyResObject).then(Toast.deleteKeyres.bind(this));
     },
 
     setSelectedObjective(objective) {

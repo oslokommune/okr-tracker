@@ -9,7 +9,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-import { handleUserAuthStateChange } from './util/initializeApp';
+import handleUserAuthStateChange from '@/util/authChangeHelper';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
@@ -37,7 +37,7 @@ Vue.config.productionTip = false;
 // handle page reloads
 let app;
 fb.auth.onAuthStateChanged(user => {
-  handleUserAuthStateChange(user);
+  handleUserAuthStateChange.call(app, user);
 
   if (!app) {
     app = new Vue({
