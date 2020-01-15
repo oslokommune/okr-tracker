@@ -2,37 +2,37 @@
   <div class="popout">
     <span class="form-label">Kvartal</span>
     <v-select
-      class="form-group"
-      :class="{ 'form-group--error': $v.quarter.$error }"
+      class="form-field"
+      :class="{ 'form-field--error': $v.quarter.$error }"
       label="name"
       :options="quarters"
       v-model="quarter"
     ></v-select>
-    <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
 
     <div class="title title-3">
       <i :class="`fas fa-${icon}`"></i>
     </div>
     <span class="form-label">Ikon</span>
-    <v-select class="form-group" :options="icons" v-model="icon">
+    <v-select class="form-field" :options="icons" v-model="icon">
       <template v-slot:option="option">
         <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
         <span>{{ option.label }}</span>
       </template>
     </v-select>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.title.$error }">
       <span class="form-label">Tittel</span>
       <input type="text" v-model="$v.title.$model" />
     </label>
-    <div class="form-group--error" v-if="$v.title.$error">Kan ikke være tom</div>
-    <label class="form-group" :class="{ 'form-group--error': $v.body.$error }">
+    <div class="form-field--error" v-if="$v.title.$error">Kan ikke være tom</div>
+    <label class="form-field" :class="{ 'form-field--error': $v.body.$error }">
       <span class="form-label">Beskrivelse</span>
       <textarea v-model="$v.body.$model" rows="4"></textarea>
     </label>
-    <div class="form-group--error" v-if="$v.body.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.body.$error">Kan ikke være tom</div>
     <button :disabled="submit" class="btn" @click="send">Legg til</button>
-    <button class="btn" @click="$emit('close-menu', false)">Lukk</button>
+    <button class="btn" @click="$emit('close-menu')">Lukk</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>

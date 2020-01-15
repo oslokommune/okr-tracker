@@ -1,28 +1,30 @@
 <template>
   <div class="container container--sidebar">
     <aside class="content--sidebar">
-      <div class="add">
-        <button class="btn btn--ghost" @click="expand = true" :disabled="expand">+ Legg til nytt mål</button>
+      <div class="add-object-modal-wrapper" v-click-outside="closeModal">
+        <button class="btn btn--ghost btn--fw" @click="openModal" :disabled="modalIsOpen">
+          <i class="fa far fa-plus fa-fw"></i>Legg til nytt mål
+        </button>
         <add-objective
-          v-if="expand"
-          @close-menu="expand = false"
+          v-if="modalIsOpen"
+          @close-menu="closeModal"
+          style="width:300px;"
           :productref="docref"
           :selected-quarter="selectedQuarter"
         ></add-objective>
       </div>
     </aside>
     <main class="content--main content--padding section">
-      <h2 class="title-2">Administrer mål</h2>
-
-      <div class="objective">
-        <div class="form-row">
-          <v-select
-            class="form-group objective__select"
-            label="name"
-            v-model="selectedQuarter"
-            :options="quarters"
-          ></v-select>
-        </div>
+      <div class="content-header">
+        <h2 class="title-2">Administrer mål</h2>
+        <span class="quarter-selector__label">Velg kvartal</span>
+        <v-select
+          v-if="quarters"
+          label="name"
+          class="quarter-selector__selector"
+          :options="quarters"
+          v-model="selectedQuarter"
+        ></v-select>
       </div>
 
       <div class="content">
@@ -40,6 +42,8 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
+
 import { mapState } from 'vuex';
 import AddObjective from '@/components/Objective/addObjective.vue';
 import EditObjective from '@/components/Objective/editObjective.vue';
@@ -51,7 +55,7 @@ export default {
   },
 
   data: () => ({
-    expand: false,
+    modalIsOpen: false,
     objectiveRefs: [],
     selectedQuarter: null,
   }),
@@ -77,6 +81,19 @@ export default {
     this.selectedQuarter = firstQuarter;
   },
 
+  methods: {
+    openModal() {
+      this.modalIsOpen = true;
+    },
+    closeModal() {
+      this.modalIsOpen = false;
+    },
+  },
+
+  directives: {
+    ClickOutside,
+  },
+
   props: {
     docref: {
       type: Object,
@@ -87,30 +104,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.objective {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-
-  &__select {
-    min-width: 200px;
-    margin-right: 1rem;
-    transform: translateY(-3px);
-  }
-}
-
-.add {
-  position: relative;
-
-  .btn {
-    width: 100%;
-  }
-}
-
 .grid-animation-item {
   display: inline-block;
-  margin-right: 10px;
   transform: scaleX(1);
   transition: all 0.5s;
 }

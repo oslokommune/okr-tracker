@@ -22,9 +22,11 @@
     <nav class="sub-nav">
       <div class="container container--sidebar">
         <div class="content--main">
-          <router-link class="sub-nav__element" exact :to="{ name: 'edit-product' }">Detaljer</router-link>
-          <router-link class="sub-nav__element" :to="{ name: 'edit-product-objectives' }">Mål</router-link>
-          <!-- <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">Nøkkelresultater</router-link> -->
+          <router-link class="sub-nav__element" exact :to="{ name: 'edit-product' }">Produkt</router-link>
+          <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">
+            Mål og nøkkelresultater
+          </router-link>
+          <router-link class="sub-nav__element" exact :to="{ name: 'home' }">Team</router-link>
         </div>
       </div>
     </nav>

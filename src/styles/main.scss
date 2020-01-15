@@ -39,9 +39,9 @@ body.using-mouse :focus {
   &--sidebar {
     @media screen and (min-width: 768px) {
       display: grid;
-      grid-gap: 4rem;
+      grid-gap: 3rem;
       grid-template-areas: 'sidebar main';
-      grid-template-columns: 12rem 1fr;
+      grid-template-columns: 13rem 1fr;
       // padding: 0 2rem 0 16rem !important;
     }
   }
@@ -86,8 +86,8 @@ body.using-mouse :focus {
 
 .popout {
   position: absolute;
-  top: 3.5rem;
-  left: -2rem;
+  top: 1.75rem;
+  left: 0rem;
   z-index: 100;
   width: 100%;
   min-width: 320px;
@@ -149,4 +149,26 @@ hr {
   margin: 1.5rem 0 1rem;
   background: rgba($color-border, 0.3);
   border: none;
+}
+
+.add-object-modal-wrapper {
+  position: relative;
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+
+  .quarter-selector {
+    &__label {
+      margin-right: 1rem;
+      margin-left: auto;
+    }
+
+    &__selector {
+      flex-basis: 12rem;
+    }
+  }
 }

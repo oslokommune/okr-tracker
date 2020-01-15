@@ -19,7 +19,7 @@
 
     <div class="container container--sidebar">
       <section class="section page-menu content--sidebar">
-        <label class="form-group">
+        <label class="form-field">
           <span class="form-label">Endre bilde</span>
           <image-uploader
             class="image-uploader"

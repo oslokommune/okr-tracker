@@ -3,12 +3,12 @@
     <h2 class="title title-2">Administrer produktområde</h2>
 
     <div class="section">
-      <label class="form-group">
+      <label class="form-field">
         <span class="form-label">Navn</span>
         <input type="text" v-model="obj.name" />
       </label>
 
-      <label class="form-group">
+      <label class="form-field">
         <span class="form-label">Bilde</span>
         <img v-if="obj.photoURL" :src="obj.photoURL" />
 
@@ -26,7 +26,7 @@
         ></image-uploader>
       </label>
 
-      <label class="form-group">
+      <label class="form-field">
         <span class="form-label">Mission statement</span>
         <textarea rows="4" v-model="obj.mission_statement"></textarea>
       </label>

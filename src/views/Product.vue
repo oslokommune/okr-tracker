@@ -42,7 +42,7 @@
               >
                 <i class="fa fas fa-fw fa-edit"></i>Endre produkt</router-link
               >
-              <div class="addObjective">
+              <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
                 <div class="sidebar-nav__item" @click="expandAddObjective = true">
                   <i class="fa fas fa-fw fa-plus"></i>Legg til mål
                 </div>
@@ -53,7 +53,19 @@
                   @close-menu="expandAddObjective = false"
                 ></add-objective>
               </div>
-              <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat</div>
+
+              <div class="add-object-menu-wrapper" v-click-outside="closeAddKeyres">
+                <div class="sidebar-nav__item" @click="expandAddKeyRes = true">
+                  <i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat
+                </div>
+                <add-keyres
+                  v-if="expandAddKeyRes"
+                  @close-menu="expandAddKeyRes = false"
+                  :productref="product.ref"
+                  :selected-quarter-name="activeQuarter.name"
+                ></add-keyres>
+              </div>
+
               <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-chart-line"></i>Oppdater data</div>
             </template>
             <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
@@ -95,9 +107,11 @@
 
 <script>
 import { mapState } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { serializeDocument, productFromSlug } from '@/util/db';
 
 import AddObjective from '@/components/Objective/addObjective.vue';
+import AddKeyres from '@/components/KeyRes/addKeyres.vue';
 import TheObjective from '@/components/TheObjective.vue';
 
 export default {
@@ -109,10 +123,12 @@ export default {
     team: [],
     activeQuarter: null,
     expandAddObjective: false,
+    expandAddKeyRes: false,
   }),
 
   components: {
     AddObjective,
+    AddKeyres,
     TheObjective,
   },
 
@@ -156,6 +172,16 @@ export default {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
     },
+
+    closeAddObjective() {
+      this.expandAddObjective = false;
+    },
+    closeAddKeyres() {
+      this.expandAddKeyRes = false;
+    },
+  },
+  directives: {
+    ClickOutside,
   },
 };
 </script>
@@ -163,7 +189,7 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/colors';
 
-.addObjective {
+.add-object-menu-wrapper {
   position: relative;
 }
 
