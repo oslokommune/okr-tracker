@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Progressbar from './ProgressBar.vue';
+import Progressbar from '../ProgressBar.vue';
 
 export default {
   components: {
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
+@import '@/styles/_colors';
 
 .objective {
   max-width: 400px;

@@ -39,7 +39,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { productListener, isTeamMemberOfProduct } from '../util/db';
+import { productListener, isTeamMemberOfProduct } from '@/util/db';
 
 export default {
   name: 'Product',

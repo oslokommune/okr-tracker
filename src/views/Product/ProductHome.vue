@@ -112,7 +112,7 @@ import { serializeDocument, productFromSlug } from '@/util/db';
 
 import AddObjective from '@/components/Objective/addObjective.vue';
 import AddKeyres from '@/components/KeyRes/addKeyres.vue';
-import TheObjective from '@/components/TheObjective.vue';
+import TheObjective from '@/components/Objective/TheObjective.vue';
 import * as Toast from '@/util/toasts';
 
 export default {
@@ -193,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
+@import '@/styles/_colors';
 
 .add-object-menu-wrapper {
   position: relative;

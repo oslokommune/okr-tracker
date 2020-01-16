@@ -14,7 +14,7 @@
         <resize-observer @notify="handleResize" />
       </div>
 
-      <edit-keyres :key-res-object="keyres" :product-object="product" class="update"></edit-keyres>
+      <!-- <edit-keyres :key-res-object="keyres" :product-object="product" class="update"></edit-keyres> -->
       <div class="values">
         <h3 class="title-3">Registrerte målepunkter</h3>
         <table class="table">
@@ -38,13 +38,13 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import TheObjective from '@/components/TheObjective.vue';
-import EditKeyres from '@/components/KeyRes/editKeyres.vue';
+import TheObjective from '@/components/Objective/TheObjective.vue';
+// import EditKeyres from '@/components/KeyRes/editKeyres.vue';
 import Linechart from '@/util/linechart';
 
 export default {
   components: {
-    EditKeyres,
+    // EditKeyres,
     TheObjective,
   },
 

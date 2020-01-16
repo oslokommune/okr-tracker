@@ -73,8 +73,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import { getOrgs, getDepartments, getProducts } from '@/util/db';
-import AdminProduct from '@/components/admin/AdminProduct.vue';
-import AdminDepartment from '@/components/admin/AdminDepartment.vue';
+import AdminProduct from './components/AdminProduct.vue';
+import AdminDepartment from './components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
 
 export default {

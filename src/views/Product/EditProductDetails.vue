@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AdminProduct from '@/components/admin/AdminProduct.vue';
+import AdminProduct from '@/views/Admin/components/AdminProduct.vue';
 
 export default {
   components: {
