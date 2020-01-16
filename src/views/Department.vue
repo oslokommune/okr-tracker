@@ -1,20 +1,6 @@
 <template>
   <div v-if="department">
-    <header class="page-header page-header--department">
-      <div class="container">
-        <div class="page-header__container">
-          <div class="page-header__name">
-            <h1 class="title-1">{{ department.name }}</h1>
-          </div>
-
-          <img
-            :src="department.photoURL || '/placeholder-image.svg'"
-            :alt="`Profilbilde for ${department.name}`"
-            class="page-header__profile-image"
-          />
-        </div>
-      </div>
-    </header>
+    <PageHeader :data="department || {}"></PageHeader>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
@@ -110,8 +96,9 @@ import { mapState } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { serializeDocument, departmentFromSlug } from '@/util/db';
 
+import PageHeader from '@/components/PageHeader.vue';
 import AddObjective from '@/components/Objective/addObjective.vue';
-import TheObjective from '@/components/TheObjective.vue';
+import TheObjective from '@/components/Objective/TheObjective.vue';
 import AddKeyres from '@/components/KeyRes/addKeyres.vue';
 
 export default {
@@ -128,6 +115,7 @@ export default {
   }),
 
   components: {
+    PageHeader,
     AddObjective,
     AddKeyres,
     TheObjective,

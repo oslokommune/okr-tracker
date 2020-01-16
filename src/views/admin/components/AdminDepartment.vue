@@ -45,7 +45,7 @@
 <script>
 import { storage } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
-import slugify from '../../util/slugify';
+import slugify from '@/util/slugify';
 
 export default {
   data: () => ({

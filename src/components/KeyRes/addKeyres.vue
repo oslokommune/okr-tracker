@@ -106,7 +106,7 @@ export default {
         target_value: this.target_value,
         target_type: this.target_type,
         created: new Date(),
-        created_by: this.user.id,
+        created_by: this.user.ref,
         edited: null,
         edited_by: null,
         unit: this.unit,

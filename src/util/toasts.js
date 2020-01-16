@@ -87,6 +87,18 @@ export function uploadedPhoto() {
   show('Lastet opp bilde');
 }
 
+export function fourOhFour() {
+  show('Siden eksisterer ikke');
+}
+
+export function restored() {
+  show(`Gjenopprettet dokument`);
+}
+
+export function deletedPermanently() {
+  show('Slettet dokument permanent');
+}
+
 export function deletedRegret(obj) {
   const { name, ref, callback } = obj;
 

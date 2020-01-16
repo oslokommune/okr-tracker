@@ -2,15 +2,7 @@
   <div>
     <ul>
       <section v-for="org in nest" :key="org.id">
-        <header class="page-header">
-          <div class="container">
-            <div class="page-header__container">
-              <div class="page-header__name page-header__name--left">
-                <h1 class="title-1">{{ org.name }}</h1>
-              </div>
-            </div>
-          </div>
-        </header>
+        <PageHeader :data="org"></PageHeader>
         <div class="container">
           <ul class="org">
             <li v-for="dept in org.departments" class="department" :key="dept.id">
@@ -45,10 +37,14 @@
 
 <script>
 import { mapState } from 'vuex';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   computed: {
     ...mapState(['nest']),
+  },
+  components: {
+    PageHeader,
   },
 };
 </script>

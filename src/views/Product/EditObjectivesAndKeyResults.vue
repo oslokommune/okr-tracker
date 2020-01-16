@@ -42,6 +42,7 @@
           >
             {{ objective.objective_title }}
           </div>
+          <div v-if="selectedQuarter" class="miller__col__item miller__col__add" @click="addProduct">+ Legg til</div>
         </div>
 
         <!-- Key results -->
@@ -159,6 +160,10 @@ export default {
         .onSnapshot(snapshot => {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
+    },
+
+    addProduct() {
+      console.log('asdf');
     },
   },
 };

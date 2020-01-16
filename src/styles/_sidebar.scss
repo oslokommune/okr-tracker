@@ -2,7 +2,11 @@
 
 .sidebar {
   &-nav {
-    margin: -1rem -0.5rem 0;
+    margin: 1.5rem 0 3rem;
+
+    @media screen and (min-width: 768px) {
+      margin: 0;
+    }
 
     &__item {
       display: inline-block;

@@ -1,23 +1,6 @@
 <template>
-  <div v-if="department">
-    <header class="page-header page-header--edit">
-      <div class="container">
-        <div class="page-header__container">
-          <router-link class="page-header__edit" :to="{ name: 'department', params: { id: $route.params.id } }">
-            Gå tilbake til {{ department.name }}
-          </router-link>
-          <div class="page-header__name">
-            <h1 class="title-1">Endre «{{ department.name }}»</h1>
-          </div>
-
-          <img
-            :src="department.photoURL || '/placeholder-image.svg'"
-            :alt="`Profilbilde for ${department.name}`"
-            class="page-header__profile-image"
-          />
-        </div>
-      </div>
-    </header>
+  <div>
+    <PageHeader :data="department || {}"></PageHeader>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
@@ -31,7 +14,7 @@
       </div>
     </nav>
 
-    <div class="content">
+    <div class="content" v-if="department">
       <router-view :docref="department.ref"></router-view>
     </div>
   </div>
@@ -39,9 +22,14 @@
 
 <script>
 import { departmentListener, isAdmin } from '../util/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'Department',
+
+  components: {
+    PageHeader,
+  },
 
   data: () => ({
     department: null,

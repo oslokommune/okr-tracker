@@ -1,20 +1,6 @@
 <template>
-  <div v-if="product">
-    <header class="page-header">
-      <div class="container">
-        <div class="page-header__container">
-          <div class="page-header__name">
-            <h1 class="title-1">{{ product.name }}</h1>
-          </div>
-
-          <img
-            :src="product.photoURL || '/placeholder-image.svg'"
-            :alt="`Profilbilde for ${product.name}`"
-            class="page-header__profile-image"
-          />
-        </div>
-      </div>
-    </header>
+  <div>
+    <PageHeader :data="product || {}"></PageHeader>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
@@ -31,49 +17,16 @@
       </div>
     </nav>
 
-    <div class="content">
+    <div class="content" v-if="product">
       <div class="container container--sidebar">
-        <aside class="content--sidebar">
-          <nav class="sidebar-nav">
-            <template v-if="hasEditPermissions">
-              <router-link
-                :to="{ name: 'edit-product', params: { slug: $route.params.slug } }"
-                class="sidebar-nav__item"
-              >
-                <i class="fa fas fa-fw fa-edit"></i>Endre produkt</router-link
-              >
-              <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
-                <div class="sidebar-nav__item" @click="expandAddObjective = true">
-                  <i class="fa fas fa-fw fa-plus"></i>Legg til mål
-                </div>
-
-                <add-objective
-                  v-if="expandAddObjective"
-                  :productref="product.ref"
-                  @close-menu="expandAddObjective = false"
-                ></add-objective>
-              </div>
-
-              <div class="add-object-menu-wrapper" v-click-outside="closeAddKeyres">
-                <div class="sidebar-nav__item" @click="expandAddKeyRes = true">
-                  <i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat
-                </div>
-                <add-keyres
-                  v-if="expandAddKeyRes"
-                  @close-menu="expandAddKeyRes = false"
-                  :productref="product.ref"
-                  :selected-quarter-name="activeQuarter.name"
-                ></add-keyres>
-              </div>
-
-              <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-chart-line"></i>Oppdater data</div>
-            </template>
-            <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
-            <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk</div>
-          </nav>
-        </aside>
+        <ProductSidebar
+          :has-edit-permissions="hasEditPermissions"
+          :product="product"
+          :active-quarter="activeQuarter"
+        ></ProductSidebar>
 
         <main class="content--main content--padding">
+          <!-- Product summary -->
           <div class="grid grid-3 section">
             <div>
               <h2 class="title title-2">Oppdrag</h2>
@@ -94,10 +47,21 @@
               <h2 class="title title-2">Denne perioden</h2>
             </div>
           </div>
+
           <hr />
+
+          <!-- Objectives -->
           <section class="section">
             <h2 class="title title-2">Mål</h2>
-            <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
+            <div class="grid-3">
+              <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
+            </div>
+          </section>
+
+          <!-- Key results -->
+          <section class="section">
+            <h2 class="title title-2">Nøkkelresultater</h2>
+            <div class="grid-3"></div>
           </section>
         </main>
       </div>
@@ -107,12 +71,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import ClickOutside from 'vue-click-outside';
 import { serializeDocument, productFromSlug } from '@/util/db';
 
-import AddObjective from '@/components/Objective/addObjective.vue';
-import AddKeyres from '@/components/KeyRes/addKeyres.vue';
-import TheObjective from '@/components/TheObjective.vue';
+import PageHeader from '@/components/PageHeader.vue';
+import TheObjective from '@/components/Objective/TheObjective.vue';
+import ProductSidebar from './components/ProductSidebar.vue';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Department',
@@ -120,16 +84,15 @@ export default {
   data: () => ({
     product: null,
     objectives: [],
+    key_results: [],
     team: [],
     activeQuarter: null,
-    expandAddObjective: false,
-    expandAddKeyRes: false,
   }),
 
   components: {
-    AddObjective,
-    AddKeyres,
+    PageHeader,
     TheObjective,
+    ProductSidebar,
   },
 
   computed: {
@@ -150,6 +113,11 @@ export default {
     },
 
     async product(prod) {
+      if (prod.archived) {
+        Toast.fourOhFour();
+        this.$router.push('/');
+      }
+
       const teamPromises = prod.team.map(d => d.get());
       this.team = await Promise.all(teamPromises).then(d => d.map(serializeDocument));
     },
@@ -172,26 +140,12 @@ export default {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
     },
-
-    closeAddObjective() {
-      this.expandAddObjective = false;
-    },
-    closeAddKeyres() {
-      this.expandAddKeyRes = false;
-    },
-  },
-  directives: {
-    ClickOutside,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
-
-.add-object-menu-wrapper {
-  position: relative;
-}
+@import '@/styles/_colors';
 
 .sub-nav__element {
   cursor: pointer;

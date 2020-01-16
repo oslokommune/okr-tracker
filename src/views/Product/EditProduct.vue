@@ -1,23 +1,6 @@
 <template>
   <div v-if="product">
-    <header class="page-header page-header--edit">
-      <div class="container">
-        <div class="page-header__container">
-          <router-link class="page-header__edit" :to="{ name: 'product', params: { id: $route.params.id } }">
-            Gå tilbake til {{ product.name }}
-          </router-link>
-          <div class="page-header__name">
-            <h1 class="title-1">Endre «{{ product.name }}»</h1>
-          </div>
-
-          <img
-            :src="product.photoURL || '/placeholder-image.svg'"
-            :alt="`Profilbilde for ${product.name}`"
-            class="page-header__profile-image"
-          />
-        </div>
-      </div>
-    </header>
+    <PageHeader :data="product"></PageHeader>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
@@ -39,10 +22,15 @@
 
 <script>
 import { mapState } from 'vuex';
-import { productListener, isTeamMemberOfProduct } from '../util/db';
+import { productListener, isTeamMemberOfProduct } from '@/util/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'Product',
+
+  components: {
+    PageHeader,
+  },
 
   data: () => ({
     product: null,

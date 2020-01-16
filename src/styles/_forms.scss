@@ -103,7 +103,9 @@ textarea {
     width: 100%;
   }
 
-  & > .fa {
+  & > .fa,
+  & > .far,
+  & > .fas {
     margin-right: 0.5rem;
   }
 
@@ -172,5 +174,15 @@ textarea {
       transition: all 0.3s ease-in-out;
       content: '';
     }
+  }
+
+  &__wrapper {
+    display: flex;
+    align-content: baseline;
+  }
+
+  &__label {
+    display: inline-block;
+    margin-right: 1rem;
   }
 }

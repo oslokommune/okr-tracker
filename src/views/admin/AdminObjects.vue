@@ -8,8 +8,17 @@
       </p>
     </section>
     <hr />
+
+    <div class="toggle__wrapper">
+      <span class="toggle__label">Vis arkiverte objekter</span>
+      <label class="toggle">
+        <input class="toggle__input" type="checkbox" v-model="showArchived" />
+        <span class="toggle__switch"></span>
+      </label>
+    </div>
+
     <div class="miller">
-      <div class="miller__col">
+      <div class="miller__col" :class="{ active: selection.type === 'organisation' }">
         <h3 class="miller__col__header">Velg organisasjon</h3>
         <div
           class="miller__col__item"
@@ -22,7 +31,7 @@
         </div>
       </div>
 
-      <div class="miller__col">
+      <div class="miller__col" :class="{ active: selection.type === 'department' }">
         <h3 class="miller__col__header">Velg produktområde</h3>
         <div
           class="miller__col__item"
@@ -32,11 +41,12 @@
           :class="{ active: selectedDeptId === dept.id }"
         >
           {{ dept.name }}
+          <i v-if="dept.archived" class="fa fas fa-history"></i>
         </div>
         <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">+ Legg til</div>
       </div>
 
-      <div class="miller__col">
+      <div class="miller__col" :class="{ active: selection.type === 'product' }">
         <h3 class="miller__col__header">Velg produkt</h3>
         <div
           class="miller__col__item"
@@ -46,6 +56,8 @@
           :class="{ active: selectedProductId === product.id }"
         >
           {{ product.name }}
+
+          <i v-if="product.archived" class="fa fas fa-history"></i>
         </div>
         <div v-if="selectedDeptId" class="miller__col__item miller__col__add" @click="addProduct">+ Legg til</div>
       </div>
@@ -61,8 +73,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import { getOrgs, getDepartments, getProducts } from '@/util/db';
-import AdminProduct from '@/components/admin/AdminProduct.vue';
-import AdminDepartment from '@/components/admin/AdminDepartment.vue';
+import AdminProduct from './components/AdminProduct.vue';
+import AdminDepartment from './components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
 
 export default {
@@ -77,6 +89,7 @@ export default {
     selectedOrgId: null,
     selectedDeptId: null,
     selectedProductId: null,
+    showArchived: false,
   }),
 
   computed: {
@@ -109,13 +122,13 @@ export default {
       this.depts = [];
       this.products = [];
       this.selectedProductId = null;
-      getDepartments.call(this, this.selectedOrgId);
+      getDepartments.call(this, this.selectedOrgId, this.showArchived);
     },
 
     selectDept(val) {
       this.selectedDeptId = val;
       this.selectedProductId = null;
-      getProducts.call(this, this.selectedOrgId, this.selectedDeptId);
+      getProducts.call(this, this.selectedOrgId, this.selectedDeptId, this.showArchived);
     },
 
     selectProduct(val) {
@@ -151,7 +164,18 @@ export default {
   },
 
   mounted() {
-    getOrgs.call(this);
+    getOrgs.call(this, this.showArchived);
+  },
+
+  watch: {
+    showArchived(value) {
+      this.selectedOrgId = null;
+      this.selectedDeptId = null;
+      this.products = [];
+      this.depts = [];
+
+      getOrgs.call(this, value);
+    },
   },
 };
 </script>

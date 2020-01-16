@@ -1,21 +1,6 @@
 <template>
   <div v-if="user">
-    <header class="page-header">
-      <div class="container">
-        <div class="page-header__container">
-          <div class="page-header__name" contenteditable @blur="updateName">
-            <h1 class="title-1" ref="name">{{ user.displayName }}</h1>
-          </div>
-
-          <img
-            v-if="user.photoURL"
-            :src="user.photoURL"
-            :alt="`Profilbilde for ${user.name}`"
-            class="page-header__profile-image"
-          />
-        </div>
-      </div>
-    </header>
+    <PageHeader :data="user"></PageHeader>
 
     <div class="container container--sidebar">
       <section class="section page-menu content--sidebar">
@@ -59,6 +44,7 @@
 import { mapState } from 'vuex';
 import { storage } from '@/config/firebaseConfig';
 import { myProductsListener, isDashboardUser } from '@/util/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'Profile',
@@ -67,6 +53,10 @@ export default {
     uploading: false,
     products: [],
   }),
+
+  components: {
+    PageHeader,
+  },
 
   beforeRouteEnter(to, from, next) {
     if (isDashboardUser()) {

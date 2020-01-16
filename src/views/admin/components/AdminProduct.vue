@@ -2,6 +2,8 @@
   <div v-if="product" class="section">
     <h2 class="title title-2">Administrer produkt</h2>
 
+    <CalloutArchivedRestore v-if="product.archived" :docref="docref"></CalloutArchivedRestore>
+
     <div class="section form-group">
       <label class="form-field">
         <span class="form-label">Produktnavn</span>
@@ -60,6 +62,7 @@ import { mapState } from 'vuex';
 import { storage } from '@/config/firebaseConfig';
 import slugify from '@/util/slugify';
 import * as Toast from '@/util/toasts';
+import CalloutArchivedRestore from '@/components/Callouts/CalloutArchivedRestore.vue';
 
 export default {
   data: () => ({
@@ -68,6 +71,10 @@ export default {
 
   computed: {
     ...mapState(['users', 'user']),
+  },
+
+  components: {
+    CalloutArchivedRestore,
   },
 
   props: {
@@ -103,7 +110,7 @@ export default {
     async deleteObject() {
       await this.docref
         .update({ archived: true })
-        .then(Toast.deleted)
+        .then(Toast.deletedRegret)
         .catch(Toast.error);
 
       this.product = null;
