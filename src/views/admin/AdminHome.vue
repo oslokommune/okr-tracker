@@ -1,17 +1,6 @@
 <template>
   <div>
-    <header class="page-header page-header--admin">
-      <div class="container">
-        <div class="page-header__container">
-          <div class="page-header__name page-header__name--left">
-            <h1 class="title-1">
-              <i class="fa fas fa-fw fa-dashboard"></i>
-              Admin
-            </h1>
-          </div>
-        </div>
-      </div>
-    </header>
+    <PageHeader :data="{ name: 'Admin' }"></PageHeader>
 
     <div class="nav-wrapper">
       <div class="container">
@@ -30,12 +19,17 @@
 <script>
 import { mapState } from 'vuex';
 import { isAdmin } from '@/util/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'Admin',
 
   computed: {
     ...mapState(['user']),
+  },
+
+  components: {
+    PageHeader,
   },
 
   async beforeRouteEnter(to, from, next) {
