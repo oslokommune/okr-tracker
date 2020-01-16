@@ -113,14 +113,14 @@ export async function isTeamMemberOfProduct(slugOrRef) {
  * Binds all organisations to `this.orgs` at caller
  * returns {void}
  */
-export async function getOrgs() {
+export async function getOrgs(includeArchived = false) {
   const ref = await db.collection('orgs');
 
   ref.onSnapshot(snapshot => {
     this.orgs = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
     this.selectedOrgId = this.orgs[0].id;
 
-    getDepartments.call(this, this.selectedOrgId);
+    getDepartments.call(this, this.selectedOrgId, includeArchived);
   });
 }
 
@@ -129,8 +129,12 @@ export async function getOrgs() {
  * @param {String} orgId - Organisation id
  * @returns {void}
  */
-export async function getDepartments(orgId) {
-  const ref = db.collection(`orgs/${orgId}/departments`).where('archived', '==', false);
+export async function getDepartments(orgId, includeArchived = false) {
+  let ref = db.collection(`orgs/${orgId}/departments`);
+
+  if (!includeArchived) {
+    ref = ref.where('archived', '==', false);
+  }
 
   ref.onSnapshot(snapshot => {
     this.depts = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
@@ -143,8 +147,12 @@ export async function getDepartments(orgId) {
  * @param {String} dept - Department id
  * @returns {void}
  */
-export async function getProducts(org, dept) {
-  const collectionRef = db.collection(`orgs/${org}/departments/${dept}/products`).where('archived', '==', false);
+export async function getProducts(org, dept, includeArchived = false) {
+  let collectionRef = db.collection(`orgs/${org}/departments/${dept}/products`);
+
+  if (!includeArchived) {
+    collectionRef = collectionRef.where('archived', '==', false);
+  }
 
   collectionRef.onSnapshot(snapshot => {
     this.products = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));

@@ -113,6 +113,7 @@ import { serializeDocument, productFromSlug } from '@/util/db';
 import AddObjective from '@/components/Objective/addObjective.vue';
 import AddKeyres from '@/components/KeyRes/addKeyres.vue';
 import TheObjective from '@/components/TheObjective.vue';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Product',
@@ -150,6 +151,11 @@ export default {
     },
 
     async product(prod) {
+      if (prod.archived) {
+        Toast.fourOhFour();
+        this.$router.push('/');
+      }
+
       const teamPromises = prod.team.map(d => d.get());
       this.team = await Promise.all(teamPromises).then(d => d.map(serializeDocument));
     },
