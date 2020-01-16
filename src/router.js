@@ -5,10 +5,12 @@ import TheLogin from './views/Login.vue';
 import TheProfile from './views/Profile.vue';
 import Product from './views/Product.vue';
 import EditProduct from './views/EditProduct.vue';
-import AdminProductBasics from './views/EditProduct/BasicInfo.vue';
+import AdminBasicInfo from './views/EditProduct/BasicInfo.vue';
 import EditObjectivesAndKeyResults from './views/EditProduct/EditObjectivesAndKeyResults.vue';
+import Department from './views/Department.vue';
 
 import { auth } from './config/firebaseConfig';
+import EditDepartment from './views/EditDepartment.vue';
 
 const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/admin/AdminHome.vue');
 const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/admin/AdminUsers.vue');
@@ -45,8 +47,23 @@ const routes = [
     path: '/product/:slug/edit',
     component: EditProduct,
     children: [
-      { name: 'edit-product', path: '/', component: AdminProductBasics },
+      { name: 'edit-product', path: '/', component: AdminBasicInfo },
       { name: 'edit-product-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
+    ],
+  },
+
+  {
+    path: '/department/:slug',
+    component: Department,
+    name: 'department',
+  },
+
+  {
+    path: '/department/:slug/edit',
+    component: EditDepartment,
+    children: [
+      { name: 'edit-department', path: '/', component: AdminBasicInfo },
+      { name: 'edit-department-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
     ],
   },
 
