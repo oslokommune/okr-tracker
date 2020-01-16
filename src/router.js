@@ -7,8 +7,10 @@ import ProductHome from './views/Product/ProductHome.vue';
 import EditProduct from './views/Product/EditProduct.vue';
 import EditProductDetails from './views/Product/EditProductDetails.vue';
 import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
+import Department from './views/Department.vue';
 
 import { auth } from './config/firebaseConfig';
+import EditDepartment from './views/EditDepartment.vue';
 
 const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
 const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');
@@ -51,6 +53,23 @@ const routes = [
     children: [
       { name: 'edit-product', path: '/', component: EditProductDetails },
       { name: 'edit-product-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
+    ],
+  },
+
+  {
+    path: '/department/:slug',
+    name: 'department',
+    meta: { headerStyle: 'department' },
+    component: Department,
+  },
+
+  {
+    path: '/department/:slug/edit',
+    component: EditDepartment,
+    meta: { headerStyle: 'edit-product' },
+    children: [
+      { name: 'edit-department', path: '/', component: EditProductDetails },
+      { name: 'edit-department-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
     ],
   },
 

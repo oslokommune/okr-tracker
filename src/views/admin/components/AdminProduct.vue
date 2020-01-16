@@ -99,7 +99,7 @@ export default {
       this.docref
         .update(this.product)
         .then(Toast.savedChanges)
-        .catch(Toast.somethingFailed);
+        .catch(Toast.error);
       this.product.team = teamList;
     },
 

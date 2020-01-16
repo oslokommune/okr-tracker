@@ -79,7 +79,7 @@ import ProductSidebar from './components/ProductSidebar.vue';
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Product',
+  name: 'Department',
 
   data: () => ({
     product: null,
