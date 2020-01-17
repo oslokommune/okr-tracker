@@ -83,8 +83,8 @@ export default {
         key_result: this.keyres.key_result,
         edited: new Date(),
         edited_by: this.user.ref,
-        start_value: this.keyres.start_value,
-        target_value: this.keyres.target_value,
+        start_value: +this.keyres.start_value,
+        target_value: +this.keyres.target_value,
         unit: this.keyres.unit,
       };
     },

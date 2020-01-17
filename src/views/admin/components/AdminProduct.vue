@@ -97,7 +97,7 @@ export default {
       const teamList = this.product.team;
       this.product.team = teamList.map(d => d.ref);
       this.docref
-        .update(this.product)
+        .update({ edited: new Date(), edited_by: this.user.ref, ...this.product })
         .then(Toast.savedChanges)
         .catch(Toast.error);
       this.product.team = teamList;
@@ -109,7 +109,7 @@ export default {
 
     async deleteObject() {
       await this.docref
-        .update({ archived: true })
+        .update({ edited: new Date(), edited_by: this.user.ref, archived: true })
         .then(Toast.deletedRegret)
         .catch(Toast.error);
 

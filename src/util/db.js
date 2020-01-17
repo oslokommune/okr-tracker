@@ -47,21 +47,6 @@ export function productListener(slug) {
     });
 }
 
-export async function productFromSlug(slug) {
-  const product = await db
-    .collectionGroup('products')
-    .where('slug', '==', slug)
-    .get()
-    .then(d => d.docs[0])
-    .then(d => serializeDocument(d));
-
-  product.ref.onSnapshot(async d => {
-    this.product = await serializeDocument(d);
-  });
-
-  return product;
-}
-
 /**
  * Finds the product with the provided slug and
  * adds a listener for changes on the object.

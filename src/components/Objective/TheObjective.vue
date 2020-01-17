@@ -41,7 +41,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/styles/_colors';
 
 .objective {
@@ -89,6 +89,40 @@ export default {
   svg {
     width: 100%;
     fill: $color-purple;
+  }
+}
+
+.objective--loading {
+  opacity: 0;
+  animation-name: pulse;
+  animation-duration: 2.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: ease-in-out;
+
+  &:nth-of-type(n + 2) {
+    animation-delay: 0.1s;
+  }
+
+  .icon {
+    color: white;
+    background: $color-grey-200;
+  }
+
+  .title-3 {
+    display: block;
+    width: 55%;
+    height: 1.15rem;
+    background: $color-grey-200;
+    transform: translateY(0.1rem);
+  }
+
+  .loading-text {
+    display: block;
+    width: 90%;
+    height: 0.8rem;
+    background: $color-grey-200;
+    transform: translateY(0.4rem);
   }
 }
 </style>

@@ -76,7 +76,6 @@ export default {
 
   watch: {
     async data(data) {
-      console.log(data);
       this.breadcrumbs = await this.generateBreadcrumbs(data);
     },
   },
