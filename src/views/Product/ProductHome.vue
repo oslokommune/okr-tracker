@@ -10,7 +10,7 @@
             :key="quarter.name"
             class="sub-nav__element"
             :class="{ 'router-link-active': quarter === activeQuarter }"
-            @click="activeQuarter = quarter"
+            @click="set_quarter(quarter)"
             >{{ quarter.name }}</span
           >
         </div>
@@ -26,43 +26,11 @@
         ></ProductSidebar>
 
         <main class="content--main content--padding">
-          <!-- Product summary -->
-          <div class="grid grid-3 section">
-            <div>
-              <h2 class="title title-2">Oppdrag</h2>
-              <p>{{ product.mission_statement }}</p>
-            </div>
-            <div>
-              <h2 class="title title-2">Team</h2>
-              <ul class="team__list">
-                <li class="team__member" v-for="user in team" :key="user.id">
-                  <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
-                  <div class="team__name">
-                    <span>{{ user.displayName }}</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h2 class="title title-2">Denne perioden</h2>
-            </div>
-          </div>
+          <ProductSummary></ProductSummary>
 
           <hr />
 
-          <!-- Objectives -->
-          <section class="section">
-            <h2 class="title title-2">Mål</h2>
-            <div class="grid-3">
-              <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
-            </div>
-          </section>
-
-          <!-- Key results -->
-          <section class="section">
-            <h2 class="title title-2">Nøkkelresultater</h2>
-            <div class="grid-3"></div>
-          </section>
+          <ObjectivesList></ObjectivesList>
         </main>
       </div>
     </div>
@@ -70,33 +38,31 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { serializeDocument, productFromSlug } from '@/util/db';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 import PageHeader from '@/components/PageHeader.vue';
-import TheObjective from '@/components/Objective/TheObjective.vue';
+import ProductSummary from './components/ProductSummary.vue';
 import ProductSidebar from './components/ProductSidebar.vue';
+import ObjectivesList from './components/ObjectivesList.vue';
+
 import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Department',
 
   data: () => ({
-    product: null,
-    objectives: [],
     key_results: [],
-    team: [],
-    activeQuarter: null,
   }),
 
   components: {
     PageHeader,
-    TheObjective,
     ProductSidebar,
+    ProductSummary,
+    ObjectivesList,
   },
 
   computed: {
-    ...mapState(['user', 'quarters']),
+    ...mapState(['user', 'quarters', 'product', 'activeQuarter']),
 
     hasEditPermissions() {
       if (!this.user) return;
@@ -107,39 +73,21 @@ export default {
   },
 
   watch: {
-    activeQuarter() {
-      if (!this.product) return;
-      this.getObjectives();
-    },
-
     async product(prod) {
       if (prod.archived) {
         Toast.fourOhFour();
         this.$router.push('/');
       }
-
-      const teamPromises = prod.team.map(d => d.get());
-      this.team = await Promise.all(teamPromises).then(d => d.map(serializeDocument));
     },
   },
 
   async mounted() {
-    this.product = await productFromSlug.call(this, this.$route.params.slug);
-    const [first] = this.quarters;
-    this.activeQuarter = first;
-    this.getObjectives();
+    this.watchProduct(this.$route.params.slug);
   },
 
   methods: {
-    getObjectives() {
-      this.product.ref
-        .collection('objectives')
-        .where('archived', '==', false)
-        .where('quarter', '==', this.activeQuarter.name)
-        .onSnapshot(snapshot => {
-          this.objectives = snapshot.docs.map(serializeDocument);
-        });
-    },
+    ...mapActions(['watchProduct']),
+    ...mapMutations(['set_quarter']),
   },
 };
 </script>
@@ -173,54 +121,6 @@ export default {
       height: 4px;
       background-color: $color-purple;
       content: '';
-    }
-  }
-}
-
-.team {
-  &__list {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -0.25rem;
-  }
-
-  &__member {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 0.25rem;
-    text-align: center;
-
-    &:hover .team__name {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  &__image {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 2.5rem;
-  }
-
-  &__name {
-    position: absolute;
-    top: 5rem;
-    left: -50%;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    width: 200%;
-    color: white;
-    transform: translateY(-1rem);
-    opacity: 0;
-    transition: all 0.12s ease-in-out;
-    user-select: none;
-    pointer-events: none;
-
-    & > span {
-      padding: 0.25rem 0.5rem;
-      background: $color-purple;
     }
   }
 }

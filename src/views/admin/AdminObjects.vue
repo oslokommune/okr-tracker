@@ -138,8 +138,17 @@ export default {
     addProduct() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/${this.selectedDeptId}/products`);
 
+      const defaultProduct = {
+        name: 'Nytt produkt',
+        slug: 'nytt-produkt',
+        archived: false,
+        team: [],
+        created: new Date(),
+        created_by: this.user.ref,
+      };
+
       deptRef
-        .add({ name: 'Nytt produkt', archived: false, team: [] })
+        .add(defaultProduct)
         .then(doc => {
           this.selectedProductId = doc.id;
         })
@@ -150,8 +159,16 @@ export default {
     addDepartment() {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/`);
 
+      const defaultDepartment = {
+        name: 'Nytt produktområde',
+        slug: 'nytt-produktomrade',
+        archived: false,
+        created: new Date(),
+        created_by: this.user.ref,
+      };
+
       deptRef
-        .add({ name: 'Nytt produktområde', archived: false })
+        .add(defaultDepartment)
         .then(doc => {
           this.selectedProductId = null;
           this.products = [];

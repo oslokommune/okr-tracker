@@ -2,7 +2,10 @@ import Vue from 'vue';
 
 const standardOption = { duration: 3500 };
 
-const show = (msg, options = standardOption) => Vue.toasted.show(msg, options);
+const show = (msg, options = standardOption) => {
+  Vue.toasted.show(msg, options);
+  return true;
+};
 
 const close = (e, toastObject) => {
   toastObject.goAway(0);
@@ -56,47 +59,51 @@ export function toggleAdmin(user, value) {
 }
 
 export function error() {
-  show('Noe gikk galt!');
+  return show('Noe gikk galt!');
 }
 
 export function savedChanges() {
-  show('Lagret endringer');
+  return show('Lagret endringer');
 }
 
 export function deleted() {
-  show('Slettet objekt');
+  return show('Slettet objekt');
 }
 
 export function addedProduct() {
-  show('Lagt til nytt produkt');
+  return show('Lagt til nytt produkt');
 }
 
 export function addedObjective(quarterName) {
-  show(`Lagt til nytt mål for ${quarterName}`);
+  return show(`Lagt til nytt mål for ${quarterName}`);
 }
 
 export function addedDepartment() {
-  show('Lagt til nytt produktområde');
+  return show('Lagt til nytt produktområde');
+}
+
+export function addedProgression() {
+  return show('Lagt til ny måleverdi');
 }
 
 export function addedKeyResult() {
-  show('Lagt til nytt nøkkelresultat');
+  return show('Lagt til nytt nøkkelresultat');
 }
 
 export function uploadedPhoto() {
-  show('Lastet opp bilde');
+  return show('Lastet opp bilde');
 }
 
 export function fourOhFour() {
-  show('Siden eksisterer ikke');
+  return show('Siden eksisterer ikke');
 }
 
 export function restored() {
-  show(`Gjenopprettet dokument`);
+  return show(`Gjenopprettet dokument`);
 }
 
 export function deletedPermanently() {
-  show('Slettet dokument permanent');
+  return show('Slettet dokument permanent');
 }
 
 export function deletedRegret(obj) {
@@ -119,14 +126,13 @@ export function deletedRegret(obj) {
   };
 
   if (name) {
-    show(`Slettet «${name}»`, options);
-  } else {
-    show(`Slettet objekt`, options);
+    return show(`Slettet «${name}»`, options);
   }
+  return show(`Slettet objekt`, options);
 }
 
 export function revertedDeletion() {
-  show('Gjenopprettet objekt');
+  return show('Gjenopprettet objekt');
 }
 
 async function unDelete(ref) {

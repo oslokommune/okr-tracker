@@ -1,12 +1,9 @@
 <template>
   <header class="header" :class="{ dev }">
     <div class="container navbar">
-      <h2 class="title-3">
-        <router-link to="/">
-          OKR-tracker
-          <span v-if="dev">(DEV)</span>
-        </router-link>
-      </h2>
+      <router-link to="/" class="home-link">
+        <img src="/okr-tracker-logo.svg" alt="OKR-tracker-logo" />
+      </router-link>
 
       <nav class="right" v-if="user">
         <div class="usernav" :class="{ isOpen }" v-click-outside="closeMenu">
@@ -82,6 +79,9 @@ export default {
 
   &.dev {
     // background: #eeeeee;
+  }
+
+  .logo {
   }
 }
 
@@ -190,6 +190,11 @@ export default {
   flex-direction: row;
   align-items: center;
   height: 100%;
+
+  .home-link {
+    display: inline-flex;
+    align-items: center;
+  }
 
   h2 {
     margin: 0;

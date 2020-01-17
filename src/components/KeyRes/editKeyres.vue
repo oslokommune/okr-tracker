@@ -31,7 +31,7 @@
 
     <hr />
 
-    <button :disabled="!dirty || submit" class="btn" @click="send">Lagre endringer</button>
+    <button :disabled="!dirty" class="btn" @click="send">Lagre endringer</button>
     <button class="btn btn--danger" @click="deleteObject">Slett nøkkelresultat</button>
 
     <p v-if="showInfo">{{ info }}</p>
@@ -39,9 +39,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import * as Toast from '@/util/toasts';
-import { serializeDocument } from '../../util/db';
 
 export default {
   data: () => ({
@@ -51,12 +51,6 @@ export default {
     dirty: false,
     objective: null,
   }),
-
-  mounted() {
-    this.keyres.ref.parent.parent.onSnapshot(document => {
-      this.parentObjective = serializeDocument(document);
-    });
-  },
 
   validations: {
     keyres: {
@@ -72,9 +66,6 @@ export default {
       key_result: {
         required,
       },
-      objective: {
-        required,
-      },
     },
   },
 
@@ -86,33 +77,36 @@ export default {
   },
 
   computed: {
+    ...mapState(['user']),
     updatedKeyRes() {
       return {
         key_result: this.keyres.key_result,
-        start_value: this.keyres.start_value,
-        target_value: this.keyres.target_value,
-        target_type: this.keyres.target_type,
+        edited: new Date(),
+        edited_by: this.user.ref,
+        start_value: +this.keyres.start_value,
+        target_value: +this.keyres.target_value,
         unit: this.keyres.unit,
       };
     },
   },
 
   methods: {
-    send() {
+    async send() {
       this.$v.$touch();
+
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
-      } else {
-        this.setSubmitInfo(true, false, '');
-        this.updateKeyRes(this.updatedKeyRes)
-          .then(() => {
-            this.setSubmitInfo(false, false, '');
-          })
-          .catch(e => {
-            this.setSubmitInfo(false, true, 'Noe gikk galt');
-            throw new Error(e);
-          });
+        return;
       }
+
+      this.setSubmitInfo(true, false, '');
+
+      await this.keyres.ref
+        .update(this.updatedKeyRes)
+        .then(Toast.savedChanges)
+        .catch(Toast.error);
+
+      this.dirty = false;
     },
 
     async deleteObject() {

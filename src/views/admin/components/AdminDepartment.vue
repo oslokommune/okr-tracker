@@ -69,13 +69,13 @@ export default {
   methods: {
     saveObject() {
       this.docref
-        .update(this.department)
+        .update({ edited: new Date(), edited_by: this.user.ref, ...this.department })
         .then(Toast.savedChanges)
         .catch(Toast.error);
     },
     deleteObject() {
       this.docref
-        .update({ archived: true })
+        .update({ edited: new Date(), edited_by: this.user.ref, archived: true })
         .then(() => {
           this.department = null;
         })

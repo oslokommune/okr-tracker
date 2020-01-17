@@ -7,6 +7,7 @@ import ProductHome from './views/Product/ProductHome.vue';
 import EditProduct from './views/Product/EditProduct.vue';
 import EditProductDetails from './views/Product/EditProductDetails.vue';
 import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
+import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
 import Department from './views/Department.vue';
 
 import { auth } from './config/firebaseConfig';
@@ -44,6 +45,13 @@ const routes = [
     meta: { headerStyle: 'product' },
     name: 'product',
     component: ProductHome,
+  },
+
+  {
+    path: '/product/:slug/k/:keyresid',
+    meta: { headerStyle: 'product' },
+    name: 'key-result',
+    component: KeyResultPage,
   },
 
   {
@@ -92,8 +100,11 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   window.scroll(0, 0);
-  if (!isAuthenticated() && to.path !== '/login') next('/login');
-  else next();
+  if (!isAuthenticated() && to.path !== '/login') {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;

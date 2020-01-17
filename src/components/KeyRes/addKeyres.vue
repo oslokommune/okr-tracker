@@ -102,8 +102,8 @@ export default {
       return {
         archived: false,
         key_result: this.key_result,
-        start_value: this.start_value,
-        target_value: this.target_value,
+        start_value: +this.start_value,
+        target_value: +this.target_value,
         target_type: this.target_type,
         created: new Date(),
         created_by: this.user.ref,

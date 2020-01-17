@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from './config/firebaseConfig';
-import generateQuarters from './util/utils';
+import quarters from './util/utils';
 import { serializeDocument, getNestedData } from '@/util/db';
 import icons from '@/config/icons';
 
@@ -31,6 +31,25 @@ export const actions = {
       commit('set_users', userList);
     });
   },
+
+  watchProduct({ commit }, slug) {
+    if (!slug) throw new Error('Missing slug');
+
+    const getProduct = db
+      .collectionGroup('products')
+      .where('slug', '==', slug)
+      .get()
+      .then(d => d.docs[0].ref);
+
+    // TODO: Unsubscribe from this when not longer needed
+    getProduct.then(product => {
+      product.onSnapshot(snapshot => {
+        commit('set_product', serializeDocument(snapshot));
+      });
+    });
+
+    return getProduct;
+  },
 };
 
 Vue.use(Vuex);
@@ -57,6 +76,15 @@ export const mutations = {
   set_nested_data(state, payload) {
     state.nest = payload;
   },
+
+  set_product(state, payload) {
+    state.product = payload;
+  },
+
+  set_quarter(state, payload) {
+    payload = payload || state.quarters[0];
+    state.activeQuarter = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -64,8 +92,10 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters: generateQuarters(),
+    quarters,
+    activeQuarter: quarters[0],
     icons,
+    product: null,
   },
   getters,
   mutations,

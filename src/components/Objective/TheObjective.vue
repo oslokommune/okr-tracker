@@ -7,29 +7,41 @@
         <p>{{ objective.objective_body }}</p>
       </div>
     </div>
-    <div class="item__bars">
-      <progressbar v-for="child in objective.children" :keyres="child" compressed :key="child.id"></progressbar>
-    </div>
+    <router-link
+      v-for="keyres in key_results"
+      :key="keyres.id"
+      :to="{ name: 'key-result', params: { keyresid: keyres.id } }"
+      >{{ keyres.key_result }}</router-link
+    >
   </div>
 </template>
 
 <script>
-import Progressbar from '../ProgressBar.vue';
+import { serializeDocument } from '../../util/db';
 
 export default {
-  components: {
-    Progressbar,
-  },
+  data: () => ({
+    key_results: [],
+  }),
   props: {
     objective: {
       type: Object,
       required: true,
     },
   },
+
+  mounted() {
+    this.objective.ref
+      .collection('key_results')
+      .where('archived', '==', false)
+      .onSnapshot(async snapshot => {
+        this.key_results = snapshot.docs.map(serializeDocument);
+      });
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/styles/_colors';
 
 .objective {
@@ -77,6 +89,40 @@ export default {
   svg {
     width: 100%;
     fill: $color-purple;
+  }
+}
+
+.objective--loading {
+  opacity: 0;
+  animation-name: pulse;
+  animation-duration: 2.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: ease-in-out;
+
+  &:nth-of-type(n + 2) {
+    animation-delay: 0.1s;
+  }
+
+  .icon {
+    color: white;
+    background: $color-grey-200;
+  }
+
+  .title-3 {
+    display: block;
+    width: 55%;
+    height: 1.15rem;
+    background: $color-grey-200;
+    transform: translateY(0.1rem);
+  }
+
+  .loading-text {
+    display: block;
+    width: 90%;
+    height: 0.8rem;
+    background: $color-grey-200;
+    transform: translateY(0.4rem);
   }
 }
 </style>

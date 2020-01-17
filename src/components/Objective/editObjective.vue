@@ -109,7 +109,7 @@ export default {
         this.setSubmitInfo(true, false, '');
 
         this.objectiveRef.ref
-          .update(objective)
+          .update({ edited: new Date(), edited_by: this.user.ref, ...objective })
           .then(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
@@ -126,7 +126,7 @@ export default {
     deleteObj(objective) {
       this.loading = true;
       this.objective.ref
-        .update({ archived: true })
+        .update({ archived: true, edited: new Date(), edited_by: this.user.ref })
         .then(() => {
           const { ref } = this.objectiveRef;
 
