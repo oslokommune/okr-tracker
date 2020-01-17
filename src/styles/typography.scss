@@ -2,7 +2,7 @@
   margin-bottom: 0.75rem;
   font-weight: 500;
   font-size: 2.25rem;
-  line-height: 1.15;
+  line-height: 1.4;
   letter-spacing: -0.03rem;
 }
 
@@ -44,6 +44,9 @@ a {
   border-radius: 3px;
 }
 
-p {
+p,
+h1,
+h2,
+h3 {
   max-width: 640px;
 }

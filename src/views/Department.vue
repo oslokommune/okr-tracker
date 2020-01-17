@@ -1,5 +1,5 @@
 <template>
-  <div v-if="department">
+  <div>
     <PageHeader :data="department || {}"></PageHeader>
 
     <nav class="sub-nav">
@@ -17,7 +17,7 @@
       </div>
     </nav>
 
-    <div class="content">
+    <div class="content" v-if="department">
       <div class="container container--sidebar">
         <aside class="content--sidebar">
           <nav class="sidebar-nav">

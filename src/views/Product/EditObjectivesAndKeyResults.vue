@@ -42,7 +42,7 @@
           >
             {{ objective.objective_title }}
           </div>
-          <div v-if="selectedQuarter" class="miller__col__item miller__col__add" @click="addProduct">+ Legg til</div>
+          <div v-if="selectedQuarter" class="miller__col__item miller__col__add" @click="addObjective">+ Legg til</div>
         </div>
 
         <!-- Key results -->
@@ -59,6 +59,13 @@
               {{ keyres.key_result }}
             </div>
           </template>
+          <div
+            v-if="selectedQuarter && selectedObjective"
+            class="miller__col__item miller__col__add"
+            @click="addKeyres"
+          >
+            + Legg til
+          </div>
         </div>
 
         <main class="miller__main">
@@ -80,6 +87,7 @@ import { mapState } from 'vuex';
 import { serializeDocument } from '../../util/db';
 import UpdateKeyres from '@/components/KeyRes/editKeyres.vue';
 import EditObjective from '@/components/Objective/editObjective.vue';
+import * as Toast from '@/util/toasts';
 
 export default {
   components: {
@@ -98,7 +106,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['quarters']),
+    ...mapState(['quarters', 'user']),
     activeLevel() {
       if (this.selectedKeyres) return 'keyres';
       if (this.selectedObjective) return 'objective';
@@ -162,8 +170,33 @@ export default {
         });
     },
 
-    addProduct() {
+    addObjective() {
       console.log('asdf');
+    },
+
+    addKeyres() {
+      if (!this.selectedObjective) return;
+
+      // console.dir(this.selectedObjective);
+      // return;
+
+      this.selectedObjective.ref
+        .collection('key_results')
+        .add({
+          archived: false,
+          key_result: 'Beskriv nøkkelresultatet',
+          start_value: 0,
+          target_value: 100,
+          created: new Date(),
+          created_by: this.user.ref,
+          unit: '',
+        })
+        .then(response => {
+          console.log(response);
+          Toast.addedKeyResult();
+          return response;
+        })
+        .catch(Toast.error);
     },
   },
 };

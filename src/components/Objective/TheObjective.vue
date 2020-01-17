@@ -7,24 +7,36 @@
         <p>{{ objective.objective_body }}</p>
       </div>
     </div>
-    <div class="item__bars">
-      <progressbar v-for="child in objective.children" :keyres="child" compressed :key="child.id"></progressbar>
-    </div>
+    <router-link
+      v-for="keyres in key_results"
+      :key="keyres.id"
+      :to="{ name: 'key-result', params: { keyresid: keyres.id } }"
+      >{{ keyres.key_result }}</router-link
+    >
   </div>
 </template>
 
 <script>
-import Progressbar from '../ProgressBar.vue';
+import { serializeDocument } from '../../util/db';
 
 export default {
-  components: {
-    Progressbar,
-  },
+  data: () => ({
+    key_results: [],
+  }),
   props: {
     objective: {
       type: Object,
       required: true,
     },
+  },
+
+  mounted() {
+    this.objective.ref
+      .collection('key_results')
+      .where('archived', '==', false)
+      .onSnapshot(async snapshot => {
+        this.key_results = snapshot.docs.map(serializeDocument);
+      });
   },
 };
 </script>
