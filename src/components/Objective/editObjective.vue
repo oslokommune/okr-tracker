@@ -79,7 +79,7 @@ export default {
     objective: null,
   }),
   computed: {
-    ...mapState(['quarters', 'icons']),
+    ...mapState(['user', 'quarters', 'icons']),
   },
 
   mounted() {
