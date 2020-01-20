@@ -11,6 +11,10 @@ export default class Linechart {
       throw new Error('svg not defined');
     }
 
+    select(svgElement)
+      .selectAll('*')
+      .remove();
+
     select(svgElement).call(initSvg.bind(this));
 
     this.height = 250;
@@ -23,7 +27,7 @@ export default class Linechart {
       .curve(curveStepAfter);
   }
 
-  render(obj, period) {
+  render(obj, period, foo) {
     this.period = period;
     this.obj = obj;
 
@@ -31,6 +35,7 @@ export default class Linechart {
     resize.call(this);
 
     const dates = Object.values(getDateSpanFromQuarter(period));
+
     this.x.domain(dates);
     this.y.domain(extent([obj.start_value, obj.target_value]));
 
@@ -42,10 +47,12 @@ export default class Linechart {
       value: +obj.start_value,
     };
 
-    const datapoints = obj.children.map(d => ({
-      timestamp: new Date(d.timestamp),
-      value: +d.value,
-    }));
+    const datapoints = foo.map(d => {
+      return {
+        timestamp: new Date(d.date),
+        value: +d.value,
+      };
+    });
 
     const data = [startValue, ...datapoints].sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 

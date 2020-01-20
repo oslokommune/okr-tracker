@@ -37,6 +37,12 @@ export default {
     },
   },
 
+  watch: {
+    keyres(newValue) {
+      this.progressbar.render(newValue);
+    },
+  },
+
   mounted() {
     this.progressbar = this.compressed
       ? new ProgressbarSmall(this.$refs.progressbar)

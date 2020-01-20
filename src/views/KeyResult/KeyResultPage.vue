@@ -2,17 +2,15 @@
   <div>
     <PageHeader :data="key_result || {}"></PageHeader>
 
-    <div class="container container--sidebar" v-if="key_result">
+    <div class="container container--sidebar">
       <div class="content--main content--padding">
-        <router-view></router-view>
-
         <div class="section">
-          <h1 class="title-1">{{ key_result.key_result }}</h1>
+          <h1 class="title-1" v-if="key_result">{{ key_result.key_result }}</h1>
         </div>
 
         <hr />
 
-        <h2 class="title-2">Nåværende verdi {{ key_result.currentValue }}</h2>
+        <svg class="graph" ref="graph"></svg>
 
         <hr />
 
@@ -38,7 +36,7 @@
 
         <hr />
 
-        <section class="section">
+        <section class="section" v-if="key_result">
           <h2 class="title-2">Registrerte målepunkter</h2>
 
           <div v-if="!progressions">Det er ingen registrerte målepunkter</div>
@@ -77,9 +75,11 @@ import moment from 'moment';
 import { serializeDocument } from '../../util/db';
 import PageHeader from '@/components/PageHeader.vue';
 import * as Toast from '@/util/toasts';
+import Linechart from '@/util/linechart';
 
 export default {
   data: () => ({
+    graph: null,
     doc: null,
     value: 0,
     date: moment().format('YYYY-MM-DDTHH:00'),
@@ -110,6 +110,31 @@ export default {
         created: new Date(),
         created_by: this.user.ref,
       };
+    },
+  },
+
+  async mounted() {
+    if (!this.$refs.graph) return;
+    if (!this.key_result) return;
+
+    this.graph = new Linechart(this.$refs.graph);
+
+    const quarter = await this.key_result.ref.parent.parent.get().then(d => d.data().quarter);
+
+    this.graph.render(this.key_result, quarter, this.list);
+    // console.log(this.key_result);
+  },
+
+  watch: {
+    async list(newVal) {
+      if (!newVal) return;
+
+      if (!this.graph) {
+        this.graph = new Linechart(this.$refs.graph);
+      }
+
+      const quarter = await this.key_result.ref.parent.parent.get().then(d => d.data().quarter);
+      this.graph.render(this.key_result, quarter, newVal);
     },
   },
 
