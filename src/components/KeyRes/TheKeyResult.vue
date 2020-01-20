@@ -21,10 +21,6 @@ export default {
   components: {
     ProgressBar,
   },
-
-  mounted() {
-    console.log(this.keyres);
-  },
 };
 </script>
 

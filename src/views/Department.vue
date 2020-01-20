@@ -59,6 +59,7 @@
 
         <main class="content--main content--padding">
           <div class="grid grid-3 section">
+            <pre>{{ department.progress }}</pre>
             <div>
               <h2 class="title title-2">Oppdrag</h2>
               <p>{{ department.mission_statement }}</p>

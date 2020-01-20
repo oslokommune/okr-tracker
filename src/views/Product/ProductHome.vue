@@ -26,7 +26,6 @@
         ></ProductSidebar>
 
         <main class="content--main content--padding">
-          <pre v-if="product.progressions && activeQuarter">{{ product.progressions[activeQuarter.name] }}</pre>
           <ProductSummary></ProductSummary>
 
           <hr />
