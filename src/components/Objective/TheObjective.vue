@@ -3,21 +3,25 @@
     <div class="item">
       <div class="icon" :class="`fas fa-fw fa-${objective.icon}`"></div>
       <div class="item__text">
-        <h3 class="title-3">{{ objective.objective_title }}</h3>
+        <h3 class="title-3">
+          {{ objective.objective_title }}
+          <span v-if="objective.progression">({{ objective.progression * 100 }}%)</span>
+        </h3>
         <p>{{ objective.objective_body }}</p>
+        <p></p>
+
+        <div class="section content content--padding">
+          <h4 class="title-4">Nøkkelresultater</h4>
+          <TheKeyResult v-for="keyres in key_results" :key="keyres.id" :keyres="keyres"></TheKeyResult>
+        </div>
       </div>
     </div>
-    <router-link
-      v-for="keyres in key_results"
-      :key="keyres.id"
-      :to="{ name: 'key-result', params: { keyresid: keyres.id } }"
-      >{{ keyres.key_result }}</router-link
-    >
   </div>
 </template>
 
 <script>
 import { serializeDocument } from '../../util/db';
+import TheKeyResult from '@/components/KeyRes/TheKeyResult.vue';
 
 export default {
   data: () => ({
@@ -28,6 +32,10 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  components: {
+    TheKeyResult,
   },
 
   mounted() {
@@ -45,15 +53,14 @@ export default {
 @import '@/styles/_colors';
 
 .objective {
-  max-width: 400px;
-  margin-top: 1rem;
+  margin-bottom: 3rem;
 }
 
 .item {
   display: grid;
   grid-gap: 1rem;
   grid-template-areas: 'icon text';
-  grid-template-rows: 8em;
+  grid-template-rows: 1fr;
   grid-template-columns: 4rem 1fr;
   height: 100%;
   margin-bottom: 1rem;

@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { storage } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
 import slugify from '@/util/slugify';
@@ -57,6 +58,10 @@ export default {
   },
   async mounted() {
     this.department = await this.docref.get().then(d => d.data());
+  },
+
+  computed: {
+    ...mapState(['user']),
   },
 
   watch: {

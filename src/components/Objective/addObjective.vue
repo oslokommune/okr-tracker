@@ -83,7 +83,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['quarters', 'icons']),
+    ...mapState(['user', 'quarters', 'icons']),
 
     newObjective() {
       return {
@@ -92,6 +92,8 @@ export default {
         icon: this.icon || 'trophy',
         quarter: this.quarter.name,
         archived: false,
+        created: new Date(),
+        created_by: this.user.ref,
       };
     },
   },
