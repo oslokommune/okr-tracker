@@ -8,7 +8,7 @@
       <TheObjectiveLoading></TheObjectiveLoading>
     </div>
 
-    <div v-if="!loading" class="grid-3">
+    <div v-if="!loading">
       <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
     </div>
   </section>

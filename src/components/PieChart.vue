@@ -19,17 +19,20 @@ export default {
   },
 
   computed: {
-    ...mapState(['chosenQuarter']),
+    ...mapState(['activeQuarter']),
   },
 
   mounted() {
     this.pie = new Pie(this.$refs.svg);
-    this.pie.render(this.product, this.chosenQuarter);
+    this.pie.render(this.product, this.activeQuarter);
   },
 
   watch: {
     product() {
-      this.pie.render(this.product, this.chosenQuarter);
+      this.pie.render(this.product, this.activeQuarter);
+    },
+    activeQuarter() {
+      this.pie.render(this.product, this.activeQuarter);
     },
   },
 };

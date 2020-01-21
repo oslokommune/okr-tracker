@@ -11,10 +11,7 @@
               </router-link>
               <ul class="product__list">
                 <li v-for="product in dept.products" class="product" :key="product.id">
-                  <router-link
-                    v-if="product.slug"
-                    :to="{ name: 'product', params: { slug: product.slug } }"
-                  >
+                  <router-link v-if="product.slug" :to="{ name: 'product', params: { slug: product.slug } }">
                     <h3 class="product__name">
                       <img
                         class="product__image"

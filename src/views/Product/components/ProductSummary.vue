@@ -17,6 +17,7 @@
     </div>
     <div>
       <h2 class="title title-2">Denne perioden</h2>
+      <pie-chart :product="product"></pie-chart>
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@
 <script>
 import { mapState } from 'vuex';
 import { serializeDocument } from '@/util/db';
+import PieChart from '@/components/PieChart.vue';
 
 export default {
   data: () => ({
@@ -32,6 +34,10 @@ export default {
 
   computed: {
     ...mapState(['product']),
+  },
+
+  components: {
+    PieChart,
   },
 
   async mounted() {

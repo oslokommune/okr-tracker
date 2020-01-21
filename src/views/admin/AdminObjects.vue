@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import { getOrgs, getDepartments, getProducts } from '@/util/db';
 import AdminProduct from './components/AdminProduct.vue';
@@ -93,6 +94,8 @@ export default {
   }),
 
   computed: {
+    ...mapState(['user']),
+
     selection() {
       if (this.selectedProductId) {
         const docRef = db
@@ -157,6 +160,8 @@ export default {
     },
 
     addDepartment() {
+      if (!this.user) return;
+
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/`);
 
       const defaultDepartment = {

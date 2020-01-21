@@ -32,6 +32,28 @@ export const actions = {
     });
   },
 
+  watchKeyResult({ commit }, id) {
+    if (!id) throw new Error('Missing key result id');
+
+    const getKeyRes = db
+      .collectionGroup('key_results')
+      .get()
+      .then(snapshot => snapshot.docs.filter(d => d.id === id)[0].ref)
+      .catch(err => {
+        throw new Error(err);
+      });
+
+    getKeyRes.then(keyResult => {
+      if (!keyResult) return;
+
+      keyResult.onSnapshot(snapshot => {
+        commit('set_key_result', serializeDocument(snapshot));
+      });
+    });
+
+    return getKeyRes;
+  },
+
   watchProduct({ commit }, slug) {
     if (!slug) throw new Error('Missing slug');
 
@@ -81,6 +103,10 @@ export const mutations = {
     state.product = payload;
   },
 
+  set_key_result(state, payload) {
+    state.key_result = payload;
+  },
+
   set_quarter(state, payload) {
     payload = payload || state.quarters[0];
     state.activeQuarter = payload;
@@ -95,6 +121,7 @@ export default new Vuex.Store({
     quarters,
     activeQuarter: quarters[0],
     icons,
+    key_result: null,
     product: null,
   },
   getters,

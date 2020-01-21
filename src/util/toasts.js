@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 const standardOption = { duration: 3500 };
 
-const show = (msg, options = standardOption) => {
+export const show = (msg, options = standardOption) => {
   Vue.toasted.show(msg, options);
   return true;
 };

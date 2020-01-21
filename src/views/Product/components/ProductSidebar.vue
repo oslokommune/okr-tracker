@@ -29,7 +29,12 @@
           ></add-keyres>
         </div>
 
-        <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-chart-line"></i>Oppdater data</div>
+        <div class="register-progress-wrapper">
+          <div class="sidebar-nav__item" @click="expandRegisterProgress = true">
+            <i class="fa fas fa-fw fa-chart-line"></i>Oppdater data
+          </div>
+          <RegisterProgressModal v-if="expandRegisterProgress" @close="closeRegisterProgress"></RegisterProgressModal>
+        </div>
       </template>
       <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
       <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk</div>
@@ -41,16 +46,19 @@
 import ClickOutside from 'vue-click-outside';
 import AddObjective from '@/components/Objective/addObjective.vue';
 import AddKeyres from '@/components/KeyRes/addKeyres.vue';
+import RegisterProgressModal from './RegisterProgressModal.vue';
 
 export default {
   data: () => ({
     expandAddObjective: false,
     expandAddKeyRes: false,
+    expandRegisterProgress: false,
   }),
 
   components: {
     AddObjective,
     AddKeyres,
+    RegisterProgressModal,
   },
 
   props: {
@@ -75,6 +83,9 @@ export default {
     },
     closeAddKeyres() {
       this.expandAddKeyRes = false;
+    },
+    closeRegisterProgress() {
+      this.expandRegisterProgress = false;
     },
   },
 

@@ -9,7 +9,7 @@
 html,
 body {
   margin: 0;
-  padding: 0;
+  padding: 0 0 5rem;
 }
 
 html {
@@ -169,5 +169,30 @@ hr {
     &__selector {
       flex-basis: 12rem;
     }
+  }
+}
+
+.table {
+  width: 100%;
+  margin: 2rem 0 1rem;
+  border-bottom: 1px solid $color-border;
+
+  th {
+    font-weight: 500;
+  }
+
+  thead {
+    th {
+      background: $color-bg;
+    }
+  }
+
+  th,
+  td {
+    height: 3rem;
+    padding: 0rem 0.5rem;
+    text-align: left;
+    vertical-align: middle;
+    border-top: 1px solid $color-border;
   }
 }
