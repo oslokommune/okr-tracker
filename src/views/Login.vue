@@ -54,6 +54,7 @@
 import { mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import TheSpinner from '../components/TheSpinner.vue';
+import Audit from '@/util/audit/audit';
 
 export default {
   data: () => ({
@@ -75,7 +76,8 @@ export default {
       this.pending = true;
       auth
         .signInWithPopup(loginProvider)
-        .then(() => {
+        .then(response => {
+          Audit.login(response.user.email);
           this.$router.push('/');
         })
         .catch(() => {
