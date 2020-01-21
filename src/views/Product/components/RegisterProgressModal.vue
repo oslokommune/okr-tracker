@@ -131,8 +131,8 @@ export default {
 
       if (oldValue === newValue) return;
 
-      this.key_result.ref.update({ currentValue: newValue }).then(() => {
-        Audit.keyResUpdateProgress(this.key_result.ref, this.product.ref, oldValue, newValue);
+      return this.key_result.ref.update({ currentValue: newValue }).then(() => {
+        return Audit.keyResUpdateProgress(this.key_result.ref, this.product.ref, oldValue, newValue);
       });
     },
 

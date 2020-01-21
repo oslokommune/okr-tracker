@@ -49,6 +49,7 @@ export default {
       .then(d => d.data());
 
     this.key_result = await this.eventData.keyres.get().then(serializeDocument);
+    console.log(this.key_result);
 
     // Replace the value from db with the one from the audit log
     this.key_result.currentValue = this.eventData.toValue;
