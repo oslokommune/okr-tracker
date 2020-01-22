@@ -65,6 +65,7 @@ export default {
 
   &__feed {
     position: relative;
+    height: calc(100vh - 3rem);
     padding-top: 1rem;
     overflow-y: scroll;
     border-top: 1px solid $color-border;

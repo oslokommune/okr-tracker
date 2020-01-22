@@ -113,16 +113,21 @@ export default {
     },
   },
 
+  async created() {
+    this.doc = await this.watchKeyResult(this.$route.params.keyresid);
+
+    this.doc.collection('progression').onSnapshot(snapshot => {
+      this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
+    });
+  },
+
   async mounted() {
     if (!this.$refs.graph) return;
     if (!this.key_result) return;
 
     this.graph = new Linechart(this.$refs.graph);
-
     const quarter = await this.key_result.ref.parent.parent.get().then(d => d.data().quarter);
-
     this.graph.render(this.key_result, quarter, this.list);
-    // console.log(this.key_result);
   },
 
   watch: {
@@ -146,14 +151,6 @@ export default {
 
   components: {
     PageHeader,
-  },
-
-  async created() {
-    this.doc = await this.watchKeyResult(this.$route.params.keyresid);
-
-    this.doc.collection('progression').onSnapshot(snapshot => {
-      this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
-    });
   },
 
   methods: {

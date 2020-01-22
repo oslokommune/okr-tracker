@@ -83,13 +83,6 @@ export default {
 .header {
   width: 100%;
   height: 5rem;
-
-  &.dev {
-    // background: #eeeeee;
-  }
-
-  .logo {
-  }
 }
 
 .usernav {

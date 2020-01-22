@@ -15,7 +15,7 @@ import EditDepartment from './views/EditDepartment.vue';
 
 const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
 const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');
-const AdminObjects = () => import(/* webpackChunkName: "group-adin" */ './views/Admin/AdminObjects.vue');
+const AdminObjects = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminObjects.vue');
 
 Vue.use(Router);
 
