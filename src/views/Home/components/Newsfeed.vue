@@ -1,14 +1,15 @@
 <template>
-  <div class="container">
-    <div class="newsfeed">
-      <h2 class="title-2">Nyhetsstrøm</h2>
+  <div class="newsfeed">
+    <h2 class="title-3">
+      <i class="fa fa-stream fa-fw"></i>Aktivitet
+      <button class="btn btn--borderless" @click="$emit('close')"><i class="fa fa-times"></i></button>
+    </h2>
 
-      <transition-group name="feed" tag="div" class="newsfeed_feed" v-if="feed.length">
-        <template v-for="event in feed">
-          <UpdatedKeyres :key="event.id" :event-data="event"></UpdatedKeyres>
-        </template>
-      </transition-group>
-    </div>
+    <transition-group name="feed" tag="div" class="newsfeed__feed" v-if="feed.length">
+      <template v-for="event in feed">
+        <UpdatedKeyres :key="event.id" :event-data="event"></UpdatedKeyres>
+      </template>
+    </transition-group>
   </div>
 </template>
 
@@ -50,9 +51,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors';
+
 .newsfeed {
-  max-width: 600px;
-  padding: 1rem;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  height: 100vh;
+  background: white;
+  border-left: 1px solid rgba(black, 0.2);
+
+  &__feed {
+    position: relative;
+    padding-top: 1rem;
+    overflow-y: scroll;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+  }
+}
+
+.title-3 {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 1rem;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+  background: $color-bg;
+
+  .fa {
+    margin-right: 1.5rem;
+    padding-left: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+.title-3 .btn {
+  margin-right: -1rem;
+  margin-left: auto;
+  text-align: center !important;
+
+  .fa {
+    margin-right: 0;
+    padding: 0;
+    font-size: 1.2rem;
+  }
 }
 
 .feed-enter-active,

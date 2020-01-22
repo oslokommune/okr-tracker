@@ -52,7 +52,7 @@ export default {
 .org {
   display: grid;
   grid-gap: 5rem 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   margin: 2rem 0;
 }
 

@@ -49,7 +49,6 @@ export default {
       .then(d => d.data());
 
     this.key_result = await this.eventData.keyres.get().then(serializeDocument);
-    console.log(this.key_result);
 
     // Replace the value from db with the one from the audit log
     this.key_result.currentValue = this.eventData.toValue;
@@ -64,15 +63,14 @@ export default {
 
 .card {
   margin-bottom: 0.75rem;
-  border: 1px solid $color-border;
-  border-radius: 4px;
-  box-shadow: 0 2px 3px rgba(black, 0.1);
+  padding: 0.25rem 1.5rem 0.25rem 1rem;
+  border: 0;
+  border-bottom: 1px solid $color-border;
 
   &__user {
     display: flex;
     align-items: flex-start;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid $color-border;
+    padding-bottom: 0.4rem;
   }
 
   &__usertext {
@@ -83,7 +81,7 @@ export default {
     flex-shrink: 0;
     width: 2rem;
     height: 2rem;
-    margin-top: -0.27rem;
+    margin-top: 0.25rem;
     margin-right: 0.75rem;
     border-radius: 1rem;
   }
@@ -93,9 +91,11 @@ export default {
   }
 
   &__body {
-    padding: 0.75rem 0;
+    margin-left: 2.75rem;
+    padding: 0.5rem 0 0.25rem;
     font-weight: 500;
     font-size: 1rem;
+    border-top: 1px solid $color-border;
 
     a {
       color: black !important;

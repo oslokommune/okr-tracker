@@ -1,15 +1,15 @@
 <template>
   <div>
-    <ProductList></ProductList>
-    <Newsfeed></Newsfeed>
+    <div class="home">
+      <ProductList class="productList"></ProductList>
+    </div>
   </div>
 </template>
 
 <script>
 import ProductList from './components/ProductList.vue';
-import Newsfeed from './components/Newsfeed.vue';
 
 export default {
-  components: { ProductList, Newsfeed },
+  components: { ProductList },
 };
 </script>

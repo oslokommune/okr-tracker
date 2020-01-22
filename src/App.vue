@@ -1,16 +1,44 @@
 <template>
   <div id="app">
-    <the-header></the-header>
-    <router-view></router-view>
+    <main class="main">
+      <the-header></the-header>
+      <router-view></router-view>
+    </main>
+    <button class="btn btn--borderless open" @click="open">
+      <i class="fas fa-stream fa-fw"></i>&nbsp;Vis aktivitet
+    </button>
+    <transition>
+      <Newsfeed v-if="user && showNewsfeed" class="newsfeed" @close="close"></Newsfeed>
+    </transition>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import TheHeader from '@/components/TheHeader.vue';
+import Newsfeed from '@/views/Home/components/Newsfeed.vue';
 
 export default {
+  data: () => ({
+    showNewsfeed: true,
+  }),
+
+  computed: {
+    ...mapState(['user']),
+  },
+
+  methods: {
+    close() {
+      this.showNewsfeed = false;
+    },
+    open() {
+      this.showNewsfeed = true;
+    },
+  },
+
   components: {
     TheHeader,
+    Newsfeed,
   },
 };
 
@@ -36,5 +64,42 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+</style>
+
+<style lang="scss" scoped>
+#app {
+  display: flex;
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.open {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: none;
+  height: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+
+  @media screen and (min-width: 1700px) {
+    display: block;
+  }
+
+  .fa {
+    margin-right: 0;
+  }
+}
+
+.newsfeed {
+  display: none;
+
+  @media screen and (min-width: 1700px) {
+    display: block;
+  }
 }
 </style>
