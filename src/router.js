@@ -99,7 +99,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  // window.scroll(0, 0);
+  window.scroll(0, 0);
   if (!isAuthenticated() && to.path !== '/login') {
     next('/login');
   } else {

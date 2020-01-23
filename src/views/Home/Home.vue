@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div class="home">
-      <ProductList class="productList"></ProductList>
-    </div>
+  <div class="home">
+    <ProductList class="productList"></ProductList>
   </div>
 </template>
 
@@ -13,3 +11,10 @@ export default {
   components: { ProductList },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles/_colors';
+.home {
+  background: $color-bg;
+}
+</style>

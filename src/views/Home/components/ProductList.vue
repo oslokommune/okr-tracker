@@ -58,14 +58,22 @@ export default {
 
 .org {
   display: grid;
-  grid-gap: 5rem 2rem;
+  grid-gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   margin: 2rem 0;
 }
 
 .department {
+  padding: 1.5rem 1rem 1.5rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 0.15rem 0.25rem rgba(black, 0.15);
   &__name {
-    margin-bottom: 2rem;
+    margin-top: 0;
+    margin-right: 2.25rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $color-border;
   }
 }
 
@@ -110,7 +118,7 @@ export default {
     border-radius: 1rem;
 
     &:hover {
-      background: rgba($color-bg, 0.75);
+      background: rgba($color-bg, 0.25);
 
       .fa {
         transform: translateX(0);

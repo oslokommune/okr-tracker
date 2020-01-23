@@ -45,6 +45,16 @@ export default class Progressbar {
         return 'middle';
       });
 
+    this.currentVal.select('rect').each((d, i, j) => {
+      const el = j[i];
+
+      const textEl = el.nextElementSibling;
+      const { width, x } = textEl.getBBox();
+
+      select(el).attr('x', x - 6);
+      select(el).attr('width', width + 12);
+    });
+
     this.currentVal.attr('transform', `translate(${this.x(val)}, 0)`);
 
     this.bar.call(setWidth.bind(this), val);

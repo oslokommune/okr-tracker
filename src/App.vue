@@ -2,7 +2,7 @@
   <div id="app">
     <main class="main">
       <the-header></the-header>
-      <router-view></router-view>
+      <router-view class="home"></router-view>
     </main>
     <button class="btn btn--borderless open" @click="open">
       <i class="fas fa-stream fa-fw"></i>&nbsp;Vis aktivitet
@@ -59,9 +59,9 @@ input,
 textarea,
 body {
   color: $color-purple;
-  font-size: 16px;
+  font-size: 15px;
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -74,7 +74,11 @@ body {
 
 .main {
   flex-grow: 1;
-  padding-bottom: 6rem;
+}
+
+.home {
+  min-height: calc(100vh - 5rem);
+  padding-bottom: 4rem;
 }
 
 .open {
