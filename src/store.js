@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from './config/firebaseConfig';
-import quarters from './util/utils';
+import { quarters } from './util/utils';
 import { serializeDocument, getNestedData } from '@/util/db';
 import icons from '@/config/icons';
 
@@ -32,8 +32,9 @@ export const actions = {
     });
   },
 
-  watchKeyResult({ commit }, id) {
+  async watchKeyResult({ commit }, id) {
     if (!id) throw new Error('Missing key result id');
+    let doc;
 
     const getKeyRes = db
       .collectionGroup('key_results')
@@ -43,15 +44,16 @@ export const actions = {
         throw new Error(err);
       });
 
-    getKeyRes.then(keyResult => {
+    const unsubscribe = await getKeyRes.then(keyResult => {
       if (!keyResult) return;
+      doc = keyResult;
 
-      keyResult.onSnapshot(snapshot => {
+      return keyResult.onSnapshot(snapshot => {
         commit('set_key_result', serializeDocument(snapshot));
       });
     });
 
-    return getKeyRes;
+    return { unsubscribe, doc };
   },
 
   watchProduct({ commit }, slug) {

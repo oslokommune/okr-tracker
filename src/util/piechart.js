@@ -12,7 +12,7 @@ import {
   updatePercentText,
 } from './pie-helpers';
 
-import { getTimeProgression, getProgression } from '@/util/helpers';
+import { getTimeProgression } from '@/util/helpers';
 
 export default class Pie {
   /**
@@ -31,7 +31,7 @@ export default class Pie {
    * Update the visualisation using the provided data
    */
   render(obj, quarter) {
-    const progress = obj.progressions[quarter.name] || 0;
+    const progress = obj && obj.progressions && obj.progressions[quarter.name] ? obj.progressions[quarter.name] : 0;
     const time = getTimeProgression(quarter.name);
 
     // Set up the data for the inner and outer arcs

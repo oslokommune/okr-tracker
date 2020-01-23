@@ -76,6 +76,8 @@ import { serializeDocument } from '../../util/db';
 import PageHeader from '@/components/PageHeader.vue';
 import * as Toast from '@/util/toasts';
 import Linechart from '@/util/linechart';
+import { getProductFromSlug } from '@/util/utils';
+import Audit from '@/util/audit/audit';
 
 export default {
   data: () => ({
@@ -91,7 +93,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user', 'key_result']),
+    ...mapState(['user', 'key_result', 'nest']),
 
     list() {
       return this.progressions
@@ -100,6 +102,10 @@ export default {
           return d;
         })
         .sort((a, b) => b.date - a.date);
+    },
+
+    id() {
+      return this.$route.params.keyresid;
     },
 
     obj() {
@@ -114,11 +120,7 @@ export default {
   },
 
   async created() {
-    this.doc = await this.watchKeyResult(this.$route.params.keyresid);
-
-    this.doc.collection('progression').onSnapshot(snapshot => {
-      this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
-    });
+    this.watchData();
   },
 
   async mounted() {
@@ -140,6 +142,10 @@ export default {
 
       const quarter = await this.key_result.ref.parent.parent.get().then(d => d.data().quarter);
       this.graph.render(this.key_result, quarter, newVal);
+    },
+
+    id() {
+      this.watchData();
     },
   },
 
@@ -165,23 +171,54 @@ export default {
     },
 
     async addValue() {
+      console.log(this.key_result);
+      console.log(this.key_result);
+
       await this.key_result.ref
         .collection('progression')
         .add(this.obj)
-        .then(Toast.addedProgression)
         .then(this.updateCurrentValue)
-        .catch(Toast.error);
+        .then(Toast.addedProgression)
+        .catch(err => {
+          Toast.error();
+          throw new Error(err);
+        });
 
       this.value = 0;
     },
 
+    async watchData() {
+      if (this.unsubscribe.doc) this.unsubscribe.doc();
+      if (this.unsubscribe.collection) this.unsubscribe.collection();
+
+      const results = await this.watchKeyResult(this.id);
+      this.unsubscribe.doc = results.unsubscribe;
+      this.doc = results.doc;
+
+      this.unsubscribe.collection = this.doc.collection('progression').onSnapshot(snapshot => {
+        this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
+      });
+    },
+
     // Finds the most recent registered value and saves it to the `keyres` object in db
     async updateCurrentValue() {
-      const currentValue = this.list[0].value;
-      return this.doc
-        .update({ currentValue })
-        .then(Toast.savedChanges)
-        .catch(Toast.error);
+      const oldValue = await this.doc.get().then(d => d.data().currentValue);
+      const newValue = this.list[0].value;
+
+      if (oldValue !== newValue) {
+        return this.doc
+          .update({ currentValue: newValue })
+          .then(async () => {
+            const product = await getProductFromSlug(this.nest, this.$route.params.slug);
+            return Audit.keyResUpdateProgress(this.key_result.ref, product.ref, oldValue, newValue);
+          })
+          .then(Toast.savedChanges)
+          .catch(err => {
+            Toast.error();
+            throw new Error(err);
+          });
+      }
+      return true;
     },
   },
 

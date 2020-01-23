@@ -14,12 +14,24 @@ const quarters = (() => {
   while (fromDate < toDate) {
     const year = fromDate.getFullYear();
     const quarter = getQuarter(fromDate);
-    const isActive = fromDate < today && fromDate > startOfQuarter(today);
-    list.push({ name: `Q${quarter} ${year}`, isActive });
+    list.push({ name: `Q${quarter} ${year}`, fromDate, toDate });
     fromDate = addMonths(fromDate, 3);
   }
 
   return list.reverse();
 })();
 
-export default quarters;
+function getProductFromSlug(nest, slug) {
+  return nest
+    .map(org => {
+      return org.departments
+        .map(dept => {
+          return dept.products.find(d => d.slug === slug);
+        })
+        .flat();
+    })
+    .flat()
+    .filter(Boolean)[0];
+}
+
+export { quarters, getProductFromSlug };

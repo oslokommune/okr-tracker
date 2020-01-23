@@ -8,7 +8,7 @@
       <i class="fas fa-stream fa-fw"></i>&nbsp;Vis aktivitet
     </button>
     <transition>
-      <Newsfeed v-if="user && showNewsfeed" class="newsfeed" @close="close"></Newsfeed>
+      <Newsfeed v-show="user && showNewsfeed" class="newsfeed" @close="close"></Newsfeed>
     </transition>
   </div>
 </template>
@@ -74,6 +74,7 @@ body {
 
 .main {
   flex-grow: 1;
+  padding-bottom: 6rem;
 }
 
 .open {

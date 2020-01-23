@@ -39,12 +39,20 @@ export default {
   watch: {
     activeQuarter() {
       if (!this.product) return;
+      if (this.unsubscribe) this.unsubscribe();
+
+      this.getObjectives();
+    },
+
+    product() {
+      if (this.unsubscribe) this.unsubscribe();
 
       this.getObjectives();
     },
   },
 
-  created() {
+  mounted() {
+    if (this.unsubscribe) this.unsubscribe();
     this.getObjectives();
   },
 

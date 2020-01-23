@@ -24,15 +24,21 @@ export default {
 
   mounted() {
     this.pie = new Pie(this.$refs.svg);
+    if (!this.product) return;
+    if (!this.activeQuarter) return;
+
     this.pie.render(this.product, this.activeQuarter);
   },
 
   watch: {
-    product() {
-      this.pie.render(this.product, this.activeQuarter);
+    product(product) {
+      if (!this.activeQuarter) return;
+      this.pie.render(product, this.activeQuarter);
     },
-    activeQuarter() {
-      this.pie.render(this.product, this.activeQuarter);
+    activeQuarter(quarter) {
+      if (!quarter) return;
+
+      this.pie.render(this.product, quarter);
     },
   },
 };
