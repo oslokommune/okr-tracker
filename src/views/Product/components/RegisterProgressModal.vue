@@ -17,11 +17,11 @@
           type="range"
           :min="key_result.from_value"
           :max="key_result.target_value"
-          v-model="key_result.currentValue"
+          v-model="newValue"
         />
         <label class="form-field">
           <span class="form-label">Verdi</span>
-          <input type="number" v-model="key_result.currentValue" />
+          <input type="number" v-model="newValue" />
         </label>
         <div class="dots">
           <div class="dot" v-for="(dot, i) in key_results" :key="dot.id" :class="{ active: i === index }"></div>
@@ -43,6 +43,7 @@ import { mapState } from 'vuex';
 import { serializeDocument } from '@/util/db';
 import ProgressBar from '@/components/ProgressBar.vue';
 import * as Toast from '@/util/toasts';
+import Audit from '@/util/audit/audit';
 
 export default {
   data: () => ({
@@ -51,6 +52,7 @@ export default {
     key_results: [],
     unsubscribeObjectives: null,
     unsubscribeKeyResults: null,
+    newValue: null,
   }),
 
   computed: {
@@ -63,11 +65,17 @@ export default {
     progress() {
       return {
         date: new Date(),
-        value: +this.key_result.currentValue,
+        value: +this.newValue,
         archived: false,
         created: new Date(),
         created_by: this.user.ref,
       };
+    },
+  },
+
+  watch: {
+    key_result(obj) {
+      this.newValue = obj.currentValue;
     },
   },
 
@@ -113,14 +121,19 @@ export default {
     },
 
     async updateCurrentValue() {
-      const currentValue = await this.key_result.ref
+      const oldValue = this.key_result.currentValue;
+      const newValue = await this.key_result.ref
         .collection('progression')
         .orderBy('date', 'desc')
         .limit(1)
         .get()
         .then(snapshot => snapshot.docs[0].data().value);
 
-      this.key_result.ref.update({ currentValue });
+      if (oldValue === newValue) return;
+
+      return this.key_result.ref.update({ currentValue: newValue }).then(() => {
+        return Audit.keyResUpdateProgress(this.key_result.ref, this.product.ref, oldValue, newValue);
+      });
     },
 
     getObjectives() {

@@ -77,11 +77,13 @@ export default {
       if (prod.archived) {
         Toast.fourOhFour();
         this.$router.push('/');
+      } else {
+        // this.watchProduct(this.$route.params.slug);
       }
     },
   },
 
-  async mounted() {
+  created() {
     this.watchProduct(this.$route.params.slug);
   },
 

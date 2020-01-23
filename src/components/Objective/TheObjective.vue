@@ -5,7 +5,7 @@
       <div class="item__text">
         <h3 class="title-3">
           {{ objective.objective_title }}
-          <span v-if="objective.progression">({{ objective.progression * 100 }}%)</span>
+          <span v-if="objective.progression">({{ Math.round(objective.progression * 100) }}%)</span>
         </h3>
         <p>{{ objective.objective_body }}</p>
         <p></p>

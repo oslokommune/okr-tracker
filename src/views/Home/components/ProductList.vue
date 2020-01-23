@@ -12,13 +12,20 @@
               <ul class="product__list">
                 <li v-for="product in dept.products" class="product" :key="product.id">
                   <router-link v-if="product.slug" :to="{ name: 'product', params: { slug: product.slug } }">
-                    <h3 class="product__name">
+                    <h3 class="product__item">
                       <img
                         class="product__image"
                         :src="product.photoURL || '/placeholder-image.svg'"
                         :alt="product.name"
                       />
-                      <span>{{ product.name }}</span>
+                      <span class="product__name">{{ product.name }}</span>
+                      <div class="progression">
+                        <div
+                          class="progression__bar"
+                          v-if="product.progressions"
+                          :style="`width:${product.progressions[quarters[0].name] * 100}%`"
+                        ></div>
+                      </div>
                       <i class="fa fa-arrow-right"></i>
                     </h3>
                   </router-link>
@@ -38,7 +45,7 @@ import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   computed: {
-    ...mapState(['nest']),
+    ...mapState(['nest', 'quarters']),
   },
   components: {
     PageHeader,
@@ -51,38 +58,67 @@ export default {
 
 .org {
   display: grid;
-  grid-gap: 5rem 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   margin: 2rem 0;
 }
 
 .department {
+  padding: 1.5rem 1rem 1.5rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 0.15rem 0.25rem rgba(black, 0.15);
   &__name {
-    margin-bottom: 2rem;
+    margin-top: 0;
+    margin-right: 2.25rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $color-border;
+  }
+}
+
+.progression {
+  position: relative;
+  grid-row: 2;
+  grid-column: 2;
+  width: 100%;
+  height: 6px;
+  background: rgba(black, 0.075);
+  border-radius: 3px;
+
+  &__bar {
+    height: 100%;
+    background: $color-yellow;
+    border-radius: 3px;
   }
 }
 
 .product {
   &__image {
-    width: 3rem;
-    height: 3rem;
+    grid-row: 1 / span 2;
+    grid-column: 1;
+    width: 2.5rem;
+    height: 2.5rem;
     margin-right: 0.75rem;
     border-radius: 50%;
   }
 
-  &__name {
+  &__item {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-gap: 0 0.75rem;
+    grid-template-rows: auto auto;
+    grid-template-columns: 2.5rem 1fr 1rem;
     align-items: center;
     justify-content: flex-start;
-    margin: 0 -0.25rem;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    margin: 0 -0.5rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    color: black;
     font-size: 1rem;
     border-radius: 1rem;
 
     &:hover {
-      background: $color-bg;
+      background: rgba($color-bg, 0.25);
 
       .fa {
         transform: translateX(0);
@@ -91,7 +127,9 @@ export default {
     }
 
     .fa {
+      grid-row: 1 / span 2;
       margin-left: auto;
+      color: $color-grey-300;
       transform: translateX(-0.75rem);
       opacity: 0;
       transition: all 0.2s ease-out;

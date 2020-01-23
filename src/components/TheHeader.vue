@@ -36,6 +36,7 @@ import { mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 import { dashboardUserName } from '@/config/applicationConfig';
 import { isDashboardUser } from '@/util/db';
+import Audit from '@/util/audit/audit';
 
 export default {
   data: () => ({
@@ -62,9 +63,15 @@ export default {
       this.isOpen = false;
     },
     logout() {
-      auth.signOut().then(() => {
-        this.$router.push('/login');
-      });
+      const { email } = this.user;
+      Audit.signOut(email)
+        .then(() => {
+          auth.signOut();
+          return true;
+        })
+        .then(() => {
+          this.$router.push('/login');
+        });
     },
   },
 };
@@ -76,13 +83,6 @@ export default {
 .header {
   width: 100%;
   height: 5rem;
-
-  &.dev {
-    // background: #eeeeee;
-  }
-
-  .logo {
-  }
 }
 
 .usernav {

@@ -21,7 +21,7 @@
           <h3 class="miller__col__header">Kvartal</h3>
           <div
             class="miller__col__item"
-            v-for="quarter in quarters"
+            v-for="quarter in quartersList"
             :key="quarter.name"
             @click="selectQuarter(quarter)"
             :class="{ active: selectedQuarter === quarter }"
@@ -84,6 +84,7 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
+import { getQuarter } from 'date-fns';
 import { serializeDocument } from '../../util/db';
 import UpdateKeyres from '@/components/KeyRes/editKeyres.vue';
 import EditObjective from '@/components/Objective/editObjective.vue';
@@ -107,6 +108,18 @@ export default {
 
   computed: {
     ...mapState(['quarters', 'user']),
+
+    // Add next quarter to this list, allowing users to set future objectives
+    quartersList() {
+      const nextStartDate = this.quarters[0].toDate;
+      const quarter = getQuarter(nextStartDate);
+      const year = nextStartDate.getFullYear();
+      const nextQuarter = {
+        name: `Q${quarter} ${year}`,
+      };
+
+      return [nextQuarter, ...this.quarters];
+    },
     activeLevel() {
       if (this.selectedKeyres) return 'keyres';
       if (this.selectedObjective) return 'objective';
@@ -119,6 +132,14 @@ export default {
     docref: {
       type: Object,
       required: true,
+    },
+  },
+
+  watch: {
+    objectives(newList) {
+      if (!newList.length) {
+        this.selectedObjective = null;
+      }
     },
   },
 
@@ -171,7 +192,22 @@ export default {
     },
 
     addObjective() {
-      console.log('asdf');
+      this.docref
+        .collection('objectives')
+        .add({
+          created_by: this.user.ref,
+          created: new Date(),
+          quarter: this.selectedQuarter.name,
+          archived: false,
+          icon: 'trophy',
+          objective_title: 'Nytt mål',
+          objective_body: '',
+        })
+        .then(() => {
+          return Toast.addedObjective(this.selectedQuarter.name);
+        })
+        .then(() => {})
+        .catch(Toast.error);
     },
 
     addKeyres() {

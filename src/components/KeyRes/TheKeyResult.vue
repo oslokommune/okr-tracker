@@ -38,5 +38,10 @@ export default {
   &:last-child {
     border-bottom: 1px solid $color-border;
   }
+
+  &__bar {
+    align-self: start;
+    padding: 0.25rem 0;
+  }
 }
 </style>
