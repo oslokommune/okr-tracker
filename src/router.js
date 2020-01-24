@@ -13,9 +13,9 @@ import Department from './views/Department.vue';
 import { auth } from './config/firebaseConfig';
 import EditDepartment from './views/EditDepartment.vue';
 
-const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
-const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');
-const AdminObjects = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminObjects.vue');
+const AdminHome = () => import(/* webpackChunkName: "group-Admin" */ './views/Admin/AdminHome.vue');
+const AdminUsers = () => import(/* webpackChunkName: "group-Admin" */ './views/Admin/AdminUsers.vue');
+const AdminObjects = () => import(/* webpackChunkName: "group-Admin" */ './views/Admin/AdminObjects.vue');
 
 Vue.use(Router);
 
