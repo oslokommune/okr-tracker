@@ -108,10 +108,11 @@ export function serializeDocument(doc) {
  * @return {boolean}
  */
 export async function isTeamMemberOfProduct(slugOrRef) {
+  const admin = await isAdmin();
+  if (admin) return true;
+
   const { email } = auth.currentUser;
   let teamMembers;
-
-  if (isAdmin()) return true;
 
   if (typeof slugOrRef === 'string') {
     teamMembers = await db

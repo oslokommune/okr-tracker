@@ -82,7 +82,7 @@ export default {
     ...mapState(['user', 'quarters', 'icons']),
   },
 
-  mounted() {
+  created() {
     if (this.objectiveRef === undefined) return;
 
     this.objectiveRef.ref.onSnapshot(snapshot => {
@@ -91,13 +91,13 @@ export default {
   },
 
   watch: {
-    async objectiveRef() {
-      this.objective = await this.objectiveRef.ref
+    async objectiveRef(objective) {
+      this.objective = await objective.ref
         .get()
         .then(serializeDocument)
         .catch(this.$errorHandler);
 
-      this.objectiveRef.ref.onSnapshot(snapshot => {
+      objective.ref.onSnapshot(snapshot => {
         this.objective = serializeDocument(snapshot);
       });
     },

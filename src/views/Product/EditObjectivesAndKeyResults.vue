@@ -38,7 +38,7 @@
             v-for="objective in objectives"
             :key="objective.id"
             @click="selectObjective(objective)"
-            :class="{ active: selectedObjective === objective }"
+            :class="{ active: selectedObjective && selectedObjective.id === objective.id }"
           >
             {{ objective.objective_title }}
           </div>
@@ -54,7 +54,7 @@
               v-for="keyres in key_results"
               :key="keyres.id"
               @click="selectKeyres(keyres)"
-              :class="{ active: selectedKeyres === keyres }"
+              :class="{ active: selectedKeyres && selectedKeyres.id === keyres.id }"
             >
               {{ keyres.key_result }}
             </div>
@@ -74,7 +74,10 @@
             :keyres="selectedKeyres"
             @archived="selectedKeyres = null"
           ></UpdateKeyres>
-          <EditObjective v-if="activeLevel === 'objective'" :objective-ref="selectedObjective"></EditObjective>
+          <EditObjective
+            v-if="selectedObjective && activeLevel === 'objective'"
+            :objective-ref="selectedObjective"
+          ></EditObjective>
         </main>
       </div>
     </main>
@@ -148,9 +151,19 @@ export default {
   },
 
   async mounted() {
-    const [firstQuarter] = this.quarters;
-    this.selectedQuarter = firstQuarter;
-    this.selectQuarter(this.selectedQuarter);
+    const { keyres, objective } = this.$route.params;
+
+    if (keyres && objective) {
+      const quarter = this.quarters.find(q => q.name === objective.quarter);
+      this.selectedQuarter = quarter;
+      this.selectQuarter(quarter);
+      this.selectObjective(objective);
+      this.selectKeyres(keyres);
+    } else {
+      const [firstQuarter] = this.quarters;
+      this.selectedQuarter = firstQuarter;
+      this.selectQuarter(this.selectedQuarter);
+    }
   },
 
   methods: {
@@ -165,7 +178,9 @@ export default {
       this.selectedKeyres = keyres;
     },
 
-    selectObjective(objective) {
+    async selectObjective(objective) {
+      if (!objective || !objective.id) return;
+
       this.selectedKeyres = null;
       this.selectedObjective = objective;
 
