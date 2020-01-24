@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader :data="department || {}"></PageHeader>
+    <page-header :data="department || {}"></page-header>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
@@ -10,7 +10,7 @@
             :key="quarter.name"
             class="sub-nav__element"
             :class="{ 'router-link-active': quarter === activeQuarter }"
-            @click="activeQuarter = quarter"
+            @click="setQuarter(quarter)"
             >{{ quarter.name }}</span
           >
         </div>
@@ -24,37 +24,12 @@
           :document="department"
           :has-edit-permissions="hasEditPermissions"
           type="department"
-        />
+        ></document-sidebar>
 
         <main class="content--main content--padding">
-          <div class="grid grid-3 section">
-            <pre>{{ department.progress }}</pre>
-            <div>
-              <h2 class="title title-2">Oppdrag</h2>
-              <p>{{ department.mission_statement }}</p>
-            </div>
-            <div>
-              <h2 class="title title-2">Produkter</h2>
-              <ul class="team__list">
-                <li class="team__member" v-for="prod in products" :key="prod.id">
-                  <router-link :to="{ name: 'product', params: { slug: prod.slug } }">
-                    <img class="team__image" :src="prod.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
-                    <div class="team__name">
-                      <span>{{ prod.name }}</span>
-                    </div>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h2 class="title title-2">Denne perioden</h2>
-            </div>
-          </div>
+          <document-summary :document="department" :team="departmentProducts" type="department"></document-summary>
           <hr />
-          <section class="section">
-            <h2 class="title title-2">Mål</h2>
-            <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
-          </section>
+          <objectives-list :document="department"></objectives-list>
         </main>
       </div>
     </div>
@@ -62,35 +37,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { departmentFromSlug, serializeDocument } from '@/util/db';
+import { serializeDocument } from '../../util/db';
 
-import PageHeader from '@/components/PageHeader.vue';
-import TheObjective from '@/components/Objective/TheObjective.vue';
+import PageHeader from '../../components/PageHeader.vue';
 import DocumentSidebar from '../../components/DocumentSidebar.vue';
+import DocumentSummary from '../../components/DocumentSummary.vue';
+import ObjectivesList from '../../components/ObjectivesList.vue';
 
 export default {
   name: 'Department',
 
   data: () => ({
-    department: null,
-    products: null,
     objectives: [],
     team: [],
-    activeQuarter: null,
-    expandAddObjective: false,
-    expandAddKeyRes: false,
   }),
 
   components: {
+    ObjectivesList,
+    DocumentSummary,
     DocumentSidebar,
     PageHeader,
-    TheObjective,
   },
 
   computed: {
-    ...mapState(['user', 'quarters']),
+    ...mapState(['user', 'quarters', 'activeQuarter', 'departmentProducts', 'department']),
 
     hasEditPermissions() {
       if (!this.user) return;
@@ -105,14 +77,12 @@ export default {
     },
   },
 
-  async mounted() {
-    this.department = await departmentFromSlug.call(this, this.$route.params.slug);
-    const [first] = this.quarters;
-    this.activeQuarter = first;
-    this.getObjectives();
+  created() {
+    this.watchDepartment(this.$route.params.slug);
   },
 
   methods: {
+    ...mapActions(['setQuarter', 'watchDepartment']),
     getObjectives() {
       this.department.ref
         .collection('objectives')
@@ -176,11 +146,6 @@ export default {
     flex-direction: column;
     padding: 0.25rem;
     text-align: center;
-
-    &:hover .team__name {
-      transform: translateY(0);
-      opacity: 1;
-    }
   }
 
   &__image {

@@ -63,29 +63,6 @@ export function departmentListener(slug) {
     });
 }
 
-export async function departmentFromSlug(slug) {
-  const department = await db
-    .collectionGroup('departments')
-    .where('slug', '==', slug)
-    .get()
-    .then(d => d.docs[0])
-    .then(d => serializeDocument(d))
-    .catch(errorHandler);
-
-  department.ref
-    .collection('products')
-    .where('archived', '==', false)
-    .onSnapshot(async d => {
-      this.products = d.docs.map(serializeDocument);
-    });
-
-  department.ref.onSnapshot(async d => {
-    this.department = await serializeDocument(d);
-  });
-
-  return department;
-}
-
 /**
  * Converts a Firebase document to a serialized object with the id and
  * Firebase reference injected as properties

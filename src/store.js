@@ -3,8 +3,10 @@ import Vuex from 'vuex';
 
 import { db, dashboardUser } from './config/firebaseConfig';
 import { quarters, errorHandler } from './util/utils';
-import { serializeDocument, getNestedData } from '@/util/db';
-import icons from '@/config/icons';
+import { serializeDocument, getNestedData } from './util/db';
+import icons from './config/icons';
+
+Vue.use(Vuex);
 
 export const actions = {
   async initializeApp({ dispatch }) {
@@ -75,9 +77,38 @@ export const actions = {
 
     return getProduct;
   },
-};
 
-Vue.use(Vuex);
+  watchDepartment({ commit }, slug) {
+    if (!slug) throw new Error('Missing slug');
+
+    const getDepartment = db
+      .collectionGroup('departments')
+      .where('slug', '==', slug)
+      .get()
+      .then(d => d.docs[0])
+      .then(d => serializeDocument(d))
+      .catch(errorHandler);
+
+    getDepartment.then(department => {
+      department.ref
+        .collection('products')
+        .where('archived', '==', false)
+        .onSnapshot(d => {
+          commit('SET_DEPARTMENTPRODUCTS', d.docs.map(serializeDocument));
+        });
+    });
+
+    getDepartment.then(department => {
+      department.ref.onSnapshot(d => {
+        commit('SET_DEPARTMENT', serializeDocument(d));
+      });
+    });
+  },
+
+  setQuarter({ commit }, quarter) {
+    commit('SET_QUARTER', quarter);
+  },
+};
 
 export const getters = {
   get_user_emails(state) {
@@ -110,9 +141,17 @@ export const mutations = {
     state.key_result = payload;
   },
 
-  set_quarter(state, payload) {
+  SET_QUARTER(state, payload) {
     payload = payload || state.quarters[0];
     state.activeQuarter = payload;
+  },
+
+  SET_DEPARTMENTPRODUCTS(state, payload) {
+    state.departmentProducts = payload;
+  },
+
+  SET_DEPARTMENT(state, payload) {
+    state.department = payload;
   },
 };
 
@@ -126,6 +165,8 @@ export default new Vuex.Store({
     icons,
     key_result: null,
     product: null,
+    department: null,
+    departmentProducts: null,
   },
   getters,
   mutations,

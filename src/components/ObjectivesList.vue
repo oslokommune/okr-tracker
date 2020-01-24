@@ -10,10 +10,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import TheObjective from '@/components/Objective/TheObjective.vue';
-import { serializeDocument } from '../../../util/db';
+import TheObjective from './Objective/TheObjective.vue';
+import { serializeDocument } from '../util/db';
 
 export default {
+  name: 'ObjectivesList',
+
   components: {
     TheObjective,
   },
@@ -23,19 +25,26 @@ export default {
     unsubscribe: null,
   }),
 
+  props: {
+    document: {
+      type: Object,
+      required: true,
+    },
+  },
+
   computed: {
-    ...mapState(['activeQuarter', 'product']),
+    ...mapState(['activeQuarter']),
   },
 
   watch: {
     activeQuarter() {
-      if (!this.product) return;
+      if (!this.document) return;
       if (this.unsubscribe) this.unsubscribe();
 
       this.getObjectives();
     },
 
-    product() {
+    document() {
       if (this.unsubscribe) this.unsubscribe();
 
       this.getObjectives();
@@ -53,11 +62,11 @@ export default {
 
   methods: {
     getObjectives() {
-      if (!this.product) return;
+      if (!this.document) return;
 
       if (this.unsubscribe) this.unsubscribe();
 
-      this.unsubscribe = this.product.ref
+      this.unsubscribe = this.document.ref
         .collection('objectives')
         .where('archived', '==', false)
         .where('quarter', '==', this.activeQuarter.name)
