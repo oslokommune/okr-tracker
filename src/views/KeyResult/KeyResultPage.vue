@@ -3,6 +3,16 @@
     <PageHeader :data="key_result || {}"></PageHeader>
 
     <div class="container container--sidebar">
+      <aside class="content--sidebar">
+        <nav v-if="hasEditPermissions" class="sidebar-nav">
+          <router-link
+            :to="{ name: 'edit-product-keyres', params: { keyres: key_result, objective: objective } }"
+            class="sidebar-nav__item"
+            ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link
+          >
+        </nav>
+      </aside>
+
       <div class="content--main content--padding">
         <div class="section">
           <h1 class="title-1" v-if="key_result">{{ key_result.key_result }}</h1>
@@ -14,7 +24,7 @@
 
         <hr />
 
-        <section class="section">
+        <section v-if="hasEditPermissions" class="section">
           <h2 class="title-2">Legg til nytt målepunkt</h2>
 
           <form @submit.prevent="addValue" class="form-group">
@@ -32,9 +42,8 @@
               <button class="btn">Legg til</button>
             </div>
           </form>
+          <hr />
         </section>
-
-        <hr />
 
         <section class="section" v-if="key_result">
           <h2 class="title-2">Registrerte målepunkter</h2>
@@ -72,7 +81,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { format, parseISO } from 'date-fns';
-import { serializeDocument } from '../../util/db';
+import { serializeDocument, isTeamMemberOfProduct } from '../../util/db';
 import PageHeader from '@/components/PageHeader.vue';
 import * as Toast from '@/util/toasts';
 import Linechart from '@/util/linechart';
@@ -85,11 +94,13 @@ export default {
     doc: null,
     value: 0,
     date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
+    objective: null,
     unsubscribe: {
       doc: null,
       collection: null,
     },
     progressions: [],
+    hasEditPermissions: false,
   }),
 
   computed: {
@@ -121,6 +132,8 @@ export default {
 
   async created() {
     this.watchData();
+
+    this.hasEditPermissions = await isTeamMemberOfProduct(this.$route.params.slug);
   },
 
   async mounted() {
@@ -128,10 +141,13 @@ export default {
     if (!this.key_result) return;
 
     this.graph = new Linechart(this.$refs.graph);
-    const quarter = await this.key_result.ref.parent.parent
+
+    this.objective = await this.key_result.ref.parent.parent
       .get()
-      .then(d => d.data().quarter)
+      .then(serializeDocument)
       .catch(this.$errorHandler);
+
+    const { quarter } = this.objective;
 
     this.graph.render(this.key_result, quarter, this.list);
   },
@@ -227,3 +243,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.content--sidebar {
+  padding-top: 3rem;
+}
+</style>

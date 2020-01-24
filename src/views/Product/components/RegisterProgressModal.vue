@@ -6,7 +6,7 @@
         <button class="btn btn--borderless" @click="close"><i class="fa fa-times"></i></button>
       </div>
 
-      <main class="modal__main" v-if="key_result">
+      <main v-if="key_result" class="modal__main">
         <div class="title">
           <p class="pill">Nøkkelresultat</p>
           <h3 class="title-3">{{ key_result.key_result }}</h3>
@@ -26,6 +26,10 @@
         <div class="dots">
           <div class="dot" v-for="(dot, i) in key_results" :key="dot.id" :class="{ active: i === index }"></div>
         </div>
+      </main>
+
+      <main v-if="!key_result" class="modal__empty">
+        <h3 class="title-3">Ingen nøkkelresultater</h3>
       </main>
 
       <div class="modal__footer">
@@ -202,6 +206,15 @@ export default {
   background: white;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
+
+  @media screen and (min-width: 1024px) {
+    min-width: 800px;
+    min-height: 500px;
+  }
+
+  &__empty {
+    padding: 2.5rem 2rem;
+  }
 
   &__header {
     display: flex;
