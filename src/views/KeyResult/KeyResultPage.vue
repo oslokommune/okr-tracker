@@ -71,7 +71,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import moment from 'moment';
+import { format, parseISO } from 'date-fns';
 import { serializeDocument } from '../../util/db';
 import PageHeader from '@/components/PageHeader.vue';
 import * as Toast from '@/util/toasts';
@@ -84,7 +84,7 @@ export default {
     graph: null,
     doc: null,
     value: 0,
-    date: moment().format('YYYY-MM-DDTHH:00'),
+    date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
     unsubscribe: {
       doc: null,
       collection: null,
@@ -110,7 +110,7 @@ export default {
 
     obj() {
       return {
-        date: moment(this.date).toDate(),
+        date: parseISO(this.date),
         value: +this.value,
         archived: false,
         created: new Date(),
@@ -151,7 +151,7 @@ export default {
 
   filters: {
     formatDate(date) {
-      return moment(date).format('DD.MM.YYYY HH:mm');
+      return format(date, 'dd.MM.yyyy HH:mm');
     },
   },
 
@@ -171,9 +171,6 @@ export default {
     },
 
     async addValue() {
-      console.log(this.key_result);
-      console.log(this.key_result);
-
       await this.key_result.ref
         .collection('progression')
         .add(this.obj)
