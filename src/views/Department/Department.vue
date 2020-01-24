@@ -19,43 +19,12 @@
 
     <div class="content" v-if="department">
       <div class="container container--sidebar">
-        <aside class="content--sidebar">
-          <nav class="sidebar-nav">
-            <template v-if="hasEditPermissions">
-              <router-link
-                :to="{ name: 'edit-department', params: { slug: $route.params.slug } }"
-                class="sidebar-nav__item"
-              >
-                <i class="fa fas fa-fw fa-edit"></i>Endre produkt</router-link
-              >
-              <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
-                <div class="sidebar-nav__item" @click="expandAddObjective = true">
-                  <i class="fa fas fa-fw fa-plus"></i>Legg til mål
-                </div>
-
-                <add-objective
-                  v-if="expandAddObjective"
-                  :productref="department.ref"
-                  @close-menu="expandAddObjective = false"
-                ></add-objective>
-              </div>
-              <div class="add-object-menu-wrapper" v-click-outside="closeAddKeyres">
-                <div class="sidebar-nav__item" @click="expandAddKeyRes = true">
-                  <i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat
-                </div>
-                <add-keyres
-                  v-if="expandAddKeyRes"
-                  @close-menu="expandAddKeyRes = false"
-                  :productref="department.ref"
-                  :selected-quarter-name="activeQuarter.name"
-                ></add-keyres>
-              </div>
-              <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-chart-line"></i>Oppdater data</div>
-            </template>
-            <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
-            <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk</div>
-          </nav>
-        </aside>
+        <document-sidebar
+          :active-quarter="activeQuarter"
+          :document="department"
+          :has-edit-permissions="hasEditPermissions"
+          type="department"
+        />
 
         <main class="content--main content--padding">
           <div class="grid grid-3 section">
@@ -95,12 +64,11 @@
 <script>
 import { mapState } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { serializeDocument, departmentFromSlug } from '@/util/db';
+import { departmentFromSlug, serializeDocument } from '@/util/db';
 
 import PageHeader from '@/components/PageHeader.vue';
-import AddObjective from '@/components/Objective/addObjective.vue';
 import TheObjective from '@/components/Objective/TheObjective.vue';
-import AddKeyres from '@/components/KeyRes/addKeyres.vue';
+import DocumentSidebar from '../../components/DocumentSidebar.vue';
 
 export default {
   name: 'Department',
@@ -116,9 +84,8 @@ export default {
   }),
 
   components: {
+    DocumentSidebar,
     PageHeader,
-    AddObjective,
-    AddKeyres,
     TheObjective,
   },
 
@@ -155,13 +122,6 @@ export default {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
     },
-
-    closeAddObjective() {
-      this.expandAddObjective = false;
-    },
-    closeAddKeyres() {
-      this.expandAddKeyRes = false;
-    },
   },
 
   directives: {
@@ -171,11 +131,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/colors';
-
-.add-object-menu-wrapper {
-  position: relative;
-}
+@import '../../styles/colors';
 
 .sub-nav__element {
   cursor: pointer;

@@ -45,9 +45,9 @@
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
 import { serializeDocument } from '@/util/db';
-import ProgressBar from '@/components/ProgressBar.vue';
-import * as Toast from '@/util/toasts';
-import Audit from '@/util/audit/audit';
+import ProgressBar from './ProgressBar.vue';
+import * as Toast from '../util/toasts';
+import Audit from '../util/audit/audit';
 
 export default {
   data: () => ({
@@ -59,8 +59,15 @@ export default {
     newValue: null,
   }),
 
+  props: {
+    document: {
+      type: Object,
+      required: true,
+    },
+  },
+
   computed: {
-    ...mapState(['user', 'product', 'quarters']),
+    ...mapState(['user', 'quarters']),
 
     key_result() {
       return this.key_results[this.index];
@@ -139,7 +146,7 @@ export default {
       return this.key_result.ref
         .update({ currentValue: newValue })
         .then(() => {
-          return Audit.keyResUpdateProgress(this.key_result.ref, this.product.ref, oldValue, newValue);
+          return Audit.keyResUpdateProgress(this.key_result.ref, this.document.ref, oldValue, newValue);
         })
         .catch(this.$errorHandler);
     },
@@ -147,7 +154,7 @@ export default {
     getObjectives() {
       if (this.unsubscribeObjectives) this.unsubscribeObjectives();
 
-      this.unsubscribeObjectives = this.product.ref
+      this.unsubscribeObjectives = this.document.ref
         .collection('objectives')
         .where('archived', '==', false)
         .where('quarter', '==', this.quarters[0].name)

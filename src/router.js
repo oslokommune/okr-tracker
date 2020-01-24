@@ -8,7 +8,7 @@ import EditProduct from './views/Product/EditProduct.vue';
 import EditProductDetails from './views/Product/EditProductDetails.vue';
 import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
 import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
-import Department from './views/Department.vue';
+import Department from './views/Department/Department.vue';
 
 import { auth } from './config/firebaseConfig';
 import EditDepartment from './views/EditDepartment.vue';

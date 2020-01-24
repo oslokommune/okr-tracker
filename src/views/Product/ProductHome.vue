@@ -48,7 +48,7 @@ import ObjectivesList from './components/ObjectivesList.vue';
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Department',
+  name: 'Product',
 
   data: () => ({
     key_results: [],
