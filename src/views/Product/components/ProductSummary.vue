@@ -41,8 +41,11 @@ export default {
   },
 
   async mounted() {
-    const teamPromises = this.product.team.map(d => d.get());
-    this.team = await Promise.all(teamPromises).then(d => d.map(serializeDocument));
+    console.log(this.product);
+    const teamPromises = this.product.team ? this.product.team.map(d => d.get()) : [];
+    this.team = await Promise.all(teamPromises)
+      .then(d => d.map(serializeDocument))
+      .catch(this.$errorHandler);
   },
 };
 </script>

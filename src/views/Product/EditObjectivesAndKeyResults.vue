@@ -207,7 +207,7 @@ export default {
           return Toast.addedObjective(this.selectedQuarter.name);
         })
         .then(() => {})
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
 
     addKeyres() {
@@ -228,11 +228,10 @@ export default {
           unit: '',
         })
         .then(response => {
-          console.log(response);
           Toast.addedKeyResult();
           return response;
         })
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
   },
 };

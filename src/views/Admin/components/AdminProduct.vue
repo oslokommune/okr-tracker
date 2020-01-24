@@ -84,7 +84,10 @@ export default {
   watch: {
     async docref(ref) {
       this.product = null;
-      ref.get().then(getProductfromRef.bind(this));
+      ref
+        .get()
+        .then(getProductfromRef.bind(this))
+        .catch(this.$errorHandler);
     },
   },
 
@@ -99,7 +102,7 @@ export default {
       this.docref
         .update({ edited: new Date(), edited_by: this.user.ref, ...this.product })
         .then(Toast.savedChanges)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
       this.product.team = teamList;
     },
 
@@ -111,7 +114,7 @@ export default {
       await this.docref
         .update({ edited: new Date(), edited_by: this.user.ref, archived: true })
         .then(Toast.deletedRegret)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
 
       this.product = null;
     },
@@ -132,12 +135,12 @@ export default {
       this.uploading = true;
       const storageRef = await storage.ref(`products/${this.docref.id}`);
 
-      const snapshot = await storageRef.put(this.file).catch(Toast.error);
+      const snapshot = await storageRef.put(this.file).catch(this.$errorHandler);
 
       Toast.uploadedPhoto();
 
       const photoURL = await snapshot.ref.getDownloadURL();
-      await this.docref.update({ photoURL }).catch(Toast.error);
+      await this.docref.update({ photoURL }).catch(this.$errorHandler);
 
       Toast.savedChanges();
 
@@ -152,7 +155,7 @@ async function getProductfromRef(snapshot) {
 
   const team = this.product.team || [];
   const promises = team.map(d => d.get());
-  const userRefs = await Promise.all(promises);
+  const userRefs = await Promise.all(promises).catch(this.$errorHandler);
 
   this.product.team = userRefs
     .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))

@@ -94,6 +94,7 @@ export default {
         if (err.code === 'auth/wrong-password') {
           this.error = 3;
         }
+        this.$errorHandler(err);
       });
 
       if (user) {

@@ -3,6 +3,7 @@ import * as Toast from '@/util/toasts';
 import { auth, db } from '@/config/firebaseConfig';
 import router from '@/router';
 import { serializeDocument, updateUserObject } from '@/util/db';
+import { errorHandler } from '@/util/utils';
 
 /**
  * Runs whenever the Firebase auth user state changes.
@@ -45,5 +46,6 @@ async function isWhiteListed(user) {
     .collection('users')
     .doc(user.email)
     .get()
-    .then(doc => doc.exists);
+    .then(doc => doc.exists)
+    .catch(errorHandler);
 }

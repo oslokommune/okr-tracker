@@ -53,6 +53,7 @@ import { required } from 'vuelidate/lib/validators';
 import { serializeDocument } from '../../util/db';
 import * as Toast from '@/util/toasts';
 import Audit from '@/util/audit/audit';
+import { errorHandler } from '@/util/utils';
 
 export default {
   data: () => ({
@@ -141,10 +142,7 @@ export default {
             Audit.createKeyResult(docref, this.productref, this.objective.ref);
             this.close();
           })
-          .catch(err => {
-            Toast.error();
-            throw new Error(err);
-          });
+          .catch(errorHandler);
       }
     },
     setSubmitInfo(submit, showInfo, info) {

@@ -92,7 +92,10 @@ export default {
 
   watch: {
     async objectiveRef() {
-      this.objective = await this.objectiveRef.ref.get().then(serializeDocument);
+      this.objective = await this.objectiveRef.ref
+        .get()
+        .then(serializeDocument)
+        .catch(this.$errorHandler);
 
       this.objectiveRef.ref.onSnapshot(snapshot => {
         this.objective = serializeDocument(snapshot);
@@ -115,10 +118,10 @@ export default {
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
             Toast.savedChanges();
           })
-          .catch(() => {
+          .catch(error => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Noe gikk galt');
-            Toast.error();
+            this.$errorHandler(error);
           });
       }
     },
@@ -137,9 +140,7 @@ export default {
         .then(() => {
           this.loading = false;
         })
-        .catch(err => {
-          throw new Error(err);
-        });
+        .catch(this.$errorHandler);
     },
 
     setSubmitInfo(submit, showInfo, info) {

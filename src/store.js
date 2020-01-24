@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from './config/firebaseConfig';
-import { quarters } from './util/utils';
+import { quarters, errorHandler } from './util/utils';
 import { serializeDocument, getNestedData } from '@/util/db';
 import icons from '@/config/icons';
 
@@ -40,9 +40,7 @@ export const actions = {
       .collectionGroup('key_results')
       .get()
       .then(snapshot => snapshot.docs.filter(d => d.id === id)[0].ref)
-      .catch(err => {
-        throw new Error(err);
-      });
+      .catch(errorHandler);
 
     const unsubscribe = await getKeyRes.then(keyResult => {
       if (!keyResult) return;
@@ -63,14 +61,17 @@ export const actions = {
       .collectionGroup('products')
       .where('slug', '==', slug)
       .get()
-      .then(d => d.docs[0].ref);
+      .then(d => d.docs[0].ref)
+      .catch(errorHandler);
 
     // TODO: Unsubscribe from this when not longer needed
-    getProduct.then(product => {
-      product.onSnapshot(snapshot => {
-        commit('set_product', serializeDocument(snapshot));
-      });
-    });
+    getProduct
+      .then(product => {
+        product.onSnapshot(snapshot => {
+          commit('set_product', serializeDocument(snapshot));
+        });
+      })
+      .catch(errorHandler);
 
     return getProduct;
   },

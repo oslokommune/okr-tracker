@@ -104,7 +104,7 @@ export default {
       await this.keyres.ref
         .update(this.updatedKeyRes)
         .then(Toast.savedChanges)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
 
       this.dirty = false;
     },
@@ -113,7 +113,7 @@ export default {
       await this.keyres.ref
         .update({ archived: true })
         .then(Toast.deletedRegret.bind(null, { ref: this.keyres.ref }))
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
 
       this.$emit('archived');
     },

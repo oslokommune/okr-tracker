@@ -49,14 +49,21 @@ export default {
     this.user = await db
       .doc(`users/${this.eventData.user}`)
       .get()
-      .then(d => d.data());
+      .then(d => d.data())
+      .catch(this.$errorHandler);
 
-    this.key_result = await this.eventData.keyres.get().then(serializeDocument);
+    this.key_result = await this.eventData.keyres
+      .get()
+      .then(serializeDocument)
+      .catch(this.$errorHandler);
 
     // Replace the value from db with the one from the audit log
     this.key_result.currentValue = this.eventData.toValue;
 
-    this.product = await this.eventData.product.get().then(d => d.data());
+    this.product = await this.eventData.product
+      .get()
+      .then(d => d.data())
+      .catch(this.$errorHandler);
   },
 };
 </script>
