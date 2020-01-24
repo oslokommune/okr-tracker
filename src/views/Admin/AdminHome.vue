@@ -22,7 +22,7 @@ import { isAdmin } from '@/util/db';
 import PageHeader from '@/components/PageHeader.vue';
 
 export default {
-  name: 'Admin',
+  name: 'AdminHome',
 
   computed: {
     ...mapState(['user']),

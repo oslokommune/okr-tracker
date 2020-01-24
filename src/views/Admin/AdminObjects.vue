@@ -63,8 +63,8 @@
       </div>
 
       <main class="miller__main">
-        <AdminProduct v-if="selection.type === 'product'" :docref="selection.docRef"></AdminProduct>
-        <AdminDepartment v-if="selection.type === 'department'" :docref="selection.docRef"></AdminDepartment>
+        <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
+        <admin-department v-if="selection.type === 'department'" :docref="selection.docRef"></admin-department>
       </main>
     </div>
   </div>
@@ -79,7 +79,7 @@ import AdminDepartment from './components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Admin',
+  name: 'AdminObjects',
 
   components: { AdminProduct, AdminDepartment },
 

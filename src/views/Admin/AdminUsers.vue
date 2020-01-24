@@ -54,7 +54,7 @@ import { db } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Admin',
+  name: 'AdminUsers',
 
   data: () => ({
     addUserList: '',
