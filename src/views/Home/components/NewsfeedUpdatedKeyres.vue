@@ -1,9 +1,9 @@
 <template>
-  <div class="card" v-if="product && user && key_result">
-    <div class="card__user">
-      <img class="card__avatar" :src="this.user.photoURL" :alt="this.user.displayName" />
-      <div class="card__usertext">
-        <span class="card__displayname">{{ this.user.displayName }}</span>
+  <div class="nf-card" v-if="product && user && key_result">
+    <div class="nf-card__user">
+      <img class="nf-card__avatar" :src="this.user.photoURL" :alt="this.user.displayName" />
+      <div class="nf-card__usertext">
+        <span class="nf-card__displayname">{{ this.user.displayName }}</span>
         har oppdatert fremdrift for
         <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: key_result.id } }"
           >et nøkkelresultat</router-link
@@ -11,12 +11,13 @@
       </div>
     </div>
 
-    <div class="card__body">
+    <div class="nf-card__body">
       <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: key_result.id } }">
         {{ key_result.key_result }}
-        <ProgressBar class="progress" :keyres="key_result"></ProgressBar>
+        <ProgressBar class="nf-progress" :keyres="key_result"></ProgressBar>
       </router-link>
     </div>
+    <newsfeed-footer :data="eventData"></newsfeed-footer>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
 import { db } from '@/config/firebaseConfig';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { serializeDocument } from '../../../util/db';
+import NewsfeedFooter from './NewsfeedFooter.vue';
 
 export default {
   data: () => ({
@@ -40,6 +42,7 @@ export default {
 
   components: {
     ProgressBar,
+    NewsfeedFooter,
   },
 
   async created() {
@@ -57,56 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles/_colors';
-
-.card {
-  margin-bottom: 0.75rem;
-  padding: 0.25rem 1.5rem 0.25rem 1rem;
-  border: 0;
-  border-bottom: 1px solid $color-border;
-
-  &__user {
-    display: flex;
-    align-items: flex-start;
-    padding-bottom: 0.4rem;
-  }
-
-  &__usertext {
-    display: inline;
-  }
-
-  &__avatar {
-    flex-shrink: 0;
-    width: 2rem;
-    height: 2rem;
-    margin-top: 0.25rem;
-    margin-right: 0.75rem;
-    border-radius: 1rem;
-  }
-
-  &__displayname {
-    font-weight: 500;
-  }
-
-  &__body {
-    margin-left: 2.75rem;
-    padding: 0.5rem 0 0.25rem;
-    font-weight: 500;
-    font-size: 1rem;
-    border-top: 1px solid $color-border;
-
-    a {
-      color: black !important;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
-
-.progress {
-  margin: 1rem 0 0.5rem;
-}
-</style>

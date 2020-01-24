@@ -52,6 +52,7 @@ import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import { serializeDocument } from '../../util/db';
 import * as Toast from '@/util/toasts';
+import Audit from '@/util/audit/audit';
 
 export default {
   data: () => ({
@@ -135,8 +136,9 @@ export default {
         this.objective.ref
           .collection('key_results')
           .add(this.newKeyRes)
-          .then(() => {
+          .then(docref => {
             Toast.addedKeyResult();
+            Audit.createKeyResult(docref, this.productref, this.objective.ref);
             this.close();
           })
           .catch(err => {
@@ -159,5 +161,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors';
+.objective__select {
+  padding-top: 0.5rem;
+}
 </style>

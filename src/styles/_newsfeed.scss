@@ -1,0 +1,142 @@
+@import '@/styles/_colors';
+
+.newsfeed {
+  position: sticky;
+  top: 0;
+  display: flex;
+
+  display: none;
+  flex-direction: column;
+  max-width: 400px;
+  height: 100vh;
+  background: white;
+  border-left: 1px solid rgba(black, 0.2);
+
+  @media screen and (min-width: 1700px) {
+    display: block;
+  }
+
+  &__feed {
+    position: relative;
+    height: calc(100vh - 3rem);
+    padding-top: 1rem;
+    overflow-y: scroll;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .title-3 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 1rem;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.06rem;
+    text-transform: uppercase;
+    background: $color-bg;
+
+    .fa {
+      margin-right: 1.5rem;
+      padding-left: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .title-3 .btn {
+    margin-right: -1rem;
+    margin-left: auto;
+    text-align: center !important;
+
+    .fa {
+      margin-right: 0;
+      padding: 0;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.feed-enter-active,
+.feed-leave-active,
+.feed-move {
+  transition: 500ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
+  transition-property: opacity, transform;
+}
+
+.feed-enter {
+  transform: translateX(50px) scaleY(0.5);
+  opacity: 0;
+}
+
+.feed-enter-to {
+  transform: translateX(0) scaleY(1);
+  opacity: 1;
+}
+
+.feed-leave-active {
+  position: absolute;
+}
+
+.feed-leave-to {
+  transform: scaleY(0);
+  transform-origin: center top;
+  opacity: 0;
+}
+
+// Newsfeed cards
+
+.nf-card {
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 1.5rem 0.25rem 1rem;
+  border: 0;
+  border-bottom: 1px solid $color-border;
+
+  &__user {
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 0.4rem;
+  }
+
+  &__usertext {
+    display: inline;
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    margin-top: 0.25rem;
+    margin-right: 0.75rem;
+    border-radius: 1rem;
+  }
+
+  &__displayname {
+    font-weight: 500;
+  }
+
+  &__body {
+    margin-left: 2.75rem;
+    padding: 0.5rem 0 0.25rem;
+    font-weight: 500;
+    font-size: 1rem;
+    border-top: 1px solid $color-border;
+
+    a {
+      color: black !important;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__footer {
+    margin-left: 2.75rem;
+    padding: 0.5rem 0;
+    font-size: 12px;
+    text-align: right;
+  }
+}
+
+.nf-progress {
+  margin: 1rem 0 0.5rem;
+}

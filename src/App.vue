@@ -99,12 +99,4 @@ body {
     margin-right: 0;
   }
 }
-
-.newsfeed {
-  display: none;
-
-  @media screen and (min-width: 1700px) {
-    display: block;
-  }
-}
 </style>

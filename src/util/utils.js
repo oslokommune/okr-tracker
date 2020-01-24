@@ -1,4 +1,5 @@
-import { addMonths, startOfQuarter, getQuarter } from 'date-fns';
+import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow } from 'date-fns';
+import locale from 'date-fns/locale/nb';
 import { startDate } from '@/config/applicationConfig';
 
 /**
@@ -34,4 +35,8 @@ function getProductFromSlug(nest, slug) {
     .filter(Boolean)[0];
 }
 
-export { quarters, getProductFromSlug };
+function timeFromNow(date) {
+  return formatDistanceToNow(date, { addSuffix: true, locale });
+}
+
+export { quarters, getProductFromSlug, timeFromNow };
