@@ -1,8 +1,11 @@
 import { db, auth } from '@/config/firebaseConfig';
+import { errorHandler } from '@/util/utils';
 
 const write = async (obj = {}) => {
   const user = obj.user || auth.currentUser.email || null;
-  db.collection('audit').add({ ...obj, user, timestamp: new Date() });
+  db.collection('audit')
+    .add({ ...obj, user, timestamp: new Date() })
+    .catch(errorHandler);
 };
 
 export default {

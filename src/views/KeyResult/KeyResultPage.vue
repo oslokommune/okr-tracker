@@ -128,7 +128,11 @@ export default {
     if (!this.key_result) return;
 
     this.graph = new Linechart(this.$refs.graph);
-    const quarter = await this.key_result.ref.parent.parent.get().then(d => d.data().quarter);
+    const quarter = await this.key_result.ref.parent.parent
+      .get()
+      .then(d => d.data().quarter)
+      .catch(this.$errorHandler);
+
     this.graph.render(this.key_result, quarter, this.list);
   },
 
@@ -140,7 +144,11 @@ export default {
         this.graph = new Linechart(this.$refs.graph);
       }
 
-      const quarter = await this.key_result.ref.parent.parent.get().then(d => d.data().quarter);
+      const quarter = await this.key_result.ref.parent.parent
+        .get()
+        .then(d => d.data().quarter)
+        .catch(this.$errorHandler);
+
       this.graph.render(this.key_result, quarter, newVal);
     },
 
@@ -167,7 +175,7 @@ export default {
         .delete()
         .then(Toast.deleted)
         .then(this.updateCurrentValue)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
 
     async addValue() {
@@ -176,10 +184,7 @@ export default {
         .add(this.obj)
         .then(this.updateCurrentValue)
         .then(Toast.addedProgression)
-        .catch(err => {
-          Toast.error();
-          throw new Error(err);
-        });
+        .catch(this.$errorHandler);
 
       this.value = 0;
     },
@@ -210,10 +215,7 @@ export default {
             return Audit.keyResUpdateProgress(this.key_result.ref, product.ref, oldValue, newValue);
           })
           .then(Toast.savedChanges)
-          .catch(err => {
-            Toast.error();
-            throw new Error(err);
-          });
+          .catch(this.$errorHandler);
       }
       return true;
     },

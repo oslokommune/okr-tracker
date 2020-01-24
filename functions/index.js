@@ -1,10 +1,8 @@
 const d3 = require('d3');
-
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 admin.initializeApp();
-
 const db = admin.firestore();
 
 // Create and Deploy Your First Cloud Functions
@@ -39,10 +37,11 @@ exports.updatedKeyResultProgression = functions.firestore
   });
 
 function getProgressionPercentage(keyres) {
+  /* eslint-disable-next-line */
   const { target_value, start_value, currentValue } = keyres;
   const scale = d3
     .scaleLinear()
-    .domain([start_value, target_value])
+    .domain([start_value, target_value]) /* eslint-disable-line */
     .clamp(true);
   return scale(currentValue);
 }

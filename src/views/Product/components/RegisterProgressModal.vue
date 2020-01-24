@@ -114,7 +114,7 @@ export default {
         .add(this.progress)
         .then(Toast.addedProgression)
         .then(this.updateCurrentValue)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
 
       this.skip();
       if (this.index === 0) this.close();
@@ -127,13 +127,17 @@ export default {
         .orderBy('date', 'desc')
         .limit(1)
         .get()
-        .then(snapshot => snapshot.docs[0].data().value);
+        .then(snapshot => snapshot.docs[0].data().value)
+        .catch(this.$errorHandler);
 
       if (oldValue === newValue) return;
 
-      return this.key_result.ref.update({ currentValue: newValue }).then(() => {
-        return Audit.keyResUpdateProgress(this.key_result.ref, this.product.ref, oldValue, newValue);
-      });
+      return this.key_result.ref
+        .update({ currentValue: newValue })
+        .then(() => {
+          return Audit.keyResUpdateProgress(this.key_result.ref, this.product.ref, oldValue, newValue);
+        })
+        .catch(this.$errorHandler);
     },
 
     getObjectives() {
@@ -157,7 +161,7 @@ export default {
           .get()
           .then(snap => snap.docs.map(serializeDocument));
       });
-      const keyResults = await Promise.all(promises);
+      const keyResults = await Promise.all(promises).catch(this.$errorHandler);
       this.key_results = keyResults.flat();
     },
   },

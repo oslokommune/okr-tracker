@@ -60,53 +60,17 @@ export default {
       required,
       minValue: minValue(0),
     },
-    // date: {
-    //   required,
-    //   minValue(value) {
-    //     return new Date(value).toISOString() > this.startDate.toISOString();
-    //   },
-    //   maxValue(value) {
-    //     return new Date(value).toISOString() < this.endDate.toISOString();
-    //   },
-    // },
   },
 
   mounted() {
-    this.keyres.ref.parent.parent.onSnapshot(document => {
-      this.parentObjective = serializeDocument(document);
-    });
-    // this.newValue = this.keyres.current_value;
+    this.keyres.ref.parent.parent
+      .onSnapshot(document => {
+        this.parentObjective = serializeDocument(document);
+      })
+      .catch(this.$errorHandler);
   },
 
   methods: {
-    // submitNewValue() {
-    //   this.$v.$touch();
-    //   if (this.$v.$invalid) {
-    //     this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
-    //   } else {
-    //     this.setSubmitInfo(true, false, '');
-    //     this.addKeyResValue({
-    //       id: uniqid(),
-    //       key_result_id: this.keyresId,
-    //       value: +this.newValue,
-    //       timestamp: this.date,
-    //     })
-    //       .then(() => {
-    //         this.setSubmitInfo(false, false, '');
-    //         this.getAllData();
-    //         this.$router.push({
-    //           name: 'keyres-value-details',
-    //           params: {
-    //             keyresId: this.keyresId,
-    //           },
-    //         });
-    //       })
-    //       .catch(() => {
-    //         this.setSubmitInfo(false, true, 'Noe gikk galt');
-    //       });
-    //   }
-    // },
-
     formatDate(value) {
       return format(value, 'd/M/y');
     },
@@ -116,12 +80,6 @@ export default {
       this.showInfo = showInfo;
       this.info = info;
     },
-  },
-
-  computed: {
-    // objective() {
-    //   return this.getObjectById(this.keyres.objective_id);
-    // },
   },
 };
 </script>

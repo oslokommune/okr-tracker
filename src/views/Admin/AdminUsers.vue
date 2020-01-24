@@ -84,20 +84,23 @@ export default {
           Toast.successFullyAddedUsers(promises.length);
           this.addUserList = '';
         })
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
 
     deleteUser(user) {
       user.ref
         .delete()
         .then(Toast.deletedUser)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
 
     toggleAdmin(user, value) {
-      user.ref.update({ admin: value }).then(() => {
-        Toast.toggleAdmin(user, value);
-      });
+      user.ref
+        .update({ admin: value })
+        .then(() => {
+          Toast.toggleAdmin(user, value);
+        })
+        .catch(this.$errorHandler);
     },
   },
 };

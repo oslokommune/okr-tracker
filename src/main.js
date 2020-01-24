@@ -8,6 +8,7 @@ import Toasted from 'vue-toasted';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import { errorHandler } from '@/util/utils';
 
 import handleUserAuthStateChange from '@/util/authChangeHelper';
 
@@ -28,6 +29,9 @@ Vue.use(Toasted, {
 });
 Vue.use(VueScrollTo);
 Vue.use(ImageUploader);
+
+// Bind instance properties
+Vue.prototype.$errorHandler = errorHandler;
 
 // Global components
 Vue.component('v-select', VueSelect);

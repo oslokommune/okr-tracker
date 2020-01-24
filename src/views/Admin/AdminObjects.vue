@@ -156,7 +156,7 @@ export default {
           this.selectedProductId = doc.id;
         })
         .then(Toast.addedProduct)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
 
     addDepartment() {
@@ -181,7 +181,7 @@ export default {
           return doc;
         })
         .then(Toast.addedDepartment)
-        .catch(Toast.error);
+        .catch(this.$errorHandler);
     },
   },
 

@@ -1,5 +1,6 @@
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
 import * as Toast from '@/util/toasts';
+import { errorHandler } from '@/util/utils';
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -25,9 +26,7 @@ export function updateUserObject(user) {
         transaction.update(userRef, newData);
       });
     })
-    .catch(error => {
-      throw new Error(error);
-    });
+    .catch(errorHandler);
 }
 
 /**
@@ -42,7 +41,7 @@ export function productListener(slug) {
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
-      const productData = await d.docs[0].ref.get();
+      const productData = await d.docs[0].ref.get().catch(errorHandler);
       this.product = serializeDocument(productData);
     });
 }
@@ -59,7 +58,7 @@ export function departmentListener(slug) {
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
-      const departmentData = await d.docs[0].ref.get();
+      const departmentData = await d.docs[0].ref.get().catch(errorHandler);
       this.department = serializeDocument(departmentData);
     });
 }
@@ -70,7 +69,8 @@ export async function departmentFromSlug(slug) {
     .where('slug', '==', slug)
     .get()
     .then(d => d.docs[0])
-    .then(d => serializeDocument(d));
+    .then(d => serializeDocument(d))
+    .catch(errorHandler);
 
   department.ref
     .collection('products')
@@ -121,9 +121,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
       .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
-      .catch(err => {
-        throw new Error(err);
-      });
+      .catch(errorHandler);
   } else {
     // 'ref'  be a
     console.log({ slugOrRef });
@@ -192,7 +190,8 @@ export async function isAdmin() {
     .collection('users')
     .doc(email)
     .get()
-    .then(d => d.data().admin);
+    .then(d => d.data().admin)
+    .catch(errorHandler);
 }
 
 /**
@@ -233,7 +232,7 @@ const getChildren = async (ref, collectionName, callback) => {
     .where('archived', '==', false)
     .get();
   const promises = snapshot.docs.map(callback);
-  return Promise.all(promises);
+  return Promise.all(promises).catch(errorHandler);
 };
 
 /**
@@ -250,7 +249,8 @@ export async function myProductsListener() {
     .collectionGroup('products')
     .where('team', 'array-contains', userRef)
     .get()
-    .then(d => d.docs.map(serializeDocument));
+    .then(d => d.docs.map(serializeDocument))
+    .catch(errorHandler);
 }
 
 export function isDashboardUser() {
@@ -261,5 +261,5 @@ export async function unDelete(ref) {
   return ref
     .update({ archived: false })
     .then(Toast.revertedDeletion)
-    .catch(Toast.error);
+    .catch(errorHandler);
 }

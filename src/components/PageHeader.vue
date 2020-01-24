@@ -33,6 +33,7 @@
 <script>
 import { serializeDocument } from '../util/db';
 import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -93,7 +94,8 @@ export default {
 
       const trail = await Promise.all(promises)
         .then(snapshots => snapshots.map(serializeDocument))
-        .then(documents => documents.map(this.getNameAndRouteFromDocument));
+        .then(documents => documents.map(this.getNameAndRouteFromDocument))
+        .catch(this.$errorHandler);
 
       return trail.reverse();
     },
@@ -142,6 +144,7 @@ export default {
         return null;
       }
 
+      Toast.error();
       throw new Error('Cannot find document type');
     },
   },

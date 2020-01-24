@@ -71,7 +71,8 @@ export default {
         })
         .then(() => {
           this.$router.push('/login');
-        });
+        })
+        .catch(this.$errorHandler);
     },
   },
 };

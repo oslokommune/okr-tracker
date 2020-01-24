@@ -118,7 +118,7 @@ export default {
             this.$emit('close-menu');
             Toast.addedObjective(this.quarter.name);
           })
-          .catch(Toast.error);
+          .catch(this.$errorHandler);
       }
     },
 

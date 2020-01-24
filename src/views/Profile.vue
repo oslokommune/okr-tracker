@@ -82,9 +82,11 @@ export default {
     setImage(file) {
       this.hasImage = true;
       this.file = file;
-      this.uploadPhoto().then(() => {
-        Audit.uploadProfilePhoto(this.user);
-      });
+      this.uploadPhoto()
+        .then(() => {
+          Audit.uploadProfilePhoto(this.user);
+        })
+        .catch(this.$errorHandler);
     },
 
     async uploadPhoto() {
@@ -93,21 +95,12 @@ export default {
 
       const storageRef = storage.ref(`photos/${this.user.id}`);
 
-      const snapshot = await storageRef.put(this.file).catch(err => {
-        Toast.error();
-        throw new Error(err);
-      });
+      const snapshot = await storageRef.put(this.file).catch(this.$errorHandler);
       const photoURL = await snapshot.ref
         .getDownloadURL()
         .then(url => url)
-        .catch(err => {
-          Toast.error();
-          throw new Error(err);
-        });
-      await this.user.ref.update({ photoURL }).catch(err => {
-        Toast.error();
-        throw new Error(err);
-      });
+        .catch(this.$errorHandler);
+      await this.user.ref.update({ photoURL }).catch(this.$errorHandler);
 
       this.user.photoURL = photoURL;
       this.uploading = false;
@@ -117,7 +110,7 @@ export default {
 
     updateName() {
       const displayName = this.$refs.name.innerHTML;
-      this.user.ref.update({ displayName });
+      this.user.ref.update({ displayName }).catch(this.$errorHandler);
     },
   },
 };
