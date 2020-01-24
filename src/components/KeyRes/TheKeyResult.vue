@@ -8,9 +8,11 @@
 </template>
 
 <script>
-import ProgressBar from '@/components/ProgressBar.vue';
+import ProgressBar from '../ProgressBar.vue';
 
 export default {
+  name: 'TheKeyResult',
+
   props: {
     keyres: {
       type: Object,

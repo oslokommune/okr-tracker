@@ -82,13 +82,15 @@
 import { mapState, mapActions } from 'vuex';
 import { format, parseISO } from 'date-fns';
 import { serializeDocument, isTeamMemberOfProduct } from '../../util/db';
-import PageHeader from '@/components/PageHeader.vue';
-import * as Toast from '@/util/toasts';
-import Linechart from '@/util/linechart';
-import { getProductFromSlug } from '@/util/utils';
-import Audit from '@/util/audit/audit';
+import PageHeader from '../../components/PageHeader.vue';
+import * as Toast from '../../util/toasts';
+import Linechart from '../../util/linechart';
+import { getProductFromSlug } from '../../util/utils';
+import Audit from '../../util/audit/audit';
 
 export default {
+  name: 'KeyResultPage',
+
   data: () => ({
     graph: null,
     doc: null,

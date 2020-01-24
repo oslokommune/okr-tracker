@@ -44,12 +44,14 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument } from '@/util/db';
+import { serializeDocument } from '../util/db';
 import ProgressBar from './ProgressBar.vue';
 import * as Toast from '../util/toasts';
 import Audit from '../util/audit/audit';
 
 export default {
+  name: 'RegisterProgressModal',
+
   data: () => ({
     index: 0,
     objectives: [],
@@ -184,7 +186,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@import '../styles/_colors';
 
 .overlay {
   position: fixed;

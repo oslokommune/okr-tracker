@@ -8,10 +8,10 @@ import EditProduct from './views/Product/EditProduct.vue';
 import EditProductDetails from './views/Product/EditProductDetails.vue';
 import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
 import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
-import Department from './views/Department/Department.vue';
+import Department from './views/Department/DepartmentHome.vue';
 
 import { auth } from './config/firebaseConfig';
-import EditDepartment from './views/EditDepartment.vue';
+import EditDepartment from './views/Department/EditDepartment.vue';
 
 const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
 const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');

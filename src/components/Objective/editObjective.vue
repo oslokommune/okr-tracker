@@ -48,10 +48,12 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import * as Toast from '@/util/toasts';
-import { serializeDocument } from '@/util/db';
+import * as Toast from '../../util/toasts';
+import { serializeDocument } from '../../util/db';
 
 export default {
+  name: 'EditObjective',
+
   props: {
     objectiveRef: {
       type: Object,

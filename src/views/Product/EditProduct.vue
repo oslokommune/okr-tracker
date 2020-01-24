@@ -22,11 +22,11 @@
 
 <script>
 import { mapState } from 'vuex';
-import { productListener, isTeamMemberOfProduct } from '@/util/db';
-import PageHeader from '@/components/PageHeader.vue';
+import { productListener, isTeamMemberOfProduct } from '../../util/db';
+import PageHeader from '../../components/PageHeader.vue';
 
 export default {
-  name: 'Product',
+  name: 'EditProduct',
 
   components: {
     PageHeader,

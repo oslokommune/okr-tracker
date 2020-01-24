@@ -44,11 +44,13 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '@/config/firebaseConfig';
-import * as Toast from '@/util/toasts';
-import slugify from '@/util/slugify';
+import { storage } from '../../../config/firebaseConfig';
+import * as Toast from '../../../util/toasts';
+import slugify from '../../../util/slugify';
 
 export default {
+  name: 'AdminDepartment',
+
   data: () => ({
     department: null,
     file: null,

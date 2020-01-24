@@ -86,9 +86,9 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import ProgressBar from '@/components/ProgressBar.vue';
-import LineChart from '@/util/linechart';
-import { formatPercent } from '@/util/pie-helpers';
+import ProgressBar from '../../components/ProgressBar.vue';
+import LineChart from '../../util/linechart';
+import { formatPercent } from '../../util/pie-helpers';
 
 export default {
   name: 'Dashboard',
@@ -182,5 +182,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/dashboard.scss';
+@import '../../styles/dashboard.scss';
 </style>

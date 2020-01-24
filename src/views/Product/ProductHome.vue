@@ -50,7 +50,7 @@ import DocumentSidebar from '../../components/DocumentSidebar.vue';
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Product',
+  name: 'ProductHome',
 
   data: () => ({
     key_results: [],

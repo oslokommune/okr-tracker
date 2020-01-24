@@ -47,7 +47,7 @@ import DocumentSummary from '../../components/DocumentSummary.vue';
 import ObjectivesList from '../../components/ObjectivesList.vue';
 
 export default {
-  name: 'Department',
+  name: 'DepartmentHome',
 
   data: () => ({
     objectives: [],

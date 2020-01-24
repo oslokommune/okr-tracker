@@ -41,9 +41,11 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import * as Toast from '@/util/toasts';
+import * as Toast from '../../util/toasts';
 
 export default {
+  name: 'EditKeyres',
+
   data: () => ({
     submit: false,
     showInfo: false,

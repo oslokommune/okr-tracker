@@ -7,6 +7,8 @@ import { mapState } from 'vuex';
 import Pie from '../util/piechart';
 
 export default {
+  name: 'PieChart',
+
   data: () => ({
     pie: null,
   }),

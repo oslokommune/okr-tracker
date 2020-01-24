@@ -11,10 +11,12 @@
 </template>
 
 <script>
-import * as Toast from '@/util/toasts';
-import { errorHandler } from '@/util/utils';
+import * as Toast from '../../util/toasts';
+import { errorHandler } from '../../util/utils';
 
 export default {
+  name: 'CalloutArchivedRestore',
+
   props: {
     docref: {
       type: Object,
@@ -40,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@import '../../styles/_colors';
 
 .callout {
   display: grid;

@@ -21,9 +21,11 @@
 
 <script>
 import { serializeDocument } from '../../util/db';
-import TheKeyResult from '@/components/KeyRes/TheKeyResult.vue';
+import TheKeyResult from '../KeyRes/TheKeyResult.vue';
 
 export default {
+  name: 'TheObjective',
+
   data: () => ({
     key_results: [],
   }),

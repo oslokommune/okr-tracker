@@ -8,12 +8,14 @@
 import ProductList from './components/ProductList.vue';
 
 export default {
+  name: 'Home',
+
   components: { ProductList },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@import '../../styles/_colors';
 .home {
   background: $color-bg;
 }

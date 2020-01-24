@@ -1,6 +1,6 @@
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
-import * as Toast from '@/util/toasts';
-import { errorHandler } from '@/util/utils';
+import * as Toast from './toasts';
+import { errorHandler } from './utils';
 
 // firebase collections
 const usersCollection = db.collection('users');

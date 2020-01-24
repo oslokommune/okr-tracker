@@ -38,11 +38,12 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import TheObjective from '@/components/Objective/TheObjective.vue';
-// import EditKeyres from '@/components/KeyRes/editKeyres.vue';
-import Linechart from '@/util/linechart';
+import TheObjective from '../../components/Objective/TheObjective.vue';
+import Linechart from '../../util/linechart';
 
 export default {
+  name: 'KeyResultDetails',
+
   components: {
     // EditKeyres,
     TheObjective,

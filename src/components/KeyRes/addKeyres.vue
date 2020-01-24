@@ -51,11 +51,13 @@
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import { serializeDocument } from '../../util/db';
-import * as Toast from '@/util/toasts';
-import Audit from '@/util/audit/audit';
-import { errorHandler } from '@/util/utils';
+import * as Toast from '../../util/toasts';
+import Audit from '../../util/audit/audit';
+import { errorHandler } from '../../util/utils';
 
 export default {
+  name: 'AddKeyres',
+
   data: () => ({
     objective: null,
     start_value: 0,
