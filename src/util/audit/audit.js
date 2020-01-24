@@ -16,4 +16,12 @@ export default {
   async keyResUpdateProgress(keyres, product, fromValue, toValue) {
     return write({ event: 'keyRes-update-progress', keyres, product, fromValue, toValue });
   },
+
+  async uploadProfilePhoto(user) {
+    return write({ event: 'upload-profile-photo', user });
+  },
+
+  async createKeyResult(keyresRef, productRef, objectiveRef) {
+    return write({ event: 'create-key-result', keyresRef, productRef, objectiveRef });
+  },
 };

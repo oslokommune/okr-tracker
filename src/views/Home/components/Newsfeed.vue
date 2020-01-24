@@ -7,7 +7,23 @@
 
     <transition-group name="feed" tag="div" class="newsfeed__feed" v-if="feed.length">
       <template v-for="event in feed">
-        <UpdatedKeyres :key="event.id" :event-data="event"></UpdatedKeyres>
+        <UpdatedKeyres
+          v-if="event.event === 'keyRes-update-progress'"
+          :key="event.id"
+          :event-data="event"
+        ></UpdatedKeyres>
+
+        <UploadProfilePhoto
+          v-if="event.event === 'upload-profile-photo'"
+          :key="event.id"
+          :event-data="event"
+        ></UploadProfilePhoto>
+
+        <CreateNewKeyResult
+          v-if="event.event === 'create-key-result'"
+          :key="event.id"
+          :event-data="event"
+        ></CreateNewKeyResult>
       </template>
     </transition-group>
   </div>
@@ -16,6 +32,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import UpdatedKeyres from './NewsfeedUpdatedKeyres.vue';
+import UploadProfilePhoto from './NewsfeedUpdatedProfilePhoto.vue';
+import CreateNewKeyResult from './NewsfeedCreateKeyResult.vue';
 import { serializeDocument } from '../../../util/db';
 
 export default {
@@ -25,13 +43,15 @@ export default {
 
   components: {
     UpdatedKeyres,
+    UploadProfilePhoto,
+    CreateNewKeyResult,
   },
 
   mounted() {
     db.collection('audit')
-      .where('event', '==', 'keyRes-update-progress')
+      .where('event', 'in', ['keyRes-update-progress', 'upload-profile-photo', 'create-key-result'])
       .orderBy('timestamp', 'desc')
-      .limit(6)
+      .limit(15)
       .onSnapshot(async snapshot => {
         const newDocuments = await snapshot.docChanges().filter(d => d.type === 'added');
 
@@ -49,84 +69,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles/_colors';
-
-.newsfeed {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-  height: 100vh;
-  background: white;
-  border-left: 1px solid rgba(black, 0.2);
-
-  &__feed {
-    position: relative;
-    height: calc(100vh - 3rem);
-    padding-top: 1rem;
-    overflow-y: scroll;
-    border-top: 1px solid $color-border;
-    border-bottom: 1px solid $color-border;
-  }
-}
-
-.title-3 {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0 1rem;
-  font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: 0.06rem;
-  text-transform: uppercase;
-  background: $color-bg;
-
-  .fa {
-    margin-right: 1.5rem;
-    padding-left: 0.5rem;
-    font-size: 1rem;
-  }
-}
-
-.title-3 .btn {
-  margin-right: -1rem;
-  margin-left: auto;
-  text-align: center !important;
-
-  .fa {
-    margin-right: 0;
-    padding: 0;
-    font-size: 1.2rem;
-  }
-}
-
-.feed-enter-active,
-.feed-leave-active,
-.feed-move {
-  transition: 500ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
-  transition-property: opacity, transform;
-}
-
-.feed-enter {
-  transform: translateX(50px) scaleY(0.5);
-  opacity: 0;
-}
-
-.feed-enter-to {
-  transform: translateX(0) scaleY(1);
-  opacity: 1;
-}
-
-.feed-leave-active {
-  position: absolute;
-}
-
-.feed-leave-to {
-  transform: scaleY(0);
-  transform-origin: center top;
-  opacity: 0;
-}
-</style>

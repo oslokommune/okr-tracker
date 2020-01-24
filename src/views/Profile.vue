@@ -45,6 +45,8 @@ import { mapState } from 'vuex';
 import { storage } from '@/config/firebaseConfig';
 import { myProductsListener, isDashboardUser } from '@/util/db';
 import PageHeader from '@/components/PageHeader.vue';
+import * as Toast from '@/util/toasts';
+import Audit from '@/util/audit/audit';
 
 export default {
   name: 'Profile',
@@ -80,19 +82,37 @@ export default {
     setImage(file) {
       this.hasImage = true;
       this.file = file;
-      this.uploadPhoto();
+      this.uploadPhoto().then(() => {
+        Audit.uploadProfilePhoto(this.user);
+      });
     },
 
     async uploadPhoto() {
+      if (!this.file) return;
       this.uploading = true;
+
       const storageRef = storage.ref(`photos/${this.user.id}`);
 
-      const snapshot = await storageRef.put(this.file);
-      const photoURL = await snapshot.ref.getDownloadURL().then(url => url);
-      await this.user.ref.update({ photoURL });
+      const snapshot = await storageRef.put(this.file).catch(err => {
+        Toast.error();
+        throw new Error(err);
+      });
+      const photoURL = await snapshot.ref
+        .getDownloadURL()
+        .then(url => url)
+        .catch(err => {
+          Toast.error();
+          throw new Error(err);
+        });
+      await this.user.ref.update({ photoURL }).catch(err => {
+        Toast.error();
+        throw new Error(err);
+      });
 
       this.user.photoURL = photoURL;
       this.uploading = false;
+
+      return photoURL;
     },
 
     updateName() {

@@ -138,6 +138,10 @@ export default {
         return null;
       }
 
+      if (docType === 'users') {
+        return null;
+      }
+
       throw new Error('Cannot find document type');
     },
   },
