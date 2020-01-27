@@ -5,7 +5,8 @@
       <p>{{ document.mission_statement }}</p>
     </div>
     <div>
-      <h2 class="title title-2">Team</h2>
+      <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>
+      <h2 v-else-if="type === 'product'" class="title title-2">Team</h2>
       <ul class="team__list">
         <li class="team__member" v-for="user in team" :key="user.id">
           <template v-if="type === 'department'">
