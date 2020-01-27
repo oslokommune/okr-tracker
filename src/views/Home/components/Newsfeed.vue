@@ -2,7 +2,9 @@
   <div class="newsfeed">
     <h2 class="title-3">
       <i class="fa fa-stream fa-fw"></i>Aktivitet
-      <button class="btn btn--borderless" @click="$emit('close')"><i class="fa fa-times"></i></button>
+      <button class="btn btn--borderless" @click="$emit('close')" v-tooltip.left="`Skjul aktivitet`">
+        <i class="fa fa-times"></i>
+      </button>
     </h2>
 
     <transition-group name="feed" tag="div" class="newsfeed__feed" v-if="feed.length">

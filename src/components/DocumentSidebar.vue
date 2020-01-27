@@ -8,11 +8,12 @@
             params: { slug: $route.params.slug },
           }"
           class="sidebar-nav__item"
+          v-tooltip.right="`Endre detaljer og team`"
         >
           <i class="fa fas fa-fw fa-edit"></i>Endre produkt
         </router-link>
         <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
-          <div class="sidebar-nav__item" @click="expandAddObjective = true">
+          <div class="sidebar-nav__item" @click="expandAddObjective = true" v-tooltip.right="`Legg til et nytt mål`">
             <i class="fa fas fa-fw fa-plus"></i>Legg til mål
           </div>
 
@@ -24,7 +25,11 @@
         </div>
 
         <div class="add-object-menu-wrapper" v-click-outside="closeAddKeyres">
-          <div class="sidebar-nav__item" @click="expandAddKeyRes = true">
+          <div
+            class="sidebar-nav__item"
+            @click="expandAddKeyRes = true"
+            v-tooltip.right="`Legg til nytt nøkkelresultat for eksisterende mål`"
+          >
             <i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat
           </div>
           <add-keyres
@@ -35,7 +40,7 @@
           ></add-keyres>
         </div>
 
-        <div class="register-progress-wrapper">
+        <div class="register-progress-wrapper" v-tooltip.right="`Registrere nye verdier til nøkkelresultatene`">
           <div class="sidebar-nav__item" @click="expandRegisterProgress = true">
             <i class="fa fas fa-fw fa-chart-line"></i>Oppdater data
           </div>
@@ -46,10 +51,14 @@
           ></register-progress-modal>
         </div>
       </template>
-      <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
-      <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk</div>
+      <div class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
+        <i class="fa fas fa-fw fa-dashboard"></i>Dashboard
+      </div>
+      <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
+        <i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk
+      </div>
     </nav>
-    <div class="edited edited--mt">Endret {{ edited }}</div>
+    <div class="edited edited--mt" v-tooltip="prettyDate">Endret {{ edited }}</div>
   </aside>
 </template>
 <script>
@@ -57,7 +66,7 @@ import ClickOutside from 'vue-click-outside';
 import AddKeyres from './KeyRes/addKeyres.vue';
 import AddObjective from './Objective/addObjective.vue';
 import RegisterProgressModal from './RegisterProgressModal.vue';
-import { timeFromNow } from '../util/utils';
+import { timeFromNow, datePretty } from '../util/utils';
 
 export default {
   name: 'DocumentSidebar',
@@ -74,6 +83,10 @@ export default {
     edited() {
       const timestamp = this.document.edited || this.document.timestamp;
       return timeFromNow(timestamp.toDate());
+    },
+    prettyDate() {
+      const timestamp = this.document.edited || this.document.timestamp;
+      return datePretty(timestamp.toDate());
     },
   },
 

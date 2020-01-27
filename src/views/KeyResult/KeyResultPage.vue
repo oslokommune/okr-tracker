@@ -8,6 +8,7 @@
           <router-link
             :to="{ name: 'edit-product-keyres', params: { keyres: key_result, objective: objective } }"
             class="sidebar-nav__item"
+            v-tooltip.right="`Endre detaljer for nøkkelresultatet`"
             ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link
           >
         </nav>
@@ -20,7 +21,7 @@
         </div>
 
         <hr />
-
+        <h3 class="title-3" v-if="quarter">Progresjon gjennom {{ quarter }}</h3>
         <svg class="graph" ref="graph"></svg>
 
         <hr />
@@ -32,15 +33,23 @@
             <div class="form-row">
               <label class="form-field">
                 <span class="form-label">Verdi</span>
-                <input type="number" v-model="value" />
+                <input
+                  type="number"
+                  v-model="value"
+                  v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
+                />
               </label>
               <label class="form-field">
                 <span class="form-label">Dato</span>
-                <input type="datetime-local" v-model="date" />
+                <input
+                  type="datetime-local"
+                  v-model="date"
+                  v-tooltip="{ content: `Hvilken dato gjelder måleverdien for`, trigger: `hover`, delay: 100 }"
+                />
               </label>
             </div>
             <div class="form-field">
-              <button class="btn">Legg til</button>
+              <button class="btn" v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }">Legg til</button>
             </div>
           </form>
           <hr />
@@ -66,7 +75,11 @@
                 <td>{{ prog.date | formatDate }}</td>
                 <td>{{ prog.created_by.id }}</td>
                 <td v-if="hasEditPermissions" style="width: 1rem;">
-                  <button class="btn btn--borderless" @click="deleteValue(prog)">
+                  <button
+                    class="btn btn--borderless"
+                    @click="deleteValue(prog)"
+                    v-tooltip.left="{ content: `Slett målepunkt`, delay: { show: 400, hide: 10 } }"
+                  >
                     <i class="fas fa-fw fa-trash"></i>Slett
                   </button>
                 </td>
@@ -96,6 +109,7 @@ export default {
     graph: null,
     doc: null,
     value: 0,
+    quarter: '',
     date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
     objective: null,
     unsubscribe: {
@@ -133,6 +147,7 @@ export default {
     },
 
     edited() {
+      if (!this.key_result) return;
       const timestamp = this.key_result.edited || this.key_result.timestamp;
       return timeFromNow(timestamp.toDate());
     },
@@ -156,6 +171,7 @@ export default {
       .catch(this.$errorHandler);
 
     const { quarter } = this.objective;
+    this.quarter = quarter;
 
     this.graph.render(this.key_result, quarter, this.list);
   },
@@ -172,6 +188,8 @@ export default {
         .get()
         .then(d => d.data().quarter)
         .catch(this.$errorHandler);
+
+      this.quarter = quarter;
 
       this.graph.render(this.key_result, quarter, newVal);
     },

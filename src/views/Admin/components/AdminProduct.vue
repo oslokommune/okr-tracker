@@ -10,8 +10,12 @@
         <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" />
       </label>
 
-      <label class="form-field">
+      <label
+        class="form-field"
+        v-tooltip.bottom="{ content: 'Dette kan ikke endres', delay: { show: 1000, hide: 50 } }"
+      >
         <span class="form-label">Slug</span>
+        <span class="form-help">Hvordan navnet fremstår i URL-en</span>
         <input type="text" v-model="product.slug" disabled />
       </label>
 
@@ -42,17 +46,32 @@
 
       <div class="form-field">
         <span class="form-label">Team</span>
-        <v-select class="objective__select" label="displayName" multiple v-model="product.team" :options="users">
+        <span class="form-help">Medlemmer får tilgang til å administrere produktet</span>
+        <v-select
+          class="objective__select"
+          label="displayName"
+          multiple
+          v-model="product.team"
+          :options="users"
+          v-tooltip.bottom="`Klikk for å legge til`"
+        >
           <template v-slot:option="option">
             {{ option.displayName || option.id }}
-            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            <span v-if="option.displayName !== option.id" v-tooltip="`Fjern bruker`">({{ option.id }})</span>
           </template>
         </v-select>
       </div>
     </div>
     <div class="section">
-      <button class="btn" @click="saveObject">Lagre</button>
-      <button v-if="isAdmin()" class="btn btn--borderless" @click="deleteObject">Slett</button>
+      <button class="btn" @click="saveObject" v-tooltip.auto="`Lagre endringer`">Lagre</button>
+      <button
+        v-if="isAdmin()"
+        class="btn btn--borderless"
+        @click="deleteObject"
+        v-tooltip.auto="`Kun administratorer kan gjenopprette et slettet produkt`"
+      >
+        Slett
+      </button>
     </div>
   </div>
 </template>

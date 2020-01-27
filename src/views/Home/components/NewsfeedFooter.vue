@@ -1,6 +1,6 @@
 <template>
-  <div class="nf-card__footer" :title="pretty" @click="showPretty = !showPretty">
-    <div class="edited">
+  <div class="nf-card__footer" @click="showPretty = !showPretty">
+    <div class="edited" v-tooltip.top-start="{ content: pretty, delay: { show: 400, hide: 50 } }">
       {{ showPretty ? pretty : timeString }}
     </div>
   </div>

@@ -6,13 +6,23 @@
       </router-link>
 
       <nav class="right" v-if="user">
-        <div class="usernav" :class="{ isOpen }" v-click-outside="closeMenu">
+        <div
+          class="usernav"
+          :class="{ isOpen }"
+          v-click-outside="closeMenu"
+          v-tooltip.left="isOpen ? `Lukk meny` : `Åpne meny`"
+        >
           <a class="usernav__name" @click="isOpen = !isOpen">
             <img class="usernav__photo" :src="user.photoURL || '/placeholder-user.svg'" :alt="displayName" />
             {{ displayName }}
           </a>
           <div class="usernav__menu" v-if="isOpen" @click="isOpen = false">
-            <router-link class="menu-item" v-if="user && user.admin" :to="{ name: 'admin-users' }">
+            <router-link
+              class="menu-item"
+              v-if="user && user.admin"
+              :to="{ name: 'admin-users' }"
+              v-tooltip.left="`Gå til adminpanelet`"
+            >
               <i class="fa fa-fw fa-dashboard"></i>
               Admin</router-link
             >

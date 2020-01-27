@@ -11,17 +11,21 @@
         <li class="team__member" v-for="user in team" :key="user.id">
           <template v-if="type === 'department'">
             <router-link :to="{ name: 'product', params: { slug: user.slug } }">
-              <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.name" />
-              <div class="team__name">
-                <span>{{ user.name }}</span>
-              </div>
+              <img
+                class="team__image"
+                :src="user.photoURL || '/placeholder-user.svg'"
+                :alt="user.name"
+                v-tooltip.auto="user.name"
+              />
             </router-link>
           </template>
           <template v-else-if="type === 'product'">
-            <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
-            <div class="team__name">
-              <span>{{ user.displayName }}</span>
-            </div>
+            <img
+              class="team__image"
+              :src="user.photoURL || '/placeholder-user.svg'"
+              :alt="user.displayName"
+              v-tooltip.auto="user.displayName || user.id"
+            />
           </template>
         </li>
       </ul>
@@ -87,27 +91,6 @@ export default {
     width: 5rem;
     height: 5rem;
     border-radius: 2.5rem;
-  }
-
-  &__name {
-    position: absolute;
-    top: 5rem;
-    left: -50%;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    width: 200%;
-    color: white;
-    transform: translateY(-1rem);
-    opacity: 0;
-    transition: all 0.12s ease-in-out;
-    user-select: none;
-    pointer-events: none;
-
-    & > span {
-      padding: 0.25rem 0.5rem;
-      background: $color-purple;
-    }
   }
 }
 </style>
