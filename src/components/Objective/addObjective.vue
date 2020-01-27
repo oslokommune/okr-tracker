@@ -14,7 +14,7 @@
       <i :class="`fas fa-${icon}`"></i>
     </div>
     <span class="form-label">Ikon</span>
-    <v-select class="form-field" :options="icons" v-model="icon">
+    <v-select class="form-field" :options="icons" v-model="icon" v-tooltip.bottom="`Søk og velg ikon fra listen`">
       <template v-slot:option="option">
         <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
         <span>{{ option.label }}</span>
@@ -32,7 +32,7 @@
     </label>
     <div class="form-field--error" v-if="$v.body.$error">Kan ikke være tom</div>
     <button :disabled="submit" class="btn" @click="send">Legg til</button>
-    <button class="btn" @click="$emit('close-menu')">Lukk</button>
+    <button class="btn btn--borderless" @click="$emit('close-menu')">Lukk</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>

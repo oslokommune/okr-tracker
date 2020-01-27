@@ -5,14 +5,6 @@
     <main class="content--main content--padding section">
       <div class="content-header">
         <h2 class="title-2">Administrer mål og nøkkelresultater</h2>
-        <span class="quarter-selector__label">Velg kvartal</span>
-        <v-select
-          v-if="quarters"
-          label="name"
-          class="quarter-selector__selector"
-          :options="quarters"
-          v-model="selectedQuarter"
-        ></v-select>
       </div>
 
       <div class="miller">
@@ -42,7 +34,14 @@
           >
             {{ objective.objective_title }}
           </div>
-          <div v-if="selectedQuarter" class="miller__col__item miller__col__add" @click="addObjective">+ Legg til</div>
+          <div
+            v-if="selectedQuarter"
+            class="miller__col__item miller__col__add"
+            @click="addObjective"
+            v-tooltip.bottom="`Legg til et mål for valgt kvartal`"
+          >
+            + Legg til
+          </div>
         </div>
 
         <!-- Key results -->
@@ -63,12 +62,16 @@
             v-if="selectedQuarter && selectedObjective"
             class="miller__col__item miller__col__add"
             @click="addKeyres"
+            v-tooltip.bottom="`Legg til et nøkkelresultat for valgt mål`"
           >
             + Legg til
           </div>
         </div>
 
-        <main class="miller__main">
+        <main
+          class="miller__main"
+          v-tooltip.top="activeLevel === 'quarter' ? `Tomt? Velg et mål eller nøkkelresultat i listen` : ``"
+        >
           <UpdateKeyres
             v-if="activeLevel === 'keyres'"
             :keyres="selectedKeyres"

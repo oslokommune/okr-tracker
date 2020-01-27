@@ -5,6 +5,7 @@ import VueResize from 'vue-resize';
 import VueScrollTo from 'vue-scrollto';
 import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
+import VTooltip from 'v-tooltip';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -29,6 +30,7 @@ Vue.use(Toasted, {
 });
 Vue.use(VueScrollTo);
 Vue.use(ImageUploader);
+Vue.use(VTooltip);
 
 // Bind instance properties
 Vue.prototype.$errorHandler = errorHandler;

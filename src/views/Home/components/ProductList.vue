@@ -7,7 +7,12 @@
           <ul class="org">
             <li v-for="dept in org.departments" class="department" :key="dept.id">
               <router-link v-if="dept.slug" :to="{ name: 'department', params: { slug: dept.slug } }">
-                <h2 class="department__name title title-3">{{ dept.name }}</h2>
+                <h2
+                  class="department__name title title-3"
+                  v-tooltip.top-start="{ content: `Se detaljer for tjenesteområdet`, delay: { show: 300, hide: 50 } }"
+                >
+                  {{ dept.name }}
+                </h2>
               </router-link>
               <ul class="product__list">
                 <li v-for="product in dept.products" class="product" :key="product.id">

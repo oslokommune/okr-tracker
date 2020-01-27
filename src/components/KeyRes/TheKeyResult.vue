@@ -1,15 +1,22 @@
 <template>
   <div class="keyres">
-    <router-link class="keyres__text" :to="{ name: 'key-result', params: { keyresid: keyres.id } }">
+    <router-link
+      class="keyres__text"
+      :to="{ name: 'key-result', params: { keyresid: keyres.id } }"
+      v-tooltip.left="`Vis detaljer`"
+    >
       <div class="keyres__name">{{ keyres.key_result }}</div>
       <div class="keyres__edited edited">Sist oppdatert {{ edited }}</div>
     </router-link>
 
-    <progress-bar class="keyres__bar" :keyres="keyres"></progress-bar>
+    <div class="keyres__bar" v-tooltip.left="`${percentage}`">
+      <progress-bar :keyres="keyres"></progress-bar>
+    </div>
   </div>
 </template>
 
 <script>
+import { scaleLinear, format } from 'd3';
 import ProgressBar from '../ProgressBar.vue';
 import { timeFromNow } from '../../util/utils';
 
@@ -21,6 +28,13 @@ export default {
       if (!this.keyres) return null;
       const timestamp = this.keyres.edited || this.keyres.created;
       return timeFromNow(timestamp.toDate());
+    },
+
+    percentage() {
+      const scale = scaleLinear().domain([this.keyres.start_value, this.keyres.target_value]);
+      const percentage = scale(this.keyres.currentValue);
+
+      return format('~p')(percentage);
     },
   },
 
@@ -56,6 +70,8 @@ export default {
   &__text {
     grid-row: 1;
     align-content: center;
+    margin-left: -0.5rem;
+    padding-left: 0.5rem;
   }
 
   &__edited {
