@@ -11,6 +11,7 @@
             ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link
           >
         </nav>
+        <div class="edited edited--mt">Endret {{ edited }}</div>
       </aside>
 
       <div class="content--main content--padding">
@@ -56,7 +57,7 @@
                 <th>Verdi</th>
                 <th>Dato</th>
                 <th>Registrert av</th>
-                <th></th>
+                <th v-if="hasEditPermissions"></th>
               </tr>
             </thead>
             <tbody>
@@ -64,7 +65,7 @@
                 <td>{{ prog.value }}</td>
                 <td>{{ prog.date | formatDate }}</td>
                 <td>{{ prog.created_by.id }}</td>
-                <td style="width: 1rem;">
+                <td v-if="hasEditPermissions" style="width: 1rem;">
                   <button class="btn btn--borderless" @click="deleteValue(prog)">
                     <i class="fas fa-fw fa-trash"></i>Slett
                   </button>
@@ -85,7 +86,7 @@ import { serializeDocument, isTeamMemberOfProduct } from '../../util/db';
 import PageHeader from '../../components/PageHeader.vue';
 import * as Toast from '../../util/toasts';
 import Linechart from '../../util/linechart';
-import { getProductFromSlug } from '../../util/utils';
+import { getProductFromSlug, timeFromNow } from '../../util/utils';
 import Audit from '../../util/audit/audit';
 
 export default {
@@ -129,6 +130,11 @@ export default {
         created: new Date(),
         created_by: this.user.ref,
       };
+    },
+
+    edited() {
+      const timestamp = this.key_result.edited || this.key_result.timestamp;
+      return timeFromNow(timestamp.toDate());
     },
   },
 
@@ -189,6 +195,8 @@ export default {
     ...mapActions(['watchKeyResult']),
 
     deleteValue(doc) {
+      if (!this.hasEditPermissions) return;
+
       doc.ref
         .delete()
         .then(Toast.deleted)
@@ -227,7 +235,7 @@ export default {
 
       if (oldValue !== newValue) {
         return this.doc
-          .update({ currentValue: newValue })
+          .update({ currentValue: newValue, edited: new Date(), edited_by: this.user.ref })
           .then(async () => {
             const product = await getProductFromSlug(this.nest, this.$route.params.slug);
             return Audit.keyResUpdateProgress(this.key_result.ref, product.ref, oldValue, newValue);
@@ -247,6 +255,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/_colors.scss';
+
 .content--sidebar {
   padding-top: 3rem;
 }
