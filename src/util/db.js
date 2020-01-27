@@ -210,7 +210,15 @@ const getChildren = async (ref, collectionName, callback) => {
     .where('archived', '==', false)
     .get();
   const promises = snapshot.docs.map(callback);
-  return Promise.all(promises).catch(errorHandler);
+  return Promise.all(promises)
+    .then(list =>
+      list.sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (b.name > a.name) return -1;
+        return 0;
+      })
+    )
+    .catch(errorHandler);
 };
 
 /**
