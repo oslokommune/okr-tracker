@@ -1,4 +1,4 @@
-import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow } from 'date-fns';
+import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow, format } from 'date-fns';
 import locale from 'date-fns/locale/nb';
 import { startDate } from '../config/applicationConfig';
 import * as Toast from './toasts';
@@ -40,9 +40,13 @@ function timeFromNow(date) {
   return formatDistanceToNow(date, { addSuffix: true, locale });
 }
 
+function datePretty(date) {
+  return format(date, 'd. MMM HH:mm:ss', { locale });
+}
+
 function errorHandler(error = {}) {
   Toast.error();
   throw new Error(error);
 }
 
-export { quarters, getProductFromSlug, timeFromNow, errorHandler };
+export { quarters, getProductFromSlug, timeFromNow, errorHandler, datePretty };

@@ -49,6 +49,7 @@
       <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
       <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk</div>
     </nav>
+    <div class="edited edited--mt">Endret {{ edited }}</div>
   </aside>
 </template>
 <script>
@@ -56,6 +57,7 @@ import ClickOutside from 'vue-click-outside';
 import AddKeyres from './KeyRes/addKeyres.vue';
 import AddObjective from './Objective/addObjective.vue';
 import RegisterProgressModal from './RegisterProgressModal.vue';
+import { timeFromNow } from '../util/utils';
 
 export default {
   name: 'DocumentSidebar',
@@ -67,6 +69,13 @@ export default {
     expandAddKeyRes: false,
     expandRegisterProgress: false,
   }),
+
+  computed: {
+    edited() {
+      const timestamp = this.document.edited || this.document.timestamp;
+      return timeFromNow(timestamp.toDate());
+    },
+  },
 
   props: {
     hasEditPermissions: {

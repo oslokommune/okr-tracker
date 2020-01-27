@@ -19,6 +19,7 @@
                         :alt="product.name"
                       />
                       <span class="product__name">{{ product.name }}</span>
+                      <span class="product__edited edited">Sist oppdatert {{ getEdited(product) }}</span>
                       <div class="progression">
                         <div
                           class="progression__bar"
@@ -42,6 +43,7 @@
 <script>
 import { mapState } from 'vuex';
 import PageHeader from '@/components/PageHeader.vue';
+import { timeFromNow } from '../../../util/utils';
 
 export default {
   computed: {
@@ -49,6 +51,13 @@ export default {
   },
   components: {
     PageHeader,
+  },
+  methods: {
+    getEdited(doc) {
+      if (!doc) return null;
+      const timestamp = doc.edited || doc.created;
+      return timeFromNow(timestamp.toDate());
+    },
   },
 };
 </script>
@@ -59,8 +68,12 @@ export default {
 .org {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   margin: 2rem 0;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
 }
 
 .department {
@@ -95,7 +108,7 @@ export default {
 
 .product {
   &__image {
-    grid-row: 1 / span 2;
+    grid-row: 1 / span all;
     grid-column: 1;
     width: 2.5rem;
     height: 2.5rem;
@@ -103,11 +116,17 @@ export default {
     border-radius: 50%;
   }
 
+  &__edited {
+    grid-row: 3;
+    grid-column: 2;
+    padding-top: 0.1rem;
+  }
+
   &__item {
     position: relative;
     display: grid;
-    grid-gap: 0 0.75rem;
-    grid-template-rows: auto auto;
+    grid-gap: 0.15rem 0.75rem;
+    grid-template-rows: auto auto auto;
     grid-template-columns: 2.5rem 1fr 1rem;
     align-items: center;
     justify-content: flex-start;
@@ -118,7 +137,11 @@ export default {
     border-radius: 1rem;
 
     &:hover {
-      background: rgba($color-bg, 0.25);
+      background: rgba($color-bg, 0.5);
+
+      > .product__edited {
+        color: $color-grey-700;
+      }
 
       .fa {
         transform: translateX(0);
@@ -127,7 +150,7 @@ export default {
     }
 
     .fa {
-      grid-row: 1 / span 2;
+      grid-row: 1 / span all;
       margin-left: auto;
       color: $color-grey-300;
       transform: translateX(-0.75rem);

@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h2 class="title title-2">Mål for perioden</h2>
+    <h2 class="title title-2">Mål for perioden ({{ objectives.length }})</h2>
 
     <div class="list">
       <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>

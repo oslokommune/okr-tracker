@@ -146,7 +146,7 @@ export default {
       if (oldValue === newValue) return;
 
       return this.key_result.ref
-        .update({ currentValue: newValue })
+        .update({ currentValue: newValue, edited: new Date(), edited_by: this.user.ref })
         .then(() => {
           return Audit.keyResUpdateProgress(this.key_result.ref, this.document.ref, oldValue, newValue);
         })

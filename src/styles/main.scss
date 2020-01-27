@@ -196,3 +196,26 @@ hr {
     border-top: 1px solid $color-border;
   }
 }
+
+.edited {
+  color: $color-grey-500;
+  font-weight: 400;
+  font-size: 12px;
+
+  &::before {
+    display: inline-block;
+    margin-right: 0.5em;
+    color: $color-grey-300;
+    font-weight: 900;
+    font-size: 0.9em;
+    font-family: 'Font Awesome 5 Pro';
+    transform: translateY(-0.05em);
+    content: '\f1da';
+  }
+
+  &--mt {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid $color-border;
+  }
+}
