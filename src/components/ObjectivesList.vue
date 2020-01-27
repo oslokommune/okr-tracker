@@ -3,6 +3,19 @@
     <h2 class="title title-2">Mål for perioden ({{ objectives.length }})</h2>
 
     <div class="list">
+      <div v-if="!objectives.length" class="empty">
+        <i class="far fa-exclamation-circle"></i>
+        <p>
+          <span> Oops! Her finnes det ingen mål. </span>
+          <router-link
+            v-if="hasEditPermissions"
+            :to="{ name: $route.name === 'department' ? 'edit-department-keyres' : 'edit-product-keyres' }"
+          >
+            Legg til mål og nøkkelresultater
+          </router-link>
+        </p>
+      </div>
+
       <TheObjective v-for="objective in objectives" :key="objective.id" :objective="objective"></TheObjective>
     </div>
   </section>
@@ -11,7 +24,7 @@
 <script>
 import { mapState } from 'vuex';
 import TheObjective from './Objective/TheObjective.vue';
-import { serializeDocument } from '../util/db';
+import { serializeDocument, isTeamMemberOfProduct } from '../util/db';
 
 export default {
   name: 'ObjectivesList',
@@ -23,6 +36,7 @@ export default {
   data: () => ({
     objectives: [],
     unsubscribe: null,
+    hasEditPermissions: false,
   }),
 
   props: {
@@ -44,14 +58,16 @@ export default {
       this.getObjectives();
     },
 
-    document() {
+    async document() {
+      this.hasEditPermissions = await isTeamMemberOfProduct(this.$route.params.slug);
       if (this.unsubscribe) this.unsubscribe();
 
       this.getObjectives();
     },
   },
 
-  mounted() {
+  async mounted() {
+    this.hasEditPermissions = await isTeamMemberOfProduct(this.$route.params.slug);
     if (this.unsubscribe) this.unsubscribe();
     this.getObjectives();
   },
@@ -81,5 +97,16 @@ export default {
 <style lang="scss" scoped>
 .list {
   margin-top: 2rem;
+}
+
+.empty {
+  display: flex;
+  align-content: center;
+  align-items: center;
+
+  .far {
+    margin-right: 0.5rem;
+    font-size: 2rem;
+  }
 }
 </style>

@@ -2,11 +2,32 @@
   <div class="grid grid-3 section">
     <div>
       <h2 class="title title-2">Oppdrag</h2>
+      <div v-if="!document.mission_statement" class="content">
+        <p>
+          <strong>Uh-oh!</strong>
+          Her mangler det noe viktig!
+        </p>
+        <p v-if="user.admin">
+          <router-link :to="{ name: type === 'product' ? 'edit-product' : 'edit-department' }"
+            >Legg inn en beskrivelse.
+          </router-link>
+        </p>
+      </div>
       <p>{{ document.mission_statement }}</p>
     </div>
     <div>
       <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>
       <h2 v-else-if="type === 'product'" class="title title-2">Team</h2>
+
+      <div v-if="!team.length">
+        <ul class="team__list team__list--empty">
+          <div class="team__member empty" v-for="i in 3" :key="`empty_${i}`">
+            <i class="fa fa-user-ninja"></i>
+          </div>
+        </ul>
+        <p>Finner ingen teammedlemmer – kanskje det bare er ninjaer her?</p>
+      </div>
+
       <ul class="team__list">
         <li class="team__member" v-for="user in team" :key="user.id">
           <template v-if="type === 'department'">
@@ -38,10 +59,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PieChart from './PieChart.vue';
 
 export default {
   name: 'DocumentSummary',
+
+  computed: {
+    ...mapState(['user']),
+  },
 
   props: {
     document: {
@@ -67,11 +93,29 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/colors';
 
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  color: $color-grey-500;
+  font-size: 1.5rem;
+  background: $color-grey-100;
+  border-radius: 2.5rem;
+}
+
 .team {
   &__list {
     display: flex;
     flex-wrap: wrap;
     margin: -0.25rem;
+
+    &--empty {
+      margin-bottom: 1rem;
+    }
   }
 
   &__member {

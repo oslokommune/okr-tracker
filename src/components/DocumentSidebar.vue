@@ -40,8 +40,12 @@
           ></add-keyres>
         </div>
 
-        <div class="register-progress-wrapper" v-tooltip.right="`Registrere nye verdier til nøkkelresultatene`">
-          <div class="sidebar-nav__item" @click="expandRegisterProgress = true">
+        <div class="register-progress-wrapper">
+          <div
+            class="sidebar-nav__item"
+            @click="expandRegisterProgress = true"
+            v-tooltip.right="`Registrere nye verdier til nøkkelresultatene`"
+          >
             <i class="fa fas fa-fw fa-chart-line"></i>Oppdater data
           </div>
           <register-progress-modal
