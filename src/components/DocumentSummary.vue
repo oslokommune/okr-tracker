@@ -21,13 +21,7 @@
 
       <div v-if="!team.length">
         <ul class="team__list team__list--empty">
-          <div class="team__member empty">
-            <i class="fa fa-user-ninja"></i>
-          </div>
-          <div class="team__member empty">
-            <i class="fa fa-user-ninja"></i>
-          </div>
-          <div class="team__member empty">
+          <div class="team__member empty" v-for="i in 3" :key="`empty_${i}`">
             <i class="fa fa-user-ninja"></i>
           </div>
         </ul>
