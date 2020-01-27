@@ -4,7 +4,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Sunburst from '@/util/sunburst-chart';
+import Sunburst from '../util/sunburst-chart';
 
 export default {
   data: () => ({

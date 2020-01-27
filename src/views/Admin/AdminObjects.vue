@@ -72,8 +72,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
-import { getOrgs, getDepartments, getProducts } from '@/util/db';
+import { db } from '../../config/firebaseConfig';
+import { getOrgs, getDepartments, getProducts } from '../../util/db';
 import AdminProduct from './components/AdminProduct.vue';
 import AdminDepartment from './components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
@@ -203,5 +203,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_miller';
+@import '../../styles/_miller';
 </style>

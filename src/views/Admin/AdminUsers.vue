@@ -49,9 +49,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import { validateEmail } from '@/util/formValidation';
-import { db } from '@/config/firebaseConfig';
-import * as Toast from '@/util/toasts';
+import { validateEmail } from '../../util/formValidation';
+import { db } from '../../config/firebaseConfig';
+import * as Toast from '../../util/toasts';
 
 export default {
   name: 'AdminUsers',
@@ -107,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@import '../../styles/_colors';
 
 .whitelist {
   $w: &;

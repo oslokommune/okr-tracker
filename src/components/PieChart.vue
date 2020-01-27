@@ -4,15 +4,17 @@
 
 <script>
 import { mapState } from 'vuex';
-import Pie from '@/util/piechart';
+import Pie from '../util/piechart';
 
 export default {
+  name: 'PieChart',
+
   data: () => ({
     pie: null,
   }),
 
   props: {
-    product: {
+    document: {
       type: Object,
       required: true,
     },
@@ -24,16 +26,16 @@ export default {
 
   mounted() {
     this.pie = new Pie(this.$refs.svg);
-    if (!this.product) return;
+    if (!this.document) return;
     if (!this.activeQuarter) return;
 
-    this.pie.render(this.product, this.activeQuarter);
+    this.pie.render(this.document, this.activeQuarter);
   },
 
   watch: {
-    product(product) {
+    document(document) {
       if (!this.activeQuarter) return;
-      this.pie.render(product, this.activeQuarter);
+      this.pie.render(document, this.activeQuarter);
     },
     activeQuarter(quarter) {
       if (!quarter) return;

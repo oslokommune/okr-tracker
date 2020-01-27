@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader :data="product || {}"></PageHeader>
+    <page-header :data="product || {}"></page-header>
 
     <nav class="sub-nav">
       <div class="container container--sidebar">
@@ -10,7 +10,7 @@
             :key="quarter.name"
             class="sub-nav__element"
             :class="{ 'router-link-active': quarter === activeQuarter }"
-            @click="set_quarter(quarter)"
+            @click="setQuarter(quarter)"
             >{{ quarter.name }}</span
           >
         </div>
@@ -19,18 +19,19 @@
 
     <div class="content" v-if="product">
       <div class="container container--sidebar">
-        <ProductSidebar
+        <document-sidebar
           :has-edit-permissions="hasEditPermissions"
-          :product="product"
+          :document="product"
           :active-quarter="activeQuarter"
-        ></ProductSidebar>
+          type="product"
+        ></document-sidebar>
 
         <main class="content--main content--padding">
-          <ProductSummary></ProductSummary>
+          <document-summary :document="product" :team="team" type="product"></document-summary>
 
           <hr />
 
-          <ObjectivesList></ObjectivesList>
+          <objectives-list :document="product"></objectives-list>
         </main>
       </div>
     </div>
@@ -38,26 +39,28 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import { serializeDocument } from '../../util/db';
 
-import PageHeader from '@/components/PageHeader.vue';
-import ProductSummary from './components/ProductSummary.vue';
-import ProductSidebar from './components/ProductSidebar.vue';
-import ObjectivesList from './components/ObjectivesList.vue';
+import PageHeader from '../../components/PageHeader.vue';
+import DocumentSummary from '../../components/DocumentSummary.vue';
+import ObjectivesList from '../../components/ObjectivesList.vue';
+import DocumentSidebar from '../../components/DocumentSidebar.vue';
 
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Department',
+  name: 'ProductHome',
 
   data: () => ({
     key_results: [],
+    team: [],
   }),
 
   components: {
+    DocumentSidebar,
     PageHeader,
-    ProductSidebar,
-    ProductSummary,
+    DocumentSummary,
     ObjectivesList,
   },
 
@@ -78,7 +81,10 @@ export default {
         Toast.fourOhFour();
         this.$router.push('/');
       } else {
-        // this.watchProduct(this.$route.params.slug);
+        const teamPromises = this.product.team ? this.product.team.map(d => d.get()) : [];
+        this.team = await Promise.all(teamPromises)
+          .then(d => d.map(serializeDocument))
+          .catch(this.$errorHandler);
       }
     },
   },
@@ -88,14 +94,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['watchProduct']),
-    ...mapMutations(['set_quarter']),
+    ...mapActions(['watchProduct', 'setQuarter']),
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@import '../../styles/_colors';
 
 .sub-nav__element {
   cursor: pointer;

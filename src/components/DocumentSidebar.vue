@@ -2,9 +2,15 @@
   <aside class="content--sidebar">
     <nav class="sidebar-nav">
       <template v-if="hasEditPermissions">
-        <router-link :to="{ name: 'edit-product', params: { slug: $route.params.slug } }" class="sidebar-nav__item">
-          <i class="fa fas fa-fw fa-edit"></i>Endre produkt</router-link
+        <router-link
+          :to="{
+            name: type === 'department' ? 'edit-department' : 'edit-product',
+            params: { slug: $route.params.slug },
+          }"
+          class="sidebar-nav__item"
         >
+          <i class="fa fas fa-fw fa-edit"></i>Endre produkt
+        </router-link>
         <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
           <div class="sidebar-nav__item" @click="expandAddObjective = true">
             <i class="fa fas fa-fw fa-plus"></i>Legg til mål
@@ -12,7 +18,7 @@
 
           <add-objective
             v-if="expandAddObjective"
-            :productref="product.ref"
+            :productref="document.ref"
             @close-menu="expandAddObjective = false"
           ></add-objective>
         </div>
@@ -24,7 +30,7 @@
           <add-keyres
             v-if="expandAddKeyRes"
             @close-menu="expandAddKeyRes = false"
-            :productref="product.ref"
+            :productref="document.ref"
             :selected-quarter-name="activeQuarter.name"
           ></add-keyres>
         </div>
@@ -33,7 +39,11 @@
           <div class="sidebar-nav__item" @click="expandRegisterProgress = true">
             <i class="fa fas fa-fw fa-chart-line"></i>Oppdater data
           </div>
-          <RegisterProgressModal v-if="expandRegisterProgress" @close="closeRegisterProgress"></RegisterProgressModal>
+          <register-progress-modal
+            v-if="expandRegisterProgress"
+            @close="closeRegisterProgress"
+            :document="document"
+          ></register-progress-modal>
         </div>
       </template>
       <div class="sidebar-nav__item"><i class="fa fas fa-fw fa-dashboard"></i>Dashboard</div>
@@ -41,25 +51,22 @@
     </nav>
   </aside>
 </template>
-
 <script>
 import ClickOutside from 'vue-click-outside';
-import AddObjective from '@/components/Objective/addObjective.vue';
-import AddKeyres from '@/components/KeyRes/addKeyres.vue';
+import AddKeyres from './KeyRes/addKeyres.vue';
+import AddObjective from './Objective/addObjective.vue';
 import RegisterProgressModal from './RegisterProgressModal.vue';
 
 export default {
+  name: 'DocumentSidebar',
+
+  components: { AddKeyres, AddObjective, RegisterProgressModal },
+
   data: () => ({
     expandAddObjective: false,
     expandAddKeyRes: false,
     expandRegisterProgress: false,
   }),
-
-  components: {
-    AddObjective,
-    AddKeyres,
-    RegisterProgressModal,
-  },
 
   props: {
     hasEditPermissions: {
@@ -67,12 +74,16 @@ export default {
       required: false,
       default: false,
     },
-    product: {
+    document: {
       type: Object,
       required: true,
     },
     activeQuarter: {
       type: Object,
+      required: true,
+    },
+    type: {
+      type: String,
       required: true,
     },
   },
@@ -94,8 +105,9 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
+@import '../styles/colors';
+
 .add-object-menu-wrapper {
   position: relative;
 }

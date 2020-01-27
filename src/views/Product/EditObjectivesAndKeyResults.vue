@@ -89,11 +89,13 @@ import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
 import { getQuarter } from 'date-fns';
 import { serializeDocument } from '../../util/db';
-import UpdateKeyres from '@/components/KeyRes/editKeyres.vue';
-import EditObjective from '@/components/Objective/editObjective.vue';
-import * as Toast from '@/util/toasts';
+import UpdateKeyres from '../../components/KeyRes/editKeyres.vue';
+import EditObjective from '../../components/Objective/editObjective.vue';
+import * as Toast from '../../util/toasts';
 
 export default {
+  name: 'EditObjectivesAndKeyResults',
+
   components: {
     UpdateKeyres,
     EditObjective,
@@ -253,7 +255,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_miller';
+@import '../../styles/_miller';
 
 .add {
   position: relative;

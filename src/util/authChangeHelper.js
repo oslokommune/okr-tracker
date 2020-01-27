@@ -1,9 +1,9 @@
-import store from '@/store';
-import * as Toast from '@/util/toasts';
-import { auth, db } from '@/config/firebaseConfig';
-import router from '@/router';
-import { serializeDocument, updateUserObject } from '@/util/db';
-import { errorHandler } from '@/util/utils';
+import store from '../store';
+import * as Toast from './toasts';
+import { auth, db } from '../config/firebaseConfig';
+import router from '../router';
+import { serializeDocument, updateUserObject } from './db';
+import { errorHandler } from './utils';
 
 /**
  * Runs whenever the Firebase auth user state changes.

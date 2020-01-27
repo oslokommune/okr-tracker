@@ -10,6 +10,8 @@ import Progressbar from '../util/progressbar';
 import ProgressbarSmall from '../util/progressbar-small';
 
 export default {
+  name: 'ProgressBar',
+
   data: () => ({
     progressbar: null,
   }),

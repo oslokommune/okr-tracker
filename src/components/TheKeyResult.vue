@@ -16,8 +16,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import UpdateKeyres from '@/components/KeyRes/updateKeyres.vue';
-import ProgressBar from '@/components/ProgressBar.vue';
+import UpdateKeyres from './KeyRes/updateKeyres.vue';
+import ProgressBar from './ProgressBar.vue';
 
 export default {
   data: () => ({

@@ -42,11 +42,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '@/config/firebaseConfig';
-import { myProductsListener, isDashboardUser } from '@/util/db';
-import PageHeader from '@/components/PageHeader.vue';
-import * as Toast from '@/util/toasts';
-import Audit from '@/util/audit/audit';
+import { storage } from '../config/firebaseConfig';
+import { myProductsListener, isDashboardUser } from '../util/db';
+import PageHeader from '../components/PageHeader.vue';
+import Audit from '../util/audit/audit';
 
 export default {
   name: 'Profile',

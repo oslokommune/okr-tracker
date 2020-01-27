@@ -40,9 +40,11 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import * as Toast from '@/util/toasts';
+import * as Toast from '../../util/toasts';
 
 export default {
+  name: 'AddObjective',
+
   data: () => ({
     title: '',
     icon: 'trophy',

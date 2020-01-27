@@ -1,6 +1,6 @@
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
-import * as Toast from '@/util/toasts';
-import { errorHandler } from '@/util/utils';
+import * as Toast from './toasts';
+import { errorHandler } from './utils';
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -61,29 +61,6 @@ export function departmentListener(slug) {
       const departmentData = await d.docs[0].ref.get().catch(errorHandler);
       this.department = serializeDocument(departmentData);
     });
-}
-
-export async function departmentFromSlug(slug) {
-  const department = await db
-    .collectionGroup('departments')
-    .where('slug', '==', slug)
-    .get()
-    .then(d => d.docs[0])
-    .then(d => serializeDocument(d))
-    .catch(errorHandler);
-
-  department.ref
-    .collection('products')
-    .where('archived', '==', false)
-    .onSnapshot(async d => {
-      this.products = d.docs.map(serializeDocument);
-    });
-
-  department.ref.onSnapshot(async d => {
-    this.department = await serializeDocument(d);
-  });
-
-  return department;
 }
 
 /**

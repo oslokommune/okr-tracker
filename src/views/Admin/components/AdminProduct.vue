@@ -59,12 +59,14 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '@/config/firebaseConfig';
-import slugify from '@/util/slugify';
-import * as Toast from '@/util/toasts';
-import CalloutArchivedRestore from '@/components/Callouts/CalloutArchivedRestore.vue';
+import { storage } from '../../../config/firebaseConfig';
+import slugify from '../../../util/slugify';
+import * as Toast from '../../../util/toasts';
+import CalloutArchivedRestore from '../../../components/Callouts/CalloutArchivedRestore.vue';
 
 export default {
+  name: 'AdminProduct',
+
   data: () => ({
     product: null,
   }),

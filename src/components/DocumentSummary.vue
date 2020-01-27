@@ -2,55 +2,66 @@
   <div class="grid grid-3 section">
     <div>
       <h2 class="title title-2">Oppdrag</h2>
-      <p>{{ product.mission_statement }}</p>
+      <p>{{ document.mission_statement }}</p>
     </div>
     <div>
-      <h2 class="title title-2">Team</h2>
+      <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>
+      <h2 v-else-if="type === 'product'" class="title title-2">Team</h2>
       <ul class="team__list">
         <li class="team__member" v-for="user in team" :key="user.id">
-          <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
-          <div class="team__name">
-            <span>{{ user.displayName }}</span>
-          </div>
+          <template v-if="type === 'department'">
+            <router-link :to="{ name: 'product', params: { slug: user.slug } }">
+              <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.name" />
+              <div class="team__name">
+                <span>{{ user.name }}</span>
+              </div>
+            </router-link>
+          </template>
+          <template v-else-if="type === 'product'">
+            <img class="team__image" :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName" />
+            <div class="team__name">
+              <span>{{ user.displayName }}</span>
+            </div>
+          </template>
         </li>
       </ul>
     </div>
     <div>
       <h2 class="title title-2">Denne perioden</h2>
-      <pie-chart :product="product"></pie-chart>
+      <pie-chart :document="document"></pie-chart>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { serializeDocument } from '@/util/db';
-import PieChart from '@/components/PieChart.vue';
+import PieChart from './PieChart.vue';
 
 export default {
-  data: () => ({
-    team: [],
-  }),
+  name: 'DocumentSummary',
 
-  computed: {
-    ...mapState(['product']),
+  props: {
+    document: {
+      type: Object,
+      required: true,
+    },
+    team: {
+      type: Array,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
   },
 
   components: {
     PieChart,
   },
-
-  async mounted() {
-    const teamPromises = this.product.team ? this.product.team.map(d => d.get()) : [];
-    this.team = await Promise.all(teamPromises)
-      .then(d => d.map(serializeDocument))
-      .catch(this.$errorHandler);
-  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@import '../styles/colors';
 
 .team {
   &__list {

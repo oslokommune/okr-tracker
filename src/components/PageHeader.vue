@@ -32,10 +32,12 @@
 
 <script>
 import { serializeDocument } from '../util/db';
-import { db } from '@/config/firebaseConfig';
-import * as Toast from '@/util/toasts';
+import { db } from '../config/firebaseConfig';
+import * as Toast from '../util/toasts';
 
 export default {
+  name: 'PageHeader',
+
   data: () => ({
     breadcrumbs: [],
   }),

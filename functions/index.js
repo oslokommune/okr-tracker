@@ -15,6 +15,9 @@ const productsPath = departmentsPath + '/products/{productId}';
 const objectivesPath = productsPath + '/objectives/{objectiveId}';
 const keyResultsPath = objectivesPath + '/key_results/{keyresId}';
 const progressionsPath = keyResultsPath + '/progression/{progressionId}';
+const departmentObjectivesPath = departmentsPath + '/objectives/{objectiveId}';
+const departmentKeyResultsPath = departmentObjectivesPath + '/key_results/{keyResId}';
+const departmentProgressionsPath = departmentKeyResultsPath + '/progression/{progressionId}';
 /* eslint-enable */
 
 exports.updatedKeyResultProgression = functions.firestore
@@ -23,19 +26,44 @@ exports.updatedKeyResultProgression = functions.firestore
     const { orgId, departmentId, productId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
 
-    const keyResultsProgressions = await db
-      .doc(objectivePath)
-      .collection('key_results')
-      .where('archived', '==', false)
-      .get()
-      .then(collection => collection.docs.map(doc => doc.data()))
-      .then(list => list.map(getProgressionPercentage));
-
+    const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
 
     return db.doc(objectivePath).update({ progression });
   });
 
+exports.updatedDepartmentKeyResultProgression = functions.firestore
+  .document(departmentProgressionsPath)
+  .onWrite(async (change, context) => {
+    const { orgId, departmentId, objectiveId } = context.params;
+    const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
+
+    const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
+    const progression = d3.mean(keyResultsProgressions);
+
+    return db.doc(objectivePath).update({ progression });
+  });
+
+/**
+ * Finds all progressions for key results related to the Objective
+ * @param {String} path - path to objective
+ * @returns {Promise} - Resolves to a list of decimal numbers
+ */
+async function getKeyResultsProgressions(path) {
+  return db
+    .doc(path)
+    .collection('key_results')
+    .where('archived', '==', false)
+    .get()
+    .then(collection => collection.docs.map(doc => doc.data()))
+    .then(list => list.map(getProgressionPercentage));
+}
+
+/**
+ * Finds the progress in percent for a key result object
+ * @param {Object} keyres - key result document
+ * @return {Number} - Between 0 and 1
+ */
 function getProgressionPercentage(keyres) {
   /* eslint-disable-next-line */
   const { target_value, start_value, currentValue } = keyres;
@@ -46,13 +74,35 @@ function getProgressionPercentage(keyres) {
   return scale(currentValue);
 }
 
+// Triggers when a product's objective is changed (i.e. progression)
 exports.updatedObjectiveProgression = functions.firestore.document(objectivesPath).onUpdate(async (change, context) => {
   const { orgId, departmentId, productId } = context.params;
   const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
+  const progressions = await getObjectiveProgressions(productPath);
+  await db.doc(productPath).update({ progressions });
+  return true;
+});
 
-  // Find all objectives for this product
+// Triggers when a department's objective is changed (i.e. progression)
+exports.updatedDepartmentObjectiveProgression = functions.firestore
+  .document(departmentObjectivesPath)
+  .onUpdate(async (change, context) => {
+    const { orgId, departmentId } = context.params;
+    const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
+    const progressions = await getObjectiveProgressions(departmentPath);
+    await db.doc(departmentPath).update({ progressions });
+    return true;
+  });
+
+/**
+ * Finds the progressions for each quarter for a department
+ * or a product. Returns an object with the quarter names as keys.
+ * @param {String} path - Path to product or deparment
+ * @returns {Object} - Dictionary of progressions for each quarter
+ */
+async function getObjectiveProgressions(path) {
   const objectiveProgressions = await db
-    .doc(productPath)
+    .doc(path)
     .collection('objectives')
     .where('archived', '==', false)
     .get()
@@ -78,10 +128,5 @@ exports.updatedObjectiveProgression = functions.firestore.document(objectivesPat
     progressions[key] = d[key];
   });
 
-  // Update the product with the progressions object
-  await db.doc(productPath).update({
-    progressions,
-  });
-
-  return true;
-});
+  return progressions;
+}

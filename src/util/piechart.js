@@ -12,7 +12,7 @@ import {
   updatePercentText,
 } from './pie-helpers';
 
-import { getTimeProgression } from '@/util/helpers';
+import { getTimeProgression } from './helpers';
 
 export default class Pie {
   /**
