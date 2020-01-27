@@ -28,8 +28,10 @@ exports.updatedKeyResultProgression = functions.firestore
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
+    const edited = new Date();
+    const edited_by = 'cloud-function';
 
-    return db.doc(objectivePath).update({ progression });
+    return db.doc(objectivePath).update({ progression, edited, edited_by });
   });
 
 exports.updatedDepartmentKeyResultProgression = functions.firestore
@@ -40,8 +42,10 @@ exports.updatedDepartmentKeyResultProgression = functions.firestore
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
+    const edited = new Date();
+    const edited_by = 'cloud-function';
 
-    return db.doc(objectivePath).update({ progression });
+    return db.doc(objectivePath).update({ progression, edited, edited_by });
   });
 
 /**
@@ -79,7 +83,10 @@ exports.updatedObjectiveProgression = functions.firestore.document(objectivesPat
   const { orgId, departmentId, productId } = context.params;
   const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
   const progressions = await getObjectiveProgressions(productPath);
-  await db.doc(productPath).update({ progressions });
+  const edited = new Date();
+  const edited_by = 'cloud-function';
+
+  await db.doc(productPath).update({ progressions, edited, edited_by });
   return true;
 });
 
@@ -90,7 +97,11 @@ exports.updatedDepartmentObjectiveProgression = functions.firestore
     const { orgId, departmentId } = context.params;
     const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
     const progressions = await getObjectiveProgressions(departmentPath);
-    await db.doc(departmentPath).update({ progressions });
+    const edited = new Date();
+    const edited_by = 'cloud-function';
+
+    await db.doc(departmentPath).update({ progressions, edited, edited_by });
+
     return true;
   });
 
