@@ -4,6 +4,14 @@
       <section v-for="org in nest" :key="org.id">
         <PageHeader :data="org"></PageHeader>
         <div class="container">
+          <div class="toggle__wrapper">
+            <span class="toggle__label">Vis detaljer</span>
+            <label class="toggle">
+              <input class="toggle__input" type="checkbox" v-model="expandProducts" />
+              <span class="toggle__switch"></span>
+            </label>
+          </div>
+
           <ul class="org">
             <li v-for="dept in org.departments" class="department" :key="dept.id">
               <router-link v-if="dept.slug" :to="{ name: 'department', params: { slug: dept.slug } }">
@@ -24,7 +32,9 @@
                         :alt="product.name"
                       />
                       <span class="product__name">{{ product.name }}</span>
-                      <span class="product__edited edited">Sist oppdatert {{ getEdited(product) }}</span>
+                      <span class="product__edited edited" v-if="expandProducts">
+                        Sist oppdatert {{ getEdited(product) }}
+                      </span>
                       <div class="progression">
                         <div
                           class="progression__bar"
@@ -35,6 +45,9 @@
                       <i class="fa fa-arrow-right"></i>
                     </h3>
                   </router-link>
+                  <transition name="expand">
+                    <product-details v-if="expandProducts" :product="product" class="details"></product-details>
+                  </transition>
                 </li>
               </ul>
             </li>
@@ -49,13 +62,19 @@
 import { mapState } from 'vuex';
 import PageHeader from '@/components/PageHeader.vue';
 import { timeFromNow } from '../../../util/utils';
+import ProductDetails from './ProductDetails.vue';
 
 export default {
+  data: () => ({
+    expandProducts: true,
+  }),
+
   computed: {
     ...mapState(['nest', 'quarters']),
   },
   components: {
     PageHeader,
+    ProductDetails,
   },
   methods: {
     getEdited(doc) {
@@ -163,5 +182,37 @@ export default {
       transition: all 0.2s ease-out;
     }
   }
+}
+
+.toggle__wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0 -1rem;
+}
+
+.expand-enter-active,
+.expand-enter-leave {
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+}
+
+.details {
+  max-height: 10rem;
+  margin-top: 0.5rem;
+  padding-right: 2.25rem;
+  padding-bottom: 1rem;
+  padding-left: 3.25rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid $color-border;
+}
+
+.expand-enter,
+.expand-leave-to {
+  max-height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
 }
 </style>

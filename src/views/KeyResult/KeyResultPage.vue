@@ -6,7 +6,10 @@
       <aside class="content--sidebar">
         <nav v-if="hasEditPermissions" class="sidebar-nav">
           <router-link
-            :to="{ name: 'edit-product-keyres', params: { keyres: key_result, objective: objective } }"
+            :to="{
+              name: 'edit-product-keyres',
+              params: { slug: $route.params.slug, keyres: key_result, objective: objective },
+            }"
             class="sidebar-nav__item"
             v-tooltip.right="`Endre detaljer for nøkkelresultatet`"
             ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link

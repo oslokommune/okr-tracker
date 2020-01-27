@@ -123,7 +123,7 @@ async function getObjectiveProgressions(path) {
   const progressionsList = d3
     .nest()
     .key(d => d.quarter)
-    .rollup(list => d3.mean(list.map(obj => obj.progression)))
+    .rollup(list => d3.mean(list.filter(obj => obj.progression).map(obj => obj.progression)))
     .entries(objectiveProgressions)
     .map(d => {
       const { key, value } = d;
@@ -136,6 +136,7 @@ async function getObjectiveProgressions(path) {
   const progressions = {};
   progressionsList.forEach(d => {
     const key = Object.keys(d)[0];
+    if (!key || !d[key]) return;
     progressions[key] = d[key];
   });
 
