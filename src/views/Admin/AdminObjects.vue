@@ -67,6 +67,16 @@
         <admin-department v-if="selection.type === 'department'" :docref="selection.docRef"></admin-department>
       </main>
     </div>
+
+    <hr />
+    <h3 class="title-3">
+      Migrere data fra gammel løsning (Google Sheets)
+    </h3>
+
+    <form @submit.prevent="importData()" class="form-row">
+      <input type="file" @input="previewFiles" multiple />
+      <button class="btn">Valider og migrere data</button>
+    </form>
   </div>
 </template>
 
@@ -77,6 +87,7 @@ import { getOrgs, getDepartments, getProducts } from '../../util/db';
 import AdminProduct from './components/AdminProduct.vue';
 import AdminDepartment from './components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
+import fileImporter from '../../migration/fileImporter';
 
 export default {
   name: 'AdminObjects',
@@ -84,6 +95,7 @@ export default {
   components: { AdminProduct, AdminDepartment },
 
   data: () => ({
+    files: null,
     orgs: [],
     products: [],
     depts: [],
@@ -119,6 +131,14 @@ export default {
   },
 
   methods: {
+    previewFiles(event) {
+      this.files = event.target.files;
+    },
+
+    importData() {
+      fileImporter(this.files);
+    },
+
     selectOrg(val) {
       this.selectedOrgId = val;
       this.selectedDeptId = null;
