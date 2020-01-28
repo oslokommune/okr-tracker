@@ -1,6 +1,7 @@
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
 import * as Toast from './toasts';
 import { errorHandler } from './utils';
+import Audit from './audit/audit';
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -247,5 +248,70 @@ export async function unDelete(ref) {
   return ref
     .update({ archived: false })
     .then(Toast.revertedDeletion)
+    .catch(errorHandler);
+}
+
+/**
+ * Saves a progress for a key result
+ * @param {KeyResultObject} keyres - serialized key result object
+ * @param {Number} value - The new value to be registered
+ * @param {DocumentReference} userRef - the user who created the progress
+ * @param {Date} date - Optional date for the progress
+ * @returns {Promise}
+ */
+export async function registerNewProgress(keyres, value, userRef, date) {
+  if (!keyres || !keyres.ref) {
+    return errorHandler('Corrupt or missing key result object');
+  }
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return errorHandler(`Cannot process provided value: ${value}`);
+  }
+  if (!userRef) {
+    return errorHandler('Missing user reference');
+  }
+
+  date = date || new Date();
+
+  const progressToBeRegistered = {
+    value,
+    date,
+    created_by: userRef,
+    created: new Date(),
+    archived: false,
+  };
+
+  return keyres.ref
+    .collection('progression')
+    .add(progressToBeRegistered)
+    .then(Toast.addedProgression)
+    .then(updateCurrentValue.bind(null, keyres, userRef))
+    .catch(errorHandler);
+}
+
+/**
+ * Finds the most recent registered value and saves it to the `keyres` object in db
+ * @param {KeyResultObject} keyres - serialized key result object
+ * @param {DocumentReference} userRef - documentReference for user
+ * @returns {Promise}
+ */
+export async function updateCurrentValue(keyres, userRef) {
+  const oldValue = keyres.currentValue || keyres.start_value || 0;
+  const newValue = await keyres.ref
+    .collection('progression')
+    .orderBy('date', 'desc')
+    .limit(1)
+    .get()
+    .then(snapshot => snapshot.docs[0].data().value)
+    .catch(errorHandler);
+
+  if (oldValue === newValue) return;
+
+  const parentDocumentRef = keyres.ref.parent.parent.parent.parent;
+
+  return keyres.ref
+    .update({ currentValue: newValue, edited: new Date(), edited_by: userRef })
+    .then(() => {
+      return Audit.keyResUpdateProgress(keyres.ref, parentDocumentRef, oldValue, newValue);
+    })
     .catch(errorHandler);
 }

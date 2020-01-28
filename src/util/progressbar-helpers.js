@@ -67,7 +67,7 @@ export function initCurrentVal(el) {
 
 export function setWidth(el, val) {
   const width = this.x(val);
-  this.isDone = val / this.x.domain()[1] >= 1;
+  this.isDone = width >= this.x.range()[1];
 
   let fill;
 

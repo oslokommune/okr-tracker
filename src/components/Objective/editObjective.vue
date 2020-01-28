@@ -23,18 +23,6 @@
       <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
     </label>
 
-    <div class="form-field" :class="{ 'form-field--error': $v.objective.objective_body.$error }">
-      <div class="form-field--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
-      <span class="form-label">Kvartal</span>
-      <v-select
-        v-if="quarters"
-        :class="{ 'form-field--error': $v.objective.quarter.$error }"
-        label="name"
-        :options="quarters"
-        v-model="objective.quarter"
-      ></v-select>
-    </div>
-
     <hr />
     <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
       Lagre endringer
@@ -69,7 +57,6 @@ export default {
       objective_body: {
         required,
       },
-      quarter: { required },
     },
   },
 
@@ -81,7 +68,7 @@ export default {
     objective: null,
   }),
   computed: {
-    ...mapState(['user', 'quarters', 'icons']),
+    ...mapState(['user', 'icons']),
   },
 
   created() {

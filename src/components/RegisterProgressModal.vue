@@ -44,10 +44,8 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument } from '../util/db';
+import { serializeDocument, registerNewProgress } from '../util/db';
 import ProgressBar from './ProgressBar.vue';
-import * as Toast from '../util/toasts';
-import Audit from '../util/audit/audit';
 
 export default {
   name: 'RegisterProgressModal',
@@ -74,21 +72,11 @@ export default {
     key_result() {
       return this.key_results[this.index];
     },
-
-    progress() {
-      return {
-        date: new Date(),
-        value: +this.newValue,
-        archived: false,
-        created: new Date(),
-        created_by: this.user.ref,
-      };
-    },
   },
 
   watch: {
     key_result(obj) {
-      this.newValue = obj.currentValue;
+      this.newValue = obj.currentValue || obj.start_value || 0;
     },
   },
 
@@ -122,35 +110,10 @@ export default {
     },
 
     async save() {
-      await this.key_results[this.index].ref
-        .collection('progression')
-        .add(this.progress)
-        .then(Toast.addedProgression)
-        .then(this.updateCurrentValue)
-        .catch(this.$errorHandler);
+      await registerNewProgress(this.key_result, +this.newValue, this.user.ref);
 
       this.skip();
       if (this.index === 0) this.close();
-    },
-
-    async updateCurrentValue() {
-      const oldValue = this.key_result.currentValue;
-      const newValue = await this.key_result.ref
-        .collection('progression')
-        .orderBy('date', 'desc')
-        .limit(1)
-        .get()
-        .then(snapshot => snapshot.docs[0].data().value)
-        .catch(this.$errorHandler);
-
-      if (oldValue === newValue) return;
-
-      return this.key_result.ref
-        .update({ currentValue: newValue, edited: new Date(), edited_by: this.user.ref })
-        .then(() => {
-          return Audit.keyResUpdateProgress(this.key_result.ref, this.document.ref, oldValue, newValue);
-        })
-        .catch(this.$errorHandler);
     },
 
     getObjectives() {
@@ -191,6 +154,8 @@ export default {
 .overlay {
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
   z-index: 9999;
   display: flex;
@@ -210,15 +175,20 @@ export default {
     'footer';
 
   grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  width: 100%;
   max-width: 50rem;
+  margin: 0 0.5rem;
   overflow: hidden;
   background: white;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
 
   @media screen and (min-width: 1024px) {
-    min-width: 800px;
-    min-height: 500px;
+    width: 70vw;
+    min-width: 700px;
+    max-width: 850px;
+    min-height: 400px;
   }
 
   &__empty {
@@ -228,8 +198,14 @@ export default {
   &__header {
     display: flex;
     align-items: center;
-    padding: 2rem;
+    padding: 0.5rem 1rem 0 2rem;
+    font-size: 1rem;
     border-bottom: 1px solid $color-border;
+
+    @media screen and (min-width: 1600px) {
+      padding: 2rem;
+      font-size: 1.5rem;
+    }
 
     .btn {
       margin: 0;
@@ -238,39 +214,62 @@ export default {
 
     .fa {
       margin: 0;
+      font-size: inherit;
     }
 
     .title-2 {
       display: block;
       margin: 0;
       margin-right: auto;
+      font-size: inherit;
     }
   }
 
   &__main {
     display: grid;
-    grid-gap: 0.6rem 1.5rem;
+    grid-gap: 0.5rem 0rem;
     grid-template-areas:
       '. title .'
       '. progress .'
       'input slider .'
       'dots dots dots';
-    grid-template-rows: 11rem 2.5rem 6rem 3rem;
-    grid-template-columns: 5.5rem auto 5.5rem;
-    padding: 2.5rem 2rem 2rem;
+    grid-template-rows: minmax(7rem, auto) auto auto auto;
+    grid-template-columns: 0 auto 0;
+    padding: 1rem 2rem 1rem;
+
+    @media screen and (min-width: 768px) {
+      grid-gap: 0.5rem 1.5rem;
+      grid-template-columns: 5.5rem auto 5.5rem;
+    }
+
+    @media screen and (min-width: 1600px) {
+      grid-template-rows: 11rem 2.5rem 6rem 3rem;
+      padding: 2.5rem 2rem 2rem;
+    }
   }
 
   &__footer {
     display: flex;
     grid-area: 'footer';
     justify-content: space-evenly;
-    padding: 1rem;
+    padding: 0.25rem 0rem;
+    font-size: 12px;
     background: $color-bg;
     border-top: 1px solid $color-border;
+
+    @media screen and (min-width: 768px) {
+      font-size: inherit;
+    }
+
+    @media screen and (min-width: 1600px) {
+      padding: 1rem;
+    }
 
     .btn {
       justify-content: center;
       width: 100%;
+      padding: 1em;
+      font-size: inherit;
       border-left: 1px solid $color-border;
       // outline: 1px solid green;
 
@@ -282,13 +281,19 @@ export default {
 }
 
 .range {
+  display: none;
   grid-area: slider;
-  transform: translateY(1.25rem);
+  align-items: center;
+  align-self: center;
+
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
 }
 
 .title {
   grid-area: title;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 
   &-3 {
     margin: 0;
@@ -300,16 +305,21 @@ export default {
 }
 
 .form-field {
-  grid-area: input;
+  grid-area: slider;
+  padding: 0;
+  transform: translateY(-0.75rem);
+
+  @media screen and (min-width: 768px) {
+    grid-area: input;
+  }
 }
 
 .dots {
   display: flex;
   grid-area: dots;
-  align-items: flex-end;
+  align-self: center;
   justify-content: center;
-  margin: 0 -0.3rem;
-  margin-top: 2rem;
+  padding: 0.75rem 0;
 }
 
 .dot {
