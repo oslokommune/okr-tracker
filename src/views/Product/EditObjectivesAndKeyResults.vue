@@ -186,6 +186,7 @@ export default {
     async selectObjective(objective) {
       if (!objective || !objective.id) return;
 
+      this.key_results = [];
       this.selectedKeyres = null;
       this.selectedObjective = objective;
 
@@ -201,6 +202,8 @@ export default {
       this.selectedQuarter = quarter;
       this.selectedObjective = null;
       this.selectedKeyres = null;
+      this.key_results = [];
+      this.objectives = [];
 
       this.docref
         .collection('objectives')
@@ -223,19 +226,17 @@ export default {
           objective_title: 'Nytt mål',
           objective_body: '',
         })
-        .then(() => {
+        .then(async response => {
+          this.selectedObjective = await response.get().then(serializeDocument);
+          this.selectedKeyres = null;
+          this.key_results = [];
           return Toast.addedObjective(this.selectedQuarter.name);
         })
-        .then(() => {})
         .catch(this.$errorHandler);
     },
 
     addKeyres() {
       if (!this.selectedObjective) return;
-
-      // console.dir(this.selectedObjective);
-      // return;
-
       this.selectedObjective.ref
         .collection('key_results')
         .add({
@@ -247,7 +248,15 @@ export default {
           created_by: this.user.ref,
           unit: '',
         })
-        .then(response => {
+        .then(async response => {
+          const newKeyres = await response.get().then(serializeDocument);
+
+          this.selectedKeyres = newKeyres;
+
+          if (!this.key_results.length) {
+            this.key_results.push(newKeyres);
+          }
+
           Toast.addedKeyResult();
           return response;
         })
