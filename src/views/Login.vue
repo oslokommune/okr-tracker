@@ -33,8 +33,8 @@
           <form @submit.prevent="submitPassword()">
             <label class="form-field">
               <span class="form-label">Passord</span>
-              <div class="form-row">
-                <input type="password" v-model="password" />
+              <div class="form-login">
+                <input class="field" type="password" v-model="password" />
                 <button class="btn">
                   Logg inn
                 </button>
@@ -124,6 +124,10 @@ export default {
 
 .login {
   max-width: 500px;
+}
+
+.form-login {
+  display: flex;
 }
 
 .container {
