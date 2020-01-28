@@ -46,6 +46,7 @@ function datePretty(date) {
 
 function errorHandler(error = {}) {
   Toast.error();
+  console.trace();
   throw new Error(error);
 }
 

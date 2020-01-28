@@ -40,7 +40,6 @@
                   type="number"
                   v-model="value"
                   v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
-                  @change="dirty = true"
                 />
               </label>
               <label class="form-field">
@@ -55,14 +54,17 @@
                     class="form-control"
                     name="date"
                     placeholder="Velg dato og tid"
-                    @on-change="dirty = true"
                   ></flat-pickr>
                   <button class="btn btn--borderless" @click.prevent="date = new Date()">I dag</button>
                 </div>
               </label>
             </div>
             <div class="form-field">
-              <button class="btn" v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }" :disabled="!dirty">
+              <button
+                class="btn"
+                v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }"
+                :disabled="!this.date"
+              >
                 Legg til
               </button>
             </div>
@@ -112,12 +114,11 @@ import { mapState, mapActions } from 'vuex';
 import { format } from 'date-fns';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
-import { serializeDocument, isTeamMemberOfProduct } from '../../util/db';
+import { serializeDocument, isTeamMemberOfProduct, registerNewProgress, updateCurrentValue } from '../../util/db';
 import PageHeader from '../../components/PageHeader.vue';
 import * as Toast from '../../util/toasts';
 import Linechart from '../../util/linechart';
-import { getProductFromSlug, timeFromNow } from '../../util/utils';
-import Audit from '../../util/audit/audit';
+import { timeFromNow } from '../../util/utils';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {
@@ -146,7 +147,6 @@ export default {
       enableTime: true,
       locale: locale.no,
     },
-    dirty: false,
   }),
 
   computed: {
@@ -163,16 +163,6 @@ export default {
 
     id() {
       return this.$route.params.keyresid;
-    },
-
-    obj() {
-      return {
-        date: new Date(this.date),
-        value: +this.value,
-        archived: false,
-        created: new Date(),
-        created_by: this.user.ref,
-      };
     },
 
     edited() {
@@ -207,7 +197,7 @@ export default {
     this.flatPickerConfig.minDate = fromDate;
     this.flatPickerConfig.maxDate = toDate;
 
-    this.value = this.key_result.currentValue || 0;
+    this.value = this.key_result && this.key_result.currentValue ? this.key_result.currentValue : 0;
 
     this.graph.render(this.key_result, quarter, this.list);
   },
@@ -235,7 +225,7 @@ export default {
     },
 
     key_result(obj) {
-      this.value = obj.currentValue || 0;
+      this.value = obj.currentValue || obj.start_value || 0;
     },
   },
 
@@ -255,23 +245,17 @@ export default {
 
     deleteValue(doc) {
       if (!this.hasEditPermissions) return;
+      if (!doc || !doc.ref) return;
 
       doc.ref
         .delete()
         .then(Toast.deleted)
-        .then(this.updateCurrentValue)
+        .then(updateCurrentValue.bind(null, this.key_result, this.user.ref))
         .catch(this.$errorHandler);
     },
 
     async addValue() {
-      await this.key_result.ref
-        .collection('progression')
-        .add(this.obj)
-        .then(this.updateCurrentValue)
-        .then(Toast.addedProgression)
-        .catch(this.$errorHandler);
-
-      this.value = 0;
+      await registerNewProgress(this.key_result, +this.value, this.user.ref);
     },
 
     async watchData() {
@@ -285,24 +269,6 @@ export default {
       this.unsubscribe.collection = this.doc.collection('progression').onSnapshot(snapshot => {
         this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
       });
-    },
-
-    // Finds the most recent registered value and saves it to the `keyres` object in db
-    async updateCurrentValue() {
-      const oldValue = await this.doc.get().then(d => d.data().currentValue);
-      const newValue = this.list[0].value;
-
-      if (oldValue !== newValue) {
-        return this.doc
-          .update({ currentValue: newValue, edited: new Date(), edited_by: this.user.ref })
-          .then(async () => {
-            const product = await getProductFromSlug(this.nest, this.$route.params.slug);
-            return Audit.keyResUpdateProgress(this.key_result.ref, product.ref, oldValue, newValue);
-          })
-          .then(Toast.savedChanges)
-          .catch(this.$errorHandler);
-      }
-      return true;
     },
   },
 
