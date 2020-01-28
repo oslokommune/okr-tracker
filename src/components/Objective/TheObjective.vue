@@ -11,7 +11,12 @@
         <p></p>
 
         <div class="section content content--padding">
-          <h4 class="title-4">Nøkkelresultater</h4>
+          <h4 class="title-4">
+            Nøkkelresultater
+          </h4>
+          <div v-if="!key_results.length">
+            Oops! Her er det ingen nøkkelresultater ennå.
+          </div>
           <TheKeyResult v-for="keyres in key_results" :key="keyres.id" :keyres="keyres"></TheKeyResult>
         </div>
       </div>

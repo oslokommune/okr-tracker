@@ -5,7 +5,10 @@
       :to="{ name: 'key-result', params: { keyresid: keyres.id } }"
       v-tooltip.left="`Vis detaljer`"
     >
-      <div class="keyres__name">{{ keyres.key_result }}</div>
+      <i class="fa fa-check-square row-icon" v-if="percentage === '100%'"></i>
+      <div class="keyres__name">
+        {{ keyres.key_result }}
+      </div>
       <div class="keyres__edited edited">Sist oppdatert {{ edited }}</div>
     </router-link>
 
@@ -102,6 +105,7 @@ export default {
 @import '@/styles/_colors';
 
 .keyres {
+  position: relative;
   display: grid;
   grid-gap: 0 1rem;
   grid-template-columns: 1fr auto 300px;
@@ -157,5 +161,13 @@ export default {
     height: 3.5rem;
     padding: 0.25rem 0;
   }
+}
+
+.row-icon {
+  position: absolute;
+  top: calc(50% - 1.15rem);
+  left: -1.5rem;
+  color: $color-yellow;
+  font-size: 1.15rem;
 }
 </style>

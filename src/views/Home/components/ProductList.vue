@@ -125,7 +125,7 @@ export default {
 
   &__bar {
     height: 100%;
-    background: $color-yellow;
+    background: $color-purple;
     border-radius: 3px;
   }
 }

@@ -34,9 +34,9 @@ export default {
         .domain([keyres.start_value, keyres.target_value]);
       const progress = scale(keyres.currentValue) || 0;
       const purple = '#292858';
-      const grey = '#c6c6cc';
+      const yellow = '#f8c66b';
 
-      const color = progress === 1 ? purple : grey;
+      const color = progress === 1 ? purple : yellow;
 
       return `width: ${progress * 100}%; backgroundColor: ${color};`;
     },
