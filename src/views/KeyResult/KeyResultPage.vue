@@ -40,19 +40,31 @@
                   type="number"
                   v-model="value"
                   v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
+                  @change="dirty = true"
                 />
               </label>
               <label class="form-field">
                 <span class="form-label">Dato</span>
-                <input
-                  type="datetime-local"
-                  v-model="date"
-                  v-tooltip="{ content: `Hvilken dato gjelder måleverdien for`, trigger: `hover`, delay: 100 }"
-                />
+                <div
+                  class="date-input"
+                  v-tooltip.top="{ content: `Hvilket tidspunkt gjelder måleverdien for`, trigger: `hover`, delay: 100 }"
+                >
+                  <flat-pickr
+                    v-model="date"
+                    :config="flatPickerConfig"
+                    class="form-control"
+                    name="date"
+                    placeholder="Velg dato og tid"
+                    @on-change="dirty = true"
+                  ></flat-pickr>
+                  <button class="btn btn--borderless" @click.prevent="date = new Date()">I dag</button>
+                </div>
               </label>
             </div>
             <div class="form-field">
-              <button class="btn" v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }">Legg til</button>
+              <button class="btn" v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }" :disabled="!dirty">
+                Legg til
+              </button>
             </div>
           </form>
           <hr />
@@ -97,13 +109,16 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
+import flatPickr from 'vue-flatpickr-component';
+import locale from 'flatpickr/dist/l10n/no';
 import { serializeDocument, isTeamMemberOfProduct } from '../../util/db';
 import PageHeader from '../../components/PageHeader.vue';
 import * as Toast from '../../util/toasts';
 import Linechart from '../../util/linechart';
 import { getProductFromSlug, timeFromNow } from '../../util/utils';
 import Audit from '../../util/audit/audit';
+import 'flatpickr/dist/flatpickr.css';
 
 export default {
   name: 'KeyResultPage',
@@ -113,7 +128,7 @@ export default {
     doc: null,
     value: 0,
     quarter: '',
-    date: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
+    date: null,
     objective: null,
     unsubscribe: {
       doc: null,
@@ -121,10 +136,21 @@ export default {
     },
     progressions: [],
     hasEditPermissions: false,
+    flatPickerConfig: {
+      altInput: true,
+      altFormat: 'd.m.Y H:i',
+      minDate: null,
+      maxDate: null,
+      dateFormat: 'Z',
+      time_24hr: true,
+      enableTime: true,
+      locale: locale.no,
+    },
+    dirty: false,
   }),
 
   computed: {
-    ...mapState(['user', 'key_result', 'nest']),
+    ...mapState(['user', 'key_result', 'nest', 'quarters']),
 
     list() {
       return this.progressions
@@ -141,7 +167,7 @@ export default {
 
     obj() {
       return {
-        date: parseISO(this.date),
+        date: new Date(this.date),
         value: +this.value,
         archived: false,
         created: new Date(),
@@ -176,6 +202,13 @@ export default {
     const { quarter } = this.objective;
     this.quarter = quarter;
 
+    // Limit date input based on the selected quarter
+    const { fromDate, toDate } = this.quarters.find(d => d.name === quarter);
+    this.flatPickerConfig.minDate = fromDate;
+    this.flatPickerConfig.maxDate = toDate;
+
+    this.value = this.key_result.currentValue || 0;
+
     this.graph.render(this.key_result, quarter, this.list);
   },
 
@@ -200,6 +233,10 @@ export default {
     id() {
       this.watchData();
     },
+
+    key_result(obj) {
+      this.value = obj.currentValue || 0;
+    },
   },
 
   filters: {
@@ -210,6 +247,7 @@ export default {
 
   components: {
     PageHeader,
+    flatPickr,
   },
 
   methods: {
@@ -280,5 +318,9 @@ export default {
 
 .content--sidebar {
   padding-top: 3rem;
+}
+
+.date-input {
+  display: flex;
 }
 </style>
