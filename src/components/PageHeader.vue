@@ -51,7 +51,7 @@ export default {
 
   computed: {
     title() {
-      if (this.data.key_result) return 'Nøkkelresultat';
+      if (this.data.description) return 'Nøkkelresultat';
 
       return this.data.name || this.data.displayName || 'Laster ...';
     },
@@ -104,7 +104,7 @@ export default {
 
     getNameAndRouteFromDocument(document) {
       const routerLinkTo = this.createRouterLinkFromDocument(document);
-      let name = document.name || document.displayName || document.objective_title || document.key_result;
+      let name = document.name || document.displayName || document.name || document.description;
 
       if (name.length > 24) {
         name = `${name
@@ -134,7 +134,7 @@ export default {
         return { name: 'department', params: { slug: document.slug } };
       }
 
-      if (docType === 'key_results') {
+      if (docType === 'keyResults') {
         return { name: 'key-result', params: { slug: this.$route.params.slug, keyresid: document.id } };
       }
 

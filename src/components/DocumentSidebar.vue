@@ -85,11 +85,13 @@ export default {
 
   computed: {
     edited() {
-      const timestamp = this.document.edited || this.document.timestamp;
+      const timestamp = this.document.edited || this.document.created;
+      if (!timestamp) return null;
       return timeFromNow(timestamp.toDate());
     },
     prettyDate() {
-      const timestamp = this.document.edited || this.document.timestamp;
+      const timestamp = this.document.edited || this.document.created;
+      if (!timestamp) return null;
       return datePretty(timestamp.toDate());
     },
   },

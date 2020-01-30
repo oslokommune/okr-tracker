@@ -7,7 +7,7 @@
     >
       <i class="fa fa-check-square row-icon" v-if="percentage === '100%'"></i>
       <div class="keyres__name">
-        {{ keyres.key_result }}
+        {{ keyres.description }}
       </div>
       <div class="keyres__edited edited">Sist oppdatert {{ edited }}</div>
     </router-link>
@@ -63,7 +63,7 @@ export default {
     },
 
     percentage() {
-      const scale = scaleLinear().domain([this.keyres.start_value, this.keyres.target_value]);
+      const scale = scaleLinear().domain([this.keyres.startValue, this.keyres.targetValue]);
       const percentage = scale(this.keyres.currentValue || 0);
 
       return format('.0%')(percentage);
@@ -86,13 +86,13 @@ export default {
 
   watch: {
     keyres(keyres) {
-      this.value = keyres.currentValue || keyres.start_value || 0;
+      this.value = keyres.currentValue || keyres.startValue || 0;
     },
   },
 
   async created() {
     this.hasEditPermissions = await isTeamMemberOfProduct(this.$route.params.slug);
-    this.value = this.keyres.currentValue || this.keyres.start_value || 0;
+    this.value = this.keyres.currentValue || this.keyres.startValue || 0;
   },
 
   components: {

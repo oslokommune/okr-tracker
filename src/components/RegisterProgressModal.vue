@@ -9,14 +9,14 @@
       <main v-if="key_result" class="modal__main">
         <div class="title">
           <p class="pill">Nøkkelresultat</p>
-          <h3 class="title-3">{{ key_result.key_result }}</h3>
+          <h3 class="title-3">{{ key_result.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="key_result"></progress-bar>
         <input
           class="range"
           type="range"
           :min="key_result.from_value"
-          :max="key_result.target_value"
+          :max="key_result.targetValue"
           v-model="newValue"
         />
         <label class="form-field">
@@ -24,7 +24,7 @@
           <input type="number" v-model="newValue" />
         </label>
         <div class="dots">
-          <div class="dot" v-for="(dot, i) in key_results" :key="dot.id" :class="{ active: i === index }"></div>
+          <div class="dot" v-for="(dot, i) in keyResults" :key="dot.id" :class="{ active: i === index }"></div>
         </div>
       </main>
 
@@ -53,7 +53,7 @@ export default {
   data: () => ({
     index: 0,
     objectives: [],
-    key_results: [],
+    keyResults: [],
     unsubscribeObjectives: null,
     unsubscribeKeyResults: null,
     newValue: null,
@@ -70,13 +70,13 @@ export default {
     ...mapState(['user', 'quarters']),
 
     key_result() {
-      return this.key_results[this.index];
+      return this.keyResults[this.index];
     },
   },
 
   watch: {
     key_result(obj) {
-      this.newValue = obj.currentValue || obj.start_value || 0;
+      this.newValue = obj.currentValue || obj.startValue || 0;
     },
   },
 
@@ -101,16 +101,16 @@ export default {
 
     previous() {
       this.index -= 1;
-      if (this.index < 0) this.index = this.key_results.length - 1;
+      if (this.index < 0) this.index = this.keyResults.length - 1;
     },
 
     skip() {
       this.index += 1;
-      if (this.index >= this.key_results.length) this.index = 0;
+      if (this.index >= this.keyResults.length) this.index = 0;
     },
 
     async save() {
-      await registerNewProgress(this.key_result, +this.newValue, this.user.ref);
+      await registerNewProgress(this.description, +this.newValue, this.user.ref);
 
       this.skip();
       if (this.index === 0) this.close();
@@ -133,12 +133,12 @@ export default {
     async getKeyResults() {
       const promises = this.objectives.map(obj => {
         return obj.ref
-          .collection('key_results')
+          .collection('keyResults')
           .get()
           .then(snap => snap.docs.map(serializeDocument));
       });
       const keyResults = await Promise.all(promises).catch(this.$errorHandler);
-      this.key_results = keyResults.flat();
+      this.keyResults = keyResults.flat();
     },
   },
 

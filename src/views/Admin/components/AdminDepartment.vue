@@ -33,7 +33,7 @@
 
       <label class="form-field">
         <span class="form-label">Mission statement</span>
-        <textarea rows="4" v-model="department.mission_statement"></textarea>
+        <textarea rows="4" v-model="department.missionStatement"></textarea>
       </label>
     </div>
 
@@ -82,13 +82,13 @@ export default {
   methods: {
     saveObject() {
       this.docref
-        .update({ edited: new Date(), edited_by: this.user.ref, ...this.department })
+        .update({ edited: new Date(), editedBy: this.user.ref, ...this.department })
         .then(Toast.savedChanges)
         .catch(this.$errorHandler);
     },
     deleteObject() {
       this.docref
-        .update({ edited: new Date(), edited_by: this.user.ref, archived: true })
+        .update({ edited: new Date(), editedBy: this.user.ref, archived: true })
         .then(() => {
           this.department = null;
         })

@@ -5,31 +5,31 @@
       v-if="objectives"
       class="form-field objective__select"
       :class="{ 'form-field--error': $v.objective.$error }"
-      label="objective_title"
+      label="name"
       v-model="$v.objective.$model"
       :options="objectives"
     ></v-select>
 
     <div class="form-field--error" v-if="$v.objective.$error">Kan ikke være tom</div>
 
-    <label class="form-field" :class="{ 'form-field--error': $v.key_result.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
       <span class="form-label">Beskrivelse</span>
-      <textarea v-model="$v.key_result.$model" rows="4"></textarea>
+      <textarea v-model="$v.description.$model" rows="4"></textarea>
     </label>
-    <div class="form-field--error" v-if="$v.key_result.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.description.$error">Kan ikke være tom</div>
 
     <div class="form-row">
-      <label class="form-field" :class="{ 'form-field--error': $v.start_value.$error }">
+      <label class="form-field" :class="{ 'form-field--error': $v.startValue.$error }">
         <span class="form-label">Startverdi</span>
-        <input type="number" v-model="$v.start_value.$model" />
+        <input type="number" v-model="$v.startValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.start_value.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.startValue.$error">Kan ikke være tom</div>
 
-      <label class="form-field" :class="{ 'form-field--error': $v.target_value.$error }">
+      <label class="form-field" :class="{ 'form-field--error': $v.targetValue.$error }">
         <span class="form-label">Målverdi</span>
-        <input type="number" v-model="$v.target_value.$model" />
+        <input type="number" v-model="$v.targetValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.target_value.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.targetValue.$error">Kan ikke være tom</div>
     </div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.unit.$error }">
@@ -60,8 +60,8 @@ export default {
 
   data: () => ({
     objective: null,
-    start_value: 0,
-    target_value: 100,
+    startValue: 0,
+    targetValue: 100,
     target_type: 'greater_than',
     key_result: '',
     unit: '',
@@ -89,10 +89,10 @@ export default {
     key_result: {
       required,
     },
-    start_value: {
+    startValue: {
       required,
     },
-    target_value: {
+    targetValue: {
       required,
     },
     unit: {
@@ -105,14 +105,14 @@ export default {
     newKeyRes() {
       return {
         archived: false,
-        key_result: this.key_result,
-        start_value: +this.start_value,
-        target_value: +this.target_value,
+        key_result: this.description,
+        startValue: +this.startValue,
+        targetValue: +this.targetValue,
         target_type: this.target_type,
         created: new Date(),
-        created_by: this.user.ref,
+        createdBy: this.user.ref,
         edited: null,
-        edited_by: null,
+        editedBy: null,
         unit: this.unit,
       };
     },
@@ -137,7 +137,7 @@ export default {
         this.setSubmitInfo(true, false, '');
 
         this.objective.ref
-          .collection('key_results')
+          .collection('keyResults')
           .add(this.newKeyRes)
           .then(docref => {
             Toast.addedKeyResult();

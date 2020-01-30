@@ -11,10 +11,11 @@
       <template v-for="event in feed">
         <UpdatedKeyres
           v-if="event.event === 'keyRes-update-progress'"
-          :key="event.id"
+          :key="event.id + 'a'"
           :event-data="event"
         ></UpdatedKeyres>
 
+        <!--
         <UploadProfilePhoto
           v-if="event.event === 'upload-profile-photo'"
           :key="event.id"
@@ -25,7 +26,7 @@
           v-if="event.event === 'create-key-result'"
           :key="event.id"
           :event-data="event"
-        ></CreateNewKeyResult>
+        ></CreateNewKeyResult> -->
       </template>
     </transition-group>
   </div>

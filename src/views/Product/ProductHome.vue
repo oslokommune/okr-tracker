@@ -53,7 +53,7 @@ export default {
   name: 'ProductHome',
 
   data: () => ({
-    key_results: [],
+    keyResults: [],
     team: [],
   }),
 

@@ -1,0 +1,36 @@
+@import './colors';
+
+.callout {
+  display: grid;
+  grid-gap: 0;
+  grid-template-areas:
+    'message'
+    'actions';
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr;
+  margin: 2rem 0 1.5rem;
+  padding: 0 1.25rem;
+  background: rgba($color-bg, 0.6);
+  border-left: 6px solid $color-yellow;
+  // box-shadow: 0 2px 5px rgba($color-grey-800, 0.5);
+
+  &__icon {
+    grid-area: icon;
+    color: darken($color-yellow, 10%);
+    font-size: 2rem;
+  }
+
+  &__actions {
+    display: flex;
+    margin-left: -1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid $color-border;
+  }
+
+  &__message {
+    grid-area: message;
+    padding: 1.25rem 0;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+}

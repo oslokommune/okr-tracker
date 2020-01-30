@@ -23,8 +23,8 @@
         <template v-for="objective in product.children">
           <tr v-for="(key_result, i) in objective.children" :key="key_result.id">
             <td v-if="i === 0" :rowspan="objective.children.length" class="cell cell--objective">
-              <h3 class="objective-title">{{ objective.objective_title }}</h3>
-              <p class="objective-body">{{ objective.objective_body }}</p>
+              <h3 class="objective-title">{{ objective.name }}</h3>
+              <p class="objective-body">{{ objective.description }}</p>
             </td>
             <td
               :class="{ active: active.id === key_result.id }"
@@ -32,7 +32,7 @@
               @click="clickKeyRes(key_result)"
               :id="`keyresult-${key_result.id}`"
             >
-              {{ key_result.key_result }}
+              {{ key_result.description }}
             </td>
             <td
               :class="{ active: active.id === key_result.id }"
@@ -52,13 +52,13 @@
     <div class="section--details details">
       <div class="details__header">
         <p class="details__lead">Nøkkelresultat</p>
-        <h1 v-if="active" class="details__title title-1">{{ active.key_result }}</h1>
+        <h1 v-if="active" class="details__title title-1">{{ active.description }}</h1>
       </div>
       <div class="details__info">
         <table class="table details__table">
           <tr>
             <td>Startverdi</td>
-            <td>{{ active.start_value }} {{ active.unit }}</td>
+            <td>{{ active.startValue }} {{ active.unit }}</td>
           </tr>
           <tr>
             <td>Nåværende verdi</td>
@@ -66,7 +66,7 @@
           </tr>
           <tr>
             <td>Målverdi</td>
-            <td>{{ active.target_value }} {{ active.unit }}</td>
+            <td>{{ active.targetValue }} {{ active.unit }}</td>
           </tr>
           <tr>
             <td>

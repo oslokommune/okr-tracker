@@ -3,24 +3,24 @@
     <h3 class="title-3">Endre nøkkelresultat</h3>
     <hr />
 
-    <label class="form-field" :class="{ 'form-field--error': $v.keyres.key_result.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.keyres.description.$error }">
       <span class="form-label">Beskriv nøkkelresultatet</span>
-      <textarea @input="dirty = true" v-model="$v.keyres.key_result.$model" rows="4"></textarea>
+      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="4"></textarea>
     </label>
-    <div class="form-field--error" v-if="$v.keyres.key_result.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.keyres.description.$error">Kan ikke være tom</div>
 
     <div class="form-row">
-      <label class="form-field" :class="{ 'form-field--error': $v.keyres.start_value.$error }">
+      <label class="form-field" :class="{ 'form-field--error': $v.keyres.startValue.$error }">
         <span class="form-label">Startverdi</span>
-        <input @input="dirty = true" type="number" v-model="$v.keyres.start_value.$model" />
+        <input @input="dirty = true" type="number" v-model="$v.keyres.startValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.keyres.start_value.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.keyres.startValue.$error">Kan ikke være tom</div>
 
-      <label class="form-field" :class="{ 'form-field--error': $v.keyres.target_value.$error }">
+      <label class="form-field" :class="{ 'form-field--error': $v.keyres.targetValue.$error }">
         <span class="form-label">Målverdi</span>
-        <input @input="dirty = true" type="number" v-model="$v.keyres.target_value.$model" />
+        <input @input="dirty = true" type="number" v-model="$v.keyres.targetValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.keyres.target_value.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.keyres.targetValue.$error">Kan ikke være tom</div>
     </div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.keyres.unit.$error }">
@@ -56,10 +56,10 @@ export default {
 
   validations: {
     keyres: {
-      start_value: {
+      startValue: {
         required,
       },
-      target_value: {
+      targetValue: {
         required,
       },
       unit: {
@@ -82,11 +82,11 @@ export default {
     ...mapState(['user']),
     updatedKeyRes() {
       return {
-        key_result: this.keyres.key_result,
+        key_result: this.keyres.description,
         edited: new Date(),
-        edited_by: this.user.ref,
-        start_value: +this.keyres.start_value,
-        target_value: +this.keyres.target_value,
+        editedBy: this.user.ref,
+        startValue: +this.keyres.startValue,
+        targetValue: +this.keyres.targetValue,
         unit: this.keyres.unit,
       };
     },

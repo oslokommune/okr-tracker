@@ -69,14 +69,52 @@
     </div>
 
     <hr />
+
+    <div class="title-2"><i class="fa fa-exclamation-triangle"></i> Danger Zone</div>
+
     <h3 class="title-3">
       Migrere data fra gammel løsning (Google Sheets)
     </h3>
 
-    <form @submit.prevent="importData()" class="form-row">
-      <input type="file" @input="previewFiles" multiple />
-      <button class="btn">Valider og migrere data</button>
-    </form>
+    <div class="form-group">
+      <form @submit.prevent="importData()">
+        <div class="callout">
+          <div class="callout__message">
+            <p>
+              For å migrere data fra gammel løsning, må følgende steg følges:
+
+              <ol class="ol">
+                <li>«Audit»- og «Orgs»-samlingene i Firestore må tømmes.</li>
+                <li>Følgende filer må lastes ned fra Google Sheets:
+                  <ol class="ol">
+                    <li>OKR-tracker-data - Depts.csv</li>
+                    <li>OKR-tracker-data - Orgs.csv</li>
+                    <li>OKR-tracker-data - Objectives.csv</li>
+                    <li>OKR-tracker-data - Products.csv</li>
+                    <li>OKR-tracker-data - KeyRes.csv</li>
+                    <li>OKR-tracker-data - KeyResTracker.csv</li>
+                  </ol>
+                  For å laste ned filer:
+                  <ol class="ol">
+                    <li>Velg riktig fane i Google Sheets-dokumentet</li>
+                    <li>Klikk «File»</li>
+                    <li>Velg «Download»</li>
+                    <li>Velg «Comma-separated values (.csv, current sheet)»</li>
+                  </ol>
+                </li>
+                <li>Last opp filene her (alle 6 filene samtidig) og trykk «Start migrering»</li>
+              </ol>
+            </p>
+            <hr />
+
+            <input type="file" @input="previewFiles" multiple />
+          </div>
+          <div class="callout__actions">
+            <button class="btn btn--borderless">Start migrering</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -167,7 +205,7 @@ export default {
         archived: false,
         team: [],
         created: new Date(),
-        created_by: this.user.ref,
+        createdBy: this.user.ref,
       };
 
       deptRef
@@ -189,7 +227,7 @@ export default {
         slug: 'nytt-produktomrade',
         archived: false,
         created: new Date(),
-        created_by: this.user.ref,
+        createdBy: this.user.ref,
       };
 
       deptRef

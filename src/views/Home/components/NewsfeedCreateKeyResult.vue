@@ -8,7 +8,7 @@
         <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
       </div>
     </div>
-    <div class="nf-card__body">«{{ keyRes.key_result }}»</div>
+    <div class="nf-card__body">«{{ keyRes.description }}»</div>
     <newsfeed-footer :data="eventData"></newsfeed-footer>
   </div>
 </template>

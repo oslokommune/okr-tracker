@@ -2,7 +2,7 @@
   <div class="grid grid-3 section">
     <div>
       <h2 class="title title-2">Oppdrag</h2>
-      <div v-if="!document.mission_statement" class="content">
+      <div v-if="!document.missionStatement" class="content">
         <p>
           <strong>Uh-oh!</strong>
           Her mangler det noe viktig!
@@ -13,7 +13,7 @@
           </router-link>
         </p>
       </div>
-      <p>{{ document.mission_statement }}</p>
+      <p>{{ document.missionStatement }}</p>
     </div>
     <div>
       <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>

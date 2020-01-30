@@ -12,11 +12,12 @@
 
 <script>
 import { scaleLinear } from 'd3';
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
     unsubscribe: null,
-    key_results: [],
+    keyResults: [],
     objectives: [],
   }),
 
@@ -31,7 +32,7 @@ export default {
     getWidth(keyres) {
       const scale = scaleLinear()
         .clamp(true)
-        .domain([keyres.start_value, keyres.target_value]);
+        .domain([keyres.startValue, keyres.targetValue]);
       const progress = scale(keyres.currentValue) || 0;
       const purple = '#292858';
       const yellow = '#f8c66b';
@@ -51,6 +52,10 @@ export default {
     },
   },
 
+  computed: {
+    ...mapState(['quarters']),
+  },
+
   watch: {
     product() {
       if (this.unsubscribe) this.unsubscribe();
@@ -58,9 +63,12 @@ export default {
     },
 
     objectives(objectives) {
-      objectives.forEach(objective => {
+      objectives.forEach(async objective => {
+        const q = await objective.ref.get().then(d => d.data().quarter);
+        if (q !== this.quarters[0].name) return;
+
         objective.ref
-          .collection('key_results')
+          .collection('keyResults')
           .where('archived', '==', false)
           .onSnapshot(snapshot => {
             objective.keyResults = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));

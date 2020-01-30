@@ -32,7 +32,7 @@
             @click="selectObjective(objective)"
             :class="{ active: selectedObjective && selectedObjective.id === objective.id }"
           >
-            {{ objective.objective_title }}
+            {{ objective.name }}
           </div>
           <div
             v-if="selectedQuarter"
@@ -50,12 +50,12 @@
           <template v-if="selectedObjective">
             <div
               class="miller__col__item"
-              v-for="keyres in key_results"
+              v-for="keyres in keyResults"
               :key="keyres.id"
               @click="selectKeyres(keyres)"
               :class="{ active: selectedKeyres && selectedKeyres.id === keyres.id }"
             >
-              {{ keyres.key_result }}
+              {{ keyres.description }}
             </div>
           </template>
           <div
@@ -111,7 +111,7 @@ export default {
     selectedObjective: null,
     selectedKeyres: null,
     objectives: null,
-    key_results: [],
+    keyResults: [],
   }),
 
   computed: {
@@ -186,15 +186,15 @@ export default {
     async selectObjective(objective) {
       if (!objective || !objective.id) return;
 
-      this.key_results = [];
+      this.keyResults = [];
       this.selectedKeyres = null;
       this.selectedObjective = objective;
 
       objective.ref
-        .collection('key_results')
+        .collection('keyResults')
         .where('archived', '==', false)
         .onSnapshot(async snapshot => {
-          this.key_results = await snapshot.docs.map(serializeDocument);
+          this.keyResults = await snapshot.docs.map(serializeDocument);
         });
     },
 
@@ -202,7 +202,7 @@ export default {
       this.selectedQuarter = quarter;
       this.selectedObjective = null;
       this.selectedKeyres = null;
-      this.key_results = [];
+      this.keyResults = [];
       this.objectives = [];
 
       this.docref
@@ -218,18 +218,18 @@ export default {
       this.docref
         .collection('objectives')
         .add({
-          created_by: this.user.ref,
+          createdBy: this.user.ref,
           created: new Date(),
           quarter: this.selectedQuarter.name,
           archived: false,
           icon: 'trophy',
-          objective_title: 'Nytt mål',
-          objective_body: '',
+          name: 'Nytt mål',
+          description: '',
         })
         .then(async response => {
           this.selectedObjective = await response.get().then(serializeDocument);
           this.selectedKeyres = null;
-          this.key_results = [];
+          this.keyResults = [];
           return Toast.addedObjective(this.selectedQuarter.name);
         })
         .catch(this.$errorHandler);
@@ -238,14 +238,14 @@ export default {
     addKeyres() {
       if (!this.selectedObjective) return;
       this.selectedObjective.ref
-        .collection('key_results')
+        .collection('keyResults')
         .add({
           archived: false,
           key_result: 'Beskriv nøkkelresultatet',
-          start_value: 0,
-          target_value: 100,
+          startValue: 0,
+          targetValue: 100,
           created: new Date(),
-          created_by: this.user.ref,
+          createdBy: this.user.ref,
           unit: '',
         })
         .then(async response => {
@@ -253,8 +253,8 @@ export default {
 
           this.selectedKeyres = newKeyres;
 
-          if (!this.key_results.length) {
-            this.key_results.push(newKeyres);
+          if (!this.keyResults.length) {
+            this.keyResults.push(newKeyres);
           }
 
           Toast.addedKeyResult();

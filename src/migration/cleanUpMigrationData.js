@@ -80,7 +80,7 @@ function cleanUpKeyResults(keyres) {
 function cleanUpProgress(progress) {
   delete progress.id;
   delete progress.archived;
-  delete progress.key_result_id;
+  delete progress.description_id;
   progress.value = +progress.value;
   progress.timestamp = new Date(progress.timestamp);
 }

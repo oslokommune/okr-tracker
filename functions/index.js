@@ -13,39 +13,39 @@ const orgsPath = 'orgs/{orgId}';
 const departmentsPath = orgsPath + '/departments/{departmentId}';
 const productsPath = departmentsPath + '/products/{productId}';
 const objectivesPath = productsPath + '/objectives/{objectiveId}';
-const keyResultsPath = objectivesPath + '/key_results/{keyresId}';
-const progressionsPath = keyResultsPath + '/progression/{progressionId}';
+const keyResultsPath = objectivesPath + '/keyResults/{keyresId}';
+const progressionsPath = keyResultsPath + '/progress/{progressionId}';
 const departmentObjectivesPath = departmentsPath + '/objectives/{objectiveId}';
-const departmentKeyResultsPath = departmentObjectivesPath + '/key_results/{keyResId}';
-const departmentProgressionsPath = departmentKeyResultsPath + '/progression/{progressionId}';
+const departmentKeyResultsPath = departmentObjectivesPath + '/keyResults/{keyResId}';
+const departmentProgressionsPath = departmentKeyResultsPath + '/progress/{progressionId}';
 /* eslint-enable */
 
 exports.updatedKeyResultProgression = functions.firestore
   .document(progressionsPath)
-  .onWrite(async (change, context) => {
+  .onUpdate(async (change, context) => {
     const { orgId, departmentId, productId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
     const edited = new Date();
-    const edited_by = 'cloud-function';
+    const editedBy = 'cloud-function';
 
-    return db.doc(objectivePath).update({ progression, edited, edited_by });
+    return db.doc(objectivePath).update({ progression, edited, editedBy });
   });
 
 exports.updatedDepartmentKeyResultProgression = functions.firestore
   .document(departmentProgressionsPath)
-  .onWrite(async (change, context) => {
+  .onUpdate(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
     const edited = new Date();
-    const edited_by = 'cloud-function';
+    const editedBy = 'cloud-function';
 
-    return db.doc(objectivePath).update({ progression, edited, edited_by });
+    return db.doc(objectivePath).update({ progression, edited, editedBy });
   });
 
 /**
@@ -56,7 +56,7 @@ exports.updatedDepartmentKeyResultProgression = functions.firestore
 async function getKeyResultsProgressions(path) {
   return db
     .doc(path)
-    .collection('key_results')
+    .collection('keyResults')
     .where('archived', '==', false)
     .get()
     .then(collection => collection.docs.map(doc => doc.data()))
@@ -70,10 +70,10 @@ async function getKeyResultsProgressions(path) {
  */
 function getProgressionPercentage(keyres) {
   /* eslint-disable-next-line */
-  const { target_value, start_value, currentValue } = keyres;
+  const { targetValue, startValue, currentValue } = keyres;
   const scale = d3
     .scaleLinear()
-    .domain([start_value, target_value]) /* eslint-disable-line */
+    .domain([startValue, targetValue]) /* eslint-disable-line */
     .clamp(true);
   return scale(currentValue);
 }
@@ -84,9 +84,9 @@ exports.updatedObjectiveProgression = functions.firestore.document(objectivesPat
   const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
   const progressions = await getObjectiveProgressions(productPath);
   const edited = new Date();
-  const edited_by = 'cloud-function';
+  const editedBy = 'cloud-function';
 
-  await db.doc(productPath).update({ progressions, edited, edited_by });
+  await db.doc(productPath).update({ progressions, edited, editedBy });
   return true;
 });
 
@@ -98,9 +98,9 @@ exports.updatedDepartmentObjectiveProgression = functions.firestore
     const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
     const progressions = await getObjectiveProgressions(departmentPath);
     const edited = new Date();
-    const edited_by = 'cloud-function';
+    const editedBy = 'cloud-function';
 
-    await db.doc(departmentPath).update({ progressions, edited, edited_by });
+    await db.doc(departmentPath).update({ progressions, edited, editedBy });
 
     return true;
   });
