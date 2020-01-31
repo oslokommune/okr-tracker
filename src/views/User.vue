@@ -12,7 +12,7 @@
           <ul>
             <li v-for="product in products" :key="product.id">
               <router-link :to="{ name: 'product', params: { slug: product.slug } }">
-                <div style="display: flex">
+                <div style="display: flex; flex-direction: row;">
                   <img
                     class="team__image"
                     :src="product.photoURL || '/placeholder-user.svg'"
@@ -20,8 +20,7 @@
                     v-tooltip.auto="product.name"
                   />
                   <div>
-                    <p>{{ product.name }}</p>
-                    <p>{{ product.ref.parent.name }}</p>
+                    <h2 class="title title-2" style="alight-items: center; padding-left: 1rem;">{{ product.name }}</h2>
                   </div>
                 </div>
               </router-link>
