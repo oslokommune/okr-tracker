@@ -20,7 +20,7 @@
 
       <div class="content--main content--padding">
         <div class="section">
-          <h1 class="title-1" v-if="key_result">{{ key_result.key_result }}</h1>
+          <h1 class="title-1" v-if="key_result">{{ key_result.description }}</h1>
         </div>
 
         <hr />
@@ -90,7 +90,7 @@
               <tr v-for="prog in list" :key="prog.id">
                 <td>{{ prog.value }}</td>
                 <td>{{ prog.date | formatDate }}</td>
-                <td>{{ prog.created_by.id }}</td>
+                <td>{{ prog.createdBy.id }}</td>
                 <td v-if="hasEditPermissions" style="width: 1rem;">
                   <button
                     class="btn btn--borderless"
@@ -155,7 +155,7 @@ export default {
     list() {
       return this.progressions
         .map(d => {
-          d.date = d.date.toDate();
+          d.date = d.timestamp.toDate();
           return d;
         })
         .sort((a, b) => b.date - a.date);
@@ -167,7 +167,7 @@ export default {
 
     edited() {
       if (!this.key_result) return;
-      const timestamp = this.key_result.edited || this.key_result.timestamp;
+      const timestamp = this.key_result.edited || this.key_result.created;
       return timeFromNow(timestamp.toDate());
     },
   },
@@ -225,7 +225,7 @@ export default {
     },
 
     key_result(obj) {
-      this.value = obj.currentValue || obj.start_value || 0;
+      this.value = obj.currentValue || obj.startValue || 0;
     },
   },
 
@@ -266,7 +266,7 @@ export default {
       this.unsubscribe.doc = results.unsubscribe;
       this.doc = results.doc;
 
-      this.unsubscribe.collection = this.doc.collection('progression').onSnapshot(snapshot => {
+      this.unsubscribe.collection = this.doc.collection('progress').onSnapshot(snapshot => {
         this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
       });
     },

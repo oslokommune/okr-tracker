@@ -39,7 +39,7 @@ export const actions = {
     let doc;
 
     const getKeyRes = db
-      .collectionGroup('key_results')
+      .collectionGroup('keyResults')
       .get()
       .then(snapshot => snapshot.docs.filter(d => d.id === id)[0].ref)
       .catch(errorHandler);

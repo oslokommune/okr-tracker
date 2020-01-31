@@ -37,14 +37,14 @@ export default class Linechart {
     const dates = Object.values(getDateSpanFromQuarter(period));
 
     this.x.domain(dates);
-    this.y.domain(extent([obj.start_value, obj.target_value]));
+    this.y.domain(extent([obj.startValue, obj.targetValue]));
 
     this.yAxis.transition().call(axisLeft(this.y));
     this.xAxis.transition().call(axisBottom(this.x).ticks(4));
 
     const startValue = {
       timestamp: dates[0],
-      value: +obj.start_value,
+      value: +obj.startValue,
     };
 
     const datapoints = foo.map(d => {

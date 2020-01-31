@@ -270,18 +270,18 @@ export async function registerNewProgress(keyres, value, userRef, date) {
     return errorHandler('Missing user reference');
   }
 
-  date = date || new Date();
+  const timestamp = date || new Date();
 
   const progressToBeRegistered = {
     value,
-    date,
-    created_by: userRef,
+    timestamp,
+    createdBy: userRef,
     created: new Date(),
     archived: false,
   };
 
   return keyres.ref
-    .collection('progression')
+    .collection('progress')
     .add(progressToBeRegistered)
     .then(Toast.addedProgression)
     .then(updateCurrentValue.bind(null, keyres, userRef))
@@ -295,13 +295,16 @@ export async function registerNewProgress(keyres, value, userRef, date) {
  * @returns {Promise}
  */
 export async function updateCurrentValue(keyres, userRef) {
-  const oldValue = keyres.currentValue || keyres.start_value || 0;
+  const oldValue = keyres.currentValue || keyres.startValue || 0;
   const newValue = await keyres.ref
-    .collection('progression')
-    .orderBy('date', 'desc')
+    .collection('progress')
+    .orderBy('timestamp', 'desc')
     .limit(1)
     .get()
-    .then(snapshot => snapshot.docs[0].data().value)
+    .then(snapshot => {
+      console.log(snapshot);
+      return snapshot.docs[0].data().value;
+    })
     .catch(errorHandler);
 
   if (oldValue === newValue) return;
@@ -309,7 +312,7 @@ export async function updateCurrentValue(keyres, userRef) {
   const parentDocumentRef = keyres.ref.parent.parent.parent.parent;
 
   return keyres.ref
-    .update({ currentValue: newValue, edited: new Date(), edited_by: userRef })
+    .update({ currentValue: newValue, edited: new Date(), editedBy: userRef })
     .then(() => {
       return Audit.keyResUpdateProgress(keyres.ref, parentDocumentRef, oldValue, newValue);
     })

@@ -188,7 +188,7 @@ function legendLabels({ i, genLength, generatedLabels, labelDelimiter }) {
 
 function getNameFromObject(d) {
   const obj = d.data;
-  const name = obj.organisation || obj.department || obj.product || obj.objective_title || obj.key_result;
+  const name = obj.organisation || obj.department || obj.product || obj.name || obj.description;
 
   return name;
 }

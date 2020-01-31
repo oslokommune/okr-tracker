@@ -89,13 +89,13 @@ export default {
 
     newObjective() {
       return {
-        objective_title: this.title,
-        objective_body: this.body,
+        name: this.title,
+        description: this.body,
         icon: this.icon || 'trophy',
         quarter: this.quarter.name,
         archived: false,
         created: new Date(),
-        created_by: this.user.ref,
+        createdBy: this.user.ref,
       };
     },
   },

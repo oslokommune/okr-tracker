@@ -2,11 +2,11 @@
   <div class="edit-objective" :class="{ loading }" v-if="objective">
     <h3 class="title-3">Endre mål</h3>
     <hr />
-    <label class="form-field" :class="{ 'form-field--error': $v.objective.objective_title.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.objective.name.$error }">
       <span class="form-label">Tittel</span>
-      <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
+      <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.name.$model" />
     </label>
-    <div class="form-field--error" v-if="$v.objective.objective_title.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.objective.name.$error">Kan ikke være tom</div>
     <div class="title title-3">
       <i :class="`fas fa-${objective.icon}`"></i>
     </div>
@@ -18,9 +18,9 @@
       </template>
     </v-select>
 
-    <label class="form-field" :class="{ 'form-field--error': $v.objective.objective_body.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.objective.description.$error }">
       <span class="form-label">Beskrivelse</span>
-      <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
+      <textarea @input="objective.edited = true" v-model.trim="$v.objective.description.$model" rows="4"></textarea>
     </label>
 
     <hr />
@@ -51,10 +51,10 @@ export default {
 
   validations: {
     objective: {
-      objective_title: {
+      name: {
         required,
       },
-      objective_body: {
+      description: {
         required,
       },
     },
@@ -101,7 +101,7 @@ export default {
         this.setSubmitInfo(true, false, '');
 
         this.objectiveRef.ref
-          .update({ edited: new Date(), edited_by: this.user.ref, ...objective })
+          .update({ edited: new Date(), editedBy: this.user.ref, ...objective })
           .then(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
@@ -118,11 +118,11 @@ export default {
     deleteObj(objective) {
       this.loading = true;
       this.objective.ref
-        .update({ archived: true, edited: new Date(), edited_by: this.user.ref })
+        .update({ archived: true, edited: new Date(), editedBy: this.user.ref })
         .then(() => {
           const { ref } = this.objectiveRef;
 
-          Toast.deletedRegret({ name: objective.objective_title, ref });
+          Toast.deletedRegret({ name: objective.name, ref });
           this.objective = null;
           return true;
         })

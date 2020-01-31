@@ -4,20 +4,20 @@
       <div class="icon" :class="`fas fa-fw fa-${objective.icon}`"></div>
       <div class="item__text">
         <h3 class="title-3">
-          {{ objective.objective_title }}
+          {{ objective.name }}
           <span v-if="objective.progression">({{ Math.round(objective.progression * 100) }}%)</span>
         </h3>
-        <p>{{ objective.objective_body }}</p>
+        <p>{{ objective.description }}</p>
         <p></p>
 
         <div class="section content content--padding">
           <h4 class="title-4">
             Nøkkelresultater
           </h4>
-          <div v-if="!key_results.length">
+          <div v-if="!keyResults.length">
             Oops! Her er det ingen nøkkelresultater ennå.
           </div>
-          <TheKeyResult v-for="keyres in key_results" :key="keyres.id" :keyres="keyres"></TheKeyResult>
+          <TheKeyResult v-for="keyres in keyResults" :key="keyres.id" :keyres="keyres"></TheKeyResult>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@ export default {
   name: 'TheObjective',
 
   data: () => ({
-    key_results: [],
+    keyResults: [],
   }),
   props: {
     objective: {
@@ -47,10 +47,10 @@ export default {
 
   mounted() {
     this.objective.ref
-      .collection('key_results')
+      .collection('keyResults')
       .where('archived', '==', false)
       .onSnapshot(async snapshot => {
-        this.key_results = snapshot.docs.map(serializeDocument);
+        this.keyResults = snapshot.docs.map(serializeDocument);
       });
   },
 };

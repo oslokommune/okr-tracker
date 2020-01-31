@@ -30,11 +30,11 @@ export default class Progressbar {
     resize.call(this);
 
     this.unit.text(obj.unit);
-    this.startVal.text(obj.start_value);
-    this.targetVal.text(obj.target_value);
+    this.startVal.text(obj.startValue);
+    this.targetVal.text(obj.targetValue);
 
-    this.x.domain([obj.start_value, obj.target_value]);
-    const val = +obj.currentValue || obj.start_value || 0;
+    this.x.domain([obj.startValue, obj.targetValue]);
+    const val = +obj.currentValue || obj.startValue || 0;
 
     this.currentVal
       .select('text')
