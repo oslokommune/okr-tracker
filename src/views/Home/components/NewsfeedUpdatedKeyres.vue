@@ -46,6 +46,10 @@ export default {
   },
 
   async created() {
+    if (!this.eventData.user) return;
+    if (!this.eventData.keyres) return;
+    if (!this.eventData.product) return;
+
     this.user = await db
       .doc(`users/${this.eventData.user}`)
       .get()

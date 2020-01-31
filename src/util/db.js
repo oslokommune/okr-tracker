@@ -302,7 +302,6 @@ export async function updateCurrentValue(keyres, userRef) {
     .limit(1)
     .get()
     .then(snapshot => {
-      console.log(snapshot);
       return snapshot.docs[0].data().value;
     })
     .catch(errorHandler);

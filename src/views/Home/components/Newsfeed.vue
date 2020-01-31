@@ -7,26 +7,19 @@
       </button>
     </h2>
 
-    <transition-group name="feed" tag="div" class="newsfeed__feed" v-if="feed.length">
+    <transition-group name="feed" tag="div" class="newsfeed__feed" v-show="feed.length">
       <template v-for="event in feed">
-        <UpdatedKeyres
-          v-if="event.event === 'keyRes-update-progress'"
-          :key="event.id + 'a'"
-          :event-data="event"
-        ></UpdatedKeyres>
+        <div v-show="event.event === 'keyRes-update-progress'" :key="event.id + 'updatedkeyres'">
+          <UpdatedKeyres :event-data="event"></UpdatedKeyres>
+        </div>
 
-        <!--
-        <UploadProfilePhoto
-          v-if="event.event === 'upload-profile-photo'"
-          :key="event.id"
-          :event-data="event"
-        ></UploadProfilePhoto>
+        <div v-if="event.event === 'upload-profile-photo'" :key="event.id + 'uploadprofilephoto'">
+          <UploadProfilePhoto :event-data="event"></UploadProfilePhoto>
+        </div>
 
-        <CreateNewKeyResult
-          v-if="event.event === 'create-key-result'"
-          :key="event.id"
-          :event-data="event"
-        ></CreateNewKeyResult> -->
+        <div v-if="event.event === 'create-key-result'" :key="event.id + 'newkeyres'">
+          <CreateNewKeyResult :event-data="event"></CreateNewKeyResult>
+        </div>
       </template>
     </transition-group>
   </div>
@@ -35,8 +28,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import UpdatedKeyres from './NewsfeedUpdatedKeyres.vue';
-// import UploadProfilePhoto from './NewsfeedUpdatedProfilePhoto.vue';
-// import CreateNewKeyResult from './NewsfeedCreateKeyResult.vue';
+import UploadProfilePhoto from './NewsfeedUpdatedProfilePhoto.vue';
+import CreateNewKeyResult from './NewsfeedCreateKeyResult.vue';
 import { serializeDocument } from '../../../util/db';
 
 export default {
@@ -46,8 +39,8 @@ export default {
 
   components: {
     UpdatedKeyres,
-    // UploadProfilePhoto,
-    // CreateNewKeyResult,
+    UploadProfilePhoto,
+    CreateNewKeyResult,
   },
 
   mounted() {
