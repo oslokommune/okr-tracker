@@ -16,14 +16,17 @@ export default async function writeMigrationData(org) {
     .then(response => org.children.map(child => writeDepartments(response, child)));
 }
 
-function writeDepartments(ref, obj) {
+async function writeDepartments(ref, obj) {
   const clone = { ...obj, ...defaultData };
   delete clone.children;
+  delete clone.objectives;
 
-  return ref
-    .collection('departments')
-    .add(clone)
-    .then(response => obj.children.map(child => writeProducts(response, child)));
+  const response = await ref.collection('departments').add(clone);
+
+  await obj.children.map(child => writeProducts(response, child));
+  await obj.objectives.map(child => writeObjectives(response, child));
+
+  return true;
 }
 
 function writeProducts(ref, obj) {

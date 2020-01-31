@@ -98,7 +98,8 @@ function cleanUpData(input) {
 function createDataTree(list) {
   const orgs = list.find(d => d.type === 'Orgs').data;
   const depts = list.find(d => d.type === 'Depts').data;
-  const prods = list.find(d => d.type === 'Products').data;
+  const prods = list.find(d => d.type === 'Products').data.filter(d => !d.product.includes('Produktområde'));
+  const deptProducts = list.find(d => d.type === 'Products').data.filter(d => d.product.includes('Produktområde'));
   const objs = list.find(d => d.type === 'Objectives').data;
   const keyres = list.find(d => d.type === 'KeyRes').data;
   const tracker = list.find(d => d.type === 'KeyResTracker').data;
@@ -117,6 +118,11 @@ function createDataTree(list) {
 
   depts.forEach(dept => {
     dept.children = prods.filter(d => d.department_id === dept.id);
+    dept.objectives = objs.filter(d => {
+      const parentDepartmentProduct = deptProducts.find(prod => prod.id === d.product_id);
+      if (!parentDepartmentProduct) return;
+      return dept.id === parentDepartmentProduct.department_id;
+    });
   });
 
   orgs.forEach(org => {
