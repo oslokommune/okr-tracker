@@ -92,8 +92,6 @@ async function getKeyResultsProgressions(path) {
     .then(collection => collection.docs.map(doc => doc.data()))
     .then(list => list.map(getProgressionPercentage));
 
-  console.log(`progression for ${path} is`, progression);
-
   return progression.length ? progression : [0];
 }
 
