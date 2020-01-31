@@ -22,7 +22,7 @@ const departmentProgressionsPath = departmentKeyResultsPath + '/progress/{progre
 
 exports.updatedKeyResultProgression = functions.firestore
   .document(progressionsPath)
-  .onUpdate(async (change, context) => {
+  .onWrite(async (change, context) => {
     const { orgId, departmentId, productId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
 
@@ -36,12 +36,42 @@ exports.updatedKeyResultProgression = functions.firestore
 
 exports.updatedDepartmentKeyResultProgression = functions.firestore
   .document(departmentProgressionsPath)
-  .onUpdate(async (change, context) => {
+  .onWrite(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
+    const edited = new Date();
+    const editedBy = 'cloud-function';
+
+    return db.doc(objectivePath).update({ progression, edited, editedBy });
+  });
+
+// Triggers when a department key result is created, deleted, edited, archived
+// Re-calculates the progression for the objective
+exports.updatedKeyResult = functions.firestore.document(keyResultsPath).onWrite(async (change, context) => {
+  const { orgId, productId, departmentId, objectiveId } = context.params;
+  const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
+
+  const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
+  const progression = d3.mean(keyResultsProgressions);
+  const edited = new Date();
+  const editedBy = 'cloud-function';
+
+  return db.doc(objectivePath).update({ progression, edited, editedBy });
+});
+
+// Triggers when a department key result is created, deleted, edited, archived
+// Re-calculates the progression for the objective
+exports.updatedDepartmentKeyResult = functions.firestore
+  .document(departmentKeyResultsPath)
+  .onWrite(async (change, context) => {
+    const { orgId, departmentId, objectiveId } = context.params;
+    const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
+
+    const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
+    const progression = d3.mean(keyResultsProgressions) || 0;
     const edited = new Date();
     const editedBy = 'cloud-function';
 
@@ -54,13 +84,17 @@ exports.updatedDepartmentKeyResultProgression = functions.firestore
  * @returns {Promise} - Resolves to a list of decimal numbers
  */
 async function getKeyResultsProgressions(path) {
-  return db
+  const progression = await db
     .doc(path)
     .collection('keyResults')
     .where('archived', '==', false)
     .get()
     .then(collection => collection.docs.map(doc => doc.data()))
     .then(list => list.map(getProgressionPercentage));
+
+  console.log(`progression for ${path} is`, progression);
+
+  return progression.length ? progression : [0];
 }
 
 /**
@@ -70,16 +104,18 @@ async function getKeyResultsProgressions(path) {
  */
 function getProgressionPercentage(keyres) {
   /* eslint-disable-next-line */
-  const { targetValue, startValue, currentValue } = keyres;
+  const { targetValue, startValue } = keyres;
+  const currentValue = keyres.currentValue || 0;
+
   const scale = d3
     .scaleLinear()
     .domain([startValue, targetValue]) /* eslint-disable-line */
     .clamp(true);
-  return scale(currentValue);
+  return scale(currentValue) || 0;
 }
 
 // Triggers when a product's objective is changed (i.e. progression)
-exports.updatedObjectiveProgression = functions.firestore.document(objectivesPath).onUpdate(async (change, context) => {
+exports.updatedObjectiveProgression = functions.firestore.document(objectivesPath).onWrite(async (change, context) => {
   const { orgId, departmentId, productId } = context.params;
   const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
   const progressions = await getObjectiveProgressions(productPath);
@@ -93,7 +129,7 @@ exports.updatedObjectiveProgression = functions.firestore.document(objectivesPat
 // Triggers when a department's objective is changed (i.e. progression)
 exports.updatedDepartmentObjectiveProgression = functions.firestore
   .document(departmentObjectivesPath)
-  .onUpdate(async (change, context) => {
+  .onWrite(async (change, context) => {
     const { orgId, departmentId } = context.params;
     const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
     const progressions = await getObjectiveProgressions(departmentPath);
@@ -123,12 +159,12 @@ async function getObjectiveProgressions(path) {
   const progressionsList = d3
     .nest()
     .key(d => d.quarter)
-    .rollup(list => d3.mean(list.filter(obj => obj.progression).map(obj => obj.progression)))
+    .rollup(list => d3.mean(list.map(obj => obj.progression || 0)))
     .entries(objectiveProgressions)
     .map(d => {
       const { key, value } = d;
       const obj = {};
-      obj[key] = value;
+      obj[key] = value || 0;
       return obj;
     });
 
