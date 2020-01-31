@@ -62,8 +62,8 @@ export default {
     objective: null,
     startValue: 0,
     targetValue: 100,
-    target_type: 'greater_than',
-    key_result: '',
+    targetType: 'greater_than',
+    description: '',
     unit: '',
     submit: false,
     showInfo: false,
@@ -86,7 +86,7 @@ export default {
     objective: {
       required,
     },
-    key_result: {
+    description: {
       required,
     },
     startValue: {
@@ -105,10 +105,10 @@ export default {
     newKeyRes() {
       return {
         archived: false,
-        key_result: this.description,
+        description: this.description,
         startValue: +this.startValue,
         targetValue: +this.targetValue,
-        target_type: this.target_type,
+        targetType: this.targetType,
         created: new Date(),
         createdBy: this.user.ref,
         edited: null,

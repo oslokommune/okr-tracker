@@ -35,8 +35,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import UpdatedKeyres from './NewsfeedUpdatedKeyres.vue';
-import UploadProfilePhoto from './NewsfeedUpdatedProfilePhoto.vue';
-import CreateNewKeyResult from './NewsfeedCreateKeyResult.vue';
+// import UploadProfilePhoto from './NewsfeedUpdatedProfilePhoto.vue';
+// import CreateNewKeyResult from './NewsfeedCreateKeyResult.vue';
 import { serializeDocument } from '../../../util/db';
 
 export default {
@@ -46,8 +46,8 @@ export default {
 
   components: {
     UpdatedKeyres,
-    UploadProfilePhoto,
-    CreateNewKeyResult,
+    // UploadProfilePhoto,
+    // CreateNewKeyResult,
   },
 
   mounted() {

@@ -174,6 +174,10 @@ export default {
     },
 
     importData() {
+      if (!this.files || this.files.length === 0) {
+        Toast.showError('You need to upload some files first');
+        return;
+      }
       fileImporter(this.files);
     },
 

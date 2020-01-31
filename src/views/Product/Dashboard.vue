@@ -21,27 +21,27 @@
     <div class="section--table" id="dashboard-keyres">
       <table class="table" v-if="product.children">
         <template v-for="objective in product.children">
-          <tr v-for="(key_result, i) in objective.children" :key="key_result.id">
+          <tr v-for="(keyResultItem, i) in objective.children" :key="keyResultItem.id">
             <td v-if="i === 0" :rowspan="objective.children.length" class="cell cell--objective">
               <h3 class="objective-title">{{ objective.name }}</h3>
               <p class="objective-body">{{ objective.description }}</p>
             </td>
             <td
-              :class="{ active: active.id === key_result.id }"
+              :class="{ active: active.id === keyResultItem.id }"
               class="cell cell--key-result"
-              @click="clickKeyRes(key_result)"
-              :id="`keyresult-${key_result.id}`"
+              @click="clickKeyRes(keyResultItem)"
+              :id="`keyresult-${keyResultItem.id}`"
             >
-              {{ key_result.description }}
+              {{ keyResultItem.description }}
             </td>
             <td
-              :class="{ active: active.id === key_result.id }"
+              :class="{ active: active.id === keyResultItem.id }"
               class="cell cell--progress-bar"
-              @click="clickKeyRes(key_result)"
+              @click="clickKeyRes(keyResultItem)"
             >
-              <progress-bar :keyres="key_result" darkmode></progress-bar>
+              <progress-bar :keyres="keyResultItem" darkmode></progress-bar>
             </td>
-            <td :class="{ active: active.id === key_result.id }" class="cell--indicator-container">
+            <td :class="{ active: active.id === keyResultItem.id }" class="cell--indicator-container">
               <div v-if="autoplay" class="active-indicator"></div>
             </td>
           </tr>
@@ -62,7 +62,7 @@
           </tr>
           <tr>
             <td>Nåværende verdi</td>
-            <td>{{ active.current_value }} {{ active.unit }}</td>
+            <td>{{ active.currentValue }} {{ active.unit }}</td>
           </tr>
           <tr>
             <td>Målverdi</td>

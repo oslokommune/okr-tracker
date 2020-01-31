@@ -18,7 +18,7 @@ export default class Progressbar {
     resize.call(this);
 
     this.x.domain([obj.startValue, obj.targetValue]);
-    const val = +obj.current_value || obj.startValue || 0;
+    const val = +obj.currentValue || obj.startValue || 0;
 
     this.valueText.text(formatPercent(obj.progression)).attr('font-weight', this.isDone ? 600 : 300);
 

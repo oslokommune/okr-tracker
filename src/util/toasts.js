@@ -7,6 +7,11 @@ export const show = (msg, options = standardOption) => {
   return true;
 };
 
+export const showError = (msg, options = standardOption) => {
+  Vue.toasted.error(msg, options);
+  return true;
+};
+
 const close = (e, toastObject) => {
   toastObject.goAway(0);
 };

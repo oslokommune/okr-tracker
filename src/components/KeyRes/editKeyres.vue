@@ -65,7 +65,7 @@ export default {
       unit: {
         required,
       },
-      key_result: {
+      description: {
         required,
       },
     },
@@ -82,7 +82,7 @@ export default {
     ...mapState(['user']),
     updatedKeyRes() {
       return {
-        key_result: this.keyres.description,
+        description: this.keyres.description,
         edited: new Date(),
         editedBy: this.user.ref,
         startValue: +this.keyres.startValue,

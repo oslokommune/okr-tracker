@@ -1,9 +1,11 @@
 import { csvParse } from 'd3';
 import cleanUpDataTree from './cleanUpMigrationData';
 import writeMigrationData from './writeMigrationData';
+import * as Toast from '../util/toasts';
 
 export default async function(fileList) {
   if (!validateFileList(fileList)) {
+    Toast.showError('Cannot process these files');
     throw new Error('Cannot process these files');
   }
 
@@ -14,7 +16,7 @@ export default async function(fileList) {
     .then(cleanUpDataTree);
 
   await data.map(writeMigrationData);
-  console.log('SUCCESS!!!');
+  Toast.show('SUCCESS!!!');
 }
 
 // Use this to validate (Boolean) if the fileList
@@ -30,17 +32,21 @@ function validateFileList(fileList) {
   ];
 
   if (fileList.length < allowedFileNames.length) {
+    Toast.showError('Missing some files');
     throw new Error('Missing some files');
   }
   if (fileList.length > allowedFileNames.length) {
+    Toast.showError('Too many files');
     throw new Error('Too many files');
   }
 
   fileList.forEach(file => {
     if (file.type !== 'text/csv') {
+      Toast.showError('Only CSV files are allowed');
       throw new Error('Only CSV files are allowed');
     }
     if (!allowedFileNames.includes(file.name)) {
+      Toast.showError('Unknown file. make sure that all the files are allowed');
       throw new Error('Unknown file. Make sure that all the files are allowed.');
     }
   });

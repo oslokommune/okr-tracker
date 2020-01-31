@@ -33,7 +33,7 @@ export function getProgression(objectives) {
           const scale = scaleLinear()
             .domain([+keyres.startValue, +keyres.targetValue])
             .clamp(true);
-          return scale(+keyres.current_value);
+          return scale(+keyres.currentValue);
         })
     ) || 0
   );
