@@ -24,6 +24,7 @@ function cleanUpDept(dept) {
   delete dept.organisation_id;
   delete dept.department;
   dept.children.forEach(cleanUpProd);
+  dept.objectives.forEach(cleanUpObjective);
 }
 
 function cleanUpProd(prod) {
@@ -80,7 +81,7 @@ function cleanUpKeyResults(keyres) {
 function cleanUpProgress(progress) {
   delete progress.id;
   delete progress.archived;
-  delete progress.description_id;
+  delete progress.key_result_id;
   progress.value = +progress.value;
   progress.timestamp = new Date(progress.timestamp);
 }
