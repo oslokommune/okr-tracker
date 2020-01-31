@@ -28,12 +28,6 @@
           <p>Har administratortilgang</p>
         </section>
         <section class="section">
-          <h2 class="title title-2">Mine produkter</h2>
-          <ul>
-            <li v-for="product in products" :key="product.id">
-              <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
-            </li>
-          </ul>
         </section>
       </main>
     </div>

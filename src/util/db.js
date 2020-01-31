@@ -240,6 +240,31 @@ export async function myProductsListener() {
     .catch(errorHandler);
 }
 
+export async function findUser(slug) {
+  const userRef = await db.collection('users');
+
+  return userRef
+    .where('slug', '==', slug)
+    .get()
+    .then(d => {
+      return d.docs.map(serializeDocument)[0];
+    })
+    .catch(errorHandler);
+}
+
+export async function userProductsListener(user) {
+  const { email } = user;
+
+  const userRef = await db.collection('users').doc(email);
+
+  return db
+    .collectionGroup('products')
+    .where('team', 'array-contains', userRef)
+    .get()
+    .then(d => d.docs.map(serializeDocument))
+    .catch(errorHandler);
+}
+
 export function isDashboardUser() {
   return auth.currentUser.email === dashboardUser;
 }

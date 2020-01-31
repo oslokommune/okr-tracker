@@ -52,8 +52,9 @@ export default {
   computed: {
     title() {
       if (this.data.description) return 'Nøkkelresultat';
+      if (!this.data) return 'Laster ...';
 
-      return this.data.name || this.data.displayName || 'Laster ...';
+      return this.data.name || this.data.displayName || this.data.id;
     },
 
     style() {
@@ -68,7 +69,7 @@ export default {
     },
 
     showImage() {
-      const typesWithImage = ['product', 'edit-product', 'profile', 'department'];
+      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'user'];
       return typesWithImage.includes(this.style);
     },
   },
@@ -104,7 +105,7 @@ export default {
 
     getNameAndRouteFromDocument(document) {
       const routerLinkTo = this.createRouterLinkFromDocument(document);
-      let name = document.name || document.displayName || document.name || document.description;
+      let name = document.name || document.displayName || document.name || document.description || document.id;
 
       if (name.length > 24) {
         name = `${name

@@ -6,17 +6,17 @@
         <button class="btn btn--borderless" @click="close"><i class="fa fa-times"></i></button>
       </div>
 
-      <main v-if="key_result" class="modal__main">
+      <main v-if="keyResult" class="modal__main">
         <div class="title">
           <p class="pill">Nøkkelresultat</p>
-          <h3 class="title-3">{{ key_result.description }}</h3>
+          <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
-        <progress-bar class="progress" :keyres="key_result"></progress-bar>
+        <progress-bar class="progress" :keyres="keyResult"></progress-bar>
         <input
           class="range"
           type="range"
-          :min="key_result.from_value"
-          :max="key_result.targetValue"
+          :min="keyResult.fromValue"
+          :max="keyResult.targetValue"
           v-model="newValue"
         />
         <label class="form-field">
@@ -28,7 +28,7 @@
         </div>
       </main>
 
-      <main v-if="!key_result" class="modal__empty">
+      <main v-if="!keyResult" class="modal__empty">
         <h3 class="title-3">Ingen nøkkelresultater</h3>
       </main>
 
@@ -69,13 +69,13 @@ export default {
   computed: {
     ...mapState(['user', 'quarters']),
 
-    key_result() {
+    keyResult() {
       return this.keyResults[this.index];
     },
   },
 
   watch: {
-    key_result(obj) {
+    keyResult(obj) {
       this.newValue = obj.currentValue || obj.startValue || 0;
     },
   },
@@ -110,7 +110,7 @@ export default {
     },
 
     async save() {
-      await registerNewProgress(this.description, +this.newValue, this.user.ref);
+      await registerNewProgress(this.keyResult, +this.newValue, this.user.ref);
 
       this.skip();
       if (this.index === 0) this.close();

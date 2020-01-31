@@ -9,6 +9,7 @@ import EditProductDetails from './views/Product/EditProductDetails.vue';
 import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
 import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
 import Department from './views/Department/DepartmentHome.vue';
+import User from './views/User.vue';
 
 import { auth } from './config/firebaseConfig';
 import EditDepartment from './views/Department/EditDepartment.vue';
@@ -89,6 +90,13 @@ const routes = [
       { name: 'admin-users', path: '/', component: AdminUsers },
       { name: 'admin-objects', path: 'data', component: AdminObjects },
     ],
+  },
+
+  {
+    path: '/user/:slug',
+    name: 'User',
+    meta: { headerStyle: 'user' },
+    component: User,
   },
 ];
 
