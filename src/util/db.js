@@ -240,18 +240,24 @@ export async function myProductsListener() {
     .catch(errorHandler);
 }
 
+/*
+ * Finds a specific user
+ * @returns user
+ */
 export async function findUser(slug) {
   const userRef = await db.collection('users');
 
   return userRef
     .where('slug', '==', slug)
     .get()
-    .then(d => {
-      return d.docs.map(serializeDocument)[0];
-    })
+    .then(d => d.docs.map(serializeDocument)[0])
     .catch(errorHandler);
 }
 
+/*
+ * Finds all the products a user is a part of
+ * @returns list of products
+ */
 export async function userProductsListener(user) {
   const { email } = user;
 
@@ -260,6 +266,18 @@ export async function userProductsListener(user) {
   return db
     .collectionGroup('products')
     .where('team', 'array-contains', userRef)
+    .get()
+    .then(d => d.docs.map(serializeDocument))
+    .catch(errorHandler);
+}
+
+/*
+ * Get all departments
+ * @returns list of departments
+ */
+export async function getAllDepartments() {
+  return db
+    .collectionGroup('departments')
     .get()
     .then(d => d.docs.map(serializeDocument))
     .catch(errorHandler);

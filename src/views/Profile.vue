@@ -27,8 +27,7 @@
           <h2 class="title title-2">Admin</h2>
           <p>Har administratortilgang</p>
         </section>
-        <section class="section">
-        </section>
+        <section class="section"></section>
       </main>
     </div>
   </div>

@@ -9,18 +9,14 @@
         </section>
         <section class="section">
           <h2 class="title title-2">Mine produkter</h2>
-          <ul>
+          <ul class="products">
             <li v-for="product in products" :key="product.id">
               <router-link :to="{ name: 'product', params: { slug: product.slug } }">
-                <div style="display: flex; flex-direction: row;">
-                  <img
-                    class="team__image"
-                    :src="product.photoURL || '/placeholder-user.svg'"
-                    :alt="product.name"
-                    v-tooltip.auto="product.name"
-                  />
-                  <div>
-                    <h2 class="title title-2" style="alight-items: center; padding-left: 1rem;">{{ product.name }}</h2>
+                <div clasS="product">
+                  <img class="product__image" :src="product.photoURL || '/placeholder-user.svg'" :alt="product.name" />
+                  <div class="product__title">
+                    <h2>{{ getDepartment(product) }}</h2>
+                    <h2>{{ product.name }}</h2>
                   </div>
                 </div>
               </router-link>
@@ -33,7 +29,7 @@
 </template>
 
 <script>
-import { isDashboardUser, findUser, userProductsListener } from '../util/db';
+import { isDashboardUser, findUser, userProductsListener, getAllDepartments } from '../util/db';
 import PageHeader from '../components/PageHeader.vue';
 
 export default {
@@ -42,10 +38,23 @@ export default {
   data: () => ({
     products: [],
     user: null,
+    departments: [],
   }),
 
   components: {
     PageHeader,
+  },
+
+  methods: {
+    getDepartment(product) {
+      let foundDep = '';
+      this.departments.forEach(dep => {
+        if (dep.id === product.ref.parent.parent.id) {
+          foundDep = dep.name;
+        }
+      });
+      return foundDep;
+    },
   },
 
   beforeRouteEnter(to, from, next) {
@@ -57,87 +66,53 @@ export default {
   },
 
   async mounted() {
-    await findUser(this.$route.params.slug).then(user => {
-      this.user = user;
+    await findUser(this.$route.params.slug).then(list => {
+      this.user = list;
     });
 
     userProductsListener(this.user).then(list => {
       this.products = list;
     });
-  },
 
-  methods: {},
+    await getAllDepartments().then(list => {
+      this.departments = list;
+    });
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.uploading {
-  opacity: 0.2;
-}
-
-.page-header__name {
-  margin: -1rem -1rem 0;
-  padding: 1rem 1rem 0;
-
-  .title-1 {
-    &::after {
-      bottom: 0.4rem;
-      display: inline-flex;
-      align-content: center;
-      align-items: center;
-      margin-left: 1.5rem;
-      padding: 0.4rem 0.75rem 0.25rem;
-      font-weight: normal;
-      font-size: 1rem;
-      border: 1px solid white;
-      transform: translateY(-0.25rem);
-      opacity: 0.45;
-      content: 'Endre';
-    }
-  }
-
-  &:hover {
-    background: rgba(white, 0.2);
-
-    .title-1::after {
-      opacity: 0;
-    }
-  }
-}
-
-.team {
-  &__list {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -0.25rem;
-
-    &--empty {
-      margin-bottom: 1rem;
-    }
-  }
-
-  &__member {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 0.25rem;
-    text-align: center;
-
-    &:hover .team__name {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+.product {
+  display: flex;
+  flex-direction: row;
 
   &__image {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border: 0.4rem solid white;
     border-radius: 0.8rem;
 
     -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.99);
     -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.99);
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.99);
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1rem;
+  }
+}
+
+.products {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin: 2rem 0;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
 }
 </style>
