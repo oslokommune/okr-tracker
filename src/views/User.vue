@@ -23,14 +23,34 @@
             </li>
           </ul>
         </section>
+        <section class="section">
+          <h2 class="title title-2">Audit</h2>
+          <template v-for="event in feed">
+            <div v-show="event.event === 'keyRes-update-progress'" :key="event.id + 'updatedkeyres'">
+              <UpdatedKeyres :event-data="event"></UpdatedKeyres>
+            </div>
+
+            <div v-if="event.event === 'upload-profile-photo'" :key="event.id + 'uploadprofilephoto'">
+              <UploadProfilePhoto :event-data="event"></UploadProfilePhoto>
+            </div>
+
+            <div v-if="event.event === 'create-key-result'" :key="event.id + 'newkeyres'">
+              <CreateNewKeyResult :event-data="event"></CreateNewKeyResult>
+            </div>
+          </template>
+        </section>
       </main>
     </div>
   </div>
 </template>
 
 <script>
-import { isDashboardUser, findUser, userProductsListener, getAllDepartments } from '../util/db';
+import { isDashboardUser, findUser, userProductsListener, getAllDepartments, serializeDocument } from '../util/db';
 import PageHeader from '../components/PageHeader.vue';
+import UpdatedKeyres from './Home/components/NewsfeedUpdatedKeyres.vue';
+import UploadProfilePhoto from './Home/components/NewsfeedUpdatedProfilePhoto.vue';
+import CreateNewKeyResult from './Home/components/NewsfeedCreateKeyResult.vue';
+import { db } from '@/config/firebaseConfig';
 
 export default {
   name: 'User',
@@ -39,10 +59,14 @@ export default {
     products: [],
     user: null,
     departments: [],
+    feed: [],
   }),
 
   components: {
     PageHeader,
+    UpdatedKeyres,
+    UploadProfilePhoto,
+    CreateNewKeyResult,
   },
 
   methods: {
@@ -77,6 +101,26 @@ export default {
     await getAllDepartments().then(list => {
       this.departments = list;
     });
+
+    db.collection('audit')
+      .where('event', 'in', ['keyRes-update-progress', 'upload-profile-photo', 'create-key-result'])
+      .orderBy('timestamp', 'desc')
+      .limit(15)
+      .onSnapshot(async snapshot => {
+        const newDocuments = await snapshot.docChanges().filter(d => d.type === 'added');
+
+        const obj = newDocuments
+          .map(d => d.doc)
+          .map(d => {
+            return serializeDocument(d);
+          });
+
+        obj.forEach(d => {
+          if (d.user === this.user.email) this.feed.push(d);
+        });
+
+        this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+      });
   },
 };
 </script>
