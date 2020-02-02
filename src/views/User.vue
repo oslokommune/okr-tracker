@@ -9,7 +9,7 @@
         </section>
         <section class="section">
           <h2 class="title title-2">Mine produkter</h2>
-          <ul class="products">
+          <ul class="grid-system">
             <li v-for="product in products" :key="product.id">
               <router-link :to="{ name: 'product', params: { slug: product.slug } }">
                 <div clasS="product">
@@ -25,19 +25,21 @@
         </section>
         <section class="section">
           <h2 class="title title-2">Audit</h2>
-          <template v-for="event in feed">
-            <div v-show="event.event === 'keyRes-update-progress'" :key="event.id + 'updatedkeyres'">
-              <UpdatedKeyres :event-data="event"></UpdatedKeyres>
-            </div>
+          <div class="grid-system">
+            <template v-for="event in feed">
+              <div v-show="event.event === 'keyRes-update-progress'" :key="event.id + 'updatedkeyres'">
+                <UpdatedKeyres class="grid-system__card" :event-data="event"></UpdatedKeyres>
+              </div>
 
-            <div v-if="event.event === 'upload-profile-photo'" :key="event.id + 'uploadprofilephoto'">
-              <UploadProfilePhoto :event-data="event"></UploadProfilePhoto>
-            </div>
+              <div v-show="event.event === 'upload-profile-photo'" :key="event.id + 'uploadprofilephoto'">
+                <UploadProfilePhoto class="grid-system__card" :event-data="event"></UploadProfilePhoto>
+              </div>
 
-            <div v-if="event.event === 'create-key-result'" :key="event.id + 'newkeyres'">
-              <CreateNewKeyResult :event-data="event"></CreateNewKeyResult>
-            </div>
-          </template>
+              <div v-show="event.event === 'create-key-result'" :key="event.id + 'newkeyres'">
+                <CreateNewKeyResult class="grid-system__card" :event-data="event"></CreateNewKeyResult>
+              </div>
+            </template>
+          </div>
         </section>
       </main>
     </div>
@@ -149,7 +151,7 @@ export default {
   }
 }
 
-.products {
+.grid-system {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -157,6 +159,10 @@ export default {
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+
+  &__card {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   }
 }
 </style>
