@@ -57,7 +57,7 @@ export default {
     return write({ event: 'update-product', productRef });
   },
 
-  updateProductImage(productRef) {
+  async updateProductImage(productRef) {
     return write({ event: 'update-product-image', productRef });
   },
 
@@ -71,5 +71,13 @@ export default {
 
   async createKeyResult(keyresRef, productRef, objectiveRef) {
     return write({ event: 'create-key-result', keyresRef, productRef, objectiveRef });
+  },
+
+  async updateKeyResult(keyresRef, productRef, objectiveRef) {
+    return write({ event: 'update-key-result', keyresRef, productRef, objectiveRef });
+  },
+
+  async archiveKeyResult(keyresRef, productRef, objectiveRef) {
+    return write({ event: 'archive-key-result', keyresRef, productRef, objectiveRef });
   },
 };

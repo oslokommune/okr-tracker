@@ -1,6 +1,6 @@
 <template>
-  <div class="nf-card" v-if="ready">
-    <div class="nf-card__user">
+  <div class="nf-card">
+    <div class="nf-card__user" v-if="ready">
       <img
         class="nf-card__avatar"
         :src="this.user.photoURL || '/placeholder-user.svg'"
@@ -18,53 +18,53 @@
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
-        <span v-if="eventData.event === 'promoted-admin'">
+        <span v-else-if="eventData.event === 'promoted-admin'">
           fikk admintilgang
         </span>
 
-        <span v-if="eventData.event === 'deleted-user'"> fjernet bruker {{ eventData.affectedUser }} </span>
+        <span v-else-if="eventData.event === 'deleted-user'"> fjernet bruker {{ eventData.affectedUser }} </span>
 
-        <span v-if="eventData.event === 'create-objective'">
+        <span v-else-if="eventData.event === 'create-objective'">
           opprettet et nytt mål for
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
-        <span v-if="eventData.event === 'archive-objective'">
+        <span v-else-if="eventData.event === 'archive-objective'">
           arkiverte målet «{{ objective.name }}» for
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
-        <span v-if="eventData.event === 'update-objective'">
+        <span v-else-if="eventData.event === 'update-objective'">
           endret målet «{{ objective.name }}» for
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
-        <span v-if="eventData.event === 'create-product'">
+        <span v-else-if="eventData.event === 'create-product'">
           opprettet et nytt produkt under
           <router-link :to="{ name: 'department', params: { slug: department.slug } }">
             {{ department.name }}
           </router-link>
         </span>
 
-        <span v-if="eventData.event === 'archive-product'"> arkiverte «{{ product.name }}» </span>
+        <span v-else-if="eventData.event === 'archive-product'"> arkiverte «{{ product.name }}» </span>
 
-        <span v-if="eventData.event === 'update-product'">
+        <span v-else-if="eventData.event === 'update-product'">
           endret
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
-        <span v-if="eventData.event === 'update-product-image'">
+        <span v-else-if="eventData.event === 'update-product-image'">
           lastet opp et nytt bilde til
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
-        <span v-if="eventData.event === 'added-users'">
+        <span v-else-if="eventData.event === 'added-users'">
           har invitert
           <strong v-tooltip="JSON.parse(eventData.list).join('<br>')"
             >{{ JSON.parse(eventData.list).length }}
@@ -72,17 +72,35 @@
           </strong>
         </span>
 
-        <span v-if="eventData.event === 'demoted-admin'">
+        <span v-else-if="eventData.event === 'demoted-admin'">
           mistet admintilgang
         </span>
 
-        <span v-if="eventData.event === 'create-key-result'">
+        <span v-else-if="eventData.event === 'create-key-result'">
           opprettet
           <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }"
             >et nøkkelresultat</router-link
           >
           for
           <router-link :to="product.route">{{ product.name }}</router-link>
+        </span>
+
+        <span v-else-if="eventData.event === 'update-key-result'">
+          endret
+          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }"
+            >et nøkkelresultat</router-link
+          >
+          for
+          <router-link :to="product.route">
+            {{ product.name }}
+          </router-link>
+        </span>
+
+        <span v-else-if="eventData.event === 'archive-key-result'">
+          arkiverte et nøkkelresultat for
+          <router-link :to="product.route">
+            {{ product.name }}
+          </router-link>
         </span>
       </div>
     </div>

@@ -29,6 +29,7 @@ export default {
       'keyRes-update-progress',
       'upload-profile-photo',
       'create-key-result',
+      'update-key-result',
       'archive-key-result',
       'create-objective',
       'update-objective',

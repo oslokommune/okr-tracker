@@ -42,6 +42,7 @@
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import * as Toast from '../../util/toasts';
+import Audit from '../../util/audit/audit';
 
 export default {
   name: 'EditKeyres',
@@ -105,7 +106,13 @@ export default {
 
       await this.keyres.ref
         .update(this.updatedKeyRes)
-        .then(Toast.savedChanges)
+        .then(() => {
+          const keyresRef = this.keyres.ref;
+          const objectiveRef = keyresRef.parent.parent;
+          const documentRef = objectiveRef.parent.parent;
+          Audit.updateKeyResult(keyresRef, documentRef, objectiveRef);
+          Toast.savedChanges();
+        })
         .catch(this.$errorHandler);
 
       this.dirty = false;
@@ -114,7 +121,14 @@ export default {
     async deleteObject() {
       await this.keyres.ref
         .update({ archived: true })
-        .then(Toast.deletedRegret.bind(null, { ref: this.keyres.ref }))
+        .then(() => {
+          const keyresRef = this.keyres.ref;
+          const objectiveRef = keyresRef.parent.parent;
+          const documentRef = objectiveRef.parent.parent;
+
+          Toast.deletedRegret({ ref: keyresRef });
+          Audit.archiveKeyResult(keyresRef, documentRef, objectiveRef);
+        })
         .catch(this.$errorHandler);
 
       this.$emit('archived');
