@@ -270,7 +270,7 @@ export async function registerNewProgress(keyres, value, userRef, date) {
     return errorHandler('Missing user reference');
   }
 
-  const timestamp = date || new Date();
+  const timestamp = date ? new Date(date) : new Date();
 
   const progressToBeRegistered = {
     value,
