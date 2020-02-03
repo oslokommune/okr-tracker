@@ -24,6 +24,17 @@
 
         <span v-if="eventData.event === 'deleted-user'"> fjernet bruker {{ eventData.affectedUser }} </span>
 
+        <span v-if="eventData.event === 'create-product'">
+          opprettet et nytt produkt under
+          <router-link :to="{ name: 'department', params: { slug: department.slug } }">
+            {{ department.name }}
+          </router-link>
+        </span>
+
+        <span v-if="eventData.event === 'archive-product'"> arkiverte produktet «{{ product.name }}» </span>
+
+        <span v-if="eventData.event === 'update-product'"> endret produktet «{{ product.name }}» </span>
+
         <span v-if="eventData.event === 'added-users'">
           har invitert
           <strong v-tooltip="JSON.parse(eventData.list).join('<br>')"
@@ -74,6 +85,7 @@ export default {
   data: () => ({
     user: null,
     product: null,
+    department: null,
     keyResult: null,
     ready: false,
     hasBody: false,
@@ -87,7 +99,7 @@ export default {
   },
 
   async created() {
-    const { user, keyresRef, productRef } = this.eventData;
+    const { user, keyresRef, productRef, departmentRef } = this.eventData;
 
     if (user) {
       this.user = await db
@@ -109,6 +121,13 @@ export default {
 
     if (productRef) {
       this.product = await productRef
+        .get()
+        .then(d => d.data())
+        .catch(this.$errorHandler);
+    }
+
+    if (departmentRef) {
+      this.department = await departmentRef
         .get()
         .then(d => d.data())
         .catch(this.$errorHandler);

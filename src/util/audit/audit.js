@@ -33,6 +33,18 @@ export default {
     return write({ event: 'deleted-user', affectedUser });
   },
 
+  async createProduct(productRef, departmentRef) {
+    return write({ event: 'create-product', productRef, departmentRef });
+  },
+
+  async archiveProduct(productRef) {
+    return write({ event: 'archive-product', productRef });
+  },
+
+  async updateProduct(productRef) {
+    return write({ event: 'update-product', productRef });
+  },
+
   async keyResUpdateProgress(keyresRef, productRef, fromValue, toValue) {
     return write({ event: 'keyRes-update-progress', keyresRef, productRef, fromValue, toValue });
   },

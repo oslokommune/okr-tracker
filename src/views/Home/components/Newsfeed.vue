@@ -36,6 +36,9 @@ export default {
       'demoted-admin',
       'added-users',
       'deleted-user',
+      'create-product',
+      'archive-product',
+      'update-product',
     ],
   }),
 
@@ -62,13 +65,13 @@ export default {
     subscribe() {
       this.unsubscribe = db
         .collection('audit')
-        .where('event', 'in', this.eventTypes)
         .orderBy('timestamp', 'desc')
-        .limit(15)
+        .limit(30)
         .onSnapshot(async snapshot => {
           const newDocuments = await snapshot
             .docChanges()
             .filter(d => d.type === 'added')
+            .filter(d => !this.eventTypes.includes(d.event))
             .filter(d => !this.feed.map(el => el.id).includes(d.doc.id));
 
           const newObjects = newDocuments
