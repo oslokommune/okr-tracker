@@ -102,6 +102,13 @@
             {{ product.name }}
           </router-link>
         </span>
+
+        <span v-else-if="eventData.event === 'update-department'">
+          endret produktområdet
+          <router-link :to="{ name: 'department', params: { slug: department.slug } }">
+            {{ department.name }}
+          </router-link>
+        </span>
       </div>
     </div>
 

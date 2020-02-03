@@ -28,6 +28,7 @@ export default {
     eventTypes: [
       'keyRes-update-progress',
       'upload-profile-photo',
+      'update-department',
       'create-key-result',
       'update-key-result',
       'archive-key-result',

@@ -3,7 +3,8 @@ import { errorHandler } from '../utils';
 
 const write = async (obj = {}) => {
   const user = obj.user || auth.currentUser.email || null;
-  db.collection('audit')
+  return db
+    .collection('audit')
     .add({ ...obj, user, timestamp: new Date() })
     .catch(errorHandler);
 };
@@ -55,6 +56,10 @@ export default {
 
   async updateProduct(productRef) {
     return write({ event: 'update-product', productRef });
+  },
+
+  async updateDepartment(departmentRef) {
+    return write({ event: 'update-department', departmentRef });
   },
 
   async updateProductImage(productRef) {
