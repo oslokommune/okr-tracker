@@ -79,8 +79,8 @@ export default {
 
   methods: {
     async saveNewProgress() {
-      await registerNewProgress(this.keyres, +this.value, this.user.ref);
       this.editMode = false;
+      await registerNewProgress(this.keyres, +this.value, this.user.ref);
     },
   },
 
