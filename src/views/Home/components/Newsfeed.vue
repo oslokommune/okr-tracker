@@ -8,60 +8,81 @@
     </h2>
 
     <transition-group name="feed" tag="div" class="newsfeed__feed" v-show="feed.length">
-      <template v-for="event in feed">
-        <div v-show="event.event === 'keyRes-update-progress'" :key="event.id + 'updatedkeyres'">
-          <UpdatedKeyres :event-data="event"></UpdatedKeyres>
-        </div>
-
-        <div v-if="event.event === 'upload-profile-photo'" :key="event.id + 'uploadprofilephoto'">
-          <UploadProfilePhoto :event-data="event"></UploadProfilePhoto>
-        </div>
-
-        <div v-if="event.event === 'create-key-result'" :key="event.id + 'newkeyres'">
-          <CreateNewKeyResult :event-data="event"></CreateNewKeyResult>
-        </div>
-      </template>
+      <div v-for="event in feed" :key="event.id">
+        <NewsfeedCard :event-data="event"></NewsfeedCard>
+      </div>
     </transition-group>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import UpdatedKeyres from './NewsfeedUpdatedKeyres.vue';
-import UploadProfilePhoto from './NewsfeedUpdatedProfilePhoto.vue';
-import CreateNewKeyResult from './NewsfeedCreateKeyResult.vue';
+import NewsfeedCard from './NewsfeedCard.vue';
 import { serializeDocument } from '../../../util/db';
 
 export default {
   data: () => ({
     feed: [],
+    unsubscribe: null,
+    eventTypes: [
+      'keyRes-update-progress',
+      'upload-profile-photo',
+      'create-key-result',
+      'archive-key-result',
+      'create-objective',
+      'archive-objective',
+      'promoted-admin',
+      'demoted-admin',
+      'added-users',
+      'deleted-user',
+    ],
   }),
 
+  computed: {
+    ...mapState(['showNewsfeed']),
+  },
+
   components: {
-    UpdatedKeyres,
-    UploadProfilePhoto,
-    CreateNewKeyResult,
+    NewsfeedCard,
+  },
+
+  watch: {
+    showNewsfeed(show) {
+      if (!show && this.unsubscribe) this.unsubscribe();
+      if (show) this.subscribe();
+    },
   },
 
   mounted() {
-    db.collection('audit')
-      .where('event', 'in', ['keyRes-update-progress', 'upload-profile-photo', 'create-key-result'])
-      .orderBy('timestamp', 'desc')
-      .limit(15)
-      .onSnapshot(async snapshot => {
-        const newDocuments = await snapshot.docChanges().filter(d => d.type === 'added');
+    this.subscribe();
+  },
 
-        const obj = newDocuments
-          .map(d => d.doc)
-          .map(d => {
-            return serializeDocument(d);
+  methods: {
+    subscribe() {
+      this.unsubscribe = db
+        .collection('audit')
+        .where('event', 'in', this.eventTypes)
+        .orderBy('timestamp', 'desc')
+        .limit(15)
+        .onSnapshot(async snapshot => {
+          const newDocuments = await snapshot
+            .docChanges()
+            .filter(d => d.type === 'added')
+            .filter(d => !this.feed.map(el => el.id).includes(d.doc.id));
+
+          const newObjects = newDocuments
+            .map(d => d.doc)
+            .map(d => {
+              return serializeDocument(d);
+            });
+
+          newObjects.forEach(obj => {
+            this.feed.push(obj);
           });
-
-        obj.forEach(d => {
-          this.feed.push(d);
+          this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
         });
-        this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
-      });
+    },
   },
 };
 </script>

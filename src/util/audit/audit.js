@@ -16,8 +16,25 @@ export default {
     return write({ event: 'sign-out', user });
   },
 
-  async keyResUpdateProgress(keyres, product, fromValue, toValue) {
-    return write({ event: 'keyRes-update-progress', keyres, product, fromValue, toValue });
+  async toggleAdmin(user, value) {
+    if (value === true) {
+      return write({ event: 'promoted-admin', user });
+    }
+    if (value === false) {
+      return write({ event: 'demoted-admin', user });
+    }
+  },
+
+  async addUsers(list) {
+    return write({ event: 'added-users', list: JSON.stringify(list) });
+  },
+
+  async deleteUser(affectedUser) {
+    return write({ event: 'deleted-user', affectedUser });
+  },
+
+  async keyResUpdateProgress(keyresRef, productRef, fromValue, toValue) {
+    return write({ event: 'keyRes-update-progress', keyresRef, productRef, fromValue, toValue });
   },
 
   async uploadProfilePhoto(user) {

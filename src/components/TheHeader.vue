@@ -32,6 +32,15 @@
             <span class="menu-item" @click="logout"><i class="fa fa-fw fa-sign-out"></i>Logg ut</span>
           </div>
         </div>
+        <div class="newsfeed-toggle">
+          <button
+            class="btn btn--borderless"
+            :class="{ showNewsfeed: showNewsfeed }"
+            @click="set_show_newsfeed(!showNewsfeed)"
+          >
+            <i class="fa fa-stream"></i>Aktivitet
+          </button>
+        </div>
 
         <!-- <router-link class="menu-item" v-if="user" :to="{ name: 'profile' }">{{ user.displayName }}</router-link> -->
         <!--  -->
@@ -42,7 +51,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { auth } from '../config/firebaseConfig';
 import { dashboardUserName } from '../config/applicationConfig';
 import { isDashboardUser } from '../util/db';
@@ -61,7 +70,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'showNewsfeed']),
 
     displayName() {
       return this.user.displayName || dashboardUserName;
@@ -69,6 +78,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['set_show_newsfeed']),
     closeMenu() {
       this.isOpen = false;
     },
@@ -212,6 +222,8 @@ export default {
   }
 
   .right {
+    display: flex;
+    align-items: center;
     margin-left: auto;
   }
 
@@ -219,6 +231,19 @@ export default {
     display: inline-block;
     margin: 0 0.25rem;
     padding: 0.55rem 0.75rem;
+  }
+}
+
+.newsfeed-toggle {
+  margin-left: 1rem;
+
+  & > .btn {
+    border-radius: 1rem;
+  }
+
+  & > .showNewsfeed {
+    background: $color-bg;
+    box-shadow: inset 0 0.1rem 0.15rem rgba(black, 0.25);
   }
 }
 </style>

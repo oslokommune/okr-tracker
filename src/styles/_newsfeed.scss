@@ -1,25 +1,29 @@
 @import '@/styles/_colors';
 
 .newsfeed {
-  position: sticky;
+  position: fixed;
   top: 0;
+  right: 0;
+  z-index: 9998;
   display: flex;
 
-  display: none;
   flex-direction: column;
-  max-width: 400px;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
   height: 100vh;
   background: white;
   border-left: 1px solid rgba(black, 0.2);
 
-  @media screen and (min-width: 1700px) {
+  @media screen and (min-width: 700px) {
+    position: sticky;
     display: block;
   }
 
   &__feed {
     position: relative;
     height: calc(100vh - 3rem);
-    padding-top: 1rem;
+    padding-top: 0.5rem;
     overflow-y: scroll;
     border-top: 1px solid $color-border;
     border-bottom: 1px solid $color-border;
@@ -29,17 +33,17 @@
     display: flex;
     align-items: center;
     margin: 0;
-    padding: 0 1rem;
+    padding: 0 0.75rem 0 0.5rem;
     font-weight: 800;
-    font-size: 1rem;
-    letter-spacing: 0.06rem;
+    font-size: 1em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     background: $color-bg;
 
     .fa {
-      margin-right: 1.5rem;
+      margin-right: 1rem;
       padding-left: 0.5rem;
-      font-size: 1rem;
+      font-size: 1em;
     }
   }
 
@@ -86,8 +90,9 @@
 // Newsfeed cards
 
 .nf-card {
+  width: 100%;
   margin-bottom: 0.75rem;
-  padding: 0.25rem 1.5rem 0.25rem 1rem;
+  padding: 0.25rem 1.25rem 0.25rem 0.5rem;
   border: 0;
   border-bottom: 1px solid $color-border;
 
@@ -105,7 +110,6 @@
     flex-shrink: 0;
     width: 2rem;
     height: 2rem;
-    margin-top: 0.25rem;
     margin-right: 0.75rem;
     border-radius: 1rem;
   }
@@ -116,13 +120,14 @@
 
   &__body {
     margin-left: 2.75rem;
-    padding: 0.5rem 0 0.25rem;
-    font-weight: 500;
-    font-size: 1rem;
+    padding: 0.5rem 0rem;
+    font-weight: 400;
+    font-size: 1em;
     border-top: 1px solid $color-border;
 
     a {
       color: black !important;
+      font-weight: 400;
       &:hover {
         text-decoration: underline;
       }
