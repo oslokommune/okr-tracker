@@ -31,6 +31,20 @@
           </router-link>
         </span>
 
+        <span v-if="eventData.event === 'archive-objective'">
+          arkiverte målet «{{ objective.name }}» for
+          <router-link :to="product.route">
+            {{ product.name }}
+          </router-link>
+        </span>
+
+        <span v-if="eventData.event === 'update-objective'">
+          endret målet «{{ objective.name }}» for
+          <router-link :to="product.route">
+            {{ product.name }}
+          </router-link>
+        </span>
+
         <span v-if="eventData.event === 'create-product'">
           opprettet et nytt produkt under
           <router-link :to="{ name: 'department', params: { slug: department.slug } }">
@@ -100,6 +114,7 @@ export default {
   data: () => ({
     user: null,
     product: null,
+    objective: null,
     department: null,
     keyResult: null,
     ready: false,
@@ -114,7 +129,7 @@ export default {
   },
 
   async created() {
-    const { user, keyresRef, productRef, departmentRef } = this.eventData;
+    const { user, keyresRef, productRef, departmentRef, objectiveRef } = this.eventData;
 
     if (user) {
       this.user = await db
@@ -145,6 +160,13 @@ export default {
       } else if (productRef.parent.id === 'products') {
         this.product.route = { name: 'product', params: { slug: this.product.slug } };
       }
+    }
+
+    if (objectiveRef) {
+      this.objective = await objectiveRef
+        .get()
+        .then(d => d.data())
+        .catch(this.$errorHandler);
     }
 
     if (departmentRef) {

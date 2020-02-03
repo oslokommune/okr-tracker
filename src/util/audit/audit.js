@@ -37,6 +37,14 @@ export default {
     return write({ event: 'create-objective', objectiveRef, productRef });
   },
 
+  async updateObjective(objectiveRef, productRef) {
+    return write({ event: 'update-objective', objectiveRef, productRef });
+  },
+
+  async archiveObjective(objectiveRef, productRef) {
+    return write({ event: 'archive-objective', objectiveRef, productRef });
+  },
+
   async createProduct(productRef, departmentRef) {
     return write({ event: 'create-product', productRef, departmentRef });
   },

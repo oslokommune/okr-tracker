@@ -31,6 +31,7 @@ export default {
       'create-key-result',
       'archive-key-result',
       'create-objective',
+      'update-objective',
       'archive-objective',
       'promoted-admin',
       'demoted-admin',
