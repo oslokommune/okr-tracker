@@ -33,6 +33,10 @@ export default {
     return write({ event: 'deleted-user', affectedUser });
   },
 
+  async createObjective(objectiveRef, productRef) {
+    return write({ event: 'create-objective', objectiveRef, productRef });
+  },
+
   async createProduct(productRef, departmentRef) {
     return write({ event: 'create-product', productRef, departmentRef });
   },

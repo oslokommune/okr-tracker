@@ -15,7 +15,7 @@
             et nøkkelresultat
           </router-link>
           for
-          <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+          <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-if="eventData.event === 'promoted-admin'">
@@ -24,6 +24,13 @@
 
         <span v-if="eventData.event === 'deleted-user'"> fjernet bruker {{ eventData.affectedUser }} </span>
 
+        <span v-if="eventData.event === 'create-objective'">
+          opprettet et nytt mål for
+          <router-link :to="product.route">
+            {{ product.name }}
+          </router-link>
+        </span>
+
         <span v-if="eventData.event === 'create-product'">
           opprettet et nytt produkt under
           <router-link :to="{ name: 'department', params: { slug: department.slug } }">
@@ -31,16 +38,16 @@
           </router-link>
         </span>
 
-        <span v-if="eventData.event === 'archive-product'"> arkiverte produktet «{{ product.name }}» </span>
+        <span v-if="eventData.event === 'archive-product'"> arkiverte «{{ product.name }}» </span>
 
         <span v-if="eventData.event === 'update-product'">
-          endret produktet
-          <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+          endret
+          <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-if="eventData.event === 'update-product-image'">
           lastet opp et nytt bilde til
-          <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+          <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-if="eventData.event === 'added-users'">
@@ -57,11 +64,11 @@
 
         <span v-if="eventData.event === 'create-key-result'">
           opprettet
-          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }">
-            et nøkkelresultat
-          </router-link>
+          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }"
+            >et nøkkelresultat</router-link
+          >
           for
-          <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+          <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
       </div>
     </div>
@@ -132,6 +139,12 @@ export default {
         .get()
         .then(d => d.data())
         .catch(this.$errorHandler);
+
+      if (productRef.parent.id === 'departments') {
+        this.product.route = { name: 'department', params: { slug: this.product.slug } };
+      } else if (productRef.parent.id === 'products') {
+        this.product.route = { name: 'product', params: { slug: this.product.slug } };
+      }
     }
 
     if (departmentRef) {

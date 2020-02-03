@@ -32,6 +32,8 @@ export default class Pie {
    * Update the visualisation using the provided data
    */
   render(obj, quarter) {
+    if (!obj || !quarter) return;
+
     const progress = obj && obj.progressions && obj.progressions[quarter.name] ? obj.progressions[quarter.name] : 0;
     const time = getTimeProgression(quarter.name);
 

@@ -95,6 +95,7 @@ import { serializeDocument } from '../../util/db';
 import UpdateKeyres from '../../components/KeyRes/editKeyres.vue';
 import EditObjective from '../../components/Objective/editObjective.vue';
 import * as Toast from '../../util/toasts';
+import Audit from '../../util/audit/audit';
 
 export default {
   name: 'EditObjectivesAndKeyResults',
@@ -230,6 +231,8 @@ export default {
           this.selectedObjective = await response.get().then(serializeDocument);
           this.selectedKeyres = null;
           this.keyResults = [];
+
+          Audit.createObjective(response, response.parent.parent);
           return Toast.addedObjective(this.selectedQuarter.name);
         })
         .catch(this.$errorHandler);
@@ -241,7 +244,7 @@ export default {
         .collection('keyResults')
         .add({
           archived: false,
-          key_result: 'Beskriv nøkkelresultatet',
+          description: 'Beskriv nøkkelresultatet',
           startValue: 0,
           targetValue: 100,
           created: new Date(),
@@ -256,6 +259,8 @@ export default {
           if (!this.keyResults.length) {
             this.keyResults.push(newKeyres);
           }
+
+          Audit.createKeyResult(response, this.selectedObjective.ref.parent.parent, this.selectedObjective.ref);
 
           Toast.addedKeyResult();
           return response;

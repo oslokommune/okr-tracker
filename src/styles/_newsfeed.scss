@@ -12,12 +12,19 @@
   min-width: 280px;
   max-width: 280px;
   height: 100vh;
+  font-size: 13px;
   background: white;
   border-left: 1px solid rgba(black, 0.2);
 
   @media screen and (min-width: 700px) {
     position: sticky;
     display: block;
+  }
+
+  a {
+    color: inherit;
+    font-weight: 400 !important;
+    text-decoration: underline;
   }
 
   &__feed {
@@ -137,6 +144,7 @@
   &__footer {
     margin-left: 2.75rem;
     padding-bottom: 0.5rem;
+    font-size: 11px;
   }
 }
 

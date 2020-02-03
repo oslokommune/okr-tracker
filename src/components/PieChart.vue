@@ -39,8 +39,7 @@ export default {
     },
     activeQuarter(quarter) {
       if (!quarter) return;
-
-      this.pie.render(this.product, quarter);
+      this.pie.render(this.document, quarter);
     },
   },
 };
