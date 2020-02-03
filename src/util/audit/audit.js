@@ -45,6 +45,10 @@ export default {
     return write({ event: 'update-product', productRef });
   },
 
+  updateProductImage(productRef) {
+    return write({ event: 'update-product-image', productRef });
+  },
+
   async keyResUpdateProgress(keyresRef, productRef, fromValue, toValue) {
     return write({ event: 'keyRes-update-progress', keyresRef, productRef, fromValue, toValue });
   },

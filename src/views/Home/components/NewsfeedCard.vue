@@ -33,7 +33,15 @@
 
         <span v-if="eventData.event === 'archive-product'"> arkiverte produktet «{{ product.name }}» </span>
 
-        <span v-if="eventData.event === 'update-product'"> endret produktet «{{ product.name }}» </span>
+        <span v-if="eventData.event === 'update-product'">
+          endret produktet
+          <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+        </span>
+
+        <span v-if="eventData.event === 'update-product-image'">
+          lastet opp et nytt bilde til
+          <router-link :to="{ name: 'product', params: { slug: product.slug } }">{{ product.name }}</router-link>
+        </span>
 
         <span v-if="eventData.event === 'added-users'">
           har invitert

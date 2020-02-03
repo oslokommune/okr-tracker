@@ -175,6 +175,7 @@ export default {
       const photoURL = await snapshot.ref.getDownloadURL();
       await this.docref.update({ photoURL }).catch(this.$errorHandler);
 
+      Audit.updateProductImage(this.docref);
       Toast.savedChanges();
 
       this.product.photoURL = photoURL;

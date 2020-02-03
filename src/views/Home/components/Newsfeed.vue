@@ -39,6 +39,7 @@ export default {
       'create-product',
       'archive-product',
       'update-product',
+      'update-product-image',
     ],
   }),
 
