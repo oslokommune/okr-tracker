@@ -128,11 +128,7 @@ body.using-mouse :focus {
     padding: 0.75rem 0.5rem;
     color: $color-purple;
 
-    // outline: 1px solid red
-
     &.router-link-active {
-      // background: $color-blue;
-
       &::after {
         position: absolute;
         right: 0;

@@ -182,7 +182,6 @@ export default {
     }
 
     &--name {
-      // flex-grow: 1;
       flex-basis: auto;
     }
 
