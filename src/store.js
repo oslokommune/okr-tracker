@@ -129,6 +129,10 @@ export const mutations = {
     state.users = payload;
   },
 
+  set_show_newsfeed(state, payload) {
+    state.showNewsfeed = payload;
+  },
+
   set_nested_data(state, payload) {
     state.nest = payload;
   },
@@ -163,6 +167,7 @@ export default new Vuex.Store({
     quarters,
     activeQuarter: quarters[0],
     icons,
+    showNewsfeed: false,
     key_result: null,
     product: null,
     department: null,

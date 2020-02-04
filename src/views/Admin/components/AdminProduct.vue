@@ -40,7 +40,7 @@
       <div class="form-field">
         <label>
           <span class="form-label">Mission statement</span>
-          <textarea rows="4" v-model="product.missionStatement"></textarea>
+          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true"></textarea>
         </label>
       </div>
 
@@ -54,6 +54,7 @@
           v-model="product.team"
           :options="users"
           v-tooltip.bottom="`Klikk for å legge til`"
+          @input="dirty = true"
         >
           <template v-slot:option="option">
             {{ option.displayName || option.id }}
@@ -63,7 +64,7 @@
       </div>
     </div>
     <div class="section">
-      <button class="btn" @click="saveObject" v-tooltip.auto="`Lagre endringer`">Lagre</button>
+      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="`Lagre endringer`">Lagre</button>
       <button
         v-if="isAdmin()"
         class="btn btn--borderless"
@@ -81,13 +82,16 @@ import { mapState } from 'vuex';
 import { storage } from '../../../config/firebaseConfig';
 import slugify from '../../../util/slugify';
 import * as Toast from '../../../util/toasts';
+import Audit from '../../../util/audit/audit';
 import CalloutArchivedRestore from '../../../components/Callouts/CalloutArchivedRestore.vue';
+import { serializeDocument } from '../../../util/db';
 
 export default {
   name: 'AdminProduct',
 
   data: () => ({
     product: null,
+    dirty: false,
   }),
 
   computed: {
@@ -123,6 +127,9 @@ export default {
       this.docref
         .update({ edited: new Date(), editedBy: this.user.ref, ...this.product })
         .then(Toast.savedChanges)
+        .then(() => {
+          Audit.updateProduct(this.docref);
+        })
         .catch(this.$errorHandler);
       this.product.team = teamList;
     },
@@ -134,7 +141,11 @@ export default {
     async deleteObject() {
       await this.docref
         .update({ edited: new Date(), editedBy: this.user.ref, archived: true })
-        .then(Toast.deletedRegret)
+        .then(async () => {
+          const doc = await this.docref.get().then(serializeDocument);
+          Toast.deletedRegret(doc);
+          Audit.archiveProduct(this.docref);
+        })
         .catch(this.$errorHandler);
 
       this.product = null;
@@ -147,6 +158,7 @@ export default {
     },
 
     updateSlug() {
+      this.dirty = true;
       this.product.slug = slugify(this.product.name);
     },
 
@@ -163,6 +175,7 @@ export default {
       const photoURL = await snapshot.ref.getDownloadURL();
       await this.docref.update({ photoURL }).catch(this.$errorHandler);
 
+      Audit.updateProductImage(this.docref);
       Toast.savedChanges();
 
       this.product.photoURL = photoURL;

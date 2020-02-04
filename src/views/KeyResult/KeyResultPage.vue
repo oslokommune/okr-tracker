@@ -255,7 +255,7 @@ export default {
     },
 
     async addValue() {
-      await registerNewProgress(this.key_result, +this.value, this.user.ref);
+      await registerNewProgress(this.key_result, +this.value, this.user.ref, this.date);
     },
 
     async watchData() {

@@ -19,10 +19,11 @@ export default class Pie {
    * Initialize the SVG and create the necessary DOM elements
    */
   constructor(svg) {
-    this.svg = select(svg).call(initSvg);
-    this.inner = this.svg.append('g').call(initGroup, 'inner');
-    this.outer = this.svg.append('g').call(initGroup, 'outer');
-    this.percentText = this.svg.append('text').call(initPercentText);
+    this.svg = select(svg).call(initSvg.bind(this));
+    this.canvas = this.svg.append('g').classed('canvas', true);
+    this.inner = this.canvas.append('g').call(initGroup, 'inner');
+    this.outer = this.canvas.append('g').call(initGroup, 'outer');
+    this.percentText = this.canvas.append('text').call(initPercentText);
     this.outer.call(initOuterGroup);
     this.pie = pie().sort(null);
   }
@@ -31,6 +32,8 @@ export default class Pie {
    * Update the visualisation using the provided data
    */
   render(obj, quarter) {
+    if (!obj || !quarter) return;
+
     const progress = obj && obj.progressions && obj.progressions[quarter.name] ? obj.progressions[quarter.name] : 0;
     const time = getTimeProgression(quarter.name);
 

@@ -27,6 +27,8 @@ export default class Progressbar {
 
   render(obj) {
     this.width = this.svg.node().getBoundingClientRect().width;
+    if (this.width < 10) return;
+
     resize.call(this);
 
     this.unit.text(obj.unit);
