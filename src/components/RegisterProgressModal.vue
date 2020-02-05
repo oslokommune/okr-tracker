@@ -44,8 +44,9 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument, registerNewProgress } from '../util/db';
+import { serializeDocument } from '../db/db';
 import ProgressBar from './ProgressBar.vue';
+import Progress from '../db/progressHandler';
 
 export default {
   name: 'RegisterProgressModal',
@@ -110,7 +111,7 @@ export default {
     },
 
     async save() {
-      await registerNewProgress(this.description, +this.newValue, this.user.ref);
+      await Progress.addProgress(this.key_result, +this.newValue, this.date);
 
       this.skip();
       if (this.index === 0) this.close();

@@ -56,7 +56,7 @@ import { mapState } from 'vuex';
 import { validateEmail } from '../../util/formValidation';
 import { db } from '../../config/firebaseConfig';
 import * as Toast from '../../util/toasts';
-import Audit from '../../util/audit/audit';
+import Audit from '../../db/audit';
 
 export default {
   name: 'AdminUsers',

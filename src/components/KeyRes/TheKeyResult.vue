@@ -43,7 +43,8 @@ import { scaleLinear, format } from 'd3';
 import { mapState } from 'vuex';
 import ProgressBar from '../ProgressBar.vue';
 import { timeFromNow } from '../../util/utils';
-import { isTeamMemberOfProduct, registerNewProgress } from '../../util/db';
+import { isTeamMemberOfProduct } from '../../db/db';
+import Progress from '../../db/progressHandler';
 
 export default {
   name: 'TheKeyResult',
@@ -80,7 +81,7 @@ export default {
   methods: {
     async saveNewProgress() {
       this.editMode = false;
-      await registerNewProgress(this.keyres, +this.value, this.user.ref);
+      await Progress.addProgress(this.keyres, +this.value);
     },
   },
 

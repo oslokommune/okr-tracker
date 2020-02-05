@@ -12,7 +12,6 @@
 
 <script>
 import * as Toast from '../../util/toasts';
-import { errorHandler } from '../../util/utils';
 
 export default {
   name: 'CalloutArchivedRestore',
@@ -29,13 +28,13 @@ export default {
       this.docref
         .update({ archived: false })
         .then(Toast.restored)
-        .catch(errorHandler);
+        .catch(this.$errorHandler);
     },
     deletePermanently() {
       this.docref
         .delete()
         .then(Toast.deletedPermanently)
-        .catch(errorHandler);
+        .catch(this.$errorHandler);
     },
   },
 };

@@ -126,7 +126,7 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import { serializeDocument } from '../../../util/db';
+import { serializeDocument } from '../../../db/db';
 import ProgressBar from '@/components/ProgressBar.vue';
 import NewsfeedFooter from './NewsfeedFooter.vue';
 

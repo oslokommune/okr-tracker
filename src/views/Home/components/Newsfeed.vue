@@ -19,7 +19,7 @@
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import NewsfeedCard from './NewsfeedCard.vue';
-import { serializeDocument } from '../../../util/db';
+import { serializeDocument } from '../../../db/db';
 
 export default {
   data: () => ({

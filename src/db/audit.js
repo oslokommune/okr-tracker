@@ -1,5 +1,5 @@
-import { db, auth } from '../../config/firebaseConfig';
-import { errorHandler } from '../utils';
+import { db, auth } from '../config/firebaseConfig';
+import { errorHandler } from '../util/utils';
 
 const write = async (obj = {}) => {
   const user = obj.user || auth.currentUser.email || null;

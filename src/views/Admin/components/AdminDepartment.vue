@@ -48,7 +48,7 @@
 import { mapState } from 'vuex';
 import { storage } from '../../../config/firebaseConfig';
 import * as Toast from '../../../util/toasts';
-import Audit from '../../../util/audit/audit';
+import Audit from '../../../db/audit';
 import slugify from '../../../util/slugify';
 
 export default {

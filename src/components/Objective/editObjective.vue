@@ -37,8 +37,8 @@
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 import * as Toast from '../../util/toasts';
-import Audit from '../../util/audit/audit';
-import { serializeDocument } from '../../util/db';
+import Audit from '../../db/audit';
+import { serializeDocument } from '../../db/db';
 
 export default {
   name: 'EditObjective',
@@ -68,6 +68,7 @@ export default {
     loading: false,
     objective: null,
     dirty: false,
+    unsubscribe: null,
   }),
   computed: {
     ...mapState(['user', 'icons']),
@@ -76,7 +77,7 @@ export default {
   created() {
     if (this.objectiveRef === undefined) return;
 
-    this.objectiveRef.ref.onSnapshot(snapshot => {
+    this.unsubscribe = this.objectiveRef.ref.onSnapshot(snapshot => {
       this.objective = serializeDocument(snapshot);
     });
   },
@@ -88,10 +89,14 @@ export default {
         .then(serializeDocument)
         .catch(this.$errorHandler);
 
-      objective.ref.onSnapshot(snapshot => {
+      this.unsubscribe = objective.ref.onSnapshot(snapshot => {
         this.objective = serializeDocument(snapshot);
       });
     },
+  },
+
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
   },
 
   methods: {

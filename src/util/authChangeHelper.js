@@ -2,7 +2,7 @@ import store from '../store';
 import * as Toast from './toasts';
 import { auth, db } from '../config/firebaseConfig';
 import router from '../router';
-import { serializeDocument, updateUserObject } from './db';
+import { serializeDocument, updateUserObject } from '../db/db';
 import { errorHandler } from './utils';
 
 /**

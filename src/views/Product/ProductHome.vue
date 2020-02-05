@@ -40,7 +40,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { serializeDocument } from '../../util/db';
+import { serializeDocument } from '../../db/db';
 
 import PageHeader from '../../components/PageHeader.vue';
 import DocumentSummary from '../../components/DocumentSummary.vue';
@@ -70,6 +70,7 @@ export default {
     hasEditPermissions() {
       if (!this.user) return;
       if (this.user.admin) return true;
+      if (!this.product.team || !this.product.team.length) return;
 
       return this.product.team.map(d => d.id).includes(this.user.id);
     },
