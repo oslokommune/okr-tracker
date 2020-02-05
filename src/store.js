@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import { db, dashboardUser } from './config/firebaseConfig';
 import { quarters, errorHandler } from './util/utils';
-import { serializeDocument, getNestedData } from './util/db';
+import { serializeDocument, getNestedData } from './db/db';
 import icons from './config/icons';
 
 Vue.use(Vuex);

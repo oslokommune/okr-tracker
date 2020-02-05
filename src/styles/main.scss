@@ -47,7 +47,11 @@ body.using-mouse :focus {
   width: 100%;
   max-width: 1410px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 0.75rem;
+
+  @media screen and (min-width: 480px) {
+    padding: 0 1rem;
+  }
 
   &--sidebar {
     @media screen and (min-width: 768px) {
@@ -232,4 +236,8 @@ hr {
 .ol {
   margin: 1rem 2.5rem;
   list-style-type: decimal;
+}
+
+*:focus {
+  outline: 4px solid $color-link;
 }

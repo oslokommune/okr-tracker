@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { serializeDocument } from '../../util/db';
+import { serializeDocument } from '../../db/db';
 import TheKeyResult from '../KeyRes/TheKeyResult.vue';
 
 export default {
@@ -33,6 +33,7 @@ export default {
 
   data: () => ({
     keyResults: [],
+    unsubscribe: null,
   }),
   props: {
     objective: {
@@ -45,8 +46,12 @@ export default {
     TheKeyResult,
   },
 
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
+  },
+
   mounted() {
-    this.objective.ref
+    this.unsubscribe = this.objective.ref
       .collection('keyResults')
       .where('archived', '==', false)
       .onSnapshot(async snapshot => {
@@ -71,11 +76,18 @@ export default {
   grid-template-columns: 4rem 1fr;
   height: 100%;
   margin-bottom: 1rem;
-  padding-right: 1rem;
+
+  @media screen and (min-width: 768px) {
+    padding-right: 1rem;
+  }
 
   &__text {
     grid-area: text;
-    padding-right: 1.5rem;
+    padding-right: 0rem;
+
+    @media screen and (min-width: 480px) {
+      padding-right: 1.5rem;
+    }
 
     h3 {
       margin: 0 0 0.25rem;

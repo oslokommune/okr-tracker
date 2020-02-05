@@ -18,7 +18,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { isAdmin } from '../../util/db';
+import { isAdmin } from '../../db/db';
 import PageHeader from '../../components/PageHeader.vue';
 
 export default {

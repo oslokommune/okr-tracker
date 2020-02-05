@@ -1,7 +1,6 @@
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
-import * as Toast from './toasts';
-import { errorHandler } from './utils';
-import Audit from './audit/audit';
+import * as Toast from '../util/toasts';
+import { errorHandler } from '../util/utils';
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -35,10 +34,11 @@ export function updateUserObject(user) {
  * adds a listener for changes on the object.
  * Binds the changes to `this.product` on the caller.
  * @param {String} slug - product slug
- * @returns {void}
+ * @returns {Function} - Unsubscribe
  */
 export function productListener(slug) {
-  db.collectionGroup('products')
+  return db
+    .collectionGroup('products')
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
@@ -52,10 +52,11 @@ export function productListener(slug) {
  * adds a listener for changes on the object.
  * Binds the changes to `this.product` on the caller.
  * @param {String} slug - product slug
- * @returns {void}
+ * @returns {Function} - Unsubscribe
  */
 export function departmentListener(slug) {
-  db.collectionGroup('departments')
+  return db
+    .collectionGroup('departments')
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
@@ -112,12 +113,12 @@ export async function isTeamMemberOfProduct(slugOrRef) {
 
 /**
  * Binds all organisations to `this.orgs` at caller
- * returns {void}
+ * @returns {Function} - Unsubscribe
  */
 export async function getOrgs(includeArchived = false) {
   const ref = await db.collection('orgs');
 
-  ref.onSnapshot(snapshot => {
+  return ref.onSnapshot(snapshot => {
     this.orgs = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
     this.selectedOrgId = this.orgs[0].id;
 
@@ -128,7 +129,7 @@ export async function getOrgs(includeArchived = false) {
 /**
  * Binds all departments to `this.depts` at caller
  * @param {String} orgId - Organisation id
- * @returns {void}
+ * @returns {Function} - Unsubscribe
  */
 export async function getDepartments(orgId, includeArchived = false) {
   let ref = db.collection(`orgs/${orgId}/departments`);
@@ -137,7 +138,7 @@ export async function getDepartments(orgId, includeArchived = false) {
     ref = ref.where('archived', '==', false);
   }
 
-  ref.onSnapshot(snapshot => {
+  return ref.onSnapshot(snapshot => {
     this.depts = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
   });
 }
@@ -146,7 +147,7 @@ export async function getDepartments(orgId, includeArchived = false) {
  * Binds all matching products to `this.products` at caller
  * @param {String} org - Organisation id
  * @param {String} dept - Department id
- * @returns {void}
+ * @returns {Function} - Unsubscribe
  */
 export async function getProducts(org, dept, includeArchived = false) {
   let collectionRef = db.collection(`orgs/${org}/departments/${dept}/products`);
@@ -155,7 +156,7 @@ export async function getProducts(org, dept, includeArchived = false) {
     collectionRef = collectionRef.where('archived', '==', false);
   }
 
-  collectionRef.onSnapshot(snapshot => {
+  return collectionRef.onSnapshot(snapshot => {
     this.products = snapshot.docs.map(doc => ({ ...{ id: doc.id }, ...doc.data() }));
   });
 }
@@ -248,72 +249,5 @@ export async function unDelete(ref) {
   return ref
     .update({ archived: false })
     .then(Toast.revertedDeletion)
-    .catch(errorHandler);
-}
-
-/**
- * Saves a progress for a key result
- * @param {KeyResultObject} keyres - serialized key result object
- * @param {Number} value - The new value to be registered
- * @param {DocumentReference} userRef - the user who created the progress
- * @param {Date} date - Optional date for the progress
- * @returns {Promise}
- */
-export async function registerNewProgress(keyres, value, userRef, date) {
-  if (!keyres || !keyres.ref) {
-    return errorHandler('Corrupt or missing key result object');
-  }
-  if (typeof value !== 'number' || Number.isNaN(value)) {
-    return errorHandler(`Cannot process provided value: ${value}`);
-  }
-  if (!userRef) {
-    return errorHandler('Missing user reference');
-  }
-
-  const timestamp = date ? new Date(date) : new Date();
-
-  const progressToBeRegistered = {
-    value,
-    timestamp,
-    createdBy: userRef,
-    created: new Date(),
-    archived: false,
-  };
-
-  return keyres.ref
-    .collection('progress')
-    .add(progressToBeRegistered)
-    .then(Toast.addedProgression)
-    .then(updateCurrentValue.bind(null, keyres, userRef))
-    .catch(errorHandler);
-}
-
-/**
- * Finds the most recent registered value and saves it to the `keyres` object in db
- * @param {KeyResultObject} keyres - serialized key result object
- * @param {DocumentReference} userRef - documentReference for user
- * @returns {Promise}
- */
-export async function updateCurrentValue(keyres, userRef) {
-  const oldValue = keyres.currentValue || keyres.startValue || 0;
-  const newValue = await keyres.ref
-    .collection('progress')
-    .orderBy('timestamp', 'desc')
-    .limit(1)
-    .get()
-    .then(snapshot => {
-      return snapshot.docs[0].data().value;
-    })
-    .catch(errorHandler);
-
-  if (oldValue === newValue) return;
-
-  const parentDocumentRef = keyres.ref.parent.parent.parent.parent;
-
-  return keyres.ref
-    .update({ currentValue: newValue, edited: new Date(), editedBy: userRef })
-    .then(() => {
-      return Audit.keyResUpdateProgress(keyres.ref, parentDocumentRef, oldValue, newValue);
-    })
     .catch(errorHandler);
 }

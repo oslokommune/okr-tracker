@@ -41,7 +41,7 @@
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 import * as Toast from '../../util/toasts';
-import Audit from '../../util/audit/audit';
+import Audit from '../../db/audit';
 
 export default {
   name: 'AddObjective',

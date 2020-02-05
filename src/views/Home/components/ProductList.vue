@@ -187,6 +187,7 @@ export default {
 
 .toggle__wrapper {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   margin: 1rem 0 -1rem;
 }

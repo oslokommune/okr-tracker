@@ -82,9 +82,9 @@ import { mapState } from 'vuex';
 import { storage } from '../../../config/firebaseConfig';
 import slugify from '../../../util/slugify';
 import * as Toast from '../../../util/toasts';
-import Audit from '../../../util/audit/audit';
+import Audit from '../../../db/audit';
 import CalloutArchivedRestore from '../../../components/Callouts/CalloutArchivedRestore.vue';
-import { serializeDocument } from '../../../util/db';
+import { serializeDocument } from '../../../db/db';
 
 export default {
   name: 'AdminProduct',
@@ -93,6 +93,7 @@ export default {
     product: null,
     dirty: false,
     team: [],
+    unsubscribe: null,
   }),
 
   computed: {
@@ -117,8 +118,12 @@ export default {
     },
   },
 
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
+  },
+
   async mounted() {
-    this.docref.onSnapshot(this.getProductfromRef);
+    this.unsubscribe = this.docref.onSnapshot(this.getProductfromRef);
   },
 
   methods: {

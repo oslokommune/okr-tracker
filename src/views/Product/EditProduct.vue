@@ -22,7 +22,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { productListener, isTeamMemberOfProduct } from '../../util/db';
+import { productListener, isTeamMemberOfProduct } from '../../db/db';
 import PageHeader from '../../components/PageHeader.vue';
 
 export default {
@@ -49,8 +49,12 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
+  },
+
   created() {
-    productListener.call(this, this.$route.params.slug);
+    this.unsubscribe = productListener.call(this, this.$route.params.slug);
   },
 };
 </script>

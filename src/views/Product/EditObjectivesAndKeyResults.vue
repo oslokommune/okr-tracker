@@ -91,11 +91,12 @@
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
 import { getQuarter } from 'date-fns';
-import { serializeDocument } from '../../util/db';
+import { serializeDocument } from '../../db/db';
 import UpdateKeyres from '../../components/KeyRes/editKeyres.vue';
 import EditObjective from '../../components/Objective/editObjective.vue';
 import * as Toast from '../../util/toasts';
-import Audit from '../../util/audit/audit';
+import Audit from '../../db/audit';
+import Keyresult from '../../db/keyresultHandler';
 
 export default {
   name: 'EditObjectivesAndKeyResults',
@@ -238,34 +239,18 @@ export default {
         .catch(this.$errorHandler);
     },
 
-    addKeyres() {
+    async addKeyres() {
       if (!this.selectedObjective) return;
-      this.selectedObjective.ref
-        .collection('keyResults')
-        .add({
-          archived: false,
-          description: 'Beskriv nøkkelresultatet',
-          startValue: 0,
-          targetValue: 100,
-          created: new Date(),
-          createdBy: this.user.ref,
-          unit: '',
-        })
-        .then(async response => {
-          const newKeyres = await response.get().then(serializeDocument);
 
-          this.selectedKeyres = newKeyres;
+      const newKeyres = await Keyresult.create(this.selectedObjective.ref)
+        .then(response => response.get())
+        .then(serializeDocument);
 
-          if (!this.keyResults.length) {
-            this.keyResults.push(newKeyres);
-          }
+      this.selectedKeyres = newKeyres;
 
-          Audit.createKeyResult(response, this.selectedObjective.ref.parent.parent, this.selectedObjective.ref);
-
-          Toast.addedKeyResult();
-          return response;
-        })
-        .catch(this.$errorHandler);
+      if (!this.keyResults.length) {
+        this.keyResults.push(newKeyres);
+      }
     },
   },
 };

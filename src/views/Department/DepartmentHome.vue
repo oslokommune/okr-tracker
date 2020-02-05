@@ -39,7 +39,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { serializeDocument } from '../../util/db';
+import { serializeDocument } from '../../db/db';
 
 import PageHeader from '../../components/PageHeader.vue';
 import DocumentSidebar from '../../components/DocumentSidebar.vue';

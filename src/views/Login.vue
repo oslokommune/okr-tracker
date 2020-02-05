@@ -54,7 +54,7 @@
 import { mapState } from 'vuex';
 import { auth, loginProvider } from '../config/firebaseConfig';
 import TheSpinner from '../components/TheSpinner.vue';
-import Audit from '../util/audit/audit';
+import Audit from '../db/audit';
 
 export default {
   data: () => ({

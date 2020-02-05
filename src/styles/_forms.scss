@@ -131,6 +131,9 @@ textarea {
 
 .toggle {
   position: relative;
+  display: inline-block;
+  width: 5rem;
+  transform: translateY(0.15rem);
 
   $t: &;
 
@@ -141,12 +144,21 @@ textarea {
     height: 0;
     background: none;
 
+    &:focus ~ #{$t}__switch {
+      background: $color-link !important;
+      outline: 4px solid $color-yellow;
+    }
+
     &:checked ~ #{$t}__switch {
-      background: $color-blue;
+      background: $color-purple;
 
       &::before {
-        left: 2.1rem;
-        background: $color-purple;
+        left: 1.25rem;
+        content: '\f00c';
+      }
+
+      &::after {
+        content: 'På';
       }
     }
   }
@@ -154,25 +166,39 @@ textarea {
   &__switch {
     position: relative;
     display: inline-block;
-    width: 4rem;
-    height: 1.5rem;
-    background: rgba(darken($color-bg, 20%), 0.2);
-    border-radius: 0.75rem;
-    box-shadow: inset 0 1px 3px rgba($color-grey-600, 0.5);
+    width: 3rem;
+    height: 2rem;
+    background: $color-grey-300;
+    border-radius: 1rem;
+    box-shadow: inset 0 1px 4px rgba($color-grey-800, 0.3);
     transition: all 0.3s ease-in-out;
 
     &::before {
       position: absolute;
-      top: -0.2rem;
-      left: 0;
-      display: block;
-      width: 1.9rem;
-      height: 1.9rem;
+      top: 0.25rem;
+      left: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+
+      // color: white;
+      font-family: 'Font Awesome 5 Pro';
+      text-align: center;
       background: white;
       border-radius: 50%;
-      box-shadow: 0 2px 4px rgba($color-grey-800, 0.7);
+      // box-shadow: 0 2px 4px rgba($color-grey-800, 0.7);
       transition: all 0.3s ease-in-out;
       content: '';
+    }
+
+    &::after {
+      position: absolute;
+      top: 0.5rem;
+      right: -1.5rem;
+      font-weight: 500;
+      content: 'Av';
     }
   }
 
