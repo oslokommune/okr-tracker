@@ -51,14 +51,14 @@
           class="objective__select"
           label="displayName"
           multiple
-          v-model="product.team"
+          v-model="team"
           :options="users"
-          v-tooltip.bottom="`Klikk for å legge til`"
+          v-tooltip.right="`Klikk for å legge til`"
           @input="dirty = true"
         >
           <template v-slot:option="option">
             {{ option.displayName || option.id }}
-            <span v-if="option.displayName !== option.id" v-tooltip="`Fjern bruker`">({{ option.id }})</span>
+            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
           </template>
         </v-select>
       </div>
@@ -92,6 +92,7 @@ export default {
   data: () => ({
     product: null,
     dirty: false,
+    team: [],
   }),
 
   computed: {
@@ -111,18 +112,18 @@ export default {
       this.product = null;
       ref
         .get()
-        .then(getProductfromRef.bind(this))
+        .then(this.getProductfromRef)
         .catch(this.$errorHandler);
     },
   },
 
   async mounted() {
-    this.docref.onSnapshot(getProductfromRef.bind(this));
+    this.docref.onSnapshot(this.getProductfromRef);
   },
 
   methods: {
     async saveObject() {
-      const teamList = this.product.team;
+      const teamList = this.team;
       this.product.team = teamList.map(d => d.ref);
       this.docref
         .update({ edited: new Date(), editedBy: this.user.ref, ...this.product })
@@ -136,6 +137,21 @@ export default {
 
     isAdmin() {
       return this.user && this.user.admin;
+    },
+
+    async getProductfromRef(snapshot) {
+      this.product = snapshot.data();
+
+      const team = this.product.team || [];
+      const promises = team.map(d => d.get());
+      const userRefs = await Promise.all(promises).catch(this.$errorHandler);
+
+      this.team = userRefs
+        .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))
+        .map(user => {
+          user.displayName = user.displayName || user.id;
+          return user;
+        });
     },
 
     async deleteObject() {
@@ -183,19 +199,4 @@ export default {
     },
   },
 };
-
-async function getProductfromRef(snapshot) {
-  this.product = snapshot.data();
-
-  const team = this.product.team || [];
-  const promises = team.map(d => d.get());
-  const userRefs = await Promise.all(promises).catch(this.$errorHandler);
-
-  this.product.team = userRefs
-    .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))
-    .map(user => {
-      user.displayName = user.displayName || user.id;
-      return user;
-    });
-}
 </script>

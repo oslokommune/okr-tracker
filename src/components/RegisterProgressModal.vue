@@ -271,7 +271,6 @@ export default {
       padding: 1em;
       font-size: inherit;
       border-left: 1px solid $color-border;
-      // outline: 1px solid green;
 
       &:first-child {
         border-left-color: transparent;

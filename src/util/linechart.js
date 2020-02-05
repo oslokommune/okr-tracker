@@ -1,9 +1,6 @@
 import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, curveStepAfter } from 'd3';
-
 import { initSvg, resize } from './linechart-helpers';
 import { getDateSpanFromQuarter } from './helpers';
-
-// import { getTimeProgression, getProgression } from './helpers';
 
 export default class Linechart {
   constructor(svgElement) {

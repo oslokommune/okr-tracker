@@ -156,7 +156,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    // min-width: 100%;
     width: 12rem;
     overflow: hidden;
     background: white;
@@ -173,7 +172,6 @@ export default {
     color: $color-link;
     color: $color-purple !important;
     font-weight: 500;
-    // text-align: right;
     border-top: 1px solid $color-grey-50;
     cursor: pointer;
     user-select: none;
@@ -189,7 +187,6 @@ export default {
 
     &:last-child {
       background: $color-bg;
-      // border-bottom: none;
       border-top: 1px solid $color-grey-300;
       &:hover {
         background: darken($color-bg, 3%);
