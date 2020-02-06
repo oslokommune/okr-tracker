@@ -9,6 +9,26 @@ const write = async (obj = {}) => {
     .catch(errorHandler);
 };
 
+export const eventTypes = [
+  'keyRes-update-progress',
+  'upload-profile-photo',
+  'update-department',
+  'create-key-result',
+  'update-key-result',
+  'archive-key-result',
+  'create-objective',
+  'update-objective',
+  'archive-objective',
+  'promoted-admin',
+  'demoted-admin',
+  'added-users',
+  'deleted-user',
+  'create-product',
+  'archive-product',
+  'update-product',
+  'update-product-image',
+];
+
 export default {
   async login(user) {
     return write({ event: 'login', user });

@@ -1,9 +1,9 @@
 <template>
-  <div v-if="user">
-    <PageHeader :data="user"></PageHeader>
+  <div v-if="getUser">
+    <PageHeader :data="getUser"></PageHeader>
     <div class="container container--sidebar">
       <main class="content--main">
-        <section v-if="user.admin" class="section">
+        <section v-if="getUser.admin" class="section">
           <h2 class="title title-2">Admin</h2>
           <p>Har administratortilgang</p>
         </section>
@@ -15,8 +15,8 @@
                 <div clasS="product">
                   <img class="product__image" :src="product.photoURL || '/placeholder-user.svg'" :alt="product.name" />
                   <div class="product__title">
-                    <h2>{{ getDepartment(product) }}</h2>
-                    <h2>{{ product.name }}</h2>
+                    <h1>{{ getDepartment(product) }}</h1>
+                    <h1 class="product__h2">{{ product.name }}</h1>
                   </div>
                 </div>
               </router-link>
@@ -25,9 +25,12 @@
         </section>
         <section class="section">
           <h2 class="title title-2">Audit</h2>
-          <div class="grid-system">
+          <div class="flex-system">
+            <div v-if="!feed.length">
+              Ingen handlinger fra brukeren.
+            </div>
             <div v-for="event in feed" :key="event.id">
-              <NewsfeedCard :event-data="event" />
+              <NewsfeedCard class="flex-system__card" :event-data="event" />
             </div>
           </div>
         </section>
@@ -37,17 +40,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { isDashboardUser, findUser, userProductsListener, getAllDepartments, serializeDocument } from '@/db/db';
 import PageHeader from '../components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
 import { db } from '@/config/firebaseConfig';
+import { eventTypes } from '@/db/audit';
 
 export default {
   name: 'User',
 
   data: () => ({
     products: [],
-    user: null,
+    dataUser: null,
+    unsubscribe: null,
     departments: [],
     feed: [],
   }),
@@ -55,6 +61,15 @@ export default {
   components: {
     PageHeader,
     NewsfeedCard,
+  },
+
+  computed: {
+    ...mapState(['user']),
+    getUser() {
+      if (this.$route.name === 'profile') return this.dataUser;
+      if (this.$route.name === 'user') return this.user;
+      return null;
+    },
   },
 
   methods: {
@@ -67,6 +82,47 @@ export default {
       });
       return foundDep;
     },
+
+    async getData() {
+      if (this.$route.name === 'profile') {
+        await findUser(this.$route.params.slug).then(list => {
+          this.dataUser = list;
+        });
+      }
+
+      userProductsListener(this.getUser).then(list => {
+        this.products = list;
+      });
+
+      await getAllDepartments().then(list => {
+        this.departments = list;
+      });
+
+      db.collection('audit')
+        .where('user', '==', this.getUser.id)
+        .orderBy('timestamp', 'desc')
+        .limit(10)
+        .onSnapshot(async snapshot => {
+          const newDocuments = await snapshot
+            .docChanges()
+            .filter(d => d.type === 'added')
+            .filter(d => !eventTypes.includes(d.event))
+            .filter(d => !this.feed.map(el => el.id).includes(d.doc.id));
+
+          const newObjects = newDocuments
+            .map(d => d.doc)
+            .map(d => {
+              return serializeDocument(d);
+            });
+
+          if (this.feed.length) this.feed = [];
+
+          newObjects.forEach(obj => {
+            this.feed.push(obj);
+          });
+          this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+        });
+    },
   },
 
   beforeRouteEnter(to, from, next) {
@@ -77,46 +133,30 @@ export default {
     }
   },
 
+  watch: {
+    user() {
+      this.getData();
+    },
+    $route(to) {
+      if (to.name === 'profile') this.getData();
+      if (to.name === 'user') this.getData();
+    },
+  },
+
   async mounted() {
-    await findUser(this.$route.params.slug).then(list => {
-      this.user = list;
-    });
-
-    userProductsListener(this.user).then(list => {
-      this.products = list;
-    });
-
-    await getAllDepartments().then(list => {
-      this.departments = list;
-    });
-
-    db.collection('audit')
-      .where('event', 'in', ['keyRes-update-progress', 'upload-profile-photo', 'create-key-result'])
-      .orderBy('timestamp', 'desc')
-      .limit(15)
-      .onSnapshot(async snapshot => {
-        const newDocuments = await snapshot.docChanges().filter(d => d.type === 'added');
-
-        const obj = newDocuments
-          .map(d => d.doc)
-          .map(d => {
-            return serializeDocument(d);
-          });
-
-        obj.forEach(d => {
-          if (d.user === this.user.email) this.feed.push(d);
-        });
-
-        this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
-      });
+    if (!this.user) return;
+    this.getData();
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/colors';
+
 .product {
   display: flex;
   flex-direction: row;
+  color: $color-purple;
 
   &__image {
     width: 4rem;
@@ -135,6 +175,27 @@ export default {
     justify-content: center;
     padding-left: 1rem;
   }
+
+  &__h2 {
+    margin: 0.25rem 0 0;
+    font-weight: 500;
+    font-size: 1.35rem;
+    line-height: 1.15;
+  }
+}
+
+.flex-system {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 1rem;
+  max-width: 500px;
+  margin: 2rem 0;
+
+  &__card {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.2);
+  }
 }
 
 .grid-system {
@@ -145,10 +206,6 @@ export default {
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  }
-
-  &__card {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   }
 }
 </style>

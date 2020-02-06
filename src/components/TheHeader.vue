@@ -28,7 +28,7 @@
               <i class="fa fa-fw fa-dashboard"></i>
               Admin</router-link
             >
-            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'profile' }"
+            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'user' }"
               ><i class="fa fa-fw fa-user"></i>Endre profil</router-link
             >
             <span class="menu-item" @click="logout" @keydown.enter="logout" tabindex="0"

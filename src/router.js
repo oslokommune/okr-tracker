@@ -35,10 +35,17 @@ const routes = [
   },
 
   {
-    path: '/profile',
+    path: '/user',
+    name: 'user',
+    meta: { headerStyle: 'user' },
+    component: User,
+  },
+
+  {
+    path: '/profile/:slug',
     name: 'profile',
     meta: { headerStyle: 'profile' },
-    component: TheProfile,
+    component: User,
   },
 
   {
@@ -90,13 +97,6 @@ const routes = [
       { name: 'admin-users', path: '/', component: AdminUsers },
       { name: 'admin-objects', path: 'data', component: AdminObjects },
     ],
-  },
-
-  {
-    path: '/user/:slug',
-    name: 'User',
-    meta: { headerStyle: 'user' },
-    component: User,
   },
 ];
 

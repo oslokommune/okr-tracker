@@ -7,7 +7,9 @@
         :alt="this.user.displayName || this.user.email"
       />
       <div class="nf-card__usertext">
-        <span class="nf-card__displayname">{{ this.user.displayName || this.user.email }}</span>
+        <router-link :to="{ name: 'profile', params: { slug: this.user.slug } }">
+          <span class="nf-card__displayname">{{ this.user.displayName || this.user.email }}</span>
+        </router-link>
 
         <span v-if="eventData.event === 'keyRes-update-progress'">
           har oppdatert fremdrift for

@@ -41,7 +41,7 @@
             </router-link>
           </template>
           <template v-else-if="type === 'product'">
-            <router-link :to="{ name: 'User', params: { slug: user.slug } }">
+            <router-link :to="{ name: 'profile', params: { slug: user.slug } }">
               <img
                 class="team__image"
                 :src="user.photoURL || '/placeholder-user.svg'"

@@ -260,9 +260,9 @@ export async function findUser(slug) {
  * @returns list of products
  */
 export async function userProductsListener(user) {
-  const { email } = user;
+  const { id } = user;
 
-  const userRef = await db.collection('users').doc(email);
+  const userRef = await db.collection('users').doc(id);
 
   return db
     .collectionGroup('products')
