@@ -82,29 +82,30 @@
           <div class="callout__message">
             <p>
               For å migrere data fra gammel løsning, må følgende steg følges:
-
-              <ol class="ol">
-                <li>«Audit»- og «Orgs»-samlingene i Firestore må tømmes.</li>
-                <li>Følgende filer må lastes ned fra Google Sheets:
-                  <ol class="ol">
-                    <li>OKR-tracker-data - Depts.csv</li>
-                    <li>OKR-tracker-data - Orgs.csv</li>
-                    <li>OKR-tracker-data - Objectives.csv</li>
-                    <li>OKR-tracker-data - Products.csv</li>
-                    <li>OKR-tracker-data - KeyRes.csv</li>
-                    <li>OKR-tracker-data - KeyResTracker.csv</li>
-                  </ol>
-                  For å laste ned filer:
-                  <ol class="ol">
-                    <li>Velg riktig fane i Google Sheets-dokumentet</li>
-                    <li>Klikk «File»</li>
-                    <li>Velg «Download»</li>
-                    <li>Velg «Comma-separated values (.csv, current sheet)»</li>
-                  </ol>
-                </li>
-                <li>Last opp filene her (alle 6 filene samtidig) og trykk «Start migrering»</li>
-              </ol>
             </p>
+
+            <ol class="ol">
+              <li>«Audit»- og «Orgs»-samlingene i Firestore må tømmes.</li>
+              <li>
+                Følgende filer må lastes ned fra Google Sheets:
+                <ol class="ol">
+                  <li>OKR-tracker-data - Depts.csv</li>
+                  <li>OKR-tracker-data - Orgs.csv</li>
+                  <li>OKR-tracker-data - Objectives.csv</li>
+                  <li>OKR-tracker-data - Products.csv</li>
+                  <li>OKR-tracker-data - KeyRes.csv</li>
+                  <li>OKR-tracker-data - KeyResTracker.csv</li>
+                </ol>
+                For å laste ned filer:
+                <ol class="ol">
+                  <li>Velg riktig fane i Google Sheets-dokumentet</li>
+                  <li>Klikk «File»</li>
+                  <li>Velg «Download»</li>
+                  <li>Velg «Comma-separated values (.csv, current sheet)»</li>
+                </ol>
+              </li>
+              <li>Last opp filene her (alle 6 filene samtidig) og trykk «Start migrering»</li>
+            </ol>
             <hr />
 
             <input type="file" @input="previewFiles" multiple />
@@ -217,8 +218,8 @@ export default {
         .add(defaultProduct)
         .then(doc => {
           this.selectedProductId = doc.id;
-          Audit.createProduct(doc, deptRef.parent)
-          return doc
+          Audit.createProduct(doc, deptRef.parent);
+          return doc;
         })
         .then(Toast.addedProduct)
         .catch(this.$errorHandler);
