@@ -56,10 +56,10 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState, mapMutations } from 'vuex';
-import { auth } from '../config/firebaseConfig';
-import { dashboardUserName } from '../config/applicationConfig';
-import { isDashboardUser } from '../db/db';
-import Audit from '../db/audit';
+import { auth } from '@/config/firebaseConfig';
+import { dashboardUserName } from '@/config/applicationConfig';
+import { isDashboardUser } from '@/db/db';
+import Audit from '@/db/audit';
 
 export default {
   data: () => ({

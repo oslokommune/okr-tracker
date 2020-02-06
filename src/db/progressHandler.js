@@ -1,8 +1,8 @@
-import { errorHandler } from '../util/utils';
+import { errorHandler } from '@/util/utils';
 import Audit from './audit';
-import * as Toast from '../util/toasts';
+import * as Toast from '@/util/toasts';
 import { isTeamMemberOfProduct } from './db';
-import Store from '../store';
+import Store from '@/store';
 
 export default {
   addProgress,

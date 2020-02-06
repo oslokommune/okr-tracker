@@ -114,11 +114,11 @@ import { mapState, mapActions } from 'vuex';
 import { format } from 'date-fns';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
-import { serializeDocument, isTeamMemberOfProduct } from '../../db/db';
-import Progress from '../../db/progressHandler';
-import PageHeader from '../../components/PageHeader.vue';
-import Linechart from '../../util/linechart';
-import { timeFromNow } from '../../util/utils';
+import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
+import Progress from '@/db/progressHandler';
+import PageHeader from '@/components/PageHeader.vue';
+import Linechart from '@/util/linechart';
+import { timeFromNow } from '@/util/utils';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {

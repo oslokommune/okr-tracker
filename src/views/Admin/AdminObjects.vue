@@ -121,13 +121,13 @@
 
 <script>
 import { mapState } from 'vuex';
-import { db } from '../../config/firebaseConfig';
-import { getOrgs, getDepartments, getProducts } from '../../db/db';
+import { db } from '@/config/firebaseConfig';
+import { getOrgs, getDepartments, getProducts } from '@/db/db';
 import AdminProduct from './components/AdminProduct.vue';
 import AdminDepartment from './components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
-import Audit from '../../db/audit';
-import fileImporter from '../../migration/fileImporter';
+import Audit from '@/db/audit';
+import fileImporter from '@/migration/fileImporter';
 
 export default {
   name: 'AdminObjects',

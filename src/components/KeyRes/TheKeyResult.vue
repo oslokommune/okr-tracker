@@ -42,9 +42,9 @@
 import { scaleLinear, format } from 'd3';
 import { mapState } from 'vuex';
 import ProgressBar from '../ProgressBar.vue';
-import { timeFromNow } from '../../util/utils';
-import { isTeamMemberOfProduct } from '../../db/db';
-import Progress from '../../db/progressHandler';
+import { timeFromNow } from '@/util/utils';
+import { isTeamMemberOfProduct } from '@/db/db';
+import Progress from '@/db/progressHandler';
 
 export default {
   name: 'TheKeyResult',

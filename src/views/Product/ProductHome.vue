@@ -40,12 +40,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { serializeDocument } from '../../db/db';
+import { serializeDocument } from '@/db/db';
 
-import PageHeader from '../../components/PageHeader.vue';
-import DocumentSummary from '../../components/DocumentSummary.vue';
-import ObjectivesList from '../../components/ObjectivesList.vue';
-import DocumentSidebar from '../../components/DocumentSidebar.vue';
+import PageHeader from '@/components/PageHeader.vue';
+import DocumentSummary from '@/components/DocumentSummary.vue';
+import ObjectivesList from '@/components/ObjectivesList.vue';
+import DocumentSidebar from '@/components/DocumentSidebar.vue';
 
 import * as Toast from '@/util/toasts';
 

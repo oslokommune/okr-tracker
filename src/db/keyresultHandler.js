@@ -1,6 +1,6 @@
-import * as Toast from '../util/toasts';
+import * as Toast from '@/util/toasts';
 import Audit from './audit';
-import { errorHandler } from '../util/utils';
+import { errorHandler } from '@/util/utils';
 import { isTeamMemberOfProduct } from './db';
 import Store from '../store';
 
