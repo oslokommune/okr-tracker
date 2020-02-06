@@ -57,6 +57,10 @@ textarea {
     margin-bottom: 0;
     color: $color-red;
   }
+
+  &--small {
+    max-width: 400px;
+  }
 }
 
 .form-row {

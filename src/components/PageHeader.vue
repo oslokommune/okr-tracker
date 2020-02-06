@@ -69,7 +69,7 @@ export default {
     },
 
     showImage() {
-      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'user'];
+      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'me'];
       return typesWithImage.includes(this.style);
     },
   },

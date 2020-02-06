@@ -35,9 +35,9 @@ const routes = [
   },
 
   {
-    path: '/user',
-    name: 'user',
-    meta: { headerStyle: 'user' },
+    path: '/me',
+    name: 'me',
+    meta: { headerStyle: 'me' },
     component: User,
   },
 

@@ -3,6 +3,19 @@
     <PageHeader :data="getUser"></PageHeader>
     <div class="container container--sidebar">
       <main class="content--main">
+        <section v-if="$route.name === 'me'" class="section">
+          <h2 class="title title-2">Display name</h2>
+          <form @submit.prevent="submitDisplayName()">
+            <label class="form-field form-field--small">
+              <div class="form-login">
+                <input class="field" v-model="displayName" />
+                <button class="btn">
+                  Lagre
+                </button>
+              </div>
+            </label>
+          </form>
+        </section>
         <section v-if="getUser.admin" class="section">
           <h2 class="title title-2">Admin</h2>
           <p>Har administratortilgang</p>
@@ -46,6 +59,7 @@ import PageHeader from '../components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
 import { db } from '@/config/firebaseConfig';
 import { eventTypes } from '@/db/audit';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'User',
@@ -56,6 +70,7 @@ export default {
     unsubscribe: null,
     departments: [],
     feed: [],
+    displayName: '',
   }),
 
   components: {
@@ -67,8 +82,12 @@ export default {
     ...mapState(['user']),
     getUser() {
       if (this.$route.name === 'profile') return this.dataUser;
-      if (this.$route.name === 'user') return this.user;
+      if (this.$route.name === 'me') return this.user;
       return null;
+    },
+
+    dName() {
+      return this.getUser.name || this.getUser.displayName || this.getUser.id;
     },
   },
 
@@ -89,6 +108,8 @@ export default {
           this.dataUser = list;
         });
       }
+
+      this.displayName = this.dName;
 
       userProductsListener(this.getUser).then(list => {
         this.products = list;
@@ -123,6 +144,14 @@ export default {
           this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
         });
     },
+
+    submitDisplayName() {
+      this.getUser.ref
+        .update({
+          displayName: this.displayName,
+        })
+        .then(Toast.savedChanges);
+    },
   },
 
   beforeRouteEnter(to, from, next) {
@@ -139,7 +168,7 @@ export default {
     },
     $route(to) {
       if (to.name === 'profile') this.getData();
-      if (to.name === 'user') this.getData();
+      if (to.name === 'me') this.getData();
     },
   },
 
@@ -207,5 +236,10 @@ export default {
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
+}
+
+.form-login {
+  display: flex;
+  max-width: 400px;
 }
 </style>
