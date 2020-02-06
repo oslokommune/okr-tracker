@@ -20,30 +20,12 @@ import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import NewsfeedCard from './NewsfeedCard.vue';
 import { serializeDocument } from '../../../db/db';
+import { eventTypes } from '@/db/audit';
 
 export default {
   data: () => ({
     feed: [],
     unsubscribe: null,
-    eventTypes: [
-      'keyRes-update-progress',
-      'upload-profile-photo',
-      'update-department',
-      'create-key-result',
-      'update-key-result',
-      'archive-key-result',
-      'create-objective',
-      'update-objective',
-      'archive-objective',
-      'promoted-admin',
-      'demoted-admin',
-      'added-users',
-      'deleted-user',
-      'create-product',
-      'archive-product',
-      'update-product',
-      'update-product-image',
-    ],
   }),
 
   computed: {
@@ -75,7 +57,7 @@ export default {
           const newDocuments = await snapshot
             .docChanges()
             .filter(d => d.type === 'added')
-            .filter(d => !this.eventTypes.includes(d.event))
+            .filter(d => !eventTypes.includes(d.event))
             .filter(d => !this.feed.map(el => el.id).includes(d.doc.id));
 
           const newObjects = newDocuments

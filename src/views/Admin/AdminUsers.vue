@@ -53,6 +53,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import uniqid from 'uniqid';
 import { validateEmail } from '../../util/formValidation';
 import { db } from '../../config/firebaseConfig';
 import * as Toast from '../../util/toasts';
@@ -86,7 +87,7 @@ export default {
         return db
           .collection('users')
           .doc(email)
-          .set({ admin: false });
+          .set({ admin: false, slug: uniqid() });
       });
 
       Promise.all(promises)

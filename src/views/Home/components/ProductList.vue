@@ -32,7 +32,7 @@
                         :alt="product.name"
                       />
                       <span class="product__name">{{ product.name }}</span>
-                      <span class="product__edited edited" v-if="expandProducts">
+                      <span class="product__edited edited" v-show="expandProducts">
                         Sist oppdatert {{ getEdited(product) }}
                       </span>
                       <div class="progression">
@@ -46,7 +46,7 @@
                     </h3>
                   </router-link>
                   <transition name="expand">
-                    <product-details v-if="expandProducts" :product="product" class="details"></product-details>
+                    <product-details v-show="expandProducts" :product="product" class="details"></product-details>
                   </transition>
                 </li>
               </ul>

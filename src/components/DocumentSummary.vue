@@ -41,12 +41,14 @@
             </router-link>
           </template>
           <template v-else-if="type === 'product'">
-            <img
-              class="team__image"
-              :src="user.photoURL || '/placeholder-user.svg'"
-              :alt="user.displayName"
-              v-tooltip.auto="user.displayName || user.id"
-            />
+            <router-link :to="{ name: 'profile', params: { slug: user.slug } }">
+              <img
+                class="team__image"
+                :src="user.photoURL || '/placeholder-user.svg'"
+                :alt="user.displayName || user.email"
+                v-tooltip.auto="user.displayName || user.id"
+              />
+            </router-link>
           </template>
         </li>
       </ul>

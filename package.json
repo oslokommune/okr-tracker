@@ -18,6 +18,7 @@
     "date-fns": "^2.9.0",
     "firebase": "^7.7.0",
     "flatpickr": "^4.6.3",
+    "uniqid": "^5.2.0",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",
     "vue-click-outside": "^1.0.7",
