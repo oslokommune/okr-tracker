@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { departmentListener, isAdmin } from '../../util/db';
+import { departmentListener, isAdmin } from '../../db/db';
 import PageHeader from '../../components/PageHeader.vue';
 
 export default {
@@ -33,6 +33,7 @@ export default {
 
   data: () => ({
     department: null,
+    unsubscribe: null,
   }),
 
   async beforeRouteEnter(to, from, next) {
@@ -44,8 +45,12 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
+  },
+
   created() {
-    departmentListener.call(this, this.$route.params.slug);
+    this.unsubscribe = departmentListener.call(this, this.$route.params.slug);
   },
 };
 </script>

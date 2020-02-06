@@ -43,7 +43,8 @@ import { scaleLinear, format } from 'd3';
 import { mapState } from 'vuex';
 import ProgressBar from '../ProgressBar.vue';
 import { timeFromNow } from '../../util/utils';
-import { isTeamMemberOfProduct, registerNewProgress } from '../../util/db';
+import { isTeamMemberOfProduct } from '../../db/db';
+import Progress from '../../db/progressHandler';
 
 export default {
   name: 'TheKeyResult',
@@ -79,8 +80,8 @@ export default {
 
   methods: {
     async saveNewProgress() {
-      await registerNewProgress(this.keyres, +this.value, this.user.ref);
       this.editMode = false;
+      await Progress.addProgress(this.keyres, +this.value);
     },
   },
 
@@ -108,18 +109,29 @@ export default {
   position: relative;
   display: grid;
   grid-gap: 0 1rem;
-  grid-template-columns: 1fr auto 300px;
+
+  grid-template-areas:
+    'text text'
+    'edit bar';
+  grid-template-rows: auto auto;
+  grid-template-columns: auto 1fr;
   align-content: center;
   align-items: center;
   padding: 0.5rem 0;
   border-top: 1px solid $color-border;
+
+  @media screen and (min-width: 900px) {
+    grid-template-areas: 'text edit bar';
+    grid-template-rows: auto;
+    grid-template-columns: minmax(10em, 2fr) auto minmax(8em, 1fr);
+  }
 
   &:last-child {
     border-bottom: 1px solid $color-border;
   }
 
   &__text {
-    grid-row: 1;
+    grid-area: text;
     align-content: center;
     margin-left: -0.5rem;
     padding-right: 1rem;
@@ -127,7 +139,7 @@ export default {
   }
 
   &__toggle {
-    grid-column: 2;
+    grid-area: edit;
     align-self: center;
     color: $color-grey-300;
 
@@ -155,9 +167,9 @@ export default {
   }
 
   &__bar {
-    grid-row: 1 / span all;
-    grid-column: 3;
+    grid-area: bar;
     align-self: center;
+    max-width: 200px;
     height: 3.5rem;
     padding: 0.25rem 0;
   }

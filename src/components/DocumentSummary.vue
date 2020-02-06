@@ -99,14 +99,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   margin: 0.25rem;
   padding: 0.25rem;
   color: $color-grey-500;
   font-size: 1.5rem;
   background: $color-grey-100;
-  border-radius: 2.5rem;
+  border-radius: 2rem;
 }
 
 .team {
@@ -134,9 +134,9 @@ export default {
   }
 
   &__image {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 2.5rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 2rem;
   }
 }
 </style>

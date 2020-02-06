@@ -50,10 +50,8 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import { serializeDocument } from '../../util/db';
-import * as Toast from '../../util/toasts';
-import Audit from '../../util/audit/audit';
-import { errorHandler } from '../../util/utils';
+import { serializeDocument } from '../../db/db';
+import Keyresult from '../../db/keyresultHandler';
 
 export default {
   name: 'AddKeyres',
@@ -68,6 +66,7 @@ export default {
     showInfo: false,
     info: '',
     objectives: null,
+    unsubscribe: null,
   }),
 
   props: {
@@ -117,13 +116,17 @@ export default {
   },
 
   mounted() {
-    this.productref
+    this.unsubscribe = this.productref
       .collection('objectives')
       .where('quarter', '==', this.selectedQuarterName)
       .where('archived', '==', false)
       .onSnapshot(snapshot => {
         this.objectives = snapshot.docs.map(serializeDocument);
       });
+  },
+
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
   },
 
   methods: {
@@ -134,15 +137,7 @@ export default {
       } else {
         this.setSubmitInfo(true, false, '');
 
-        this.objective.ref
-          .collection('keyResults')
-          .add(this.newKeyRes)
-          .then(docref => {
-            Toast.addedKeyResult();
-            Audit.createKeyResult(docref, this.productref, this.objective.ref);
-            this.close();
-          })
-          .catch(errorHandler);
+        Keyresult.create(this.objective.ref, this.newKeyRes).then(this.close);
       }
     },
     setSubmitInfo(submit, showInfo, info) {

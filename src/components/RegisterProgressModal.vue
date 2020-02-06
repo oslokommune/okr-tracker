@@ -12,13 +12,7 @@
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>
-        <input
-          class="range"
-          type="range"
-          :min="keyResult.fromValue"
-          :max="keyResult.targetValue"
-          v-model="newValue"
-        />
+        <input class="range" type="range" :min="keyResult.fromValue" :max="keyResult.targetValue" v-model="newValue" />
         <label class="form-field">
           <span class="form-label">Verdi</span>
           <input type="number" v-model="newValue" />
@@ -44,8 +38,9 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument, registerNewProgress } from '../util/db';
+import { serializeDocument } from '../db/db';
 import ProgressBar from './ProgressBar.vue';
+import Progress from '../db/progressHandler';
 
 export default {
   name: 'RegisterProgressModal',
@@ -110,7 +105,7 @@ export default {
     },
 
     async save() {
-      await registerNewProgress(this.keyResult, +this.newValue, this.user.ref);
+      await Progress.addProgress(this.keyResult, +this.newValue, this.date);
 
       this.skip();
       if (this.index === 0) this.close();
@@ -271,7 +266,6 @@ export default {
       padding: 1em;
       font-size: inherit;
       border-left: 1px solid $color-border;
-      // outline: 1px solid green;
 
       &:first-child {
         border-left-color: transparent;

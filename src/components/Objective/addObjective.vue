@@ -41,6 +41,7 @@
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 import * as Toast from '../../util/toasts';
+import Audit from '../../db/audit';
 
 export default {
   name: 'AddObjective',
@@ -116,8 +117,9 @@ export default {
         this.productref
           .collection('objectives')
           .add(this.newObjective)
-          .then(() => {
+          .then(response => {
             this.$emit('close-menu');
+            Audit.createObjective(response, response.parent.parent);
             Toast.addedObjective(this.quarter.name);
           })
           .catch(this.$errorHandler);

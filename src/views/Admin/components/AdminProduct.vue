@@ -40,7 +40,7 @@
       <div class="form-field">
         <label>
           <span class="form-label">Mission statement</span>
-          <textarea rows="4" v-model="product.missionStatement"></textarea>
+          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true"></textarea>
         </label>
       </div>
 
@@ -51,19 +51,20 @@
           class="objective__select"
           label="displayName"
           multiple
-          v-model="product.team"
+          v-model="team"
           :options="users"
-          v-tooltip.bottom="`Klikk for å legge til`"
+          v-tooltip.right="`Klikk for å legge til`"
+          @input="dirty = true"
         >
           <template v-slot:option="option">
             {{ option.displayName || option.id }}
-            <span v-if="option.displayName !== option.id" v-tooltip="`Fjern bruker`">({{ option.id }})</span>
+            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
           </template>
         </v-select>
       </div>
     </div>
     <div class="section">
-      <button class="btn" @click="saveObject" v-tooltip.auto="`Lagre endringer`">Lagre</button>
+      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="`Lagre endringer`">Lagre</button>
       <button
         v-if="isAdmin()"
         class="btn btn--borderless"
@@ -81,13 +82,18 @@ import { mapState } from 'vuex';
 import { storage } from '../../../config/firebaseConfig';
 import slugify from '../../../util/slugify';
 import * as Toast from '../../../util/toasts';
+import Audit from '../../../db/audit';
 import CalloutArchivedRestore from '../../../components/Callouts/CalloutArchivedRestore.vue';
+import { serializeDocument } from '../../../db/db';
 
 export default {
   name: 'AdminProduct',
 
   data: () => ({
     product: null,
+    dirty: false,
+    team: [],
+    unsubscribe: null,
   }),
 
   computed: {
@@ -107,22 +113,29 @@ export default {
       this.product = null;
       ref
         .get()
-        .then(getProductfromRef.bind(this))
+        .then(this.getProductfromRef)
         .catch(this.$errorHandler);
     },
   },
 
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
+  },
+
   async mounted() {
-    this.docref.onSnapshot(getProductfromRef.bind(this));
+    this.unsubscribe = this.docref.onSnapshot(this.getProductfromRef);
   },
 
   methods: {
     async saveObject() {
-      const teamList = this.product.team;
+      const teamList = this.team;
       this.product.team = teamList.map(d => d.ref);
       this.docref
         .update({ edited: new Date(), editedBy: this.user.ref, ...this.product })
         .then(Toast.savedChanges)
+        .then(() => {
+          Audit.updateProduct(this.docref);
+        })
         .catch(this.$errorHandler);
       this.product.team = teamList;
     },
@@ -131,10 +144,29 @@ export default {
       return this.user && this.user.admin;
     },
 
+    async getProductfromRef(snapshot) {
+      this.product = snapshot.data();
+
+      const team = this.product.team || [];
+      const promises = team.map(d => d.get());
+      const userRefs = await Promise.all(promises).catch(this.$errorHandler);
+
+      this.team = userRefs
+        .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))
+        .map(user => {
+          user.displayName = user.displayName || user.id;
+          return user;
+        });
+    },
+
     async deleteObject() {
       await this.docref
         .update({ edited: new Date(), editedBy: this.user.ref, archived: true })
-        .then(Toast.deletedRegret)
+        .then(async () => {
+          const doc = await this.docref.get().then(serializeDocument);
+          Toast.deletedRegret(doc);
+          Audit.archiveProduct(this.docref);
+        })
         .catch(this.$errorHandler);
 
       this.product = null;
@@ -147,6 +179,7 @@ export default {
     },
 
     updateSlug() {
+      this.dirty = true;
       this.product.slug = slugify(this.product.name);
     },
 
@@ -163,6 +196,7 @@ export default {
       const photoURL = await snapshot.ref.getDownloadURL();
       await this.docref.update({ photoURL }).catch(this.$errorHandler);
 
+      Audit.updateProductImage(this.docref);
       Toast.savedChanges();
 
       this.product.photoURL = photoURL;
@@ -170,19 +204,4 @@ export default {
     },
   },
 };
-
-async function getProductfromRef(snapshot) {
-  this.product = snapshot.data();
-
-  const team = this.product.team || [];
-  const promises = team.map(d => d.get());
-  const userRefs = await Promise.all(promises).catch(this.$errorHandler);
-
-  this.product.team = userRefs
-    .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))
-    .map(user => {
-      user.displayName = user.displayName || user.id;
-      return user;
-    });
-}
 </script>

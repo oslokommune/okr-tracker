@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { serializeDocument } from '../util/db';
+import { serializeDocument } from '../db/db';
 import { db } from '../config/firebaseConfig';
 import * as Toast from '../util/toasts';
 

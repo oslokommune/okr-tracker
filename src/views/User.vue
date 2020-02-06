@@ -26,19 +26,9 @@
         <section class="section">
           <h2 class="title title-2">Audit</h2>
           <div class="grid-system">
-            <template v-for="event in feed">
-              <div v-show="event.event === 'keyRes-update-progress'" :key="event.id + 'updatedkeyres'">
-                <UpdatedKeyres class="grid-system__card" :event-data="event"></UpdatedKeyres>
-              </div>
-
-              <div v-show="event.event === 'upload-profile-photo'" :key="event.id + 'uploadprofilephoto'">
-                <UploadProfilePhoto class="grid-system__card" :event-data="event"></UploadProfilePhoto>
-              </div>
-
-              <div v-show="event.event === 'create-key-result'" :key="event.id + 'newkeyres'">
-                <CreateNewKeyResult class="grid-system__card" :event-data="event"></CreateNewKeyResult>
-              </div>
-            </template>
+            <div v-for="event in feed" :key="event.id">
+              <NewsfeedCard :event-data="event" />
+            </div>
           </div>
         </section>
       </main>
@@ -47,11 +37,9 @@
 </template>
 
 <script>
-import { isDashboardUser, findUser, userProductsListener, getAllDepartments, serializeDocument } from '../util/db';
+import { isDashboardUser, findUser, userProductsListener, getAllDepartments, serializeDocument } from '@/db/db';
 import PageHeader from '../components/PageHeader.vue';
-import UpdatedKeyres from './Home/components/NewsfeedUpdatedKeyres.vue';
-import UploadProfilePhoto from './Home/components/NewsfeedUpdatedProfilePhoto.vue';
-import CreateNewKeyResult from './Home/components/NewsfeedCreateKeyResult.vue';
+import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
 import { db } from '@/config/firebaseConfig';
 
 export default {
@@ -66,9 +54,7 @@ export default {
 
   components: {
     PageHeader,
-    UpdatedKeyres,
-    UploadProfilePhoto,
-    CreateNewKeyResult,
+    NewsfeedCard,
   },
 
   methods: {

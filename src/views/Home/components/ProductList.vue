@@ -66,7 +66,7 @@ import ProductDetails from './ProductDetails.vue';
 
 export default {
   data: () => ({
-    expandProducts: true,
+    expandProducts: false,
   }),
 
   computed: {
@@ -124,6 +124,7 @@ export default {
   border-radius: 3px;
 
   &__bar {
+    width: 0%;
     height: 100%;
     background: $color-purple;
     border-radius: 3px;
@@ -186,6 +187,7 @@ export default {
 
 .toggle__wrapper {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   margin: 1rem 0 -1rem;
 }

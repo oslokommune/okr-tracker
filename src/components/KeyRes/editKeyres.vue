@@ -41,7 +41,7 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import * as Toast from '../../util/toasts';
+import KeyResult from '../../db/keyresultHandler';
 
 export default {
   name: 'EditKeyres',
@@ -101,22 +101,13 @@ export default {
         return;
       }
 
+      await KeyResult.update(this.keyres.ref, this.updatedKeyRes);
       this.setSubmitInfo(true, false, '');
-
-      await this.keyres.ref
-        .update(this.updatedKeyRes)
-        .then(Toast.savedChanges)
-        .catch(this.$errorHandler);
-
       this.dirty = false;
     },
 
     async deleteObject() {
-      await this.keyres.ref
-        .update({ archived: true })
-        .then(Toast.deletedRegret.bind(null, { ref: this.keyres.ref }))
-        .catch(this.$errorHandler);
-
+      await KeyResult.archive(this.keyres.ref);
       this.$emit('archived');
     },
 

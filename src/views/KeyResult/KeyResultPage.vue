@@ -114,9 +114,9 @@ import { mapState, mapActions } from 'vuex';
 import { format } from 'date-fns';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
-import { serializeDocument, isTeamMemberOfProduct, registerNewProgress, updateCurrentValue } from '../../util/db';
+import { serializeDocument, isTeamMemberOfProduct } from '../../db/db';
+import Progress from '../../db/progressHandler';
 import PageHeader from '../../components/PageHeader.vue';
-import * as Toast from '../../util/toasts';
 import Linechart from '../../util/linechart';
 import { timeFromNow } from '../../util/utils';
 import 'flatpickr/dist/flatpickr.css';
@@ -244,18 +244,11 @@ export default {
     ...mapActions(['watchKeyResult']),
 
     deleteValue(doc) {
-      if (!this.hasEditPermissions) return;
-      if (!doc || !doc.ref) return;
-
-      doc.ref
-        .delete()
-        .then(Toast.deleted)
-        .then(updateCurrentValue.bind(null, this.key_result, this.user.ref))
-        .catch(this.$errorHandler);
+      Progress.deleteProgress(doc, this.key_result);
     },
 
-    async addValue() {
-      await registerNewProgress(this.key_result, +this.value, this.user.ref);
+    addValue() {
+      Progress.addProgress(this.key_result, +this.value, this.date);
     },
 
     async watchData() {

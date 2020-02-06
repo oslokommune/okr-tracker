@@ -3,41 +3,43 @@
     <h2 class="title title-2">Administrer produktområde</h2>
 
     <div class="section">
-      <label class="form-field">
-        <span class="form-label">Navn</span>
-        <input type="text" v-model="department.name" @input="updateSlug" />
-      </label>
+      <div class="form-group">
+        <label class="form-field">
+          <span class="form-label">Navn</span>
+          <input type="text" v-model="department.name" @input="updateSlug" />
+        </label>
 
-      <label>
-        <span class="form-group">Slug</span>
-        <input type="text" v-model="department.slug" disabled />
-      </label>
+        <label>
+          <span class="form-group">Slug</span>
+          <input type="text" v-model="department.slug" disabled />
+        </label>
 
-      <label class="form-field">
-        <span class="form-label">Bilde</span>
-        <img v-if="department.photoURL" :src="department.photoURL" />
+        <label class="form-field">
+          <span class="form-label">Bilde</span>
+          <img v-if="department.photoURL" :src="department.photoURL" />
 
-        <image-uploader
-          :max-width="250"
-          :max-height="250"
-          :quality="0.6"
-          :auto-rotate="true"
-          output-format="blob"
-          accept="image/*"
-          do-not-resize="['gif', 'svg']"
-          :preview="false"
-          @input="setImage"
-          @onUpload="uploadPhoto"
-        ></image-uploader>
-      </label>
+          <image-uploader
+            :max-width="250"
+            :max-height="250"
+            :quality="0.6"
+            :auto-rotate="true"
+            output-format="blob"
+            accept="image/*"
+            do-not-resize="['gif', 'svg']"
+            :preview="false"
+            @input="setImage"
+            @onUpload="uploadPhoto"
+          ></image-uploader>
+        </label>
 
-      <label class="form-field">
-        <span class="form-label">Mission statement</span>
-        <textarea rows="4" v-model="department.missionStatement"></textarea>
-      </label>
+        <label class="form-field">
+          <span class="form-label">Mission statement</span>
+          <textarea rows="4" v-model="department.missionStatement" @input="dirty = true"></textarea>
+        </label>
+      </div>
     </div>
 
-    <button class="btn" @click="saveObject">Lagre</button>
+    <button class="btn" :disabled="!dirty" @click="saveObject">Lagre</button>
     <button class="btn btn--borderless" @click="deleteObject">Slett</button>
   </div>
 </template>
@@ -46,6 +48,7 @@
 import { mapState } from 'vuex';
 import { storage } from '../../../config/firebaseConfig';
 import * as Toast from '../../../util/toasts';
+import Audit from '../../../db/audit';
 import slugify from '../../../util/slugify';
 
 export default {
@@ -54,6 +57,7 @@ export default {
   data: () => ({
     department: null,
     file: null,
+    dirty: false,
   }),
   props: {
     docref: { type: Object, required: true },
@@ -83,7 +87,11 @@ export default {
     saveObject() {
       this.docref
         .update({ edited: new Date(), editedBy: this.user.ref, ...this.department })
-        .then(Toast.savedChanges)
+        .then(() => {
+          this.dirty = false;
+          Audit.updateDepartment(this.docref);
+          Toast.savedChanges();
+        })
         .catch(this.$errorHandler);
     },
     deleteObject() {
@@ -119,6 +127,7 @@ export default {
     },
 
     updateSlug() {
+      this.dirty = true;
       this.department.slug = slugify(this.department.name);
     },
   },

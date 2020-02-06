@@ -19,22 +19,24 @@
         </div>
       </div>
       <div class="whitelist__body">
-        <div class="whitelist__row" v-for="user in users" :key="user.id">
-          <div class="whitelist__cell whitelist__cell--email">{{ user.id }}</div>
-          <div class="whitelist__cell whitelist__cell--name">{{ user.displayName }}</div>
+        <div class="whitelist__row" v-for="u in users" :key="u.id">
+          <div class="whitelist__cell whitelist__cell--email">{{ u.id }}</div>
+          <div class="whitelist__cell whitelist__cell--name">{{ u.displayName }}</div>
           <div class="whitelist__cell whitelist__cell--admin">
             <label class="toggle">
               <input
                 class="toggle__input"
                 type="checkbox"
-                :checked="user.admin"
-                @change="toggleAdmin(user, $event.target.checked)"
+                :checked="u.admin"
+                @change="toggleAdmin(u, $event.target.checked)"
               />
               <span class="toggle__switch"></span>
             </label>
           </div>
           <div class="whitelist__cell whitelist__cell--action">
-            <button class="btn btn--borderless" @click="deleteUser(user)">Slett</button>
+            <button v-if="user" :disabled="u.id === user.email" class="btn btn--borderless" @click="deleteUser(u)">
+              Slett
+            </button>
           </div>
         </div>
       </div>
@@ -42,7 +44,9 @@
 
     <h3 class="title title-3">Legg til e-post-adresser</h3>
     <p>Én adresse per rad</p>
-    <textarea rows="10" v-model="addUserList"></textarea>
+    <div class="form-group">
+      <textarea rows="10" v-model="addUserList"></textarea>
+    </div>
     <button @click="addEmails">Legg til</button>
   </div>
 </template>
@@ -53,6 +57,7 @@ import uniqid from 'uniqid';
 import { validateEmail } from '../../util/formValidation';
 import { db } from '../../config/firebaseConfig';
 import * as Toast from '../../util/toasts';
+import Audit from '../../db/audit';
 
 export default {
   name: 'AdminUsers',
@@ -62,7 +67,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['users']),
+    ...mapState(['user', 'users']),
   },
 
   methods: {
@@ -73,7 +78,12 @@ export default {
         .filter(Boolean)
         .filter(validateEmail);
 
-      const promises = list.map(email => {
+      if (!list.length) {
+        Toast.show('Ugyldig e-postadresse');
+        return;
+      }
+
+      const promises = list.map(async email => {
         return db
           .collection('users')
           .doc(email)
@@ -83,15 +93,24 @@ export default {
       Promise.all(promises)
         .then(() => {
           Toast.successFullyAddedUsers(promises.length);
+          Audit.addUsers(list);
           this.addUserList = '';
         })
         .catch(this.$errorHandler);
     },
 
     deleteUser(user) {
+      if (user.id === this.user.id) {
+        Toast.show('Kan ikke slette deg selv');
+        return;
+      }
+
       user.ref
         .delete()
-        .then(Toast.deletedUser)
+        .then(() => {
+          Audit.deleteUser(user.id);
+          Toast.deletedUser(user);
+        })
         .catch(this.$errorHandler);
     },
 
@@ -100,6 +119,7 @@ export default {
         .update({ admin: value })
         .then(() => {
           Toast.toggleAdmin(user, value);
+          Audit.toggleAdmin(user.id, value);
         })
         .catch(this.$errorHandler);
     },
@@ -113,13 +133,18 @@ export default {
 .whitelist {
   $w: &;
 
-  max-height: 50vh;
   margin-bottom: 3rem;
-  overflow-y: scroll;
+  overflow: hidden;
+  border-bottom: 1px solid $color-border;
 
   &__body {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-width: 800px;
+    max-height: 50vh;
+    overflow-x: auto;
+    overflow-y: scroll;
   }
 
   &__row {
@@ -133,6 +158,8 @@ export default {
   }
 
   &__header {
+    min-width: 800px;
+    overflow-x: auto;
     font-weight: 500;
     #{$w}__row {
       border: none;
@@ -146,19 +173,22 @@ export default {
     padding: 0.25rem 0.5rem;
 
     &--admin {
-      flex-basis: 10rem;
+      flex-basis: 5rem;
+      flex-grow: 0;
+      margin-left: auto;
     }
 
     &--email {
-      flex-basis: 50%;
+      flex-basis: 40%;
     }
 
     &--name {
-      flex-grow: 1;
+      flex-basis: auto;
     }
 
     &--action {
       flex-basis: 100px;
+      flex-grow: 0;
     }
   }
 }

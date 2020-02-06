@@ -12,9 +12,11 @@
           v-click-outside="closeMenu"
           v-tooltip.left="isOpen ? `Lukk meny` : `Åpne meny`"
         >
-          <a class="usernav__name" @click="isOpen = !isOpen">
+          <a class="usernav__name" @click="isOpen = !isOpen" @keydown.enter="isOpen = !isOpen" tabindex="0">
             <img class="usernav__photo" :src="user.photoURL || '/placeholder-user.svg'" :alt="displayName" />
-            {{ displayName }}
+            <span class="usernav__display-name">
+              {{ displayName }}
+            </span>
           </a>
           <div class="usernav__menu" v-if="isOpen" @click="isOpen = false">
             <router-link
@@ -29,12 +31,23 @@
             <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'profile' }"
               ><i class="fa fa-fw fa-user"></i>Endre profil</router-link
             >
-            <span class="menu-item" @click="logout"><i class="fa fa-fw fa-sign-out"></i>Logg ut</span>
+            <span class="menu-item" @click="logout" @keydown.enter="logout" tabindex="0"
+              ><i class="fa fa-fw fa-sign-out"></i>Logg ut</span
+            >
           </div>
         </div>
-
-        <!-- <router-link class="menu-item" v-if="user" :to="{ name: 'profile' }">{{ user.displayName }}</router-link> -->
-        <!--  -->
+        <div class="newsfeed-toggle">
+          <button
+            class="btn btn--borderless"
+            :class="{ showNewsfeed: showNewsfeed }"
+            @click="set_show_newsfeed(!showNewsfeed)"
+          >
+            <i class="fa fa-stream"></i>
+            <div class="newsfeed-toggle__label">
+              Aktivitet
+            </div>
+          </button>
+        </div>
       </nav>
     </div>
   </header>
@@ -42,11 +55,11 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { auth } from '../config/firebaseConfig';
 import { dashboardUserName } from '../config/applicationConfig';
-import { isDashboardUser } from '../util/db';
-import Audit from '../util/audit/audit';
+import { isDashboardUser } from '../db/db';
+import Audit from '../db/audit';
 
 export default {
   data: () => ({
@@ -61,7 +74,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'showNewsfeed']),
 
     displayName() {
       return this.user.displayName || dashboardUserName;
@@ -69,6 +82,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['set_show_newsfeed']),
     closeMenu() {
       this.isOpen = false;
     },
@@ -107,6 +121,13 @@ export default {
     transform: rotate(180deg);
   }
 
+  &__display-name {
+    display: none;
+    @media screen and (min-width: 440px) {
+      display: block;
+    }
+  }
+
   &__name {
     display: block;
     display: flex;
@@ -135,8 +156,12 @@ export default {
   &__photo {
     width: 2rem;
     height: 2rem;
-    margin-right: 1rem;
+    margin-right: 0;
     border-radius: 1rem;
+
+    @media screen and (min-width: 440px) {
+      margin-right: 1rem;
+    }
   }
 
   &__menu {
@@ -146,13 +171,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    // min-width: 100%;
     width: 12rem;
-    overflow: hidden;
     background: white;
     border: 1px solid $color-bg;
     border-radius: 1rem;
-    border-top-right-radius: 0;
     box-shadow: 0 2px 4px rgba($color-grey-400, 0.5);
   }
 
@@ -163,7 +185,6 @@ export default {
     color: $color-link;
     color: $color-purple !important;
     font-weight: 500;
-    // text-align: right;
     border-top: 1px solid $color-grey-50;
     cursor: pointer;
     user-select: none;
@@ -175,12 +196,15 @@ export default {
 
     &:first-child {
       border-top: none;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
     }
 
     &:last-child {
       background: $color-bg;
-      // border-bottom: none;
       border-top: 1px solid $color-grey-300;
+      border-bottom-right-radius: 1rem;
+      border-bottom-left-radius: 1rem;
       &:hover {
         background: darken($color-bg, 3%);
       }
@@ -212,6 +236,8 @@ export default {
   }
 
   .right {
+    display: flex;
+    align-items: center;
     margin-left: auto;
   }
 
@@ -219,6 +245,36 @@ export default {
     display: inline-block;
     margin: 0 0.25rem;
     padding: 0.55rem 0.75rem;
+  }
+}
+
+.newsfeed-toggle {
+  @media screen and (min-width: 540px) {
+    margin-left: 1rem;
+  }
+
+  .fa {
+    margin: 0;
+    padding: 0;
+    @media screen and (min-width: 540px) {
+      padding-right: 0.5rem;
+    }
+  }
+
+  &__label {
+    display: none;
+    @media screen and (min-width: 540px) {
+      display: block;
+    }
+  }
+
+  & > .btn {
+    border-radius: 1rem;
+  }
+
+  & > .showNewsfeed {
+    background: $color-bg;
+    box-shadow: inset 0 0.1rem 0.15rem rgba(black, 0.25);
   }
 }
 </style>
