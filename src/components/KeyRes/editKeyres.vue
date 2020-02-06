@@ -1,181 +1,114 @@
 <template>
-  <div class="edit-keyres content">
-    <h3 class="title-3">Endre detaljer</h3>
-    <span class="form-label">Tilknyttet mål</span>
-    <v-select
-      class="form-group objective__select"
-      :class="{ 'form-group--error': $v.objective.$error }"
-      label="objective_title"
-      v-model="$v.objective.$model"
-      :value="objective"
-      :options="productObject.children"
-      @input="setSelectedObjective"
-    ></v-select>
-    <div class="form-group--error" v-if="$v.objective.$error">Kan ikke være tom</div>
+  <div class="edit-keyres">
+    <h3 class="title-3">Endre nøkkelresultat</h3>
+    <hr />
 
-    <label class="form-group" :class="{ 'form-group--error': $v.key_result.$error }">
-      <span class="form-label">Beskrivelse</span>
-      <textarea @input="edited = true" v-model="$v.key_result.$model" rows="4"></textarea>
+    <label class="form-field" :class="{ 'form-field--error': $v.keyres.description.$error }">
+      <span class="form-label">Beskriv nøkkelresultatet</span>
+      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="4"></textarea>
     </label>
-    <div class="form-group--error" v-if="$v.key_result.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.keyres.description.$error">Kan ikke være tom</div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.start_value.$error }">
-      <span class="form-label">Startverdi</span>
-      <input @input="edited = true" type="number" v-model="$v.start_value.$model" />
-    </label>
-    <div class="form-group--error" v-if="$v.start_value.$error">Kan ikke være tom</div>
+    <div class="form-row">
+      <label class="form-field" :class="{ 'form-field--error': $v.keyres.startValue.$error }">
+        <span class="form-label">Startverdi</span>
+        <input @input="dirty = true" type="number" v-model="$v.keyres.startValue.$model" />
+      </label>
+      <div class="form-field--error" v-if="$v.keyres.startValue.$error">Kan ikke være tom</div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.target_value.$error }">
-      <span class="form-label">Målverdi</span>
-      <input @input="edited = true" type="number" v-model="$v.target_value.$model" />
-    </label>
-    <div class="form-group--error" v-if="$v.target_value.$error">Kan ikke være tom</div>
+      <label class="form-field" :class="{ 'form-field--error': $v.keyres.targetValue.$error }">
+        <span class="form-label">Målverdi</span>
+        <input @input="dirty = true" type="number" v-model="$v.keyres.targetValue.$model" />
+      </label>
+      <div class="form-field--error" v-if="$v.keyres.targetValue.$error">Kan ikke være tom</div>
+    </div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.unit.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.keyres.unit.$error }">
       <span class="form-label">Måleenhet</span>
-      <input @input="edited = true" type="text" v-model="$v.unit.$model" />
+      <input @input="dirty = true" type="text" v-model="$v.keyres.unit.$model" />
     </label>
-    <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.keyres.unit.$error">Kan ikke være tom</div>
 
-    <button :disabled="!edited || submit" class="btn" @click="send">Oppdater</button>
+    <hr />
+
+    <button :disabled="!dirty" class="btn" @click="send">Lagre endringer</button>
     <button class="btn btn--danger" @click="deleteObject">Slett nøkkelresultat</button>
+
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
+import KeyResult from '../../db/keyresultHandler';
 
 export default {
+  name: 'EditKeyres',
+
   data: () => ({
-    objective_id: null,
-    start_value: 0,
-    target_value: 100,
-    target_type: 'greater_than',
-    key_result: '',
-    unit: '',
     submit: false,
     showInfo: false,
     info: '',
-    edited: false,
+    dirty: false,
     objective: null,
   }),
 
-  mounted() {
-    this.objective_id = this.keyResObject.objective_id;
-    this.start_value = this.keyResObject.start_value;
-    this.target_value = this.keyResObject.target_value;
-    this.target_type = this.keyResObject.target_type;
-    this.key_result = this.keyResObject.key_result;
-    this.unit = this.keyResObject.unit;
-    this.objective = this.getObjective;
-  },
-
   validations: {
-    start_value: {
-      required,
-    },
-    target_value: {
-      required,
-    },
-    unit: {
-      required,
-    },
-    key_result: {
-      required,
-    },
-    objective: {
-      required,
+    keyres: {
+      startValue: {
+        required,
+      },
+      targetValue: {
+        required,
+      },
+      unit: {
+        required,
+      },
+      description: {
+        required,
+      },
     },
   },
 
   props: {
-    keyResObject: {
-      type: Object,
-      required: true,
-    },
-    productObject: {
+    keyres: {
       type: Object,
       required: true,
     },
   },
 
   computed: {
-    ...mapState(['chosenQuarter']),
-    ...mapGetters(['getProductWithDistinctObjectives', 'getObjectById']),
-
-    product() {
-      return this.getProductWithDistinctObjectives(this.keyResObject.id, this.chosenQuarter);
-    },
-
-    getObjective() {
-      return this.getObjectById(this.keyResObject.objective_id);
-    },
-
+    ...mapState(['user']),
     updatedKeyRes() {
       return {
-        id: this.keyResObject.id,
-        rowIndex: this.keyResObject.rowIndex,
-        objective_id: this.objective_id,
-        key_result: this.key_result,
-        start_value: this.start_value,
-        target_value: this.target_value,
-        target_type: this.target_type,
-        unit: this.unit,
+        description: this.keyres.description,
+        edited: new Date(),
+        editedBy: this.user.ref,
+        startValue: +this.keyres.startValue,
+        targetValue: +this.keyres.targetValue,
+        unit: this.keyres.unit,
       };
     },
   },
 
   methods: {
-    ...mapActions(['getAllData', 'updateKeyRes', 'deleteKeyRes']),
-
-    send() {
+    async send() {
       this.$v.$touch();
+
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
-      } else {
-        this.setSubmitInfo(true, false, '');
-        this.updateKeyRes(this.updatedKeyRes)
-          .then(() => {
-            this.setSubmitInfo(false, false, '');
-          })
-          .catch(e => {
-            this.setSubmitInfo(false, true, 'Noe gikk galt');
-            throw new Error(e);
-          });
+        return;
       }
+
+      await KeyResult.update(this.keyres.ref, this.updatedKeyRes);
+      this.setSubmitInfo(true, false, '');
+      this.dirty = false;
     },
 
-    deleteObject() {
-      this.$router.push({ name: 'edit-product-keyres' });
-      this.deleteKeyRes(this.keyResObject).then(() => {
-        this.$toasted.show(`Slettet nøkkelresultat`, {
-          action: [
-            {
-              text: 'Angre',
-              onClick: (e, toastObject) => {
-                this.updateKeyRes(this.keyResObject).then(() => {
-                  this.getAllData();
-                  toastObject.goAway(0);
-                });
-              },
-            },
-            {
-              text: 'Lukk',
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
-      });
-    },
-
-    setSelectedObjective(objective) {
-      this.$v.objective.$touch();
-      this.edited = true;
-      this.objective_id = objective.id;
+    async deleteObject() {
+      await KeyResult.archive(this.keyres.ref);
+      this.$emit('archived');
     },
 
     setSubmitInfo(submit, showInfo, info) {
@@ -192,6 +125,6 @@ export default {
 
 .edit-keyres {
   width: 100%;
-  margin-right: 1rem;
+  margin-top: -1.5rem;
 }
 </style>

@@ -2,49 +2,69 @@
   <div class="popout">
     <span class="form-label">Kvartal</span>
     <v-select
-      class="form-group"
-      :class="{ 'form-group--error': $v.quarter.$error }"
-      :value="quarter"
-      :options="availableQuarters"
-      @input="setSelectedQuarter"
+      class="form-field"
+      :class="{ 'form-field--error': $v.quarter.$error }"
+      label="name"
+      :options="quarters"
+      v-model="quarter"
     ></v-select>
-    <div class="form-group--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
-    <label class="form-group" :class="{ 'form-group--error': $v.title.$error }">
+    <div class="form-field--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+
+    <div class="title title-3">
+      <i :class="`fas fa-${icon}`"></i>
+    </div>
+    <span class="form-label">Ikon</span>
+    <v-select class="form-field" :options="icons" v-model="icon" v-tooltip.bottom="`Søk og velg ikon fra listen`">
+      <template v-slot:option="option">
+        <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+        <span>{{ option.label }}</span>
+      </template>
+    </v-select>
+
+    <label class="form-field" :class="{ 'form-field--error': $v.title.$error }">
       <span class="form-label">Tittel</span>
       <input type="text" v-model="$v.title.$model" />
     </label>
-    <div class="form-group--error" v-if="$v.title.$error">Kan ikke være tom</div>
-    <label class="form-group" :class="{ 'form-group--error': $v.body.$error }">
+    <div class="form-field--error" v-if="$v.title.$error">Kan ikke være tom</div>
+    <label class="form-field" :class="{ 'form-field--error': $v.body.$error }">
       <span class="form-label">Beskrivelse</span>
       <textarea v-model="$v.body.$model" rows="4"></textarea>
     </label>
-    <div class="form-group--error" v-if="$v.body.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.body.$error">Kan ikke være tom</div>
     <button :disabled="submit" class="btn" @click="send">Legg til</button>
-    <button class="btn" @click="$emit('close-menu', false)">Lukk</button>
+    <button class="btn btn--borderless" @click="$emit('close-menu')">Lukk</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
 <script>
-import { addQuarters, getYear, getQuarter } from 'date-fns';
 import { required } from 'vuelidate/lib/validators';
-import uniqid from 'uniqid';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
+import * as Toast from '../../util/toasts';
+import Audit from '../../db/audit';
 
 export default {
+  name: 'AddObjective',
+
   data: () => ({
     title: '',
-    quarter: '',
+    icon: 'trophy',
     body: '',
     submit: false,
     showInfo: false,
     info: '',
+    quarter: null,
   }),
 
   props: {
-    productId: {
-      type: String,
+    productref: {
+      type: Object,
       required: true,
+    },
+    selectedQuarter: {
+      type: Object,
+      required: false,
+      default: null,
     },
   },
 
@@ -61,47 +81,27 @@ export default {
   },
 
   mounted() {
-    this.quarter = this.chosenQuarter;
+    const [firstQuarter] = this.quarters;
+    this.quarter = firstQuarter;
   },
 
   computed: {
-    ...mapGetters(['products']),
-    ...mapState(['chosenQuarter']),
+    ...mapState(['user', 'quarters', 'icons']),
 
     newObjective() {
       return {
-        id: uniqid(),
-        objective_title: this.title,
-        objective_body: this.body,
-        quarter: this.quarter,
-        product_id: this.productId,
+        name: this.title,
+        description: this.body,
+        icon: this.icon || 'trophy',
+        quarter: this.quarter.name,
+        archived: false,
+        created: new Date(),
+        createdBy: this.user.ref,
       };
-    },
-
-    availableQuarters() {
-      let from = new Date(2019, 1, 1);
-      const to = new Date();
-      const quarters = [];
-      // TODO: write less shit code
-      while (to > from) {
-        const year = getYear(from);
-        const quarter = getQuarter(from);
-
-        quarters.push(`${year} Q${quarter}`);
-        from = addQuarters(from, 1);
-      }
-
-      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-      from = addQuarters(from, 1);
-      quarters.push(`${getYear(from)} Q${getQuarter(from)}`);
-
-      return quarters;
     },
   },
 
   methods: {
-    ...mapActions(['addObjective', 'addObject']),
-
     setSelectedQuarter(value) {
       this.$v.quarter.$touch();
       this.quarter = value;
@@ -113,18 +113,16 @@ export default {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.addObjective(this.newObjective)
-          .then(() => {
-            this.setSubmitInfo(false, false, '');
-            this.$emit('close-menu', false);
-            this.title = '';
-            this.body = '';
-            this.quarter = '';
+
+        this.productref
+          .collection('objectives')
+          .add(this.newObjective)
+          .then(response => {
+            this.$emit('close-menu');
+            Audit.createObjective(response, response.parent.parent);
+            Toast.addedObjective(this.quarter.name);
           })
-          .catch(e => {
-            this.setSubmitInfo(false, true, 'Noe gikk galt');
-            throw new Error(e);
-          });
+          .catch(this.$errorHandler);
       }
     },
 

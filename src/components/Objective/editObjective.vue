@@ -1,41 +1,50 @@
 <template>
-  <div class="item" :class="{ loading }">
-    <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_title.$error }">
+  <div class="edit-objective" :class="{ loading }" v-if="objective">
+    <h3 class="title-3">Endre mål</h3>
+    <hr />
+    <label class="form-field" :class="{ 'form-field--error': $v.objective.name.$error }">
       <span class="form-label">Tittel</span>
-      <input @input="objective.edited = true" type="text" v-model.trim="$v.objective.objective_title.$model" />
+      <input @input="dirty = true" type="text" v-model.trim="$v.objective.name.$model" />
     </label>
-    <div class="form-group--error" v-if="$v.objective.objective_title.$error">Kan ikke være tom</div>
-    <label class="form-group" :class="{ 'form-group--error': $v.objective.objective_body.$error }">
-      <span class="form-label">Beskrivelse</span>
-      <textarea @input="objective.edited = true" v-model.trim="$v.objective.objective_body.$model" rows="4"></textarea>
-    </label>
-    <div class="form-group--error" v-if="$v.objective.objective_body.$error">Kan ikke være tom</div>
-    <span class="form-label">Kvartal</span>
-    <v-select
-      :class="{ 'form-group--error': $v.quarter.$error }"
-      class="form-group"
-      :value="quarter"
-      :options="quarters"
-      @input="setSelectedQuarter"
-    ></v-select>
-
-    <div class="item__footer">
-      <button class="btn" :disabled="!objective.edited || submit" @click="updateObj(objective)">
-        Lagre endringer
-      </button>
-      <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
+    <div class="form-field--error" v-if="$v.objective.name.$error">Kan ikke være tom</div>
+    <div class="title title-3">
+      <i :class="`fas fa-${objective.icon}`"></i>
     </div>
+    <span class="form-label">Ikon</span>
+    <v-select class="form-field" :options="icons" v-model="objective.icon" @input="dirty = true">
+      <template v-slot:option="option">
+        <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+        <span>{{ option.label }}</span>
+      </template>
+    </v-select>
+
+    <label class="form-field" :class="{ 'form-field--error': $v.objective.description.$error }">
+      <span class="form-label">Beskrivelse</span>
+      <textarea @input="dirty = true" v-model.trim="$v.objective.description.$model" rows="4"></textarea>
+    </label>
+
+    <hr />
+    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">
+      Lagre endringer
+    </button>
+    <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
+
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
+import * as Toast from '../../util/toasts';
+import Audit from '../../db/audit';
+import { serializeDocument } from '../../db/db';
 
 export default {
+  name: 'EditObjective',
+
   props: {
-    objective: {
+    objectiveRef: {
       type: Object,
       required: true,
     },
@@ -43,103 +52,93 @@ export default {
 
   validations: {
     objective: {
-      objective_title: {
+      name: {
         required,
       },
-      objective_body: {
+      description: {
         required,
       },
-    },
-    quarter: {
-      required,
     },
   },
 
   data: () => ({
-    quarter: '',
     submit: false,
     showInfo: false,
     info: '',
     loading: false,
+    objective: null,
+    dirty: false,
+    unsubscribe: null,
   }),
-
-  mounted() {
-    if (this.objective === undefined) return;
-    this.quarter = this.objective.quarter;
+  computed: {
+    ...mapState(['user', 'icons']),
   },
 
-  computed: {
-    ...mapGetters(['getDistinctQuarters']),
+  created() {
+    if (this.objectiveRef === undefined) return;
 
-    quarters() {
-      return this.getDistinctQuarters(this.$route.params.id);
+    this.unsubscribe = this.objectiveRef.ref.onSnapshot(snapshot => {
+      this.objective = serializeDocument(snapshot);
+    });
+  },
+
+  watch: {
+    async objectiveRef(objective) {
+      this.objective = await objective.ref
+        .get()
+        .then(serializeDocument)
+        .catch(this.$errorHandler);
+
+      this.unsubscribe = objective.ref.onSnapshot(snapshot => {
+        this.objective = serializeDocument(snapshot);
+      });
     },
+  },
+
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
   },
 
   methods: {
-    ...mapActions(['updateObjective', 'deleteObjective', 'updateObject', 'deleteObject', 'getAllData']),
-
-    setSelectedQuarter(value) {
-      this.$v.quarter.$touch();
-      this.objective.edited = true;
-      this.quarter = value;
-    },
-
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.updateObjective(objective)
-          .then(() => {
-            this.updateObject({
-              key: 'Objectives',
-              data: objective,
-            });
-          })
+
+        this.objectiveRef.ref
+          .update({ edited: new Date(), editedBy: this.user.ref, ...objective })
           .then(() => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Oppdatering vellykket!');
+            Audit.updateObjective(this.objective.ref, this.objective.ref.parent.parent);
+            Toast.savedChanges();
           })
-          .catch(() => {
+          .catch(error => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Noe gikk galt');
+            this.$errorHandler(error);
           });
       }
     },
 
     deleteObj(objective) {
       this.loading = true;
-      this.deleteObjective(objective)
+      this.objective.ref
+        .update({ archived: true, edited: new Date(), editedBy: this.user.ref })
         .then(() => {
-          this.$toasted.show(`Slettet «${objective.objective_title}»`, {
-            action: [
-              {
-                text: 'Angre',
-                onClick: (e, toastObject) => {
-                  objective.archived = '';
-                  this.updateObjective(objective)
-                    .then(() => {
-                      return this.getAllData();
-                    })
-                    .then(() => {
-                      toastObject.goAway(0);
-                    });
-                },
-              },
-              {
-                text: 'Lukk',
-                onClick: (e, toastObject) => {
-                  toastObject.goAway(0);
-                },
-              },
-            ],
-          });
+          const { ref } = this.objectiveRef;
+
+          Audit.archiveObjective(this.objective.ref, this.objective.ref.parent.parent);
+          Toast.deletedRegret({ name: objective.name, ref });
+          this.objective = null;
+          return true;
         })
         .then(() => {
           this.loading = false;
-        });
+        })
+        .catch(this.$errorHandler);
     },
 
     setSubmitInfo(submit, showInfo, info) {
@@ -152,14 +151,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-  padding: 2rem;
-  background: #fbfbfb;
-  border: 1px solid #eaeaea;
+.edit-objective {
+  width: 100%;
+  margin-top: -1.5rem;
+}
 
+.item {
   &__footer {
     display: flex;
     justify-content: space-between;
+    margin-top: 3rem;
   }
 
   &.loading {

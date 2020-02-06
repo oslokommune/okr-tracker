@@ -1,121 +1,9 @@
 import { scaleTime, scaleLinear, mean } from 'd3';
 import { endOfQuarter } from 'date-fns';
-import * as sheetOptions from '@/config/sheetOptions';
-
-/**
- * Takes an multidimensional array and generates
- * an array of objects using the values in the first
- * index as keys
- */
-export function arraysToObjects(arr) {
-  const jsonObj = [];
-  const headers = arr[0];
-  for (let i = 1; i < arr.length; i += 1) {
-    const data = arr[i];
-    const obj = {};
-    for (let j = 0; j < data.length; j += 1) {
-      obj[headers[j].trim()] = data[j].trim();
-    }
-    obj.rowIndex = i + 1;
-    jsonObj.push(obj);
-  }
-  return jsonObj;
-}
-
-/**
- * Takes an array of grouped data and returns a nested object
- */
-export function nest(data) {
-  const values = data.KeyResTracker.filter(d => !d.archived);
-  const users = data.Users;
-
-  const keyres = data.KeyRes.filter(d => !d.archived).map(kr => {
-    kr.children = values.filter(val => val.key_result_id === kr.id);
-    kr.current_value = findCurrentValue(kr.children) || kr.start_value;
-
-    const scale = scaleLinear()
-      .domain([+kr.start_value, +kr.target_value])
-      .clamp(true);
-    kr.progression = scale(+kr.current_value);
-
-    return kr;
-  });
-
-  const objectives = data.Objectives.filter(d => !d.archived).map(objective => {
-    objective.children = keyres.filter(keyresult => keyresult.objective_id === objective.id);
-    objective.progression = mean(objective.children.map(obj => obj.progression)) || 0;
-    return objective;
-  });
-
-  const products = data.Products.map(product => {
-    const team = product.team_members ? product.team_members.split(',') : [];
-
-    product.children = objectives.filter(objective => objective.product_id === product.id);
-    product.team = team.map(id => users.find(user => user.id === id));
-
-    product.progression = mean(product.children.map(obj => obj.progression)) || 0;
-    return product;
-  });
-
-  const depts = data.Depts.map(dept => {
-    dept.children = products.filter(product => product.department_id === dept.id);
-    dept.progression = mean(dept.children.map(product => product.progression)) || 0;
-    return dept;
-  });
-
-  const orgs = data.Orgs.map(org => {
-    org.children = depts.filter(dept => dept.organisation_id === org.id);
-    org.progression = mean(org.children.map(dept => dept.progression)) || 0;
-    return org;
-  });
-
-  return orgs;
-}
-
-/**
- * Options for the values.append() call
- */
-export function generateAppendDataOptions(sheetName) {
-  return {
-    spreadsheetId: sheetOptions.sheetid,
-    valueInputOption: 'RAW',
-    insertDataOption: 'OVERWRITE',
-    range: `'${sheetName}'!A1`,
-  };
-}
-
-/**
- * Options for the values.update() call
- */
-export function generateUpdateDataOptions(sheetName, obj) {
-  return {
-    spreadsheetId: sheetOptions.sheetid,
-    valueInputOption: 'RAW',
-    range: `'${sheetName}'!A${obj.rowIndex}`,
-  };
-}
-
-/**
- * Method to store state-object in localstorage
- * @param obj object to store in localstorage
- */
-export function storeObjectInLocalStorage(obj) {
-  localStorage.setItem('okr-data', JSON.stringify(obj));
-}
-
-function findCurrentValue(list) {
-  if (!list || !list.length) return false;
-  list.sort((a, b) => {
-    if (a.timestamp > b.timestamp) return -1;
-    if (a.timestamp < b.timestamp) return 1;
-    return 0;
-  });
-  return list[0].value;
-}
 
 export function getDateSpanFromQuarter(quarter) {
-  const year = quarter.split(' ')[0];
-  const q = +quarter.split('Q')[1];
+  const year = quarter.split(' ')[1];
+  const q = +quarter.split('Q')[1].split(' ')[0];
 
   const startDate = new Date(year, (q - 1) * 3, 1);
   const endDate = endOfQuarter(startDate);
@@ -143,9 +31,9 @@ export function getProgression(objectives) {
         .flat()
         .map(keyres => {
           const scale = scaleLinear()
-            .domain([+keyres.start_value, +keyres.target_value])
+            .domain([+keyres.startValue, +keyres.targetValue])
             .clamp(true);
-          return scale(+keyres.current_value);
+          return scale(+keyres.currentValue);
         })
     ) || 0
   );

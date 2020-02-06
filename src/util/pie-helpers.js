@@ -1,7 +1,7 @@
 import { select, arc, interpolate, format, easeCircleOut } from 'd3';
 
-const size = 260;
-const padding = 55;
+const size = 250;
+const padding = 50;
 const radius = (size - padding * 2) / 2;
 const duration = 600;
 const ease = easeCircleOut;
@@ -13,7 +13,7 @@ const colors = {
 export const formatPercent = format('.0%');
 
 function initSvg(el) {
-  el.attr('height', size).attr('width', size);
+  el.attr('height', size * 0.8).attr('width', size);
 }
 
 // Set up the arc generators
@@ -27,7 +27,7 @@ const outerArc = arc()
 
 // Helper for naming and centering a group element
 function initGroup(g, name = 'group') {
-  g.classed(name, true).attr('transform', `translate(${size / 2}, ${size / 2})`);
+  g.classed(name, true).attr('transform', `translate(${size / 2}, ${size / 2 - size * 0.1})`);
 }
 
 // Initializes the outer group element by appending the neccessary elements within
@@ -44,7 +44,7 @@ function initOuterGroup(el) {
 // Positions and styles the percentage text element
 function initPercentText(el) {
   el.classed('percent', true)
-    .attr('transform', `translate(${size / 2}, ${size / 2})`)
+    .attr('transform', `translate(${size / 2}, ${size / 2 - size * 0.1})`)
     .attr('text-anchor', 'middle')
     .attr('font-size', 24)
     .attr('font-weight', 'bold')

@@ -2,81 +2,95 @@
   <div class="popout">
     <span class="form-label">Tilknyttet mål</span>
     <v-select
-      class="form-group objective__select"
-      :class="{ 'form-group--error': $v.objective_id.$error }"
-      label="objective_title"
-      v-model="$v.objective_id.$model"
-      :value="objective_id"
-      :options="product.children"
+      v-if="objectives"
+      class="form-field objective__select"
+      :class="{ 'form-field--error': $v.objective.$error }"
+      label="name"
+      v-model="$v.objective.$model"
+      :options="objectives"
     ></v-select>
-    <div class="form-group--error" v-if="$v.objective_id.$error">Kan ikke være tom</div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.key_result.$error }">
+    <div class="form-field--error" v-if="$v.objective.$error">Kan ikke være tom</div>
+
+    <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
       <span class="form-label">Beskrivelse</span>
-      <textarea v-model="$v.key_result.$model" rows="4"></textarea>
+      <textarea v-model="$v.description.$model" rows="4"></textarea>
     </label>
-    <div class="form-group--error" v-if="$v.key_result.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.description.$error">Kan ikke være tom</div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.start_value.$error }">
-      <span class="form-label">Startverdi</span>
-      <input type="number" v-model="$v.start_value.$model" />
-    </label>
-    <div class="form-group--error" v-if="$v.start_value.$error">Kan ikke være tom</div>
+    <div class="form-row">
+      <label class="form-field" :class="{ 'form-field--error': $v.startValue.$error }">
+        <span class="form-label">Startverdi</span>
+        <input type="number" v-model="$v.startValue.$model" />
+      </label>
+      <div class="form-field--error" v-if="$v.startValue.$error">Kan ikke være tom</div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.target_value.$error }">
-      <span class="form-label">Målverdi</span>
-      <input type="number" v-model="$v.target_value.$model" />
-    </label>
-    <div class="form-group--error" v-if="$v.target_value.$error">Kan ikke være tom</div>
+      <label class="form-field" :class="{ 'form-field--error': $v.targetValue.$error }">
+        <span class="form-label">Målverdi</span>
+        <input type="number" v-model="$v.targetValue.$model" />
+      </label>
+      <div class="form-field--error" v-if="$v.targetValue.$error">Kan ikke være tom</div>
+    </div>
 
-    <label class="form-group" :class="{ 'form-group--error': $v.unit.$error }">
+    <label class="form-field" :class="{ 'form-field--error': $v.unit.$error }">
       <span class="form-label">Måleenhet</span>
+      <span class="form-help">Hva er det som måles (klikk/prosent/brukere etc)?</span>
       <input type="text" v-model="$v.unit.$model" />
     </label>
-    <div class="form-group--error" v-if="$v.unit.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.unit.$error">Kan ikke være tom</div>
+
+    <hr />
 
     <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
-    <button class="btn btn--ghost" @click="$emit('close-menu', false)">Avbryt</button>
+    <button class="btn btn--ghost" @click="close">Avbryt</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import uniqid from 'uniqid';
+import { serializeDocument } from '../../db/db';
+import Keyresult from '../../db/keyresultHandler';
 
 export default {
+  name: 'AddKeyres',
+
   data: () => ({
-    objective_id: null,
-    start_value: 0,
-    target_value: 100,
-    target_type: 'greater_than',
-    key_result: '',
+    objective: null,
+    startValue: 0,
+    targetValue: 100,
+    description: '',
     unit: '',
     submit: false,
     showInfo: false,
     info: '',
+    objectives: null,
+    unsubscribe: null,
   }),
 
   props: {
-    productId: {
+    productref: {
+      type: Object,
+      required: true,
+    },
+    selectedQuarterName: {
       type: String,
       required: true,
     },
   },
 
   validations: {
-    objective_id: {
+    objective: {
       required,
     },
-    key_result: {
+    description: {
       required,
     },
-    start_value: {
+    startValue: {
       required,
     },
-    target_value: {
+    targetValue: {
       required,
     },
     unit: {
@@ -85,68 +99,62 @@ export default {
   },
 
   computed: {
-    ...mapState(['chosenQuarter']),
-    ...mapGetters(['getProductWithDistinctObjectives']),
-
-    product() {
-      return this.getProductWithDistinctObjectives(this.productId, this.chosenQuarter);
-    },
-
+    ...mapState(['user']),
     newKeyRes() {
       return {
-        id: uniqid(),
-        objective_id: this.objective_id.id,
-        key_result: this.key_result,
-        start_value: this.start_value,
-        target_value: this.target_value,
-        target_type: this.target_type,
+        archived: false,
+        description: this.description,
+        startValue: +this.startValue,
+        targetValue: +this.targetValue,
+        created: new Date(),
+        createdBy: this.user.ref,
+        edited: null,
+        editedBy: null,
         unit: this.unit,
       };
     },
   },
 
-  methods: {
-    ...mapActions(['addObject', 'addKeyResult']),
+  mounted() {
+    this.unsubscribe = this.productref
+      .collection('objectives')
+      .where('quarter', '==', this.selectedQuarterName)
+      .where('archived', '==', false)
+      .onSnapshot(snapshot => {
+        this.objectives = snapshot.docs.map(serializeDocument);
+      });
+  },
 
+  beforeDestroy() {
+    if (this.unsubscribe) this.unsubscribe();
+  },
+
+  methods: {
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
-        this.addKeyResult(this.newKeyRes)
-          .then(() => {
-            this.addObject({
-              key: 'KeyRes',
-              data: this.newKeyRes,
-            });
-          })
-          .then(() => {
-            this.setSubmitInfo(false, false, '');
-            this.$emit('close-menu', false);
-            this.objective_id = null;
-            this.start_value = 0;
-            this.target_value = 100;
-            this.target_type = 'greater_than';
-            this.key_result = '';
-            this.unit = '';
-          })
-          .catch(e => {
-            this.setSubmitInfo(false, true, 'Noe gikk galt');
-            throw new Error(e);
-          });
+
+        Keyresult.create(this.objective.ref, this.newKeyRes).then(this.close);
       }
     },
-
     setSubmitInfo(submit, showInfo, info) {
       this.submit = submit;
       this.showInfo = showInfo;
       this.info = info;
+    },
+
+    close() {
+      this.$emit('close-menu', false);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors';
+.objective__select {
+  padding-top: 0.5rem;
+}
 </style>

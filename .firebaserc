@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "production": "okr-tracker-production",
+    "development": "origo-okr-tracker"
+  }
+}

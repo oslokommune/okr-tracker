@@ -1,46 +1,32 @@
 <template>
   <div id="app">
-    <the-header></the-header>
-    <the-login v-if="!isLoggedIn"></the-login>
-    <router-view v-else></router-view>
+    <main class="main">
+      <the-header></the-header>
+      <router-view class="home"></router-view>
+    </main>
+    <transition>
+      <Newsfeed v-show="user && showNewsfeed" class="newsfeed" @close="set_show_newsfeed(false)"></Newsfeed>
+    </transition>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import TheHeader from '@/components/TheHeader.vue';
-import TheLogin from '@/components/TheLogin.vue';
+import Newsfeed from '@/views/Home/components/Newsfeed.vue';
 
 export default {
-  components: {
-    TheHeader,
-    TheLogin,
-  },
-
-  data: () => ({
-    isLoggedIn: false,
-  }),
-
-  mounted() {
-    this.isLoggedIn = this.$isAuthenticated();
-    if (this.isLoggedIn) {
-      this.init();
-    }
-  },
-
-  watch: {
-    $route() {
-      this.isLoggedIn = this.$isAuthenticated();
-    },
+  computed: {
+    ...mapState(['user', 'showNewsfeed']),
   },
 
   methods: {
-    ...mapActions(['initGapi', 'getAllData']),
+    ...mapMutations(['set_show_newsfeed']),
+  },
 
-    async init() {
-      await this.initGapi();
-      await this.getAllData();
-    },
+  components: {
+    TheHeader,
+    Newsfeed,
   },
 };
 
@@ -55,16 +41,19 @@ document.body.addEventListener('keydown', function() {
 
 <style lang="scss">
 @import '@/styles/main.scss';
+</style>
 
-button,
-input,
-textarea,
-body {
-  color: $color-purple;
-  font-size: 16px;
-  font-family: 'OsloSans', Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+<style lang="scss" scoped>
+#app {
+  display: flex;
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.home {
+  min-height: calc(100vh - 5rem);
+  padding-bottom: 4rem;
 }
 </style>

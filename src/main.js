@@ -1,27 +1,27 @@
 import Vue from 'vue';
-import VueGAPI from 'vue-gapi';
 import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
 import VueScrollTo from 'vue-scrollto';
+import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
+import VTooltip from 'v-tooltip';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import { errorHandler } from '@/util/utils';
+
+import handleUserAuthStateChange from '@/util/authChangeHelper';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
 
-// create the 'options' object for google api
-const apiConfig = {
-  clientId: process.env.VUE_APP_GOOGLE_API_CLIENT_SECRET,
-  discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-  scope: 'https://www.googleapis.com/auth/spreadsheets',
-};
+const fb = require('./config/firebaseConfig');
+
+Vue.config.productionTip = false;
 
 // Use plugins
-Vue.use(VueGAPI, apiConfig);
 Vue.use(Vuelidate);
 Vue.use(VueResize);
 Vue.use(Toasted, {
@@ -29,14 +29,28 @@ Vue.use(Toasted, {
   className: 'toast',
 });
 Vue.use(VueScrollTo);
+Vue.use(ImageUploader);
+Vue.use(VTooltip);
+
+// Bind instance properties
+Vue.prototype.$errorHandler = errorHandler;
 
 // Global components
 Vue.component('v-select', VueSelect);
 
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-  render: h => h(App),
-}).$mount('#app');
+// handle page reloads
+let app;
+fb.auth.onAuthStateChanged(user => {
+  handleUserAuthStateChange.call(app, user);
+
+  if (!app) {
+    app = new Vue({
+      el: '#app',
+      router,
+      store,
+      render: h => h(App),
+    });
+  }
+});

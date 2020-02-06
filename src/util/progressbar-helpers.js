@@ -1,6 +1,7 @@
-export const fontSize = 15;
+export const fontSize = 12;
 export const radius = 4;
-export const barPadding = 5;
+export const barPadding = 3;
+export const barHeight = 10;
 
 export const colors = {
   purple: '#2A2859',
@@ -10,26 +11,26 @@ export const colors = {
 
 export function initSvg(el) {
   this.paddingLeft = this.compressed ? 80 : 0;
-  this.height = this.compressed ? 26 : 70;
+  this.height = this.compressed ? 26 : 43;
 
   el.style('width', '100%').attr('height', this.height);
 }
 
 export function initBar(el) {
-  const y = this.compressed ? 5 : 22 + barPadding;
+  const y = this.compressed ? 5 : 14 + barPadding;
   const x = barPadding + this.paddingLeft;
 
-  el.attr('height', 16)
+  el.attr('height', 10)
     .attr('x', x)
     .attr('rx', radius - 2)
     .attr('y', y);
 }
 
 export function initBackground(el) {
-  const y = this.compressed ? 0 : 22;
+  const y = this.compressed ? 0 : 14;
   const x = this.paddingLeft;
 
-  el.attr('height', 26)
+  el.attr('height', 16)
     .attr('fill', colors.grey)
     .attr('x', x)
     .attr('rx', radius)
@@ -37,43 +38,46 @@ export function initBackground(el) {
 }
 
 export function initUnit(el) {
-  el.attr('font-size', fontSize).attr('y', 12);
+  el.attr('font-size', fontSize).attr('y', fontSize - 3);
 }
 
 export function initStartVal(el) {
-  el.attr('font-size', fontSize).attr('y', 66);
+  el.attr('font-size', fontSize).attr('y', 42);
 }
 
 export function initTargetVal(el) {
   el.attr('font-size', fontSize)
-    .attr('y', 66)
+    .attr('y', 42)
     .attr('text-anchor', 'end');
 }
 
 export function initCurrentVal(el) {
   el.append('rect')
-    .attr('y', 48)
-    .attr('x', -10)
+    .attr('y', 31)
     .attr('fill', 'white')
-    .attr('width', 20)
-    .attr('height', 20);
+    .attr('height', 12);
 
   el.append('text')
     .attr('text-anchor', 'middle')
     .attr('font-size', fontSize)
     .style('font-weight', 'bold')
     .text('100')
-    .attr('y', 66);
+    .attr('y', 42);
 }
 
 export function setWidth(el, val) {
   const width = this.x(val);
-  this.isDone = val / this.x.domain()[1] >= 1;
+  this.isDone = width >= this.x.range()[1];
 
-  let fill = '';
-  if (this.isDark) fill = '#777';
-  else if (this.isDone) fill = colors.purple;
-  else fill = colors.yellow;
+  let fill;
+
+  if (this.isDark) {
+    fill = '#777';
+  } else if (this.isDone) {
+    fill = colors.purple;
+  } else {
+    fill = colors.yellow;
+  }
 
   el.attr('width', width).attr('fill', fill);
 }

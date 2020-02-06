@@ -1,15 +1,21 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import Product from './views/Product.vue';
-import AddProduct from './views/AddProduct.vue';
-import EditProduct from './views/EditProduct.vue';
-import EditProductBasic from './views/EditProduct/BasicInfo.vue';
-import EditProductObjectives from './views/EditProduct/Objectives.vue';
-import EditProductKeyres from './views/EditProduct/KeyResults.vue';
-import KeyResDetails from './views/EditProduct/KeyResultDetails.vue';
-import Dashboard from './views/Dashboard.vue';
-import NotFound from './views/NotFound.vue';
+import Home from './views/Home/Home.vue';
+import TheLogin from './views/Login.vue';
+import ProductHome from './views/Product/ProductHome.vue';
+import EditProduct from './views/Product/EditProduct.vue';
+import EditProductDetails from './views/Product/EditProductDetails.vue';
+import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
+import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
+import Department from './views/Department/DepartmentHome.vue';
+import Profile from './views/Profile.vue';
+
+import { auth } from './config/firebaseConfig';
+import EditDepartment from './views/Department/EditDepartment.vue';
+
+const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
+const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');
+const AdminObjects = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminObjects.vue');
 
 Vue.use(Router);
 
@@ -17,42 +23,79 @@ const routes = [
   {
     path: '/',
     name: 'home',
+    meta: { headerStyle: 'home' },
     component: Home,
   },
 
   {
-    path: '/product/:id',
+    path: '/login',
+    name: 'login',
+    component: TheLogin,
+  },
+
+  {
+    path: '/me',
+    name: 'me',
+    meta: { headerStyle: 'me' },
+    component: Profile,
+  },
+
+  {
+    path: '/profile/:slug',
+    name: 'profile',
+    meta: { headerStyle: 'profile' },
+    component: Profile,
+  },
+
+  {
+    path: '/product/:slug',
+    meta: { headerStyle: 'product' },
     name: 'product',
-    component: Product,
+    component: ProductHome,
   },
 
   {
-    path: '/add-product',
-    name: 'add-product',
-    component: AddProduct,
+    path: '/product/:slug/k/:keyresid',
+    meta: { headerStyle: 'product' },
+    name: 'key-result',
+    component: KeyResultPage,
   },
 
   {
-    path: '/product/:id/edit',
+    path: '/product/:slug/edit',
+    meta: { headerStyle: 'edit-product' },
     component: EditProduct,
     children: [
-      { path: '/', name: 'edit-product', component: EditProductBasic },
-      { path: 'objectives', name: 'edit-product-objectives', component: EditProductObjectives },
-      { path: 'key-results/', name: 'edit-product-keyres', component: EditProductKeyres },
-      { path: 'key-results/:keyresId', name: 'keyres-value-details', component: KeyResDetails },
+      { name: 'edit-product', path: '/', component: EditProductDetails },
+      { name: 'edit-product-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
     ],
   },
 
   {
-    name: 'dashboard',
-    path: '/product/:id/dashboard',
-    component: Dashboard,
+    path: '/department/:slug',
+    name: 'department',
+    meta: { headerStyle: 'department' },
+    component: Department,
   },
 
   {
-    path: '*',
-    name: 'NotFound',
-    component: NotFound,
+    path: '/department/:slug/edit',
+    component: EditDepartment,
+    meta: { headerStyle: 'edit-product' },
+    children: [
+      { name: 'edit-department', path: '/', component: EditProductDetails },
+      { name: 'edit-department-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
+    ],
+  },
+
+  {
+    path: '/admin',
+    component: AdminHome,
+    meta: { headerStyle: 'admin' },
+    children: [
+      { name: 'admin-users', path: '/', component: AdminUsers },
+      { name: 'admin-objects', path: 'data', component: AdminObjects },
+    ],
   },
 ];
 
@@ -64,7 +107,15 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   window.scroll(0, 0);
-  next();
+  if (!isAuthenticated() && to.path !== '/login') {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;
+
+function isAuthenticated() {
+  return auth.currentUser;
+}

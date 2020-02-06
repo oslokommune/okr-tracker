@@ -17,8 +17,8 @@ export default class Progressbar {
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
 
-    this.x.domain([obj.start_value, obj.target_value]);
-    const val = +obj.current_value || obj.start_value || 0;
+    this.x.domain([obj.startValue, obj.targetValue]);
+    const val = +obj.currentValue || obj.startValue || 0;
 
     this.valueText.text(formatPercent(obj.progression)).attr('font-weight', this.isDone ? 600 : 300);
 
