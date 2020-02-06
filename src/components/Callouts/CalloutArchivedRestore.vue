@@ -12,6 +12,7 @@
 
 <script>
 import * as Toast from '../../util/toasts';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'CalloutArchivedRestore',
@@ -28,13 +29,17 @@ export default {
       this.docref
         .update({ archived: false })
         .then(Toast.restored)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('restore_archived', auth.currentUser.email, this.$route.path, err);
+        });
     },
     deletePermanently() {
       this.docref
         .delete()
         .then(Toast.deletedPermanently)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('delete_archived', auth.currentUser.email, this.$route.path, err);
+        });
     },
   },
 };

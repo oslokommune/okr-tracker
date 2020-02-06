@@ -6,7 +6,9 @@ const write = async (obj = {}) => {
   return db
     .collection('audit')
     .add({ ...obj, user, timestamp: new Date() })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('db_write', auth.currentUser.email, '', err);
+    });
 };
 
 export const eventTypes = [

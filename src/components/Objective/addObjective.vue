@@ -122,7 +122,9 @@ export default {
             Audit.createObjective(response, response.parent.parent);
             Toast.addedObjective(this.quarter.name);
           })
-          .catch(this.$errorHandler);
+          .catch(err => {
+            this.$errorHandler('add_objective', this.user.email, this.$route.path, err);
+          });
       }
     },
 

@@ -94,7 +94,7 @@ export default {
         if (err.code === 'auth/wrong-password') {
           this.error = 3;
         }
-        this.$errorHandler(err);
+        this.$errorHandler('login', email, this.$route.path, err);
       });
 
       if (user) {

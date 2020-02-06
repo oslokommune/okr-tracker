@@ -222,7 +222,9 @@ export default {
           return doc;
         })
         .then(Toast.addedProduct)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('add_product', this.user.email, this.$route.path, err);
+        });
     },
 
     addDepartment() {
@@ -247,7 +249,9 @@ export default {
           return doc;
         })
         .then(Toast.addedDepartment)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('add_department', this.user.email, this.$route.path, err);
+        });
     },
   },
 

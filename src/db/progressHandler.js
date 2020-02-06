@@ -17,16 +17,19 @@ export default {
  * @returns {Promise}
  */
 async function addProgress(keyres, value, date) {
+  const user = Store.state.user.email;
+  const route = '';
+
   if (!keyres || !keyres.ref) {
-    return errorHandler('Corrupt or missing key result object');
+    return errorHandler('add_progress', user, route, 'Corrupt or missing key result object');
   }
   if (typeof value !== 'number' || Number.isNaN(value)) {
-    return errorHandler(`Cannot process provided value: ${value}`);
+    return errorHandler('add_progress', user, route, `Cannot process provided value: ${value}`);
   }
 
   const documentRef = keyres.ref.parent.parent.parent.parent.parent.parent;
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Not allowed to add progress');
+  if (!hasEditPermissions) throw errorHandler('add_progress', user, route, 'Not allowed to add progress');
 
   const userRef = Store.state.user.ref;
   const timestamp = date ? new Date(date) : new Date();
@@ -44,22 +47,29 @@ async function addProgress(keyres, value, date) {
     .add(progressToBeRegistered)
     .then(Toast.addedProgression)
     .then(updateCurrentValue.bind(null, keyres))
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('add_progress', user, route, err);
+    });
 }
 
 async function deleteProgress(doc, keyres) {
-  if (!doc) throw errorHandler('Missing document');
+  const user = Store.state.user.email;
+  const route = '';
+
+  if (!doc) throw errorHandler('delete_progress', user, route, 'Missing document');
 
   const documentRef = doc.ref.parent.parent.parent.parent.parent.parent;
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
 
-  if (!hasEditPermissions) throw errorHandler('Not allowed to delete this');
+  if (!hasEditPermissions) throw errorHandler('delete_progress', user, route, 'Not allowed to delete this');
 
   doc.ref
     .delete()
     .then(Toast.deleted)
     .then(updateCurrentValue.bind(null, keyres))
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('delete_progress', user, route, err);
+    });
 }
 
 /**
@@ -68,12 +78,15 @@ async function deleteProgress(doc, keyres) {
  * @returns {Promise}
  */
 async function updateCurrentValue(keyres) {
-  if (!keyres) throw errorHandler('Missing document');
+  const user = Store.state.user.email;
+  const route = '';
+
+  if (!keyres) throw errorHandler('update_current_value', user, route, 'Missing document');
 
   const documentRef = keyres.ref.parent.parent.parent.parent.parent.parent;
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
 
-  if (!hasEditPermissions) throw errorHandler('Not allowed to delete this');
+  if (!hasEditPermissions) throw errorHandler('update_current_value', user, route, 'Not allowed to delete this');
 
   const userRef = Store.state.user.ref;
   const oldValue = keyres.currentValue || keyres.startValue || 0;
@@ -86,7 +99,9 @@ async function updateCurrentValue(keyres) {
       if (!snapshot.docs || !snapshot.docs.length) return null;
       return snapshot.docs[0].data().value;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_current_value', user, route, err);
+    });
 
   if (oldValue === newValue) return;
 
@@ -97,5 +112,7 @@ async function updateCurrentValue(keyres) {
     .then(() => {
       return Audit.keyResUpdateProgress(keyres.ref, parentDocumentRef, oldValue, newValue);
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_current_value', user, route, err);
+    });
 }

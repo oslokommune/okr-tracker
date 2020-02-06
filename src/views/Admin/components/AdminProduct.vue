@@ -114,7 +114,9 @@ export default {
       ref
         .get()
         .then(this.getProductfromRef)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_product', this.user.email, this.$route.path, err);
+        });
     },
   },
 
@@ -136,7 +138,9 @@ export default {
         .then(() => {
           Audit.updateProduct(this.docref);
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('update_product', this.user.email, this.$route.path, err);
+        });
       this.product.team = teamList;
     },
 
@@ -167,7 +171,9 @@ export default {
           Toast.deletedRegret(doc);
           Audit.archiveProduct(this.docref);
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('archive_product', this.user.email, this.$route.path, err);
+        });
 
       this.product = null;
     },
@@ -189,12 +195,16 @@ export default {
       this.uploading = true;
       const storageRef = await storage.ref(`products/${this.docref.id}`);
 
-      const snapshot = await storageRef.put(this.file).catch(this.$errorHandler);
+      const snapshot = await storageRef.put(this.file).catch(err => {
+        this.$errorHandler('upload_photo', this.user.email, this.$route.path, err);
+      });
 
       Toast.uploadedPhoto();
 
       const photoURL = await snapshot.ref.getDownloadURL();
-      await this.docref.update({ photoURL }).catch(this.$errorHandler);
+      await this.docref.update({ photoURL }).catch(err => {
+        this.$errorHandler('upload_photo', this.user.email, this.$route.path, err);
+      });
 
       Audit.updateProductImage(this.docref);
       Toast.savedChanges();

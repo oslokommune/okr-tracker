@@ -128,7 +128,9 @@ export default {
         .then(snapshot => {
           return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('audit_specific_user', this.getUser.email, this.$router.path, err);
+        });
     },
 
     submitDisplayName() {

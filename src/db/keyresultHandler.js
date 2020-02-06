@@ -10,6 +10,9 @@ import Store from '../store';
  * @param {Object} data - Data for the key result
  */
 async function create(objectiveRef, data) {
+  const user = Store.state.user.email;
+  const route = '';
+
   const defaultData = {
     archived: false,
     description: 'Beskriv nøkkelresultatet',
@@ -24,7 +27,7 @@ async function create(objectiveRef, data) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('create_keyres', user, route, 'Insufficient permissions');
 
   return objectiveRef
     .collection('keyResults')
@@ -34,7 +37,9 @@ async function create(objectiveRef, data) {
       Audit.createKeyResult(keyresRef, documentRef, objectiveRef);
       return keyresRef;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('create_keyres', user, route, err);
+    });
 }
 
 /**
@@ -44,11 +49,14 @@ async function create(objectiveRef, data) {
  * @returns {Promise}
  */
 async function update(keyresRef, data) {
+  const user = Store.state.user.email;
+  const route = '';
+
   const objectiveRef = keyresRef.parent.parent;
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('update_keyres', user, route, 'Insufficient permissions');
 
   return keyresRef
     .update(data)
@@ -57,7 +65,9 @@ async function update(keyresRef, data) {
       Toast.savedChanges();
       return keyresRef;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_keyres', user, route, err);
+    });
 }
 
 /**
@@ -65,11 +75,14 @@ async function update(keyresRef, data) {
  * @param {DocumentReference} keyresRef - key result reference
  */
 async function archive(keyresRef) {
+  const user = Store.state.user.email;
+  const route = '';
+
   const objectiveRef = keyresRef.parent.parent;
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('archive_keyres', user, route, 'Insufficient permissions');
 
   await keyresRef
     .update({ archived: true })
@@ -78,7 +91,9 @@ async function archive(keyresRef) {
       Audit.archiveKeyResult(keyresRef, documentRef, objectiveRef);
       return true;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('archive_keyres', user, route, err);
+    });
 }
 
 export default {

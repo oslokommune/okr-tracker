@@ -187,7 +187,9 @@ export default {
     this.objective = await this.key_result.ref.parent.parent
       .get()
       .then(serializeDocument)
-      .catch(this.$errorHandler);
+      .catch(err => {
+        this.$errorHandler('get_objective', this.user.email, this.$route.path, err);
+      });
 
     const { quarter } = this.objective;
     this.quarter = quarter;
@@ -213,7 +215,9 @@ export default {
       const quarter = await this.key_result.ref.parent.parent
         .get()
         .then(d => d.data().quarter)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_quarters', this.user.email, this.$route.path, err);
+        });
 
       this.quarter = quarter;
 

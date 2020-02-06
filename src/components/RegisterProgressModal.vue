@@ -132,7 +132,9 @@ export default {
           .get()
           .then(snap => snap.docs.map(serializeDocument));
       });
-      const keyResults = await Promise.all(promises).catch(this.$errorHandler);
+      const keyResults = await Promise.all(promises).catch(err => {
+        this.$errorHandler('get_keyres', this.user.email, this.$route.path, err);
+      });
       this.keyResults = keyResults.flat();
     },
   },

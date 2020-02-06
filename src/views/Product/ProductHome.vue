@@ -85,7 +85,9 @@ export default {
         const teamPromises = this.product.team ? this.product.team.map(d => d.get()) : [];
         this.team = await Promise.all(teamPromises)
           .then(d => d.map(serializeDocument))
-          .catch(this.$errorHandler);
+          .catch(err => {
+            this.$errorHandler('get_product', this.user.email, this.$route.path, err);
+          });
       }
     },
   },

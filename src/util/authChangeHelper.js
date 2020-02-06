@@ -47,5 +47,7 @@ async function isWhiteListed(user) {
     .doc(user.email)
     .get()
     .then(doc => doc.exists)
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('is_whitelisted', user.email, router.currentRoute.path, err);
+    });
 }

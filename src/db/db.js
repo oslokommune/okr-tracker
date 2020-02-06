@@ -26,7 +26,9 @@ export function updateUserObject(user) {
         transaction.update(userRef, newData);
       });
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_user_object', user.email, '', err);
+    });
 }
 
 /**
@@ -42,7 +44,9 @@ export function productListener(slug) {
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
-      const productData = await d.docs[0].ref.get().catch(errorHandler);
+      const productData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('product_listener', auth.currentUser.email, '', err);
+      });
       this.product = serializeDocument(productData);
     });
 }
@@ -60,7 +64,9 @@ export function departmentListener(slug) {
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
-      const departmentData = await d.docs[0].ref.get().catch(errorHandler);
+      const departmentData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('department_listener', auth.currentUser.email, '', err);
+      });
       this.department = serializeDocument(departmentData);
     });
 }
@@ -101,7 +107,9 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
       .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('check_teammember_product', email, err);
+      });
   } else {
     // 'ref'  be a
     console.log({ slugOrRef });
@@ -171,7 +179,9 @@ export async function isAdmin() {
     .doc(email)
     .get()
     .then(d => d.data().admin)
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('is_admin', email, '', err);
+    });
 }
 
 /**
@@ -220,26 +230,10 @@ const getChildren = async (ref, collectionName, callback) => {
         return 0;
       })
     )
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('get_children', auth.currentUser.email, '', err);
+    });
 };
-
-/**
- * Binds all products that the current user is
- * a member of to `this.products` on the caller
- * @returns {void}
- */
-export async function myProductsListener() {
-  const { email } = auth.currentUser;
-
-  const userRef = await db.collection('users').doc(email);
-
-  return db
-    .collectionGroup('products')
-    .where('team', 'array-contains', userRef)
-    .get()
-    .then(d => d.docs.map(serializeDocument))
-    .catch(errorHandler);
-}
 
 /*
  * Finds a specific user
@@ -252,7 +246,9 @@ export async function findUser(slug) {
     .where('slug', '==', slug)
     .get()
     .then(d => d.docs.map(serializeDocument)[0])
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('find_user', auth.currentUser.email, '', err);
+    });
 }
 
 /*
@@ -269,7 +265,9 @@ export async function userProductsListener(user) {
     .where('team', 'array-contains', userRef)
     .get()
     .then(d => d.docs.map(serializeDocument))
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('user_products_listener', id, '', err);
+    });
 }
 
 /*
@@ -281,7 +279,9 @@ export async function getAllDepartments() {
     .collectionGroup('departments')
     .get()
     .then(d => d.docs.map(serializeDocument))
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('get_all_department', auth.currentUser.email, '', err);
+    });
 }
 
 export function isDashboardUser() {
@@ -292,5 +292,7 @@ export async function unDelete(ref) {
   return ref
     .update({ archived: false })
     .then(Toast.revertedDeletion)
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('is_dashboard_user', auth.currentUser.email, '', err);
+    });
 }

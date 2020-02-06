@@ -2,6 +2,7 @@ import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow, format } fr
 import locale from 'date-fns/locale/nb';
 import { startDate } from '../config/applicationConfig';
 import * as Toast from './toasts';
+import { analytics } from '@/config/firebaseConfig';
 
 /**
  * Generates a list of named quarters
@@ -44,7 +45,9 @@ function datePretty(date) {
   return format(date, 'd. MMM HH:mm:ss', { locale });
 }
 
-function errorHandler(error = {}) {
+function errorHandler(errorType, user, view, error = console.trace()) {
+  analytics.logEvent(errorType, { user, view, error });
+
   Toast.error();
   console.trace();
   throw new Error(error);

@@ -163,14 +163,18 @@ export default {
         .doc(`users/${user}`)
         .get()
         .then(d => ({ email: user, ...d.data() }))
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_user', user, this.$router.path, err);
+        });
     }
 
     if (keyresRef) {
       this.keyResult = await keyresRef
         .get()
         .then(serializeDocument)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_keyres', user, this.$router.path, err);
+        });
 
       // Replace the value from db with the one from the audit log
       this.keyResult.currentValue = this.eventData.toValue;
@@ -180,7 +184,9 @@ export default {
       this.product = await productRef
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_product', user, this.$router.path, err);
+        });
 
       if (productRef.parent.id === 'departments') {
         this.product.route = { name: 'department', params: { slug: this.product.slug } };
@@ -193,14 +199,18 @@ export default {
       this.objective = await objectiveRef
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_objective', user, this.$route.path, err);
+        });
     }
 
     if (departmentRef) {
       this.department = await departmentRef
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_department', user, this.$route.path, err);
+        });
     }
 
     if (this.eventData.event === 'keyRes-update-progress') {
