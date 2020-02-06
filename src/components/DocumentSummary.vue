@@ -45,7 +45,7 @@
               <img
                 class="team__image"
                 :src="user.photoURL || '/placeholder-user.svg'"
-                :alt="user.displayName"
+                :alt="user.displayName || user.email"
                 v-tooltip.auto="user.displayName || user.id"
               />
             </router-link>

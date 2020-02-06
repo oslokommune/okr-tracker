@@ -54,7 +54,7 @@ export default {
       if (this.data.description) return 'Nøkkelresultat';
       if (!this.data) return 'Laster ...';
 
-      return this.data.name || this.data.displayName || this.data.id;
+      return this.data.name || this.data.displayName || this.data.id || 'Laster ...';
     },
 
     style() {
