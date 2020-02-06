@@ -119,30 +119,16 @@ export default {
         this.departments = list;
       });
 
-      db.collection('audit')
+      this.feed = await db
+        .collection('audit')
         .where('user', '==', this.getUser.id)
         .orderBy('timestamp', 'desc')
         .limit(10)
-        .onSnapshot(async snapshot => {
-          const newDocuments = await snapshot
-            .docChanges()
-            .filter(d => d.type === 'added')
-            .filter(d => !eventTypes.includes(d.event))
-            .filter(d => !this.feed.map(el => el.id).includes(d.doc.id));
-
-          const newObjects = newDocuments
-            .map(d => d.doc)
-            .map(d => {
-              return serializeDocument(d);
-            });
-
-          if (this.feed.length) this.feed = [];
-
-          newObjects.forEach(obj => {
-            this.feed.push(obj);
-          });
-          this.feed.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
-        });
+        .get()
+        .then(snapshot => {
+          return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
+        })
+        .catch(this.$errorHandler);
     },
 
     submitDisplayName() {
