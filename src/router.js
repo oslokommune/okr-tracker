@@ -2,14 +2,13 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home/Home.vue';
 import TheLogin from './views/Login.vue';
-import TheProfile from './views/Profile.vue';
 import ProductHome from './views/Product/ProductHome.vue';
 import EditProduct from './views/Product/EditProduct.vue';
 import EditProductDetails from './views/Product/EditProductDetails.vue';
 import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
 import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
 import Department from './views/Department/DepartmentHome.vue';
-import User from './views/User.vue';
+import Profile from './views/Profile.vue';
 
 import { auth } from './config/firebaseConfig';
 import EditDepartment from './views/Department/EditDepartment.vue';
@@ -38,14 +37,14 @@ const routes = [
     path: '/me',
     name: 'me',
     meta: { headerStyle: 'me' },
-    component: User,
+    component: Profile,
   },
 
   {
     path: '/profile/:slug',
     name: 'profile',
     meta: { headerStyle: 'profile' },
-    component: User,
+    component: Profile,
   },
 
   {
