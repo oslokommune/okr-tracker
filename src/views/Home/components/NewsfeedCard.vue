@@ -118,8 +118,8 @@
       <template v-if="eventData.event === 'keyRes-update-progress'">
         <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }">
           {{ keyResult.description }}
-          <ProgressBar class="nf-progress" :keyres="keyResult"></ProgressBar>
         </router-link>
+        <ProgressBar class="nf-progress" :keyres="keyResult"></ProgressBar>
       </template>
     </div>
     <newsfeed-footer :data="eventData"></newsfeed-footer>

@@ -34,7 +34,9 @@ export default {
       this.docref
         .delete()
         .then(Toast.deletedPermanently)
-        .catch(this.$errorHandler);
+        .catch(() => {
+          this.$errorHandler('this error');
+        });
     },
   },
 };

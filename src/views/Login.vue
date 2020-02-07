@@ -52,9 +52,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import { auth, loginProvider } from '../config/firebaseConfig';
-import TheSpinner from '../components/TheSpinner.vue';
-import Audit from '../db/audit';
+import { auth, loginProvider } from '@/config/firebaseConfig';
+import TheSpinner from '@/components/TheSpinner.vue';
+import Audit from '@/db/audit';
 
 export default {
   data: () => ({
@@ -79,6 +79,7 @@ export default {
         .then(response => {
           Audit.login(response.user.email);
           this.$router.push('/');
+          this.$errorHandler('logged-in-successfully');
         })
         .catch(() => {
           this.pending = false;

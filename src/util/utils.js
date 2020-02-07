@@ -1,7 +1,9 @@
 import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow, format } from 'date-fns';
 import locale from 'date-fns/locale/nb';
+import { analytics } from 'firebase';
 import { startDate } from '../config/applicationConfig';
 import * as Toast from './toasts';
+// import router from '@/router';
 
 /**
  * Generates a list of named quarters
@@ -44,10 +46,18 @@ function datePretty(date) {
   return format(date, 'd. MMM HH:mm:ss', { locale });
 }
 
-function errorHandler(error = {}) {
+function errorHandler(errorType) {
+  const error = new Error(errorType);
+  const params = {
+    user: 'user',
+    view: 'router.path',
+    trace: error.trace,
+  };
+
   Toast.error();
-  console.trace();
-  throw new Error(error);
+  analytics.logEvent(errorType, params);
+
+  throw error;
 }
 
 export { quarters, getProductFromSlug, timeFromNow, errorHandler, datePretty };
