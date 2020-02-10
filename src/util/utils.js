@@ -46,18 +46,9 @@ function datePretty(date) {
   return format(date, 'd. MMM HH:mm:ss', { locale });
 }
 
-function errorHandler(errorType) {
-  const error = new Error(errorType);
-  const params = {
-    user: 'user',
-    view: 'router.path',
-    trace: error.trace,
-  };
-
+function errorHandler() {
   Toast.error();
-  analytics.logEvent(errorType, params);
-
-  throw error;
+  throw new Error();
 }
 
 export { quarters, getProductFromSlug, timeFromNow, errorHandler, datePretty };

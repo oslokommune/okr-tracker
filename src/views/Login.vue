@@ -79,7 +79,6 @@ export default {
         .then(response => {
           Audit.login(response.user.email);
           this.$router.push('/');
-          this.$errorHandler('logged-in-successfully');
         })
         .catch(() => {
           this.pending = false;
