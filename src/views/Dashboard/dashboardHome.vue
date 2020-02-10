@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel__header"><i class="fa fa-fw fa-chart-pie"></i>Progresjon</div>
+        <div class="panel__header"><i class="fa fa-fw fa-chart-pie"></i>Progresjon {{ quarters[0].name }}</div>
         <pie-chart :document="product" :darkmode="true"></pie-chart>
       </div>
     </aside>

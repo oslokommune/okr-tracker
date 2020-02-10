@@ -1,6 +1,5 @@
 import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow, format } from 'date-fns';
 import locale from 'date-fns/locale/nb';
-import { analytics } from 'firebase';
 import { startDate } from '../config/applicationConfig';
 import * as Toast from './toasts';
 // import router from '@/router';
