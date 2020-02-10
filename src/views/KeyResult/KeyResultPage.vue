@@ -5,13 +5,7 @@
     <div class="container container--sidebar">
       <aside class="content--sidebar">
         <nav v-if="hasEditPermissions" class="sidebar-nav">
-          <router-link
-            :to="{
-              name: 'edit-product-keyres',
-              params: { slug: $route.params.slug, keyres: key_result, objective: objective },
-            }"
-            class="sidebar-nav__item"
-            v-tooltip.right="`Endre detaljer for nøkkelresultatet`"
+          <router-link :to="editRoute" class="sidebar-nav__item" v-tooltip.right="`Endre detaljer for nøkkelresultatet`"
             ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link
           >
         </nav>
@@ -151,6 +145,23 @@ export default {
 
   computed: {
     ...mapState(['user', 'key_result', 'nest', 'quarters']),
+
+    editRoute() {
+      let name;
+      const parent = this.key_result.ref.parent.parent.parent.parent.parent.id;
+      if (parent === 'products') {
+        name = 'edit-product-keyres';
+      } else if (parent === 'departments') {
+        name = 'edit-department-keyres';
+      } else {
+        return;
+      }
+
+      return {
+        name,
+        params: { slug: this.$route.params.slug, keyres: this.key_result, objective: this.objective },
+      };
+    },
 
     list() {
       return this.progressions
