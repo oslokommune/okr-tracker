@@ -49,8 +49,7 @@ function errorHandler(errorType, user, view, error = console.trace()) {
   analytics.logEvent(errorType, { user, view, error });
 
   Toast.error();
-  console.trace();
-  throw new Error(error);
+  throw new Error();
 }
 
 export { quarters, getProductFromSlug, timeFromNow, errorHandler, datePretty };
