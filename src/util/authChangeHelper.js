@@ -32,6 +32,7 @@ export default async function handleUserAuthStateChange(user) {
 
       store.commit('set_user', null);
       router.push({ name: 'login', params: { error: 1 } });
+      errorHandler('not_whitelisted_error', null);
     });
   }
 }
@@ -48,6 +49,6 @@ async function isWhiteListed(user) {
     .get()
     .then(doc => doc.exists)
     .catch(err => {
-      errorHandler('is_whitelisted', user.email, router.currentRoute.path, err);
+      errorHandler('not_whitelisted_error', err);
     });
 }

@@ -123,7 +123,7 @@ export default {
             Toast.addedObjective(this.quarter.name);
           })
           .catch(err => {
-            this.$errorHandler('add_objective', this.user.email, this.$route.path, err);
+            this.$errorHandler('add_objective_error', err);
           });
       }
     },

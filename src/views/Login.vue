@@ -80,9 +80,10 @@ export default {
           Audit.login(response.user.email);
           this.$router.push('/');
         })
-        .catch(() => {
+        .catch(err => {
           this.pending = false;
           this.error = 2;
+          this.$errorHandler('login_error', err);
         });
     },
 
@@ -94,7 +95,7 @@ export default {
         if (err.code === 'auth/wrong-password') {
           this.error = 3;
         }
-        this.$errorHandler('login', email, this.$route.path, err);
+        this.$errorHandler('login_error', err);
       });
 
       if (user) {

@@ -40,7 +40,7 @@ import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
 import { serializeDocument } from '../db/db';
 import ProgressBar from './ProgressBar.vue';
-import Progress from '../db/progressHandler';
+import { addProgress } from '../db/progressHandler';
 
 export default {
   name: 'RegisterProgressModal',
@@ -105,7 +105,7 @@ export default {
     },
 
     async save() {
-      await Progress.addProgress(this.keyResult, +this.newValue, this.date);
+      await addProgress(this.keyResult, +this.newValue, this.date);
 
       this.skip();
       if (this.index === 0) this.close();
@@ -133,7 +133,7 @@ export default {
           .then(snap => snap.docs.map(serializeDocument));
       });
       const keyResults = await Promise.all(promises).catch(err => {
-        this.$errorHandler('get_keyres', this.user.email, this.$route.path, err);
+        this.$errorHandler('get_keyres_error', err);
       });
       this.keyResults = keyResults.flat();
     },

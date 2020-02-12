@@ -97,7 +97,7 @@ export default {
           this.addUserList = '';
         })
         .catch(err => {
-          this.$errorHandler('add_users', this.user.email, this.$route.path, err);
+          this.$errorHandler('add_users_error', err);
         });
     },
 
@@ -114,7 +114,7 @@ export default {
           Toast.deletedUser(user);
         })
         .catch(err => {
-          this.$errorHandler('delete_user', this.user.email, this.$route.path, err);
+          this.$errorHandler('delete_user_error', err);
         });
     },
 
@@ -126,7 +126,7 @@ export default {
           Audit.toggleAdmin(user.id, value);
         })
         .catch(err => {
-          this.$errorHandler('toggle_admin', this.user.email, this.$route.path, err);
+          this.$errorHandler('toggle_admin_error', err);
         });
     },
   },

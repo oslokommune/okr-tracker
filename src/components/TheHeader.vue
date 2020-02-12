@@ -97,7 +97,7 @@ export default {
           this.$router.push('/login');
         })
         .catch(err => {
-          this.$errorHandler('logout_user', this.user.email, this.$route.path, err);
+          this.$errorHandler('logout_error', err);
         });
     },
   },

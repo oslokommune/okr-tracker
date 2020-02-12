@@ -99,7 +99,7 @@ export default {
         .then(snapshots => snapshots.map(serializeDocument))
         .then(documents => documents.map(this.getNameAndRouteFromDocument))
         .catch(err => {
-          this.$errorHandler('generate_breadcrumbs', this.user.email, this.$route.path, err);
+          this.$errorHandler('generate_breadcrumbs_error', err);
         });
 
       return trail.reverse();

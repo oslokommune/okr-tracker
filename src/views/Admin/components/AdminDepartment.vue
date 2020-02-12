@@ -67,7 +67,7 @@ export default {
       .get()
       .then(d => d.data())
       .catch(err => {
-        this.$errorHandler('get_department', this.user.email, this.$route.path, err);
+        this.$errorHandler('get_department_error', err);
       });
   },
 
@@ -82,7 +82,7 @@ export default {
         .get()
         .then(d => d.data())
         .catch(err => {
-          this.$errorHandler('get_department', this.user.email, this.$route.path, err);
+          this.$errorHandler('get_department_error', err);
         });
     },
   },
@@ -97,7 +97,7 @@ export default {
           Toast.savedChanges();
         })
         .catch(err => {
-          this.$errorHandler('update_department', this.user.email, this.$route.path, err);
+          this.$errorHandler('update_department_error', err);
         });
     },
     deleteObject() {
@@ -108,7 +108,7 @@ export default {
         })
         .then(Toast.deleted)
         .catch(err => {
-          this.$errorHandler('archive_department', this.user.email, this.$route.path, err);
+          this.$errorHandler('archive_department_error', err);
         });
     },
 
@@ -124,13 +124,13 @@ export default {
       const storageRef = storage.ref(`departments/${this.docref.id}`);
 
       const snapshot = await storageRef.put(this.file).catch(err => {
-        this.$errorHandler('upload_photo_department', this.user.email, this.$route.path, err);
+        this.$errorHandler('upload_photo_department_error', err);
       });
       Toast.uploadedPhoto();
 
       const photoURL = await snapshot.ref.getDownloadURL();
       await this.docref.update({ photoURL }).catch(err => {
-        this.$errorHandler('upload_photo_department', this.user.email, this.$route.path, err);
+        this.$errorHandler('upload_photo_department_error', err);
       });
       Toast.savedChanges();
 

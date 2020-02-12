@@ -6,10 +6,10 @@ import VueScrollTo from 'vue-scrollto';
 import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
+import { errorHandler } from '@/util/utils';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import { errorHandler } from '@/util/utils';
 
 import handleUserAuthStateChange from '@/util/authChangeHelper';
 
@@ -54,3 +54,5 @@ fb.auth.onAuthStateChanged(user => {
     });
   }
 });
+
+export default { app };

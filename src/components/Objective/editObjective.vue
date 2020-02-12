@@ -88,7 +88,7 @@ export default {
         .get()
         .then(serializeDocument)
         .catch(err => {
-          this.$errorHandler('get_objective', this.user.email, this.$route.path, err);
+          this.$errorHandler('get_objective_error', err);
         });
 
       this.unsubscribe = objective.ref.onSnapshot(snapshot => {
@@ -120,7 +120,7 @@ export default {
           .catch(error => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Noe gikk galt');
-            this.$errorHandler('update_objective', this.user.email, this.$route.path, error);
+            this.$errorHandler('update_objective_error', error);
           });
       }
     },
@@ -141,7 +141,7 @@ export default {
           this.loading = false;
         })
         .catch(err => {
-          this.$errorHandler('delete_objective', this.user.email, this.$route.path, err);
+          this.$errorHandler('delete_objective_error', err);
         });
     },
 

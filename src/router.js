@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 import Home from './views/Home/Home.vue';
 import TheLogin from './views/Login.vue';
 import ProductHome from './views/Product/ProductHome.vue';
@@ -10,9 +11,9 @@ import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
 import Department from './views/Department/DepartmentHome.vue';
 import Profile from './views/Profile.vue';
 import DashboardHome from '@/views/Dashboard/dashboardHome.vue';
+import EditDepartment from './views/Department/EditDepartment.vue';
 
 import { auth } from './config/firebaseConfig';
-import EditDepartment from './views/Department/EditDepartment.vue';
 
 const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
 const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');

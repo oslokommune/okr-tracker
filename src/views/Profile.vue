@@ -54,11 +54,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import { isDashboardUser, findUser, userProductsListener, getAllDepartments, serializeDocument } from '@/db/db';
+import { isDashboardUser, findUser, userProductsListener, getAllDepartments, getAuditFromUser } from '@/db/db';
 import PageHeader from '../components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
-import { db } from '@/config/firebaseConfig';
-import { eventTypes } from '@/db/audit';
 import * as Toast from '@/util/toasts';
 
 export default {
@@ -119,18 +117,7 @@ export default {
         this.departments = list;
       });
 
-      this.feed = await db
-        .collection('audit')
-        .where('user', '==', this.getUser.id)
-        .orderBy('timestamp', 'desc')
-        .limit(10)
-        .get()
-        .then(snapshot => {
-          return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
-        })
-        .catch(err => {
-          this.$errorHandler('audit_specific_user', this.getUser.email, this.$router.path, err);
-        });
+      this.feed = await getAuditFromUser(this.getUser.id);
     },
 
     submitDisplayName() {

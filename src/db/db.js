@@ -1,6 +1,9 @@
+import Vue from 'vue';
 import { db, auth, dashboardUser } from '../config/firebaseConfig';
 import * as Toast from '../util/toasts';
-import { errorHandler } from '../util/utils';
+import { eventTypes } from '@/db/audit';
+
+const errorHandler = Vue.$errorHandler;
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -27,7 +30,7 @@ export function updateUserObject(user) {
       });
     })
     .catch(err => {
-      errorHandler('update_user_object', user.email, '', err);
+      errorHandler('update_user_object_error', err, { targetUser: user.email });
     });
 }
 
@@ -45,7 +48,7 @@ export function productListener(slug) {
     .onSnapshot(async d => {
       if (!d.docs.length) return;
       const productData = await d.docs[0].ref.get().catch(err => {
-        errorHandler('product_listener', auth.currentUser.email, '', err);
+        errorHandler('product_listener_error', err);
       });
       this.product = serializeDocument(productData);
     });
@@ -65,7 +68,7 @@ export function departmentListener(slug) {
     .onSnapshot(async d => {
       if (!d.docs.length) return;
       const departmentData = await d.docs[0].ref.get().catch(err => {
-        errorHandler('department_listener', auth.currentUser.email, '', err);
+        errorHandler('department_listener_error', err);
       });
       this.department = serializeDocument(departmentData);
     });
@@ -108,11 +111,9 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .then(serializeDocument)
       .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
       .catch(err => {
-        errorHandler('check_teammember_product', email, err);
+        errorHandler('check_teammember_product_error', err);
       });
   } else {
-    // 'ref'  be a
-    console.log({ slugOrRef });
     return;
   }
 
@@ -180,7 +181,7 @@ export async function isAdmin() {
     .get()
     .then(d => d.data().admin)
     .catch(err => {
-      errorHandler('is_admin', email, '', err);
+      errorHandler('check_is_admin_error', err);
     });
 }
 
@@ -231,7 +232,7 @@ const getChildren = async (ref, collectionName, callback) => {
       })
     )
     .catch(err => {
-      errorHandler('get_children', auth.currentUser.email, '', err);
+      errorHandler('get_children_error', err);
     });
 };
 
@@ -247,7 +248,7 @@ export async function findUser(slug) {
     .get()
     .then(d => d.docs.map(serializeDocument)[0])
     .catch(err => {
-      errorHandler('find_user', auth.currentUser.email, '', err);
+      errorHandler('find_user_error', err);
     });
 }
 
@@ -266,7 +267,7 @@ export async function userProductsListener(user) {
     .get()
     .then(d => d.docs.map(serializeDocument))
     .catch(err => {
-      errorHandler('user_products_listener', id, '', err);
+      errorHandler('user_products_listener_error', err);
     });
 }
 
@@ -280,7 +281,7 @@ export async function getAllDepartments() {
     .get()
     .then(d => d.docs.map(serializeDocument))
     .catch(err => {
-      errorHandler('get_all_department', auth.currentUser.email, '', err);
+      errorHandler('get_all_department_error', err);
     });
 }
 
@@ -293,6 +294,21 @@ export async function unDelete(ref) {
     .update({ archived: false })
     .then(Toast.revertedDeletion)
     .catch(err => {
-      errorHandler('is_dashboard_user', auth.currentUser.email, '', err);
+      errorHandler('undelete_error', err);
+    });
+}
+
+export async function getAuditFromUser(userId) {
+  return db
+    .collection('audit')
+    .where('user', '==', userId)
+    .orderBy('timestamp', 'desc')
+    .limit(10)
+    .get()
+    .then(snapshot => {
+      return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
+    })
+    .catch(err => {
+      errorHandler('audit_specific_user_error', err);
     });
 }

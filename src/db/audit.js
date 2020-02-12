@@ -1,5 +1,5 @@
+import Vue from 'vue';
 import { db, auth } from '../config/firebaseConfig';
-import { errorHandler } from '../util/utils';
 
 const write = async (obj = {}) => {
   const user = obj.user || auth.currentUser.email || null;
@@ -7,7 +7,7 @@ const write = async (obj = {}) => {
     .collection('audit')
     .add({ ...obj, user, timestamp: new Date() })
     .catch(err => {
-      errorHandler('db_write', auth.currentUser.email, '', err);
+      Vue.$errorHandler('db_write_error', err);
     });
 };
 
