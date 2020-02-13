@@ -1,10 +1,8 @@
-import Vue from 'vue';
 import Audit from './audit';
 import * as Toast from '../util/toasts';
 import { isTeamMemberOfProduct } from './db';
 import Store from '../store';
-
-const errorHandler = Vue.$errorHandler;
+import { logHandler, errorHandler } from '@/util/utils';
 
 /**
  * Saves a progress for a key result
@@ -41,6 +39,9 @@ export async function addProgress(keyres, value, date) {
     .add(progressToBeRegistered)
     .then(Toast.addedProgression)
     .then(updateCurrentValue.bind(null, keyres))
+    .then(() => {
+      logHandler('add_progress');
+    })
     .catch(err => {
       errorHandler('add_progress_error', err);
     });
@@ -58,6 +59,7 @@ export async function deleteProgress(doc, keyres) {
     .delete()
     .then(Toast.deleted)
     .then(updateCurrentValue.bind(null, keyres))
+    .then(() => logHandler('delete_progress'))
     .catch(err => {
       errorHandler('delete_progress_error', err);
     });

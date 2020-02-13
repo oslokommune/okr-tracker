@@ -58,4 +58,11 @@ async function errorHandler(errorType, error = console.trace(), payload = {}) {
   throw new Error(errorType);
 }
 
-export { quarters, getProductFromSlug, timeFromNow, errorHandler, datePretty };
+async function logHandler(eventName) {
+  const user = auth.currentUser ? auth.currentUser.email : null;
+  const view = router.currentRoute.path;
+
+  analytics.logEvent(`${eventName}`, { user, view });
+}
+
+export { quarters, getProductFromSlug, timeFromNow, errorHandler, logHandler, datePretty };

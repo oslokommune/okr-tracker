@@ -6,7 +6,7 @@ import VueScrollTo from 'vue-scrollto';
 import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
-import { errorHandler } from '@/util/utils';
+import { errorHandler, logHandler } from '@/util/utils';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -34,6 +34,7 @@ Vue.use(VTooltip);
 
 // Bind instance properties
 Vue.prototype.$errorHandler = errorHandler;
+Vue.prototype.$logHandler = logHandler;
 
 // Global components
 Vue.component('v-select', VueSelect);
