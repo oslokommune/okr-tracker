@@ -156,7 +156,7 @@ export const mutations = {
   },
 
   SET_QUARTER(state, payload) {
-    payload = payload || state.quarters()[0];
+    payload = payload || state.quarters[0];
     state.activeQuarter = payload;
   },
 
