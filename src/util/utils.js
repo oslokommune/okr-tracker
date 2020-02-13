@@ -5,8 +5,6 @@ import * as Toast from './toasts';
 import { analytics, auth } from '@/config/firebaseConfig';
 import router from '@/router';
 
-// console.dir(Vue.prototype);
-
 /**
  * Generates a list of named quarters
  * @returns {Array} - List of quarters as objects
