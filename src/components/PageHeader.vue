@@ -3,8 +3,8 @@
     <div class="container">
       <div class="page-header__container">
         <ul class="breadcrumb" v-if="breadcrumbs">
-          <li>
-            <router-link to="/"><i class="fas fa-home"></i></router-link>
+          <li class="breadcrumb__item">
+            <router-link to="/"><i class="fas fa-home"></i>Hjem</router-link>
           </li>
           <li class="breadcrumb__item" v-for="item in breadcrumbs" :key="item.name">
             <router-link v-if="item.routerLinkTo" :to="item.routerLinkTo">{{ item.name }}</router-link>
@@ -64,7 +64,7 @@ export default {
     },
 
     icon() {
-      if (this.style === 'admin') return 'dashboard';
+      if (this.style === 'admin') return 'tachometer-alt';
       return false;
     },
 

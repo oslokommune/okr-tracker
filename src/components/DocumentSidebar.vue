@@ -56,11 +56,11 @@
         </div>
       </template>
       <router-link :to="{ name: 'dashboard' }" class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
-        <i class="fa fas fa-fw fa-dashboard"></i>Dashboard
+        <i class="fa fas fa-fw fa-tachometer-alt"></i>Dashboard
       </router-link>
-      <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
-        <i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk
-      </div>
+      <!-- <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
+        <i class="fa fas fa-fw fa-image"></i>Eksporter grafikk
+      </div> -->
     </nav>
     <div class="edited edited--mt" v-tooltip="prettyDate">Endret {{ edited }}</div>
   </aside>

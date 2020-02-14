@@ -25,14 +25,14 @@
               :to="{ name: 'admin-users' }"
               v-tooltip.left="`Gå til adminpanelet`"
             >
-              <i class="fa fa-fw fa-dashboard"></i>
+              <i class="fa fa-fw fa-tachometer-alt"></i>
               Admin</router-link
             >
             <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'me' }"
               ><i class="fa fa-fw fa-user"></i>Endre profil</router-link
             >
             <span class="menu-item" @click="logout" @keydown.enter="logout" tabindex="0"
-              ><i class="fa fa-fw fa-sign-out"></i>Logg ut</span
+              ><i class="fa fa-fw fa-sign-out-alt"></i>Logg ut</span
             >
           </div>
         </div>

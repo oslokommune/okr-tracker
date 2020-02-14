@@ -14,6 +14,13 @@
   &--admin {
     color: $color-blue;
     background: $color-purple;
+
+    .breadcrumb {
+      color: white;
+      a {
+        color: white !important;
+      }
+    }
   }
 
   &--edit-product {
@@ -151,6 +158,10 @@
   height: 100%;
   overflow: hidden;
 
+  a {
+    color: black;
+  }
+
   @media screen and (min-width: 768px) {
     grid-column: 1 / span 2;
   }
@@ -165,6 +176,10 @@
 
   &__item {
     display: none;
+
+    &:first-child {
+      padding-left: 0;
+    }
 
     @media screen and (min-width: 320px) {
       display: block;
@@ -194,11 +209,12 @@
     padding: 0.45rem;
     font-weight: 500 !important;
     white-space: nowrap;
-    & > a {
+    a {
       color: black !important;
       text-decoration: underline;
     }
-    &::before {
+
+    &:not(:first-child)::before {
       display: inline-block;
       padding: 0 0rem;
       transform: translateX(-0.45rem);

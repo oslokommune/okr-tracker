@@ -123,7 +123,8 @@ export default {
         display: inline-block;
         width: 100%;
         color: black;
-        font-family: 'Font Awesome 5 Pro';
+        font-weight: 900;
+        font-family: 'Font Awesome 5 Free';
         text-align: center;
         content: '\f00c';
       }
