@@ -21,7 +21,7 @@ export function deleteKeyRes() {
   const options = {
     action: [
       {
-        text: i18n.t('toaster.regret'),
+        text: i18n.tc('toaster.regret'),
         onClick: (e, toastObject) => {
           this.updateKeyRes(this.keyResObject).then(() => {
             this.getAllData();
@@ -30,7 +30,7 @@ export function deleteKeyRes() {
         },
       },
       {
-        text: 'Lukk',
+        text: i18n.tc('toaster.close'),
         onClick: (e, toastObject) => {
           toastObject.goAway(0);
         },
@@ -38,7 +38,7 @@ export function deleteKeyRes() {
     ],
   };
 
-  show(`Slettet nøkkelresultat`, options);
+  show(i18n.tc('toaster.deletedKeyResult'), options);
 }
 
 export function loggedIn(user) {
@@ -82,31 +82,31 @@ export function addedObjective(quarterName) {
 }
 
 export function addedDepartment() {
-  return show('Lagt til nytt produktområde');
+  return show(i18n.tc('toaster.addedDepartment'));
 }
 
 export function addedProgression() {
-  return show('Lagt til ny måleverdi');
+  return show(i18n.tc('toaster.addedPorgression'));
 }
 
 export function addedKeyResult() {
-  return show('Lagt til nytt nøkkelresultat');
+  return show(i18n.tc('toaster.addedKeyResylt'));
 }
 
 export function uploadedPhoto() {
-  return show('Lastet opp bilde');
+  return show(i18n.tc('toaster.uploadedPhoto'));
 }
 
 export function fourOhFour() {
-  return show('Siden eksisterer ikke');
+  return show(i18n.tc('toaster.fourOhFour'));
 }
 
 export function restored() {
-  return show(`Gjenopprettet dokument`);
+  return show(i18n.tc('toaster.restored'));
 }
 
 export function deletedPermanently() {
-  return show('Slettet dokument permanent');
+  return show(i18n.tc('toaster.deletedPermanently'));
 }
 
 export function deletedRegret(obj) {
@@ -118,24 +118,24 @@ export function deletedRegret(obj) {
     duration: 4000,
     action: [
       {
-        text: 'Angre',
+        text: i18n.tc('toaster.regret'),
         onClick: callback || unDelete.bind(null, ref),
       },
       {
-        text: 'Lukk',
+        text: i18n.tc('toaster.close'),
         onClick: close,
       },
     ],
   };
 
   if (name) {
-    return show(`Slettet «${name}»`, options);
+    return show(i18n.tc('toaster.deletedObject', null, { name }), options);
   }
-  return show(`Slettet objekt`, options);
+  return show(i18n.tc('toaster.deleted'), options);
 }
 
 export function revertedDeletion() {
-  return show('Gjenopprettet objekt');
+  return show(i18n.tc('toaster.restored'));
 }
 
 async function unDelete(ref) {
