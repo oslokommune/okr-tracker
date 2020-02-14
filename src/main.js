@@ -16,6 +16,8 @@ import handleUserAuthStateChange from '@/util/authChangeHelper';
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+// console.log(foo);
 
 const fb = require('./config/firebaseConfig');
 

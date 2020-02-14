@@ -9,7 +9,6 @@
           <router-link class="sub-nav__element" :to="{ name: 'edit-department-keyres' }">
             Mål og nøkkelresultater
           </router-link>
-          <router-link class="sub-nav__element" exact :to="{ name: 'home' }">Team</router-link>
         </div>
       </div>
     </nav>

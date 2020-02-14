@@ -11,6 +11,7 @@
     "deploy": "npm run build && firebase deploy --project=production"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "blueimp-canvas-to-blob": "^3.17.0",
     "core-js": "^3.6.4",
     "d3": "^5.15.0",
