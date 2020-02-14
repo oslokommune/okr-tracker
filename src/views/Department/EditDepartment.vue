@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { departmentListener, isAdmin } from '../../db/db';
-import PageHeader from '../../components/PageHeader.vue';
+import { departmentListener, isAdmin } from '@/db/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'Department',

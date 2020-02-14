@@ -18,8 +18,8 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import NewsfeedCard from './NewsfeedCard.vue';
-import { serializeDocument } from '../../../db/db';
+import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
+import { serializeDocument } from '@/db/db';
 import { eventTypes } from '@/db/audit';
 
 export default {

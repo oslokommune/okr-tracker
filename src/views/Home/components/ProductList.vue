@@ -61,8 +61,8 @@
 <script>
 import { mapState } from 'vuex';
 import PageHeader from '@/components/PageHeader.vue';
-import { timeFromNow } from '../../../util/utils';
-import ProductDetails from './ProductDetails.vue';
+import { timeFromNow } from '@/util/utils';
+import ProductDetails from '@/views/Home/components/ProductDetails.vue';
 
 export default {
   data: () => ({

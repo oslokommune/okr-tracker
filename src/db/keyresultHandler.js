@@ -1,8 +1,8 @@
-import * as Toast from '../util/toasts';
-import Audit from './audit';
-import { errorHandler } from '../util/utils';
-import { isTeamMemberOfProduct } from './db';
-import Store from '../store';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import { errorHandler } from '@/util/utils';
+import { isTeamMemberOfProduct } from '@/db/db';
+import Store from '@/store';
 
 /**
  * Creates a key result for the provided objective

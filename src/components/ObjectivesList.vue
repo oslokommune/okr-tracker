@@ -23,8 +23,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import TheObjective from './Objective/TheObjective.vue';
-import { serializeDocument, isTeamMemberOfProduct } from '../db/db';
+import TheObjective from '@/components/Objective/TheObjective.vue';
+import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
 
 export default {
   name: 'ObjectivesList',

@@ -33,7 +33,7 @@
 import { mapState, mapMutations } from 'vuex';
 import { serializeDocument } from '@/db/db';
 import PieChart from '@/components/PieChart.vue';
-import DashboardObjective from './dashboardObjective.vue';
+import DashboardObjective from '@/views/Dashboard/dashboardObjective.vue';
 
 export default {
   name: 'DashboardHome',

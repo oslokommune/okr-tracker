@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import * as Toast from '../../util/toasts';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'CalloutArchivedRestore',

@@ -54,10 +54,10 @@
 <script>
 import { mapState } from 'vuex';
 import uniqid from 'uniqid';
-import { validateEmail } from '../../util/formValidation';
-import { db } from '../../config/firebaseConfig';
-import * as Toast from '../../util/toasts';
-import Audit from '../../db/audit';
+import { validateEmail } from '@/util/formValidation';
+import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
 
 export default {
   name: 'AdminUsers',

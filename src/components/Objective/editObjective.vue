@@ -36,9 +36,9 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import * as Toast from '../../util/toasts';
-import Audit from '../../db/audit';
-import { serializeDocument } from '../../db/db';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import { serializeDocument } from '@/db/db';
 
 export default {
   name: 'EditObjective',

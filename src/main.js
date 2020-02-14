@@ -7,9 +7,9 @@ import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import { errorHandler, logHandler } from '@/util/utils';
-import App from './App.vue';
-import router from './router';
-import store from './store';
+import App from '@/App.vue';
+import router from '@/router';
+import store from '@/store';
 
 import handleUserAuthStateChange from '@/util/authChangeHelper';
 

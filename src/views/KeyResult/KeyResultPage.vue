@@ -113,10 +113,10 @@ import { format, formatDistanceToNow } from 'date-fns';
 import dateLocale from 'date-fns/locale/nb';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
-import { serializeDocument, isTeamMemberOfProduct } from '../../db/db';
+import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
+import PageHeader from '@/components/PageHeader.vue';
+import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
-import PageHeader from '../../components/PageHeader.vue';
-import Linechart from '../../util/linechart';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {

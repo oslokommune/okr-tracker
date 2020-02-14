@@ -50,8 +50,8 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import { serializeDocument } from '../../db/db';
-import Keyresult from '../../db/keyresultHandler';
+import { serializeDocument } from '@/db/db';
+import Keyresult from '@/db/keyresultHandler';
 
 export default {
   name: 'AddKeyres',
