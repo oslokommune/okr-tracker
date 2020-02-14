@@ -24,7 +24,7 @@ async function create(objectiveRef, data) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('create_keyres_error', new Error('Insufficient permissions'));
 
   return objectiveRef
     .collection('keyResults')
@@ -34,7 +34,9 @@ async function create(objectiveRef, data) {
       Audit.createKeyResult(keyresRef, documentRef, objectiveRef);
       return keyresRef;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('create_keyres_error', err);
+    });
 }
 
 /**
@@ -48,7 +50,7 @@ async function update(keyresRef, data) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('update_keyres_error', new Error('Insufficient permissions'));
 
   return keyresRef
     .update(data)
@@ -57,7 +59,9 @@ async function update(keyresRef, data) {
       Toast.savedChanges();
       return keyresRef;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_keyres_error', err);
+    });
 }
 
 /**
@@ -69,7 +73,7 @@ async function archive(keyresRef) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('archive_keyres_error', new Error('Insufficient permissions'));
 
   await keyresRef
     .update({ archived: true })
@@ -78,7 +82,9 @@ async function archive(keyresRef) {
       Audit.archiveKeyResult(keyresRef, documentRef, objectiveRef);
       return true;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('archive_keyres_error', err);
+    });
 }
 
 export default {

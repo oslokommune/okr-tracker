@@ -2,13 +2,14 @@ import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow, format } fr
 import locale from 'date-fns/locale/nb';
 import { startDate } from '../config/applicationConfig';
 import * as Toast from './toasts';
-// import router from '@/router';
+import { analytics, auth } from '@/config/firebaseConfig';
+import router from '@/router';
 
 /**
  * Generates a list of named quarters
  * @returns {Array} - List of quarters as objects
  */
-const quarters = (() => {
+function quarters() {
   let fromDate = new Date(startDate);
   const today = new Date();
   const toDate = startOfQuarter(addMonths(today, 3));
@@ -22,7 +23,7 @@ const quarters = (() => {
   }
 
   return list.reverse();
-})();
+}
 
 function getProductFromSlug(nest, slug) {
   return nest
@@ -45,9 +46,21 @@ function datePretty(date) {
   return format(date, 'd. MMM HH:mm:ss', { locale });
 }
 
-function errorHandler() {
+async function errorHandler(errorType, error = console.trace(), payload = {}) {
+  const user = auth.currentUser ? auth.currentUser.email : null;
+  const view = router.currentRoute.path;
+
+  analytics.logEvent(`${errorType}`, { user, view, error, ...payload });
+
   Toast.error();
-  throw new Error();
+  throw new Error(errorType);
 }
 
-export { quarters, getProductFromSlug, timeFromNow, errorHandler, datePretty };
+async function logHandler(eventName) {
+  const user = auth.currentUser ? auth.currentUser.email : null;
+  const view = router.currentRoute.path;
+
+  analytics.logEvent(`${eventName}`, { user, view });
+}
+
+export { quarters, getProductFromSlug, timeFromNow, errorHandler, logHandler, datePretty };

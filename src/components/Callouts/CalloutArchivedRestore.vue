@@ -28,13 +28,17 @@ export default {
       this.docref
         .update({ archived: false })
         .then(Toast.restored)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('restore_archived_error', err);
+        });
     },
     deletePermanently() {
       this.docref
         .delete()
         .then(Toast.deletedPermanently)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('delete_archived_error', err);
+        });
     },
   },
 };

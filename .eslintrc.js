@@ -14,6 +14,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'func-names': 'off',
     'no-restricted-globals': 'off',
+    'import/no-cycle': [2, { maxDepth: 1 }],
   },
   parserOptions: {
     parser: 'babel-eslint',
