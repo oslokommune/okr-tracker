@@ -1,7 +1,7 @@
 import { csvParse } from 'd3';
-import cleanUpDataTree from './cleanUpMigrationData';
-import writeMigrationData from './writeMigrationData';
-import * as Toast from '../util/toasts';
+import cleanUpDataTree from '@/migration/cleanUpMigrationData';
+import writeMigrationData from '@/migration/writeMigrationData';
+import * as Toast from '@/util/toasts';
 
 export default async function(fileList) {
   if (!validateFileList(fileList)) {
