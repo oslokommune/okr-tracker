@@ -55,7 +55,7 @@
 <script>
 import { mapState } from 'vuex';
 import { isDashboardUser, findUser, userProductsListener, getAllDepartments, getAuditFromUser } from '@/db/db';
-import PageHeader from '../components/PageHeader.vue';
+import PageHeader from '@/components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
 import * as Toast from '@/util/toasts';
 

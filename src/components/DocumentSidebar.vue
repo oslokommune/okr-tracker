@@ -67,9 +67,9 @@
 </template>
 <script>
 import ClickOutside from 'vue-click-outside';
-import AddKeyres from './KeyRes/addKeyres.vue';
-import AddObjective from './Objective/addObjective.vue';
-import RegisterProgressModal from './RegisterProgressModal.vue';
+import AddKeyres from '@/components/KeyRes/addKeyres.vue';
+import AddObjective from '@/components/Objective/addObjective.vue';
+import RegisterProgressModal from '@/components/RegisterProgressModal.vue';
 import { timeFromNow, datePretty } from '@/util/utils';
 
 export default {

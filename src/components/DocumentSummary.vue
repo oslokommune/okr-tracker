@@ -62,7 +62,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import PieChart from './PieChart.vue';
+import PieChart from '@/components/PieChart.vue';
 
 export default {
   name: 'DocumentSummary',

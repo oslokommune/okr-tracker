@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/colors';
+@import '../../styles/_colors.scss';
 
 .sub-nav__element {
   cursor: pointer;
