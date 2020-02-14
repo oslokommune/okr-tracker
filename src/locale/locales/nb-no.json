@@ -28,8 +28,9 @@
     "regret": "Angre",
     "close": "Lukk",
     "addedTo": "Lagt til",
+    "welcome": "Velkommen {user}",
     "addedUsers": "user | users",
-    "deletedUser": "SLettet bruker {user}",
+    "deletedUser": "Slettet bruker {user}",
     "addedAdmin": "Gitt {user} admintilgang",
     "removedAdmin": "Fjernet admintilgang for {user}",
     "error": "Noe gikk galt!",
@@ -44,6 +45,8 @@
     "fourOhFour": "Siden eksisterer ikke",
     "restored": "Gjenopprettet dokument",
     "deletedPermanently": "Slettet dokumentet permanent",
-    "removed": "Slettet"
+    "removed": "Slettet",
+    "removedObject": "Slettet «{name}»",
+    "deletedKeyResult": "Slettet nøkkelresultat"
   }
 }
