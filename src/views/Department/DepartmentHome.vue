@@ -39,12 +39,12 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { serializeDocument } from '../../db/db';
+import { serializeDocument } from '@/db/db';
 
-import PageHeader from '../../components/PageHeader.vue';
-import DocumentSidebar from '../../components/DocumentSidebar.vue';
-import DocumentSummary from '../../components/DocumentSummary.vue';
-import ObjectivesList from '../../components/ObjectivesList.vue';
+import PageHeader from '@/components/PageHeader.vue';
+import DocumentSidebar from '@/components/DocumentSidebar.vue';
+import DocumentSummary from '@/components/DocumentSummary.vue';
+import ObjectivesList from '@/components/ObjectivesList.vue';
 
 export default {
   name: 'DepartmentHome',
@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors';
+@import '../../styles/_colors.scss';
 
 .sub-nav__element {
   cursor: pointer;

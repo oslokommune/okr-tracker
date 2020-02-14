@@ -9,7 +9,7 @@ import {
   initUnit,
   setWidth,
   resize,
-} from './progressbar-helpers';
+} from '@/util/progressbar-helpers';
 
 export default class Progressbar {
   constructor(svg) {

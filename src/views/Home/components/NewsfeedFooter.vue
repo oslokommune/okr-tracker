@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { timeFromNow, datePretty } from '../../../util/utils';
+import { timeFromNow, datePretty } from '@/util/utils';
 
 export default {
   name: 'NewsfeedFooter',

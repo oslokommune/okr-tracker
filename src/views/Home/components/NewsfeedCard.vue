@@ -129,9 +129,9 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import { serializeDocument } from '../../../db/db';
+import { serializeDocument } from '@/db/db';
 import ProgressBar from '@/components/ProgressBar.vue';
-import NewsfeedFooter from './NewsfeedFooter.vue';
+import NewsfeedFooter from '@/views/Home/components/NewsfeedFooter.vue';
 
 export default {
   components: {

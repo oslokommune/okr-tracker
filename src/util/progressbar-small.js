@@ -1,6 +1,6 @@
 import { scaleLinear, select } from 'd3';
-import { formatPercent } from './pie-helpers';
-import { initBackground, initBar, initSvg, resize, setWidth, initValueText } from './progressbar-helpers';
+import { formatPercent } from '@/util/pie-helpers';
+import { initBackground, initBar, initSvg, resize, setWidth, initValueText } from '@/util/progressbar-helpers';
 
 export default class Progressbar {
   constructor(svg) {

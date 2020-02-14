@@ -41,9 +41,9 @@
 <script>
 import { scaleLinear, format } from 'd3';
 import { mapState } from 'vuex';
-import ProgressBar from '../ProgressBar.vue';
-import { timeFromNow } from '../../util/utils';
-import { isTeamMemberOfProduct } from '../../db/db';
+import ProgressBar from '@/components/ProgressBar.vue';
+import { timeFromNow } from '@/util/utils';
+import { isTeamMemberOfProduct } from '@/db/db';
 import { addProgress } from '@/db/progressHandler';
 
 export default {

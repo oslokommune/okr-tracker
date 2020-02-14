@@ -38,9 +38,9 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument } from '../db/db';
-import ProgressBar from './ProgressBar.vue';
-import { addProgress } from '../db/progressHandler';
+import { serializeDocument } from '@/db/db';
+import ProgressBar from '@/components/ProgressBar.vue';
+import { addProgress } from '@/db/progressHandler';
 
 export default {
   name: 'RegisterProgressModal',

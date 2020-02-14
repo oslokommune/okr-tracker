@@ -79,12 +79,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '../../../config/firebaseConfig';
-import slugify from '../../../util/slugify';
-import * as Toast from '../../../util/toasts';
-import Audit from '../../../db/audit';
-import CalloutArchivedRestore from '../../../components/Callouts/CalloutArchivedRestore.vue';
-import { serializeDocument } from '../../../db/db';
+import { storage } from '@/config/firebaseConfig';
+import slugify from '@/util/slugify';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import CalloutArchivedRestore from '@/components/Callouts/CalloutArchivedRestore.vue';
+import { serializeDocument } from '@/db/db';
 
 export default {
   name: 'AdminProduct',

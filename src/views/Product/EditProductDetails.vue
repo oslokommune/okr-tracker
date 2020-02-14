@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import AdminProduct from '../Admin/components/AdminProduct.vue';
-import AdminDepartment from '../Admin/components/AdminDepartment.vue';
+import AdminProduct from '@/views/Admin/components/AdminProduct.vue';
+import AdminDepartment from '@/views/Admin/components/AdminDepartment.vue';
 
 export default {
   name: 'EditProductDetails',

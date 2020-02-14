@@ -41,7 +41,7 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import KeyResult from '../../db/keyresultHandler';
+import KeyResult from '@/db/keyresultHandler';
 
 export default {
   name: 'EditKeyres',

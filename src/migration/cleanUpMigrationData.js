@@ -1,4 +1,4 @@
-import slugify from '../util/slugify';
+import slugify from '@/util/slugify';
 
 export default function cleanUpDataTree(tree) {
   tree.forEach(cleanUpOrg);

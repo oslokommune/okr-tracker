@@ -10,9 +10,9 @@ import {
   updateTodayLine,
   updateTodayTextPosition,
   updatePercentText,
-} from './pie-helpers';
+} from '@/util/pie-helpers';
 
-import { getTimeProgression } from './helpers';
+import { getTimeProgression } from '@/util/helpers';
 
 export default class Pie {
   /**

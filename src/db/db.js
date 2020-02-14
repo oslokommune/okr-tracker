@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import { db, auth, dashboardUser } from '../config/firebaseConfig';
-import * as Toast from '../util/toasts';
+import { db, auth, dashboardUser } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 import { eventTypes } from '@/db/audit';
 
 const errorHandler = Vue.$errorHandler;

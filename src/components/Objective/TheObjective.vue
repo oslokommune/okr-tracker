@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { serializeDocument } from '../../db/db';
-import TheKeyResult from '../KeyRes/TheKeyResult.vue';
+import { serializeDocument } from '@/db/db';
+import TheKeyResult from '@/components/KeyRes/TheKeyResult.vue';
 
 export default {
   name: 'TheObjective',

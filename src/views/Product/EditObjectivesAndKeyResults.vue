@@ -91,12 +91,12 @@
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
 import { getQuarter } from 'date-fns';
-import { serializeDocument } from '../../db/db';
-import UpdateKeyres from '../../components/KeyRes/editKeyres.vue';
-import EditObjective from '../../components/Objective/editObjective.vue';
-import * as Toast from '../../util/toasts';
-import Audit from '../../db/audit';
-import Keyresult from '../../db/keyresultHandler';
+import { serializeDocument } from '@/db/db';
+import UpdateKeyres from '@/components/KeyRes/editKeyres.vue';
+import EditObjective from '@/components/Objective/editObjective.vue';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import Keyresult from '@/db/keyresultHandler';
 
 export default {
   name: 'EditObjectivesAndKeyResults',

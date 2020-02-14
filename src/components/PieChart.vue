@@ -4,7 +4,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Pie from '../util/piechart';
+import Pie from '@/util/piechart';
 
 export default {
   name: 'PieChart',

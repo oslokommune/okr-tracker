@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import { serializeDocument } from '../db/db';
-import { db } from '../config/firebaseConfig';
-import * as Toast from '../util/toasts';
+import { serializeDocument } from '@/db/db';
+import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'PageHeader',

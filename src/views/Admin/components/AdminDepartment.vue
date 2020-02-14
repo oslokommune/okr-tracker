@@ -46,10 +46,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import { storage } from '../../../config/firebaseConfig';
-import * as Toast from '../../../util/toasts';
-import Audit from '../../../db/audit';
-import slugify from '../../../util/slugify';
+import { storage } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import slugify from '@/util/slugify';
 
 export default {
   name: 'AdminDepartment',
