@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import i18n from '@/locale/i18n';
 
 const standardOption = { duration: 3500 };
 
@@ -20,7 +21,7 @@ export function deleteKeyRes() {
   const options = {
     action: [
       {
-        text: 'Angre',
+        text: i18n.t('toaster.regret'),
         onClick: (e, toastObject) => {
           this.updateKeyRes(this.keyResObject).then(() => {
             this.getAllData();
@@ -41,46 +42,43 @@ export function deleteKeyRes() {
 }
 
 export function loggedIn(user) {
-  show(`Velkommen ${user.displayName ? user.displayName : ''}`);
+  show(i18n.tc('toaster.welcome', null, { user: user.displayName ? user.displayName : '' }));
 }
 
 export function successFullyAddedUsers(count) {
-  let str = `Lagt til ${count} `;
-  str += count === 1 ? `bruker` : `brukere`;
-
-  show(str);
+  show(i18n.tc('toaster.addedUsers', count));
 }
 
 export function deletedUser(user) {
-  show(`Slettet bruker ${user.id}`);
+  show(i18n.tc('toaster.deletedUser', null, { user }));
 }
 
 export function toggleAdmin(user, value) {
   if (value) {
-    show(`Gitt ${user.displayName || user.email} admintilgang`);
+    show(i18n.tc('toaster.addedAdmin', null, { user: user.displayName || user.email }));
   } else {
-    show(`Fjernet admintilgang for ${user.displayName || user.email}`);
+    show(i18n.tc('toaster.removedAdmin', null, { user: user.displayName || user.email }));
   }
 }
 
 export function error() {
-  return show('Noe gikk galt!');
+  return show(i18n.tc('toaster.error'));
 }
 
 export function savedChanges() {
-  return show('Lagret endringer');
+  return show(i18n.tc('toaster.savedChanged'));
 }
 
 export function deleted() {
-  return show('Slettet objekt');
+  return show(i18n.tc('toasted.deleted'));
 }
 
 export function addedProduct() {
-  return show('Lagt til nytt produkt');
+  return show(i18n.tc('toaster.addedProduct'));
 }
 
 export function addedObjective(quarterName) {
-  return show(`Lagt til nytt mål for ${quarterName}`);
+  return show(i18n.tc('toaster.addedObjective', null, { object: quarterName }));
 }
 
 export function addedDepartment() {

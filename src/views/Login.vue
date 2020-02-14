@@ -2,33 +2,33 @@
   <div class="container">
     <div class="login">
       <div class="section">
-        <h1 class="title-1">Du er ikke logget inn</h1>
+        <h1 class="title-1">{{ $t('login.notLoggedIn') }}</h1>
       </div>
 
       <hr />
 
       <div class="section">
-        <h2 class="title title-3">Google-bruker</h2>
-        <p>Logg inn med din registrerte Google-konto for å bruke denne applikasjonen.</p>
+        <h2 class="title title-3">{{ $t('login.google.title') }}</h2>
+        <p>{{ $t('login.google.info') }}</p>
 
         <div v-if="error === 1" class="error">
-          Epost-adressen du forsøkte å logge inn med er ikke registrert. Kontakt systemadministrator for å få tilgang.
+          {{ $t('login.error.wrongEmail') }}
         </div>
         <div v-if="error === 2" class="error">
-          Klarte ikke å logge inn med Google. Kontakt systemadministrator hvis feilen vedvarer.
+          {{ $t('login.error.googleError') }}
         </div>
 
         <div class="form-field">
-          <button class="btn" @click="loginWithGoogle">Logg inn med Google</button>
+          <button class="btn" @click="loginWithGoogle">{{ $t('login.google.btn') }}</button>
         </div>
       </div>
       <hr />
       <div class="section">
-        <h2 class="title title-3">Dashboard-bruker</h2>
-        <p>Logg inn med passord for å logge inn med begrenset tilgang.</p>
+        <h2 class="title title-3">{{ $t('login.dashboard.title') }}</h2>
+        <p>{{ $t('login.dashboard.info') }}</p>
         <div class="section">
           <div v-if="error === 3" class="error">
-            Passordet er feil.
+            {{ $t('login.error.wrongPassword') }}
           </div>
           <form @submit.prevent="submitPassword()">
             <label class="form-field">
@@ -36,7 +36,7 @@
               <div class="form-login">
                 <input class="field" type="password" v-model="password" />
                 <button class="btn">
-                  Logg inn
+                  {{ $t('login.dashboard.btn') }}
                 </button>
               </div>
             </label>

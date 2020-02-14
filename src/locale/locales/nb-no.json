@@ -1,0 +1,49 @@
+{
+  "login": {
+    "notLoggedIn": "Du er ikke logget inm",
+    "google": {
+      "title": "Google-bruker",
+      "info": "Logg inn med din registrerte Google-konto for å bruke denne applikasjonen",
+      "btn": "Logg inn med Google"
+    },
+    "dashboard": {
+      "title": "Dashboard-bruker",
+      "info": "Logg inn med passord for å logge inn med begrenset tilgang",
+      "password": "Passord",
+      "btn": "Logg inn"
+    },
+    "error": {
+      "wrongEmail": "Epost-adressen du forsøkte å logge inn med er ikke registrert. Kontakt systemadministrator for å få tilgang.",
+      "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
+      "wrongPassword": "Passordet er feil."
+    }
+  },
+  "header": {
+    "changeProfile": "Endre profil",
+    "admin": "Admin",
+    "logout": "Logg ut",
+    "newsfeed": "Aktivitet"
+  },
+  "toaster": {
+    "regret": "Angre",
+    "close": "Lukk",
+    "addedTo": "Lagt til",
+    "addedUsers": "user | users",
+    "deletedUser": "SLettet bruker {user}",
+    "addedAdmin": "Gitt {user} admintilgang",
+    "removedAdmin": "Fjernet admintilgang for {user}",
+    "error": "Noe gikk galt!",
+    "savedChanges": "Lagret endringer",
+    "deleted": "Slettet object",
+    "addedProduct": "Lagt til nytt produkt",
+    "addedObjective": "Lagt til nytt mål for {object}",
+    "addedDepartment": "Lagt til nytt produktområde",
+    "addedProgression": "Lagt til ny målverdi",
+    "addedKeyResult": "Lagt til nytt nøkkelresultat",
+    "uploadedPhoto": "Lastet opp bilde",
+    "fourOhFour": "Siden eksisterer ikke",
+    "restored": "Gjenopprettet dokument",
+    "deletedPermanently": "Slettet dokumentet permanent",
+    "removed": "Slettet"
+  }
+}

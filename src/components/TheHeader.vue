@@ -26,14 +26,16 @@
               v-tooltip.left="`Gå til adminpanelet`"
             >
               <i class="fa fa-fw fa-tachometer-alt"></i>
-              Admin</router-link
-            >
-            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'me' }"
-              ><i class="fa fa-fw fa-user"></i>Endre profil</router-link
-            >
-            <span class="menu-item" @click="logout" @keydown.enter="logout" tabindex="0"
-              ><i class="fa fa-fw fa-sign-out-alt"></i>Logg ut</span
-            >
+              {{ $t('header.admin') }}
+            </router-link>
+            <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'me' }">
+              <i class="fa fa-fw fa-user" />
+              {{ $t('header.changeProfile') }}
+            </router-link>
+            <span class="menu-item" @click="logout" @keydown.enter="logout" tabindex="0">
+              <i class="fa fa-fw fa-sign-out-alt" />
+              {{ $t('header.logout') }}
+            </span>
           </div>
         </div>
         <div class="newsfeed-toggle">
@@ -44,7 +46,7 @@
           >
             <i class="fa fa-stream"></i>
             <div class="newsfeed-toggle__label">
-              Aktivitet
+              {{ $t('header.newsfeed') }}
             </div>
           </button>
         </div>
