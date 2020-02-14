@@ -55,9 +55,9 @@
           ></register-progress-modal>
         </div>
       </template>
-      <div class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
+      <router-link :to="{ name: 'dashboard' }" class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
         <i class="fa fas fa-fw fa-dashboard"></i>Dashboard
-      </div>
+      </router-link>
       <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
         <i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk
       </div>

@@ -6,10 +6,8 @@
       <aside class="content--sidebar">
         <nav v-if="hasEditPermissions" class="sidebar-nav">
           <router-link
-            :to="{
-              name: 'edit-product-keyres',
-              params: { slug: $route.params.slug, keyres: key_result, objective: objective },
-            }"
+            v-if="editRoute"
+            :to="editRoute"
             class="sidebar-nav__item"
             v-tooltip.right="`Endre detaljer for nøkkelresultatet`"
             ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link
@@ -111,14 +109,14 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
+import dateLocale from 'date-fns/locale/nb';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
 import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
-import Progress from '@/db/progressHandler';
 import PageHeader from '@/components/PageHeader.vue';
 import Linechart from '@/util/linechart';
-import { timeFromNow } from '@/util/utils';
+import { deleteProgress, addProgress } from '@/db/progressHandler';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {
@@ -152,6 +150,24 @@ export default {
   computed: {
     ...mapState(['user', 'key_result', 'nest', 'quarters']),
 
+    editRoute() {
+      let name;
+      if (!this.key_result) return;
+      const parent = this.key_result.ref.parent.parent.parent.parent.parent.id;
+      if (parent === 'products') {
+        name = 'edit-product-keyres';
+      } else if (parent === 'departments') {
+        name = 'edit-department-keyres';
+      } else {
+        return;
+      }
+
+      return {
+        name,
+        params: { slug: this.$route.params.slug, keyres: this.key_result, objective: this.objective },
+      };
+    },
+
     list() {
       return this.progressions
         .map(d => {
@@ -168,7 +184,7 @@ export default {
     edited() {
       if (!this.key_result) return;
       const timestamp = this.key_result.edited || this.key_result.created;
-      return timeFromNow(timestamp.toDate());
+      return formatDistanceToNow(timestamp.toDate(), { addSuffix: true, dateLocale });
     },
   },
 
@@ -187,7 +203,9 @@ export default {
     this.objective = await this.key_result.ref.parent.parent
       .get()
       .then(serializeDocument)
-      .catch(this.$errorHandler);
+      .catch(err => {
+        this.$errorHandler('get_objective_error', err);
+      });
 
     const { quarter } = this.objective;
     this.quarter = quarter;
@@ -213,7 +231,9 @@ export default {
       const quarter = await this.key_result.ref.parent.parent
         .get()
         .then(d => d.data().quarter)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_key_result_quarter_error', err);
+        });
 
       this.quarter = quarter;
 
@@ -244,11 +264,11 @@ export default {
     ...mapActions(['watchKeyResult']),
 
     deleteValue(doc) {
-      Progress.deleteProgress(doc, this.key_result);
+      deleteProgress(doc, this.key_result);
     },
 
     addValue() {
-      Progress.addProgress(this.key_result, +this.value, this.date);
+      addProgress(this.key_result, +this.value, this.date);
     },
 
     async watchData() {

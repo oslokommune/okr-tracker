@@ -66,7 +66,9 @@ export default {
     this.department = await this.docref
       .get()
       .then(d => d.data())
-      .catch(this.$errorHandler);
+      .catch(err => {
+        this.$errorHandler('get_department_error', err);
+      });
   },
 
   computed: {
@@ -79,7 +81,9 @@ export default {
       this.department = await newDocref
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_department_error', err);
+        });
     },
   },
 
@@ -92,7 +96,9 @@ export default {
           Audit.updateDepartment(this.docref);
           Toast.savedChanges();
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('update_department_error', err);
+        });
     },
     deleteObject() {
       this.docref
@@ -101,7 +107,9 @@ export default {
           this.department = null;
         })
         .then(Toast.deleted)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('archive_department_error', err);
+        });
     },
 
     setImage(file) {
@@ -115,11 +123,15 @@ export default {
       this.uploading = true;
       const storageRef = storage.ref(`departments/${this.docref.id}`);
 
-      const snapshot = await storageRef.put(this.file).catch(this.$errorHandler);
+      const snapshot = await storageRef.put(this.file).catch(err => {
+        this.$errorHandler('upload_photo_department_error', err);
+      });
       Toast.uploadedPhoto();
 
       const photoURL = await snapshot.ref.getDownloadURL();
-      await this.docref.update({ photoURL }).catch(this.$errorHandler);
+      await this.docref.update({ photoURL }).catch(err => {
+        this.$errorHandler('upload_photo_department_error', err);
+      });
       Toast.savedChanges();
 
       this.department.photoURL = photoURL;

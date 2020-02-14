@@ -98,7 +98,9 @@ export default {
       const trail = await Promise.all(promises)
         .then(snapshots => snapshots.map(serializeDocument))
         .then(documents => documents.map(this.getNameAndRouteFromDocument))
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('generate_breadcrumbs_error', err);
+        });
 
       return trail.reverse();
     },

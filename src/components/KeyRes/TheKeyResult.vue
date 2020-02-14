@@ -44,7 +44,7 @@ import { mapState } from 'vuex';
 import ProgressBar from '../ProgressBar.vue';
 import { timeFromNow } from '@/util/utils';
 import { isTeamMemberOfProduct } from '@/db/db';
-import Progress from '@/db/progressHandler';
+import { addProgress } from '@/db/progressHandler';
 
 export default {
   name: 'TheKeyResult',
@@ -81,7 +81,7 @@ export default {
   methods: {
     async saveNewProgress() {
       this.editMode = false;
-      await Progress.addProgress(this.keyres, +this.value);
+      await addProgress(this.keyres, +this.value);
     },
   },
 

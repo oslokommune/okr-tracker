@@ -96,7 +96,9 @@ export default {
         .then(() => {
           this.$router.push('/login');
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('logout_error', err);
+        });
     },
   },
 };

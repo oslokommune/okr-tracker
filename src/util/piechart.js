@@ -18,13 +18,14 @@ export default class Pie {
   /**
    * Initialize the SVG and create the necessary DOM elements
    */
-  constructor(svg) {
+  constructor(svg, darkmode = false) {
+    this.darkmode = darkmode;
     this.svg = select(svg).call(initSvg.bind(this));
     this.canvas = this.svg.append('g').classed('canvas', true);
     this.inner = this.canvas.append('g').call(initGroup, 'inner');
     this.outer = this.canvas.append('g').call(initGroup, 'outer');
-    this.percentText = this.canvas.append('text').call(initPercentText);
-    this.outer.call(initOuterGroup);
+    this.percentText = this.canvas.append('text').call(initPercentText.bind(this));
+    this.outer.call(initOuterGroup.bind(this));
     this.pie = pie().sort(null);
   }
 
@@ -42,8 +43,8 @@ export default class Pie {
     const outerArcs = this.pie([time, 1 - time]);
 
     // Use the arc data to update the arcs
-    this.inner.call(updateInnerArcs, innerArcs);
-    this.outer.call(updateOuterArcs, outerArcs);
+    this.inner.call(updateInnerArcs.bind(this), innerArcs);
+    this.outer.call(updateOuterArcs.bind(this), outerArcs);
 
     // Position the 'today' marker and text using the provided angle
     const todayAngle = outerArcs[0].endAngle;

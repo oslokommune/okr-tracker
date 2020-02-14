@@ -114,7 +114,9 @@ export default {
       ref
         .get()
         .then(this.getProductfromRef)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_product_error', err);
+        });
     },
   },
 
@@ -136,7 +138,9 @@ export default {
         .then(() => {
           Audit.updateProduct(this.docref);
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('update_product_error', err);
+        });
       this.product.team = teamList;
     },
 
@@ -149,7 +153,9 @@ export default {
 
       const team = this.product.team || [];
       const promises = team.map(d => d.get());
-      const userRefs = await Promise.all(promises).catch(this.$errorHandler);
+      const userRefs = await Promise.all(promises).catch(err => {
+        this.$errorHandler('get_team_users_error', err);
+      });
 
       this.team = userRefs
         .map(user => ({ id: user.id, ref: user.ref, ...user.data() }))
@@ -167,7 +173,9 @@ export default {
           Toast.deletedRegret(doc);
           Audit.archiveProduct(this.docref);
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('archive_product_error', err);
+        });
 
       this.product = null;
     },
@@ -189,12 +197,16 @@ export default {
       this.uploading = true;
       const storageRef = await storage.ref(`products/${this.docref.id}`);
 
-      const snapshot = await storageRef.put(this.file).catch(this.$errorHandler);
+      const snapshot = await storageRef.put(this.file).catch(err => {
+        this.$errorHandler('upload_photo_error', err);
+      });
 
       Toast.uploadedPhoto();
 
       const photoURL = await snapshot.ref.getDownloadURL();
-      await this.docref.update({ photoURL }).catch(this.$errorHandler);
+      await this.docref.update({ photoURL }).catch(err => {
+        this.$errorHandler('update_photo_url_error', err);
+      });
 
       Audit.updateProductImage(this.docref);
       Toast.savedChanges();

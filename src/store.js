@@ -2,9 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { quarters, errorHandler } from '@/util/utils';
+import { quarters } from '@/util/utils';
 import { serializeDocument, getNestedData } from '@/db/db';
 import icons from '@/config/icons';
+
+const errorHandler = Vue.$errorHandler;
 
 Vue.use(Vuex);
 
@@ -42,7 +44,9 @@ export const actions = {
       .collectionGroup('keyResults')
       .get()
       .then(snapshot => snapshot.docs.filter(d => d.id === id)[0].ref)
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('get_keyres_error', err);
+      });
 
     const unsubscribe = await getKeyRes.then(keyResult => {
       if (!keyResult) return;
@@ -64,7 +68,9 @@ export const actions = {
       .where('slug', '==', slug)
       .get()
       .then(d => d.docs[0].ref)
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('get_product_error', err);
+      });
 
     // TODO: Unsubscribe from this when not longer needed
     getProduct
@@ -73,7 +79,9 @@ export const actions = {
           commit('set_product', serializeDocument(snapshot));
         });
       })
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('watch_product_error', err);
+      });
 
     return getProduct;
   },
@@ -87,7 +95,9 @@ export const actions = {
       .get()
       .then(d => d.docs[0])
       .then(d => serializeDocument(d))
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('get_department_error', err);
+      });
 
     getDepartment.then(department => {
       department.ref
@@ -164,8 +174,8 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters,
-    activeQuarter: quarters[0],
+    quarters: quarters(),
+    activeQuarter: quarters()[0],
     icons,
     showNewsfeed: false,
     key_result: null,
