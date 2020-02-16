@@ -1,6 +1,6 @@
 <template>
   <div class="popout">
-    <span class="form-label">Kvartal</span>
+    <span class="form-label">{{ $t('objective.quarter') }}</span>
     <v-select
       class="form-field"
       :class="{ 'form-field--error': $v.quarter.$error }"
@@ -8,13 +8,13 @@
       :options="quarters"
       v-model="quarter"
     ></v-select>
-    <div class="form-field--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.quarter.$error">{{ $t('validations.empty') }}</div>
 
     <div class="title title-3">
       <i :class="`fas fa-${icon}`"></i>
     </div>
-    <span class="form-label">Ikon</span>
-    <v-select class="form-field" :options="icons" v-model="icon" v-tooltip.bottom="`Søk og velg ikon fra listen`">
+    <span class="form-label">{{ $t('objective.icon') }}</span>
+    <v-select class="form-field" :options="icons" v-model="icon" v-tooltip.bottom="$t('tooltip.icon')">
       <template v-slot:option="option">
         <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
         <span>{{ option.label }}</span>
@@ -22,17 +22,17 @@
     </v-select>
 
     <label class="form-field" :class="{ 'form-field--error': $v.title.$error }">
-      <span class="form-label">Tittel</span>
+      <span class="form-label">{{ $t('objective.title') }}</span>
       <input type="text" v-model="$v.title.$model" />
     </label>
-    <div class="form-field--error" v-if="$v.title.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.title.$error">{{ $t('validations.empty') }}</div>
     <label class="form-field" :class="{ 'form-field--error': $v.body.$error }">
-      <span class="form-label">Beskrivelse</span>
+      <span class="form-label">{{ $t('objective.description') }}</span>
       <textarea v-model="$v.body.$model" rows="4"></textarea>
     </label>
-    <div class="form-field--error" v-if="$v.body.$error">Kan ikke være tom</div>
-    <button :disabled="submit" class="btn" @click="send">Legg til</button>
-    <button class="btn btn--borderless" @click="$emit('close-menu')">Lukk</button>
+    <div class="form-field--error" v-if="$v.body.$error">{{ $t('validations.empty') }}</div>
+    <button :disabled="submit" class="btn" @click="send">{{ $t('validations.add') }}</button>
+    <button class="btn btn--borderless" @click="$emit('close-menu')">{{ $t('validations.close') }}</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
@@ -110,7 +110,7 @@ export default {
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
+        this.setSubmitInfo(false, true, this.$i18n.t('validations.required'));
       } else {
         this.setSubmitInfo(true, false, '');
 

@@ -1,6 +1,6 @@
 <template>
   <div class="popout">
-    <span class="form-label">Tilknyttet mål</span>
+    <span class="form-label">{{ $t('keyres.objective') }}</span>
     <v-select
       v-if="objectives"
       class="form-field objective__select"
@@ -10,39 +10,41 @@
       :options="objectives"
     ></v-select>
 
-    <div class="form-field--error" v-if="$v.objective.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.objective.$error">{{ $t('validations.empty') }}</div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
-      <span class="form-label">Beskrivelse</span>
+      <span class="form-label">{{ $t('keyres.description') }}</span>
       <textarea v-model="$v.description.$model" rows="4"></textarea>
     </label>
-    <div class="form-field--error" v-if="$v.description.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.description.$error">{{ $t('validations.empty') }}</div>
 
     <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.startValue.$error }">
-        <span class="form-label">Startverdi</span>
+        <span class="form-label">{{ $t('keyres.startValue') }}</span>
         <input type="number" v-model="$v.startValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.startValue.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.startValue.$error">{{ $t('validations.empty') }}</div>
 
       <label class="form-field" :class="{ 'form-field--error': $v.targetValue.$error }">
-        <span class="form-label">Målverdi</span>
+        <span class="form-label">{{ $t('keyres.targetValue') }}</span>
         <input type="number" v-model="$v.targetValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.targetValue.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.targetValue.$error">{{ $t('validations.empty') }}</div>
     </div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.unit.$error }">
-      <span class="form-label">Måleenhet</span>
-      <span class="form-help">Hva er det som måles (klikk/prosent/brukere etc)?</span>
+      <span class="form-label">{{ $t('keyres.unit') }}</span>
+      <span class="form-help">{{ $t('keyres.unitDescription') }}</span>
       <input type="text" v-model="$v.unit.$model" />
     </label>
-    <div class="form-field--error" v-if="$v.unit.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.unit.$error">{{ $t('validations.empty') }}</div>
 
     <hr />
 
-    <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
-    <button class="btn btn--ghost" @click="close">Avbryt</button>
+    <button :disabled="submit" class="btn" @click="send">
+      {{ $tc('validations.submit', null, { object: 'nøkkelresultat' }) }}
+    </button>
+    <button class="btn btn--ghost" @click="close">{{ $t('validations.close') }}</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
@@ -133,7 +135,7 @@ export default {
     send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
+        this.setSubmitInfo(false, true, this.$i18n.t('validations.required'));
       } else {
         this.setSubmitInfo(true, false, '');
 

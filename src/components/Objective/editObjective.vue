@@ -24,9 +24,7 @@
     </label>
 
     <hr />
-    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">
-      Lagre endringer
-    </button>
+    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">Lagre endringer</button>
     <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
 
     <p v-if="showInfo">{{ info }}</p>
@@ -105,7 +103,7 @@ export default {
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
+        this.setSubmitInfo(false, true, this.$i18n.t('validations.required'));
       } else {
         this.setSubmitInfo(true, false, '');
 

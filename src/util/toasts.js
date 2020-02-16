@@ -21,7 +21,7 @@ export function deleteKeyRes() {
   const options = {
     action: [
       {
-        text: i18n.tc('toaster.regret'),
+        text: i18n.tc('toaster.action.regret'),
         onClick: (e, toastObject) => {
           this.updateKeyRes(this.keyResObject).then(() => {
             this.getAllData();
@@ -30,7 +30,7 @@ export function deleteKeyRes() {
         },
       },
       {
-        text: i18n.tc('toaster.close'),
+        text: i18n.tc('toaster.action.close'),
         onClick: (e, toastObject) => {
           toastObject.goAway(0);
         },
@@ -38,7 +38,7 @@ export function deleteKeyRes() {
     ],
   };
 
-  show(i18n.tc('toaster.deletedKeyResult'), options);
+  show(i18n.tc('toaster.delete.keyResult'), options);
 }
 
 export function loggedIn(user) {
@@ -46,16 +46,16 @@ export function loggedIn(user) {
 }
 
 export function successFullyAddedUsers(count) {
-  show(i18n.tc('toaster.addedUsers', count));
+  show(i18n.tc('toaster.add.users', count));
 }
 
 export function deletedUser(user) {
-  show(i18n.tc('toaster.deletedUser', null, { user }));
+  show(i18n.tc('toaster.delte.user', null, { user }));
 }
 
 export function toggleAdmin(user, value) {
   if (value) {
-    show(i18n.tc('toaster.addedAdmin', null, { user: user.displayName || user.email }));
+    show(i18n.tc('toaster.add.admin', null, { user: user.displayName || user.email }));
   } else {
     show(i18n.tc('toaster.removedAdmin', null, { user: user.displayName || user.email }));
   }
@@ -74,23 +74,23 @@ export function deleted() {
 }
 
 export function addedProduct() {
-  return show(i18n.tc('toaster.addedProduct'));
+  return show(i18n.tc('toaster.add.product'));
 }
 
 export function addedObjective(quarterName) {
-  return show(i18n.tc('toaster.addedObjective', null, { object: quarterName }));
+  return show(i18n.tc('toaster.add.objective', null, { object: quarterName }));
 }
 
 export function addedDepartment() {
-  return show(i18n.tc('toaster.addedDepartment'));
+  return show(i18n.tc('toaster.add.department'));
 }
 
 export function addedProgression() {
-  return show(i18n.tc('toaster.addedPorgression'));
+  return show(i18n.tc('toaster.add.porgression'));
 }
 
 export function addedKeyResult() {
-  return show(i18n.tc('toaster.addedKeyResylt'));
+  return show(i18n.tc('toaster.add.keyResylt'));
 }
 
 export function uploadedPhoto() {
@@ -106,7 +106,7 @@ export function restored() {
 }
 
 export function deletedPermanently() {
-  return show(i18n.tc('toaster.deletedPermanently'));
+  return show(i18n.tc('toaster.delete.permanently'));
 }
 
 export function deletedRegret(obj) {
@@ -118,18 +118,18 @@ export function deletedRegret(obj) {
     duration: 4000,
     action: [
       {
-        text: i18n.tc('toaster.regret'),
+        text: i18n.tc('toaster.action.regret'),
         onClick: callback || unDelete.bind(null, ref),
       },
       {
-        text: i18n.tc('toaster.close'),
+        text: i18n.tc('toaster.action.close'),
         onClick: close,
       },
     ],
   };
 
   if (name) {
-    return show(i18n.tc('toaster.deletedObject', null, { name }), options);
+    return show(i18n.tc('toaster.delete.object', null, { name }), options);
   }
   return show(i18n.tc('toaster.deleted'), options);
 }

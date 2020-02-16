@@ -25,28 +25,74 @@
     "newsfeed": "Aktivitet"
   },
   "toaster": {
-    "regret": "Angre",
-    "close": "Lukk",
-    "addedTo": "Lagt til",
     "welcome": "Velkommen {user}",
-    "addedUsers": "user | users",
-    "deletedUser": "Slettet bruker {user}",
-    "addedAdmin": "Gitt {user} admintilgang",
+    "addedTo": "Lagt til",
+    "add": {
+      "users": "user | users",
+      "admin": "Gitt {user} admintilgang",
+      "product": "Lagt til nytt produkt",
+      "objective": "Lagt til nytt mål for {object}",
+      "progression": "Lagt til ny målverdi",
+      "department": "Lagt til nytt produktområde",
+      "keyResult": "Lagt til nytt nøkkelresultat"
+    },
+    "delete": {
+      "user": "Slettet bruker {user}",
+      "permanently": "Slettet dokumentet permanent",
+      "object": "Slettet «{name}»",
+      "keyResult": "Slettet nøkkelresultat"
+    },
+    "action": {
+      "regret": "Angre",
+      "close": "Lukk"
+    },
     "removedAdmin": "Fjernet admintilgang for {user}",
     "error": "Noe gikk galt!",
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
-    "addedProduct": "Lagt til nytt produkt",
-    "addedObjective": "Lagt til nytt mål for {object}",
-    "addedDepartment": "Lagt til nytt produktområde",
-    "addedProgression": "Lagt til ny målverdi",
-    "addedKeyResult": "Lagt til nytt nøkkelresultat",
     "uploadedPhoto": "Lastet opp bilde",
     "fourOhFour": "Siden eksisterer ikke",
     "restored": "Gjenopprettet dokument",
-    "deletedPermanently": "Slettet dokumentet permanent",
     "removed": "Slettet",
-    "removedObject": "Slettet «{name}»",
-    "deletedKeyResult": "Slettet nøkkelresultat"
+    "callout": {
+      "restore": "Gjenopprett",
+      "delete": "Slett permanent"
+    }
+  },
+  "validations": {
+    "empty": "Kan ikke være tom",
+    "required": "Nødvendige felt kan ikke være tomme",
+    "submit": "Lagre nytt {object}",
+    "close": "Lukk",
+    "add": "Legg til",
+    "stop": "Avbryt"
+  },
+  "keyres": {
+    "objective": "Tilknyttet mål",
+    "description": "Beskrivelse",
+    "startValue": "Startverdi",
+    "targetValue": "Målverdi",
+    "unit": "Måleenhet",
+    "unitDescription": "Hva er det som måles (klikk, prosent, brukere etc)?",
+    "change": "Endre nøkkelresultat",
+    "saveChanges": "Lagre endringer",
+    "delete": "SLett nøkkelresultat",
+    "close": "Lukk",
+    "updateKeyres": "Oppdater verdi for nøkkelresultat",
+    "lastUpdated": "Sist oppdatert {date}"
+  },
+  "objective": {
+    "quarter": "Kvartal",
+    "icon": "Ikon",
+    "description": "Beskrivelse",
+    "title": "Tittel",
+    "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå."
+  },
+  "tooltip": {
+    "newValue": "Ny verdi",
+    "showDetails": "Vis detaljer",
+    "save": "Lagre",
+    "close": "Lukk",
+    "icon": "Søk og velg ikon fra listen"
   }
 }

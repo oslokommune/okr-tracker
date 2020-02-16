@@ -2,9 +2,13 @@
   <div class="callout">
     <div class="callout__message">Dette produktet er arkivert</div>
     <div class="callout__actions">
-      <button @click="restore" class="btn btn--borderless"><i class="fa far fa-trash-undo"></i>Gjenopprett</button>
+      <button @click="restore" class="btn btn--borderless">
+        <i class="fa far fa-trash-undo"></i>
+        {{ $t('toaster.callout.restore') }}
+      </button>
       <button @click="deletePermanently" class="btn btn--borderless">
-        <i class="far fa-trash-alt"></i>Slett permanent
+        <i class="far fa-trash-alt"></i>
+        {{ $t('toaster.callout.delete') }}
       </button>
     </div>
   </div>
