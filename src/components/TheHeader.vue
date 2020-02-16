@@ -10,20 +10,18 @@
           class="usernav"
           :class="{ isOpen }"
           v-click-outside="closeMenu"
-          v-tooltip.left="isOpen ? `Lukk meny` : `Åpne meny`"
+          v-tooltip.left="isOpen ? $t('tooltip.closeMenu') : $t('tooltip.openMenu')"
         >
           <a class="usernav__name" @click="isOpen = !isOpen" @keydown.enter="isOpen = !isOpen" tabindex="0">
             <img class="usernav__photo" :src="user.photoURL || '/placeholder-user.svg'" :alt="displayName" />
-            <span class="usernav__display-name">
-              {{ displayName }}
-            </span>
+            <span class="usernav__display-name">{{ displayName }}</span>
           </a>
           <div class="usernav__menu" v-if="isOpen" @click="isOpen = false">
             <router-link
               class="menu-item"
               v-if="user && user.admin"
               :to="{ name: 'admin-users' }"
-              v-tooltip.left="`Gå til adminpanelet`"
+              v-tooltip.left="$t('tooltip.toAdmin')"
             >
               <i class="fa fa-fw fa-tachometer-alt"></i>
               {{ $t('header.admin') }}
@@ -45,9 +43,7 @@
             @click="set_show_newsfeed(!showNewsfeed)"
           >
             <i class="fa fa-stream"></i>
-            <div class="newsfeed-toggle__label">
-              {{ $t('header.newsfeed') }}
-            </div>
+            <div class="newsfeed-toggle__label">{{ $t('header.newsfeed') }}</div>
           </button>
         </div>
       </nav>

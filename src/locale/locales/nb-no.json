@@ -93,6 +93,9 @@
     "showDetails": "Vis detaljer",
     "save": "Lagre",
     "close": "Lukk",
-    "icon": "Søk og velg ikon fra listen"
+    "icon": "Søk og velg ikon fra listen",
+    "closeMenu": "Lukk meny",
+    "openMenu": "Åpne meny",
+    "toAdmin": "Gå til adminpanelet"
   }
 }
