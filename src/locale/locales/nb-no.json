@@ -1,4 +1,5 @@
 {
+  "pageHeader": "Hjem",
   "login": {
     "notLoggedIn": "Du er ikke logget inm",
     "google": {
@@ -79,14 +80,26 @@
     "delete": "SLett nøkkelresultat",
     "close": "Lukk",
     "updateKeyres": "Oppdater verdi for nøkkelresultat",
-    "lastUpdated": "Sist oppdatert {date}"
+    "lastUpdated": "Sist oppdatert {date}",
+    "registerProgression": {
+      "register": "Registrere progresjon",
+      "keyres": "Nøkkelresultat",
+      "value": "Verdi",
+      "noKeyres": "Ingen nøkkelresultater",
+      "previous": "Forrige",
+      "jumpOver": "Hopp over",
+      "save": "Lagre og gå videre"
+    }
   },
   "objective": {
     "quarter": "Kvartal",
     "icon": "Ikon",
     "description": "Beskrivelse",
     "title": "Tittel",
-    "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå."
+    "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå.",
+    "objectiveForPeriod": "Mål for perioden ({count})",
+    "empty": "Oops! Her finnes det ingen mål.",
+    "addObjectiveAndKeyres": "Legg til mål og nøkkelresultater"
   },
   "tooltip": {
     "newValue": "Ny verdi",
@@ -96,6 +109,31 @@
     "icon": "Søk og velg ikon fra listen",
     "closeMenu": "Lukk meny",
     "openMenu": "Åpne meny",
-    "toAdmin": "Gå til adminpanelet"
+    "toAdmin": "Gå til adminpanelet",
+    "changeDetailsAndTeam": "Endre detaljer og team",
+    "addObjective": "Legg til et nytt mål",
+    "addKeyresToObjective": "Legg til nytt nøkkelresultat for eksisterende mål",
+    "updateKeyres": "Registrere nye verdier til nøkkelresultatene",
+    "dashboard": "Gå til dashboard-visning",
+    "export": "Eksporter skjermbilder til presentasjoner (1920x1080)"
+  },
+  "document": {
+    "changeProduct": "Endre product",
+    "addObjective": "Legg til mål",
+    "newKeyres": "Nytt nøkkelresultat",
+    "updateData": "Oppdater data",
+    "dashboard": "Dashboard",
+    "edited": "Endret {date}",
+    "export": "Eksporter grafikk",
+    "mission": "Oppdrag",
+    "missing": {
+      "first": "Uh-oh!",
+      "second": "Her mangler det noe viktig!"
+    },
+    "addDescription": "Legg inn en beskrivelse",
+    "product": "Produkter",
+    "team": "Team",
+    "noTeam": "Finner ingen teammedlemmer - kanskje det bare er ninjaer her?",
+    "period": "Denne perioden"
   }
 }

@@ -1,23 +1,23 @@
 <template>
   <div class="grid grid-3 section">
     <div>
-      <h2 class="title title-2">Oppdrag</h2>
+      <h2 class="title title-2">{{ $t('document.mission') }}</h2>
       <div v-if="!document.missionStatement" class="content">
         <p>
-          <strong>Uh-oh!</strong>
-          Her mangler det noe viktig!
+          <strong>{{ $t('document.missing.first') }}</strong>
+          {{ $t('document.missing.second') }}
         </p>
         <p v-if="user.admin">
-          <router-link :to="{ name: type === 'product' ? 'edit-product' : 'edit-department' }"
-            >Legg inn en beskrivelse.
-          </router-link>
+          <router-link :to="{ name: type === 'product' ? 'edit-product' : 'edit-department' }">{{
+            $t('document.addDescription')
+          }}</router-link>
         </p>
       </div>
       <p>{{ document.missionStatement }}</p>
     </div>
     <div>
-      <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>
-      <h2 v-else-if="type === 'product'" class="title title-2">Team</h2>
+      <h2 v-if="type === 'department'" class="title title-2">{{ $t('document.product') }}</h2>
+      <h2 v-else-if="type === 'product'" class="title title-2">{{ $t('document.team') }}</h2>
 
       <div v-if="!team.length">
         <ul class="team__list team__list--empty">
@@ -25,7 +25,7 @@
             <i class="fa fa-user-ninja"></i>
           </div>
         </ul>
-        <p>Finner ingen teammedlemmer – kanskje det bare er ninjaer her?</p>
+        <p>{{ $t('document.noTeam') }}</p>
       </div>
 
       <ul class="team__list">
@@ -54,7 +54,7 @@
       </ul>
     </div>
     <div>
-      <h2 class="title title-2">Denne perioden</h2>
+      <h2 class="title title-2">{{ $t('document.period') }}</h2>
       <pie-chart :document="document"></pie-chart>
     </div>
   </div>

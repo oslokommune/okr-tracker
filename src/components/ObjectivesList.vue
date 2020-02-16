@@ -1,18 +1,17 @@
 <template>
   <section class="section">
-    <h2 class="title title-2">Mål for perioden ({{ objectives.length }})</h2>
+    <h2 class="title title-2">{{ $tc('objective.objectiveForPeriod', objectives.length) }}</h2>
 
     <div class="list">
       <div v-if="!objectives.length" class="empty">
         <i class="fa fa-fw fa-exclamation-circle"></i>
         <p>
-          <span> Oops! Her finnes det ingen mål. </span>
+          <span>{{ $t(objective.empty) }}</span>
           <router-link
             v-if="hasEditPermissions"
             :to="{ name: $route.name === 'department' ? 'edit-department-keyres' : 'edit-product-keyres' }"
+            >{{ $t('objective.addObjectiveAndKeyres') }}</router-link
           >
-            Legg til mål og nøkkelresultater
-          </router-link>
         </p>
       </div>
 
