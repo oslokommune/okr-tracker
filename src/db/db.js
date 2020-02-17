@@ -109,12 +109,23 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .get()
       .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
-      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
+      .then(d => {
+        return d && d.team ? d.team.map(doc => doc.id) : [];
+      })
       .catch(err => {
         errorHandler('check_teammember_product_error', err);
       });
   } else {
-    return;
+    teamMembers = await slugOrRef
+      .get()
+      .then(snapshot => snapshot.docs[0])
+      .then(serializeDocument)
+      .then(d => {
+        return d && d.team ? d.team.map(doc => doc.id) : [];
+      })
+      .catch(err => {
+        errorHandler('check_teammember_product_error', err);
+      });
   }
 
   return teamMembers.includes(email);
@@ -222,6 +233,7 @@ const getChildren = async (ref, collectionName, callback) => {
     .collection(collectionName)
     .where('archived', '==', false)
     .get();
+
   const promises = snapshot.docs.map(callback);
   return Promise.all(promises)
     .then(list =>
