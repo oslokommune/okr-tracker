@@ -17,7 +17,7 @@
     "d3": "^5.15.0",
     "d3-svg-legend": "^2.25.6",
     "date-fns": "^2.9.0",
-    "firebase": "^7.7.0",
+    "firebase": "^7.8.2",
     "flatpickr": "^4.6.3",
     "uniqid": "^5.2.0",
     "v-tooltip": "^2.0.3",
