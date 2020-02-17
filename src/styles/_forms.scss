@@ -139,8 +139,6 @@ textarea {
   width: 5rem;
   transform: translateY(0.15rem);
 
-  $t: &;
-
   &__input {
     position: absolute;
     left: -999999px;
@@ -148,12 +146,12 @@ textarea {
     height: 0;
     background: none;
 
-    &:focus ~ #{$t}__switch {
+    &:focus ~ .toggle__switch {
       background: $color-link !important;
       outline: 4px solid $color-yellow;
     }
 
-    &:checked ~ #{$t}__switch {
+    &:checked ~ .toggle__switch {
       background: $color-purple;
 
       &::before {
