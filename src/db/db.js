@@ -102,6 +102,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
   const { email } = auth.currentUser;
   let teamMembers;
 
+  // Get team members from product (either slug or document reference)
   if (typeof slugOrRef === 'string') {
     teamMembers = await db
       .collectionGroup('products')
@@ -118,15 +119,14 @@ export async function isTeamMemberOfProduct(slugOrRef) {
   } else {
     teamMembers = await slugOrRef
       .get()
-      .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
-      .then(d => {
-        return d && d.team ? d.team.map(doc => doc.id) : [];
-      })
+      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
       .catch(err => {
         errorHandler('check_teammember_product_error', err);
       });
   }
+
+  if (!teamMembers || !teamMembers.length) return;
 
   return teamMembers.includes(email);
 }
