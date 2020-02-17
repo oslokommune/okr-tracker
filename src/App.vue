@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <main class="main">
       <the-header></the-header>
       <router-view class="home"></router-view>
@@ -44,7 +44,7 @@ document.body.addEventListener('keydown', function() {
 </style>
 
 <style lang="scss" scoped>
-#app {
+.app {
   display: flex;
 }
 
