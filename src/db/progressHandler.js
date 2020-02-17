@@ -1,6 +1,6 @@
 import Audit from '@/db/audit';
 import * as Toast from '@/util/toasts';
-import { isTeamMemberOfProduct } from '@//db';
+import { isTeamMemberOfProduct } from '@/db';
 import Store from '@/store';
 
 import { logHandler, errorHandler } from '@/util/utils';
@@ -21,6 +21,7 @@ export async function addProgress(keyres, value, date) {
   }
 
   const documentRef = keyres.ref.parent.parent.parent.parent.parent.parent;
+
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
   if (!hasEditPermissions) throw errorHandler('add_progress_error', new Error('Not allowed to add progress'));
 
