@@ -23,6 +23,17 @@ async function create(objectiveRef, data) {
 
   const documentRef = objectiveRef.parent.parent;
 
+  const keyResCount = await objectiveRef
+    .collection('keyResults')
+    .where('archived', '==', false)
+    .get()
+    .then(snapshot => snapshot.docs.length);
+
+  if (keyResCount >= 5) {
+    Toast.show('Kan ikke ha flere enn 5 nøkkelresultater');
+    return errorHandler('create_keyres_error', new Error('Maximum key results'));
+  }
+
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
   if (!hasEditPermissions) throw errorHandler('create_keyres_error', new Error('Insufficient permissions'));
 
