@@ -218,7 +218,18 @@ export default {
         });
     },
 
-    addObjective() {
+    async addObjective() {
+      const objectiveCount = await this.docref
+        .collection('objectives')
+        .where('quarter', '==', this.selectedQuarter.name)
+        .get()
+        .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
+
+      if (objectiveCount >= 4) {
+        Toast.show('Kan ikke ha flere enn 4 mål');
+        return;
+      }
+
       this.docref
         .collection('objectives')
         .add({
