@@ -197,6 +197,7 @@ export default {
   async mounted() {
     if (!this.$refs.graph) return;
     if (!this.key_result) return;
+    if (!this.list) return;
 
     this.graph = new Linechart(this.$refs.graph);
 
@@ -221,20 +222,14 @@ export default {
   },
 
   watch: {
-    async list(newVal) {
+    list(newVal) {
       if (!newVal) return;
 
       if (!this.graph) {
         this.graph = new Linechart(this.$refs.graph);
       }
 
-      const quarter = await this.key_result.ref.parent.parent
-        .get()
-        .then(d => d.data().quarter)
-        .catch(err => {
-          this.$errorHandler('get_key_result_quarter_error', err);
-        });
-
+      const { quarter } = this.key_result ? this.key_result : {};
       this.quarter = quarter;
 
       this.graph.render(this.key_result, quarter, newVal);
