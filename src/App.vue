@@ -5,7 +5,7 @@
       <router-view class="home"></router-view>
     </main>
     <transition>
-      <Newsfeed v-show="user && showNewsfeed" class="newsfeed" @close="set_show_newsfeed(false)"></Newsfeed>
+      <Newsfeed v-if="user" v-show="showNewsfeed" class="newsfeed" @close="set_show_newsfeed(false)"></Newsfeed>
     </transition>
   </div>
 </template>

@@ -17,55 +17,57 @@
       </label>
     </div>
 
-    <div class="miller">
-      <div class="miller__col" :class="{ active: selection.type === 'organisation' }">
-        <h3 class="miller__col__header">Velg organisasjon</h3>
-        <div
-          class="miller__col__item"
-          v-for="org in orgs"
-          :key="org.id"
-          @click="selectOrg(org.id)"
-          :class="{ active: selectedOrgId === org.id }"
-        >
-          {{ org.name }}
+    <div class="miller__container">
+      <div class="miller">
+        <div class="miller__col" :class="{ active: selection.type === 'organisation' }">
+          <h3 class="miller__col__header">Velg organisasjon</h3>
+          <div
+            class="miller__col__item"
+            v-for="org in orgs"
+            :key="org.id"
+            @click="selectOrg(org.id)"
+            :class="{ active: selectedOrgId === org.id }"
+          >
+            {{ org.name }}
+          </div>
         </div>
-      </div>
 
-      <div class="miller__col" :class="{ active: selection.type === 'department' }">
-        <h3 class="miller__col__header">Velg produktområde</h3>
-        <div
-          class="miller__col__item"
-          v-for="dept in depts"
-          :key="dept.id"
-          @click="selectDept(dept.id)"
-          :class="{ active: selectedDeptId === dept.id }"
-        >
-          {{ dept.name }}
-          <i v-if="dept.archived" class="fa fas fa-history"></i>
+        <div class="miller__col" :class="{ active: selection.type === 'department' }">
+          <h3 class="miller__col__header">Velg produktområde</h3>
+          <div
+            class="miller__col__item"
+            v-for="dept in depts"
+            :key="dept.id"
+            @click="selectDept(dept.id)"
+            :class="{ active: selectedDeptId === dept.id }"
+          >
+            {{ dept.name }}
+            <i v-if="dept.archived" class="fa fas fa-history"></i>
+          </div>
+          <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">+ Legg til</div>
         </div>
-        <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">+ Legg til</div>
-      </div>
 
-      <div class="miller__col" :class="{ active: selection.type === 'product' }">
-        <h3 class="miller__col__header">Velg produkt</h3>
-        <div
-          class="miller__col__item"
-          v-for="product in products"
-          :key="product.id"
-          @click="selectProduct(product.id)"
-          :class="{ active: selectedProductId === product.id }"
-        >
-          {{ product.name }}
+        <div class="miller__col" :class="{ active: selection.type === 'product' }">
+          <h3 class="miller__col__header">Velg produkt</h3>
+          <div
+            class="miller__col__item"
+            v-for="product in products"
+            :key="product.id"
+            @click="selectProduct(product.id)"
+            :class="{ active: selectedProductId === product.id }"
+          >
+            {{ product.name }}
 
-          <i v-if="product.archived" class="fa fas fa-history"></i>
+            <i v-if="product.archived" class="fa fas fa-history"></i>
+          </div>
+          <div v-if="selectedDeptId" class="miller__col__item miller__col__add" @click="addProduct">+ Legg til</div>
         </div>
-        <div v-if="selectedDeptId" class="miller__col__item miller__col__add" @click="addProduct">+ Legg til</div>
-      </div>
 
-      <main class="miller__main">
-        <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
-        <admin-department v-if="selection.type === 'department'" :docref="selection.docRef"></admin-department>
-      </main>
+        <main class="miller__main">
+          <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
+          <admin-department v-if="selection.type === 'department'" :docref="selection.docRef"></admin-department>
+        </main>
+      </div>
     </div>
 
     <hr />

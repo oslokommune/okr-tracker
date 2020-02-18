@@ -65,6 +65,7 @@ export default {
 
     icon() {
       if (this.style === 'admin') return 'tachometer-alt';
+      if (this.style === 'help') return 'question-circle';
       return false;
     },
 
