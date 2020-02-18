@@ -14,7 +14,6 @@ import { sanitize } from 'dompurify';
 import PageHeader from '@/components/PageHeader.vue';
 
 marked.setOptions({
-  sanitizer: sanitize,
   smartypants: true,
 });
 
@@ -29,7 +28,7 @@ export default {
 
   async created() {
     fetch('./help.md').then(async response => {
-      this.markdown = marked(await response.text());
+      this.markdown = sanitize(marked(await response.text()));
     });
   },
 };
