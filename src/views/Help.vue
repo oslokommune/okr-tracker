@@ -3,14 +3,20 @@
     <PageHeader :data="{ name: 'Hjelp', icon: 'user' }" :toc="true" toc-id="toc" toc-first-level="2"></PageHeader>
 
     <div class="container" v-if="markdown">
-      <vue-markdown class="md" :source="markdown"></vue-markdown>
+      <div class="md" v-html="markdown"></div>
     </div>
   </div>
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown';
+import marked from 'marked';
+import { sanitize } from 'dompurify';
 import PageHeader from '@/components/PageHeader.vue';
+
+marked.setOptions({
+  sanitizer: sanitize,
+  smartypants: true,
+});
 
 export default {
   data: () => ({
@@ -18,13 +24,12 @@ export default {
   }),
 
   components: {
-    VueMarkdown,
     PageHeader,
   },
 
   async created() {
     fetch('./help.md').then(async response => {
-      this.markdown = await response.text();
+      this.markdown = marked(await response.text());
     });
   },
 };
