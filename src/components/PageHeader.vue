@@ -19,7 +19,7 @@
           </h1>
         </div>
 
-        <div class="page-header__profile-image page-header__profile-image--icon" v-if="data.icon">
+        <div class="page-header__profile-image page-header__profile-image--icon" v-if="data.icon && showImage">
           <i :class="`fa fa-fw fa-${data.icon}`"></i>
         </div>
 
