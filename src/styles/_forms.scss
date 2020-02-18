@@ -109,14 +109,22 @@ textarea {
     width: 100%;
   }
 
-  & > .fa,
-  & > .far,
-  & > .fas {
+  &:not(&--icon) > .fa,
+  &:not(&--icon) > .far,
+  &:not(&--icon) > .fas {
     margin-right: 0.5rem;
   }
 
   & + & {
     margin-left: 0.5rem;
+  }
+
+  &--icon {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
   }
 
   &--danger {
