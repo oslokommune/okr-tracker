@@ -22,86 +22,119 @@
         </div>
 
         <hr />
-        <h3 class="title-3" v-if="quarter">Progresjon gjennom {{ quarter }}</h3>
-        <svg class="graph" ref="graph"></svg>
 
-        <hr />
+        <div class="columns">
+          <div class="column--left">
+            <h3 class="title-3" v-if="quarter">Progresjon gjennom {{ quarter }}</h3>
+            <svg class="graph" ref="graph"></svg>
 
-        <section v-if="hasEditPermissions" class="section">
-          <h2 class="title-2">Legg til nytt målepunkt</h2>
+            <hr />
 
-          <form @submit.prevent="addValue" class="form-group">
-            <div class="form-row">
-              <label class="form-field">
-                <span class="form-label">Verdi</span>
-                <input
-                  type="number"
-                  v-model="value"
-                  v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
-                />
-              </label>
-              <label class="form-field">
-                <span class="form-label">Dato</span>
-                <div
-                  class="date-input"
-                  v-tooltip.top="{ content: `Hvilket tidspunkt gjelder måleverdien for`, trigger: `hover`, delay: 100 }"
-                >
-                  <flat-pickr
-                    v-model="date"
-                    :config="flatPickerConfig"
-                    class="form-control"
-                    name="date"
-                    placeholder="Velg dato og tid"
-                  ></flat-pickr>
-                  <button class="btn btn--borderless" @click.prevent="date = new Date()">I dag</button>
+            <section v-if="hasEditPermissions" class="section">
+              <h2 class="title-2">Legg til nytt målepunkt</h2>
+
+              <form @submit.prevent="addValue" class="form-group">
+                <div class="form-row">
+                  <label class="form-field">
+                    <span class="form-label">Verdi</span>
+                    <input
+                      type="number"
+                      v-model="value"
+                      v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
+                    />
+                  </label>
+                  <label class="form-field">
+                    <span class="form-label">Dato</span>
+                    <div
+                      class="date-input"
+                      v-tooltip.top="{
+                        content: `Hvilket tidspunkt gjelder måleverdien for`,
+                        trigger: `hover`,
+                        delay: 100,
+                      }"
+                    >
+                      <flat-pickr
+                        v-model="date"
+                        :config="flatPickerConfig"
+                        class="form-control"
+                        name="date"
+                        placeholder="Velg dato og tid"
+                      ></flat-pickr>
+                      <button class="btn btn--borderless" @click.prevent="date = new Date()">I dag</button>
+                    </div>
+                  </label>
                 </div>
-              </label>
-            </div>
-            <div class="form-field">
-              <button
-                class="btn"
-                v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }"
-                :disabled="!this.date"
-              >
-                Legg til
-              </button>
-            </div>
-          </form>
-          <hr />
-        </section>
-
-        <section class="section" v-if="key_result">
-          <h2 class="title-2">Registrerte målepunkter</h2>
-
-          <div v-if="!progressions">Det er ingen registrerte målepunkter</div>
-
-          <table v-if="progressions" class="table">
-            <thead>
-              <tr>
-                <th>Verdi</th>
-                <th>Dato</th>
-                <th>Registrert av</th>
-                <th v-if="hasEditPermissions"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="prog in list" :key="prog.id">
-                <td>{{ prog.value }}</td>
-                <td>{{ prog.date | formatDate }}</td>
-                <td>{{ prog.createdBy.id }}</td>
-                <td v-if="hasEditPermissions" style="width: 1rem;">
+                <div class="form-field">
                   <button
-                    class="btn btn--borderless"
-                    @click="deleteValue(prog)"
-                    v-tooltip.left="{ content: `Slett målepunkt`, delay: { show: 400, hide: 10 } }"
+                    class="btn"
+                    v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }"
+                    :disabled="!this.date"
                   >
-                    <i class="fas fa-fw fa-trash"></i>Slett
+                    Legg til
                   </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+                </div>
+              </form>
+              <hr />
+            </section>
+
+            <section class="section" v-if="key_result">
+              <h2 class="title-2">Registrerte målepunkter</h2>
+
+              <div v-if="!progressions">Det er ingen registrerte målepunkter</div>
+
+              <table v-if="progressions" class="table">
+                <thead>
+                  <tr>
+                    <th>Verdi</th>
+                    <th>Dato</th>
+                    <th>Registrert av</th>
+                    <th v-if="hasEditPermissions"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="prog in list" :key="prog.id">
+                    <td>{{ prog.value }}</td>
+                    <td>{{ prog.date | formatDate }}</td>
+                    <td>{{ prog.createdBy.id }}</td>
+                    <td v-if="hasEditPermissions" style="width: 1rem;">
+                      <button
+                        class="btn btn--borderless"
+                        @click="deleteValue(prog)"
+                        v-tooltip.left="{ content: `Slett målepunkt`, delay: { show: 400, hide: 10 } }"
+                      >
+                        <i class="fas fa-fw fa-trash"></i>Slett
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+
+          <div class="column--right">
+            <h3 class="title-3">
+              <i class="fa fa-pen"></i>
+              Notater
+              <button @click="editNotes = !editNotes" class="btn btn--borderless">
+                <i class="fa fa-edit"></i>Endre
+              </button>
+            </h3>
+
+            <template v-if="!editNotes">
+              <div class="md notes" v-if="markdown" v-html="markdown"></div>
+              <em v-else>Her kan du skrive notater som bare teamet ditt kan se.</em>
+            </template>
+
+            <template v-if="editNotes">
+              <textarea rows="20" @input="dirty = true" v-model="key_result.notes"></textarea>
+              <p>
+                <strong>Tips!</strong> Her kan du skrive markdown.
+                <router-link :to="{ name: 'help' }">Les mer</router-link>.
+              </p>
+              <button @click="saveNotes" class="btn" :disabled="!dirty">Lagre notater</button>
+            </template>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -113,11 +146,18 @@ import { format, formatDistanceToNow } from 'date-fns';
 import dateLocale from 'date-fns/locale/nb';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
+import marked from 'marked';
+import { sanitize } from 'dompurify';
 import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
 import PageHeader from '@/components/PageHeader.vue';
 import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
+import keyResHandler from '@/db/keyresultHandler';
 import 'flatpickr/dist/flatpickr.css';
+
+marked.setOptions({
+  smartypants: true,
+});
 
 export default {
   name: 'KeyResultPage',
@@ -129,6 +169,8 @@ export default {
     quarter: '',
     date: null,
     objective: null,
+    dirty: false,
+    editNotes: false,
     unsubscribe: {
       doc: null,
       collection: null,
@@ -150,6 +192,11 @@ export default {
   computed: {
     ...mapState(['user', 'key_result', 'nest', 'quarters']),
 
+    markdown() {
+      if (!this.key_result || !this.key_result.notes) return '';
+      return sanitize(marked(this.key_result.notes));
+    },
+
     editRoute() {
       let name;
       if (!this.key_result) return;
@@ -169,6 +216,7 @@ export default {
     },
 
     list() {
+      if (!this.progressions || !this.progressions.length) return;
       return this.progressions
         .map(d => {
           d.date = d.timestamp.toDate();
@@ -275,6 +323,12 @@ export default {
       addProgress(this.key_result, +this.value, this.date);
     },
 
+    saveNotes() {
+      keyResHandler.update(this.key_result.ref, this.key_result);
+      this.dirty = false;
+      this.editNotes = false;
+    },
+
     async watchData() {
       if (this.unsubscribe.doc) this.unsubscribe.doc();
       if (this.unsubscribe.collection) this.unsubscribe.collection();
@@ -306,5 +360,32 @@ export default {
 
 .date-input {
   display: flex;
+}
+
+.columns {
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: 2fr 1fr;
+}
+
+.column--right {
+  & > .title-3 {
+    display: flex;
+    align-items: center;
+
+    & > .btn {
+      margin-left: auto;
+    }
+
+    & > .fa {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.notes {
+  padding: 1rem;
+  font-size: 0.9rem;
+  background: $color-grey-50;
 }
 </style>

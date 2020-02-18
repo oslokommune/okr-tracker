@@ -58,6 +58,24 @@ Ta kontakt med en systemadministrator for å få passordet.
 
 ---
 
+## Hva er «Markdown»?
+
+Markdown lar deg enkelt formatere tekst ved hjelp av spesialtegn. For eksempel:
+
+| Tegn              | Format       |
+| ----------------- | ------------ |
+| #                 | Tittelnivå 1 |
+| ##                | Tittelnivå 2 |
+| ###               | Tittelnivå 3 |
+| ####              | Tittelnivå 4 |
+| - \<tekst\>       | Liste        |
+| \_\<tekst\>\_     | _Kursiv_     |
+| \*\*\<tekst\>\*\* | **Halvfet**  |
+
+Her kan du finne [fullstendig liste av formater](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+
+---
+
 ## Administrator
 
 ### Legge til en ny bruker til systemet

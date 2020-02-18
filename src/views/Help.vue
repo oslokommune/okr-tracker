@@ -52,28 +52,4 @@ export default {
   margin-top: 3rem;
   margin-bottom: 5rem;
 }
-
-/deep/.md {
-  h2 {
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-  }
-
-  h3 {
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.15rem;
-  }
-
-  ul {
-    margin: 1em 0;
-    padding-left: 2em;
-    list-style-type: disc;
-  }
-
-  .table {
-    margin-bottom: 2rem;
-  }
-}
 </style>
