@@ -225,11 +225,13 @@ export default {
     list(newVal) {
       if (!newVal) return;
 
-      if (!this.graph) {
+      if (!this.graph && this.$refs.graph) {
         this.graph = new Linechart(this.$refs.graph);
       }
 
-      const { quarter } = this.key_result ? this.key_result : {};
+      if (!this.key_result) return;
+
+      const { quarter } = this.key_result;
       this.quarter = quarter;
 
       this.graph.render(this.key_result, quarter, newVal);
@@ -241,6 +243,13 @@ export default {
 
     key_result(obj) {
       this.value = obj.currentValue || obj.startValue || 0;
+
+      const { quarter } = this.key_result;
+      const { list } = this;
+
+      if (!list || !quarter || !obj) return;
+
+      this.graph.render(obj, quarter, list);
     },
   },
 
@@ -275,6 +284,7 @@ export default {
       this.doc = results.doc;
 
       this.unsubscribe.collection = this.doc.collection('progress').onSnapshot(snapshot => {
+        if (!snapshot.docs.length) return;
         this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
       });
     },
