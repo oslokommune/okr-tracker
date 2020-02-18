@@ -150,6 +150,14 @@
       height: 13rem;
       transform: translateX(-6px);
     }
+
+    &--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5em;
+      background: $color-yellow;
+    }
   }
 }
 

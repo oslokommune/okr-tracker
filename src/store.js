@@ -52,8 +52,16 @@ export const actions = {
       if (!keyResult) return;
       doc = keyResult;
 
-      return keyResult.onSnapshot(snapshot => {
-        commit('set_key_result', serializeDocument(snapshot));
+      return keyResult.onSnapshot(async snapshot => {
+        if (!snapshot || !snapshot.ref) return;
+
+        const data = serializeDocument(snapshot);
+        const objective = await snapshot.ref.parent.parent.get().then(d => d.data());
+        const { icon, quarter } = objective;
+
+        data.icon = icon;
+        data.quarter = quarter;
+        commit('set_key_result', data);
       });
     });
 
