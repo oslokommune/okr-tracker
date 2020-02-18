@@ -129,7 +129,7 @@
               <textarea rows="20" @input="dirty = true" v-model="key_result.notes"></textarea>
               <p>
                 <strong>Tips!</strong> Her kan du skrive markdown.
-                <router-link :to="{ name: 'help' }">Les mer</router-link>.
+                <router-link :to="{ name: 'help' }" target="_blank" rel="noopener noreferrer">Les mer</router-link>.
               </p>
               <button @click="saveNotes" class="btn" :disabled="!dirty">Lagre notater</button>
             </template>
