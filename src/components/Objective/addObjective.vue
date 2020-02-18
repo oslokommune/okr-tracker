@@ -107,11 +107,23 @@ export default {
       this.quarter = value;
     },
 
-    send() {
+    async send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
+        const objectiveCount = await this.productref
+          .collection('objectives')
+          .where('quarter', '==', this.newObjective.quarter)
+          .get()
+          .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
+
+        if (objectiveCount >= 4) {
+          Toast.show('Kan ikke ha flere enn 4 mål');
+          this.$emit('close-menu');
+          return;
+        }
+
         this.setSubmitInfo(true, false, '');
 
         this.productref
