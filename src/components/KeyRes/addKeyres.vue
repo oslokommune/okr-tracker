@@ -44,7 +44,7 @@
     <button :disabled="submit" class="btn" @click="send">
       {{ $tc('validations.submit', null, { object: 'nøkkelresultat' }) }}
     </button>
-    <button class="btn btn--ghost" @click="close">{{ $t('validations.close') }}</button>
+    <button class="btn btn--ghost" @click="close">{{ $t('validations.stop') }}</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>

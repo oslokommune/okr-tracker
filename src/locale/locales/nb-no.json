@@ -135,5 +135,8 @@
     "team": "Team",
     "noTeam": "Finner ingen teammedlemmer - kanskje det bare er ninjaer her?",
     "period": "Denne perioden"
+  },
+  "home": {
+    "newsfeed": "Aktivitet"
   }
 }
