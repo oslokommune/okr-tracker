@@ -175,7 +175,6 @@ export default {
       });
 
       this.user.photoURL = photoURL;
-      2;
       this.uploading = false;
 
       Toast.savedChanges();
