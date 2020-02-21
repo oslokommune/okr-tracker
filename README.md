@@ -75,14 +75,28 @@ npm run build
 
 ### Deploy
 
-Deploys project to Firebase
+Deploys project to production environment
 
 ```
 npm run deploy
+```
+
+Deploys to development environment
+
+```
+npm run deploy:dev
 ```
 
 ### Lints and fixes files
 
 ```
 npm run lint
+```
+
+```
+npm run lint:style
+```
+
+```
+npm run lint:style:fix
 ```
