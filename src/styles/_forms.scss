@@ -109,14 +109,22 @@ textarea {
     width: 100%;
   }
 
-  & > .fa,
-  & > .far,
-  & > .fas {
+  &:not(&--icon) > .fa,
+  &:not(&--icon) > .far,
+  &:not(&--icon) > .fas {
     margin-right: 0.5rem;
   }
 
   & + & {
     margin-left: 0.5rem;
+  }
+
+  &--icon {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
   }
 
   &--danger {
@@ -139,8 +147,6 @@ textarea {
   width: 5rem;
   transform: translateY(0.15rem);
 
-  $t: &;
-
   &__input {
     position: absolute;
     left: -999999px;
@@ -148,12 +154,12 @@ textarea {
     height: 0;
     background: none;
 
-    &:focus ~ #{$t}__switch {
+    &:focus ~ .toggle__switch {
       background: $color-link !important;
       outline: 4px solid $color-yellow;
     }
 
-    &:checked ~ #{$t}__switch {
+    &:checked ~ .toggle__switch {
       background: $color-purple;
 
       &::before {

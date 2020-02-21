@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/views/Home/Home.vue';
 import TheLogin from '@/views/Login.vue';
+import TheHelp from '@/views/Help.vue';
 import ProductHome from '@/views/Product/ProductHome.vue';
 import EditProduct from '@/views/Product/EditProduct.vue';
 import EditProductDetails from '@/views/Product/EditProductDetails.vue';
@@ -32,6 +33,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: TheLogin,
+  },
+
+  {
+    path: '/help',
+    name: 'help',
+    component: TheHelp,
+    meta: { headerStyle: 'help' },
   },
 
   {
@@ -109,6 +117,12 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   window.scroll(0, 0);
+
+  if (to.name === 'help') {
+    next();
+    return;
+  }
+
   if (!isAuthenticated() && to.path !== '/login') {
     next('/login');
   } else {

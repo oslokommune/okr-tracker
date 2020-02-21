@@ -28,6 +28,11 @@
     background: $color-grey-200;
   }
 
+  &--help {
+    color: $color-grey-900;
+    background: $color-grey-200;
+  }
+
   &--profile {
     color: $color-grey-900;
     background: $color-green;
@@ -144,6 +149,14 @@
       width: 13rem;
       height: 13rem;
       transform: translateX(-6px);
+    }
+
+    &--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5em;
+      background: $color-yellow;
     }
   }
 }

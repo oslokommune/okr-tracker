@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <div class="app">
     <main class="main">
       <the-header></the-header>
       <router-view class="home"></router-view>
     </main>
     <transition>
-      <Newsfeed v-show="user && showNewsfeed" class="newsfeed" @close="set_show_newsfeed(false)"></Newsfeed>
+      <Newsfeed v-if="user" v-show="showNewsfeed" class="newsfeed" @close="SET_SHOW_NEWSFEED(false)"></Newsfeed>
     </transition>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['set_show_newsfeed']),
+    ...mapMutations(['SET_SHOW_NEWSFEED']),
   },
 
   components: {
@@ -44,7 +44,7 @@ document.body.addEventListener('keydown', function() {
 </style>
 
 <style lang="scss" scoped>
-#app {
+.app {
   display: flex;
 }
 

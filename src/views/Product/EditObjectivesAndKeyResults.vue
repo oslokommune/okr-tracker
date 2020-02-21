@@ -7,81 +7,83 @@
         <h2 class="title-2">Administrer mål og nøkkelresultater</h2>
       </div>
 
-      <div class="miller">
-        <!-- Quarters -->
-        <div class="miller__col" :class="{ active: activeLevel === 'quarter' }">
-          <h3 class="miller__col__header">Kvartal</h3>
-          <div
-            class="miller__col__item"
-            v-for="quarter in quartersList"
-            :key="quarter.name"
-            @click="selectQuarter(quarter)"
-            :class="{ active: selectedQuarter === quarter }"
-          >
-            {{ quarter.name }}
-          </div>
-        </div>
-
-        <!-- Objectives -->
-        <div class="miller__col" :class="{ active: activeLevel === 'objective' }">
-          <h3 class="miller__col__header">Mål</h3>
-          <div
-            class="miller__col__item"
-            v-for="objective in objectives"
-            :key="objective.id"
-            @click="selectObjective(objective)"
-            :class="{ active: selectedObjective && selectedObjective.id === objective.id }"
-          >
-            {{ objective.name }}
-          </div>
-          <div
-            v-if="selectedQuarter"
-            class="miller__col__item miller__col__add"
-            @click="addObjective"
-            v-tooltip.bottom="`Legg til et mål for valgt kvartal`"
-          >
-            + Legg til
-          </div>
-        </div>
-
-        <!-- Key results -->
-        <div class="miller__col" :class="{ active: activeLevel === 'keyres' }">
-          <h3 class="miller__col__header">Nøkkelresultat</h3>
-          <template v-if="selectedObjective">
+      <div class="miller__container">
+        <div class="miller">
+          <!-- Quarters -->
+          <div class="miller__col" :class="{ active: activeLevel === 'quarter' }">
+            <h3 class="miller__col__header">Kvartal</h3>
             <div
               class="miller__col__item"
-              v-for="keyres in keyResults"
-              :key="keyres.id"
-              @click="selectKeyres(keyres)"
-              :class="{ active: selectedKeyres && selectedKeyres.id === keyres.id }"
+              v-for="quarter in quartersList"
+              :key="quarter.name"
+              @click="selectQuarter(quarter)"
+              :class="{ active: selectedQuarter === quarter }"
             >
-              {{ keyres.description }}
+              {{ quarter.name }}
             </div>
-          </template>
-          <div
-            v-if="selectedQuarter && selectedObjective"
-            class="miller__col__item miller__col__add"
-            @click="addKeyres"
-            v-tooltip.bottom="`Legg til et nøkkelresultat for valgt mål`"
-          >
-            + Legg til
           </div>
-        </div>
 
-        <main
-          class="miller__main"
-          v-tooltip.top="activeLevel === 'quarter' ? `Tomt? Velg et mål eller nøkkelresultat i listen` : ``"
-        >
-          <UpdateKeyres
-            v-if="activeLevel === 'keyres'"
-            :keyres="selectedKeyres"
-            @archived="selectedKeyres = null"
-          ></UpdateKeyres>
-          <EditObjective
-            v-if="selectedObjective && activeLevel === 'objective'"
-            :objective-ref="selectedObjective"
-          ></EditObjective>
-        </main>
+          <!-- Objectives -->
+          <div class="miller__col" :class="{ active: activeLevel === 'objective' }">
+            <h3 class="miller__col__header">Mål</h3>
+            <div
+              class="miller__col__item"
+              v-for="objective in objectives"
+              :key="objective.id"
+              @click="selectObjective(objective)"
+              :class="{ active: selectedObjective && selectedObjective.id === objective.id }"
+            >
+              {{ objective.name }}
+            </div>
+            <div
+              v-if="selectedQuarter"
+              class="miller__col__item miller__col__add"
+              @click="addObjective"
+              v-tooltip.bottom="`Legg til et mål for valgt kvartal`"
+            >
+              + Legg til
+            </div>
+          </div>
+
+          <!-- Key results -->
+          <div class="miller__col" :class="{ active: activeLevel === 'keyres' }">
+            <h3 class="miller__col__header">Nøkkelresultat</h3>
+            <template v-if="selectedObjective">
+              <div
+                class="miller__col__item"
+                v-for="keyres in keyResults"
+                :key="keyres.id"
+                @click="selectKeyres(keyres)"
+                :class="{ active: selectedKeyres && selectedKeyres.id === keyres.id }"
+              >
+                {{ keyres.description }}
+              </div>
+            </template>
+            <div
+              v-if="selectedQuarter && selectedObjective"
+              class="miller__col__item miller__col__add"
+              @click="addKeyres"
+              v-tooltip.bottom="`Legg til et nøkkelresultat for valgt mål`"
+            >
+              + Legg til
+            </div>
+          </div>
+
+          <main
+            class="miller__main"
+            v-tooltip.top="activeLevel === 'quarter' ? `Tomt? Velg et mål eller nøkkelresultat i listen` : ``"
+          >
+            <UpdateKeyres
+              v-if="activeLevel === 'keyres'"
+              :keyres="selectedKeyres"
+              @archived="selectedKeyres = null"
+            ></UpdateKeyres>
+            <EditObjective
+              v-if="selectedObjective && activeLevel === 'objective'"
+              :objective-ref="selectedObjective"
+            ></EditObjective>
+          </main>
+        </div>
       </div>
     </main>
   </div>
@@ -216,7 +218,18 @@ export default {
         });
     },
 
-    addObjective() {
+    async addObjective() {
+      const objectiveCount = await this.docref
+        .collection('objectives')
+        .where('quarter', '==', this.selectedQuarter.name)
+        .get()
+        .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
+
+      if (objectiveCount >= 4) {
+        Toast.show('Kan ikke ha flere enn 4 mål');
+        return;
+      }
+
       this.docref
         .collection('objectives')
         .add({

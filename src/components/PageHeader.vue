@@ -22,8 +22,12 @@
           </h1>
         </div>
 
+        <div class="page-header__profile-image page-header__profile-image--icon" v-if="data.icon && showImage">
+          <i :class="`fa fa-fw fa-${data.icon}`"></i>
+        </div>
+
         <img
-          v-if="showImage"
+          v-else-if="showImage"
           :src="data.photoURL || '/placeholder-image.svg'"
           :alt="`Profilbilde for ${title}`"
           class="page-header__profile-image"
@@ -68,6 +72,7 @@ export default {
 
     icon() {
       if (this.style === 'admin') return 'tachometer-alt';
+      if (this.style === 'help') return 'question-circle';
       return false;
     },
 

@@ -5,8 +5,13 @@
         <img src="/okr-tracker-logo.svg" alt="OKR-tracker-logo" />
       </router-link>
 
-      <nav class="right" v-if="user">
+      <nav class="right">
+        <router-link :to="{ name: 'help' }" class="btn btn--borderless btn--icon" v-tooltip="'Hjelp'">
+          <i class="far fa-fw fa-question-circle"></i>
+        </router-link>
+
         <div
+          v-if="user"
           class="usernav"
           :class="{ isOpen }"
           v-click-outside="closeMenu"
@@ -36,11 +41,11 @@
             </span>
           </div>
         </div>
-        <div class="newsfeed-toggle">
+        <div class="newsfeed-toggle" v-if="user">
           <button
             class="btn btn--borderless"
             :class="{ showNewsfeed: showNewsfeed }"
-            @click="set_show_newsfeed(!showNewsfeed)"
+            @click="SET_SHOW_NEWSFEED(!showNewsfeed)"
           >
             <i class="fa fa-stream"></i>
             <div class="newsfeed-toggle__label">{{ $t('header.newsfeed') }}</div>
@@ -80,7 +85,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['set_show_newsfeed']),
+    ...mapMutations(['SET_SHOW_NEWSFEED']),
     closeMenu() {
       this.isOpen = false;
     },

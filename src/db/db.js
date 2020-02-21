@@ -102,6 +102,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
   const { email } = auth.currentUser;
   let teamMembers;
 
+  // Get team members from product (either slug or document reference)
   if (typeof slugOrRef === 'string') {
     teamMembers = await db
       .collectionGroup('products')
@@ -109,13 +110,23 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .get()
       .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
-      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
+      .then(d => {
+        return d && d.team ? d.team.map(doc => doc.id) : [];
+      })
       .catch(err => {
         errorHandler('check_teammember_product_error', err);
       });
   } else {
-    return;
+    teamMembers = await slugOrRef
+      .get()
+      .then(serializeDocument)
+      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
+      .catch(err => {
+        errorHandler('check_teammember_product_error', err);
+      });
   }
+
+  if (!teamMembers || !teamMembers.length) return;
 
   return teamMembers.includes(email);
 }
@@ -222,6 +233,7 @@ const getChildren = async (ref, collectionName, callback) => {
     .collection(collectionName)
     .where('archived', '==', false)
     .get();
+
   const promises = snapshot.docs.map(callback);
   return Promise.all(promises)
     .then(list =>

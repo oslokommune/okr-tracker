@@ -1,3 +1,4 @@
+.md h1,
 .title-1 {
   margin-bottom: 0.5rem;
   font-weight: 500;
@@ -6,6 +7,7 @@
   letter-spacing: -0.03rem;
 }
 
+.md h2,
 .title-2 {
   margin: 0.25rem 0 0.75rem;
   font-weight: 500;
@@ -13,6 +15,7 @@
   line-height: 1.15;
 }
 
+.md h3,
 .title-3 {
   margin: 1.25rem 0 0.75rem;
   font-weight: 500;
@@ -20,6 +23,7 @@
   line-height: 1.15;
 }
 
+.md h4,
 .title-4 {
   margin: 1rem 0 0.5rem;
   font-weight: 500;
@@ -54,4 +58,54 @@ h3 {
 
 strong {
   font-weight: 500;
+}
+
+p + p {
+  margin-top: 1em;
+}
+
+code {
+  margin: 0 0.25em;
+  padding: 0.25em 0.3em;
+  font-size: 0.9em;
+  font-family: Monaco, monospace;
+  line-height: 100%;
+  letter-spacing: -0.05em;
+  word-break: normal;
+  background-color: #eeeeee;
+  border-radius: 2px;
+}
+
+em {
+  font-style: italic;
+}
+
+.md {
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+  }
+
+  ul {
+    margin: 1em 0;
+    padding-left: 2em;
+    list-style-type: disc;
+  }
+
+  .table {
+    margin-bottom: 2rem;
+  }
+
+  ol {
+    margin: 1em 0;
+    padding-left: 2em;
+    list-style-type: decimal;
+  }
 }
