@@ -18,10 +18,7 @@
     "d3": "^5.15.0",
     "d3-svg-legend": "^2.25.6",
     "date-fns": "^2.9.0",
-<<<<<<< HEAD
-=======
     "dompurify": "^2.0.8",
->>>>>>> develop
     "firebase": "^7.8.2",
     "flatpickr": "^4.6.3",
     "marked": "^0.8.0",
