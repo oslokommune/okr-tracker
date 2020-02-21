@@ -2,9 +2,6 @@ const d3 = require('d3');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { google } = require('googleapis');
-const cors = require('cors');
-
-cors({ origin: true });
 
 admin.initializeApp();
 const db = admin.firestore();
