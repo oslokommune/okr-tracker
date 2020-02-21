@@ -120,10 +120,6 @@ export async function isTeamMemberOfProduct(slugOrRef) {
     teamMembers = await slugOrRef
       .get()
       .then(serializeDocument)
-      .then(d => {
-        console.log(d);
-        return d;
-      })
       .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
       .catch(err => {
         errorHandler('check_teammember_product_error', err);
