@@ -3,6 +3,7 @@ import Audit from '@/db/audit';
 import { errorHandler } from '@/util/utils';
 import { isTeamMemberOfProduct } from '@/db/db';
 import Store from '@/store';
+import { functions } from '@/config/firebaseConfig';
 
 /**
  * Creates a key result for the provided objective
@@ -40,9 +41,19 @@ async function create(objectiveRef, data) {
   return objectiveRef
     .collection('keyResults')
     .add(data)
-    .then(keyresRef => {
+    .then(async keyresRef => {
       Toast.addedKeyResult();
       Audit.createKeyResult(keyresRef, documentRef, objectiveRef);
+
+      console.log(keyresRef);
+
+      if (data.auto) {
+        const myCall = await functions.httpsCallable('triggerScheduledFunction');
+        await myCall(keyresRef.path).catch(err => {
+          throw new Error(err);
+        });
+      }
+
       return keyresRef;
     })
     .catch(err => {

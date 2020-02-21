@@ -1,12 +1,26 @@
 const d3 = require('d3');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { google } = require('googleapis');
+const cors = require('cors');
+
+cors({ origin: true });
 
 admin.initializeApp();
 const db = admin.firestore();
 
-// Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
+const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const sheetsEmail = functions.config().sheets.email;
+const sheetsKey = functions.config().sheets.key;
+const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
+
+jwtClient.authorize(function(err) {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('Successfully connected!');
+  }
+});
 
 /* eslint-disable  */
 const orgsPath = 'orgs/{orgId}';
@@ -175,4 +189,76 @@ async function getObjectiveProgressions(path) {
   });
 
   return progressions;
+}
+
+/**
+ * Scheduled function that automatically updates the progress for all key results
+ * with the `auto` property set to true, getting the data from the provided
+ * google sheets details.
+ */
+exports.scheduledFunction = functions.pubsub.schedule('every 12 hours').onRun(async () => {
+  return db
+    .collectionGroup('keyResults')
+    .where('auto', '==', true)
+    .get()
+    .then(snapshot => snapshot.docs.map(d => ({ ref: d.ref, ...d.data() })))
+    .then(list => list.map(getAndSaveDataFromSheets))
+    .catch(e => {
+      throw new Error(e);
+    });
+});
+
+exports.triggerScheduledFunction = functions.https.onCall(async docPath => {
+  const doc = await db
+    .doc(docPath)
+    .get()
+    .then(d => ({ ref: d.ref, ...d.data() }));
+
+  return JSON.stringify(getAndSaveDataFromSheets(doc));
+});
+
+/**
+ * Finds and saves the value in the Google Sheets document
+ * for the provided Key Result reference
+ * @param {DocumentReference} document - The Key Result
+ * @returns {Object} - Result is true or false
+ */
+async function getAndSaveDataFromSheets(document) {
+  const { ref, sheetId, sheetName, sheetCell } = document;
+  const now = new Date();
+  const value = await getSheetsData(sheetId, sheetName, sheetCell);
+
+  if (!value) return { result: false };
+
+  await ref.collection('progress').add({ value, archived: false, created: now, timestamp: now, createdBy: 'auto' });
+  await document.ref.update({ currentValue: value });
+
+  return { result: true };
+}
+
+/**
+ * Gets a value from a Google Sheet cell
+ * @param {String} sheetId - ID of Sheets Document
+ * @param {String} sheetName - Name of Sheet (tab)
+ * @param {String} cell - Cell name of value
+ * @returns {Number} - Value of the cell
+ */
+async function getSheetsData(sheetId, sheetName, cell) {
+  const sheets = google.sheets('v4');
+  if (!sheetId || !sheetName || !cell) return;
+
+  const sheetRequest = {
+    auth: jwtClient,
+    spreadsheetId: sheetId,
+    range: `${sheetName}!${cell}`,
+  };
+
+  return sheets.spreadsheets.values
+    .get(sheetRequest)
+    .then(response => {
+      return +response.data.values[0][0];
+    })
+    .catch(err => {
+      throw new Error(err);
+    });
 }

@@ -12,8 +12,15 @@
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>
-        <input class="range" type="range" :min="keyResult.fromValue" :max="keyResult.targetValue" v-model="newValue" />
-        <label class="form-field">
+        <input
+          v-if="!keyResult.auto"
+          class="range"
+          type="range"
+          :min="keyResult.fromValue"
+          :max="keyResult.targetValue"
+          v-model="newValue"
+        />
+        <label v-if="!keyResult.auto" class="form-field">
           <span class="form-label">Verdi</span>
           <input type="number" v-model="newValue" />
         </label>
@@ -330,5 +337,9 @@ export default {
     background: $color-purple;
     transform: scale(1.5);
   }
+}
+
+.pill {
+  width: auto;
 }
 </style>

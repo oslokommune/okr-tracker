@@ -153,3 +153,71 @@ Kun administratorer og teammedlemmer har rettigheter til å endre progresjon for
 På nøkkelresultatsiden (trykk på et nøkkelresultat for å åpne), kan du slette et målepunkt ved å trykke på <i class="fa fa-trash"></i>-knappen på høyre side av målepunktet.
 
 Det er ingen måte å endre et eksisterende målepunkt, så det må i så fall slettes og legges inn på nytt med de nye verdiene.
+
+## Google Sheets-integrasjon
+
+Med hjelp av Google Sheets kan du konfigurere automatisk oppdatering av progresjon for et nøkkelresultat.
+
+Progresjonen for det «automatiske» nøkkelresultatet vil bli oppdatert to ganger om dagen med verdien i den _cellen_ som er definert.
+
+| Felt            | Beskrivelse                                                                               |
+| --------------- | ----------------------------------------------------------------------------------------- |
+| Google Sheet ID | Dette er Google Sheet-dokumentets ID, og kan finnes i URL-en når du har dokumentet åpent. |
+| Fane            | Navnet på fanen hvor cellen ligger                                                        |
+| Celle           | Navnet på cellen (f.eks.: «A1»)                                                           |
+
+Dokumentet må deles med OKR-trackeren via applikasjonens _service account_ (`origo-okr-tracker@appspot.gserviceaccount.com`).
+
+### Opprette et «automatisk» nøkkelresultat
+
+**Steg 1: Forberede Google Sheets-dokument**
+
+- Gå til [Google Sheets](https://sheets.google.com)
+- Opprett nytt regneark
+- Trykk på «Del»
+- Del dokumentet med `origo-okr-tracker@appspot.gserviceaccount.com`
+- Finn dokument-id-en i URL-en (.../spreadsheets/d/`<ID>`/edit)
+- Finn navnet på _fanen_ som verdien du ønsker å bruke ligger i
+
+**Steg 2: Opprette nøkkelresultat**
+
+_Ønsker du datauthenting fra Google Analytics bør du følge guiden for dette før du går videre._
+
+- I OKR-trackeren, naviger til produktet som nøkkelresultatet skal ligge under
+- Trykk på «+ Nytt nøkkelresultat» i sidemenyen
+- Fyll inn detaljene i skjemaet
+- Aktiver «Automatisk (Google Sheets)»
+- Fyll inn «Google Sheet ID», «Fane» og «Celle»
+- Klikk «Lagre nytt nøkkelresultat»
+
+### Google Analytics
+
+Via en Google Analytics-plugin til Google Sheets kan du automatisk hente ut verdier fra analytics.
+
+**Obs!** Din innloggede bruker må allerede ha tilgang til Analytics-rapporten som du ønsker å hente ut verdi(er) fra.
+
+**Steg 1: Installer Plugin til dokumentet**
+
+- Åpne Google Sheets-dokumentet
+- Velg «Add-ons» fra toppmenyen
+- Klikk på «Get add-ons»
+- Søk etter og velg på «Google Analytics» og klikk på «Install»
+
+**Steg 2: Hent ut data**
+
+- Velg «Add-ons» → «Google Analytics» → «Create new report» fra toppmenyen
+- Skriv inn et navn (dette blir også navnet på fanen)
+- Fyll inn skjemaet for å finne riktig verdi å hente ut
+- Trykk «Create Report»
+- Du kan nå hente data manuelt via «Add-ons» → «Google Analytics» → «Run reports» fra toppmenyen.
+
+**Viktig:**
+
+I fanen «Report Configuration», er det viktig at du oppdaterer «Start date» og «End date» til å samsvare med det kvartalet som nøkkelresultatet gjelder for (YYYY-MM-DD).
+
+**Sette opp automatisk uthenting**
+
+- Velg «Add-ons» → «Google Analytics» → «Schedule reports» fra toppmenyen
+- Velg «Enable reports to run automatically»
+- Velg «Every day» eller «Every hour»
+- Klikk «Save»
