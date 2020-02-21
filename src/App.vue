@@ -5,7 +5,7 @@
       <router-view class="home"></router-view>
     </main>
     <transition>
-      <Newsfeed v-if="user" v-show="showNewsfeed" class="newsfeed" @close="set_show_newsfeed(false)"></Newsfeed>
+      <Newsfeed v-if="user" v-show="showNewsfeed" class="newsfeed" @close="SET_SHOW_NEWSFEED(false)"></Newsfeed>
     </transition>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['set_show_newsfeed']),
+    ...mapMutations(['SET_SHOW_NEWSFEED']),
   },
 
   components: {
