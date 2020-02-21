@@ -2,6 +2,23 @@
   <div v-if="getUser">
     <PageHeader :data="getUser"></PageHeader>
     <div class="container container--sidebar">
+      <section class="section page-menu content--sidebar">
+        <label v-if="$route.name === 'me'" class="form-field">
+          <span class="form-label">Endre bilde</span>
+          <image-uploader
+            class="image-uploader"
+            :max-width="250"
+            :max-height="250"
+            :quality="0.6"
+            :auto-rotate="true"
+            output-format="blob"
+            accept="image/*"
+            do-not-resize="['gif', 'svg']"
+            :preview="false"
+            @input="setImage"
+          ></image-uploader>
+        </label>
+      </section>
       <main class="content--main">
         <section v-if="$route.name === 'me'" class="section">
           <h2 class="title title-2">Display name</h2>
@@ -58,6 +75,7 @@ import { isDashboardUser, findUser, userProductsListener, getAllDepartments, get
 import PageHeader from '@/components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
 import * as Toast from '@/util/toasts';
+import { storage } from '@/config/firebaseConfig';
 
 export default {
   name: 'User',
@@ -69,6 +87,8 @@ export default {
     departments: [],
     feed: [],
     displayName: '',
+    uploading: false,
+    file: null,
   }),
 
   components: {
@@ -126,6 +146,39 @@ export default {
           displayName: this.displayName,
         })
         .then(Toast.savedChanges);
+    },
+
+    setImage(file) {
+      this.hasImage = true;
+      this.file = file;
+      this.uploadPhoto();
+    },
+
+    async uploadPhoto() {
+      if (!this.file) return;
+      this.uploading = true;
+
+      const storageRef = storage.ref(`photos/${this.user.id}`);
+
+      const snapshot = await storageRef.put(this.file).catch(() => {
+        this.$errorHandler('upload_photo_profile_error');
+      });
+      const photoURL = await snapshot.ref
+        .getDownloadURL()
+        .then(url => url)
+        .catch(() => {
+          this.$errorHandler('upload_photo_profile_error');
+        });
+
+      await this.user.ref.update({ photoURL }).catch(() => {
+        this.$errorHandler('upload_photo_profile_error');
+      });
+
+      this.user.photoURL = photoURL;
+      this.uploading = false;
+
+      Toast.uploadedPhoto();
+      return photoURL;
     },
   },
 
