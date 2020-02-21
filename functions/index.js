@@ -31,8 +31,9 @@ const departmentKeyResultsPath = departmentObjectivesPath + '/keyResults/{keyRes
 const departmentProgressionsPath = departmentKeyResultsPath + '/progress/{progressionId}';
 /* eslint-enable */
 
-exports.updatedKeyResultProgression = functions.firestore
-  .document(progressionsPath)
+exports.updatedKeyResultProgression = functions
+  .region('europe-west2')
+  .firestore.document(progressionsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, productId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
@@ -45,8 +46,9 @@ exports.updatedKeyResultProgression = functions.firestore
     return db.doc(objectivePath).update({ progression, edited, editedBy });
   });
 
-exports.updatedDepartmentKeyResultProgression = functions.firestore
-  .document(departmentProgressionsPath)
+exports.updatedDepartmentKeyResultProgression = functions
+  .region('europe-west2')
+  .firestore.document(departmentProgressionsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
@@ -61,22 +63,26 @@ exports.updatedDepartmentKeyResultProgression = functions.firestore
 
 // Triggers when a department key result is created, deleted, edited, archived
 // Re-calculates the progression for the objective
-exports.updatedKeyResult = functions.firestore.document(keyResultsPath).onWrite(async (change, context) => {
-  const { orgId, productId, departmentId, objectiveId } = context.params;
-  const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
+exports.updatedKeyResult = functions
+  .region('europe-west2')
+  .firestore.document(keyResultsPath)
+  .onWrite(async (change, context) => {
+    const { orgId, productId, departmentId, objectiveId } = context.params;
+    const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
 
-  const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
-  const progression = d3.mean(keyResultsProgressions);
-  const edited = new Date();
-  const editedBy = 'cloud-function';
+    const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
+    const progression = d3.mean(keyResultsProgressions);
+    const edited = new Date();
+    const editedBy = 'cloud-function';
 
-  return db.doc(objectivePath).update({ progression, edited, editedBy });
-});
+    return db.doc(objectivePath).update({ progression, edited, editedBy });
+  });
 
 // Triggers when a department key result is created, deleted, edited, archived
 // Re-calculates the progression for the objective
-exports.updatedDepartmentKeyResult = functions.firestore
-  .document(departmentKeyResultsPath)
+exports.updatedDepartmentKeyResult = functions
+  .region('europe-west2')
+  .firestore.document(departmentKeyResultsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
@@ -124,20 +130,24 @@ function getProgressionPercentage(keyres) {
 }
 
 // Triggers when a product's objective is changed (i.e. progression)
-exports.updatedObjectiveProgression = functions.firestore.document(objectivesPath).onWrite(async (change, context) => {
-  const { orgId, departmentId, productId } = context.params;
-  const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
-  const progressions = await getObjectiveProgressions(productPath);
-  const edited = new Date();
-  const editedBy = 'cloud-function';
+exports.updatedObjectiveProgression = functions
+  .region('europe-west2')
+  .firestore.document(objectivesPath)
+  .onWrite(async (change, context) => {
+    const { orgId, departmentId, productId } = context.params;
+    const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
+    const progressions = await getObjectiveProgressions(productPath);
+    const edited = new Date();
+    const editedBy = 'cloud-function';
 
-  await db.doc(productPath).update({ progressions, edited, editedBy });
-  return true;
-});
+    await db.doc(productPath).update({ progressions, edited, editedBy });
+    return true;
+  });
 
 // Triggers when a department's objective is changed (i.e. progression)
-exports.updatedDepartmentObjectiveProgression = functions.firestore
-  .document(departmentObjectivesPath)
+exports.updatedDepartmentObjectiveProgression = functions
+  .region('europe-west2')
+  .firestore.document(departmentObjectivesPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId } = context.params;
     const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
@@ -193,19 +203,22 @@ async function getObjectiveProgressions(path) {
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.scheduledFunction = functions.pubsub.schedule('every 12 hours').onRun(async () => {
-  return db
-    .collectionGroup('keyResults')
-    .where('auto', '==', true)
-    .get()
-    .then(snapshot => snapshot.docs.map(d => ({ ref: d.ref, ...d.data() })))
-    .then(list => list.map(getAndSaveDataFromSheets))
-    .catch(e => {
-      throw new Error(e);
-    });
-});
+exports.scheduledFunction = functions
+  .region('europe-west2')
+  .pubsub.schedule('every 12 hours')
+  .onRun(async () => {
+    return db
+      .collectionGroup('keyResults')
+      .where('auto', '==', true)
+      .get()
+      .then(snapshot => snapshot.docs.map(d => ({ ref: d.ref, ...d.data() })))
+      .then(list => list.map(getAndSaveDataFromSheets))
+      .catch(e => {
+        throw new Error(e);
+      });
+  });
 
-exports.triggerScheduledFunction = functions.https.onCall(async docPath => {
+exports.triggerScheduledFunction = functions.region('europe-west2').https.onCall(async docPath => {
   const doc = await db
     .doc(docPath)
     .get()
