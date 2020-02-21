@@ -14,7 +14,7 @@ import { errorHandler } from '@/util/utils';
  */
 export default async function handleUserAuthStateChange(user) {
   if (!user) {
-    store.commit('set_user', null);
+    store.commit('SET_USER', null);
   } else if (await isWhiteListed(user)) {
     store.dispatch('initializeApp');
 
@@ -24,13 +24,13 @@ export default async function handleUserAuthStateChange(user) {
     db.collection('users')
       .doc(user.email)
       .onSnapshot(snapshot => {
-        store.commit('set_user', serializeDocument(snapshot));
+        store.commit('SET_USER', serializeDocument(snapshot));
       });
   } else {
     auth.signOut().then(() => {
       if (this) this.$toasted.show('Logget ut');
 
-      store.commit('set_user', null);
+      store.commit('SET_USER', null);
       router.push({ name: 'login', params: { error: 1 } });
       errorHandler('not_whitelisted_error', null);
     });

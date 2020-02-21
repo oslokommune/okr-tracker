@@ -45,7 +45,7 @@
           <button
             class="btn btn--borderless"
             :class="{ showNewsfeed: showNewsfeed }"
-            @click="set_show_newsfeed(!showNewsfeed)"
+            @click="SET_SHOW_NEWSFEED(!showNewsfeed)"
           >
             <i class="fa fa-stream"></i>
             <div class="newsfeed-toggle__label">
@@ -87,7 +87,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['set_show_newsfeed']),
+    ...mapMutations(['SET_SHOW_NEWSFEED']),
     closeMenu() {
       this.isOpen = false;
     },

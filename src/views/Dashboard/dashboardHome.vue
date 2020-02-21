@@ -59,7 +59,7 @@ export default {
   },
 
   created() {
-    this.set_show_newsfeed(false);
+    this.SET_SHOW_NEWSFEED(false);
     this.watchData();
     this.SET_QUARTER();
   },
@@ -69,7 +69,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['set_show_newsfeed', 'SET_QUARTER']),
+    ...mapMutations(['SET_SHOW_NEWSFEED', 'SET_QUARTER']),
     async watchData() {
       this.team = await this.getTeam();
       const currentQuarter = this.quarters[0];
