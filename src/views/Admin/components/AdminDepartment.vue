@@ -28,7 +28,6 @@
             do-not-resize="['gif', 'svg']"
             :preview="false"
             @input="setImage"
-            @onUpload="uploadPhoto"
           ></image-uploader>
         </label>
 

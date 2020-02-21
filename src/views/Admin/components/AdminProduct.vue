@@ -33,7 +33,6 @@
           do-not-resize="['gif']"
           :preview="false"
           @input="setImage"
-          @onUpload="uploadPhoto"
         ></image-uploader>
       </label>
 
@@ -189,6 +188,7 @@ export default {
     updateSlug() {
       this.dirty = true;
       this.product.slug = slugify(this.product.name);
+      this.uploadPhoto();
     },
 
     async uploadPhoto() {
