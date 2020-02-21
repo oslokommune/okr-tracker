@@ -2,7 +2,7 @@
   <div class="grid" v-if="objectives.length">
     <template v-for="objective in objectives">
       <template v-for="keyres in objective.keyResults">
-        <div class="foo" :key="keyres.id">
+        <div class="outer" :key="keyres.id">
           <div class="inner" :style="getWidth(keyres)"></div>
         </div>
       </template>
@@ -97,7 +97,7 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 }
 
-.foo {
+.outer {
   width: 100%;
   height: 6px;
   overflow: hidden;

@@ -1,6 +1,6 @@
 import Audit from '@/db/audit';
 import * as Toast from '@/util/toasts';
-import { isTeamMemberOfProduct } from '@/db';
+import { isTeamMemberOfProduct } from '@/db/db';
 import Store from '@/store';
 
 import { logHandler, errorHandler } from '@/util/utils';
@@ -20,7 +20,13 @@ export async function addProgress(keyres, value, date) {
     return errorHandler('add_progress_error', new Error(`Cannot process provided value: ${value}`));
   }
 
-  const documentRef = keyres.ref.parent.parent.parent.parent.parent.parent;
+  let documentRef;
+  const grandParent = keyres.ref.parent.parent.parent.parent;
+  if (grandParent.parent.id === 'products') {
+    documentRef = grandParent;
+  } else {
+    documentRef = grandParent.parent.parent;
+  }
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
   if (!hasEditPermissions) throw errorHandler('add_progress_error', new Error('Not allowed to add progress'));
@@ -75,13 +81,20 @@ export async function deleteProgress(doc, keyres) {
 async function updateCurrentValue(keyres) {
   if (!keyres) throw errorHandler('update_current_value_error', new Error('Missing document'));
 
-  const documentRef = keyres.ref.parent.parent.parent.parent.parent.parent;
+  let documentRef;
+  const grandParent = keyres.ref.parent.parent.parent.parent;
+  if (grandParent.parent.id === 'products') {
+    documentRef = grandParent;
+  } else {
+    documentRef = grandParent.parent.parent;
+  }
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
 
   if (!hasEditPermissions) throw errorHandler('update_current_value_error', new Error('Not allowed to delete this'));
 
   const userRef = Store.state.user.ref;
   const oldValue = keyres.currentValue || keyres.startValue || 0;
+
   const newValue = await keyres.ref
     .collection('progress')
     .orderBy('timestamp', 'desc')

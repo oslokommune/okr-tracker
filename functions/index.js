@@ -1,12 +1,23 @@
 const d3 = require('d3');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { google } = require('googleapis');
 
 admin.initializeApp();
 const db = admin.firestore();
 
-// Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
+const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const sheetsEmail = functions.config().sheets.email;
+const sheetsKey = functions.config().sheets.key;
+const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
+
+jwtClient.authorize(function(err) {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('Successfully connected!');
+  }
+});
 
 /* eslint-disable  */
 const orgsPath = 'orgs/{orgId}';
@@ -20,8 +31,9 @@ const departmentKeyResultsPath = departmentObjectivesPath + '/keyResults/{keyRes
 const departmentProgressionsPath = departmentKeyResultsPath + '/progress/{progressionId}';
 /* eslint-enable */
 
-exports.updatedKeyResultProgression = functions.firestore
-  .document(progressionsPath)
+exports.updatedKeyResultProgression = functions
+  .region('europe-west2')
+  .firestore.document(progressionsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, productId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
@@ -34,8 +46,9 @@ exports.updatedKeyResultProgression = functions.firestore
     return db.doc(objectivePath).update({ progression, edited, editedBy });
   });
 
-exports.updatedDepartmentKeyResultProgression = functions.firestore
-  .document(departmentProgressionsPath)
+exports.updatedDepartmentKeyResultProgression = functions
+  .region('europe-west2')
+  .firestore.document(departmentProgressionsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
@@ -50,22 +63,26 @@ exports.updatedDepartmentKeyResultProgression = functions.firestore
 
 // Triggers when a department key result is created, deleted, edited, archived
 // Re-calculates the progression for the objective
-exports.updatedKeyResult = functions.firestore.document(keyResultsPath).onWrite(async (change, context) => {
-  const { orgId, productId, departmentId, objectiveId } = context.params;
-  const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
+exports.updatedKeyResult = functions
+  .region('europe-west2')
+  .firestore.document(keyResultsPath)
+  .onWrite(async (change, context) => {
+    const { orgId, productId, departmentId, objectiveId } = context.params;
+    const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
 
-  const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
-  const progression = d3.mean(keyResultsProgressions);
-  const edited = new Date();
-  const editedBy = 'cloud-function';
+    const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
+    const progression = d3.mean(keyResultsProgressions);
+    const edited = new Date();
+    const editedBy = 'cloud-function';
 
-  return db.doc(objectivePath).update({ progression, edited, editedBy });
-});
+    return db.doc(objectivePath).update({ progression, edited, editedBy });
+  });
 
 // Triggers when a department key result is created, deleted, edited, archived
 // Re-calculates the progression for the objective
-exports.updatedDepartmentKeyResult = functions.firestore
-  .document(departmentKeyResultsPath)
+exports.updatedDepartmentKeyResult = functions
+  .region('europe-west2')
+  .firestore.document(departmentKeyResultsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
     const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
@@ -113,20 +130,24 @@ function getProgressionPercentage(keyres) {
 }
 
 // Triggers when a product's objective is changed (i.e. progression)
-exports.updatedObjectiveProgression = functions.firestore.document(objectivesPath).onWrite(async (change, context) => {
-  const { orgId, departmentId, productId } = context.params;
-  const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
-  const progressions = await getObjectiveProgressions(productPath);
-  const edited = new Date();
-  const editedBy = 'cloud-function';
+exports.updatedObjectiveProgression = functions
+  .region('europe-west2')
+  .firestore.document(objectivesPath)
+  .onWrite(async (change, context) => {
+    const { orgId, departmentId, productId } = context.params;
+    const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
+    const progressions = await getObjectiveProgressions(productPath);
+    const edited = new Date();
+    const editedBy = 'cloud-function';
 
-  await db.doc(productPath).update({ progressions, edited, editedBy });
-  return true;
-});
+    await db.doc(productPath).update({ progressions, edited, editedBy });
+    return true;
+  });
 
 // Triggers when a department's objective is changed (i.e. progression)
-exports.updatedDepartmentObjectiveProgression = functions.firestore
-  .document(departmentObjectivesPath)
+exports.updatedDepartmentObjectiveProgression = functions
+  .region('europe-west2')
+  .firestore.document(departmentObjectivesPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId } = context.params;
     const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
@@ -175,4 +196,79 @@ async function getObjectiveProgressions(path) {
   });
 
   return progressions;
+}
+
+/**
+ * Scheduled function that automatically updates the progress for all key results
+ * with the `auto` property set to true, getting the data from the provided
+ * google sheets details.
+ */
+exports.scheduledFunction = functions
+  .region('europe-west2')
+  .pubsub.schedule('every 12 hours')
+  .onRun(async () => {
+    return db
+      .collectionGroup('keyResults')
+      .where('auto', '==', true)
+      .get()
+      .then(snapshot => snapshot.docs.map(d => ({ ref: d.ref, ...d.data() })))
+      .then(list => list.map(getAndSaveDataFromSheets))
+      .catch(e => {
+        throw new Error(e);
+      });
+  });
+
+exports.triggerScheduledFunction = functions.region('europe-west2').https.onCall(async docPath => {
+  const doc = await db
+    .doc(docPath)
+    .get()
+    .then(d => ({ ref: d.ref, ...d.data() }));
+
+  return JSON.stringify(getAndSaveDataFromSheets(doc));
+});
+
+/**
+ * Finds and saves the value in the Google Sheets document
+ * for the provided Key Result reference
+ * @param {DocumentReference} document - The Key Result
+ * @returns {Object} - Result is true or false
+ */
+async function getAndSaveDataFromSheets(document) {
+  const { ref, sheetId, sheetName, sheetCell } = document;
+  const now = new Date();
+  const value = await getSheetsData(sheetId, sheetName, sheetCell);
+
+  if (!value) return { result: false };
+
+  await ref.collection('progress').add({ value, archived: false, created: now, timestamp: now, createdBy: 'auto' });
+  await document.ref.update({ currentValue: value });
+
+  return { result: true };
+}
+
+/**
+ * Gets a value from a Google Sheet cell
+ * @param {String} sheetId - ID of Sheets Document
+ * @param {String} sheetName - Name of Sheet (tab)
+ * @param {String} cell - Cell name of value
+ * @returns {Number} - Value of the cell
+ */
+async function getSheetsData(sheetId, sheetName, cell) {
+  const sheets = google.sheets('v4');
+  if (!sheetId || !sheetName || !cell) return;
+
+  const sheetRequest = {
+    auth: jwtClient,
+    spreadsheetId: sheetId,
+    range: `${sheetName}!${cell}`,
+  };
+
+  return sheets.spreadsheets.values
+    .get(sheetRequest)
+    .then(response => {
+      return +response.data.values[0][0];
+    })
+    .catch(err => {
+      throw new Error(err);
+    });
 }
