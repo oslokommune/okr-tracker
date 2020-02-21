@@ -45,8 +45,6 @@ async function create(objectiveRef, data) {
       Toast.addedKeyResult();
       Audit.createKeyResult(keyresRef, documentRef, objectiveRef);
 
-      console.log(keyresRef);
-
       if (data.auto) {
         const myCall = await functions.httpsCallable('triggerScheduledFunction');
         await myCall(keyresRef.path).catch(err => {
