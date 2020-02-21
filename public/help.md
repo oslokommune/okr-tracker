@@ -40,6 +40,10 @@ Kun systemadministratorer og eksisterende team-medlemmer har rettigheter til å 
 
 ### Hvordan kan jeg endre profilbilde?
 
+Gå til [profilsiden](/me) og `Velg fil` under «Endre bilde» for å laste opp nytt profilbilde.
+
+### Hvordan kan jeg endre visningsnavnet mitt?
+
 Gå til [profilsiden](/me) og endre feltet «Display name» og trykk `Lagre`.
 
 ---
