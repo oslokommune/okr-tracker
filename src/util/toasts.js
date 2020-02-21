@@ -41,7 +41,7 @@ export function deleteKeyRes() {
 }
 
 export function loggedIn(user) {
-  show(`Velkommen ${user.displayName}!`);
+  show(`Velkommen ${user.displayName ? user.displayName : ''}`);
 }
 
 export function successFullyAddedUsers(count) {

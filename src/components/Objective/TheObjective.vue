@@ -1,7 +1,9 @@
 <template>
   <div class="objective">
     <div class="item">
-      <div class="icon" :class="`fas fa-fw fa-${objective.icon}`"></div>
+      <div class="icon">
+        <i :class="`fas fa-fw fa-${objective.icon}`"></i>
+      </div>
       <div class="item__text">
         <h3 class="title-3">
           {{ objective.name }}
@@ -25,8 +27,8 @@
 </template>
 
 <script>
-import { serializeDocument } from '../../db/db';
-import TheKeyResult from '../KeyRes/TheKeyResult.vue';
+import { serializeDocument } from '@/db/db';
+import TheKeyResult from '@/components/KeyRes/TheKeyResult.vue';
 
 export default {
   name: 'TheObjective',
@@ -107,15 +109,11 @@ export default {
   align-content: center;
   align-items: center;
   justify-content: center;
-  width: 4rem;
+  width: 4rem !important;
   height: 4rem;
+  overflow: hidden;
   font-size: 1.75rem;
   background: $color-yellow;
-
-  svg {
-    width: 100%;
-    fill: $color-purple;
-  }
 }
 
 .objective--loading {

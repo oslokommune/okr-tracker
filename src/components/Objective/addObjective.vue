@@ -40,8 +40,8 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import * as Toast from '../../util/toasts';
-import Audit from '../../db/audit';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
 
 export default {
   name: 'AddObjective',
@@ -107,11 +107,23 @@ export default {
       this.quarter = value;
     },
 
-    send() {
+    async send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
+        const objectiveCount = await this.productref
+          .collection('objectives')
+          .where('quarter', '==', this.newObjective.quarter)
+          .get()
+          .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
+
+        if (objectiveCount >= 4) {
+          Toast.show('Kan ikke ha flere enn 4 mål');
+          this.$emit('close-menu');
+          return;
+        }
+
         this.setSubmitInfo(true, false, '');
 
         this.productref
@@ -122,7 +134,9 @@ export default {
             Audit.createObjective(response, response.parent.parent);
             Toast.addedObjective(this.quarter.name);
           })
-          .catch(this.$errorHandler);
+          .catch(err => {
+            this.$errorHandler('add_objective_error', err);
+          });
       }
     },
 

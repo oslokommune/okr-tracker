@@ -6,16 +6,17 @@ import VueScrollTo from 'vue-scrollto';
 import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import { errorHandler } from '@/util/utils';
+import { errorHandler, logHandler } from '@/util/utils';
+import App from '@/App.vue';
+import router from '@/router';
+import store from '@/store';
 
 import handleUserAuthStateChange from '@/util/authChangeHelper';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const fb = require('./config/firebaseConfig');
 
@@ -34,6 +35,7 @@ Vue.use(VTooltip);
 
 // Bind instance properties
 Vue.prototype.$errorHandler = errorHandler;
+Vue.prototype.$logHandler = logHandler;
 
 // Global components
 Vue.component('v-select', VueSelect);
@@ -54,3 +56,5 @@ fb.auth.onAuthStateChanged(user => {
     });
   }
 });
+
+export default { app };

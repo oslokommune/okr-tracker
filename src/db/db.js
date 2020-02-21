@@ -1,6 +1,9 @@
-import { db, auth, dashboardUser } from '../config/firebaseConfig';
-import * as Toast from '../util/toasts';
-import { errorHandler } from '../util/utils';
+import Vue from 'vue';
+import { db, auth, dashboardUser } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
+import { eventTypes } from '@/db/audit';
+
+const errorHandler = Vue.$errorHandler;
 
 // firebase collections
 const usersCollection = db.collection('users');
@@ -26,7 +29,9 @@ export function updateUserObject(user) {
         transaction.update(userRef, newData);
       });
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_user_object_error', err, { targetUser: user.email });
+    });
 }
 
 /**
@@ -42,7 +47,9 @@ export function productListener(slug) {
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
-      const productData = await d.docs[0].ref.get().catch(errorHandler);
+      const productData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('product_listener_error', err);
+      });
       this.product = serializeDocument(productData);
     });
 }
@@ -60,7 +67,9 @@ export function departmentListener(slug) {
     .where('slug', '==', slug)
     .onSnapshot(async d => {
       if (!d.docs.length) return;
-      const departmentData = await d.docs[0].ref.get().catch(errorHandler);
+      const departmentData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('department_listener_error', err);
+      });
       this.department = serializeDocument(departmentData);
     });
 }
@@ -93,6 +102,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
   const { email } = auth.currentUser;
   let teamMembers;
 
+  // Get team members from product (either slug or document reference)
   if (typeof slugOrRef === 'string') {
     teamMembers = await db
       .collectionGroup('products')
@@ -100,13 +110,23 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .get()
       .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
-      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
-      .catch(errorHandler);
+      .then(d => {
+        return d && d.team ? d.team.map(doc => doc.id) : [];
+      })
+      .catch(err => {
+        errorHandler('check_teammember_product_error', err);
+      });
   } else {
-    // 'ref'  be a
-    console.log({ slugOrRef });
-    return;
+    teamMembers = await slugOrRef
+      .get()
+      .then(serializeDocument)
+      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
+      .catch(err => {
+        errorHandler('check_teammember_product_error', err);
+      });
   }
+
+  if (!teamMembers || !teamMembers.length) return;
 
   return teamMembers.includes(email);
 }
@@ -171,7 +191,9 @@ export async function isAdmin() {
     .doc(email)
     .get()
     .then(d => d.data().admin)
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('check_is_admin_error', err);
+    });
 }
 
 /**
@@ -211,6 +233,7 @@ const getChildren = async (ref, collectionName, callback) => {
     .collection(collectionName)
     .where('archived', '==', false)
     .get();
+
   const promises = snapshot.docs.map(callback);
   return Promise.all(promises)
     .then(list =>
@@ -220,26 +243,10 @@ const getChildren = async (ref, collectionName, callback) => {
         return 0;
       })
     )
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('get_children_error', err);
+    });
 };
-
-/**
- * Binds all products that the current user is
- * a member of to `this.products` on the caller
- * @returns {void}
- */
-export async function myProductsListener() {
-  const { email } = auth.currentUser;
-
-  const userRef = await db.collection('users').doc(email);
-
-  return db
-    .collectionGroup('products')
-    .where('team', 'array-contains', userRef)
-    .get()
-    .then(d => d.docs.map(serializeDocument))
-    .catch(errorHandler);
-}
 
 /*
  * Finds a specific user
@@ -252,7 +259,9 @@ export async function findUser(slug) {
     .where('slug', '==', slug)
     .get()
     .then(d => d.docs.map(serializeDocument)[0])
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('find_user_error', err);
+    });
 }
 
 /*
@@ -269,7 +278,9 @@ export async function userProductsListener(user) {
     .where('team', 'array-contains', userRef)
     .get()
     .then(d => d.docs.map(serializeDocument))
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('user_products_listener_error', err);
+    });
 }
 
 /*
@@ -281,7 +292,9 @@ export async function getAllDepartments() {
     .collectionGroup('departments')
     .get()
     .then(d => d.docs.map(serializeDocument))
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('get_all_department_error', err);
+    });
 }
 
 export function isDashboardUser() {
@@ -292,5 +305,22 @@ export async function unDelete(ref) {
   return ref
     .update({ archived: false })
     .then(Toast.revertedDeletion)
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('undelete_error', err);
+    });
+}
+
+export async function getAuditFromUser(userId) {
+  return db
+    .collection('audit')
+    .where('user', '==', userId)
+    .orderBy('timestamp', 'desc')
+    .limit(10)
+    .get()
+    .then(snapshot => {
+      return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
+    })
+    .catch(err => {
+      errorHandler('audit_specific_user_error', err);
+    });
 }

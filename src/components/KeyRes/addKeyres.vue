@@ -41,6 +41,40 @@
 
     <hr />
 
+    <div class="toggle__container">
+      <span class="toggle__label">Automatisk registrering av progresjon</span>
+      <label class="toggle">
+        <input class="toggle__input" type="checkbox" v-model="auto" />
+        <span class="toggle__switch"></span>
+      </label>
+    </div>
+
+    <div v-if="auto">
+      <p>
+        <router-link :to="{ name: 'help' }">Les mer.</router-link>
+      </p>
+
+      <label class="form-field">
+        <span class="form-label">Google Sheet ID</span>
+        <span class="form-help">Kode fra URL .../spreadsheets/d/<strong>&lt;id&gt;</strong></span>
+        <input type="text" v-model="sheetId" />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Fane</span>
+        <span class="form-help">Samme som navnet på fanen i Google Sheets</span>
+        <input type="text" v-model="sheetName" />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Celle</span>
+        <span class="form-help">For eksempel «A12»</span>
+        <input type="text" v-model="sheetCell" />
+      </label>
+    </div>
+
+    <hr />
+
     <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
     <button class="btn btn--ghost" @click="close">Avbryt</button>
     <p v-if="showInfo">{{ info }}</p>
@@ -50,14 +84,18 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import { serializeDocument } from '../../db/db';
-import Keyresult from '../../db/keyresultHandler';
+import { serializeDocument } from '@/db/db';
+import Keyresult from '@/db/keyresultHandler';
 
 export default {
   name: 'AddKeyres',
 
   data: () => ({
+    auto: false,
     objective: null,
+    sheetId: '',
+    sheetName: '',
+    sheetCell: '',
     startValue: 0,
     targetValue: 100,
     description: '',
@@ -108,6 +146,10 @@ export default {
         targetValue: +this.targetValue,
         created: new Date(),
         createdBy: this.user.ref,
+        auto: this.auto,
+        sheetId: this.sheetId,
+        sheetName: this.sheetName,
+        sheetCell: this.sheetCell,
         edited: null,
         editedBy: null,
         unit: this.unit,
@@ -130,14 +172,14 @@ export default {
   },
 
   methods: {
-    send() {
+    async send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
         this.setSubmitInfo(true, false, '');
 
-        Keyresult.create(this.objective.ref, this.newKeyRes).then(this.close);
+        await Keyresult.create(this.objective.ref, this.newKeyRes).then(this.close);
       }
     },
     setSubmitInfo(submit, showInfo, info) {
@@ -156,5 +198,11 @@ export default {
 <style lang="scss" scoped>
 .objective__select {
   padding-top: 0.5rem;
+}
+
+.toggle__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

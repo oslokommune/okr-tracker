@@ -1,21 +1,23 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home/Home.vue';
-import TheLogin from './views/Login.vue';
-import ProductHome from './views/Product/ProductHome.vue';
-import EditProduct from './views/Product/EditProduct.vue';
-import EditProductDetails from './views/Product/EditProductDetails.vue';
-import EditObjectivesAndKeyResults from './views/Product/EditObjectivesAndKeyResults.vue';
-import KeyResultPage from './views/KeyResult/KeyResultPage.vue';
-import Department from './views/Department/DepartmentHome.vue';
-import Profile from './views/Profile.vue';
+import Home from '@/views/Home/Home.vue';
+import TheLogin from '@/views/Login.vue';
+import TheHelp from '@/views/Help.vue';
+import ProductHome from '@/views/Product/ProductHome.vue';
+import EditProduct from '@/views/Product/EditProduct.vue';
+import EditProductDetails from '@/views/Product/EditProductDetails.vue';
+import EditObjectivesAndKeyResults from '@/views/Product/EditObjectivesAndKeyResults.vue';
+import KeyResultPage from '@/views/KeyResult/KeyResultPage.vue';
+import Department from '@/views/Department/DepartmentHome.vue';
+import Profile from '@/views/Profile.vue';
+import EditDepartment from '@/views/Department/EditDepartment.vue';
+import DashboardHome from '@/views/Dashboard/dashboardHome.vue';
 
-import { auth } from './config/firebaseConfig';
-import EditDepartment from './views/Department/EditDepartment.vue';
+import { auth } from '@/config/firebaseConfig';
 
-const AdminHome = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminHome.vue');
-const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminUsers.vue');
-const AdminObjects = () => import(/* webpackChunkName: "group-admin" */ './views/Admin/AdminObjects.vue');
+const AdminHome = () => import(/* webpackChunkName: "group-admin" */ '@/views/Admin/AdminHome.vue');
+const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ '@/views/Admin/AdminUsers.vue');
+const AdminObjects = () => import(/* webpackChunkName: "group-admin" */ '@/views/Admin/AdminObjects.vue');
 
 Vue.use(Router);
 
@@ -31,6 +33,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: TheLogin,
+  },
+
+  {
+    path: '/help',
+    name: 'help',
+    component: TheHelp,
+    meta: { headerStyle: 'help' },
   },
 
   {
@@ -52,6 +61,7 @@ const routes = [
     meta: { headerStyle: 'product' },
     name: 'product',
     component: ProductHome,
+    children: [{ name: 'dashboard', path: 'dashboard', component: DashboardHome }],
   },
 
   {
@@ -107,6 +117,12 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   window.scroll(0, 0);
+
+  if (to.name === 'help') {
+    next();
+    return;
+  }
+
   if (!isAuthenticated() && to.path !== '/login') {
     next('/login');
   } else {

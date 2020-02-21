@@ -7,13 +7,15 @@ const duration = 600;
 const ease = easeCircleOut;
 const colors = {
   purple: '#2A2859',
-  grey: '#F2F2F2',
+  grey: '#a2a2a2',
   yellow: '#F9C66B',
 };
 export const formatPercent = format('.0%');
 
 function initSvg(el) {
-  el.attr('height', size * 0.8).attr('width', size);
+  el.attr('viewBox', `0 0 ${size / 0.8} ${size}`)
+    .attr('width', '100%')
+    .attr('preserveAspectRatio', 'xMidYMid');
 }
 
 // Set up the arc generators
@@ -33,12 +35,13 @@ function initGroup(g, name = 'group') {
 // Initializes the outer group element by appending the neccessary elements within
 function initOuterGroup(el) {
   el.append('g');
-  el.append('line').attr('stroke', 'black');
+  el.append('line').attr('stroke', this.darkmode ? 'white' : 'black');
 
   el.append('text')
     .attr('font-size', 14)
     .attr('y', 5)
-    .text('I dag');
+    .text('I dag')
+    .attr('fill', this.darkmode ? 'white' : 'black');
 }
 
 // Positions and styles the percentage text element
@@ -48,7 +51,7 @@ function initPercentText(el) {
     .attr('text-anchor', 'middle')
     .attr('font-size', 24)
     .attr('font-weight', 'bold')
-    .attr('fill', colors.purple)
+    .attr('fill', this.darkmode ? 'white' : colors.purple)
     .attr('y', 8);
 }
 
@@ -94,7 +97,13 @@ function updateInnerArcs(el, data) {
   el.selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', (d, i) => (i === 0 ? colors.purple : colors.grey))
+    .attr('fill', (d, i) => {
+      if (this.darkmode) {
+        return colors.yellow;
+      }
+      return i === 0 ? colors.purple : colors.grey;
+    })
+    .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0.15))
     .transition()
     .duration(duration)
     .ease(ease)
@@ -107,7 +116,10 @@ function updateOuterArcs(el, data) {
     .selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', (d, i) => (i === 0 ? colors.yellow : 'white'))
+    .attr('fill', () => {
+      return this.darkmode ? 'white' : colors.yellow;
+    })
+    .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0))
     .transition()
     .duration(duration)
     .ease(ease)

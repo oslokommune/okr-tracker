@@ -18,8 +18,8 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import NewsfeedCard from './NewsfeedCard.vue';
-import { serializeDocument } from '../../../db/db';
+import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
+import { serializeDocument } from '@/db/db';
 import { eventTypes } from '@/db/audit';
 
 export default {
@@ -57,14 +57,9 @@ export default {
           const newDocuments = await snapshot
             .docChanges()
             .filter(d => d.type === 'added')
-            .filter(d => !eventTypes.includes(d.event))
             .filter(d => !this.feed.map(el => el.id).includes(d.doc.id));
 
-          const newObjects = newDocuments
-            .map(d => d.doc)
-            .map(d => {
-              return serializeDocument(d);
-            });
+          const newObjects = newDocuments.map(d => serializeDocument(d.doc)).filter(d => eventTypes.includes(d.event));
 
           newObjects.forEach(obj => {
             this.feed.push(obj);

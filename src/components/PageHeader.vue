@@ -3,8 +3,8 @@
     <div class="container">
       <div class="page-header__container">
         <ul class="breadcrumb" v-if="breadcrumbs">
-          <li>
-            <router-link to="/"><i class="fas fa-home"></i></router-link>
+          <li class="breadcrumb__item">
+            <router-link to="/"><i class="fas fa-home"></i>Hjem</router-link>
           </li>
           <li class="breadcrumb__item" v-for="item in breadcrumbs" :key="item.name">
             <router-link v-if="item.routerLinkTo" :to="item.routerLinkTo">{{ item.name }}</router-link>
@@ -19,8 +19,12 @@
           </h1>
         </div>
 
+        <div class="page-header__profile-image page-header__profile-image--icon" v-if="data.icon && showImage">
+          <i :class="`fa fa-fw fa-${data.icon}`"></i>
+        </div>
+
         <img
-          v-if="showImage"
+          v-else-if="showImage"
           :src="data.photoURL || '/placeholder-image.svg'"
           :alt="`Profilbilde for ${title}`"
           class="page-header__profile-image"
@@ -31,9 +35,9 @@
 </template>
 
 <script>
-import { serializeDocument } from '../db/db';
-import { db } from '../config/firebaseConfig';
-import * as Toast from '../util/toasts';
+import { serializeDocument } from '@/db/db';
+import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'PageHeader',
@@ -64,7 +68,8 @@ export default {
     },
 
     icon() {
-      if (this.style === 'admin') return 'dashboard';
+      if (this.style === 'admin') return 'tachometer-alt';
+      if (this.style === 'help') return 'question-circle';
       return false;
     },
 
@@ -98,7 +103,9 @@ export default {
       const trail = await Promise.all(promises)
         .then(snapshots => snapshots.map(serializeDocument))
         .then(documents => documents.map(this.getNameAndRouteFromDocument))
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('generate_breadcrumbs_error', err);
+        });
 
       return trail.reverse();
     },

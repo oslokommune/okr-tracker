@@ -1,8 +1,9 @@
-import * as Toast from '../util/toasts';
-import Audit from './audit';
-import { errorHandler } from '../util/utils';
-import { isTeamMemberOfProduct } from './db';
-import Store from '../store';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import { errorHandler } from '@/util/utils';
+import { isTeamMemberOfProduct } from '@/db/db';
+import Store from '@/store';
+import { functions } from '@/config/firebaseConfig';
 
 /**
  * Creates a key result for the provided objective
@@ -23,18 +24,39 @@ async function create(objectiveRef, data) {
 
   const documentRef = objectiveRef.parent.parent;
 
+  const keyResCount = await objectiveRef
+    .collection('keyResults')
+    .where('archived', '==', false)
+    .get()
+    .then(snapshot => snapshot.docs.length);
+
+  if (keyResCount >= 5) {
+    Toast.show('Kan ikke ha flere enn 5 nøkkelresultater');
+    return errorHandler('create_keyres_error', new Error('Maximum key results'));
+  }
+
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('create_keyres_error', new Error('Insufficient permissions'));
 
   return objectiveRef
     .collection('keyResults')
     .add(data)
-    .then(keyresRef => {
+    .then(async keyresRef => {
       Toast.addedKeyResult();
       Audit.createKeyResult(keyresRef, documentRef, objectiveRef);
+
+      if (data.auto) {
+        const myCall = await functions.httpsCallable('triggerScheduledFunction');
+        await myCall(keyresRef.path).catch(err => {
+          throw new Error(err);
+        });
+      }
+
       return keyresRef;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('create_keyres_error', err);
+    });
 }
 
 /**
@@ -48,7 +70,7 @@ async function update(keyresRef, data) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('update_keyres_error', new Error('Insufficient permissions'));
 
   return keyresRef
     .update(data)
@@ -57,7 +79,9 @@ async function update(keyresRef, data) {
       Toast.savedChanges();
       return keyresRef;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('update_keyres_error', err);
+    });
 }
 
 /**
@@ -69,7 +93,7 @@ async function archive(keyresRef) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('Insufficient permissions');
+  if (!hasEditPermissions) throw errorHandler('archive_keyres_error', new Error('Insufficient permissions'));
 
   await keyresRef
     .update({ archived: true })
@@ -78,7 +102,9 @@ async function archive(keyresRef) {
       Audit.archiveKeyResult(keyresRef, documentRef, objectiveRef);
       return true;
     })
-    .catch(errorHandler);
+    .catch(err => {
+      errorHandler('archive_keyres_error', err);
+    });
 }
 
 export default {

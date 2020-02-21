@@ -4,7 +4,7 @@
 
     <div class="list">
       <div v-if="!objectives.length" class="empty">
-        <i class="far fa-exclamation-circle"></i>
+        <i class="fa fa-fw fa-exclamation-circle"></i>
         <p>
           <span> Oops! Her finnes det ingen mål. </span>
           <router-link
@@ -23,8 +23,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import TheObjective from './Objective/TheObjective.vue';
-import { serializeDocument, isTeamMemberOfProduct } from '../db/db';
+import TheObjective from '@/components/Objective/TheObjective.vue';
+import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
 
 export default {
   name: 'ObjectivesList',
@@ -104,7 +104,7 @@ export default {
   align-content: center;
   align-items: center;
 
-  .far {
+  .fa {
     margin-right: 0.5rem;
     font-size: 2rem;
   }

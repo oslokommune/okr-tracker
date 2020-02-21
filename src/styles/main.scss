@@ -185,7 +185,8 @@ hr {
   }
 }
 
-.table {
+.table,
+.md table {
   width: 100%;
   margin: 2rem 0 1rem;
   border-bottom: 1px solid $color-border;
@@ -221,7 +222,7 @@ hr {
     color: $color-grey-300;
     font-weight: 900;
     font-size: 0.9em;
-    font-family: 'Font Awesome 5 Pro';
+    font-family: 'Font Awesome 5 Free';
     transform: translateY(-0.05em);
     content: '\f1da';
   }

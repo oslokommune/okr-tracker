@@ -12,8 +12,15 @@
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>
-        <input class="range" type="range" :min="keyResult.fromValue" :max="keyResult.targetValue" v-model="newValue" />
-        <label class="form-field">
+        <input
+          v-if="!keyResult.auto"
+          class="range"
+          type="range"
+          :min="keyResult.fromValue"
+          :max="keyResult.targetValue"
+          v-model="newValue"
+        />
+        <label v-if="!keyResult.auto" class="form-field">
           <span class="form-label">Verdi</span>
           <input type="number" v-model="newValue" />
         </label>
@@ -38,9 +45,9 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument } from '../db/db';
-import ProgressBar from './ProgressBar.vue';
-import Progress from '../db/progressHandler';
+import { serializeDocument } from '@/db/db';
+import ProgressBar from '@/components/ProgressBar.vue';
+import { addProgress } from '@/db/progressHandler';
 
 export default {
   name: 'RegisterProgressModal',
@@ -105,7 +112,7 @@ export default {
     },
 
     async save() {
-      await Progress.addProgress(this.keyResult, +this.newValue, this.date);
+      await addProgress(this.keyResult, +this.newValue, this.date);
 
       this.skip();
       if (this.index === 0) this.close();
@@ -132,7 +139,9 @@ export default {
           .get()
           .then(snap => snap.docs.map(serializeDocument));
       });
-      const keyResults = await Promise.all(promises).catch(this.$errorHandler);
+      const keyResults = await Promise.all(promises).catch(err => {
+        this.$errorHandler('get_keyres_error', err);
+      });
       this.keyResults = keyResults.flat();
     },
   },
@@ -328,5 +337,9 @@ export default {
     background: $color-purple;
     transform: scale(1.5);
   }
+}
+
+.pill {
+  width: auto;
 }
 </style>

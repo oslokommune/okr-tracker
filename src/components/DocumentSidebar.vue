@@ -55,22 +55,22 @@
           ></register-progress-modal>
         </div>
       </template>
-      <div class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
-        <i class="fa fas fa-fw fa-dashboard"></i>Dashboard
-      </div>
-      <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
-        <i class="fa fas fa-fw fa-photo"></i>Eksporter grafikk
-      </div>
+      <router-link :to="{ name: 'dashboard' }" class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
+        <i class="fa fas fa-fw fa-tachometer-alt"></i>Dashboard
+      </router-link>
+      <!-- <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
+        <i class="fa fas fa-fw fa-image"></i>Eksporter grafikk
+      </div> -->
     </nav>
     <div class="edited edited--mt" v-tooltip="prettyDate">Endret {{ edited }}</div>
   </aside>
 </template>
 <script>
 import ClickOutside from 'vue-click-outside';
-import AddKeyres from './KeyRes/addKeyres.vue';
-import AddObjective from './Objective/addObjective.vue';
-import RegisterProgressModal from './RegisterProgressModal.vue';
-import { timeFromNow, datePretty } from '../util/utils';
+import AddKeyres from '@/components/KeyRes/addKeyres.vue';
+import AddObjective from '@/components/Objective/addObjective.vue';
+import RegisterProgressModal from '@/components/RegisterProgressModal.vue';
+import { timeFromNow, datePretty } from '@/util/utils';
 
 export default {
   name: 'DocumentSidebar',

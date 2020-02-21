@@ -2,6 +2,23 @@
   <div v-if="getUser">
     <PageHeader :data="getUser"></PageHeader>
     <div class="container container--sidebar">
+      <section class="section page-menu content--sidebar">
+        <label v-if="$route.name === 'me'" class="form-field">
+          <span class="form-label">Endre bilde</span>
+          <image-uploader
+            class="image-uploader"
+            :max-width="250"
+            :max-height="250"
+            :quality="0.6"
+            :auto-rotate="true"
+            output-format="blob"
+            accept="image/*"
+            do-not-resize="['gif', 'svg']"
+            :preview="false"
+            @input="setImage"
+          ></image-uploader>
+        </label>
+      </section>
       <main class="content--main">
         <section v-if="$route.name === 'me'" class="section">
           <h2 class="title title-2">Display name</h2>
@@ -54,12 +71,11 @@
 
 <script>
 import { mapState } from 'vuex';
-import { isDashboardUser, findUser, userProductsListener, getAllDepartments, serializeDocument } from '@/db/db';
-import PageHeader from '../components/PageHeader.vue';
+import { isDashboardUser, findUser, userProductsListener, getAllDepartments, getAuditFromUser } from '@/db/db';
+import PageHeader from '@/components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
-import { db } from '@/config/firebaseConfig';
-import { eventTypes } from '@/db/audit';
 import * as Toast from '@/util/toasts';
+import { storage } from '@/config/firebaseConfig';
 
 export default {
   name: 'User',
@@ -71,6 +87,8 @@ export default {
     departments: [],
     feed: [],
     displayName: '',
+    uploading: false,
+    file: null,
   }),
 
   components: {
@@ -119,16 +137,7 @@ export default {
         this.departments = list;
       });
 
-      this.feed = await db
-        .collection('audit')
-        .where('user', '==', this.getUser.id)
-        .orderBy('timestamp', 'desc')
-        .limit(10)
-        .get()
-        .then(snapshot => {
-          return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
-        })
-        .catch(this.$errorHandler);
+      this.feed = await getAuditFromUser(this.getUser.id);
     },
 
     submitDisplayName() {
@@ -137,6 +146,39 @@ export default {
           displayName: this.displayName,
         })
         .then(Toast.savedChanges);
+    },
+
+    setImage(file) {
+      this.hasImage = true;
+      this.file = file;
+      this.uploadPhoto();
+    },
+
+    async uploadPhoto() {
+      if (!this.file) return;
+      this.uploading = true;
+
+      const storageRef = storage.ref(`photos/${this.user.id}`);
+
+      const snapshot = await storageRef.put(this.file).catch(() => {
+        this.$errorHandler('upload_photo_profile_error');
+      });
+      const photoURL = await snapshot.ref
+        .getDownloadURL()
+        .then(url => url)
+        .catch(() => {
+          this.$errorHandler('upload_photo_profile_error');
+        });
+
+      await this.user.ref.update({ photoURL }).catch(() => {
+        this.$errorHandler('upload_photo_profile_error');
+      });
+
+      this.user.photoURL = photoURL;
+      this.uploading = false;
+
+      Toast.uploadedPhoto();
+      return photoURL;
     },
   },
 

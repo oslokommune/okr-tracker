@@ -2,20 +2,7 @@
   <div>
     <page-header :data="product || {}"></page-header>
 
-    <nav class="sub-nav">
-      <div class="container container--sidebar">
-        <div class="content--main">
-          <span
-            v-for="quarter in quarters"
-            :key="quarter.name"
-            class="sub-nav__element"
-            :class="{ 'router-link-active': quarter === activeQuarter }"
-            @click="setQuarter(quarter)"
-            >{{ quarter.name }}</span
-          >
-        </div>
-      </div>
-    </nav>
+    <the-sub-nav />
 
     <div class="content" v-if="product">
       <div class="container container--sidebar">
@@ -34,18 +21,20 @@
           <objectives-list :document="product"></objectives-list>
         </main>
       </div>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { serializeDocument } from '../../db/db';
+import { serializeDocument } from '@/db/db';
 
-import PageHeader from '../../components/PageHeader.vue';
-import DocumentSummary from '../../components/DocumentSummary.vue';
-import ObjectivesList from '../../components/ObjectivesList.vue';
-import DocumentSidebar from '../../components/DocumentSidebar.vue';
+import PageHeader from '@/components/PageHeader.vue';
+import DocumentSummary from '@/components/DocumentSummary.vue';
+import ObjectivesList from '@/components/ObjectivesList.vue';
+import DocumentSidebar from '@/components/DocumentSidebar.vue';
+import TheSubNav from '@/components/TheSubNav.vue';
 
 import * as Toast from '@/util/toasts';
 
@@ -62,10 +51,11 @@ export default {
     PageHeader,
     DocumentSummary,
     ObjectivesList,
+    TheSubNav,
   },
 
   computed: {
-    ...mapState(['user', 'quarters', 'product', 'activeQuarter']),
+    ...mapState(['user', 'product', 'activeQuarter']),
 
     hasEditPermissions() {
       if (!this.user) return;
@@ -85,7 +75,9 @@ export default {
         const teamPromises = this.product.team ? this.product.team.map(d => d.get()) : [];
         this.team = await Promise.all(teamPromises)
           .then(d => d.map(serializeDocument))
-          .catch(this.$errorHandler);
+          .catch(err => {
+            this.$errorHandler('get_product', this.user.email, this.$route.path, err);
+          });
       }
     },
   },
@@ -95,7 +87,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['watchProduct', 'setQuarter']),
+    ...mapActions(['watchProduct']),
   },
 };
 </script>

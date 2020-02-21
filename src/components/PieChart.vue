@@ -4,7 +4,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Pie from '../util/piechart';
+import Pie from '@/util/piechart';
 
 export default {
   name: 'PieChart',
@@ -18,6 +18,11 @@ export default {
       type: Object,
       required: true,
     },
+    darkmode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   computed: {
@@ -25,7 +30,7 @@ export default {
   },
 
   mounted() {
-    this.pie = new Pie(this.$refs.svg);
+    this.pie = new Pie(this.$refs.svg, this.darkmode);
     if (!this.document) return;
     if (!this.activeQuarter) return;
 

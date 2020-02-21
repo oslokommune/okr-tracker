@@ -3,13 +3,14 @@
     <div class="nf-card__user" v-if="ready">
       <img
         class="nf-card__avatar"
-        :src="this.user.photoURL || '/placeholder-user.svg'"
-        :alt="this.user.displayName || this.user.email"
+        :src="user.photoURL || '/placeholder-user.svg'"
+        :alt="user.displayName || user.email"
       />
       <div class="nf-card__usertext">
-        <router-link :to="{ name: 'profile', params: { slug: this.user.slug } }">
-          <span class="nf-card__displayname">{{ this.user.displayName || this.user.email }}</span>
+        <router-link v-if="user.slug" :to="{ name: 'profile', params: { slug: user.slug } }">
+          <span class="nf-card__displayname">{{ user.displayName || user.email }}</span>
         </router-link>
+        <span v-else-if="!user.slug" class="nf-card__displayname">{{ user.displayName || user.email }}</span>
 
         <span v-if="eventData.event === 'keyRes-update-progress'">
           har oppdatert fremdrift for
@@ -118,8 +119,8 @@
       <template v-if="eventData.event === 'keyRes-update-progress'">
         <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }">
           {{ keyResult.description }}
-          <ProgressBar class="nf-progress" :keyres="keyResult"></ProgressBar>
         </router-link>
+        <ProgressBar class="nf-progress" :keyres="keyResult"></ProgressBar>
       </template>
     </div>
     <newsfeed-footer :data="eventData"></newsfeed-footer>
@@ -128,9 +129,9 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import { serializeDocument } from '../../../db/db';
+import { serializeDocument } from '@/db/db';
 import ProgressBar from '@/components/ProgressBar.vue';
-import NewsfeedFooter from './NewsfeedFooter.vue';
+import NewsfeedFooter from '@/views/Home/components/NewsfeedFooter.vue';
 
 export default {
   components: {
@@ -163,14 +164,18 @@ export default {
         .doc(`users/${user}`)
         .get()
         .then(d => ({ email: user, ...d.data() }))
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_user_error', err);
+        });
     }
 
     if (keyresRef) {
       this.keyResult = await keyresRef
         .get()
         .then(serializeDocument)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_keyres_error', err);
+        });
 
       // Replace the value from db with the one from the audit log
       this.keyResult.currentValue = this.eventData.toValue;
@@ -180,7 +185,9 @@ export default {
       this.product = await productRef
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_product_error', err);
+        });
 
       if (productRef.parent.id === 'departments') {
         this.product.route = { name: 'department', params: { slug: this.product.slug } };
@@ -193,14 +200,18 @@ export default {
       this.objective = await objectiveRef
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_objective_error', err);
+        });
     }
 
     if (departmentRef) {
       this.department = await departmentRef
         .get()
         .then(d => d.data())
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_department_error', err);
+        });
     }
 
     if (this.eventData.event === 'keyRes-update-progress') {

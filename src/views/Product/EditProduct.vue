@@ -9,7 +9,6 @@
           <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">
             Mål og nøkkelresultater
           </router-link>
-          <router-link class="sub-nav__element" exact :to="{ name: 'home' }">Team</router-link>
         </div>
       </div>
     </nav>
@@ -22,8 +21,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { productListener, isTeamMemberOfProduct } from '../../db/db';
-import PageHeader from '../../components/PageHeader.vue';
+import { productListener, isTeamMemberOfProduct } from '@/db/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'EditProduct',

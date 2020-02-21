@@ -1,4 +1,4 @@
-import { db } from '../config/firebaseConfig';
+import { db } from '@/config/firebaseConfig';
 
 const defaultData = {
   archived: false,

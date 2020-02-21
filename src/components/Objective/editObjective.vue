@@ -36,9 +36,9 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import * as Toast from '../../util/toasts';
-import Audit from '../../db/audit';
-import { serializeDocument } from '../../db/db';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
+import { serializeDocument } from '@/db/db';
 
 export default {
   name: 'EditObjective',
@@ -87,7 +87,9 @@ export default {
       this.objective = await objective.ref
         .get()
         .then(serializeDocument)
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('get_objective_error', err);
+        });
 
       this.unsubscribe = objective.ref.onSnapshot(snapshot => {
         this.objective = serializeDocument(snapshot);
@@ -118,7 +120,7 @@ export default {
           .catch(error => {
             this.objective.edited = false;
             this.setSubmitInfo(false, true, 'Noe gikk galt');
-            this.$errorHandler(error);
+            this.$errorHandler('update_objective_error', error);
           });
       }
     },
@@ -138,7 +140,9 @@ export default {
         .then(() => {
           this.loading = false;
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('delete_objective_error', err);
+        });
     },
 
     setSubmitInfo(submit, showInfo, info) {

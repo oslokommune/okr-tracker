@@ -9,7 +9,6 @@
           <router-link class="sub-nav__element" :to="{ name: 'edit-department-keyres' }">
             Mål og nøkkelresultater
           </router-link>
-          <router-link class="sub-nav__element" exact :to="{ name: 'home' }">Team</router-link>
         </div>
       </div>
     </nav>
@@ -21,8 +20,8 @@
 </template>
 
 <script>
-import { departmentListener, isAdmin } from '../../db/db';
-import PageHeader from '../../components/PageHeader.vue';
+import { departmentListener, isAdmin } from '@/db/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'Department',

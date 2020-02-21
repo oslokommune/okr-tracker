@@ -18,8 +18,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { isAdmin } from '../../db/db';
-import PageHeader from '../../components/PageHeader.vue';
+import { isAdmin } from '@/db/db';
+import PageHeader from '@/components/PageHeader.vue';
 
 export default {
   name: 'AdminHome',

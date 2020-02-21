@@ -54,10 +54,10 @@
 <script>
 import { mapState } from 'vuex';
 import uniqid from 'uniqid';
-import { validateEmail } from '../../util/formValidation';
-import { db } from '../../config/firebaseConfig';
-import * as Toast from '../../util/toasts';
-import Audit from '../../db/audit';
+import { validateEmail } from '@/util/formValidation';
+import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
+import Audit from '@/db/audit';
 
 export default {
   name: 'AdminUsers',
@@ -96,7 +96,9 @@ export default {
           Audit.addUsers(list);
           this.addUserList = '';
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('add_users_error', err);
+        });
     },
 
     deleteUser(user) {
@@ -111,7 +113,9 @@ export default {
           Audit.deleteUser(user.id);
           Toast.deletedUser(user);
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('delete_user_error', err);
+        });
     },
 
     toggleAdmin(user, value) {
@@ -121,7 +125,9 @@ export default {
           Toast.toggleAdmin(user, value);
           Audit.toggleAdmin(user.id, value);
         })
-        .catch(this.$errorHandler);
+        .catch(err => {
+          this.$errorHandler('toggle_admin_error', err);
+        });
     },
   },
 };

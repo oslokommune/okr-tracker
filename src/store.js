@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { db, dashboardUser } from './config/firebaseConfig';
-import { quarters, errorHandler } from './util/utils';
-import { serializeDocument, getNestedData } from './db/db';
-import icons from './config/icons';
+import { db, dashboardUser } from '@/config/firebaseConfig';
+import { quarters } from '@/util/utils';
+import { serializeDocument, getNestedData } from '@/db/db';
+import icons from '@/config/icons';
+
+const errorHandler = Vue.$errorHandler;
 
 Vue.use(Vuex);
 
@@ -16,7 +18,7 @@ export const actions = {
 
   watchProducts({ commit }) {
     db.collectionGroup('products').onSnapshot(async () => {
-      commit('set_nested_data', await getNestedData());
+      commit('SET_NESTED_DATA', await getNestedData());
     });
   },
 
@@ -30,7 +32,7 @@ export const actions = {
           return user;
         });
 
-      commit('set_users', userList);
+      commit('SET_USERS', userList);
     });
   },
 
@@ -42,14 +44,24 @@ export const actions = {
       .collectionGroup('keyResults')
       .get()
       .then(snapshot => snapshot.docs.filter(d => d.id === id)[0].ref)
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('get_keyres_error', err);
+      });
 
     const unsubscribe = await getKeyRes.then(keyResult => {
       if (!keyResult) return;
       doc = keyResult;
 
-      return keyResult.onSnapshot(snapshot => {
-        commit('set_key_result', serializeDocument(snapshot));
+      return keyResult.onSnapshot(async snapshot => {
+        if (!snapshot || !snapshot.ref) return;
+
+        const data = serializeDocument(snapshot);
+        const objective = await snapshot.ref.parent.parent.get().then(d => d.data());
+        const { icon, quarter } = objective;
+
+        data.icon = icon;
+        data.quarter = quarter;
+        commit('SET_KEY_RESULT', data);
       });
     });
 
@@ -64,16 +76,20 @@ export const actions = {
       .where('slug', '==', slug)
       .get()
       .then(d => d.docs[0].ref)
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('get_product_error', err);
+      });
 
     // TODO: Unsubscribe from this when not longer needed
     getProduct
       .then(product => {
         product.onSnapshot(snapshot => {
-          commit('set_product', serializeDocument(snapshot));
+          commit('SET_PRODUCT', serializeDocument(snapshot));
         });
       })
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('watch_product_error', err);
+      });
 
     return getProduct;
   },
@@ -87,7 +103,9 @@ export const actions = {
       .get()
       .then(d => d.docs[0])
       .then(d => serializeDocument(d))
-      .catch(errorHandler);
+      .catch(err => {
+        errorHandler('get_department_error', err);
+      });
 
     getDepartment.then(department => {
       department.ref
@@ -110,38 +128,30 @@ export const actions = {
   },
 };
 
-export const getters = {
-  get_user_emails(state) {
-    return state.users.map(d => d.id);
-  },
-};
+export const getters = {};
 
 export const mutations = {
-  set_user(state, payload) {
+  SET_USER(state, payload) {
     state.user = payload;
   },
 
-  set_quarters(state, payload) {
-    state.quarters = payload;
-  },
-
-  set_users(state, payload) {
+  SET_USERS(state, payload) {
     state.users = payload;
   },
 
-  set_show_newsfeed(state, payload) {
+  SET_SHOW_NEWSFEED(state, payload) {
     state.showNewsfeed = payload;
   },
 
-  set_nested_data(state, payload) {
+  SET_NESTED_DATA(state, payload) {
     state.nest = payload;
   },
 
-  set_product(state, payload) {
+  SET_PRODUCT(state, payload) {
     state.product = payload;
   },
 
-  set_key_result(state, payload) {
+  SET_KEY_RESULT(state, payload) {
     state.key_result = payload;
   },
 
@@ -164,8 +174,8 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters,
-    activeQuarter: quarters[0],
+    quarters: quarters(),
+    activeQuarter: quarters()[0],
     icons,
     showNewsfeed: false,
     key_result: null,
