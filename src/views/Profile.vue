@@ -16,7 +16,6 @@
             do-not-resize="['gif', 'svg']"
             :preview="false"
             @input="setImage"
-            @onUpload="uploadPhoto"
           ></image-uploader>
         </label>
       </section>
@@ -89,6 +88,7 @@ export default {
     feed: [],
     displayName: '',
     uploading: false,
+    file: null,
   }),
 
   components: {
@@ -177,7 +177,7 @@ export default {
       this.user.photoURL = photoURL;
       this.uploading = false;
 
-      Toast.savedChanges();
+      Toast.uploadedPhoto();
       return photoURL;
     },
   },
