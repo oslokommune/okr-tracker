@@ -2,20 +2,7 @@
   <div>
     <page-header :data="department || {}"></page-header>
 
-    <nav class="sub-nav">
-      <div class="container container--sidebar">
-        <div class="content--main">
-          <span
-            v-for="quarter in quarters"
-            :key="quarter.name"
-            class="sub-nav__element"
-            :class="{ 'router-link-active': quarter === activeQuarter }"
-            @click="setQuarter(quarter)"
-            >{{ quarter.name }}</span
-          >
-        </div>
-      </div>
-    </nav>
+    <the-sub-nav />
 
     <div class="content" v-if="department">
       <div class="container container--sidebar">
@@ -45,6 +32,7 @@ import PageHeader from '@/components/PageHeader.vue';
 import DocumentSidebar from '@/components/DocumentSidebar.vue';
 import DocumentSummary from '@/components/DocumentSummary.vue';
 import ObjectivesList from '@/components/ObjectivesList.vue';
+import TheSubNav from '@/components/TheSubNav.vue';
 
 export default {
   name: 'DepartmentHome',
@@ -59,10 +47,11 @@ export default {
     DocumentSummary,
     DocumentSidebar,
     PageHeader,
+    TheSubNav,
   },
 
   computed: {
-    ...mapState(['user', 'quarters', 'activeQuarter', 'departmentProducts', 'department']),
+    ...mapState(['user', 'activeQuarter', 'departmentProducts', 'department']),
 
     hasEditPermissions() {
       if (!this.user) return;
@@ -82,7 +71,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setQuarter', 'watchDepartment']),
+    ...mapActions(['watchDepartment']),
     getObjectives() {
       this.department.ref
         .collection('objectives')
@@ -106,31 +95,6 @@ export default {
 .sub-nav__element {
   cursor: pointer;
   user-select: none;
-}
-
-.button--tab {
-  position: relative;
-  display: inline-block;
-  padding: 0.75rem 0.5rem;
-  color: $color-purple;
-  background: none;
-
-  border: none;
-
-  &.active {
-    position: relative;
-    cursor: default;
-
-    &::after {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      height: 4px;
-      background-color: $color-purple;
-      content: '';
-    }
-  }
 }
 
 .team {

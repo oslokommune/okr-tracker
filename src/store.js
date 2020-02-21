@@ -18,7 +18,7 @@ export const actions = {
 
   watchProducts({ commit }) {
     db.collectionGroup('products').onSnapshot(async () => {
-      commit('set_nested_data', await getNestedData());
+      commit('SET_NESTED_DATA', await getNestedData());
     });
   },
 
@@ -32,7 +32,7 @@ export const actions = {
           return user;
         });
 
-      commit('set_users', userList);
+      commit('SET_USERS', userList);
     });
   },
 
@@ -61,7 +61,7 @@ export const actions = {
 
         data.icon = icon;
         data.quarter = quarter;
-        commit('set_key_result', data);
+        commit('SET_KEY_RESULT', data);
       });
     });
 
@@ -84,7 +84,7 @@ export const actions = {
     getProduct
       .then(product => {
         product.onSnapshot(snapshot => {
-          commit('set_product', serializeDocument(snapshot));
+          commit('SET_PRODUCT', serializeDocument(snapshot));
         });
       })
       .catch(err => {
@@ -128,38 +128,30 @@ export const actions = {
   },
 };
 
-export const getters = {
-  get_user_emails(state) {
-    return state.users.map(d => d.id);
-  },
-};
+export const getters = {};
 
 export const mutations = {
-  set_user(state, payload) {
+  SET_USER(state, payload) {
     state.user = payload;
   },
 
-  set_quarters(state, payload) {
-    state.quarters = payload;
-  },
-
-  set_users(state, payload) {
+  SET_USERS(state, payload) {
     state.users = payload;
   },
 
-  set_show_newsfeed(state, payload) {
+  SET_SHOW_NEWSFEED(state, payload) {
     state.showNewsfeed = payload;
   },
 
-  set_nested_data(state, payload) {
+  SET_NESTED_DATA(state, payload) {
     state.nest = payload;
   },
 
-  set_product(state, payload) {
+  SET_PRODUCT(state, payload) {
     state.product = payload;
   },
 
-  set_key_result(state, payload) {
+  SET_KEY_RESULT(state, payload) {
     state.key_result = payload;
   },
 
