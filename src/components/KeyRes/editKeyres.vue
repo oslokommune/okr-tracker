@@ -29,6 +29,37 @@
     </label>
     <div class="form-field--error" v-if="$v.keyres.unit.$error">Kan ikke være tom</div>
 
+    <div v-if="keyres.auto">
+      <hr />
+      <div class="toggle__container">
+        <span class="toggle__label">Automatisk (Google Sheets)</span>
+        <label class="toggle">
+          <input class="toggle__input" type="checkbox" disabled v-model="keyres.auto" />
+          <span class="toggle__switch"></span>
+        </label>
+      </div>
+
+      <hr />
+
+      <label class="form-field">
+        <span class="form-label">Google Sheet ID</span>
+        <span class="form-help">Kode fra URL .../spreadsheets/d/<strong>&lt;id&gt;</strong></span>
+        <input type="text" v-model="keyres.sheetId" />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Fane</span>
+        <span class="form-help">Samme som navnet på fanen i Google Sheets</span>
+        <input type="text" v-model="keyres.sheetName" />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Celle</span>
+        <span class="form-help">For eksempel «A12»</span>
+        <input type="text" v-model="keyres.sheetCell" />
+      </label>
+    </div>
+
     <hr />
 
     <button :disabled="!dirty" class="btn" @click="send">Lagre endringer</button>
@@ -88,6 +119,9 @@ export default {
         startValue: +this.keyres.startValue,
         targetValue: +this.keyres.targetValue,
         unit: this.keyres.unit,
+        sheetId: this.keyres.sheetId,
+        sheetName: this.keyres.sheetName,
+        sheetCell: this.keyres.sheetCell,
       };
     },
   },
@@ -126,5 +160,11 @@ export default {
 .edit-keyres {
   width: 100%;
   margin-top: -1.5rem;
+}
+
+.toggle__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

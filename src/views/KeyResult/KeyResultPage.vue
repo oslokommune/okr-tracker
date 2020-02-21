@@ -30,7 +30,27 @@
 
             <hr />
 
-            <section v-if="hasEditPermissions" class="section">
+            <section class="section" v-if="key_result && key_result.auto">
+              <div class="callout">
+                <div class="callout__message">
+                  Dette er et automatisk nøkkelresultat.
+                </div>
+
+                <div class="callout__actions">
+                  <button
+                    class="btn btn--borderless"
+                    v-if="key_result && key_result.auto"
+                    @click="triggerScheduledFunction"
+                  >
+                    <i v-if="!loading" class="fa fa-fw fa-sync"></i>
+                    <i v-else class="fa fa-spinner fa-pulse fa-fw"></i>
+                    Hent data nå
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <section v-if="hasEditPermissions && key_result && !key_result.auto" class="section">
               <h2 class="title-2">Legg til nytt målepunkt</h2>
 
               <form @submit.prevent="addValue" class="form-group">
@@ -78,7 +98,9 @@
             </section>
 
             <section class="section" v-if="key_result">
-              <h2 class="title-2">Registrerte målepunkter</h2>
+              <h2 class="title-2">
+                Registrerte målepunkter
+              </h2>
 
               <div v-if="!progressions">Det er ingen registrerte målepunkter</div>
 
@@ -154,6 +176,7 @@ import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
 import keyResHandler from '@/db/keyresultHandler';
 import 'flatpickr/dist/flatpickr.css';
+import { functions } from '@/config/firebaseConfig';
 
 marked.setOptions({
   smartypants: true,
@@ -170,6 +193,7 @@ export default {
     date: null,
     objective: null,
     dirty: false,
+    loading: false,
     editNotes: false,
     unsubscribe: {
       doc: null,
@@ -327,6 +351,17 @@ export default {
       keyResHandler.update(this.key_result.ref, this.key_result);
       this.dirty = false;
       this.editNotes = false;
+    },
+
+    async triggerScheduledFunction() {
+      this.loading = true;
+
+      const myCall = await functions.httpsCallable('triggerScheduledFunction');
+      await myCall(this.key_result.ref.path).catch(err => {
+        throw new Error(err);
+      });
+
+      this.loading = false;
     },
 
     async watchData() {
