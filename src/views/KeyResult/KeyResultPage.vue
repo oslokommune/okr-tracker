@@ -133,7 +133,7 @@
             </section>
           </div>
 
-          <div class="column--right">
+          <div class="column--right" v-if="hasEditPermissions && key_result">
             <h3 class="title-3">
               <i class="fa fa-pen"></i>
               Notater
