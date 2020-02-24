@@ -18,10 +18,34 @@ export function initSvg(svg) {
 
   this.xAxis = this.canvas.append('g').classed('axis x', true);
 
+  this.valueArea = this.canvas.append('path').call(styleArea);
+
   this.yAxis = this.canvas.append('g').classed('axis y', true);
   this.valueLine = this.canvas.append('path').call(styleValueLine);
   this.target = this.canvas.append('line').classed('target', true);
-  this.today = this.canvas.append('today').classed('today', true);
+  this.today = this.canvas
+    .append('line')
+    .classed('today', true)
+    .attr('stroke', 'black')
+    .attr('stroke-opacity', 0.2);
+
+  const gradient = this.svg
+    .append('defs')
+    .append('linearGradient')
+    .attr('id', 'areaGradient')
+    .attr('x1', '0%')
+    .attr('x2', '0%')
+    .attr('y1', '0%')
+    .attr('y2', '100%');
+
+  gradient
+    .append('stop')
+    .attr('offset', '0%')
+    .attr('style', `stop-color:${colors.purple};stop-opacity:1;`);
+  gradient
+    .append('stop')
+    .attr('offset', '100%')
+    .attr('style', `stop-color:${colors.purple};stop-opacity:0;`);
 }
 
 function styleValueLine(el) {
@@ -29,6 +53,12 @@ function styleValueLine(el) {
     .attr('fill', 'none')
     .attr('stroke', colors.purple)
     .attr('stroke-width', 3);
+}
+
+function styleArea(el) {
+  el.classed('area', true)
+    .attr('fill', 'url(#areaGradient)')
+    .attr('fill-opacity', 0.4);
 }
 
 export function resize() {
