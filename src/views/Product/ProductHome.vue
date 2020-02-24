@@ -57,6 +57,10 @@ export default {
   computed: {
     ...mapState(['user', 'product', 'activeQuarter']),
 
+    slug() {
+      return this.$route.params.slug;
+    },
+
     hasEditPermissions() {
       if (!this.user) return;
       if (this.user.admin) return true;
@@ -67,6 +71,10 @@ export default {
   },
 
   watch: {
+    slug(slug) {
+      this.watchProduct(slug);
+    },
+
     async product(prod) {
       if (prod.archived) {
         Toast.fourOhFour();
@@ -83,7 +91,7 @@ export default {
   },
 
   created() {
-    this.watchProduct(this.$route.params.slug);
+    this.watchProduct(this.slug);
   },
 
   methods: {
