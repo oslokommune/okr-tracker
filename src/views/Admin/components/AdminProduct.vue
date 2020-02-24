@@ -24,9 +24,9 @@
         <img v-if="product.photoURL" :src="product.photoURL" />
 
         <image-uploader
-          :max-width="250"
-          :max-height="250"
-          :quality="0.6"
+          :max-width="450"
+          :max-height="450"
+          :quality="0.9"
           :auto-rotate="true"
           output-format="blob"
           accept="image/*"

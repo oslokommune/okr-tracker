@@ -7,9 +7,9 @@
           <span class="form-label">Endre bilde</span>
           <image-uploader
             class="image-uploader"
-            :max-width="250"
-            :max-height="250"
-            :quality="0.6"
+            :max-width="450"
+            :max-height="450"
+            :quality="0.9"
             :auto-rotate="true"
             output-format="blob"
             accept="image/*"
