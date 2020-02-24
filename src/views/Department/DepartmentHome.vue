@@ -53,6 +53,10 @@ export default {
   computed: {
     ...mapState(['user', 'activeQuarter', 'departmentProducts', 'department']),
 
+    slug() {
+      return this.$route.params.slug;
+    },
+
     hasEditPermissions() {
       if (!this.user) return;
       return this.user.admin;
@@ -64,10 +68,14 @@ export default {
       if (!this.department) return;
       this.getObjectives();
     },
+
+    slug(slug) {
+      this.watchDepartment(slug);
+    },
   },
 
   created() {
-    this.watchDepartment(this.$route.params.slug);
+    this.watchDepartment(this.slug);
   },
 
   methods: {
