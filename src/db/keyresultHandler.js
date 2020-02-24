@@ -72,6 +72,11 @@ async function update(keyresRef, data) {
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
   if (!hasEditPermissions) throw errorHandler('update_keyres_error', new Error('Insufficient permissions'));
 
+  data.auto = data.auto ? data.auto : false;
+  data.sheetId = data.sheetId ? data.sheetId : false;
+  data.sheetCell = data.sheetCell ? data.sheetCell : false;
+  data.sheetName = data.sheetName ? data.sheetName : false;
+
   return keyresRef
     .update(data)
     .then(() => {
