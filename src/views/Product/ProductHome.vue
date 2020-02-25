@@ -14,6 +14,8 @@
         ></document-sidebar>
 
         <main class="content--main content--padding">
+          <callout-upload-product-image></callout-upload-product-image>
+
           <document-summary :document="product" :team="team" type="product"></document-summary>
 
           <hr />
@@ -35,6 +37,7 @@ import DocumentSummary from '@/components/DocumentSummary.vue';
 import ObjectivesList from '@/components/ObjectivesList.vue';
 import DocumentSidebar from '@/components/DocumentSidebar.vue';
 import TheSubNav from '@/components/TheSubNav.vue';
+import CalloutUploadProductImage from '@/components/Callouts/CalloutUploadProductImage.vue';
 
 import * as Toast from '@/util/toasts';
 
@@ -52,6 +55,7 @@ export default {
     DocumentSummary,
     ObjectivesList,
     TheSubNav,
+    CalloutUploadProductImage,
   },
 
   computed: {
