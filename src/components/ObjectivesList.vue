@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import TheObjective from '@/components/Objective/TheObjective.vue';
 import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
+import slugify from '@/util/slugify';
 
 export default {
   name: 'ObjectivesList',
@@ -47,11 +47,13 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeQuarter']),
+    selectedPeriod() {
+      return this.$route.query.period;
+    },
   },
 
   watch: {
-    activeQuarter() {
+    selectedPeriod() {
       if (!this.document) return;
       if (this.unsubscribe) this.unsubscribe();
 
@@ -77,15 +79,26 @@ export default {
   },
 
   methods: {
-    getObjectives() {
+    async getObjectives() {
       if (!this.document) return;
-
       if (this.unsubscribe) this.unsubscribe();
+
+      const period = await this.document.ref
+        .collection('periods')
+        .get()
+        .then(snapshot => snapshot.docs)
+        .then(docs => docs.map(serializeDocument))
+        .then(docs => docs.find(p => slugify(p.name) === this.selectedPeriod));
+
+      if (!period) {
+        this.objectives = [];
+        return;
+      }
 
       this.unsubscribe = this.document.ref
         .collection('objectives')
         .where('archived', '==', false)
-        .where('quarter', '==', this.activeQuarter.name)
+        .where('period', '==', period.ref)
         .onSnapshot(snapshot => {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
