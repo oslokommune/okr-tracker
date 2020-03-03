@@ -69,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'quarters']),
+    ...mapState(['user', 'activePeriod']),
 
     keyResult() {
       return this.keyResults[this.index];
@@ -124,8 +124,12 @@ export default {
       this.unsubscribeObjectives = this.document.ref
         .collection('objectives')
         .where('archived', '==', false)
-        .where('quarter', '==', this.quarters[0].name)
+        .where('period', '==', this.activePeriod.ref)
         .onSnapshot(snapshot => {
+          if (snapshot.empty) {
+            this.objectives = [];
+            return;
+          }
           this.objectives = snapshot.docs.map(serializeDocument);
 
           this.getKeyResults();
