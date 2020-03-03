@@ -38,6 +38,7 @@ import ObjectivesList from '@/components/ObjectivesList.vue';
 import DocumentSidebar from '@/components/DocumentSidebar.vue';
 import TheSubNav from '@/components/TheSubNav.vue';
 import CalloutUploadProductImage from '@/components/Callouts/CalloutUploadProductImage.vue';
+import slugify from '@/util/slugify';
 
 import * as Toast from '@/util/toasts';
 
@@ -48,6 +49,14 @@ export default {
     keyResults: [],
     team: [],
   }),
+
+  props: {
+    period: {
+      type: String,
+      required: false,
+      default: () => '',
+    },
+  },
 
   components: {
     DocumentSidebar,
@@ -80,6 +89,11 @@ export default {
     },
 
     async product(prod) {
+      if (!this.period) {
+        const firstPeriod = Object.keys(prod.progressions)[0];
+        this.$router.push({ query: { period: slugify(firstPeriod) } });
+      }
+
       if (prod.archived) {
         Toast.fourOhFour();
         this.$router.push('/');

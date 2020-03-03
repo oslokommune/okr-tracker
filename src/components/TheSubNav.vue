@@ -2,14 +2,15 @@
   <nav class="sub-nav">
     <div class="container container--sidebar">
       <div class="content--main">
-        <span
+        <router-link
+          exact
+          :to="{ query: { period: slugify(quarter.name) } }"
           v-for="quarter in quarters"
           :key="quarter.name"
           class="sub-nav__element"
-          :class="{ 'router-link-active': quarter.name === activeQuarter.name }"
-          @click="setQuarter(quarter)"
-          >{{ quarter.name }}</span
         >
+          {{ quarter.name }}
+        </router-link>
       </div>
     </div>
   </nav>
@@ -17,16 +18,18 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import slugify from '@/util/slugify';
 
 export default {
   name: 'SubNav',
 
   computed: {
-    ...mapState(['quarters', 'activeQuarter']),
+    ...mapState(['quarters']),
   },
 
   methods: {
     ...mapActions(['setQuarter']),
+    slugify,
   },
 };
 </script>

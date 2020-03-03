@@ -10,7 +10,7 @@
         </label>
 
         <label>
-          <span class="form-group">Slug</span>
+          <span class="form-label">Slug</span>
           <input type="text" v-model="department.slug" disabled />
         </label>
 

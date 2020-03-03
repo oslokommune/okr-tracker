@@ -35,8 +35,8 @@ export default class Pie {
   render(obj, quarter) {
     if (!obj || !quarter) return;
 
-    const progress = obj && obj.progressions && obj.progressions[quarter.name] ? obj.progressions[quarter.name] : 0;
-    const time = getTimeProgression(quarter.name);
+    const progress = obj && obj.progressions && obj.progressions[quarter] ? obj.progressions[quarter] : 0;
+    const time = getTimeProgression(quarter);
 
     // Set up the data for the inner and outer arcs
     const innerArcs = this.pie([progress, 1 - progress]);

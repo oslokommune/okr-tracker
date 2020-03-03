@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Pie from '@/util/piechart';
 
 export default {
@@ -26,23 +25,26 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeQuarter']),
+    period() {
+      if (!this.$route.query.period) return;
+      return this.$route.query.period.replace('-', ' ').toUpperCase();
+    },
   },
 
   mounted() {
     this.pie = new Pie(this.$refs.svg, this.darkmode);
     if (!this.document) return;
-    if (!this.activeQuarter) return;
+    if (!this.period) return;
 
-    this.pie.render(this.document, this.activeQuarter);
+    this.pie.render(this.document, this.period);
   },
 
   watch: {
     document(document) {
-      if (!this.activeQuarter) return;
-      this.pie.render(document, this.activeQuarter);
+      if (!this.period) return;
+      this.pie.render(document, this.period);
     },
-    activeQuarter(quarter) {
+    period(quarter) {
       if (!quarter) return;
       this.pie.render(this.document, quarter);
     },
