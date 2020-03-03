@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 
 export default {
   name: 'ProgressSimple',
@@ -24,7 +24,7 @@ export default {
     const currentPeriodRef = await this.document.ref
       .collection('periods')
       .get()
-      .then(snapshot => snapshot.docs.map(serializeDocument))
+      .then(serializeList)
       .then(docs => docs.filter(doc => doc.startDate.toDate() < now && doc.endDate.toDate() > now))
       .then(docs => (docs.length ? docs[0].ref : false));
 

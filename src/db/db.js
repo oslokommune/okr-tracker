@@ -90,6 +90,10 @@ export function serializeDocument(doc) {
   };
 }
 
+export function serializeList(snapshot) {
+  return snapshot.docs.map(serializeDocument);
+}
+
 /**
  * Checks whether the signed in user is a team member of a product.
  * @param {String or FirebaseRef} slugOrRef - May be either a slug (string) or a Firestore reference
@@ -258,7 +262,8 @@ export async function findUser(slug) {
   return userRef
     .where('slug', '==', slug)
     .get()
-    .then(d => d.docs.map(serializeDocument)[0])
+    .then(serializeList)
+    .then(list => list.docs.map(serializeDocument)[0])
     .catch(err => {
       errorHandler('find_user_error', err);
     });
@@ -277,7 +282,7 @@ export async function userProductsListener(user) {
     .collectionGroup('products')
     .where('team', 'array-contains', userRef)
     .get()
-    .then(d => d.docs.map(serializeDocument))
+    .then(serializeList)
     .catch(err => {
       errorHandler('user_products_listener_error', err);
     });
@@ -291,7 +296,7 @@ export async function getAllDepartments() {
   return db
     .collectionGroup('departments')
     .get()
-    .then(d => d.docs.map(serializeDocument))
+    .then(serializeList)
     .catch(err => {
       errorHandler('get_all_department_error', err);
     });
@@ -318,7 +323,7 @@ export async function getAuditFromUser(userId) {
     .limit(10)
     .get()
     .then(snapshot => {
-      return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
+      return serializeList(snapshot).filter(d => eventTypes.includes(d.event));
     })
     .catch(err => {
       errorHandler('audit_specific_user_error', err);

@@ -38,9 +38,9 @@ export default {
   },
 
   watch: {
-    activePeriod(quarter) {
-      if (!quarter) return;
-      this.pie.render(this.activePeriod);
+    activePeriod(period) {
+      if (!period) return;
+      this.pie.render(period);
     },
   },
 };

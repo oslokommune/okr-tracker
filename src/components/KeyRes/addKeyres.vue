@@ -84,7 +84,7 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 import Keyresult from '@/db/keyresultHandler';
 
 export default {
@@ -163,7 +163,7 @@ export default {
       .where('quarter', '==', this.selectedQuarterName)
       .where('archived', '==', false)
       .onSnapshot(snapshot => {
-        this.objectives = snapshot.docs.map(serializeDocument);
+        this.objectives = serializeList(snapshot);
       });
   },
 

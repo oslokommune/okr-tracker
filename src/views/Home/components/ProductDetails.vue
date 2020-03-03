@@ -12,7 +12,7 @@
 
 <script>
 import { scaleLinear } from 'd3';
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 
 export default {
   data: () => ({
@@ -89,7 +89,7 @@ export default {
     this.currentPeriod = await this.product.ref
       .collection('periods')
       .get()
-      .then(snapshot => snapshot.docs.map(serializeDocument))
+      .then(serializeList)
       .then(docs => docs.filter(doc => doc.startDate.toDate() < now && doc.endDate.toDate() > now))
       .then(docs => (docs && docs.length ? docs[0] : false));
   },

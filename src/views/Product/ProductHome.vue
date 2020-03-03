@@ -29,7 +29,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import { serializeDocument } from '@/db/db';
+import { serializeDocument, serializeList } from '@/db/db';
 
 import PageHeader from '@/components/PageHeader.vue';
 import DocumentSummary from '@/components/DocumentSummary.vue';
@@ -129,7 +129,7 @@ export default {
       const periods = await this.product.ref
         .collection('periods')
         .get()
-        .then(snapshot => snapshot.docs.map(serializeDocument))
+        .then(serializeList)
         .then(docs => docs.filter(doc => doc.startDate.toDate() < new Date()))
         .then(docs =>
           docs.sort((a, b) => {

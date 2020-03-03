@@ -102,7 +102,7 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument } from '@/db/db';
+import { serializeDocument, serializeList } from '@/db/db';
 import UpdateKeyres from '@/components/KeyRes/editKeyres.vue';
 import EditObjective from '@/components/Objective/editObjective.vue';
 import EditPeriod from '@/components/Period/editPeriod.vue';
@@ -162,11 +162,11 @@ export default {
 
   async mounted() {
     this.docref.collection('periods').onSnapshot(snapshot => {
-      this.periods = snapshot.docs.map(serializeDocument);
+      this.periods = serializeList(snapshot);
     });
 
+    // TODO: Handle direct access to key result when params from $route are sent
     // const { keyres, objective } = this.$route.params;
-
     // if (keyres && objective) {
     //   const quarter = this.quarters.find(q => q.name === objective.quarter);
     //   this.selectedPeriod = quarter;
@@ -203,7 +203,7 @@ export default {
         .collection('keyResults')
         .where('archived', '==', false)
         .onSnapshot(async snapshot => {
-          this.keyResults = await snapshot.docs.map(serializeDocument);
+          this.keyResults = await serializeList(snapshot);
         });
     },
 
@@ -219,7 +219,7 @@ export default {
         .where('archived', '==', false)
         .where('period', '==', period.ref)
         .onSnapshot(snapshot => {
-          this.objectives = snapshot.docs.map(serializeDocument);
+          this.objectives = serializeList(snapshot);
         });
     },
 

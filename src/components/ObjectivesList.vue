@@ -24,7 +24,7 @@
 <script>
 import { mapState } from 'vuex';
 import TheObjective from '@/components/Objective/TheObjective.vue';
-import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
+import { serializeList, isTeamMemberOfProduct } from '@/db/db';
 
 export default {
   name: 'ObjectivesList',
@@ -88,7 +88,7 @@ export default {
         .where('archived', '==', false)
         .where('period', '==', this.activePeriod.ref)
         .onSnapshot(snapshot => {
-          this.objectives = snapshot.docs.map(serializeDocument);
+          this.objectives = serializeList(snapshot);
         });
     },
   },

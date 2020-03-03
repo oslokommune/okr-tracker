@@ -1,6 +1,6 @@
 import { startOfMonth, endOfMonth } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 
 /**
  * This function prepares the database for changing static 'quarters'
@@ -46,8 +46,7 @@ function getDepartments() {
   return db
     .collectionGroup('departments')
     .get()
-    .then(d => d.docs)
-    .then(d => d.map(serializeDocument));
+    .then(serializeList);
 }
 
 /**
@@ -58,8 +57,7 @@ function getProducts() {
   return db
     .collectionGroup('products')
     .get()
-    .then(d => d.docs)
-    .then(d => d.map(serializeDocument));
+    .then(serializeList);
 }
 
 /**
@@ -154,7 +152,7 @@ async function getObjectives(document) {
   return document.ref
     .collection('objectives')
     .get()
-    .then(snapshot => snapshot.docs.map(serializeDocument));
+    .then(serializeList);
 }
 
 /**
@@ -166,5 +164,5 @@ async function getPeriods(document) {
   return document.ref
     .collection('periods')
     .get()
-    .then(snapshot => snapshot.docs.map(serializeDocument));
+    .then(serializeList);
 }

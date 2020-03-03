@@ -170,7 +170,7 @@ import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
 import marked from 'marked';
 import { sanitize } from 'dompurify';
-import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
+import { serializeDocument, serializeList, isTeamMemberOfProduct } from '@/db/db';
 import PageHeader from '@/components/PageHeader.vue';
 import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
@@ -361,7 +361,7 @@ export default {
 
       this.unsubscribe.collection = this.doc.collection('progress').onSnapshot(snapshot => {
         if (!snapshot.docs.length) return;
-        this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
+        this.progressions = serializeList(snapshot).sort((a, b) => b.date - a.date);
       });
     },
   },

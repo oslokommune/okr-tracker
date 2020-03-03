@@ -25,7 +25,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 import slugify from '@/util/slugify';
 
 import PageHeader from '@/components/PageHeader.vue';
@@ -96,7 +96,7 @@ export default {
       const periods = await this.department.ref
         .collection('periods')
         .get()
-        .then(snapshot => snapshot.docs.map(serializeDocument))
+        .then(serializeList)
         .then(docs => docs.filter(doc => doc.startDate.toDate() < new Date()))
         .then(docs =>
           docs.sort((a, b) => {

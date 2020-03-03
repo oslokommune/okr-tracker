@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { quarters } from '@/util/utils';
 import { serializeDocument, getNestedData } from '@/db/db';
 import icons from '@/config/icons';
 
@@ -173,7 +172,6 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters: quarters(),
     activePeriod: null,
     icons,
     showNewsfeed: false,
