@@ -61,7 +61,6 @@ export default {
   created() {
     this.SET_SHOW_NEWSFEED(false);
     this.watchData();
-    this.SET_QUARTER();
   },
 
   mounted() {
@@ -69,7 +68,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['SET_SHOW_NEWSFEED', 'SET_QUARTER']),
+    ...mapMutations(['SET_SHOW_NEWSFEED']),
     async watchData() {
       this.team = await this.getTeam();
       const currentQuarter = this.quarters[0];
