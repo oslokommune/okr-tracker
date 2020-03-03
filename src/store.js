@@ -155,11 +155,6 @@ export const mutations = {
     state.key_result = payload;
   },
 
-  SET_QUARTER(state, payload) {
-    payload = payload || state.quarters[0];
-    state.activeQuarter = payload;
-  },
-
   SET_ACTIVE_PERIOD(state, payload) {
     state.activePeriod = payload;
   },
@@ -179,7 +174,6 @@ export default new Vuex.Store({
     users: [],
     nest: [],
     quarters: quarters(),
-    activeQuarter: quarters()[0],
     activePeriod: null,
     icons,
     showNewsfeed: false,
