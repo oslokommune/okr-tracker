@@ -23,7 +23,7 @@
     <button class="btn" :disabled="!dirty" @click="update">
       Lagre endringer
     </button>
-    <!-- <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button> -->
+    <button class="btn btn--danger" @click="deletePeriod">Slett periode</button>
   </div>
 </template>
 
@@ -32,8 +32,8 @@ import { mapState } from 'vuex';
 import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
+import format from 'date-fns/format';
 import * as Toast from '@/util/toasts';
-import Audit from '@/db/audit';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {
@@ -73,7 +73,15 @@ export default {
     flatPickr,
   },
 
+  mounted() {
+    this.range = this.generateRange();
+  },
+
   watch: {
+    period() {
+      this.range = this.generateRange();
+    },
+
     range(range) {
       if (!range) return;
       const parts = this.range.split(' til ').map(d => new Date(d));
@@ -91,6 +99,12 @@ export default {
   methods: {
     update() {
       const { name } = this.period;
+
+      if (!this.range) {
+        Toast.show('Ugyldig dato');
+        return;
+      }
+
       const [startDate, endDate] = this.range.split(' til ').map(d => new Date(d));
 
       if (!startDate || !endDate) {
@@ -100,47 +114,49 @@ export default {
 
       if (!name.length) {
         Toast.show('Ugyldig navn');
-        return;
       }
 
       this.period.ref
         .update({ edited: new Date(), editedBy: this.user.ref, startDate, endDate, name })
         .then(() => {
           this.dirty = false;
-          // Audit.updateObjective(this.objective.ref, this.objective.ref.parent.parent);
           Toast.savedChanges();
         })
         .catch(error => {
           this.objective.edited = false;
-          throw new Error(error);
-          // this.$errorHandler('update_objective_error', error);
+          this.$errorHandler('update_period_error', error);
         });
     },
 
-    deleteObj(objective) {
-      this.loading = true;
-      this.objective.ref
-        .update({ archived: true, edited: new Date(), editedBy: this.user.ref })
-        .then(() => {
-          const { ref } = this.objectiveRef;
+    async deletePeriod() {
+      const hasLinkedObjectives = await this.period.ref.parent.parent
+        .collection('objectives')
+        .where('archived', '==', false)
+        .where('period', '==', this.period.ref)
+        .get()
+        .then(snapshot => !snapshot.empty);
 
-          Audit.archiveObjective(this.objective.ref, this.objective.ref.parent.parent);
-          Toast.deletedRegret({ name: objective.name, ref });
-          this.objective = null;
-          return true;
-        })
-        .then(() => {
-          this.loading = false;
-        })
-        .catch(err => {
-          this.$errorHandler('delete_objective_error', err);
-        });
+      if (hasLinkedObjectives) {
+        Toast.show('Kan ikke slette periode som har tilknyttet mål');
+        return;
+      }
+
+      this.period.ref.delete().then(() => {
+        this.$emit('deletedPeriod');
+      });
     },
 
     setSubmitInfo(submit, showInfo, info) {
       this.submit = submit;
       this.showInfo = showInfo;
       this.info = info;
+    },
+
+    generateRange() {
+      if (!this.period.startDate || !this.period.endDate) return;
+      const startDate = format(this.period.startDate.toDate(), 'yyyy-MM-dd');
+      const endDate = format(this.period.endDate.toDate(), 'yyyy-MM-dd');
+      return `${startDate} til ${endDate}`;
     },
   },
 };

@@ -11,13 +11,13 @@
         <div class="miller">
           <!-- Periods -->
           <div class="miller__col" :class="{ active: activeLevel === 'period' }">
-            <h3 class="miller__col__header">Kvartal</h3>
+            <h3 class="miller__col__header">Periode</h3>
             <div
               class="miller__col__item"
               v-for="period in periods"
               :key="period.name"
               @click="selectPeriod(period)"
-              :class="{ active: selectedPeriod === period }"
+              :class="{ active: selectedPeriod && selectedPeriod.id === period.id }"
             >
               {{ period.name }}
             </div>
@@ -87,7 +87,11 @@
               :objective-ref="selectedObjective"
             ></EditObjective>
 
-            <EditPeriod v-if="selectedPeriod && activeLevel === 'period'" :period="selectedPeriod"></EditPeriod>
+            <EditPeriod
+              v-if="selectedPeriod && activeLevel === 'period'"
+              :period="selectedPeriod"
+              @deletedPeriod="selectedPeriod = null"
+            ></EditPeriod>
           </main>
         </div>
       </div>
@@ -210,12 +214,10 @@ export default {
       this.keyResults = [];
       this.objectives = [];
 
-      console.log(period.name);
-
       this.docref
         .collection('objectives')
-        .where('quarter', '==', period.name)
         .where('archived', '==', false)
+        .where('period', '==', period.ref)
         .onSnapshot(snapshot => {
           this.objectives = snapshot.docs.map(serializeDocument);
         });
@@ -224,7 +226,8 @@ export default {
     async addObjective() {
       const objectiveCount = await this.docref
         .collection('objectives')
-        .where('period', '==', this.selectedPeriod.name)
+        .where('archived', '==', false)
+        .where('period', '==', this.selectedPeriod.ref)
         .get()
         .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
 
@@ -238,7 +241,7 @@ export default {
         .add({
           createdBy: this.user.ref,
           created: new Date(),
-          quarter: this.selectedPeriod.name,
+          period: this.selectedPeriod.ref,
           archived: false,
           icon: 'trophy',
           name: 'Nytt mål',
@@ -258,16 +261,25 @@ export default {
     },
 
     async addPeriod() {
-      this.selectedPeriod = await this.docref.collection('periods').add({
-        archived: false,
-        created: new Date(),
-        createdBy: this.user.id,
-        name: 'Ny periode',
-        startDate: null,
-        endDate: null,
-      });
-      this.selectObjective = null;
-      this.selectKeyres = null;
+      const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      this.docref
+        .collection('periods')
+        .add({
+          archived: false,
+          created: new Date(),
+          createdBy: this.user.id,
+          name: 'Ny periode',
+          startDate: today,
+          endDate: tomorrow,
+        })
+        .then(async response => {
+          this.selectedPeriod = await response.get().then(serializeDocument);
+          this.selectedObjective = null;
+          this.selectedKeyres = null;
+          console.log(this.selectedPeriod);
+        });
     },
 
     async addKeyres() {
