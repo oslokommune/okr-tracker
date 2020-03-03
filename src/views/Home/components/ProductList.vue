@@ -36,7 +36,7 @@
                         Sist oppdatert {{ getEdited(product) }}
                       </span>
                       <div class="progression">
-                        <ProgressSimple :document="product"></ProgressSimple>
+                        <SimpleProgress :document="product"></SimpleProgress>
                       </div>
                       <i class="fa fa-arrow-right"></i>
                     </h3>
@@ -59,7 +59,7 @@ import { mapState } from 'vuex';
 import PageHeader from '@/components/PageHeader.vue';
 import { timeFromNow } from '@/util/utils';
 import ProductDetails from '@/views/Home/components/ProductDetails.vue';
-import ProgressSimple from '@/views/Home/components/ProgressSimple.vue';
+import SimpleProgress from '@/views/Home/components/SimpleProgress.vue';
 
 export default {
   data: () => ({
@@ -72,7 +72,7 @@ export default {
   components: {
     PageHeader,
     ProductDetails,
-    ProgressSimple,
+    SimpleProgress,
   },
   methods: {
     getEdited(doc) {
