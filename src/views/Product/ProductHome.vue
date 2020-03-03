@@ -2,7 +2,7 @@
   <div>
     <page-header :data="product || {}"></page-header>
 
-    <the-sub-nav />
+    <the-sub-nav v-if="product" :document="product" />
 
     <div class="content" v-if="product">
       <div class="container container--sidebar">

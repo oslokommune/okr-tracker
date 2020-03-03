@@ -4,12 +4,12 @@
       <div class="content--main">
         <router-link
           exact
-          :to="{ query: { period: slugify(quarter.name) } }"
-          v-for="quarter in quarters"
-          :key="quarter.name"
+          :to="{ query: { period: slugify(period.name) } }"
+          v-for="period in periods"
+          :key="period.name"
           class="sub-nav__element"
         >
-          {{ quarter.name }}
+          {{ period.name }}
         </router-link>
       </div>
     </div>
@@ -17,19 +17,41 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import slugify from '@/util/slugify';
+import { serializeDocument } from '@/db/db';
 
 export default {
   name: 'SubNav',
 
-  computed: {
-    ...mapState(['quarters']),
+  data: () => ({
+    periods: [],
+  }),
+
+  props: {
+    document: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  created() {
+    this.getPeriods();
+  },
+
+  watch: {
+    document() {
+      this.getPeriods();
+    },
   },
 
   methods: {
-    ...mapActions(['setQuarter']),
     slugify,
+    getPeriods() {
+      if (!this.document) return;
+      this.document.ref.collection('periods').onSnapshot(snapshot => {
+        this.periods = snapshot.docs.map(serializeDocument);
+      });
+    },
   },
 };
 </script>
