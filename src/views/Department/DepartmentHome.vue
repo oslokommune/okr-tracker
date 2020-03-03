@@ -7,7 +7,6 @@
     <div class="content" v-if="department">
       <div class="container container--sidebar">
         <document-sidebar
-          :active-quarter="activeQuarter"
           :document="department"
           :has-edit-permissions="hasEditPermissions"
           type="department"
@@ -24,9 +23,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { serializeDocument } from '@/db/db';
+import slugify from '@/util/slugify';
 
 import PageHeader from '@/components/PageHeader.vue';
 import DocumentSidebar from '@/components/DocumentSidebar.vue';
@@ -38,7 +38,6 @@ export default {
   name: 'DepartmentHome',
 
   data: () => ({
-    objectives: [],
     team: [],
   }),
 
@@ -51,10 +50,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'activeQuarter', 'departmentProducts', 'department']),
+    ...mapState(['user', 'departmentProducts', 'department']),
 
     slug() {
       return this.$route.params.slug;
+    },
+
+    queryParamPeriod() {
+      return this.$route.query.period;
     },
 
     hasEditPermissions() {
@@ -64,30 +67,55 @@ export default {
   },
 
   watch: {
-    activeQuarter() {
-      if (!this.department) return;
-      this.getObjectives();
-    },
-
     slug(slug) {
       this.watchDepartment(slug);
+    },
+
+    department() {
+      this.setPeriod();
+    },
+
+    queryParamPeriod() {
+      this.setPeriod();
     },
   },
 
   created() {
+    if (!this.slug) return;
     this.watchDepartment(this.slug);
+    this.setPeriod();
   },
 
   methods: {
     ...mapActions(['watchDepartment']),
-    getObjectives() {
-      this.department.ref
-        .collection('objectives')
-        .where('archived', '==', false)
-        .where('quarter', '==', this.activeQuarter.name)
-        .onSnapshot(snapshot => {
-          this.objectives = snapshot.docs.map(serializeDocument);
-        });
+    ...mapMutations(['SET_ACTIVE_PERIOD']),
+
+    async setPeriod() {
+      if (!this.department) return;
+
+      const periods = await this.department.ref
+        .collection('periods')
+        .get()
+        .then(snapshot => snapshot.docs.map(serializeDocument))
+        .then(docs => docs.filter(doc => doc.startDate.toDate() < new Date()))
+        .then(docs =>
+          docs.sort((a, b) => {
+            if (a.startDate.seconds < b.startDate.seconds) return 1;
+            if (a.startDate.seconds > b.startDate.seconds) return -1;
+            return 0;
+          })
+        );
+
+      let activePeriod;
+
+      if (!this.queryParamPeriod) {
+        const [firstPeriod] = periods;
+        activePeriod = firstPeriod;
+      } else {
+        activePeriod = periods.find(period => slugify(period.name) === this.queryParamPeriod);
+      }
+
+      this.SET_ACTIVE_PERIOD(activePeriod);
     },
   },
 

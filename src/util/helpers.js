@@ -13,12 +13,12 @@ export function getDateSpanFromQuarter(quarter) {
   return { startDate, endDate };
 }
 
-export function getTimeProgression(quarter) {
-  if (!quarter) return;
-  const { startDate, endDate } = getDateSpanFromQuarter(quarter);
+export function getTimeProgression(period) {
+  if (!period) return;
+  const { startDate, endDate } = period;
 
   const timeScale = scaleTime()
-    .domain([startDate, endDate])
+    .domain([startDate.toDate(), endDate.toDate()])
     .clamp(true);
 
   return timeScale(new Date());

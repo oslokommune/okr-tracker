@@ -9,7 +9,6 @@
         <document-sidebar
           :has-edit-permissions="hasEditPermissions"
           :document="product"
-          :active-quarter="activeQuarter"
           type="product"
         ></document-sidebar>
 
@@ -29,7 +28,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import { serializeDocument } from '@/db/db';
 
 import PageHeader from '@/components/PageHeader.vue';
@@ -68,10 +67,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'product', 'activeQuarter']),
+    ...mapState(['user', 'product']),
 
     slug() {
       return this.$route.params.slug;
+    },
+
+    queryParamPeriod() {
+      return this.$route.query.period;
     },
 
     hasEditPermissions() {
@@ -85,14 +88,16 @@ export default {
 
   watch: {
     slug(slug) {
+      if (!slug) return;
       this.watchProduct(slug);
     },
 
+    queryParamPeriod() {
+      this.setPeriod();
+    },
+
     async product(prod) {
-      if (!this.period) {
-        const firstPeriod = Object.keys(prod.progressions)[0];
-        this.$router.push({ query: { period: slugify(firstPeriod) } });
-      }
+      this.setPeriod();
 
       if (prod.archived) {
         Toast.fourOhFour();
@@ -109,11 +114,42 @@ export default {
   },
 
   created() {
+    if (!this.slug) return;
     this.watchProduct(this.slug);
+    this.setPeriod();
   },
 
   methods: {
     ...mapActions(['watchProduct']),
+    ...mapMutations(['SET_ACTIVE_PERIOD']),
+
+    async setPeriod() {
+      if (!this.product) return;
+
+      const periods = await this.product.ref
+        .collection('periods')
+        .get()
+        .then(snapshot => snapshot.docs.map(serializeDocument))
+        .then(docs => docs.filter(doc => doc.startDate.toDate() < new Date()))
+        .then(docs =>
+          docs.sort((a, b) => {
+            if (a.startDate.seconds < b.startDate.seconds) return 1;
+            if (a.startDate.seconds > b.startDate.seconds) return -1;
+            return 0;
+          })
+        );
+
+      let activePeriod;
+
+      if (!this.queryParamPeriod) {
+        const [firstPeriod] = periods;
+        activePeriod = firstPeriod;
+      } else {
+        activePeriod = periods.find(period => slugify(period.name) === this.queryParamPeriod);
+      }
+
+      this.SET_ACTIVE_PERIOD(activePeriod);
+    },
   },
 };
 </script>

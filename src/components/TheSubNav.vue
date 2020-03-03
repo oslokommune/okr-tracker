@@ -1,5 +1,5 @@
 <template>
-  <nav class="sub-nav">
+  <nav class="sub-nav" v-if="activePeriod">
     <div class="container container--sidebar">
       <div class="content--main">
         <router-link
@@ -8,6 +8,7 @@
           v-for="period in periods"
           :key="period.name"
           class="sub-nav__element"
+          :class="{ 'router-link-active': activePeriod.name === period.name }"
         >
           {{ period.name }}
         </router-link>
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import slugify from '@/util/slugify';
 import { serializeDocument } from '@/db/db';
 
@@ -34,6 +36,10 @@ export default {
     },
   },
 
+  computed: {
+    ...mapState(['activePeriod']),
+  },
+
   created() {
     this.getPeriods();
   },
@@ -49,7 +55,14 @@ export default {
     getPeriods() {
       if (!this.document) return;
       this.document.ref.collection('periods').onSnapshot(snapshot => {
-        this.periods = snapshot.docs.map(serializeDocument);
+        this.periods = snapshot.docs
+          .map(serializeDocument)
+          .filter(doc => doc.startDate.toDate() < new Date())
+          .sort((a, b) => {
+            if (a.startDate.seconds < b.startDate.seconds) return 1;
+            if (a.startDate.seconds > b.startDate.seconds) return -1;
+            return 0;
+          });
       });
     },
   },

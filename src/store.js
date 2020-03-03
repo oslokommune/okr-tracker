@@ -160,6 +160,10 @@ export const mutations = {
     state.activeQuarter = payload;
   },
 
+  SET_ACTIVE_PERIOD(state, payload) {
+    state.activePeriod = payload;
+  },
+
   SET_DEPARTMENTPRODUCTS(state, payload) {
     state.departmentProducts = payload;
   },
@@ -176,6 +180,7 @@ export default new Vuex.Store({
     nest: [],
     quarters: quarters(),
     activeQuarter: quarters()[0],
+    activePeriod: null,
     icons,
     showNewsfeed: false,
     key_result: null,
