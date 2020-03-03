@@ -9,17 +9,21 @@
 
       <div class="miller__container">
         <div class="miller">
-          <!-- Quarters -->
-          <div class="miller__col" :class="{ active: activeLevel === 'quarter' }">
+          <!-- Periods -->
+          <div class="miller__col" :class="{ active: activeLevel === 'period' }">
             <h3 class="miller__col__header">Kvartal</h3>
             <div
               class="miller__col__item"
-              v-for="quarter in quartersList"
-              :key="quarter.name"
-              @click="selectQuarter(quarter)"
-              :class="{ active: selectedQuarter === quarter }"
+              v-for="period in periods"
+              :key="period.name"
+              @click="selectPeriod(period)"
+              :class="{ active: selectedPeriod === period }"
             >
-              {{ quarter.name }}
+              {{ period.name }}
+            </div>
+
+            <div class="miller__col__item miller__col__add" @click="addPeriod" v-tooltip.bottom="`Legg til ny periode`">
+              + Legg til periode
             </div>
           </div>
 
@@ -36,7 +40,7 @@
               {{ objective.name }}
             </div>
             <div
-              v-if="selectedQuarter"
+              v-if="selectedPeriod"
               class="miller__col__item miller__col__add"
               @click="addObjective"
               v-tooltip.bottom="`Legg til et mål for valgt kvartal`"
@@ -60,7 +64,7 @@
               </div>
             </template>
             <div
-              v-if="selectedQuarter && selectedObjective"
+              v-if="selectedPeriod && selectedObjective"
               class="miller__col__item miller__col__add"
               @click="addKeyres"
               v-tooltip.bottom="`Legg til et nøkkelresultat for valgt mål`"
@@ -71,7 +75,7 @@
 
           <main
             class="miller__main"
-            v-tooltip.top="activeLevel === 'quarter' ? `Tomt? Velg et mål eller nøkkelresultat i listen` : ``"
+            v-tooltip.top="!activeLevel ? `Tomt? Velg et mål eller nøkkelresultat i listen` : ``"
           >
             <UpdateKeyres
               v-if="activeLevel === 'keyres'"
@@ -82,6 +86,8 @@
               v-if="selectedObjective && activeLevel === 'objective'"
               :objective-ref="selectedObjective"
             ></EditObjective>
+
+            <EditPeriod v-if="selectedPeriod && activeLevel === 'period'" :period="selectedPeriod"></EditPeriod>
           </main>
         </div>
       </div>
@@ -92,10 +98,10 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { getQuarter } from 'date-fns';
 import { serializeDocument } from '@/db/db';
 import UpdateKeyres from '@/components/KeyRes/editKeyres.vue';
 import EditObjective from '@/components/Objective/editObjective.vue';
+import EditPeriod from '@/components/Period/editPeriod.vue';
 import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import Keyresult from '@/db/keyresultHandler';
@@ -106,36 +112,27 @@ export default {
   components: {
     UpdateKeyres,
     EditObjective,
+    EditPeriod,
   },
 
   data: () => ({
     modalIsOpen: false,
     product: null,
-    selectedQuarter: null,
+    selectedPeriod: null,
     selectedObjective: null,
     selectedKeyres: null,
     objectives: null,
     keyResults: [],
+    periods: [],
   }),
 
   computed: {
-    ...mapState(['quarters', 'user']),
+    ...mapState(['user']),
 
-    // Add next quarter to this list, allowing users to set future objectives
-    quartersList() {
-      const nextStartDate = this.quarters[0].toDate;
-      const quarter = getQuarter(nextStartDate);
-      const year = nextStartDate.getFullYear();
-      const nextQuarter = {
-        name: `Q${quarter} ${year}`,
-      };
-
-      return [nextQuarter, ...this.quarters];
-    },
     activeLevel() {
       if (this.selectedKeyres) return 'keyres';
       if (this.selectedObjective) return 'objective';
-      if (this.selectedQuarter) return 'quarter';
+      if (this.selectedPeriod) return 'period';
       return false;
     },
   },
@@ -160,19 +157,23 @@ export default {
   },
 
   async mounted() {
-    const { keyres, objective } = this.$route.params;
+    this.docref.collection('periods').onSnapshot(snapshot => {
+      this.periods = snapshot.docs.map(serializeDocument);
+    });
 
-    if (keyres && objective) {
-      const quarter = this.quarters.find(q => q.name === objective.quarter);
-      this.selectedQuarter = quarter;
-      this.selectQuarter(quarter);
-      this.selectObjective(objective);
-      this.selectKeyres(keyres);
-    } else {
-      const [firstQuarter] = this.quarters;
-      this.selectedQuarter = firstQuarter;
-      this.selectQuarter(this.selectedQuarter);
-    }
+    // const { keyres, objective } = this.$route.params;
+
+    // if (keyres && objective) {
+    //   const quarter = this.quarters.find(q => q.name === objective.quarter);
+    //   this.selectedPeriod = quarter;
+    //   this.selectQuarter(quarter);
+    //   this.selectObjective(objective);
+    //   this.selectKeyres(keyres);
+    // } else {
+    //   const [firstQuarter] = this.quarters;
+    //   this.selectedPeriod = firstQuarter;
+    //   this.selectQuarter(this.selectedPeriod);
+    // }
   },
 
   methods: {
@@ -202,16 +203,18 @@ export default {
         });
     },
 
-    selectQuarter(quarter) {
-      this.selectedQuarter = quarter;
+    selectPeriod(period) {
+      this.selectedPeriod = period;
       this.selectedObjective = null;
       this.selectedKeyres = null;
       this.keyResults = [];
       this.objectives = [];
 
+      console.log(period.name);
+
       this.docref
         .collection('objectives')
-        .where('quarter', '==', quarter.name)
+        .where('quarter', '==', period.name)
         .where('archived', '==', false)
         .onSnapshot(snapshot => {
           this.objectives = snapshot.docs.map(serializeDocument);
@@ -221,7 +224,7 @@ export default {
     async addObjective() {
       const objectiveCount = await this.docref
         .collection('objectives')
-        .where('quarter', '==', this.selectedQuarter.name)
+        .where('period', '==', this.selectedPeriod.name)
         .get()
         .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
 
@@ -235,7 +238,7 @@ export default {
         .add({
           createdBy: this.user.ref,
           created: new Date(),
-          quarter: this.selectedQuarter.name,
+          quarter: this.selectedPeriod.name,
           archived: false,
           icon: 'trophy',
           name: 'Nytt mål',
@@ -247,11 +250,24 @@ export default {
           this.keyResults = [];
 
           Audit.createObjective(response, response.parent.parent);
-          return Toast.addedObjective(this.selectedQuarter.name);
+          return Toast.addedObjective(this.selectedPeriod.name);
         })
         .catch(err => {
           this.$errorHandler('add_objective', this.user.email, this.$route.path, err);
         });
+    },
+
+    async addPeriod() {
+      this.selectedPeriod = await this.docref.collection('periods').add({
+        archived: false,
+        created: new Date(),
+        createdBy: this.user.id,
+        name: 'Ny periode',
+        startDate: null,
+        endDate: null,
+      });
+      this.selectObjective = null;
+      this.selectKeyres = null;
     },
 
     async addKeyres() {
