@@ -165,19 +165,20 @@ export default {
       this.periods = serializeList(snapshot);
     });
 
-    // TODO: Handle direct access to key result when params from $route are sent
-    // const { keyres, objective } = this.$route.params;
-    // if (keyres && objective) {
-    //   const quarter = this.quarters.find(q => q.name === objective.quarter);
-    //   this.selectedPeriod = quarter;
-    //   this.selectQuarter(quarter);
-    //   this.selectObjective(objective);
-    //   this.selectKeyres(keyres);
-    // } else {
-    //   const [firstQuarter] = this.quarters;
-    //   this.selectedPeriod = firstQuarter;
-    //   this.selectQuarter(this.selectedPeriod);
-    // }
+    const { keyres, objective } = this.$route.params;
+    if (keyres && objective) {
+      this.selectedPeriod = objective.period;
+
+      this.objectives = await this.docref
+        .collection('objectives')
+        .where('archived', '==', false)
+        .where('period', '==', objective.period)
+        .get()
+        .then(serializeList);
+
+      await this.selectObjective(objective);
+      await this.selectKeyres(keyres);
+    }
   },
 
   methods: {
@@ -207,7 +208,7 @@ export default {
         });
     },
 
-    selectPeriod(period) {
+    async selectPeriod(period) {
       this.selectedPeriod = period;
       this.selectedObjective = null;
       this.selectedKeyres = null;
@@ -221,6 +222,13 @@ export default {
         .onSnapshot(snapshot => {
           this.objectives = serializeList(snapshot);
         });
+
+      this.objectives = await this.docref
+        .collection('objectives')
+        .where('archived', '==', false)
+        .where('period', '==', period.ref)
+        .get()
+        .then(serializeList);
     },
 
     async addObjective() {
