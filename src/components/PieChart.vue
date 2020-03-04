@@ -23,6 +23,10 @@ export default {
 
   computed: {
     ...mapState(['activePeriod']),
+
+    progress() {
+      return this.activePeriod.progression || 0;
+    },
   },
 
   mounted() {
