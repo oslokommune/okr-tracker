@@ -25,7 +25,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { serializeList } from '@/db/db';
+import { serializeList, serializeDocument } from '@/db/db';
 import slugify from '@/util/slugify';
 
 import PageHeader from '@/components/PageHeader.vue';
@@ -115,7 +115,10 @@ export default {
         activePeriod = periods.find(period => slugify(period.name) === this.queryParamPeriod);
       }
 
-      this.SET_ACTIVE_PERIOD(activePeriod);
+      activePeriod.ref.onSnapshot(snapshot => {
+        const period = serializeDocument(snapshot);
+        this.SET_ACTIVE_PERIOD(period);
+      });
     },
   },
 

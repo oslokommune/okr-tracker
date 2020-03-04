@@ -148,7 +148,10 @@ export default {
         activePeriod = periods.find(period => slugify(period.name) === this.queryParamPeriod);
       }
 
-      this.SET_ACTIVE_PERIOD(activePeriod);
+      activePeriod.ref.onSnapshot(snapshot => {
+        const period = serializeDocument(snapshot);
+        this.SET_ACTIVE_PERIOD(period);
+      });
     },
   },
 };
