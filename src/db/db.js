@@ -263,7 +263,7 @@ export async function findUser(slug) {
     .where('slug', '==', slug)
     .get()
     .then(serializeList)
-    .then(list => list.docs.map(serializeDocument)[0])
+    .then(list => list[0])
     .catch(err => {
       errorHandler('find_user_error', err);
     });
