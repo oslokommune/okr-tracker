@@ -112,10 +112,6 @@ export default {
       type: Object,
       required: true,
     },
-    selectedQuarterName: {
-      type: String,
-      required: true,
-    },
   },
 
   validations: {
@@ -137,7 +133,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'activePeriod']),
     newKeyRes() {
       return {
         archived: false,
@@ -158,10 +154,12 @@ export default {
   },
 
   mounted() {
+    if (!this.activePeriod) return;
+
     this.unsubscribe = this.productref
       .collection('objectives')
-      .where('quarter', '==', this.selectedQuarterName)
       .where('archived', '==', false)
+      .where('period', '==', this.activePeriod.ref)
       .onSnapshot(snapshot => {
         this.objectives = serializeList(snapshot);
       });
