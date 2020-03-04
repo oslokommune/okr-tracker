@@ -36,14 +36,35 @@ exports.updatedKeyResultProgression = functions
   .firestore.document(progressionsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, productId, objectiveId } = context.params;
-    const objectivePath = `orgs/${orgId}/departments/${departmentId}/products/${productId}/objectives/${objectiveId}`;
+    const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
+    const objectivePath = `${productPath}/objectives/${objectiveId}`;
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
     const edited = new Date();
     const editedBy = 'cloud-function';
 
-    return db.doc(objectivePath).update({ progression, edited, editedBy });
+    await db.doc(objectivePath).update({ progression, edited, editedBy });
+
+    const period = await db
+      .doc(objectivePath)
+      .get()
+      .then(snapshot => snapshot.data().period);
+
+    // Get the average progression for all objectives
+    // in the same period
+    const periodProgression = await db
+      .doc(productPath)
+      .collection('objectives')
+      .where('archived', '==', false)
+      .where('period', '==', period)
+      .get()
+      .then(snapshot => snapshot.docs.map(doc => doc.data().progression || 0))
+      .then(values => d3.mean(values));
+
+    await period.update({ progression: periodProgression });
+
+    return true;
   });
 
 exports.updatedDepartmentKeyResultProgression = functions
@@ -127,75 +148,6 @@ function getProgressionPercentage(keyres) {
     .domain([startValue, targetValue]) /* eslint-disable-line */
     .clamp(true);
   return scale(currentValue) || 0;
-}
-
-// Triggers when a product's objective is changed (i.e. progression)
-exports.updatedObjectiveProgression = functions
-  .region('europe-west2')
-  .firestore.document(objectivesPath)
-  .onWrite(async (change, context) => {
-    const { orgId, departmentId, productId } = context.params;
-    const productPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
-    const progressions = await getObjectiveProgressions(productPath);
-    const edited = new Date();
-    const editedBy = 'cloud-function';
-
-    await db.doc(productPath).update({ progressions, edited, editedBy });
-    return true;
-  });
-
-// Triggers when a department's objective is changed (i.e. progression)
-exports.updatedDepartmentObjectiveProgression = functions
-  .region('europe-west2')
-  .firestore.document(departmentObjectivesPath)
-  .onWrite(async (change, context) => {
-    const { orgId, departmentId } = context.params;
-    const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
-    const progressions = await getObjectiveProgressions(departmentPath);
-    const edited = new Date();
-    const editedBy = 'cloud-function';
-
-    await db.doc(departmentPath).update({ progressions, edited, editedBy });
-
-    return true;
-  });
-
-/**
- * Finds the progressions for each quarter for a department
- * or a product. Returns an object with the quarter names as keys.
- * @param {String} path - Path to product or deparment
- * @returns {Object} - Dictionary of progressions for each quarter
- */
-async function getObjectiveProgressions(path) {
-  const objectiveProgressions = await db
-    .doc(path)
-    .collection('objectives')
-    .where('archived', '==', false)
-    .get()
-    .then(collection => collection.docs.map(doc => doc.data()));
-
-  // Nest objectives by quarter
-  const progressionsList = d3
-    .nest()
-    .key(d => d.quarter)
-    .rollup(list => d3.mean(list.map(obj => obj.progression || 0)))
-    .entries(objectiveProgressions)
-    .map(d => {
-      const { key, value } = d;
-      const obj = {};
-      obj[key] = value || 0;
-      return obj;
-    });
-
-  // Convert array to object with quarter name as key
-  const progressions = {};
-  progressionsList.forEach(d => {
-    const key = Object.keys(d)[0];
-    if (!key || !d[key]) return;
-    progressions[key] = d[key];
-  });
-
-  return progressions;
 }
 
 /**
