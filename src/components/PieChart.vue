@@ -14,10 +14,6 @@ export default {
   }),
 
   props: {
-    document: {
-      type: Object,
-      required: true,
-    },
     darkmode: {
       type: Boolean,
       required: false,
@@ -31,8 +27,7 @@ export default {
 
   mounted() {
     this.pie = new Pie(this.$refs.svg, this.darkmode);
-    if (!this.document) return;
-    if (!this.period) return;
+    if (!this.activePeriod) return;
 
     this.pie.render(this.activePeriod);
   },

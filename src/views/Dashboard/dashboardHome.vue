@@ -13,8 +13,10 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel__header"><i class="fa fa-fw fa-chart-pie"></i>Progresjon {{ quarters[0].name }}</div>
-        <pie-chart :document="product" :darkmode="true"></pie-chart>
+        <div class="panel__header" v-if="currentPeriod">
+          <i class="fa fa-fw fa-chart-pie"></i>Progresjon {{ currentPeriod.name }}
+        </div>
+        <pie-chart v-if="product" :document="product" :darkmode="true"></pie-chart>
       </div>
     </aside>
 
@@ -31,7 +33,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { serializeDocument } from '@/db/db';
+import { serializeDocument, serializeList } from '@/db/db';
 import PieChart from '@/components/PieChart.vue';
 import DashboardObjective from '@/views/Dashboard/dashboardObjective.vue';
 
@@ -41,10 +43,11 @@ export default {
     objectives: [],
     team: [],
     events: [],
+    currentPeriod: null,
   }),
 
   computed: {
-    ...mapState(['product', 'quarters']),
+    ...mapState(['product']),
   },
 
   components: {
@@ -53,14 +56,18 @@ export default {
   },
 
   watch: {
-    product() {
-      this.watchData();
+    async product() {
+      this.team = await this.getTeam();
+      this.currentPeriod = await this.getCurrentPeriod();
+      await this.getObjectives();
     },
   },
 
-  created() {
+  async created() {
     this.SET_SHOW_NEWSFEED(false);
-    this.watchData();
+    this.team = await this.getTeam();
+    this.currentPeriod = await this.getCurrentPeriod();
+    await this.getObjectives();
   },
 
   mounted() {
@@ -69,14 +76,23 @@ export default {
 
   methods: {
     ...mapMutations(['SET_SHOW_NEWSFEED']),
-    async watchData() {
-      this.team = await this.getTeam();
-      const currentQuarter = this.quarters[0];
+    async getCurrentPeriod() {
+      const now = new Date();
+      return this.product.ref
+        .collection('periods')
+        .get()
+        .then(serializeList)
+        .then(periods => periods.filter(period => period.startDate.toDate() < now && period.endDate.toDate() > now))
+        .then(periods => (periods && periods.length ? periods[0] : false))
+        .catch(() => {
+          throw new Error('Unable to find current period');
+        });
+    },
 
-      // Get objectives
+    async getObjectives() {
       this.product.ref
         .collection('objectives')
-        .where('quarter', '==', currentQuarter.name)
+        .where('period', '==', this.currentPeriod.ref)
         .onSnapshot(snapshot => {
           this.objectives = snapshot.docs.map(serializeDocument).filter(d => !d.archived);
           this.$refs.dashboard.style.setProperty('--columns', this.objectives.length);
