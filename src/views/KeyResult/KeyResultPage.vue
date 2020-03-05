@@ -214,7 +214,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user', 'key_result', 'nest']),
+    ...mapState(['user', 'key_result']),
 
     markdown() {
       if (!this.key_result || !this.key_result.notes) return '';
