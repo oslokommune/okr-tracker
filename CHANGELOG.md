@@ -13,6 +13,7 @@ This change adds a `/periods` subcollection on the `departments` and `products` 
 ### Added
 
 - Show callout to team members when a product image is missing
+- Documentation for managing departments on Help page
 
 ### Changed
 
