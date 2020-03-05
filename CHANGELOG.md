@@ -23,10 +23,17 @@ This change adds a `/periods` subcollection on the `departments` and `products` 
   - Navigating between periods using URL query parameters
   - Adjustments in Cloud Functions to handle progression for dynamic periods
 - Refactoring some Firestore handling – introducing the `serializeList` function to make the codebase a bit more DRY.
+- Hide progress visualisation when department or product does not have any objectives
 
 ### Removed
 
 - Legacy dashboard component
+
+### Fixed
+
+- Fix issue where progress graphic did not always update when navigating between pages
+- Force the submenu to appear even when no periods are available
+- Minor layout adjustment on the page header (less white space below page name on desktop)
 
 ## [1.0.2] - 2020-02-25
 
