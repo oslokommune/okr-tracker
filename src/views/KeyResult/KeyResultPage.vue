@@ -282,7 +282,7 @@ export default {
         this.graph = new Linechart(this.$refs.graph);
       }
 
-      if (!this.period) return;
+      if (!this.period || !this.graph) return;
       this.graph.render(this.key_result, this.period, this.list);
     },
 
@@ -291,6 +291,8 @@ export default {
     },
 
     async key_result(obj) {
+      if (!this.graph) return;
+
       this.value = obj.currentValue || obj.startValue || 0;
 
       const objectiveRef = obj.ref.parent.parent;

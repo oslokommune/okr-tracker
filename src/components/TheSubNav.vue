@@ -1,6 +1,6 @@
 <template>
-  <nav class="sub-nav" v-if="activePeriod">
-    <div class="container container--sidebar">
+  <nav class="sub-nav">
+    <div class="container container--sidebar" v-if="activePeriod">
       <div class="content--main">
         <router-link
           exact
@@ -73,5 +73,9 @@ export default {
 .sub-nav__element {
   cursor: pointer;
   user-select: none;
+}
+
+.sub-nav {
+  min-height: 3em !important;
 }
 </style>

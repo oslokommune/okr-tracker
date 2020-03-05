@@ -33,10 +33,8 @@ export default class Pie {
    * Update the visualisation using the provided data
    */
   render(period) {
-    if (!period) return;
-
     const time = getTimeProgression(period);
-    const { progression } = period;
+    const { progression } = period || 0;
 
     // Set up the data for the inner and outer arcs
     const innerArcs = this.pie([progression, 1 - progression]);

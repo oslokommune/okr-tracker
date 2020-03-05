@@ -1,7 +1,8 @@
 import { scaleTime, scaleLinear, mean } from 'd3';
 
 export function getTimeProgression(period) {
-  if (!period) return;
+  if (!period) return -1;
+
   const { startDate, endDate } = period;
 
   const timeScale = scaleTime()
