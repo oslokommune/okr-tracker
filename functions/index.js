@@ -236,9 +236,9 @@ async function generateBackup() {
   const auth = new GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
   });
+
   const client = await auth.getClient();
-  const timestamp = new Date().toISOString().split('T')[0];
-  const path = `${timestamp}`;
+  const path = `${new Date().toISOString().split('T')[0]}`;
 
   const projectId = await auth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):exportDocuments`;
@@ -273,10 +273,9 @@ async function restoreBackup() {
   });
 
   const client = await auth.getClient();
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const timestamp = yesterday.toISOString().split('T')[0];
-  const path = `${timestamp}`;
+  const oneDayBefore = new Date();
+  oneDayBefore.setDate(oneDayBefore.getDate() - 1);
+  const path = `${oneDayBefore.toISOString().split('T')[0]}`;
 
   const projectId = await auth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):importDocuments`;
