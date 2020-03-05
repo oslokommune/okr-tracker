@@ -286,7 +286,6 @@ export default {
           this.selectedPeriod = await response.get().then(serializeDocument);
           this.selectedObjective = null;
           this.selectedKeyres = null;
-          console.log(this.selectedPeriod);
         });
     },
 
