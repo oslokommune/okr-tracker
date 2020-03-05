@@ -3,7 +3,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { google } = require('googleapis');
 const { GoogleAuth } = require('google-auth-library');
-const dateformat = require('dateformat');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -238,7 +237,7 @@ async function generateBackup() {
     scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
   });
   const client = await auth.getClient();
-  const timestamp = dateformat(Date.now(), 'yyyy-mm-dd');
+  const timestamp = new Date().toISOString().split('T')[0];
   const path = `${timestamp}`;
 
   const projectId = await auth.getProjectId();
@@ -276,7 +275,7 @@ async function restoreBackup() {
   const client = await auth.getClient();
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const timestamp = dateformat(yesterday, 'yyyy-mm-dd');
+  const timestamp = yesterday.toISOString().split('T')[0];
   const path = `${timestamp}`;
 
   const projectId = await auth.getProjectId();
