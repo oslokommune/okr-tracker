@@ -82,6 +82,10 @@ Her kan du finne [fullstendig liste av formater](https://github.com/adam-p/markd
 
 ## Administrator
 
+### Åpne adminpanelet
+
+Administratorer har tilgang til adminpanelet. Klikk på ditt navn i toppmenyen og velg «Admin».
+
 ### Legge til en ny bruker til systemet
 
 Kun systemadministratorer har tilgang til å legge inn nye brukere til systemet. Administratorer kan administrere brukere fra [adminpanelet](/admin).
@@ -95,6 +99,26 @@ Administratorer kan legge til eller fjerne admintilganger for brukere fra [admin
 ## Produktområder
 
 Produktområder inneholder _produkter_, _mål_ og _nøkkelresultater_.
+
+### Opprette et nytt produktområde
+
+Administratorer kan opprette nye produktområder fra [«Produkter og produktområder»-siden](/admin/data) i adminpanelet.
+
+- I kolonnen «Velg produktområde», klikk `Legg til`.
+- Skriv inn navn, mission statement
+- Last opp bilde (valgfritt)
+- Trykk `Lagre`.
+
+### Arkivere et produktområde
+
+Administratorer kan arkivere ekisterende produktområder fra [«Produkter og produktområder»-siden](/admin/data) i adminpanelet. Arkiverte objekter kan gjenopprettes.
+
+- Velg produktområde fra menyen
+- Trykk `Slett`.
+
+### Permanent slette et produktområde
+
+Det er ikke støtte for permanent sletting av produktområder fra adminpanelet for øyeblikket. Dette kan gjøres manuelt i databasen av en systemadministrator.
 
 ---
 
