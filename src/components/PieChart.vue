@@ -1,5 +1,5 @@
 <template>
-  <svg class="pie" ref="svg"></svg>
+  <svg v-show="activePeriod" class="pie" ref="svg"></svg>
 </template>
 
 <script>
@@ -25,20 +25,17 @@ export default {
     ...mapState(['activePeriod']),
 
     progress() {
-      return this.activePeriod.progression || 0;
+      return this.activePeriod && this.activePeriod.progression ? this.activePeriod.progression : 0;
     },
   },
 
   mounted() {
     this.pie = new Pie(this.$refs.svg, this.darkmode);
-    if (!this.activePeriod) return;
-
     this.pie.render(this.activePeriod);
   },
 
   watch: {
     activePeriod(period) {
-      if (!period) return;
       this.pie.render(period);
     },
   },
