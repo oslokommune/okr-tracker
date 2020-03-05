@@ -59,6 +59,7 @@
                     <span class="form-label">Verdi</span>
                     <input
                       type="number"
+                      step="any"
                       v-model="value"
                       v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
                     />

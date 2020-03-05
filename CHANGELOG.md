@@ -36,6 +36,7 @@ This change adds a `/periods` subcollection on the `departments` and `products` 
 - Fix issue where progress graphic did not always update when navigating between pages
 - Force the submenu to appear even when no periods are available
 - Minor layout adjustment on the page header (less white space below page name on desktop)
+- Allow floating point numbers as key result progress
 
 ## [1.0.2] - 2020-02-25
 
