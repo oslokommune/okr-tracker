@@ -12,6 +12,7 @@ const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 const sheetsEmail = functions.config().sheets.email;
 const sheetsKey = functions.config().sheets.key;
 const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
+const storageBucketName = functions.config().storage.bucket;
 
 jwtClient.authorize(function(err) {
   if (err) {
@@ -239,11 +240,10 @@ async function generateBackup() {
   const client = await auth.getClient();
   const timestamp = dateformat(Date.now(), 'yyyy-mm-dd');
   const path = `${timestamp}`;
-  const BUCKET_NAME = 'okr-tracker-backup';
 
   const projectId = await auth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):exportDocuments`;
-  const backupRoute = `gs://${BUCKET_NAME}/${path}`;
+  const backupRoute = `gs://${storageBucketName}/${path}`;
 
   return client
     .request({
@@ -278,11 +278,10 @@ async function restoreBackup() {
   yesterday.setDate(yesterday.getDate() - 1);
   const timestamp = dateformat(yesterday, 'yyyy-mm-dd');
   const path = `${timestamp}`;
-  const BUCKET_NAME = `okr-tracker-backup`;
 
   const projectId = await auth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):importDocuments`;
-  const backupRoute = `gs://${BUCKET_NAME}/${path}`;
+  const backupRoute = `gs://${storageBucketName}/${path}`;
 
   return client
     .request({
