@@ -86,6 +86,7 @@ export default {
         description: this.body,
         icon: this.icon || 'trophy',
         period: this.selectedPeriod.ref,
+        progression: 0,
         archived: false,
         created: new Date(),
         createdBy: this.user.ref,
