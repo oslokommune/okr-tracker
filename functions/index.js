@@ -2,6 +2,8 @@ const d3 = require('d3');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { google } = require('googleapis');
+const { GoogleAuth } = require('google-auth-library');
+const dateformat = require('dateformat');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -222,5 +224,80 @@ async function getSheetsData(sheetId, sheetName, cell) {
     })
     .catch(err => {
       throw new Error(err);
+    });
+}
+
+exports.automatedBackups = functions
+  .region('europe-west2')
+  .pubsub.schedule('0 0 * * *')
+  .onRun(generateBackup);
+
+async function generateBackup() {
+  const auth = new GoogleAuth({
+    scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
+  });
+  const client = await auth.getClient();
+  const timestamp = dateformat(Date.now(), 'yyyy-mm-dd');
+  const path = `${timestamp}`;
+  const BUCKET_NAME = 'okr-tracker-backup';
+
+  const projectId = await auth.getProjectId();
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):exportDocuments`;
+  const backupRoute = `gs://${BUCKET_NAME}/${path}`;
+
+  return client
+    .request({
+      url,
+      method: 'POST',
+      data: {
+        outputUriPrefix: backupRoute,
+      },
+    })
+    .then(() => {
+      console.log(`Backup saved to folder on ${backupRoute}`);
+      return Promise.resolve();
+    })
+    .catch(async error => {
+      console.error('Error message: ', error.message);
+      return Promise.reject(new Error({ message: error.message }));
+    });
+}
+
+exports.automatedRestore = functions
+  .region('europe-west2')
+  .pubsub.topic('restore-backup')
+  .onPublish(restoreBackup);
+
+async function restoreBackup() {
+  const auth = new GoogleAuth({
+    scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
+  });
+
+  const client = await auth.getClient();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const timestamp = dateformat(yesterday, 'yyyy-mm-dd');
+  const path = `${timestamp}`;
+  const BUCKET_NAME = `okr-tracker-backup`;
+
+  const projectId = await auth.getProjectId();
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):importDocuments`;
+  const backupRoute = `gs://${BUCKET_NAME}/${path}`;
+
+  return client
+    .request({
+      url,
+      method: 'POST',
+      data: {
+        inputUriPrefix: backupRoute,
+      },
+    })
+    .then(() => {
+      console.log(`Backup restored from folder ${backupRoute}`);
+      return Promise.resolve();
+    })
+    .catch(async error => {
+      console.error('Error message: ', error.message);
+      return Promise.reject(new Error({ message: error.message }));
     });
 }
