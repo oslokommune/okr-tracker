@@ -140,6 +140,7 @@ export default {
         description: this.description,
         startValue: +this.startValue,
         targetValue: +this.targetValue,
+        currentValue: +this.startValue,
         created: new Date(),
         createdBy: this.user.ref,
         auto: this.auto,
