@@ -2,6 +2,7 @@ const d3 = require('d3');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { google } = require('googleapis');
+const { GoogleAuth } = require('google-auth-library');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -10,6 +11,7 @@ const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 const sheetsEmail = functions.config().sheets.email;
 const sheetsKey = functions.config().sheets.key;
 const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
+const storageBucketName = functions.config().storage.bucket;
 
 jwtClient.authorize(function(err) {
   if (err) {
@@ -222,5 +224,77 @@ async function getSheetsData(sheetId, sheetName, cell) {
     })
     .catch(err => {
       throw new Error(err);
+    });
+}
+
+exports.automatedBackups = functions
+  .region('europe-west2')
+  .pubsub.schedule('0 0 * * *')
+  .onRun(generateBackup);
+
+async function generateBackup() {
+  const auth = new GoogleAuth({
+    scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
+  });
+
+  const client = await auth.getClient();
+  const path = `${new Date().toISOString().split('T')[0]}`;
+
+  const projectId = await auth.getProjectId();
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):exportDocuments`;
+  const backupRoute = `gs://${storageBucketName}/${path}`;
+
+  return client
+    .request({
+      url,
+      method: 'POST',
+      data: {
+        outputUriPrefix: backupRoute,
+      },
+    })
+    .then(() => {
+      console.log(`Backup saved to folder on ${backupRoute}`);
+      return Promise.resolve();
+    })
+    .catch(async error => {
+      console.error('Error message: ', error.message);
+      return Promise.reject(new Error({ message: error.message }));
+    });
+}
+
+exports.automatedRestore = functions
+  .region('europe-west2')
+  .pubsub.topic('restore-backup')
+  .onPublish(restoreBackup);
+
+async function restoreBackup() {
+  const auth = new GoogleAuth({
+    scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
+  });
+
+  const client = await auth.getClient();
+  const oneDayBefore = new Date();
+  oneDayBefore.setDate(oneDayBefore.getDate() - 1);
+  const path = `${oneDayBefore.toISOString().split('T')[0]}`;
+
+  const projectId = await auth.getProjectId();
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):importDocuments`;
+  const backupRoute = `gs://${storageBucketName}/${path}`;
+
+  return client
+    .request({
+      url,
+      method: 'POST',
+      data: {
+        inputUriPrefix: backupRoute,
+      },
+    })
+    .then(() => {
+      console.log(`Backup restored from folder ${backupRoute}`);
+      return Promise.resolve();
+    })
+    .catch(async error => {
+      console.error('Error message: ', error.message);
+      return Promise.reject(new Error({ message: error.message }));
     });
 }

@@ -14,6 +14,8 @@ This change adds a `/periods` subcollection on the `departments` and `products` 
 
 - Show callout to team members when a product image is missing
 - Documentation for managing departments on Help page
+- Automated backup of the firebase database
+- Automated restore of backup for the firebase database
 
 ### Changed
 
