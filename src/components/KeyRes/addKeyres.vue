@@ -84,7 +84,7 @@
 <script>
 import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 import Keyresult from '@/db/keyresultHandler';
 
 export default {
@@ -112,10 +112,6 @@ export default {
       type: Object,
       required: true,
     },
-    selectedQuarterName: {
-      type: String,
-      required: true,
-    },
   },
 
   validations: {
@@ -137,7 +133,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'activePeriod']),
     newKeyRes() {
       return {
         archived: false,
@@ -158,12 +154,14 @@ export default {
   },
 
   mounted() {
+    if (!this.activePeriod) return;
+
     this.unsubscribe = this.productref
       .collection('objectives')
-      .where('quarter', '==', this.selectedQuarterName)
       .where('archived', '==', false)
+      .where('period', '==', this.activePeriod.ref)
       .onSnapshot(snapshot => {
-        this.objectives = snapshot.docs.map(serializeDocument);
+        this.objectives = serializeList(snapshot);
       });
   },
 
