@@ -119,9 +119,8 @@
       </form>
 
       <hr />
-
-      <h3 class="title-3">Konverter kvartaler til dynamiske perioder</h3>
-      <button class="btn" @click="convertQuartersToPeriods">Start konvertering</button>
+      <!-- <h3 class="title-3">Konverter kvartaler til dynamiske perioder</h3> -->
+      <!-- <button class="btn" @click="convertQuartersToPeriods">Start konvertering</button> -->
     </div>
   </div>
 </template>

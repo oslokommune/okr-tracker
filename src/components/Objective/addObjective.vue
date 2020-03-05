@@ -1,6 +1,6 @@
 <template>
   <div class="popout">
-    <span class="form-label">Kvartal</span>
+    <span class="form-label">Periode</span>
     <v-select
       class="form-field"
       :class="{ 'form-field--error': $v.selectedPeriod.$error }"
