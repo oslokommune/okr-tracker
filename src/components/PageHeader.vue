@@ -153,8 +153,6 @@ export default {
         return null;
       }
 
-      console.log(docType);
-
       Toast.error();
       throw new Error('Cannot find document type');
     },
