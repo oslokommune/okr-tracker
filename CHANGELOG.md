@@ -4,16 +4,29 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased [1.2.0]
 
-OKRs are now supported on _organisation_ level.
+OKRs are now supported on _organisation_ level. This will allow administrators to create and manage details (name, mission statement), objectives and key results for organisations.
+
+_Organisations_ will work in a similar fashion as departments and products, whereas the child departments will be displayed on an organisation’s page.
+
+Note: Creating and/or deleting organisations is not included in this version.
 
 ### Added
 
-- Edit existing organisations from the admin panel
-- Page to view organisations under route `/organization/<name>`
+- OKRs for organisation level
+  - Edit existing organisations from the admin panel
+  - Page to view organisations under route `/organization/<slug>`
+  - Manage objectives and key results for organisation at `/organization/<slug>/edit`
+  - Cloud functions to handle progression for organisation
 
 ### Changed
 
 - Convert the organisation in breadcrumbs to a link
+- Use `placeholder-image.svg` instead of `placeholder-user.svg` for departments and products that do not have an image
+- Consistently use American `organization` instead of `organisation` as function and variable names
+
+### Fixed
+
+- Fix JSDoc errors in `db.js`
 
 ## [1.1.0] - 2020-03-09
 
