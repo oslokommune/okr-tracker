@@ -34,6 +34,9 @@
         <input
           type="number"
           v-model="value"
+          step="any"
+          :min="keyres.fromValue"
+          :max="keyres.targetValue"
           v-tooltip="{ content: 'Ny verdi', trigger: 'focus', hideOnTargetClick: false }"
         />
         <button class="btn" v-tooltip="`Lagre`"><i class="fa fa-check"></i></button>
@@ -56,7 +59,7 @@ export default {
   data: () => ({
     editMode: false,
     hasEditPermissions: false,
-    value: 0,
+    value: 0.0,
   }),
 
   computed: {

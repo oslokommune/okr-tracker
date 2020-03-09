@@ -79,8 +79,8 @@ export function addedProduct() {
   return show('Lagt til nytt produkt');
 }
 
-export function addedObjective(quarterName) {
-  return show(`Lagt til nytt mål for ${quarterName}`);
+export function addedObjective(periodName) {
+  return show(`Lagt til nytt mål for ${periodName}`);
 }
 
 export function addedDepartment() {

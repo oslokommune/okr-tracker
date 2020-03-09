@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { quarters } from '@/util/utils';
 import { serializeDocument, getNestedData } from '@/db/db';
 import icons from '@/config/icons';
 
@@ -57,10 +56,9 @@ export const actions = {
 
         const data = serializeDocument(snapshot);
         const objective = await snapshot.ref.parent.parent.get().then(d => d.data());
-        const { icon, quarter } = objective;
+        const { icon } = objective;
 
         data.icon = icon;
-        data.quarter = quarter;
         commit('SET_KEY_RESULT', data);
       });
     });
@@ -122,10 +120,6 @@ export const actions = {
       });
     });
   },
-
-  setQuarter({ commit }, quarter) {
-    commit('SET_QUARTER', quarter);
-  },
 };
 
 export const getters = {};
@@ -155,9 +149,8 @@ export const mutations = {
     state.key_result = payload;
   },
 
-  SET_QUARTER(state, payload) {
-    payload = payload || state.quarters[0];
-    state.activeQuarter = payload;
+  SET_ACTIVE_PERIOD(state, payload) {
+    state.activePeriod = payload;
   },
 
   SET_DEPARTMENTPRODUCTS(state, payload) {
@@ -174,8 +167,7 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters: quarters(),
-    activeQuarter: quarters()[0],
+    activePeriod: null,
     icons,
     showNewsfeed: false,
     key_result: null,

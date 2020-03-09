@@ -1,29 +1,8 @@
-import { addMonths, startOfQuarter, getQuarter, formatDistanceToNow, format } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import locale from 'date-fns/locale/nb';
-import { startDate } from '@/config/applicationConfig';
 import * as Toast from '@/util/toasts';
 import { analytics, auth } from '@/config/firebaseConfig';
 import router from '@/router';
-
-/**
- * Generates a list of named quarters
- * @returns {Array} - List of quarters as objects
- */
-function quarters() {
-  let fromDate = new Date(startDate);
-  const today = new Date();
-  const toDate = startOfQuarter(addMonths(today, 3));
-  const list = [];
-
-  while (fromDate < toDate) {
-    const year = fromDate.getFullYear();
-    const quarter = getQuarter(fromDate);
-    list.push({ name: `Q${quarter} ${year}`, fromDate, toDate });
-    fromDate = addMonths(fromDate, 3);
-  }
-
-  return list.reverse();
-}
 
 function getProductFromSlug(nest, slug) {
   return nest
@@ -63,4 +42,4 @@ async function logHandler(eventName) {
   analytics.logEvent(`${eventName}`, { user, view });
 }
 
-export { quarters, getProductFromSlug, timeFromNow, errorHandler, logHandler, datePretty };
+export { getProductFromSlug, timeFromNow, errorHandler, logHandler, datePretty };

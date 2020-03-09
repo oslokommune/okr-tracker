@@ -1,6 +1,5 @@
 import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, area } from 'd3';
 import { initSvg, resize } from '@/util/linechart-helpers';
-import { getDateSpanFromQuarter } from '@/util/helpers';
 
 export default class Linechart {
   constructor(svgElement) {
@@ -36,9 +35,7 @@ export default class Linechart {
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
 
-    const dates = Object.values(getDateSpanFromQuarter(period));
-
-    this.x.domain(dates);
+    this.x.domain([period.startDate.toDate(), period.endDate.toDate()]);
     this.y.domain(extent([obj.startValue, obj.targetValue]));
 
     this.yAxis.transition().call(axisLeft(this.y));
@@ -51,7 +48,7 @@ export default class Linechart {
       .attr('y1', this.innerHeight);
 
     const startValue = {
-      timestamp: dates[0],
+      timestamp: period.startDate.toDate(),
       value: +obj.startValue,
       startValue: +obj.startValue,
     };

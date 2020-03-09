@@ -117,6 +117,10 @@
           </div>
         </div>
       </form>
+
+      <hr />
+      <!-- <h3 class="title-3">Konverter kvartaler til dynamiske perioder</h3> -->
+      <!-- <button class="btn" @click="convertQuartersToPeriods">Start konvertering</button> -->
     </div>
   </div>
 </template>
@@ -130,6 +134,7 @@ import AdminDepartment from '@/views/Admin/components/AdminDepartment.vue';
 import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import fileImporter from '@/migration/fileImporter';
+import convertQuartersToPeriods from '@/migration/convertQuartersToPeriods';
 
 export default {
   name: 'AdminObjects',
@@ -173,6 +178,8 @@ export default {
   },
 
   methods: {
+    convertQuartersToPeriods,
+
     previewFiles(event) {
       this.files = event.target.files;
     },

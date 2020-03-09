@@ -36,7 +36,6 @@
             v-if="expandAddKeyRes"
             @close-menu="expandAddKeyRes = false"
             :productref="document.ref"
-            :selected-quarter-name="activeQuarter.name"
           ></add-keyres>
         </div>
 
@@ -103,10 +102,6 @@ export default {
       default: false,
     },
     document: {
-      type: Object,
-      required: true,
-    },
-    activeQuarter: {
       type: Object,
       required: true,
     },

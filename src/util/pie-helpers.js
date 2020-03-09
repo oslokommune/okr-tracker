@@ -87,7 +87,7 @@ function updatePercentText(el, tweenTo) {
       const counter = interpolate(j[i].current || 0, tweenTo);
       return t => {
         j[i].current = counter(t);
-        select(j[i]).text(formatPercent(counter(t)));
+        select(j[i]).text(formatPercent(counter(t) || 0));
       };
     });
 }

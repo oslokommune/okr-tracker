@@ -45,7 +45,7 @@
 <script>
 import ClickOutside from 'vue-click-outside';
 import { mapState } from 'vuex';
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { addProgress } from '@/db/progressHandler';
 
@@ -69,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'quarters']),
+    ...mapState(['user', 'activePeriod']),
 
     keyResult() {
       return this.keyResults[this.index];
@@ -124,9 +124,13 @@ export default {
       this.unsubscribeObjectives = this.document.ref
         .collection('objectives')
         .where('archived', '==', false)
-        .where('quarter', '==', this.quarters[0].name)
+        .where('period', '==', this.activePeriod.ref)
         .onSnapshot(snapshot => {
-          this.objectives = snapshot.docs.map(serializeDocument);
+          if (snapshot.empty) {
+            this.objectives = [];
+            return;
+          }
+          this.objectives = serializeList(snapshot);
 
           this.getKeyResults();
         });
@@ -137,7 +141,7 @@ export default {
         return obj.ref
           .collection('keyResults')
           .get()
-          .then(snap => snap.docs.map(serializeDocument));
+          .then(serializeList);
       });
       const keyResults = await Promise.all(promises).catch(err => {
         this.$errorHandler('get_keyres_error', err);

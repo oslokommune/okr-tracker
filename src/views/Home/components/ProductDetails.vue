@@ -12,11 +12,12 @@
 
 <script>
 import { scaleLinear } from 'd3';
-import { mapState } from 'vuex';
+import { serializeList } from '@/db/db';
 
 export default {
   data: () => ({
     unsubscribe: null,
+    currentPeriod: null,
     keyResults: [],
     objectives: [],
   }),
@@ -42,31 +43,30 @@ export default {
       return `width: ${progress * 100}%; backgroundColor: ${color};`;
     },
 
-    listen() {
+    getObjectives() {
+      if (!this.currentPeriod) return;
       this.unsubscribe = this.product.ref
         .collection('objectives')
         .where('archived', '==', false)
+        .where('period', '==', this.currentPeriod.ref)
         .onSnapshot(snapshot => {
           this.objectives = snapshot.docs.map(d => ({ ref: d.ref, keyResults: [] }));
         });
     },
   },
 
-  computed: {
-    ...mapState(['quarters']),
-  },
-
   watch: {
     product() {
       if (this.unsubscribe) this.unsubscribe();
-      this.listen();
+      this.getObjectives();
+    },
+
+    async currentPeriod() {
+      this.getObjectives();
     },
 
     objectives(objectives) {
       objectives.forEach(async objective => {
-        const q = await objective.ref.get().then(d => d.data().quarter);
-        if (q !== this.quarters[0].name) return;
-
         objective.ref
           .collection('keyResults')
           .where('archived', '==', false)
@@ -81,8 +81,17 @@ export default {
     if (this.unsubscribe) this.unsubscribe();
   },
 
-  created() {
-    this.listen();
+  async created() {
+    this.getObjectives();
+
+    // Find the period in which is currently active
+    const now = new Date();
+    this.currentPeriod = await this.product.ref
+      .collection('periods')
+      .get()
+      .then(serializeList)
+      .then(docs => docs.filter(doc => doc.startDate.toDate() < now && doc.endDate.toDate() > now))
+      .then(docs => (docs && docs.length ? docs[0] : false));
   },
 };
 </script>

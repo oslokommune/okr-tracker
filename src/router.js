@@ -61,6 +61,9 @@ const routes = [
     meta: { headerStyle: 'product' },
     name: 'product',
     component: ProductHome,
+    props(route) {
+      return route.query || {};
+    },
     children: [{ name: 'dashboard', path: 'dashboard', component: DashboardHome }],
   },
 

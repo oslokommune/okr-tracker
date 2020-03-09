@@ -1,14 +1,14 @@
 <template>
   <div class="popout">
-    <span class="form-label">Kvartal</span>
+    <span class="form-label">Periode</span>
     <v-select
       class="form-field"
-      :class="{ 'form-field--error': $v.quarter.$error }"
+      :class="{ 'form-field--error': $v.selectedPeriod.$error }"
       label="name"
-      :options="quarters"
-      v-model="quarter"
+      :options="availablePeriods"
+      v-model="$v.selectedPeriod.$model"
     ></v-select>
-    <div class="form-field--error" v-if="$v.quarter.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.selectedPeriod.$error">Kan ikke være tom</div>
 
     <div class="title title-3">
       <i :class="`fas fa-${icon}`"></i>
@@ -31,7 +31,7 @@
       <textarea v-model="$v.body.$model" rows="4"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.body.$error">Kan ikke være tom</div>
-    <button :disabled="submit" class="btn" @click="send">Legg til</button>
+    <button :disabled="submit" class="btn" @click="submitForm">Legg til</button>
     <button class="btn btn--borderless" @click="$emit('close-menu')">Lukk</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
@@ -42,6 +42,7 @@ import { required } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
+import { serializeList } from '@/db/db';
 
 export default {
   name: 'AddObjective',
@@ -53,7 +54,8 @@ export default {
     submit: false,
     showInfo: false,
     info: '',
-    quarter: null,
+    selectedPeriod: null,
+    availablePeriods: [],
   }),
 
   props: {
@@ -61,18 +63,13 @@ export default {
       type: Object,
       required: true,
     },
-    selectedQuarter: {
-      type: Object,
-      required: false,
-      default: null,
-    },
   },
 
   validations: {
     title: {
       required,
     },
-    quarter: {
+    selectedPeriod: {
       required,
     },
     body: {
@@ -80,20 +77,16 @@ export default {
     },
   },
 
-  mounted() {
-    const [firstQuarter] = this.quarters;
-    this.quarter = firstQuarter;
-  },
-
   computed: {
-    ...mapState(['user', 'quarters', 'icons']),
+    ...mapState(['user', 'icons']),
 
     newObjective() {
       return {
         name: this.title,
         description: this.body,
         icon: this.icon || 'trophy',
-        quarter: this.quarter.name,
+        period: this.selectedPeriod.ref,
+        progression: 0,
         archived: false,
         created: new Date(),
         createdBy: this.user.ref,
@@ -101,43 +94,54 @@ export default {
     },
   },
 
+  created() {
+    this.getAvailablePeriods();
+  },
+
   methods: {
-    setSelectedQuarter(value) {
-      this.$v.quarter.$touch();
-      this.quarter = value;
+    async getAvailablePeriods() {
+      this.availablePeriods = await this.productref
+        .collection('periods')
+        .get()
+        .then(serializeList);
     },
 
-    async send() {
+    async submitForm() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
       } else {
-        const objectiveCount = await this.productref
-          .collection('objectives')
-          .where('quarter', '==', this.newObjective.quarter)
-          .get()
-          .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
-
-        if (objectiveCount >= 4) {
+        if ((await this.getObjectiveCount()) >= 4) {
           Toast.show('Kan ikke ha flere enn 4 mål');
           this.$emit('close-menu');
           return;
         }
-
         this.setSubmitInfo(true, false, '');
-
-        this.productref
-          .collection('objectives')
-          .add(this.newObjective)
-          .then(response => {
-            this.$emit('close-menu');
-            Audit.createObjective(response, response.parent.parent);
-            Toast.addedObjective(this.quarter.name);
-          })
-          .catch(err => {
-            this.$errorHandler('add_objective_error', err);
-          });
+        this.addObjective();
       }
+    },
+
+    addObjective() {
+      this.productref
+        .collection('objectives')
+        .add(this.newObjective)
+        .then(response => {
+          this.$emit('close-menu');
+          Audit.createObjective(response, response.parent.parent);
+          Toast.addedObjective(this.selectedPeriod.name);
+        })
+        .catch(err => {
+          this.$errorHandler('add_objective_error', err);
+        });
+    },
+
+    getObjectiveCount() {
+      return this.productref
+        .collection('objectives')
+        .where('archived', '==', false)
+        .where('period', '==', this.selectedPeriod.ref)
+        .get()
+        .then(snapshot => snapshot.size);
     },
 
     setSubmitInfo(submit, showInfo, info) {

@@ -22,10 +22,12 @@
       <div v-if="!team.length">
         <ul class="team__list team__list--empty">
           <div class="team__member empty" v-for="i in 3" :key="`empty_${i}`">
-            <i class="fa fa-user-ninja"></i>
+            <i v-if="type === 'department'" class="fa fa-cubes"></i>
+            <i v-if="type === 'product'" class="fa fa-user-ninja"></i>
           </div>
         </ul>
-        <p>Finner ingen teammedlemmer – kanskje det bare er ninjaer her?</p>
+        <p v-if="type === 'department'">Finner ingen produkter</p>
+        <p v-if="type === 'product'">Finner ingen teammedlemmer – kanskje det bare er ninjaer her?</p>
       </div>
 
       <ul class="team__list">
