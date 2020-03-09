@@ -61,7 +61,7 @@ exports.updatedKeyResultProgression = functions
       .where('archived', '==', false)
       .where('period', '==', period)
       .get()
-      .then(snapshot => snapshot.docs.map(doc => doc.data().progression || 0))
+      .then(snapshot => snapshot.docs.map(doc => doc.data().progression))
       .then(values => d3.mean(values));
 
     await period.update({ progression: periodProgression });
@@ -74,14 +74,35 @@ exports.updatedDepartmentKeyResultProgression = functions
   .firestore.document(departmentProgressionsPath)
   .onWrite(async (change, context) => {
     const { orgId, departmentId, objectiveId } = context.params;
-    const objectivePath = `orgs/${orgId}/departments/${departmentId}/objectives/${objectiveId}`;
+    const departmentPath = `orgs/${orgId}/departments/${departmentId}`;
+    const objectivePath = `${departmentPath}/objectives/${objectiveId}`;
 
     const keyResultsProgressions = await getKeyResultsProgressions(objectivePath);
     const progression = d3.mean(keyResultsProgressions);
     const edited = new Date();
     const editedBy = 'cloud-function';
 
-    return db.doc(objectivePath).update({ progression, edited, editedBy });
+    await db.doc(objectivePath).update({ progression, edited, editedBy });
+
+    const period = await db
+      .doc(objectivePath)
+      .get()
+      .then(snapshot => snapshot.data().period);
+
+    // Get the average progression for all objectives
+    // in the same period
+    const periodProgression = await db
+      .doc(departmentPath)
+      .collection('objectives')
+      .where('archived', '==', false)
+      .where('period', '==', period)
+      .get()
+      .then(snapshot => snapshot.docs.map(doc => doc.data().progression))
+      .then(values => d3.mean(values));
+
+    await period.update({ progression: periodProgression });
+
+    return true;
   });
 
 // Triggers when a department key result is created, deleted, edited, archived
