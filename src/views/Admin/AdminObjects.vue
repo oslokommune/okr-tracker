@@ -19,7 +19,7 @@
 
     <div class="miller__container">
       <div class="miller">
-        <div class="miller__col" :class="{ active: selection.type === 'organisation' }">
+        <div class="miller__col" :class="{ active: selection.type === 'organization' }">
           <h3 class="miller__col__header">Velg organisasjon</h3>
           <div
             class="miller__col__item"
@@ -64,8 +64,9 @@
         </div>
 
         <main class="miller__main">
-          <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
+          <admin-organization v-if="selection.type === 'organization'" :docref="selection.docRef"></admin-organization>
           <admin-department v-if="selection.type === 'department'" :docref="selection.docRef"></admin-department>
+          <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
         </main>
       </div>
     </div>
@@ -131,6 +132,7 @@ import { db } from '@/config/firebaseConfig';
 import { getOrgs, getDepartments, getProducts } from '@/db/db';
 import AdminProduct from '@/views/Admin/components/AdminProduct.vue';
 import AdminDepartment from '@/views/Admin/components/AdminDepartment.vue';
+import AdminOrganization from '@/views/Admin/components/AdminOrganization.vue';
 import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import fileImporter from '@/migration/fileImporter';
@@ -139,7 +141,7 @@ import convertQuartersToPeriods from '@/migration/convertQuartersToPeriods';
 export default {
   name: 'AdminObjects',
 
-  components: { AdminProduct, AdminDepartment },
+  components: { AdminProduct, AdminDepartment, AdminOrganization },
 
   data: () => ({
     files: null,
@@ -169,8 +171,8 @@ export default {
       }
 
       if (this.selectedOrgId) {
-        const docRef = '';
-        return { type: 'organisation', docRef };
+        const docRef = db.collection('orgs').doc(this.selectedOrgId);
+        return { type: 'organization', docRef };
       }
 
       return false;

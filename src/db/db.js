@@ -212,7 +212,9 @@ export const getNestedData = () => {
 async function getOrgData(organisation) {
   const { ref } = organisation;
   const departments = await getChildren(ref, 'departments', getDeptData);
-  return { departments, ...organisation.data() };
+  const orgData = organisation.data();
+  const routerLinkTo = { name: 'organization', params: { slug: orgData.slug } };
+  return { departments, ...orgData, routerLinkTo };
 }
 
 async function getDeptData(department) {

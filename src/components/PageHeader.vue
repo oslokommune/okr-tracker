@@ -15,7 +15,8 @@
         <div class="page-header__name" :class="{ 'page-header__name--left': !showImage }">
           <h1 class="title-1">
             <i v-if="icon" :class="`fa fa-fw fa-${icon}`" aria-hidden></i>
-            {{ title }}
+            <router-link v-if="data.routerLinkTo" :to="data.routerLinkTo">{{ data.name }}</router-link>
+            <template v-else>{{ title }}</template>
           </h1>
         </div>
 
@@ -57,7 +58,6 @@ export default {
     title() {
       if (this.data.description) return 'Nøkkelresultat';
       if (!this.data) return 'Laster ...';
-
       return this.data.name || this.data.displayName || this.data.id || 'Laster ...';
     },
 

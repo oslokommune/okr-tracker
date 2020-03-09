@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { serializeDocument, getNestedData, getDepartments } from '@/db/db';
+import { serializeDocument, getNestedData } from '@/db/db';
 import icons from '@/config/icons';
 
 const errorHandler = Vue.$errorHandler;
