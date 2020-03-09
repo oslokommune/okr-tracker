@@ -133,7 +133,7 @@ export default {
       }
 
       if (docType === 'orgs') {
-        return null;
+        return { name: 'organization', params: { slug: document.slug } };
       }
       if (docType === 'products') {
         return { name: 'product', params: { slug: document.slug } };
