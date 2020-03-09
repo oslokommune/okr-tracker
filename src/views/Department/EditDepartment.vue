@@ -5,7 +5,7 @@
     <nav class="sub-nav">
       <div class="container container--sidebar">
         <div class="content--main">
-          <router-link class="sub-nav__element" exact :to="{ name: 'edit-department' }">Produkt</router-link>
+          <router-link class="sub-nav__element" exact :to="{ name: 'edit-department' }">Produktområde</router-link>
           <router-link class="sub-nav__element" :to="{ name: 'edit-department-keyres' }">
             Mål og nøkkelresultater
           </router-link>

@@ -74,7 +74,7 @@ export default {
     },
 
     showImage() {
-      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'me'];
+      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'organization', 'me'];
       return typesWithImage.includes(this.style);
     },
   },
@@ -141,7 +141,6 @@ export default {
       if (docType === 'departments') {
         return { name: 'department', params: { slug: document.slug } };
       }
-
       if (docType === 'keyResults') {
         return { name: 'key-result', params: { slug: this.$route.params.slug, keyresid: document.id } };
       }
@@ -153,6 +152,8 @@ export default {
       if (docType === 'users') {
         return null;
       }
+
+      console.log(docType);
 
       Toast.error();
       throw new Error('Cannot find document type');

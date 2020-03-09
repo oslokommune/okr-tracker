@@ -16,7 +16,7 @@
           <document-summary
             :document="organization"
             :team="organizationDepartments"
-            type="department"
+            type="organization"
           ></document-summary>
           <hr />
           <objectives-list :document="organization"></objectives-list>

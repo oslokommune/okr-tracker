@@ -75,6 +75,26 @@ export function departmentListener(slug) {
 }
 
 /**
+ * Finds the product with the provided slug and
+ * adds a listener for changes on the object.
+ * Binds the changes to `this.product` on the caller.
+ * @param {String} slug - product slug
+ * @returns {Function} - Unsubscribe
+ */
+export function organizationListener(slug) {
+  return db
+    .collection('orgs')
+    .where('slug', '==', slug)
+    .onSnapshot(async d => {
+      if (!d.docs.length) return;
+      const organizationData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('organization_listener_error', err);
+      });
+      this.organization = serializeDocument(organizationData);
+    });
+}
+
+/**
  * Converts a Firebase document to a serialized object with the id and
  * Firebase reference injected as properties
  * @param {FirebaseDoc} doc
