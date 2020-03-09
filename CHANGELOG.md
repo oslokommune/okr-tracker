@@ -23,6 +23,7 @@ Note: Creating and/or deleting organisations is not included in this version.
 - Convert the organisation in breadcrumbs to a link
 - Use `placeholder-image.svg` instead of `placeholder-user.svg` for departments and products that do not have an image
 - Consistently use American `organization` instead of `organisation` as function and variable names
+- Reduce font weight on table of contents on help page
 
 ### Fixed
 
