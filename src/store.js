@@ -121,11 +121,11 @@ export const actions = {
     });
   },
 
-  watchOrganization({ commit }, slug) {
+  async watchOrganization({ commit }, slug) {
     if (!slug) throw new Error('Missing slug');
 
     const getOrganization = db
-      .collectionGroup('orgs')
+      .collection('orgs')
       .where('slug', '==', slug)
       .get()
       .then(d => d.docs[0])
