@@ -9,7 +9,7 @@
     </label>
 
     <label class="form-field">
-      <span class="form-label">Startdato</span>
+      <span class="form-label">Start- og sluttdato</span>
       <flat-pickr
         v-model="range"
         :config="flatPickerConfig"
