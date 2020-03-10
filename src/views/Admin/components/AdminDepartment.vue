@@ -16,7 +16,7 @@
 
         <label class="form-field">
           <span class="form-label">Bilde</span>
-          <img v-if="department.photoURL" :src="department.photoURL" />
+          <img v-if="department.photoURL" :src="department.photoURL" class="preview-image" />
 
           <image-uploader
             :max-width="450"
@@ -33,6 +33,7 @@
 
         <label class="form-field">
           <span class="form-label">Mission statement</span>
+          <span class="form-help">Her kan du skrive <router-link :to="{ name: 'help' }">Markdown</router-link></span>
           <textarea rows="4" v-model="department.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>

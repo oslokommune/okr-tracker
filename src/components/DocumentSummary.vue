@@ -13,7 +13,7 @@
           </router-link>
         </p>
       </div>
-      <p>{{ document.missionStatement }}</p>
+      <div class="md" v-html="displayMarkdown(document.missionStatement)"></div>
     </div>
     <MembersList :type="type" :team="team"></MembersList>
     <div>
@@ -25,14 +25,26 @@
 
 <script>
 import { mapState } from 'vuex';
+import marked from 'marked';
+import { sanitize } from 'dompurify';
 import PieChart from '@/components/PieChart.vue';
 import MembersList from '@/components/MembersList.vue';
+
+marked.setOptions({
+  smartypants: true,
+});
 
 export default {
   name: 'DocumentSummary',
 
   computed: {
     ...mapState(['user']),
+  },
+
+  methods: {
+    displayMarkdown(str) {
+      return sanitize(marked(str));
+    },
   },
 
   props: {

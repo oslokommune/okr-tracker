@@ -20,6 +20,7 @@ _Organisations_ will work in a similar fashion as departments and products, wher
   - Page to view organisations under route `/organization/<slug>`
   - Manage objectives and key results for organisation at `/organization/<slug>/edit`
   - Cloud functions to handle progression for organisation
+- Supporting Markdown for mission statements
 
 ### Changed
 
