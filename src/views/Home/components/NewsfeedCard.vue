@@ -170,9 +170,11 @@ export default {
     }
 
     if (keyresRef) {
+      const { fromValue, toValue } = this.eventData;
       this.keyResult = await keyresRef
         .get()
         .then(serializeDocument)
+        .then(obj => ({ fromValue, toValue, ...obj }))
         .catch(err => {
           this.$errorHandler('get_keyres_error', err);
         });

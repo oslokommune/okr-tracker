@@ -43,6 +43,8 @@ _Organisations_ will work in a similar fashion as departments and products, wher
   - Managing products
   - Managing organisations
   - Managing dynamic periods
+- Reduce size of image preview on forms for editing organisations, departments and products
+- Visualise the (positive or negative) change on the newsfeed card for updating progress on a key result
 
 ### Deprecated
 
