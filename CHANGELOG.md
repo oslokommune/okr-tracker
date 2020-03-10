@@ -6,9 +6,12 @@ All notable changes to this project will be documented in this file. The format 
 
 OKRs are now supported on _organisation_ level. This will allow administrators to create and manage details (name, mission statement), objectives and key results for organisations.
 
-_Organisations_ will work in a similar fashion as departments and products, whereas the child departments will be displayed on an organisation’s page.
+_Organisations_ will work in a similar fashion as departments and products, whereas the child departments will be displayed on an organisation’s page. Please note that creating and/or deleting organisations is not included in this version.
 
-Note: Creating and/or deleting organisations is not included in this version.
+### What’s new
+
+- OKRs for organisation level
+- Character limits for user inputs
 
 ### Added
 
@@ -35,6 +38,19 @@ Note: Creating and/or deleting organisations is not included in this version.
   - `missionStatement` <= 320 char
   - `keyResult/description` <= 120 char
   - `keyResult/unit` <= 32 char
+- Improved design on members and products lists (include name next to its image)
+- Improved content on `help.md`
+  - Managing products
+  - Managing organisations
+  - Managing dynamic periods
+
+### Deprecated
+
+**Migrating data from Google Sheets:** Functionality for migrating data from Google Sheets should no longer be necessary. The scripts for handling this will remain in the codebase for now, but will soon be removed. The description and file upload will be removed in the UI.
+
+### Removed
+
+- Form for migrating data from Google Sheets
 
 ### Fixed
 
