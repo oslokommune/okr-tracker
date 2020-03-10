@@ -12,6 +12,8 @@ import Department from '@/views/Department/DepartmentHome.vue';
 import Profile from '@/views/Profile.vue';
 import EditDepartment from '@/views/Department/EditDepartment.vue';
 import DashboardHome from '@/views/Dashboard/dashboardHome.vue';
+import EditOrganization from '@/views/Organization/EditOrganization.vue';
+import OrganizationHome from '@/views/Organization/OrganizationHome.vue';
 
 import { auth } from '@/config/firebaseConfig';
 
@@ -98,6 +100,23 @@ const routes = [
     children: [
       { name: 'edit-department', path: '/', component: EditProductDetails },
       { name: 'edit-department-keyres', path: 'objectives-key-results', component: EditObjectivesAndKeyResults },
+    ],
+  },
+
+  {
+    path: '/organization/:slug',
+    name: 'organization',
+    meta: { headerStyle: 'department' },
+    component: OrganizationHome,
+  },
+
+  {
+    path: '/organization/:slug/edit',
+    component: EditOrganization,
+    meta: { headerStyle: 'department' },
+    children: [
+      { name: 'edit-organization', path: '/', component: EditProductDetails },
+      { name: 'edit-organization-keyres', path: '/objectives-key-result', component: EditObjectivesAndKeyResults },
     ],
   },
 

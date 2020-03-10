@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased [1.2.0]
+
+OKRs are now supported on _organisation_ level. This will allow administrators to create and manage details (name, mission statement), objectives and key results for organisations.
+
+_Organisations_ will work in a similar fashion as departments and products, whereas the child departments will be displayed on an organisation’s page.
+
+Note: Creating and/or deleting organisations is not included in this version.
+
+### Added
+
+- OKRs for organisation level
+  - Edit existing organisations from the admin panel
+  - Page to view organisations under route `/organization/<slug>`
+  - Manage objectives and key results for organisation at `/organization/<slug>/edit`
+  - Cloud functions to handle progression for organisation
+
+### Changed
+
+- Convert the organisation in breadcrumbs to a link
+- Use `placeholder-image.svg` instead of `placeholder-user.svg` for departments and products that do not have an image
+- Consistently use American `organization` instead of `organisation` as function and variable names
+- Reduce font weight on table of contents on help page
+
+### Fixed
+
+- Fix JSDoc errors in `db.js`
+
 ## [1.1.0] - 2020-03-09
 
 This release introduces _dynamic date periods_ that replace static annual quarters for objectives. This means that custom date periods need to be manually created on each department and product onwards.

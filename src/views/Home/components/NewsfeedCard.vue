@@ -193,6 +193,8 @@ export default {
         this.product.route = { name: 'department', params: { slug: this.product.slug } };
       } else if (productRef.parent.id === 'products') {
         this.product.route = { name: 'product', params: { slug: this.product.slug } };
+      } else if (productRef.parent.id === 'orgs') {
+        this.product.route = { name: 'organization', params: { slug: this.product.slug } };
       }
     }
 

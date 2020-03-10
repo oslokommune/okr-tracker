@@ -16,12 +16,14 @@
       <p>{{ document.missionStatement }}</p>
     </div>
     <div>
-      <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>
+      <h2 v-if="type === 'organization'" class="title title-2">Produktområder</h2>
+      <h2 v-else-if="type === 'department'" class="title title-2">Produkter</h2>
       <h2 v-else-if="type === 'product'" class="title title-2">Team</h2>
 
       <div v-if="!team.length">
         <ul class="team__list team__list--empty">
           <div class="team__member empty" v-for="i in 3" :key="`empty_${i}`">
+            <i v-if="type === 'organization'" class="fa fa-users"></i>
             <i v-if="type === 'department'" class="fa fa-cubes"></i>
             <i v-if="type === 'product'" class="fa fa-user-ninja"></i>
           </div>
@@ -32,11 +34,22 @@
 
       <ul class="team__list">
         <li class="team__member" v-for="user in team" :key="user.id">
+          <template v-if="type === 'organization'">
+            <router-link :to="{ name: 'department', params: { slug: user.slug } }">
+              <img
+                class="team__image"
+                :src="user.photoURL || '/placeholder-image.svg'"
+                :alt="user.name"
+                v-tooltip.auto="user.name"
+              />
+            </router-link>
+          </template>
+
           <template v-if="type === 'department'">
             <router-link :to="{ name: 'product', params: { slug: user.slug } }">
               <img
                 class="team__image"
-                :src="user.photoURL || '/placeholder-user.svg'"
+                :src="user.photoURL || '/placeholder-image.svg'"
                 :alt="user.name"
                 v-tooltip.auto="user.name"
               />
