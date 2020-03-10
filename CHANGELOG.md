@@ -24,6 +24,17 @@ Note: Creating and/or deleting organisations is not included in this version.
 - Use `placeholder-image.svg` instead of `placeholder-user.svg` for departments and products that do not have an image
 - Consistently use American `organization` instead of `organisation` as function and variable names
 - Reduce font weight on table of contents on help page
+- Limit character count on various user inputs
+  - `profile/displayName` <= 32 char
+  - `organization/name` <= 64 char
+  - `department/name` <= 64 char
+  - `product/name` <= 64 char
+  - `period/name` <= 12 char
+  - `objective/description` <= 320 char
+  - `objective/name` <= 160 char
+  - `missionStatement` <= 320 char
+  - `keyResult/description` <= 120 char
+  - `keyResult/unit` <= 32 char
 
 ### Fixed
 

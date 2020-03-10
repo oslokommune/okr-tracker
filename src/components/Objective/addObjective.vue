@@ -23,12 +23,12 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.title.$error }">
       <span class="form-label">Tittel</span>
-      <input type="text" v-model="$v.title.$model" />
+      <input type="text" v-model="$v.title.$model" maxlength="160" />
     </label>
     <div class="form-field--error" v-if="$v.title.$error">Kan ikke være tom</div>
     <label class="form-field" :class="{ 'form-field--error': $v.body.$error }">
       <span class="form-label">Beskrivelse</span>
-      <textarea v-model="$v.body.$model" rows="4"></textarea>
+      <textarea v-model="$v.body.$model" rows="4" maxlength="320"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.body.$error">Kan ikke være tom</div>
     <button :disabled="submit" class="btn" @click="submitForm">Legg til</button>

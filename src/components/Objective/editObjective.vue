@@ -4,7 +4,7 @@
     <hr />
     <label class="form-field" :class="{ 'form-field--error': $v.objective.name.$error }">
       <span class="form-label">Tittel</span>
-      <input @input="dirty = true" type="text" v-model.trim="$v.objective.name.$model" />
+      <input @input="dirty = true" type="text" v-model.trim="$v.objective.name.$model" maxlength="160" />
     </label>
     <div class="form-field--error" v-if="$v.objective.name.$error">Kan ikke være tom</div>
     <div class="title title-3">
@@ -20,7 +20,12 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.objective.description.$error }">
       <span class="form-label">Beskrivelse</span>
-      <textarea @input="dirty = true" v-model.trim="$v.objective.description.$model" rows="4"></textarea>
+      <textarea
+        @input="dirty = true"
+        v-model.trim="$v.objective.description.$model"
+        rows="4"
+        maxlength="320"
+      ></textarea>
     </label>
 
     <hr />

@@ -6,7 +6,7 @@
       <div class="form-group">
         <label class="form-field">
           <span class="form-label">Navn</span>
-          <input type="text" v-model="organization.name" @input="updateSlug" />
+          <input type="text" v-model="organization.name" @input="updateSlug" maxlength="64" />
         </label>
 
         <label>
@@ -33,7 +33,7 @@
 
         <label class="form-field">
           <span class="form-label">Mission statement</span>
-          <textarea rows="4" v-model="organization.missionStatement" @input="dirty = true"></textarea>
+          <textarea rows="4" v-model="organization.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
     </div>
