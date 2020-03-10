@@ -21,7 +21,7 @@
 
       <label class="form-field">
         <span class="form-label">Bilde</span>
-        <img v-if="product.photoURL" :src="product.photoURL" />
+        <img v-if="product.photoURL" :src="product.photoURL" class="preview-image" />
 
         <image-uploader
           :max-width="450"

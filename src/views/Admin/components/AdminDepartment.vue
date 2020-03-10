@@ -16,7 +16,7 @@
 
         <label class="form-field">
           <span class="form-label">Bilde</span>
-          <img v-if="department.photoURL" :src="department.photoURL" />
+          <img v-if="department.photoURL" :src="department.photoURL" class="preview-image" />
 
           <image-uploader
             :max-width="450"

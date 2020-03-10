@@ -44,6 +44,7 @@ _Organisations_ will work in a similar fashion as departments and products, wher
   - Managing products
   - Managing organisations
   - Managing dynamic periods
+- Reduce size of image preview on forms for editing organisations, departments and products
 
 ### Deprecated
 
