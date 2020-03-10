@@ -128,18 +128,18 @@ Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være 
 
 | Felt        | Format     | Beskrivelse                                           |
 | ----------- | ---------- | ----------------------------------------------------- |
-| Kvartal     | `Menyvalg` | Velg hvilket kvartal målet gjelder for.               |
+| Periode     | `Menyvalg` | Velg hvilken periode målet gjelder for.               |
 | Ikon        | `Menyvalg` | Velg et passende ikon for målet.                      |
 | Tittel      | `Tekst`    | Skriv en kort (1--2 ord) tittel for målet.            |
 | Beskrivelse | `Tekst`    | En kort (cirka en setning) tekst som beskriver målet. |
 
-### Legge inn mål for fremtidige perioder (kvartaler)
+### Legge inn mål for fremtidige perioder
 
-Du kan legge inn mål og nøkkelresultater for den neste perioden (kvartalet).
+Du kan legge inn mål og nøkkelresultater for den neste perioden.
 
 - Gå til `Endre produkt`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Velg fremtidig kvartal i første kolonne
+- Velg en fremtidig periode i første kolonne
 - Trykk `+ Legg til` i kolonnen for «Mål»
 
 Mål og nøkkelresultater for fremtidige perioder vil ikke vises til andre enn dine teammedlemmer og er kun tilgjengelige fra «Administrer mål og nøkkelresultater»-siden.
