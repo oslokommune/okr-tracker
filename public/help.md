@@ -96,6 +96,46 @@ Administratorer kan legge til eller fjerne admintilganger for brukere fra [admin
 
 ---
 
+## Produkter
+
+Produkter er underordnet et _produktområde_ og inneholder _mål_ og _nøkkelresultater_.
+
+### Opprette et nytt produkt
+
+Administratorer kan opprette nye produkter fra [«Produkter og produktområder»-siden](/admin/data) i adminpanelet.
+
+- Velg organisasjon og produktområde som produktet skal være en del av.
+- I kolonnen «Velg produkt», klikk `Legg til`.
+- Skriv inn navn, mission statement.
+- Last opp bilde (valgfritt).
+- Legg inn teammedlemmer av produktet
+- Trykk `Lagre`.
+
+### Arkivere et produkt
+
+Administratorer kan arkivere ekisterende produktområder fra [«Produkter og produktområder»-siden](/admin/data) i adminpanelet. Arkiverte objekter kan gjenopprettes.
+
+- Velg produkt fra menyen
+- Trykk `Slett`.
+
+### Gjenopprette et arkivert produkt
+
+Arkiverte produkter kan gjenopprettes av systemadministratorer.
+
+- Aktiver «Vis arkiverte objekter»-bryteren over tabellen.
+- Velg det arkiverte produktet som skal gjenopprettes.
+- Trykk «jenopprett».
+
+### Permanent slette et produkt
+
+For å permanent slette et produkt må produktet allerede vært «arkivert» (se over).
+
+- Aktiver «Vis arkiverte objekter»-bryteren over tabellen.
+- Velg det arkiverte produktet som skal slettes permanent.
+- Trykk «Slett permanent»
+
+---
+
 ## Produktområder
 
 Produktområder inneholder _produkter_, _mål_ og _nøkkelresultater_.
@@ -105,8 +145,8 @@ Produktområder inneholder _produkter_, _mål_ og _nøkkelresultater_.
 Administratorer kan opprette nye produktområder fra [«Produkter og produktområder»-siden](/admin/data) i adminpanelet.
 
 - I kolonnen «Velg produktområde», klikk `Legg til`.
-- Skriv inn navn, mission statement
-- Last opp bilde (valgfritt)
+- Skriv inn navn, mission statement.
+- Last opp bilde (valgfritt).
 - Trykk `Lagre`.
 
 ### Arkivere et produktområde
@@ -122,6 +162,32 @@ Det er ikke støtte for permanent sletting av produktområder fra adminpanelet f
 
 ---
 
+## Organisasjon
+
+Organisasjoner er det overordnede nivået som inneholder _produktområder_. Organisasjoner kan også inneholder egne _mål_ og _nøkkelresultater_.
+
+### Opprette en ny organisasjon
+
+Per nå er det ingen mulighet for å opprette organisasjoner i brukergrensesnittet. Ta kontakt med systemadminstrator dersom dette skulle bli nødvendig.
+
+### Endre en organisasjon
+
+Administratorer kan endre detaljer for en organisasjon fra [«Produkter og produktområder»-siden](/admin/data) i adminpanelet.
+
+- Velg organisasjon fra kolonnen «Velg organisasjon».
+- Endre navn, bilde og/eller mission statement i skjemaet.
+- Trykk `Lagre`.
+
+### Administrere mål og nøkkelresultater for en organisasjon
+
+Kun administratorer har rettigheter til å opprette, endre og slette _mål_ og _nøkkelresultater_ for en organisasjon.
+
+- Naviger til organisasjonssiden (klikk på organisasjonens navn på forsiden).
+- Velg «Endre produkt»
+- Følg oppskriften beskrevet under _mål_ og _nøkkelresultater_ på denne hjelpesiden.
+
+---
+
 ## Mål
 
 Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være helt konkret. Mål er knyttet til én periode (ett kvartal).
@@ -133,16 +199,27 @@ Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være 
 | Tittel      | `Tekst`    | Skriv en kort (1--2 ord) tittel for målet.            |
 | Beskrivelse | `Tekst`    | En kort (cirka en setning) tekst som beskriver målet. |
 
-### Legge inn mål for fremtidige perioder
-
-Du kan legge inn mål og nøkkelresultater for den neste perioden.
+### Opprette ny periode for mål
 
 - Gå til `Endre produkt`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Velg en fremtidig periode i første kolonne
-- Trykk `+ Legg til` i kolonnen for «Mål»
+- Trykk «Legg til periode» i kolonnen «Periode».
+- Skriv et kort og beskrivende navn for perioden (f.eks.: «Q4 2020» eller «Høst 2020»).
+- Velg start- og sluttdato for perioden i datovelgeren.
+- Trykk `Lagre endringer`.
+
+Nå kan nye mål knyttes til denne perioden.
 
 Mål og nøkkelresultater for fremtidige perioder vil ikke vises til andre enn dine teammedlemmer og er kun tilgjengelige fra «Administrer mål og nøkkelresultater»-siden.
+
+### Slette en periode
+
+Perioder som inneholder _mål_ kan ikke slettes. For permanent å slette en periode må samtlige tilknyttede mål arkiveres eller flyttes.
+
+- Gå til `Endre produkt`
+- Naviger til `Mål og nøkkelresultater`-fanen
+- Velg perioden som skal slettes.
+- Trykk `Slett periode`
 
 ### Kan jeg gjenbruke et tidligere mål?
 
