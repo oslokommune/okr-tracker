@@ -7,7 +7,7 @@
     <div class="section form-group">
       <label class="form-field">
         <span class="form-label">Produktnavn</span>
-        <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" />
+        <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" maxlength="64" />
       </label>
 
       <label
@@ -39,7 +39,7 @@
       <div class="form-field">
         <label>
           <span class="form-label">Mission statement</span>
-          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true"></textarea>
+          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
 

@@ -25,7 +25,7 @@
           <form @submit.prevent="submitDisplayName()">
             <label class="form-field form-field--small">
               <div class="form-login">
-                <input class="field" v-model="displayName" />
+                <input class="field" v-model="displayName" maxlength="32" />
                 <button class="btn">
                   Lagre
                 </button>
