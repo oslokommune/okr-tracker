@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Refactor all Cloud Functions
 - Better documentation (jsdoc) for all Cloud Functions
+- Show progress next to an _objective_ also when it's empty (0%)
 
 ### Fixed
 
