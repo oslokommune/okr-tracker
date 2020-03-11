@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
