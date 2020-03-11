@@ -92,7 +92,7 @@
     }
   },
   "objective": {
-    "quarter": "Kvartal",
+    "period": "Periode",
     "icon": "Ikon",
     "description": "Beskrivelse",
     "title": "Tittel",

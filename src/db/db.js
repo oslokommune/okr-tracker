@@ -55,10 +55,10 @@ export function productListener(slug) {
 }
 
 /**
- * Finds the product with the provided slug and
+ * Finds the department with the provided slug and
  * adds a listener for changes on the object.
- * Binds the changes to `this.product` on the caller.
- * @param {String} slug - product slug
+ * Binds the changes to `this.department` on the caller.
+ * @param {String} slug - department slug
  * @returns {Function} - Unsubscribe
  */
 export function departmentListener(slug) {
@@ -71,6 +71,26 @@ export function departmentListener(slug) {
         errorHandler('department_listener_error', err);
       });
       this.department = serializeDocument(departmentData);
+    });
+}
+
+/**
+ * Finds the organization with the provided slug and
+ * adds a listener for changes on the object.
+ * Binds the changes to `this.organization` on the caller.
+ * @param {String} slug - organization slug
+ * @returns {Function} - Unsubscribe
+ */
+export function organizationListener(slug) {
+  return db
+    .collection('orgs')
+    .where('slug', '==', slug)
+    .onSnapshot(async d => {
+      if (!d.docs.length) return;
+      const organizationData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('organization_listener_error', err);
+      });
+      this.organization = serializeDocument(organizationData);
     });
 }
 
@@ -88,6 +108,10 @@ export function serializeDocument(doc) {
     isDashboardUser: isDashboardUser(),
     ...doc.data(),
   };
+}
+
+export function serializeList(snapshot) {
+  return snapshot.docs.map(serializeDocument);
 }
 
 /**
@@ -205,10 +229,12 @@ export const getNestedData = () => {
   return getChildren(db, 'orgs', getOrgData);
 };
 
-async function getOrgData(organisation) {
-  const { ref } = organisation;
+async function getOrgData(organization) {
+  const { ref } = organization;
   const departments = await getChildren(ref, 'departments', getDeptData);
-  return { departments, ...organisation.data() };
+  const orgData = organization.data();
+  const routerLinkTo = { name: 'organization', params: { slug: orgData.slug } };
+  return { departments, ...orgData, routerLinkTo };
 }
 
 async function getDeptData(department) {
@@ -258,7 +284,8 @@ export async function findUser(slug) {
   return userRef
     .where('slug', '==', slug)
     .get()
-    .then(d => d.docs.map(serializeDocument)[0])
+    .then(serializeList)
+    .then(list => list[0])
     .catch(err => {
       errorHandler('find_user_error', err);
     });
@@ -277,7 +304,7 @@ export async function userProductsListener(user) {
     .collectionGroup('products')
     .where('team', 'array-contains', userRef)
     .get()
-    .then(d => d.docs.map(serializeDocument))
+    .then(serializeList)
     .catch(err => {
       errorHandler('user_products_listener_error', err);
     });
@@ -291,7 +318,7 @@ export async function getAllDepartments() {
   return db
     .collectionGroup('departments')
     .get()
-    .then(d => d.docs.map(serializeDocument))
+    .then(serializeList)
     .catch(err => {
       errorHandler('get_all_department_error', err);
     });
@@ -318,7 +345,7 @@ export async function getAuditFromUser(userId) {
     .limit(10)
     .get()
     .then(snapshot => {
-      return snapshot.docs.map(serializeDocument).filter(d => eventTypes.includes(d.event));
+      return serializeList(snapshot).filter(d => eventTypes.includes(d.event));
     })
     .catch(err => {
       errorHandler('audit_specific_user_error', err);

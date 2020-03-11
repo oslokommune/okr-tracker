@@ -77,8 +77,8 @@ export function addedProduct() {
   return show(i18n.tc('toaster.add.product'));
 }
 
-export function addedObjective(quarterName) {
-  return show(i18n.tc('toaster.add.objective', null, { object: quarterName }));
+export function addedObjective(periodName) {
+  return show(i18n.tc('toaster.add.objective', null, { object: periodName }));
 }
 
 export function addedDepartment() {

@@ -2,18 +2,19 @@
   <div>
     <page-header :data="product || {}"></page-header>
 
-    <the-sub-nav />
+    <the-sub-nav v-if="product" :document="product" />
 
     <div class="content" v-if="product">
       <div class="container container--sidebar">
         <document-sidebar
           :has-edit-permissions="hasEditPermissions"
           :document="product"
-          :active-quarter="activeQuarter"
           type="product"
         ></document-sidebar>
 
         <main class="content--main content--padding">
+          <callout-upload-product-image></callout-upload-product-image>
+
           <document-summary :document="product" :team="team" type="product"></document-summary>
 
           <hr />
@@ -27,14 +28,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { serializeDocument } from '@/db/db';
+import { mapState, mapActions, mapMutations } from 'vuex';
+import { serializeDocument, serializeList } from '@/db/db';
 
 import PageHeader from '@/components/PageHeader.vue';
 import DocumentSummary from '@/components/DocumentSummary.vue';
 import ObjectivesList from '@/components/ObjectivesList.vue';
 import DocumentSidebar from '@/components/DocumentSidebar.vue';
 import TheSubNav from '@/components/TheSubNav.vue';
+import CalloutUploadProductImage from '@/components/Callouts/CalloutUploadProductImage.vue';
+import slugify from '@/util/slugify';
 
 import * as Toast from '@/util/toasts';
 
@@ -46,16 +49,33 @@ export default {
     team: [],
   }),
 
+  props: {
+    period: {
+      type: String,
+      required: false,
+      default: () => '',
+    },
+  },
+
   components: {
     DocumentSidebar,
     PageHeader,
     DocumentSummary,
     ObjectivesList,
     TheSubNav,
+    CalloutUploadProductImage,
   },
 
   computed: {
-    ...mapState(['user', 'product', 'activeQuarter']),
+    ...mapState(['user', 'product']),
+
+    slug() {
+      return this.$route.params.slug;
+    },
+
+    queryParamPeriod() {
+      return this.$route.query.period;
+    },
 
     hasEditPermissions() {
       if (!this.user) return;
@@ -67,7 +87,18 @@ export default {
   },
 
   watch: {
+    slug(slug) {
+      if (!slug) return;
+      this.watchProduct(slug);
+    },
+
+    queryParamPeriod() {
+      this.setPeriod();
+    },
+
     async product(prod) {
+      this.setPeriod();
+
       if (prod.archived) {
         Toast.fourOhFour();
         this.$router.push('/');
@@ -83,11 +114,49 @@ export default {
   },
 
   created() {
-    this.watchProduct(this.$route.params.slug);
+    if (!this.slug) return;
+    this.watchProduct(this.slug);
+    this.setPeriod();
   },
 
   methods: {
     ...mapActions(['watchProduct']),
+    ...mapMutations(['SET_ACTIVE_PERIOD']),
+
+    async setPeriod() {
+      if (!this.product) return;
+
+      const periods = await this.product.ref
+        .collection('periods')
+        .get()
+        .then(serializeList)
+        .then(docs => docs.filter(doc => doc.startDate.toDate() < new Date()))
+        .then(docs =>
+          docs.sort((a, b) => {
+            if (a.startDate.seconds < b.startDate.seconds) return 1;
+            if (a.startDate.seconds > b.startDate.seconds) return -1;
+            return 0;
+          })
+        );
+
+      let activePeriod;
+
+      if (!this.queryParamPeriod) {
+        const [firstPeriod] = periods;
+        activePeriod = firstPeriod;
+      } else {
+        activePeriod = periods.find(period => slugify(period.name) === this.queryParamPeriod);
+      }
+
+      if (!activePeriod) {
+        this.SET_ACTIVE_PERIOD(null);
+      } else {
+        activePeriod.ref.onSnapshot(snapshot => {
+          const period = serializeDocument(snapshot);
+          this.SET_ACTIVE_PERIOD(period);
+        });
+      }
+    },
   },
 };
 </script>

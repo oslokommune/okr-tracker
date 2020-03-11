@@ -4,7 +4,7 @@
       <template v-if="hasEditPermissions">
         <router-link
           :to="{
-            name: type === 'department' ? 'edit-department' : 'edit-product',
+            name: editLinkName,
             params: { slug: $route.params.slug },
           }"
           class="sidebar-nav__item"
@@ -43,7 +43,6 @@
             v-if="expandAddKeyRes"
             @close-menu="expandAddKeyRes = false"
             :productref="document.ref"
-            :selected-quarter-name="activeQuarter.name"
           ></add-keyres>
         </div>
 
@@ -103,6 +102,10 @@ export default {
       if (!timestamp) return null;
       return datePretty(timestamp.toDate());
     },
+    editLinkName() {
+      if (!this.type) return;
+      return `edit-${this.type}`;
+    },
   },
 
   props: {
@@ -112,10 +115,6 @@ export default {
       default: false,
     },
     document: {
-      type: Object,
-      required: true,
-    },
-    activeQuarter: {
       type: Object,
       required: true,
     },

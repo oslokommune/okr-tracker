@@ -1,21 +1,25 @@
 <template>
   <div>
-    <page-header :data="department || {}"></page-header>
+    <page-header :data="organization || {}"></page-header>
 
-    <the-sub-nav v-if="department" :document="department" />
+    <the-sub-nav v-if="organization" :document="organization" />
 
-    <div class="content" v-if="department">
+    <div class="content" v-if="organization">
       <div class="container container--sidebar">
         <document-sidebar
-          :document="department"
+          :document="organization"
           :has-edit-permissions="hasEditPermissions"
-          type="department"
+          type="organization"
         ></document-sidebar>
 
         <main class="content--main content--padding">
-          <document-summary :document="department" :team="departmentProducts" type="department"></document-summary>
+          <document-summary
+            :document="organization"
+            :team="organizationDepartments"
+            type="organization"
+          ></document-summary>
           <hr />
-          <objectives-list :document="department"></objectives-list>
+          <objectives-list :document="organization"></objectives-list>
         </main>
       </div>
     </div>
@@ -35,7 +39,7 @@ import ObjectivesList from '@/components/ObjectivesList.vue';
 import TheSubNav from '@/components/TheSubNav.vue';
 
 export default {
-  name: 'DepartmentHome',
+  name: 'OrganizationHome',
 
   data: () => ({
     team: [],
@@ -50,7 +54,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'departmentProducts', 'department']),
+    ...mapState(['user', 'organizationDepartments', 'organization']),
 
     slug() {
       return this.$route.params.slug;
@@ -68,10 +72,10 @@ export default {
 
   watch: {
     slug(slug) {
-      this.watchDepartment(slug);
+      this.watchOrganization(slug);
     },
 
-    department() {
+    organization() {
       this.setPeriod();
     },
 
@@ -82,18 +86,18 @@ export default {
 
   created() {
     if (!this.slug) return;
-    this.watchDepartment(this.slug);
+    this.watchOrganization(this.slug);
     this.setPeriod();
   },
 
   methods: {
-    ...mapActions(['watchDepartment']),
+    ...mapActions(['watchOrganization']),
     ...mapMutations(['SET_ACTIVE_PERIOD']),
 
     async setPeriod() {
-      if (!this.department) return;
+      if (!this.organization) return;
 
-      const periods = await this.department.ref
+      const periods = await this.organization.ref
         .collection('periods')
         .get()
         .then(serializeList)

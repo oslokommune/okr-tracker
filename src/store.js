@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { quarters } from '@/util/utils';
 import { serializeDocument, getNestedData } from '@/db/db';
 import icons from '@/config/icons';
 
@@ -57,10 +56,9 @@ export const actions = {
 
         const data = serializeDocument(snapshot);
         const objective = await snapshot.ref.parent.parent.get().then(d => d.data());
-        const { icon, quarter } = objective;
+        const { icon } = objective;
 
         data.icon = icon;
-        data.quarter = quarter;
         commit('SET_KEY_RESULT', data);
       });
     });
@@ -123,8 +121,33 @@ export const actions = {
     });
   },
 
-  setQuarter({ commit }, quarter) {
-    commit('SET_QUARTER', quarter);
+  async watchOrganization({ commit }, slug) {
+    if (!slug) throw new Error('Missing slug');
+
+    const getOrganization = db
+      .collection('orgs')
+      .where('slug', '==', slug)
+      .get()
+      .then(d => d.docs[0])
+      .then(d => serializeDocument(d))
+      .catch(err => {
+        errorHandler('get_organization_error', err);
+      });
+
+    getOrganization.then(org => {
+      org.ref
+        .collection('departments')
+        .where('archived', '==', false)
+        .onSnapshot(d => {
+          commit('SET_ORGANIZATION_DEPARTMENTS', d.docs.map(serializeDocument));
+        });
+    });
+
+    getOrganization.then(org => {
+      org.ref.onSnapshot(d => {
+        commit('SET_ORGANIZATION', serializeDocument(d));
+      });
+    });
   },
 };
 
@@ -155,9 +178,8 @@ export const mutations = {
     state.key_result = payload;
   },
 
-  SET_QUARTER(state, payload) {
-    payload = payload || state.quarters[0];
-    state.activeQuarter = payload;
+  SET_ACTIVE_PERIOD(state, payload) {
+    state.activePeriod = payload;
   },
 
   SET_DEPARTMENTPRODUCTS(state, payload) {
@@ -167,6 +189,14 @@ export const mutations = {
   SET_DEPARTMENT(state, payload) {
     state.department = payload;
   },
+
+  SET_ORGANIZATION(state, payload) {
+    state.organization = payload;
+  },
+
+  SET_ORGANIZATION_DEPARTMENTS(state, payload) {
+    state.organizationDepartments = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -174,14 +204,15 @@ export default new Vuex.Store({
     user: null,
     users: [],
     nest: [],
-    quarters: quarters(),
-    activeQuarter: quarters()[0],
+    activePeriod: null,
     icons,
     showNewsfeed: false,
     key_result: null,
     product: null,
     department: null,
     departmentProducts: null,
+    organization: null,
+    organizationDepartments: null,
   },
   getters,
   mutations,

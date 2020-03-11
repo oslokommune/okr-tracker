@@ -3,6 +3,7 @@ import Audit from '@/db/audit';
 import { errorHandler } from '@/util/utils';
 import { isTeamMemberOfProduct } from '@/db/db';
 import Store from '@/store';
+import { functions } from '@/config/firebaseConfig';
 
 /**
  * Creates a key result for the provided objective
@@ -40,9 +41,17 @@ async function create(objectiveRef, data) {
   return objectiveRef
     .collection('keyResults')
     .add(data)
-    .then(keyresRef => {
+    .then(async keyresRef => {
       Toast.addedKeyResult();
       Audit.createKeyResult(keyresRef, documentRef, objectiveRef);
+
+      if (data.auto) {
+        const myCall = await functions.httpsCallable('triggerScheduledFunction');
+        await myCall(keyresRef.path).catch(err => {
+          throw new Error(err);
+        });
+      }
+
       return keyresRef;
     })
     .catch(err => {
@@ -62,6 +71,11 @@ async function update(keyresRef, data) {
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
   if (!hasEditPermissions) throw errorHandler('update_keyres_error', new Error('Insufficient permissions'));
+
+  data.auto = data.auto ? data.auto : false;
+  data.sheetId = data.sheetId ? data.sheetId : false;
+  data.sheetCell = data.sheetCell ? data.sheetCell : false;
+  data.sheetName = data.sheetName ? data.sheetName : false;
 
   return keyresRef
     .update(data)

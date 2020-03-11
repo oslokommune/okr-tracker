@@ -36,11 +36,7 @@
                         Sist oppdatert {{ getEdited(product) }}
                       </span>
                       <div class="progression">
-                        <div
-                          class="progression__bar"
-                          v-if="product.progressions"
-                          :style="`width:${product.progressions[quarters[0].name] * 100}%`"
-                        ></div>
+                        <SimpleProgress :document="product"></SimpleProgress>
                       </div>
                       <i class="fa fa-arrow-right"></i>
                     </h3>
@@ -63,6 +59,7 @@ import { mapState } from 'vuex';
 import PageHeader from '@/components/PageHeader.vue';
 import { timeFromNow } from '@/util/utils';
 import ProductDetails from '@/views/Home/components/ProductDetails.vue';
+import SimpleProgress from '@/views/Home/components/SimpleProgress.vue';
 
 export default {
   data: () => ({
@@ -70,11 +67,12 @@ export default {
   }),
 
   computed: {
-    ...mapState(['nest', 'quarters']),
+    ...mapState(['nest']),
   },
   components: {
     PageHeader,
     ProductDetails,
+    SimpleProgress,
   },
   methods: {
     getEdited(doc) {

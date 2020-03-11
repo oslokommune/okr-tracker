@@ -7,7 +7,7 @@
     <div class="section form-group">
       <label class="form-field">
         <span class="form-label">Produktnavn</span>
-        <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" />
+        <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" maxlength="64" />
       </label>
 
       <label
@@ -21,26 +21,26 @@
 
       <label class="form-field">
         <span class="form-label">Bilde</span>
-        <img v-if="product.photoURL" :src="product.photoURL" />
+        <img v-if="product.photoURL" :src="product.photoURL" class="preview-image" />
 
         <image-uploader
-          :max-width="250"
-          :max-height="250"
-          :quality="0.6"
+          :max-width="450"
+          :max-height="450"
+          :quality="0.9"
           :auto-rotate="true"
           output-format="blob"
           accept="image/*"
           do-not-resize="['gif']"
           :preview="false"
           @input="setImage"
-          @onUpload="uploadPhoto"
         ></image-uploader>
       </label>
 
       <div class="form-field">
         <label>
           <span class="form-label">Mission statement</span>
-          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true"></textarea>
+          <span class="form-help">Her kan du skrive <router-link :to="{ name: 'help' }">Markdown</router-link></span>
+          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
 
@@ -189,6 +189,7 @@ export default {
     updateSlug() {
       this.dirty = true;
       this.product.slug = slugify(this.product.name);
+      this.uploadPhoto();
     },
 
     async uploadPhoto() {

@@ -32,14 +32,12 @@ export default class Pie {
   /**
    * Update the visualisation using the provided data
    */
-  render(obj, quarter) {
-    if (!obj || !quarter) return;
-
-    const progress = obj && obj.progressions && obj.progressions[quarter.name] ? obj.progressions[quarter.name] : 0;
-    const time = getTimeProgression(quarter.name);
+  render(period) {
+    const time = getTimeProgression(period);
+    const { progression } = period || 0;
 
     // Set up the data for the inner and outer arcs
-    const innerArcs = this.pie([progress, 1 - progress]);
+    const innerArcs = this.pie([progression, 1 - progression]);
     const outerArcs = this.pie([time, 1 - time]);
 
     // Use the arc data to update the arcs
@@ -52,6 +50,6 @@ export default class Pie {
     this.outer.select('text').call(updateTodayTextPosition, todayAngle);
 
     // Update the percentage text by tweening to the provided value
-    this.percentText.call(updatePercentText, progress);
+    this.percentText.call(updatePercentText, progression);
   }
 }

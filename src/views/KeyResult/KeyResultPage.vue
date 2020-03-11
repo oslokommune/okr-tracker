@@ -25,12 +25,32 @@
 
         <div class="columns">
           <div class="column--left">
-            <h3 class="title-3" v-if="quarter">Progresjon gjennom {{ quarter }}</h3>
+            <h3 class="title-3" v-if="period">Progresjon gjennom {{ period.name }}</h3>
             <svg class="graph" ref="graph"></svg>
 
             <hr />
 
-            <section v-if="hasEditPermissions" class="section">
+            <section class="section" v-if="key_result && key_result.auto">
+              <div class="callout">
+                <div class="callout__message">
+                  Dette er et automatisk nøkkelresultat.
+                </div>
+
+                <div class="callout__actions">
+                  <button
+                    class="btn btn--borderless"
+                    v-if="key_result && key_result.auto"
+                    @click="triggerScheduledFunction"
+                  >
+                    <i v-if="!loading" class="fa fa-fw fa-sync"></i>
+                    <i v-else class="fa fa-spinner fa-pulse fa-fw"></i>
+                    Hent data nå
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <section v-if="hasEditPermissions && key_result && !key_result.auto" class="section">
               <h2 class="title-2">Legg til nytt målepunkt</h2>
 
               <form @submit.prevent="addValue" class="form-group">
@@ -39,6 +59,7 @@
                     <span class="form-label">Verdi</span>
                     <input
                       type="number"
+                      step="any"
                       v-model="value"
                       v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
                     />
@@ -78,7 +99,9 @@
             </section>
 
             <section class="section" v-if="key_result">
-              <h2 class="title-2">Registrerte målepunkter</h2>
+              <h2 class="title-2">
+                Registrerte målepunkter
+              </h2>
 
               <div v-if="!progressions">Det er ingen registrerte målepunkter</div>
 
@@ -111,7 +134,7 @@
             </section>
           </div>
 
-          <div class="column--right">
+          <div class="column--right" v-if="hasEditPermissions && key_result">
             <h3 class="title-3">
               <i class="fa fa-pen"></i>
               Notater
@@ -148,12 +171,13 @@ import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
 import marked from 'marked';
 import { sanitize } from 'dompurify';
-import { serializeDocument, isTeamMemberOfProduct } from '@/db/db';
+import { serializeDocument, serializeList, isTeamMemberOfProduct } from '@/db/db';
 import PageHeader from '@/components/PageHeader.vue';
 import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
 import keyResHandler from '@/db/keyresultHandler';
 import 'flatpickr/dist/flatpickr.css';
+import { functions } from '@/config/firebaseConfig';
 
 marked.setOptions({
   smartypants: true,
@@ -166,10 +190,11 @@ export default {
     graph: null,
     doc: null,
     value: 0,
-    quarter: '',
     date: null,
     objective: null,
+    period: null,
     dirty: false,
+    loading: false,
     editNotes: false,
     unsubscribe: {
       doc: null,
@@ -190,7 +215,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user', 'key_result', 'nest', 'quarters']),
+    ...mapState(['user', 'key_result']),
 
     markdown() {
       if (!this.key_result || !this.key_result.notes) return '';
@@ -248,25 +273,6 @@ export default {
     if (!this.list) return;
 
     this.graph = new Linechart(this.$refs.graph);
-
-    this.objective = await this.key_result.ref.parent.parent
-      .get()
-      .then(serializeDocument)
-      .catch(err => {
-        this.$errorHandler('get_objective_error', err);
-      });
-
-    const { quarter } = this.objective;
-    this.quarter = quarter;
-
-    // Limit date input based on the selected quarter
-    const { fromDate, toDate } = this.quarters.find(d => d.name === quarter);
-    this.flatPickerConfig.minDate = fromDate;
-    this.flatPickerConfig.maxDate = toDate;
-
-    this.value = this.key_result && this.key_result.currentValue ? this.key_result.currentValue : 0;
-
-    this.graph.render(this.key_result, quarter, this.list);
   },
 
   watch: {
@@ -277,27 +283,35 @@ export default {
         this.graph = new Linechart(this.$refs.graph);
       }
 
-      if (!this.key_result) return;
-
-      const { quarter } = this.key_result;
-      this.quarter = quarter;
-
-      this.graph.render(this.key_result, quarter, newVal);
+      if (!this.period || !this.graph) return;
+      this.graph.render(this.key_result, this.period, this.list);
     },
 
     id() {
       this.watchData();
     },
 
-    key_result(obj) {
+    async key_result(obj) {
+      if (!this.graph) return;
+
       this.value = obj.currentValue || obj.startValue || 0;
 
-      const { quarter } = this.key_result;
-      const { list } = this;
+      const objectiveRef = obj.ref.parent.parent;
+      this.objective = await objectiveRef
+        .get()
+        .then(serializeDocument)
+        .catch(err => {
+          this.$errorHandler('get_objective_error', err);
+        });
 
-      if (!list || !quarter || !obj) return;
+      this.period = await this.objective.period.get().then(snapshot => snapshot.data());
+      if (!this.period) return;
 
-      this.graph.render(obj, quarter, list);
+      const { startDate, endDate } = this.period;
+      this.flatPickerConfig.minDate = startDate.toDate();
+      this.flatPickerConfig.maxDate = endDate.toDate();
+
+      this.graph.render(obj, this.period, this.list);
     },
   },
 
@@ -329,6 +343,17 @@ export default {
       this.editNotes = false;
     },
 
+    async triggerScheduledFunction() {
+      this.loading = true;
+
+      const myCall = await functions.httpsCallable('triggerScheduledFunction');
+      await myCall(this.key_result.ref.path).catch(err => {
+        throw new Error(err);
+      });
+
+      this.loading = false;
+    },
+
     async watchData() {
       if (this.unsubscribe.doc) this.unsubscribe.doc();
       if (this.unsubscribe.collection) this.unsubscribe.collection();
@@ -339,7 +364,7 @@ export default {
 
       this.unsubscribe.collection = this.doc.collection('progress').onSnapshot(snapshot => {
         if (!snapshot.docs.length) return;
-        this.progressions = snapshot.docs.map(serializeDocument).sort((a, b) => b.date - a.date);
+        this.progressions = serializeList(snapshot).sort((a, b) => b.date - a.date);
       });
     },
   },

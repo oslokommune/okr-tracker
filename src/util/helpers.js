@@ -1,21 +1,12 @@
 import { scaleTime, scaleLinear, mean } from 'd3';
-import { endOfQuarter } from 'date-fns';
 
-export function getDateSpanFromQuarter(quarter) {
-  const year = quarter.split(' ')[1];
-  const q = +quarter.split('Q')[1].split(' ')[0];
+export function getTimeProgression(period) {
+  if (!period) return -1;
 
-  const startDate = new Date(year, (q - 1) * 3, 1);
-  const endDate = endOfQuarter(startDate);
-
-  return { startDate, endDate };
-}
-
-export function getTimeProgression(quarter) {
-  const { startDate, endDate } = getDateSpanFromQuarter(quarter);
+  const { startDate, endDate } = period;
 
   const timeScale = scaleTime()
-    .domain([startDate, endDate])
+    .domain([startDate.toDate(), endDate.toDate()])
     .clamp(true);
 
   return timeScale(new Date());

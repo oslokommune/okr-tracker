@@ -11,12 +11,16 @@
     </router-link>
 
     <button
-      v-if="hasEditPermissions"
+      v-if="hasEditPermissions && !keyres.auto"
       class="btn btn--borderless keyres__toggle"
       v-tooltip="editMode ? $t('tooltip.close') : $t('keyres.updateKeyres')"
       @click="editMode = !editMode"
     >
       <i class="fa fa-fw" :class="{ 'fa-times': editMode, 'fa-wrench': !editMode }"></i>
+    </button>
+
+    <button v-if="keyres.auto" class="btn btn--borderless keyres__toggle" disabled>
+      <i class="fa fa-fw fa-magic" v-tooltip="`Automatisk`"></i>
     </button>
 
     <div v-if="!editMode" class="keyres__bar" v-tooltip.right="`${percentage}`">
@@ -28,6 +32,9 @@
         <input
           type="number"
           v-model="value"
+          step="any"
+          :min="keyres.fromValue"
+          :max="keyres.targetValue"
           v-tooltip="{ content: $t('tooltip.newValue'), trigger: 'focus', hideOnTargetClick: false }"
         />
         <button class="btn" v-tooltip="$t('tooltip.save')">
@@ -52,7 +59,7 @@ export default {
   data: () => ({
     editMode: false,
     hasEditPermissions: false,
-    value: 0,
+    value: 0.0,
   }),
 
   computed: {
@@ -123,7 +130,7 @@ export default {
   @media screen and (min-width: 900px) {
     grid-template-areas: 'text edit bar';
     grid-template-rows: auto;
-    grid-template-columns: minmax(10em, 2fr) auto minmax(8em, 1fr);
+    grid-template-columns: minmax(10em, 4fr) auto 12rem;
   }
 
   &:last-child {
@@ -142,6 +149,11 @@ export default {
     grid-area: edit;
     align-self: center;
     color: $color-grey-300;
+
+    &:disabled {
+      color: $color-yellow;
+      background: none;
+    }
 
     .fa {
       margin: 0;

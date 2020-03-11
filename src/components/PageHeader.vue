@@ -18,7 +18,8 @@
         <div class="page-header__name" :class="{ 'page-header__name--left': !showImage }">
           <h1 class="title-1">
             <i v-if="icon" :class="`fa fa-fw fa-${icon}`" aria-hidden></i>
-            {{ title }}
+            <router-link v-if="data.routerLinkTo" :to="data.routerLinkTo">{{ data.name }}</router-link>
+            <template v-else>{{ title }}</template>
           </h1>
         </div>
 
@@ -60,7 +61,6 @@ export default {
     title() {
       if (this.data.description) return 'Nøkkelresultat';
       if (!this.data) return 'Laster ...';
-
       return this.data.name || this.data.displayName || this.data.id || 'Laster ...';
     },
 
@@ -77,7 +77,7 @@ export default {
     },
 
     showImage() {
-      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'me'];
+      const typesWithImage = ['product', 'edit-product', 'profile', 'department', 'organization', 'me'];
       return typesWithImage.includes(this.style);
     },
   },
@@ -136,7 +136,7 @@ export default {
       }
 
       if (docType === 'orgs') {
-        return null;
+        return { name: 'organization', params: { slug: document.slug } };
       }
       if (docType === 'products') {
         return { name: 'product', params: { slug: document.slug } };
@@ -144,7 +144,6 @@ export default {
       if (docType === 'departments') {
         return { name: 'department', params: { slug: document.slug } };
       }
-
       if (docType === 'keyResults') {
         return { name: 'key-result', params: { slug: this.$route.params.slug, keyresid: document.id } };
       }

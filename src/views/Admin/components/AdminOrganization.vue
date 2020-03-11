@@ -1,22 +1,22 @@
 <template>
-  <div v-if="department">
-    <h2 class="title title-2">Administrer produktområde</h2>
+  <div v-if="organization">
+    <h2 class="title title-2">Administrer organisasjon</h2>
 
     <div class="section">
       <div class="form-group">
         <label class="form-field">
           <span class="form-label">Navn</span>
-          <input type="text" v-model="department.name" @input="updateSlug" maxlength="64" />
+          <input type="text" v-model="organization.name" @input="updateSlug" maxlength="64" />
         </label>
 
         <label>
           <span class="form-label">Slug</span>
-          <input type="text" v-model="department.slug" disabled />
+          <input type="text" v-model="organization.slug" disabled />
         </label>
 
         <label class="form-field">
           <span class="form-label">Bilde</span>
-          <img v-if="department.photoURL" :src="department.photoURL" class="preview-image" />
+          <img v-if="organization.photoURL" :src="organization.photoURL" class="preview-image" />
 
           <image-uploader
             :max-width="450"
@@ -34,13 +34,12 @@
         <label class="form-field">
           <span class="form-label">Mission statement</span>
           <span class="form-help">Her kan du skrive <router-link :to="{ name: 'help' }">Markdown</router-link></span>
-          <textarea rows="4" v-model="department.missionStatement" @input="dirty = true" maxlength="320"></textarea>
+          <textarea rows="4" v-model="organization.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
     </div>
-
     <button class="btn" :disabled="!dirty" @click="saveObject">Lagre</button>
-    <button class="btn btn--borderless" @click="deleteObject">Slett</button>
+    <!-- <button class="btn btn--borderless" @click="deleteObject">Slett</button> -->
   </div>
 </template>
 
@@ -52,22 +51,23 @@ import Audit from '@/db/audit';
 import slugify from '@/util/slugify';
 
 export default {
-  name: 'AdminDepartment',
+  name: 'AdminOrganization',
 
   data: () => ({
-    department: null,
+    organization: null,
     file: null,
     dirty: false,
   }),
   props: {
     docref: { type: Object, required: true },
   },
+
   async created() {
-    this.department = await this.docref
+    this.organization = await this.docref
       .get()
       .then(d => d.data())
       .catch(err => {
-        this.$errorHandler('get_department_error', err);
+        this.$errorHandler('get_organization_error', err);
       });
   },
 
@@ -77,12 +77,12 @@ export default {
 
   watch: {
     async docref(newDocref) {
-      this.department = null;
-      this.department = await newDocref
+      this.organization = null;
+      this.organization = await newDocref
         .get()
         .then(d => d.data())
         .catch(err => {
-          this.$errorHandler('get_department_error', err);
+          this.$errorHandler('get_organization_error', err);
         });
     },
   },
@@ -90,25 +90,14 @@ export default {
   methods: {
     saveObject() {
       this.docref
-        .update({ edited: new Date(), editedBy: this.user.ref, ...this.department })
+        .update({ edited: new Date(), editedBy: this.user.ref, ...this.organization })
         .then(() => {
           this.dirty = false;
-          Audit.updateDepartment(this.docref);
+          Audit.updateOrganization(this.docref);
           Toast.savedChanges();
         })
         .catch(err => {
-          this.$errorHandler('update_department_error', err);
-        });
-    },
-    deleteObject() {
-      this.docref
-        .update({ edited: new Date(), editedBy: this.user.ref, archived: true })
-        .then(() => {
-          this.department = null;
-        })
-        .then(Toast.deleted)
-        .catch(err => {
-          this.$errorHandler('archive_department_error', err);
+          this.$errorHandler('update_organization_error', err);
         });
     },
 
@@ -121,26 +110,26 @@ export default {
     async uploadPhoto() {
       if (!this.file) return;
       this.uploading = true;
-      const storageRef = storage.ref(`departments/${this.docref.id}`);
+      const storageRef = storage.ref(`organizations/${this.docref.id}`);
 
       const snapshot = await storageRef.put(this.file).catch(err => {
-        this.$errorHandler('upload_photo_department_error', err);
+        this.$errorHandler('upload_photo_organization_error', err);
       });
       Toast.uploadedPhoto();
 
       const photoURL = await snapshot.ref.getDownloadURL();
       await this.docref.update({ photoURL }).catch(err => {
-        this.$errorHandler('upload_photo_department_error', err);
+        this.$errorHandler('upload_photo_organization_error', err);
       });
       Toast.savedChanges();
 
-      this.department.photoURL = photoURL;
+      this.organization.photoURL = photoURL;
       this.uploading = false;
     },
 
     updateSlug() {
       this.dirty = true;
-      this.department.slug = slugify(this.department.name);
+      this.organization.slug = slugify(this.organization.name);
     },
   },
 };

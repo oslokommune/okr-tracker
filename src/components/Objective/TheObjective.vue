@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { serializeDocument } from '@/db/db';
+import { serializeList } from '@/db/db';
 import TheKeyResult from '@/components/KeyRes/TheKeyResult.vue';
 
 export default {
@@ -53,7 +53,7 @@ export default {
       .collection('keyResults')
       .where('archived', '==', false)
       .onSnapshot(async snapshot => {
-        this.keyResults = snapshot.docs.map(serializeDocument);
+        this.keyResults = serializeList(snapshot);
       });
   },
 };

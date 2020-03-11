@@ -1,5 +1,5 @@
 <template>
-  <svg class="pie" ref="svg"></svg>
+  <svg v-show="activePeriod" class="pie" ref="svg"></svg>
 </template>
 
 <script>
@@ -14,10 +14,6 @@ export default {
   }),
 
   props: {
-    document: {
-      type: Object,
-      required: true,
-    },
     darkmode: {
       type: Boolean,
       required: false,
@@ -26,25 +22,21 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeQuarter']),
+    ...mapState(['activePeriod']),
+
+    progress() {
+      return this.activePeriod && this.activePeriod.progression ? this.activePeriod.progression : 0;
+    },
   },
 
   mounted() {
     this.pie = new Pie(this.$refs.svg, this.darkmode);
-    if (!this.document) return;
-    if (!this.activeQuarter) return;
-
-    this.pie.render(this.document, this.activeQuarter);
+    this.pie.render(this.activePeriod);
   },
 
   watch: {
-    document(document) {
-      if (!this.activeQuarter) return;
-      this.pie.render(document, this.activeQuarter);
-    },
-    activeQuarter(quarter) {
-      if (!quarter) return;
-      this.pie.render(this.document, quarter);
+    activePeriod(period) {
+      this.pie.render(period);
     },
   },
 };
