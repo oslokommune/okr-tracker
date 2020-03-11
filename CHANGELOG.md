@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - Refactor all Cloud Functions
+- Better documentation (jsdoc) for all Cloud Functions
 
 ### Fixed
 
