@@ -91,5 +91,9 @@ export default {
     padding-top: 0.25rem;
     padding-left: 2rem;
   }
+
+  a {
+    font-weight: 400 !important;
+  }
 }
 </style>

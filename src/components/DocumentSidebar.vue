@@ -4,7 +4,7 @@
       <template v-if="hasEditPermissions">
         <router-link
           :to="{
-            name: type === 'department' ? 'edit-department' : 'edit-product',
+            name: editLinkName,
             params: { slug: $route.params.slug },
           }"
           class="sidebar-nav__item"
@@ -92,6 +92,10 @@ export default {
       const timestamp = this.document.edited || this.document.created;
       if (!timestamp) return null;
       return datePretty(timestamp.toDate());
+    },
+    editLinkName() {
+      if (!this.type) return;
+      return `edit-${this.type}`;
     },
   },
 

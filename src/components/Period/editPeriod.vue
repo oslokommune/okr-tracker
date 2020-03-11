@@ -5,11 +5,11 @@
     <label class="form-field">
       <span class="form-label">Navn på periode</span>
       <div class="form-help">F.eks. Q1 2021 / Vår 2021</div>
-      <input @input="dirty = true" type="text" v-model.trim="period.name" />
+      <input @input="dirty = true" type="text" v-model.trim="period.name" maxlength="12" />
     </label>
 
     <label class="form-field">
-      <span class="form-label">Startdato</span>
+      <span class="form-label">Start- og sluttdato</span>
       <flat-pickr
         v-model="range"
         :config="flatPickerConfig"

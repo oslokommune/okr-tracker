@@ -2,6 +2,63 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2020-03-11
+
+OKRs are now supported on _organisation_ level. This will allow administrators to create and manage details (name, mission statement), objectives and key results for organisations.
+
+_Organisations_ will work in a similar fashion as departments and products, whereas the child departments will be displayed on an organisation’s page. Please note that creating and/or deleting organisations is not included in this version.
+
+### What’s new
+
+- OKRs for organisation level
+- Character limits for user inputs
+
+### Added
+
+- OKRs for organisation level
+  - Edit existing organisations from the admin panel
+  - Page to view organisations under route `/organization/<slug>`
+  - Manage objectives and key results for organisation at `/organization/<slug>/edit`
+  - Cloud functions to handle progression for organisation
+- Supporting Markdown for mission statements
+
+### Changed
+
+- Convert the organisation in breadcrumbs to a link
+- Use `placeholder-image.svg` instead of `placeholder-user.svg` for departments and products that do not have an image
+- Consistently use American `organization` instead of `organisation` as function and variable names
+- Reduce font weight on table of contents on help page
+- Limit character count on various user inputs
+  - `profile/displayName` <= 32 char
+  - `organization/name` <= 64 char
+  - `department/name` <= 64 char
+  - `product/name` <= 64 char
+  - `period/name` <= 12 char
+  - `objective/description` <= 320 char
+  - `objective/name` <= 160 char
+  - `missionStatement` <= 320 char
+  - `keyResult/description` <= 120 char
+  - `keyResult/unit` <= 32 char
+- Improved design on members and products lists (include name next to its image)
+- Improved content on `help.md`
+  - Managing products
+  - Managing organisations
+  - Managing dynamic periods
+- Reduce size of image preview on forms for editing organisations, departments and products
+- Visualise the (positive or negative) change on the newsfeed card for updating progress on a key result
+
+### Deprecated
+
+**Migrating data from Google Sheets:** Functionality for migrating data from Google Sheets should no longer be necessary. The scripts for handling this will remain in the codebase for now, but will soon be removed. The description and file upload will be removed in the UI.
+
+### Removed
+
+- Form for migrating data from Google Sheets
+
+### Fixed
+
+- Fix JSDoc errors in `db.js`
+
 ## [1.1.0] - 2020-03-09
 
 This release introduces _dynamic date periods_ that replace static annual quarters for objectives. This means that custom date periods need to be manually created on each department and product onwards.

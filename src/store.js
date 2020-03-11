@@ -120,6 +120,35 @@ export const actions = {
       });
     });
   },
+
+  async watchOrganization({ commit }, slug) {
+    if (!slug) throw new Error('Missing slug');
+
+    const getOrganization = db
+      .collection('orgs')
+      .where('slug', '==', slug)
+      .get()
+      .then(d => d.docs[0])
+      .then(d => serializeDocument(d))
+      .catch(err => {
+        errorHandler('get_organization_error', err);
+      });
+
+    getOrganization.then(org => {
+      org.ref
+        .collection('departments')
+        .where('archived', '==', false)
+        .onSnapshot(d => {
+          commit('SET_ORGANIZATION_DEPARTMENTS', d.docs.map(serializeDocument));
+        });
+    });
+
+    getOrganization.then(org => {
+      org.ref.onSnapshot(d => {
+        commit('SET_ORGANIZATION', serializeDocument(d));
+      });
+    });
+  },
 };
 
 export const getters = {};
@@ -160,6 +189,14 @@ export const mutations = {
   SET_DEPARTMENT(state, payload) {
     state.department = payload;
   },
+
+  SET_ORGANIZATION(state, payload) {
+    state.organization = payload;
+  },
+
+  SET_ORGANIZATION_DEPARTMENTS(state, payload) {
+    state.organizationDepartments = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -174,6 +211,8 @@ export default new Vuex.Store({
     product: null,
     department: null,
     departmentProducts: null,
+    organization: null,
+    organizationDepartments: null,
   },
   getters,
   mutations,

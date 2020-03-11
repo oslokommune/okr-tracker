@@ -84,6 +84,10 @@ export default {
     return write({ event: 'update-department', departmentRef });
   },
 
+  async updateOrganization(organizationRef) {
+    return write({ event: 'update-organization', organizationRef });
+  },
+
   async updateProductImage(productRef) {
     return write({ event: 'update-product-image', productRef });
   },

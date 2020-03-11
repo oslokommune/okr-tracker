@@ -14,7 +14,7 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
       <span class="form-label">Beskrivelse</span>
-      <textarea v-model="$v.description.$model" rows="4"></textarea>
+      <textarea v-model="$v.description.$model" rows="4" maxlength="120"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.description.$error">Kan ikke være tom</div>
 
@@ -35,7 +35,7 @@
     <label class="form-field" :class="{ 'form-field--error': $v.unit.$error }">
       <span class="form-label">Måleenhet</span>
       <span class="form-help">Hva er det som måles (klikk/prosent/brukere etc)?</span>
-      <input type="text" v-model="$v.unit.$model" />
+      <input type="text" v-model="$v.unit.$model" maxlength="32" />
     </label>
     <div class="form-field--error" v-if="$v.unit.$error">Kan ikke være tom</div>
 

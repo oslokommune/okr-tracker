@@ -5,7 +5,7 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.keyres.description.$error }">
       <span class="form-label">Beskriv nøkkelresultatet</span>
-      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="4"></textarea>
+      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="4" maxlength="120"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.keyres.description.$error">Kan ikke være tom</div>
 
@@ -25,7 +25,7 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.keyres.unit.$error }">
       <span class="form-label">Måleenhet</span>
-      <input @input="dirty = true" type="text" v-model="$v.keyres.unit.$model" />
+      <input @input="dirty = true" type="text" v-model="$v.keyres.unit.$model" maxlength="32" />
     </label>
     <div class="form-field--error" v-if="$v.keyres.unit.$error">Kan ikke være tom</div>
 

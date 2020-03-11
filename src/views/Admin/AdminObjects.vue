@@ -19,7 +19,7 @@
 
     <div class="miller__container">
       <div class="miller">
-        <div class="miller__col" :class="{ active: selection.type === 'organisation' }">
+        <div class="miller__col" :class="{ active: selection.type === 'organization' }">
           <h3 class="miller__col__header">Velg organisasjon</h3>
           <div
             class="miller__col__item"
@@ -64,64 +64,17 @@
         </div>
 
         <main class="miller__main">
-          <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
+          <admin-organization v-if="selection.type === 'organization'" :docref="selection.docRef"></admin-organization>
           <admin-department v-if="selection.type === 'department'" :docref="selection.docRef"></admin-department>
+          <admin-product v-if="selection.type === 'product'" :docref="selection.docRef"></admin-product>
         </main>
       </div>
     </div>
 
     <hr />
 
-    <div class="title-2"><i class="fa fa-exclamation-triangle"></i> Danger Zone</div>
-
-    <h3 class="title-3">
-      Migrere data fra gammel løsning (Google Sheets)
-    </h3>
-
-    <div class="form-group">
-      <form @submit.prevent="importData()">
-        <div class="callout">
-          <div class="callout__message">
-            <p>
-              For å migrere data fra gammel løsning, må følgende steg følges:
-            </p>
-
-            <ol class="ol">
-              <li>«Audit»- og «Orgs»-samlingene i Firestore må tømmes.</li>
-              <li>
-                Følgende filer må lastes ned fra Google Sheets:
-                <ol class="ol">
-                  <li>OKR-tracker-data - Depts.csv</li>
-                  <li>OKR-tracker-data - Orgs.csv</li>
-                  <li>OKR-tracker-data - Objectives.csv</li>
-                  <li>OKR-tracker-data - Products.csv</li>
-                  <li>OKR-tracker-data - KeyRes.csv</li>
-                  <li>OKR-tracker-data - KeyResTracker.csv</li>
-                </ol>
-                For å laste ned filer:
-                <ol class="ol">
-                  <li>Velg riktig fane i Google Sheets-dokumentet</li>
-                  <li>Klikk «File»</li>
-                  <li>Velg «Download»</li>
-                  <li>Velg «Comma-separated values (.csv, current sheet)»</li>
-                </ol>
-              </li>
-              <li>Last opp filene her (alle 6 filene samtidig) og trykk «Start migrering»</li>
-            </ol>
-            <hr />
-
-            <input type="file" @input="previewFiles" multiple />
-          </div>
-          <div class="callout__actions">
-            <button class="btn btn--borderless">Start migrering</button>
-          </div>
-        </div>
-      </form>
-
-      <hr />
-      <!-- <h3 class="title-3">Konverter kvartaler til dynamiske perioder</h3> -->
-      <!-- <button class="btn" @click="convertQuartersToPeriods">Start konvertering</button> -->
-    </div>
+    <!-- <h3 class="title-3">Konverter kvartaler til dynamiske perioder</h3> -->
+    <!-- <button class="btn" @click="convertQuartersToPeriods">Start konvertering</button> -->
   </div>
 </template>
 
@@ -131,6 +84,7 @@ import { db } from '@/config/firebaseConfig';
 import { getOrgs, getDepartments, getProducts } from '@/db/db';
 import AdminProduct from '@/views/Admin/components/AdminProduct.vue';
 import AdminDepartment from '@/views/Admin/components/AdminDepartment.vue';
+import AdminOrganization from '@/views/Admin/components/AdminOrganization.vue';
 import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import fileImporter from '@/migration/fileImporter';
@@ -139,7 +93,7 @@ import convertQuartersToPeriods from '@/migration/convertQuartersToPeriods';
 export default {
   name: 'AdminObjects',
 
-  components: { AdminProduct, AdminDepartment },
+  components: { AdminProduct, AdminDepartment, AdminOrganization },
 
   data: () => ({
     files: null,
@@ -169,8 +123,8 @@ export default {
       }
 
       if (this.selectedOrgId) {
-        const docRef = '';
-        return { type: 'organisation', docRef };
+        const docRef = db.collection('orgs').doc(this.selectedOrgId);
+        return { type: 'organization', docRef };
       }
 
       return false;
@@ -180,10 +134,12 @@ export default {
   methods: {
     convertQuartersToPeriods,
 
+    // DEPRECATED
     previewFiles(event) {
       this.files = event.target.files;
     },
 
+    // DEPRECATED
     importData() {
       if (!this.files || this.files.length === 0) {
         Toast.showError('You need to upload some files first');

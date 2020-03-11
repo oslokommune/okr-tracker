@@ -55,10 +55,10 @@ export function productListener(slug) {
 }
 
 /**
- * Finds the product with the provided slug and
+ * Finds the department with the provided slug and
  * adds a listener for changes on the object.
- * Binds the changes to `this.product` on the caller.
- * @param {String} slug - product slug
+ * Binds the changes to `this.department` on the caller.
+ * @param {String} slug - department slug
  * @returns {Function} - Unsubscribe
  */
 export function departmentListener(slug) {
@@ -71,6 +71,26 @@ export function departmentListener(slug) {
         errorHandler('department_listener_error', err);
       });
       this.department = serializeDocument(departmentData);
+    });
+}
+
+/**
+ * Finds the organization with the provided slug and
+ * adds a listener for changes on the object.
+ * Binds the changes to `this.organization` on the caller.
+ * @param {String} slug - organization slug
+ * @returns {Function} - Unsubscribe
+ */
+export function organizationListener(slug) {
+  return db
+    .collection('orgs')
+    .where('slug', '==', slug)
+    .onSnapshot(async d => {
+      if (!d.docs.length) return;
+      const organizationData = await d.docs[0].ref.get().catch(err => {
+        errorHandler('organization_listener_error', err);
+      });
+      this.organization = serializeDocument(organizationData);
     });
 }
 
@@ -209,10 +229,12 @@ export const getNestedData = () => {
   return getChildren(db, 'orgs', getOrgData);
 };
 
-async function getOrgData(organisation) {
-  const { ref } = organisation;
+async function getOrgData(organization) {
+  const { ref } = organization;
   const departments = await getChildren(ref, 'departments', getDeptData);
-  return { departments, ...organisation.data() };
+  const orgData = organization.data();
+  const routerLinkTo = { name: 'organization', params: { slug: orgData.slug } };
+  return { departments, ...orgData, routerLinkTo };
 }
 
 async function getDeptData(department) {
