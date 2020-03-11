@@ -34,5 +34,5 @@ function getProgressionPercentage(keyres) {
     .scaleLinear()
     .domain([startValue, targetValue]) /* eslint-disable-line */
     .clamp(true);
-  return scale(currentValue) || 0;
+  return scale(currentValue || 0);
 }
