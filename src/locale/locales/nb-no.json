@@ -1,5 +1,10 @@
 {
-  "pageHeader": "Hjem",
+  "pageHeader": {
+    "header": "Hjem",
+    "keyres": "Nøkkelresultat",
+    "loading": "Laster ...",
+    "error": "Cannot find document type"
+  },
   "login": {
     "notLoggedIn": "Du er ikke logget inm",
     "google": {
@@ -58,7 +63,15 @@
     "callout": {
       "restore": "Gjenopprett",
       "delete": "Slett permanent"
-    }
+    },
+    "calloutPictures": {
+      "information": "Her mangler det et productbilde. Vil du laste opp et?",
+      "yes": "Let's go!",
+      "no": "Lukk",
+      "never": "Lukk og ikke vis igjen"
+    },
+    "invalidName": "Ugyldig navn",
+    "invalidDate": "Ugyldig dato"
   },
   "validations": {
     "empty": "Kan ikke være tom",
@@ -69,15 +82,26 @@
     "stop": "Avbryt"
   },
   "keyres": {
+    "name": "nøkkelresultat",
     "objective": "Tilknyttet mål",
     "description": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
     "unitDescription": "Hva er det som måles (klikk, prosent, brukere etc)?",
+    "automation": {
+      "header": "Automatisk registrering av progresjon",
+      "readMore": "Les mer",
+      "googleSheetId": "Google Sheet ID",
+      "googleSheetIdHelp": "Kode fra URL .../spreadsheets/d/<strong><d></strong>",
+      "sheetsTab": "Fane",
+      "sheetsTabHelp": "Samme som navnet på fanen i Google Sheets",
+      "sheetsCell": "Celle",
+      "sheetsCellHelp": "For eksempel «A12»"
+    },
     "change": "Endre nøkkelresultat",
     "saveChanges": "Lagre endringer",
-    "delete": "SLett nøkkelresultat",
+    "delete": "Slett nøkkelresultat",
     "close": "Lukk",
     "updateKeyres": "Oppdater verdi for nøkkelresultat",
     "lastUpdated": "Sist oppdatert {date}",
@@ -99,7 +123,21 @@
     "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå.",
     "objectiveForPeriod": "Mål for perioden ({count})",
     "empty": "Oops! Her finnes det ingen mål.",
-    "addObjectiveAndKeyres": "Legg til mål og nøkkelresultater"
+    "addObjectiveAndKeyres": "Legg til mål og nøkkelresultater",
+    "saveChanges": "Lagre endringer",
+    "delete": "Slett mål",
+    "change": "Endre mål",
+    "keyres": "Nøkkelresultater"
+  },
+  "period": {
+    "change": "Endre periode",
+    "name": "Navn på periode",
+    "nameHelp": "F.eks. Q01 2021 / Vår 2021",
+    "dateRange": "Start- og sluttdato",
+    "saveChanges": "Lagre endringer",
+    "deletePeriod": "Slett periode",
+    "hasObjectives": "Kan ikke slette periode som har tilknyttet mål",
+    "range": "{startDate} til {endDate}"
   },
   "tooltip": {
     "newValue": "Ny verdi",
@@ -115,7 +153,8 @@
     "addKeyresToObjective": "Legg til nytt nøkkelresultat for eksisterende mål",
     "updateKeyres": "Registrere nye verdier til nøkkelresultatene",
     "dashboard": "Gå til dashboard-visning",
-    "export": "Eksporter skjermbilder til presentasjoner (1920x1080)"
+    "export": "Eksporter skjermbilder til presentasjoner (1920x1080)",
+    "auto": "Automatisk"
   },
   "document": {
     "changeProduct": "Endre product",
@@ -138,5 +177,17 @@
   },
   "home": {
     "newsfeed": "Aktivitet"
+  },
+  "membersList": {
+    "title": {
+      "organization": "Produktområder",
+      "department": "Produkter",
+      "product": "Team"
+    },
+    "empty": {
+      "organization": "Finner ingen produktområder",
+      "department": "Finner ingen produkter",
+      "product": "Finner ingen teammedlemmer - kanskje det bare er ninjaer her?"
+    }
   }
 }

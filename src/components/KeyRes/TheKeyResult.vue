@@ -20,7 +20,7 @@
     </button>
 
     <button v-if="keyres.auto" class="btn btn--borderless keyres__toggle" disabled>
-      <i class="fa fa-fw fa-magic" v-tooltip="`Automatisk`"></i>
+      <i class="fa fa-fw fa-magic" v-tooltip="$t('tooltip.auto')"></i>
     </button>
 
     <div v-if="!editMode" class="keyres__bar" v-tooltip.right="`${percentage}`">

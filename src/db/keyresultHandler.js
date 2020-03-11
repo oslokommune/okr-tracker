@@ -4,6 +4,7 @@ import { errorHandler } from '@/util/utils';
 import { isTeamMemberOfProduct } from '@/db/db';
 import Store from '@/store';
 import { functions } from '@/config/firebaseConfig';
+import i18n from '@/locale/i18n';
 
 /**
  * Creates a key result for the provided objective

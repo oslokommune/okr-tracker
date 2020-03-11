@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2 v-if="type === 'organization'" class="title title-2">Produktområder</h2>
-    <h2 v-if="type === 'department'" class="title title-2">Produkter</h2>
-    <h2 v-if="type === 'product'" class="title title-2">Team</h2>
+    <h2 v-if="type === 'organization'" class="title title-2">{{$t('membersList.title.organization')}}</h2>
+    <h2 v-if="type === 'department'" class="title title-2">{{$t('membersList.title.department')}}</h2>
+    <h2 v-if="type === 'product'" class="title title-2">{{$t('membersList.title.product')}}</h2>
 
     <!-- Empty list -->
     <div v-if="!team.length">
@@ -13,9 +13,9 @@
           <i v-if="type === 'product'" class="fa fa-user-ninja"></i>
         </div>
       </ul>
-      <p v-if="type === 'organization'">Finner ingen produktområder</p>
-      <p v-if="type === 'department'">Finner ingen produkter</p>
-      <p v-if="type === 'product'">Finner ingen teammedlemmer – kanskje det bare er ninjaer her?</p>
+      <p v-if="type === 'organization'">{{$t('membersList.empty.organization')}}</p>
+      <p v-if="type === 'department'">{{$t('membersList.empty.department')}}</p>
+      <p v-if="type === 'product'">{{$t('membersList.empty.product')}}</p>
     </div>
 
     <ul class="team__list">

@@ -42,7 +42,7 @@
     <hr />
 
     <div class="toggle__container">
-      <span class="toggle__label">Automatisk registrering av progresjon</span>
+      <span class="toggle__label">{{ $('keyres.automation.header') }}</span>
       <label class="toggle">
         <input class="toggle__input" type="checkbox" v-model="auto" />
         <span class="toggle__switch"></span>
@@ -51,24 +51,24 @@
 
     <div v-if="auto">
       <p>
-        <router-link :to="{ name: 'help' }">Les mer.</router-link>
+        <router-link :to="{ name: 'help' }">{{ $t('keyres.automation.readMore') }}</router-link>
       </p>
 
       <label class="form-field">
-        <span class="form-label">Google Sheet ID</span>
-        <span class="form-help">Kode fra URL .../spreadsheets/d/<strong>&lt;id&gt;</strong></span>
+        <span class="form-label">{{ $t('keyres.automation.googleSheetId') }}</span>
+        <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
         <input type="text" v-model="sheetId" />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Fane</span>
-        <span class="form-help">Samme som navnet på fanen i Google Sheets</span>
+        <span class="form-label">{{ $t('keyres.automation.sheetsTab') }}</span>
+        <span class="form-help">{{ $t('keyres.automation.sheetsTabhelp') }}</span>
         <input type="text" v-model="sheetName" />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Celle</span>
-        <span class="form-help">For eksempel «A12»</span>
+        <span class="form-label">{{ $t('keyres.automation.sheetsCell') }}</span>
+        <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
         <input type="text" v-model="sheetCell" />
       </label>
     </div>
@@ -76,7 +76,7 @@
     <hr />
 
     <button :disabled="submit" class="btn" @click="send">
-      {{ $tc('validations.submit', null, { object: 'nøkkelresultat' }) }}
+      {{ $tc('validations.submit', null, { object: $t('keyres.name') }) }}
     </button>
     <button class="btn btn--ghost" @click="close">{{ $t('validations.stop') }}</button>
     <p v-if="showInfo">{{ info }}</p>

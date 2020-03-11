@@ -1,15 +1,15 @@
 <template>
   <div class="edit-objective" :class="{ loading }" v-if="period">
-    <h3 class="title-3">Endre periode</h3>
+    <h3 class="title-3">{{ $t('period.change') }}</h3>
     <hr />
     <label class="form-field">
-      <span class="form-label">Navn på periode</span>
-      <div class="form-help">F.eks. Q1 2021 / Vår 2021</div>
+      <span class="form-label">{{ $t('period.name') }}</span>
+      <div class="form-help">{{ $t('period.nameHelp') }}</div>
       <input @input="dirty = true" type="text" v-model.trim="period.name" maxlength="12" />
     </label>
 
     <label class="form-field">
-      <span class="form-label">Start- og sluttdato</span>
+      <span class="form-label">{{ $t('period.dateRange') }}</span>
       <flat-pickr
         v-model="range"
         :config="flatPickerConfig"
@@ -21,9 +21,9 @@
 
     <hr />
     <button class="btn" :disabled="!dirty" @click="update">
-      Lagre endringer
+      {{ $t('period.saveChanges') }}
     </button>
-    <button class="btn btn--danger" @click="deletePeriod">Slett periode</button>
+    <button class="btn btn--danger" @click="deletePeriod">{{ $t('deletePeriode') }}</button>
   </div>
 </template>
 
@@ -34,6 +34,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import * as Toast from '@/util/toasts';
+import i18n from '@/locale/i18n';
 import 'flatpickr/dist/flatpickr.css';
 
 export default {
@@ -101,19 +102,19 @@ export default {
       const { name } = this.period;
 
       if (!this.range) {
-        Toast.show('Ugyldig dato');
+        Toast.show(i18n.t('toaster.invalidDate'));
         return;
       }
 
       const [startDate, endDate] = this.range.split(' til ').map(d => new Date(d));
 
       if (!startDate || !endDate) {
-        Toast.show('Ugyldig dato');
+        Toast.show(i18n.t('toaster.invalidDate'));
         return;
       }
 
       if (!name.length) {
-        Toast.show('Ugyldig navn');
+        Toast.show(i18n.t('toaster.invalidName'));
       }
 
       this.period.ref
@@ -137,7 +138,7 @@ export default {
         .then(snapshot => !snapshot.empty);
 
       if (hasLinkedObjectives) {
-        Toast.show('Kan ikke slette periode som har tilknyttet mål');
+        Toast.show(i18n.t('period.hasObjective'));
         return;
       }
 
@@ -156,7 +157,7 @@ export default {
       if (!this.period.startDate || !this.period.endDate) return;
       const startDate = format(this.period.startDate.toDate(), 'yyyy-MM-dd');
       const endDate = format(this.period.endDate.toDate(), 'yyyy-MM-dd');
-      return `${startDate} til ${endDate}`;
+      return i18n.tc('period.range', null, { startDate, endDate });
     },
   },
 };

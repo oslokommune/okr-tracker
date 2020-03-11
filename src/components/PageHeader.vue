@@ -6,7 +6,7 @@
           <li class="breadcrumb__item">
             <router-link to="/">
               <i class="fas fa-home"></i>
-              {{ $t('pageHeader') }}
+              {{ $t('pageHeader.header') }}
             </router-link>
           </li>
           <li class="breadcrumb__item" v-for="item in breadcrumbs" :key="item.name">
@@ -42,6 +42,7 @@
 import { serializeDocument } from '@/db/db';
 import { db } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'PageHeader',
@@ -59,9 +60,9 @@ export default {
 
   computed: {
     title() {
-      if (this.data.description) return 'Nøkkelresultat';
-      if (!this.data) return 'Laster ...';
-      return this.data.name || this.data.displayName || this.data.id || 'Laster ...';
+      if (this.data.description) return i18n.t('pageHeader.keyres');
+      if (!this.data) return i18n.t('pageHeader.loading');
+      return this.data.name || this.data.displayName || this.data.id || i18n.t('pageHeader.loading');
     },
 
     style() {
@@ -157,7 +158,7 @@ export default {
       }
 
       Toast.error();
-      throw new Error('Cannot find document type');
+      throw new Error(i18n.t('pageHeader.error'));
     },
   },
 };
