@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Refactor all Cloud Functions
+- Better documentation (jsdoc) for all Cloud Functions
+- Show progress next to an _objective_ also when it's empty (0%)
+
+### Fixed
+
+- Fix bug where progression for objectives and periods did not get updated when a new (empty) key result was created
+
 ## [1.2.0] - 2020-03-11
 
 OKRs are now supported on _organisation_ level. This will allow administrators to create and manage details (name, mission statement), objectives and key results for organisations.
