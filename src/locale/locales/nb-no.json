@@ -167,7 +167,11 @@
     "keyresValue": "Skriv inn ny måleverdi",
     "keyresDate": "Hvilket tidspunkt gjelder måleverdien for",
     "saveKeyresValue": "Lagre nytt målepunkt",
-    "deleteKeyresValue": "Slett målepunkt"
+    "deleteKeyresValue": "Slett målepunkt",
+    "emptyMiller": "Tomt? Velg et mål eller nøkkelresultat i listen",
+    "addPeriod": "Legg til ny periode",
+    "addObjectiveForPeriod": "Legg til et mål for valgt kvartal",
+    "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål"
   },
   "document": {
     "changeProduct": "Endre product",
@@ -358,5 +362,32 @@
       }
     },
     "flatPickrPlaceholder": "Velg dato og tid"
+  },
+  "product": {
+    "title": "Product",
+    "objAndKeyres": "Mål og nøkkelresultater",
+    "editObjectivesAndKeyresults": {
+      "title": "Administrer mål og nøkkelresultater",
+      "period": "Periode",
+      "addPeriod": "+ Legg til periode",
+      "objective": "Mål",
+      "add": "+ Legg til",
+      "keyres": "Nøkkelresultat",
+      "max": "Kan ikke ha flere enn 4 mål",
+      "newPeriod": "Ny periode"
+    }
+  },
+  "help": {
+    "title": "Innhold"
+  },
+  "profile": {
+    "changePicture": "Endre bilde",
+    "name": "Display name",
+    "save": "Lagre",
+    "admin": "Admin",
+    "hasAdmin": "Har administratortilgang",
+    "products": "Mine produkter",
+    "audit": "Audit",
+    "noActivity": "Ingen handlinger fra brukeren."
   }
 }
