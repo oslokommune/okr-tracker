@@ -173,6 +173,7 @@ export async function getOrgs(includeArchived = false) {
 /**
  * Binds all departments to `this.depts` at caller
  * @param {String} orgId - Organisation id
+ * @param {boolean} includeArchived - get archived departments as well
  * @returns {Function} - Unsubscribe
  */
 export async function getDepartments(orgId, includeArchived = false) {
@@ -191,6 +192,7 @@ export async function getDepartments(orgId, includeArchived = false) {
  * Binds all matching products to `this.products` at caller
  * @param {String} org - Organisation id
  * @param {String} dept - Department id
+ * @param {boolean} includeArchived - get archived products as well
  * @returns {Function} - Unsubscribe
  */
 export async function getProducts(org, dept, includeArchived = false) {

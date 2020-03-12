@@ -5,9 +5,11 @@
     <nav class="sub-nav">
       <div class="container container--sidebar">
         <div class="content--main">
-          <router-link class="sub-nav__element" exact :to="{ name: 'edit-organization' }">Organisasjon</router-link>
+          <router-link class="sub-nav__element" exact :to="{ name: 'edit-organization' }">{{
+            $t('organization.title')
+          }}</router-link>
           <router-link class="sub-nav__element" :to="{ name: 'edit-organization-keyres' }">
-            Mål og nøkkelresultater
+            {{ $t('organization.objAndKeyres') }}
           </router-link>
         </div>
       </div>
@@ -22,6 +24,7 @@
 <script>
 import { organizationListener, isAdmin } from '@/db/db';
 import PageHeader from '@/components/PageHeader.vue';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'EditOrganization',
@@ -40,7 +43,7 @@ export default {
       next();
     } else {
       next(false);
-      throw new Error('You do not have access to this page!');
+      throw new Error(i18n.t('errorHandler.noAccess'));
     }
   },
 

@@ -1,12 +1,12 @@
 <template>
   <div v-if="product" class="section">
-    <h2 class="title title-2">Administrer produkt</h2>
+    <h2 class="title title-2">{{ $t('admin.product.title') }}</h2>
 
     <CalloutArchivedRestore v-if="product.archived" :docref="docref"></CalloutArchivedRestore>
 
     <div class="section form-group">
       <label class="form-field">
-        <span class="form-label">Produktnavn</span>
+        <span class="form-label">{{ $t('admin.product.name') }}</span>
         <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" maxlength="64" />
       </label>
 
@@ -14,13 +14,13 @@
         class="form-field"
         v-tooltip.bottom="{ content: 'Dette kan ikke endres', delay: { show: 1000, hide: 50 } }"
       >
-        <span class="form-label">Slug</span>
-        <span class="form-help">Hvordan navnet fremstår i URL-en</span>
+        <span class="form-label">{{ $t('admin.product.slug') }}</span>
+        <span class="form-help">{{ $t('admin.product.slugHelp') }}</span>
         <input type="text" v-model="product.slug" disabled />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Bilde</span>
+        <span class="form-label">{{ $t('admin.product.picture') }}</span>
         <img v-if="product.photoURL" :src="product.photoURL" class="preview-image" />
 
         <image-uploader
@@ -38,22 +38,22 @@
 
       <div class="form-field">
         <label>
-          <span class="form-label">Mission statement</span>
-          <span class="form-help">Her kan du skrive <router-link :to="{ name: 'help' }">Markdown</router-link></span>
+          <span class="form-label">{{ $t('admin.product.missionsStatement') }}</span>
+          <span class="form-help" v-html="$t('admin.product.missionsStatementHelp')"></span>
           <textarea rows="4" v-model="product.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
 
       <div class="form-field">
-        <span class="form-label">Team</span>
-        <span class="form-help">Medlemmer får tilgang til å administrere produktet</span>
+        <span class="form-label">{{ $t('admin.product.team') }}</span>
+        <span class="form-help">{{ $t('admin.product.teamHelp') }}</span>
         <v-select
           class="objective__select"
           label="displayName"
           multiple
           v-model="team"
           :options="users"
-          v-tooltip.right="`Klikk for å legge til`"
+          v-tooltip.right="$t('tooltip.team')"
           @input="dirty = true"
         >
           <template v-slot:option="option">
@@ -64,14 +64,16 @@
       </div>
     </div>
     <div class="section">
-      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="`Lagre endringer`">Lagre</button>
+      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="$t('tooltip.saveChanges')">
+        {{ $t('admin.product.save') }}
+      </button>
       <button
         v-if="isAdmin()"
         class="btn btn--borderless"
         @click="deleteObject"
-        v-tooltip.auto="`Kun administratorer kan gjenopprette et slettet produkt`"
+        v-tooltip.auto="$t('tooltip.adminOnly')"
       >
-        Slett
+        {{ $t('admin.product.delete') }}
       </button>
     </div>
   </div>

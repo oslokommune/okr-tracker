@@ -5,8 +5,10 @@
     <div class="nav-wrapper">
       <div class="container">
         <nav class="nav">
-          <router-link class="router-link" :to="{ name: 'admin-users' }">Brukere</router-link>
-          <router-link class="router-link" :to="{ name: 'admin-objects' }">Produkter og produktområder</router-link>
+          <router-link class="router-link" :to="{ name: 'admin-users' }">{{ $t('admin.home.users') }}</router-link>
+          <router-link class="router-link" :to="{ name: 'admin-objects' }">{{
+            $t('admin.home.depsAndProds')
+          }}</router-link>
         </nav>
       </div>
     </div>

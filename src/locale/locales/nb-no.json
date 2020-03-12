@@ -1,4 +1,7 @@
 {
+  "general": {
+    "team": "Team"
+  },
   "pageHeader": {
     "header": "Hjem",
     "keyres": "Nøkkelresultat",
@@ -154,7 +157,17 @@
     "updateKeyres": "Registrere nye verdier til nøkkelresultatene",
     "dashboard": "Gå til dashboard-visning",
     "export": "Eksporter skjermbilder til presentasjoner (1920x1080)",
-    "auto": "Automatisk"
+    "auto": "Automatisk",
+    "team": "Klikk for å legge til",
+    "adminOnly": "Kun administrator kan gjenopprette et slettet produkt",
+    "saveChanges": "Lagre endringer",
+    "uploadRequired": "You need to upload some files first",
+    "departmentDetails": "Se detaljer for tjenesteområdet",
+    "keyresChange": "Endre detailjer for nøkkelresulta",
+    "keyresValue": "Skriv inn ny måleverdi",
+    "keyresDate": "Hvilket tidspunkt gjelder måleverdien for",
+    "saveKeyresValue": "Lagre nytt målepunkt",
+    "deleteKeyresValue": "Slett målepunkt"
   },
   "document": {
     "changeProduct": "Endre product",
@@ -176,7 +189,44 @@
     "period": "Denne perioden"
   },
   "home": {
-    "newsfeed": "Aktivitet"
+    "newsfeed": "Aktivitet",
+    "newsfeedCard": {
+      "updatedKeyres": {
+        "one": "har oppdatert fremdrift for ",
+        "two": "et nøkkelresultat ",
+        "three": "for"
+      },
+      "adminAdded": "fikk admintilgang",
+      "adminRemoved": "mistet admintilgang",
+      "removedUser": "fjernet bruker {user}",
+      "objectiveAdded": "opprettet et nytt mål for ",
+      "objectiveArchived": "arkiverte målet «{objective}» for ",
+      "objectiveUpdated": "endret målet «{objective}» for ",
+      "productAdded": "opprettet et nytt produkt under ",
+      "productArchived": "arkiverte «{product}»",
+      "productUpdated": "endret ",
+      "productUpdatedImage": "lastet opp et nytt bilde til ",
+      "usersAdded": {
+        "one": "har invitert ",
+        "two": "{length} {users}"
+      },
+      "keyresAdded": {
+        "one": "opprettet ",
+        "two": "et nøkkelresultat ",
+        "three": "for"
+      },
+      "keyresUpdated": {
+        "one": "endret ",
+        "two": "et nøkkelresultat ",
+        "three": "for"
+      },
+      "keyresArchived": "arkiverte et nøkkelresultat for",
+      "departmentUpdated": "endret produktområdet"
+    },
+    "productList": {
+      "details": "Vis detailjer",
+      "lastUpdated": "Sist oppdatert {product}"
+    }
   },
   "membersList": {
     "title": {
@@ -201,6 +251,112 @@
     "process": "Cannot process provided value: {value}",
     "noAdding": "Not allowed to add progress",
     "noDeletion": "Not allowed to delete this",
-    "missing": "Missing document"
+    "missing": "Missing document",
+    "noPeriods": "Unable to find current period",
+    "noAccess": "You do not have access to this page!"
+  },
+  "admin": {
+    "department": {
+      "title": "Administrer produktområde",
+      "defaultName": "Nytt produktområde",
+      "defaultSlug": "nytt-produktområde",
+      "name": "Navn",
+      "slug": "Slug",
+      "picture": "Bilde",
+      "missionStatement": "Missions statement",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
+      "save": "Lagre",
+      "delete": "Slett"
+    },
+    "organization": {
+      "title": "Administrer organisasjon",
+      "name": "Navn",
+      "slug": "Slug",
+      "picture": "Bilde",
+      "missionStatement": "Missions statement",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
+      "save": "Lagre"
+    },
+    "product": {
+      "title": "Administrer produkt",
+      "defaultName": "Nytt produkt",
+      "defaultSlug": "nytt-produkt",
+      "name": "Navn",
+      "slug": "Slug",
+      "slugHelp": "Hvordan navnet fremstår i URL-en",
+      "picture": "Bilde",
+      "missionStatement": "Missions statement",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
+      "team": "Team",
+      "teamHelp": "Medlemmer får tilgang til å administrere produktet",
+      "save": "Lagre",
+      "delete": "Slett"
+    },
+    "home": {
+      "users": "Brukere",
+      "depsAndProds": "Produkter og produktområder"
+    },
+    "objects": {
+      "title": "Administrer produkter og produktområder",
+      "subtitle": "Legg til, endre eller slett produkter og produktområder. Utover admin-brukere har kun team-medlemmer av et produkt mulighet til å redigere mål og nøkkelresultater",
+      "showArchived": "Vis arkiverte objekter",
+      "organization": "Velg organisasjon",
+      "department": "Velg produktområde",
+      "product": "Velg produkt",
+      "add": "+ Legg til"
+    },
+    "users": {
+      "title": "Brukeradministrasjon",
+      "subtitle": "Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang. Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne tilgangskontrollen",
+      "email": "E-post",
+      "name": "Navn",
+      "admin": "Admin",
+      "delete": "Slett",
+      "addEmails": "Legg til e-post-adresser",
+      "addEmailsHelp": "Én adresse per rad",
+      "add": "Legg til"
+    }
+  },
+  "department": {
+    "title": "Produktområde",
+    "objAndKeyres": "Mål og nøkkelresultater"
+  },
+  "organization": {
+    "title": "Organisasjon",
+    "objAndKeyres": "Mål og nøkkelresultater"
+  },
+  "keyResultPage": {
+    "change": "Endre nøkkelresultat",
+    "changed": "Endret {keyres}",
+    "period": "Progresjon gjennom {period}",
+    "auto": "Dette er et automatisk nøkkelresultat.",
+    "autoUpdate": "Hent data nå",
+    "addResValue": "Legg til nytt målepunkt",
+    "save": "Legg til",
+    "registered": "Registrerte målepunkter",
+    "empty": "Det er ingen registrerte målepunkter",
+    "add": {
+      "value": "Verdi",
+      "date": "Dato",
+      "today": "I dag"
+    },
+    "table": {
+      "value": "Verdi",
+      "date": "Dato",
+      "by": "Registrert av",
+      "delete": "Slett"
+    },
+    "notes": {
+      "title": "Notater",
+      "edit": "Endre",
+      "empty": "Her kan du skrive notater som bare teamet ditt kan se.",
+      "save": "Lagre notater",
+      "tips": {
+        "one": "Tips!",
+        "two": "Her kan du skrive markdown",
+        "three": "Les mer"
+      }
+    },
+    "flatPickrPlaceholder": "Velg dato og tid"
   }
 }

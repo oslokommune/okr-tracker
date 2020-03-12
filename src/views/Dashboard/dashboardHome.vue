@@ -6,7 +6,7 @@
         <div class="product__name">{{ product.name }}</div>
       </div>
       <div class="panel team">
-        <div class="panel__header"><i class="fa fa-fw fa-users"></i>Team</div>
+        <div class="panel__header"><i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}</div>
         <div v-for="user in team" :key="user.id" class="team__member">
           <img :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName || user.id" class="team__image" />
           <div class="team__name">{{ user.displayName || user.id }}</div>
@@ -36,6 +36,7 @@ import { mapState, mapMutations } from 'vuex';
 import { serializeDocument, serializeList } from '@/db/db';
 import PieChart from '@/components/PieChart.vue';
 import DashboardObjective from '@/views/Dashboard/dashboardObjective.vue';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'DashboardHome',
@@ -85,7 +86,7 @@ export default {
         .then(periods => periods.filter(period => period.startDate.toDate() < now && period.endDate.toDate() > now))
         .then(periods => (periods && periods.length ? periods[0] : false))
         .catch(() => {
-          throw new Error('Unable to find current period');
+          throw new Error(i18n.t('errorHandler.noPeriods'));
         });
     },
 

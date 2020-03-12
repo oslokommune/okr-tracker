@@ -1,21 +1,21 @@
 <template>
   <div v-if="department">
-    <h2 class="title title-2">Administrer produktområde</h2>
+    <h2 class="title title-2">{{$t('admin.department.title')}}</h2>
 
     <div class="section">
       <div class="form-group">
         <label class="form-field">
-          <span class="form-label">Navn</span>
+          <span class="form-label">{{$t('admin.department.name')}}</span>
           <input type="text" v-model="department.name" @input="updateSlug" maxlength="64" />
         </label>
 
         <label>
-          <span class="form-label">Slug</span>
+          <span class="form-label">{{$t('admin.department.slug')}}</span>
           <input type="text" v-model="department.slug" disabled />
         </label>
 
         <label class="form-field">
-          <span class="form-label">Bilde</span>
+          <span class="form-label">{{$t('admin.department.picture')}}</span>
           <img v-if="department.photoURL" :src="department.photoURL" class="preview-image" />
 
           <image-uploader
@@ -32,15 +32,15 @@
         </label>
 
         <label class="form-field">
-          <span class="form-label">Mission statement</span>
-          <span class="form-help">Her kan du skrive <router-link :to="{ name: 'help' }">Markdown</router-link></span>
+          <span class="form-label">{{$t('admin.department.missionStatement')}}</span>
+          <span class="form-help" v-html="$t('admin.department.missionStatementHelp')"></span>
           <textarea rows="4" v-model="department.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
     </div>
 
-    <button class="btn" :disabled="!dirty" @click="saveObject">Lagre</button>
-    <button class="btn btn--borderless" @click="deleteObject">Slett</button>
+    <button class="btn" :disabled="!dirty" @click="saveObject">{{$t('admin.department.save')}}</button>
+    <button class="btn btn--borderless" @click="deleteObject">{{$t('admin.department.delete')}}</button>
   </div>
 </template>
 
