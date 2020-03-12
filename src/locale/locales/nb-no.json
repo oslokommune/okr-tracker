@@ -189,5 +189,18 @@
       "department": "Finner ingen produkter",
       "product": "Finner ingen teammedlemmer - kanskje det bare er ninjaer her?"
     }
+  },
+  "keyresHandler": {
+    "description": "Beskriv nækkelresultatet",
+    "keyresCap": "Kan ikke ha flere enn 5 nøkkelresultat",
+    "maxSizeError": "Maximum key results"
+  },
+  "errorHandler": {
+    "insufficient": "Insufficient permissions",
+    "missingKeyRes": "Corrupt or missing key result object",
+    "process": "Cannot process provided value: {value}",
+    "noAdding": "Not allowed to add progress",
+    "noDeletion": "Not allowed to delete this",
+    "missing": "Missing document"
   }
 }

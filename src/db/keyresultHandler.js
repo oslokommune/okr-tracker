@@ -14,7 +14,7 @@ import i18n from '@/locale/i18n';
 async function create(objectiveRef, data) {
   const defaultData = {
     archived: false,
-    description: 'Beskriv nøkkelresultatet',
+    description: i18n.t('keyresHandler.description'),
     startValue: 0,
     targetValue: 100,
     created: new Date(),
@@ -32,12 +32,12 @@ async function create(objectiveRef, data) {
     .then(snapshot => snapshot.docs.length);
 
   if (keyResCount >= 5) {
-    Toast.show('Kan ikke ha flere enn 5 nøkkelresultater');
-    return errorHandler('create_keyres_error', new Error('Maximum key results'));
+    Toast.show(i18n.t('keyresHandler.keyresCap'));
+    return errorHandler('create_keyres_error', new Error(i18n.t('keyresHandler.mazSizeError')));
   }
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('create_keyres_error', new Error('Insufficient permissions'));
+  if (!hasEditPermissions) throw errorHandler('create_keyres_error', new Error(i18n.t('errorHandler.insufficient')));
 
   return objectiveRef
     .collection('keyResults')
@@ -71,7 +71,7 @@ async function update(keyresRef, data) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('update_keyres_error', new Error('Insufficient permissions'));
+  if (!hasEditPermissions) throw errorHandler('update_keyres_error', new Error(i18n.t('errorHandler.insufficient')));
 
   data.auto = data.auto ? data.auto : false;
   data.sheetId = data.sheetId ? data.sheetId : false;
@@ -99,7 +99,7 @@ async function archive(keyresRef) {
   const documentRef = objectiveRef.parent.parent;
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
-  if (!hasEditPermissions) throw errorHandler('archive_keyres_error', new Error('Insufficient permissions'));
+  if (!hasEditPermissions) throw errorHandler('archive_keyres_error', new Error(i18n.t('errorHandler.insufficient')));
 
   await keyresRef
     .update({ archived: true })
