@@ -1,12 +1,14 @@
 <template>
   <div class="callout" v-if="show">
     <div class="callout__message">
-      Her mangler det et produktbilde. Vil du laste opp et?
+      {{ $t('toaster.calloutPictures.information') }}
     </div>
     <div class="callout__actions">
-      <router-link :to="{ name: 'edit-product' }" class="btn btn--borderless">Let’s go!</router-link>
-      <button @click="close(false)" class="btn btn--borderless">Lukk</button>
-      <button @click="close(true)" class="btn btn--borderless">Lukk og ikke vis igjen</button>
+      <router-link :to="{ name: 'edit-product' }" class="btn btn--borderless">
+        {{ $t('toaster.calloutPictures.yes') }}
+      </router-link>
+      <button @click="close(false)" class="btn btn--borderless">{{ $t('toaster.calloutPictures.no') }}</button>
+      <button @click="close(true)" class="btn btn--borderless">{{ $t('toaster.calloutPictures.never') }}</button>
     </div>
   </div>
 </template>

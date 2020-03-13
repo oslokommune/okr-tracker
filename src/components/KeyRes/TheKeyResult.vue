@@ -3,26 +3,24 @@
     <router-link
       class="keyres__text"
       :to="{ name: 'key-result', params: { keyresid: keyres.id } }"
-      v-tooltip.left="`Vis detaljer`"
+      v-tooltip.left="$t('tooltip.showDetails')"
     >
       <i class="fa fa-check-square row-icon" v-if="percentage === '100%'"></i>
-      <div class="keyres__name">
-        {{ keyres.description }}
-      </div>
-      <div class="keyres__edited edited">Sist oppdatert {{ edited }}</div>
+      <div class="keyres__name">{{ keyres.description }}</div>
+      <div class="keyres__edited edited">{{ $tc('keyres.lastUpdated', null, { date: edited }) }}</div>
     </router-link>
 
     <button
       v-if="hasEditPermissions && !keyres.auto"
       class="btn btn--borderless keyres__toggle"
-      v-tooltip="editMode ? `Lukk` : `Oppdater verdi for nøkkelresultat`"
+      v-tooltip="editMode ? $t('tooltip.close') : $t('keyres.updateKeyres')"
       @click="editMode = !editMode"
     >
       <i class="fa fa-fw" :class="{ 'fa-times': editMode, 'fa-wrench': !editMode }"></i>
     </button>
 
     <button v-if="keyres.auto" class="btn btn--borderless keyres__toggle" disabled>
-      <i class="fa fa-fw fa-magic" v-tooltip="`Automatisk`"></i>
+      <i class="fa fa-fw fa-magic" v-tooltip="$t('tooltip.auto')"></i>
     </button>
 
     <div v-if="!editMode" class="keyres__bar" v-tooltip.right="`${percentage}`">
@@ -37,9 +35,11 @@
           step="any"
           :min="keyres.fromValue"
           :max="keyres.targetValue"
-          v-tooltip="{ content: 'Ny verdi', trigger: 'focus', hideOnTargetClick: false }"
+          v-tooltip="{ content: $t('tooltip.newValue'), trigger: 'focus', hideOnTargetClick: false }"
         />
-        <button class="btn" v-tooltip="`Lagre`"><i class="fa fa-check"></i></button>
+        <button class="btn" v-tooltip="$t('tooltip.save')">
+          <i class="fa fa-check"></i>
+        </button>
       </form>
     </div>
   </div>

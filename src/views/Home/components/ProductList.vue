@@ -5,7 +5,7 @@
         <PageHeader :data="org"></PageHeader>
         <div class="container">
           <div class="toggle__wrapper">
-            <span class="toggle__label">Vis detaljer</span>
+            <span class="toggle__label">{{ $t('home.productList.details') }}</span>
             <label class="toggle">
               <input class="toggle__input" type="checkbox" v-model="expandProducts" />
               <span class="toggle__switch"></span>
@@ -17,7 +17,7 @@
               <router-link v-if="dept.slug" :to="{ name: 'department', params: { slug: dept.slug } }">
                 <h2
                   class="department__name title title-3"
-                  v-tooltip.top-start="{ content: `Se detaljer for tjenesteområdet`, delay: { show: 300, hide: 50 } }"
+                  v-tooltip.top-start="{ content: $t('tooltip.departmentDetails'), delay: { show: 300, hide: 50 } }"
                 >
                   {{ dept.name }}
                 </h2>
@@ -33,7 +33,7 @@
                       />
                       <span class="product__name">{{ product.name }}</span>
                       <span class="product__edited edited" v-show="expandProducts">
-                        Sist oppdatert {{ getEdited(product) }}
+                        {{ $t('home.productList.lastUpdated', null, { product: getEdited(product) }) }}
                       </span>
                       <div class="progression">
                         <SimpleProgress :document="product"></SimpleProgress>

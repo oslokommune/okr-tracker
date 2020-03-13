@@ -9,11 +9,11 @@
             v-if="editRoute"
             :to="editRoute"
             class="sidebar-nav__item"
-            v-tooltip.right="`Endre detaljer for nøkkelresultatet`"
-            ><i class="fas fa fa-fw fa-edit"></i>Endre nøkkelresultat</router-link
+            v-tooltip.right="$t('tooltip.keyresChange')"
+            ><i class="fas fa fa-fw fa-edit"></i>{{ $t('keyResultPage.change') }}</router-link
           >
         </nav>
-        <div class="edited edited--mt">Endret {{ edited }}</div>
+        <div class="edited edited--mt">{{ $t('keyResultPage.changed', null, { keyres: edited }) }}</div>
       </aside>
 
       <div class="content--main content--padding">
@@ -25,7 +25,7 @@
 
         <div class="columns">
           <div class="column--left">
-            <h3 class="title-3" v-if="period">Progresjon gjennom {{ period.name }}</h3>
+            <h3 class="title-3" v-if="period">{{ $t('keyResultPage.period', null, { period: period.name }) }}</h3>
             <svg class="graph" ref="graph"></svg>
 
             <hr />
@@ -33,7 +33,7 @@
             <section class="section" v-if="key_result && key_result.auto">
               <div class="callout">
                 <div class="callout__message">
-                  Dette er et automatisk nøkkelresultat.
+                  {{ $t('keyResultPage.auto') }}
                 </div>
 
                 <div class="callout__actions">
@@ -44,32 +44,32 @@
                   >
                     <i v-if="!loading" class="fa fa-fw fa-sync"></i>
                     <i v-else class="fa fa-spinner fa-pulse fa-fw"></i>
-                    Hent data nå
+                    {{ $t('keyResultPage.autoUpdate') }}
                   </button>
                 </div>
               </div>
             </section>
 
             <section v-if="hasEditPermissions && key_result && !key_result.auto" class="section">
-              <h2 class="title-2">Legg til nytt målepunkt</h2>
+              <h2 class="title-2">{{ $t('keyResultPage.addResValue') }}</h2>
 
               <form @submit.prevent="addValue" class="form-group">
                 <div class="form-row">
                   <label class="form-field">
-                    <span class="form-label">Verdi</span>
+                    <span class="form-label">{{ $t('keyResultPage.add.value') }}</span>
                     <input
                       type="number"
                       step="any"
                       v-model="value"
-                      v-tooltip="{ content: `Skriv inn ny måleverdi`, trigger: `hover`, delay: 100 }"
+                      v-tooltip="{ content: $t('tooltip.keyresValue'), trigger: `hover`, delay: 100 }"
                     />
                   </label>
                   <label class="form-field">
-                    <span class="form-label">Dato</span>
+                    <span class="form-label">{{ $t('keyResultPage.add.date') }}</span>
                     <div
                       class="date-input"
                       v-tooltip.top="{
-                        content: `Hvilket tidspunkt gjelder måleverdien for`,
+                        content: $t('tooltip.keyresDate'),
                         trigger: `hover`,
                         delay: 100,
                       }"
@@ -79,19 +79,21 @@
                         :config="flatPickerConfig"
                         class="form-control"
                         name="date"
-                        placeholder="Velg dato og tid"
+                        :placeholder="$t('keyResultPage.flatPickrPlaceholder')"
                       ></flat-pickr>
-                      <button class="btn btn--borderless" @click.prevent="date = new Date()">I dag</button>
+                      <button class="btn btn--borderless" @click.prevent="date = new Date()">
+                        {{ $t('keyResultPage.add.today') }}
+                      </button>
                     </div>
                   </label>
                 </div>
                 <div class="form-field">
                   <button
                     class="btn"
-                    v-tooltip.right="{ content: `Lagre nytt målepunkt`, delay: 400 }"
+                    v-tooltip.right="{ content: $t('tooltip.saveKeyresValue'), delay: 400 }"
                     :disabled="!this.date"
                   >
-                    Legg til
+                    {{ $t('keyResultPage.save') }}
                   </button>
                 </div>
               </form>
@@ -100,17 +102,17 @@
 
             <section class="section" v-if="key_result">
               <h2 class="title-2">
-                Registrerte målepunkter
+                {{ $t('keyResultPage.registered') }}
               </h2>
 
-              <div v-if="!progressions">Det er ingen registrerte målepunkter</div>
+              <div v-if="!progressions">{{ $t('keyResultPage.empty') }}</div>
 
               <table v-if="progressions" class="table">
                 <thead>
                   <tr>
-                    <th>Verdi</th>
-                    <th>Dato</th>
-                    <th>Registrert av</th>
+                    <th>{{ $t('keyResultPage.table.value') }}</th>
+                    <th>{{ $t('keyResultPage.table.date') }}</th>
+                    <th>{{ $t('keyResultPage.table.by') }}</th>
                     <th v-if="hasEditPermissions"></th>
                   </tr>
                 </thead>
@@ -123,9 +125,9 @@
                       <button
                         class="btn btn--borderless"
                         @click="deleteValue(prog)"
-                        v-tooltip.left="{ content: `Slett målepunkt`, delay: { show: 400, hide: 10 } }"
+                        v-tooltip.left="{ content: $t('tooltip.deleteKeyresValue'), delay: { show: 400, hide: 10 } }"
                       >
-                        <i class="fas fa-fw fa-trash"></i>Slett
+                        <i class="fas fa-fw fa-trash"></i>{{ $t('keyResultPage.table.delete') }}
                       </button>
                     </td>
                   </tr>
@@ -137,24 +139,27 @@
           <div class="column--right" v-if="hasEditPermissions && key_result">
             <h3 class="title-3">
               <i class="fa fa-pen"></i>
-              Notater
+              {{ $t('keyResultPage.notes.title') }}
               <button @click="editNotes = !editNotes" class="btn btn--borderless">
-                <i class="fa fa-edit"></i>Endre
+                <i class="fa fa-edit"></i>{{ $t('keyResultPage.notes.edit') }}
               </button>
             </h3>
 
             <template v-if="!editNotes">
               <div class="md notes" v-if="markdown" v-html="markdown"></div>
-              <em v-else>Her kan du skrive notater som bare teamet ditt kan se.</em>
+              <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
             </template>
 
             <template v-if="editNotes">
               <textarea rows="20" @input="dirty = true" v-model="key_result.notes"></textarea>
               <p>
-                <strong>Tips!</strong> Her kan du skrive markdown.
-                <router-link :to="{ name: 'help' }" target="_blank" rel="noopener noreferrer">Les mer</router-link>.
+                <strong>{{ $t('keyResultPage.notes.tips.one') }}</strong> {{ $t('keyResultPage.notes.tips.two') }}
+                <router-link :to="{ name: 'help' }" target="_blank" rel="noopener noreferrer">{{
+                  $t('keyResultPage.notes.three')
+                }}</router-link
+                >.
               </p>
-              <button @click="saveNotes" class="btn" :disabled="!dirty">Lagre notater</button>
+              <button @click="saveNotes" class="btn" :disabled="!dirty">{{ $t('keyResultPage.notes.save') }}</button>
             </template>
           </div>
         </div>

@@ -1,15 +1,15 @@
 <template>
   <div class="grid grid-3 section">
     <div>
-      <h2 class="title title-2">Oppdrag</h2>
+      <h2 class="title title-2">{{ $t('document.mission') }}</h2>
       <div v-if="!document.missionStatement" class="content">
         <p>
-          <strong>Uh-oh!</strong>
-          Her mangler det noe viktig!
+          <strong>{{ $t('document.missing.first') }}</strong>
+          {{ $t('document.missing.second') }}
         </p>
         <p v-if="user.admin">
           <router-link :to="{ name: type === 'product' ? 'edit-product' : 'edit-department' }">
-            Legg inn en beskrivelse.
+            {{ $t('document.addDescription') }}
           </router-link>
         </p>
       </div>
@@ -17,7 +17,7 @@
     </div>
     <MembersList :type="type" :team="team"></MembersList>
     <div>
-      <h2 class="title title-2">Denne perioden</h2>
+      <h2 class="title title-2">{{ $t('document.period') }}</h2>
       <pie-chart :document="document"></pie-chart>
     </div>
   </div>

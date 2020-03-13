@@ -13,101 +13,113 @@
         <span v-else-if="!user.slug" class="nf-card__displayname">{{ user.displayName || user.email }}</span>
 
         <span v-if="eventData.event === 'keyRes-update-progress'">
-          har oppdatert fremdrift for
+          {{ $t('home.newsfeedCard.updatedKeyres.one') }}
           <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }">
-            et nøkkelresultat
+            {{ $t('home.newsfeedCard.updatedKeyres.two') }}
           </router-link>
-          for
+          {{ $t('home.newsfeedCard.updatedKeyres.three') }}
+
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-else-if="eventData.event === 'promoted-admin'">
-          fikk admintilgang
+          {{ $t('home.newsfeedCard.adminAdded') }}
         </span>
 
-        <span v-else-if="eventData.event === 'deleted-user'"> fjernet bruker {{ eventData.affectedUser }} </span>
+        <span v-else-if="eventData.event === 'deleted-user'">
+          {{ $t('fjernet bruker ', null, { user: eventData.affectedUser }) }}
+        </span>
 
         <span v-else-if="eventData.event === 'create-objective'">
-          opprettet et nytt mål for
+          {{ $t('home.newsfeedCard.objectiveAdded') }}
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
         <span v-else-if="eventData.event === 'archive-objective'">
-          arkiverte målet «{{ objective.name }}» for
+          {{ $t('home.newsfeedCard.objectiveArhived', null, { objective: objective.name }) }}
+
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
         <span v-else-if="eventData.event === 'update-objective'">
-          endret målet «{{ objective.name }}» for
+          {{ $t('home.newsfeedCard.objectiveUpdated', null, { objective: objective.name }) }}
+
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
         <span v-else-if="eventData.event === 'create-product'">
-          opprettet et nytt produkt under
+          {{ $t('home.newsfeedCard.productAdded') }}
           <router-link :to="{ name: 'department', params: { slug: department.slug } }">
             {{ department.name }}
           </router-link>
         </span>
 
-        <span v-else-if="eventData.event === 'archive-product'"> arkiverte «{{ product.name }}» </span>
+        <span v-else-if="eventData.event === 'archive-product'"
+          >{{ $t('home.newsfeedCard.productArchived', null, { product: product.name }) }}»
+        </span>
 
         <span v-else-if="eventData.event === 'update-product'">
-          endret
+          {{ $t('home.newsfeedCard.productUpdated') }}
+
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-else-if="eventData.event === 'update-product-image'">
-          lastet opp et nytt bilde til
+          {{ $t('home.newsfeedCard.productUpdatedImage') }}
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-else-if="eventData.event === 'added-users'">
-          har invitert
-          <strong v-tooltip="JSON.parse(eventData.list).join('<br>')"
-            >{{ JSON.parse(eventData.list).length }}
-            {{ JSON.parse(eventData.list).length === 1 ? 'bruker' : 'brukere' }}
+          {{ $t('home.newsfeedCard.usersAdded') }}
+          <strong v-tooltip="JSON.parse(eventData.list).join('<br>')">
+            {{
+              $t('home.newsfeedCard.usersAdded.two', null, {
+                length: JSON.parse(eventData.list).length,
+                users: JSON.parse(eventData.list).length === 1 ? 'bruker' : 'brukere',
+              })
+            }}
           </strong>
         </span>
 
         <span v-else-if="eventData.event === 'demoted-admin'">
-          mistet admintilgang
+          {{ $t('home.newsfeedCard.adminRemoved') }}
         </span>
 
         <span v-else-if="eventData.event === 'create-key-result'">
-          opprettet
-          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }"
-            >et nøkkelresultat</router-link
-          >
-          for
+          {{ $t('home.newsfeedCard.keyresAdded.one') }}
+          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }">{{
+            $t('home.newsfeedCard.keyresAdded.two')
+          }}</router-link>
+          {{ $t('home.newsfeedCard.keyresAdded.three') }}
           <router-link :to="product.route">{{ product.name }}</router-link>
         </span>
 
         <span v-else-if="eventData.event === 'update-key-result'">
-          endret
-          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }"
-            >et nøkkelresultat</router-link
-          >
-          for
+          {{ $t('home.newsfeedCard.keyresUpdated.one') }}
+          <router-link :to="{ name: 'key-result', params: { slug: product.slug, keyresid: keyResult.id } }">{{
+            $t('home.newsfeedCard.keyresUpdated.two')
+          }}</router-link>
+          {{ $t('home.newsfeedCard.keyresUpdated.three') }}
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
         <span v-else-if="eventData.event === 'archive-key-result'">
-          arkiverte et nøkkelresultat for
+          {{ $t('home.newsfeedCard.keyresArchived') }}
           <router-link :to="product.route">
             {{ product.name }}
           </router-link>
         </span>
 
         <span v-else-if="eventData.event === 'update-department'">
-          endret produktområdet
+          {{ $t('home.newsfeedCard.departmentUpdated') }}
           <router-link :to="{ name: 'department', params: { slug: department.slug } }">
             {{ department.name }}
           </router-link>

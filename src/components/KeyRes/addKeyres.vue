@@ -1,6 +1,6 @@
 <template>
   <div class="popout">
-    <span class="form-label">Tilknyttet mål</span>
+    <span class="form-label">{{ $t('keyres.objective') }}</span>
     <v-select
       v-if="objectives"
       class="form-field objective__select"
@@ -10,39 +10,39 @@
       :options="objectives"
     ></v-select>
 
-    <div class="form-field--error" v-if="$v.objective.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.objective.$error">{{ $t('validations.empty') }}</div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
-      <span class="form-label">Beskrivelse</span>
+      <span class="form-label">{{ $t('keyres.description') }}</span>
       <textarea v-model="$v.description.$model" rows="4" maxlength="120"></textarea>
     </label>
-    <div class="form-field--error" v-if="$v.description.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.description.$error">{{ $t('validations.empty') }}</div>
 
     <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.startValue.$error }">
-        <span class="form-label">Startverdi</span>
+        <span class="form-label">{{ $t('keyres.startValue') }}</span>
         <input type="number" v-model="$v.startValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.startValue.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.startValue.$error">{{ $t('validations.empty') }}</div>
 
       <label class="form-field" :class="{ 'form-field--error': $v.targetValue.$error }">
-        <span class="form-label">Målverdi</span>
+        <span class="form-label">{{ $t('keyres.targetValue') }}</span>
         <input type="number" v-model="$v.targetValue.$model" />
       </label>
-      <div class="form-field--error" v-if="$v.targetValue.$error">Kan ikke være tom</div>
+      <div class="form-field--error" v-if="$v.targetValue.$error">{{ $t('validations.empty') }}</div>
     </div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.unit.$error }">
-      <span class="form-label">Måleenhet</span>
-      <span class="form-help">Hva er det som måles (klikk/prosent/brukere etc)?</span>
+      <span class="form-label">{{ $t('keyres.unit') }}</span>
+      <span class="form-help">{{ $t('keyres.unitDescription') }}</span>
       <input type="text" v-model="$v.unit.$model" maxlength="32" />
     </label>
-    <div class="form-field--error" v-if="$v.unit.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.unit.$error">{{ $t('validations.empty') }}</div>
 
     <hr />
 
     <div class="toggle__container">
-      <span class="toggle__label">Automatisk registrering av progresjon</span>
+      <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
       <label class="toggle">
         <input class="toggle__input" type="checkbox" v-model="auto" />
         <span class="toggle__switch"></span>
@@ -51,32 +51,34 @@
 
     <div v-if="auto">
       <p>
-        <router-link :to="{ name: 'help' }">Les mer.</router-link>
+        <router-link :to="{ name: 'help' }">{{ $t('keyres.automation.readMore') }}</router-link>
       </p>
 
       <label class="form-field">
-        <span class="form-label">Google Sheet ID</span>
-        <span class="form-help">Kode fra URL .../spreadsheets/d/<strong>&lt;id&gt;</strong></span>
+        <span class="form-label">{{ $t('keyres.automation.googleSheetId') }}</span>
+        <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
         <input type="text" v-model="sheetId" />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Fane</span>
-        <span class="form-help">Samme som navnet på fanen i Google Sheets</span>
+        <span class="form-label">{{ $t('keyres.automation.sheetsTab') }}</span>
+        <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
         <input type="text" v-model="sheetName" />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Celle</span>
-        <span class="form-help">For eksempel «A12»</span>
+        <span class="form-label">{{ $t('keyres.automation.sheetsCell') }}</span>
+        <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
         <input type="text" v-model="sheetCell" />
       </label>
     </div>
 
     <hr />
 
-    <button :disabled="submit" class="btn" @click="send">Lagre nytt nøkkelresultat</button>
-    <button class="btn btn--ghost" @click="close">Avbryt</button>
+    <button :disabled="submit" class="btn" @click="send">
+      {{ $tc('validations.submit', null, { object: $t('keyres.name') }) }}
+    </button>
+    <button class="btn btn--ghost" @click="close">{{ $t('validations.stop') }}</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>
@@ -86,6 +88,7 @@ import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import { serializeList } from '@/db/db';
 import Keyresult from '@/db/keyresultHandler';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'AddKeyres',
@@ -174,7 +177,7 @@ export default {
     async send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
+        this.setSubmitInfo(false, true, i18n.t('validations.required'));
       } else {
         this.setSubmitInfo(true, false, '');
 

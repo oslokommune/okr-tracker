@@ -1,14 +1,16 @@
 <template>
   <div class="overlay" @click="close">
-    <div class="modal" @click.stop="">
+    <div class="modal" @click.stop>
       <div class="modal__header">
-        <h2 class="title-2">Registrere progresjon</h2>
-        <button class="btn btn--borderless" @click="close"><i class="fa fa-times"></i></button>
+        <h2 class="title-2">{{ $t('keyres.registerProgression.register') }}</h2>
+        <button class="btn btn--borderless" @click="close">
+          <i class="fa fa-times"></i>
+        </button>
       </div>
 
       <main v-if="keyResult" class="modal__main">
         <div class="title">
-          <p class="pill">Nøkkelresultat</p>
+          <p class="pill">{{ $t('keyres.registerProgression.keyres') }}</p>
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>
@@ -21,7 +23,7 @@
           v-model="newValue"
         />
         <label v-if="!keyResult.auto" class="form-field">
-          <span class="form-label">Verdi</span>
+          <span class="form-label">{{ $t('keyres.registerProgression.value') }}</span>
           <input type="number" v-model="newValue" />
         </label>
         <div class="dots">
@@ -30,13 +32,13 @@
       </main>
 
       <main v-if="!keyResult" class="modal__empty">
-        <h3 class="title-3">Ingen nøkkelresultater</h3>
+        <h3 class="title-3">{{ $t('keyres.registerProgression.noKeyres') }}</h3>
       </main>
 
       <div class="modal__footer">
-        <button class="btn btn--borderless" @click="previous">Forrige</button>
-        <button class="btn btn--borderless" @click="skip">Hopp over</button>
-        <button class="btn btn--borderless" @click="save">Lagre og gå videre</button>
+        <button class="btn btn--borderless" @click="previous">{{ $t('keyres.registerProgression.previous') }}</button>
+        <button class="btn btn--borderless" @click="skip">{{ $t('keyres.registerProgression.jumpOver') }}</button>
+        <button class="btn btn--borderless" @click="save">{{ $t('keyres.registerProgression.save') }}</button>
       </div>
     </div>
   </div>

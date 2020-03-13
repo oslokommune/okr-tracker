@@ -13,12 +13,8 @@
         <p></p>
 
         <div class="section content content--padding">
-          <h4 class="title-4">
-            Nøkkelresultater
-          </h4>
-          <div v-if="!keyResults.length">
-            Oops! Her er det ingen nøkkelresultater ennå.
-          </div>
+          <h4 class="title-4">{{ $t('objective.keyres') }}</h4>
+          <div v-if="!keyResults.length">{{ $t('objective.emptyKeyres') }}</div>
           <TheKeyResult v-for="keyres in keyResults" :key="keyres.id" :keyres="keyres"></TheKeyResult>
         </div>
       </div>

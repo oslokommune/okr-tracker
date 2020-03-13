@@ -1,16 +1,16 @@
 <template>
   <div class="edit-objective" :class="{ loading }" v-if="objective">
-    <h3 class="title-3">Endre mål</h3>
+    <h3 class="title-3">{{ $t('objective.change') }}</h3>
     <hr />
     <label class="form-field" :class="{ 'form-field--error': $v.objective.name.$error }">
-      <span class="form-label">Tittel</span>
+      <span class="form-label">{{ $t('objective.title') }}</span>
       <input @input="dirty = true" type="text" v-model.trim="$v.objective.name.$model" maxlength="160" />
     </label>
-    <div class="form-field--error" v-if="$v.objective.name.$error">Kan ikke være tom</div>
+    <div class="form-field--error" v-if="$v.objective.name.$error">{{ $t('validations.empty') }}</div>
     <div class="title title-3">
       <i :class="`fas fa-${objective.icon}`"></i>
     </div>
-    <span class="form-label">Ikon</span>
+    <span class="form-label">{{ $t('objective.icon') }}</span>
     <v-select class="form-field" :options="icons" v-model="objective.icon" @input="dirty = true">
       <template v-slot:option="option">
         <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
@@ -19,7 +19,7 @@
     </v-select>
 
     <label class="form-field" :class="{ 'form-field--error': $v.objective.description.$error }">
-      <span class="form-label">Beskrivelse</span>
+      <span class="form-label">{{ $t('objective.description') }}</span>
       <textarea
         @input="dirty = true"
         v-model.trim="$v.objective.description.$model"
@@ -29,10 +29,8 @@
     </label>
 
     <hr />
-    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">
-      Lagre endringer
-    </button>
-    <button class="btn btn--danger" @click="deleteObj(objective)">Slett mål</button>
+    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">{{ $t('objective.saveChanges') }}</button>
+    <button class="btn btn--danger" @click="deleteObj(objective)">{{ $t('objective.delete') }}</button>
 
     <p v-if="showInfo">{{ info }}</p>
   </div>
@@ -110,7 +108,7 @@ export default {
     updateObj(objective) {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, 'Nødvendige felt kan ikke være tomme');
+        this.setSubmitInfo(false, true, this.$t('validations.required'));
       } else {
         this.setSubmitInfo(true, false, '');
 
