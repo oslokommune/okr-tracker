@@ -68,7 +68,7 @@
       "delete": "Slett permanent"
     },
     "calloutPictures": {
-      "information": "Her mangler det et productbilde. Vil du laste opp et?",
+      "information": "Her mangler det et produktbilde. Vil du laste opp et?",
       "yes": "Let's go!",
       "no": "Lukk",
       "never": "Lukk og ikke vis igjen"
@@ -135,7 +135,7 @@
   "period": {
     "change": "Endre periode",
     "name": "Navn på periode",
-    "nameHelp": "F.eks. Q01 2021 / Vår 2021",
+    "nameHelp": "F.eks. Q1 2021 / Vår 2021",
     "dateRange": "Start- og sluttdato",
     "saveChanges": "Lagre endringer",
     "deletePeriod": "Slett periode",

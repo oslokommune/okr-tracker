@@ -109,7 +109,7 @@ export default {
     async submitForm() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, this.$i18n.t('validations.required'));
+        this.setSubmitInfo(false, true, this.$t('validations.required'));
       } else {
         if ((await this.getObjectiveCount()) >= 4) {
           Toast.show('Kan ikke ha flere enn 4 mål');

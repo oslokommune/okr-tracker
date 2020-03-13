@@ -131,7 +131,7 @@ export default {
       this.$v.$touch();
 
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, this.$i18n.t('validations.required'));
+        this.setSubmitInfo(false, true, this.$t('validations.required'));
         return;
       }
 
