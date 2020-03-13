@@ -2,7 +2,7 @@
   <div>
     <h2 v-if="type === 'organization'" class="title title-2">{{ $t('membersList.title.organization') }}</h2>
     <h2 v-if="type === 'department'" class="title title-2">{{ $t('membersList.title.department') }}</h2>
-    <h2 v-if="type === 'product'" class="title title-2">{{ $t('membersList.title.product') }}</h2>
+    <h2 v-if="type === 'product'" class="title title-2">{{ $t('general.team') }}</h2>
 
     <!-- Empty list -->
     <div v-if="!team.length">

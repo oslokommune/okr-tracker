@@ -38,14 +38,14 @@
 
       <div class="form-field">
         <label>
-          <span class="form-label">{{ $t('admin.product.missionsStatement') }}</span>
-          <span class="form-help" v-html="$t('admin.product.missionsStatementHelp')"></span>
+          <span class="form-label">{{ $t('admin.product.missionStatement') }}</span>
+          <span class="form-help" v-html="$t('admin.product.missionStatementHelp')"></span>
           <textarea rows="4" v-model="product.missionStatement" @input="dirty = true" maxlength="320"></textarea>
         </label>
       </div>
 
       <div class="form-field">
-        <span class="form-label">{{ $t('admin.product.team') }}</span>
+        <span class="form-label">{{ $t('general.team') }}</span>
         <span class="form-help">{{ $t('admin.product.teamHelp') }}</span>
         <v-select
           class="objective__select"

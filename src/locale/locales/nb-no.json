@@ -188,8 +188,6 @@
     },
     "addDescription": "Legg inn en beskrivelse",
     "product": "Produkter",
-    "team": "Team",
-    "noTeam": "Finner ingen teammedlemmer - kanskje det bare er ninjaer her?",
     "period": "Denne perioden"
   },
   "home": {
@@ -235,8 +233,7 @@
   "membersList": {
     "title": {
       "organization": "Produktområder",
-      "department": "Produkter",
-      "product": "Team"
+      "department": "Produkter"
     },
     "empty": {
       "organization": "Finner ingen produktområder",
@@ -291,7 +288,6 @@
       "picture": "Bilde",
       "missionStatement": "Missions statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
-      "team": "Team",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
       "save": "Lagre",
       "delete": "Slett"
@@ -364,7 +360,7 @@
     "flatPickrPlaceholder": "Velg dato og tid"
   },
   "product": {
-    "title": "Product",
+    "title": "Produkt",
     "objAndKeyres": "Mål og nøkkelresultater",
     "editObjectivesAndKeyresults": {
       "title": "Administrer mål og nøkkelresultater",

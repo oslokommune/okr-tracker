@@ -23,7 +23,7 @@
     <button class="btn" :disabled="!dirty" @click="update">
       {{ $t('period.saveChanges') }}
     </button>
-    <button class="btn btn--danger" @click="deletePeriod">{{ $t('deletePeriode') }}</button>
+    <button class="btn btn--danger" @click="deletePeriod">{{ $t('period.deletePeriod') }}</button>
   </div>
 </template>
 

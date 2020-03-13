@@ -50,7 +50,7 @@
           <div
             class="sidebar-nav__item"
             @click="expandRegisterProgress = true"
-            v-tooltip.right="$t('tooltip.updateKeys')"
+            v-tooltip.right="$t('tooltip.updateKeyres')"
           >
             <i class="fa fas fa-fw fa-chart-line"></i>
             {{ $t('document.updateData') }}

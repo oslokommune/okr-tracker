@@ -6,7 +6,7 @@
       <div v-if="!objectives.length" class="empty">
         <i class="fa fa-fw fa-exclamation-circle"></i>
         <p>
-          <span>{{ $t(objective.empty) }}</span>
+          <span>{{ $t('objective.empty') }}</span>
           <router-link
             v-if="hasEditPermissions"
             :to="{ name: $route.name === 'department' ? 'edit-department-keyres' : 'edit-product-keyres' }"

@@ -42,7 +42,7 @@
     <hr />
 
     <div class="toggle__container">
-      <span class="toggle__label">{{ $('keyres.automation.header') }}</span>
+      <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
       <label class="toggle">
         <input class="toggle__input" type="checkbox" v-model="auto" />
         <span class="toggle__switch"></span>
@@ -62,7 +62,7 @@
 
       <label class="form-field">
         <span class="form-label">{{ $t('keyres.automation.sheetsTab') }}</span>
-        <span class="form-help">{{ $t('keyres.automation.sheetsTabhelp') }}</span>
+        <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
         <input type="text" v-model="sheetName" />
       </label>
 
@@ -88,6 +88,7 @@ import { mapState } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
 import { serializeList } from '@/db/db';
 import Keyresult from '@/db/keyresultHandler';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'AddKeyres',
@@ -176,7 +177,7 @@ export default {
     async send() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.setSubmitInfo(false, true, this.$i18n.t('validations.required'));
+        this.setSubmitInfo(false, true, i18n.t('validations.required'));
       } else {
         this.setSubmitInfo(true, false, '');
 
