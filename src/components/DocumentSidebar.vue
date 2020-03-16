@@ -62,12 +62,17 @@
           ></register-progress-modal>
         </div>
       </template>
-      <router-link :to="{ name: 'dashboard' }" class="sidebar-nav__item" v-tooltip.right="$t('tooltip.dashboard')">
+      <router-link
+        v-if="type === 'product'"
+        :to="{ name: 'dashboard' }"
+        class="sidebar-nav__item"
+        v-tooltip.right="$t('tooltip.dashboard')"
+      >
         <i class="fa fas fa-fw fa-tachometer-alt"></i>
         {{ $t('document.dashboard') }}
       </router-link>
       <!-- <div class="sidebar-nav__item" v-tooltip.right="$t('tooltip.export')">
-        <i class="fa fas fa-fw fa-image"></i>{{$t('document.export)}}
+        <i class="fa fas fa-fw fa-image"></i>{{$t('document.export')}}
       </div>-->
     </nav>
     <div class="edited edited--mt" v-tooltip="prettyDate">{{ $tc('document.edited', null, { date: edited }) }}</div>
