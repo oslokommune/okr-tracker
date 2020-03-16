@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { serializeDocument, getNestedData } from '@/db/db';
+import { serializeDocument, serializeList, getNestedData, getDepartmentMembers } from '@/db/db';
 import icons from '@/config/icons';
 
 const errorHandler = Vue.$errorHandler;
@@ -92,7 +92,7 @@ export const actions = {
     return getProduct;
   },
 
-  watchDepartment({ commit }, slug) {
+  async watchDepartment({ commit }, slug) {
     if (!slug) throw new Error('Missing slug');
 
     const getDepartment = db
@@ -110,13 +110,13 @@ export const actions = {
         .collection('products')
         .where('archived', '==', false)
         .onSnapshot(d => {
-          commit('SET_DEPARTMENTPRODUCTS', d.docs.map(serializeDocument));
+          commit('SET_DEPARTMENTPRODUCTS', serializeList(d));
         });
-    });
 
-    getDepartment.then(department => {
-      department.ref.onSnapshot(d => {
-        commit('SET_DEPARTMENT', serializeDocument(d));
+      department.ref.onSnapshot(async d => {
+        const dep = serializeDocument(d);
+        dep.members = await getDepartmentMembers(dep);
+        commit('SET_DEPARTMENT', dep);
       });
     });
   },
@@ -139,11 +139,9 @@ export const actions = {
         .collection('departments')
         .where('archived', '==', false)
         .onSnapshot(d => {
-          commit('SET_ORGANIZATION_DEPARTMENTS', d.docs.map(serializeDocument));
+          commit('SET_ORGANIZATION_DEPARTMENTS', serializeList(d));
         });
-    });
 
-    getOrganization.then(org => {
       org.ref.onSnapshot(d => {
         commit('SET_ORGANIZATION', serializeDocument(d));
       });
