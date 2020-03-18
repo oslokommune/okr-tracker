@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Visualising members of a department as a network graph
+- Localization for nb-no with vue-i18n
 
 ### Changed
 
