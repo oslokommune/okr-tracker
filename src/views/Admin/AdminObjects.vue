@@ -1,16 +1,15 @@
 <template>
   <div>
     <section class="section">
-      <h2 class="title-2">Administrer produkter og produktområder</h2>
+      <h2 class="title-2">{{ $t('admin.objects.title') }}</h2>
       <p>
-        Legg til, endre eller slett produkter og produktområder. Utover admin-brukere har kun team-medlemmer av et
-        produkt mulighet til å redigere mål og nøkkelresultater.
+        {{ $t('admin.objects.subtitle') }}
       </p>
     </section>
     <hr />
 
     <div class="toggle__wrapper">
-      <span class="toggle__label">Vis arkiverte objekter</span>
+      <span class="toggle__label">{{ $t('admin.objects.showArchived') }}</span>
       <label class="toggle">
         <input class="toggle__input" type="checkbox" v-model="showArchived" />
         <span class="toggle__switch"></span>
@@ -20,7 +19,7 @@
     <div class="miller__container">
       <div class="miller">
         <div class="miller__col" :class="{ active: selection.type === 'organization' }">
-          <h3 class="miller__col__header">Velg organisasjon</h3>
+          <h3 class="miller__col__header">{{ $t('admin.objects.organization') }}</h3>
           <div
             class="miller__col__item"
             v-for="org in orgs"
@@ -33,7 +32,7 @@
         </div>
 
         <div class="miller__col" :class="{ active: selection.type === 'department' }">
-          <h3 class="miller__col__header">Velg produktområde</h3>
+          <h3 class="miller__col__header">{{ $t('admin.objects.department') }}</h3>
           <div
             class="miller__col__item"
             v-for="dept in depts"
@@ -44,11 +43,13 @@
             {{ dept.name }}
             <i v-if="dept.archived" class="fa fas fa-history"></i>
           </div>
-          <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">+ Legg til</div>
+          <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">
+            {{ $t('admin.objects.add') }}
+          </div>
         </div>
 
         <div class="miller__col" :class="{ active: selection.type === 'product' }">
-          <h3 class="miller__col__header">Velg produkt</h3>
+          <h3 class="miller__col__header">{{ $t('admin.objects.product') }}</h3>
           <div
             class="miller__col__item"
             v-for="product in products"
@@ -60,7 +61,9 @@
 
             <i v-if="product.archived" class="fa fas fa-history"></i>
           </div>
-          <div v-if="selectedDeptId" class="miller__col__item miller__col__add" @click="addProduct">+ Legg til</div>
+          <div v-if="selectedDeptId" class="miller__col__item miller__col__add" @click="addProduct">
+            {{ $t('admin.objects.add') }}
+          </div>
         </div>
 
         <main class="miller__main">
@@ -89,6 +92,7 @@ import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import fileImporter from '@/migration/fileImporter';
 import convertQuartersToPeriods from '@/migration/convertQuartersToPeriods';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'AdminObjects',
@@ -142,7 +146,7 @@ export default {
     // DEPRECATED
     importData() {
       if (!this.files || this.files.length === 0) {
-        Toast.showError('You need to upload some files first');
+        Toast.showError(i18n.t('tooltip.uploadRequired'));
         return;
       }
       fileImporter(this.files);
@@ -171,8 +175,8 @@ export default {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/${this.selectedDeptId}/products`);
 
       const defaultProduct = {
-        name: 'Nytt produkt',
-        slug: 'nytt-produkt',
+        name: i18n.t('admin.product.defaultName'),
+        slug: i18n.t('admin.product.defaultSlug'),
         archived: false,
         team: [],
         created: new Date(),
@@ -198,8 +202,8 @@ export default {
       const deptRef = db.collection(`orgs/${this.selectedOrgId}/departments/`);
 
       const defaultDepartment = {
-        name: 'Nytt produktområde',
-        slug: 'nytt-produktomrade',
+        name: i18n.t('admin.department.defaultName'),
+        slug: i18n.t('admin.department.defaultSlug'),
         archived: false,
         created: new Date(),
         createdBy: this.user.ref,

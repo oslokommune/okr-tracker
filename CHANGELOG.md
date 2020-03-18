@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2020-03-18
+
+### Changed
+
+- Removed padding around force graph
+- Better handling of responsive sizes for force graph
+
+## [1.3.0] - 2020-03-18
+
+### Added
+
+- Visualising members of a department as a network graph
+- Localization for nb-no with vue-i18n
+
+### Changed
+
+- Refactor all Cloud Functions
+- Better documentation (jsdoc) for all Cloud Functions
+- Show progress next to an _objective_ also when it's empty (0%)
+
+### Fixed
+
+- Fix bug where progression for objectives and periods did not get updated when a new (empty) key result was created
+- Hide dashboard view for departments and organisations
+- Fix error logged when toggling archived documents on admin panel
+
 ## [1.2.0] - 2020-03-11
 
 OKRs are now supported on _organisation_ level. This will allow administrators to create and manage details (name, mission statement), objectives and key results for organisations.

@@ -3,7 +3,7 @@
     <PageHeader :data="{ name: 'Hjelp', icon: 'user' }" :toc="true" toc-id="toc" toc-first-level="2"></PageHeader>
 
     <div class="container" v-if="markdown">
-      <h2 class="title-2">Innhold</h2>
+      <h2 class="title-2">{{ $t('help.title') }}</h2>
       <ul class="toc" v-if="toc">
         <li v-for="levelOne in toc.children" :key="levelOne.id">
           <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>

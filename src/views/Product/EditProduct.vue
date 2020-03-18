@@ -5,9 +5,11 @@
     <nav class="sub-nav">
       <div class="container container--sidebar">
         <div class="content--main">
-          <router-link class="sub-nav__element" exact :to="{ name: 'edit-product' }">Produkt</router-link>
+          <router-link class="sub-nav__element" exact :to="{ name: 'edit-product' }">{{
+            $t('product.title')
+          }}</router-link>
           <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">
-            Mål og nøkkelresultater
+            {{ $t('product.objAndKeyres') }}
           </router-link>
         </div>
       </div>
@@ -23,6 +25,7 @@
 import { mapState } from 'vuex';
 import { productListener, isTeamMemberOfProduct } from '@/db/db';
 import PageHeader from '@/components/PageHeader.vue';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'EditProduct',
@@ -44,7 +47,7 @@ export default {
       next();
     } else {
       next(false);
-      throw new Error('You do not have access to this page!');
+      throw new Error(i18n.t('errorHandler.noAccess'));
     }
   },
 

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import i18n from '@/locale/i18n';
 
 const standardOption = { duration: 3500 };
 
@@ -20,7 +21,7 @@ export function deleteKeyRes() {
   const options = {
     action: [
       {
-        text: 'Angre',
+        text: i18n.tc('toaster.action.regret'),
         onClick: (e, toastObject) => {
           this.updateKeyRes(this.keyResObject).then(() => {
             this.getAllData();
@@ -29,7 +30,7 @@ export function deleteKeyRes() {
         },
       },
       {
-        text: 'Lukk',
+        text: i18n.tc('toaster.action.close'),
         onClick: (e, toastObject) => {
           toastObject.goAway(0);
         },
@@ -37,78 +38,75 @@ export function deleteKeyRes() {
     ],
   };
 
-  show(`Slettet nøkkelresultat`, options);
+  show(i18n.tc('toaster.delete.keyResult'), options);
 }
 
 export function loggedIn(user) {
-  show(`Velkommen ${user.displayName ? user.displayName : ''}`);
+  show(i18n.tc('toaster.welcome', null, { user: user.displayName ? user.displayName : '' }));
 }
 
 export function successFullyAddedUsers(count) {
-  let str = `Lagt til ${count} `;
-  str += count === 1 ? `bruker` : `brukere`;
-
-  show(str);
+  show(i18n.tc('toaster.add.users', count));
 }
 
 export function deletedUser(user) {
-  show(`Slettet bruker ${user.id}`);
+  show(i18n.tc('toaster.delte.user', null, { user }));
 }
 
 export function toggleAdmin(user, value) {
   if (value) {
-    show(`Gitt ${user.displayName || user.email} admintilgang`);
+    show(i18n.tc('toaster.add.admin', null, { user: user.displayName || user.email }));
   } else {
-    show(`Fjernet admintilgang for ${user.displayName || user.email}`);
+    show(i18n.tc('toaster.removedAdmin', null, { user: user.displayName || user.email }));
   }
 }
 
 export function error() {
-  return show('Noe gikk galt!');
+  return show(i18n.tc('toaster.error'));
 }
 
 export function savedChanges() {
-  return show('Lagret endringer');
+  return show(i18n.tc('toaster.savedChanged'));
 }
 
 export function deleted() {
-  return show('Slettet objekt');
+  return show(i18n.tc('toasted.deleted'));
 }
 
 export function addedProduct() {
-  return show('Lagt til nytt produkt');
+  return show(i18n.tc('toaster.add.product'));
 }
 
 export function addedObjective(periodName) {
-  return show(`Lagt til nytt mål for ${periodName}`);
+  return show(i18n.tc('toaster.add.objective', null, { object: periodName }));
 }
 
 export function addedDepartment() {
-  return show('Lagt til nytt produktområde');
+  return show(i18n.tc('toaster.add.department'));
 }
 
 export function addedProgression() {
-  return show('Lagt til ny måleverdi');
+  return show(i18n.tc('toaster.add.porgression'));
 }
 
 export function addedKeyResult() {
-  return show('Lagt til nytt nøkkelresultat');
+  return show(i18n.tc('toaster.add.keyResylt'));
 }
 
 export function uploadedPhoto() {
-  return show('Lastet opp bilde');
+  return show(i18n.tc('toaster.uploadedPhoto'));
 }
 
 export function fourOhFour() {
-  return show('Siden eksisterer ikke');
+  return show(i18n.tc('toaster.fourOhFour'));
 }
 
 export function restored() {
-  return show(`Gjenopprettet dokument`);
+  return show(i18n.tc('toaster.restored'));
 }
 
 export function deletedPermanently() {
-  return show('Slettet dokument permanent');
+  return show(i18n.tc('toaster.delete.permanently'));
 }
 
 export function deletedRegret(obj) {
@@ -120,24 +118,24 @@ export function deletedRegret(obj) {
     duration: 4000,
     action: [
       {
-        text: 'Angre',
+        text: i18n.tc('toaster.action.regret'),
         onClick: callback || unDelete.bind(null, ref),
       },
       {
-        text: 'Lukk',
+        text: i18n.tc('toaster.action.close'),
         onClick: close,
       },
     ],
   };
 
   if (name) {
-    return show(`Slettet «${name}»`, options);
+    return show(i18n.tc('toaster.delete.object', null, { name }), options);
   }
-  return show(`Slettet objekt`, options);
+  return show(i18n.tc('toaster.deleted'), options);
 }
 
 export function revertedDeletion() {
-  return show('Gjenopprettet objekt');
+  return show(i18n.tc('toaster.restored'));
 }
 
 async function unDelete(ref) {

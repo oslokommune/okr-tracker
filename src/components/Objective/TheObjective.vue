@@ -7,18 +7,14 @@
       <div class="item__text">
         <h3 class="title-3">
           {{ objective.name }}
-          <span v-if="objective.progression">({{ Math.round(objective.progression * 100) }}%)</span>
+          <span>({{ Math.round(objective.progression * 100) }}%)</span>
         </h3>
         <p>{{ objective.description }}</p>
         <p></p>
 
         <div class="section content content--padding">
-          <h4 class="title-4">
-            Nøkkelresultater
-          </h4>
-          <div v-if="!keyResults.length">
-            Oops! Her er det ingen nøkkelresultater ennå.
-          </div>
+          <h4 class="title-4">{{ $t('objective.keyres') }}</h4>
+          <div v-if="!keyResults.length">{{ $t('objective.emptyKeyres') }}</div>
           <TheKeyResult v-for="keyres in keyResults" :key="keyres.id" :keyres="keyres"></TheKeyResult>
         </div>
       </div>

@@ -1,20 +1,18 @@
 <template>
   <div>
     <section class="section">
-      <h2 class="title-2">Brukeradministrasjon</h2>
+      <h2 class="title-2">{{ $t('admin.users.title') }}</h2>
       <p>
-        Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang.
-        Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne
-        tilgangskontrollen.
+        {{ $t('admin.users.subtitle') }}
       </p>
     </section>
     <hr />
     <div class="section whitelist">
       <div class="whitelist__header">
         <div class="whitelist__row">
-          <div class="whitelist__cell whitelist__cell--email">E-post</div>
-          <div class="whitelist__cell whitelist__cell--name">Navn</div>
-          <div class="whitelist__cell whitelist__cell--admin">Admin</div>
+          <div class="whitelist__cell whitelist__cell--email">{{ $t('admin.users.email') }}</div>
+          <div class="whitelist__cell whitelist__cell--name">{{ $t('admin.users.name') }}</div>
+          <div class="whitelist__cell whitelist__cell--admin">{{ $t('admin.users.admin') }}</div>
           <div class="whitelist__cell whitelist__cell--action"></div>
         </div>
       </div>
@@ -35,19 +33,19 @@
           </div>
           <div class="whitelist__cell whitelist__cell--action">
             <button v-if="user" :disabled="u.id === user.email" class="btn btn--borderless" @click="deleteUser(u)">
-              Slett
+              {{ $t('admin.users.delete') }}
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <h3 class="title title-3">Legg til e-post-adresser</h3>
-    <p>Én adresse per rad</p>
+    <h3 class="title title-3">{{ $t('admin.users.addEmails') }}</h3>
+    <p>{{ $t('admin.users.addEmailsHelp') }}</p>
     <div class="form-group">
       <textarea rows="10" v-model="addUserList"></textarea>
     </div>
-    <button @click="addEmails">Legg til</button>
+    <button @click="addEmails">{{ $t('admin.users.add') }}</button>
   </div>
 </template>
 

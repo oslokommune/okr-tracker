@@ -4,7 +4,7 @@
     <div class="container container--sidebar">
       <section class="section page-menu content--sidebar">
         <label v-if="$route.name === 'me'" class="form-field">
-          <span class="form-label">Endre bilde</span>
+          <span class="form-label">{{ $t('profile.changePicture') }}</span>
           <image-uploader
             class="image-uploader"
             :max-width="450"
@@ -21,24 +21,24 @@
       </section>
       <main class="content--main">
         <section v-if="$route.name === 'me'" class="section">
-          <h2 class="title title-2">Display name</h2>
+          <h2 class="title title-2">{{ $t('profile.name') }}</h2>
           <form @submit.prevent="submitDisplayName()">
             <label class="form-field form-field--small">
               <div class="form-login">
                 <input class="field" v-model="displayName" maxlength="32" />
                 <button class="btn">
-                  Lagre
+                  {{ $t('profile.save') }}
                 </button>
               </div>
             </label>
           </form>
         </section>
         <section v-if="getUser.admin" class="section">
-          <h2 class="title title-2">Admin</h2>
-          <p>Har administratortilgang</p>
+          <h2 class="title title-2">{{ $t('profile.admin') }}</h2>
+          <p>{{ $t('profile.hasAdmin') }}</p>
         </section>
         <section class="section">
-          <h2 class="title title-2">Mine produkter</h2>
+          <h2 class="title title-2">{{ $t('profile.products') }}</h2>
           <ul class="grid-system">
             <li v-for="product in products" :key="product.id">
               <router-link :to="{ name: 'product', params: { slug: product.slug } }">
@@ -54,10 +54,10 @@
           </ul>
         </section>
         <section class="section">
-          <h2 class="title title-2">Audit</h2>
+          <h2 class="title title-2">{{ $t('profile.audit') }}</h2>
           <div class="flex-system">
             <div v-if="!feed.length">
-              Ingen handlinger fra brukeren.
+              {{ $t('profile.noActivity') }}
             </div>
             <div v-for="event in feed" :key="event.id">
               <NewsfeedCard class="flex-system__card" :event-data="event" />

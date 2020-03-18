@@ -1,14 +1,16 @@
 <template>
   <div class="overlay" @click="close">
-    <div class="modal" @click.stop="">
+    <div class="modal" @click.stop>
       <div class="modal__header">
-        <h2 class="title-2">Registrere progresjon</h2>
-        <button class="btn btn--borderless" @click="close"><i class="fa fa-times"></i></button>
+        <h2 class="title-2">{{ $t('keyres.registerProgression.register') }}</h2>
+        <button class="btn btn--borderless" @click="close">
+          <i class="fa fa-times"></i>
+        </button>
       </div>
 
       <main v-if="keyResult" class="modal__main">
         <div class="title">
-          <p class="pill">Nøkkelresultat</p>
+          <p class="pill">{{ $t('keyres.registerProgression.keyres') }}</p>
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>
@@ -21,7 +23,7 @@
           v-model="newValue"
         />
         <label v-if="!keyResult.auto" class="form-field">
-          <span class="form-label">Verdi</span>
+          <span class="form-label">{{ $t('keyres.registerProgression.value') }}</span>
           <input type="number" v-model="newValue" />
         </label>
         <div class="dots">
@@ -30,13 +32,13 @@
       </main>
 
       <main v-if="!keyResult" class="modal__empty">
-        <h3 class="title-3">Ingen nøkkelresultater</h3>
+        <h3 class="title-3">{{ $t('keyres.registerProgression.noKeyres') }}</h3>
       </main>
 
       <div class="modal__footer">
-        <button class="btn btn--borderless" @click="previous">Forrige</button>
-        <button class="btn btn--borderless" @click="skip">Hopp over</button>
-        <button class="btn btn--borderless" @click="save">Lagre og gå videre</button>
+        <button class="btn btn--borderless" @click="previous">{{ $t('keyres.registerProgression.previous') }}</button>
+        <button class="btn btn--borderless" @click="skip">{{ $t('keyres.registerProgression.jumpOver') }}</button>
+        <button class="btn btn--borderless" @click="save">{{ $t('keyres.registerProgression.save') }}</button>
       </div>
     </div>
   </div>
@@ -158,134 +160,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/_colors';
-
-.overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(black, 0.2);
-}
-
-.modal {
-  display: grid;
-
-  grid-template-areas:
-    'header'
-    'main'
-    'footer';
-
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 100%;
-  width: 100%;
-  max-width: 50rem;
-  margin: 0 0.5rem;
-  overflow: hidden;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
-
-  @media screen and (min-width: 1024px) {
-    width: 70vw;
-    min-width: 700px;
-    max-width: 850px;
-    min-height: 400px;
-  }
-
-  &__empty {
-    padding: 2.5rem 2rem;
-  }
-
-  &__header {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem 0 2rem;
-    font-size: 1rem;
-    border-bottom: 1px solid $color-border;
-
-    @media screen and (min-width: 1600px) {
-      padding: 2rem;
-      font-size: 1.5rem;
-    }
-
-    .btn {
-      margin: 0;
-      padding: 0 1.15rem;
-    }
-
-    .fa {
-      margin: 0;
-      font-size: inherit;
-    }
-
-    .title-2 {
-      display: block;
-      margin: 0;
-      margin-right: auto;
-      font-size: inherit;
-    }
-  }
-
-  &__main {
-    display: grid;
-    grid-gap: 0.5rem 0rem;
-    grid-template-areas:
-      '. title .'
-      '. progress .'
-      'input slider .'
-      'dots dots dots';
-    grid-template-rows: minmax(7rem, auto) auto auto auto;
-    grid-template-columns: 0 auto 0;
-    padding: 1rem 2rem 1rem;
-
-    @media screen and (min-width: 768px) {
-      grid-gap: 0.5rem 1.5rem;
-      grid-template-columns: 5.5rem auto 5.5rem;
-    }
-
-    @media screen and (min-width: 1600px) {
-      grid-template-rows: 11rem 2.5rem 6rem 3rem;
-      padding: 2.5rem 2rem 2rem;
-    }
-  }
-
-  &__footer {
-    display: flex;
-    grid-area: 'footer';
-    justify-content: space-evenly;
-    padding: 0.25rem 0rem;
-    font-size: 12px;
-    background: $color-bg;
-    border-top: 1px solid $color-border;
-
-    @media screen and (min-width: 768px) {
-      font-size: inherit;
-    }
-
-    @media screen and (min-width: 1600px) {
-      padding: 1rem;
-    }
-
-    .btn {
-      justify-content: center;
-      width: 100%;
-      padding: 1em;
-      font-size: inherit;
-      border-left: 1px solid $color-border;
-
-      &:first-child {
-        border-left-color: transparent;
-      }
-    }
-  }
-}
+@import '../styles/_modal';
 
 .range {
   display: none;

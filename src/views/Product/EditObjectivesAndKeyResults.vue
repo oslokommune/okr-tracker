@@ -4,14 +4,14 @@
 
     <main class="content--main content--padding section">
       <div class="content-header">
-        <h2 class="title-2">Administrer mål og nøkkelresultater</h2>
+        <h2 class="title-2">{{ $t('product.editObjectivesAndKeyresults.title') }}</h2>
       </div>
 
       <div class="miller__container">
         <div class="miller">
           <!-- Periods -->
           <div class="miller__col" :class="{ active: activeLevel === 'period' }">
-            <h3 class="miller__col__header">Periode</h3>
+            <h3 class="miller__col__header">{{ $t('product.editObjectivesAndKeyresults.period') }}</h3>
             <div
               class="miller__col__item"
               v-for="period in periods"
@@ -22,14 +22,18 @@
               {{ period.name }}
             </div>
 
-            <div class="miller__col__item miller__col__add" @click="addPeriod" v-tooltip.bottom="`Legg til ny periode`">
-              + Legg til periode
+            <div
+              class="miller__col__item miller__col__add"
+              @click="addPeriod"
+              v-tooltip.bottom="$t('tooltip.addPeriod')"
+            >
+              {{ $t('product.editObjectivesAndKeyresults.addPeriod') }}
             </div>
           </div>
 
           <!-- Objectives -->
           <div class="miller__col" :class="{ active: activeLevel === 'objective' }">
-            <h3 class="miller__col__header">Mål</h3>
+            <h3 class="miller__col__header">{{ $t('product.editObjectivesAndKeyresults.objective') }}</h3>
             <div
               class="miller__col__item"
               v-for="objective in objectives"
@@ -43,15 +47,15 @@
               v-if="selectedPeriod"
               class="miller__col__item miller__col__add"
               @click="addObjective"
-              v-tooltip.bottom="`Legg til et mål for valgt kvartal`"
+              v-tooltip.bottom="$t('tooltip.addObjectiveForPeriod')"
             >
-              + Legg til
+              {{ $t('product.editObjectivesAndKeyresults.add') }}
             </div>
           </div>
 
           <!-- Key results -->
           <div class="miller__col" :class="{ active: activeLevel === 'keyres' }">
-            <h3 class="miller__col__header">Nøkkelresultat</h3>
+            <h3 class="miller__col__header">{{ $t('product.editObjectivesAndKeyresults.keyres') }}</h3>
             <template v-if="selectedObjective">
               <div
                 class="miller__col__item"
@@ -67,16 +71,13 @@
               v-if="selectedPeriod && selectedObjective"
               class="miller__col__item miller__col__add"
               @click="addKeyres"
-              v-tooltip.bottom="`Legg til et nøkkelresultat for valgt mål`"
+              v-tooltip.bottom="$t('tooltip.addKeyresForObjective')"
             >
-              + Legg til
+              {{ $t('product.editObjectivesAndKeyresults.add') }}
             </div>
           </div>
 
-          <main
-            class="miller__main"
-            v-tooltip.top="!activeLevel ? `Tomt? Velg et mål eller nøkkelresultat i listen` : ``"
-          >
+          <main class="miller__main" v-tooltip.top="!activeLevel ? $t('tooltip.emptyMiller') : ``">
             <UpdateKeyres
               v-if="activeLevel === 'keyres'"
               :keyres="selectedKeyres"
@@ -109,6 +110,7 @@ import EditPeriod from '@/components/Period/editPeriod.vue';
 import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import Keyresult from '@/db/keyresultHandler';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'EditObjectivesAndKeyResults',
@@ -240,7 +242,7 @@ export default {
         .then(snapshot => snapshot.docs.map(doc => doc.data()).filter(doc => !doc.archived).length);
 
       if (objectiveCount >= 4) {
-        Toast.show('Kan ikke ha flere enn 4 mål');
+        Toast.show(i18n.t('product.editObjectivesAndKeyresults.max'));
         return;
       }
 
@@ -278,7 +280,7 @@ export default {
           archived: false,
           created: new Date(),
           createdBy: this.user.id,
-          name: 'Ny periode',
+          name: i18n.t('product.editObjectivesAndKeyresults.newPeriod'),
           startDate: today,
           endDate: tomorrow,
         })

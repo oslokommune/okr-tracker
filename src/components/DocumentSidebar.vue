@@ -8,13 +8,19 @@
             params: { slug: $route.params.slug },
           }"
           class="sidebar-nav__item"
-          v-tooltip.right="`Endre detaljer og team`"
+          v-tooltip.right="$t('tooltip.changeDetailsAndTeam')"
         >
-          <i class="fa fas fa-fw fa-edit"></i>Endre produkt
+          <i class="fa fas fa-fw fa-edit"></i>
+          {{ $t('document.changeProduct') }}
         </router-link>
         <div class="add-object-menu-wrapper" v-click-outside="closeAddObjective">
-          <div class="sidebar-nav__item" @click="expandAddObjective = true" v-tooltip.right="`Legg til et nytt mål`">
-            <i class="fa fas fa-fw fa-plus"></i>Legg til mål
+          <div
+            class="sidebar-nav__item"
+            @click="expandAddObjective = true"
+            v-tooltip.right="$t('tooltip.addObjective')"
+          >
+            <i class="fa fas fa-fw fa-plus"></i>
+            {{ $t('document.addObjective') }}
           </div>
 
           <add-objective
@@ -28,9 +34,10 @@
           <div
             class="sidebar-nav__item"
             @click="expandAddKeyRes = true"
-            v-tooltip.right="`Legg til nytt nøkkelresultat for eksisterende mål`"
+            v-tooltip.right="$t('tooltip.addKeyresToObjective')"
           >
-            <i class="fa fas fa-fw fa-plus"></i>Nytt nøkkelresultat
+            <i class="fa fas fa-fw fa-plus"></i>
+            {{ $t('document.newKeyres') }}
           </div>
           <add-keyres
             v-if="expandAddKeyRes"
@@ -43,9 +50,10 @@
           <div
             class="sidebar-nav__item"
             @click="expandRegisterProgress = true"
-            v-tooltip.right="`Registrere nye verdier til nøkkelresultatene`"
+            v-tooltip.right="$t('tooltip.updateKeyres')"
           >
-            <i class="fa fas fa-fw fa-chart-line"></i>Oppdater data
+            <i class="fa fas fa-fw fa-chart-line"></i>
+            {{ $t('document.updateData') }}
           </div>
           <register-progress-modal
             v-if="expandRegisterProgress"
@@ -54,14 +62,22 @@
           ></register-progress-modal>
         </div>
       </template>
-      <router-link :to="{ name: 'dashboard' }" class="sidebar-nav__item" v-tooltip.right="`Gå til dashboard-visning`">
-        <i class="fa fas fa-fw fa-tachometer-alt"></i>Dashboard
+      <router-link
+        v-if="type === 'product'"
+        :to="{ name: 'dashboard' }"
+        class="sidebar-nav__item"
+        v-tooltip.right="$t('tooltip.dashboard')"
+      >
+        <i class="fa fas fa-fw fa-tachometer-alt"></i>
+        {{ $t('document.dashboard') }}
       </router-link>
-      <!-- <div class="sidebar-nav__item" v-tooltip.right="`Eksporter skjermbilder til presentasjoner (1920x1080)`">
-        <i class="fa fas fa-fw fa-image"></i>Eksporter grafikk
-      </div> -->
+
+      <membersModal v-if="type === 'department'" class="members-wrapper" :document="document"></membersModal>
+      <!-- <div class="sidebar-nav__item" v-tooltip.right="$t('tooltip.export')">
+        <i class="fa fas fa-fw fa-image"></i>{{$t('document.export')}}
+      </div>-->
     </nav>
-    <div class="edited edited--mt" v-tooltip="prettyDate">Endret {{ edited }}</div>
+    <div class="edited edited--mt" v-tooltip="prettyDate">{{ $tc('document.edited', null, { date: edited }) }}</div>
   </aside>
 </template>
 <script>
@@ -69,12 +85,13 @@ import ClickOutside from 'vue-click-outside';
 import AddKeyres from '@/components/KeyRes/addKeyres.vue';
 import AddObjective from '@/components/Objective/addObjective.vue';
 import RegisterProgressModal from '@/components/RegisterProgressModal.vue';
+import MembersModal from '@/components/MembersModal.vue';
 import { timeFromNow, datePretty } from '@/util/utils';
 
 export default {
   name: 'DocumentSidebar',
 
-  components: { AddKeyres, AddObjective, RegisterProgressModal },
+  components: { AddKeyres, AddObjective, RegisterProgressModal, MembersModal },
 
   data: () => ({
     expandAddObjective: false,

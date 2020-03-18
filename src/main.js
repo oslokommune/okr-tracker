@@ -10,6 +10,7 @@ import { errorHandler, logHandler } from '@/util/utils';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
+import i18n from '@/locale/i18n';
 
 import handleUserAuthStateChange from '@/util/authChangeHelper';
 
@@ -52,6 +53,7 @@ fb.auth.onAuthStateChanged(user => {
       el: '#app',
       router,
       store,
+      i18n,
       render: h => h(App),
     });
   }
