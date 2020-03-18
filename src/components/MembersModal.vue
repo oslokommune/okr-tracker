@@ -10,8 +10,8 @@
         {{ $t('document.showMembers') }}
       </span>
     </div>
-    <div class="overlay" v-show="open">
-      <div class="modal" v-click-outside="closeModal">
+    <div class="overlay" v-show="open" @click.stop="closeModal">
+      <div class="modal">
         <div class="modal__header">
           <h2 class="title-2">{{ $t('document.members') }}</h2>
           <button class="btn btn--borderless" @click="closeModal">
@@ -38,18 +38,20 @@ export default {
     loading: false,
   }),
 
+  mounted() {
+    this.graph = new ForceGraph(this.$refs.svg);
+  },
+
   methods: {
     closeModal() {
       this.open = false;
       this.loading = false;
-
-      if (this.graph) this.graph.destroy();
+      this.graph.destroy();
     },
     async openModal() {
       this.loading = true;
-      const tree = await getDepartmentMembers(this.document);
-      this.graph = new ForceGraph(this.$refs.svg, tree, this.document.name);
       this.open = true;
+      this.graph.render(await getDepartmentMembers(this.document), this.document.name);
       this.loading = false;
     },
   },
@@ -73,5 +75,14 @@ export default {
 .modal-wrapper {
   position: relative;
   z-index: 100;
+}
+
+.modal__main {
+  padding: 0;
+}
+
+svg {
+  grid-row: 1 / 5;
+  grid-column: 1 / -1;
 }
 </style>

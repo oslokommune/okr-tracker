@@ -6,14 +6,11 @@ const colorYellow = '#f8c66b';
 const fontsize = 12;
 
 export default class {
-  constructor(svg, tree, departmentName) {
-    this.width = 800;
+  constructor(svg) {
     this.height = 550;
     this.radius = 12;
 
-    this.svg = select(svg)
-      .attr('height', this.height)
-      .attr('width', this.width);
+    this.svg = select(svg);
 
     this.svg.append('defs');
 
@@ -27,6 +24,10 @@ export default class {
         .scaleExtent([0.1, 4])
         .on('zoom', zoomed.bind(this))
     );
+  }
+
+  render(tree, departmentName) {
+    this.svg.attr('height', this.height).attr('width', '100%');
 
     this.nodes = [{ id: 'root', type: 'root', name: departmentName }];
     this.links = [];
@@ -37,7 +38,14 @@ export default class {
   }
 
   destroy() {
-    this.svg.select('*').remove();
+    this.container
+      .select('.links')
+      .selectAll('*')
+      .remove();
+    this.container
+      .select('.nodes')
+      .selectAll('*')
+      .remove();
   }
 
   run() {
@@ -55,7 +63,7 @@ export default class {
   updateLinks() {
     select('.links')
       .selectAll('line')
-      .data(this.links, d => d.id)
+      .data(this.links)
       .join('line')
       .attr('stroke', 'black')
       .attr('stroke-width', 3)
@@ -69,7 +77,7 @@ export default class {
   updateNodes() {
     const g = select('.nodes')
       .selectAll('g')
-      .data(this.nodes, d => d.id)
+      .data(this.nodes)
       .join(this.enterNode.bind(this))
       .attr('transform', d => `translate(${d.x}, ${d.y})`)
       .call(

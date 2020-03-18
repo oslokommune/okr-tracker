@@ -2,8 +2,10 @@ import { forceManyBody, forceCenter, forceLink, forceCollide } from 'd3';
 
 export default {
   center() {
+    const width = this.svg.node().parentNode.clientWidth;
+
     return forceCenter()
-      .x(this.width / 2)
+      .x(width / 2)
       .y(this.height / 2);
   },
 
