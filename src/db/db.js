@@ -357,14 +357,20 @@ export async function getAuditFromUser(userId) {
 export async function getDepartmentMembers(department) {
   const promises = await department.ref
     .collection('products')
+    .where('archived', '==', false)
     .get()
     .then(serializeList)
-    .then(list => list.map(d => d.team).flat())
-    .then(list => list.map(d => d.get()));
-
-  return Promise.all(promises).then(users => {
-    return users.map(serializeDocument).filter((obj, pos, arr) => {
-      return arr.map(mapObj => mapObj.id).indexOf(obj.id) === pos;
+    .then(list => {
+      if (!list.length) return;
+      return list.map(async product => {
+        if (!product.team || !product.team.length) {
+          product.team = [];
+        } else {
+          product.team = await Promise.all(product.team.map(member => member.get().then(serializeDocument)));
+        }
+        return product;
+      });
     });
-  });
+
+  return Promise.all(promises);
 }

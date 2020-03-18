@@ -71,6 +71,8 @@
         <i class="fa fas fa-fw fa-tachometer-alt"></i>
         {{ $t('document.dashboard') }}
       </router-link>
+
+      <membersModal v-if="type === 'department'" class="members-wrapper" :document="document"></membersModal>
       <!-- <div class="sidebar-nav__item" v-tooltip.right="$t('tooltip.export')">
         <i class="fa fas fa-fw fa-image"></i>{{$t('document.export')}}
       </div>-->
@@ -83,12 +85,13 @@ import ClickOutside from 'vue-click-outside';
 import AddKeyres from '@/components/KeyRes/addKeyres.vue';
 import AddObjective from '@/components/Objective/addObjective.vue';
 import RegisterProgressModal from '@/components/RegisterProgressModal.vue';
+import MembersModal from '@/components/MembersModal.vue';
 import { timeFromNow, datePretty } from '@/util/utils';
 
 export default {
   name: 'DocumentSidebar',
 
-  components: { AddKeyres, AddObjective, RegisterProgressModal },
+  components: { AddKeyres, AddObjective, RegisterProgressModal, MembersModal },
 
   data: () => ({
     expandAddObjective: false,
