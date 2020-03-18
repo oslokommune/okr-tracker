@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import { db, dashboardUser } from '@/config/firebaseConfig';
-import { serializeDocument, serializeList, getNestedData, getDepartmentMembers } from '@/db/db';
+import { serializeDocument, serializeList, getNestedData } from '@/db/db';
 import icons from '@/config/icons';
 
 const errorHandler = Vue.$errorHandler;
@@ -113,10 +113,8 @@ export const actions = {
           commit('SET_DEPARTMENTPRODUCTS', serializeList(d));
         });
 
-      department.ref.onSnapshot(async d => {
-        const dep = serializeDocument(d);
-        dep.members = await getDepartmentMembers(dep);
-        commit('SET_DEPARTMENT', dep);
+      department.ref.onSnapshot(d => {
+        commit('SET_DEPARTMENT', serializeDocument(d));
       });
     });
   },
