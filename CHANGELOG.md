@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+### Added
+
+- Visualising members of a department as a network graph
+
 ### Changed
 
 - Refactor all Cloud Functions
@@ -13,6 +17,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fix bug where progression for objectives and periods did not get updated when a new (empty) key result was created
+- Hide dashboard view for departments and organisations
 
 ## [1.2.0] - 2020-03-11
 

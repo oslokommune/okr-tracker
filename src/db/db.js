@@ -353,3 +353,24 @@ export async function getAuditFromUser(userId) {
       errorHandler('audit_specific_user_error', err);
     });
 }
+
+export async function getDepartmentMembers(department) {
+  const promises = await department.ref
+    .collection('products')
+    .where('archived', '==', false)
+    .get()
+    .then(serializeList)
+    .then(list => {
+      if (!list.length) return;
+      return list.map(async product => {
+        if (!product.team || !product.team.length) {
+          product.team = [];
+        } else {
+          product.team = await Promise.all(product.team.map(member => member.get().then(serializeDocument)));
+        }
+        return product;
+      });
+    });
+
+  return Promise.all(promises);
+}

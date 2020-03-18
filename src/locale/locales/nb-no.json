@@ -1,11 +1,11 @@
 {
   "general": {
-    "team": "Team"
+    "team": "Team",
+    "loading": "Laster ..."
   },
   "pageHeader": {
     "header": "Hjem",
     "keyres": "Nøkkelresultat",
-    "loading": "Laster ...",
     "error": "Cannot find document type"
   },
   "login": {
@@ -181,6 +181,7 @@
     "dashboard": "Dashboard",
     "edited": "Endret {date}",
     "export": "Eksporter grafikk",
+    "showMembers": "Vis medlemmer",
     "mission": "Oppdrag",
     "missing": {
       "first": "Uh-oh!",
@@ -188,7 +189,8 @@
     },
     "addDescription": "Legg inn en beskrivelse",
     "product": "Produkter",
-    "period": "Denne perioden"
+    "period": "Denne perioden",
+    "members": "Medlemmer"
   },
   "home": {
     "newsfeed": "Aktivitet",
