@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fix bug where progression for objectives and periods did not get updated when a new (empty) key result was created
 - Hide dashboard view for departments and organisations
+- Fix error logged when toggling archived documents on admin panel
 
 ## [1.2.0] - 2020-03-11
 

@@ -151,6 +151,8 @@ export default {
     },
 
     async getProductfromRef(snapshot) {
+      if (!snapshot.data()) return;
+
       this.product = snapshot.data();
 
       const team = this.product.team || [];
