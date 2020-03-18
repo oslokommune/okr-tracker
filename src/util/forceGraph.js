@@ -25,11 +25,7 @@ export default class {
     this.svg.call(
       zoom()
         .scaleExtent([0.1, 4])
-        .on('zoom', () => {
-          const text = this.container.selectAll('text');
-          text.attr('font-size', fontsize / event.transform.k);
-          this.container.attr('transform', event.transform);
-        })
+        .on('zoom', zoomed.bind(this))
     );
 
     this.nodes = [{ id: 'root', type: 'root', name: departmentName }];
@@ -38,6 +34,10 @@ export default class {
     this.generateLinksAndNodes(tree);
 
     this.run();
+  }
+
+  destroy() {
+    this.svg.select('*').remove();
   }
 
   run() {
@@ -204,4 +204,10 @@ function dragended(d) {
   if (!event.active) this.simulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
+}
+
+function zoomed() {
+  const text = this.container.selectAll('text');
+  text.attr('font-size', fontsize / event.transform.k);
+  this.container.attr('transform', event.transform);
 }

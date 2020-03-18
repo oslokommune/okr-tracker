@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-wrapper" v-click-outside="closeModal">
+  <div class="modal-wrapper">
     <div class="sidebar-nav__item" @click="openModal">
       <i v-if="loading" class="fa fas fa-fw fa-spinner"></i>
       <i v-else class="fa fas fa-fw fa-users"></i>
@@ -11,7 +11,7 @@
       </span>
     </div>
     <div class="overlay" v-show="open">
-      <div class="modal">
+      <div class="modal" v-click-outside="closeModal">
         <div class="modal__header">
           <h2 class="title-2">{{ $t('document.members') }}</h2>
           <button class="btn btn--borderless" @click="closeModal">
@@ -42,6 +42,8 @@ export default {
     closeModal() {
       this.open = false;
       this.loading = false;
+
+      if (this.graph) this.graph.destroy();
     },
     async openModal() {
       this.loading = true;
