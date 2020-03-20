@@ -21,6 +21,7 @@
 <script>
 import { mapState } from 'vuex';
 import { isAdmin } from '@/db/db';
+import i18n from '@/locale/i18n';
 
 import PageHeader from '@/components/PageHeader.vue';
 
@@ -37,7 +38,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `Admin |  ${i18n.t('general.project')}`,
+      title: `${i18n.t('general.admin')} |  ${i18n.t('general.project')}`,
     };
   },
 

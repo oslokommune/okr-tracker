@@ -60,9 +60,9 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.product ? this.product.name : i18n.t('general.product')} | Dashboard |  ${i18n.t(
-        'general.project'
-      )}`,
+      title: `${this.product ? this.product.name : i18n.t('general.product')} | ${i18n.t(
+        'general.dashboard'
+      )} |  ${i18n.t('general.project')}`,
     };
   },
 

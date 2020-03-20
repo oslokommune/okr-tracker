@@ -29,7 +29,7 @@
               v-tooltip.left="$t('tooltip.toAdmin')"
             >
               <i class="fa fa-fw fa-tachometer-alt"></i>
-              {{ $t('header.admin') }}
+              {{ $t('general.admin') }}
             </router-link>
             <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'me' }">
               <i class="fa fa-fw fa-user" />

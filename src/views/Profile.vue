@@ -34,7 +34,7 @@
           </form>
         </section>
         <section v-if="getUser.admin" class="section">
-          <h2 class="title title-2">{{ $t('profile.admin') }}</h2>
+          <h2 class="title title-2">{{ $t('general.admin') }}</h2>
           <p>{{ $t('profile.hasAdmin') }}</p>
         </section>
         <section class="section">
@@ -76,6 +76,7 @@ import PageHeader from '@/components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
 import * as Toast from '@/util/toasts';
 import { storage } from '@/config/firebaseConfig';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'User',

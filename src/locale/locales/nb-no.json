@@ -10,7 +10,9 @@
     "keyres": "Nøkkelresultat",
     "notFound": "Not found",
     "help": "Hjelp",
-    "objAndKeyres": "Mål og nøkkelresultater"
+    "objAndKeyres": "Mål og nøkkelresultater",
+    "admin": "Admin",
+    "dashboard": "Dashboard"
   },
   "pageHeader": {
     "header": "Hjem",
@@ -37,7 +39,6 @@
   },
   "header": {
     "changeProfile": "Endre profil",
-    "admin": "Admin",
     "logout": "Logg ut",
     "newsfeed": "Aktivitet"
   },
@@ -187,7 +188,6 @@
     "addObjective": "Legg til mål",
     "newKeyres": "Nytt nøkkelresultat",
     "updateData": "Oppdater data",
-    "dashboard": "Dashboard",
     "edited": "Endret {date}",
     "export": "Eksporter grafikk",
     "showMembers": "Vis medlemmer",
@@ -321,7 +321,6 @@
       "subtitle": "Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang. Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne tilgangskontrollen",
       "email": "E-post",
       "name": "Navn",
-      "admin": "Admin",
       "delete": "Slett",
       "addEmails": "Legg til e-post-adresser",
       "addEmailsHelp": "Én adresse per rad",
@@ -383,7 +382,6 @@
     "changePicture": "Endre bilde",
     "name": "Display name",
     "save": "Lagre",
-    "admin": "Admin",
     "hasAdmin": "Har administratortilgang",
     "products": "Mine produkter",
     "audit": "Audit",
