@@ -38,7 +38,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${i18n.t('general.admin')} |  ${i18n.t('general.project')}`,
+      title: `${i18n.t('general.admin')} | ${i18n.t('general.project')}`,
     };
   },
 

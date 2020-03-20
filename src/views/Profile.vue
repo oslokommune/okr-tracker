@@ -99,7 +99,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.displayName} |  ${i18n.t('general.project')}`,
+      title: `${this.displayName} | ${i18n.t('general.project')}`,
     };
   },
 

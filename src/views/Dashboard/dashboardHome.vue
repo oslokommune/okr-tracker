@@ -62,7 +62,7 @@ export default {
     return {
       title: `${this.product ? this.product.name : i18n.t('general.product')} | ${i18n.t(
         'general.dashboard'
-      )} |  ${i18n.t('general.project')}`,
+      )} | ${i18n.t('general.project')}`,
     };
   },
 

@@ -48,7 +48,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.organization ? this.organization.name : i18n.t('general.organization')} |  ${i18n.t(
+      title: `${this.organization ? this.organization.name : i18n.t('general.organization')} | ${i18n.t(
         'general.project'
       )}`,
     };

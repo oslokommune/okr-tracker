@@ -52,7 +52,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.department ? this.department.name : i18n.t('general.department')} |  ${i18n.t('general.project')}`,
+      title: `${this.department ? this.department.name : i18n.t('general.department')} | ${i18n.t('general.project')}`,
     };
   },
 
