@@ -27,7 +27,9 @@
       class="objective"
     ></dashboardObjective>
 
-    <router-link :to="{ name: 'product' }" class="close" v-tooltip="`Lukk`"><i class="fa fa-times"></i></router-link>
+    <router-link :to="{ name: 'product' }" class="close" v-tooltip="$t('tooltip.close')"
+      ><i class="fa fa-times"></i
+    ></router-link>
   </div>
 </template>
 
@@ -54,6 +56,12 @@ export default {
   components: {
     PieChart,
     DashboardObjective,
+  },
+
+  metaInfo() {
+    return {
+      title: `${this.product ? this.product.name : i18n.t('general.product')} | Dashboard | OKR`,
+    };
   },
 
   watch: {

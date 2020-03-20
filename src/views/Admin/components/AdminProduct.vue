@@ -12,7 +12,7 @@
 
       <label
         class="form-field"
-        v-tooltip.bottom="{ content: 'Dette kan ikke endres', delay: { show: 1000, hide: 50 } }"
+        v-tooltip.bottom="{ content: $t('tooltip.cantChange'), delay: { show: 1000, hide: 50 } }"
       >
         <span class="form-label">{{ $t('admin.product.slug') }}</span>
         <span class="form-help">{{ $t('admin.product.slugHelp') }}</span>

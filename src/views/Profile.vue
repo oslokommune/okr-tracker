@@ -96,6 +96,12 @@ export default {
     NewsfeedCard,
   },
 
+  metaInfo() {
+    return {
+      title: `${this.displayName} | OKR`,
+    };
+  },
+
   computed: {
     ...mapState(['user']),
     getUser() {

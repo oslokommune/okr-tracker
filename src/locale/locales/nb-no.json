@@ -1,11 +1,18 @@
 {
   "general": {
     "team": "Team",
-    "loading": "Laster ..."
+    "loading": "Laster ...",
+    "product": "Produkt",
+    "organization": "Organisasjon",
+    "department": "Produktområde",
+    "owner": "Oslo kommune",
+    "keyres": "Nøkkelresultat",
+    "notFound": "Not found",
+    "help": "Hjelp",
+    "objAndKeyres": "Mål og nøkkelresultater"
   },
   "pageHeader": {
     "header": "Hjem",
-    "keyres": "Nøkkelresultat",
     "error": "Cannot find document type"
   },
   "login": {
@@ -110,7 +117,6 @@
     "lastUpdated": "Sist oppdatert {date}",
     "registerProgression": {
       "register": "Registrere progresjon",
-      "keyres": "Nøkkelresultat",
       "value": "Verdi",
       "noKeyres": "Ingen nøkkelresultater",
       "previous": "Forrige",
@@ -171,7 +177,9 @@
     "emptyMiller": "Tomt? Velg et mål eller nøkkelresultat i listen",
     "addPeriod": "Legg til ny periode",
     "addObjectiveForPeriod": "Legg til et mål for valgt kvartal",
-    "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål"
+    "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål",
+    "cantChange": "Dette kan ikke endres",
+    "hideActivity": "Skjul aktivitet"
   },
   "document": {
     "changeProduct": "Endre product",
@@ -318,14 +326,6 @@
       "addEmailsHelp": "Én adresse per rad",
       "add": "Legg til"
     }
-  },
-  "department": {
-    "title": "Produktområde",
-    "objAndKeyres": "Mål og nøkkelresultater"
-  },
-  "organization": {
-    "title": "Organisasjon",
-    "objAndKeyres": "Mål og nøkkelresultater"
   },
   "keyResultPage": {
     "change": "Endre nøkkelresultat",

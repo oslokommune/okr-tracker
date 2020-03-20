@@ -55,6 +55,7 @@ import { mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import TheSpinner from '@/components/TheSpinner.vue';
 import Audit from '@/db/audit';
+import i18n from '@/locale/i18n';
 
 export default {
   data: () => ({
@@ -62,6 +63,12 @@ export default {
     password: '',
     pending: false,
   }),
+
+  metaInfo() {
+    return {
+      title: `OKR | ${i18n.t('general.owner')}`,
+    };
+  },
 
   components: {
     TheSpinner,

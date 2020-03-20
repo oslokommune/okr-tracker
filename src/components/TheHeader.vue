@@ -6,7 +6,7 @@
       </router-link>
 
       <nav class="right">
-        <router-link :to="{ name: 'help' }" class="btn btn--borderless btn--icon" v-tooltip="'Hjelp'">
+        <router-link :to="{ name: 'help' }" class="btn btn--borderless btn--icon" v-tooltip="$t('general.help')">
           <i class="far fa-fw fa-question-circle"></i>
         </router-link>
 

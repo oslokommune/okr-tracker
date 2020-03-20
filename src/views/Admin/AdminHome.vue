@@ -21,6 +21,7 @@
 <script>
 import { mapState } from 'vuex';
 import { isAdmin } from '@/db/db';
+
 import PageHeader from '@/components/PageHeader.vue';
 
 export default {
@@ -32,6 +33,12 @@ export default {
 
   components: {
     PageHeader,
+  },
+
+  metaInfo() {
+    return {
+      title: `Admin | OKR`,
+    };
   },
 
   async beforeRouteEnter(to, from, next) {
