@@ -14,13 +14,13 @@
   "dependencies": {
     "d3": "^5.15.0",
     "d3-scale": "^3.2.1",
-    "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0",
+    "firebase-admin": "^8.10.0",
+    "firebase-functions": "^3.4.0",
     "google-auth-library": "^5.10.1",
-    "googleapis": "^47.0.0"
+    "googleapis": "^48.0.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.1.6"
+    "firebase-functions-test": "^0.2.0"
   },
   "private": true
 }
