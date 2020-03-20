@@ -2,7 +2,7 @@
   <div class="newsfeed">
     <h2 class="title-3">
       <i class="fa fa-stream fa-fw"></i>{{ $t('home.newsfeed') }}
-      <button class="btn btn--borderless" @click="$emit('close')" v-tooltip.left="`Skjul aktivitet`">
+      <button class="btn btn--borderless" @click="$emit('close')" v-tooltip.left="$t('tooltip.hideActivity')">
         <i class="fa fa-times"></i>
       </button>
     </h2>

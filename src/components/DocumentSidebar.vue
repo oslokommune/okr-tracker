@@ -69,7 +69,7 @@
         v-tooltip.right="$t('tooltip.dashboard')"
       >
         <i class="fa fas fa-fw fa-tachometer-alt"></i>
-        {{ $t('document.dashboard') }}
+        {{ $t('general.dashboard') }}
       </router-link>
 
       <membersModal v-if="type === 'department'" class="members-wrapper" :document="document"></membersModal>

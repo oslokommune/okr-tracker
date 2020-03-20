@@ -60,7 +60,7 @@ export default {
 
   computed: {
     title() {
-      if (this.data.description) return i18n.t('pageHeader.keyres');
+      if (this.data.description) return i18n.t('general.keyres');
       if (!this.data) return i18n.t('general.loading');
       return this.data.name || this.data.displayName || this.data.id || i18n.t('general.loading');
     },

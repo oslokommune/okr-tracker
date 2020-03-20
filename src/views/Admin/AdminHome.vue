@@ -21,6 +21,8 @@
 <script>
 import { mapState } from 'vuex';
 import { isAdmin } from '@/db/db';
+import i18n from '@/locale/i18n';
+
 import PageHeader from '@/components/PageHeader.vue';
 
 export default {
@@ -32,6 +34,12 @@ export default {
 
   components: {
     PageHeader,
+  },
+
+  metaInfo() {
+    return {
+      title: `${i18n.t('general.admin')} | ${i18n.t('general.project')}`,
+    };
   },
 
   async beforeRouteEnter(to, from, next) {

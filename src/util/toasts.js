@@ -30,7 +30,7 @@ export function deleteKeyRes() {
         },
       },
       {
-        text: i18n.tc('toaster.action.close'),
+        text: i18n.tc('btn.close'),
         onClick: (e, toastObject) => {
           toastObject.goAway(0);
         },
@@ -122,7 +122,7 @@ export function deletedRegret(obj) {
         onClick: callback || unDelete.bind(null, ref),
       },
       {
-        text: i18n.tc('toaster.action.close'),
+        text: i18n.tc('btn.close'),
         onClick: close,
       },
     ],
