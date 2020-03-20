@@ -19,7 +19,7 @@ import i18n from '@/locale/i18n';
 export default {
   metaInfo() {
     return {
-      title: `OKR | ${i18n.t('general.owner')}`,
+      title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,
     };
   },
 

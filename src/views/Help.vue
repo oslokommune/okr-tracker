@@ -48,7 +48,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${i18n.t('general.help')} | OKR`,
+      title: `${i18n.t('general.help')} |  ${i18n.t('general.project')}`,
     };
   },
 

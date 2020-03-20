@@ -60,7 +60,9 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.product ? this.product.name : i18n.t('general.product')} | Dashboard | OKR`,
+      title: `${this.product ? this.product.name : i18n.t('general.product')} | Dashboard |  ${i18n.t(
+        'general.project'
+      )}`,
     };
   },
 

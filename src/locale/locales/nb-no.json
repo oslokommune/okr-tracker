@@ -1,6 +1,7 @@
 {
   "general": {
     "team": "Team",
+    "project": "OKR",
     "loading": "Laster ...",
     "product": "Produkt",
     "organization": "Organisasjon",

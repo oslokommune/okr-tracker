@@ -98,7 +98,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.displayName} | OKR`,
+      title: `${this.displayName} |  ${i18n.t('general.project')}`,
     };
   },
 

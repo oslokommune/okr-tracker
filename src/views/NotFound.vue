@@ -9,7 +9,7 @@ export default {
   name: 'NotFound',
   metaInfo() {
     return {
-      title: `${i18n.t('general.notFound')} | OKR`,
+      title: `${i18n.t('general.notFound')} |  ${i18n.t('general.project')}`,
     };
   },
 };

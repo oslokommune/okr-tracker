@@ -48,7 +48,9 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.organization ? this.organization.name : i18n.t('general.organization')} | OKR`,
+      title: `${this.organization ? this.organization.name : i18n.t('general.organization')} |  ${i18n.t(
+        'general.project'
+      )}`,
     };
   },
 

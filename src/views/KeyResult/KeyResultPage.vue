@@ -223,7 +223,9 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.key_result ? this.key_result.description : i18n.t('general.keyres')} | OKR`,
+      title: `${this.key_result ? this.key_result.description : i18n.t('general.keyres')} |  ${i18n.t(
+        'general.project'
+      )}`,
     };
   },
 

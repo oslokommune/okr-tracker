@@ -15,7 +15,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `OKR | ${i18n.t('general.owner')}`,
+      title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,
     };
   },
 };

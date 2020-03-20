@@ -37,7 +37,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `Admin | OKR`,
+      title: `Admin |  ${i18n.t('general.project')}`,
     };
   },
 
