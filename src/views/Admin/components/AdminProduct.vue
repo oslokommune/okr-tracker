@@ -64,8 +64,8 @@
       </div>
     </div>
     <div class="section">
-      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="$t('tooltip.saveChanges')">
-        {{ $t('admin.product.save') }}
+      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="$t('btn.saveChanges')">
+        {{ $t('btn.save') }}
       </button>
       <button
         v-if="isAdmin()"

@@ -14,6 +14,11 @@
     "admin": "Admin",
     "dashboard": "Dashboard"
   },
+  "btn": {
+    "close": "Lukk",
+    "save": "Lagre",
+    "saveChanges": "Lagre endringer"
+  },
   "pageHeader": {
     "header": "Hjem",
     "error": "Cannot find document type"
@@ -61,8 +66,7 @@
       "keyResult": "Slettet nøkkelresultat"
     },
     "action": {
-      "regret": "Angre",
-      "close": "Lukk"
+      "regret": "Angre"
     },
     "removedAdmin": "Fjernet admintilgang for {user}",
     "error": "Noe gikk galt!",
@@ -79,7 +83,6 @@
     "calloutPictures": {
       "information": "Her mangler det et produktbilde. Vil du laste opp et?",
       "yes": "Let's go!",
-      "no": "Lukk",
       "never": "Lukk og ikke vis igjen"
     },
     "invalidName": "Ugyldig navn",
@@ -89,7 +92,6 @@
     "empty": "Kan ikke være tom",
     "required": "Nødvendige felt kan ikke være tomme",
     "submit": "Lagre nytt {object}",
-    "close": "Lukk",
     "add": "Legg til",
     "stop": "Avbryt"
   },
@@ -112,7 +114,6 @@
       "sheetsCellHelp": "For eksempel «A12»"
     },
     "change": "Endre nøkkelresultat",
-    "saveChanges": "Lagre endringer",
     "delete": "Slett nøkkelresultat",
     "close": "Lukk",
     "updateKeyres": "Oppdater verdi for nøkkelresultat",
@@ -135,7 +136,6 @@
     "objectiveForPeriod": "Mål for perioden ({count})",
     "empty": "Oops! Her finnes det ingen mål.",
     "addObjectiveAndKeyres": "Legg til mål og nøkkelresultater",
-    "saveChanges": "Lagre endringer",
     "delete": "Slett mål",
     "change": "Endre mål",
     "keyres": "Nøkkelresultater"
@@ -145,7 +145,6 @@
     "name": "Navn på periode",
     "nameHelp": "F.eks. Q1 2021 / Vår 2021",
     "dateRange": "Start- og sluttdato",
-    "saveChanges": "Lagre endringer",
     "deletePeriod": "Slett periode",
     "hasObjectives": "Kan ikke slette periode som har tilknyttet mål",
     "range": "{startDate} til {endDate}"
@@ -153,8 +152,6 @@
   "tooltip": {
     "newValue": "Ny verdi",
     "showDetails": "Vis detaljer",
-    "save": "Lagre",
-    "close": "Lukk",
     "icon": "Søk og velg ikon fra listen",
     "closeMenu": "Lukk meny",
     "openMenu": "Åpne meny",
@@ -168,7 +165,6 @@
     "auto": "Automatisk",
     "team": "Klikk for å legge til",
     "adminOnly": "Kun administrator kan gjenopprette et slettet produkt",
-    "saveChanges": "Lagre endringer",
     "uploadRequired": "You need to upload some files first",
     "departmentDetails": "Se detaljer for tjenesteområdet",
     "keyresChange": "Endre detailjer for nøkkelresulta",
@@ -277,7 +273,6 @@
       "picture": "Bilde",
       "missionStatement": "Missions statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
-      "save": "Lagre",
       "delete": "Slett"
     },
     "organization": {
@@ -287,7 +282,6 @@
       "picture": "Bilde",
       "missionStatement": "Missions statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
-      "save": "Lagre"
     },
     "product": {
       "title": "Administrer produkt",
@@ -300,7 +294,6 @@
       "missionStatement": "Missions statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
-      "save": "Lagre",
       "delete": "Slett"
     },
     "home": {
@@ -381,7 +374,6 @@
   "profile": {
     "changePicture": "Endre bilde",
     "name": "Display name",
-    "save": "Lagre",
     "hasAdmin": "Har administratortilgang",
     "products": "Mine produkter",
     "audit": "Audit",

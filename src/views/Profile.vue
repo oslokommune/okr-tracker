@@ -27,7 +27,7 @@
               <div class="form-login">
                 <input class="field" v-model="displayName" maxlength="32" />
                 <button class="btn">
-                  {{ $t('profile.save') }}
+                  {{ $t('btn.save') }}
                 </button>
               </div>
             </label>

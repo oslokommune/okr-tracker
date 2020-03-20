@@ -27,7 +27,7 @@
       class="objective"
     ></dashboardObjective>
 
-    <router-link :to="{ name: 'product' }" class="close" v-tooltip="$t('tooltip.close')"
+    <router-link :to="{ name: 'product' }" class="close" v-tooltip="$t('btn.close')"
       ><i class="fa fa-times"></i
     ></router-link>
   </div>
