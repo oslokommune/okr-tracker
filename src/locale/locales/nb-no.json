@@ -281,7 +281,7 @@
       "slug": "Slug",
       "picture": "Bilde",
       "missionStatement": "Missions statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>"
     },
     "product": {
       "title": "Administrer produkt",
