@@ -7,19 +7,35 @@
       </p>
     </section>
     <hr />
+
+    <div class="search form-group">
+      <label>
+        <span class="form-label">{{ $t('admin.users.find') }}</span>
+        <input type="text" v-model="query" />
+      </label>
+    </div>
+
+    <hr />
+
     <div class="section whitelist">
       <div class="whitelist__header">
         <div class="whitelist__row">
-          <div class="whitelist__cell whitelist__cell--email">{{ $t('admin.users.email') }}</div>
-          <div class="whitelist__cell whitelist__cell--name">{{ $t('admin.users.name') }}</div>
-          <div class="whitelist__cell whitelist__cell--admin">{{ $t('general.admin') }}</div>
+          <div @click="sort('id')" class="whitelist__cell whitelist__cell--email">{{ $t('admin.users.email') }}</div>
+          <div @click="sort('displayName')" class="whitelist__cell whitelist__cell--name">
+            {{ $t('admin.users.name') }}
+          </div>
+          <div @click="sort('admin')" class="whitelist__cell whitelist__cell--admin">{{ $t('general.admin') }}</div>
           <div class="whitelist__cell whitelist__cell--action"></div>
         </div>
       </div>
       <div class="whitelist__body">
-        <div class="whitelist__row" v-for="u in users" :key="u.id">
+        <div class="whitelist__row" v-for="u in filteredList" :key="u.id">
           <div class="whitelist__cell whitelist__cell--email">{{ u.id }}</div>
-          <div class="whitelist__cell whitelist__cell--name">{{ u.displayName }}</div>
+          <div class="whitelist__cell whitelist__cell--name">
+            <router-link v-if="u.slug" :to="{ name: 'profile', params: { slug: u.slug } }">
+              {{ u.displayName }}
+            </router-link>
+          </div>
           <div class="whitelist__cell whitelist__cell--admin">
             <label class="toggle">
               <input
@@ -45,13 +61,14 @@
     <div class="form-group">
       <textarea rows="10" v-model="addUserList"></textarea>
     </div>
-    <button @click="addEmails">{{ $t('admin.users.add') }}</button>
+    <button class="btn btn--primary" @click="addEmails">{{ $t('admin.users.add') }}</button>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import uniqid from 'uniqid';
+import Fuse from 'fuse.js';
 import { validateEmail } from '@/util/formValidation';
 import { db } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
@@ -61,14 +78,84 @@ export default {
   name: 'AdminUsers',
 
   data: () => ({
+    query: '',
     addUserList: '',
+    sortBy: 'displayName',
+    sortAsc: true,
+    filteredList: [],
+    fuse: null,
+    fuseSettings: {
+      threshold: 0.5,
+      keys: [
+        {
+          name: 'id',
+          weight: 0.3,
+        },
+        {
+          name: 'email',
+          weight: 0.3,
+        },
+        {
+          name: 'displayName',
+          weight: 0.7,
+        },
+      ],
+    },
   }),
 
   computed: {
     ...mapState(['user', 'users']),
   },
 
+  watch: {
+    users(users) {
+      this.filteredList = users;
+      this.fuse = new Fuse(this.filteredList, this.fuseSettings);
+    },
+
+    query(str) {
+      if (str.length < 2) {
+        this.filteredList = this.users;
+        return;
+      }
+      this.filteredList = this.fuse.search(str);
+    },
+
+    sortBy() {
+      this.filteredList.sort(this.compare);
+    },
+    sortAsc() {
+      this.filteredList.sort(this.compare);
+    },
+  },
+
+  mounted() {
+    this.filteredList = this.users;
+    this.fuse = new Fuse(this.filteredList, this.fuseSettings);
+  },
+
   methods: {
+    sort(prop) {
+      if (prop === this.sortBy) {
+        this.sortAsc = !this.sortAsc;
+        return;
+      }
+      this.sortBy = prop;
+    },
+
+    filter() {
+      const res = this.fuse.search(this.query);
+      return res;
+    },
+
+    compare(a, b) {
+      const prop = this.sortBy;
+      const inverse = this.sortAsc ? 1 : -1;
+      if (a[prop] > b[prop]) return 1 * inverse;
+      if (a[prop] < b[prop]) return -1 * inverse;
+      return 0;
+    },
+
     addEmails() {
       const list = this.addUserList
         .trim()
@@ -170,6 +257,7 @@ export default {
     }
     #{$w}__cell {
       padding: 0.75rem 0.5rem;
+      cursor: pointer;
     }
   }
 
