@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Layout issue on key result page on certain page widths
 - A few locale strings that were not mapped correctly
+- Remove random word space before 'Home' in breadcrumbs
 
 ## [1.3.1] - 2020-03-18
 
