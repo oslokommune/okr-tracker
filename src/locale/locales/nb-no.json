@@ -234,7 +234,7 @@
       "departmentUpdated": "endret produktområdet"
     },
     "productList": {
-      "details": "Vis detailjer",
+      "details": "Vis detaljer",
       "lastUpdated": "Sist oppdatert {product}"
     }
   },
@@ -250,7 +250,7 @@
     }
   },
   "keyresHandler": {
-    "description": "Beskriv nækkelresultatet",
+    "description": "Beskriv nøkkelresultatet",
     "keyresCap": "Kan ikke ha flere enn 5 nøkkelresultat",
     "maxSizeError": "Maximum key results"
   },
@@ -272,7 +272,7 @@
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Missions statement",
+      "missionStatement": "Mission statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
       "delete": "Slett"
     },
@@ -281,7 +281,7 @@
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Missions statement",
+      "missionStatement": "Mission statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>"
     },
     "product": {
@@ -292,7 +292,7 @@
       "slug": "Slug",
       "slugHelp": "Hvordan navnet fremstår i URL-en",
       "picture": "Bilde",
-      "missionStatement": "Missions statement",
+      "missionStatement": "Mission statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
       "delete": "Slett"

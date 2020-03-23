@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Dynamic `<title>`s with `vue-meta`
 - Ability to add comments when updating progress for a key result via toaster
 - Display comments as tooltips on progressions list for a key result
 
