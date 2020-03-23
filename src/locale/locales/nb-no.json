@@ -36,6 +36,7 @@
   "toaster": {
     "welcome": "Velkommen {user}",
     "addedTo": "Lagt til",
+    "addComment": "Legg til kommentar",
     "add": {
       "users": "user | users",
       "admin": "Gitt {user} admintilgang",
@@ -174,7 +175,7 @@
     "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål"
   },
   "document": {
-    "changeProduct": "Endre product",
+    "changeProduct": "Endre produkt",
     "addObjective": "Legg til mål",
     "newKeyres": "Nytt nøkkelresultat",
     "updateData": "Oppdater data",

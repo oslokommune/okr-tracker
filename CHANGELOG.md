@@ -4,9 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- Ability to add comments when updating progress for a key result via toaster
+- Display comments as tooltips on progressions list for a key result
+
 ### Changed
 
 - Increase modal size for members chart
+
+### Fixed
+
+- Layout issue on key result page on certain page widths
+- A few locale strings that were not mapped correctly
 
 ## [1.3.1] - 2020-03-18
 

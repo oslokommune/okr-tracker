@@ -42,6 +42,11 @@
         </button>
       </form>
     </div>
+    <AddProgressComment
+      v-show="addCommentTo"
+      :document-ref="addCommentTo"
+      @close="addCommentTo = null"
+    ></AddProgressComment>
   </div>
 </template>
 
@@ -52,6 +57,7 @@ import ProgressBar from '@/components/ProgressBar.vue';
 import { timeFromNow } from '@/util/utils';
 import { isTeamMemberOfProduct } from '@/db/db';
 import { addProgress } from '@/db/progressHandler';
+import AddProgressComment from '@/components/AddProgressComment.vue';
 
 export default {
   name: 'TheKeyResult',
@@ -60,6 +66,7 @@ export default {
     editMode: false,
     hasEditPermissions: false,
     value: 0.0,
+    addCommentTo: null,
   }),
 
   computed: {
@@ -88,7 +95,11 @@ export default {
   methods: {
     async saveNewProgress() {
       this.editMode = false;
-      await addProgress(this.keyres, +this.value);
+      await addProgress(this.keyres, +this.value, null, this.addComment);
+    },
+
+    addComment(ref) {
+      this.addCommentTo = ref;
     },
   },
 
@@ -105,6 +116,7 @@ export default {
 
   components: {
     ProgressBar,
+    AddProgressComment,
   },
 };
 </script>

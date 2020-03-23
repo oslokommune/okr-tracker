@@ -33,7 +33,7 @@ async function create(objectiveRef, data) {
 
   if (keyResCount >= 5) {
     Toast.show(i18n.t('keyresHandler.keyresCap'));
-    return errorHandler('create_keyres_error', new Error(i18n.t('keyresHandler.mazSizeError')));
+    return errorHandler('create_keyres_error', new Error(i18n.t('keyresHandler.maxSizeError')));
   }
 
   const hasEditPermissions = await isTeamMemberOfProduct(documentRef);
