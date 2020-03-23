@@ -13,7 +13,7 @@
     <button
       v-if="hasEditPermissions && !keyres.auto"
       class="btn btn--borderless keyres__toggle"
-      v-tooltip="editMode ? $t('tooltip.close') : $t('keyres.updateKeyres')"
+      v-tooltip="editMode ? $t('btn.close') : $t('keyres.updateKeyres')"
       @click="editMode = !editMode"
     >
       <i class="fa fa-fw" :class="{ 'fa-times': editMode, 'fa-wrench': !editMode }"></i>
@@ -37,7 +37,7 @@
           :max="keyres.targetValue"
           v-tooltip="{ content: $t('tooltip.newValue'), trigger: 'focus', hideOnTargetClick: false }"
         />
-        <button class="btn" v-tooltip="$t('tooltip.save')">
+        <button class="btn" v-tooltip="$t('btn.save')">
           <i class="fa fa-check"></i>
         </button>
       </form>

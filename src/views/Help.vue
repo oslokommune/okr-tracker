@@ -30,6 +30,7 @@ import marked from 'marked';
 import { sanitize } from 'dompurify';
 import PageHeader from '@/components/PageHeader.vue';
 import toc from '@/util/toc';
+import i18n from '@/locale/i18n';
 
 marked.setOptions({
   smartypants: true,
@@ -43,6 +44,12 @@ export default {
 
   components: {
     PageHeader,
+  },
+
+  metaInfo() {
+    return {
+      title: `${i18n.t('general.help')} | ${i18n.t('general.project')}`,
+    };
   },
 
   async created() {

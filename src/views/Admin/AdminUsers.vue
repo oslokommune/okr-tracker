@@ -12,7 +12,7 @@
         <div class="whitelist__row">
           <div class="whitelist__cell whitelist__cell--email">{{ $t('admin.users.email') }}</div>
           <div class="whitelist__cell whitelist__cell--name">{{ $t('admin.users.name') }}</div>
-          <div class="whitelist__cell whitelist__cell--admin">{{ $t('admin.users.admin') }}</div>
+          <div class="whitelist__cell whitelist__cell--admin">{{ $t('general.admin') }}</div>
           <div class="whitelist__cell whitelist__cell--action"></div>
         </div>
       </div>

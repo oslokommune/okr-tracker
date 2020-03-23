@@ -21,7 +21,7 @@
 
     <hr />
     <button class="btn" :disabled="!dirty" @click="update">
-      {{ $t('period.saveChanges') }}
+      {{ $t('btn.saveChanges') }}
     </button>
     <button class="btn btn--danger" @click="deletePeriod">{{ $t('period.deletePeriod') }}</button>
   </div>

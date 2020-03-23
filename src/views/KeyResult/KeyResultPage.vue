@@ -188,6 +188,8 @@ import locale from 'flatpickr/dist/l10n/no';
 import marked from 'marked';
 import { sanitize } from 'dompurify';
 import { serializeDocument, serializeList, isTeamMemberOfProduct } from '@/db/db';
+import i18n from '@/locale/i18n';
+
 import PageHeader from '@/components/PageHeader.vue';
 import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
@@ -231,6 +233,14 @@ export default {
       locale: locale.no,
     },
   }),
+
+  metaInfo() {
+    return {
+      title: `${this.key_result ? this.key_result.description : i18n.t('general.keyres')} | ${i18n.t(
+        'general.project'
+      )}`,
+    };
+  },
 
   computed: {
     ...mapState(['user', 'key_result']),

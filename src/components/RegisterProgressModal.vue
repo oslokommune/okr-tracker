@@ -10,7 +10,7 @@
 
       <main v-if="keyResult" class="modal__main">
         <div class="title">
-          <p class="pill">{{ $t('keyres.registerProgression.keyres') }}</p>
+          <p class="pill">{{ $t('general.keyres') }}</p>
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>

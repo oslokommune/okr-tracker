@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <button class="btn" :disabled="!dirty" @click="saveObject">{{ $t('admin.department.save') }}</button>
+    <button class="btn" :disabled="!dirty" @click="saveObject">{{ $t('btn.save') }}</button>
     <button class="btn btn--borderless" @click="deleteObject">{{ $t('admin.department.delete') }}</button>
   </div>
 </template>
