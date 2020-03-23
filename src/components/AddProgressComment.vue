@@ -10,7 +10,7 @@
         </div>
         <div class="modal__main">
           <textarea class="textarea" v-model="content"></textarea>
-          <button class="btn" @click="save">Lagre</button>
+          <button class="btn" @click="save">{{ $t('btn.save') }}</button>
         </div>
       </div>
     </div>
