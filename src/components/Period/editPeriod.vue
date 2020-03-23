@@ -138,7 +138,7 @@ export default {
         .then(snapshot => !snapshot.empty);
 
       if (hasLinkedObjectives) {
-        Toast.show(i18n.t('period.hasObjective'));
+        Toast.show(i18n.t('period.hasObjectives'));
         return;
       }
 

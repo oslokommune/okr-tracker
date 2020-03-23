@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Dynamic `<title>`s with `vue-meta`
+- Ability to add comments when updating progress for a key result via toaster
+- Display comments as tooltips on progressions list for a key result
+
+### Changed
+
+- Increase modal size for members chart
+
+### Fixed
+
+- Layout issue on key result page on certain page widths
+- A few locale strings that were not mapped correctly
+
 ## [1.3.1] - 2020-03-18
 
 ### Changed

@@ -50,7 +50,7 @@ export function successFullyAddedUsers(count) {
 }
 
 export function deletedUser(user) {
-  show(i18n.tc('toaster.delte.user', null, { user }));
+  show(i18n.tc('toaster.delete.user', null, { user }));
 }
 
 export function toggleAdmin(user, value) {
@@ -66,11 +66,11 @@ export function error() {
 }
 
 export function savedChanges() {
-  return show(i18n.tc('toaster.savedChanged'));
+  return show(i18n.tc('toaster.savedChanges'));
 }
 
 export function deleted() {
-  return show(i18n.tc('toasted.deleted'));
+  return show(i18n.tc('toaster.deleted'));
 }
 
 export function addedProduct() {
@@ -85,12 +85,29 @@ export function addedDepartment() {
   return show(i18n.tc('toaster.add.department'));
 }
 
-export function addedProgression() {
-  return show(i18n.tc('toaster.add.porgression'));
+export function addedProgression(callback, ref) {
+  const options = {
+    action: [
+      {
+        text: i18n.tc('toaster.addComment'),
+        onClick: (e, toastObject) => {
+          callback(ref);
+          toastObject.goAway(0);
+        },
+      },
+      {
+        text: i18n.tc('toaster.action.close'),
+        onClick: (e, toastObject) => {
+          toastObject.goAway(0);
+        },
+      },
+    ],
+  };
+  return show(i18n.tc('toaster.add.progression'), options);
 }
 
 export function addedKeyResult() {
-  return show(i18n.tc('toaster.add.keyResylt'));
+  return show(i18n.tc('toaster.add.keyResult'));
 }
 
 export function uploadedPhoto() {

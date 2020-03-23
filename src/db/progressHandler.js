@@ -13,7 +13,7 @@ import { logHandler, errorHandler } from '@/util/utils';
  * @param {Date} date - Optional date for the progress
  * @returns {Promise}
  */
-export async function addProgress(keyres, value, date) {
+export async function addProgress(keyres, value, date, addComment) {
   if (!keyres || !keyres.ref) {
     return errorHandler('add_progress_error', new Error(i18n.t('errorHandler.missingKeyRes')));
   }
@@ -46,7 +46,10 @@ export async function addProgress(keyres, value, date) {
   return keyres.ref
     .collection('progress')
     .add(progressToBeRegistered)
-    .then(Toast.addedProgression)
+    .then(response => {
+      Toast.addedProgression(addComment, response);
+      return response;
+    })
     .then(updateCurrentValue.bind(null, keyres))
     .then(() => {
       logHandler('add_progress');
