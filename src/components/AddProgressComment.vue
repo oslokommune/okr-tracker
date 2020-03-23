@@ -3,7 +3,7 @@
     <div class="overlay">
       <div class="modal">
         <div class="modal__header">
-          <h2 class="title-2">Legg til kommentar</h2>
+          <h2 class="title-2">{{ $t('toaster.addComment') }}</h2>
           <button class="btn btn--borderless" @click="closeModal">
             <i class="fa fa-times"></i>
           </button>
