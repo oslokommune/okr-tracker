@@ -72,6 +72,12 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/_modal';
 
+.modal {
+  width: calc(100vw - 4rem);
+  max-width: none;
+  height: calc(100vh - 4rem);
+}
+
 .modal-wrapper {
   position: relative;
   z-index: 100;
@@ -84,5 +90,6 @@ export default {
 svg {
   grid-row: 1 / 5;
   grid-column: 1 / -1;
+  height: 100%;
 }
 </style>
