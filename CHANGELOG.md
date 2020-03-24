@@ -9,15 +9,18 @@ All notable changes to this project will be documented in this file. The format 
 - Dynamic `<title>`s with `vue-meta`
 - Ability to add comments when updating progress for a key result via toaster
 - Display comments as tooltips on progressions list for a key result
+- Fuzzy search for user list on admin panel with `Fuse.js`
 
 ### Changed
 
 - Increase modal size for members chart
+- Sortable columns for user list on admin panel
 
 ### Fixed
 
 - Layout issue on key result page on certain page widths
 - A few locale strings that were not mapped correctly
+- Remove random word space before 'Home' in breadcrumbs
 
 ## [1.3.1] - 2020-03-18
 

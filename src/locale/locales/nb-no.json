@@ -311,6 +311,7 @@
       "add": "+ Legg til"
     },
     "users": {
+      "find": "Finn bruker",
       "title": "Brukeradministrasjon",
       "subtitle": "Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang. Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne tilgangskontrollen",
       "email": "E-post",
