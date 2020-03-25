@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Fixed
+
+- Typo in nb-no translation
+
+## [1.4.0] - 2020-03-25
+
+### Added
+
+- Dynamic `<title>`s with `vue-meta`
+- Ability to add comments when updating progress for a key result via toaster
+- Display comments as tooltips on progressions list for a key result
+- Fuzzy search for user list on admin panel with `Fuse.js`
+
+### Changed
+
+- Increase modal size for members chart
+- Sortable columns for user list on admin panel
+
+### Fixed
+
+- Layout issue on key result page on certain page widths
+- A few locale strings that were not mapped correctly
+- Remove random word space before 'Home' in breadcrumbs
+- Fix issue where progression for an empty objective shows as 'NaN'
+- Fix z-index issue with the members modal
+
 ## [1.3.1] - 2020-03-18
 
 ### Changed

@@ -55,7 +55,7 @@
 
           <!-- Key results -->
           <div class="miller__col" :class="{ active: activeLevel === 'keyres' }">
-            <h3 class="miller__col__header">{{ $t('product.editObjectivesAndKeyresults.keyres') }}</h3>
+            <h3 class="miller__col__header">{{ $t('general.keyres') }}</h3>
             <template v-if="selectedObjective">
               <div
                 class="miller__col__item"

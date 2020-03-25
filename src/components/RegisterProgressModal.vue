@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay" @click="close">
+  <div class="overlay">
     <div class="modal" @click.stop>
       <div class="modal__header">
         <h2 class="title-2">{{ $t('keyres.registerProgression.register') }}</h2>
@@ -10,7 +10,7 @@
 
       <main v-if="keyResult" class="modal__main">
         <div class="title">
-          <p class="pill">{{ $t('keyres.registerProgression.keyres') }}</p>
+          <p class="pill">{{ $t('general.keyres') }}</p>
           <h3 class="title-3">{{ keyResult.description }}</h3>
         </div>
         <progress-bar class="progress" :keyres="keyResult"></progress-bar>
@@ -41,6 +41,12 @@
         <button class="btn btn--borderless" @click="save">{{ $t('keyres.registerProgression.save') }}</button>
       </div>
     </div>
+
+    <AddProgressComment
+      v-show="addCommentTo"
+      :document-ref="addCommentTo"
+      @close="addCommentTo = null"
+    ></AddProgressComment>
   </div>
 </template>
 
@@ -50,11 +56,13 @@ import { mapState } from 'vuex';
 import { serializeList } from '@/db/db';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { addProgress } from '@/db/progressHandler';
+import AddProgressComment from '@/components/AddProgressComment.vue';
 
 export default {
   name: 'RegisterProgressModal',
 
   data: () => ({
+    addCommentTo: null,
     index: 0,
     objectives: [],
     keyResults: [],
@@ -86,6 +94,7 @@ export default {
 
   components: {
     ProgressBar,
+    AddProgressComment,
   },
 
   mounted() {
@@ -103,6 +112,10 @@ export default {
       this.$emit('close');
     },
 
+    addComment(ref) {
+      this.addCommentTo = ref;
+    },
+
     previous() {
       this.index -= 1;
       if (this.index < 0) this.index = this.keyResults.length - 1;
@@ -114,7 +127,7 @@ export default {
     },
 
     async save() {
-      await addProgress(this.keyResult, +this.newValue, this.date);
+      await addProgress(this.keyResult, +this.newValue, this.date, this.addComment);
 
       this.skip();
       if (this.index === 0) this.close();

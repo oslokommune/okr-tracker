@@ -113,6 +113,7 @@
                     <th>{{ $t('keyResultPage.table.value') }}</th>
                     <th>{{ $t('keyResultPage.table.date') }}</th>
                     <th>{{ $t('keyResultPage.table.by') }}</th>
+                    <th></th>
                     <th v-if="hasEditPermissions"></th>
                   </tr>
                 </thead>
@@ -120,7 +121,12 @@
                   <tr v-for="prog in list" :key="prog.id">
                     <td>{{ prog.value }}</td>
                     <td>{{ prog.date | formatDate }}</td>
-                    <td>{{ prog.createdBy.id }}</td>
+                    <td>{{ prog.createdBy.id || prog.createdBy }}</td>
+                    <td>
+                      <button v-if="prog.comment" class="btn btn--borderless" v-tooltip="prog.comment">
+                        <i class="fa fa-comment"></i>
+                      </button>
+                    </td>
                     <td v-if="hasEditPermissions" style="width: 1rem;">
                       <button
                         class="btn btn--borderless"
@@ -155,7 +161,7 @@
               <p>
                 <strong>{{ $t('keyResultPage.notes.tips.one') }}</strong> {{ $t('keyResultPage.notes.tips.two') }}
                 <router-link :to="{ name: 'help' }" target="_blank" rel="noopener noreferrer">{{
-                  $t('keyResultPage.notes.three')
+                  $t('keyResultPage.notes.tips.three')
                 }}</router-link
                 >.
               </p>
@@ -165,6 +171,11 @@
         </div>
       </div>
     </div>
+    <AddProgressComment
+      v-show="addCommentTo"
+      :document-ref="addCommentTo"
+      @close="addCommentTo = null"
+    ></AddProgressComment>
   </div>
 </template>
 
@@ -177,12 +188,15 @@ import locale from 'flatpickr/dist/l10n/no';
 import marked from 'marked';
 import { sanitize } from 'dompurify';
 import { serializeDocument, serializeList, isTeamMemberOfProduct } from '@/db/db';
+import i18n from '@/locale/i18n';
+
 import PageHeader from '@/components/PageHeader.vue';
 import Linechart from '@/util/linechart';
 import { deleteProgress, addProgress } from '@/db/progressHandler';
 import keyResHandler from '@/db/keyresultHandler';
 import 'flatpickr/dist/flatpickr.css';
 import { functions } from '@/config/firebaseConfig';
+import AddProgressComment from '@/components/AddProgressComment.vue';
 
 marked.setOptions({
   smartypants: true,
@@ -192,6 +206,7 @@ export default {
   name: 'KeyResultPage',
 
   data: () => ({
+    addCommentTo: null,
     graph: null,
     doc: null,
     value: 0,
@@ -218,6 +233,14 @@ export default {
       locale: locale.no,
     },
   }),
+
+  metaInfo() {
+    return {
+      title: `${this.key_result ? this.key_result.description : i18n.t('general.keyres')} | ${i18n.t(
+        'general.project'
+      )}`,
+    };
+  },
 
   computed: {
     ...mapState(['user', 'key_result']),
@@ -329,6 +352,7 @@ export default {
   components: {
     PageHeader,
     flatPickr,
+    AddProgressComment,
   },
 
   methods: {
@@ -339,7 +363,11 @@ export default {
     },
 
     addValue() {
-      addProgress(this.key_result, +this.value, this.date);
+      addProgress(this.key_result, +this.value, this.date, this.addComment);
+    },
+
+    addComment(ref) {
+      this.addCommentTo = ref;
     },
 
     saveNotes() {
@@ -395,10 +423,25 @@ export default {
 .columns {
   display: grid;
   grid-gap: 2rem;
-  grid-template-columns: 2fr 1fr;
+
+  grid-template-areas:
+    'notes'
+    'main';
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr;
+
+  @media screen and(min-width: 1200px) {
+    grid-template-areas: 'main notes';
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.column--left {
+  grid-area: main;
 }
 
 .column--right {
+  grid-area: notes;
   & > .title-3 {
     display: flex;
     align-items: center;

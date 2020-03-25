@@ -27,7 +27,7 @@
         </span>
 
         <span v-else-if="eventData.event === 'deleted-user'">
-          {{ $t('fjernet bruker ', null, { user: eventData.affectedUser }) }}
+          {{ $t('home.newsfeedCard.removedUser', null, { user: eventData.affectedUser }) }}
         </span>
 
         <span v-else-if="eventData.event === 'create-objective'">
@@ -38,7 +38,7 @@
         </span>
 
         <span v-else-if="eventData.event === 'archive-objective'">
-          {{ $t('home.newsfeedCard.objectiveArhived', null, { objective: objective.name }) }}
+          {{ $t('home.newsfeedCard.objectiveArchived', null, { objective: objective.name }) }}
 
           <router-link :to="product.route">
             {{ product.name }}
@@ -76,7 +76,7 @@
         </span>
 
         <span v-else-if="eventData.event === 'added-users'">
-          {{ $t('home.newsfeedCard.usersAdded') }}
+          {{ $t('home.newsfeedCard.usersAdded.one') }}
           <strong v-tooltip="JSON.parse(eventData.list).join('<br>')">
             {{
               $t('home.newsfeedCard.usersAdded.two', null, {

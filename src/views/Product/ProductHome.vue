@@ -38,6 +38,7 @@ import DocumentSidebar from '@/components/DocumentSidebar.vue';
 import TheSubNav from '@/components/TheSubNav.vue';
 import CalloutUploadProductImage from '@/components/Callouts/CalloutUploadProductImage.vue';
 import slugify from '@/util/slugify';
+import i18n from '@/locale/i18n';
 
 import * as Toast from '@/util/toasts';
 
@@ -64,6 +65,12 @@ export default {
     ObjectivesList,
     TheSubNav,
     CalloutUploadProductImage,
+  },
+
+  metaInfo() {
+    return {
+      title: `${this.product ? this.product.name : i18n.t('general.product')} | ${i18n.t('general.project')}`,
+    };
   },
 
   computed: {

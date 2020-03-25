@@ -6,7 +6,7 @@
       </router-link>
 
       <nav class="right">
-        <router-link :to="{ name: 'help' }" class="btn btn--borderless btn--icon" v-tooltip="'Hjelp'">
+        <router-link :to="{ name: 'help' }" class="btn btn--borderless btn--icon" v-tooltip="$t('general.help')">
           <i class="far fa-fw fa-question-circle"></i>
         </router-link>
 
@@ -29,7 +29,7 @@
               v-tooltip.left="$t('tooltip.toAdmin')"
             >
               <i class="fa fa-fw fa-tachometer-alt"></i>
-              {{ $t('header.admin') }}
+              {{ $t('general.admin') }}
             </router-link>
             <router-link v-if="!isDashboardUser()" class="menu-item" :to="{ name: 'me' }">
               <i class="fa fa-fw fa-user" />

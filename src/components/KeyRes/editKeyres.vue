@@ -62,7 +62,7 @@
 
     <hr />
 
-    <button :disabled="!dirty" class="btn" @click="send">{{ $t('keyres.saveChanges') }}</button>
+    <button :disabled="!dirty" class="btn" @click="send">{{ $t('btn.saveChanges') }}</button>
     <button class="btn btn--danger" @click="deleteObject">{{ $t('keyres.delete') }}</button>
 
     <p v-if="showInfo">{{ info }}</p>

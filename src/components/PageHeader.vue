@@ -4,10 +4,7 @@
       <div class="page-header__container">
         <ul class="breadcrumb" v-if="breadcrumbs">
           <li class="breadcrumb__item">
-            <router-link to="/">
-              <i class="fas fa-home"></i>
-              {{ $t('pageHeader.header') }}
-            </router-link>
+            <router-link to="/"><i class="fas fa-home"></i>{{ $t('pageHeader.header') }}</router-link>
           </li>
           <li class="breadcrumb__item" v-for="item in breadcrumbs" :key="item.name">
             <router-link v-if="item.routerLinkTo" :to="item.routerLinkTo">{{ item.name }}</router-link>
@@ -60,7 +57,7 @@ export default {
 
   computed: {
     title() {
-      if (this.data.description) return i18n.t('pageHeader.keyres');
+      if (this.data.description) return i18n.t('general.keyres');
       if (!this.data) return i18n.t('general.loading');
       return this.data.name || this.data.displayName || this.data.id || i18n.t('general.loading');
     },

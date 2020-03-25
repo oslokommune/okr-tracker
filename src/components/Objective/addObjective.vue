@@ -32,7 +32,7 @@
     </label>
     <div class="form-field--error" v-if="$v.body.$error">{{ $t('validations.empty') }}</div>
     <button :disabled="submit" class="btn" @click="submitForm">{{ $t('validations.add') }}</button>
-    <button class="btn btn--borderless" @click="$emit('close-menu')">{{ $t('validations.close') }}</button>
+    <button class="btn btn--borderless" @click="$emit('close-menu')">{{ $t('btn.close') }}</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>

@@ -31,6 +31,7 @@ import { mapActions, mapState, mapMutations } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { serializeList, serializeDocument } from '@/db/db';
 import slugify from '@/util/slugify';
+import i18n from '@/locale/i18n';
 
 import PageHeader from '@/components/PageHeader.vue';
 import DocumentSidebar from '@/components/DocumentSidebar.vue';
@@ -44,6 +45,14 @@ export default {
   data: () => ({
     team: [],
   }),
+
+  metaInfo() {
+    return {
+      title: `${this.organization ? this.organization.name : i18n.t('general.organization')} | ${i18n.t(
+        'general.project'
+      )}`,
+    };
+  },
 
   components: {
     ObjectivesList,

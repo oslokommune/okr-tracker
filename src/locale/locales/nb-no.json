@@ -1,15 +1,30 @@
 {
   "general": {
     "team": "Team",
-    "loading": "Laster ..."
+    "project": "OKR",
+    "loading": "Laster ...",
+    "product": "Produkt",
+    "organization": "Organisasjon",
+    "department": "Produktområde",
+    "owner": "Oslo kommune",
+    "keyres": "Nøkkelresultat",
+    "notFound": "Not found",
+    "help": "Hjelp",
+    "objAndKeyres": "Mål og nøkkelresultater",
+    "admin": "Admin",
+    "dashboard": "Dashboard"
+  },
+  "btn": {
+    "close": "Lukk",
+    "save": "Lagre",
+    "saveChanges": "Lagre endringer"
   },
   "pageHeader": {
     "header": "Hjem",
-    "keyres": "Nøkkelresultat",
     "error": "Cannot find document type"
   },
   "login": {
-    "notLoggedIn": "Du er ikke logget inm",
+    "notLoggedIn": "Du er ikke logget inn",
     "google": {
       "title": "Google-bruker",
       "info": "Logg inn med din registrerte Google-konto for å bruke denne applikasjonen",
@@ -29,19 +44,19 @@
   },
   "header": {
     "changeProfile": "Endre profil",
-    "admin": "Admin",
     "logout": "Logg ut",
     "newsfeed": "Aktivitet"
   },
   "toaster": {
     "welcome": "Velkommen {user}",
     "addedTo": "Lagt til",
+    "addComment": "Legg til kommentar",
     "add": {
       "users": "user | users",
       "admin": "Gitt {user} admintilgang",
       "product": "Lagt til nytt produkt",
       "objective": "Lagt til nytt mål for {object}",
-      "progression": "Lagt til ny målverdi",
+      "progression": "Lagt til ny verdi",
       "department": "Lagt til nytt produktområde",
       "keyResult": "Lagt til nytt nøkkelresultat"
     },
@@ -52,8 +67,7 @@
       "keyResult": "Slettet nøkkelresultat"
     },
     "action": {
-      "regret": "Angre",
-      "close": "Lukk"
+      "regret": "Angre"
     },
     "removedAdmin": "Fjernet admintilgang for {user}",
     "error": "Noe gikk galt!",
@@ -70,7 +84,6 @@
     "calloutPictures": {
       "information": "Her mangler det et produktbilde. Vil du laste opp et?",
       "yes": "Let's go!",
-      "no": "Lukk",
       "never": "Lukk og ikke vis igjen"
     },
     "invalidName": "Ugyldig navn",
@@ -80,7 +93,6 @@
     "empty": "Kan ikke være tom",
     "required": "Nødvendige felt kan ikke være tomme",
     "submit": "Lagre nytt {object}",
-    "close": "Lukk",
     "add": "Legg til",
     "stop": "Avbryt"
   },
@@ -103,14 +115,12 @@
       "sheetsCellHelp": "For eksempel «A12»"
     },
     "change": "Endre nøkkelresultat",
-    "saveChanges": "Lagre endringer",
     "delete": "Slett nøkkelresultat",
     "close": "Lukk",
     "updateKeyres": "Oppdater verdi for nøkkelresultat",
     "lastUpdated": "Sist oppdatert {date}",
     "registerProgression": {
       "register": "Registrere progresjon",
-      "keyres": "Nøkkelresultat",
       "value": "Verdi",
       "noKeyres": "Ingen nøkkelresultater",
       "previous": "Forrige",
@@ -127,7 +137,6 @@
     "objectiveForPeriod": "Mål for perioden ({count})",
     "empty": "Oops! Her finnes det ingen mål.",
     "addObjectiveAndKeyres": "Legg til mål og nøkkelresultater",
-    "saveChanges": "Lagre endringer",
     "delete": "Slett mål",
     "change": "Endre mål",
     "keyres": "Nøkkelresultater"
@@ -137,7 +146,6 @@
     "name": "Navn på periode",
     "nameHelp": "F.eks. Q1 2021 / Vår 2021",
     "dateRange": "Start- og sluttdato",
-    "saveChanges": "Lagre endringer",
     "deletePeriod": "Slett periode",
     "hasObjectives": "Kan ikke slette periode som har tilknyttet mål",
     "range": "{startDate} til {endDate}"
@@ -145,8 +153,6 @@
   "tooltip": {
     "newValue": "Ny verdi",
     "showDetails": "Vis detaljer",
-    "save": "Lagre",
-    "close": "Lukk",
     "icon": "Søk og velg ikon fra listen",
     "closeMenu": "Lukk meny",
     "openMenu": "Åpne meny",
@@ -160,7 +166,6 @@
     "auto": "Automatisk",
     "team": "Klikk for å legge til",
     "adminOnly": "Kun administrator kan gjenopprette et slettet produkt",
-    "saveChanges": "Lagre endringer",
     "uploadRequired": "You need to upload some files first",
     "departmentDetails": "Se detaljer for tjenesteområdet",
     "keyresChange": "Endre detailjer for nøkkelresulta",
@@ -171,14 +176,15 @@
     "emptyMiller": "Tomt? Velg et mål eller nøkkelresultat i listen",
     "addPeriod": "Legg til ny periode",
     "addObjectiveForPeriod": "Legg til et mål for valgt kvartal",
-    "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål"
+    "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål",
+    "cantChange": "Dette kan ikke endres",
+    "hideActivity": "Skjul aktivitet"
   },
   "document": {
-    "changeProduct": "Endre product",
+    "changeProduct": "Endre produkt",
     "addObjective": "Legg til mål",
     "newKeyres": "Nytt nøkkelresultat",
     "updateData": "Oppdater data",
-    "dashboard": "Dashboard",
     "edited": "Endret {date}",
     "export": "Eksporter grafikk",
     "showMembers": "Vis medlemmer",
@@ -228,7 +234,7 @@
       "departmentUpdated": "endret produktområdet"
     },
     "productList": {
-      "details": "Vis detailjer",
+      "details": "Vis detaljer",
       "lastUpdated": "Sist oppdatert {product}"
     }
   },
@@ -244,7 +250,7 @@
     }
   },
   "keyresHandler": {
-    "description": "Beskriv nækkelresultatet",
+    "description": "Beskriv nøkkelresultatet",
     "keyresCap": "Kan ikke ha flere enn 5 nøkkelresultat",
     "maxSizeError": "Maximum key results"
   },
@@ -266,9 +272,8 @@
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Missions statement",
+      "missionStatement": "Mission statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
-      "save": "Lagre",
       "delete": "Slett"
     },
     "organization": {
@@ -276,9 +281,8 @@
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Missions statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
-      "save": "Lagre"
+      "missionStatement": "Mission statement",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>"
     },
     "product": {
       "title": "Administrer produkt",
@@ -288,10 +292,9 @@
       "slug": "Slug",
       "slugHelp": "Hvordan navnet fremstår i URL-en",
       "picture": "Bilde",
-      "missionStatement": "Missions statement",
+      "missionStatement": "Mission statement",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
-      "save": "Lagre",
       "delete": "Slett"
     },
     "home": {
@@ -308,24 +311,16 @@
       "add": "+ Legg til"
     },
     "users": {
+      "find": "Finn bruker",
       "title": "Brukeradministrasjon",
       "subtitle": "Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang. Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne tilgangskontrollen",
       "email": "E-post",
       "name": "Navn",
-      "admin": "Admin",
       "delete": "Slett",
       "addEmails": "Legg til e-post-adresser",
       "addEmailsHelp": "Én adresse per rad",
       "add": "Legg til"
     }
-  },
-  "department": {
-    "title": "Produktområde",
-    "objAndKeyres": "Mål og nøkkelresultater"
-  },
-  "organization": {
-    "title": "Organisasjon",
-    "objAndKeyres": "Mål og nøkkelresultater"
   },
   "keyResultPage": {
     "change": "Endre nøkkelresultat",
@@ -381,8 +376,6 @@
   "profile": {
     "changePicture": "Endre bilde",
     "name": "Display name",
-    "save": "Lagre",
-    "admin": "Admin",
     "hasAdmin": "Har administratortilgang",
     "products": "Mine produkter",
     "audit": "Audit",

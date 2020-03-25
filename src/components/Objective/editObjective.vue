@@ -29,7 +29,7 @@
     </label>
 
     <hr />
-    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">{{ $t('objective.saveChanges') }}</button>
+    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">{{ $t('btn.saveChanges') }}</button>
     <button class="btn btn--danger" @click="deleteObj(objective)">{{ $t('objective.delete') }}</button>
 
     <p v-if="showInfo">{{ info }}</p>

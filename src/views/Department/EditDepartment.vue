@@ -6,10 +6,10 @@
       <div class="container container--sidebar">
         <div class="content--main">
           <router-link class="sub-nav__element" exact :to="{ name: 'edit-department' }">{{
-            $t('department.title')
+            $t('general.department')
           }}</router-link>
           <router-link class="sub-nav__element" :to="{ name: 'edit-department-keyres' }">
-            {{ $t('department.objAndKeyres') }}
+            {{ $t('general.objAndKeyres') }}
           </router-link>
         </div>
       </div>

@@ -7,7 +7,7 @@
       <router-link :to="{ name: 'edit-product' }" class="btn btn--borderless">
         {{ $t('toaster.calloutPictures.yes') }}
       </router-link>
-      <button @click="close(false)" class="btn btn--borderless">{{ $t('toaster.calloutPictures.no') }}</button>
+      <button @click="close(false)" class="btn btn--borderless">{{ $t('btn.close') }}</button>
       <button @click="close(true)" class="btn btn--borderless">{{ $t('toaster.calloutPictures.never') }}</button>
     </div>
   </div>

@@ -7,7 +7,7 @@
       <div class="item__text">
         <h3 class="title-3">
           {{ objective.name }}
-          <span>({{ Math.round(objective.progression * 100) }}%)</span>
+          <span>({{ Math.round(objective.progression || 0 * 100) }}%)</span>
         </h3>
         <p>{{ objective.description }}</p>
         <p></p>

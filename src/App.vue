@@ -14,8 +14,15 @@
 import { mapState, mapMutations } from 'vuex';
 import TheHeader from '@/components/TheHeader.vue';
 import Newsfeed from '@/views/Home/components/Newsfeed.vue';
+import i18n from '@/locale/i18n';
 
 export default {
+  metaInfo() {
+    return {
+      title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,
+    };
+  },
+
   computed: {
     ...mapState(['user', 'showNewsfeed']),
   },
