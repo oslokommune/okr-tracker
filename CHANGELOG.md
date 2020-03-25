@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file. The format 
 - A few locale strings that were not mapped correctly
 - Remove random word space before 'Home' in breadcrumbs
 - Fix issue where progression for an empty objective shows as 'NaN'
+- Fix z-index issue with the members modal
 
 ## [1.3.1] - 2020-03-18
 

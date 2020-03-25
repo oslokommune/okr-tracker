@@ -28,6 +28,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
+import { mapMutations } from 'vuex';
 import { getDepartmentMembers } from '@/db/db';
 import ForceGraph from '@/util/forceGraph';
 
@@ -42,7 +43,12 @@ export default {
     this.graph = new ForceGraph(this.$refs.svg);
   },
 
+  updated() {
+    this.SET_SHOW_NEWSFEED(false);
+  },
+
   methods: {
+    ...mapMutations(['SET_SHOW_NEWSFEED']),
     closeModal() {
       this.open = false;
       this.loading = false;
@@ -80,7 +86,7 @@ export default {
 
 .modal-wrapper {
   position: relative;
-  z-index: 100;
+  z-index: 2;
 }
 
 .modal__main {

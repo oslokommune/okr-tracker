@@ -150,8 +150,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '../styles/colors';
-
 .add-object-menu-wrapper {
   position: relative;
 }
