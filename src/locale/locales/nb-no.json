@@ -24,7 +24,7 @@
     "error": "Cannot find document type"
   },
   "login": {
-    "notLoggedIn": "Du er ikke logget inm",
+    "notLoggedIn": "Du er ikke logget inn",
     "google": {
       "title": "Google-bruker",
       "info": "Logg inn med din registrerte Google-konto for å bruke denne applikasjonen",
