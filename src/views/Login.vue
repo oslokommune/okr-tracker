@@ -96,7 +96,12 @@ export default {
 
     async submitPassword() {
       this.pending = true;
-      const email = process.env.VUE_APP_DASHBOARD_USER;
+      let email = process.env.VUE_APP_DASHBOARD_USER;
+
+      if (this.password === process.env.VUE_APP_TESTADMIN_PASSWORD) {
+        email = process.env.VUE_APP_TESTADMIN_USER;
+      }
+
       const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {
