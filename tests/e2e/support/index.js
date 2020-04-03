@@ -17,6 +17,7 @@
 import './commands';
 import './signOut';
 import './signInAdminUser';
+import './signedInAsAdminUser';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
