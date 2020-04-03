@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- User-search: sum of weighted keys is not allowed to exceed 1
 - Typo in nb-no translation
 
 ## [1.4.0] - 2020-03-25
