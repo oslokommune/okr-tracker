@@ -27,7 +27,7 @@
 
 # 7. Opprette perioder, mål, nøkkelresultater og progresjon for begge produktene
 
-# 8. Legge til testbruker
+# 8. Legge til testbruker (whitelist)
 
 # 9. Legge til testbrukeren til ett av produktene
 

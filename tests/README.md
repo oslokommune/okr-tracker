@@ -1,6 +1,10 @@
 # Getting started
 
-The e2e tests use Cypress. Google restricts bots (including Cypress) to log in using Auth2.0 so we need to bypass that. Here's what you need to getting started:
+The e2e tests use [Cypress](https://www.cypress.io/).
+
+Google restricts bots (including Cypress) to log in using Auth2.0 so we need to bypass that. The strategy here is to create separate email/password test users in Firebase and logging these in with a password.
+
+Here's what you need to getting started:
 
 ## Firebase Setup
 
