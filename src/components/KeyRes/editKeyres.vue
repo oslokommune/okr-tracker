@@ -5,10 +5,16 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.keyres.description.$error }">
       <span class="form-label">{{ $t('keyres.description') }}</span>
-      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="4" maxlength="120"></textarea>
+      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="1" maxlength="120"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.keyres.description.$error">{{ $t('validations.empty') }}</div>
 
+    <label class="form-field" :class="{ 'form-field--error': $v.keyres.longDescription.$error }">
+      <span class="form-label">{{ $t('keyres.longDescription') }}</span>
+      <textarea @input="dirty = true" v-model="$v.keyres.longDescription.$model" rows="4" maxlength="120"></textarea>
+    </label>
+    <div class="form-field--error" v-if="$v.keyres.longDescription.$error">{{ $t('validations.empty') }}</div>
+ 
     <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.keyres.startValue.$error }">
         <span class="form-label">{{ $t('keyres.startValue') }}</span>
@@ -99,6 +105,9 @@ export default {
       description: {
         required,
       },
+      longDescription: {
+        required,
+      },
     },
   },
 
@@ -114,6 +123,7 @@ export default {
     updatedKeyRes() {
       return {
         description: this.keyres.description,
+        longDescription: this.keyres.longDescription,
         edited: new Date(),
         editedBy: this.user.ref,
         startValue: +this.keyres.startValue,

@@ -15,6 +15,7 @@ async function create(objectiveRef, data) {
   const defaultData = {
     archived: false,
     description: i18n.t('keyresHandler.description'),
+    longDescription: i18n.t('keyresHandler.longDescription'),
     startValue: 0,
     targetValue: 100,
     created: new Date(),

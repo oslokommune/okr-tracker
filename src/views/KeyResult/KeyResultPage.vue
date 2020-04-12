@@ -23,6 +23,10 @@
 
         <hr />
 
+        <div class="section">
+          <h3 class="notes" v-if="key_result">{{ key_result.longDescription }}</h3>
+        </div>
+
         <div class="columns">
           <div class="column--left">
             <h3 class="title-3" v-if="period">{{ $t('keyResultPage.period', null, { period: period.name }) }}</h3>

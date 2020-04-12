@@ -14,11 +14,17 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
       <span class="form-label">{{ $t('keyres.description') }}</span>
-      <textarea v-model="$v.description.$model" rows="4" maxlength="120"></textarea>
+      <textarea v-model="$v.description.$model" rows="1" maxlength="120"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.description.$error">{{ $t('validations.empty') }}</div>
 
-    <div class="form-row">
+    <label class="form-field" :class="{ 'form-field--error': $v.longDescription.$error }">
+      <span class="form-label">{{ $t('keyres.longDescription') }}</span>
+      <textarea v-model="$v.longDescription.$model" rows="4" maxlength="120"></textarea>
+    </label>
+    <div class="form-field--error" v-if="$v.longDescription.$error">{{ $t('validations.empty') }}</div>
+
+   <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.startValue.$error }">
         <span class="form-label">{{ $t('keyres.startValue') }}</span>
         <input type="number" v-model="$v.startValue.$model" />
@@ -102,6 +108,7 @@ export default {
     startValue: 0,
     targetValue: 100,
     description: '',
+    longDescription: '',
     unit: '',
     submit: false,
     showInfo: false,
@@ -124,6 +131,9 @@ export default {
     description: {
       required,
     },
+    longDescription: {
+      required,
+    },
     startValue: {
       required,
     },
@@ -141,6 +151,7 @@ export default {
       return {
         archived: false,
         description: this.description,
+        longDescription: this.longDescription,
         startValue: +this.startValue,
         targetValue: +this.targetValue,
         currentValue: +this.startValue,
