@@ -9,12 +9,11 @@
     </label>
     <div class="form-field--error" v-if="$v.keyres.description.$error">{{ $t('validations.empty') }}</div>
 
-    <label class="form-field" :class="{ 'form-field--error': $v.keyres.longDescription.$error }">
+    <label class="form-field">
       <span class="form-label">{{ $t('keyres.longDescription') }}</span>
-      <textarea @input="dirty = true" v-model="$v.keyres.longDescription.$model" rows="4" maxlength="120"></textarea>
+      <textarea @input="dirty = true" v-model="longDescription" rows="4" maxlength="120"></textarea>
     </label>
-    <div class="form-field--error" v-if="$v.keyres.longDescription.$error">{{ $t('validations.empty') }}</div>
- 
+
     <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.keyres.startValue.$error }">
         <span class="form-label">{{ $t('keyres.startValue') }}</span>
@@ -103,9 +102,6 @@ export default {
         required,
       },
       description: {
-        required,
-      },
-      longDescription: {
         required,
       },
     },

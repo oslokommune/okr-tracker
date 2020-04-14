@@ -19,13 +19,10 @@
       <div class="content--main content--padding">
         <div class="section">
           <h1 class="title-1" v-if="key_result">{{ key_result.description }}</h1>
+          <p class="longDescription" v-if="key_result.longDescription">{{ key_result.longDescription }}</p>
         </div>
 
         <hr />
-
-        <div class="section">
-          <h3 class="notes" v-if="key_result">{{ key_result.longDescription }}</h3>
-        </div>
 
         <div class="columns">
           <div class="column--left">
@@ -418,6 +415,11 @@ export default {
 
 .content--sidebar {
   padding-top: 3rem;
+}
+
+.longDescription {
+  margin: 1rem 0;
+  font-size: 1rem;
 }
 
 .date-input {
