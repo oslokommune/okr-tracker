@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## Added
+
+- Description-field for key-result. Ref. issue #106.
+
 ### Fixed
 
 - User-search: sum of weighted keys is not allowed to exceed 1
