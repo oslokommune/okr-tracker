@@ -56,7 +56,7 @@
       "admin": "Gitt {user} admintilgang",
       "product": "Lagt til nytt produkt",
       "objective": "Lagt til nytt mål for {object}",
-      "progression": "Lagt til ny målverdi",
+      "progression": "Lagt til ny verdi",
       "department": "Lagt til nytt produktområde",
       "keyResult": "Lagt til nytt nøkkelresultat"
     },
@@ -99,7 +99,8 @@
   "keyres": {
     "name": "nøkkelresultat",
     "objective": "Tilknyttet mål",
-    "description": "Beskrivelse",
+    "description": "Navn på nøkkelresultat",
+    "longDescription": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
@@ -250,7 +251,8 @@
     }
   },
   "keyresHandler": {
-    "description": "Beskriv nøkkelresultatet",
+    "description": "Navn på nøkkelresultatet",
+    "longDescription": "Beskrivelse",
     "keyresCap": "Kan ikke ha flere enn 5 nøkkelresultat",
     "maxSizeError": "Maximum key results"
   },

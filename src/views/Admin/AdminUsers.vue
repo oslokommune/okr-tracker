@@ -89,15 +89,15 @@ export default {
       keys: [
         {
           name: 'id',
-          weight: 0.3,
+          weight: 0.25,
         },
         {
           name: 'email',
-          weight: 0.3,
+          weight: 0.25,
         },
         {
           name: 'displayName',
-          weight: 0.7,
+          weight: 0.5,
         },
       ],
     },
