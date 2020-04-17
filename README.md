@@ -1,16 +1,28 @@
-# okr-tracker
+# OKR Tracker
+
+**This application is a reporting tool for [OKRs](https://en.wikipedia.org/wiki/OKR) (objectives and key results) using [Vue.js](https://vuejs.org/) and [Google Firebase](https://firebase.google.com/) as a backend.**
 
 ## Getting started
 
-### Setting up Firebase
+To create a new instance of the OKR-tracker, please read the [Setting up Firebase](/documentation/setting-up-firebase.md) guide.
 
-- Create a [Google Firebase](https://firebase.google.com) project.
-- Install the Firebase CLI and [initialize the project](https://firebase.google.com/docs/cli).
-- Create a Google service account
-  - From the Project Overview, select 'Service accounts'
-  - Click 'Generate new private key'
+To get up and running, you need the [Firebase CLI](https://firebase.google.com/docs/cli) and to set up a few environment variables.
 
-In order to fetch data from Google Sheets, you must set up environment variables for Firebase Functions:
+### Installing Firebase CLI
+
+Install the Firebase CLI via `npm`:
+
+```
+npm install -g firebase-tools
+```
+
+### Setting up Firebase environment variables
+
+- Navigate to your [Firebase project](http://console.firebase.google.com/)
+- From the Project Overview, select 'Service accounts'
+- Click 'Generate new private key'
+
+Then run the following command using your new key
 
 ```
 firebase functions:config:set
@@ -18,7 +30,8 @@ firebase functions:config:set
   sheets.key="<service account private key>"
 ```
 
-If you want to add automated backups and restore then you must set up environment variables for Firbase Functions:
+If you want to add automated backups and restore then you must set up environment variables for Firebase Functions:
+
 ```
 firebase functions:config:set storage.bucket="<bucket name>"
 ```
@@ -29,7 +42,7 @@ firebase functions:config:set storage.bucket="<bucket name>"
 
 Grab the project parameters from Settings page on Firebase. Under 'General' and 'Your apps', select 'Config' under 'Firebase SDK snippet' and take note of the `firebaseConfig` object displayed.
 
-Create a `.env.production` file with the following secrets:
+Create an `.env.production` file with the following secrets:
 
 | Secret                        | Description                                                     |
 | ----------------------------- | --------------------------------------------------------------- |
@@ -43,22 +56,7 @@ Create a `.env.production` file with the following secrets:
 | `VUE_APP_APP_ID`              | _details from firebaseConfig_                                   |
 | `VUE_APP_MEASUREMENT_ID`      | _details from firebaseConfig_                                   |
 
-### Setting up the Firebase Firestore
-
-The Firebase Database must be set to Firestore, and needs a few values to get up and running.
-
-Manually insert the following values to the database.
-
-- `/orgs/<new document>`
-  - `name: 'My Organisation Name`
-  - `archived: false`
-  - `missionStatement: 'My Mission Statement'`
-- `/users/<new document>` (ID must be your email address)
-  - `admin: true`
-  - `slug: 'MySlug'`
-- `/users/<new document>` (ID must be the same as the dashboard user's email address)
-  - `admin: false`
-  - `slug: 'MyDashboardUserSlug'`
+You can create a separate development environment by setting up another Firebase project and store its credentials in a `.env.local` file in the root directory.
 
 ## Project setup
 

@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
-## Added
+### Added
 
 - Description-field for key-result. Ref. issue #106.
+
+### Changed
+
+- Improved documentation in README
 
 ### Fixed
 
