@@ -1,3 +1,5 @@
+# Automated Backup with Cloud Functions
+
 We use cloud functions to backup our database every night and only keep backup of the last 14 days. If a backup is older than 14 days it gets automatically and permanently deleted from the storage bucket.
 
 #### Requirements for automated backups
