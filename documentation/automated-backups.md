@@ -1,6 +1,3 @@
-
-### Automated Backup with Cloud Functions
-
 We use cloud functions to backup our database every night and only keep backup of the last 14 days. If a backup is older than 14 days it gets automatically and permanently deleted from the storage bucket.
 
 #### Requirements for automated backups
@@ -18,18 +15,9 @@ TLDR:
 - Navigate to `Storage` - Create a storage bucket - Give it a rule to delete storage that is >14 days old
 - Run the command `firebase functions:config:set storage.bucket="<your-storage-bucket-name>"`
 
-If you do not want to have automated backups then you need to delete or comment out the code inside `functions/index.js`
-
-```javascript
-/**
- * Functions for backup and restoring the Firestore database
- */
-exports.automatedBackups = automatedBackups();
-exports.automatedRestore = automatedRestore();
-
-```
-
 ### Automated Restore with Cloud Functions
+
+This is called automated restore but we still need to manually trigger a cloud function that does the restore from the Google Cloud Console
 
 Follow this [tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
@@ -38,4 +26,5 @@ TLDR:
 - Create a topic and name it `restore-backup`
 - Trigger the topic by publishing a message and the restore will be triggered
 
-![Gif of the process](recovery.gif)
+Gif of the process:
+![Gif of the process src: thecloudfunction-blog](recovery.gif)

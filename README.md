@@ -58,6 +58,31 @@ Create an `.env.production` file with the following secrets:
 
 You can create a separate development environment by setting up another Firebase project and store its credentials in a `.env.local` file in the root directory.
 
+### Enable Google Auth in Firebase
+
+We use Google Auth to authenticate users and this needs to be enable in the Firebase Console.
+
+- Navigate to your project in Firebase console
+- Press the `Authentication`-button in the side menu
+- `Sign-in Method`-tab
+- Enable Google Auth
+
+
+### Automated Backup with Cloud Functions
+
+To set up automated backups, please read the [Setting up Automated backups](/documentation/setting-up-firebase.md) guide.
+
+If you do not want to have automated backups then you need to delete or comment out the code inside `functions/index.js`
+
+```javascript
+/**
+ * Functions for backup and restoring the Firestore database
+ */
+exports.automatedBackups = automatedBackups();
+exports.automatedRestore = automatedRestore();
+
+```
+
 ## Project setup
 
 ```
