@@ -30,3 +30,4 @@ TLDR:
 
 Gif of the process:
 ![Gif of the process src: thecloudfunction-blog](recovery.gif)
+Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
