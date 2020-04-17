@@ -17,8 +17,8 @@
       </aside>
 
       <div class="content--main content--padding">
-        <div class="section">
-          <h1 class="title-1" v-if="key_result">{{ key_result.description }}</h1>
+        <div class="section" v-if="key_result">
+          <h1 class="title-1" v-if="key_result.description">{{ key_result.description }}</h1>
           <p class="longDescription" v-if="key_result.longDescription">{{ key_result.longDescription }}</p>
         </div>
 
