@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file. The format 
 
 - User-search: sum of weighted keys is not allowed to exceed 1
 - Typo in nb-no translation
+- Objective-progression was always 0
+- Products did not update accordingly when changing routes
+- keyResultPage did not show longDescription correctly
 
 ## [1.4.0] - 2020-03-25
 
