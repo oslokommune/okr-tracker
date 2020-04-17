@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
-## [1.4.1] - 2020-04-16
+## [1.4.1] - 2020-04-17
 
 ## Added
 
