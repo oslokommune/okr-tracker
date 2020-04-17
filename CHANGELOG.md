@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [1.4.1] - 2020-04-17
 
-## Added
+### Added
 
 - Description-field for key-result. Ref. issue #106.
 
