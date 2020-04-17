@@ -139,7 +139,9 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  store.commit('CLEAN_STATE');
+  if (from.params.slug !== to.params.slug) {
+    store.commit('CLEAN_STATE');
+  }
   window.scroll(0, 0);
 
   if (to.name === 'help') {
