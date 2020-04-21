@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from './store';
 import Home from '@/views/Home/Home.vue';
 import TheLogin from '@/views/Login.vue';
 import TheHelp from '@/views/Help.vue';
@@ -138,6 +139,9 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  if (from.params.slug !== to.params.slug) {
+    store.commit('CLEAN_STATE');
+  }
   window.scroll(0, 0);
 
   if (to.name === 'help') {
