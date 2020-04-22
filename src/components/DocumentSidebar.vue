@@ -7,6 +7,7 @@
             name: editLinkName,
             params: { slug: $route.params.slug },
           }"
+          data-cy="edit_object_link"
           class="sidebar-nav__item"
           v-tooltip.right="$t('tooltip.changeDetailsAndTeam')"
         >

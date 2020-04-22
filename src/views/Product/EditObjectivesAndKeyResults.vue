@@ -25,6 +25,7 @@
             <div
               class="miller__col__item miller__col__add"
               @click="addPeriod"
+              data-cy="add_period_button"
               v-tooltip.bottom="$t('tooltip.addPeriod')"
             >
               {{ $t('product.editObjectivesAndKeyresults.addPeriod') }}
@@ -47,6 +48,7 @@
               v-if="selectedPeriod"
               class="miller__col__item miller__col__add"
               @click="addObjective"
+              data-cy="add_objective_button"
               v-tooltip.bottom="$t('tooltip.addObjectiveForPeriod')"
             >
               {{ $t('product.editObjectivesAndKeyresults.add') }}
@@ -71,6 +73,7 @@
               v-if="selectedPeriod && selectedObjective"
               class="miller__col__item miller__col__add"
               @click="addKeyres"
+              data-cy="add_keyres_button"
               v-tooltip.bottom="$t('tooltip.addKeyresForObjective')"
             >
               {{ $t('product.editObjectivesAndKeyresults.add') }}

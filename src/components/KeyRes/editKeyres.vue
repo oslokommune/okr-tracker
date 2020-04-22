@@ -5,32 +5,60 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.keyres.description.$error }">
       <span class="form-label">{{ $t('keyres.description') }}</span>
-      <textarea @input="dirty = true" v-model="$v.keyres.description.$model" rows="1" maxlength="120"></textarea>
+      <textarea
+        @input="dirty = true"
+        v-model="$v.keyres.description.$model"
+        rows="1"
+        maxlength="120"
+        data-cy="keyres_name_field"
+      ></textarea>
     </label>
     <div class="form-field--error" v-if="$v.keyres.description.$error">{{ $t('validations.empty') }}</div>
 
     <label class="form-field">
       <span class="form-label">{{ $t('keyres.longDescription') }}</span>
-      <textarea @input="dirty = true" v-model="longDescription" rows="4" maxlength="120"></textarea>
+      <textarea
+        @input="dirty = true"
+        v-model="longDescription"
+        rows="4"
+        maxlength="120"
+        data-cy="keyres_longdescription_field"
+      ></textarea>
     </label>
 
     <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.keyres.startValue.$error }">
         <span class="form-label">{{ $t('keyres.startValue') }}</span>
-        <input @input="dirty = true" type="number" v-model="$v.keyres.startValue.$model" />
+        <input
+          @input="dirty = true"
+          type="number"
+          v-model="$v.keyres.startValue.$model"
+          data-cy="keyres_startvalue_field"
+        />
       </label>
       <div class="form-field--error" v-if="$v.keyres.startValue.$error">{{ $t('validations.empty') }}</div>
 
       <label class="form-field" :class="{ 'form-field--error': $v.keyres.targetValue.$error }">
         <span class="form-label">{{ $t('keyres.targetValue') }}</span>
-        <input @input="dirty = true" type="number" v-model="$v.keyres.targetValue.$model" />
+        <input
+          @input="dirty = true"
+          type="number"
+          v-model="$v.keyres.targetValue.$model"
+          data-cy="keyres_targetvalue_field"
+        />
       </label>
       <div class="form-field--error" v-if="$v.keyres.targetValue.$error">{{ $t('validations.empty') }}</div>
     </div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.keyres.unit.$error }">
       <span class="form-label">{{ $t('keyres.unit') }}</span>
-      <input @input="dirty = true" type="text" v-model="$v.keyres.unit.$model" maxlength="32" />
+      <input
+        @input="dirty = true"
+        type="text"
+        v-model="$v.keyres.unit.$model"
+        maxlength="32"
+        data-cy="keyres_unit_field"
+      />
     </label>
     <div class="form-field--error" v-if="$v.keyres.unit.$error">{{ $t('validations.empty') }}</div>
 
@@ -67,8 +95,12 @@
 
     <hr />
 
-    <button :disabled="!dirty" class="btn" @click="send">{{ $t('btn.saveChanges') }}</button>
-    <button class="btn btn--danger" @click="deleteObject">{{ $t('keyres.delete') }}</button>
+    <button :disabled="!dirty" class="btn" @click="send" data-cy="save_keyres_button">
+      {{ $t('btn.saveChanges') }}
+    </button>
+    <button class="btn btn--danger" @click="deleteObject" data-cy="delete_keyres_button">
+      {{ $t('keyres.delete') }}
+    </button>
 
     <p v-if="showInfo">{{ info }}</p>
   </div>
