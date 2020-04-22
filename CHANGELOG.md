@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [1.4.2] - 2020-04-22
+
+### Added
+
+- MIT License
+
+### Changed
+
+- Improve documentation
+
+### Fixed
+
+- Fix issue regarding saving `longDescription` for key results
+
 ## [1.4.1] - 2020-04-17
 
 ### Added

@@ -11,7 +11,7 @@
 
     <label class="form-field">
       <span class="form-label">{{ $t('keyres.longDescription') }}</span>
-      <textarea @input="dirty = true" v-model="longDescription" rows="4" maxlength="120"></textarea>
+      <textarea @input="dirty = true" v-model="keyres.longDescription" rows="4" maxlength="120"></textarea>
     </label>
 
     <div class="form-row">
