@@ -150,6 +150,12 @@ export const actions = {
 export const getters = {};
 
 export const mutations = {
+  CLEAN_STATE(state) {
+    state.product = null;
+    state.department = null;
+    state.organization = null;
+  },
+
   SET_USER(state, payload) {
     state.user = payload;
   },
