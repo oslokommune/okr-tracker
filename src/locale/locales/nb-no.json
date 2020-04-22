@@ -382,5 +382,10 @@
     "products": "Mine produkter",
     "audit": "Audit",
     "noActivity": "Ingen handlinger fra brukeren."
+  },
+  "callout": {
+    "archivedRestore": {
+      "message": "Dette objektet er arkivert."
+    }
   }
 }

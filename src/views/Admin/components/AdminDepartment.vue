@@ -2,6 +2,8 @@
   <div v-if="department">
     <h2 class="title title-2">{{ $t('admin.department.title') }}</h2>
 
+    <CalloutArchivedRestore v-if="department.archived" :docref="docref"></CalloutArchivedRestore>
+
     <div class="section">
       <div class="form-group">
         <label class="form-field">
@@ -59,6 +61,8 @@ import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import slugify from '@/util/slugify';
 
+import CalloutArchivedRestore from '@/components/Callouts/CalloutArchivedRestore.vue';
+
 export default {
   name: 'AdminDepartment',
 
@@ -67,6 +71,9 @@ export default {
     file: null,
     dirty: false,
   }),
+  components: {
+    CalloutArchivedRestore,
+  },
   props: {
     docref: { type: Object, required: true },
   },
