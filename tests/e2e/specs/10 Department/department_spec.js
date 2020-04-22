@@ -112,5 +112,60 @@ describe('Create data for department', () => {
     cy.get('.sub-nav .router-link-active').should('contain', testPeriod.name);
 
     cy.get('[data-cy="objectives_list"] .title').should('contain', '(1)');
+
+    cy.get('.keyres').should('contain', testKeyResult.name);
+    cy.get('.progress__startValue').should('contain', testKeyResult.startValue);
+    cy.get('.progress__targetValue').should('contain', testKeyResult.targetValue);
+    cy.get('.progress__unit').should('contain', testKeyResult.unit);
+
+    cy.get('.progress__bar').should('have.css', 'width', '2px');
+  });
+});
+
+describe('Create progress for key result', () => {
+  it('Navigates to and validates key result page', () => {
+    cy.get('.keyres__name')
+      .should('contain', testKeyResult.name)
+      .click()
+      .wait(1000);
+
+    cy.url().should('include', testDepartment.slug);
+
+    cy.get('.breadcrumb')
+      .should('contain', testDepartment.name)
+      .should('contain', testObjective.name)
+      .should('contain', testKeyResult.name);
+
+    cy.get('.content--main h1.title-1').should('contain', testKeyResult.name);
+    cy.get('.longDescription').should('contain', testKeyResult.longDescription);
+
+    cy.get('.table tbody').should('be.empty');
+  });
+
+  it('Adds progression to key result', () => {
+    cy.get('[data-cy="progress_value_field"]')
+      .clear()
+      .type(testKeyResult.progressValue);
+
+    cy.get('[data-cy="today_button"]')
+      .contains('I dag')
+      .click();
+
+    cy.get('[data-cy="add_progress_button"]')
+      .click()
+      .wait(750);
+
+    cy.get('svg path').should('exist');
+
+    cy.get('.table tbody')
+      .should('not.be.empty')
+      .should('contain', testKeyResult.progressValue);
+  });
+
+  it('Verifies the progress on department page', () => {
+    cy.get('.breadcrumb')
+      .contains(testDepartment.name)
+      .click()
+      .wait(400);
   });
 });

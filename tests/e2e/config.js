@@ -24,5 +24,6 @@ export const testKeyResult = {
   longDescription: 'This is a long description for the test key result',
   startValue: 10,
   targetValue: 50,
+  progressValue: 30,
   unit: 'TestUnit',
 };

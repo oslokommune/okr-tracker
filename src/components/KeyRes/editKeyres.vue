@@ -19,7 +19,7 @@
       <span class="form-label">{{ $t('keyres.longDescription') }}</span>
       <textarea
         @input="dirty = true"
-        v-model="longDescription"
+        v-model="keyres.longDescription"
         rows="4"
         maxlength="120"
         data-cy="keyres_longdescription_field"

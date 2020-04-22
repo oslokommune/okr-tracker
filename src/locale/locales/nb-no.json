@@ -67,7 +67,8 @@
       "keyResult": "Slettet nøkkelresultat"
     },
     "action": {
-      "regret": "Angre"
+      "regret": "Angre",
+      "close": "Lukk"
     },
     "removedAdmin": "Fjernet admintilgang for {user}",
     "error": "Noe gikk galt!",

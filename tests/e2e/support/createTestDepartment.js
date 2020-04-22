@@ -21,7 +21,5 @@ Cypress.Commands.add('createTestDepartment', () => {
     .clear()
     .type(testDepartment.mission_statement);
 
-  cy.get('[id="btn-saveDep"]')
-    .click()
-    .wait(100);
+  cy.get('[id="btn-saveDep"]').click();
 });
