@@ -49,7 +49,7 @@ Manually insert the following values to the database.
 
 ## Enable Google Auth in Firebase
 
-We use Google Auth to authenticate users and this needs to be enable in the Firebase Console.
+We use Google Auth to authenticate users and this needs to be enabled in the Firebase Console.
 
 - Navigate to your project in Firebase console
 - Press the `Authentication`-button in the side menu
