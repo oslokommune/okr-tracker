@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- MIT License
+
+### Changed
+
+- Improve documentation
+
 ## [1.4.1] - 2020-04-17
 
 ### Added
