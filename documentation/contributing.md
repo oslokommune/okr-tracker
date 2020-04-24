@@ -20,7 +20,7 @@ Example:
 
 ## Pull requests
 
-Contributions to this repository are welcomed. Please ensure your pull requests adheres to the following guidelines:
+Contributions to this repository are welcomed. Please ensure your pull requests adhere to the following guidelines:
 
 - Make individual pull requests for each of your suggested changes.
 - Code (including comments) and documentation should be in English. Check spelling and grammar

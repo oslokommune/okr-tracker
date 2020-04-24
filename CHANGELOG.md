@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file. The format 
 - Update prettier to version 2.0
 - Update dependencies
 
+### Fixed
+
+- Typo in documentation
+
 ## [1.4.2] - 2020-04-22
 
 ### Added
