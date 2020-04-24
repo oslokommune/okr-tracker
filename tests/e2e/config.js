@@ -4,11 +4,23 @@ export const testDepartment = {
   slug: 'test-department',
 };
 
-export const testProduct = {
-  name: 'Test Product',
-  mission_statement: 'This is my mission statement for the test product.',
-  slug: 'test-product',
-};
+export const testProducts = [
+  {
+    name: 'Test Product One',
+    mission_statement: 'This is my mission statement for the test product one.',
+    slug: 'test-product-one',
+  },
+  {
+    name: 'Test Product Two',
+    mission_statement: 'This is my mission statement for the test product two.',
+    slug: 'test-product-two',
+  },
+  {
+    name: 'Test Product Three',
+    mission_statement: 'This is my mission statement for the test product three.',
+    slug: 'test-product-three',
+  },
+];
 
 export const testPeriod = {
   name: 'Q1 TEST',

@@ -159,13 +159,39 @@ describe('Create progress for key result', () => {
 
     cy.get('.table tbody')
       .should('not.be.empty')
-      .should('contain', testKeyResult.progressValue);
+      .should('contain', testKeyResult.progressValue)
+      .should('contain', Cypress.env('VUE_APP_TESTADMIN_USER'));
   });
 
   it('Verifies the progress on department page', () => {
-    cy.get('.breadcrumb')
+    cy.get('.breadcrumb__item')
       .contains(testDepartment.name)
       .click()
       .wait(400);
+
+    cy.get('svg text.percent').should('contain', '50%');
+
+    cy.get('[data-cy="objectives_list"]')
+      .should('contain', '(50%)')
+      .should('contain', testObjective.description);
+
+    cy.get('.progress__current-value').should('contain', testKeyResult.progressValue);
+  });
+
+  it('Updates progress from product page (inline)', () => {
+    cy.get('button.keyres__toggle').click();
+
+    cy.get('.keyres__edit input')
+      .clear()
+      .type(`${testKeyResult.targetValue} {enter}`)
+      .wait(1000);
+
+    cy.get('svg text.percent').should('contain', '100%');
+
+    cy.get('[data-cy="objectives_list"]')
+      .should('contain', '(100%)')
+      .should('contain', testObjective.description);
+
+    cy.get('.progress__bar').should('have.class', 'completed');
   });
 });
