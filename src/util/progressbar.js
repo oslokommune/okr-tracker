@@ -67,10 +67,7 @@ export default class Progressbar {
 
     this.bg.attr('fill', 'white').attr('fill-opacity', 0.2);
     this.bar.attr('fill', '#777777');
-    this.svg
-      .selectAll('text')
-      .attr('fill', 'white')
-      .attr('fill-opacity', 0.8);
+    this.svg.selectAll('text').attr('fill', 'white').attr('fill-opacity', 0.8);
 
     this.currentVal.select('rect').attr('fill', '#020218');
   }

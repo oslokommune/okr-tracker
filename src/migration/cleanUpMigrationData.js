@@ -50,10 +50,7 @@ function cleanUpObjective(obj) {
   delete obj.archived;
   delete obj.product_id;
 
-  obj.quarter = obj.quarter
-    .split(' ')
-    .reverse()
-    .join(' ');
+  obj.quarter = obj.quarter.split(' ').reverse().join(' ');
 
   obj.children.forEach(cleanUpKeyResults);
 }

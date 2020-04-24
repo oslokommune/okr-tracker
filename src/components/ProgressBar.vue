@@ -55,9 +55,7 @@ export default {
     getWidth() {
       const { startValue, targetValue, currentValue } = this.keyres;
 
-      const scale = scaleLinear()
-        .domain([startValue, targetValue])
-        .clamp(true);
+      const scale = scaleLinear().domain([startValue, targetValue]).clamp(true);
 
       const decimal = scale(currentValue || startValue);
 
@@ -71,9 +69,7 @@ export default {
       let width = 0;
       let direction;
 
-      const scale = scaleLinear()
-        .domain([startValue, targetValue])
-        .clamp(true);
+      const scale = scaleLinear().domain([startValue, targetValue]).clamp(true);
 
       if (toValue || fromValue <= 0) {
         fromPos = scale(fromValue);
@@ -98,10 +94,7 @@ export default {
 
   watch: {
     keyres() {
-      this.bar
-        .transition()
-        .duration(1000)
-        .style('width', this.getWidth());
+      this.bar.transition().duration(1000).style('width', this.getWidth());
     },
   },
 };

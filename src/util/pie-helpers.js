@@ -68,7 +68,7 @@ function updateTodayTextPosition(el, targetAngle) {
     .attrTween('todayText', (d, i, j) => {
       const angleInterpolator = interpolate(j[i].current || 0, targetAngle);
 
-      return function(t) {
+      return function (t) {
         const angle = angleInterpolator(t);
         const pos = getPosFromAngle(angle - Math.PI / 2, radius + 18);
         const anchor = angle > Math.PI ? 'end' : 'start';
@@ -141,10 +141,7 @@ function updateTodayLine(el, targetAngle) {
         const [x1, y1] = getPosFromAngle(angle - Math.PI / 2, radius + 2);
         const [x2, y2] = getPosFromAngle(angle - Math.PI / 2, radius + 11);
 
-        el.attr('x1', x1)
-          .attr('y1', y1)
-          .attr('x2', x2)
-          .attr('y2', y2);
+        el.attr('x1', x1).attr('y1', y1).attr('x2', x2).attr('y2', y2);
       };
     });
 }
