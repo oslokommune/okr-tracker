@@ -29,7 +29,7 @@ export default {
     },
 
     hasImage() {
-      return this.product && this.product.photoURL;
+      return this.product?.photoURL;
     },
 
     stored() {
