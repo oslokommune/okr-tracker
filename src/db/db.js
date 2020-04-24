@@ -257,10 +257,7 @@ async function getProductData(product) {
  * @return {Array}
  */
 const getChildren = async (ref, collectionName, callback) => {
-  const snapshot = await ref
-    .collection(collectionName)
-    .where('archived', '==', false)
-    .get();
+  const snapshot = await ref.collection(collectionName).where('archived', '==', false).get();
 
   const promises = snapshot.docs.map(callback);
   return Promise.all(promises)

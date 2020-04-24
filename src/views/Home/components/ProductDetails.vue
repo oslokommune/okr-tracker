@@ -31,9 +31,7 @@ export default {
 
   methods: {
     getWidth(keyres) {
-      const scale = scaleLinear()
-        .clamp(true)
-        .domain([keyres.startValue, keyres.targetValue]);
+      const scale = scaleLinear().clamp(true).domain([keyres.startValue, keyres.targetValue]);
       const progress = scale(keyres.currentValue) || 0;
       const purple = '#292858';
       const yellow = '#f8c66b';

@@ -1,6 +1,6 @@
 import { stratify } from 'd3';
 
-export default function(markup) {
+export default function (markup) {
   const root = { id: 'root', text: '', parent: '', level: 0 };
   const headings = getHeadings(markup);
   const tree = stratify().parentId(d => d.parent)([root, ...headings]);

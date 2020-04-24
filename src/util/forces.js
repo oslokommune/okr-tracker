@@ -22,8 +22,6 @@ export default {
   },
 
   charge() {
-    return forceManyBody()
-      .strength(-500)
-      .distanceMin(2);
+    return forceManyBody().strength(-500).distanceMin(2);
   },
 };

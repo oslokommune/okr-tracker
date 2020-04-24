@@ -7,9 +7,7 @@ export default class Linechart {
       throw new Error('svg not defined');
     }
 
-    select(svgElement)
-      .selectAll('*')
-      .remove();
+    select(svgElement).selectAll('*').remove();
 
     select(svgElement).call(initSvg.bind(this));
 
@@ -41,11 +39,7 @@ export default class Linechart {
     this.yAxis.transition().call(axisLeft(this.y));
     this.xAxis.transition().call(axisBottom(this.x).ticks(4));
 
-    this.today
-      .attr('x1', this.x(new Date()))
-      .attr('x2', this.x(new Date()))
-      .attr('y2', 0)
-      .attr('y1', this.innerHeight);
+    this.today.attr('x1', this.x(new Date())).attr('x2', this.x(new Date())).attr('y2', 0).attr('y1', this.innerHeight);
 
     const startValue = {
       timestamp: period.startDate.toDate(),
@@ -69,14 +63,8 @@ export default class Linechart {
       startValue: +obj.startValue,
     });
 
-    this.valueArea
-      .datum(data)
-      .transition()
-      .attr('d', this.area);
+    this.valueArea.datum(data).transition().attr('d', this.area);
 
-    this.valueLine
-      .datum(data)
-      .transition()
-      .attr('d', this.line);
+    this.valueLine.datum(data).transition().attr('d', this.line);
   }
 }

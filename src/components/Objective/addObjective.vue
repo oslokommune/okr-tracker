@@ -100,10 +100,7 @@ export default {
 
   methods: {
     async getAvailablePeriods() {
-      this.availablePeriods = await this.productref
-        .collection('periods')
-        .get()
-        .then(serializeList);
+      this.availablePeriods = await this.productref.collection('periods').get().then(serializeList);
     },
 
     async submitForm() {

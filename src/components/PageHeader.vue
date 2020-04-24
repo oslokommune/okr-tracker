@@ -116,10 +116,7 @@ export default {
       let name = document.name || document.displayName || document.name || document.description || document.id;
 
       if (name.length > 24) {
-        name = `${name
-          .split('')
-          .splice(0, 24)
-          .join('')}...`;
+        name = `${name.split('').splice(0, 24).join('')}...`;
       }
 
       return { name, routerLinkTo };

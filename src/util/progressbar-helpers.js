@@ -30,11 +30,7 @@ export function initBackground(el) {
   const y = this.compressed ? 0 : 14;
   const x = this.paddingLeft;
 
-  el.attr('height', 16)
-    .attr('fill', colors.grey)
-    .attr('x', x)
-    .attr('rx', radius)
-    .attr('y', y);
+  el.attr('height', 16).attr('fill', colors.grey).attr('x', x).attr('rx', radius).attr('y', y);
 }
 
 export function initUnit(el) {
@@ -46,16 +42,11 @@ export function initStartVal(el) {
 }
 
 export function initTargetVal(el) {
-  el.attr('font-size', fontSize)
-    .attr('y', 42)
-    .attr('text-anchor', 'end');
+  el.attr('font-size', fontSize).attr('y', 42).attr('text-anchor', 'end');
 }
 
 export function initCurrentVal(el) {
-  el.append('rect')
-    .attr('y', 31)
-    .attr('fill', 'white')
-    .attr('height', 12);
+  el.append('rect').attr('y', 31).attr('fill', 'white').attr('height', 12);
 
   el.append('text')
     .attr('text-anchor', 'middle')
