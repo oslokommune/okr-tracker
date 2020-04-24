@@ -89,7 +89,7 @@ export default {
       .get()
       .then(serializeList)
       .then(docs => docs.filter(doc => doc.startDate.toDate() < now && doc.endDate.toDate() > now))
-      .then(docs => (docs && docs.length ? docs[0] : false));
+      .then(docs => (docs?.length ? docs[0] : false));
   },
 };
 </script>
