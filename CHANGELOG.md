@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
-- Upgrade prettier to version 2.0
+- Update prettier to version 2.0
+- Update dependencies
 
 ## [1.4.2] - 2020-04-22
 
