@@ -102,6 +102,10 @@ export default {
         email = process.env.VUE_APP_TESTADMIN_USER;
       }
 
+      if (this.password === process.env.VUE_APP_TESTUSER_PASSWORD) {
+        email = process.env.VUE_APP_TESTUSER_USER;
+      }
+
       const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {

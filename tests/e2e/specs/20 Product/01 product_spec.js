@@ -34,9 +34,6 @@ describe('Create department', () => {
         cy.log('Completed test department creation');
       }
     });
-
-    // check to see if product exists
-    // if it does, delete it
   });
 
   it('Creates new products', () => {
@@ -45,7 +42,10 @@ describe('Create department', () => {
   });
 
   it('Creates periods for products', () => {
-    // cy.createPeriod(0);
-    // cy.createPeriod(1);
+    cy.visit(`/product/${testProducts[0].slug}/edit/objectives-key-results`).wait(1000);
+    cy.createPeriod();
+
+    cy.visit(`/product/${testProducts[1].slug}/edit/objectives-key-results`).wait(1000);
+    cy.createPeriod();
   });
 });

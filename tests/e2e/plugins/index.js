@@ -10,7 +10,14 @@
 // const webpack = require('@cypress/webpack-preprocessor')
 
 // Which environment variables should be copied to cypress
-const variables = ['VUE_APP_DASHBOARD_USER', 'VUE_APP_TESTADMIN_USER', 'VUE_APP_TESTADMIN_PASSWORD', 'NODE_ENV'];
+const variables = [
+  'VUE_APP_DASHBOARD_USER',
+  'VUE_APP_TESTADMIN_USER',
+  'VUE_APP_TESTADMIN_PASSWORD',
+  'VUE_APP_TESTUSER_USER',
+  'VUE_APP_TESTUSER_PASSWORD',
+  'NODE_ENV',
+];
 
 module.exports = (on, config) => {
   // on('file:preprocessor', webpack({

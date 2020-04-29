@@ -61,6 +61,7 @@
         <span class="form-label">{{ $t('general.team') }}</span>
         <span class="form-help">{{ $t('admin.product.teamHelp') }}</span>
         <v-select
+          data-cy="team_field"
           class="objective__select"
           label="displayName"
           multiple

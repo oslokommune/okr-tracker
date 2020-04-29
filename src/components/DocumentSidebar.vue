@@ -19,6 +19,7 @@
             class="sidebar-nav__item"
             @click="expandAddObjective = true"
             v-tooltip.right="$t('tooltip.addObjective')"
+            data-cy="add_objective"
           >
             <i class="fa fas fa-fw fa-plus"></i>
             {{ $t('document.addObjective') }}
@@ -36,6 +37,7 @@
             class="sidebar-nav__item"
             @click="expandAddKeyRes = true"
             v-tooltip.right="$t('tooltip.addKeyresToObjective')"
+            data-cy="add_keyres"
           >
             <i class="fa fas fa-fw fa-plus"></i>
             {{ $t('document.newKeyres') }}

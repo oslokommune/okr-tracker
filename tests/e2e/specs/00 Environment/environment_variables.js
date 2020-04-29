@@ -7,5 +7,7 @@ describe('Environment checks', () => {
   it('Has required environment variables', () => {
     expect(Cypress.env('VUE_APP_TESTADMIN_USER')).to.exist;
     expect(Cypress.env('VUE_APP_TESTADMIN_PASSWORD')).to.exist;
+    expect(Cypress.env('VUE_APP_TESTUSER_USER')).to.exist;
+    expect(Cypress.env('VUE_APP_TESTUSER_PASSWORD')).to.exist;
   });
 });

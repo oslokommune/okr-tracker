@@ -13,7 +13,7 @@
       <flat-pickr
         v-model="range"
         :config="flatPickerConfig"
-        class="form-control"
+        class="form-control cy-datepicker"
         name="date"
         placeholder="Velg start- og sluttdato"
       ></flat-pickr>
