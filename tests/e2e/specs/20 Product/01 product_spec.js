@@ -1,6 +1,6 @@
 import { testDepartment, testProducts } from '../../config';
 
-describe('Create department', () => {
+describe('Create products for test department', () => {
   before(() => {
     cy.visit('/').wait(3000);
 

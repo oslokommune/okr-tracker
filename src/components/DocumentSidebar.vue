@@ -54,6 +54,7 @@
             class="sidebar-nav__item"
             @click="expandRegisterProgress = true"
             v-tooltip.right="$t('tooltip.updateKeyres')"
+            data-cy="update_data"
           >
             <i class="fa fas fa-fw fa-chart-line"></i>
             {{ $t('document.updateData') }}

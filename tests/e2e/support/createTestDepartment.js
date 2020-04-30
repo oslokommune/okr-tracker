@@ -5,13 +5,13 @@ Cypress.Commands.add('createTestDepartment', () => {
 
   cy.get('[id="admin-depsAndProds"]')
     .click()
-    .wait(100);
+    .wait(600);
 
   cy.url().should('include', '/admin/data');
 
   cy.get('[id="admin-addDepartment"]')
     .click()
-    .wait(100);
+    .wait(600);
 
   cy.get('[id="dep-name"]')
     .clear()

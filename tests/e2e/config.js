@@ -8,6 +8,7 @@ export const testProducts = [
   {
     name: 'Test Product One',
     mission_statement: 'This is my mission statement for the test product one.',
+    edited_mission_statement: 'Edited mission statement',
     slug: 'test-product-one',
   },
   {

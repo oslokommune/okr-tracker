@@ -16,7 +16,7 @@ describe('Create key results', () => {
   it('Creates key result for test product one', () => {
     cy.createKeyres(0);
   });
-  it('Creates key result for test product one', () => {
+  it('Creates key result for test product two', () => {
     cy.createKeyres(1);
   });
 });

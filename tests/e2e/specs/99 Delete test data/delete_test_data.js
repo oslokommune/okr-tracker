@@ -1,10 +1,19 @@
 describe('Delete department', () => {
+  before(() => {
+    cy.signInAdminUser();
+  });
+
+  it('Deletes test products', () => {
+    cy.deleteProduct(0);
+    cy.deleteProduct(1);
+  });
+
   it('Deletes test department', () => {
     cy.deleteTestDepartment();
   });
 
   it('Removes test user', () => {
-    cy.visit('/admin').wait(2000);
+    cy.visit('/admin').wait(3000);
 
     cy.get('.whitelist__body')
       .find('.whitelist__row')

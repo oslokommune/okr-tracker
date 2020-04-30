@@ -3,7 +3,7 @@
     <div class="modal" @click.stop>
       <div class="modal__header">
         <h2 class="title-2">{{ $t('keyres.registerProgression.register') }}</h2>
-        <button class="btn btn--borderless" @click="close">
+        <button class="btn btn--borderless" @click="close" data-cy="close_button">
           <i class="fa fa-times"></i>
         </button>
       </div>
@@ -24,7 +24,7 @@
         />
         <label v-if="!keyResult.auto" class="form-field">
           <span class="form-label">{{ $t('keyres.registerProgression.value') }}</span>
-          <input type="number" v-model="newValue" />
+          <input type="number" v-model="newValue" data-cy="value_field" />
         </label>
         <div class="dots">
           <div class="dot" v-for="(dot, i) in keyResults" :key="dot.id" :class="{ active: i === index }"></div>
@@ -38,7 +38,9 @@
       <div class="modal__footer">
         <button class="btn btn--borderless" @click="previous">{{ $t('keyres.registerProgression.previous') }}</button>
         <button class="btn btn--borderless" @click="skip">{{ $t('keyres.registerProgression.jumpOver') }}</button>
-        <button class="btn btn--borderless" @click="save">{{ $t('keyres.registerProgression.save') }}</button>
+        <button class="btn btn--borderless" @click="save" data-cy="save_button">
+          {{ $t('keyres.registerProgression.save') }}
+        </button>
       </div>
     </div>
 

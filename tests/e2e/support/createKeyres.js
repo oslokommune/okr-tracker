@@ -28,5 +28,5 @@ Cypress.Commands.add('createKeyres', index => {
 
   cy.get('[data-cy="save_keyres_button"]')
     .click()
-    .wait(200);
+    .wait(1200);
 });

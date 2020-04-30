@@ -1,6 +1,18 @@
 import { testProducts } from '../../config';
 
 describe('Add user to product', () => {
+  before(() => {
+    cy.visit('/')
+      .wait(1000)
+      .get('.usernav__name')
+      .then($el => {
+        if (!$el.text().includes(Cypress.env('Test Admin'))) {
+          cy.signOut();
+          cy.signInAdminUser();
+        }
+      });
+  });
+
   it('Navigates to edit page for product one', () => {
     cy.visit(`/product/${testProducts[0].slug}/edit`).wait(2000);
 
@@ -21,5 +33,9 @@ describe('Add user to product', () => {
       .click();
 
     cy.get('.toasted').should('contain', 'Lagret');
+  });
+
+  it('Logs out from test admin', () => {
+    cy.signOut();
   });
 });
