@@ -17,7 +17,7 @@ Add the users to the `users` collection in Firestore:
   - Set `admin` to `true`
   - Set `displayName` to 'Test Admin'
   - Set `slug` to 'test-admin'
-  - set `testAdmiin` to `true`
+  - set `testAdmin` to `true`
 
 ## Update environment variables
 

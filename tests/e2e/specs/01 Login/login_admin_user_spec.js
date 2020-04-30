@@ -4,8 +4,7 @@ describe('Test Admin Login', () => {
     cy.visit('/').wait(3000);
 
     cy.get('body').then($body => {
-      const text = $body.text();
-      if (text.includes('Test Admin') || text.includes(Cypress.env('VUE_APP_TESTUSER_USER'))) {
+      if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VUE_APP_TESTUSER_USER'))) {
         cy.signOut();
       }
     });
