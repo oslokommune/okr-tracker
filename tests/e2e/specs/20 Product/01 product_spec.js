@@ -42,10 +42,10 @@ describe('Create products for test department', () => {
   });
 
   it('Creates periods for products', () => {
-    cy.visit(`/product/${testProducts[0].slug}/edit/objectives-key-results`).wait(1000);
+    cy.visit(`/product/${testProducts[0].slug}/edit/objectives-key-results`).wait(2000);
     cy.createPeriod();
 
-    cy.visit(`/product/${testProducts[1].slug}/edit/objectives-key-results`).wait(1000);
+    cy.visit(`/product/${testProducts[1].slug}/edit/objectives-key-results`).wait(2000);
     cy.createPeriod();
   });
 });

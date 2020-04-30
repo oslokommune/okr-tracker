@@ -6,7 +6,7 @@ import { testPeriod } from '../config';
 Cypress.Commands.add('createPeriod', () => {
   cy.get('[data-cy="add_period_button"]')
     .click()
-    .wait(1000);
+    .wait(2000);
 
   cy.get('[data-cy="period_name"]')
     .clear()
@@ -14,5 +14,5 @@ Cypress.Commands.add('createPeriod', () => {
 
   cy.get('[data-cy="save_period"]')
     .click()
-    .wait(300);
+    .wait(500);
 });

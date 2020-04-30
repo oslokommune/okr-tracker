@@ -6,7 +6,7 @@ import { testObjective, testPeriod } from '../config';
 Cypress.Commands.add('createObjective', () => {
   cy.get('[data-cy="add_objective"]')
     .click()
-    .wait(200);
+    .wait(500);
 
   cy.get('[data-cy="period_selector"]')
     .click()
@@ -24,5 +24,5 @@ Cypress.Commands.add('createObjective', () => {
 
   cy.get('[data-cy="save_objective"]')
     .click()
-    .wait(1000);
+    .wait(2000);
 });
