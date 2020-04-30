@@ -2,7 +2,7 @@
 
 The e2e tests use [Cypress](https://www.cypress.io/).
 
-Google restricts bots (including Cypress) to log in using Auth2.0 so we need to bypass that. The strategy here is to create separate email/password test users in Firebase and logging these in with a password.
+Google restricts bots (including Cypress) to log in using OAuth2.0 so we need to bypass that. The strategy here is to create separate email/password test users in Firebase and logging these in with a password.
 
 Here's what you need to getting started:
 
@@ -17,11 +17,7 @@ Add the users to the `users` collection in Firestore:
   - Set `admin` to `true`
   - Set `displayName` to 'Test Admin'
   - Set `slug` to 'test-admin'
-- For the non-admin user
-  - Use the email address as `id`
-  - Set `admin` to `false`
-  - Set `displayName` to 'Test User'
-  - Set `slug` to 'test-user'
+  - set `testAdmiin` to `true`
 
 ## Update environment variables
 

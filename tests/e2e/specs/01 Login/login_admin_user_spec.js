@@ -1,16 +1,17 @@
 /* eslint-disable */
 describe('Test Admin Login', () => {
-  it('Visits the app root url', () => {
-    cy.visit('/');
-
-    cy.wait(3000);
+  before(() => {
+    cy.visit('/').wait(3000);
 
     cy.get('body').then($body => {
-      if ($body.text().includes('Hjem')) {
+      const text = $body.text();
+      if (text.includes('Test Admin') || text.includes(Cypress.env('VUE_APP_TESTUSER_USER'))) {
         cy.signOut();
       }
     });
+  });
 
+  it('Visits the app root url', () => {
     cy.url().should('include', '/login');
   });
 

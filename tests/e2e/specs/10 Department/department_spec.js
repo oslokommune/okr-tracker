@@ -184,7 +184,7 @@ describe('Create progress for key result', () => {
     cy.get('.keyres__edit input')
       .clear()
       .type(`${testKeyResult.targetValue} {enter}`)
-      .wait(1000);
+      .wait(2500);
 
     cy.get('svg text.percent').should('contain', '100%');
 

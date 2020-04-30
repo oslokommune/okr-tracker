@@ -74,7 +74,7 @@ describe('Verifies restrictions for test user', () => {
   it('Allows updating progress for Product one (using modal)', () => {
     cy.get('[data-cy="update_data"]')
       .click()
-      .wait(2500);
+      .wait(4500);
 
     cy.get('.modal')
       .should('contain', testKeyResult.name)
