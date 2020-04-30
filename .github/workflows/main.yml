@@ -41,3 +41,15 @@ jobs:
         npm run lint:style
       env:
         CI: true
+    - name: Cypress run
+      uses: cypress-io/github-action@v1
+      with:
+        browser: chrome
+        headless: true
+      env:
+        VUE_APP_DASHBOARD_USER: ${{ secrets.VUE_APP_DASHBOARD_USER }}
+        VUE_APP_TESTADMIN_USER: ${{ secrets.VUE_APP_TESTADMIN_USER }}
+        VUE_APP_TESTADMIN_PASSWORD: ${{ secrets.VUE_APP_TESTADMIN_PASSWORD }}
+        VUE_APP_TESTUSER_USER: ${{ secrets.VUE_APP_TESTUSER_USER }}
+        VUE_APP_TESTUSER_PASSWORD: ${{ secrets.VUE_APP_TESTUSER_PASSWORD }}
+        NODE_ENV: ${{ secrets.NODE_ENV }}
