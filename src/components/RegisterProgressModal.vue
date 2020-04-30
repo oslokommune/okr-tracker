@@ -155,10 +155,7 @@ export default {
 
     async getKeyResults() {
       const promises = this.objectives.map(obj => {
-        return obj.ref
-          .collection('keyResults')
-          .get()
-          .then(serializeList);
+        return obj.ref.collection('keyResults').get().then(serializeList);
       });
       const keyResults = await Promise.all(promises).catch(err => {
         this.$errorHandler('get_keyres_error', err);

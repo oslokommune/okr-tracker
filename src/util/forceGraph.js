@@ -19,11 +19,7 @@ export default class {
     this.container.append('g').attr('class', 'links');
     this.container.append('g').attr('class', 'nodes');
 
-    this.svg.call(
-      zoom()
-        .scaleExtent([0.1, 4])
-        .on('zoom', zoomed.bind(this))
-    );
+    this.svg.call(zoom().scaleExtent([0.1, 4]).on('zoom', zoomed.bind(this)));
   }
 
   render(tree, departmentName) {
@@ -38,14 +34,8 @@ export default class {
   }
 
   destroy() {
-    this.container
-      .select('.links')
-      .selectAll('*')
-      .remove();
-    this.container
-      .select('.nodes')
-      .selectAll('*')
-      .remove();
+    this.container.select('.links').selectAll('*').remove();
+    this.container.select('.nodes').selectAll('*').remove();
   }
 
   run() {
@@ -80,12 +70,7 @@ export default class {
       .data(this.nodes)
       .join(this.enterNode.bind(this))
       .attr('transform', d => `translate(${d.x}, ${d.y})`)
-      .call(
-        drag()
-          .on('start', dragstarted.bind(this))
-          .on('drag', dragged.bind(this))
-          .on('end', dragended.bind(this))
-      );
+      .call(drag().on('start', dragstarted.bind(this)).on('drag', dragged.bind(this)).on('end', dragended.bind(this)));
 
     this.svg
       .select('defs')

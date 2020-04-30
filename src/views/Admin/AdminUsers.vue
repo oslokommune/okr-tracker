@@ -157,11 +157,7 @@ export default {
     },
 
     addEmails() {
-      const list = this.addUserList
-        .trim()
-        .split('\n')
-        .filter(Boolean)
-        .filter(validateEmail);
+      const list = this.addUserList.trim().split('\n').filter(Boolean).filter(validateEmail);
 
       if (!list.length) {
         Toast.show('Ugyldig e-postadresse');
@@ -169,10 +165,7 @@ export default {
       }
 
       const promises = list.map(async email => {
-        return db
-          .collection('users')
-          .doc(email)
-          .set({ admin: false, slug: uniqid() });
+        return db.collection('users').doc(email).set({ admin: false, slug: uniqid() });
       });
 
       Promise.all(promises)

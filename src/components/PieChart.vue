@@ -25,7 +25,7 @@ export default {
     ...mapState(['activePeriod']),
 
     progress() {
-      return this.activePeriod && this.activePeriod.progression ? this.activePeriod.progression : 0;
+      return this.activePeriod?.progression ? this.activePeriod.progression : 0;
     },
   },
 

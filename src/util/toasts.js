@@ -156,8 +156,5 @@ export function revertedDeletion() {
 }
 
 async function unDelete(ref) {
-  return ref
-    .update({ archived: false })
-    .then(revertedDeletion)
-    .catch(error);
+  return ref.update({ archived: false }).then(revertedDeletion).catch(error);
 }

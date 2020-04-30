@@ -168,7 +168,7 @@ export default {
     },
 
     isAdmin() {
-      return this.user && this.user.admin;
+      return this.user?.admin;
     },
 
     async getProductfromRef(snapshot) {

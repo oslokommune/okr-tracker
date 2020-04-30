@@ -31,9 +31,7 @@ export default {
 
   methods: {
     getWidth(keyres) {
-      const scale = scaleLinear()
-        .clamp(true)
-        .domain([keyres.startValue, keyres.targetValue]);
+      const scale = scaleLinear().clamp(true).domain([keyres.startValue, keyres.targetValue]);
       const progress = scale(keyres.currentValue) || 0;
       const purple = '#292858';
       const yellow = '#f8c66b';
@@ -91,7 +89,7 @@ export default {
       .get()
       .then(serializeList)
       .then(docs => docs.filter(doc => doc.startDate.toDate() < now && doc.endDate.toDate() > now))
-      .then(docs => (docs && docs.length ? docs[0] : false));
+      .then(docs => (docs?.length ? docs[0] : false));
   },
 };
 </script>

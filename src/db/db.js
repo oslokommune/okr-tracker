@@ -135,7 +135,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
       .then(snapshot => snapshot.docs[0])
       .then(serializeDocument)
       .then(d => {
-        return d && d.team ? d.team.map(doc => doc.id) : [];
+        return d?.team ? d.team.map(doc => doc.id) : [];
       })
       .catch(err => {
         errorHandler('check_teammember_product_error', err);
@@ -144,7 +144,7 @@ export async function isTeamMemberOfProduct(slugOrRef) {
     teamMembers = await slugOrRef
       .get()
       .then(serializeDocument)
-      .then(d => (d && d.team ? d.team.map(doc => doc.id) : []))
+      .then(d => (d?.team ? d.team.map(doc => doc.id) : []))
       .catch(err => {
         errorHandler('check_teammember_product_error', err);
       });
@@ -257,10 +257,7 @@ async function getProductData(product) {
  * @return {Array}
  */
 const getChildren = async (ref, collectionName, callback) => {
-  const snapshot = await ref
-    .collection(collectionName)
-    .where('archived', '==', false)
-    .get();
+  const snapshot = await ref.collection(collectionName).where('archived', '==', false).get();
 
   const promises = snapshot.docs.map(callback);
   return Promise.all(promises)

@@ -22,7 +22,7 @@ Create an `.env.local` file (and an `.env.production` file if you intend to depl
 
 ## Automated Backup with Cloud Functions
 
-To set up automated backups, please read the [Setting up Automated backups](/documentation/setting-up-firebase.md) guide.
+To set up automated backups, please read the [Setting up Automated backups](/documentation/automated-backups.md) guide.
 
 If you do not want to have automated backups then you need to delete or comment out the code inside `functions/index.js`
 

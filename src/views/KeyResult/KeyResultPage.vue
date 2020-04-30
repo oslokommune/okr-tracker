@@ -31,7 +31,7 @@
 
             <hr />
 
-            <section class="section" v-if="key_result && key_result.auto">
+            <section class="section" v-if="key_result?.auto">
               <div class="callout">
                 <div class="callout__message">
                   {{ $t('keyResultPage.auto') }}
@@ -40,7 +40,7 @@
                 <div class="callout__actions">
                   <button
                     class="btn btn--borderless"
-                    v-if="key_result && key_result.auto"
+                    v-if="key_result?.auto"
                     @click="triggerScheduledFunction"
                   >
                     <i v-if="!loading" class="fa fa-fw fa-sync"></i>

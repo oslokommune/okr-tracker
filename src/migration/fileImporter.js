@@ -3,7 +3,7 @@ import cleanUpDataTree from '@/migration/cleanUpMigrationData';
 import writeMigrationData from '@/migration/writeMigrationData';
 import * as Toast from '@/util/toasts';
 
-export default async function(fileList) {
+export default async function (fileList) {
   if (!validateFileList(fileList)) {
     Toast.showError('Cannot process these files');
     throw new Error('Cannot process these files');

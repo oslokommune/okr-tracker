@@ -11,10 +11,7 @@ export function initSvg(svg) {
 
   svg.style('width', '100%');
 
-  this.canvas = svg
-    .append('g')
-    .classed('canvas', true)
-    .attr('transform', `translate(${padding.left}, ${padding.top})`);
+  this.canvas = svg.append('g').classed('canvas', true).attr('transform', `translate(${padding.left}, ${padding.top})`);
 
   this.xAxis = this.canvas.append('g').classed('axis x', true);
 
@@ -23,11 +20,7 @@ export function initSvg(svg) {
   this.yAxis = this.canvas.append('g').classed('axis y', true);
   this.valueLine = this.canvas.append('path').call(styleValueLine);
   this.target = this.canvas.append('line').classed('target', true);
-  this.today = this.canvas
-    .append('line')
-    .classed('today', true)
-    .attr('stroke', 'black')
-    .attr('stroke-opacity', 0.2);
+  this.today = this.canvas.append('line').classed('today', true).attr('stroke', 'black').attr('stroke-opacity', 0.2);
 
   const gradient = this.svg
     .append('defs')
@@ -38,27 +31,16 @@ export function initSvg(svg) {
     .attr('y1', '0%')
     .attr('y2', '100%');
 
-  gradient
-    .append('stop')
-    .attr('offset', '0%')
-    .attr('style', `stop-color:${colors.purple};stop-opacity:1;`);
-  gradient
-    .append('stop')
-    .attr('offset', '100%')
-    .attr('style', `stop-color:${colors.purple};stop-opacity:0;`);
+  gradient.append('stop').attr('offset', '0%').attr('style', `stop-color:${colors.purple};stop-opacity:1;`);
+  gradient.append('stop').attr('offset', '100%').attr('style', `stop-color:${colors.purple};stop-opacity:0;`);
 }
 
 function styleValueLine(el) {
-  el.classed('valueLine', true)
-    .attr('fill', 'none')
-    .attr('stroke', colors.purple)
-    .attr('stroke-width', 3);
+  el.classed('valueLine', true).attr('fill', 'none').attr('stroke', colors.purple).attr('stroke-width', 3);
 }
 
 function styleArea(el) {
-  el.classed('area', true)
-    .attr('fill', 'url(#areaGradient)')
-    .attr('fill-opacity', 0.4);
+  el.classed('area', true).attr('fill', 'url(#areaGradient)').attr('fill-opacity', 0.4);
 }
 
 export function resize() {

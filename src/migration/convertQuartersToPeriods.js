@@ -12,7 +12,7 @@ import { serializeList } from '@/db/db';
  * Finally it updates all the objectives by adding a reference to
  * the corresponding period.
  */
-export default async function() {
+export default async function () {
   // Get all the documents from the database
   const departments = await getDepartments();
   const products = await getProducts();
@@ -43,10 +43,7 @@ export default async function() {
  * @returns {Promise} - Serialized departments
  */
 function getDepartments() {
-  return db
-    .collectionGroup('departments')
-    .get()
-    .then(serializeList);
+  return db.collectionGroup('departments').get().then(serializeList);
 }
 
 /**
@@ -54,10 +51,7 @@ function getDepartments() {
  * @returns {Promise} - Serialized products
  */
 function getProducts() {
-  return db
-    .collectionGroup('products')
-    .get()
-    .then(serializeList);
+  return db.collectionGroup('products').get().then(serializeList);
 }
 
 /**
@@ -149,10 +143,7 @@ async function linkObjectivesToPeriods(document) {
  * @returns {Promise} - Serialized objectives
  */
 async function getObjectives(document) {
-  return document.ref
-    .collection('objectives')
-    .get()
-    .then(serializeList);
+  return document.ref.collection('objectives').get().then(serializeList);
 }
 
 /**
@@ -161,8 +152,5 @@ async function getObjectives(document) {
  * @returns {Promise} - Serialized periods
  */
 async function getPeriods(document) {
-  return document.ref
-    .collection('periods')
-    .get()
-    .then(serializeList);
+  return document.ref.collection('periods').get().then(serializeList);
 }
