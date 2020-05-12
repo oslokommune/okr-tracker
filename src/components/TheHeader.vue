@@ -24,7 +24,7 @@
           <div class="usernav__menu" v-if="isOpen" @click="isOpen = false">
             <router-link
               class="menu-item"
-              v-if="user?.admin"
+              v-if="user && user.admin"
               :to="{ name: 'admin-users' }"
               v-tooltip.left="$t('tooltip.toAdmin')"
             >
