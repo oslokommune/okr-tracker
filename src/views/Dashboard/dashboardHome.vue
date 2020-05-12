@@ -94,7 +94,7 @@ export default {
         .get()
         .then(serializeList)
         .then(periods => periods.filter(period => period.startDate.toDate() < now && period.endDate.toDate() > now))
-        .then(periods => (periods?.length ? periods[0] : false))
+        .then(periods => (periods && periods.length ? periods[0] : false))
         .catch(() => {
           throw new Error(i18n.t('errorHandler.noPeriods'));
         });
