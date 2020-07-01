@@ -20,5 +20,7 @@ firebase-debug.log
 *.njsproj
 *.sln
 *.sw?
+*.log
 
 .firebase/
+/functions/.runtimeconfig.json

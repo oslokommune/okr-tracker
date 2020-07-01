@@ -1,0 +1,12 @@
+[
+  {
+    "id": "email@internet.com",
+    "displayName": "Dashboard",
+    "admin": false
+  },
+  {
+    "id": "jesper.kiledal@gmail.com",
+    "admin": true,
+    "displayName": "Jesper Kiledal"
+  }
+]

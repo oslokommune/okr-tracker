@@ -14,7 +14,7 @@ admin.initializeApp();
 const { handleProgressionUpdates } = require('./updateProgression');
 const { automatedBackups, automatedRestore } = require('./backupAndRestore');
 const { scheduledFunction, triggerScheduledFunction } = require('./automatedKeyResults');
-
+const populateFirestoreEmulator = require('./populateFirestoreEmulator');
 /*
 |----------------------------------------------------------------------------------
 |
@@ -47,3 +47,5 @@ exports.automatedRestore = automatedRestore();
  */
 exports.scheduledFunction = scheduledFunction();
 exports.triggerScheduledFunction = triggerScheduledFunction();
+
+exports.populateFirestoreEmulator = populateFirestoreEmulator;

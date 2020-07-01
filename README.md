@@ -15,3 +15,11 @@ To set up your local development environment, build and deploy for an existing F
 ## Contributing
 
 Please see our [Guidelines](/documentation/contributing.md).
+
+---
+
+Retreive Firebase Functions configuration for running emulated functions locally:
+
+```
+firebase functions:config:get > .runtimeconfig.json
+```

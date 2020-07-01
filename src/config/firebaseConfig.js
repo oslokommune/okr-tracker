@@ -5,6 +5,11 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/functions';
 
+const firestoreEmulator = {
+  host: 'localhost:8888',
+  ssl: false,
+};
+
 export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;
 
 const config = {
@@ -27,5 +32,12 @@ const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
 const functions = firebase.functions();
+
+if (process.env.NODE_ENV === 'development') {
+  db.settings(firestoreEmulator);
+  console.log('Established connection to Firestore emulator');
+} else {
+  console.log('Established connection to Firestore server');
+}
 
 export { db, auth, loginProvider, storage, analytics, functions };
