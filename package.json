@@ -10,7 +10,8 @@
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
     "deploy": "npm run build && firebase deploy --project=production",
     "deploy:dev": "vue-cli-service build --mode staging && firebase deploy --project=development",
-    "local": "firebase emulators:start & ( sleep 10 && node ./src/mock ) & npm run serve"
+    "local": "firebase emulators:start & ( sleep 15 && node ./src/mock ) & npm run serve",
+    "foo": "node ./src/mock"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
@@ -50,6 +51,7 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
+    "data-dir": "^1.2.2",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^6.2.2",

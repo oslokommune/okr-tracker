@@ -14,7 +14,6 @@ admin.initializeApp();
 const { handleProgressionUpdates } = require('./updateProgression');
 const { automatedBackups, automatedRestore } = require('./backupAndRestore');
 const { scheduledFunction, triggerScheduledFunction } = require('./automatedKeyResults');
-const populateFirestoreEmulator = require('./populateFirestoreEmulator');
 /*
 |----------------------------------------------------------------------------------
 |
@@ -48,4 +47,8 @@ exports.automatedRestore = automatedRestore();
 exports.scheduledFunction = scheduledFunction();
 exports.triggerScheduledFunction = triggerScheduledFunction();
 
-exports.populateFirestoreEmulator = populateFirestoreEmulator;
+/**
+ * Function for populating mock data to Firebase emulator when developing
+ * locally. Will not be used in production.
+ */
+exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "epost@internet.com",
+    "displayName": "Dashboard",
+    "admin": false
+  },
+  {
+    "id": "aulon.mujaj@gmail.com",
+    "admin": true
+  },
+  {
+    "id": "jesper.kiledal@gmail.com",
+    "admin": true
+  }
+]

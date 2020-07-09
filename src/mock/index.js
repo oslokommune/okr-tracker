@@ -1,25 +1,86 @@
-/* eslint-disable-next-line */
-const axios = require('axios');
-
-// Import mock data
-const users = require('./mockUsers.json');
-const orgs = require('./mockOrgs.json');
-
-const data = { users, orgs };
+const path = require('path');
+const axios = require('axios'); // eslint-disable-line
+const dataDir = require('data-dir'); // eslint-disable-line
 
 // Emulator settings for functions
 const PORT = 5001;
-const PROJECT_ID = 'origo-okr-tracker'; // todo: read from environment variable
-const REGION = 'europe-west2';
+const PROJECT_ID = 'origo-okr-tracker'; // todo: read from firebase.json
+const REGION = 'europe-west2'; // todo: read from firebase.rc
 const FUNCTION_ID = 'populateFirestoreEmulator';
 const SECRET = 'UZPmJ9gOXHmb6RRttAyURi4JdkvDq8'; // todo: read from environment variable
 const url = `http://localhost:${PORT}/${PROJECT_ID}/${REGION}/${FUNCTION_ID}?secret=${SECRET}`;
 
-// Call the emulated cloud function
-axios({
-  method: 'post',
-  url,
-  data,
-}).catch(err => {
-  throw new Error(err);
-});
+run();
+
+async function run() {
+  const users = require('./users/mockUsers.json');
+
+  const rawData = dataDir(path.join(__dirname, 'orgs'));
+  const orgs = Object.values(rawData).map(parseOrgData);
+
+  callCloudFunction({ users, orgs });
+}
+
+function parseOrgData(org) {
+  return {
+    ...org.data,
+    periods: parseObjectivesData(org.objectives),
+    departments: org.departments ? Object.values(org.departments).map(parseDepartmentData) : [],
+  };
+}
+
+function parseDepartmentData(dept) {
+  return {
+    ...dept.data,
+    periods: parseObjectivesData(dept.objectives),
+    products: dept.products ? Object.values(dept.products).map(parseProductData) : [],
+  };
+}
+
+function parseProductData(product) {
+  return {
+    ...product.data,
+    periods: parseObjectivesData(product.objectives),
+  };
+}
+
+function parseObjectivesData(list) {
+  Object.keys(list)
+    .map(key => {
+      key.key = key;
+      return key;
+    })
+    .filter(key => key.split('_').length === 1)
+    .forEach(key => {
+      list[key].objectives = [];
+    });
+
+  Object.keys(list)
+    .filter(key => key.split('_').length === 2)
+    .forEach(key => {
+      list[key].keyResults = [];
+      const period = key.split('_')[0];
+      list[period].objectives.push(list[key]);
+    });
+
+  Object.keys(list)
+    .filter(key => key.split('_').length === 3)
+    .forEach(key => {
+      const [period, objective] = key.split('_');
+      list[`${period}_${objective}`].keyResults.push(list[key]);
+    });
+
+  return Object.keys(list)
+    .filter(key => key.split('_').length === 1)
+    .map(key => list[key]);
+}
+
+function callCloudFunction(data) {
+  return axios({
+    method: 'post',
+    url,
+    data,
+  }).catch(err => {
+    throw new Error(err);
+  });
+}
