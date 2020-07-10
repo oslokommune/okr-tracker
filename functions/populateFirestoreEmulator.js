@@ -48,7 +48,7 @@ async function populateUsers(users) {
   if (!users || !users.length) return;
 
   users.forEach(async user => {
-    const { id, displayName, admin } = user;
+    const { id, displayName, admin, slug } = user;
 
     const userData = {
       id,
@@ -58,6 +58,10 @@ async function populateUsers(users) {
 
     if (displayName) {
       userData.displayName = displayName;
+    }
+
+    if (slug) {
+      userData.slug = slug;
     }
 
     await db.collection('users').doc(id).set(userData);

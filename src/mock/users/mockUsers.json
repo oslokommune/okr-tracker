@@ -5,6 +5,12 @@
     "admin": false
   },
   {
+    "id": "testadmin@internet.com",
+    "admin": true,
+    "slug": "test-admin",
+    "displayName": "Test Admin"
+  },
+  {
     "id": "aulon.mujaj@gmail.com",
     "admin": true
   },
