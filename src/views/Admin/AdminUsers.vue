@@ -11,7 +11,7 @@
     <div class="search form-group">
       <label>
         <span class="form-label">{{ $t('admin.users.find') }}</span>
-        <input type="text" v-model="query" />
+        <input type="text" v-model="query" data-cy="user_search_field" />
       </label>
     </div>
 
@@ -59,9 +59,9 @@
     <h3 class="title title-3">{{ $t('admin.users.addEmails') }}</h3>
     <p>{{ $t('admin.users.addEmailsHelp') }}</p>
     <div class="form-group">
-      <textarea rows="10" v-model="addUserList"></textarea>
+      <textarea rows="10" v-model="addUserList" data-cy="email_list"></textarea>
     </div>
-    <button class="btn btn--primary" @click="addEmails">{{ $t('admin.users.add') }}</button>
+    <button class="btn btn--primary" @click="addEmails" data-cy="add_users_button">{{ $t('admin.users.add') }}</button>
   </div>
 </template>
 

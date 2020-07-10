@@ -8,7 +8,11 @@
           <router-link class="sub-nav__element" exact :to="{ name: 'edit-department' }">{{
             $t('general.department')
           }}</router-link>
-          <router-link class="sub-nav__element" :to="{ name: 'edit-department-keyres' }">
+          <router-link
+            class="sub-nav__element"
+            :to="{ name: 'edit-department-keyres' }"
+            data-cy="objectives_key_results_tab"
+          >
             {{ $t('general.objAndKeyres') }}
           </router-link>
         </div>

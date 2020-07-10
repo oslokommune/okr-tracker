@@ -8,31 +8,32 @@
       label="name"
       v-model="$v.objective.$model"
       :options="objectives"
+      data-cy="objective_selector"
     ></v-select>
 
     <div class="form-field--error" v-if="$v.objective.$error">{{ $t('validations.empty') }}</div>
 
     <label class="form-field" :class="{ 'form-field--error': $v.description.$error }">
       <span class="form-label">{{ $t('keyres.description') }}</span>
-      <textarea v-model="$v.description.$model" rows="1" maxlength="120"></textarea>
+      <textarea v-model="$v.description.$model" rows="1" maxlength="120" data-cy="keyres_name_field"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.description.$error">{{ $t('validations.empty') }}</div>
 
     <label class="form-field">
       <span class="form-label">{{ $t('keyres.longDescription') }}</span>
-      <textarea v-model="longDescription" rows="4" maxlength="120"></textarea>
+      <textarea v-model="longDescription" rows="4" maxlength="120" data-cy="keyres_description_field"></textarea>
     </label>
 
     <div class="form-row">
       <label class="form-field" :class="{ 'form-field--error': $v.startValue.$error }">
         <span class="form-label">{{ $t('keyres.startValue') }}</span>
-        <input type="number" v-model="$v.startValue.$model" />
+        <input type="number" v-model="$v.startValue.$model" data-cy="keyres_startvalue_field" />
       </label>
       <div class="form-field--error" v-if="$v.startValue.$error">{{ $t('validations.empty') }}</div>
 
       <label class="form-field" :class="{ 'form-field--error': $v.targetValue.$error }">
         <span class="form-label">{{ $t('keyres.targetValue') }}</span>
-        <input type="number" v-model="$v.targetValue.$model" />
+        <input type="number" v-model="$v.targetValue.$model" data-cy="keyres_targetvalue_field" />
       </label>
       <div class="form-field--error" v-if="$v.targetValue.$error">{{ $t('validations.empty') }}</div>
     </div>
@@ -40,7 +41,7 @@
     <label class="form-field" :class="{ 'form-field--error': $v.unit.$error }">
       <span class="form-label">{{ $t('keyres.unit') }}</span>
       <span class="form-help">{{ $t('keyres.unitDescription') }}</span>
-      <input type="text" v-model="$v.unit.$model" maxlength="32" />
+      <input type="text" v-model="$v.unit.$model" maxlength="32" data-cy="keyres_unit_field" />
     </label>
     <div class="form-field--error" v-if="$v.unit.$error">{{ $t('validations.empty') }}</div>
 
@@ -80,10 +81,10 @@
 
     <hr />
 
-    <button :disabled="submit" class="btn" @click="send">
+    <button :disabled="submit" class="btn" @click="send" data-cy="save_keyres_button">
       {{ $tc('validations.submit', null, { object: $t('keyres.name') }) }}
     </button>
-    <button class="btn btn--ghost" @click="close">{{ $t('validations.stop') }}</button>
+    <button class="btn btn--ghost" @click="close" data-cy="close_button">{{ $t('validations.stop') }}</button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>

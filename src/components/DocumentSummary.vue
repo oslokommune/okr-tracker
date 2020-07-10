@@ -13,7 +13,7 @@
           </router-link>
         </p>
       </div>
-      <div class="md" v-html="displayMarkdown(document.missionStatement)"></div>
+      <div class="md" data-cy="mission_statement" v-html="displayMarkdown(document.missionStatement)"></div>
     </div>
     <MembersList :type="type" :team="team"></MembersList>
     <div>

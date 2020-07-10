@@ -2,11 +2,13 @@
   <div v-if="department">
     <h2 class="title title-2">{{ $t('admin.department.title') }}</h2>
 
+    <CalloutArchivedRestore v-if="department.archived" :docref="docref"></CalloutArchivedRestore>
+
     <div class="section">
       <div class="form-group">
         <label class="form-field">
           <span class="form-label">{{ $t('admin.department.name') }}</span>
-          <input type="text" v-model="department.name" @input="updateSlug" maxlength="64" />
+          <input type="text" id="dep-name" v-model="department.name" @input="updateSlug" maxlength="64" />
         </label>
 
         <label>
@@ -34,13 +36,21 @@
         <label class="form-field">
           <span class="form-label">{{ $t('admin.department.missionStatement') }}</span>
           <span class="form-help" v-html="$t('admin.department.missionStatementHelp')"></span>
-          <textarea rows="4" v-model="department.missionStatement" @input="dirty = true" maxlength="320"></textarea>
+          <textarea
+            id="dep-missionStatement"
+            rows="4"
+            v-model="department.missionStatement"
+            @input="dirty = true"
+            maxlength="320"
+          ></textarea>
         </label>
       </div>
     </div>
 
-    <button class="btn" :disabled="!dirty" @click="saveObject">{{ $t('btn.save') }}</button>
-    <button class="btn btn--borderless" @click="deleteObject">{{ $t('admin.department.delete') }}</button>
+    <button class="btn" id="btn-saveDep" :disabled="!dirty" @click="saveObject">{{ $t('btn.save') }}</button>
+    <button class="btn btn--borderless" id="btn-deleteDep" @click="deleteObject">
+      {{ $t('admin.department.delete') }}
+    </button>
   </div>
 </template>
 
@@ -51,6 +61,8 @@ import * as Toast from '@/util/toasts';
 import Audit from '@/db/audit';
 import slugify from '@/util/slugify';
 
+import CalloutArchivedRestore from '@/components/Callouts/CalloutArchivedRestore.vue';
+
 export default {
   name: 'AdminDepartment',
 
@@ -59,6 +71,9 @@ export default {
     file: null,
     dirty: false,
   }),
+  components: {
+    CalloutArchivedRestore,
+  },
   props: {
     docref: { type: Object, required: true },
   },

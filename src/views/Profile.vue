@@ -37,6 +37,9 @@
           <h2 class="title title-2">{{ $t('general.admin') }}</h2>
           <p>{{ $t('profile.hasAdmin') }}</p>
         </section>
+        <section v-if="getUser.testAdmin" class="section">
+          <DeleteTestData></DeleteTestData>
+        </section>
         <section class="section">
           <h2 class="title title-2">{{ $t('profile.products') }}</h2>
           <ul class="grid-system">
@@ -74,6 +77,7 @@ import { mapState } from 'vuex';
 import { isDashboardUser, findUser, userProductsListener, getAllDepartments, getAuditFromUser } from '@/db/db';
 import PageHeader from '@/components/PageHeader.vue';
 import NewsfeedCard from '@/views/Home/components/NewsfeedCard.vue';
+import DeleteTestData from '@/components/DeleteTestData.vue';
 import * as Toast from '@/util/toasts';
 import { storage } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
@@ -95,6 +99,7 @@ export default {
   components: {
     PageHeader,
     NewsfeedCard,
+    DeleteTestData,
   },
 
   metaInfo() {

@@ -7,6 +7,7 @@
       label="name"
       :options="availablePeriods"
       v-model="$v.selectedPeriod.$model"
+      data-cy="period_selector"
     ></v-select>
     <div class="form-field--error" v-if="$v.selectedPeriod.$error">{{ $t('validations.empty') }}</div>
 
@@ -23,16 +24,20 @@
 
     <label class="form-field" :class="{ 'form-field--error': $v.title.$error }">
       <span class="form-label">{{ $t('objective.title') }}</span>
-      <input type="text" v-model="$v.title.$model" maxlength="160" />
+      <input type="text" v-model="$v.title.$model" maxlength="160" data-cy="objective_title_field" />
     </label>
     <div class="form-field--error" v-if="$v.title.$error">{{ $t('validations.empty') }}</div>
     <label class="form-field" :class="{ 'form-field--error': $v.body.$error }">
       <span class="form-label">{{ $t('objective.description') }}</span>
-      <textarea v-model="$v.body.$model" rows="4" maxlength="320"></textarea>
+      <textarea v-model="$v.body.$model" rows="4" maxlength="320" data-cy="objective_body_field"></textarea>
     </label>
     <div class="form-field--error" v-if="$v.body.$error">{{ $t('validations.empty') }}</div>
-    <button :disabled="submit" class="btn" @click="submitForm">{{ $t('validations.add') }}</button>
-    <button class="btn btn--borderless" @click="$emit('close-menu')">{{ $t('btn.close') }}</button>
+    <button :disabled="submit" class="btn" @click="submitForm" data-cy="save_objective">
+      {{ $t('validations.add') }}
+    </button>
+    <button class="btn btn--borderless" @click="$emit('close-menu')" data-cy="delete_objective">
+      {{ $t('btn.close') }}
+    </button>
     <p v-if="showInfo">{{ info }}</p>
   </div>
 </template>

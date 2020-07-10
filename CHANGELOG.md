@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- e2e tests with Cypress. See [documentation](/tests/e2e/README.md) and [test plan](/tests/e2e/test-plan.md).
+
 ### Changed
 
 - Update prettier to version 2.0

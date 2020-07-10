@@ -8,6 +8,7 @@ import 'firebase/functions';
 const firestoreEmulator = {
   host: 'localhost:8888',
   ssl: false,
+  experimentalForceLongPolling: true,
 };
 
 export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;
@@ -33,7 +34,7 @@ const auth = firebase.auth();
 const analytics = firebase.analytics();
 const functions = firebase.functions();
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   console.log('Established connection to Firestore emulator');
 } else {

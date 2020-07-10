@@ -8,7 +8,11 @@
           <router-link class="sub-nav__element" exact :to="{ name: 'edit-product' }">{{
             $t('product.title')
           }}</router-link>
-          <router-link class="sub-nav__element" :to="{ name: 'edit-product-keyres' }">
+          <router-link
+            class="sub-nav__element"
+            :to="{ name: 'edit-product-keyres' }"
+            data-cy="objectives_and_key_results_tab"
+          >
             {{ $t('product.objAndKeyres') }}
           </router-link>
         </div>
