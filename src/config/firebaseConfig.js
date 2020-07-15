@@ -5,8 +5,11 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/functions';
 
+import { emulators } from '../../firebase.json';
+
+const functionsEmulator = `http://localhost:${emulators.functions.port}`;
 const firestoreEmulator = {
-  host: 'localhost:8888',
+  host: `localhost:${emulators.firestore.port}`,
   ssl: false,
   experimentalForceLongPolling: true,
 };
@@ -36,7 +39,8 @@ const functions = firebase.functions();
 
 if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
-  console.log('Established connection to Firestore emulator');
+  functions.useFunctionsEmulator(functionsEmulator);
+  console.log('Established connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
 }

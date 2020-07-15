@@ -1,11 +1,17 @@
 const path = require('path');
+const fs = require('fs');
 const axios = require('axios'); // eslint-disable-line
 const dataDir = require('data-dir'); // eslint-disable-line
 
+const { emulators } = require('../../firebase.json');
+const { region } = require('../../functions/config');
+
+const { projects } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../.firebaserc'), 'utf8'));
+
 // Emulator settings for functions
-const PORT = 5001;
-const PROJECT_ID = 'origo-okr-tracker'; // todo: read from firebase.json
-const REGION = 'europe-west2'; // todo: read from firebase.rc
+const PORT = emulators.functions.port;
+const PROJECT_ID = projects.development;
+const REGION = region;
 const FUNCTION_ID = 'populateFirestoreEmulator';
 const SECRET = 'UZPmJ9gOXHmb6RRttAyURi4JdkvDq8'; // todo: read from environment variable
 const url = `http://localhost:${PORT}/${PROJECT_ID}/${REGION}/${FUNCTION_ID}?secret=${SECRET}`;

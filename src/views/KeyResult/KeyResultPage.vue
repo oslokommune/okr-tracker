@@ -200,6 +200,7 @@ import keyResHandler from '@/db/keyresultHandler';
 import 'flatpickr/dist/flatpickr.css';
 import { functions } from '@/config/firebaseConfig';
 import AddProgressComment from '@/components/AddProgressComment.vue';
+import { show as showToast } from '../../util/toasts';
 
 marked.setOptions({
   smartypants: true,
@@ -382,10 +383,14 @@ export default {
     async triggerScheduledFunction() {
       this.loading = true;
 
-      const myCall = await functions.httpsCallable('triggerScheduledFunction');
-      await myCall(this.key_result.ref.path).catch(err => {
-        throw new Error(err);
-      });
+      try {
+        const myCall = await functions.httpsCallable('triggerScheduledFunction');
+        await myCall(this.key_result.ref.path);
+
+        showToast(this.$t('general.success'));
+      } catch (error) {
+        this.$errorHandler(error);
+      }
 
       this.loading = false;
     },

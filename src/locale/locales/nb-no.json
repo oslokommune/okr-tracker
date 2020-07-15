@@ -12,7 +12,8 @@
     "help": "Hjelp",
     "objAndKeyres": "Mål og nøkkelresultater",
     "admin": "Admin",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "success": "Suksess!"
   },
   "btn": {
     "close": "Lukk",

@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+
 const functions = require('firebase-functions');
 const { google } = require('googleapis');
 
@@ -11,7 +12,7 @@ const sheetsEmail = functions.config().sheets.email;
 const sheetsKey = functions.config().sheets.key;
 const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
 
-jwtClient.authorize(function(err) {
+jwtClient.authorize(function (err) {
   if (err) {
     console.error(err);
   } else {
@@ -24,7 +25,7 @@ jwtClient.authorize(function(err) {
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.scheduledFunction = function() {
+exports.scheduledFunction = function () {
   return functions
     .region(config.region)
     .pubsub.schedule(config.autoKeyresFetchFrequency)
@@ -44,14 +45,17 @@ exports.scheduledFunction = function() {
 /**
  * Manually trigger the scheduled function
  */
-exports.triggerScheduledFunction = function() {
+exports.triggerScheduledFunction = function () {
   return functions.region(config.region).https.onCall(async docPath => {
-    const doc = await db
-      .doc(docPath)
-      .get()
-      .then(d => ({ ref: d.ref, ...d.data() }));
-
-    return JSON.stringify(getAndSaveDataFromSheets(doc));
+    try {
+      return db
+        .doc(docPath)
+        .get()
+        .then(d => ({ ref: d.ref, ...d.data() }))
+        .then(doc => JSON.stringify(getAndSaveDataFromSheets(doc)));
+    } catch (error) {
+      return error;
+    }
   });
 };
 
