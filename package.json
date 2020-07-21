@@ -10,7 +10,7 @@
     "deploy": "npm run build && firebase deploy --project=production",
     "deploy:dev": "vue-cli-service build --mode staging && firebase deploy --project=development",
     "local": "firebase emulators:start & ( sleep 15 && node ./src/mock ) & npm run serve",
-    "foo": "node ./src/mock",
+    "local:injectmock": "node ./src/mock",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
   },

@@ -12,6 +12,10 @@ To create a new instance of the OKR-tracker, please read the [Setting up Firebas
 
 To set up your local development environment, build and deploy for an existing Firebase backend, please see our guide for [Connecting to an existing Firebase project](/documentation/connecting-to-existing-firebase.md).
 
+## Modifying mock data
+
+Mock data is located in `src/mock`. See the [guide](/src/mock/README.md) for structure and formats.
+
 ## Contributing
 
 Please see our [Guidelines](/documentation/contributing.md).

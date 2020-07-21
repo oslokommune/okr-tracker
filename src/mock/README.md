@@ -7,34 +7,35 @@ The test data must adhere to the following structure:
 ```
 📁 /mock
    📁 users
-      📄 users.json
+      📄 users.json                                   (required)
    📁 orgs
       📁 /MyCustomOrganisation
-         📄 data.json
+         📄 data.json                                 (required)
          📁 objectives
          📁 departments
             📁 MyCustomDepartment
-               📄 data.json
+               📄 data.json                           (required)
                📁 objectives
                📁 products
                   📁 MyCustomProduct
-                     📄 data.json
+                     📄 data.json                     (required)
+                     📄 kpis.json
                      📁 objectives
+                        📄 myPeriod.json
+                        📄 myPeriod_myObjective.json
+                        📄 myPeriod_myObjective_myKeyResult.json
+                        📄 myPeriod_myObjective_mySecondKeyResult.json
+                        📄 myPeriod_myOtherObjective.json
+                        📄 myPeriod_myOtherObjective_myThirdKeyResult.json
 ```
 
-Files in the `objectives` folder must adhere to the following structure:
+Files in the `objectives` folder must adhere to the structure above, where periods, objectives and key results are linked through this naming convention.
 
-```
-📁 objectives
-   📄 myPeriod.json
-   📄 myPeriod_myObjective.json
-   📄 myPeriod_myObjective_myKeyResult.json
-   📄 myPeriod_myObjective_mySecondKeyResult.json
-   📄 myPeriod_myOtherObjective.json
-   📄 myPeriod_myOtherObjective_myThirdKeyResult.json
-```
+## Data structures
 
-## users.json
+### User data (users.json)
+
+- Make sure to add your own email address and set `admin` to `true`.
 
 ```
 [
@@ -47,7 +48,7 @@ Files in the `objectives` folder must adhere to the following structure:
 ]
 ```
 
-## Organisation data
+### Organisation data (data.json)
 
 ```
 {
@@ -56,7 +57,7 @@ Files in the `objectives` folder must adhere to the following structure:
 }
 ```
 
-## Department data
+### Department data (data.json)
 
 ```
 {
@@ -65,7 +66,7 @@ Files in the `objectives` folder must adhere to the following structure:
 }
 ```
 
-## Product data
+### Product data (data.json)
 
 ```
 {
@@ -76,7 +77,10 @@ Files in the `objectives` folder must adhere to the following structure:
 }
 ```
 
-## Period data
+### Period data (myPeriod.json)
+
+- Use camelCase in file name.
+- Replace ‘myPeriod’ with whatever name you'd like. It doesn’t matter, but make sure to reuse this name for the period’s objectives and key results.
 
 ```
 {
@@ -86,7 +90,11 @@ Files in the `objectives` folder must adhere to the following structure:
 }
 ```
 
-## Objective data
+### Objective data (myPeriod_myObjective.json)
+
+- Use camelCase in file name.
+- Replace ‘myPeriod’ with the period you want the objective to be nested in.
+- Replace ‘myObjective’ with whatever name you'd like. It doesn’t matter, but make sure to reuse this name for the objective’s key results.
 
 ```
 {
@@ -96,7 +104,12 @@ Files in the `objectives` folder must adhere to the following structure:
 }
 ```
 
-## Key result data
+### Key result data (myPeriod_myObjective_myKeyResult.json)
+
+- Use camelCase in file name.
+- Replace ‘myPeriod’ with the period the key result belongs to.
+- Replace ‘myObjective’ with the objective the key result belongs to.
+  Replace ‘myKeyResult’ with whatever name you'd like.
 
 ```
 {
@@ -118,5 +131,27 @@ Files in the `objectives` folder must adhere to the following structure:
     },
     // ...
   ]
+}
+```
+
+### KPI data (kpis.json)
+
+```
+{
+  "kpi/users": {
+    "description": "MyDescription",
+    "sheet": {
+      "id": "mySheetId",
+      "name": "Sheet1",
+      "cell": "A1"
+    },
+    "progress": [
+      { "created": "2020-07-15", "value": 535 },
+      { "created": "2020-07-14", "value": 521 },
+      // ...
+    ]
+  },
+  "kpi/user-satisfaction": { /* same as above */ },
+  "kpi/conversion-rate": { /* same as above */ }
 }
 ```
