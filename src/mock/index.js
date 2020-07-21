@@ -47,6 +47,7 @@ function parseProductData(product) {
   return {
     ...product.data,
     periods: parseObjectivesData(product.objectives),
+    kpis: product.kpis,
   };
 }
 

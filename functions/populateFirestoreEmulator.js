@@ -98,13 +98,38 @@ async function populateProducts(products, parentPath) {
   if (!products || !products.length) return;
 
   products.forEach(async prod => {
-    const { name, missionStatement, periods } = prod;
+    const { name, missionStatement, periods, kpis } = prod;
     const slug = slugify(name);
     const { path } = await db
       .collection(`${parentPath}/products`)
       .add({ name, archived, slug, created, missionStatement });
     await populatePeriods(periods, path);
+    await populateKPIs(kpis, path);
   });
+}
+
+async function populateKPIs(kpis, parentPath) {
+  /* eslint-disable */
+  for (const kpi in kpis) {
+    if (!kpi) return;
+
+    const { description, sheet, progress } = kpis[kpi];
+    const name = kpi.split('/')[1];
+
+    const documentReference = await db.collection(`${parentPath}/kpis`).add({
+      description,
+      sheet,
+      name,
+    });
+
+    progress.forEach(prog => {
+      documentReference.collection('progress').add({
+        created: new Date(prog.created),
+        value: prog.value,
+      });
+    });
+  }
+  /* eslint-enable */
 }
 
 async function populatePeriods(periods, parentPath) {
