@@ -25,11 +25,7 @@ describe('Delete department', () => {
   });
 
   it('Removes all remaining test data', () => {
-    cy.visit('/me')
-      .wait(1000)
-      .get('[data-cy="delete_test_data"]')
-      .click()
-      .wait(1000);
+    cy.visit('/me').wait(1000).get('[data-cy="delete_test_data"]').click().wait(1000);
   });
 
   it('Logs out', () => {

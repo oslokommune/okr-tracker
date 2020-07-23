@@ -29,10 +29,7 @@ describe('Whitelist user', () => {
   });
 
   it('Finds the test user with search', () => {
-    cy.get('[data-cy="user_search_field"]')
-      .clear()
-      .type(Cypress.env('VUE_APP_TESTUSER_USER'))
-      .wait(100);
+    cy.get('[data-cy="user_search_field"]').clear().type(Cypress.env('VUE_APP_TESTUSER_USER')).wait(100);
 
     cy.get('.whitelist__body').should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
   });

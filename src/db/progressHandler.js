@@ -1,4 +1,3 @@
-import Audit from '@/db/audit';
 import * as Toast from '@/util/toasts';
 import { isTeamMemberOfProduct } from '@/db/db';
 import Store from '@/store';
@@ -58,7 +57,7 @@ export async function addProgress(keyres, value, date, addComment) {
     });
 }
 
-export async function deleteProgress(doc, keyres) {
+export async function deleteProgress(doc) {
   if (!doc) throw errorHandler('delete_progress_error', new Error(i18n.t('errorHandler.missing')));
 
   const documentRef = doc.ref.parent.parent.parent.parent.parent.parent;

@@ -37,69 +37,43 @@ describe('Create department', () => {
 
 describe('Create data for department', () => {
   it('Navigates to edit page', () => {
-    cy.get('[data-cy="edit_object_link"]')
-      .click()
-      .wait(750);
+    cy.get('[data-cy="edit_object_link"]').click().wait(750);
 
     cy.get('#dep-name').should('have.value', testDepartment.name);
 
-    cy.get('[data-cy="objectives_key_results_tab"]')
-      .click()
-      .wait(750);
+    cy.get('[data-cy="objectives_key_results_tab"]').click().wait(750);
   });
 
   it('Creates a new period with mock data', () => {
-    cy.get('[data-cy="add_period_button"]')
-      .click()
-      .wait(750);
+    cy.get('[data-cy="add_period_button"]').click().wait(750);
 
-    cy.get('[data-cy="period_name"]')
-      .clear()
-      .type(testPeriod.name);
+    cy.get('[data-cy="period_name"]').clear().type(testPeriod.name);
 
     cy.get('[data-cy="save_period"]').click();
   });
 
   it('Creates an objective for the period', () => {
-    cy.get('[data-cy="add_objective_button"]')
-      .click()
-      .wait(750);
+    cy.get('[data-cy="add_objective_button"]').click().wait(750);
 
-    cy.get('[data-cy="objective_name_field"]')
-      .clear()
-      .type(testObjective.name);
+    cy.get('[data-cy="objective_name_field"]').clear().type(testObjective.name);
 
-    cy.get('[data-cy="objective_description_field"]')
-      .clear()
-      .type(testObjective.description);
+    cy.get('[data-cy="objective_description_field"]').clear().type(testObjective.description);
 
     cy.get('[data-cy="save_objective_button"]').click();
   });
 
   it('Creates a key result for the objective', () => {
-    cy.get('[data-cy="add_keyres_button"]')
-      .click()
-      .wait(750);
+    cy.get('[data-cy="add_keyres_button"]').click().wait(750);
 
-    cy.get('[data-cy="keyres_name_field"]')
-      .clear()
-      .type(testKeyResult.name);
+    cy.get('[data-cy="keyres_name_field"]').clear().type(testKeyResult.name);
 
-    cy.get('[data-cy="keyres_longdescription_field"]')
-      .clear()
-      .type(testKeyResult.longDescription);
+    cy.get('[data-cy="keyres_longdescription_field"]').clear().type(testKeyResult.longDescription);
 
-    cy.get('[data-cy="keyres_startvalue_field"]')
-      .clear()
-      .type(testKeyResult.startValue);
+    cy.get('[data-cy="keyres_startvalue_field"]').clear().type(testKeyResult.startValue);
 
-    cy.get('[data-cy="keyres_targetvalue_field"]')
-      .clear()
-      .type(testKeyResult.targetValue);
+    cy.get('[data-cy="keyres_targetvalue_field"]').clear().type(testKeyResult.targetValue);
 
-    cy.get('[data-cy="keyres_unit_field"]')
-      .clear()
-      .type(testKeyResult.unit);
+    cy.get('[data-cy="keyres_unit_field"]').clear().type(testKeyResult.unit);
 
     cy.get('[data-cy="save_keyres_button"]').click();
   });
@@ -124,10 +98,7 @@ describe('Create data for department', () => {
 
 describe('Create progress for key result', () => {
   it('Navigates to and validates key result page', () => {
-    cy.get('.keyres__name')
-      .should('contain', testKeyResult.name)
-      .click()
-      .wait(1000);
+    cy.get('.keyres__name').should('contain', testKeyResult.name).click().wait(1000);
 
     cy.url().should('include', testDepartment.slug);
 
@@ -143,17 +114,11 @@ describe('Create progress for key result', () => {
   });
 
   it('Adds progression to key result', () => {
-    cy.get('[data-cy="progress_value_field"]')
-      .clear()
-      .type(testKeyResult.progressValue);
+    cy.get('[data-cy="progress_value_field"]').clear().type(testKeyResult.progressValue);
 
-    cy.get('[data-cy="today_button"]')
-      .contains('I dag')
-      .click();
+    cy.get('[data-cy="today_button"]').contains('I dag').click();
 
-    cy.get('[data-cy="add_progress_button"]')
-      .click()
-      .wait(750);
+    cy.get('[data-cy="add_progress_button"]').click().wait(750);
 
     cy.get('svg path').should('exist');
 
@@ -164,16 +129,11 @@ describe('Create progress for key result', () => {
   });
 
   it('Verifies the progress on department page', () => {
-    cy.get('.breadcrumb__item')
-      .contains(testDepartment.name)
-      .click()
-      .wait(400);
+    cy.get('.breadcrumb__item').contains(testDepartment.name).click().wait(400);
 
     cy.get('svg text.percent').should('contain', '50%');
 
-    cy.get('[data-cy="objectives_list"]')
-      .should('contain', '(50%)')
-      .should('contain', testObjective.description);
+    cy.get('[data-cy="objectives_list"]').should('contain', '(50%)').should('contain', testObjective.description);
 
     cy.get('.progress__current-value').should('contain', testKeyResult.progressValue);
   });
@@ -181,16 +141,11 @@ describe('Create progress for key result', () => {
   it('Updates progress from product page (inline)', () => {
     cy.get('button.keyres__toggle').click();
 
-    cy.get('.keyres__edit input')
-      .clear()
-      .type(`${testKeyResult.targetValue} {enter}`)
-      .wait(2500);
+    cy.get('.keyres__edit input').clear().type(`${testKeyResult.targetValue} {enter}`).wait(2500);
 
     cy.get('svg text.percent').should('contain', '100%');
 
-    cy.get('[data-cy="objectives_list"]')
-      .should('contain', '(100%)')
-      .should('contain', testObjective.description);
+    cy.get('[data-cy="objectives_list"]').should('contain', '(100%)').should('contain', testObjective.description);
 
     cy.get('.progress__bar').should('have.class', 'completed');
   });

@@ -10,10 +10,7 @@ describe('Verifies restrictions for test user', () => {
     cy.get('form').submit();
     cy.wait(1000);
 
-    cy.visit('/me')
-      .wait(1000)
-      .get('.page-header__name')
-      .should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
+    cy.visit('/me').wait(1000).get('.page-header__name').should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
   });
 
   it('Verifies team membership (Product one)', () => {
@@ -48,19 +45,13 @@ describe('Verifies restrictions for test user', () => {
   });
 
   it('Allows test user to edit Product One', () => {
-    cy.get('[data-cy="edit_object_link"]')
-      .click()
-      .wait(500);
+    cy.get('[data-cy="edit_object_link"]').click().wait(500);
 
     cy.get('[data-cy="product_name_field"]').should('have.value', testProducts[0].name);
 
-    cy.get('[data-cy="product_mission_statement_field"]')
-      .clear()
-      .type(testProducts[0].edited_mission_statement);
+    cy.get('[data-cy="product_mission_statement_field"]').clear().type(testProducts[0].edited_mission_statement);
 
-    cy.get('[data-cy="save_product_button"]')
-      .should('not.be.disabled')
-      .click();
+    cy.get('[data-cy="save_product_button"]').should('not.be.disabled').click();
 
     cy.get('.toasted').should('contain', 'Lagret');
   });
@@ -72,9 +63,7 @@ describe('Verifies restrictions for test user', () => {
   });
 
   it('Allows updating progress for Product one (using modal)', () => {
-    cy.get('[data-cy="update_data"]')
-      .click()
-      .wait(4500);
+    cy.get('[data-cy="update_data"]').click().wait(4500);
 
     cy.get('.modal')
       .should('contain', testKeyResult.name)
@@ -82,9 +71,7 @@ describe('Verifies restrictions for test user', () => {
       .should('contain', testKeyResult.targetValue)
       .should('contain', testKeyResult.unit);
 
-    cy.get('[data-cy="value_field"]')
-      .clear()
-      .type(testKeyResult.targetValue);
+    cy.get('[data-cy="value_field"]').clear().type(testKeyResult.targetValue);
 
     cy.get('[data-cy="save_button"]').click();
 
@@ -111,26 +98,15 @@ describe('Verifies restrictions for test user', () => {
       .should('not.contain', 'Oppdater data')
       .should('contain', 'Dashboard');
 
-    cy.visit(`/product/${testProducts[1].slug}/edit`)
-      .wait(2000)
-      .url()
-      .should('not.include', testProducts[1].slug);
+    cy.visit(`/product/${testProducts[1].slug}/edit`).wait(2000).url().should('not.include', testProducts[1].slug);
   });
 
   it('Cannot access admin page', () => {
-    cy.visit(`/admin`)
-      .wait(1000)
-      .url()
-      .should('not.include', 'admin');
+    cy.visit(`/admin`).wait(1000).url().should('not.include', 'admin');
   });
 
   it('Cannot edit department', () => {
-    cy.visit(`/`)
-      .wait(1000)
-      .get('.department > a')
-      .contains(testDepartment.name)
-      .click()
-      .wait(1000);
+    cy.visit(`/`).wait(1000).get('.department > a').contains(testDepartment.name).click().wait(1000);
 
     cy.get('.sidebar-nav')
       .should('not.contain', 'Endre produkt')

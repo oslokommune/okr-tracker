@@ -105,14 +105,10 @@ describe('Create objectives', () => {
   });
 
   it('Creates objective for test product one', () => {
-    cy.visit(`/product/${testProducts[0].slug}`)
-      .wait(1000)
-      .createObjective();
+    cy.visit(`/product/${testProducts[0].slug}`).wait(1000).createObjective();
   });
 
   it('Creates objective for test product two', () => {
-    cy.visit(`/product/${testProducts[1].slug}`)
-      .wait(1000)
-      .createObjective();
+    cy.visit(`/product/${testProducts[1].slug}`).wait(1000).createObjective();
   });
 });

@@ -28,9 +28,7 @@ describe('Add user to product', () => {
   });
 
   it('Saves the product', () => {
-    cy.get('[data-cy="save_product_button"]')
-      .should('not.be.disabled')
-      .click();
+    cy.get('[data-cy="save_product_button"]').should('not.be.disabled').click();
 
     cy.get('.toasted').should('contain', 'Lagret');
   });
