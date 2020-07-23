@@ -45,8 +45,8 @@
           </div>
           <div
             v-if="selectedOrgId"
-            id="admin-addDepartment"
             class="miller__col__item miller__col__add"
+            data-cy="admin-addDepartment"
             @click="addDepartment"
           >
             {{ $t('admin.objects.add') }}
@@ -68,7 +68,7 @@
           </div>
           <div
             v-if="selectedDeptId"
-            id="admin-addProduct"
+            data-cy="admin-addProduct"
             class="miller__col__item miller__col__add"
             @click="addProduct"
           >

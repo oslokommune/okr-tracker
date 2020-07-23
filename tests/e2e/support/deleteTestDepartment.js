@@ -5,7 +5,7 @@ Cypress.Commands.add('deleteTestDepartment', () => {
 
   cy.get('.miller__col__item').contains(testDepartment.name).click().wait(600);
 
-  cy.get('#btn-deleteDep').click().wait(600);
+  cy.get('[data-cy="btn-deleteDep"]').click().wait(600);
 
   cy.get('.toggle').click().wait(1000);
 

@@ -3,7 +3,7 @@ import { testDepartment, testProducts } from '../config';
 Cypress.Commands.add('deleteProduct', productIndex => {
   cy.visit('/admin').wait(2000);
 
-  cy.get('[id="admin-depsAndProds"]').click().wait(1000);
+  cy.get('[data-cy="admin-depsAndProds"]').click().wait(1000);
 
   cy.url().should('include', '/admin/data');
 

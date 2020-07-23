@@ -39,7 +39,7 @@ describe('Create data for department', () => {
   it('Navigates to edit page', () => {
     cy.get('[data-cy="edit_object_link"]').click().wait(750);
 
-    cy.get('#dep-name').should('have.value', testDepartment.name);
+    cy.get('[data-cy="dep-name"]').should('have.value', testDepartment.name);
 
     cy.get('[data-cy="objectives_key_results_tab"]').click().wait(750);
   });

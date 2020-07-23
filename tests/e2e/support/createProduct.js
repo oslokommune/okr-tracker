@@ -3,13 +3,13 @@ import { testDepartment, testProducts } from '../config';
 Cypress.Commands.add('createProduct', productIndex => {
   cy.visit('/admin').wait(2000);
 
-  cy.get('[id="admin-depsAndProds"]').click().wait(1000);
+  cy.get('[data-cy="admin-depsAndProds"]').click().wait(1000);
 
   cy.url().should('include', '/admin/data');
 
   cy.get('.miller__col__item').contains(testDepartment.name).click().wait(500);
 
-  cy.get('#admin-addProduct').click().wait(1000);
+  cy.get('[data-cy="admin-addProduct"]').click().wait(1000);
 
   cy.get('[data-cy="product_name_field"]').clear().type(testProducts[productIndex].name);
 

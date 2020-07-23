@@ -8,7 +8,7 @@
       <div class="form-group">
         <label class="form-field">
           <span class="form-label">{{ $t('admin.department.name') }}</span>
-          <input type="text" id="dep-name" v-model="department.name" @input="updateSlug" maxlength="64" />
+          <input type="text" v-model="department.name" @input="updateSlug" maxlength="64" data-cy="dep-name" />
         </label>
 
         <label>
@@ -37,18 +37,18 @@
           <span class="form-label">{{ $t('admin.department.missionStatement') }}</span>
           <span class="form-help" v-html="$t('admin.department.missionStatementHelp')"></span>
           <textarea
-            id="dep-missionStatement"
             rows="4"
             v-model="department.missionStatement"
             @input="dirty = true"
             maxlength="320"
+            data-cy="dep-missionStatement"
           ></textarea>
         </label>
       </div>
     </div>
 
-    <button class="btn" id="btn-saveDep" :disabled="!dirty" @click="saveObject">{{ $t('btn.save') }}</button>
-    <button class="btn btn--borderless" id="btn-deleteDep" @click="deleteObject">
+    <button class="btn" :disabled="!dirty" data-cy="btn-saveDep" @click="saveObject">{{ $t('btn.save') }}</button>
+    <button class="btn btn--borderless" data-cy="btn-deleteDep" @click="deleteObject">
       {{ $t('admin.department.delete') }}
     </button>
   </div>
