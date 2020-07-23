@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
+- Improve documentation
 - Update prettier to version 2.0
 - Update dependencies
 
@@ -19,6 +20,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Typo in documentation
 - Fix bug in manual testing of automatic key results (trigger cloud function) in UI with better feedback and error handling
+- Gitignore `.firebaserc`
 
 ## [1.4.2] - 2020-04-22
 

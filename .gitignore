@@ -26,6 +26,7 @@ firebase-debug.log
 *.log
 
 .firebase/
+.firebaserc
 /functions/.runtimeconfig.json
 
 # Custom users in test data
