@@ -9,13 +9,5 @@
     "admin": true,
     "slug": "test-admin",
     "displayName": "Test Admin"
-  },
-  {
-    "id": "aulon.mujaj@gmail.com",
-    "admin": true
-  },
-  {
-    "id": "jesper.kiledal@gmail.com",
-    "admin": true
   }
 ]

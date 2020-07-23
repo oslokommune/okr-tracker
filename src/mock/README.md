@@ -1,5 +1,10 @@
 # Test data
 
+## Setup
+
+- Rename `customUsers-template.json` to `customUsers.json` and insert your own Google ID. Set `admin` to `true`.
+- Optionally, add or modify the mock data by changing the json files. See below.
+
 ## File structure
 
 The test data must adhere to the following structure:
@@ -7,7 +12,8 @@ The test data must adhere to the following structure:
 ```
 📁 /mock
    📁 users
-      📄 users.json                                   (required)
+      📄 systemUsers.json                                   (required)
+      📄 customUsers.json
    📁 orgs
       📁 /MyCustomOrganisation
          📄 data.json                                 (required)
@@ -33,9 +39,7 @@ Files in the `objectives` folder must adhere to the structure above, where perio
 
 ## Data structures
 
-### User data (users.json)
-
-- Make sure to add your own email address and set `admin` to `true`.
+### User data (customUsers.json)
 
 ```
 [
