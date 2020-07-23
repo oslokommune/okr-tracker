@@ -19,15 +19,17 @@ const url = `http://localhost:${PORT}/${PROJECT_ID}/${REGION}/${FUNCTION_ID}?sec
 run();
 
 async function run() {
-  let users;
+  const systemUsers = require('./users/systemUsers.json');
+  const customUsers = await new Promise(resolve => {
+    try {
+      const customUsersData = require('./users/customUsers.json'); // eslint-disable-line
+      resolve(customUsersData);
+    } catch {
+      resolve([]);
+    }
+  });
 
-  try {
-    const systemUsers = require('./users/systemUsers.json');
-    const customUsers = require('./users/customUsers.json');
-    users = [...systemUsers, ...customUsers];
-  } catch (error) {
-    throw new Error(error);
-  }
+  const users = [...systemUsers, ...customUsers];
 
   const rawData = dataDir(path.join(__dirname, 'orgs'));
   const orgs = Object.values(rawData).map(parseOrgData);
