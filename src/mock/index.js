@@ -6,11 +6,17 @@ const dataDir = require('data-dir'); // eslint-disable-line
 const { emulators } = require('../../firebase.json');
 const { region } = require('../../functions/config');
 
-const { projects } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../.firebaserc'), 'utf8'));
+const PROJECT_ID = (() => {
+  try {
+    const { projects } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../.firebaserc'), 'utf8'));
+    return projects.development;
+  } catch {
+    return 'fake-project-id';
+  }
+})();
 
 // Emulator settings for functions
 const PORT = emulators.functions.port;
-const PROJECT_ID = projects.development;
 const REGION = region;
 const FUNCTION_ID = 'populateFirestoreEmulator';
 const SECRET = 'UZPmJ9gOXHmb6RRttAyURi4JdkvDq8'; // todo: read from environment variable
