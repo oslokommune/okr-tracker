@@ -43,7 +43,7 @@ jobs:
           CI: true
       - name: End-to-end tests
         run: |
-          npm install -g firebase-tools
+          npm install -g firebase-tools @vue/cli-service",
           cd ./functions && npm install && cd ..
           firebase emulators:exec --project fake-project-id 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'
         env:
