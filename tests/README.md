@@ -15,14 +15,6 @@ VUE_APP_TESTUSER_PASSWORD=<testuser password>
 
 ## Run tests
 
-Make sure that the local development environment is running:
-
-```
-npm run local
-```
-
-Then run the test:
-
 ```
 npm run test:e2e
 ```

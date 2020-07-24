@@ -118,7 +118,7 @@ export default {
         this.filteredList = this.users;
         return;
       }
-      this.filteredList = this.fuse.search(str);
+      this.filteredList = this.fuse.search(str).map(({ item }) => item);
     },
 
     sortBy() {

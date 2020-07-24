@@ -25,6 +25,7 @@ function datePretty(date) {
   return format(date, 'd. MMM HH:mm:ss', { locale });
 }
 
+// eslint-disable-next-line no-console
 async function errorHandler(errorType, error = console.trace(), payload = {}) {
   const user = auth.currentUser ? auth.currentUser.email : null;
   const view = router.currentRoute.path;
