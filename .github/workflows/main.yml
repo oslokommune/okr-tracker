@@ -44,7 +44,7 @@ jobs:
       - name: End-to-end tests
         run: |
           cd ./functions && npm install && cd ..
-          npm run test:e2e:headless --project-id=$VUE_APP_APP_ID
+          npm run test:e2e:headless
         env:
           BACKUP_STORAGE_BUCKET: ${{ secrets.BACKUP_STORAGE_BUCKET }}
           SHEETS_EMAIL: ${{ secrets.SHEETS_EMAIL }}
