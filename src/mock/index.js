@@ -8,8 +8,11 @@ const { region } = require('../../functions/config');
 
 const PROJECT_ID = (() => {
   try {
-    const { projects } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../.firebaserc'), 'utf8'));
-    return projects.development;
+    if (fs.existsSync('./.firebaserc')) {
+      const { projects } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../.firebaserc'), 'utf8'));
+      return projects.development;
+    }
+    return 'fake-project-id';
   } catch {
     return 'fake-project-id';
   }
