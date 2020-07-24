@@ -8,8 +8,8 @@ const config = require('./config');
 const db = admin.firestore();
 
 const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
-const sheetsEmail = functions.config().sheets.email;
-const sheetsKey = functions.config().sheets.key;
+const sheetsEmail = process.env.SHEETS_EMAIL || functions.config().sheets.email;
+const sheetsKey = process.env.SHEETS_KEY || functions.config().sheets.key;
 const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
 
 jwtClient.authorize(function (err) {
