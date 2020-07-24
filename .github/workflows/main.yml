@@ -44,7 +44,7 @@ jobs:
       - name: End-to-end tests
         run: |
           cd ./functions && npm install && cd ..
-          npm run test:e2e:headless
+          firebase emulators:exec --project $VUE_APP_APP_ID 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'
         env:
           BACKUP_STORAGE_BUCKET: ${{ secrets.BACKUP_STORAGE_BUCKET }}
           SHEETS_EMAIL: ${{ secrets.SHEETS_EMAIL }}

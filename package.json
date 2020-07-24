@@ -5,8 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "migrate-users": "node ./src/mock/authUsers NODE_ENV=development",
     "test:e2e": "vue-cli-service test:e2e --mode e2e",
-    "test:e2e:headless": " firebase emulators:exec --project fake-project-id 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'",
+    "test:e2e:headless": "firebase emulators:exec --project fake-project-id 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'",
     "lint": "vue-cli-service lint",
     "deploy": "npm run build && firebase deploy --project=production",
     "deploy:dev": "vue-cli-service build --mode staging && firebase deploy --project=development",
@@ -46,8 +47,8 @@
     "vuex": "^3.2.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-e2e-cypress": "^4.2.3",
     "@vue/cli-plugin-babel": "^4.3.1",
+    "@vue/cli-plugin-e2e-cypress": "^4.2.3",
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-service": "^4.3.1",
     "@vue/eslint-config-airbnb": "^5.0.2",

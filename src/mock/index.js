@@ -12,9 +12,9 @@ const PROJECT_ID = (() => {
       const { projects } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../.firebaserc'), 'utf8'));
       return projects.development;
     }
-    return 'fake-project-id';
+    return process.env.VUE_APP_APP_ID;
   } catch {
-    return 'fake-project-id';
+    return process.env.VUE_APP_APP_ID;
   }
 })();
 
