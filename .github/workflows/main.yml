@@ -43,4 +43,5 @@ jobs:
           CI: true
       - name: End-to-end tests
         run: |
+          npm install -g firebase-tools
           npm run test:e2e:headless
