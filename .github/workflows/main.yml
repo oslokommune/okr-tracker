@@ -45,4 +45,5 @@ jobs:
         run: |
           npm install -g firebase-tools
           cd ./functions && npm install
+          cd ./functions && firebase functions:config:get > .runtimeconfig.json
           firebase emulators:exec --project fake-project-id 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'
