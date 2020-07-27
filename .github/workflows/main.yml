@@ -25,20 +25,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Cache
-      - name: Cache multiple paths
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/cache
-            !~/cache/exclude
-            **/node_modules
-            **/functions/node_modules
-            ~/.cache
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
       # Runs a single command using the runners shell
       - name: Use Node.js {{matrix.node-version}}
         uses: actions/setup-node@v1.4.2
