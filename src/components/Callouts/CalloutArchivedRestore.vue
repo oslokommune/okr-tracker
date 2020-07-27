@@ -1,12 +1,12 @@
 <template>
   <div class="callout">
-    <div class="callout__message">Dette produktet er arkivert</div>
+    <div class="callout__message">{{ $t('callout.archivedRestore.message') }}</div>
     <div class="callout__actions">
       <button @click="restore" class="btn btn--borderless">
         <i class="fa far fa-trash-undo"></i>
         {{ $t('toaster.callout.restore') }}
       </button>
-      <button @click="deletePermanently" class="btn btn--borderless">
+      <button @click="deletePermanently" class="btn btn--borderless" data-cy="permanently-delete-object">
         <i class="far fa-trash-alt"></i>
         {{ $t('toaster.callout.delete') }}
       </button>

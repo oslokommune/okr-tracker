@@ -7,6 +7,7 @@ import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
+
 import { errorHandler, logHandler } from '@/util/utils';
 import App from '@/App.vue';
 import router from '@/router';

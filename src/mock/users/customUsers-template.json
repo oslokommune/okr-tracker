@@ -1,0 +1,10 @@
+[
+  {
+    "id": "email@example.com",
+    "admin": true
+  },
+  {
+    "id": "my@email.com",
+    "admin": true
+  }
+]

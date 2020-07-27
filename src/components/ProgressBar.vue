@@ -3,7 +3,7 @@
     <div class="progress__unit">{{ keyres.unit }}</div>
     <div class="progress__bar-container" :class="{ darkmode }">
       <div class="progress__bar" ref="bar" :class="{ completed, darkmode }" style="width: 0%;">
-        <div class="progress__current-value">
+        <div class="progress__current-value" :data-progress="keyres.currentValue || keyres.startValue">
           {{ keyres.currentValue || keyres.startValue }}
         </div>
       </div>

@@ -5,7 +5,7 @@
     <label class="form-field">
       <span class="form-label">{{ $t('period.name') }}</span>
       <div class="form-help">{{ $t('period.nameHelp') }}</div>
-      <input @input="dirty = true" type="text" v-model.trim="period.name" maxlength="12" />
+      <input @input="dirty = true" type="text" v-model.trim="period.name" maxlength="12" data-cy="period_name" />
     </label>
 
     <label class="form-field">
@@ -13,17 +13,19 @@
       <flat-pickr
         v-model="range"
         :config="flatPickerConfig"
-        class="form-control"
+        class="form-control cy-datepicker"
         name="date"
         placeholder="Velg start- og sluttdato"
       ></flat-pickr>
     </label>
 
     <hr />
-    <button class="btn" :disabled="!dirty" @click="update">
+    <button class="btn" :disabled="!dirty" @click="update" data-cy="save_period">
       {{ $t('btn.saveChanges') }}
     </button>
-    <button class="btn btn--danger" @click="deletePeriod">{{ $t('period.deletePeriod') }}</button>
+    <button class="btn btn--danger" data-cy="delete_period" @click="deletePeriod">
+      {{ $t('period.deletePeriod') }}
+    </button>
   </div>
 </template>
 

@@ -7,7 +7,14 @@
     <div class="section form-group">
       <label class="form-field">
         <span class="form-label">{{ $t('admin.product.name') }}</span>
-        <input ref="nameref" type="text" v-model="product.name" @input="updateSlug" maxlength="64" />
+        <input
+          ref="nameref"
+          type="text"
+          v-model="product.name"
+          @input="updateSlug"
+          maxlength="64"
+          data-cy="product_name_field"
+        />
       </label>
 
       <label
@@ -40,7 +47,13 @@
         <label>
           <span class="form-label">{{ $t('admin.product.missionStatement') }}</span>
           <span class="form-help" v-html="$t('admin.product.missionStatementHelp')"></span>
-          <textarea rows="4" v-model="product.missionStatement" @input="dirty = true" maxlength="320"></textarea>
+          <textarea
+            rows="4"
+            v-model="product.missionStatement"
+            @input="dirty = true"
+            maxlength="320"
+            data-cy="product_mission_statement_field"
+          ></textarea>
         </label>
       </div>
 
@@ -48,6 +61,7 @@
         <span class="form-label">{{ $t('general.team') }}</span>
         <span class="form-help">{{ $t('admin.product.teamHelp') }}</span>
         <v-select
+          data-cy="team_field"
           class="objective__select"
           label="displayName"
           multiple
@@ -64,7 +78,13 @@
       </div>
     </div>
     <div class="section">
-      <button class="btn" @click="saveObject" :disabled="!dirty" v-tooltip.auto="$t('btn.saveChanges')">
+      <button
+        class="btn"
+        @click="saveObject"
+        :disabled="!dirty"
+        v-tooltip.auto="$t('btn.saveChanges')"
+        data-cy="save_product_button"
+      >
         {{ $t('btn.save') }}
       </button>
       <button
@@ -72,6 +92,7 @@
         class="btn btn--borderless"
         @click="deleteObject"
         v-tooltip.auto="$t('tooltip.adminOnly')"
+        data-cy="delete_product_button"
       >
         {{ $t('admin.product.delete') }}
       </button>

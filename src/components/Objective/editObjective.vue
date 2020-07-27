@@ -4,7 +4,13 @@
     <hr />
     <label class="form-field" :class="{ 'form-field--error': $v.objective.name.$error }">
       <span class="form-label">{{ $t('objective.title') }}</span>
-      <input @input="dirty = true" type="text" v-model.trim="$v.objective.name.$model" maxlength="160" />
+      <input
+        @input="dirty = true"
+        type="text"
+        v-model.trim="$v.objective.name.$model"
+        maxlength="160"
+        data-cy="objective_name_field"
+      />
     </label>
     <div class="form-field--error" v-if="$v.objective.name.$error">{{ $t('validations.empty') }}</div>
     <div class="title title-3">
@@ -25,12 +31,17 @@
         v-model.trim="$v.objective.description.$model"
         rows="4"
         maxlength="320"
+        data-cy="objective_description_field"
       ></textarea>
     </label>
 
     <hr />
-    <button class="btn" :disabled="!dirty" @click="updateObj(objective)">{{ $t('btn.saveChanges') }}</button>
-    <button class="btn btn--danger" @click="deleteObj(objective)">{{ $t('objective.delete') }}</button>
+    <button class="btn" :disabled="!dirty" @click="updateObj(objective)" data-cy="save_objective_button">
+      {{ $t('btn.saveChanges') }}
+    </button>
+    <button class="btn btn--danger" @click="deleteObj(objective)" data-cy="delete_objective_button">
+      {{ $t('objective.delete') }}
+    </button>
 
     <p v-if="showInfo">{{ info }}</p>
   </div>

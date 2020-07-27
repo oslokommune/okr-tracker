@@ -2,9 +2,12 @@
 node_modules
 dist/
 /docs
+tests/e2e/videos/*
+tests/e2e/screenshots/*
 
 # local env files
 .env.*
+cypress.env.json
 
 # Log files
 npm-debug.log*
@@ -20,5 +23,11 @@ firebase-debug.log
 *.njsproj
 *.sln
 *.sw?
+*.log
 
 .firebase/
+.firebaserc
+/functions/.runtimeconfig.json
+
+# Custom users in test data
+/src/mock/users/customUsers.json

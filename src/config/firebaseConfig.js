@@ -5,6 +5,15 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/functions';
 
+import { emulators } from '../../firebase.json';
+
+const functionsEmulator = `http://localhost:${emulators.functions.port}`;
+const firestoreEmulator = {
+  host: `localhost:${emulators.firestore.port}`,
+  ssl: false,
+  experimentalForceLongPolling: true,
+};
+
 export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;
 
 const config = {
@@ -27,5 +36,13 @@ const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
 const functions = firebase.functions();
+
+if (process.env.NODE_ENV === 'development' || window.Cypress) {
+  db.settings(firestoreEmulator);
+  functions.useFunctionsEmulator(functionsEmulator);
+  console.log('Established connection to Firestore emulators');
+} else {
+  console.log('Established connection to Firestore server');
+}
 
 export { db, auth, loginProvider, storage, analytics, functions };

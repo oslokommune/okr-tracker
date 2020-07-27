@@ -7,7 +7,7 @@ const config = require('./config');
 
 const db = admin.firestore();
 
-exports.handleProgressionUpdates = function(level, type) {
+exports.handleProgressionUpdates = function (level, type) {
   // Determine which path (Firestore) should be listened on
   let docPath;
   if (type === 'progression') {
@@ -26,10 +26,16 @@ exports.handleProgressionUpdates = function(level, type) {
     .region(config.region)
     .firestore.document(docPath)
     .onWrite(async (change, context) => {
-      const { parentPath, objectivePath } = getPathsFromLevel(level, context);
+      const { parentPath, objectivePath, keyResultPath } = getPathsFromLevel(level, context);
 
-      await updateObjectiveProgression(objectivePath);
-      await updatePeriodProgression(parentPath, objectivePath);
+      if (type === 'progression' && keyResultPath) {
+        await updateCurrentValue(keyResultPath);
+      }
+
+      if (objectivePath) {
+        await updateObjectiveProgression(objectivePath);
+        await updatePeriodProgression(parentPath, objectivePath);
+      }
       return true;
     });
 };
@@ -69,22 +75,27 @@ async function updatePeriodProgression(parentPath, objectivePath) {
  * @return {Object}
  */
 function getPathsFromLevel(level, context) {
-  const { orgId, productId, departmentId, objectiveId } = context.params;
+  const { orgId, productId, departmentId, objectiveId, keyresId } = context.params;
   let parentPath;
   let objectivePath;
+  let keyResultPath;
+
   if (level === 'organization') {
     parentPath = `orgs/${orgId}`;
     objectivePath = `${parentPath}/objectives/${objectiveId}`;
+    keyResultPath = `${objectivePath}/keyResults/${keyresId}`;
   } else if (level === 'department') {
     parentPath = `orgs/${orgId}/departments/${departmentId}`;
     objectivePath = `${parentPath}/objectives/${objectiveId}`;
+    keyResultPath = `${objectivePath}/keyResults/${keyresId}`;
   } else if (level === 'product') {
     parentPath = `orgs/${orgId}/departments/${departmentId}/products/${productId}`;
     objectivePath = `${parentPath}/objectives/${objectiveId}`;
+    keyResultPath = `${objectivePath}/keyResults/${keyresId}`;
   } else {
     return;
   }
-  return { parentPath, objectivePath };
+  return { parentPath, objectivePath, keyResultPath };
 }
 
 /**
@@ -138,4 +149,28 @@ function getKeyresPath(level) {
   if (level === 'product') {
     return paths.keyResultsPath;
   }
+}
+
+async function updateCurrentValue(keyResultPath) {
+  const keyResRef = db.doc(keyResultPath);
+  const progressRef = keyResRef.collection('progress');
+
+  const { currentValue, startValue } = await keyResRef.get().then(snapshot => {
+    if (!snapshot.exists) return {};
+    return snapshot.data();
+  });
+  const oldValue = currentValue || startValue || 0;
+
+  const { value } = await progressRef
+    .orderBy('timestamp', 'desc')
+    .limit(1)
+    .get()
+    .then(snapshot => {
+      if (!snapshot.docs || !snapshot.docs.length) return {};
+      return snapshot.docs[0].data();
+    });
+
+  if (oldValue === value) return;
+
+  keyResRef.update({ currentValue: value, edited: new Date() });
 }

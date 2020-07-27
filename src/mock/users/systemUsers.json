@@ -1,0 +1,13 @@
+[
+  {
+    "id": "epost@internet.com",
+    "displayName": "Dashboard",
+    "admin": false
+  },
+  {
+    "id": "testadmin@internet.com",
+    "admin": true,
+    "slug": "test-admin",
+    "displayName": "Test Admin"
+  }
+]

@@ -43,7 +43,12 @@
             {{ dept.name }}
             <i v-if="dept.archived" class="fa fas fa-history"></i>
           </div>
-          <div v-if="selectedOrgId" class="miller__col__item miller__col__add" @click="addDepartment">
+          <div
+            v-if="selectedOrgId"
+            class="miller__col__item miller__col__add"
+            data-cy="admin-addDepartment"
+            @click="addDepartment"
+          >
             {{ $t('admin.objects.add') }}
           </div>
         </div>
@@ -61,7 +66,12 @@
 
             <i v-if="product.archived" class="fa fas fa-history"></i>
           </div>
-          <div v-if="selectedDeptId" class="miller__col__item miller__col__add" @click="addProduct">
+          <div
+            v-if="selectedDeptId"
+            data-cy="admin-addProduct"
+            class="miller__col__item miller__col__add"
+            @click="addProduct"
+          >
             {{ $t('admin.objects.add') }}
           </div>
         </div>

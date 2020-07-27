@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from './store';
 import Home from '@/views/Home/Home.vue';
 import TheLogin from '@/views/Login.vue';
 import TheHelp from '@/views/Help.vue';
@@ -17,6 +16,7 @@ import EditOrganization from '@/views/Organization/EditOrganization.vue';
 import OrganizationHome from '@/views/Organization/OrganizationHome.vue';
 
 import { auth } from '@/config/firebaseConfig';
+import store from './store';
 
 const AdminHome = () => import(/* webpackChunkName: "group-admin" */ '@/views/Admin/AdminHome.vue');
 const AdminUsers = () => import(/* webpackChunkName: "group-admin" */ '@/views/Admin/AdminUsers.vue');

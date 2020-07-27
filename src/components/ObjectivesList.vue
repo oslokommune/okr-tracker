@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section" data-cy="objectives_list">
     <h2 class="title title-2">{{ $tc('objective.objectiveForPeriod', objectives.length) }}</h2>
 
     <div class="list">

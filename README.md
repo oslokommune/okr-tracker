@@ -12,6 +12,30 @@ To create a new instance of the OKR-tracker, please read the [Setting up Firebas
 
 To set up your local development environment, build and deploy for an existing Firebase backend, please see our guide for [Connecting to an existing Firebase project](/documentation/connecting-to-existing-firebase.md).
 
+## Run locally
+
+Add your own user to the mock data. The mock data is located in `src/mock`. See the [guide](/src/mock/README.md) changing the data.
+
+Install packages:
+
+```
+§ npm install
+```
+
+Run local development server, Firebase emulators and inject mock data to local Firestore:
+
+```
+§ npm run local
+```
+
 ## Contributing
 
-Please see our [Guidelines](/documentation/contributing.md).
+Please see our [Contributing guidelines](/documentation/contributing.md).
+
+---
+
+Retreive Firebase Functions configuration for running emulated functions locally:
+
+```
+§ firebase functions:config:get > .runtimeconfig.json
+```

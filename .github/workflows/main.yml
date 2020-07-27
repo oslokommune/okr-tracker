@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,22 +22,43 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
-    - name: Use Node.js {{matrix.node-version}}
-      uses: actions/setup-node@v1.4.2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install
-      run: |
-        npm install
-      env:
-        CI: true
-    - name: npm lint
-      run: |
-        npm run lint
-        npm run lint:style
-      env:
-        CI: true
+      # Runs a single command using the runners shell
+      - name: Use Node.js {{matrix.node-version}}
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: |
+          npm install
+        env:
+          CI: true
+      - name: npm lint
+        run: |
+          npm run lint
+          npm run lint:style
+        env:
+          CI: true
+      - name: End-to-end tests
+        run: |
+          cd ./functions && npm install && cd ..
+          npm run test:e2e:headless
+        env:
+          BACKUP_STORAGE_BUCKET: ${{ secrets.BACKUP_STORAGE_BUCKET }}
+          SHEETS_EMAIL: ${{ secrets.SHEETS_EMAIL }}
+          SHEETS_KEY: ${{ secrets.SHEETS_KEY }}
+          VUE_APP_DASHBOARD_USER: ${{ secrets.VUE_APP_DASHBOARD_USER }}
+          VUE_APP_TESTADMIN_USER: ${{ secrets.VUE_APP_TESTADMIN_USER }}
+          VUE_APP_TESTADMIN_PASSWORD: ${{ secrets.VUE_APP_TESTADMIN_PASSWORD }}
+          VUE_APP_TESTUSER_USER: ${{ secrets.VUE_APP_TESTUSER_USER }}
+          VUE_APP_TESTUSER_PASSWORD: ${{ secrets.VUE_APP_TESTUSER_PASSWORD }}
+          VUE_APP_API_KEY: ${{ secrets.VUE_APP_API_KEY }}
+          VUE_APP_AUTH_DOMAIN: ${{ secrets.VUE_APP_AUTH_DOMAIN }}
+          VUE_APP_DATABASE_URL: ${{ secrets.VUE_APP_DATABASE_URL }}
+          VUE_APP_PROJECT_ID: ${{ secrets.VUE_APP_PROJECT_ID }}
+          VUE_APP_STORAGE_BUCKET: ${{ secrets.VUE_APP_STORAGE_BUCKET }}
+          VUE_APP_MESSAGING_SENDER_ID: ${{ secrets.VUE_APP_MESSAGING_SENDER_ID }}
+          VUE_APP_APP_ID: ${{ secrets.VUE_APP_APP_ID }}
+          VUE_APP_MEASUREMENT_ID: ${{ secrets.VUE_APP_MEASUREMENT_ID }}

@@ -63,6 +63,7 @@
                       step="any"
                       v-model="value"
                       v-tooltip="{ content: $t('tooltip.keyresValue'), trigger: `hover`, delay: 100 }"
+                      data-cy="progress_value_field"
                     />
                   </label>
                   <label class="form-field">
@@ -82,7 +83,7 @@
                         name="date"
                         :placeholder="$t('keyResultPage.flatPickrPlaceholder')"
                       ></flat-pickr>
-                      <button class="btn btn--borderless" @click.prevent="date = new Date()">
+                      <button class="btn btn--borderless" @click.prevent="date = new Date()" data-cy="today_button">
                         {{ $t('keyResultPage.add.today') }}
                       </button>
                     </div>
@@ -93,6 +94,7 @@
                     class="btn"
                     v-tooltip.right="{ content: $t('tooltip.saveKeyresValue'), delay: 400 }"
                     :disabled="!this.date"
+                    data-cy="add_progress_button"
                   >
                     {{ $t('keyResultPage.save') }}
                   </button>
@@ -198,6 +200,7 @@ import keyResHandler from '@/db/keyresultHandler';
 import 'flatpickr/dist/flatpickr.css';
 import { functions } from '@/config/firebaseConfig';
 import AddProgressComment from '@/components/AddProgressComment.vue';
+import { show as showToast } from '../../util/toasts';
 
 marked.setOptions({
   smartypants: true,
@@ -380,10 +383,14 @@ export default {
     async triggerScheduledFunction() {
       this.loading = true;
 
-      const myCall = await functions.httpsCallable('triggerScheduledFunction');
-      await myCall(this.key_result.ref.path).catch(err => {
-        throw new Error(err);
-      });
+      try {
+        const myCall = await functions.httpsCallable('triggerScheduledFunction');
+        await myCall(this.key_result.ref.path);
+
+        showToast(this.$t('general.success'));
+      } catch (error) {
+        this.$errorHandler(error);
+      }
 
       this.loading = false;
     },

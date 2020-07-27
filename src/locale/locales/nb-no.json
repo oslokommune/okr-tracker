@@ -12,7 +12,8 @@
     "help": "Hjelp",
     "objAndKeyres": "Mål og nøkkelresultater",
     "admin": "Admin",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "success": "Suksess!"
   },
   "btn": {
     "close": "Lukk",
@@ -67,7 +68,8 @@
       "keyResult": "Slettet nøkkelresultat"
     },
     "action": {
-      "regret": "Angre"
+      "regret": "Angre",
+      "close": "Lukk"
     },
     "removedAdmin": "Fjernet admintilgang for {user}",
     "error": "Noe gikk galt!",
@@ -382,5 +384,10 @@
     "products": "Mine produkter",
     "audit": "Audit",
     "noActivity": "Ingen handlinger fra brukeren."
+  },
+  "callout": {
+    "archivedRestore": {
+      "message": "Dette objektet er arkivert."
+    }
   }
 }
