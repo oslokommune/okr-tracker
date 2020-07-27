@@ -34,8 +34,7 @@ jobs:
             !~/cache/exclude
             **/node_modules
             **/functions/node_modules
-            ~/.cache/firebase/emulators/
-            ~/.cache/Cypress
+            ~/.cache
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
           restore-keys: |
             ${{ runner.os }}-
