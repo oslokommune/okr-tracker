@@ -8,7 +8,7 @@ const db = admin.firestore();
  * @param {String} path - path to objective
  * @returns {Promise} - Resolves to a list of decimal numbers
  */
-exports.getKeyResultsProgressions = async function(path) {
+exports.getKeyResultsProgressions = async function (path) {
   const progression = await db
     .doc(path)
     .collection('keyResults')
