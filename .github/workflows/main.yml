@@ -36,6 +36,8 @@ jobs:
             **/functions/node_modules
             ~/.cache/firebase/emulators/
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
       # Runs a single command using the runners shell
       - name: Use Node.js {{matrix.node-version}}
