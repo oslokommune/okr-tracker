@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios'); // eslint-disable-line
@@ -14,6 +15,7 @@ const PROJECT_ID = (() => {
     }
     return process.env.VUE_APP_APP_ID;
   } catch {
+    console.log('error is in projectID');
     return process.env.VUE_APP_APP_ID;
   }
 })();
@@ -34,6 +36,7 @@ async function run() {
       const customUsersData = require('./users/customUsers.json'); // eslint-disable-line
       resolve(customUsersData);
     } catch {
+      console.log('error is in customUsers');
       resolve([]);
     }
   });
@@ -41,6 +44,7 @@ async function run() {
   const users = [...systemUsers, ...customUsers];
 
   const rawData = dataDir(path.join(__dirname, 'orgs'));
+  console.log('rawData: ', rawData);
   const orgs = Object.values(rawData).map(parseOrgData);
 
   callCloudFunction({ users, orgs });
@@ -107,6 +111,7 @@ function callCloudFunction(data) {
     url,
     data,
   }).catch(err => {
+    console.log(err);
     throw new Error(err);
   });
 }
