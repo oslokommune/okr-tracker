@@ -42,7 +42,7 @@ export default {
     orgs: {
       immediate: true,
       handler() {
-        this.$bind('departments', db.collection('departments'), { maxRefDepth: 0 });
+        this.$bind('departments', db.collection('departments'), { maxRefDepth: 1 });
       },
     },
   },
@@ -51,8 +51,8 @@ export default {
     async update({ id, ...data }) {
       try {
         await new Dept(id).update(data);
-      } catch {
-        console.error('err');
+      } catch (error) {
+        console.error('err', error);
       }
     },
 

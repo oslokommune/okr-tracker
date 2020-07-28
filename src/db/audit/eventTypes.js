@@ -1,8 +1,8 @@
-export const UPDATE_ORGANISATION = Symbol('Update organisation');
-export const ARCHIVE_ORGANISATION = Symbol('Archive organisation');
-export const RESTORE_ORGANISATION = Symbol('Restore organisation');
-export const CREATE_ORGANISATION = Symbol('Create organisation');
-export const REMOVE_ORGANISATION = Symbol('Remove organisation');
+export const UPDATE_ORGANIZATION = Symbol('Update organization');
+export const ARCHIVE_ORGANIZATION = Symbol('Archive organization');
+export const RESTORE_ORGANIZATION = Symbol('Restore organization');
+export const CREATE_ORGANIZATION = Symbol('Create organization');
+export const REMOVE_ORGANIZATION = Symbol('Remove organization');
 
 export const UPDATE_DEPARTMENT = Symbol('Update department');
 export const ARCHIVE_DEPARTMENT = Symbol('Archive department');
