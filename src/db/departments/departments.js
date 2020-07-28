@@ -2,22 +2,23 @@ import { db } from '@/config/firebaseConfig';
 import slugify from '@/util/slugify';
 
 import logEvent from '../audit';
-import { ARCHIVE_ORGANIZATION, RESTORE_ORGANIZATION, UPDATE_ORGANIZATION } from '../audit/eventTypes';
+import { ARCHIVE_DEPARTMENT, RESTORE_DEPARTMENT, UPDATE_DEPARTMENT } from '../audit/eventTypes';
 
 export default class Organisation {
   constructor(id) {
     if (!id) throw new Error('Invalid data');
-    this.ref = db.collection('organizations').doc(id);
+    this.ref = db.collection('departments').doc(id);
   }
 
   async update(data) {
     if (!data) throw new TypeError('Missing data');
 
+    delete data.organization; // Do not update organization reference
     data.slug = slugify(data.name);
 
     try {
       await this.ref.update(data);
-      logEvent(UPDATE_ORGANIZATION, data);
+      logEvent(UPDATE_DEPARTMENT, data);
     } catch (error) {
       this.handleError(error);
       return false;
@@ -29,7 +30,7 @@ export default class Organisation {
   async archive() {
     try {
       await this.ref.update({ archived: true });
-      logEvent(ARCHIVE_ORGANIZATION, this);
+      logEvent(ARCHIVE_DEPARTMENT, this);
     } catch (error) {
       this.handleError(error);
       return false;
@@ -41,7 +42,7 @@ export default class Organisation {
   async restore() {
     try {
       await this.ref.update({ archived: false });
-      logEvent(RESTORE_ORGANIZATION, this);
+      logEvent(RESTORE_DEPARTMENT, this);
     } catch (error) {
       this.handleError(error);
       return false;
