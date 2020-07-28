@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "migrate-users": "node ./src/mock/authUsers NODE_ENV=development",
+    "transform-data": "node ./src/migrate",
     "test:e2e": "vue-cli-service test:e2e --mode e2e",
     "test:e2e:headless": " firebase emulators:exec --project origo-okr-tracker 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'",
     "lint": "vue-cli-service lint",

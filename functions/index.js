@@ -52,3 +52,8 @@ exports.triggerScheduledFunction = triggerScheduledFunction();
  * locally. Will not be used in production.
  */
 exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');
+
+/**
+ * Transforms the old data model to a new flatter one
+ */
+exports.transformDataModel = require('./transformDataModel');
