@@ -1,7 +1,12 @@
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
+
+const config = require('./config');
 
 // Initialize the app to get everything started
 admin.initializeApp();
+
+const db = admin.firestore();
 
 /*
 |----------------------------------------------------------------------------------
@@ -57,3 +62,54 @@ exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');
  * Transforms the old data model to a new flatter one
  */
 exports.transformDataModel = require('./transformDataModel');
+
+function getDiff(change, keys) {
+  const diff = {};
+  const before = change.before.data();
+  const after = change.after.data();
+
+  keys.forEach(key => {
+    if (before[key] !== after[key]) {
+      diff[key] = {
+        before: before[key],
+        after: after[key],
+      };
+    }
+  });
+
+  return diff;
+}
+
+exports.updateProgression = functions
+  .region(config.region)
+  .firestore.document('keyResults/{keyResultId}/progress/{progressId}')
+  .onWrite(async (change, context) => {
+    const { keyResultId } = context.params;
+    const { value, createdBy: user } = change.after.data();
+
+    db.collection('audit').add({
+      event: 'addKeyResProgress',
+      created: new Date(),
+      user,
+      value,
+      keyResult: db.collection('keyResults').doc(keyResultId),
+    });
+  });
+
+exports.updateDepartment = functions
+  .region(config.region)
+  .firestore.document('departments/{departmentId}')
+  .onWrite(async (change, context) => {
+    const diff = getDiff(change, ['name', 'archived', 'missionStatement', 'slug']);
+
+    const { departmentId } = context.params;
+    const { updatedBy: user } = change.after.data();
+
+    db.collection('audit').add({
+      event: 'updateDepartment',
+      created: new Date(),
+      department: db.collection('departments').doc(departmentId),
+      user,
+      ...diff,
+    });
+  });

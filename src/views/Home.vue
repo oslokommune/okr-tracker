@@ -1,18 +1,19 @@
 <template>
   <div>
-    <pre>{{ user.email }}</pre>
+    <pre v-if="user">{{ user.email }}</pre>
 
     <hr />
 
     <ul v-if="user">
-      <li v-for="org in departments" :key="org.id">
-        <pre>{{ org }}</pre>
+      <li v-for="item in products" :key="item.id">
+        <pre>{{ item }}</pre>
 
-        <input v-model="org.name" />
+        <input v-model="item.name" />
 
-        <button @click="update(org)">Update</button>
-        <button v-if="!org.archived" @click="archive(org)">Archive</button>
-        <button v-if="org.archived" @click="restore(org)">Restore</button>
+        <button @click="update(item)">Update</button>
+        <button v-if="!item.archived" @click="archive(item)">Archive</button>
+        <button v-if="item.archived" @click="restore(item)">Restore</button>
+        <button v-if="item.archived" @click="del(item)">Delete</button>
       </li>
 
       <hr />
@@ -25,11 +26,11 @@
 
 <script>
 import { auth, loginProvider, db } from '@/config/firebaseConfig';
-import Dept from '@/db/departments';
+import Product from '@/db/Product';
 
 export default {
   data: () => ({
-    departments: [],
+    products: [],
   }),
 
   computed: {
@@ -38,30 +39,29 @@ export default {
     },
   },
 
-  watch: {
-    orgs: {
-      immediate: true,
-      handler() {
-        this.$bind('departments', db.collection('departments'), { maxRefDepth: 1 });
-      },
-    },
+  created() {
+    this.$bind('products', db.collection('products'), { maxRefDepth: 0 });
   },
 
   methods: {
     async update({ id, ...data }) {
       try {
-        await new Dept(id).update(data);
+        await new Product(id).update(data);
       } catch (error) {
         console.error('err', error);
       }
     },
 
     async archive({ id }) {
-      await new Dept(id).archive();
+      await new Product(id).archive();
     },
 
     async restore({ id }) {
-      await new Dept(id).restore();
+      await new Product(id).restore();
+    },
+
+    async del({ id }) {
+      await new Product(id).delete();
     },
 
     logout() {
