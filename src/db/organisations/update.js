@@ -12,7 +12,7 @@ export default async function update(data) {
   data.slug = slugify(data.name);
 
   try {
-    await this.ref.updatde(data);
+    await this.ref.update(data);
     logEvent(UPDATE_ORGANISATION, data);
   } catch (error) {
     handleError(error);
