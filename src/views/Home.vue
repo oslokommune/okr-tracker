@@ -25,7 +25,7 @@
 
 <script>
 import { auth, loginProvider, db } from '@/config/firebaseConfig';
-import Org from '@/db/organisations';
+import Org from '@/db/organizations';
 
 export default {
   data: () => ({
