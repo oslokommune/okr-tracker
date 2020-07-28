@@ -7,14 +7,12 @@ import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
+import { firestorePlugin } from 'vuefire';
 
-import { errorHandler, logHandler } from '@/util/utils';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
-
-import handleUserAuthStateChange from '@/util/authChangeHelper';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
@@ -36,10 +34,7 @@ Vue.use(VueScrollTo);
 Vue.use(ImageUploader);
 Vue.use(VTooltip);
 Vue.use(VueMeta);
-
-// Bind instance properties
-Vue.prototype.$errorHandler = errorHandler;
-Vue.prototype.$logHandler = logHandler;
+Vue.use(firestorePlugin);
 
 // Global components
 Vue.component('v-select', VueSelect);
@@ -49,7 +44,7 @@ Vue.config.productionTip = false;
 // handle page reloads
 let app;
 fb.auth.onAuthStateChanged(user => {
-  handleUserAuthStateChange.call(app, user);
+  store.commit('SET_USER', user);
 
   if (!app) {
     app = new Vue({

@@ -1,19 +1,13 @@
 <template>
   <div class="app">
     <main class="main">
-      <the-header></the-header>
       <router-view class="home"></router-view>
     </main>
-    <transition>
-      <Newsfeed v-if="user" v-show="showNewsfeed" class="newsfeed" @close="SET_SHOW_NEWSFEED(false)"></Newsfeed>
-    </transition>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import TheHeader from '@/components/TheHeader.vue';
-import Newsfeed from '@/views/Home/components/Newsfeed.vue';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -31,10 +25,7 @@ export default {
     ...mapMutations(['SET_SHOW_NEWSFEED']),
   },
 
-  components: {
-    TheHeader,
-    Newsfeed,
-  },
+  components: {},
 };
 
 // Using a class on body to determine how to style focus states

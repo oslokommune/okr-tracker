@@ -45,16 +45,12 @@
         <hr />
       </div>
     </div>
-
-    <the-spinner v-if="pending"></the-spinner>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
-import TheSpinner from '@/components/TheSpinner.vue';
-import Audit from '@/db/audit';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -70,10 +66,6 @@ export default {
     };
   },
 
-  components: {
-    TheSpinner,
-  },
-
   computed: {
     ...mapState(['user']),
   },
@@ -84,7 +76,6 @@ export default {
       auth
         .signInWithPopup(loginProvider)
         .then(response => {
-          Audit.login(response.user.email);
           this.$router.push('/');
         })
         .catch(err => {
