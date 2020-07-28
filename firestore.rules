@@ -17,12 +17,56 @@ service cloud.firestore {
       allow write: if isSignedIn() && isAdmin();
     }
     
-    match /orgs/{document} {
+    match /organizations/{document} {
       allow read: if isSignedIn();
       allow create: if isSignedIn() && isAdmin();
       allow update: if isSignedIn() && isAdmin();
       allow delete: if isSignedIn() && isAdmin();
     }
+    
+    match /departments/{document} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
+    match /products/{document} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
+    match /keyResults/{document} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
+    match /objectives/{document} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
+    match /periods/{document} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
+    match /kpis/{document} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
+    
+    
     
     // Allow signed in users to read all data
     match /{document=**} {

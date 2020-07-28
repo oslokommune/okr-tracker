@@ -5,7 +5,7 @@
     <hr />
 
     <ul v-if="user">
-      <li v-for="org in orgs" :key="org.id">
+      <li v-for="org in departments" :key="org.id">
         <pre>{{ org }}</pre>
 
         <input v-model="org.name" />
@@ -25,11 +25,11 @@
 
 <script>
 import { auth, loginProvider, db } from '@/config/firebaseConfig';
-import Org from '@/db/organisations';
+import Dept from '@/db/departments';
 
 export default {
   data: () => ({
-    orgs: [],
+    departments: [],
   }),
 
   computed: {
@@ -38,25 +38,30 @@ export default {
     },
   },
 
-  firestore: {
-    orgs: db.collection('orgs'),
+  watch: {
+    orgs: {
+      immediate: true,
+      handler() {
+        this.$bind('departments', db.collection('departments'), { maxRefDepth: 0 });
+      },
+    },
   },
 
   methods: {
     async update({ id, ...data }) {
       try {
-        await new Org(id).update(data);
+        await new Dept(id).update(data);
       } catch {
         console.error('err');
       }
     },
 
     async archive({ id }) {
-      await new Org(id).archive();
+      await new Dept(id).archive();
     },
 
     async restore({ id }) {
-      await new Org(id).restore();
+      await new Dept(id).restore();
     },
 
     logout() {
