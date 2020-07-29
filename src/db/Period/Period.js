@@ -4,30 +4,26 @@ import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
 import Objective from '../Objective';
 
 export default class Period extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+  static collectionRef = db.collection('periods');
 
-    this.collectionRef = db.collection('periods');
-    this.ref = this.collectionRef.doc(id);
-  }
-
-  static create(data) {
-    if (!data.name) throw new Error('Missing name');
-    if (!data.startDate) throw new Error('Missing start date');
-    if (!data.endDate) throw new Error('Missing end date');
-
-    if (typeof data.name !== 'string') throw new TypeError('Invalid period name');
-    if (typeof data.startDate.getMonth !== 'function') throw new TypeError('Invalid start date');
-    if (typeof data.endDate.getMonth !== 'function') throw new TypeError('Invalid end date');
-
-    super.create(data);
-  }
-
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
-
-    super.update(data);
-  }
+  static props = {
+    name: {
+      type: 'string',
+      required: true,
+    },
+    parent: {
+      type: 'object',
+      required: true,
+    },
+    startDate: {
+      type: 'date',
+      required: true,
+    },
+    endDate: {
+      type: 'date',
+      required: true,
+    },
+  };
 
   async delete() {
     // Delete affected key results

@@ -3,24 +3,34 @@ import { db } from '@/config/firebaseConfig';
 import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
 
 export default class KeyResult extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+  static collectionRef = db.collection('keyResults');
 
-    this.collectionRef = db.collection('keyResults');
-    this.ref = this.collectionRef.doc(id);
-  }
-
-  static create(data) {
-    if (!data.name) throw new Error('Missing name');
-    if (!data.icon) throw new Error('Missing icon');
-    super.create(data);
-  }
-
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
-
-    super.update(data);
-  }
+  static props = {
+    name: {
+      type: 'string',
+      required: true,
+    },
+    objective: {
+      type: 'object',
+      required: true,
+    },
+    parent: {
+      type: 'object',
+      required: true,
+    },
+    startValue: {
+      type: 'number',
+      required: true,
+    },
+    targetValue: {
+      type: 'number',
+      required: true,
+    },
+    unit: {
+      type: 'string',
+      required: true,
+    },
+  };
 
   async delete() {
     // Delete affected progress

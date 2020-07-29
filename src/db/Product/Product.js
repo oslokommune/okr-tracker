@@ -5,26 +5,30 @@ import Period from '../Period';
 import Kpi from '../Kpi';
 
 export default class Product extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+  static collectionRef = db.collection('products');
 
-    this.collectionRef = db.collection('products');
-    this.ref = this.collectionRef.doc(id);
-  }
+  static props = {
+    name: {
+      type: 'string',
+      required: true,
+    },
+    organization: {
+      type: 'object',
+      required: true,
+    },
+    department: {
+      type: 'object',
+      required: true,
+    },
+  };
 
   static create(data) {
-    if (!data.name) throw new Error('Name must be provided');
-
     data.slug = slugify(data.name);
-
     super.create(data);
   }
 
   async update(data) {
-    if (!data) throw new TypeError('Missing data');
-
     data.slug = slugify(data.name);
-
     super.update(data);
   }
 

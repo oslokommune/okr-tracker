@@ -4,24 +4,22 @@ import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
 import KeyResult from '../KeyResult';
 
 export default class Objective extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+  static collectionRef = db.collection('objectives');
 
-    this.collectionRef = db.collection('objectives');
-    this.ref = this.collectionRef.doc(id);
-  }
-
-  static create(data) {
-    if (!data.name) throw new Error('Missing name');
-    if (!data.icon) throw new Error('Missing icon');
-    super.create(data);
-  }
-
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
-
-    super.update(data);
-  }
+  static props = {
+    name: {
+      type: 'string',
+      required: true,
+    },
+    parent: {
+      type: 'object',
+      required: true,
+    },
+    period: {
+      type: 'object',
+      required: true,
+    },
+  };
 
   async delete() {
     // Delete affected key results

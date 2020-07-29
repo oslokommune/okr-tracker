@@ -5,28 +5,27 @@ import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
 import Period from '../Period';
 import Product from '../Product';
 
-export default class Organisation extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+export default class Department extends CommonDatabaseFunctions {
+  static collectionRef = db.collection('departments');
 
-    this.collectionRef = db.collection('departments');
-    this.ref = this.collectionRef.doc(id);
-  }
+  static props = {
+    name: {
+      type: 'string',
+      required: true,
+    },
+    organization: {
+      type: 'object',
+      required: true,
+    },
+  };
 
   static create(data) {
-    if (!data.name) throw new Error('Name must be set');
-    if (!data.organization) throw new Error('Organization must be set');
-
     data.slug = slugify(data.name);
-
     super.create(data);
   }
 
   async update(data) {
-    if (!data) throw new TypeError('Missing data');
-
     data.slug = slugify(data.name);
-
     super.update(data);
   }
 
