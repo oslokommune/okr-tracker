@@ -16,6 +16,8 @@
         <button v-if="item.archived" @click="del(item)">Delete</button>
       </li>
 
+      <button @click="create">Create new</button>
+
       <hr />
       <button @click="logout">Logout</button>
     </ul>
@@ -50,6 +52,12 @@ export default {
       } catch (error) {
         console.error('err', error);
       }
+    },
+
+    async create() {
+      await new Product({
+        name: 'Hello Test',
+      });
     },
 
     async archive({ id }) {
