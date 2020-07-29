@@ -1,6 +1,5 @@
 import { db, auth } from '@/config/firebaseConfig';
 import slugify from '@/util/slugify';
-import logEvent from '../audit';
 
 export default class {
   constructor(idOrObject, collectionRef) {
@@ -55,7 +54,6 @@ export default class {
       const data = { archived: true };
       this.setUpdatedMetadata(data);
       await this.ref.update(data);
-      logEvent(this.archiveEventSymbol, this);
     } catch (error) {
       this.handleError(error);
       return false;
@@ -69,7 +67,6 @@ export default class {
       const data = { archived: false };
       this.setUpdatedMetadata(data);
       await this.ref.update(data);
-      logEvent(this.restoreEventSymbol, this);
     } catch (error) {
       this.handleError(error);
       return false;
@@ -85,8 +82,6 @@ export default class {
       await this.ref.update(data);
 
       await this.ref.delete();
-
-      logEvent(this.deleteEventSymbol, this);
     } catch (error) {
       this.handleError(error);
       return false;

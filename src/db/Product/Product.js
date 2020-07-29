@@ -1,8 +1,6 @@
 import { db } from '@/config/firebaseConfig';
 
 import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
-import logEvent from '../audit';
-import { ARCHIVE_PRODUCT, RESTORE_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from '../audit/eventTypes';
 
 export default class Product extends CommonDatabaseFunctions {
   constructor(id) {
@@ -13,11 +11,6 @@ export default class Product extends CommonDatabaseFunctions {
     if (typeof id === 'string') {
       this.ref = db.collection('products').doc(id);
     }
-
-    this.updateEventSymbol = UPDATE_PRODUCT;
-    this.archiveEventSymbol = ARCHIVE_PRODUCT;
-    this.restoreEventSymbol = RESTORE_PRODUCT;
-    this.deleteEventSymbol = DELETE_PRODUCT;
   }
 
   async update(data) {
@@ -31,7 +24,6 @@ export default class Product extends CommonDatabaseFunctions {
 
     try {
       await this.ref.update(data);
-      logEvent(this.updateEventSymbol, data);
     } catch (error) {
       this.handleError(error);
       return false;

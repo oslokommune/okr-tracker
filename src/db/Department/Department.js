@@ -1,7 +1,5 @@
 import { db } from '@/config/firebaseConfig';
 
-import logEvent from '../audit';
-import { ARCHIVE_DEPARTMENT, RESTORE_DEPARTMENT, UPDATE_DEPARTMENT } from '../audit/eventTypes';
 import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
 
 export default class Organisation extends CommonDatabaseFunctions {
@@ -9,10 +7,6 @@ export default class Organisation extends CommonDatabaseFunctions {
     super(id, db.collection('departments'));
 
     this.ref = db.collection('departments').doc(id);
-
-    this.updateEventSymbol = UPDATE_DEPARTMENT;
-    this.archiveEventSymbol = ARCHIVE_DEPARTMENT;
-    this.restoreEventSymbol = RESTORE_DEPARTMENT;
   }
 
   async update(data) {
@@ -24,7 +18,6 @@ export default class Organisation extends CommonDatabaseFunctions {
 
     try {
       await this.ref.update(data);
-      logEvent(this.updateEventSymbol, data);
     } catch (error) {
       this.handleError(error);
       return false;
