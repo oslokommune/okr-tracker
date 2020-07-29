@@ -6,7 +6,7 @@ import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
 
 export default class Organisation extends CommonDatabaseFunctions {
   constructor(id) {
-    super(id);
+    super(id, db.collection('departments'));
 
     this.ref = db.collection('departments').doc(id);
 

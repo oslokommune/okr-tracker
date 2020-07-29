@@ -6,7 +6,7 @@ import { ARCHIVE_ORGANIZATION, RESTORE_ORGANIZATION, UPDATE_ORGANIZATION } from 
 
 export default class Organisation extends CommonDatabaseFunctions {
   constructor(id) {
-    super(id);
+    super(id, db.collection('organizations'));
 
     this.ref = db.collection('organizations').doc(id);
 

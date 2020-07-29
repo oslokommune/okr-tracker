@@ -6,9 +6,13 @@ import { ARCHIVE_PRODUCT, RESTORE_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from
 
 export default class Product extends CommonDatabaseFunctions {
   constructor(id) {
-    super(id);
+    super(id, db.collection('products'));
 
-    this.ref = db.collection('products').doc(id);
+    this.collectionRef = db.collection('products');
+
+    if (typeof id === 'string') {
+      this.ref = db.collection('products').doc(id);
+    }
 
     this.updateEventSymbol = UPDATE_PRODUCT;
     this.archiveEventSymbol = ARCHIVE_PRODUCT;
