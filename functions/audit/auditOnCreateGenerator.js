@@ -21,11 +21,9 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
       if (documentData.createdBy) {
         auditData.user = documentData.createdBy;
       }
-
       if (documentData.name) {
         auditData.name = documentData.name;
       }
-
       if (documentData.department) {
         auditData.department = documentData.department;
       }

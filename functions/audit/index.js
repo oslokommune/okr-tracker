@@ -7,6 +7,9 @@
  * * documentType - For namespacing event names
  */
 
+// TODO: Audit for key result progress
+// TODO: Audit for KPIs
+
 const admin = require('firebase-admin');
 const { auditOnUpdateGenerator } = require('./auditOnUpdateGenerator');
 const { auditOnCreateGenerator } = require('./auditOnCreateGenerator');

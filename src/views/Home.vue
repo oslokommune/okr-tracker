@@ -5,7 +5,7 @@
     <hr />
 
     <ul v-if="user">
-      <li v-for="item in products" :key="item.id">
+      <li v-for="item in filteredItems" :key="item.id">
         <pre>{{ item }}</pre>
 
         <input v-model="item.name" />
@@ -28,48 +28,53 @@
 
 <script>
 import { auth, loginProvider, db } from '@/config/firebaseConfig';
-import Product from '@/db/Product';
+import Objective from '@/db/Objective';
 
 export default {
   data: () => ({
-    products: [],
+    objectives: [],
   }),
 
   computed: {
     user() {
       return this.$store.state.user;
     },
+
+    filteredItems() {
+      return this.objectives;
+    },
   },
 
   created() {
-    this.$bind('products', db.collection('products'), { maxRefDepth: 0 });
+    this.$bind('objectives', db.collection('objectives'), { maxRefDepth: 0 });
   },
 
   methods: {
     async update({ id, ...data }) {
       try {
-        await new Product(id).update(data);
+        await new Objective(id).update(data);
       } catch (error) {
         console.error('err', error);
       }
     },
 
     async create() {
-      await new Product({
+      await Objective.create({
         name: 'Hello Test',
+        organization: 'organizations/testorg',
       });
     },
 
     async archive({ id }) {
-      await new Product(id).archive();
+      await new Objective(id).archive();
     },
 
     async restore({ id }) {
-      await new Product(id).restore();
+      await new Objective(id).restore();
     },
 
     async del({ id }) {
-      await new Product(id).delete();
+      await new Objective(id).delete();
     },
 
     logout() {

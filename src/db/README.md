@@ -9,7 +9,7 @@ Organisations, Departments, Products, Periods, Objectives and Key results are cl
 ```js
 import Product from '@/db/Product';
 
-const myProduct = new Product({
+const myProduct = Product.create({
   name: 'My product name',
   description: 'My mission statement',
   organization: ParentOrganizationReference,

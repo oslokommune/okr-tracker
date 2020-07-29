@@ -26,8 +26,24 @@ exports.auditOnDeleteGenerator = function ({ docPath, collectionRef, documentTyp
         auditData.name = documentData.name;
       }
 
+      if (documentData.organization) {
+        auditData.organization = documentData.organization;
+      }
+
       if (documentData.department) {
         auditData.department = documentData.department;
+      }
+
+      if (documentData.product) {
+        auditData.product = documentData.product;
+      }
+
+      if (documentData.objective) {
+        auditData.objective = documentData.objective;
+      }
+
+      if (documentData.parent) {
+        auditData.parent = documentData.parent;
       }
 
       db.collection('audit').add(auditData);

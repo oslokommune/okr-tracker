@@ -181,6 +181,11 @@ async function handleKeyResults(doc) {
     ...doc.data(),
   };
 
+  data.name = data.description;
+  data.description = data.longDescription;
+
+  delete data.longDescription;
+
   await db.collection('keyResults').doc(id).set(data);
 
   await ref

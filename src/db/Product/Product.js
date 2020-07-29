@@ -1,35 +1,47 @@
 import { db } from '@/config/firebaseConfig';
-
+import slugify from '@/util/slugify';
 import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import Period from '../Period';
+import Kpi from '../Kpi';
 
 export default class Product extends CommonDatabaseFunctions {
   constructor(id) {
-    super(id, db.collection('products'));
+    super(id);
 
     this.collectionRef = db.collection('products');
+    this.ref = this.collectionRef.doc(id);
+  }
 
-    if (typeof id === 'string') {
-      this.ref = db.collection('products').doc(id);
-    }
+  static create(data) {
+    if (!data.name) throw new Error('Name must be provided');
+
+    data.slug = slugify(data.name);
+
+    super.create(data);
   }
 
   async update(data) {
     if (!data) throw new TypeError('Missing data');
 
-    delete data.organization; // Do not update organization reference
-    delete data.department; // Do not update department reference
-    delete data.team; // TODO: Update team - make sure to preserve references in array
+    data.slug = slugify(data.name);
 
-    this.setUpdatedMetadata(data);
+    super.update(data);
+  }
 
-    try {
-      await this.ref.update(data);
-    } catch (error) {
-      this.handleError(error);
-      return false;
-    }
+  async delete() {
+    // Delete affected periods
+    db.collection('periods')
+      .where('parent', '==', this.ref)
+      .get()
+      .then(({ docs }) => docs.forEach(({ ref }) => new Period(ref.id).delete()));
 
-    return this;
+    // Delete affected KPIs
+    db.collection('kpis')
+      .where('parent', '==', this.ref)
+      .get()
+      .then(({ docs }) => docs.forEach(({ ref }) => new Kpi(ref.id).delete()));
+
+    super.delete();
   }
 
   handleError(error) {

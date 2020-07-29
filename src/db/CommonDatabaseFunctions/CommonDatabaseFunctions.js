@@ -1,46 +1,43 @@
 import { db, auth } from '@/config/firebaseConfig';
-import slugify from '@/util/slugify';
 
 export default class {
-  constructor(idOrObject, collectionRef) {
-    if (!idOrObject) throw new Error('Missing ID or payload for creating new instance');
-    if (!collectionRef) throw new Error('Missing collection reference');
-
-    this.collectionRef = collectionRef;
-
-    if (typeof idOrObject !== 'string' && typeof idOrObject !== 'object') {
-      throw new Error('Invalid data');
-    }
-
-    if (typeof idOrObject === 'object') {
-      this.create(idOrObject);
-    }
+  constructor(id) {
+    if (!id) throw new Error('Missing document ID');
+    if (typeof id !== 'string') throw new TypeError('Invalid document ID');
   }
 
-  setUpdatedMetadata(data) {
-    if (data.name) {
-      data.slug = slugify(data.name);
+  static async create(data) {
+    data = {
+      ...data,
+      archived: false,
+      created: new Date(),
+      createdBy: db.collection('users').doc(auth.currentUser.email),
+    };
+
+    const { collectionRef } = new this('dummy-id');
+
+    try {
+      await collectionRef.add(data);
+    } catch (error) {
+      throw new Error('Cannot create document', error);
     }
+
+    return this;
+  }
+
+  async update(data) {
+    // Preserve Firestore references when updating
+    if (data.parent) data.parent = db.doc(data.parent);
+    if (data.organization) data.organization = db.doc(data.organization);
+    if (data.period) data.period = db.doc(data.period);
+    if (data.department) data.department = db.doc(data.department);
+    if (data.objective) data.objective = db.doc(data.objective);
 
     data.edited = new Date();
     data.editedBy = db.collection('users').doc(auth.currentUser.email);
-  }
-
-  setCreatedMetadata(data) {
-    if (data.name) {
-      data.slug = slugify(data.name);
-    }
-
-    data.archived = false;
-    data.created = new Date();
-    data.createdBy = db.collection('users').doc(auth.currentUser.email);
-  }
-
-  async create(data) {
-    this.setCreatedMetadata(data);
 
     try {
-      await this.collectionRef.add(data);
+      await this.ref.update(data);
     } catch (error) {
       this.handleError(error);
       return false;
@@ -51,9 +48,11 @@ export default class {
 
   async archive() {
     try {
-      const data = { archived: true };
-      this.setUpdatedMetadata(data);
-      await this.ref.update(data);
+      await this.ref.update({
+        archived: true,
+        edited: new Date(),
+        editedBy: db.collection('users').doc(auth.currentUser.email),
+      });
     } catch (error) {
       this.handleError(error);
       return false;
@@ -64,9 +63,11 @@ export default class {
 
   async restore() {
     try {
-      const data = { archived: false };
-      this.setUpdatedMetadata(data);
-      await this.ref.update(data);
+      await this.ref.update({
+        archived: false,
+        edited: new Date(),
+        editedBy: db.collection('users').doc(auth.currentUser.email),
+      });
     } catch (error) {
       this.handleError(error);
       return false;
@@ -77,13 +78,15 @@ export default class {
 
   async delete() {
     try {
-      const data = {};
-      this.setUpdatedMetadata(data);
-      await this.ref.update(data);
+      await this.ref.update({
+        edited: new Date(),
+        editedBy: db.collection('users').doc(auth.currentUser.email),
+      });
 
       await this.ref.delete();
     } catch (error) {
-      this.handleError(error);
+      this.handleError('Could not delete document');
+      console.error(error);
       return false;
     }
 
