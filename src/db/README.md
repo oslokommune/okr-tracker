@@ -2,7 +2,7 @@
 
 ## API
 
-Organisations, Departments, Products, Periods, Objectives and Key results are classes that share some CRUD operations like archiving and restoring. All operations are saved in the audit log. Note that slugs are generated and updated automatically.
+Organisations, Departments, Products, Periods, Objectives and Key results share several CRUD operations like archiving and restoring. All operations are saved in the audit log. Note that slugs are generated and updated automatically.
 
 ### Create
 
@@ -24,13 +24,11 @@ const myProduct = Product.create({
 ```js
 import Product from '@/db/Product';
 
-const myProduct = new Product(id)
-  .update({
-    name: 'My new name',
-  })
-  .then(() => {
-    console.log('Successfully updated');
-  });
+Product.update(id, {
+  name: 'My new name',
+}).then(() => {
+  console.log('Successfully updated');
+});
 ```
 
 ### Archive
@@ -38,7 +36,7 @@ const myProduct = new Product(id)
 ```js
 import Product from '@/db/Product';
 
-const myProduct = new Product(id).archive().then(() => {
+Product.archive(id).then(() => {
   console.log('Successfully archived');
 });
 ```
@@ -48,7 +46,7 @@ const myProduct = new Product(id).archive().then(() => {
 ```js
 import Product from '@/db/Product';
 
-const myProduct = new Product(id).restore().then(() => {
+Product.restore(id).then(() => {
   console.log('Successfully restored');
 });
 ```
@@ -58,11 +56,9 @@ const myProduct = new Product(id).restore().then(() => {
 ```js
 import Product from '@/db/Product';
 
-try {
-  const myProduct = new Product(id).delete().then(() => {
-    console.log('Successfully deleted');
-  });
-} catch (err) {
+Product.deleteDeep(id).then(() => {
+  console.log('Successfully deleted');
+}).catch (err) {
   console.error(err);
 }
 ```

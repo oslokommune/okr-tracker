@@ -1,42 +1,34 @@
 import { db } from '@/config/firebaseConfig';
-
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import props from './props';
+import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
 import KeyResult from '../KeyResult';
 
-export default class Objective extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+const collection = db.collection('objectives');
 
-    this.collectionRef = db.collection('objectives');
-    this.ref = this.collectionRef.doc(id);
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  return createDocument(collection, data);
+};
 
-  static create(data) {
-    if (!data.name) throw new Error('Missing name');
-    if (!data.icon) throw new Error('Missing icon');
-    super.create(data);
-  }
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
 
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
+  return updateDocument(collection.doc(id), data);
+};
 
-    super.update(data);
-  }
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-  async delete() {
-    // Delete affected key results
-    db.collection('keyResults')
-      .where('objective', '==', this.ref)
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => new KeyResult(ref.id).delete()));
+const deleteDeep = async id => {
+  // Delete affected key results
+  db.collection('keyResults')
+    .where('objective', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => KeyResult.deleteDeep(ref.id)));
 
-    super.delete();
-  }
+  return deleteDocument(update, collection.doc(id));
+};
 
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
-
-    return false;
-  }
-}
+export default { create, update, archive, restore, deleteDeep };

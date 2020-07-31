@@ -5,7 +5,7 @@
     <hr />
 
     <ul v-if="user">
-      <li v-for="item in filteredItems" :key="item.id">
+      <li v-for="item in departments" :key="item.id">
         <pre>{{ item }}</pre>
 
         <input v-model="item.name" />
@@ -13,7 +13,7 @@
         <button @click="update(item)">Update</button>
         <button v-if="!item.archived" @click="archive(item)">Archive</button>
         <button v-if="item.archived" @click="restore(item)">Restore</button>
-        <button v-if="item.archived" @click="del(item)">Delete</button>
+        <button v-if="item.archived" @click="deleteDeep(item)">Delete</button>
       </li>
 
       <button @click="create">Create new</button>
@@ -28,53 +28,52 @@
 
 <script>
 import { auth, loginProvider, db } from '@/config/firebaseConfig';
-import Objective from '@/db/Objective';
+import Department from '@/db/Department';
 
 export default {
   data: () => ({
-    objectives: [],
+    departments: [],
   }),
 
   computed: {
     user() {
       return this.$store.state.user;
     },
-
-    filteredItems() {
-      return this.objectives;
-    },
   },
 
   created() {
-    this.$bind('objectives', db.collection('objectives'), { maxRefDepth: 0 });
+    this.$bind('departments', db.collection('departments'), { maxRefDepth: 0 });
   },
 
   methods: {
     async update({ id, ...data }) {
+      delete data.organization;
       try {
-        await new Objective(id).update(data);
+        await Department.update(id, data);
       } catch (error) {
         console.error('err', error);
       }
     },
 
     async create() {
-      await Objective.create({
-        name: 'Hello Test',
-        organization: 'organizations/testorg',
+      await Department.create({
+        name: 'MyDepartment from UI',
+        organization: db.doc('organizations/ggHgxEEcjBOOtJuyvIwc'),
+      }).catch(() => {
+        console.log('showing error in UI');
       });
     },
 
     async archive({ id }) {
-      await new Objective(id).archive();
+      await Department.archive(id);
     },
 
     async restore({ id }) {
-      await new Objective(id).restore();
+      await Department.restore(id);
     },
 
-    async del({ id }) {
-      await new Objective(id).delete();
+    async deleteDeep({ id }) {
+      await Department.deleteDeep(id);
     },
 
     logout() {

@@ -1,52 +1,37 @@
 import { db } from '@/config/firebaseConfig';
-
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import props from './props';
+import { validateCreateProps, validateUpdateProps, createDocument, updateDocument, deleteDocument } from '../common';
 import Objective from '../Objective';
 
-export default class Period extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+const collection = db.collection('periods');
 
-    this.collectionRef = db.collection('periods');
-    this.ref = this.collectionRef.doc(id);
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  return createDocument(collection, data);
+};
 
-  static create(data) {
-    if (!data.name) throw new Error('Missing name');
-    if (!data.startDate) throw new Error('Missing start date');
-    if (!data.endDate) throw new Error('Missing end date');
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+  return updateDocument(collection.doc(id), data);
+};
 
-    if (typeof data.name !== 'string') throw new TypeError('Invalid period name');
-    if (typeof data.startDate.getMonth !== 'function') throw new TypeError('Invalid start date');
-    if (typeof data.endDate.getMonth !== 'function') throw new TypeError('Invalid end date');
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-    super.create(data);
-  }
+const deleteDeep = async id => {
+  // Delete affected key results
+  db.collection('objectives')
+    .where('period', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) =>
+      docs.forEach(({ ref }) => {
+        Objective.deleteDeep(ref.id);
+      })
+    );
 
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
+  deleteDocument(update, collection.doc(id));
+};
 
-    super.update(data);
-  }
-
-  async delete() {
-    // Delete affected key results
-    db.collection('objectives')
-      .where('period', '==', this.ref)
-      .get()
-      .then(({ docs }) =>
-        docs.forEach(({ ref }) => {
-          new Objective(ref.id).delete();
-        })
-      );
-
-    super.delete();
-  }
-
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
-
-    return false;
-  }
-}
+export default { create, update, archive, restore, deleteDeep };

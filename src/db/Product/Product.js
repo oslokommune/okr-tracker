@@ -1,53 +1,50 @@
 import { db } from '@/config/firebaseConfig';
-import slugify from '@/util/slugify';
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import props from './props';
+import {
+  validateCreateProps,
+  slugify,
+  createDocument,
+  validateUpdateProps,
+  updateDocument,
+  deleteDocument,
+} from '../common';
 import Period from '../Period';
 import Kpi from '../Kpi';
 
-export default class Product extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
+const collection = db.collection('products');
 
-    this.collectionRef = db.collection('products');
-    this.ref = this.collectionRef.doc(id);
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  data.slug = slugify(data.name);
+  return createDocument(collection, data);
+};
 
-  static create(data) {
-    if (!data.name) throw new Error('Name must be provided');
-
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+  if (data.name) {
     data.slug = slugify(data.name);
-
-    super.create(data);
   }
+  return updateDocument(collection.doc(id), data);
+};
 
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-    data.slug = slugify(data.name);
+const deleteDeep = async id => {
+  db.collection('periods')
+    .where('parent', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => Period.deleteDeep(ref.id)));
 
-    super.update(data);
-  }
+  // Delete affected KPIs
+  db.collection('kpis')
+    .where('parent', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => Kpi.deleteDeep(ref.id)));
 
-  async delete() {
-    // Delete affected periods
-    db.collection('periods')
-      .where('parent', '==', this.ref)
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => new Period(ref.id).delete()));
+  return deleteDocument(update, collection.doc(id));
+};
 
-    // Delete affected KPIs
-    db.collection('kpis')
-      .where('parent', '==', this.ref)
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => new Kpi(ref.id).delete()));
-
-    super.delete();
-  }
-
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
-
-    return false;
-  }
-}
+export default { create, update, archive, restore, deleteDeep };

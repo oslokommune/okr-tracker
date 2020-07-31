@@ -1,41 +1,33 @@
 import { db } from '@/config/firebaseConfig';
+import props from './props';
+import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
 
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+const collection = db.collection('keyResults');
 
-export default class KeyResult extends CommonDatabaseFunctions {
-  constructor(id) {
-    super(id);
-
-    this.collectionRef = db.collection('keyResults');
-    this.ref = this.collectionRef.doc(id);
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  return createDocument(collection, data);
+};
 
-  static create(data) {
-    if (!data.name) throw new Error('Missing name');
-    if (!data.icon) throw new Error('Missing icon');
-    super.create(data);
-  }
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+  return updateDocument(collection.doc(id), data);
+};
 
-  async update(data) {
-    if (!data) throw new TypeError('Missing data');
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-    super.update(data);
-  }
+const deleteDeep = async id => {
+  // Delete affected progress
+  collection
+    .doc(id)
+    .collection('progress')
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
 
-  async delete() {
-    // Delete affected progress
-    this.ref
-      .collection('progress')
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
+  return deleteDocument(update, collection.doc(id));
+};
 
-    super.delete();
-  }
-
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
-
-    return false;
-  }
-}
+export default { create, update, archive, restore, deleteDeep };
