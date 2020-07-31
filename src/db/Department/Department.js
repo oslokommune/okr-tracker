@@ -1,54 +1,54 @@
 import { db } from '@/config/firebaseConfig';
-import slugify from '@/util/slugify';
-
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import props from './props';
+import {
+  validateCreateProps,
+  slugify,
+  createDocument,
+  validateUpdateProps,
+  updateDocument,
+  deleteDocument,
+} from '../common';
 import Period from '../Period';
 import Product from '../Product';
 
-export default class Department extends CommonDatabaseFunctions {
-  static collectionRef = db.collection('departments');
+const collection = db.collection('departments');
 
-  static props = {
-    name: {
-      type: 'string',
-      required: true,
-    },
-    organization: {
-      type: 'object',
-      required: true,
-    },
-  };
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
+  }
 
-  static create(data) {
+  data.slug = slugify(data.name);
+  return createDocument(collection, data);
+};
+
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+
+  if (data.name) {
     data.slug = slugify(data.name);
-    super.create(data);
   }
 
-  async update(data) {
-    data.slug = slugify(data.name);
-    super.update(data);
-  }
+  return updateDocument(collection.doc(id), data);
+};
 
-  async delete() {
-    // Delete affected periods
-    db.collection('periods')
-      .where('parent', '==', this.ref)
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => new Period(ref.id).delete()));
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-    // Delete affected products
-    db.collection('products')
-      .where('department', '==', this.ref)
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => new Product(ref.id).delete()));
+const deleteDeep = async id => {
+  // Delete affected periods
+  db.collection('periods')
+    .where('parent', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => Period.deleteDeep(ref.id)));
 
-    super.delete();
-  }
+  // Delete affected products
+  db.collection('products')
+    .where('department', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => Product.deleteDeep(ref.id)));
 
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
+  return deleteDocument(update, collection.doc(id));
+};
 
-    return false;
-  }
-}
+export default { create, update, archive, restore, deleteDeep };

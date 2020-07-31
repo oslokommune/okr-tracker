@@ -1,35 +1,34 @@
 import { db } from '@/config/firebaseConfig';
-import slugify from '@/util/slugify';
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import props from './props';
+import { validateCreateProps, createDocument, validateUpdateProps, slugify, updateDocument } from '../common';
 
-export default class Organisation extends CommonDatabaseFunctions {
-  static collectionRef = db.collection('organizations');
+const collection = db.collection('organizations');
 
-  static props = {
-    name: {
-      type: 'string',
-      required: true,
-    },
-  };
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
+  }
 
-  static create(data) {
+  data.slug = slugify(data.name);
+
+  return createDocument(collection, data);
+};
+
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+
+  if (data.name) {
     data.slug = slugify(data.name);
-    super.create(data);
   }
 
-  async update(data) {
-    data.slug = slugify(data.name);
-    super.update(data);
-  }
+  return updateDocument(collection.doc(id), data);
+};
 
-  async delete() {
-    throw new Error('Organizations can only be deleted from the Firestore console');
-  }
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
+const deleteDeep = () => {
+  throw new Error('Organizations can only be deleted from the Firestore console');
+};
 
-    return false;
-  }
-}
+export default { create, update, archive, restore, deleteDeep };

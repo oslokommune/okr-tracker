@@ -1,39 +1,33 @@
 import { db } from '@/config/firebaseConfig';
+import props from './props';
+import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
 
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+const collection = db.collection('kpis');
 
-export default class Kpi extends CommonDatabaseFunctions {
-  static collectionRef = db.collection('kpis');
-
-  static props = {
-    name: {
-      type: 'string',
-      required: true,
-    },
-    parent: {
-      type: 'object',
-      required: true,
-    },
-  };
-
-  async addProgress(/* payload */) {
-    // TODO:
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  return createDocument(collection, data);
+};
 
-  async delete() {
-    // Delete affected progress
-    this.ref
-      .collection('progress')
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+  return updateDocument(collection.doc(id), data);
+};
 
-    super.delete();
-  }
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
 
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
+const deleteDeep = async id => {
+  // Delete affected progress
+  collection
+    .doc(id)
+    .collection('progress')
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
 
-    return false;
-  }
-}
+  return deleteDocument(update, collection.doc(id));
+};
+
+export default { create, update, archive, restore, deleteDeep };

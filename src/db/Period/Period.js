@@ -1,48 +1,37 @@
 import { db } from '@/config/firebaseConfig';
-
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+import props from './props';
+import { validateCreateProps, validateUpdateProps, createDocument, updateDocument, deleteDocument } from '../common';
 import Objective from '../Objective';
 
-export default class Period extends CommonDatabaseFunctions {
-  static collectionRef = db.collection('periods');
+const collection = db.collection('periods');
 
-  static props = {
-    name: {
-      type: 'string',
-      required: true,
-    },
-    parent: {
-      type: 'object',
-      required: true,
-    },
-    startDate: {
-      type: 'date',
-      required: true,
-    },
-    endDate: {
-      type: 'date',
-      required: true,
-    },
-  };
-
-  async delete() {
-    // Delete affected key results
-    db.collection('objectives')
-      .where('period', '==', this.ref)
-      .get()
-      .then(({ docs }) =>
-        docs.forEach(({ ref }) => {
-          new Objective(ref.id).delete();
-        })
-      );
-
-    super.delete();
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  return createDocument(collection, data);
+};
 
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+  return updateDocument(collection.doc(id), data);
+};
 
-    return false;
-  }
-}
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
+
+const deleteDeep = async id => {
+  // Delete affected key results
+  db.collection('objectives')
+    .where('period', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) =>
+      docs.forEach(({ ref }) => {
+        Objective.deleteDeep(ref.id);
+      })
+    );
+
+  deleteDocument(update, collection.doc(id));
+};
+
+export default { create, update, archive, restore, deleteDeep };

@@ -1,51 +1,33 @@
 import { db } from '@/config/firebaseConfig';
+import props from './props';
+import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
 
-import CommonDatabaseFunctions from '../CommonDatabaseFunctions';
+const collection = db.collection('keyResults');
 
-export default class KeyResult extends CommonDatabaseFunctions {
-  static collectionRef = db.collection('keyResults');
-
-  static props = {
-    name: {
-      type: 'string',
-      required: true,
-    },
-    objective: {
-      type: 'object',
-      required: true,
-    },
-    parent: {
-      type: 'object',
-      required: true,
-    },
-    startValue: {
-      type: 'number',
-      required: true,
-    },
-    targetValue: {
-      type: 'number',
-      required: true,
-    },
-    unit: {
-      type: 'string',
-      required: true,
-    },
-  };
-
-  async delete() {
-    // Delete affected progress
-    this.ref
-      .collection('progress')
-      .get()
-      .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
-
-    super.delete();
+const create = async data => {
+  if (!(await validateCreateProps(props, data))) {
+    throw new Error('Invalid data');
   }
+  return createDocument(collection, data);
+};
 
-  handleError(error) {
-    // TODO: Show an error to the user
-    console.error(error);
+const update = async (id, data) => {
+  validateUpdateProps(props, data);
+  return updateDocument(collection.doc(id), data);
+};
 
-    return false;
-  }
-}
+const archive = id => update(id, { archived: true });
+const restore = id => update(id, { archived: false });
+
+const deleteDeep = async id => {
+  // Delete affected progress
+  collection
+    .doc(id)
+    .collection('progress')
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
+
+  return deleteDocument(update, collection.doc(id));
+};
+
+export default { create, update, archive, restore, deleteDeep };
