@@ -1,10 +1,10 @@
-import metadata from './metadata';
+import metadata from '../util/metadata';
 
 /**
  * Creates a document into the provided collection. Appends metadata (timestamp and user)
  * to the data payload
  *
- * @param {CollectionReference} collection
+ * @param {import('firebase').firebase.firestore.CollectionReference} collection - Firebase collection reference
  * @param {Object} data
  * @returns {Promise}
  */

@@ -1,3 +1,1 @@
-import KeyResult from './KeyResult';
-
-export default KeyResult;
+export { default } from './KeyResult';

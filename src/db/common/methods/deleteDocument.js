@@ -1,11 +1,11 @@
-import metadata from './metadata';
+import metadata from '../util/metadata';
 
 /**
  * Deletes a document from Firestore. Adds edited data to document before deletion, to ensure
  * that Cloud Functions can extract information about the delete event.
  *
  * @param {Function} update
- * @param {DocumentReference} document
+ * @param {import('firebase').firestore.DocumentReference} document - Firebase document reference
  * @returns {Promise} - Resolves `true` for success
  */
 export default async function deleteDocument(update, document) {

@@ -1,6 +1,8 @@
 <template>
   <div class="app">
     <main class="main">
+      OKR
+      <hr />
       <router-view class="home"></router-view>
     </main>
   </div>

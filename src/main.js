@@ -19,7 +19,7 @@ import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-const fb = require('./config/firebaseConfig');
+const { auth } = require('./config/firebaseConfig');
 
 Vue.config.productionTip = false;
 
@@ -41,20 +41,20 @@ Vue.component('v-select', VueSelect);
 
 Vue.config.productionTip = false;
 
-// handle page reloads
-let app;
-fb.auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(user => {
   store.commit('SET_USER', user);
 
-  if (!app) {
-    app = new Vue({
-      el: '#app',
-      router,
-      store,
-      i18n,
-      render: h => h(App),
-    });
+  if (!user && router.currentRoute.name !== 'login') {
+    router.push('/login');
   }
+});
+
+const app = new Vue({
+  el: '#app',
+  router,
+  store,
+  i18n,
+  render: h => h(App),
 });
 
 export default { app };
