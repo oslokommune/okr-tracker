@@ -28,6 +28,10 @@ exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');
  */
 exports.transformDataModel = require('./transformDataModel');
 
+exports.SlugDepartment = require('./slug').SlugDepartment;
+exports.SlugOrganization = require('./slug').SlugOrganization;
+exports.SlugProducts = require('./slug').SlugProducts;
+
 /**
  * Listens for create, update and delete operations and logs the event with meta data
  */

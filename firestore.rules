@@ -88,6 +88,11 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     
+    match /slugs/{document} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
     match /{document=**} {
       allow read: if false;
       allow write: if false;
