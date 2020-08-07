@@ -1,0 +1,53 @@
+{
+  "kpi/users": {
+    "description": "Testbeskrivelse for brukere",
+    "sheet": {
+      "id": "mySheetId",
+      "name": "Sheet1",
+      "cell": "A1"
+    },
+    "progress": [
+      { "created": "2020-07-15", "value": 535 },
+      { "created": "2020-07-14", "value": 521 },
+      { "created": "2020-07-13", "value": 498 },
+      { "created": "2020-07-12", "value": 484 },
+      { "created": "2020-07-11", "value": 435 },
+      { "created": "2020-07-10", "value": 432 },
+      { "created": "2020-07-09", "value": 422 }
+    ]
+  },
+  "kpi/user-satisfaction": {
+    "description": "Beskrivelse for brukertilfredshet-KPI",
+    "sheet": {
+      "id": "mySheetId",
+      "name": "Sheet1",
+      "cell": "A1"
+    },
+    "progress": [
+      { "created": "2020-07-15", "value": 535 },
+      { "created": "2020-07-14", "value": 521 },
+      { "created": "2020-07-13", "value": 498 },
+      { "created": "2020-07-12", "value": 484 },
+      { "created": "2020-07-11", "value": 435 },
+      { "created": "2020-07-10", "value": 432 },
+      { "created": "2020-07-09", "value": 422 }
+    ]
+  },
+  "kpi/conversion-rate": {
+    "description": "Beskrivelse for fullføringsgrad",
+    "sheet": {
+      "id": "mySheetId",
+      "name": "Sheet1",
+      "cell": "A1"
+    },
+    "progress": [
+      { "created": "2020-07-15", "value": 535 },
+      { "created": "2020-07-14", "value": 521 },
+      { "created": "2020-07-13", "value": 498 },
+      { "created": "2020-07-12", "value": 484 },
+      { "created": "2020-07-11", "value": 435 },
+      { "created": "2020-07-10", "value": 432 },
+      { "created": "2020-07-09", "value": 422 }
+    ]
+  }
+}
