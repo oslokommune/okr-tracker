@@ -2,19 +2,29 @@
   <div class="modal">
     <router-link :to="{ name: 'ItemHome' }">Close</router-link>
     <hr />
-    <pre>{{ keyRes.id }}</pre>
+
+    <div>name: {{ keyRes.name }}</div>
+    <div>targetValue: {{ keyRes.targetValue }}</div>
+    <div>startValue: {{ keyRes.startValue }}</div>
+    <div>currentValue: {{ keyRes.currentValue }}</div>
+    <div>progression: {{ keyRes.progression }}</div>
 
     <form @submit.prevent="addValue">
       <input type="number" v-model="newValue" />
       <button>Send</button>
     </form>
 
-    <pre>{{ progress }}</pre>
+    <hr />
+
+    <ul>
+      <li v-for="p in progress" :key="p.id" @click="remove(p.id)">{{ p.value }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
 import { db } from '@/config/firebaseConfig';
+import Progress from '@/db/Progress';
 
 export default {
   data: () => ({
@@ -29,8 +39,12 @@ export default {
   },
 
   methods: {
-    addValue() {
-      // TODO:
+    async addValue() {
+      await Progress.create(this.keyRes.id, { value: +this.newValue });
+      this.newValue = null;
+    },
+    remove(id) {
+      Progress.remove(this.keyRes.id, id);
     },
   },
 
@@ -38,7 +52,7 @@ export default {
     keyRes: {
       immediate: true,
       handler({ id }) {
-        this.$bind('progress', db.collection(`keyResults/${id}/progress`));
+        this.$bind('progress', db.collection(`keyResults/${id}/progress`).orderBy('timestamp', 'desc'));
       },
     },
   },
@@ -53,6 +67,7 @@ export default {
   width: calc(100vw - 4rem);
   height: calc(100vh - 4rem);
   padding: 2rem;
+  overflow: auto;
   background: white;
   border-radius: 2px;
   box-shadow: 0 8px 24px rgba(black, 0.2);
