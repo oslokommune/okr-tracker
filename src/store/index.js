@@ -6,7 +6,21 @@ import actions from './actions';
 
 Vue.use(Vuex);
 
-export const getters = {};
+export const getters = {
+  tree: state => {
+    const { organizations, departments, products } = state;
+
+    return organizations.map(org => {
+      org.children = departments
+        .filter(({ organization }) => organization.id === org.id)
+        .map(dept => {
+          dept.children = products.filter(({ department }) => department.id === dept.id);
+          return dept;
+        });
+      return org;
+    });
+  },
+};
 
 export const mutations = {
   ...vuexfireMutations,

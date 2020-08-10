@@ -5,21 +5,19 @@
     <hr />
 
     <ul v-if="user">
-      <li v-for="item in departments" :key="item.id">
-        <pre>{{ item }}</pre>
-
-        <input v-model="item.name" />
-
-        <button @click="update(item)">Update</button>
-        <button v-if="!item.archived" @click="archive(item)">Archive</button>
-        <button v-if="item.archived" @click="restore(item)">Restore</button>
-        <button v-if="item.archived" @click="deleteDeep(item)">Delete</button>
+      <li v-for="org in tree" :key="org.id">
+        <ItemRow :data="org"></ItemRow>
+        <ul>
+          <li v-for="dept in org.children" :key="dept.id">
+            <itemRow :data="dept"></itemRow>
+            <ul>
+              <li v-for="prod in dept.children" :key="prod.id">
+                <itemRow :data="prod"></itemRow>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </li>
-
-      <button @click="create">Create new</button>
-
-      <hr />
-      <button @click="logout">Logout</button>
     </ul>
 
     <button v-if="!user" @click="login">Login</button>
@@ -27,55 +25,20 @@
 </template>
 
 <script>
-import { auth, loginProvider, db } from '@/config/firebaseConfig';
-import Department from '@/db/Department';
+import { auth, loginProvider } from '@/config/firebaseConfig';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    departments: [],
-  }),
-
   computed: {
-    user() {
-      return this.$store.state.user;
-    },
+    ...mapGetters(['tree']),
+    ...mapState(['user']),
   },
 
-  created() {
-    this.$bind('departments', db.collection('departments'), { maxRefDepth: 0 });
+  components: {
+    ItemRow: () => import('@/components/ItemRow.vue'),
   },
 
   methods: {
-    async update({ id, ...data }) {
-      delete data.organization;
-      try {
-        await Department.update(id, data);
-      } catch (error) {
-        console.error('err', error);
-      }
-    },
-
-    async create() {
-      await Department.create({
-        name: 'MyDepartment from UI',
-        organization: db.doc('organizations/ggHgxEEcjBOOtJuyvIwc'),
-      }).catch(() => {
-        console.log('showing error in UI');
-      });
-    },
-
-    async archive({ id }) {
-      await Department.archive(id);
-    },
-
-    async restore({ id }) {
-      await Department.restore(id);
-    },
-
-    async deleteDeep({ id }) {
-      await Department.deleteDeep(id);
-    },
-
     logout() {
       auth.signOut();
     },

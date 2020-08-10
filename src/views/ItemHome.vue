@@ -11,7 +11,7 @@
       <ul v-if="periods && activePeriod">
         <li v-for="period in periods" :key="period.id">
           <button @click="set_active_period_and_data(period.id)" :disabled="period.id === activePeriod.id">
-            {{ period.name }}
+            {{ period.name }} ({{ period.progression }})
           </button>
         </li>
       </ul>
@@ -21,7 +21,7 @@
     <div v-if="loading">Skeleton UI</div>
     <div v-else>
       <ul v-if="objectives">
-        <li v-for="objective in objectives" :key="objective.id">{{ objective.name }}</li>
+        <li v-for="objective in objectives" :key="objective.id">{{ objective.name }} ({{ objective.progression }})</li>
       </ul>
     </div>
 
@@ -30,9 +30,9 @@
     <div v-else>
       <ul v-if="keyResults">
         <li v-for="keyResult in keyResults" :key="keyResult.id">
-          <router-link :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }">{{
-            keyResult.name
-          }}</router-link>
+          <router-link :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }">
+            {{ keyResult.name }} ({{ keyResult.progression }})
+          </router-link>
         </li>
       </ul>
     </div>
@@ -74,6 +74,11 @@ export default {
 
   mounted() {
     this.loading = false;
+  },
+
+  async beforeRouteLeave(to, from, next) {
+    this.loading = true;
+    next();
   },
 
   async beforeRouteUpdate(to, from, next) {
