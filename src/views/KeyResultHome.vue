@@ -9,6 +9,11 @@
     <div>currentValue: {{ keyRes.currentValue }}</div>
     <div>progression: {{ keyRes.progression }}</div>
 
+    <form @submit.prevent="change">
+      <input type="number" v-model.number="keyRes.weight" />
+      <button>Send</button>
+    </form>
+
     <form @submit.prevent="addValue">
       <input type="number" v-model="newValue" />
       <button>Send</button>
@@ -25,6 +30,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
+import KeyResult from '@/db/KeyResult';
 
 export default {
   data: () => ({
@@ -39,6 +45,11 @@ export default {
   },
 
   methods: {
+    async change() {
+      const { name, startValue, targetValue, description, unit, auto, weight } = this.keyRes;
+      await KeyResult.update(this.keyRes.id, { name, startValue, targetValue, description, unit, auto, weight });
+    },
+
     async addValue() {
       await Progress.create(this.keyRes.id, { value: +this.newValue });
       this.newValue = null;

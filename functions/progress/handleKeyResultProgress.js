@@ -6,16 +6,12 @@ const db = admin.firestore();
 /**
  * Listens for changes in progress for a key result. Updates the 'progression' Field for
  * the key result accordingly
- *
- * TODO: Handle the key result progression when start or target values for a key result are changed
  */
 module.exports = async function handleKeyResultProgress(change, { params }) {
   const { keyResultId } = params;
   const keyResultRef = db.doc(`keyResults/${keyResultId}`);
 
-  const { startValue, targetValue, objective, currentValue: oldValue } = await keyResultRef
-    .get()
-    .then(snapshot => snapshot.data());
+  const { startValue, targetValue, objective } = await keyResultRef.get().then(snapshot => snapshot.data());
 
   const currentValue = await keyResultRef
     .collection('progress')
@@ -25,14 +21,14 @@ module.exports = async function handleKeyResultProgress(change, { params }) {
     .then(snapshot => snapshot.docs)
     .then(docs => (docs.length ? docs[0].data().value : startValue));
 
-  if (oldValue === currentValue) return;
-
   const scale = d3.scaleLinear().domain([startValue, targetValue]).clamp(true);
   const progression = scale(currentValue);
 
   await keyResultRef.update({ currentValue, progression });
 
   updateObjectiveProgression(objective);
+
+  return true;
 };
 
 /**
@@ -42,15 +38,13 @@ module.exports = async function handleKeyResultProgress(change, { params }) {
 async function updateObjectiveProgression(objectiveRef) {
   // const objectiveRef = db.doc(path);
 
-  // Finds all progression for related key results and returns the average
-  // TODO: handle weighting of key results here
+  // Finds all progression for related key results and returns the weighted average
   const progression = await db
     .collection('keyResults')
     .where('archived', '==', false)
     .where('objective', '==', objectiveRef)
     .get()
-    .then(({ docs }) => docs.map(doc => doc.data().progression))
-    .then(d3.mean);
+    .then(getWeightedProgression);
 
   await objectiveRef.update({ progression });
 
@@ -71,4 +65,16 @@ async function updatePeriodProgression(periodRef) {
     .then(d3.mean);
 
   await periodRef.update({ progression });
+}
+
+function getWeightedProgression({ docs }) {
+  const totalWeight = d3.sum(docs.map(doc => doc.data().weight));
+
+  const weightedProgressions = docs.map(doc => {
+    const { weight, progression } = doc.data();
+    const normalizedWeight = weight / totalWeight;
+    return progression * normalizedWeight;
+  });
+
+  return d3.sum(weightedProgressions);
 }
