@@ -11,12 +11,16 @@ exports.handleKeyResultProgressOnKeyResultUpdate = functions
   .region(config.region)
   .firestore.document(`keyResults/{keyResultId}`)
   .onUpdate(({ before, after }, context) => {
-    if (before.data().progression !== after.data().progression) return;
+    const fields = ['startValue', 'targetValue', 'currentValue', 'weight'];
 
-    return handleKeyResultProgress(null, context);
+    const fieldsHaveChanged = fields.some(field => before.data()[field] !== after.data()[field]);
+
+    if (fieldsHaveChanged) return handleKeyResultProgress(null, context);
+
+    return true;
   });
 
-exports.handleKeyResultProgressOnKeyResultUpdate = functions
+exports.handleKeyResultProgressOnObjectiveUpdate = functions
   .region(config.region)
   .firestore.document(`objectives/{objectiveId}`)
   .onUpdate(({ before, after }) => {
