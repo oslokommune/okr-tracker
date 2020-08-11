@@ -23,4 +23,8 @@ export default {
     type: 'string',
     required: true,
   },
+  notes: {
+    type: 'string',
+    required: false,
+  },
 };

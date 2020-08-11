@@ -1,9 +1,12 @@
 <template>
-  <div class="app">
-    <main class="main">
-      OKR
-      <hr />
-      <router-view class="home"></router-view>
+  <div class="l-app">
+    <header class="l-header">
+      <router-link to="/">Home</router-link>
+    </header>
+    <main class="l-main">
+      <SidebarNavigation class="l-sidebar"></SidebarNavigation>
+      <router-view class="l-router-view"></router-view>
+      <footer class="l-footer"></footer>
     </main>
   </div>
 </template>
@@ -19,6 +22,10 @@ export default {
     };
   },
 
+  components: {
+    SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
+  },
+
   computed: {
     ...mapState(['user', 'showNewsfeed']),
   },
@@ -26,8 +33,6 @@ export default {
   methods: {
     ...mapMutations(['SET_SHOW_NEWSFEED']),
   },
-
-  components: {},
 };
 
 // Using a class on body to determine how to style focus states
@@ -44,16 +49,32 @@ document.body.addEventListener('keydown', function () {
 </style>
 
 <style lang="scss" scoped>
-.app {
-  display: flex;
+.l-app {
+  display: grid;
+  grid-template-rows: auto auto;
 }
 
-.main {
-  flex-grow: 1;
+.l-main {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 24rem 100%;
+  max-width: 1200px;
 }
 
-.home {
-  min-height: calc(100vh - 5rem);
-  padding-bottom: 4rem;
+.l-router-view {
+  width: 100%;
+  outline: 1px solid green;
+}
+
+.l-sidebar {
+  height: calc(100vh - 5rem);
+  outline: 1px solid blue;
+}
+
+.l-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 5rem;
 }
 </style>

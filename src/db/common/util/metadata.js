@@ -1,13 +1,13 @@
-import { db, auth } from '@/config/firebaseConfig';
+import { db, auth, serverTimestamp } from '@/config/firebaseConfig';
 
 const created = () => ({
   archived: false,
-  created: new Date(),
+  created: serverTimestamp(),
   createdBy: db.collection('users').doc(auth.currentUser.email),
 });
 
 const edited = () => ({
-  edited: new Date(),
+  edited: serverTimestamp(),
   editedBy: db.collection('users').doc(auth.currentUser.email),
 });
 

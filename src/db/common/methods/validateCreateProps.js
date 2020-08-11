@@ -1,11 +1,11 @@
 /* eslint-disable valid-typeof */
 
-export default async function (props, data) {
-  try {
+export default function (props, data) {
+  return new Promise((resolve, reject) => {
     Object.entries(props).forEach(async ([prop, { type, required }]) => {
       // Check existence
       if (required && !Object.hasOwnProperty.call(data, prop)) {
-        throw new Error(`Cannot create ${name}. Missing required property "${prop}".`);
+        reject(new Error(`Cannot create ${name}. Missing required property "${prop}".`));
       }
 
       // If property is included
@@ -15,18 +15,20 @@ export default async function (props, data) {
           try {
             await data[prop].get();
           } catch {
-            throw new Error(`Cannot find "${prop}" at ${data[prop].path}`);
+            reject(new Error(`Cannot find "${prop}" at ${data[prop].path}`));
+          }
+        } else if (type === 'date') {
+          // Verify date objects
+          if (Object.prototype.toString.call(data[prop]) !== '[object Date]') {
+            reject(new TypeError(`${prop} is not a valid Date object`));
           }
 
           // ... otherwise check its type
         } else if (typeof data[prop] !== type) {
-          throw new TypeError(`"${prop}" must be ${type}.`);
+          reject(new TypeError(`"${prop}" must be ${type}.`));
         }
       }
     });
-  } catch (err) {
-    throw new Error(err);
-  }
-
-  return true;
+    resolve(true);
+  });
 }

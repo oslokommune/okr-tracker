@@ -43,6 +43,14 @@ function getDiff({ before, after }, keys) {
   after = after.data();
 
   keys.forEach(key => {
+    if (before[key] && before[key].seconds) {
+      before[key] = before[key].seconds;
+    }
+
+    if (after[key] && after[key].seconds) {
+      after[key] = after[key].seconds;
+    }
+
     if (before[key] !== after[key]) {
       diff[key] = {
         before: before[key] === undefined ? null : before[key],

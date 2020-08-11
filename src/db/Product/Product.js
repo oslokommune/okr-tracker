@@ -1,13 +1,6 @@
 import { db } from '@/config/firebaseConfig';
 import props from './props';
-import {
-  validateCreateProps,
-  slugify,
-  createDocument,
-  validateUpdateProps,
-  updateDocument,
-  deleteDocument,
-} from '../common';
+import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
 import Period from '../Period';
 import Kpi from '../Kpi';
 
@@ -17,15 +10,11 @@ const create = async data => {
   if (!(await validateCreateProps(props, data))) {
     throw new Error('Invalid data');
   }
-  data.slug = slugify(data.name);
   return createDocument(collection, data);
 };
 
 const update = async (id, data) => {
   validateUpdateProps(props, data);
-  if (data.name) {
-    data.slug = slugify(data.name);
-  }
   return updateDocument(collection.doc(id), data);
 };
 

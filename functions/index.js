@@ -28,6 +28,10 @@ exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');
  */
 exports.transformDataModel = require('./transformDataModel');
 
+exports.SlugDepartment = require('./slug').SlugDepartment;
+exports.SlugOrganization = require('./slug').SlugOrganization;
+exports.SlugProducts = require('./slug').SlugProducts;
+
 /**
  * Listens for create, update and delete operations and logs the event with meta data
  */
@@ -49,3 +53,8 @@ exports.AuditObjectiveDelete = require('./audit').ObjectiveDelete;
 exports.AuditKeyResultUpdate = require('./audit').KeyResultUpdate;
 exports.AuditKeyResultCreate = require('./audit').KeyResultCreate;
 exports.AuditKeyResultDelete = require('./audit').KeyResultDelete;
+
+/**
+ * Listen for changes in progress and update key results and items accordingly
+ */
+exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;

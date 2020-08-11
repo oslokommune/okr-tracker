@@ -41,20 +41,26 @@ Vue.component('v-select', VueSelect);
 
 Vue.config.productionTip = false;
 
-auth.onAuthStateChanged(user => {
+let app;
+
+auth.onAuthStateChanged(async user => {
   store.commit('SET_USER', user);
+
+  await store.dispatch('init_state');
+
+  if (!app) {
+    app = new Vue({
+      el: '#app',
+      router,
+      store,
+      i18n,
+      render: h => h(App),
+    });
+  }
 
   if (!user && router.currentRoute.name !== 'login') {
     router.push('/login');
   }
-});
-
-const app = new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App),
 });
 
 export default { app };
