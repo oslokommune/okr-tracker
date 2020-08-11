@@ -142,6 +142,7 @@ async function handleObjective(doc) {
 
   const data = {
     parent: getParentRef(ref),
+    weight: 1,
     ...doc.data(),
   };
 
@@ -178,6 +179,7 @@ async function handleKeyResults(doc) {
   const data = {
     parent,
     objective,
+    weight: 1,
     ...doc.data(),
   };
 
