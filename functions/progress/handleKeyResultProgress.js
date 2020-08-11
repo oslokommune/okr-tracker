@@ -7,7 +7,7 @@ const db = admin.firestore();
  * Listens for changes in progress for a key result. Updates the 'progression' Field for
  * the key result accordingly
  */
-module.exports = async function handleKeyResultProgress(change, { params }) {
+async function handleKeyResultProgress(change, { params }) {
   const { keyResultId } = params;
   const keyResultRef = db.doc(`keyResults/${keyResultId}`);
 
@@ -29,16 +29,14 @@ module.exports = async function handleKeyResultProgress(change, { params }) {
   updateObjectiveProgression(objective);
 
   return true;
-};
+}
 
 /**
  * Updates the progression for the related Objective once
  * the key result progression has been updated
  */
 async function updateObjectiveProgression(objectiveRef) {
-  // const objectiveRef = db.doc(path);
-
-  // Finds all progression for related key results and returns the weighted average
+  // Finds all progression for related key results and updates the objective's progression
   const progression = await db
     .collection('keyResults')
     .where('archived', '==', false)
@@ -54,15 +52,13 @@ async function updateObjectiveProgression(objectiveRef) {
 }
 
 async function updatePeriodProgression(periodRef) {
-  // Finds all progression for related objectives and returns the average
-  // TODO: handle weighting of objectives here
+  // Finds all progressions for related objectives and updates the period's progression
   const progression = await db
     .collection('objectives')
     .where('archived', '==', false)
     .where('period', '==', periodRef)
     .get()
-    .then(({ docs }) => docs.map(doc => doc.data().progression))
-    .then(d3.mean);
+    .then(getWeightedProgression);
 
   await periodRef.update({ progression });
 }
@@ -78,3 +74,6 @@ function getWeightedProgression({ docs }) {
 
   return d3.sum(weightedProgressions);
 }
+
+exports.handleKeyResultProgress = handleKeyResultProgress;
+exports.updatePeriodProgression = updatePeriodProgression;

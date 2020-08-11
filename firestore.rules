@@ -19,6 +19,12 @@ service cloud.firestore {
       return /databases/$(database)/documents/users/$(request.auth.token.email) in get(resource.data.parent).data.team
     }
     
+    function isMemberOfKeyResParent(document) {
+      return /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team
+    }
+    
+    
+    
     
     
     match /users/{user} {
@@ -56,9 +62,9 @@ service cloud.firestore {
     
     match /keyResults/{document}/progress/{progress} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isAdmin() || isMemberOfKeyResParent(document);
+      allow update: if isAdmin() || isMemberOfKeyResParent(document);
+      allow delete: if isAdmin() || isMemberOfKeyResParent(document);
     }
     
     match /objectives/{document} {
