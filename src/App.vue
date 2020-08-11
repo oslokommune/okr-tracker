@@ -1,10 +1,8 @@
 <template>
   <div class="l-app">
-    <header class="l-header">
-      <router-link to="/">Home</router-link>
-    </header>
+    <SiteHeader class="l-header"></SiteHeader>
     <main class="l-main">
-      <SidebarNavigation class="l-sidebar"></SidebarNavigation>
+      <SidebarNavigation v-if="user" class="l-sidebar"></SidebarNavigation>
       <router-view class="l-router-view"></router-view>
       <footer class="l-footer"></footer>
     </main>
@@ -12,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -24,14 +22,11 @@ export default {
 
   components: {
     SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
+    SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
   },
 
   computed: {
-    ...mapState(['user', 'showNewsfeed']),
-  },
-
-  methods: {
-    ...mapMutations(['SET_SHOW_NEWSFEED']),
+    ...mapState(['user']),
   },
 };
 
@@ -62,6 +57,7 @@ document.body.addEventListener('keydown', function () {
 }
 
 .l-router-view {
+  grid-column: 2;
   width: 100%;
   outline: 1px solid green;
 }
@@ -69,12 +65,5 @@ document.body.addEventListener('keydown', function () {
 .l-sidebar {
   height: calc(100vh - 5rem);
   outline: 1px solid blue;
-}
-
-.l-header {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 5rem;
 }
 </style>

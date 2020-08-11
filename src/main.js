@@ -46,7 +46,11 @@ let app;
 auth.onAuthStateChanged(async user => {
   store.commit('SET_USER', user);
 
-  await store.dispatch('init_state');
+  if (user) {
+    await store.dispatch('init_state');
+  } else {
+    await store.dispatch('reset_state');
+  }
 
   if (!app) {
     app = new Vue({
