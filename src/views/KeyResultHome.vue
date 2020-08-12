@@ -10,12 +10,12 @@
     <div>progression: {{ keyRes.progression }}</div>
 
     <form @submit.prevent="change">
-      <input type="number" v-model.number="keyRes.weight" />
+      <input type="number" v-model.number="keyRes.weight" step="any" />
       <button>Send</button>
     </form>
 
     <form @submit.prevent="addValue">
-      <input type="number" v-model="newValue" />
+      <input type="number" v-model.number="newValue" step="any" />
       <button>Send</button>
     </form>
 

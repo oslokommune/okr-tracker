@@ -99,10 +99,12 @@ async function populateProducts(products, parentPath) {
 
   products.forEach(async prod => {
     const { name, missionStatement, periods, kpis } = prod;
+    const team = prod.team.map(path => db.doc(path));
+
     const slug = slugify(name);
     const { path } = await db
       .collection(`${parentPath}/products`)
-      .add({ name, archived, slug, created, missionStatement });
+      .add({ name, archived, slug, created, missionStatement, team });
     await populatePeriods(periods, path);
     await populateKPIs(kpis, path);
   });

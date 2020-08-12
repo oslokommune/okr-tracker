@@ -66,8 +66,18 @@ function parseDepartmentData(dept) {
 }
 
 function parseProductData(product) {
+  const systemUsers = require('./users/systemUsers.json');
+  const team = [];
+
+  if (systemUsers.length && product.data.team) {
+    product.data.team.forEach(index => {
+      team.push(`users/${systemUsers[index].id}`);
+    });
+  }
+
   return {
     ...product.data,
+    team,
     periods: parseObjectivesData(product.objectives),
     kpis: product.kpis,
   };
