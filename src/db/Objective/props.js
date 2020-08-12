@@ -11,4 +11,8 @@ export default {
     type: 'object',
     required: true,
   },
+  weight: {
+    type: 'number',
+    required: true,
+  },
 };

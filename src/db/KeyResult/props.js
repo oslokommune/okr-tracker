@@ -27,4 +27,8 @@ export default {
     type: 'string',
     required: false,
   },
+  weight: {
+    type: 'number',
+    required: true,
+  },
 };

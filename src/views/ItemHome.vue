@@ -45,6 +45,17 @@
       </ul>
     </div>
 
+    <h3 class="title-4">Team</h3>
+    <div v-if="loading">Skeleton UI</div>
+    <div v-else>
+      <ul v-if="activeItem.team">
+        <li v-for="user in activeItem.team" :key="user.id">
+          {{ user.email }}
+          <span v-if="user.admin">(admin)</span>
+        </li>
+      </ul>
+    </div>
+
     <router-view></router-view>
   </div>
 </template>

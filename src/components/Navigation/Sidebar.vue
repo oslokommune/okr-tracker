@@ -19,15 +19,26 @@
         </li>
       </ul>
     </div>
+
+    <div class="sidebar__group">
+      <button @click="signOut">Sign out</button>
+    </div>
   </aside>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   computed: {
     ...mapState(['activeItem', 'sidebarGroups']),
+  },
+
+  methods: {
+    signOut() {
+      auth.signOut().then(this.$router.push.bind(null, '/'));
+    },
   },
 };
 </script>

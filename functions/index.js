@@ -58,3 +58,5 @@ exports.AuditKeyResultDelete = require('./audit').KeyResultDelete;
  * Listen for changes in progress and update key results and items accordingly
  */
 exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
+exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
+exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
