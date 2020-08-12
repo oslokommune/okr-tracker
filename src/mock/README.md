@@ -76,9 +76,10 @@ Files in the `objectives` folder must adhere to the structure above, where perio
 {
   "name": "My Product Name",
   "missionStatement": "My mission statement" // Markdown is supported,
-
-  // TODO: Teams
+  team: [0,1]
 }
+
+The `team` array must contain indecies for objects in the `customUsers.json` file. E.g. `[0, 1]` adds the first two custom users to the product team.
 ```
 
 ### Period data (myPeriod.json)

@@ -1,4 +1,5 @@
 {
   "name": "Nike",
-  "missionStatement": "Dette er mitt oppdrag"
+  "missionStatement": "Dette er mitt oppdrag",
+  "team": [0, 1]
 }
