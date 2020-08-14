@@ -15,7 +15,6 @@ const PROJECT_ID = (() => {
     }
     return process.env.VUE_APP_PROJECT_ID;
   } catch {
-    console.log('error is in projectID');
     return process.env.VUE_APP_PROJECT_ID;
   }
 })();
@@ -36,7 +35,6 @@ async function run() {
       const customUsersData = require('./users/customUsers.json'); // eslint-disable-line
       resolve(customUsersData);
     } catch {
-      console.log('error is in customUsers');
       resolve([]);
     }
   });
@@ -66,7 +64,7 @@ function parseDepartmentData(dept) {
 }
 
 function parseProductData(product) {
-  const systemUsers = require('./users/systemUsers.json');
+  const systemUsers = require('./users/customUsers.json');
   const team = [];
 
   if (systemUsers.length && product.data.team) {

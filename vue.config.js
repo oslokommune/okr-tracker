@@ -9,5 +9,13 @@ module.exports = {
 
   css: {
     sourceMap: true,
+    loaderOptions: {
+      sass: {
+        prependData: `
+        @import "@/styles/griddle-overrides.scss";
+        @import "@braid/griddle/scss/griddle.scss";
+        `,
+      },
+    },
   },
 };

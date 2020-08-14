@@ -17,6 +17,7 @@
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
   },
   "dependencies": {
+    "@braid/griddle": "^1.2.1",
     "@fortawesome/fontawesome-free": "^5.13.0",
     "babel-runtime": "^6.26.0",
     "blueimp-canvas-to-blob": "^3.20.0",

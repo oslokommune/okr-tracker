@@ -7,7 +7,9 @@ import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
+
 import { firestorePlugin } from 'vuefire';
+import { VueGriddle } from '@braid/griddle';
 
 import App from '@/App.vue';
 import router from '@/router';
@@ -38,6 +40,7 @@ Vue.use(firestorePlugin);
 
 // Global components
 Vue.component('v-select', VueSelect);
+Vue.component('Griddle', VueGriddle);
 
 Vue.config.productionTip = false;
 

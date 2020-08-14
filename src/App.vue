@@ -1,11 +1,13 @@
 <template>
-  <div class="l-app">
-    <SiteHeader class="l-header"></SiteHeader>
-    <main class="l-main">
-      <SidebarNavigation v-if="user" class="l-sidebar"></SidebarNavigation>
-      <router-view class="l-router-view"></router-view>
-      <footer class="l-footer"></footer>
+  <div class="app">
+    <SiteHeader class="header"></SiteHeader>
+    <Breadcrumbs></Breadcrumbs>
+    <main class="container">
+      <SidebarNavigation v-if="user" class="sidebar"></SidebarNavigation>
+      <router-view class="main-view"></router-view>
+      <footer class="footer">footer</footer>
     </main>
+    <Griddle />
   </div>
 </template>
 
@@ -23,6 +25,7 @@ export default {
   components: {
     SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
+    Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
   },
 
   computed: {
@@ -44,26 +47,46 @@ document.body.addEventListener('keydown', function () {
 </style>
 
 <style lang="scss" scoped>
-.l-app {
-  display: grid;
-  grid-template-rows: auto auto;
+@import '@/styles/_colors.scss';
+.app {
+  min-height: 100vh;
+  background: $color-bg;
 }
 
-.l-main {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 24rem 100%;
-  max-width: 1200px;
+.container {
+  @include container();
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.l-router-view {
-  grid-column: 2;
-  width: 100%;
-  outline: 1px solid green;
+.sidebar {
+  display: none;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(3);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(2);
+  }
 }
 
-.l-sidebar {
-  height: calc(100vh - 5rem);
-  outline: 1px solid blue;
+.main-view {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+  }
+  @media screen and (min-width: bp(l)) {
+    width: span(10);
+  }
+
+  margin-left: span(0, 1);
+}
+
+.footer {
+  grid-column: 1 / 3;
+  background: white;
 }
 </style>
