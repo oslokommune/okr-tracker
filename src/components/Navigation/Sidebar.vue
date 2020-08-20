@@ -13,8 +13,12 @@
                 (activeItem && activeItem.organization && activeItem.organization.id === item.id),
             }"
           >
-            <em :class="`fas fa-fw fa-${group.icon}`"></em>
+            <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
             {{ item.name }}
+            <span
+              class="sidebar__user-icon fas fa-user-circle"
+              v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
+            ></span>
           </router-link>
         </li>
       </ul>
@@ -32,7 +36,7 @@ import { auth } from '@/config/firebaseConfig';
 
 export default {
   computed: {
-    ...mapState(['activeItem', 'sidebarGroups']),
+    ...mapState(['activeItem', 'sidebarGroups', 'user']),
   },
 
   methods: {
@@ -68,9 +72,12 @@ export default {
 
 .sidebar__link {
   display: block;
+  display: flex;
+  align-items: center;
   padding: 0.35rem;
   color: #2a2859;
   font-weight: 400;
+  text-decoration: none;
   border-radius: 2px;
   -webkit-user-drag: none;
 
@@ -82,5 +89,15 @@ export default {
   &.router-link-active-parent {
     font-weight: 500;
   }
+}
+
+.sidebar__user-icon {
+  display: inline-block;
+  margin-left: auto;
+  font-size: 0.85em;
+}
+
+.sidebar__category-icon {
+  margin-right: 0.35rem;
 }
 </style>

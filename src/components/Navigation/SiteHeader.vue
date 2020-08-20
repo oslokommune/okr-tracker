@@ -36,15 +36,29 @@ export default {
 .container {
   @include container();
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   height: 4rem;
+
+  @media screen and (min-width: bp(m)) {
+    flex-direction: row;
+  }
 }
 
 .logo {
-  width: span(2);
+  width: span(4);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(3);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(2);
+  }
 }
 
 .item {
+  flex-grow: 1;
   margin-left: span(0, 1);
 }
 
