@@ -6,43 +6,32 @@
       {{ activePeriod.endDate | formatDate }}
     </div>
 
-    <div class="actions">
+    <div class="views">
       <button
-        v-for="action in actions"
-        class="action"
-        :class="{ active: action.id === activeView }"
-        :key="action.id"
-        @click="setView(action.id)"
+        v-for="view in views"
+        class="view"
+        :class="{ active: view.id === activeView }"
+        :key="view.id"
+        @click="SET_VIEW(view.id)"
       >
-        <span class="action__icon"></span>
-        <span class="action__name">{{ action.label }}</span>
+        <span class="view__icon"></span>
+        <span class="view__name">{{ view.label }}</span>
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { format } from 'date-fns';
 
 export default {
-  data: () => ({
-    activeView: 'compact',
-    actions: [
-      { label: 'Kompakt', id: 'compact', icon: '' },
-      { label: 'Detaljer', id: 'details', icon: '' },
-      { label: 'Utvided', id: 'expanded', icon: '' },
-    ],
-  }),
-
   computed: {
-    ...mapState(['activePeriod']),
+    ...mapState(['activePeriod', 'views', 'activeView']),
   },
 
   methods: {
-    setView(view) {
-      this.activeView = view;
-    },
+    ...mapMutations(['SET_VIEW']),
   },
 
   filters: {
@@ -84,7 +73,7 @@ export default {
   }
 }
 
-.action {
+.view {
   font-weight: 500;
   background: none;
   border: none;
@@ -92,7 +81,7 @@ export default {
   opacity: 0.6;
 }
 
-.action.active {
+.view.active {
   opacity: 1;
 }
 </style>
