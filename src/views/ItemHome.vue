@@ -1,65 +1,28 @@
 <template>
   <div class="item">
     <div class="main">
-      <h2 class="title-2">Mål og nøkkelresultater</h2>
+      <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
+      <h2 class="title-2">Mål og nøkkelresultater</h2>
       <period-selector></period-selector>
       <action-bar></action-bar>
 
-      <h3 class="title-4">Objectives</h3>
       <div v-if="loading">Skeleton UI</div>
       <div v-else>
-        <ul v-if="objectives">
-          <li v-for="objective in objectives" :key="objective.id">
-            {{ objective.name }} ({{ objective.progression }})
-          </li>
-        </ul>
-      </div>
-
-      <h3 class="title-4">Key results</h3>
-      <div v-if="loading">Skeleton UI</div>
-      <div v-else>
-        <ul v-if="keyResults">
-          <li v-for="keyResult in keyResults" :key="keyResult.id">
-            <router-link :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }">
-              {{ keyResult.name }} ({{ keyResult.progression }})
-            </router-link>
-          </li>
-        </ul>
-      </div>
-
-      <h3 class="title-4">KPIs</h3>
-      <div v-if="loading">Skeleton UI</div>
-      <div v-else>
-        <ul v-if="kpis">
-          <li v-for="kpi in kpis" :key="kpi.id">{{ kpi.name }}</li>
-        </ul>
-      </div>
-
-      <h3 class="title-4">Team</h3>
-      <div v-if="loading">Skeleton UI</div>
-      <div v-else>
-        <ul v-if="activeItem.team">
-          <li v-for="user in activeItem.team" :key="user.id">
-            {{ user.email }}
-            <span v-if="user.admin">(admin)</span>
+        <ul v-if="tree">
+          <li v-for="objective in tree" :key="objective.id" class="group">
+            <ObjectiveRow :objective="objective"></ObjectiveRow>
+            <ul v-if="objective.keyResults">
+              <li v-for="keyResult in objective.keyResults" :key="keyResult.id">
+                <KeyResultRow :key-result="keyResult"></KeyResultRow>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
     </div>
 
-    <aside v-if="activeItem" class="widgets">
-      <section v-if="activeItem.missionStatement" class="widget">
-        <header class="widget__header">
-          <span class="widget__icon fas fa-fw fa-file"></span>
-          <span class="widget__title">Oppdrag</span>
-          <span class="widget__toggle fas fa-fw fa-minus"></span>
-        </header>
-        <div class="widget__body">
-          {{ activeItem.missionStatement }}
-        </div>
-      </section>
-    </aside>
+    <Widgets></Widgets>
 
     <router-view></router-view>
   </div>
@@ -77,10 +40,23 @@ export default {
   components: {
     PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),
+    Widgets: () => import('@/components/widgets/Widgets.vue'),
+    Kpis: () => import('@/components/Kpis.vue'),
+    ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
+    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
   },
 
   computed: {
     ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis']),
+
+    tree() {
+      return this.objectives.map(objective => {
+        objective.keyResults = this.keyResults.filter(keyRes => {
+          return keyRes.objective === `objectives/${objective.id}`;
+        });
+        return objective;
+      });
+    },
   },
 
   mounted() {
@@ -127,13 +103,9 @@ export default {
   }
 }
 
-.widgets {
-  @media screen and (min-width: bp(l)) {
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    margin-left: span(1, 2, span(10));
-  }
+.group {
+  margin-bottom: 1rem;
+  background: white;
+  box-shadow: 0 2px 2px rgba(black, 0.06);
 }
 </style>
