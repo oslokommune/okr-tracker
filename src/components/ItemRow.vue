@@ -4,7 +4,7 @@
 
     <span class="item__name">{{ data.name }}</span>
 
-    <ProgressBar :progression="progression"></ProgressBar>
+    <ProgressBar class="progress-bar" :progression="progression"></ProgressBar>
 
     <span class="item__chevron fas fa-chevron-right"></span>
   </router-link>
@@ -102,5 +102,13 @@ export default {
   transform: translateX(-0.5rem);
   opacity: 0;
   transition: all 0.1s ease-in;
+}
+
+.progress-bar {
+  width: span(1, 0, span(6));
+
+  @media screen and (min-width: bp(l)) {
+    width: span(2, 0, span(6));
+  }
 }
 </style>
