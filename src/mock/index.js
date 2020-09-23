@@ -7,6 +7,12 @@ const dataDir = require('data-dir'); // eslint-disable-line
 const { emulators } = require('../../firebase.json');
 const { region } = require('../../functions/config');
 
+try {
+  require('./users/customUsers.json');
+} catch {
+  throw Error('Missing customUsers.json');
+}
+
 const PROJECT_ID = (() => {
   try {
     if (fs.existsSync('./.firebaserc')) {
@@ -67,9 +73,11 @@ function parseProductData(product) {
   const systemUsers = require('./users/customUsers.json');
   const team = [];
 
-  if (systemUsers.length && product.data.team) {
+  if (systemUsers.length && product.data.team && product.data.team.length) {
     product.data.team.forEach(index => {
-      team.push(`users/${systemUsers[index].id}`);
+      if (systemUsers[index] && systemUsers[index].id) {
+        team.push(`users/${systemUsers[index].id}`);
+      }
     });
   }
 

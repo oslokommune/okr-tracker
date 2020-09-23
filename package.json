@@ -3,16 +3,13 @@
   "version": "1.4.2",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "firebase emulators:start & ( sleep 10 && node ./src/mock ) & ( sleep 15 && node ./src/migrate ) & vue-cli-service serve",
     "build": "vue-cli-service build",
-    "transform-data": "node ./src/migrate",
     "test:e2e": "vue-cli-service test:e2e --mode e2e",
     "test:e2e:headless": " firebase emulators:exec --project origo-okr-tracker 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'",
-    "lint": "vue-cli-service lint",
     "deploy": "npm run build && firebase deploy --project=production",
     "deploy:dev": "vue-cli-service build --mode staging && firebase deploy --project=development",
-    "local": "firebase emulators:start & ( sleep 10 && node ./src/mock ) & npm run serve",
-    "local:injectmock": "node ./src/mock",
+    "lint": "vue-cli-service lint",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
   },
