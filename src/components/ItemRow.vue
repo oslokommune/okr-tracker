@@ -4,9 +4,7 @@
 
     <span class="item__name">{{ data.name }}</span>
 
-    <div class="item__progression">
-      <div class="bar" :style="{ width: `${progression * 100}%` }"></div>
-    </div>
+    <ProgressBar class="progress-bar" :progression="progression"></ProgressBar>
 
     <span class="item__chevron fas fa-chevron-right"></span>
   </router-link>
@@ -17,6 +15,10 @@ export default {
   data: () => ({
     progression: null,
   }),
+
+  components: {
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
+  },
 
   computed: {
     icon() {
@@ -102,16 +104,11 @@ export default {
   transition: all 0.1s ease-in;
 }
 
-.item__progression {
-  position: relative;
-  width: span(1, 0, span(10));
-  height: 4px;
-  margin-right: 1rem;
-  background: $color-grey-100;
-}
+.progress-bar {
+  width: span(1, 0, span(6));
 
-.bar {
-  height: 100%;
-  background: $color-yellow;
+  @media screen and (min-width: bp(l)) {
+    width: span(2, 0, span(6));
+  }
 }
 </style>

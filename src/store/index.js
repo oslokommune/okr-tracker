@@ -36,6 +36,10 @@ export const mutations = {
   SET_ACTIVE_ITEM_REF(state, payload) {
     state.activeItemRef = payload;
   },
+
+  SET_VIEW(state, payload) {
+    state.activeView = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -53,6 +57,12 @@ export default new Vuex.Store({
     objectives: [],
     keyResults: [],
     kpis: [],
+    activeView: 'compact',
+    views: [
+      { label: 'Kompakt', id: 'compact', icon: '' },
+      { label: 'Detaljer', id: 'details', icon: '' },
+      { label: 'Utvided', id: 'expanded', icon: '' },
+    ],
   },
   getters,
   mutations,

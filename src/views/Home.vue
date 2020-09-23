@@ -51,9 +51,11 @@ export default {
 <style lang="scss" scoped>
 .items {
   width: span(12);
+  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(m)) {
     width: span(9, 0, span(9));
+    margin-top: 1rem;
   }
 
   @media screen and (min-width: bp(l)) {
@@ -61,8 +63,7 @@ export default {
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-    margin-left: span(1, 1, span(10));
+    margin-top: 1.5rem;
   }
 }
 
@@ -70,5 +71,9 @@ export default {
   background: white;
   border-radius: 2px;
   box-shadow: 0 0.15rem 0.15rem rgba(black, 0.07);
+
+  @media screen and (min-width: bp(l)) {
+    margin-bottom: 1rem;
+  }
 }
 </style>
