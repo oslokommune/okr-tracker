@@ -29,7 +29,7 @@ const routes = [
     beforeEnter: routerGuards.itemHome,
   },
   {
-    path: '/:slug/keyresult/:keyResultId',
+    path: '/:slug/:keyResultId',
     name: 'KeyResultHome',
     component: () => import('@/views/KeyResultHome.vue'),
     beforeEnter: routerGuards.keyResultHome,
