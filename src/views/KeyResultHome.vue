@@ -71,16 +71,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal {
-  position: fixed;
-  top: 2rem;
-  left: 2rem;
-  width: calc(100vw - 4rem);
-  height: calc(100vh - 4rem);
-  padding: 2rem;
-  overflow: auto;
-  background: white;
-  border-radius: 2px;
-  box-shadow: 0 8px 24px rgba(black, 0.2);
-}
 </style>

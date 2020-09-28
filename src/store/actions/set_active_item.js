@@ -5,10 +5,12 @@ import { db } from '@/config/firebaseConfig';
  * When navigating to an organization, department or product, the 'item' is stored along with its
  * related data (its own reference, periods, objectives, key results, kpis) in the store.
  */
-export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, commit, dispatch }, item) => {
+export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, commit, dispatch, state }, item) => {
   if (!item) {
     return unbindFirestoreRef('activeItem');
   }
+
+  if (state.activeItemRef && item.id === state.activeItemRef.id) return true;
 
   // Store the document reference
   commit('SET_ACTIVE_ITEM_REF', item);

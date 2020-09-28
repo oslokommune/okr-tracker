@@ -27,15 +27,12 @@ const routes = [
     name: 'ItemHome',
     component: () => import('@/views/ItemHome.vue'),
     beforeEnter: routerGuards.itemHome,
-
-    children: [
-      {
-        path: ':keyResultId',
-        name: 'KeyResultHome',
-        component: () => import('@/views/KeyResultHome.vue'),
-        beforeEnter: routerGuards.keyResultHome,
-      },
-    ],
+  },
+  {
+    path: '/:slug/keyresult/:keyResultId',
+    name: 'KeyResultHome',
+    component: () => import('@/views/KeyResultHome.vue'),
+    beforeEnter: routerGuards.keyResultHome,
   },
 ];
 

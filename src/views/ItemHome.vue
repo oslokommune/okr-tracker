@@ -63,11 +63,6 @@ export default {
     this.loading = false;
   },
 
-  async beforeRouteLeave(to, from, next) {
-    this.loading = true;
-    next();
-  },
-
   async beforeRouteUpdate(to, from, next) {
     this.loading = true;
     if (to.params.slug !== from.params.slug) {
