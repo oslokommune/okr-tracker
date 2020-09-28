@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main">
     <div class="login">
       <div class="section">
         <h1 class="title-1">{{ $t('login.notLoggedIn') }}</h1>
@@ -75,7 +75,7 @@ export default {
       this.pending = true;
       auth
         .signInWithPopup(loginProvider)
-        .then(response => {
+        .then(() => {
           this.$router.push('/');
         })
         .catch(err => {
@@ -131,17 +131,29 @@ export default {
 @import '../styles/_colors.scss';
 
 .login {
-  max-width: 500px;
+  width: span(12);
+
+  @media screen and (min-width: bp(s)) {
+    width: span(6);
+  }
+
+  @media screen and (min-width: bp(m)) {
+    width: span(4, 0, span(9));
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(4, 0, span(10));
+  }
 }
 
 .form-login {
   display: flex;
 }
 
-.container {
+.main {
   display: flex;
   align-items: center;
-  min-height: calc(80vh - 5rem);
+  padding-top: 2rem;
 }
 
 .error {

@@ -24,8 +24,23 @@
       </ul>
     </div>
 
-    <div class="sidebar__group">
-      <button @click="signOut">Sign out</button>
+    <div class="sidebar__group sidebar__bottom button-col">
+      <router-link :to="{ name: 'admin' }" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-cogs"></span>
+        <span class="btn--label">Admin</span>
+      </router-link>
+      <router-link :to="{ name: 'help' }" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-question-circle"></span>
+        <span class="btn--label">Help</span>
+      </router-link>
+      <router-link :to="{ name: 'contact' }" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-envelope"></span>
+        <span class="btn--label">Contact</span>
+      </router-link>
+      <button @click="signOut" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-sign-out-alt"></span>
+        <span class="btn--label">Sign out</span>
+      </button>
     </div>
   </aside>
 </template>
@@ -49,11 +64,16 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
   padding: 1.5rem 0;
 }
 
-.sidebar__group {
-  margin-bottom: 1rem;
+.sidebar__bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
 }
 
 .label {
