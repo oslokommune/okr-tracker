@@ -11,7 +11,7 @@
           </span>
           <div>{{ activeKeyResult.currentValue }} {{ activeKeyResult.unit }}</div>
 
-          <button>Oppdater verdi</button>
+          <button class="btn btn--borderless">Oppdater verdi</button>
         </div>
 
         <div class="second__graph">
@@ -23,7 +23,7 @@
 
       <h2 class="title-2">Historikk</h2>
 
-      <table v-if="progress">
+      <table v-if="progress" class="table">
         <thead>
           <tr>
             <th>Verdi</th>
@@ -36,11 +36,14 @@
         <tbody>
           <tr v-for="p in progress" :key="p.id">
             <td>{{ p.value }}</td>
-            <td>{{ p.timestamp.toDate() }}</td>
+            <td>{{ formatDate(p.timestamp.toDate()) }}</td>
             <td>{{ p.createdBy.displayName || p.createdBy.id }}</td>
-            <td v-if="p.comment"><i class="fa fa-comment"></i></td>
-            <td>
-              <button>Slett</button>
+            <td v-if="p.comment"><i class="fa fa-comment-alt"></i></td>
+            <td style="width: 1rem;">
+              <button class="btn btn--borderless">
+                <i class="fas fa-fw fa-trash"></i>
+                Slett
+              </button>
             </td>
           </tr>
         </tbody>
@@ -53,6 +56,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { format } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import KeyResult from '@/db/KeyResult';
@@ -101,6 +105,10 @@ export default {
     remove(id) {
       Progress.remove(this.activeKeyResult.id, id);
     },
+
+    formatDate(date) {
+      return format(date, 'dd.MM.yyyy HH:mm');
+    },
   },
 
   watch: {
@@ -138,7 +146,6 @@ export default {
 
     padding: 1rem;
     background: white;
-    border: 1px solid $color-grey-100;
     box-shadow: 0 2px 3px rgba(black, 0.1);
   }
 
@@ -148,7 +155,6 @@ export default {
     margin-left: span(0, 1);
     padding: 1rem;
     background: white;
-    border: 1px solid $color-grey-100;
     box-shadow: 0 2px 3px rgba(black, 0.1);
   }
 }
@@ -173,5 +179,31 @@ export default {
   margin-bottom: 1rem;
   background: white;
   box-shadow: 0 2px 2px rgba(black, 0.06);
+}
+
+.table,
+.md table {
+  width: 100%;
+  margin: 2rem 0 1rem;
+  border-bottom: 1px solid $color-border;
+
+  th {
+    font-weight: 500;
+  }
+
+  thead {
+    th {
+      border-top: none;
+    }
+  }
+
+  th,
+  td {
+    height: 3rem;
+    padding: 0 0.5rem;
+    text-align: left;
+    vertical-align: middle;
+    border-top: 1px solid $color-border;
+  }
 }
 </style>
