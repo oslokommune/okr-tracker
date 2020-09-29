@@ -3,20 +3,29 @@
     <div class="main">
       <h1 class="title-2">{{ activeKeyResult.name }}</h1>
 
-      <div class="second">
-        <div class="second__value" style="display: flex; flex-direction: column;">
-          <span>
+      <div class="main-widgets">
+        <div class="main-widgets__value" style="display: flex; flex-direction: column;">
+          <h3 class="main-widgets__title">
             <i class="fas fa-chart-line"></i>
             Verdi
-          </span>
-          <div>{{ activeKeyResult.currentValue }} {{ activeKeyResult.unit }}</div>
+          </h3>
+          <div class="main-widgets__current__value">
+            {{ activeKeyResult.currentValue }}
+          </div>
+
+          <div class="main-widgets__current__unit">
+            {{ activeKeyResult.unit }}
+          </div>
 
           <button class="btn btn--borderless">Oppdater verdi</button>
         </div>
 
-        <div class="second__graph">
-          <i class="fas fa-chart-line"></i>
-          Progresjon
+        <div class="main-widgets__graph">
+          <h3 class="main-widgets__title">
+            <i class="fas fa-chart-line"></i>
+            Progresjon
+          </h3>
+
           <svg class="graph" ref="graph"></svg>
         </div>
       </div>
@@ -139,18 +148,27 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+@import '@/styles/typography.scss';
 
 .keyres {
   display: flex;
   flex-wrap: wrap;
 }
 
-.second {
+.main-widgets {
   display: flex;
   width: 100%;
   margin-bottom: 2rem;
 
-  &__value {
+  &__title {
+    margin-bottom: 0.5rem;
+    color: $color-grey-400;
+    font-weight: 500;
+    font-size: $font-size-0;
+    text-transform: uppercase;
+  }
+
+  &__current {
     align-self: flex-start;
     width: span(2, 0, span(7));
     margin-bottom: 0.5rem;
@@ -158,12 +176,25 @@ export default {
     padding: 1rem;
     background: white;
     box-shadow: 0 2px 3px rgba(black, 0.1);
+
+    &__value {
+      color: $color-yellow;
+      font-weight: 700;
+      font-size: 50px;
+    }
+
+    &__unit {
+      margin-top: -0.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
   }
 
   &__graph {
     width: span(5, 0, span(7));
 
-    margin-left: span(0, 1);
+    margin-left: span(0, 2);
     padding: 1rem;
     background: white;
     box-shadow: 0 2px 3px rgba(black, 0.1);
