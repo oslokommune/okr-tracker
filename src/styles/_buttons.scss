@@ -11,11 +11,17 @@
   color: $color-purple;
   font-weight: 500;
   font-size: 1rem;
+  white-space: nowrap;
   text-decoration: none;
   background: $color-grey-100;
   border: none;
   border-radius: 2px;
   cursor: pointer;
+}
+
+.btn--pri {
+  color: $color-purple;
+  background: $color-yellow;
 }
 
 .btn--icon {

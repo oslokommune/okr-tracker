@@ -30,8 +30,15 @@ export default {
   },
 
   methods: {
-    send() {
-      RequestAccess.create({ email: this.email });
+    async send() {
+      try {
+        await RequestAccess.create({ email: this.email });
+        this.$toasted.show('Successfully registered your access request');
+        this.$router.push({ name: 'login' });
+      } catch {
+        this.email = '';
+        this.$toasted.error('Could not register your access request');
+      }
     },
   },
 
@@ -52,11 +59,11 @@ export default {
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(4, 0, span(9));
+    width: span(6, 0, span(9));
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(4, 0, span(10));
+    width: span(6, 0, span(10));
   }
 }
 
