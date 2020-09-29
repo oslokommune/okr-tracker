@@ -1,6 +1,3 @@
-import { db } from '@/config/firebaseConfig';
+import * as User from './User';
 
-const collectionReference = db.collection('users');
-
-export const getAllUserIds = () => collectionReference.get().then(({ docs }) => docs.map(({ id }) => id));
-export const getUserFromId = id => collectionReference.doc(id).get();
+export default User;

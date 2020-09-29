@@ -19,6 +19,12 @@ const routes = [
     beforeEnter: routerGuards.login,
   },
   {
+    path: '/request-access',
+    name: 'request-access',
+    component: () => import('@/views/RequestAccess.vue'),
+    beforeEnter: routerGuards.requestAccess,
+  },
+  {
     path: '/404',
     name: 'Not found',
     component: () => import('@/views/NotFound.vue'),

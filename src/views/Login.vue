@@ -44,6 +44,11 @@
         </div>
         <hr />
       </div>
+
+      <div class="section">
+        <h2 class="title-2">Request access</h2>
+        <router-link :to="{ name: 'request-access' }">Request access</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -105,14 +110,6 @@ export default {
         this.$errorHandler('login_error', err);
       });
     },
-  },
-
-  beforeRouteEnter(to, from, next) {
-    if (auth.currentUser) {
-      next('/');
-    } else {
-      next();
-    }
   },
 
   mounted() {

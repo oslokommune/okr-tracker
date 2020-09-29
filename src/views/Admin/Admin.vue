@@ -18,7 +18,10 @@
       <li>
         <router-link exact class="tab" :to="{ name: 'AdminAccessRequests' }" active-class="active">
           <span class="tab__icon fas fa-user-plus"></span>
-          <span class="tab__name">Access requests</span>
+          <span class="tab__name"
+            >Access requests
+            <span v-if="requestAccess.length > 0">({{ requestAccess.length }})</span>
+          </span>
         </router-link>
       </li>
 
@@ -34,7 +37,17 @@
 </template>
 
 <script>
+import { db } from '@/config/firebaseConfig';
+
 export default {
   name: 'Admin',
+
+  data: () => ({
+    requestAccess: [],
+  }),
+
+  firestore: {
+    requestAccess: db.collection('requestAccess'),
+  },
 };
 </script>
