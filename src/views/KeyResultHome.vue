@@ -1,5 +1,5 @@
 <template>
-  <div class="keyres">
+  <div class="keyres" v-if="activeKeyResult">
     <div class="main">
       <h1 class="title-2">{{ activeKeyResult.name }}</h1>
 
@@ -41,7 +41,7 @@
             <td v-if="p.comment"><i class="fa fa-comment-alt"></i></td>
             <td style="width: 1rem;">
               <button class="btn btn--borderless">
-                <i class="fas fa-fw fa-trash"></i>
+                <i class="far fa-trash-alt"></i>
                 Slett
               </button>
             </td>
@@ -71,6 +71,16 @@ export default {
     newValue: null,
     graph: null,
   }),
+
+  async beforeRouteLeave(to, from, next) {
+    try {
+      await this.$store.dispatch('set_active_key_result', null);
+      return next();
+    } catch (error) {
+      console.error(error);
+      next(false);
+    }
+  },
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod']),
@@ -114,8 +124,9 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      async handler({ id }) {
-        await this.$bind('progress', db.collection(`keyResults/${id}/progress`).orderBy('timestamp', 'desc'));
+      async handler(keyresult) {
+        if (!keyresult) return;
+        await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`).orderBy('timestamp', 'desc'));
 
         if (this.graph) {
           this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);

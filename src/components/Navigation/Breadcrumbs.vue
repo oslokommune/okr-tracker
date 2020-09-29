@@ -3,10 +3,14 @@
     <nav class="breadcrumbs__nav">
       <ul class="breadcrumbs__list">
         <li class="breadcrumbs__item" v-for="item in breadcrumbs" :key="item.id">
-          <router-link class="breadcrumbs__link" :to="item.route">
+          <router-link v-if="item.route" class="breadcrumbs__link" :to="item.route">
             <span class="breadcrumbs__icon fas" :class="`fa-${item.icon}`"></span>
             <span class="breadcrumbs__label">{{ item.label }}</span>
           </router-link>
+          <span class="breadcrumbs__link" v-else>
+            <span class="breadcrumbs__icon fas" :class="`fa-${item.icon}`"></span>
+            <span class="breadcrumbs__label">{{ item.label }}</span>
+          </span>
         </li>
       </ul>
     </nav>
@@ -27,7 +31,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem']),
+    ...mapState(['activeItem', 'activeKeyResult']),
   },
 
   watch: {
@@ -62,6 +66,20 @@ export default {
             label: name,
             route: `/${slug}`,
             icon,
+          });
+        }
+
+        if (this.activeKeyResult) {
+          const { objective, name } = this.activeKeyResult;
+
+          list.push({
+            label: objective.name,
+            icon: 'trophy',
+          });
+
+          list.push({
+            label: name,
+            icon: 'file-contract',
           });
         }
 
