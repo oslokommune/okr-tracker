@@ -97,19 +97,13 @@ export default {
         email = process.env.VUE_APP_TESTUSER_USER;
       }
 
-      const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
+      await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {
           this.error = 3;
         }
         this.$errorHandler('login_error', err);
       });
-
-      if (user) {
-        this.$router.push('/');
-      } else {
-        this.error = 3;
-      }
     },
   },
 

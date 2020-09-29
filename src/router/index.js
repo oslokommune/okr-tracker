@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/views/Home.vue';
-import routerGuards from './router-guards';
+import * as routerGuards from './router-guards';
 
 Vue.use(Router);
 
@@ -16,6 +16,7 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/Login.vue'),
+    beforeEnter: routerGuards.login,
   },
   {
     path: '/404',

@@ -47,16 +47,23 @@ Vue.config.productionTip = false;
 let app;
 
 auth.onAuthStateChanged(async user => {
-  const userData = await db.doc(`users/${user.email}`).get();
-
-  if (userData.exists) {
-    await store.dispatch('init_state');
-    user.admin = userData.data().admin || false;
-
-    store.commit('SET_USER', user);
-  } else {
+  if (!user) {
     await store.dispatch('reset_state');
     store.commit('SET_USER', null);
+  } else {
+    const userData = await db.doc(`users/${user.email}`).get();
+
+    if (userData.exists) {
+      await store.dispatch('init_state');
+      user.admin = userData.data().admin || false;
+
+      store.commit('SET_USER', user);
+      router.push('/');
+    } else {
+      await store.dispatch('reset_state');
+      store.commit('SET_USER', null);
+      router.push('/login');
+    }
   }
 
   if (!app) {

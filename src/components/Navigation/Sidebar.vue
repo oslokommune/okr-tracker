@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 
 export default {
@@ -55,8 +55,13 @@ export default {
   },
 
   methods: {
-    signOut() {
-      auth.signOut().then(this.$router.push.bind(null, '/'));
+    ...mapActions(['reset_state']),
+
+    async signOut() {
+      await auth.signOut();
+      await this.reset_state();
+
+      this.$router.push('/login');
     },
   },
 };
