@@ -4,7 +4,7 @@
       <h1 class="title-2">{{ activeKeyResult.name }}</h1>
 
       <div class="main-widgets">
-        <div class="main-widgets__value" style="display: flex; flex-direction: column;">
+        <div class="main-widgets__current" style="display: flex; flex-direction: column;">
           <h3 class="main-widgets__title">
             <i class="fas fa-chart-line"></i>
             Verdi
@@ -59,7 +59,7 @@
       </table>
     </div>
 
-    <widgets></widgets>
+    <widgets-key-result-home></widgets-key-result-home>
   </div>
 </template>
 
@@ -74,7 +74,7 @@ import LineChart from '@/util/LineChart';
 export default {
   name: 'KeyResultHome',
 
-  components: { Widgets: () => import('@/components/widgets/Widgets.vue') },
+  components: { WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue') },
   data: () => ({
     progress: [],
     newValue: null,
