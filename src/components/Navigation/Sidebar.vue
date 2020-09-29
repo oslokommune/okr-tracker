@@ -25,15 +25,15 @@
     </div>
 
     <div class="sidebar__group sidebar__bottom button-col">
-      <router-link :to="{ name: 'admin' }" class="btn btn--ter btn--icon">
+      <router-link v-if="user.admin" :to="{ name: 'AdminSystem' }" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-cogs"></span>
         <span class="btn--label">Admin</span>
       </router-link>
-      <router-link :to="{ name: 'help' }" class="btn btn--ter btn--icon">
+      <router-link :to="'#'" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-question-circle"></span>
         <span class="btn--label">Help</span>
       </router-link>
-      <router-link :to="{ name: 'contact' }" class="btn btn--ter btn--icon">
+      <router-link :to="'#'" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-envelope"></span>
         <span class="btn--label">Contact</span>
       </router-link>

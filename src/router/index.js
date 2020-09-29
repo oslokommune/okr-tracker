@@ -8,7 +8,7 @@ Vue.use(Router);
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: Home,
     beforeEnter: routerGuards.home,
   },
@@ -21,6 +21,34 @@ const routes = [
     path: '/404',
     name: 'Not found',
     component: () => import('@/views/NotFound.vue'),
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    beforeEnter: routerGuards.admin,
+    component: () => import('@/views/Admin/Admin.vue'),
+    children: [
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('@/views/Admin/AdminUsers.vue'),
+      },
+      {
+        path: 'items',
+        name: 'AdminItems',
+        component: () => import('@/views/Admin/AdminItems.vue'),
+      },
+      {
+        path: 'access-requests',
+        name: 'AdminAccessRequests',
+        component: () => import('@/views/Admin/AdminAccessRequests.vue'),
+      },
+      {
+        path: 'system',
+        name: 'AdminSystem',
+        component: () => import('@/views/Admin/AdminSystem.vue'),
+      },
+    ],
   },
   {
     path: '/:slug',

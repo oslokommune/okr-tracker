@@ -36,33 +36,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
-.tabs {
-  display: flex;
-  margin: 1rem 0;
-  border-bottom: 1px solid $color-grey-200;
-}
-
-.tab {
-  padding: 0.5rem 0.5rem;
-  color: $color-grey-700;
-  font-weight: 500;
-  background: none;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-
-  &.active {
-    color: $color-grey-900;
-    border-bottom-color: black;
-  }
-}
-
-.tab__icon {
-  margin-right: 0.35rem;
-  color: $color-grey-700;
-}
-</style>

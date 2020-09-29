@@ -96,11 +96,24 @@ export default {
   }
 }
 
+.breadcrumbs__item {
+  display: none;
+
+  &:nth-of-type(1) {
+    display: block;
+  }
+
+  @media screen and (min-width: bp(xs)) {
+    display: block;
+  }
+}
+
 .breadcrumbs__link {
   position: relative;
   display: block;
   padding: 0.5rem;
   color: $color-grey-900;
+  white-space: nowrap;
   text-decoration: none;
 
   &::after {

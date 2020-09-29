@@ -21,7 +21,7 @@ import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-const { auth } = require('./config/firebaseConfig');
+const { auth, db } = require('./config/firebaseConfig');
 
 Vue.config.productionTip = false;
 
@@ -47,12 +47,16 @@ Vue.config.productionTip = false;
 let app;
 
 auth.onAuthStateChanged(async user => {
-  store.commit('SET_USER', user);
+  const userData = await db.doc(`users/${user.email}`).get();
 
-  if (user) {
+  if (userData.exists) {
     await store.dispatch('init_state');
+    user.admin = userData.data().admin || false;
+
+    store.commit('SET_USER', user);
   } else {
     await store.dispatch('reset_state');
+    store.commit('SET_USER', null);
   }
 
   if (!app) {
