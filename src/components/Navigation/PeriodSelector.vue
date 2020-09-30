@@ -1,15 +1,15 @@
 <template>
-  <ul v-if="periods && activePeriod" class="tabs">
+  <ul v-if="periods" class="tabs">
     <li v-for="period in periods" :key="period.id">
       <button
         @click="set_active_period_and_data(period.id)"
-        :disabled="period.id === activePeriod.id"
+        :disabled="activePeriod && period.id === activePeriod.id"
         class="tab"
-        :class="{ active: period.id === activePeriod.id }"
+        :class="{ active: activePeriod && period.id === activePeriod.id }"
       >
         <span
           class="tab__icon"
-          :class="period.id === activePeriod.id ? 'fas fa-calendar-alt' : 'far fa-calendar'"
+          :class="activePeriod && period.id === activePeriod.id ? 'fas fa-calendar-alt' : 'far fa-calendar'"
         ></span>
         <span class="tab__name">{{ period.name }}</span>
       </button>

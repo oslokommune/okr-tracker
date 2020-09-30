@@ -1,38 +1,10 @@
 <template>
-  <div>
-    <ul class="tabs">
-      <li>
-        <router-link exact class="tab" :to="{ name: 'AdminUsers' }" active-class="active">
-          <span class="tab__icon fas fa-user-friends"></span>
-          <span class="tab__name">Users</span>
-        </router-link>
-      </li>
-
-      <li>
-        <router-link exact class="tab" :to="{ name: 'AdminItems' }" active-class="active">
-          <span class="tab__icon fas fa-cubes"></span>
-          <span class="tab__name">Products and departments</span>
-        </router-link>
-      </li>
-
-      <li>
-        <router-link exact class="tab" :to="{ name: 'AdminAccessRequests' }" active-class="active">
-          <span class="tab__icon fas fa-user-plus"></span>
-          <span class="tab__name"
-            >Access requests
-            <span v-if="requestAccess.length > 0">({{ requestAccess.length }})</span>
-          </span>
-        </router-link>
-      </li>
-
-      <li>
-        <router-link exact class="tab" :to="{ name: 'AdminSystem' }" active-class="active">
-          <span class="tab__icon fas fa-cogs"></span>
-          <span class="tab__name">System</span>
-        </router-link>
-      </li>
-    </ul>
-    <router-view></router-view>
+  <div class="grid">
+    <admin-items class="admin-items"></admin-items>
+    <div class="admin-users">
+      <admin-access-requests v-if="requestAccess.length"></admin-access-requests>
+      <admin-users></admin-users>
+    </div>
   </div>
 </template>
 
@@ -46,8 +18,60 @@ export default {
     requestAccess: [],
   }),
 
+  components: {
+    AdminAccessRequests: () => import('./components/AdminAccessRequests.vue'),
+    AdminUsers: () => import('./components/AdminUsers.vue'),
+    AdminItems: () => import('./components/AdminItems.vue'),
+  },
+
   firestore: {
     requestAccess: db.collection('requestAccess'),
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.grid {
+  display: grid;
+  grid-gap: span(0, 1);
+  grid-template-columns: repeat(12, 1fr);
+
+  @media screen and (min-width: bp(m)) {
+    grid-gap: span(0, 1, span(9));
+    grid-template-columns: repeat(9, 1fr);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    grid-gap: span(0, 1, span(10));
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+.admin-items {
+  grid-row: 1;
+  grid-column: 1 / span 12;
+
+  @media screen and (min-width: bp(m)) {
+    grid-column: 1 / span 6;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    grid-column: 1 / span 7;
+  }
+}
+
+.admin-users {
+  grid-row: 2;
+  grid-column: 1 / span 12;
+
+  @media screen and (min-width: bp(m)) {
+    grid-row: 1;
+    grid-column: 7 / span 3;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    grid-row: 1;
+    grid-column: 8 / span 3;
+  }
+}
+</style>

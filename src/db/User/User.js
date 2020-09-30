@@ -30,3 +30,24 @@ export const remove = async user => {
     throw new Error(`Could not delete user ${user.id}`);
   }
 };
+
+export const update = async user => {
+  if (!user) throw new Error('Missing user');
+
+  try {
+    return collectionReference.doc(user.id).update(user);
+  } catch (error) {
+    throw new Error(`Could not update user ${user.id}`);
+  }
+};
+
+export const addUsers = async userList => {
+  if (!userList || !userList.length) throw new Error('Invalid data');
+  const promises = userList.map(email => ({ email })).map(create);
+
+  try {
+    return Promise.all(promises);
+  } catch (error) {
+    throw new Error(error);
+  }
+};

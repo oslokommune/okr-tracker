@@ -25,7 +25,7 @@
     </div>
 
     <div class="sidebar__group sidebar__bottom button-col">
-      <router-link v-if="user.admin" :to="{ name: 'AdminSystem' }" class="btn btn--ter btn--icon">
+      <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-cogs"></span>
         <span class="btn--label">Admin</span>
       </router-link>
