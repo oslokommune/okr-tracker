@@ -5,15 +5,12 @@
         <h2 class="title-2">Organizations</h2>
 
         <div class="col">
-          <div class="col__header">
-            <div class="col__icon fa fa-industry"></div>
-            <div class="col__title">Organizations</div>
-          </div>
           <div class="col__body">
             <div class="col__row" v-for="organization in organizations" :key="organization.id">
-              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }">{{
-                organization.name
-              }}</router-link>
+              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }">
+                <span class="col__icon fa fa-industry"></span>
+                {{ organization.name }}</router-link
+              >
             </div>
           </div>
           <div class="col__footer">
@@ -25,15 +22,12 @@
       <div>
         <h2 class="title-2">Departments</h2>
         <div class="col">
-          <div class="col__header">
-            <div class="col__icon fa fa-cubes"></div>
-            <div class="col__title">Departments</div>
-          </div>
           <div class="col__body">
             <div class="col__row" v-for="department in departments" :key="department.id">
-              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: department.slug } }">{{
-                department.name
-              }}</router-link>
+              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: department.slug } }">
+                <span class="col__icon fa fa-cubes"></span>
+                {{ department.name }}</router-link
+              >
             </div>
           </div>
           <div class="col__footer">
@@ -45,15 +39,12 @@
       <div>
         <h2 class="title-2">Products</h2>
         <div class="col">
-          <div class="col__header">
-            <div class="col__icon fa fa-cube"></div>
-            <div class="col__title">Products</div>
-          </div>
           <div class="col__body">
             <div class="col__row" v-for="product in products" :key="product.id">
-              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: product.slug } }">{{
-                product.name
-              }}</router-link>
+              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: product.slug } }">
+                <span class="col__icon fa fa-cube"></span>
+                {{ product.name }}</router-link
+              >
             </div>
           </div>
           <div class="col__footer">
@@ -126,13 +117,16 @@ export default {
   flex-direction: column;
   height: 32rem;
   background: white;
-  box-shadow: 0 2px 3px rgba($color-grey-500, 0.5);
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
 }
 
 .col__header {
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 1rem;
+  background: $color-grey-100;
+  // border-bottom: 1px solid $color-grey-100;
 }
 
 .col__footer {
@@ -144,10 +138,20 @@ export default {
 }
 
 .col__icon {
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 }
 
 .col__title {
+  // font-weight: 500;
+}
+
+.col__link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: $color-purple;
   font-weight: 500;
+  font-size: 1rem;
+  text-decoration: none;
+  border-bottom: 1px solid $color-grey-100;
 }
 </style>
