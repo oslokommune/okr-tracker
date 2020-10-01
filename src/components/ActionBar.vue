@@ -32,7 +32,6 @@ export default {
 
   methods: {
     ...mapMutations(['SET_VIEW']),
-    format,
   },
 
   filters: {
