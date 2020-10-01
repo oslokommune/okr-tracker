@@ -40,15 +40,13 @@ const routes = [
     name: 'ItemHome',
     component: () => import('@/views/ItemHome.vue'),
     beforeEnter: routerGuards.itemHome,
+  },
 
-    children: [
-      {
-        path: ':keyResultId',
-        name: 'KeyResultHome',
-        component: () => import('@/views/KeyResultHome.vue'),
-        beforeEnter: routerGuards.keyResultHome,
-      },
-    ],
+  {
+    path: '/:slug/admin',
+    name: 'ItemAdmin',
+    component: () => import('@/views/ItemAdmin.vue'),
+    beforeEnter: routerGuards.itemAdmin,
   },
 ];
 

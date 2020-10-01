@@ -48,10 +48,11 @@ export default {
 }
 
 .admin-items {
-  grid-row: 1;
+  grid-row: 2;
   grid-column: 1 / span 12;
 
   @media screen and (min-width: bp(m)) {
+    grid-row: 1;
     grid-column: 1 / span 6;
   }
 
@@ -61,7 +62,7 @@ export default {
 }
 
 .admin-users {
-  grid-row: 2;
+  grid-row: 1;
   grid-column: 1 / span 12;
 
   @media screen and (min-width: bp(m)) {
