@@ -7,13 +7,13 @@
       "cell": "A1"
     },
     "progress": [
-      { "created": "2020-07-15", "value": 535 },
-      { "created": "2020-07-14", "value": 521 },
-      { "created": "2020-07-13", "value": 498 },
-      { "created": "2020-07-12", "value": 484 },
-      { "created": "2020-07-11", "value": 435 },
-      { "created": "2020-07-10", "value": 432 },
-      { "created": "2020-07-09", "value": 422 }
+      { "created": "2020-10-15", "value": 535 },
+      { "created": "2020-10-14", "value": 521 },
+      { "created": "2020-10-13", "value": 498 },
+      { "created": "2020-10-12", "value": 484 },
+      { "created": "2020-10-11", "value": 435 },
+      { "created": "2020-10-10", "value": 432 },
+      { "created": "2020-10-09", "value": 422 }
     ]
   },
   "kpi/user-satisfaction": {
@@ -24,13 +24,13 @@
       "cell": "A1"
     },
     "progress": [
-      { "created": "2020-07-15", "value": 535 },
-      { "created": "2020-07-14", "value": 521 },
-      { "created": "2020-07-13", "value": 498 },
-      { "created": "2020-07-12", "value": 484 },
-      { "created": "2020-07-11", "value": 435 },
-      { "created": "2020-07-10", "value": 432 },
-      { "created": "2020-07-09", "value": 422 }
+      { "created": "2020-10-15", "value": 535 },
+      { "created": "2020-10-14", "value": 521 },
+      { "created": "2020-10-13", "value": 498 },
+      { "created": "2020-10-12", "value": 484 },
+      { "created": "2020-10-11", "value": 435 },
+      { "created": "2020-10-10", "value": 432 },
+      { "created": "2020-10-09", "value": 422 }
     ]
   },
   "kpi/conversion-rate": {
@@ -41,13 +41,13 @@
       "cell": "A1"
     },
     "progress": [
-      { "created": "2020-07-15", "value": 535 },
-      { "created": "2020-07-14", "value": 521 },
-      { "created": "2020-07-13", "value": 498 },
-      { "created": "2020-07-12", "value": 484 },
-      { "created": "2020-07-11", "value": 435 },
-      { "created": "2020-07-10", "value": 432 },
-      { "created": "2020-07-09", "value": 422 }
+      { "created": "2020-10-15", "value": 535 },
+      { "created": "2020-10-14", "value": 521 },
+      { "created": "2020-10-13", "value": 498 },
+      { "created": "2020-10-12", "value": 484 },
+      { "created": "2020-10-11", "value": 435 },
+      { "created": "2020-10-10", "value": 432 },
+      { "created": "2020-10-09", "value": 422 }
     ]
   }
 }

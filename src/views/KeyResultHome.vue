@@ -105,7 +105,7 @@ export default {
 
   methods: {
     async change() {
-      const { name, startValue, targetValue, description, unit, auto, weight } = this.activeKeyResult;
+      const { name, startValue, targetValue, description, unit, auto, weight, notes } = this.activeKeyResult;
       await KeyResult.update(this.activeKeyResult.id, {
         name,
         startValue,
@@ -114,6 +114,7 @@ export default {
         unit,
         auto,
         weight,
+        notes,
       });
     },
 
