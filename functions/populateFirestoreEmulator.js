@@ -177,9 +177,10 @@ async function populateKeyResults(keyResults, parentPath) {
   if (!keyResults || !keyResults.length) return;
 
   keyResults.forEach(async keyres => {
-    const { description, longDescription, startValue, targetValue, auto, unit, progress } = keyres;
+    const { description, longDescription, startValue, targetValue, auto, unit, progress, notes } = keyres;
 
     const { path } = await db.collection(`${parentPath}/keyResults`).add({
+      notes,
       description,
       longDescription,
       startValue,

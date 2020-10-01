@@ -63,6 +63,12 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/:slug/:keyResultId',
+    name: 'KeyResultHome',
+    component: () => import('@/views/KeyResultHome.vue'),
+    beforeEnter: routerGuards.keyResultHome,
+  },
 ];
 
 const router = new Router({

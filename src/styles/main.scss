@@ -10,6 +10,7 @@
 // @import '_newsfeed';
 // @import '_tooltip';
 // @import '_callout';
+@import 'widgets';
 
 @import '@braid/griddle/scss/griddle-overlay.scss';
 
@@ -49,5 +50,5 @@ body.using-mouse :focus {
 }
 
 *:focus {
-  outline: 4px solid $color-link;
+  outline: 2px solid $color-link;
 }

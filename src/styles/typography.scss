@@ -1,11 +1,26 @@
+$font-size-0: 0.79rem;
+$font-size-1: 0.91rem;
+$font-size-2: 1rem;
+$font-size-3: 1.14rem;
+$font-size-4: 1.36rem;
+$font-size-5: 1.71rem;
+$font-size-7: 2.28rem;
+
 .title-1 {
   margin-bottom: 0.5em;
-  font-size: 1.5rem;
+  font-size: $font-size-4;
 }
 
 .title-2 {
   margin-bottom: 0.5rem;
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: $font-size-3;
+  letter-spacing: -0.03rem;
+}
+
+.title-3 {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: $font-size-2;
   letter-spacing: -0.03rem;
 }
