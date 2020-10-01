@@ -32,31 +32,33 @@
 
       <h2 class="title-2">Historikk</h2>
 
-      <table v-if="progress" class="table">
-        <thead>
-          <tr>
-            <th>Verdi</th>
-            <th>Dato</th>
-            <th>Registrert av</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="p in progress" :key="p.id">
-            <td>{{ p.value }}</td>
-            <td>{{ formatDate(p.timestamp.toDate()) }}</td>
-            <td>{{ p.createdBy.displayName || p.createdBy.id }}</td>
-            <td v-if="p.comment"><i class="fa fa-comment-alt"></i></td>
-            <td v-if="hasEditPermissions" style="width: 1rem;">
-              <button class="btn btn--ter btn--icon">
-                <i class="icon far fa-trash-alt"></i>
-                Slett
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="main__table">
+        <table v-if="progress" class="table">
+          <thead>
+            <tr>
+              <th>Verdi</th>
+              <th>Dato</th>
+              <th>Registrert av</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="p in progress" :key="p.id">
+              <td>{{ p.value }}</td>
+              <td>{{ formatDate(p.timestamp.toDate()) }}</td>
+              <td>{{ p.createdBy.displayName || p.createdBy.id }}</td>
+              <td v-if="p.comment"><i class="fa fa-comment-alt"></i></td>
+              <td v-if="hasEditPermissions" style="width: 1rem;">
+                <button @click="remove(p.id)" class="btn btn--ter btn--icon">
+                  <i class="icon far fa-trash-alt"></i>
+                  Slett
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <widgets-key-result-home></widgets-key-result-home>
@@ -122,6 +124,7 @@ export default {
       await Progress.create(this.activeKeyResult.id, { value: +this.newValue });
       this.newValue = null;
     },
+
     remove(id) {
       Progress.remove(this.activeKeyResult.id, id);
     },
@@ -175,12 +178,20 @@ export default {
 
   &__current {
     align-self: flex-start;
-    width: span(2, 0, span(7));
+    width: span(3);
     margin-bottom: 0.5rem;
 
     padding: 1rem;
     background: white;
     box-shadow: 0 2px 3px rgba(black, 0.1);
+
+    @media screen and (min-width: bp(m)) {
+      width: span(2, 0, span(9));
+    }
+
+    @media screen and (min-width: bp(l)) {
+      width: span(2, 0, span(7));
+    }
 
     &__value {
       color: $color-yellow;
@@ -202,12 +213,27 @@ export default {
   }
 
   &__graph {
-    width: span(5, 0, span(7));
+    width: span(9);
 
-    margin-left: span(0, 2);
+    margin-left: span(0, 1);
     padding: 1rem;
     background: white;
     box-shadow: 0 2px 3px rgba(black, 0.1);
+
+    @media screen and (min-width: bp(m)) {
+      width: span(7, 0, span(9));
+      margin-left: span(0, 1, span(9));
+    }
+
+    @media screen and (min-width: bp(l)) {
+      width: span(5, 0, span(7));
+      margin-left: span(0, 1, span(7));
+    }
+
+    @media screen and (min-width: bp(xl)) {
+      width: span(5, 0, span(7));
+      margin-left: span(0, 1, span(7));
+    }
   }
 }
 
@@ -225,6 +251,11 @@ export default {
   @media screen and (min-width: bp(xl)) {
     width: span(6, 0, span(10));
   }
+}
+
+.main__table {
+  overflow: auto;
+  width: 100%;
 }
 
 .group {
