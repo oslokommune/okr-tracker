@@ -26,5 +26,7 @@ export default async ({ state, commit }) => {
     { name: 'Products', items: products.filter(filterProducts), icon: 'cube' },
   ];
 
+  if (state.sidebarGroups && JSON.stringify(groups) === JSON.stringify(state.sidebarGroups)) return true;
+
   commit('SET_SIDEBAR_GROUPS', groups);
 };

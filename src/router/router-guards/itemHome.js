@@ -1,5 +1,5 @@
-import { db } from '@/config/firebaseConfig';
 import store from '@/store';
+import getSlugRef from './routerGuardUtil';
 
 /**
  * Router guard for organization, department, and product 'home' pages.
@@ -10,17 +10,10 @@ import store from '@/store';
 export default async function (to, from, next) {
   const { slug } = to.params;
 
-  const slugSnapshot = await db.doc(`slugs/${slug}`).get();
-  if (!slugSnapshot.exists) {
-    console.error(`cannot find ${slug}`);
-    next('/404');
-    return;
-  }
-
-  const { reference } = slugSnapshot.data();
+  const slugRef = await getSlugRef(slug, next);
 
   try {
-    await store.dispatch('set_active_item', reference);
+    await store.dispatch('set_active_item', slugRef);
     await store.dispatch('set_sidebar_items');
     return next();
   } catch (error) {

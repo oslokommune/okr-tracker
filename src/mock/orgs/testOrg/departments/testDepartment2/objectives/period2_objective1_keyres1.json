@@ -9,12 +9,13 @@
     {
       "comment": "Dette er en kommentar",
       "value": 25,
-      "timestamp": "2020-07-03"
+      "timestamp": "2019-10-03"
     },
     {
       "comment": "Dette er en kommentar",
       "value": 88,
-      "timestamp": "2020-07-01"
+      "timestamp": "2019-10-01"
     }
-  ]
+  ],
+  "notes": "Dette er et notat"
 }

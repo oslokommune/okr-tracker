@@ -40,7 +40,7 @@ export default {
   components: {
     PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),
-    Widgets: () => import('@/components/widgets/Widgets.vue'),
+    Widgets: () => import('@/components/widgets/WidgetsItemHome.vue'),
     Kpis: () => import('@/components/Kpis.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
@@ -61,11 +61,6 @@ export default {
 
   mounted() {
     this.loading = false;
-  },
-
-  async beforeRouteLeave(to, from, next) {
-    this.loading = true;
-    next();
   },
 
   async beforeRouteUpdate(to, from, next) {
