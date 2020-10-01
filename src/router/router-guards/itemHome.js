@@ -14,7 +14,6 @@ export default async function (to, from, next) {
   if (!slugSnapshot.exists) {
     console.error(`cannot find ${slug}`);
     next('/404');
-    return;
   }
 
   const { reference } = slugSnapshot.data();

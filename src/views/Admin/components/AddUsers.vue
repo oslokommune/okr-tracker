@@ -32,8 +32,8 @@ export default {
 
       try {
         await User.addUsers(list);
+        this.$emit('close');
         this.$toasted.show(`Successfully added ${list.length} users`);
-        this.emails = '';
       } catch (error) {
         this.$toasted.show(`Could not add users`);
         throw new Error(error);

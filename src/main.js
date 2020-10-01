@@ -50,8 +50,14 @@ auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
+    console.log('success?');
     router.push('/');
   } catch {
+    if (user) {
+      store.commit('SET_LOGIN_ERROR', 1);
+    }
+
+    await auth.signOut();
     await store.dispatch('reset_state');
   }
 
@@ -63,10 +69,6 @@ auth.onAuthStateChanged(async user => {
       i18n,
       render: h => h(App),
     });
-  }
-
-  if (!user && router.currentRoute.name !== 'login') {
-    router.push('/login');
   }
 });
 

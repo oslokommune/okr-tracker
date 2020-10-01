@@ -5,7 +5,7 @@ export default async function (to, from, next) {
 
   try {
     await store.dispatch('set_active_key_result', keyResultId);
-    return next();
+    next();
   } catch (error) {
     console.error(error);
     next(false);

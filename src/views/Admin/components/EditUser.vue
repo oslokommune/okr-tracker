@@ -53,7 +53,10 @@ export default {
   },
 
   methods: {
-    remove: User.remove,
+    remove(user) {
+      User.remove(user);
+      this.$emit('close');
+    },
     save: User.update,
   },
 };

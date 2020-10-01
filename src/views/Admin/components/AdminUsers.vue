@@ -23,12 +23,12 @@
       </div>
     </div>
 
-    <edit-user v-if="selectedUser && !viewAddUsers" :selected-user="selectedUser">
+    <edit-user v-if="selectedUser && !viewAddUsers" :selected-user="selectedUser" @close="selectedUser = null">
       <template v-slot:back>
         <div><button class="btn" @click="selectedUser = null">Back to users</button></div>
       </template>
     </edit-user>
-    <add-users v-if="viewAddUsers">
+    <add-users v-if="viewAddUsers" @close="viewAddUsers = false">
       <template v-slot:back>
         <div><button class="btn" @click="viewAddUsers = false">Back to users</button></div>
       </template>
