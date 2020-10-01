@@ -11,7 +11,7 @@
       </div>
 
       <div v-if="editNotes" class="notes__btn">
-        <button @click="saveNotes" class="btn btn--borderless" :disabled="!dirty">
+        <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty">
           {{ $t('keyResultPage.notes.save') }}
         </button>
         <button @click="editNotes = false" class="btn btn--ter">
@@ -78,7 +78,7 @@ export default {
     margin-bottom: 1rem;
   }
 
-  & {
+  &__markdown {
     padding: 0.75rem 0.75rem 0.6rem 0.75rem;
   }
 
