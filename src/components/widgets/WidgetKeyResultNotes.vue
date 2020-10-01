@@ -1,24 +1,24 @@
 <template>
   <Widget v-if="activeKeyResult.notes" title="Notater" icon="pencil-alt">
-    <div style="display: flex; flex-direction: column;">
-      <div v-if="editNotes" style="margin-bottom: 1rem;">
+    <div class="notes">
+      <div class="notes--margin-bottom" v-if="editNotes">
         <textarea rows="20" @input="dirty = true" v-model="activeKeyResult.notes"></textarea>
       </div>
 
-      <div v-else style="margin-bottom: 1rem;">
-        <div class="notes" v-if="markdown" v-html="markdown"></div>
+      <div class="notes--margin-bottom" v-else>
+        <div class="notes__markdown" v-if="markdown" v-html="markdown"></div>
         <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
       </div>
 
-      <div v-if="editNotes" style="display: flex; flex-direction: row;">
+      <div v-if="editNotes" class="notes__btn">
         <button @click="saveNotes" class="btn btn--borderless" :disabled="!dirty">
           {{ $t('keyResultPage.notes.save') }}
         </button>
-        <button @click="editNotes = false" class="btn btn--borderless">
+        <button @click="editNotes = false" class="btn btn--ter">
           Lukk
         </button>
       </div>
-      <button v-else @click="editNotes = !editNotes" class="btn btn--borderless">
+      <button v-else @click="editNotes = !editNotes" class="btn btn--ter">
         Endre notater
       </button>
     </div>
@@ -47,7 +47,6 @@ export default {
     ...mapState(['activeKeyResult']),
 
     markdown() {
-      console.log(this.activeKeyResult.notes);
       if (!this.activeKeyResult.notes) return null;
       return sanitize(this.activeKeyResult.notes);
     },
@@ -72,7 +71,20 @@ export default {
 @import '@/styles/_colors.scss';
 
 .notes {
-  padding: 1rem;
-  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+
+  &--margin-bottom {
+    margin-bottom: 1rem;
+  }
+
+  & {
+    padding: 0.75rem 0.75rem 0.6rem 0.75rem;
+  }
+
+  &__btn {
+    display: flex;
+    flex-direction: row;
+  }
 }
 </style>

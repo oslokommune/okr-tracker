@@ -4,7 +4,7 @@
       <h1 class="title-2">{{ activeKeyResult.name }}</h1>
 
       <div class="main-widgets">
-        <div class="main-widgets__current" style="display: flex; flex-direction: column;">
+        <div class="main-widgets__current main-widgets__current__children">
           <h3 class="main-widgets__title">
             <i class="fas fa-chart-line"></i>
             Verdi
@@ -17,7 +17,7 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button class="btn btn--borderless">Oppdater verdi</button>
+          <button class="btn btn--ter">Oppdater verdi</button>
         </div>
 
         <div class="main-widgets__graph">
@@ -48,9 +48,9 @@
             <td>{{ formatDate(p.timestamp.toDate()) }}</td>
             <td>{{ p.createdBy.displayName || p.createdBy.id }}</td>
             <td v-if="p.comment"><i class="fa fa-comment-alt"></i></td>
-            <td style="width: 1rem;">
-              <button class="btn btn--borderless">
-                <i class="far fa-trash-alt"></i>
+            <td v-if="hasEditPermissions" style="width: 1rem;">
+              <button class="btn btn--ter btn--icon">
+                <i class="icon far fa-trash-alt"></i>
                 Slett
               </button>
             </td>
@@ -92,7 +92,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod']),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
   },
 
   mounted() {
@@ -128,6 +128,10 @@ export default {
 
     formatDate(date) {
       return format(date, 'dd.MM.yyyy HH:mm');
+    },
+
+    hasEditPermissions() {
+      return this.user.admin || this.activeItem.team.includes(this.user);
     },
   },
 
@@ -189,6 +193,11 @@ export default {
       margin-bottom: 0.5rem;
       font-weight: 500;
       text-transform: capitalize;
+    }
+
+    &__children {
+      display: flex;
+      flex-direction: column;
     }
   }
 

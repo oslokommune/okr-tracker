@@ -1,21 +1,24 @@
 <template>
   <Widget v-if="activeKeyResult" title="Detaljer" icon="info-circle">
-    <div style="display: flex; flex-direction: column;">
+    <div class="details">
       <h3 class="title-3">Tilhører mål</h3>
-      <span style="margin-bottom: 1rem;">
+      <span class="details--margin-bottom">
         <i class="fa fa-trophy"></i>
         {{ activeKeyResult.objective.name }}
       </span>
       <h3 class="title-3">Periode</h3>
-      <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 1rem;">
+
+      <div class="details__period">
         <span>
           <i class="fa fa-calendar-alt"></i>
           {{ activePeriod.name }}
         </span>
         <span> {{ formatDate(activePeriod.startDate) }} - {{ formatDate(activePeriod.endDate) }} </span>
       </div>
+
       <h3 class="title-3">Antall oppdateringer</h3>
-      <span style="margin-bottom: 1rem;">
+
+      <span class="details--margin-bottom">
         <i class="fa fa-chart-line"></i>
         {{ progress.length }}
       </span>
@@ -62,4 +65,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.details {
+  display: flex;
+  flex-direction: column;
+
+  &--margin-bottom {
+    margin-bottom: 1rem;
+  }
+
+  &__period {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+}
+</style>
