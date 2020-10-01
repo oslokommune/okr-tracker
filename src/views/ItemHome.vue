@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import routerGuards from '@/router/router-guards';
+import { itemHome as routerGuard } from '@/router/router-guards';
 import { mapState } from 'vuex';
 
 export default {
@@ -66,7 +66,7 @@ export default {
   async beforeRouteUpdate(to, from, next) {
     this.loading = true;
     if (to.params.slug !== from.params.slug) {
-      await routerGuards.itemHome(to, from, next);
+      await routerGuard(to, from, next);
       this.loading = false;
     } else {
       this.loading = false;

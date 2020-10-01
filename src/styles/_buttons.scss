@@ -1,0 +1,61 @@
+.button-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  display: block;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  color: $color-purple;
+  font-weight: 500;
+  font-size: 1rem;
+  white-space: nowrap;
+  text-decoration: none;
+  background: $color-grey-100;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.btn--danger {
+  color: darken($color-red, 55%);
+  background: lighten($color-red, 5%);
+}
+
+.btn--pri {
+  color: $color-purple;
+  background: $color-yellow;
+}
+
+.btn--icon {
+  justify-content: flex-start;
+
+  & > .icon {
+    margin-right: 0.35rem;
+  }
+}
+
+.btn--ter {
+  background: none;
+  &:hover {
+    background: rgba($color-grey-500, 0.1);
+  }
+}
+
+.btn--ghost {
+  background: none;
+  border: 1px solid currentColor;
+}
+
+.btn--fw {
+  justify-content: center;
+  width: 100%;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  filter: saturate(0.5);
+}

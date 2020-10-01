@@ -25,10 +25,6 @@ export const getters = {
 export const mutations = {
   ...vuexfireMutations,
 
-  SET_USER(state, payload) {
-    state.user = payload;
-  },
-
   SET_SIDEBAR_GROUPS(state, payload) {
     state.sidebarGroups = payload;
   },

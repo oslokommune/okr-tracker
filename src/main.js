@@ -47,11 +47,11 @@ Vue.config.productionTip = false;
 let app;
 
 auth.onAuthStateChanged(async user => {
-  store.commit('SET_USER', user);
-
-  if (user) {
+  try {
+    await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-  } else {
+    router.push('/');
+  } catch {
     await store.dispatch('reset_state');
   }
 
