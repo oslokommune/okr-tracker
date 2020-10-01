@@ -1,48 +1,48 @@
 <template>
-  <div class="container">
+  <div class="main">
     <div class="login">
-      <div class="section">
-        <h1 class="title-1">{{ $t('login.notLoggedIn') }}</h1>
-      </div>
-
-      <hr />
-
-      <div class="section">
-        <h2 class="title title-3">{{ $t('login.google.title') }}</h2>
-        <p>{{ $t('login.google.info') }}</p>
-
-        <div v-if="error === 1" class="error">
-          {{ $t('login.error.wrongEmail') }}
-        </div>
-        <div v-if="error === 2" class="error">
-          {{ $t('login.error.googleError') }}
-        </div>
-
-        <div class="form-field">
-          <button class="btn" @click="loginWithGoogle">{{ $t('login.google.btn') }}</button>
-        </div>
-      </div>
-      <hr />
-      <div class="section">
-        <h2 class="title title-3">{{ $t('login.dashboard.title') }}</h2>
-        <p>{{ $t('login.dashboard.info') }}</p>
+      <h1 class="title-1">{{ $t('login.notLoggedIn') }}</h1>
+      <div class="sections">
         <div class="section">
-          <div v-if="error === 3" class="error">
-            {{ $t('login.error.wrongPassword') }}
+          <h2 class="title title-2">{{ $t('login.google.title') }}</h2>
+          <p>{{ $t('login.google.info') }}</p>
+
+          <div v-if="error === 1" class="error">
+            {{ $t('login.error.wrongEmail') }}
           </div>
-          <form @submit.prevent="submitPassword()">
-            <label class="form-field">
-              <span class="form-label">Passord</span>
-              <div class="form-login">
-                <input class="field" type="password" v-model="password" />
-                <button class="btn">
-                  {{ $t('login.dashboard.btn') }}
-                </button>
-              </div>
-            </label>
-          </form>
+          <div v-if="error === 2" class="error">
+            {{ $t('login.error.googleError') }}
+          </div>
+
+          <div class="form-field">
+            <button class="btn btn--pri" @click="loginWithGoogle">{{ $t('login.google.btn') }}</button>
+          </div>
         </div>
-        <hr />
+        <div class="section">
+          <h2 class="title title-2">{{ $t('login.dashboard.title') }}</h2>
+          <p>{{ $t('login.dashboard.info') }}</p>
+          <div class="section">
+            <div v-if="error === 3" class="error">
+              {{ $t('login.error.wrongPassword') }}
+            </div>
+            <form @submit.prevent="submitPassword()">
+              <label class="form-field">
+                <span class="form-label">Passord</span>
+                <div class="form-login">
+                  <input class="field" type="password" v-model="password" />
+                  <button class="btn">
+                    {{ $t('login.dashboard.btn') }}
+                  </button>
+                </div>
+              </label>
+            </form>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="title-2">Request access</h2>
+          <router-link :to="{ name: 'request-access' }">Request access</router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -75,7 +75,7 @@ export default {
       this.pending = true;
       auth
         .signInWithPopup(loginProvider)
-        .then(response => {
+        .then(() => {
           this.$router.push('/');
         })
         .catch(err => {
@@ -97,28 +97,14 @@ export default {
         email = process.env.VUE_APP_TESTUSER_USER;
       }
 
-      const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
+      await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {
           this.error = 3;
         }
         this.$errorHandler('login_error', err);
       });
-
-      if (user) {
-        this.$router.push('/');
-      } else {
-        this.error = 3;
-      }
     },
-  },
-
-  beforeRouteEnter(to, from, next) {
-    if (auth.currentUser) {
-      next('/');
-    } else {
-      next();
-    }
   },
 
   mounted() {
@@ -130,18 +116,42 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/_colors.scss';
 
-.login {
-  max-width: 500px;
+.sections {
+  @media screen and (min-width: bp(s)) {
+    width: span(6);
+  }
+
+  @media screen and (min-width: bp(m)) {
+    width: span(6, 0, span(9));
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(6, 0, span(10));
+  }
 }
 
 .form-login {
   display: flex;
 }
 
-.container {
+.form-field {
+  display: block;
+  margin: 1rem 0;
+}
+
+.field {
+  flex-grow: 1;
+}
+
+.main {
   display: flex;
   align-items: center;
-  min-height: calc(80vh - 5rem);
+  padding-top: 2rem;
+}
+
+.section {
+  width: 100%;
+  margin: 1rem 0;
 }
 
 .error {

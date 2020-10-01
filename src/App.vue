@@ -3,9 +3,13 @@
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
     <main class="container">
-      <SidebarNavigation v-if="user" class="sidebar"></SidebarNavigation>
-      <router-view class="main-view"></router-view>
-      <footer class="footer">footer</footer>
+      <div class="sidebarContainer">
+        <SidebarNavigation v-if="user"></SidebarNavigation>
+      </div>
+      <div class="main-view">
+        <router-view class="router-view"></router-view>
+        <footer class="footer">footer</footer>
+      </div>
     </main>
     <Griddle />
   </div>
@@ -59,7 +63,7 @@ document.body.addEventListener('keydown', function () {
   flex-wrap: wrap;
 }
 
-.sidebar {
+.sidebarContainer {
   display: none;
 
   @media screen and (min-width: bp(m)) {
@@ -77,16 +81,30 @@ document.body.addEventListener('keydown', function () {
 
   @media screen and (min-width: bp(m)) {
     width: span(9);
+    margin-left: span(0, 1);
   }
   @media screen and (min-width: bp(l)) {
     width: span(10);
   }
+}
 
-  margin-left: span(0, 1);
+.router-view {
+  min-height: calc(100vh - 20rem);
 }
 
 .footer {
-  grid-column: 1 / 3;
-  background: white;
+  width: 100%;
+  margin: 2rem 0;
+  padding-top: 2rem;
+  text-align: center;
+  border-top: 1px solid $color-grey-300;
+
+  @media screen and (min-width: bp(l)) {
+    width: span(7, 0, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, 0, span(10));
+  }
 }
 </style>

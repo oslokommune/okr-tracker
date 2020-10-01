@@ -2,8 +2,10 @@
 @import 'colors';
 @import 'fonts';
 @import 'typography';
+@import '_buttons';
+@import '_tabs';
 // @import 'grid';
-// @import 'forms';
+@import 'forms';
 // @import '_sidebar';
 // @import '_newsfeed';
 // @import '_tooltip';
@@ -14,6 +16,7 @@
 html,
 body {
   margin: 0;
+  font-size: 14px;
 }
 
 button,
@@ -21,7 +24,7 @@ input,
 textarea,
 body {
   color: $color-purple;
-  font-size: 14px;
+
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;

@@ -24,14 +24,29 @@
       </ul>
     </div>
 
-    <div class="sidebar__group">
-      <button @click="signOut">Sign out</button>
+    <div class="sidebar__group sidebar__bottom button-col">
+      <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-cogs"></span>
+        <span class="btn--label">Admin</span>
+      </router-link>
+      <router-link :to="'#'" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-question-circle"></span>
+        <span class="btn--label">Help</span>
+      </router-link>
+      <router-link :to="'#'" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-envelope"></span>
+        <span class="btn--label">Contact</span>
+      </router-link>
+      <button @click="signOut" class="btn btn--ter btn--icon">
+        <span class="icon fa fa-fw fa-sign-out-alt"></span>
+        <span class="btn--label">Sign out</span>
+      </button>
     </div>
   </aside>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 
 export default {
@@ -40,8 +55,13 @@ export default {
   },
 
   methods: {
-    signOut() {
-      auth.signOut().then(this.$router.push.bind(null, '/'));
+    ...mapActions(['reset_state']),
+
+    async signOut() {
+      await auth.signOut();
+      await this.reset_state();
+
+      this.$router.push('/login');
     },
   },
 };
@@ -49,11 +69,16 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
   padding: 1.5rem 0;
 }
 
-.sidebar__group {
-  margin-bottom: 1rem;
+.sidebar__bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
 }
 
 .label {

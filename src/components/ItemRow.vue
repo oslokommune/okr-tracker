@@ -4,6 +4,26 @@
 
     <span class="item__name">{{ data.name }}</span>
 
+    <div v-if="type === 'product'" class="item__kpis">
+      <div class="item__kpi">
+        <span class="item__kpi-icon fas fa-chart-line"></span>
+        <span class="item__kpi-value">124</span>
+        <span class="item__kpi-arrow item__kpi-arrow--up"></span>
+      </div>
+
+      <div class="item__kpi">
+        <span class="item__kpi-icon far fa-smile"></span>
+        <span class="item__kpi-value">124</span>
+        <span class="item__kpi-arrow item__kpi-arrow--up"></span>
+      </div>
+
+      <div class="item__kpi">
+        <span class="item__kpi-icon far fa-check-square"></span>
+        <span class="item__kpi-value">124</span>
+        <span class="item__kpi-arrow item__kpi-arrow--up"></span>
+      </div>
+    </div>
+
     <ProgressBar class="progress-bar" :progression="progression"></ProgressBar>
 
     <span class="item__chevron fas fa-chevron-right"></span>
@@ -105,10 +125,32 @@ export default {
 }
 
 .progress-bar {
-  width: span(1, 0, span(6));
+  width: span(1, 0, span(6)) !important;
 
   @media screen and (min-width: bp(l)) {
     width: span(2, 0, span(6));
   }
+}
+
+.item__kpis {
+  display: flex;
+  margin: 0 1rem;
+}
+
+.item__kpi {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.item__kpi-value {
+  color: #686876;
+  font-weight: 500;
+  font-size: 0.7rem;
+}
+
+.item__kpi-icon {
+  margin-right: 0.25rem;
+  color: $color-purple;
 }
 </style>
