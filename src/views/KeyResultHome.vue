@@ -17,7 +17,7 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button class="btn btn--ter">Oppdater verdi</button>
+          <button @click="isOpen = true" class="btn btn--ter">Oppdater verdi</button>
         </div>
 
         <div class="main-widgets__graph">
@@ -62,6 +62,8 @@
     </div>
 
     <widgets-key-result-home></widgets-key-result-home>
+
+    <modal v-if="isOpen" @close="closeModal" :keyres="activeKeyResult"></modal>
   </div>
 </template>
 
@@ -76,11 +78,15 @@ import LineChart from '@/util/LineChart';
 export default {
   name: 'KeyResultHome',
 
-  components: { WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue') },
+  components: {
+    WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
+    Modal: () => import('@/components/Modal.vue'),
+  },
   data: () => ({
     progress: [],
     newValue: null,
     graph: null,
+    isOpen: true,
   }),
 
   async beforeRouteLeave(to, from, next) {
@@ -135,6 +141,10 @@ export default {
 
     hasEditPermissions() {
       return this.user.admin || this.activeItem.team.includes(this.user);
+    },
+
+    closeModal() {
+      this.isOpen = false;
     },
   },
 
