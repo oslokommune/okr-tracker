@@ -4,8 +4,7 @@
 }
 
 .btn {
-  display: block;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 0.5rem;
   color: $color-purple;
@@ -36,6 +35,7 @@
 
 .btn--icon {
   justify-content: flex-start;
+  padding-right: 1rem;
 
   & > .icon {
     margin-right: 0.35rem;

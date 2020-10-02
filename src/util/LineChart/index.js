@@ -47,21 +47,25 @@ export default class LineChart {
       startValue: +obj.startValue,
     };
 
-    const datapoints = progressionList.map(d => {
-      return {
-        timestamp: d.timestamp.toDate(),
-        value: +d.value,
-        startValue: +obj.startValue,
-      };
-    });
+    const datapoints = progressionList
+      .map(d => {
+        return {
+          timestamp: d.timestamp.toDate(),
+          value: +d.value,
+          startValue: +obj.startValue,
+        };
+      })
+      .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
-    const data = [startValue, ...datapoints].sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+    const lastValue = datapoints.length ? +datapoints[datapoints.length - 1].value : startValue.value;
 
-    data.push({
+    const todayValue = {
       timestamp: new Date(),
-      value: +data[data.length - 1].value,
+      value: lastValue,
       startValue: +obj.startValue,
-    });
+    };
+
+    const data = [startValue, ...datapoints, todayValue];
 
     this.valueArea.datum(data).transition().attr('d', this.area);
 

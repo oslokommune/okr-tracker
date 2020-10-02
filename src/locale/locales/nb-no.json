@@ -25,20 +25,15 @@
     "error": "Cannot find document type"
   },
   "login": {
-    "notLoggedIn": "Du er ikke logget inn",
-    "google": {
-      "title": "Google-bruker",
-      "info": "Logg inn med din registrerte Google-konto for å bruke denne applikasjonen",
-      "btn": "Logg inn med Google"
-    },
-    "dashboard": {
-      "title": "Dashboard-bruker",
-      "info": "Logg inn med passord for å logge inn med begrenset tilgang",
-      "password": "Passord",
-      "btn": "Logg inn"
-    },
+    "login": "Logg inn",
+    "requestAccess": "Be om tilgang",
+    "requestButton": "Send forespørsel",
+    "backToLogin": "Tilbake til innlogging",
+    "google": "Logg inn med Google",
+    "email": "E-post",
+    "password": "Passord",
     "error": {
-      "wrongEmail": "Epost-adressen du forsøkte å logge inn med er ikke registrert. Kontakt systemadministrator for å få tilgang.",
+      "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
       "wrongPassword": "Passordet er feil."
     }

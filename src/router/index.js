@@ -43,9 +43,25 @@ const routes = [
   },
   {
     path: '/:slug/admin',
-    name: 'ItemAdmin',
-    component: () => import('@/views/ItemAdmin.vue'),
+    component: () => import('@/views/ItemAdmin/ItemAdmin.vue'),
     beforeEnter: routerGuards.itemAdmin,
+    children: [
+      {
+        path: '',
+        name: 'ItemAdmin',
+        component: () => import('@/views/ItemAdmin/ItemAdminGeneral.vue'),
+      },
+      {
+        path: 'okr',
+        name: 'ItemAdminOKRs',
+        component: () => import('@/views/ItemAdmin/ItemAdminOKRs.vue'),
+      },
+      {
+        path: 'kpi',
+        name: 'ItemAdminKPIs',
+        component: () => import('@/views/ItemAdmin/ItemAdminKPIs.vue'),
+      },
+    ],
   },
   {
     path: '/:slug/:keyResultId',

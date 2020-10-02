@@ -1,5 +1,10 @@
 <template>
   <aside v-if="activeItem" class="widgets">
+    <router-link class="btn btn--ghost btn--icon" v-if="user.admin" :to="{ name: 'ItemAdmin' }">
+      <span class="icon fa fa-cog"></span>
+      Admin
+    </router-link>
+
     <WidgetProgression v-if="activeItem"></WidgetProgression>
     <WidgetMissionStatement v-if="activeItem"></WidgetMissionStatement>
     <WidgetTeam v-if="activePeriod"></WidgetTeam>
@@ -12,7 +17,7 @@ import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['activeItem', 'activePeriod']),
+    ...mapState(['activeItem', 'activePeriod', 'user']),
   },
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
@@ -23,4 +28,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.widgets {
+  margin-top: 0.5rem;
+}
+.widgets > .btn {
+  margin-bottom: 1.5rem;
+}
+</style>

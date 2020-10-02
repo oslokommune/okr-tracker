@@ -1,47 +1,47 @@
 <template>
-  <div class="main">
+  <div class="wrapper">
     <div class="login">
-      <h1 class="title-1">{{ $t('login.notLoggedIn') }}</h1>
+      <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div class="sections">
         <div class="section">
-          <h2 class="title title-2">{{ $t('login.google.title') }}</h2>
-          <p>{{ $t('login.google.info') }}</p>
+          <div v-if="loginError === 1" class="error">
+            {{ $t('login.error.notRegistered') }}
 
-          <div v-if="error === 1" class="error">
-            {{ $t('login.error.wrongEmail') }}
+            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }}</router-link
+            >.
           </div>
-          <div v-if="error === 2" class="error">
+
+          <div v-if="loginError === 2" class="error">
             {{ $t('login.error.googleError') }}
           </div>
-
-          <div class="form-field">
-            <button class="btn btn--pri" @click="loginWithGoogle">{{ $t('login.google.btn') }}</button>
-          </div>
         </div>
-        <div class="section">
-          <h2 class="title title-2">{{ $t('login.dashboard.title') }}</h2>
-          <p>{{ $t('login.dashboard.info') }}</p>
-          <div class="section">
-            <div v-if="error === 3" class="error">
-              {{ $t('login.error.wrongPassword') }}
-            </div>
-            <form @submit.prevent="submitPassword()">
-              <label class="form-field">
-                <span class="form-label">Passord</span>
-                <div class="form-login">
-                  <input class="field" type="password" v-model="password" />
-                  <button class="btn">
-                    {{ $t('login.dashboard.btn') }}
-                  </button>
-                </div>
-              </label>
-            </form>
-          </div>
+        <div class="login__form">
+          <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
+          <form @submit.prevent="submitPassword()">
+            <label class="form-field">
+              <span class="form-label">{{ $t('login.email') }}</span>
+              <div class="form-login">
+                <input class="field" type="email" v-model="email" />
+              </div>
+            </label>
+            <label class="form-field">
+              <span class="form-label">{{ $t('login.password') }}</span>
+              <div class="form-login">
+                <input class="field" type="password" v-model="password" />
+              </div>
+            </label>
+            <button class="btn btn--pri">{{ $t('login.login') }}</button>
+          </form>
         </div>
 
-        <div class="section">
-          <h2 class="title-2">Request access</h2>
-          <router-link :to="{ name: 'request-access' }">Request access</router-link>
+        <div class="login__footer">
+          <button class="btn btn--ghost btn--icon" @click="loginWithGoogle">
+            <span class="icon fab fa-fw fa-google"></span>
+            {{ $t('login.google') }}
+          </button>
+          <router-link class="btn btn--pri" :to="{ name: 'request-access' }">{{
+            $t('login.requestAccess')
+          }}</router-link>
         </div>
       </div>
     </div>
@@ -49,13 +49,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 
 export default {
   data: () => ({
-    error: true,
+    email: '',
     password: '',
     pending: false,
   }),
@@ -67,48 +67,31 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'loginError']),
   },
 
   methods: {
+    ...mapMutations(['SET_LOGIN_ERROR']),
     loginWithGoogle() {
       this.pending = true;
-      auth
-        .signInWithPopup(loginProvider)
-        .then(() => {
-          this.$router.push('/');
-        })
-        .catch(err => {
-          this.pending = false;
-          this.error = 2;
-          this.$errorHandler('login_error', err);
-        });
+      auth.signInWithPopup(loginProvider).catch(() => {
+        this.pending = false;
+        this.SET_LOGIN_ERROR(2);
+      });
     },
 
     async submitPassword() {
       this.pending = true;
-      let email = process.env.VUE_APP_DASHBOARD_USER;
 
-      if (this.password === process.env.VUE_APP_TESTADMIN_PASSWORD) {
-        email = process.env.VUE_APP_TESTADMIN_USER;
-      }
-
-      if (this.password === process.env.VUE_APP_TESTUSER_PASSWORD) {
-        email = process.env.VUE_APP_TESTUSER_USER;
-      }
-
-      await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
+      try {
+        await auth.signInWithEmailAndPassword(this.email, this.password);
+      } catch (err) {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {
-          this.error = 3;
+          this.SET_LOGIN_ERROR(3);
         }
-        this.$errorHandler('login_error', err);
-      });
+      }
     },
-  },
-
-  mounted() {
-    this.error = this.$route.params.error;
   },
 };
 </script>
@@ -116,42 +99,50 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/_colors.scss';
 
-.sections {
+.login {
+  display: flex;
+  flex-direction: column;
+  width: span(10);
+  margin-left: span(1, 1);
+  padding: 2rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+
+  @media screen and (min-width: bp(xs)) {
+    width: span(8);
+    margin-top: 2rem;
+    margin-left: span(2, 1);
+  }
+
   @media screen and (min-width: bp(s)) {
     width: span(6);
+    margin-top: 3rem;
+    margin-left: 0;
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(6, 0, span(9));
+    width: span(5, 0, span(9));
+    margin-top: 5rem;
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(6, 0, span(10));
+    width: span(4, 0, span(10));
   }
 }
 
-.form-login {
+.login__form {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid $color-grey-100;
+}
+
+.login__footer {
   display: flex;
-}
+  margin: 1.75rem -0.25rem -0.25rem;
 
-.form-field {
-  display: block;
-  margin: 1rem 0;
-}
-
-.field {
-  flex-grow: 1;
-}
-
-.main {
-  display: flex;
-  align-items: center;
-  padding-top: 2rem;
-}
-
-.section {
-  width: 100%;
-  margin: 1rem 0;
+  & > .btn {
+    margin: 0.25rem;
+  }
 }
 
 .error {
@@ -159,7 +150,7 @@ export default {
   padding: 1em 1.5em;
   color: black;
   background: rgba($color-red, 0.25);
-  border: 2px solid $color-red;
-  border-radius: 4px;
+  border: 1px solid $color-red;
+  border-radius: 2px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
   <div>
-    Item Admin
+    KPIs
   </div>
 </template>
