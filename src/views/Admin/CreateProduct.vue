@@ -68,12 +68,10 @@ export default {
         archived: false,
       };
 
-      console.log(data);
-
       try {
         await Product.create(data);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        this.$toasted.show('Could not create product');
       }
     },
   },

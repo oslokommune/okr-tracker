@@ -126,7 +126,6 @@ export default {
   align-items: center;
   padding: 1rem;
   background: $color-grey-100;
-  // border-bottom: 1px solid $color-grey-100;
 }
 
 .col__footer {
@@ -134,15 +133,8 @@ export default {
   padding: 1rem;
 }
 
-.col__body {
-}
-
 .col__icon {
   margin-right: 0.25rem;
-}
-
-.col__title {
-  // font-weight: 500;
 }
 
 .col__link {

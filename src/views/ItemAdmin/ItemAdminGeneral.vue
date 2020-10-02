@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="activeItem">
     <item-admin-general-product v-if="type === 'product'"></item-admin-general-product>
     <item-admin-general-department v-if="type === 'department'"></item-admin-general-department>
     <item-admin-general-organization v-if="type === 'organization'"></item-admin-general-organization>
