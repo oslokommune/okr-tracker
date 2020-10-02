@@ -30,6 +30,12 @@ const routes = [
     component: () => import('@/views/NotFound.vue'),
   },
   {
+    path: '/user/:id',
+    name: 'User',
+    component: () => import('@/views/User.vue'),
+    beforeEnter: routerGuards.user,
+  },
+  {
     path: '/admin',
     name: 'Admin',
     beforeEnter: routerGuards.admin,

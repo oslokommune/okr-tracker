@@ -4,4 +4,5 @@ export { default as itemAdmin } from './itemAdmin';
 export { default as keyResultHome } from './keyResultHome';
 export { default as admin } from './admin';
 export { default as login } from './login';
+export { default as user } from './user';
 export { default as requestAccess } from './requestAccess'; /* eslint-disable-line */

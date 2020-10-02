@@ -2,7 +2,7 @@
   <Widget v-if="activeItem.team" title="Team" icon="users">
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">
-        <router-link :to="{ name: 'user', params: { id: user.id } }" class="user__link">
+        <router-link :to="{ name: 'User', params: { id: user.id } }" class="user__link">
           <img src="" aria-hidden class="user__image" />
           <span class="user__name">{{ user.displayName || user.id }}</span>
         </router-link>
