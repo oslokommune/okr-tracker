@@ -4,7 +4,7 @@ export default {
     required: true,
   },
   organization: {
-    type: 'reference',
+    type: 'object',
     required: true,
   },
 };

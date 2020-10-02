@@ -14,17 +14,8 @@
         <textarea class="form__field" v-model="activeItem.missionStatement" rows="4"></textarea>
       </label>
       <div class="form-group">
-        <span class="form-label">Parent department</span>
-        <v-select label="name" v-model="activeItem.department" :options="departments" :clearable="false"></v-select>
-      </div>
-      <div class="form-group">
-        <span class="form-label">Team members</span>
-        <v-select label="displayName" multiple v-model="activeItem.team" :options="users">
-          <template v-slot:option="option">
-            {{ option.displayName || option.id }}
-            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-          </template>
-        </v-select>
+        <span class="form-label">Parent organization</span>
+        <v-select label="name" v-model="activeItem.organization" :options="organizations" :clearable="false"></v-select>
       </div>
     </form>
 
@@ -36,7 +27,7 @@
       </p>
       <div class="button-row">
         <button class="btn btn--icon" @click="restore">
-          <span class="icon fa fa-fw fa-recycle"></span> Restore product
+          <span class="icon fa fa-fw fa-recycle"></span> Restore department
         </button>
         <button class="btn btn--icon btn--danger" @click="deleteDeep">
           <span class="icon fa fa-fw fa-trash"></span> Permanently delete
@@ -49,70 +40,65 @@
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived">
-        <span class="icon fa fa-fw fa-trash"></span> Archive product
+        <span class="icon fa fa-fw fa-trash"></span> Archive department
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import Product from '@/db/Product';
+import Department from '@/db/Department';
 import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    users: [],
-  }),
   computed: {
-    ...mapState(['activeItem', 'departments']),
+    ...mapState(['activeItem', 'organizations']),
   },
 
-  firestore: {
-    users: db.collection('users'),
-  },
   methods: {
     async update() {
+      console.log('update');
       try {
         const { id, name, missionStatement } = this.activeItem;
 
-        const team = this.activeItem.team.map(user => db.collection('users').doc(user.id));
-        const department = db.collection('departments').doc(this.activeItem.department.id);
+        const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
 
-        Product.update(id, { name, team, missionStatement, department });
+        await Department.update(id, { name, missionStatement, organization });
         this.$toasted.show('Saved successfully');
-      } catch {
+      } catch (error) {
+        console.error(error);
         this.$toasted.show('Could not save changes');
       }
     },
     async archive() {
       try {
-        await Product.archive(this.activeItem.id);
+        await Department.archive(this.activeItem.id);
         this.$toasted.show('Archived');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not archive product');
+        this.$toasted.show('Could not archive department');
       }
     },
 
     async restore() {
       try {
-        await Product.restore(this.activeItem.id);
+        await Department.restore(this.activeItem.id);
         this.$toasted.show('Restored');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not restore product');
+        this.$toasted.show('Could not restore department');
       }
     },
 
     async deleteDeep() {
       try {
-        await Product.deleteDeep(this.activeItem.id);
-        this.$toasted.show('Permanently deleted product');
+        await Department.deleteDeep(this.activeItem.id);
+        this.$toasted.show('Permanently deleted department');
         this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not delete product');
+        this.$toasted.show('Could not delete department');
       }
     },
   },

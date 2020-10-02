@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
     <item-admin-general-product v-if="type === 'product'"></item-admin-general-product>
+    <item-admin-general-department v-if="type === 'department'"></item-admin-general-department>
+    <item-admin-general-organization v-if="type === 'organization'"></item-admin-general-organization>
   </div>
 </template>
 
@@ -10,6 +12,8 @@ import { mapState } from 'vuex';
 export default {
   components: {
     ItemAdminGeneralProduct: () => import('./ItemAdminGeneralProduct'),
+    ItemAdminGeneralDepartment: () => import('./ItemAdminGeneralDepartment'),
+    ItemAdminGeneralOrganization: () => import('./ItemAdminGeneralOrganization'),
   },
   computed: {
     ...mapState(['activeItem']),
