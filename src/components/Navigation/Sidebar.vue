@@ -69,6 +69,8 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar {
+  position: sticky;
+  top: 7.5rem;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 8rem);

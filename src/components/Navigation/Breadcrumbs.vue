@@ -94,6 +94,9 @@ export default {
 @import '@/styles/_colors.scss';
 
 .breadcrumbs {
+  position: sticky;
+  top: 4rem;
+  z-index: 10;
   margin-bottom: 1rem;
   background: white;
   box-shadow: 0 3px 5px rgba(black, 0.1);
