@@ -21,7 +21,7 @@ textarea {
   }
 }
 
-.v-select:not(.vs--single) {
+.v-select {
   width: 100%;
   .vs__selected-options {
     padding: 0.25rem !important;
@@ -29,15 +29,14 @@ textarea {
 
   .vs__dropdown-toggle {
     min-height: 3rem !important;
-    border: 2.5px solid $color-border !important;
-    border-radius: 0 !important;
+    background: $color-grey-50;
+    border: 0;
   }
 
   .vs__selected {
     margin-right: 0.25rem;
     padding: 0.25rem 0.75rem !important;
-    background: rgba($color-bg, 0.5) !important;
-    border: 1px solid $color-border !important;
+    background: white;
     border-radius: 0 !important;
   }
 }
