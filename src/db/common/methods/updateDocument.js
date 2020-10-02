@@ -11,8 +11,6 @@ import metadata from '../util/metadata';
 export default async function updateDocument(document, data) {
   data = { ...data, ...metadata.edited() };
 
-  console.log(data);
-
   try {
     return document.update(data);
   } catch (error) {
