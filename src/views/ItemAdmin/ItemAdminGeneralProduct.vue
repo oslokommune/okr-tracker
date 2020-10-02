@@ -20,7 +20,7 @@
       <div class="form-group">
         <span class="form-label">Team members</span>
         <v-select label="displayName" multiple v-model="activeItem.team" :options="users">
-          <template v-slot:option="option">
+          <template #option="option">
             {{ option.displayName || option.id }}
             <span v-if="option.displayName !== option.id">({{ option.id }})</span>
           </template>

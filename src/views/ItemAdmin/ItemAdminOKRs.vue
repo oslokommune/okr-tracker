@@ -1,5 +1,3 @@
 <template>
-  <div>
-    OKRs
-  </div>
+  <div>OKRs</div>
 </template>

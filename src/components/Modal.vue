@@ -2,9 +2,7 @@
   <div class="overlay">
     <div class="modal">
       <div class="modal__header">
-        <h2 class="title-2">
-          Oppdater verdi for nøkkelresultatet
-        </h2>
+        <h2 class="title-2">Oppdater verdi for nøkkelresultatet</h2>
         <button class="btn btn--ter" @click="close">
           <i class="fa fa-times" />
         </button>
@@ -42,12 +40,8 @@
         </div>
       </div>
       <div class="modal__footer">
-        <button @click="saveProgress" class="btn btn--sec">
-          Lagre
-        </button>
-        <button @click="close" class="btn btn--ghost btn--space">
-          Avbryt
-        </button>
+        <button @click="saveProgress" class="btn btn--sec">Lagre</button>
+        <button @click="close" class="btn btn--ghost btn--space">Avbryt</button>
       </div>
     </div>
   </div>

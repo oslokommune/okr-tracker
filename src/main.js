@@ -39,7 +39,7 @@ Vue.use(VueMeta);
 Vue.use(firestorePlugin);
 
 // Global components
-Vue.component('v-select', VueSelect);
+Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
 
 Vue.config.productionTip = false;
