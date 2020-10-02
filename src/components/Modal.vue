@@ -3,49 +3,49 @@
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">
-          Oppdater verdi for nøkkelresultat
+          Oppdater verdi for nøkkelresultatet
         </h2>
         <button class="btn btn--ter" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>
       <div class="modal__main">
-        <h3 title="title-3">{{ keyres.name }}</h3>
+        <h3 class="title-3">{{ keyres.name }}</h3>
 
         <hr />
 
         <div>
           <label>
-            Legg ved kommentarer (valgfritt)
+            <span class="title-3">Legg ved kommentarer (valgfritt)</span>
             <textarea class="modal__textarea" rows="3" v-model="note"></textarea>
           </label>
         </div>
 
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-          <label class="form-group">
+        <div class="modal__main--flex">
+          <label class="form-group modal__main--input-label">
             <span class="form-label">Ny verdi:</span>
-            <input class="form__field modal__input" type="number" v-model="value" />
+            <input class="form__field modal__main--input-value" type="number" v-model="value" />
           </label>
-          <label class="form-group">
+          <label class="form-group modal__main--input-label">
             <span class="form-label">Dato og tid:</span>
             <flat-pickr
               v-model="date"
               :config="flatPickerConfig"
-              class="form-control modal__input"
+              class="form-control"
               name="date"
               placeholder="Velg dato"
             ></flat-pickr>
           </label>
-          <button class="btn btn--ter" @click.prevent="date = new Date()">
+          <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
             {{ $t('keyResultPage.add.today') }}
           </button>
         </div>
       </div>
       <div class="modal__footer">
-        <button @click="saveProgress" class="btn btn--pri">
+        <button @click="saveProgress" class="btn btn--sec">
           Lagre
         </button>
-        <button @click="close" class="btn btn--ghost">
+        <button @click="close" class="btn btn--ghost btn--space">
           Avbryt
         </button>
       </div>
@@ -122,7 +122,26 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.modal__input {
+.modal__main--flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.modal__main--input-value {
+  width: 75px;
   border: 1px solid $color-purple !important;
+}
+
+.modal__main--input-label {
+  margin-right: 1rem;
+}
+
+.modal__main--btn {
+  align-self: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.btn--space {
+  margin-left: 1rem;
 }
 </style>

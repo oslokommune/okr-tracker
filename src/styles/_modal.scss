@@ -29,9 +29,8 @@
 
   @media screen and (min-width: 1024px) {
     width: 70vw;
-    min-width: 700px;
-    max-width: 850px;
-    min-height: 400px;
+    min-width: 400px;
+    max-width: 550px;
   }
 
   &__empty {
@@ -41,7 +40,7 @@
   &__header {
     display: flex;
     align-items: center;
-    padding: 0.5rem 1rem 0 2rem;
+    padding: 1rem 1rem 0.5rem 2rem;
     font-size: 1rem;
 
     @media screen and (min-width: 1600px) {
@@ -70,7 +69,6 @@
     flex-direction: column;
     padding: 1rem 2rem 1rem;
     background-color: $color-grey-50;
-
   }
 
   &__footer {
