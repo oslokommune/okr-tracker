@@ -86,7 +86,7 @@ export default {
     progress: [],
     newValue: null,
     graph: null,
-    isOpen: true,
+    isOpen: false,
   }),
 
   async beforeRouteLeave(to, from, next) {
@@ -264,8 +264,8 @@ export default {
 }
 
 .main__table {
-  overflow: auto;
   width: 100%;
+  overflow: auto;
 }
 
 .group {

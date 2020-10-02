@@ -22,7 +22,8 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, co
 
   // Bind active period
   const activePeriod = await getActivePeriod(periodsRef);
-  await dispatch('set_active_period_and_data', activePeriod.id);
+
+  await dispatch('set_active_period_and_data', activePeriod ? activePeriod.id : null);
 
   // Bind KPIs
   const kpisRef = db.collection('kpis').where('parent', '==', item);

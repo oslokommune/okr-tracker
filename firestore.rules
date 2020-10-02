@@ -51,7 +51,7 @@ service cloud.firestore {
 
     match /products/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin();
+      allow create: if true;
       allow update: if isAdmin() || isTeamMember();
       allow delete: if isAdmin();
     }
