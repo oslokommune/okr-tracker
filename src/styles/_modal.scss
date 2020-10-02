@@ -21,21 +21,11 @@
   flex-direction: column;
 
   width: 100%;
-  max-width: 50rem;
+  max-width: 550px;
   overflow: hidden;
   background: white;
   border-radius: 3px;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
-
-  @media screen and (min-width: 1024px) {
-    width: 70vw;
-    min-width: 400px;
-    max-width: 550px;
-  }
-
-  &__empty {
-    padding: 2.5rem 2rem;
-  }
 
   &__header {
     display: flex;
@@ -75,7 +65,7 @@
     display: flex;
     padding: 1rem 2rem 1rem;
     font-size: 12px;
-    background: $color-bg;
+    background-color: $color-grey-50;
     border-top: 1px solid $color-border;
   }
 }
