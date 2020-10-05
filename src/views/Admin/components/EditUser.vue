@@ -25,8 +25,14 @@
           />
         </label>
       </form>
-      <img :src="selectedUser.photoURL" class="selected-user__image" />
-      <input type="file" @input="setImage" accept="image/png, image/jpeg" />
+      <div>
+        <span class="form-label">Profile image</span>
+        <div class="image">
+          <img :src="selectedUser.photoURL" class="image__image" v-if="selectedUser.photoURL" />
+          <input type="file" @input="setImage" accept="image/png, image/jpeg" class="image__field" />
+          <button v-if="selectedUser.photoURL" class="btn" @click="deleteImage">Delete image</button>
+        </div>
+      </div>
     </div>
 
     <div class="selected-user__footer">
@@ -80,8 +86,19 @@ export default {
         console.error(error);
       }
     },
+    async deleteImage() {
+      try {
+        this.thisUser.photoURL = null;
+        this.image = null;
+        this.save(this.thisUser);
+        await User.deleteImage(this.user.id);
+      } catch (error) {
+        // throw new Error(error);
+      }
+    },
     async save(user) {
       try {
+        this.image = null;
         await User.update(user);
         this.$toasted.show('Success');
       } catch {
@@ -122,9 +139,15 @@ export default {
   }
 }
 
-.selected-user__image {
-  width: 4rem;
-  height: 4rem;
+.image {
+  display: flex;
+}
+
+.image__image {
+  width: 3rem;
+  height: 3rem;
   object-fit: cover;
+  background: white;
+  border-radius: 2rem;
 }
 </style>

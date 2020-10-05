@@ -15,7 +15,8 @@
           v-if="user"
           @click="showUserMenu = !showUserMenu"
         >
-          <span class="user__icon fa fa-user-circle"></span>
+          <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
+          <img v-if="user.photoURL" :src="user.photoURL" class="user__image" />
           <span class="user__name">{{ user.displayName }}</span>
           <span class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'"></span>
         </button>
@@ -199,8 +200,20 @@ export default {
 }
 
 .user__icon {
+  display: inline-block;
+  width: 2rem;
   margin-right: 0.3em;
   font-size: 1.5rem;
+}
+
+.user__image {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: 0.75em;
+  object-fit: cover;
+  background: white;
+  border-radius: 1rem;
 }
 
 .user__name {

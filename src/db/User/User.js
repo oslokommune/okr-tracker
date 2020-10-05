@@ -77,3 +77,19 @@ export const uploadImage = async (id, image) => {
     throw new Error(error);
   }
 };
+
+export const deleteImage = async id => {
+  try {
+    const { photoURL } = await collectionReference
+      .doc(id)
+      .get()
+      .then(snap => snap.data());
+
+    await storage.refFromURL(photoURL).delete();
+    await update({ id, photoURL: null });
+
+    return true;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
