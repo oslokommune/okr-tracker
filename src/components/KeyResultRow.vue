@@ -1,17 +1,17 @@
 <template>
   <router-link
-    :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }"
+    :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
     class="keyResult"
     :class="{ expanded: activeView !== 'compact' }"
   >
-    <span class="keyResult__name">{{ keyResult.name }}</span>
+    <span class="keyResult__name">{{ keyRow.name }}</span>
 
-    <ProgressBar class="keyResult__progression" :progression="keyResult.progression"></ProgressBar>
+    <ProgressBar class="keyResult__progression" :progression="keyRow.progression"></ProgressBar>
 
-    <span v-if="activeView !== 'compact'" class="keyResult__description">{{ keyResult.description }}</span>
+    <span v-if="activeView !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
 
     <form v-if="activeView !== 'compact'" class="keyResult__form" @submit.prevent="update">
-      <input type="number" v-model.number="keyResult.currentValue" @click.stop="" />
+      <input type="number" v-model.number="keyRow.currentValue" @click.stop="" />
       <button>Send</button>
     </form>
   </router-link>
@@ -29,6 +29,10 @@ export default {
     },
   },
 
+  data: () => ({
+    keyRow: null,
+  }),
+
   computed: {
     ...mapState(['activeView']),
   },
@@ -41,6 +45,15 @@ export default {
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
+  },
+
+  watch: {
+    keyResult: {
+      immediate: true,
+      handler() {
+        this.keyRow = this.keyResult;
+      },
+    },
   },
 };
 </script>

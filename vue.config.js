@@ -11,7 +11,7 @@ module.exports = {
     sourceMap: true,
     loaderOptions: {
       sass: {
-        prependData: `
+        additionalData: `
         @import "@/styles/griddle-overrides.scss";
         @import "@braid/griddle/scss/griddle.scss";
         `,
