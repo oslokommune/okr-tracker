@@ -1,8 +1,14 @@
 <template>
   <div v-if="user">
+    <img :src="user.photoURL" :alt="user.displayName || user.id" />
     <h1 class="title-1">{{ user.displayName || user.email }}</h1>
 
-    <button v-if="me">Edit</button>
+    <div v-if="me">
+      <input type="file" @input="setImage" accept="image/png, image/jpeg" />
+      <button @click="uploadImage">Upload</button>
+
+      <button @click="save">Save</button>
+    </div>
 
     <div>
       <div v-for="product in products" :key="product.id">
@@ -22,12 +28,14 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import { format } from 'date-fns';
+import User from '@/db/User';
 
 export default {
   data: () => ({
     user: null,
     products: [],
     audit: [],
+    image: null,
   }),
 
   computed: {
@@ -39,6 +47,28 @@ export default {
   methods: {
     formatDate(date) {
       return format(date.toDate(), 'dd/MM/yyyy HH:mm');
+    },
+    setImage({ target }) {
+      const { files } = target;
+      if (files.length !== 1) return;
+      const [image] = files;
+      this.image = image;
+    },
+    async uploadImage() {
+      try {
+        const url = await User.uploadImage(this.user.id, this.image);
+        this.image = null;
+        this.user.photoURL = url;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async save() {
+      try {
+        await User.update(this.user);
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 

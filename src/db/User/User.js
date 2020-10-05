@@ -1,4 +1,5 @@
-import { db } from '@/config/firebaseConfig';
+import { db, storage } from '@/config/firebaseConfig';
+import { compressImage } from '../common';
 
 const collectionReference = db.collection('users');
 
@@ -47,6 +48,31 @@ export const addUsers = async userList => {
 
   try {
     return Promise.all(promises);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+/**
+ * Uploads a file to storage bucket
+ * @param {string} id - User id
+ * @param {File} image
+ * @returns {String} - File URL
+ */
+export const uploadImage = async (id, image) => {
+  if (!id) throw new Error('UserId must be provided');
+  if (!image) throw new Error('Image must be provided');
+  if (image.type.split('/')[0] !== 'image') throw new Error('Invalid file');
+
+  const storageRef = storage.ref(`photos/${id}-${image.name}`);
+
+  try {
+    const compressed = await compressImage(image, 400);
+
+    const { state, ref } = await storageRef.put(compressed);
+    if (state !== 'success') throw new Error(state);
+
+    return ref.getDownloadURL();
   } catch (error) {
     throw new Error(error);
   }

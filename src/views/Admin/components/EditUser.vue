@@ -25,6 +25,8 @@
           />
         </label>
       </form>
+      <img :src="selectedUser.photoURL" class="selected-user__image" />
+      <input type="file" @input="setImage" accept="image/png, image/jpeg" />
     </div>
 
     <div class="selected-user__footer">
@@ -50,6 +52,7 @@ export default {
 
   data: () => ({
     thisUser: null,
+    image: null,
   }),
 
   computed: {
@@ -61,13 +64,37 @@ export default {
       User.remove(user);
       this.$emit('close');
     },
-    save: User.update,
+    setImage({ target }) {
+      const { files } = target;
+      if (files.length !== 1) return;
+      const [image] = files;
+      this.image = image;
+      this.uploadImage();
+    },
+    async uploadImage() {
+      try {
+        const url = await User.uploadImage(this.user.id, this.image);
+        this.image = null;
+        this.thisUser.photoURL = url;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async save(user) {
+      try {
+        await User.update(user);
+        this.$toasted.show('Success');
+      } catch {
+        this.$toasted.show('Failed');
+      }
+    },
   },
 
   watch: {
     selectedUser: {
       immediate: true,
       handler() {
+        this.image = null;
         this.thisUser = this.selectedUser;
       },
     },
@@ -93,5 +120,11 @@ export default {
   > .btn {
     margin: 0.25rem;
   }
+}
+
+.selected-user__image {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
 }
 </style>
