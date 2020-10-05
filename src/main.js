@@ -50,7 +50,7 @@ auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-    router.push('/');
+    await router.push('/');
   } catch {
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);

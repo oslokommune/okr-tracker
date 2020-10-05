@@ -41,7 +41,7 @@ export default {
       try {
         await RequestAccess.create({ email: this.email });
         this.$toasted.show('Successfully registered your access request');
-        this.$router.push({ name: 'login' });
+        await this.$router.push({ name: 'login' });
       } catch {
         this.email = '';
         this.$toasted.error('Could not register your access request');

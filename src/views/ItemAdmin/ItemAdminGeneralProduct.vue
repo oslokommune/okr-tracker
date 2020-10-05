@@ -109,7 +109,7 @@ export default {
       try {
         await Product.deleteDeep(this.activeItem.id);
         this.$toasted.show('Permanently deleted product');
-        this.$router.push('/');
+        await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
         this.$toasted.show('Could not delete product');
