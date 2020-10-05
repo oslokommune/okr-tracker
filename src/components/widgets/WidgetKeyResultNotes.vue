@@ -14,13 +14,9 @@
         <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty">
           {{ $t('keyResultPage.notes.save') }}
         </button>
-        <button @click="editNotes = false" class="btn btn--ter">
-          Lukk
-        </button>
+        <button @click="editNotes = false" class="btn btn--ter">Lukk</button>
       </div>
-      <button v-else @click="editNotes = !editNotes" class="btn btn--ter">
-        Endre notater
-      </button>
+      <button v-else @click="editNotes = !editNotes" class="btn btn--ter">Endre notater</button>
     </div>
   </Widget>
 </template>

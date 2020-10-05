@@ -1,5 +1,3 @@
 <template>
-  <div>
-    KPIs
-  </div>
+  <div>KPIs</div>
 </template>
