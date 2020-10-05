@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: () => import('@/views/Login.vue'),
     beforeEnter: routerGuards.login,
   },

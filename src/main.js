@@ -50,7 +50,9 @@ auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-    await router.push('/');
+    await router.push({
+      path: `${router.currentRoute.query.redirectFrom || router.history.getCurrentLocation() || '/'}`,
+    });
   } catch {
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);
@@ -58,6 +60,11 @@ auth.onAuthStateChanged(async user => {
 
     await auth.signOut();
     await store.dispatch('reset_state');
+
+    await router.push({
+      name: 'Login',
+      query: { redirectFrom: router.currentRoute.fullPath },
+    });
   }
 
   if (!app) {
