@@ -1,9 +1,7 @@
 <template>
   <header class="header">
     <div class="container">
-      <router-link :to="{ name: 'Home' }" class="logo">
-        Logo
-      </router-link>
+      <router-link :to="{ name: 'Home' }" class="logo"> Logo </router-link>
       <div class="title" v-if="title">
         <h1 class="title__name">
           {{ title }}

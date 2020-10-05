@@ -39,7 +39,7 @@ Vue.use(VueMeta);
 Vue.use(firestorePlugin);
 
 // Global components
-Vue.component('v-select', VueSelect);
+Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
 
 Vue.config.productionTip = false;
@@ -50,7 +50,7 @@ auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-    router.push('/');
+    await router.push('/');
   } catch {
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);

@@ -20,7 +20,7 @@
       <div class="form-group">
         <span class="form-label">Team members</span>
         <v-select label="displayName" multiple v-model="activeItem.team" :options="users">
-          <template v-slot:option="option">
+          <template #option="option">
             {{ option.displayName || option.id }}
             <span v-if="option.displayName !== option.id">({{ option.id }})</span>
           </template>
@@ -109,7 +109,7 @@ export default {
       try {
         await Product.deleteDeep(this.activeItem.id);
         this.$toasted.show('Permanently deleted product');
-        this.$router.push('/');
+        await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
         this.$toasted.show('Could not delete product');

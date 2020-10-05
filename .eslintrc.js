@@ -15,7 +15,7 @@ module.exports = {
     'func-names': 'off',
     'no-restricted-globals': 'off',
     'import/no-cycle': [2, { maxDepth: 1 }],
-    'global-require': 'off'
+    'global-require': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',

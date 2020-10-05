@@ -49,7 +49,7 @@
               <td>{{ formatDate(p.timestamp.toDate()) }}</td>
               <td>{{ p.createdBy.displayName || p.createdBy.id }}</td>
               <td><i v-if="p.comment" class="fa fa-comment-alt"></i></td>
-              <td v-if="hasEditPermissions" style="width: 1rem;">
+              <td v-if="hasEditPermissions" style="width: 1rem">
                 <button @click="remove(p.id)" class="btn btn--ter btn--icon">
                   <i class="icon far fa-trash-alt"></i>
                   Slett

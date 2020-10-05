@@ -4,15 +4,15 @@
 
     <div class="selected-user__main">
       <h2 class="title-2">Edit user</h2>
-      <form id="user-form" @submit.prevent="save(selectedUser)">
+      <form id="user-form" @submit.prevent="save(thisUser)">
         <label class="form-group">
           <span class="form-label">Email</span>
-          <input class="form__field" type="email" v-model="selectedUser.id" disabled />
+          <input class="form__field" type="email" v-model="thisUser.id" disabled />
         </label>
 
         <label class="form-group">
           <span class="form-label">Display name</span>
-          <input class="form__field" type="text" v-model="selectedUser.displayName" />
+          <input class="form__field" type="text" v-model="thisUser.displayName" />
         </label>
 
         <label class="form-group--checkbox">
@@ -20,7 +20,7 @@
           <input
             class="form__checkbox"
             type="checkbox"
-            v-model="selectedUser.admin"
+            v-model="thisUser.admin"
             :disabled="user.email === selectedUser.email"
           />
         </label>
@@ -48,6 +48,10 @@ export default {
     },
   },
 
+  data: () => ({
+    thisUser: null,
+  }),
+
   computed: {
     ...mapState(['user']),
   },
@@ -58,6 +62,15 @@ export default {
       this.$emit('close');
     },
     save: User.update,
+  },
+
+  watch: {
+    selectedUser: {
+      immediate: true,
+      handler() {
+        this.thisUser = this.selectedUser;
+      },
+    },
   },
 };
 </script>
