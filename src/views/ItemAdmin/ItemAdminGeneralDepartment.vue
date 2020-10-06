@@ -19,6 +19,12 @@
       </div>
     </form>
 
+    <div class="form-group">
+      <span class="form-label">Image</span>
+      <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
+      <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
+    </div>
+
     <div v-if="activeItem.archived" class="archived">
       <h2 class="title-2">Archived</h2>
       <p>
@@ -52,25 +58,37 @@ import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
 
 export default {
+  data: () => ({
+    image: null,
+  }),
   computed: {
     ...mapState(['activeItem', 'organizations']),
   },
 
   methods: {
     async update() {
-      console.log('update');
       try {
         const { id, name, missionStatement } = this.activeItem;
 
+        const photoURL = this.image ? await Department.uploadImage(id, this.image) : null;
+
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
 
-        await Department.update(id, { name, missionStatement, organization });
+        await Department.update(id, { name, missionStatement, organization, photoURL });
         this.$toasted.show('Saved successfully');
       } catch (error) {
         console.error(error);
         this.$toasted.show('Could not save changes');
       }
     },
+
+    async setImage({ target }) {
+      const { files } = target;
+      if (files.length !== 1) return;
+      const [image] = files;
+      this.image = image;
+    },
+
     async archive() {
       try {
         await Department.archive(this.activeItem.id);
@@ -114,5 +132,13 @@ export default {
   > .btn {
     margin: 0.25rem;
   }
+}
+
+.image {
+  width: 10rem;
+  height: 10rem;
+  margin: 1rem 0;
+  object-fit: cover;
+  border-radius: 3px;
 }
 </style>

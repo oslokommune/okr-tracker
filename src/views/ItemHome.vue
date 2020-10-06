@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <Widgets></Widgets>
+    <Widgets class="aside"></Widgets>
 
     <router-view></router-view>
   </div>
@@ -92,9 +92,23 @@ export default {
   @media screen and (min-width: bp(l)) {
     width: span(7, 0, span(10));
   }
+}
+
+.aside {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9, 0, span(9));
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(3, 0, span(10));
+    margin-left: span(0, 1, span(10));
+  }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
+    width: span(3, 0, span(10));
+    // margin-left: span(1, 2, span(10));
   }
 }
 

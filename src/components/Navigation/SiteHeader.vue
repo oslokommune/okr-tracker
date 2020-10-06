@@ -91,8 +91,6 @@ export default {
     async signOut() {
       await auth.signOut();
       await this.reset_state();
-
-      await this.$router.push('/login');
     },
   },
 };

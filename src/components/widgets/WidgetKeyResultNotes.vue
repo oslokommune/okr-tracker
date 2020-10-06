@@ -16,7 +16,9 @@
         </button>
         <button @click="editNotes = false" class="btn btn--ter">Lukk</button>
       </div>
-      <button v-else @click="editNotes = !editNotes" class="btn btn--ter">Endre notater</button>
+      <div v-else>
+        <button @click="editNotes = !editNotes" class="btn btn--ter">Endre notater</button>
+      </div>
     </div>
   </Widget>
 </template>
@@ -75,7 +77,7 @@ export default {
   }
 
   &__markdown {
-    padding: 0.75rem 0.75rem 0.6rem 0.75rem;
+    padding: 0.75rem 0.75rem 0.6rem 0rem;
   }
 
   &__btn {

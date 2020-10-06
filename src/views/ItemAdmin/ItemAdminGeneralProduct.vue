@@ -28,6 +28,12 @@
       </div>
     </form>
 
+    <div class="form-group">
+      <span class="form-label">Image</span>
+      <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
+      <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
+    </div>
+
     <div v-if="activeItem.archived" class="archived">
       <h2 class="title-2">Archived</h2>
       <p>
@@ -63,6 +69,7 @@ import { mapState } from 'vuex';
 export default {
   data: () => ({
     users: [],
+    image: null,
   }),
   computed: {
     ...mapState(['activeItem', 'departments']),
@@ -76,21 +83,33 @@ export default {
       try {
         const { id, name, missionStatement } = this.activeItem;
 
+        const photoURL = this.image ? await Product.uploadImage(id, this.image) : null;
+
         const team = this.activeItem.team.map(user => db.collection('users').doc(user.id));
         const department = db.collection('departments').doc(this.activeItem.department.id);
 
-        Product.update(id, { name, team, missionStatement, department });
+        Product.update(id, { name, team, missionStatement, department, photoURL });
         this.$toasted.show('Saved successfully');
-      } catch {
+      } catch (error) {
+        console.log(error);
         this.$toasted.show('Could not save changes');
       }
     },
+
+    async setImage({ target }) {
+      const { files } = target;
+      if (files.length !== 1) return;
+      const [image] = files;
+      this.image = image;
+    },
+
     async archive() {
       try {
         await Product.archive(this.activeItem.id);
         this.$toasted.show('Archived');
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
+      } catch (error) {
+        console.log(error);
         this.$toasted.show('Could not archive product');
       }
     },
@@ -128,5 +147,12 @@ export default {
   > .btn {
     margin: 0.25rem;
   }
+}
+.image {
+  width: 10rem;
+  height: 10rem;
+  margin: 1rem 0;
+  object-fit: cover;
+  border-radius: 3px;
 }
 </style>
