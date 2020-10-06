@@ -108,7 +108,6 @@ export default {
 
   @media screen and (min-width: bp(xl)) {
     width: span(3, 0, span(10));
-    // margin-left: span(1, 2, span(10));
   }
 }
 
