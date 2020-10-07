@@ -12,7 +12,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       let event;
       const diff = getDiff({ before, after }, fields);
 
-      if (!Object.keys(diff).length) return;
+      if (!Object.keys(diff).length) return false;
 
       if (diff.archived && diff.archived.after === true) {
         event = `${documentType}Archived`;
@@ -21,7 +21,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       } else if (diff) {
         event = `${documentType}Updated`;
       } else {
-        return;
+        return false;
       }
 
       const { documentId } = context.params;

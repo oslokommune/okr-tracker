@@ -72,12 +72,13 @@ export default {
 
   methods: {
     ...mapMutations(['SET_LOGIN_ERROR']),
-    loginWithGoogle() {
+    async loginWithGoogle() {
       this.pending = true;
-      auth.signInWithPopup(loginProvider).catch(() => {
+      await auth.signInWithPopup(loginProvider).catch(() => {
         this.pending = false;
         this.SET_LOGIN_ERROR(2);
       });
+      await this.$router.push('/');
     },
 
     async submitPassword() {
@@ -85,6 +86,7 @@ export default {
 
       try {
         await auth.signInWithEmailAndPassword(this.email, this.password);
+        this.$router.push('/');
       } catch (err) {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {

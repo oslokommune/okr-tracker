@@ -1,6 +1,13 @@
 import { db } from '@/config/firebaseConfig';
 import props from './props';
-import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
+import {
+  validateCreateProps,
+  createDocument,
+  validateUpdateProps,
+  updateDocument,
+  deleteDocument,
+  UploadImage,
+} from '../common';
 import Period from '../Period';
 import Kpi from '../Kpi';
 
@@ -36,4 +43,8 @@ const deleteDeep = async id => {
   return deleteDocument(update, collection.doc(id));
 };
 
-export default { create, update, archive, restore, deleteDeep };
+const uploadImage = (id, image) => {
+  return UploadImage(id, image, 'products');
+};
+
+export default { create, update, archive, restore, deleteDeep, uploadImage };

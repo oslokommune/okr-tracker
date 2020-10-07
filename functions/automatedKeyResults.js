@@ -87,7 +87,7 @@ async function getAndSaveDataFromSheets(document) {
  */
 async function getSheetsData(sheetId, sheetName, cell) {
   const sheets = google.sheets('v4');
-  if (!sheetId || !sheetName || !cell) return;
+  if (!sheetId || !sheetName || !cell) return false;
 
   const sheetRequest = {
     auth: jwtClient,

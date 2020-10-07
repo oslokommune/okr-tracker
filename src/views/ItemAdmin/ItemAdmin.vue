@@ -7,7 +7,7 @@
           <span class="tab__name">{{ link.label }}</span>
         </router-link>
       </li>
-      <li class="tab--right">
+      <li class="tab--right" v-if="activeItem">
         <router-link class="tab" :to="{ name: 'ItemHome' }" exact>
           <span class="tab__icon fa fa-arrow-right"></span>
           <span class="tab__name">{{ activeItem.name }}</span>

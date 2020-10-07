@@ -14,7 +14,7 @@
             </div>
           </div>
           <div class="col__footer">
-            <button class="btn btn--fw">+ Add organisation</button>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }">+ Add organization</router-link>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="col__footer">
-            <button class="btn btn--fw">+ Add department</button>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }">+ Add department</router-link>
           </div>
         </div>
       </div>
@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="col__footer">
-            <button class="btn btn--fw">+ Add product</button>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }">+ Add product</router-link>
           </div>
         </div>
       </div>
@@ -126,7 +126,6 @@ export default {
   align-items: center;
   padding: 1rem;
   background: $color-grey-100;
-  // border-bottom: 1px solid $color-grey-100;
 }
 
 .col__footer {
@@ -134,15 +133,8 @@ export default {
   padding: 1rem;
 }
 
-.col__body {
-}
-
 .col__icon {
   margin-right: 0.25rem;
-}
-
-.col__title {
-  // font-weight: 500;
 }
 
 .col__link {

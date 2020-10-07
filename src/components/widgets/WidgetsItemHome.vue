@@ -1,14 +1,18 @@
 <template>
-  <aside v-if="activeItem" class="widgets">
+  <aside v-if="activeItem" class="wrapper">
     <router-link class="btn btn--ghost btn--icon" v-if="user.admin" :to="{ name: 'ItemAdmin' }">
       <span class="icon fa fa-cog"></span>
       Admin
     </router-link>
 
-    <WidgetProgression v-if="activeItem"></WidgetProgression>
-    <WidgetMissionStatement v-if="activeItem"></WidgetMissionStatement>
-    <WidgetTeam v-if="activePeriod"></WidgetTeam>
-    <WidgetChildItems></WidgetChildItems>
+    <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
+
+    <div class="widgets">
+      <WidgetProgression v-if="activeItem"></WidgetProgression>
+      <WidgetMissionStatement v-if="activeItem"></WidgetMissionStatement>
+      <WidgetTeam v-if="activePeriod"></WidgetTeam>
+      <WidgetChildItems></WidgetChildItems>
+    </div>
   </aside>
 </template>
 
@@ -29,10 +33,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.widgets {
+.wrapper {
+  position: relative;
   margin-top: 0.5rem;
 }
 .widgets > .btn {
   margin-bottom: 1.5rem;
+}
+
+.image {
+  width: 100%;
+  height: 20rem;
+  margin-bottom: 3rem;
+  object-fit: cover;
 }
 </style>

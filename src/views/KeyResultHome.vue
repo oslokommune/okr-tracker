@@ -86,7 +86,7 @@ export default {
     progress: [],
     newValue: null,
     graph: null,
-    isOpen: true,
+    isOpen: false,
   }),
 
   async beforeRouteLeave(to, from, next) {

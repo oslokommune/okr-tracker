@@ -113,7 +113,7 @@ async function populateProducts(products, parentPath) {
 async function populateKPIs(kpis, parentPath) {
   /* eslint-disable */
   for (const kpi in kpis) {
-    if (!kpi) return;
+    if (!kpi) return false;
 
     const { description, sheet, progress } = kpis[kpi];
     const name = kpi.split('/')[1];
@@ -135,7 +135,7 @@ async function populateKPIs(kpis, parentPath) {
 }
 
 async function populatePeriods(periods, parentPath) {
-  if (!periods || !periods.length) return;
+  if (!periods || !periods.length) return false;
 
   periods.forEach(async period => {
     const { name, startDate, endDate, objectives } = period;
@@ -153,7 +153,7 @@ async function populatePeriods(periods, parentPath) {
 }
 
 async function populateObjectives(objectives, parentPath, periodId) {
-  if (!objectives || !objectives.length) return;
+  if (!objectives || !objectives.length) return false;
 
   objectives.forEach(async objective => {
     const { name, description, icon, keyResults } = objective;
@@ -174,7 +174,7 @@ async function populateObjectives(objectives, parentPath, periodId) {
 }
 
 async function populateKeyResults(keyResults, parentPath) {
-  if (!keyResults || !keyResults.length) return;
+  if (!keyResults || !keyResults.length) return false;
 
   keyResults.forEach(async keyres => {
     const { description, longDescription, startValue, targetValue, auto, unit, progress, notes } = keyres;
@@ -197,7 +197,7 @@ async function populateKeyResults(keyResults, parentPath) {
 }
 
 async function populateProgress(progressList, parentPath) {
-  if (!progressList || !progressList.length) return;
+  if (!progressList || !progressList.length) return false;
 
   await new Promise(resolve => setTimeout(resolve, 1000));
 

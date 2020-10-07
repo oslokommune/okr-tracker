@@ -3,7 +3,6 @@ import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
 import VueScrollTo from 'vue-scrollto';
-import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
@@ -33,7 +32,6 @@ Vue.use(Toasted, {
   className: 'toast',
 });
 Vue.use(VueScrollTo);
-Vue.use(ImageUploader);
 Vue.use(VTooltip);
 Vue.use(VueMeta);
 Vue.use(firestorePlugin);
@@ -50,7 +48,6 @@ auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-    await router.push('/');
   } catch {
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);
@@ -58,6 +55,7 @@ auth.onAuthStateChanged(async user => {
 
     await auth.signOut();
     await store.dispatch('reset_state');
+    await router.push('/login');
   }
 
   if (!app) {

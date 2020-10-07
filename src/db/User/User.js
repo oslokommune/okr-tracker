@@ -1,4 +1,5 @@
-import { db } from '@/config/firebaseConfig';
+import { db, storage } from '@/config/firebaseConfig';
+import UploadImage from '../common/uploadImage';
 
 const collectionReference = db.collection('users');
 
@@ -47,6 +48,26 @@ export const addUsers = async userList => {
 
   try {
     return Promise.all(promises);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const uploadImage = (id, image) => {
+  return UploadImage(id, image, 'photos');
+};
+
+export const deleteImage = async id => {
+  try {
+    const { photoURL } = await collectionReference
+      .doc(id)
+      .get()
+      .then(snap => snap.data());
+
+    await storage.refFromURL(photoURL).delete();
+    await update({ id, photoURL: null });
+
+    return true;
   } catch (error) {
     throw new Error(error);
   }
