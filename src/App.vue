@@ -2,7 +2,10 @@
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
-    <main class="container">
+    <main v-if="pageLoading">
+      <spinner></spinner>
+    </main>
+    <main v-else class="container">
       <div class="sidebarContainer">
         <SidebarNavigation v-if="user"></SidebarNavigation>
       </div>
@@ -30,10 +33,11 @@ export default {
     SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
     Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
+    Spinner: () => import('@/components/TheSpinner.vue'),
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'pageLoading']),
   },
 };
 
@@ -105,6 +109,30 @@ document.body.addEventListener('keydown', function () {
 
   @media screen and (min-width: bp(xl)) {
     width: span(6, 0, span(10));
+  }
+}
+
+.spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-light-blue, 1);
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-delay: 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+
+  &__text {
+    padding: 0.75em;
   }
 }
 </style>
