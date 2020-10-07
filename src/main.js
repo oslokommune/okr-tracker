@@ -42,11 +42,12 @@ Vue.component('Griddle', VueGriddle);
 
 Vue.config.productionTip = false;
 
+let app;
+
 auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-    await store.commit('SET_LOADING_COMPLETE');
     await router.push({
       path: `${router.currentRoute.query.redirectFrom || router.history.getCurrentLocation() || '/'}`,
     });
@@ -63,11 +64,16 @@ auth.onAuthStateChanged(async user => {
       query: { redirectFrom: router.currentRoute.fullPath },
     });
   }
+
+  if (!app) {
+    app = new Vue({
+      el: '#app',
+      router,
+      store,
+      i18n,
+      render: h => h(App),
+    });
+  }
 });
 
-new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App),
-}).$mount('#app');
+export default { app };

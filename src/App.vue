@@ -2,10 +2,7 @@
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
-    <main v-if="pageLoading">
-      <spinner></spinner>
-    </main>
-    <main v-else class="container">
+    <main class="container">
       <div class="sidebarContainer">
         <SidebarNavigation v-if="user"></SidebarNavigation>
       </div>
@@ -33,11 +30,14 @@ export default {
     SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
     Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
-    Spinner: () => import('@/components/TheSpinner.vue'),
   },
 
   computed: {
     ...mapState(['user', 'pageLoading']),
+  },
+
+  created() {
+    document.querySelector('#spinner').remove();
   },
 };
 
@@ -111,5 +111,4 @@ document.body.addEventListener('keydown', function () {
     width: span(6, 0, span(10));
   }
 }
-
 </style>
