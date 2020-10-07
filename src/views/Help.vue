@@ -1,25 +1,23 @@
 <template>
-  <div>
-    <div class="container" v-if="markdown">
-      <h2 class="title-2">{{ $t('help.title') }}</h2>
-      <ul class="toc" v-if="toc">
-        <li v-for="levelOne in toc.children" :key="levelOne.id">
-          <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
-          <ul v-if="levelOne.children">
-            <li v-for="levelTwo in levelOne.children" :key="levelTwo.id">
-              <a :href="`#${levelTwo.data.id}`">{{ levelTwo.data.text }}</a>
-              <ul v-if="levelTwo.children">
-                <li v-for="levelThree in levelTwo.children" :key="levelThree.id">
-                  <a :href="`#${levelThree.data.id}`">{{ levelThree.data.text }}</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
+  <div class="container" v-if="markdown">
+    <h2 class="title-2">{{ $t('help.title') }}</h2>
+    <ul class="toc" v-if="toc">
+      <li v-for="levelOne in toc.children" :key="levelOne.id">
+        <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
+        <ul v-if="levelOne.children">
+          <li v-for="levelTwo in levelOne.children" :key="levelTwo.id">
+            <a :href="`#${levelTwo.data.id}`">{{ levelTwo.data.text }}</a>
+            <ul v-if="levelTwo.children">
+              <li v-for="levelThree in levelTwo.children" :key="levelThree.id">
+                <a :href="`#${levelThree.data.id}`">{{ levelThree.data.text }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
 
-      <div class="md" v-html="markdown"></div>
-    </div>
+    <div class="md" v-html="markdown"></div>
   </div>
 </template>
 
