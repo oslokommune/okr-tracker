@@ -112,27 +112,4 @@ document.body.addEventListener('keydown', function () {
   }
 }
 
-.spinner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgba($color-light-blue, 1);
-  opacity: 0;
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-delay: 0.5s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-
-  &__text {
-    padding: 0.75em;
-  }
-}
 </style>
