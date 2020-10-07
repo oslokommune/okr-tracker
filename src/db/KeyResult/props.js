@@ -4,11 +4,11 @@ export default {
     required: true,
   },
   objective: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   parent: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   startValue: {

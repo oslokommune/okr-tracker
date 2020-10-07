@@ -4,8 +4,8 @@ import { validateCreateProps, createDocument, validateUpdateProps, updateDocumen
 
 const collection = db.collection('keyResults');
 
-const create = async data => {
-  if (!(await validateCreateProps(props, data))) {
+const create = data => {
+  if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
   return createDocument(collection, data);

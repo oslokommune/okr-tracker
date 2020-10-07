@@ -23,6 +23,7 @@
 
 <script>
 import Organization from '@/db/Organization';
+import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
   data: () => ({
@@ -40,9 +41,10 @@ export default {
       };
 
       try {
-        await Organization.create(data);
-      } catch {
+        await Organization.create(data).then(findSlugAndRedirect);
+      } catch (error) {
         this.$toasted.show('Could not create organization');
+        throw new Error(error);
       }
     },
   },

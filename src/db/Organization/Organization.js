@@ -4,15 +4,15 @@ import { validateCreateProps, createDocument, validateUpdateProps, updateDocumen
 
 const collection = db.collection('organizations');
 
-const create = async data => {
-  if (!(await validateCreateProps(props, data))) {
+const create = data => {
+  if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
 
   return createDocument(collection, data);
 };
 
-const update = async (id, data) => {
+const update = (id, data) => {
   validateUpdateProps(props, data);
   return updateDocument(collection.doc(id), data);
 };

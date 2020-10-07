@@ -38,6 +38,7 @@
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
 import { mapState } from 'vuex';
+import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
   data: () => ({
@@ -69,7 +70,7 @@ export default {
       };
 
       try {
-        await Product.create(data);
+        await Product.create(data).then(findSlugAndRedirect);
       } catch {
         this.$toasted.show('Could not create product');
       }
