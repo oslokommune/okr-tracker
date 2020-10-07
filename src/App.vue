@@ -33,7 +33,11 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'pageLoading']),
+  },
+
+  created() {
+    document.querySelector('#spinner').remove();
   },
 };
 
