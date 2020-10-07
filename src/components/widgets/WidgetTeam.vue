@@ -1,12 +1,14 @@
 <template>
   <Widget v-if="activeItem.team" title="Team" icon="users">
-    <ul>
-      <li v-for="user in activeItem.team" :key="user.id">
-        {{ user.id }}
+    <ul class="users__list">
+      <li v-for="user in activeItem.team" :key="user.id" class="user">
+        <router-link :to="{ name: 'User', params: { id: user.id } }" class="user__link">
+          <img src="" aria-hidden class="user__image" />
+          <span class="user__name">{{ user.displayName || user.id }}</span>
+        </router-link>
       </li>
-
-      <button>+ Legg til</button>
     </ul>
+    <router-link :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter" v-if="memberOrAdmin">+ Legg til</router-link>
   </Widget>
 </template>
 
@@ -15,7 +17,12 @@ import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['activeItem']),
+    ...mapState(['activeItem', 'user']),
+    memberOrAdmin() {
+      const isAdmin = this.user.admin;
+      const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
+      return isAdmin || isMember;
+    },
   },
 
   components: {
@@ -23,3 +30,27 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles/_colors.scss';
+
+.users__list {
+  display: flex;
+  flex-direction: column;
+  margin-right: -1rem;
+  margin-bottom: 1rem;
+  margin-left: -1rem;
+  border-bottom: 1px solid $color-grey-100;
+}
+
+.user__link {
+  display: block;
+  color: $color-purple;
+  text-decoration: none;
+}
+
+.user {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid $color-grey-100;
+}
+</style>

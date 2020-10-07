@@ -11,7 +11,7 @@
       </div>
       <div class="main-view">
         <router-view class="router-view"></router-view>
-        <footer class="footer">footer</footer>
+        <footer class="footer"></footer>
       </div>
     </main>
     <Griddle />
@@ -101,7 +101,7 @@ document.body.addEventListener('keydown', function () {
   margin: 2rem 0;
   padding-top: 2rem;
   text-align: center;
-  border-top: 1px solid $color-grey-300;
+  // border-top: 1px solid $color-grey-300;
 
   @media screen and (min-width: bp(l)) {
     width: span(7, 0, span(10));

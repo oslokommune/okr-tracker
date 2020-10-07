@@ -27,6 +27,7 @@
     "firebase": "^7.22.1",
     "flatpickr": "^4.6.6",
     "fuse.js": "^6.4.1",
+    "image-file-resize": "^1.0.3",
     "marked": "^1.2.0",
     "uniqid": "^5.2.0",
     "v-tooltip": "^2.0.3",

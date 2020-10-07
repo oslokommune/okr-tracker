@@ -30,6 +30,10 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    match /audit/{document} {
+      allow read: if isSignedIn();
+    }
+
     match /users/{user} {
       allow read: if true;
       allow write: if isAdmin();
@@ -51,7 +55,7 @@ service cloud.firestore {
 
     match /products/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin();
+      allow create: if true;
       allow update: if isAdmin() || isTeamMember();
       allow delete: if isAdmin();
     }

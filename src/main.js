@@ -3,7 +3,6 @@ import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
 import VueScrollTo from 'vue-scrollto';
-import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
@@ -33,7 +32,6 @@ Vue.use(Toasted, {
   className: 'toast',
 });
 Vue.use(VueScrollTo);
-Vue.use(ImageUploader);
 Vue.use(VTooltip);
 Vue.use(VueMeta);
 Vue.use(firestorePlugin);

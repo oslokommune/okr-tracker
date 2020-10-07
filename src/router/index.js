@@ -30,10 +30,34 @@ const routes = [
     component: () => import('@/views/NotFound.vue'),
   },
   {
+    path: '/user/:id',
+    name: 'User',
+    component: () => import('@/views/User.vue'),
+    beforeEnter: routerGuards.user,
+  },
+  {
     path: '/admin',
     name: 'Admin',
     beforeEnter: routerGuards.admin,
     component: () => import('@/views/Admin/Admin.vue'),
+  },
+  {
+    path: '/admin/create-organization',
+    name: 'CreateOrganization',
+    beforeEnter: routerGuards.admin,
+    component: () => import('@/views/Admin/CreateOrganization.vue'),
+  },
+  {
+    path: '/admin/create-department',
+    name: 'CreateDepartment',
+    beforeEnter: routerGuards.admin,
+    component: () => import('@/views/Admin/CreateDepartment.vue'),
+  },
+  {
+    path: '/admin/create-product',
+    name: 'CreateProduct',
+    beforeEnter: routerGuards.admin,
+    component: () => import('@/views/Admin/CreateProduct.vue'),
   },
   {
     path: '/:slug',
