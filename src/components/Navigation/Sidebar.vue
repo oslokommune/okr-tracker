@@ -50,6 +50,8 @@ import { mapActions, mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 
 export default {
+  name: 'Sidebar',
+
   computed: {
     ...mapState(['activeItem', 'sidebarGroups', 'user']),
   },
@@ -60,8 +62,6 @@ export default {
     async signOut() {
       await auth.signOut();
       await this.reset_state();
-
-      await this.$router.push('/login');
     },
   },
 };
