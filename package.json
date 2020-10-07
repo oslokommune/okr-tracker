@@ -38,7 +38,7 @@
     "vue-image-upload-resize": "^2.3.0",
     "vue-meta": "^2.4.0",
     "vue-resize": "^0.5.0",
-    "vue-router": "^3.4.5",
+    "vue-router": "^3.4.6",
     "vue-scrollto": "^2.18.2",
     "vue-select": "^3.10.8",
     "vue-toasted": "^1.1.28",
