@@ -83,12 +83,16 @@ export default {
       try {
         const { id, name, missionStatement } = this.activeItem;
 
-        const photoURL = this.image ? await Product.uploadImage(id, this.image) : null;
-
         const team = this.activeItem.team.map(user => db.collection('users').doc(user.id));
         const department = db.collection('departments').doc(this.activeItem.department.id);
 
-        Product.update(id, { name, team, missionStatement, department, photoURL });
+        const data = { name, team, missionStatement, department };
+
+        if (this.image) {
+          data.photoURL = await Product.uploadImage(id, this.image);
+        }
+
+        Product.update(id, data);
         this.$toasted.show('Saved successfully');
       } catch (error) {
         console.log(error);

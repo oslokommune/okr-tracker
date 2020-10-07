@@ -10,6 +10,10 @@ export default function (props, data) {
         if (!(data[prop] instanceof firestore.DocumentReference)) {
           throw new TypeError(`${prop} is not a valid reference`);
         }
+      } else if (type === 'array') {
+        if (!Array.isArray(data[prop])) {
+          throw new TypeError(`${prop} is not a valid array`);
+        }
       } else if (type === 'date') {
         // Verify date objects
         if (Object.prototype.toString.call(data[prop]) !== '[object Date]') {

@@ -29,6 +29,7 @@
 import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
 import { mapState } from 'vuex';
+import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
   data: () => ({
@@ -42,6 +43,7 @@ export default {
   },
 
   methods: {
+    findSlugAndRedirect,
     async save() {
       const { name, missionStatement, organization } = this;
       const data = {
@@ -52,7 +54,7 @@ export default {
       };
 
       try {
-        await Department.create(data);
+        await Department.create(data).then(this.findSlugAndRedirect);
       } catch (error) {
         this.$toasted.show('Could not create department');
         throw new Error(error);

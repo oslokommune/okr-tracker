@@ -67,9 +67,12 @@ export default {
       try {
         const { id, name, missionStatement } = this.activeItem;
 
-        const photoURL = this.image ? await Organization.uploadImage(id, this.image) : null;
+        const data = { name, missionStatement };
+        if (this.image) {
+          data.photoURL = await Organization.uploadImage(id, this.image);
+        }
 
-        await Organization.update(id, { name, missionStatement, photoURL });
+        await Organization.update(id, data);
         this.$toasted.show('Saved successfully');
       } catch (error) {
         console.error(error);

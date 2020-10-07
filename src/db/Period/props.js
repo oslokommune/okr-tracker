@@ -4,7 +4,7 @@ export default {
     required: true,
   },
   parent: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   startDate: {
