@@ -13,8 +13,8 @@ import Product from '../Product';
 
 const collection = db.collection('departments');
 
-const create = async data => {
-  if (!(await validateCreateProps(props, data))) {
+const create = data => {
+  if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
 

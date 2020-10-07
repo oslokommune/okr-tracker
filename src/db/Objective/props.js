@@ -4,11 +4,11 @@ export default {
     required: true,
   },
   parent: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   period: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   weight: {

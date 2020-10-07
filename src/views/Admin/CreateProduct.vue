@@ -19,7 +19,7 @@
         <div class="form-group">
           <span class="form-label">Team members</span>
           <v-select label="displayName" multiple v-model="team" :options="users">
-            <template v-slot:option="option">
+            <template #slot:option="option">
               {{ option.displayName || option.id }}
               <span v-if="option.displayName !== option.id">({{ option.id }})</span>
             </template>
@@ -38,6 +38,7 @@
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
 import { mapState } from 'vuex';
+import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
   data: () => ({
@@ -69,7 +70,7 @@ export default {
       };
 
       try {
-        await Product.create(data);
+        await Product.create(data).then(findSlugAndRedirect);
       } catch {
         this.$toasted.show('Could not create product');
       }

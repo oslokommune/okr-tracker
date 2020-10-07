@@ -19,7 +19,7 @@ const create = async (keyResultId, data) => {
       throw new Error(`Cannot find key result with ID ${keyResultId}`);
     }
 
-    await validateCreateProps(props, data);
+    validateCreateProps(props, data);
     data.timestamp = data.timestamp || new Date();
 
     const now = new Date().getTime();

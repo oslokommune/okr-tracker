@@ -4,15 +4,15 @@ export default {
     required: true,
   },
   organization: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   department: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   team: {
-    type: 'object', // TODO: Add check for array
+    type: 'array',
     required: false,
   },
   missionStatement: {

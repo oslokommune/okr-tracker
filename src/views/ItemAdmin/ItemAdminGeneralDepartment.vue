@@ -70,11 +70,13 @@ export default {
       try {
         const { id, name, missionStatement } = this.activeItem;
 
-        const photoURL = this.image ? await Department.uploadImage(id, this.image) : null;
-
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
+        const data = { name, missionStatement, organization };
+        if (this.image) {
+          data.photoURL = await Department.uploadImage(id, this.image);
+        }
 
-        await Department.update(id, { name, missionStatement, organization, photoURL });
+        await Department.update(id, data);
         this.$toasted.show('Saved successfully');
       } catch (error) {
         console.error(error);

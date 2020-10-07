@@ -5,9 +5,9 @@ import { validateCreateProps } from '../common';
 
 const collection = db.collection('requestAccess');
 
-export const create = async data => {
+export const create = data => {
   try {
-    await validateCreateProps(props, data);
+    validateCreateProps(props, data);
 
     return collection.add({ ...data, created: new Date() });
   } catch (error) {
@@ -15,7 +15,7 @@ export const create = async data => {
   }
 };
 
-export const reject = async id => {
+export const reject = id => {
   try {
     return collection.doc(id).delete();
   } catch {
