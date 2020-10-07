@@ -1,7 +1,5 @@
 <template>
   <div>
-    <PageHeader :data="{ name: 'Hjelp', icon: 'user' }" :toc="true" toc-id="toc" toc-first-level="2"></PageHeader>
-
     <div class="container" v-if="markdown">
       <h2 class="title-2">{{ $t('help.title') }}</h2>
       <ul class="toc" v-if="toc">
@@ -28,8 +26,7 @@
 <script>
 import marked from 'marked';
 import { sanitize } from 'dompurify';
-import PageHeader from '@/components/PageHeader.vue';
-import toc from '@/util/toc';
+import toc from '@/util/tableOfContent';
 import i18n from '@/locale/i18n';
 
 marked.setOptions({
@@ -37,14 +34,12 @@ marked.setOptions({
 });
 
 export default {
+  name: 'Help',
+
   data: () => ({
     markdown: '',
     toc: [],
   }),
-
-  components: {
-    PageHeader,
-  },
 
   metaInfo() {
     return {
@@ -87,8 +82,8 @@ export default {
   margin: 2rem 0 5rem;
   padding: 1.5rem;
   font-size: 1rem;
-  background: $color-bg;
-  border: 1px solid $color-border;
+  background: white;
+  border: 1px solid $color-grey-100;
 
   li {
     padding: 0.25rem 0;
