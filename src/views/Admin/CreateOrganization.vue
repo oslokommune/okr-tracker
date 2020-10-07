@@ -41,8 +41,9 @@ export default {
 
       try {
         await Organization.create(data);
-      } catch {
+      } catch (error) {
         this.$toasted.show('Could not create organization');
+        throw new Error(error);
       }
     },
   },

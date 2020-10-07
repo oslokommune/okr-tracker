@@ -1,5 +1,6 @@
-/* eslint-disable valid-typeof */
+import { firestore } from 'firebase';
 
+/* eslint-disable valid-typeof */
 export default function (props, data) {
   return new Promise((resolve, reject) => {
     Object.entries(props).forEach(async ([prop, { type, required }]) => {
@@ -12,10 +13,8 @@ export default function (props, data) {
       if (Object.hasOwnProperty.call(data, prop)) {
         // ... check that the referenced document exists
         if (type === 'reference') {
-          try {
-            await data[prop].get();
-          } catch {
-            reject(new Error(`Cannot find "${prop}" at ${data[prop].path}`));
+          if (!(data[prop] instanceof firestore.DocumentReference)) {
+            reject(new TypeError(`${prop} is not a valid reference`));
           }
         } else if (type === 'date') {
           // Verify date objects

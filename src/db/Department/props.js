@@ -4,7 +4,7 @@ export default {
     required: true,
   },
   organization: {
-    type: 'object',
+    type: 'reference',
     required: true,
   },
   missionStatement: {

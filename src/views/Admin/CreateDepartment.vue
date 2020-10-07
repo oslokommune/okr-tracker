@@ -53,8 +53,9 @@ export default {
 
       try {
         await Department.create(data);
-      } catch {
+      } catch (error) {
         this.$toasted.show('Could not create department');
+        throw new Error(error);
       }
     },
   },
