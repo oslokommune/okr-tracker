@@ -1,58 +1,32 @@
 <template>
   <div class="wrapper" v-if="activeItemRef">
     <div class="miller">
-      <div class="miller__col">
-        <div class="miller__col-heading">Select period</div>
-        <ul class="miller__list">
-          <li v-for="p in periods" :key="p.id" class="miller__list-item">
+      <div
+        class="miller__col"
+        v-for="{ type, heading, activeClass, selectedClass, items, icon, notSelected, addEvent } in columns"
+        :key="type"
+      >
+        <div class="miller__col-heading">{{ heading }}</div>
+        <div class="miller__not-selected" v-if="notSelected">{{ notSelected }}</div>
+        <ul class="miller__list" v-else>
+          <li v-for="{ id, name } in items" :key="id" class="miller__list-item">
             <router-link
               class="miller__link"
-              :to="{ query: { type: 'period', id: p.id } }"
+              :to="{ query: { type, id } }"
               :class="{
-                active: editObject && p.id === editObject.id,
-                selected: selectedPeriod && selectedPeriod.id === p.id,
+                active: activeClass(id),
+                selected: selectedClass(id),
               }"
             >
-              <span class="miller__icon fa fa-calendar-alt"></span>
-              <span class="miller__label">{{ p.name }}</span>
+              <span class="miller__icon fa" :class="icon"></span>
+              <span class="miller__label">{{ name }}</span>
             </router-link>
           </li>
         </ul>
-      </div>
-
-      <div class="miller__col">
-        <div class="miller__col-heading">Select objective</div>
-        <ul class="miller__list">
-          <li v-for="o in objectives" :key="o.id" class="miller__list-item">
-            <router-link
-              class="miller__link"
-              :to="{ query: { type: 'objective', id: o.id } }"
-              :class="{
-                active: editObject && o.id === editObject.id,
-                selected: selectedObjective && selectedObjective.id === o.id,
-              }"
-            >
-              <span class="miller__icon fa fa-trophy"></span>
-              <span class="miller__label">{{ o.name }}</span>
-            </router-link>
-          </li>
-        </ul>
-      </div>
-
-      <div class="miller__col">
-        <div class="miller__col-heading">Select key result</div>
-        <ul class="miller__list">
-          <li v-for="k in keyResults" :key="k.id" class="miller__list-item">
-            <router-link
-              class="miller__link"
-              :to="{ query: { type: 'keyResult', id: k.id } }"
-              :class="{ active: editObject && k.id === editObject.id }"
-            >
-              <span class="miller__icon fa fa-chart-pie"></span>
-              <span class="miller__label">{{ k.name }}</span>
-            </router-link>
-          </li>
-        </ul>
+        <button v-if="!notSelected" class="miller__add btn btn--ter btn--icon btn--fw" @click="addEvent">
+          <span class="icon fa fa-plus"></span>
+          <span>Create new</span>
+        </button>
       </div>
     </div>
 
@@ -65,6 +39,9 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
+import Period from '@/db/Period';
+import Objective from '@/db/Objective';
+import KeyResult from '@/db/KeyResult';
 
 export default {
   name: 'ItemAdminOKRs',
@@ -76,12 +53,48 @@ export default {
     periods: [],
     objectives: [],
     keyResults: [],
+    selectedType: null,
     selectedPeriod: null,
     selectedObjective: null,
   }),
 
   computed: {
     ...mapState(['activeItemRef']),
+
+    columns() {
+      return [
+        {
+          heading: 'Select Period',
+          items: this.periods,
+          type: 'period',
+          icon: 'fa-calendar-alt',
+          activeClass: id => this.editObject && id === this.editObject.id,
+          selectedClass: id => id === this.selectedPeriodId,
+          notSelected: false,
+          addEvent: this.createPeriod,
+        },
+        {
+          heading: 'Select objective',
+          items: this.objectives,
+          type: 'objective',
+          icon: 'fa-trophy',
+          activeClass: id => this.editObject && id === this.editObject.id,
+          selectedClass: id => id === this.selectedObjectiveId,
+          notSelected: !this.selectedType ? 'No period selected' : false,
+          addEvent: this.createObjective,
+        },
+        {
+          heading: 'Select key results',
+          items: this.keyResults,
+          type: 'keyResult',
+          icon: 'fa-chart-pie',
+          activeClass: id => this.editObject && id === this.editObject.id,
+          selectedClass: () => false,
+          notSelected: !this.selectedType || this.selectedType === 'period' ? 'No objective selected' : false,
+          addEvent: this.createKeyResult,
+        },
+      ];
+    },
   },
 
   watch: {
@@ -122,23 +135,31 @@ export default {
     },
 
     async setItems({ type, id }) {
-      this.bindPeriods();
-
       if (!type || !id) {
         if (this.objectives.length) this.$unbind('objectives');
         if (this.keyResults.length) this.$unbind('keyResults');
+        this.selectedType = null;
+      }
+
+      if (!this.selectedType) {
+        this.bindPeriods();
       }
 
       if (type === 'period') {
         await this.bindObjectives({ parentId: id });
         if (this.keyResults.length) this.$unbind('keyResults');
-        this.selectedObjective = null;
-        this.selectedPeriod = null;
+        this.selectedObjectiveId = null;
+        this.selectedPeriodId = id;
       } else if (type === 'objective') {
-        const [keyres] = await this.bindKeyResults({ parentId: id });
-        await this.bindObjectives({ parentId: keyres.objective.period.id });
-        this.selectedPeriod = keyres.objective.period;
-        this.selectedObjective = null;
+        await this.bindKeyResults({ parentId: id });
+        const { period } = await db
+          .collection('objectives')
+          .doc(id)
+          .get()
+          .then(snap => snap.data());
+        await this.bindObjectives({ parentId: period.id });
+        this.selectedPeriodId = period.id;
+        this.selectedObjectiveId = id;
       } else if (type === 'keyResult') {
         const keyRes = await db
           .collection('keyResults')
@@ -152,11 +173,13 @@ export default {
           .get()
           .then(snap => snap.data());
 
-        this.selectedPeriod = objective.period;
-        this.selectedObjective = keyRes.objective;
+        this.selectedPeriodId = objective.period.id;
+        this.selectedObjectiveId = keyRes.objective.id;
         await this.bindObjectives({ parentId: objective.period.id });
         await this.bindKeyResults({ parentId: keyRes.objective.id });
       }
+
+      this.selectedType = type;
     },
 
     bindPeriods() {
@@ -188,6 +211,44 @@ export default {
           .where('archived', 'in', [false, this.showArchived])
       );
     },
+
+    async createPeriod() {
+      const startDate = new Date();
+      const endDate = new Date();
+      try {
+        const { id } = await Period.create({ name: 'placeholder', parent: this.activeItemRef, startDate, endDate });
+        this.$router.push({ query: { type: 'period', id } });
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async createObjective() {
+      try {
+        const period = db.collection('periods').doc(this.selectedPeriodId);
+        const { id } = await Objective.create({ name: 'placeholder', parent: this.activeItemRef, weight: 1, period });
+        await this.$router.push({ query: { type: 'objective', id } });
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async createKeyResult() {
+      try {
+        const data = {
+          name: 'placeholder',
+          objective: db.collection('objectives').doc(this.selectedObjectiveId),
+          parent: this.activeItemRef,
+          startValue: 0,
+          targetValue: 100,
+          unit: '',
+          weight: 1,
+        };
+
+        const { id } = await KeyResult.create(data);
+        await this.$router.push({ query: { type: 'keyResult', id } });
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   },
 };
 </script>
@@ -205,7 +266,7 @@ export default {
 
 .miller {
   display: grid;
-  // grid-gap: span(0, 1);
+  grid-gap: 1.75rem 0;
   grid-template-columns: repeat(1, 1fr);
   background: white;
   border-radius: 3px;
@@ -229,6 +290,8 @@ export default {
 }
 
 .miller__col {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   border-left: 1px solid $color-grey-100;
 
@@ -255,22 +318,37 @@ export default {
   display: flex;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  color: $color-grey-900;
+  color: $color-grey-800;
   text-decoration: none;
   border-bottom: 1px solid $color-grey-100;
 
   &.selected {
+    color: black;
     font-weight: 500;
+    background: $color-grey-50;
   }
 
   &.active {
+    color: black;
     font-weight: 500;
     background: $color-yellow;
   }
 }
 
+.miller__add {
+  margin-top: auto;
+  border-top: 1px solid $color-grey-100;
+}
+
+.miller__not-selected {
+  padding: 0.5rem 0.75rem;
+  color: $color-grey-500;
+  font-style: italic;
+}
+
 .miller__icon {
   margin-right: 0.35rem;
+  opacity: 0.75;
 }
 
 .details {
