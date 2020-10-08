@@ -10,6 +10,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   }
 
   const activePeriodRef = db.collection('periods').doc(id);
+  await bindFirestoreRef('activePeriod', activePeriodRef, { maxRefDepth: 0 });
 
   const objectivesRef = db
     .collection('objectives')
@@ -18,14 +19,18 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   const activeObjectivesList = await objectivesRef.get().then(snapshot => snapshot.docs.map(doc => doc.ref));
 
-  const keyResultsRef = db
-    .collection('keyResults')
-    .where('archived', '==', false)
-    .where('objective', 'in', activeObjectivesList);
+  if (activeObjectivesList.length) {
+    const keyResultsRef = db
+      .collection('keyResults')
+      .where('archived', '==', false)
+      .where('objective', 'in', activeObjectivesList);
 
-  await bindFirestoreRef('activePeriod', activePeriodRef, { maxRefDepth: 0 });
-  await bindFirestoreRef('objectives', objectivesRef, { maxRefDepth: 0 });
-  await bindFirestoreRef('keyResults', keyResultsRef, { maxRefDepth: 0 });
+    await bindFirestoreRef('objectives', objectivesRef, { maxRefDepth: 0 });
+    await bindFirestoreRef('keyResults', keyResultsRef, { maxRefDepth: 0 });
+  } else {
+    unbindFirestoreRef('objectives');
+    unbindFirestoreRef('keyResults');
+  }
 
   return true;
 });
