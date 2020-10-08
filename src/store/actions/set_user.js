@@ -16,5 +16,19 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   if (!exists) rejectAccess();
 
   // Bind the user object
-  return bindFirestoreRef('user', userRef);
+  const options = {
+    serialize,
+  };
+  return bindFirestoreRef('user', userRef, options);
 });
+
+/**
+ * Custom serializer for the firestore action. Includes the document's Firestore path
+ * and the its progression in the current period
+ */
+function serialize(snapshot) {
+  const document = snapshot.data();
+  Object.defineProperty(document, 'ref', { value: snapshot.ref });
+
+  return document;
+}

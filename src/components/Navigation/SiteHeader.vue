@@ -32,6 +32,11 @@
                 ><i class="icon fa fa-fw fa-cogs"></i> Admin</router-link
               >
             </li>
+            <li class="menu__list-item show-mobile">
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }"
+                ><i class="icon fa fa-fw fa-question-circle"></i> Help</router-link
+              >
+            </li>
             <li>
               <button class="btn btn--ter btn--icon" @click="signOut">
                 <i class="icon fa fa-fw fa-sign-out-alt"></i> Sign out
@@ -265,5 +270,11 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.show-mobile {
+  @media screen and (min-width: bp(m)) {
+    display: none;
+  }
 }
 </style>

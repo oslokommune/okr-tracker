@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div v-for="group in sidebarGroups" class="sidebar__group" :key="group.name">
-      <h4 class="label">{{ group.name }}</h4>
+      <h4 class="label" v-if="group.items.length">{{ group.name }}</h4>
       <ul class="sidebar__list">
         <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
           <router-link
@@ -93,8 +93,8 @@ export default {
   text-transform: uppercase;
 }
 
-.sidebar__listitem {
-  font-size: 14px;
+.sidebar__list {
+  margin-bottom: 0.5rem;
 }
 
 .sidebar__link {
