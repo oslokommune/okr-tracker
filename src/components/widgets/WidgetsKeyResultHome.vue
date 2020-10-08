@@ -2,8 +2,10 @@
   <aside v-if="activeKeyResult" class="wrapper">
     <div class="keyresult">
       <div class="keyresult__body">
-        <i class="fa fa-edit"></i>
-        Endre nøkkelresultater
+        <router-link :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }">
+          <i class="fa fa-edit"></i>
+          Endre nøkkelresultater
+        </router-link>
       </div>
     </div>
 
