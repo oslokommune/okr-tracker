@@ -29,7 +29,7 @@
         <span class="icon fa fa-fw fa-cogs"></span>
         <span class="btn--label">Admin</span>
       </router-link>
-      <router-link :to="'#'" class="btn btn--ter btn--icon">
+      <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-question-circle"></span>
         <span class="btn--label">Help</span>
       </router-link>
