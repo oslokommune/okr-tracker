@@ -23,7 +23,13 @@
 
       <div class="form-group">
         <span class="form-label">Period</span>
-        <v-select label="name" v-model="objective.period" :options="periods" :clearable="false">
+        <v-select
+          label="name"
+          v-model="objective.period"
+          :options="periods"
+          :clearable="false"
+          @input="changedPeriod = true"
+        >
           <template #option="option"> {{ option.name }} </template>
         </v-select>
       </div>
@@ -48,6 +54,7 @@ export default {
   data: () => ({
     objective: null,
     periods: [],
+    changedPeriod: false,
   }),
   props: {
     data: {
@@ -72,7 +79,30 @@ export default {
   },
 
   methods: {
-    update() {},
+    async update() {
+      try {
+        const { id, name, description, weight, icon, period } = this.objective;
+        const data = {
+          name,
+          icon: icon || '',
+          description: description || '',
+          weight: weight || 1,
+          period: db.collection('periods').doc(period.id),
+        };
+
+        await Objective.update(id, data);
+
+        if (this.changedPeriod) {
+          await this.$router.push({ query: {} });
+          await this.$router.push({ query: { type: 'objective', id } });
+        }
+
+        this.$toasted.show('Successfully saved changes');
+      } catch (error) {
+        console.log(error);
+        this.$toasted.show('Could not save changes');
+      }
+    },
     async archive() {
       try {
         await Objective.archive(this.objective.id);
