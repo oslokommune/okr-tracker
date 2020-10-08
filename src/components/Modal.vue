@@ -48,9 +48,7 @@
 </template>
 
 <script>
-import flatPickr from 'vue-flatpickr-component';
 import locale from 'flatpickr/dist/l10n/no';
-import 'flatpickr/dist/flatpickr.css';
 import Progress from '@/db/Progress';
 
 export default {
@@ -78,10 +76,6 @@ export default {
     note: '',
     value: 0,
   }),
-
-  components: {
-    flatPickr,
-  },
 
   methods: {
     close() {

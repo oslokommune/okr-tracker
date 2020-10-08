@@ -6,6 +6,7 @@ import VueScrollTo from 'vue-scrollto';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
+import VueFlatPickr from 'vue-flatpickr-component';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -19,6 +20,7 @@ import i18n from '@/locale/i18n';
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import 'flatpickr/dist/flatpickr.css';
 
 const { auth } = require('./config/firebaseConfig');
 
@@ -35,6 +37,7 @@ Vue.use(VueScrollTo);
 Vue.use(VTooltip);
 Vue.use(VueMeta);
 Vue.use(firestorePlugin);
+Vue.use(VueFlatPickr);
 
 // Global components
 Vue.component('VSelect', VueSelect);
