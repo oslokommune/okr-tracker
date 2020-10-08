@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-if="activeItem">
+  <div class="wrapper" v-if="activeItemRef">
     <div class="miller">
       <div class="miller__col">
         <div class="miller__col-heading">Select period</div>
@@ -8,7 +8,10 @@
             <router-link
               class="miller__link"
               :to="{ query: { type: 'period', id: p.id } }"
-              :class="{ active: editObject && p.id === editObject.id }"
+              :class="{
+                active: editObject && p.id === editObject.id,
+                selected: selectedPeriod && selectedPeriod.id === p.id,
+              }"
             >
               <span class="miller__icon fa fa-calendar-alt"></span>
               <span class="miller__label">{{ p.name }}</span>
@@ -24,7 +27,10 @@
             <router-link
               class="miller__link"
               :to="{ query: { type: 'objective', id: o.id } }"
-              :class="{ active: editObject && o.id === editObject.id }"
+              :class="{
+                active: editObject && o.id === editObject.id,
+                selected: selectedObjective && selectedObjective.id === o.id,
+              }"
             >
               <span class="miller__icon fa fa-trophy"></span>
               <span class="miller__label">{{ o.name }}</span>
@@ -70,10 +76,12 @@ export default {
     periods: [],
     objectives: [],
     keyResults: [],
+    selectedPeriod: null,
+    selectedObjective: null,
   }),
 
   computed: {
-    ...mapState(['activeItem', 'activeItemRef']),
+    ...mapState(['activeItemRef']),
   },
 
   watch: {
@@ -110,8 +118,6 @@ export default {
         default:
           this.editForm = null;
           this.editObject = null;
-
-          console.log(this.editObject);
       }
     },
 
@@ -126,9 +132,13 @@ export default {
       if (type === 'period') {
         await this.bindObjectives({ parentId: id });
         if (this.keyResults.length) this.$unbind('keyResults');
+        this.selectedObjective = null;
+        this.selectedPeriod = null;
       } else if (type === 'objective') {
         const [keyres] = await this.bindKeyResults({ parentId: id });
         await this.bindObjectives({ parentId: keyres.objective.period.id });
+        this.selectedPeriod = keyres.objective.period;
+        this.selectedObjective = null;
       } else if (type === 'keyResult') {
         const keyRes = await db
           .collection('keyResults')
@@ -142,6 +152,8 @@ export default {
           .get()
           .then(snap => snap.data());
 
+        this.selectedPeriod = objective.period;
+        this.selectedObjective = keyRes.objective;
         await this.bindObjectives({ parentId: objective.period.id });
         await this.bindKeyResults({ parentId: keyRes.objective.id });
       }
