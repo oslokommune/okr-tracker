@@ -293,7 +293,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-left: 1px solid $color-grey-100;
+  border-left: 2px solid $color-grey-100;
 
   &:first-child {
     border-left: none;
@@ -332,6 +332,23 @@ export default {
     color: black;
     font-weight: 500;
     background: $color-yellow;
+  }
+}
+
+.miller__list {
+  max-height: 11rem;
+  overflow: auto;
+
+  @media screen and (min-width: bp(s)) {
+    max-height: 20rem;
+  }
+
+  @media screen and (min-width: bp(m)) {
+    max-height: 25rem;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    max-height: 35rem;
   }
 }
 
