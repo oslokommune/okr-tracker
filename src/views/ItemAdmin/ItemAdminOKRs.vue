@@ -1,37 +1,47 @@
 <template>
-  <div class="wrapper" v-if="activeItemRef">
-    <div class="miller">
-      <div
-        class="miller__col"
-        v-for="{ type, heading, activeClass, selectedClass, items, icon, notSelected, addEvent } in columns"
-        :key="type"
-      >
-        <div class="miller__col-heading">{{ heading }}</div>
-        <div class="miller__not-selected" v-if="notSelected">{{ notSelected }}</div>
-        <ul class="miller__list" v-else>
-          <li v-for="{ id, name } in items" :key="id" class="miller__list-item">
-            <router-link
-              class="miller__link"
-              :to="{ query: { type, id } }"
-              :class="{
-                active: activeClass(id),
-                selected: selectedClass(id),
-              }"
-            >
-              <span class="miller__icon fa" :class="icon"></span>
-              <span class="miller__label">{{ name }}</span>
-            </router-link>
-          </li>
-        </ul>
-        <button v-if="!notSelected" class="miller__add btn btn--ter btn--icon btn--fw" @click="addEvent">
-          <span class="icon fa fa-plus"></span>
-          <span>Create new</span>
-        </button>
-      </div>
+  <div>
+    <div class="action-bar">
+      <label class="form-group--checkbox">
+        <input class="form__checkbox" type="checkbox" v-model="showArchived" />
+        <span class="form-label">Show archived</span>
+      </label>
     </div>
 
-    <div class="details" v-if="editObject && editForm">
-      <component :is="editForm" :data="editObject"></component>
+    <div class="wrapper" v-if="activeItemRef">
+      <div class="miller">
+        <div
+          class="miller__col"
+          v-for="{ type, heading, activeClass, selectedClass, items, icon, notSelected, addEvent } in columns"
+          :key="type"
+        >
+          <div class="miller__col-heading">{{ heading }}</div>
+          <div class="miller__not-selected" v-if="notSelected">{{ notSelected }}</div>
+          <ul class="miller__list" v-else>
+            <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
+              <router-link
+                class="miller__link"
+                :to="{ query: { type, id } }"
+                :class="{
+                  active: activeClass(id),
+                  selected: selectedClass(id),
+                }"
+              >
+                <span class="miller__icon fa" :class="icon"></span>
+                <span class="miller__label">{{ name }}</span>
+                <span class="miller__archived fa fa-recycle" v-if="archived"></span>
+              </router-link>
+            </li>
+          </ul>
+          <button v-if="!notSelected" class="miller__add btn btn--ter btn--icon btn--fw" @click="addEvent">
+            <span class="icon fa fa-plus"></span>
+            <span>Create new</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="details" v-if="editObject && editForm">
+        <component :is="editForm" :data="editObject"></component>
+      </div>
     </div>
   </div>
 </template>
@@ -104,6 +114,12 @@ export default {
         await this.setItems(query);
         this.setFormComponent(query);
       },
+    },
+    async showArchived() {
+      const { query } = this.$route;
+      await this.bindPeriods();
+      await this.setItems(query);
+      this.setFormComponent(query);
     },
   },
 
@@ -366,6 +382,10 @@ export default {
 .miller__icon {
   margin-right: 0.35rem;
   opacity: 0.75;
+}
+
+.miller__archived {
+  margin-left: auto;
 }
 
 .details {

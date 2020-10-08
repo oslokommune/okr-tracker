@@ -77,10 +77,6 @@ export default {
     value: 0,
   }),
 
-  components: {
-    flatPickr,
-  },
-
   methods: {
     close() {
       this.$emit('close');

@@ -64,7 +64,7 @@ export default {
     data: {
       immediate: true,
       handler() {
-        this.activePeriod = this.data;
+        this.activePeriod = { ...this.data, id: this.data.id };
         this.range = this.generateRange();
       },
     },
@@ -91,6 +91,7 @@ export default {
     async archive() {
       try {
         await Period.archive(this.activePeriod.id);
+        this.$router.push({ query: {} });
         this.$toasted.show('Archived');
       } catch (error) {
         console.log(error);
@@ -103,7 +104,7 @@ export default {
         const { id, name } = this.activePeriod;
 
         await Period.update(id, { name, startDate: new Date(this.startDate), endDate: new Date(this.endDate) });
-        this.$toasted.show('Archived');
+        this.$toasted.show('Successfully saved changes');
       } catch (error) {
         console.log(error);
         this.$toasted.show('Could not save changes');
