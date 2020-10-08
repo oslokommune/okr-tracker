@@ -284,6 +284,7 @@ export default {
   display: grid;
   grid-gap: 1.75rem 0;
   grid-template-columns: repeat(1, 1fr);
+  align-self: flex-start;
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
