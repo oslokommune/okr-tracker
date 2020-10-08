@@ -60,6 +60,11 @@ const routes = [
     component: () => import('@/views/Admin/CreateProduct.vue'),
   },
   {
+    path: '/help',
+    name: 'Help',
+    component: () => import('@/views/Help.vue'),
+  },
+  {
     path: '/:slug',
     name: 'ItemHome',
     component: () => import('@/views/ItemHome.vue'),
