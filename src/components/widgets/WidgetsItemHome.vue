@@ -5,6 +5,8 @@
       Admin
     </router-link>
 
+    <router-link :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }"> Dashboard </router-link>
+
     <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
 
     <div class="widgets">

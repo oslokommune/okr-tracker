@@ -93,6 +93,12 @@ const routes = [
     ],
   },
   {
+    path: '/:slug/dashboard',
+    name: 'Dashboard',
+    component: () => import('@/views/DashboardHome.vue'),
+    beforeEnter: routerGuards.home,
+  },
+  {
     path: '/:slug/:keyResultId',
     name: 'KeyResultHome',
     component: () => import('@/views/KeyResultHome.vue'),
