@@ -30,6 +30,15 @@ export default {
       type: String,
       required: true,
     },
+    open: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+  },
+
+  mounted() {
+    this.isOpen = this.open;
   },
 };
 </script>

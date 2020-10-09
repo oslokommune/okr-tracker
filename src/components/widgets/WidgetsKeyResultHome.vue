@@ -10,9 +10,10 @@
       </router-link>
     </div>
 
-    <div class="widgets">
-      <widget-key-result-details v-if="activeKeyResult"></widget-key-result-details>
-      <widget-key-result-notes v-if="activeKeyResult"></widget-key-result-notes>
+    <div class="widgets" v-if="activeKeyResult">
+      <widget-key-result-details></widget-key-result-details>
+      <widget-key-result-notes></widget-key-result-notes>
+      <widget-key-result-weights></widget-key-result-weights>
     </div>
   </aside>
 </template>
@@ -26,7 +27,7 @@ export default {
   computed: {
     ...mapState(['activeKeyResult', 'user']),
     editRights() {
-      if (!this.user.admin) return true;
+      if (this.user.admin) return true;
       const { team } = this.activeKeyResult.parent;
       if (!team) return false;
       return team.includes(this.user.ref.path);
@@ -35,6 +36,7 @@ export default {
   components: {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
+    WidgetKeyResultWeights: () => import('./WidgetKeyResultWeights.vue'),
   },
 };
 </script>
