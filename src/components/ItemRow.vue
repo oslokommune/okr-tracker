@@ -100,7 +100,12 @@ export default {
 }
 
 .item__name {
+  flex-shrink: 1;
   margin-right: auto;
+  padding-right: 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .item--department {
@@ -114,6 +119,7 @@ export default {
 }
 
 .item__icon {
+  flex-shrink: 0;
   margin-right: 0.5rem;
 }
 
@@ -125,6 +131,7 @@ export default {
 }
 
 .progress-bar {
+  flex-shrink: 0;
   width: span(1, 0, span(6)) !important;
 
   @media screen and (min-width: bp(l)) {
@@ -133,8 +140,12 @@ export default {
 }
 
 .item__kpis {
-  display: flex;
+  display: none;
   margin: 0 1rem;
+
+  @media screen and (min-width: bp(s)) {
+    display: flex;
+  }
 }
 
 .item__kpi {

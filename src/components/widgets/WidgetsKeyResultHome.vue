@@ -1,10 +1,13 @@
 <template>
   <aside v-if="activeKeyResult" class="wrapper">
-    <div class="keyresult">
-      <div class="keyresult__body">
-        <i class="fa fa-edit"></i>
-        Endre nøkkelresultater
-      </div>
+    <div class="keyresult" v-if="editRights">
+      <router-link
+        class="btn btn--ter btn--icon"
+        :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+      >
+        <i class="icon fa fa-edit"></i>
+        Endre nøkkelresultat
+      </router-link>
     </div>
 
     <div class="widgets">
@@ -21,7 +24,13 @@ export default {
   name: 'WidgetsKeyResultHome',
 
   computed: {
-    ...mapState(['activeKeyResult']),
+    ...mapState(['activeKeyResult', 'user']),
+    editRights() {
+      if (!this.user.admin) return true;
+      const { team } = this.activeKeyResult.parent;
+      if (!team) return false;
+      return team.includes(this.user.ref.path);
+    },
   },
   components: {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
@@ -47,15 +56,12 @@ export default {
   }
 }
 .keyresult {
+  display: flex;
   width: 100%;
-  margin: 1rem 0 1rem 0;
-}
+  margin: 1.75rem 0 1rem;
 
-.keyresult__body {
-  padding: 0.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    padding: 1;
+  & > .btn {
+    width: 100%;
   }
 }
 </style>
