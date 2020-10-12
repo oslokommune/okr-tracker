@@ -1,8 +1,13 @@
 <template>
   <aside v-if="activeItem" class="wrapper">
     <router-link class="btn btn--ghost btn--icon" v-if="user.admin" :to="{ name: 'ItemAdmin' }">
-      <span class="icon fa fa-cog"></span>
+      <i class="icon fa fa-cog"></i>
       Admin
+    </router-link>
+
+    <router-link class="btn btn--ghost btn--icon" :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }">
+      <i class="icon fas fa-tachometer-alt"></i>
+      Dashboard
     </router-link>
 
     <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
