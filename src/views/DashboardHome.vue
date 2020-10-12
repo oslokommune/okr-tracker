@@ -1,13 +1,13 @@
 <template>
   <div class="db" ref="dashboard">
-    <aside class="meta">
+    <aside v-if="activeItem" class="meta">
       <div class="panel product">
         <img class="product__image" :src="activeItem.photoURL || '/placeholder-image.svg'" :alt="activeItem.name" />
         <div class="product__name">{{ activeItem.name }}</div>
       </div>
       <div v-if="activeItem.team" class="panel team">
         <div class="panel__header"><i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}</div>
-        <div v-for="user in team" :key="user.id" class="team__member">
+        <div v-for="user in activeItem.team" :key="user.id" class="team__member">
           <img :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName || user.id" class="team__image" />
           <div class="team__name">{{ user.displayName || user.id }}</div>
         </div>
@@ -27,14 +27,17 @@
       class="objective"
     ></dashboard-objective>
 
-    <router-link :to="{ name: 'product' }" class="close" v-tooltip="$t('btn.close')"
+    <router-link
+      :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
+      class="close"
+      v-tooltip="$t('btn.close')"
       ><i class="fa fa-times"></i
     ></router-link>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import PieChart from '@/util/PieChart';
 
 export default {
@@ -46,15 +49,6 @@ export default {
 
   computed: {
     ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults']),
-
-    tree() {
-      return this.objectives.map(objective => {
-        objective.keyResults = this.keyResults.filter(keyRes => {
-          return keyRes.objective === `objectives/${objective.id}`;
-        });
-        return objective;
-      });
-    },
   },
 
   components: {
@@ -68,6 +62,20 @@ export default {
     this.piegraph.render(this.activeKeyResult, this.activePeriod, this.progress);
 
     this.enterFullscreen();
+  },
+
+  watch: {
+    keyResults: {
+      immediate: true,
+      handler() {
+        this.tree = this.objectives.map(objective => {
+          objective.keyResults = this.keyResults.filter(keyRes => {
+            return keyRes.objective === `objectives/${objective.id}`;
+          });
+          return objective;
+        });
+      },
+    },
   },
 
   methods: {
