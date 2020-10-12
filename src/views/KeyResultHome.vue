@@ -74,6 +74,7 @@ import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import KeyResult from '@/db/KeyResult';
 import LineChart from '@/util/LineChart';
+import routerGuard from '@/router/router-guards/keyResultHome';
 
 export default {
   name: 'KeyResultHome',
@@ -88,6 +89,8 @@ export default {
     graph: null,
     isOpen: false,
   }),
+
+  beforeRouteUpdate: routerGuard,
 
   async beforeRouteLeave(to, from, next) {
     try {
@@ -155,9 +158,8 @@ export default {
         if (!keyresult) return;
         await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`).orderBy('timestamp', 'desc'));
 
-        if (this.graph) {
-          this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
-        }
+        this.graph = new LineChart(this.$refs.graph);
+        this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
       },
     },
   },
