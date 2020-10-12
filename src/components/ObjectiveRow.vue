@@ -1,5 +1,9 @@
 <template>
-  <router-link class="objective" to="#" :class="{ expanded: activeView !== 'compact' }">
+  <router-link
+    class="objective"
+    :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
+    :class="{ expanded: activeView !== 'compact' }"
+  >
     <span class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`"></span>
     <span class="objective__name">{{ objective.name }}</span>
 

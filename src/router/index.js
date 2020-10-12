@@ -93,10 +93,16 @@ const routes = [
     ],
   },
   {
-    path: '/:slug/:keyResultId',
+    path: '/:slug/k/:keyResultId',
     name: 'KeyResultHome',
     component: () => import('@/views/KeyResultHome.vue'),
     beforeEnter: routerGuards.keyResultHome,
+  },
+  {
+    path: '/:slug/o/:objectiveId',
+    name: 'ObjectiveHome',
+    component: () => import('@/views/ObjectiveHome.vue'),
+    // beforeEnter: routerGuards.keyResultHome,
   },
 ];
 

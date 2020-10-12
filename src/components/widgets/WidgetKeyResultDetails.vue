@@ -2,13 +2,13 @@
   <Widget v-if="activeKeyResult" title="Detaljer" icon="info-circle">
     <div class="details">
       <h3 class="title-3">Tilhører mål</h3>
-      <span class="details--margin-bottom">
+      <span class="details--margin-bottom" v-if="activeKeyResult.objective">
         <i class="fa fa-trophy"></i>
         {{ activeKeyResult.objective.name }}
       </span>
       <h3 class="title-3">Periode</h3>
 
-      <div class="details__period">
+      <div class="details__period" v-if="activePeriod">
         <span>
           <i class="fa fa-calendar-alt"></i>
           {{ activePeriod.name }}
