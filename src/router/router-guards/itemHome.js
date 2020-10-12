@@ -1,6 +1,8 @@
 import store from '@/store';
 import getSlugRef from './routerGuardUtil';
 
+const { state } = store;
+
 /**
  * Router guard for organization, department, and product 'home' pages.
  *
@@ -12,9 +14,14 @@ export default async function (to, from, next) {
 
   const slugRef = await getSlugRef(slug, next);
 
+  const { activeItem } = state;
+
   try {
-    await store.dispatch('set_active_item', slugRef);
-    await store.dispatch('set_sidebar_items');
+    if (!activeItem || !slugRef || activeItem.id !== slugRef.id) {
+      await store.dispatch('set_active_item', slugRef);
+      await store.dispatch('set_sidebar_items');
+    }
+
     return next();
   } catch (error) {
     console.log(error);
