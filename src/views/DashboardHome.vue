@@ -58,8 +58,8 @@ export default {
   mounted() {
     if (!this.$refs.piechart) return;
 
-    this.piegraph = new PieChart(this.$refs.piechart);
-    this.piegraph.render(this.activeKeyResult, this.activePeriod, this.progress);
+    this.piegraph = new PieChart(this.$refs.piechart, true);
+    this.piegraph.render(this.activePeriod);
 
     this.enterFullscreen();
   },
@@ -105,7 +105,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 1000;
   display: grid;
   grid-gap: 1em;
   grid-template-rows: repeat(6, 1fr);
