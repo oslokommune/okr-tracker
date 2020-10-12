@@ -27,10 +27,6 @@ export default {
     DashboardProgressBar: () => import('@/components/DashboardProgressBar.vue'),
   },
 
-  data: () => ({
-    progression: null,
-  }),
-
   props: {
     objective: {
       type: Object,

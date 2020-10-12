@@ -1,8 +1,8 @@
 <template>
   <div class="progress__container">
     <div class="progress__unit">{{ keyres.unit }}</div>
-    <div class="progress__bar-container" :class="{ darkmode }">
-      <div class="progress__bar" ref="bar" :class="{ completed, darkmode }" style="width: 0%">
+    <div class="progress__bar-container">
+      <div class="progress__bar" ref="bar" :class="{ completed }" style="width: 0%">
         <div class="progress__current-value" :data-progress="keyres.currentValue || keyres.startValue">
           {{ keyres.currentValue || keyres.startValue }}
         </div>
@@ -24,7 +24,6 @@ export default {
 
   data: () => ({
     completed: false,
-    darkmode: true,
   }),
 
   props: {
@@ -118,13 +117,9 @@ export default {
     grid-area: bar;
     height: 1.7em;
     padding: 2px;
-    background: rgba($color-bg, 0.75);
+    background: rgba(white, 0.1);
     border: 1px solid $color-bg;
     border-radius: 4px;
-
-    &.darkmode {
-      background: rgba(white, 0.1);
-    }
   }
 
   &__bar {
@@ -135,12 +130,8 @@ export default {
     height: 100%;
     padding-right: 2px;
     overflow: hidden;
-    background: $color-grey-100;
+    background: rgba(white, 0.6);
     border-radius: 3px;
-
-    &.darkmode {
-      background: rgba(white, 0.6);
-    }
 
     &.completed {
       background: $color-yellow;

@@ -43,7 +43,6 @@ import PieChart from '@/util/PieChart';
 export default {
   name: 'DashboardHome',
   data: () => ({
-    team: [],
     piegraph: null,
   }),
 
