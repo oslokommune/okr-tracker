@@ -1,7 +1,7 @@
 <template>
   <div class="objective">
     <div class="objective__head">
-      <i class="objective__icon fa fa-fw" :class="`fa-trphy`"></i>
+      <i class="objective__icon fa fa-fw fa-trophy"></i>
       <div class="objective__name">
         {{ objective.name }}
       </div>
