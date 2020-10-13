@@ -103,7 +103,7 @@ function updateInnerArcs(el, data) {
         return colors.yellow;
       }
       if (this.dimmed) {
-        return i === 0 ? colors.blue : colors.dimmed;
+        return i === 0 ? colors.dimmed : colors.grey;
       }
       return i === 0 ? colors.purple : colors.grey;
     })
