@@ -112,7 +112,7 @@ const routes = [
     name: 'Dashboard',
     meta: { breadcrumbs: ['home', 'item'] },
     component: () => import('@/views/DashboardHome.vue'),
-    beforeEnter: routerGuards.itemHome,
+    beforeEnter: routerGuards.dashboard,
   },
   {
     path: '/:slug/k/:keyResultId',
