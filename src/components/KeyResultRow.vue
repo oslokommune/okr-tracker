@@ -2,15 +2,15 @@
   <router-link
     :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
     class="keyResult"
-    :class="{ expanded: activeView !== 'compact' }"
+    :class="{ expanded: view !== 'compact' }"
   >
     <span class="keyResult__name">{{ keyRow.name }}</span>
 
     <ProgressBar class="keyResult__progression" :progression="keyRow.progression"></ProgressBar>
 
-    <span v-if="activeView !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
+    <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
 
-    <form v-if="activeView !== 'compact'" class="keyResult__form" @submit.prevent="update">
+    <form v-if="view !== 'compact'" class="keyResult__form" @submit.prevent="update">
       <input type="number" v-model.number="keyRow.currentValue" @click.stop="" />
       <button>Send</button>
     </form>
@@ -27,6 +27,11 @@ export default {
       type: Object,
       required: true,
     },
+    forceExpanded: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data: () => ({
@@ -35,6 +40,11 @@ export default {
 
   computed: {
     ...mapState(['activeView']),
+    view() {
+      if (this.forceExpanded) return 'expanded';
+
+      return this.activeView;
+    },
   },
 
   methods: {
