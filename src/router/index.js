@@ -96,7 +96,7 @@ const routes = [
     path: '/:slug/dashboard',
     name: 'Dashboard',
     component: () => import('@/views/DashboardHome.vue'),
-    beforeEnter: routerGuards.itemHome,
+    beforeEnter: routerGuards.dashboard,
   },
   {
     path: '/:slug/k/:keyResultId',
