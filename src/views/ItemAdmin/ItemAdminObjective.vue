@@ -13,7 +13,7 @@
 
       <label class="form-group">
         <span class="form-label">Weight</span>
-        <input class="form__field" type="number" min="1" v-model="objective.weight" />
+        <input class="form__field" type="number" min="1" v-model.number="objective.weight" />
       </label>
 
       <label class="form-group">
