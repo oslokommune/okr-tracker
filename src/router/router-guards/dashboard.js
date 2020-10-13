@@ -5,10 +5,11 @@ import getSlugRef from './routerGuardUtil';
 const { state } = store;
 
 /**
- * Router guard for organization, department, and product 'home' pages.
+ * Router guard for organization, department, and product 'dashboard' pages.
  *
  * Finds and verifies the document from slug and waits for 'set_active_item' action in store
  * to resolve before allowing the route to change.
+ * Always defaults to the newest period
  */
 export default async function (to, from, next) {
   const { slug } = to.params;
