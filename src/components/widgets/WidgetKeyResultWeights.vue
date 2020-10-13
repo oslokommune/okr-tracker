@@ -23,7 +23,7 @@ import { scaleLinear, max } from 'd3';
 import Widget from './Widget.vue';
 
 export default {
-  name: 'WidgetKeyResultNotes',
+  name: 'WidgetKeyResultWeights',
 
   data: () => ({
     chart: null,
