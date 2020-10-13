@@ -184,7 +184,12 @@ async function handleKeyResults(doc) {
   };
 
   data.name = data.description;
-  data.description = data.longDescription;
+
+  if (data.longDescription) {
+    data.description = data.longDescription;
+  } else {
+    delete data.description;
+  }
 
   delete data.longDescription;
 
