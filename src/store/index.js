@@ -53,6 +53,7 @@ export default new Vuex.Store({
     activeItemRef: null,
     activeKeyResult: null,
     activePeriod: null,
+    activeObjective: null,
     periods: [],
     objectives: [],
     keyResults: [],
