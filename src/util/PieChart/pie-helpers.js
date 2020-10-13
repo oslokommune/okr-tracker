@@ -9,6 +9,7 @@ const colors = {
   purple: '#2A2859',
   grey: '#a2a2a2',
   yellow: '#F9C66B',
+  dimmed: '#c7c7c7',
 };
 export const formatPercent = format('.0%');
 
@@ -100,6 +101,9 @@ function updateInnerArcs(el, data) {
     .attr('fill', (d, i) => {
       if (this.darkmode) {
         return colors.yellow;
+      }
+      if (this.dimmed) {
+        return i === 0 ? colors.blue : colors.dimmed;
       }
       return i === 0 ? colors.purple : colors.grey;
     })

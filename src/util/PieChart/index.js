@@ -18,8 +18,9 @@ export default class Pie {
   /**
    * Initialize the SVG and create the necessary DOM elements
    */
-  constructor(svg, darkmode = false) {
-    this.darkmode = darkmode;
+  constructor(svg, { darkmode, dimmed }) {
+    this.dimmed = dimmed || false;
+    this.darkmode = darkmode || false;
     this.svg = select(svg).call(initSvg.bind(this));
     this.canvas = this.svg.append('g').classed('canvas', true);
     this.inner = this.canvas.append('g').call(initGroup, 'inner');

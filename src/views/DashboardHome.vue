@@ -27,12 +27,14 @@
       class="objective"
     ></dashboard-objective>
 
-    <router-link
-      :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
-      class="close"
-      v-tooltip="$t('btn.close')"
-      ><i class="fa fa-times"></i
-    ></router-link>
+    <div class="close__container">
+      <router-link
+        class="close"
+        :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
+        v-tooltip="$t('btn.close')"
+        ><i class="fa fa-times"></i
+      ></router-link>
+    </div>
   </div>
 </template>
 
@@ -57,7 +59,7 @@ export default {
   mounted() {
     if (!this.$refs.piechart) return;
 
-    this.piegraph = new PieChart(this.$refs.piechart, true);
+    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true });
     this.piegraph.render(this.activePeriod);
 
     this.enterFullscreen();
@@ -108,13 +110,13 @@ export default {
   display: grid;
   grid-gap: 1em;
   grid-template-rows: repeat(6, 1fr);
-  grid-template-columns: 25% repeat(var(--columns), minmax(auto, 25%)) 1fr auto;
+  grid-template-columns: repeat(5, 1fr) auto;
   justify-content: start;
   width: 100vw;
   height: 100vh;
   padding: 1.5em;
   color: white;
-  font-size: calc(0.8vw);
+  font-size: calc(12px + (20 - 12) * (100vw - 600px) / (2000 - 600));
   background-color: #020218;
   background-image: url('/dashboard-1.png');
   background-size: cover;
@@ -149,10 +151,6 @@ export default {
   }
 }
 
-.close {
-  grid-column-end: calc(var(--columns) + 3);
-}
-
 .team {
   $imageSize: 1.75em;
   display: flex;
@@ -183,7 +181,6 @@ export default {
 .product {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   text-align: center;
 
   &__image {
@@ -204,13 +201,18 @@ export default {
   }
 }
 
+.close__container {
+  grid-column: 6;
+  justify-self: end;
+  width: 100%;
+}
+
 .close {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 3em;
   height: 3em;
-  margin-left: auto;
   padding: 0;
   color: white;
 

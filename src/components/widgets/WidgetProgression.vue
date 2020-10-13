@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import PieChart from '@/util/PieChart';
 
 export default {
@@ -14,15 +13,23 @@ export default {
     chart: null,
   }),
 
-  computed: {
-    ...mapState(['activePeriod']),
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    dimmed: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   mounted() {
     setTimeout(() => {
       this.svg = this.$refs.svg;
-      this.chart = new PieChart(this.svg);
-      this.chart.render(this.activePeriod);
+      this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
+      this.chart.render(this.data);
     }, 100);
   },
 
