@@ -2,14 +2,14 @@
   <div class="breadcrumbs">
     <nav class="breadcrumbs__nav">
       <ul class="breadcrumbs__list">
-        <li class="breadcrumbs__item" v-for="item in breadcrumbs" :key="item.id">
-          <router-link v-if="item.route" class="breadcrumbs__link" :to="item.route">
-            <span class="breadcrumbs__icon fas" :class="`fa-${item.icon}`"></span>
-            <span class="breadcrumbs__label">{{ item.label }}</span>
+        <li class="breadcrumbs__item" v-for="{ id, route, icon, label } in breadcrumbs" :key="id">
+          <router-link v-if="route" class="breadcrumbs__link" :to="route">
+            <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
+            <span class="breadcrumbs__label">{{ label }}</span>
           </router-link>
           <span class="breadcrumbs__link" v-else>
-            <span class="breadcrumbs__icon fas" :class="`fa-${item.icon}`"></span>
-            <span class="breadcrumbs__label">{{ item.label }}</span>
+            <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
+            <span class="breadcrumbs__label">{{ label }}</span>
           </span>
         </li>
       </ul>
@@ -19,72 +19,56 @@
 
 <script>
 import { mapState } from 'vuex';
+import * as breadcrumbList from '@/config/breadcrumbs';
 
 export default {
   data: () => ({
     breadcrumbs: [],
-    home: {
-      route: '/',
-      label: 'Hjem',
-      icon: 'home',
-    },
   }),
 
   computed: {
-    ...mapState(['activeItem', 'activeKeyResult']),
+    ...mapState(['activeItem']),
   },
 
   watch: {
     $route: {
       immediate: true,
-      handler() {
-        const list = [this.home];
-
-        if (this.activeItem) {
-          const { organization, department, name, slug } = this.activeItem;
-
-          if (organization) {
-            list.push({
-              label: organization.name,
-              route: `/${organization.slug}`,
-              icon: 'industry',
-            });
-          }
-
-          if (department) {
-            list.push({
-              label: department.name,
-              route: `/${department.slug}`,
-              icon: 'cubes',
-            });
-          }
-
-          /* eslint-disable-next-line */
-          const icon = !organization ? 'industry' : !department ? 'cubes' : 'cube';
-
-          list.push({
-            label: name,
-            route: `/${slug}`,
-            icon,
-          });
+      handler({ meta: { breadcrumbs } }) {
+        try {
+          this.breadcrumbs = breadcrumbs.map(this.getBreadcrumb).flat();
+        } catch {
+          this.breadcrumbs = [breadcrumbList.home()];
         }
-
-        if (this.activeKeyResult) {
-          const { objective, name } = this.activeKeyResult;
-
-          list.push({
-            label: objective.name,
-            icon: 'trophy',
-          });
-
-          list.push({
-            label: name,
-            icon: 'file-contract',
-          });
-        }
-
-        this.breadcrumbs = list;
       },
+    },
+  },
+
+  methods: {
+    /**
+     * Loops the list of breadcrumb ids from the route object and return the breadcrumbs from
+     * breadcrumbs.js
+     */
+    getBreadcrumb(name) {
+      return name === 'item' ? this.getItemBreadcrumbs() : breadcrumbList[name]();
+    },
+
+    /**
+     * 'Items' may be organizations, departments or products. We must identify what type of item this
+     * is by looking at its properties to determine how many parent items need to be included.
+     * @returns {Array} - Including potential parent items
+     */
+    getItemBreadcrumbs() {
+      const itemList = [];
+
+      if (this.activeItem.organization) {
+        itemList.push(breadcrumbList.organization());
+      }
+      if (this.activeItem.department) {
+        itemList.push(breadcrumbList.department());
+      }
+      itemList.push(breadcrumbList.product());
+
+      return itemList;
     },
   },
 };

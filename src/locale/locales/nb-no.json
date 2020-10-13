@@ -272,7 +272,7 @@
       "slug": "Slug",
       "picture": "Bilde",
       "missionStatement": "Mission statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
       "delete": "Slett"
     },
     "organization": {
@@ -281,7 +281,7 @@
       "slug": "Slug",
       "picture": "Bilde",
       "missionStatement": "Mission statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>"
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>"
     },
     "product": {
       "title": "Administrer produkt",
@@ -292,7 +292,7 @@
       "slugHelp": "Hvordan navnet fremstår i URL-en",
       "picture": "Bilde",
       "missionStatement": "Mission statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'help' }\">Markdown</router-link>",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
       "delete": "Slett"
     },
