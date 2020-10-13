@@ -21,7 +21,7 @@
     </aside>
 
     <dashboard-objective
-      v-for="objective in objectives"
+      v-for="objective in tree"
       :key="objective.id"
       :objective="objective"
       class="objective"
@@ -44,6 +44,7 @@ export default {
   name: 'DashboardHome',
   data: () => ({
     piegraph: null,
+    tree: [],
   }),
 
   computed: {

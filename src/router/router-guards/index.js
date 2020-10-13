@@ -6,3 +6,4 @@ export { default as admin } from './admin';
 export { default as login } from './login';
 export { default as user } from './user';
 export { default as requestAccess } from './requestAccess'; /* eslint-disable-line */
+export { default as dashboard } from './dashboard';
