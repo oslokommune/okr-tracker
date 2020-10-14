@@ -2,7 +2,7 @@
   <router-link
     class="objective"
     :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
-    :class="{ expanded: activeView !== 'compact' }"
+    :class="{ expanded: user.preferences.view !== 'compact' }"
   >
     <span class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`"></span>
     <span class="objective__name">{{ objective.name }}</span>
@@ -10,7 +10,7 @@
     <span class="objective__progression-text">{{ Math.round(objective.progression * 100) }} %</span>
     <ProgressBar class="objective__progression" :progression="objective.progression"></ProgressBar>
 
-    <span v-if="activeView !== 'compact'" class="objective__description">{{ objective.description }}</span>
+    <span v-if="user.preferences.view !== 'compact'" class="objective__description">{{ objective.description }}</span>
   </router-link>
 </template>
 
@@ -26,7 +26,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeView']),
+    ...mapState(['user']),
   },
 
   components: {

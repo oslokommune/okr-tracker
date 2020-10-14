@@ -1,5 +1,5 @@
 <template>
-  <Widget title="Progression" icon="chart-pie">
+  <Widget :widget-id="widgetId" title="Progression" icon="chart-pie">
     <svg ref="svg"></svg>
   </Widget>
 </template>
@@ -14,6 +14,10 @@ export default {
   }),
 
   props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
     data: {
       type: Object,
       required: true,

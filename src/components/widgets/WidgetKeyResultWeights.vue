@@ -1,5 +1,5 @@
 <template>
-  <Widget title="Vekting" icon="balance-scale" :open="false">
+  <Widget :widget-id="widgetId" title="Vekting" icon="balance-scale" :open="false">
     Nøkkelresultater for {{ activeKeyResult.objective.name }}
     <div class="scales">
       <router-link
@@ -29,6 +29,13 @@ export default {
     chart: null,
     scale: scaleLinear(),
   }),
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
     ...mapState(['activeKeyResult', 'keyResults']),

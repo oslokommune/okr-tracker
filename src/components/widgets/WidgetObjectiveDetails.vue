@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeObjective" title="Detaljer" icon="info-circle">
+  <Widget :widget-id="widgetId" v-if="activeObjective" title="Detaljer" icon="info-circle">
     <div class="details">
       <h3 class="title-3">Periode</h3>
 
@@ -42,6 +42,13 @@ export default {
 
   computed: {
     ...mapState(['activeObjective']),
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
   },
 
   components: {

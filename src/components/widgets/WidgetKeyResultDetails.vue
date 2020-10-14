@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeKeyResult" title="Detaljer" icon="info-circle">
+  <Widget :widget-id="widgetId" v-if="activeKeyResult" title="Detaljer" icon="info-circle">
     <div class="details">
       <h3 class="title-3">Tilhører mål</h3>
       <span class="details--margin-bottom" v-if="activeKeyResult.objective">
@@ -38,6 +38,13 @@ export default {
   data: () => ({
     progress: [],
   }),
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod']),

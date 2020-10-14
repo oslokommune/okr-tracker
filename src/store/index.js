@@ -33,8 +33,8 @@ export const mutations = {
     state.activeItemRef = payload;
   },
 
-  SET_VIEW(state, payload) {
-    state.activeView = payload;
+  SET_PREFERENCES(state, payload) {
+    state.user.preferences = payload;
   },
 
   SET_LOGIN_ERROR(state, payload) {
@@ -59,7 +59,6 @@ export default new Vuex.Store({
     keyResults: [],
     kpis: [],
     loginError: null,
-    activeView: 'compact',
     views: [
       { label: 'Kompakt', id: 'compact', icon: '' },
       { label: 'Detaljer', id: 'details', icon: '' },

@@ -1,4 +1,5 @@
 import { db, storage } from '@/config/firebaseConfig';
+import preferences from './defaultPreferences';
 import UploadImage from '../common/uploadImage';
 
 const collectionReference = db.collection('users');
@@ -16,6 +17,7 @@ export const create = async ({ email }) => {
     return collectionReference.doc(email).set({
       id: email,
       email,
+      preferences,
     });
   } catch (error) {
     throw new Error(`Could not add user ${email}`);

@@ -1,5 +1,5 @@
 <template>
-  <Widget title="Vekting" icon="balance-scale" :open="false">
+  <Widget :widget-id="widgetId" title="Vekting" icon="balance-scale" :open="false">
     Mål for {{ activeObjective.period.name }}
     <div class="scales">
       <router-link
@@ -39,6 +39,13 @@ export default {
         name,
         active: this.activeObjective.id === id,
       }));
+    },
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
     },
   },
 

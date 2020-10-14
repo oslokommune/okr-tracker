@@ -4,7 +4,15 @@ const firebaseAdmin = require('firebase-admin');
 const db = firebaseAdmin.firestore();
 
 module.exports = functions.https.onRequest(async (req, res) => {
-  db.collection('orgs')
+  await db
+    .collection('users')
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(handleUser);
+    });
+
+  await db
+    .collection('orgs')
     .get()
     .then(snapshot => {
       snapshot.forEach(handleOrg);
@@ -12,6 +20,33 @@ module.exports = functions.https.onRequest(async (req, res) => {
 
   res.status(200).send('Success');
 });
+
+async function handleUser({ ref }) {
+  return ref.update({
+    preferences: {
+      view: 'compact',
+      startPage: null,
+      widgets: {
+        itemHome: {
+          progression: true,
+          missionStatement: true,
+          team: true,
+          children: false,
+        },
+        objectiveHome: {
+          progression: true,
+          details: false,
+          weights: false,
+        },
+        keyResultHome: {
+          details: false,
+          notes: true,
+          weights: true,
+        },
+      },
+    },
+  });
+}
 
 async function handleOrg(doc) {
   const { id, ref } = doc;

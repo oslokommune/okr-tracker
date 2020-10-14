@@ -31,7 +31,7 @@ const departmentsConfig = {
 };
 const productsConfig = {
   docPath: 'products/{documentId}',
-  fields: ['name', 'archived', 'missionStatement'],
+  fields: ['name', 'archived', 'missionStatement', 'team'],
   collectionRef: db.collection('products'),
   documentType: 'Product',
 };
@@ -43,13 +43,13 @@ const periodsConfig = {
 };
 const objectivesConfig = {
   docPath: 'objectives/{documentId}',
-  fields: ['name', 'archived', 'description', 'icon'],
+  fields: ['name', 'archived', 'description', 'icon', 'weight'],
   collectionRef: db.collection('objectives'),
   documentType: 'Objective',
 };
 const keyResultsConfig = {
   docPath: 'keyResults/{documentId}',
-  fields: ['name', 'archived', 'description', 'longDescription', 'unit', 'targetValue', 'startValue', 'auto'],
+  fields: ['name', 'archived', 'description', 'longDescription', 'unit', 'targetValue', 'startValue', 'auto', 'weight'],
   collectionRef: db.collection('keyResults'),
   documentType: 'KeyResult',
 };
