@@ -11,9 +11,13 @@
     </div>
 
     <div class="widgets">
-      <widget-progression :data="progressionData" :dimmed="true"></widget-progression>
-      <widget-objective-details></widget-objective-details>
-      <widget-objective-weights></widget-objective-weights>
+      <widget-progression
+        widget-id="objectiveHome.progression"
+        :data="progressionData"
+        :dimmed="true"
+      ></widget-progression>
+      <widget-objective-details widget-id="objectiveHome.details"></widget-objective-details>
+      <widget-objective-weights widget-id="objectiveHome.weights"></widget-objective-weights>
     </div>
   </aside>
 </template>

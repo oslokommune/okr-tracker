@@ -39,11 +39,10 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeView']),
+    ...mapState(['user']),
     view() {
       if (this.forceExpanded) return 'expanded';
-
-      return this.activeView;
+      return this.user.preferences.view;
     },
   },
 

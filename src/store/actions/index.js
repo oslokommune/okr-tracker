@@ -7,6 +7,7 @@ import set_active_objective from './set_active_objective';
 import set_active_period_and_data from './set_active_period_and_data';
 import reset_state from './reset_state';
 import set_user from './set_user';
+import update_preferences from './update_preferences';
 
 export default {
   set_sidebar_items,
@@ -17,4 +18,5 @@ export default {
   init_state,
   reset_state,
   set_user,
+  update_preferences,
 };

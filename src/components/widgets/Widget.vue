@@ -3,11 +3,7 @@
     <header class="widget__header">
       <span class="widget__icon fas fa-fw" :class="`fa-${icon}`"></span>
       <span class="widget__title">{{ title }}</span>
-      <button
-        class="widget__toggle fas fa-fw"
-        :class="isOpen ? 'fa-minus' : 'fa-plus'"
-        @click="isOpen = !isOpen"
-      ></button>
+      <button class="widget__toggle fas fa-fw" :class="isOpen ? 'fa-minus' : 'fa-plus'" @click="toggle"></button>
     </header>
     <div class="widget__body" v-show="isOpen">
       <slot></slot>
@@ -16,12 +12,14 @@
 </template>
 
 <script>
-export default {
-  data: () => ({
-    isOpen: true,
-  }),
+import { mapActions, mapState } from 'vuex';
 
+export default {
   props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
     icon: {
       type: String,
       required: true,
@@ -30,15 +28,27 @@ export default {
       type: String,
       required: true,
     },
-    open: {
-      type: Boolean,
-      required: false,
-      default: true,
+  },
+
+  computed: {
+    ...mapState(['user']),
+    isOpen() {
+      try {
+        const [namespace, name] = this.widgetId.split('.');
+        return this.user.preferences.widgets[namespace][name];
+      } catch {
+        return true;
+      }
     },
   },
 
-  mounted() {
-    this.isOpen = this.open;
+  methods: {
+    ...mapActions(['update_preferences']),
+    toggle() {
+      const [namespace, name] = this.widgetId.split('.');
+      this.user.preferences.widgets[namespace][name] = !this.user.preferences.widgets[namespace][name];
+      this.update_preferences();
+    },
   },
 };
 </script>

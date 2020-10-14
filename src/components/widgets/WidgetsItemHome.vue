@@ -13,10 +13,10 @@
     <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
 
     <div class="widgets">
-      <WidgetProgression v-if="activePeriod" :data="activePeriod"></WidgetProgression>
-      <WidgetMissionStatement v-if="activeItem"></WidgetMissionStatement>
-      <WidgetTeam v-if="activePeriod"></WidgetTeam>
-      <WidgetChildItems></WidgetChildItems>
+      <WidgetProgression widget-id="itemHome.progression" v-if="activePeriod" :data="activePeriod"></WidgetProgression>
+      <WidgetMissionStatement widget-id="itemHome.missionStatement" v-if="activeItem"></WidgetMissionStatement>
+      <WidgetTeam widget-id="itemHome.team" v-if="activePeriod"></WidgetTeam>
+      <WidgetChildItems widget-id="itemHome.children"></WidgetChildItems>
     </div>
   </aside>
 </template>

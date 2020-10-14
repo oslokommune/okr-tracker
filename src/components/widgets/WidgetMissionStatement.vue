@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeItem.missionStatement" title="Oppdrag" icon="file">
+  <Widget v-if="activeItem.missionStatement" :widget-id="widgetId" title="Oppdrag" icon="file">
     {{ activeItem.missionStatement }}
   </Widget>
 </template>
@@ -10,6 +10,13 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState(['activeItem']),
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
   },
 
   components: {

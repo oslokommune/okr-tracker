@@ -11,9 +11,9 @@
     </div>
 
     <div class="widgets" v-if="activeKeyResult">
-      <widget-key-result-details></widget-key-result-details>
-      <widget-key-result-notes></widget-key-result-notes>
-      <widget-key-result-weights></widget-key-result-weights>
+      <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
+      <widget-key-result-notes widget-id="keyResultHome.notes"></widget-key-result-notes>
+      <widget-key-result-weights widget-id="keyResultHome.weights"></widget-key-result-weights>
     </div>
   </aside>
 </template>

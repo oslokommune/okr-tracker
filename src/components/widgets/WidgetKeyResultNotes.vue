@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeKeyResult.notes" title="Notater" icon="pencil-alt">
+  <Widget :widget-id="widgetId" v-if="activeKeyResult.notes" title="Notater" icon="pencil-alt">
     <div class="notes">
       <div class="notes--margin-bottom" v-if="editNotes">
         <textarea rows="20" @input="dirty = true" v-model="activeKeyResult.notes"></textarea>
@@ -40,6 +40,13 @@ export default {
     editNotes: false,
     dirty: false,
   }),
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
     ...mapState(['activeKeyResult']),

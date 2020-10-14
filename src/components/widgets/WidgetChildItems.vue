@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="children.length" :title="title" :icon="icon">
+  <Widget :widget-id="widgetId" v-if="children.length" :title="title" :icon="icon">
     <ul>
       <li v-for="child in children" :key="child.id">
         <router-link :to="child.slug">
@@ -22,6 +22,13 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'departments', 'products']),
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
   },
 
   watch: {

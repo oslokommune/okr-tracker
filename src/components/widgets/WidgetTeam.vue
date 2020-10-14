@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeItem.team" title="Team" icon="users">
+  <Widget :widget-id="widgetId" v-if="activeItem.team" title="Team" icon="users">
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">
         <router-link :to="{ name: 'User', params: { id: user.id } }" class="user__link">
@@ -22,6 +22,13 @@ export default {
       const isAdmin = this.user.admin;
       const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
       return isAdmin || isMember;
+    },
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
     },
   },
 

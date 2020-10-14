@@ -10,9 +10,9 @@
       <button
         v-for="view in views"
         class="view"
-        :class="{ active: view.id === activeView }"
+        :class="{ active: view.id === user.preferences.view }"
         :key="view.id"
-        @click="SET_VIEW(view.id)"
+        @click="updateView(view.id)"
       >
         <span class="view__icon"></span>
         <span class="view__name">{{ view.label }}</span>
@@ -22,16 +22,20 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { format } from 'date-fns';
 
 export default {
   computed: {
-    ...mapState(['activePeriod', 'views', 'activeView']),
+    ...mapState(['activePeriod', 'views', 'user']),
   },
 
   methods: {
-    ...mapMutations(['SET_VIEW']),
+    ...mapActions(['update_preferences']),
+    updateView(view) {
+      this.user.preferences.view = view;
+      this.update_preferences();
+    },
   },
 
   filters: {
