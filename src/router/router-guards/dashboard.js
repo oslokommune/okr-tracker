@@ -1,38 +1,27 @@
 import store from '@/store';
 import getActivePeriod from '@/store/actions/actionUtils';
-import getSlugRef from './routerGuardUtil';
 
 const { state } = store;
 
 /**
  * Router guard for organization, department, and product 'dashboard' pages.
- *
- * Finds and verifies the document from slug and waits for 'set_active_item' action in store
- * to resolve before allowing the route to change.
- * Always defaults to the newest period
+ * Ensures that the current period is set.
  */
 export default async function (to, from, next) {
-  const { slug } = to.params;
-
-  const slugRef = await getSlugRef(slug, next);
-
-  const { activeItem, activePeriod } = state;
+  const now = new Date().getTime() / 1000;
 
   try {
-    if (!activeItem || !slugRef || activeItem.id !== slugRef.id) {
-      await store.dispatch('set_active_item', slugRef);
-      await store.dispatch('set_sidebar_items');
-    } else {
-      const { activePeriodRef } = await getActivePeriod(slugRef);
+    const {
+      activePeriod: { startDate, endDate },
+    } = state;
 
-      if (activePeriod.id !== activePeriodRef.id) {
-        await store.dispatch('set_active_item', slugRef);
-      }
+    if (startDate.seconds > now || endDate.seconds < now) {
+      const { activePeriodRef } = await getActivePeriod(state.activeItemRef);
+      await store.dispatch('set_active_period_and_data', activePeriodRef.id);
     }
 
-    return next();
-  } catch (error) {
-    console.log(error);
-    next(false);
+    next();
+  } catch {
+    throw new Error('No period found');
   }
 }
