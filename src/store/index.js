@@ -33,10 +33,6 @@ export const mutations = {
     state.activeItemRef = payload;
   },
 
-  SET_PREFERENCES(state, payload) {
-    state.user.preferences = payload;
-  },
-
   SET_LOGIN_ERROR(state, payload) {
     state.loginError = payload;
   },
