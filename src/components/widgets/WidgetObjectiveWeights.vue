@@ -1,9 +1,9 @@
 <template>
   <Widget title="Vekting" icon="balance-scale" :open="false">
-    Nøkkelresultater for {{ activeKeyResult.objective.name }}
+    Mål for {{ activeObjective.period.name }}
     <div class="scales">
       <router-link
-        :to="{ params: { keyResultId: id } }"
+        :to="{ params: { objectiveId: id } }"
         class="bar"
         v-for="{ id, weight, active, name } in weights"
         :key="id"
@@ -23,7 +23,7 @@ import { scaleLinear, max } from 'd3';
 import Widget from './Widget.vue';
 
 export default {
-  name: 'WidgetKeyResultWeights',
+  name: 'WidgetObjectiveWeights',
 
   data: () => ({
     chart: null,
@@ -31,13 +31,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'keyResults']),
+    ...mapState(['activeObjective', 'objectives']),
     weights() {
-      return this.keyResults.map(({ weight, id, name }) => ({
+      return this.objectives.map(({ weight, id, name }) => ({
         weight,
         id,
         name,
-        active: this.activeKeyResult.id === id,
+        active: this.activeObjective.id === id,
       }));
     },
   },

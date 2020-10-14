@@ -168,13 +168,18 @@ export default {
         this.selectedPeriodId = id;
       } else if (type === 'objective') {
         await this.bindKeyResults({ parentId: id });
-        const { period } = await db
+
+        const objective = await db
           .collection('objectives')
           .doc(id)
           .get()
           .then(snap => snap.data());
-        await this.bindObjectives({ parentId: period.id });
-        this.selectedPeriodId = period.id;
+
+        if (objective && objective.period) {
+          await this.bindObjectives({ parentId: objective.period.id });
+          this.selectedPeriodId = objective.period.id;
+        }
+
         this.selectedObjectiveId = id;
       } else if (type === 'keyResult') {
         const keyRes = await db
