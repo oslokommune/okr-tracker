@@ -5,16 +5,15 @@ const { state } = store;
 
 /**
  * Router guard for organization, department, and product 'home' pages.
- *
- * Finds and verifies the document from slug and waits for 'set_active_item' action in store
- * to resolve before allowing the route to change.
  */
 export default async function (to, from, next) {
+  const { activeItem } = state;
   const { slug } = to.params;
 
-  const slugRef = await getSlugRef(slug, next);
+  if (from.params && from.params.slug === slug) next();
+  if (activeItem && activeItem.slug === slug) next();
 
-  const { activeItem } = state;
+  const slugRef = await getSlugRef(slug, next);
 
   try {
     if (!activeItem || !slugRef || activeItem.id !== slugRef.id) {
