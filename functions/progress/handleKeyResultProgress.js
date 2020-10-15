@@ -24,7 +24,12 @@ async function handleKeyResultProgress(change, { params }) {
   const scale = d3.scaleLinear().domain([startValue, targetValue]).clamp(true);
   const progression = scale(currentValue);
 
-  await keyResultRef.update({ currentValue, progression });
+  try {
+    await keyResultRef.update({ currentValue, progression });
+  } catch (error) {
+    console.log('Could not update key result', keyResultId);
+    throw new Error(error);
+  }
 
   updateObjectiveProgression(objective);
 
@@ -44,7 +49,12 @@ async function updateObjectiveProgression(objectiveRef) {
     .get()
     .then(getWeightedProgression);
 
-  await objectiveRef.update({ progression });
+  try {
+    await objectiveRef.update({ progression });
+  } catch (error) {
+    console.log('Could not update objective', objectiveRef);
+    throw new Error(error);
+  }
 
   // Update progression for Items or Periods
   const { period } = await objectiveRef.get().then(doc => doc.data());
@@ -60,7 +70,12 @@ async function updatePeriodProgression(periodRef) {
     .get()
     .then(getWeightedProgression);
 
-  await periodRef.update({ progression });
+  try {
+    await periodRef.update({ progression });
+  } catch (error) {
+    console.log('Could not update period', periodRef);
+    throw new Error(error);
+  }
 }
 
 function getWeightedProgression({ docs }) {
