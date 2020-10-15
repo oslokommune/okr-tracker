@@ -58,15 +58,11 @@ export default {
      * @returns {Array} - Including potential parent items
      */
     getItemBreadcrumbs() {
-      const itemList = [];
+      const { organization, department } = this.activeItem;
+      const itemList = [breadcrumbList.organization()];
 
-      if (this.activeItem.organization) {
-        itemList.push(breadcrumbList.organization());
-      }
-      if (this.activeItem.department) {
-        itemList.push(breadcrumbList.department());
-      }
-      itemList.push(breadcrumbList.product());
+      if (organization) itemList.push(breadcrumbList.department());
+      if (department) itemList.push(breadcrumbList.product());
 
       return itemList;
     },
