@@ -33,7 +33,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'pageLoading']),
+    ...mapState(['user']),
   },
 
   created() {
