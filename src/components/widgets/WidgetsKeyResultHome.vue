@@ -10,6 +10,8 @@
       </router-link>
     </div>
 
+    <button @click="update">Oppdater automatisk verdi</button>
+
     <div class="widgets" v-if="activeKeyResult">
       <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
       <widget-key-result-notes widget-id="keyResultHome.notes"></widget-key-result-notes>
@@ -20,6 +22,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { functions } from '@/config/firebaseConfig';
 
 export default {
   name: 'WidgetsKeyResultHome',
@@ -37,6 +40,13 @@ export default {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
     WidgetKeyResultWeights: () => import('./WidgetKeyResultWeights.vue'),
+  },
+
+  methods: {
+    update() {
+      // const myCall = functions.httpsCallable('triggerScheduledFunction');
+      console.log(this.activeKeyResult.path);
+    },
   },
 };
 </script>

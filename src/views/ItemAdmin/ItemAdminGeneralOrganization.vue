@@ -63,7 +63,6 @@ export default {
 
   methods: {
     async update() {
-      console.log('update');
       try {
         const { id, name, missionStatement } = this.activeItem;
 

@@ -31,7 +31,7 @@ exports.scheduledFunction = function () {
     .pubsub.schedule(config.autoKeyresFetchFrequency)
     .onRun(async () => {
       return db
-        .collectionGroup('keyResults')
+        .collection('keyResults')
         .where('auto', '==', true)
         .get()
         .then(snapshot => snapshot.docs.map(d => ({ ref: d.ref, ...d.data() })))

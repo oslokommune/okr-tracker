@@ -48,6 +48,40 @@
           <input class="form__field" type="number" min="1" v-model.number="keyResult.weight" />
         </label>
       </div>
+
+      <hr />
+
+      <div class="toggle__container">
+        <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
+        <label class="toggle">
+          <input class="toggle__input" type="checkbox" v-model="keyResult.auto" />
+          <span class="toggle__switch"></span>
+        </label>
+      </div>
+
+      <div v-if="keyResult.auto">
+        <p>
+          <router-link :to="{ name: 'Help' }">{{ $t('keyres.automation.readMore') }}</router-link>
+        </p>
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('keyres.automation.googleSheetId') }}</span>
+          <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+          <input class="form__field" type="text" v-model="keyResult.sheetId" />
+        </label>
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('keyres.automation.sheetsTab') }}</span>
+          <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
+          <input class="form__field" type="text" v-model="keyResult.sheetName" />
+        </label>
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('keyres.automation.sheetsCell') }}</span>
+          <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
+          <input class="form__field" type="text" v-model="keyResult.sheetCell" />
+        </label>
+      </div>
     </form>
 
     <div class="button-row">
@@ -96,7 +130,20 @@ export default {
   methods: {
     async update() {
       try {
-        const { id, name, weight, description, objective, auto, unit, startValue, targetValue } = this.keyResult;
+        const {
+          id,
+          name,
+          weight,
+          description,
+          objective,
+          auto,
+          unit,
+          startValue,
+          targetValue,
+          sheetId,
+          sheetName,
+          sheetCell,
+        } = this.keyResult;
 
         const data = {
           name: name || '',
@@ -107,6 +154,9 @@ export default {
           unit: unit || '',
           startValue: startValue || 0,
           targetValue: targetValue || 100,
+          sheetCell: sheetCell || '',
+          sheetId: sheetId || '',
+          sheetName: sheetName || '',
         };
 
         await KeyResult.update(id, data);
@@ -145,5 +195,11 @@ export default {
   > .btn {
     margin: 0.25rem;
   }
+}
+
+.toggle__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

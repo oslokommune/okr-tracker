@@ -10,7 +10,6 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   try {
     await bindFirestoreRef('activeObjective', reference, { maxRefDepth: 1 });
   } catch (error) {
-    console.log('feil!!!');
     throw new Error(error);
   }
 });
