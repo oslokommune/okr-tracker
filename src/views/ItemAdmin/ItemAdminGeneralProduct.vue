@@ -19,7 +19,12 @@
       </div>
       <div class="form-group">
         <span class="form-label">Team members</span>
-        <v-select label="displayName" multiple v-model="activeItem.team" :options="users">
+        <v-select
+          multiple
+          v-model="activeItem.team"
+          :options="users"
+          :get-option-label="option => option.displayName || option.id"
+        >
           <template #option="option">
             {{ option.displayName || option.id }}
             <span v-if="option.displayName !== option.id">({{ option.id }})</span>

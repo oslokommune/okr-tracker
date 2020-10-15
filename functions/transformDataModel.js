@@ -4,79 +4,114 @@ const firebaseAdmin = require('firebase-admin');
 const db = firebaseAdmin.firestore();
 
 module.exports = functions.https.onRequest(async (req, res) => {
-  await db
-    .collection('users')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleUser);
-    });
+  try {
+    await db
+      .collection('users')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleUser);
+      });
+  } catch (error) {
+    console.error('Could not migrate users');
+    throw new Error(error);
+  }
 
-  await db
-    .collection('orgs')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleOrg);
-    });
+  try {
+    await db
+      .collection('orgs')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleOrg);
+      });
+  } catch (error) {
+    console.error('Could not migrate data');
+    throw new Error(error);
+  }
 
   res.status(200).send('Success');
 });
 
 async function handleUser({ ref }) {
-  return ref.update({
-    preferences: {
-      view: 'compact',
-      startPage: null,
-      widgets: {
-        itemHome: {
-          progression: true,
-          missionStatement: true,
-          team: true,
-          children: false,
-        },
-        objectiveHome: {
-          progression: true,
-          details: false,
-          weights: false,
-        },
-        keyResultHome: {
-          details: false,
-          notes: true,
-          weights: true,
-        },
+  const preferences = {
+    view: 'compact',
+    startPage: null,
+    widgets: {
+      itemHome: {
+        progression: true,
+        missionStatement: true,
+        team: true,
+        children: false,
+      },
+      objectiveHome: {
+        progression: true,
+        details: false,
+        weights: false,
+      },
+      keyResultHome: {
+        details: false,
+        notes: true,
+        weights: true,
       },
     },
-  });
+  };
+
+  try {
+    return ref.update({ preferences });
+  } catch (error) {
+    console.error('Could not update user', ref);
+    throw new Error(error);
+  }
 }
 
 async function handleOrg(doc) {
   const { id, ref } = doc;
 
   // save organization data
-  await db.collection('organizations').doc(id).set(doc.data());
+  try {
+    await db.collection('organizations').doc(id).set(doc.data());
+  } catch (error) {
+    console.error('Could not migrate organizations');
+    throw new Error(error);
+  }
 
   // Save period data
-  await ref
-    .collection('periods')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handlePeriods);
-    });
+  try {
+    await ref
+      .collection('periods')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handlePeriods);
+      });
+  } catch (error) {
+    console.error('Could not migrate organization period');
+    throw new Error(error);
+  }
 
   // Save objective data
-  await ref
-    .collection('objectives')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleObjective);
-    });
+  try {
+    await ref
+      .collection('objectives')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleObjective);
+      });
+  } catch (error) {
+    console.error('Could not migrate organization objectives');
+    throw new Error(error);
+  }
 
   // Save departments data
-  await ref
-    .collection('departments')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleDepartments);
-    });
+  try {
+    await ref
+      .collection('departments')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleDepartments);
+      });
+  } catch (error) {
+    console.error('Could not migrate departments');
+    throw new Error(error);
+  }
 }
 
 async function handleProducts(doc) {
@@ -86,34 +121,57 @@ async function handleProducts(doc) {
     organization: db.collection('organizations').doc(ref.parent.parent.parent.parent.id),
     department: db.collection('departments').doc(ref.parent.parent.id),
     ...doc.data(),
+    archived: doc.data().archived || false,
   };
 
-  // save departments data
-  await db.collection('products').doc(id).set(data);
+  delete data.ref;
+
+  // save product data
+  try {
+    await db.collection('products').doc(id).set(data);
+  } catch (error) {
+    console.error('Could not set product data');
+    throw new Error(error);
+  }
 
   // Save period data
-  await ref
-    .collection('periods')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handlePeriods);
-    });
+  try {
+    await ref
+      .collection('periods')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handlePeriods);
+      });
+  } catch (error) {
+    console.error('Could not migrate product periods');
+    throw new Error(error);
+  }
 
   // Save objective data
-  await ref
-    .collection('objectives')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleObjective);
-    });
+  try {
+    await ref
+      .collection('objectives')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleObjective);
+      });
+  } catch (error) {
+    console.error('Could not migrate product objectives');
+    throw new Error(error);
+  }
 
   // Save kpi data
-  await ref
-    .collection('kpis')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleKpis);
-    });
+  try {
+    await ref
+      .collection('kpis')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleKpis);
+      });
+  } catch (error) {
+    console.error('Could not migrate product kpi');
+    throw new Error(error);
+  }
 }
 
 async function handleKpis(doc) {
@@ -122,18 +180,31 @@ async function handleKpis(doc) {
   const data = {
     parent: getParentRef(ref),
     ...doc.data(),
+    archived: doc.data().archived || false,
   };
 
-  await db.collection('kpis').doc(id).set(data);
+  delete data.ref;
 
-  await ref
-    .collection('progress')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(progressDoc => {
-        db.collection(`kpis/${id}/progress`).add(progressDoc.data());
+  try {
+    await db.collection('kpis').doc(id).set(data);
+  } catch (error) {
+    console.error('Could not set kpi data');
+    throw new Error(error);
+  }
+
+  try {
+    await ref
+      .collection('progress')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(progressDoc => {
+          db.collection(`kpis/${id}/progress`).add(progressDoc.data());
+        });
       });
-    });
+  } catch (error) {
+    console.error('Could not migrate kpi progress');
+    throw new Error(error);
+  }
 }
 
 async function handleDepartments(doc) {
@@ -142,34 +213,57 @@ async function handleDepartments(doc) {
   const data = {
     organization: db.collection('organizations').doc(ref.parent.parent.id),
     ...doc.data(),
+    archived: doc.data().archived || false,
   };
 
+  delete data.ref;
+
   // save departments data
-  await db.collection('departments').doc(id).set(data);
+  try {
+    await db.collection('departments').doc(id).set(data);
+  } catch (error) {
+    console.error('Could not set department data');
+    throw new Error(error);
+  }
 
   // Save period data
-  await ref
-    .collection('periods')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handlePeriods);
-    });
+  try {
+    await ref
+      .collection('periods')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handlePeriods);
+      });
+  } catch (error) {
+    console.error('Could not migrate department period');
+    throw new Error(error);
+  }
 
   // Save objective data
-  await ref
-    .collection('objectives')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleObjective);
-    });
+  try {
+    await ref
+      .collection('objectives')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleObjective);
+      });
+  } catch (error) {
+    console.error('Could not migrate department objectives');
+    throw new Error(error);
+  }
 
   // Handle products
-  await ref
-    .collection('products')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleProducts);
-    });
+  try {
+    await ref
+      .collection('products')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleProducts);
+      });
+  } catch (error) {
+    console.error('Could not migrate products');
+    throw new Error(error);
+  }
 }
 
 async function handleObjective(doc) {
@@ -179,19 +273,32 @@ async function handleObjective(doc) {
     parent: getParentRef(ref),
     weight: 1,
     ...doc.data(),
+    archived: doc.data().archived || false,
   };
+
+  delete data.ref;
 
   data.period = db.collection('periods').doc(data.period.id);
 
-  await db.collection('objectives').doc(id).set(data);
+  try {
+    await db.collection('objectives').doc(id).set(data);
+  } catch (error) {
+    console.error('Could not migrate objective', id);
+    throw new Error(error);
+  }
 
   // Save objective data
-  await ref
-    .collection('keyResults')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(handleKeyResults);
-    });
+  try {
+    await ref
+      .collection('keyResults')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(handleKeyResults);
+      });
+  } catch (error) {
+    console.error('Could not migrate key results');
+    throw new Error(error);
+  }
 }
 
 async function handlePeriods(doc) {
@@ -200,9 +307,17 @@ async function handlePeriods(doc) {
   const data = {
     parent: getParentRef(ref),
     ...doc.data(),
+    archived: doc.data().archived || false,
   };
 
-  await db.collection('periods').doc(id).set(data);
+  delete data.ref;
+
+  try {
+    await db.collection('periods').doc(id).set(data);
+  } catch (error) {
+    console.error('Could not set periode data', id);
+    throw new Error(error);
+  }
 }
 
 async function handleKeyResults(doc) {
@@ -216,6 +331,7 @@ async function handleKeyResults(doc) {
     objective,
     weight: 1,
     ...doc.data(),
+    archived: doc.data().archived || false,
   };
 
   data.name = data.description;
@@ -227,17 +343,28 @@ async function handleKeyResults(doc) {
   }
 
   delete data.longDescription;
+  delete data.ref;
 
-  await db.collection('keyResults').doc(id).set(data);
+  try {
+    await db.collection('keyResults').doc(id).set(data);
+  } catch (error) {
+    console.error('Could not set key res data', data);
+    throw new Error(error);
+  }
 
-  await ref
-    .collection('progress')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(progressDoc => {
-        db.collection(`keyResults/${id}/progress`).add(progressDoc.data());
+  try {
+    await ref
+      .collection('progress')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(progressDoc => {
+          db.collection(`keyResults/${id}/progress`).add(progressDoc.data());
+        });
       });
-    });
+  } catch (error) {
+    console.error('Could not migrate key result progress');
+    throw new Error(error);
+  }
 }
 
 function getParentRef(ref) {

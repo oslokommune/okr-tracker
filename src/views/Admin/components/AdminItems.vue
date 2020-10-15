@@ -121,6 +121,10 @@ export default {
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
 }
 
+.col__body {
+  overflow: auto;
+}
+
 .col__header {
   display: flex;
   align-items: center;

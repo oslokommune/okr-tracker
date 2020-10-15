@@ -7,5 +7,10 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   }
   const reference = db.collection('objectives').doc(id);
 
-  return bindFirestoreRef('activeObjective', reference, { maxRefDepth: 1 });
+  try {
+    await bindFirestoreRef('activeObjective', reference, { maxRefDepth: 1 });
+  } catch (error) {
+    console.log('feil!!!');
+    throw new Error(error);
+  }
 });
