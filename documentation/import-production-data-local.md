@@ -43,7 +43,7 @@ If you don't already have automated backups of your production data, we will nee
 gcloud firestore export gs://okr-tracker-production.appspot.com/<backup-folder-name>
 ```
 
-Now copy the new folder to your local machine, we are going to do this from our functions-folder:
+Now copy the new folder to your local machine, we are going to do this from our functions folder:
 
 ```
 cd functions
@@ -80,7 +80,7 @@ firebase emulators:start --import=./
 
 ### Migrate from old databse
 
-If your database uses the old datamodel, you need to run the migration script after import
+If your database uses the old data model, you need to run the migration script after import
 
 ```
 node src/migrate
