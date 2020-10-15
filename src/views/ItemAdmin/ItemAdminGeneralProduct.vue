@@ -23,7 +23,7 @@
           multiple
           v-model="activeItem.team"
           :options="users"
-          :getOptionLabel="obj => obj.displayName || obj.id"
+          :get-option-label="option => option.displayName || option.id"
         >
           <template #option="option">
             {{ option.displayName || option.id }}
