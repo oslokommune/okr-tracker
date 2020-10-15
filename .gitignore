@@ -29,6 +29,7 @@ firebase-debug.log
 .firebaserc
 /functions/.runtimeconfig.json
 /functions/okr-tracker-backup-2
+/functions/backup
 firebase-export-metadata.json
 
 # Custom users in test data
