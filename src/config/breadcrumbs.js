@@ -141,3 +141,24 @@ export const itemAdminKPI = () => {
     label: 'KPIs',
   };
 };
+
+export const createOrganization = () => {
+  return {
+    icon: 'plus-square',
+    label: 'Create Organization',
+  };
+};
+
+export const createDepartment = () => {
+  return {
+    icon: 'plus-square',
+    label: 'Create Department',
+  };
+};
+
+export const createProduct = () => {
+  return {
+    icon: 'plus-square',
+    label: 'Create Product',
+  };
+};

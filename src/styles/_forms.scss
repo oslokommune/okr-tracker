@@ -10,7 +10,7 @@ textarea {
   color: $color-purple;
   font-weight: 500;
   font-size: 1rem;
-  background: white;
+  background: rgba($color-grey-100, 0.5);
   border: 0;
   border-radius: 3px;
 
@@ -29,8 +29,10 @@ textarea {
 
   .vs__dropdown-toggle {
     min-height: 3rem !important;
-    background: $color-grey-50;
+    padding-right: 0.5rem;
+    background: rgba($color-grey-100, 0.5);
     border: 0;
+    border-radius: 3px;
   }
 
   .vs__selected {
