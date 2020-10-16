@@ -14,7 +14,7 @@ const colors = {
 export const formatPercent = format('.0%');
 
 function initSvg(el) {
-  el.attr('viewBox', `0 0 ${size / 0.8} ${size}`)
+  el.attr('viewBox', `0 0 ${size} ${size / 1.2}`)
     .attr('width', '100%')
     .attr('preserveAspectRatio', 'xMidYMid');
 }

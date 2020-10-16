@@ -36,10 +36,10 @@
     </form>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update">
+      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!objective.archived">
+      <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!objective.archived">
         <span class="icon fa fa-fw fa-trash"></span> Archive objective
       </button>
     </div>
@@ -55,6 +55,7 @@ export default {
     objective: null,
     periods: [],
     changedPeriod: false,
+    loading: false,
   }),
   props: {
     data: {
@@ -80,6 +81,7 @@ export default {
 
   methods: {
     async update() {
+      this.loading = true;
       try {
         const { id, name, description, weight, icon, period } = this.objective;
         const data = {
@@ -102,8 +104,11 @@ export default {
         console.log(error);
         this.$toasted.show('Could not save changes');
       }
+
+      this.loading = false;
     },
     async archive() {
+      this.loading = true;
       try {
         await Objective.archive(this.objective.id);
         this.$router.push({ query: {} });
@@ -112,6 +117,8 @@ export default {
         console.log(error);
         this.$toasted.show('Could not archive product');
       }
+
+      this.loading = false;
     },
   },
 };

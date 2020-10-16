@@ -7,7 +7,7 @@
       <textarea class="add-users__input form-field" v-model="emails"></textarea>
     </div>
     <div class="add-users__footer">
-      <button class="btn btn--fw" @click="save">Register users</button>
+      <button class="btn btn--fw" @click="save" :disabled="loading">Register users</button>
     </div>
   </div>
 </template>
@@ -19,10 +19,12 @@ import validateEmail from '@/util/validateEmail';
 export default {
   data: () => ({
     emails: '',
+    loading: false,
   }),
 
   methods: {
     async save() {
+      this.loading = true;
       const list = this.emails.trim().split('\n').filter(Boolean).filter(validateEmail);
 
       if (!list.length) {
@@ -38,6 +40,8 @@ export default {
         this.$toasted.show(`Could not add users`);
         throw new Error(error);
       }
+
+      this.loading = false;
     },
   },
 };

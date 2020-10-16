@@ -32,20 +32,20 @@
         and progress will forever be gone.
       </p>
       <div class="button-row">
-        <button class="btn btn--icon" @click="restore">
+        <button class="btn btn--icon" @click="restore" :disabled="loading">
           <span class="icon fa fa-fw fa-recycle"></span> Restore department
         </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep">
+        <button class="btn btn--icon btn--danger" @click="deleteDeep" :disabled="loading">
           <span class="icon fa fa-fw fa-trash"></span> Permanently delete
         </button>
       </div>
     </div>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update">
+      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived">
+      <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!activeItem.archived">
         <span class="icon fa fa-fw fa-trash"></span> Archive department
       </button>
     </div>
@@ -60,6 +60,7 @@ import { mapState } from 'vuex';
 export default {
   data: () => ({
     image: null,
+    loading: false,
   }),
   computed: {
     ...mapState(['activeItem', 'organizations']),
@@ -67,6 +68,7 @@ export default {
 
   methods: {
     async update() {
+      this.loading = true;
       try {
         const { id, name, missionStatement } = this.activeItem;
 
@@ -82,6 +84,8 @@ export default {
         console.error(error);
         this.$toasted.show('Could not save changes');
       }
+
+      this.loading = false;
     },
 
     async setImage({ target }) {
@@ -92,6 +96,7 @@ export default {
     },
 
     async archive() {
+      this.loading = true;
       try {
         await Department.archive(this.activeItem.id);
         this.$toasted.show('Archived');
@@ -99,9 +104,12 @@ export default {
       } catch {
         this.$toasted.show('Could not archive department');
       }
+
+      this.loading = false;
     },
 
     async restore() {
+      this.loading = true;
       try {
         await Department.restore(this.activeItem.id);
         this.$toasted.show('Restored');
@@ -109,9 +117,12 @@ export default {
       } catch {
         this.$toasted.show('Could not restore department');
       }
+
+      this.loading = false;
     },
 
     async deleteDeep() {
+      this.loading = true;
       try {
         await Department.deleteDeep(this.activeItem.id);
         this.$toasted.show('Permanently deleted department');
@@ -120,6 +131,8 @@ export default {
       } catch {
         this.$toasted.show('Could not delete department');
       }
+
+      this.loading = false;
     },
   },
 };

@@ -32,6 +32,7 @@ Vue.use(VueResize);
 Vue.use(Toasted, {
   position: 'bottom-right',
   className: 'toast',
+  duration: 5000,
 });
 Vue.use(VueScrollTo);
 Vue.use(VTooltip);

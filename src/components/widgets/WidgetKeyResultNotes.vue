@@ -11,7 +11,7 @@
       </div>
 
       <div v-if="editNotes" class="notes__btn">
-        <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty">
+        <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty || loading">
           {{ $t('keyResultPage.notes.save') }}
         </button>
         <button @click="editNotes = false" class="btn btn--ter">Lukk</button>
@@ -39,6 +39,7 @@ export default {
   data: () => ({
     editNotes: false,
     dirty: false,
+    loading: false,
   }),
 
   props: {
@@ -63,9 +64,11 @@ export default {
 
   methods: {
     async saveNotes() {
+      this.loading = true;
       const { notes, id } = this.activeKeyResult;
       await KeyResult.update(id, { notes });
       this.dirty = false;
+      this.loading = false;
       this.editNotes = false;
     },
   },

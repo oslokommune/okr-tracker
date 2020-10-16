@@ -58,7 +58,6 @@ export default new Vuex.Store({
     views: [
       { label: 'Kompakt', id: 'compact', icon: '' },
       { label: 'Detaljer', id: 'details', icon: '' },
-      { label: 'Utvided', id: 'expanded', icon: '' },
     ],
   },
   getters,

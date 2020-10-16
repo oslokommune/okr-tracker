@@ -16,7 +16,7 @@
             <input class="field" type="email" v-model="email" required />
           </div>
         </label>
-        <button class="btn btn--pri">{{ $t('login.requestButton') }}</button>
+        <button class="btn btn--pri" :disabled="loading">{{ $t('login.requestButton') }}</button>
       </form>
     </div>
   </div>
@@ -29,6 +29,7 @@ import { mapMutations } from 'vuex';
 export default {
   data: () => ({
     email: '',
+    loading: false,
   }),
 
   mounted() {
@@ -38,6 +39,7 @@ export default {
   methods: {
     ...mapMutations(['SET_LOGIN_ERROR']),
     async send() {
+      this.loading = true;
       try {
         await RequestAccess.create({ email: this.email });
         this.$toasted.show('Successfully registered your access request');
@@ -46,6 +48,8 @@ export default {
         this.email = '';
         this.$toasted.error('Could not register your access request');
       }
+
+      this.loading = false;
     },
   },
 };

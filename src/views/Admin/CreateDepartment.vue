@@ -19,7 +19,9 @@
       </form>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" @click="save"><span class="icon fa fa-fw fa-save"></span> Create</button>
+        <button class="btn btn--icon btn--pri" @click="save" :disabled="loading">
+          <span class="icon fa fa-fw fa-save"></span> Create
+        </button>
       </div>
     </div>
   </div>
@@ -36,6 +38,7 @@ export default {
     name: '',
     missionStatement: '',
     organization: null,
+    loading: false,
   }),
 
   computed: {
@@ -53,12 +56,16 @@ export default {
         archived: false,
       };
 
+      this.loading = true;
+
       try {
         await Department.create(data).then(this.findSlugAndRedirect);
       } catch (error) {
         this.$toasted.show('Could not create department');
         throw new Error(error);
       }
+
+      this.loading = false;
     },
   },
 };

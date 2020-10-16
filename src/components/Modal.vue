@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="modal__footer">
-        <button @click="saveProgress" class="btn btn--sec">Lagre</button>
+        <button @click="saveProgress" :disabled="loading" class="btn btn--sec">Lagre</button>
         <button @click="close" class="btn btn--ghost btn--space">Avbryt</button>
       </div>
     </div>
@@ -75,6 +75,7 @@ export default {
     date: null,
     note: '',
     value: 0,
+    loading: false,
   }),
 
   methods: {
@@ -83,11 +84,13 @@ export default {
     },
 
     async saveProgress() {
+      this.loading = true;
       await Progress.create(this.keyres.id, {
         value: +this.value,
         comment: this.note,
         timestamp: new Date(this.date),
       });
+      this.loading = false;
       this.$emit('close');
     },
   },

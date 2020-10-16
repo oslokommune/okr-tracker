@@ -19,10 +19,10 @@
     </form>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update">
+      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activePeriod.archived">
+      <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!activePeriod.archived">
         <span class="icon fa fa-fw fa-trash"></span> Archive Period
       </button>
     </div>
@@ -58,6 +58,7 @@ export default {
       locale: locale.no,
     },
     range: null,
+    laoding: false,
   }),
 
   watch: {
@@ -89,17 +90,21 @@ export default {
     },
 
     async archive() {
+      this.loading = true;
       try {
         await Period.archive(this.activePeriod.id);
-        this.$router.push({ query: {} });
+        await this.$router.push({ query: {} });
         this.$toasted.show('Archived');
       } catch (error) {
         console.log(error);
         this.$toasted.show('Could not archive product');
       }
+
+      this.loading = false;
     },
 
     async update() {
+      this.loading = true;
       try {
         const { id, name } = this.activePeriod;
 
@@ -109,6 +114,8 @@ export default {
         console.log(error);
         this.$toasted.show('Could not save changes');
       }
+
+      this.loading = false;
     },
   },
 };
