@@ -28,7 +28,9 @@
       </form>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" @click="save"><span class="icon fa fa-fw fa-save"></span> Create</button>
+        <button class="btn btn--icon btn--pri" @click="save" :disabled="loading">
+          <span class="icon fa fa-fw fa-save"></span> Create
+        </button>
       </div>
     </div>
   </div>
@@ -47,6 +49,7 @@ export default {
     department: null,
     team: [],
     users: [],
+    loading: false,
   }),
 
   computed: {
@@ -59,6 +62,7 @@ export default {
 
   methods: {
     async save() {
+      this.loading = true;
       const { name, missionStatement, department, team } = this;
       const data = {
         name: name.trim(),
@@ -74,6 +78,7 @@ export default {
       } catch {
         this.$toasted.show('Could not create product');
       }
+      this.loading = false;
     },
   },
 };

@@ -30,14 +30,20 @@
         <div class="image">
           <img :src="selectedUser.photoURL" class="image__image" v-if="selectedUser.photoURL" />
           <input type="file" @input="setImage" accept="image/png, image/jpeg" class="image__field" />
-          <button v-if="selectedUser.photoURL" class="btn" @click="deleteImage">Delete image</button>
+          <button v-if="selectedUser.photoURL" class="btn" @click="deleteImage" :disabled="loading">
+            Delete image
+          </button>
         </div>
       </div>
     </div>
 
     <div class="selected-user__footer">
-      <button class="btn" form="user-form">Save changes</button>
-      <button class="btn btn--danger" @click="remove(selectedUser)" :disabled="user.email === selectedUser.email">
+      <button class="btn" form="user-form" :disabled="loading">Save changes</button>
+      <button
+        class="btn btn--danger"
+        @click="remove(selectedUser)"
+        :disabled="user.email === selectedUser.email || loading"
+      >
         Remove user
       </button>
     </div>
@@ -59,6 +65,7 @@ export default {
   data: () => ({
     thisUser: null,
     image: null,
+    loading: false,
   }),
 
   computed: {
@@ -67,8 +74,10 @@ export default {
 
   methods: {
     remove(user) {
+      this.loading = true;
       User.remove(user);
       this.$emit('close');
+      this.loading = false;
     },
     setImage({ target }) {
       const { files } = target;
@@ -78,6 +87,7 @@ export default {
       this.uploadImage();
     },
     async uploadImage() {
+      this.loading = true;
       try {
         const url = await User.uploadImage(this.user.id, this.image);
         this.image = null;
@@ -85,18 +95,23 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      this.loading = false;
     },
     async deleteImage() {
+      this.loading = true;
       try {
         this.thisUser.photoURL = null;
         this.image = null;
-        this.save(this.thisUser);
+        await this.save(this.thisUser);
         await User.deleteImage(this.user.id);
       } catch (error) {
         // throw new Error(error);
       }
+
+      this.loading = false;
     },
     async save(user) {
+      this.loading = true;
       try {
         this.image = null;
         await User.update(user);
@@ -104,6 +119,8 @@ export default {
       } catch {
         this.$toasted.show('Failed');
       }
+
+      this.loading = false;
     },
   },
 

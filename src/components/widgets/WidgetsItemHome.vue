@@ -1,16 +1,17 @@
 <template>
   <aside v-if="activeItem" class="wrapper">
-    <router-link class="btn btn--ghost btn--icon" v-if="user.admin" :to="{ name: 'ItemAdmin' }">
-      <i class="icon fa fa-cog"></i>
-      Admin
-    </router-link>
+    <div class="itemHome">
+      <router-link class="btn btn--ter btn--icon" v-if="user.admin" :to="{ name: 'ItemAdmin' }">
+        <i class="icon fa fa-cog"></i>
+        Admin
+      </router-link>
+      <router-link class="btn btn--ter btn--icon" :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }">
+        <i class="icon fas fa-tachometer-alt"></i>
+        Dashboard
+      </router-link>
+    </div>
 
-    <router-link class="btn btn--ghost btn--icon" :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }">
-      <i class="icon fas fa-tachometer-alt"></i>
-      Dashboard
-    </router-link>
-
-    <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
+    <img v-if="activeItem.photoURL" :src="activeItem.photoURL" :alt="activeItem.photoURL" class="image" />
 
     <div class="widgets">
       <WidgetProgression widget-id="itemHome.progression" v-if="activePeriod" :data="activePeriod"></WidgetProgression>
@@ -51,5 +52,16 @@ export default {
   height: 20rem;
   margin-bottom: 3rem;
   object-fit: cover;
+}
+
+.itemHome {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 1.75rem 0 1rem;
+
+  & > .btn {
+    width: 100%;
+  }
 }
 </style>

@@ -3,7 +3,12 @@
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">
         <router-link :to="{ name: 'User', params: { id: user.id } }" class="user__link" v-if="user.id">
-          <img src="" aria-hidden class="user__image" />
+          <img
+            :src="user.photoURL || '/placeholder-image.svg'"
+            :alt="user.photoURL"
+            aria-hidden="true"
+            class="user__image"
+          />
           <span class="user__name">{{ user.displayName || user.id }}</span>
         </router-link>
       </li>
@@ -51,9 +56,17 @@ export default {
 }
 
 .user__link {
-  display: block;
+  display: flex;
+  align-items: center;
   color: $color-purple;
   text-decoration: none;
+}
+
+.user__image {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: 0.35rem;
+  border-radius: 1rem;
 }
 
 .user {

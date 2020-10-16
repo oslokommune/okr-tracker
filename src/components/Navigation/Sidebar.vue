@@ -33,10 +33,6 @@
         <span class="icon fa fa-fw fa-question-circle"></span>
         <span class="btn--label">Help</span>
       </router-link>
-      <router-link :to="'#'" class="btn btn--ter btn--icon">
-        <span class="icon fa fa-fw fa-envelope"></span>
-        <span class="btn--label">Contact</span>
-      </router-link>
       <button @click="signOut" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-sign-out-alt"></span>
         <span class="btn--label">Sign out</span>

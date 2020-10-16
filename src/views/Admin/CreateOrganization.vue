@@ -15,7 +15,9 @@
       </form>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" @click="save"><span class="icon fa fa-fw fa-save"></span> Create</button>
+        <button class="btn btn--icon btn--pri" @click="save" :disabled="loading">
+          <span class="icon fa fa-fw fa-save"></span> Create
+        </button>
       </div>
     </div>
   </div>
@@ -29,6 +31,7 @@ export default {
   data: () => ({
     name: '',
     missionStatement: '',
+    loading: false,
   }),
 
   methods: {
@@ -40,12 +43,16 @@ export default {
         archived: false,
       };
 
+      this.loading = true;
+
       try {
         await Organization.create(data).then(findSlugAndRedirect);
       } catch (error) {
         this.$toasted.show('Could not create organization');
         throw new Error(error);
       }
+
+      this.loading = false;
     },
   },
 };

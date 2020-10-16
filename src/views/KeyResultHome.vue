@@ -115,20 +115,6 @@ export default {
   },
 
   methods: {
-    async change() {
-      const { name, startValue, targetValue, description, unit, auto, weight, notes } = this.activeKeyResult;
-      await KeyResult.update(this.activeKeyResult.id, {
-        name,
-        startValue,
-        targetValue,
-        description,
-        unit,
-        auto,
-        weight,
-        notes,
-      });
-    },
-
     async addValue() {
       await Progress.create(this.activeKeyResult.id, { value: +this.newValue });
       this.newValue = null;

@@ -7,7 +7,7 @@
       <input type="file" @input="setImage" accept="image/png, image/jpeg" />
       <button @click="uploadImage">Upload</button>
 
-      <button @click="save">Save</button>
+      <button @click="save" :disabled="loading">Save</button>
     </div>
 
     <div>
@@ -36,6 +36,7 @@ export default {
     products: [],
     audit: [],
     image: null,
+    loading: false,
   }),
 
   computed: {
@@ -64,11 +65,14 @@ export default {
       }
     },
     async save() {
+      this.loading = true;
       try {
         await User.update(this.user);
       } catch (error) {
         console.error(error);
       }
+
+      this.loading = false;
     },
   },
 

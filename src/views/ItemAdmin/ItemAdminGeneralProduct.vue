@@ -46,20 +46,20 @@
         and progress will forever be gone.
       </p>
       <div class="button-row">
-        <button class="btn btn--icon" @click="restore">
+        <button class="btn btn--icon" @click="restore" :disabled="loading">
           <span class="icon fa fa-fw fa-recycle"></span> Restore product
         </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep">
+        <button class="btn btn--icon btn--danger" @click="deleteDeep" :disabled="loading">
           <span class="icon fa fa-fw fa-trash"></span> Permanently delete
         </button>
       </div>
     </div>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update">
+      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived">
+      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived" :disabled="loading">
         <span class="icon fa fa-fw fa-trash"></span> Archive product
       </button>
     </div>
@@ -75,6 +75,7 @@ export default {
   data: () => ({
     users: [],
     image: null,
+    loading: false,
   }),
   computed: {
     ...mapState(['activeItem', 'departments']),
@@ -85,6 +86,7 @@ export default {
   },
   methods: {
     async update() {
+      this.loading = true;
       try {
         const { id, name, missionStatement } = this.activeItem;
 
@@ -103,6 +105,7 @@ export default {
         console.log(error);
         this.$toasted.show('Could not save changes');
       }
+      this.loading = false;
     },
 
     async setImage({ target }) {
@@ -113,6 +116,7 @@ export default {
     },
 
     async archive() {
+      this.loading = true;
       try {
         await Product.archive(this.activeItem.id);
         this.$toasted.show('Archived');
@@ -121,9 +125,11 @@ export default {
         console.log(error);
         this.$toasted.show('Could not archive product');
       }
+      this.loading = false;
     },
 
     async restore() {
+      this.loading = true;
       try {
         await Product.restore(this.activeItem.id);
         this.$toasted.show('Restored');
@@ -131,9 +137,11 @@ export default {
       } catch {
         this.$toasted.show('Could not restore product');
       }
+      this.loading = false;
     },
 
     async deleteDeep() {
+      this.loading = true;
       try {
         await Product.deleteDeep(this.activeItem.id);
         this.$toasted.show('Permanently deleted product');
@@ -142,6 +150,7 @@ export default {
       } catch {
         this.$toasted.show('Could not delete product');
       }
+      this.loading = false;
     },
   },
 };
