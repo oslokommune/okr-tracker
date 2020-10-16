@@ -6,7 +6,12 @@ const config = require('./config');
 const db = firebaseAdmin.firestore();
 
 exports.transformOnPubsub = function () {
-  return functions.region(config.region).pubsub.topic('transform-data-model').onPublish(handleTransform);
+  return functions
+    .region(config.region)
+    .pubsub.topic('transform-data-model')
+    .onPublish(async () => {
+      await handleTransform();
+    });
 };
 
 exports.transformOnRequest = functions.region(config.region).https.onRequest(async (req, res) => {
