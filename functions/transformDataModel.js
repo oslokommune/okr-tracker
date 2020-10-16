@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const firebaseAdmin = require('firebase-admin');
+const { handleKeyResultProgress } = require('./progress/handleKeyResultProgress');
 
 const db = firebaseAdmin.firestore();
 
@@ -27,6 +28,18 @@ module.exports = functions.https.onRequest(async (req, res) => {
     console.error('Could not migrate data');
     throw new Error(error);
   }
+
+  await setTimeout(async () => {
+    await db
+      .collection('keyResults')
+      .get()
+      .then(snapshot => {
+        console.log('Count: ', snapshot.size);
+        snapshot.forEach(keyres => {
+          handleKeyResultProgress(null, { params: { keyResultId: keyres.id } });
+        });
+      });
+  }, 15000);
 
   res.status(200).send('Success');
 });
@@ -273,6 +286,7 @@ async function handleObjective(doc) {
     parent: getParentRef(ref),
     weight: 1,
     ...doc.data(),
+    progression: 0,
     archived: doc.data().archived || false,
   };
 
@@ -308,6 +322,7 @@ async function handlePeriods(doc) {
     parent: getParentRef(ref),
     ...doc.data(),
     archived: doc.data().archived || false,
+    progression: 0,
   };
 
   delete data.ref;
@@ -331,6 +346,7 @@ async function handleKeyResults(doc) {
     objective,
     weight: 1,
     ...doc.data(),
+    progression: 0,
     archived: doc.data().archived || false,
   };
 
