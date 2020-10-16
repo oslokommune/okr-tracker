@@ -28,7 +28,6 @@ async function handleKeyResultProgress(change, { params }) {
     await keyResultRef.update({ currentValue, progression });
   } catch (error) {
     console.log('Could not update key result', keyResultId);
-    throw new Error(error);
   }
 
   updateObjectiveProgression(objective);
@@ -52,33 +51,48 @@ async function updateObjectiveProgression(objectiveRef) {
   try {
     await objectiveRef.update({ progression });
   } catch (error) {
-    console.log('Could not update objective', objectiveRef);
-    throw new Error(error);
+    console.log('Could not update objective', objectiveRef.id);
   }
 
   // Update progression for Items or Periods
-  const { period } = await objectiveRef.get().then(doc => doc.data());
-  updatePeriodProgression(period);
+  try {
+    const { period } = await objectiveRef.get().then(doc => doc.data());
+    if (period.id) {
+      updatePeriodProgression(period);
+    }
+  } catch {
+    console.log('could not update period');
+  }
 }
 
 async function updatePeriodProgression(periodRef) {
   // Finds all progressions for related objectives and updates the period's progression
-  const progression = await db
-    .collection('objectives')
-    .where('archived', '==', false)
-    .where('period', '==', periodRef)
-    .get()
-    .then(getWeightedProgression);
+
+  let progression = 0;
 
   try {
-    await periodRef.update({ progression });
+    progression = await db
+      .collection('objectives')
+      .where('archived', '==', false)
+      .where('period', '==', periodRef)
+      .get()
+      .then(getWeightedProgression);
+  } catch {
+    console.log('could not get progressions for objectives');
+  }
+
+  try {
+    if (progression) {
+      await periodRef.update({ progression });
+    }
   } catch (error) {
-    console.log('Could not update period', periodRef);
-    throw new Error(error);
+    console.log('Could not update period', periodRef.id);
   }
 }
 
 function getWeightedProgression({ docs }) {
+  if (!docs.length) return 0;
+
   const totalWeight = d3.sum(docs.map(doc => doc.data().weight));
 
   const weightedProgressions = docs.map(doc => {
