@@ -21,43 +21,56 @@ exports.transformOnRequest = functions.region(config.region).https.onRequest(asy
 });
 
 async function handleTransform() {
+  console.log('\n\n--- STARTING MIGRATION --- \n\n');
+
   try {
+    console.log('\n\nTRANSFORMING USERS ...\n');
     await db
       .collection('users')
       .get()
       .then(snapshot => {
         snapshot.forEach(handleUser);
       });
+    console.log('\nFINISHED TRANSFORMING USERS\n\n');
   } catch (error) {
     console.error('Could not migrate users');
     throw new Error(error);
   }
 
   try {
+    console.log('\n\nTRANSFORMING DATA ...\n');
     await db
       .collection('orgs')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleOrg);
+        return Promise.all(snapshot.docs.map(handleOrg));
       });
+    console.log('\n\nFINISHED TRANSFORMING DATA\n');
   } catch (error) {
     console.error('Could not migrate data');
     throw new Error(error);
   }
 
-  await setTimeout(async () => {
+  try {
+    console.log('\n\nCALCULATING PROGRESSION ...\n');
     await db
       .collection('keyResults')
       .get()
       .then(snapshot => {
-        console.log('Count: ', snapshot.size);
-        snapshot.forEach(keyres => {
-          handleKeyResultProgress(null, { params: { keyResultId: keyres.id } });
-        });
+        return Promise.all(
+          snapshot.docs.map(keyres => {
+            return handleKeyResultProgress(null, { params: { keyResultId: keyres.id } });
+          })
+        );
       });
-  }, 15000);
+    console.log('\n\nFINISHED CALCULATING PROGRESSION\n');
+  } catch (error) {
+    console.error('Could process progressions');
+    throw new Error(error);
+  }
 
-  return Promise.resolve();
+  console.log('\n\n\n--- MIGRATION COMPLETE --- \n\n');
+  return true;
 }
 
 async function handleUser({ ref }) {
@@ -109,7 +122,7 @@ async function handleOrg(doc) {
       .collection('periods')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handlePeriods);
+        return Promise.all(snapshot.docs.map(handlePeriods));
       });
   } catch (error) {
     console.error('Could not migrate organization period');
@@ -122,7 +135,7 @@ async function handleOrg(doc) {
       .collection('objectives')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleObjective);
+        return Promise.all(snapshot.docs.map(handleObjective));
       });
   } catch (error) {
     console.error('Could not migrate organization objectives');
@@ -135,7 +148,7 @@ async function handleOrg(doc) {
       .collection('departments')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleDepartments);
+        return Promise.all(snapshot.docs.map(handleDepartments));
       });
   } catch (error) {
     console.error('Could not migrate departments');
@@ -169,7 +182,7 @@ async function handleProducts(doc) {
       .collection('periods')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handlePeriods);
+        return Promise.all(snapshot.docs.map(handlePeriods));
       });
   } catch (error) {
     console.error('Could not migrate product periods');
@@ -182,7 +195,7 @@ async function handleProducts(doc) {
       .collection('objectives')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleObjective);
+        return Promise.all(snapshot.docs.map(handleObjective));
       });
   } catch (error) {
     console.error('Could not migrate product objectives');
@@ -195,7 +208,7 @@ async function handleProducts(doc) {
       .collection('kpis')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleKpis);
+        return Promise.all(snapshot.docs.map(handleKpis));
       });
   } catch (error) {
     console.error('Could not migrate product kpi');
@@ -261,7 +274,7 @@ async function handleDepartments(doc) {
       .collection('periods')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handlePeriods);
+        return Promise.all(snapshot.docs.map(handlePeriods));
       });
   } catch (error) {
     console.error('Could not migrate department period');
@@ -274,7 +287,7 @@ async function handleDepartments(doc) {
       .collection('objectives')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleObjective);
+        return Promise.all(snapshot.docs.map(handleObjective));
       });
   } catch (error) {
     console.error('Could not migrate department objectives');
@@ -287,7 +300,7 @@ async function handleDepartments(doc) {
       .collection('products')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleProducts);
+        return Promise.all(snapshot.docs.map(handleProducts));
       });
   } catch (error) {
     console.error('Could not migrate products');
@@ -323,7 +336,7 @@ async function handleObjective(doc) {
       .collection('keyResults')
       .get()
       .then(snapshot => {
-        snapshot.forEach(handleKeyResults);
+        return Promise.all(snapshot.docs.map(handleKeyResults));
       });
   } catch (error) {
     console.error('Could not migrate key results');
@@ -389,9 +402,11 @@ async function handleKeyResults(doc) {
       .collection('progress')
       .get()
       .then(snapshot => {
-        snapshot.forEach(progressDoc => {
-          db.collection(`keyResults/${id}/progress`).add(progressDoc.data());
-        });
+        return Promise.all(
+          snapshot.docs.map(progressDoc => {
+            return db.collection(`keyResults/${id}/progress`).add(progressDoc.data());
+          })
+        );
       });
   } catch (error) {
     console.error('Could not migrate key result progress');
