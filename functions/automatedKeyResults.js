@@ -32,6 +32,7 @@ exports.scheduledFunction = function () {
     .onRun(async () => {
       return db
         .collection('keyResults')
+        .where('archived', '==', false)
         .where('auto', '==', true)
         .get()
         .then(snapshot => snapshot.docs.map(d => ({ ref: d.ref, ...d.data() })))
