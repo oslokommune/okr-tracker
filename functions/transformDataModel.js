@@ -1,10 +1,21 @@
 const functions = require('firebase-functions');
 const firebaseAdmin = require('firebase-admin');
 const { handleKeyResultProgress } = require('./progress/handleKeyResultProgress');
+const config = require('./config');
 
 const db = firebaseAdmin.firestore();
 
-module.exports = functions.https.onRequest(async (req, res) => {
+exports.transformOnPubsub = function () {
+  return functions.region(config.region).pubsub.topic('transform-data-model').onPublish(handleTransform);
+};
+
+exports.transformOnRequest = functions.region(config.region).https.onRequest(async (req, res) => {
+  await handleTransform();
+
+  res.status(200).send('Success');
+});
+
+async function handleTransform() {
   try {
     await db
       .collection('users')
@@ -41,8 +52,8 @@ module.exports = functions.https.onRequest(async (req, res) => {
       });
   }, 15000);
 
-  res.status(200).send('Success');
-});
+  return Promise.resolve();
+}
 
 async function handleUser({ ref }) {
   const preferences = {

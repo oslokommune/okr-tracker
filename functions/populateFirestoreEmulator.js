@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const firebaseAdmin = require('firebase-admin');
+const config = require('./config');
 
 const secret = 'UZPmJ9gOXHmb6RRttAyURi4JdkvDq8';
 const db = firebaseAdmin.firestore();
@@ -7,7 +8,7 @@ const archived = false;
 const created = new Date();
 let allUsers;
 
-module.exports = functions.https.onRequest(async (req, res) => {
+module.exports = functions.region(config.region).https.onRequest(async (req, res) => {
   if (!req.query.secret) {
     res.status(401).send('401: Unauthorized');
   }

@@ -23,7 +23,7 @@ const PROJECT_ID = (() => {
 // Emulator settings for functions
 const PORT = emulators.functions.port;
 const REGION = region;
-const FUNCTION_ID = 'transformDataModel';
+const FUNCTION_ID = 'transformDataModelOnRequest';
 const SECRET = 'UZPmJ9gOXHmb6RRttAyURi4JdkvDq8'; // todo: read from environment variable
 const url = `http://localhost:${PORT}/${PROJECT_ID}/${REGION}/${FUNCTION_ID}?secret=${SECRET}`;
 

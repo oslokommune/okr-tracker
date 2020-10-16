@@ -26,7 +26,8 @@ exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');
 /**
  * Transforms the old data model to a new flatter one
  */
-exports.transformDataModel = require('./transformDataModel');
+exports.transformDataModelOnPubsub = require('./transformDataModel').transformOnPubsub;
+exports.transformDataModelOnRequest = require('./transformDataModel').transformOnRequest;
 
 exports.SlugDepartment = require('./slug').SlugDepartment;
 exports.SlugOrganization = require('./slug').SlugOrganization;
