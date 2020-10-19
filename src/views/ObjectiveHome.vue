@@ -85,23 +85,6 @@ export default {
   }
 }
 
-.aside {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-  }
-}
-
 .key-results {
   margin-top: 2.5rem;
 }

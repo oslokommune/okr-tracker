@@ -72,7 +72,6 @@ import { mapState } from 'vuex';
 import { format } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
-import KeyResult from '@/db/KeyResult';
 import LineChart from '@/util/LineChart';
 import routerGuard from '@/router/router-guards/keyResultHome';
 

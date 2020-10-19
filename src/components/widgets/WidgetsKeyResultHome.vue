@@ -10,7 +10,7 @@
       </router-link>
     </div>
 
-    <button @click="update">Oppdater automatisk verdi</button>
+    <button v-if="activeKeyResult.auto" @click="update">Oppdater automatisk verdi</button>
 
     <div class="widgets" v-if="activeKeyResult">
       <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
@@ -22,7 +22,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import { functions } from '@/config/firebaseConfig';
 
 export default {
   name: 'WidgetsKeyResultHome',
