@@ -6,6 +6,7 @@ const db = admin.firestore();
 
 exports.auditOnDeleteGenerator = function ({ docPath, collectionRef, documentType }) {
   return functions
+    .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
     .onDelete(async (snapshot, context) => {

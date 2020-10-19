@@ -30,7 +30,7 @@ async function handleKeyResultProgress(change, { params }) {
     console.log('Could not update key result', keyResultId);
   }
 
-  updateObjectiveProgression(objective);
+  await updateObjectiveProgression(objective);
 
   return true;
 }

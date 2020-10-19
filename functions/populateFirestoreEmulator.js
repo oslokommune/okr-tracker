@@ -8,42 +8,45 @@ const archived = false;
 const created = new Date();
 let allUsers;
 
-module.exports = functions.region(config.region).https.onRequest(async (req, res) => {
-  if (!req.query.secret) {
-    res.status(401).send('401: Unauthorized');
-  }
-  if (req.query.secret !== secret) {
-    res.status(401).send('401: Unauthorized');
-  }
+module.exports = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .https.onRequest(async (req, res) => {
+    if (!req.query.secret) {
+      res.status(401).send('401: Unauthorized');
+    }
+    if (req.query.secret !== secret) {
+      res.status(401).send('401: Unauthorized');
+    }
 
-  if (!req.body || !req.body.users || !req.body.users.length) {
-    res.status(422).send('422: Unprocessable entity');
-  }
+    if (!req.body || !req.body.users || !req.body.users.length) {
+      res.status(422).send('422: Unprocessable entity');
+    }
 
-  // prettier-ignore
-  const collectionsAreEmpty = [
+    // prettier-ignore
+    const collectionsAreEmpty = [
     await db.collection('users').get().then(snapshot => snapshot.empty),
     await db.collection('orgs').get().then(snapshot => snapshot.empty),
   ];
 
-  if (collectionsAreEmpty.includes(false)) {
-    console.error('All collections must be empty');
-    res.status(500).send('All collection must be empty');
-    return;
-  }
+    if (collectionsAreEmpty.includes(false)) {
+      console.error('All collections must be empty');
+      res.status(500).send('All collection must be empty');
+      return;
+    }
 
-  allUsers = req.body.users;
+    allUsers = req.body.users;
 
-  try {
-    await populateUsers(req.body.users);
-    await populateOrgs(req.body.orgs);
-  } catch (err) {
-    res.status(500).send('Something went wrong');
-    throw new Error(err);
-  }
+    try {
+      await populateUsers(req.body.users);
+      await populateOrgs(req.body.orgs);
+    } catch (err) {
+      res.status(500).send('Something went wrong');
+      throw new Error(err);
+    }
 
-  res.status(200).send('Success');
-});
+    res.status(200).send('Success');
+  });
 
 async function populateUsers(users) {
   if (!users || !users.length) return;

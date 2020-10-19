@@ -6,6 +6,7 @@ const db = admin.firestore();
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
   return functions
+    .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
     .onUpdate(async ({ before, after }, context) => {
