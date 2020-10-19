@@ -58,7 +58,7 @@ async function updateObjectiveProgression(objectiveRef) {
   try {
     const { period } = await objectiveRef.get().then(doc => doc.data());
     if (period.id) {
-      updatePeriodProgression(period);
+      await updatePeriodProgression(period);
     }
   } catch {
     console.log('could not update period');
