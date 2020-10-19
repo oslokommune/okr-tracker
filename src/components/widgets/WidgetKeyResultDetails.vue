@@ -6,8 +6,14 @@
         <i class="fa fa-trophy"></i>
         {{ activeKeyResult.objective.name }}
       </span>
-      <h3 class="title-3">Periode</h3>
 
+      <h3 class="title-3">Created By</h3>
+      <span class="details--margin-bottom">
+        <i class="fa fa-user"></i>
+        {{ activeKeyResult.createdBy.displayName || activeKeyResult.createdBy.id }}
+      </span>
+
+      <h3 class="title-3">Periode</h3>
       <div class="details__period" v-if="activePeriod">
         <span>
           <i class="fa fa-calendar-alt"></i>
@@ -17,10 +23,27 @@
       </div>
 
       <h3 class="title-3">Antall oppdateringer</h3>
-
       <span class="details--margin-bottom">
         <i class="fa fa-chart-line"></i>
         {{ progress.length }}
+      </span>
+
+      <h3 class="title-3" v-if="activeKeyResult.editedBy">Edited by</h3>
+      <span v-if="activeKeyResult.editedBy" class="details--margin-bottom">
+        <i class="fa fa-user"></i>
+        {{ activeKeyResult.editedBy.displayName || activeKeyResult.editedBy.id }}
+      </span>
+
+      <h3 class="title-3">Target value</h3>
+      <span class="details--margin-bottom">
+        <i class="fa fa-bullseye" />
+        {{ activeKeyResult.unit }}: {{ activeKeyResult.targetValue }}
+      </span>
+
+      <h3 class="title-3">Last update:</h3>
+      <span class="details--margin-bottom">
+        <i class="fa fa-user-edit" />
+        {{ formatDate(activePeriod.edited) }}
       </span>
     </div>
   </Widget>
