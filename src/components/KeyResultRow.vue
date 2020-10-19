@@ -5,11 +5,11 @@
     </router-link>
 
     <ProgressBar
-      v-if="expanded === 'compact'"
+      v-if="view === 'compact'"
       class="keyResult__progression"
       :progression="keyRow.progression"
     ></ProgressBar>
-    <ProgressBarExpanded v-else class="keyResult__progression" :progression="keyRow.progression"></ProgressBarExpanded>
+    <ProgressBarExpanded v-else class="keyResult__progression" :key-result="keyRow"></ProgressBarExpanded>
 
     <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
 

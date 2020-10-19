@@ -48,6 +48,8 @@ export default {
 
   &.expanded {
     grid-template-columns: 2rem 1fr auto span(2, 0, span(6));
+    margin-top: 3rem;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -75,9 +77,9 @@ export default {
 
 .objective__description {
   grid-row: 2;
-  grid-column: 2 / 4;
+  grid-column: 2 / 3;
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 </style>
