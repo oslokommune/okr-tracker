@@ -23,6 +23,9 @@ service cloud.firestore {
       return /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team
     }
 
+    function isSelf(document) {
+      return document == request.auth.token.email
+    }
 
 
     match /requestAccess/{document} {
@@ -36,7 +39,7 @@ service cloud.firestore {
 
     match /users/{user} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if isAdmin() || isSelf(user);
     }
 
     match /organizations/{document} {
