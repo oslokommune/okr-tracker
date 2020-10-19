@@ -1,7 +1,9 @@
 <template>
   <header class="header">
     <div class="container">
-      <router-link :to="{ name: 'Home' }" class="logo"> Logo </router-link>
+      <router-link :to="{ name: 'Home' }" class="logo">
+        <img src="/oslo-logo.svg" alt="Logo" class="logo__img" />
+      </router-link>
       <div class="title" v-if="title">
         <h1 class="title__name">
           {{ title }}
@@ -125,8 +127,11 @@ export default {
 }
 
 .logo {
+  position: relative;
   display: none;
   width: span(2);
+  height: 100%;
+  padding: 0.65rem 0;
 
   @media screen and (min-width: bp(s)) {
     display: block;
@@ -139,6 +144,11 @@ export default {
   @media screen and (min-width: bp(l)) {
     width: span(2);
   }
+}
+
+.logo__img {
+  display: block;
+  height: 100%;
 }
 
 .title {
