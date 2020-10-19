@@ -1,7 +1,7 @@
 <template>
   <aside v-if="activeItem" class="wrapper">
     <div class="itemHome">
-      <router-link class="btn btn--ter btn--icon" v-if="user.admin" :to="{ name: 'ItemAdmin' }">
+      <router-link class="btn btn--ter btn--icon" v-if="hasEditRights" :to="{ name: 'ItemAdmin' }">
         <i class="icon fa fa-cog"></i>
         Admin
       </router-link>
@@ -23,11 +23,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   computed: {
     ...mapState(['activeItem', 'activePeriod', 'user']),
+    ...mapGetters(['hasEditRights']),
   },
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),

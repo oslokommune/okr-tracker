@@ -38,21 +38,23 @@ export default {
 <style lang="scss" scoped>
 .objective {
   display: grid;
+  grid-gap: 0.25rem;
   grid-template-rows: auto auto;
-  grid-template-columns: 1.5rem 1fr auto span(1, 0, span(6));
+  grid-template-columns: 2rem 1fr auto span(1, 0, span(6));
   align-items: center;
   padding: 0.5rem 0.75rem;
   color: black;
   text-decoration: none;
-  border-bottom: 1px solid rgba(black, 0.1);
 
   &.expanded {
-    grid-template-columns: 1.5rem 1fr auto span(2, 0, span(6));
+    grid-template-columns: 2rem 1fr auto span(2, 0, span(6));
   }
 }
 
 .objective__icon {
   grid-column: 1;
+  align-self: start;
+  padding-top: 0.15rem;
 }
 
 .objective__name {

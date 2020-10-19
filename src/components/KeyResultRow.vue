@@ -1,25 +1,32 @@
 <template>
-  <router-link
-    :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
-    class="keyResult"
-    :class="{ expanded: view !== 'compact' }"
-  >
-    <span class="keyResult__name">{{ keyRow.name }}</span>
+  <div class="keyResult" :class="{ expanded: view !== 'compact' }">
+    <router-link class="keyResult__name" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
+      >{{ keyRow.name }}
+    </router-link>
 
-    <ProgressBar class="keyResult__progression" :progression="keyRow.progression"></ProgressBar>
+    <ProgressBar
+      v-if="expanded === 'compact'"
+      class="keyResult__progression"
+      :progression="keyRow.progression"
+    ></ProgressBar>
+    <ProgressBarExpanded v-else class="keyResult__progression" :progression="keyRow.progression"></ProgressBarExpanded>
 
     <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
 
-    <form v-if="view !== 'compact'" class="keyResult__form" @submit.prevent="update">
-      <input type="number" v-model.number="keyRow.currentValue" @click.stop="" />
-      <button>Send</button>
+    <form
+      v-if="view !== 'compact' && hasEditRights"
+      class="keyResult__form"
+      @submit.prevent="update"
+      @click.stop="false"
+    >
+      <input type="number" v-model.number="keyRow.currentValue" class="keyResult__input" />
+      <button class="btn">Update value</button>
     </form>
-  </router-link>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import KeyResult from '@/db/KeyResult';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -40,20 +47,16 @@ export default {
 
   computed: {
     ...mapState(['user']),
+    ...mapGetters(['hasEditRights']),
     view() {
       if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
     },
   },
 
-  methods: {
-    update() {
-      console.dir(KeyResult);
-    },
-  },
-
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
+    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
   },
 
   watch: {
@@ -68,16 +71,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors.scss';
+
 .keyResult {
   display: grid;
-  grid-template-columns: 1.5rem 1fr span(1, 0, span(6));
+  grid-gap: 0.25rem;
+  grid-template-columns: 2rem 1fr span(1, 0, span(6));
   align-items: baseline;
   padding: 0.5rem 0.75rem;
-  color: black;
-  text-decoration: none;
 
   &.expanded {
-    grid-template-columns: 1.5rem 1fr span(2, 0, span(6));
+    grid-template-columns: 2rem 1fr span(2, 0, span(6));
+    padding: 1rem 0.75rem;
   }
 }
 
@@ -87,6 +92,12 @@ export default {
 
 .keyResult__name {
   grid-column: 2;
+  color: $color-grey-800;
+  text-decoration: none;
+
+  @media screen and (min-width: bp('m')) {
+    padding-right: 1rem;
+  }
 }
 
 .keyResult__progression {
@@ -95,8 +106,35 @@ export default {
 
 .keyResult__description {
   grid-row: 2;
-  grid-column: 2 / 4;
+  grid-column: 2;
+  align-self: start;
   margin-top: 0.5rem;
   font-size: 0.8rem;
+
+  @media screen and (min-width: bp('m')) {
+    padding-right: 1rem;
+  }
+}
+
+.keyResult__form {
+  display: flex;
+  grid-row: 3;
+  grid-column: 2 / 4;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media screen and (min-width: bp('m')) {
+    grid-row: 3;
+    grid-column: 2;
+  }
+
+  @media screen and (min-width: bp('m')) {
+    grid-row: 2;
+    grid-column: 3;
+  }
+}
+
+.keyResult__input {
+  margin-right: 0.5rem;
 }
 </style>

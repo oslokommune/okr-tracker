@@ -1,22 +1,23 @@
 <template>
   <div class="objective" v-if="activeObjective">
     <div class="main">
-      <h1 class="title-2">{{ activeObjective.name }}</h1>
+      <h1 class="title-1">{{ activeObjective.name }}</h1>
       <p>{{ activeObjective.description }}</p>
 
       <section class="key-results">
-        <h2 class="title-3">Key results</h2>
+        <h2 class="title-2">Key results</h2>
         <div class="key-results__list">
           <KeyResultRow
             v-for="keyResult in keyResults"
             :key="keyResult.id"
             :key-result="keyResult"
             :force-expanded="true"
+            class="keyResultRow"
           ></KeyResultRow>
         </div>
       </section>
     </div>
-    <widgets-objective-home></widgets-objective-home>
+    <widgets-objective-home class="aside"></widgets-objective-home>
   </div>
 </template>
 
@@ -69,12 +70,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors.scss';
+
 .objective {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .main {
   width: span(12);
+  padding-top: 1.5rem;
 
   @media screen and (min-width: bp(m)) {
     width: span(9, 0, span(9));
@@ -92,6 +97,15 @@ export default {
 .key-results__list {
   margin: 1.5rem 0;
   background: white;
-  box-shadow: 0 2px 2px rgba(black, 0.06);
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(black, 0.1);
+}
+
+.keyResultRow {
+  border-top: 1px solid $color-grey-100;
+
+  &:first-child {
+    border-top: 0;
+  }
 }
 </style>

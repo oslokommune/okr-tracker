@@ -57,12 +57,11 @@ export default {
 @import '@/styles/_colors.scss';
 
 .widget {
+  align-self: start;
   width: 100%;
   margin-bottom: 0.5rem;
   background: white;
   border: 1px solid $color-grey-100;
-  // border-radius: 4px;
-  // box-shadow: 0 2px 3px rgba($color-grey-700, 0.2);
 }
 
 .widget__header {

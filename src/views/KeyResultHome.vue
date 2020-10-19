@@ -1,7 +1,8 @@
 <template>
   <div class="keyres" v-if="activeKeyResult">
     <div class="main">
-      <h1 class="title-2">{{ activeKeyResult.name }}</h1>
+      <h1 class="title-1">{{ activeKeyResult.name }}</h1>
+      <p>{{ activeKeyResult.description }}</p>
 
       <div class="main-widgets">
         <div class="main-widgets__current main-widgets__current__children">
@@ -61,7 +62,7 @@
       </div>
     </div>
 
-    <widgets-key-result-home></widgets-key-result-home>
+    <widgets-key-result-home class="aside"></widgets-key-result-home>
 
     <modal v-if="isOpen" @close="closeModal" :keyres="activeKeyResult"></modal>
   </div>
@@ -163,6 +164,7 @@ export default {
 .main-widgets {
   display: flex;
   width: 100%;
+  margin-top: 1.5rem;
   margin-bottom: 2rem;
 
   &__title {
@@ -236,6 +238,7 @@ export default {
 
 .main {
   width: span(12);
+  padding-top: 1.5rem;
 
   @media screen and (min-width: bp(m)) {
     width: span(9, 0, span(9));
