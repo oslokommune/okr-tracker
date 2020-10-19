@@ -8,6 +8,7 @@ const create = data => {
   if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
+  data.progression = 0;
   return createDocument(collection, data);
 };
 

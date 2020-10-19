@@ -40,12 +40,16 @@ export default {
   computed: {
     ...mapState(['activeKeyResult', 'keyResults']),
     weights() {
-      return this.keyResults.map(({ weight, id, name }) => ({
+      const siblings = ({ objective }) => objective.split('/')[1] === this.activeKeyResult.objective.id;
+
+      const processWeights = ({ weight, id, name }) => ({
         weight,
         id,
         name,
         active: this.activeKeyResult.id === id,
-      }));
+      });
+
+      return this.keyResults.filter(siblings).map(processWeights);
     },
   },
 
