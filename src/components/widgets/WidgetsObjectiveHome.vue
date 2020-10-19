@@ -57,14 +57,14 @@ export default {
   width: span(12);
   margin-top: 0.5rem;
 
-  @media screen and (min-width: bp(l)) {
+  @media screen and (min-width: bp(m)) {
     width: span(3, 0, span(10));
     margin-left: span(0, 1, span(10));
   }
 
   @media screen and (min-width: bp(xl)) {
     width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
+    margin-left: span(0, 1, span(10));
   }
 }
 .keyresult {

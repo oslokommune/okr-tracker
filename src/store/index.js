@@ -20,6 +20,12 @@ export const getters = {
       return org;
     });
   },
+
+  hasEditRights: state => {
+    const { user, activeItem } = state;
+    if (!user || !activeItem) return;
+    return user.admin || activeItem.team.map(({ id }) => id).includes(user.id);
+  },
 };
 
 export const mutations = {

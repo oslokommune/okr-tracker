@@ -8,10 +8,10 @@
       <action-bar></action-bar>
 
       <ul v-if="tree">
-        <li v-for="objective in tree" :key="objective.id" class="group">
+        <li v-for="objective in tree" :key="objective.id">
           <ObjectiveRow :objective="objective"></ObjectiveRow>
-          <ul v-if="objective.keyResults">
-            <li v-for="keyResult in objective.keyResults" :key="keyResult.id">
+          <ul v-if="objective.keyResults" class="group">
+            <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
               <KeyResultRow :key-result="keyResult"></KeyResultRow>
             </li>
           </ul>
@@ -52,6 +52,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors.scss';
+
 .item {
   display: flex;
   flex-wrap: wrap;
@@ -89,6 +91,15 @@ export default {
 .group {
   margin-bottom: 1rem;
   background: white;
-  box-shadow: 0 2px 2px rgba(black, 0.06);
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(black, 0.1);
+}
+
+.keyResultRow {
+  border-top: 1px solid $color-grey-100;
+
+  &:first-child {
+    border-top: 0;
+  }
 }
 </style>
