@@ -33,12 +33,16 @@ export default {
   computed: {
     ...mapState(['activeObjective', 'objectives']),
     weights() {
-      return this.objectives.map(({ weight, id, name }) => ({
+      const siblings = ({ period }) => period.split('/')[1] === this.activeObjective.period.id;
+
+      const processWeights = ({ weight, id, name }) => ({
         weight,
         id,
         name,
         active: this.activeObjective.id === id,
-      }));
+      });
+
+      return this.objectives.filter(siblings).map(processWeights);
     },
   },
 
