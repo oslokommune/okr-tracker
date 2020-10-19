@@ -1,7 +1,7 @@
 <template>
   <div class="breadcrumbs">
     <nav class="breadcrumbs__nav">
-      <ul class="breadcrumbs__list">
+      <ul class="breadcrumbs__list" :data-count="breadcrumbs.length">
         <li class="breadcrumbs__item" v-for="{ id, route, icon, label } in breadcrumbs" :key="id">
           <router-link v-if="route" class="breadcrumbs__link" :to="route">
             <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
@@ -112,10 +112,13 @@ export default {
 .breadcrumbs__link {
   position: relative;
   display: block;
+  max-width: none;
   padding: 0.5rem;
+  overflow: hidden;
   color: $color-grey-900;
   white-space: nowrap;
   text-decoration: none;
+  text-overflow: ellipsis;
 
   &::after {
     position: absolute;
@@ -130,5 +133,25 @@ export default {
 
 .breadcrumbs__icon {
   margin-right: 0.25rem;
+}
+
+.breadcrumbs__list {
+  @for $c from 1 through 6 {
+    &[data-count='#{$c}'] .breadcrumbs__link {
+      max-width: #{24 - ($c * 3)}rem;
+
+      @media screen and (min-width: bp(s)) {
+        max-width: #{26 - ($c * 3)}rem;
+      }
+
+      @media screen and (min-width: bp(m)) {
+        max-width: #{28 - ($c * 3)}rem;
+      }
+
+      @media screen and (min-width: bp(l)) {
+        max-width: #{32 - ($c * 2.5)}rem;
+      }
+    }
+  }
 }
 </style>
