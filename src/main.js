@@ -2,12 +2,10 @@ import Vue from 'vue';
 import VueSelect from 'vue-select';
 import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
-import VueScrollTo from 'vue-scrollto';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
-
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
 
@@ -34,7 +32,6 @@ Vue.use(Toasted, {
   className: 'toast',
   duration: 5000,
 });
-Vue.use(VueScrollTo);
 Vue.use(VTooltip);
 Vue.use(VueMeta);
 Vue.use(firestorePlugin);
