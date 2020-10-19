@@ -6,6 +6,7 @@ const db = admin.firestore();
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
   return functions
+    .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
     .onUpdate(async ({ before, after }, context) => {
@@ -27,7 +28,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       const { documentId } = context.params;
       const { editedBy: user } = after.data();
 
-      db.collection('audit').add({
+      await db.collection('audit').add({
         event,
         timestamp: new Date(),
         documentRef: collectionRef.doc(documentId),

@@ -6,6 +6,7 @@ const db = admin.firestore();
 
 exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentType }) {
   return functions
+    .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
     .onCreate(async (snapshot, context) => {
@@ -28,6 +29,6 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
         auditData.department = documentData.department;
       }
 
-      db.collection('audit').add(auditData);
+      await db.collection('audit').add(auditData);
     });
 };

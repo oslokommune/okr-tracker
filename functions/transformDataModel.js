@@ -7,6 +7,7 @@ const db = firebaseAdmin.firestore();
 
 exports.transformOnPubsub = function () {
   return functions
+    .runWith(config.runtimeOpts)
     .region(config.region)
     .pubsub.topic('transform-data-model')
     .onPublish(async () => {
@@ -14,11 +15,14 @@ exports.transformOnPubsub = function () {
     });
 };
 
-exports.transformOnRequest = functions.region(config.region).https.onRequest(async (req, res) => {
-  await handleTransform();
+exports.transformOnRequest = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .https.onRequest(async (req, res) => {
+    await handleTransform();
 
-  res.status(200).send('Success');
-});
+    res.status(200).send('Success');
+  });
 
 async function handleTransform() {
   console.log('\n\n--- STARTING MIGRATION --- \n\n');

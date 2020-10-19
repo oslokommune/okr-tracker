@@ -3,11 +3,13 @@ const config = require('../config');
 const { handleKeyResultProgress, updatePeriodProgression } = require('./handleKeyResultProgress');
 
 exports.handleKeyResultProgress = functions
+  .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`keyResults/{keyResultId}/progress/{documentId}`)
   .onWrite(handleKeyResultProgress);
 
 exports.handleKeyResultProgressOnKeyResultUpdate = functions
+  .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`keyResults/{keyResultId}`)
   .onUpdate(({ before, after }, context) => {
@@ -21,6 +23,7 @@ exports.handleKeyResultProgressOnKeyResultUpdate = functions
   });
 
 exports.handleKeyResultProgressOnObjectiveUpdate = functions
+  .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`objectives/{objectiveId}`)
   .onUpdate(({ before, after }) => {

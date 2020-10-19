@@ -30,7 +30,7 @@ async function handleKeyResultProgress(change, { params }) {
     console.log('Could not update key result', keyResultId);
   }
 
-  updateObjectiveProgression(objective);
+  await updateObjectiveProgression(objective);
 
   return true;
 }
@@ -58,7 +58,7 @@ async function updateObjectiveProgression(objectiveRef) {
   try {
     const { period } = await objectiveRef.get().then(doc => doc.data());
     if (period.id) {
-      updatePeriodProgression(period);
+      await updatePeriodProgression(period);
     }
   } catch {
     console.log('could not update period');
