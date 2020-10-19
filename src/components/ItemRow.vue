@@ -1,5 +1,6 @@
 <template>
   <router-link :to="`/${data.slug}`" class="item" :class="`item--${type}`">
+    <span class="indent" v-if="type === 'product'"></span>
     <span class="item__icon fas fa-fw" :class="`fa-${icon}`"></span>
 
     <span class="item__name">{{ data.name }}</span>
@@ -163,5 +164,9 @@ export default {
 .item__kpi-icon {
   margin-right: 0.25rem;
   color: $color-purple;
+}
+
+.indent {
+  width: 1.6rem;
 }
 </style>
