@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueSelect from 'vue-select';
-import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
 import VueScrollTo from 'vue-scrollto';
 import Toasted from 'vue-toasted';
@@ -27,7 +26,6 @@ const { auth } = require('./config/firebaseConfig');
 Vue.config.productionTip = false;
 
 // Use plugins
-Vue.use(Vuelidate);
 Vue.use(VueResize);
 Vue.use(Toasted, {
   position: 'bottom-right',
