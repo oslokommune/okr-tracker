@@ -1,21 +1,27 @@
 <template>
   <div v-if="activePeriod">
     <form>
-      <label class="form-group">
-        <span class="form-label">Name</span>
-        <input class="form__field" type="text" v-model="activePeriod.name" />
-      </label>
+      <validation-provider name="name" v-slot="{ errors }">
+        <label class="form-group">
+          <span class="form-label">Name</span>
+          <input class="form__field" type="text" v-model="activePeriod.name" />
+        </label>
+        <span>{{ errors[0] }}</span>
+      </validation-provider>
 
-      <label class="form-field">
-        <span class="form-label">{{ $t('period.dateRange') }}</span>
-        <flat-pickr
-          v-model="range"
-          :config="flatPickerConfig"
-          class="form-control cy-datepicker"
-          name="date"
-          placeholder="Velg start- og sluttdato"
-        ></flat-pickr>
-      </label>
+      <validation-provider name="range" v-slot="{ errors }">
+        <label class="form-field">
+          <span class="form-label">{{ $t('period.dateRange') }}</span>
+          <flat-pickr
+            v-model="range"
+            :config="flatPickerConfig"
+            class="form-control cy-datepicker"
+            name="date"
+            placeholder="Velg start- og sluttdato"
+          ></flat-pickr>
+        </label>
+        <span>{{ errors[0] }}</span>
+      </validation-provider>
     </form>
 
     <div class="button-row">
@@ -33,7 +39,11 @@
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
+import { extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import Period from '@/db/Period';
+
+extend('required', required);
 
 export default {
   name: 'ItemAdminPeriod',

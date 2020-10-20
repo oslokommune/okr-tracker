@@ -17,23 +17,25 @@
         </div>
         <div class="login__form">
           <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
-          <form @submit.prevent="loginWithEmail">
-            <validation-provider name="email" rules="required|email" v-slot="{ errors }">
-              <label class="form-group">
-                <span class="form-label">{{ $t('login.email') }}</span>
-                <input class="form__field" type="email" v-model="email" />
-              </label>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
-            <validation-provider name="password" rules="required" v-slot="{ errors }">
-              <label class="form-field">
-                <span class="form-label">{{ $t('login.password') }}</span>
-                <input class="form__field" type="password" v-model="password" />
-              </label>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
-          </form>
-          <button class="btn btn--pri" @click="loginWithEmail">{{ $t('login.login') }}</button>
+          <validation-observer v-slot="{ handleSubmit }">
+            <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
+              <validation-provider name="email" rules="required|email" v-slot="{ errors }">
+                <label class="form-group">
+                  <span class="form-label">{{ $t('login.email') }}</span>
+                  <input class="form__field" type="email" v-model="email" />
+                  <span>{{ errors[0] }}</span>
+                </label>
+              </validation-provider>
+              <validation-provider name="password" rules="required" v-slot="{ errors }">
+                <label class="form-field">
+                  <span class="form-label">{{ $t('login.password') }}</span>
+                  <input class="form__field" type="password" v-model="password" />
+                  <span>{{ errors[0] }}</span>
+                </label>
+              </validation-provider>
+            </form>
+          </validation-observer>
+          <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
         </div>
 
         <div class="login__footer">

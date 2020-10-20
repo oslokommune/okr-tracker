@@ -7,40 +7,46 @@
           <i class="fa fa-times" />
         </button>
       </div>
-      <div class="modal__main">
-        <h3 class="title-3">{{ keyres.name }}</h3>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form id="modal" class="modal__main" @submit.prevent="handleSubmit(saveProgress)">
+          <h3 class="title-3">{{ keyres.name }}</h3>
 
-        <hr />
+          <hr />
 
-        <div>
           <label>
             <span class="title-3">Legg ved kommentarer (valgfritt)</span>
             <textarea class="modal__textarea" rows="3" v-model="note"></textarea>
           </label>
-        </div>
 
-        <div class="modal__main--flex">
-          <label class="form-group modal__main--input-label">
-            <span class="form-label">Ny verdi:</span>
-            <input class="form__field modal__main--input-value" type="number" v-model="value" />
-          </label>
-          <label class="form-group modal__main--input-label">
-            <span class="form-label">Dato og tid:</span>
-            <flat-pickr
-              v-model="date"
-              :config="flatPickerConfig"
-              class="form-control"
-              name="date"
-              placeholder="Velg dato"
-            ></flat-pickr>
-          </label>
-          <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
-            {{ $t('keyResultPage.add.today') }}
-          </button>
-        </div>
-      </div>
+          <div class="modal__main--flex">
+            <validation-provider name="value" rules="required" v-slot="{ errors }">
+              <label class="form-group modal__main--input-label">
+                <span class="form-label">Ny verdi:</span>
+                <input class="form__field modal__main--input-value" type="number" v-model="value" />
+                <span>{{ errors[0] }}</span>
+              </label>
+            </validation-provider>
+            <validation-provider name="range" rules="required" v-slot="{ errors }">
+              <label class="form-group modal__main--input-label">
+                <span class="form-label">Dato og tid:</span>
+                <flat-pickr
+                  v-model="date"
+                  :config="flatPickerConfig"
+                  class="form-control"
+                  name="date"
+                  placeholder="Velg dato"
+                ></flat-pickr>
+                <span>{{ errors[0] }}</span>
+              </label>
+            </validation-provider>
+            <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
+              {{ $t('keyResultPage.add.today') }}
+            </button>
+          </div>
+        </form>
+      </validation-observer>
       <div class="modal__footer">
-        <button @click="saveProgress" :disabled="loading" class="btn btn--sec">Lagre</button>
+        <button form="modal" :disabled="loading" class="btn btn--sec">Lagre</button>
         <button @click="close" class="btn btn--ghost btn--space">Avbryt</button>
       </div>
     </div>
@@ -49,7 +55,11 @@
 
 <script>
 import locale from 'flatpickr/dist/l10n/no';
+import { extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import Progress from '@/db/Progress';
+
+extend('required', required);
 
 export default {
   name: 'Modal',
