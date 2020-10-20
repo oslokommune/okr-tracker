@@ -17,21 +17,23 @@
         </div>
         <div class="login__form">
           <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
-          <form @submit.prevent="submitPassword()">
-            <label class="form-field">
-              <span class="form-label">{{ $t('login.email') }}</span>
-              <div class="form-login">
-                <input class="field" type="email" v-model="email" />
-              </div>
-            </label>
-            <label class="form-field">
-              <span class="form-label">{{ $t('login.password') }}</span>
-              <div class="form-login">
-                <input class="field" type="password" v-model="password" />
-              </div>
-            </label>
-            <button class="btn btn--pri">{{ $t('login.login') }}</button>
+          <form @submit.prevent="loginWithEmail">
+            <validation-provider name="email" rules="required|email" v-slot="{ errors }">
+              <label class="form-group">
+                <span class="form-label">{{ $t('login.email') }}</span>
+                <input class="form__field" type="email" v-model="email" />
+              </label>
+              <span>{{ errors[0] }}</span>
+            </validation-provider>
+            <validation-provider name="password" rules="required" v-slot="{ errors }">
+              <label class="form-field">
+                <span class="form-label">{{ $t('login.password') }}</span>
+                <input class="form__field" type="password" v-model="password" />
+              </label>
+              <span>{{ errors[0] }}</span>
+            </validation-provider>
           </form>
+          <button class="btn btn--pri" @click="loginWithEmail">{{ $t('login.login') }}</button>
         </div>
 
         <div class="login__footer">
@@ -50,8 +52,13 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
+import { extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
+
+extend('email', email);
+extend('required', required);
 
 export default {
   data: () => ({
@@ -83,7 +90,7 @@ export default {
       }
     },
 
-    async submitPassword() {
+    async loginWithEmail() {
       this.pending = true;
 
       try {

@@ -6,6 +6,7 @@ import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
+import { ValidationProvider } from 'vee-validate';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -41,6 +42,7 @@ Vue.use(VueFlatPickr);
 // Global components
 Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
+Vue.component('ValidationProvider', ValidationProvider);
 
 Vue.config.productionTip = false;
 
