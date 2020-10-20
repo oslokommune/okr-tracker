@@ -20,8 +20,10 @@
       @click.stop="false"
     >
       <input type="number" v-model.number="keyRow.currentValue" class="keyResult__input" />
-      <button class="btn">Update value</button>
+      <button class="btn" @click="isOpen = true">Update value</button>
     </form>
+
+    <modal v-if="isOpen" @close="isOpen = false" :keyres="keyRow"></modal>
   </div>
 </template>
 
@@ -43,6 +45,7 @@ export default {
 
   data: () => ({
     keyRow: null,
+    isOpen: false,
   }),
 
   computed: {
@@ -57,6 +60,11 @@ export default {
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
+    Modal: () => import('@/components/Modal.vue'),
+  },
+
+  methods: {
+    update() {},
   },
 
   watch: {

@@ -1,5 +1,5 @@
 export default {
-  name: {
+  type: {
     type: 'string',
     required: true,
   },
