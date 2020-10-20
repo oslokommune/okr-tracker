@@ -3,32 +3,47 @@
     <h1 class="title-1">Create new product</h1>
 
     <div class="container">
-      <form>
-        <label class="form-group">
-          <span class="form-label">Name</span>
-          <input class="form__field" type="text" v-model="name" />
-        </label>
-        <label class="form-group">
-          <span class="form-label">Mission statement</span>
-          <textarea class="form__field" v-model="missionStatement" rows="4"></textarea>
-        </label>
-        <div class="form-group">
-          <span class="form-label">Parent department</span>
-          <v-select label="name" v-model="department" :options="departments" :clearable="false"></v-select>
-        </div>
-        <div class="form-group">
-          <span class="form-label">Team members</span>
-          <v-select label="displayName" multiple v-model="team" :options="users">
-            <template #option="option">
-              {{ option.displayName || option.id }}
-              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-            </template>
-          </v-select>
-        </div>
-      </form>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form id="createProduct" @submit.prevent="handleSubmit(save)">
+          <form-component input-type="input" name="name" label="Name" rules="required" type="text" v-model="name" />
+
+          <form-component
+            input-type="textarea"
+            name="missionStatement"
+            label="Mission statement"
+            rules="required"
+            v-model="missionStatement"
+          />
+
+          <form-component
+            input-type="select"
+            name="department"
+            label="Parent department"
+            select-label="name"
+            rules="required"
+            v-model="department"
+            :select-options="departments"
+          />
+
+          <div class="form-group">
+            <span class="form-label">Team members</span>
+            <v-select
+              multiple
+              v-model="team"
+              :options="users"
+              :get-option-label="option => option.displayName || option.id"
+            >
+              <template #option="option">
+                {{ option.displayName || option.id }}
+                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+              </template>
+            </v-select>
+          </div>
+        </form>
+      </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" @click="save" :disabled="loading">
+        <button class="btn btn--icon btn--pri" form="createProduct" :disabled="loading">
           <span class="icon fa fa-fw fa-save"></span> Create
         </button>
       </div>
@@ -39,8 +54,12 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
+import { extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+
+extend('required', required);
 
 export default {
   data: () => ({
@@ -51,6 +70,10 @@ export default {
     users: [],
     loading: false,
   }),
+
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
 
   computed: {
     ...mapState(['departments']),

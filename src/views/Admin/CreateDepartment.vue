@@ -5,29 +5,25 @@
     <div class="container">
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createDepartment" @submit.prevent="handleSubmit(save)">
-          <validation-provider name="name" rules="required" v-slot="{ errors }">
-            <label class="form-group">
-              <span class="form-label">Name</span>
-              <input class="form__field" type="text" v-model="name" />
-            </label>
-            <div class="form-field--error">{{ errors[0] }}</div>
-          </validation-provider>
+          <form-component input-type="input" name="name" label="Name" rules="required" v-model="name" type="text" />
 
-          <validation-provider name="missionStatement" rules="required" v-slot="{ errors }">
-            <label class="form-group">
-              <span class="form-label">Mission statement</span>
-              <textarea class="form__field" v-model="missionStatement" rows="4"></textarea>
-            </label>
-            <div class="form-field--error">{{ errors[0] }}</div>
-          </validation-provider>
+          <form-component
+            input-type="textarea"
+            name="missionStatement"
+            label="Mission statement"
+            rules="required"
+            v-model="missionStatement"
+          />
 
-          <validation-provider name="organization" rules="required" v-slot="{ errors }">
-            <div class="form-group">
-              <span class="form-label">Parent organization</span>
-              <v-select label="name" v-model="organization" :options="organizations" :clearable="false"></v-select>
-            </div>
-            <div class="form-field--error">{{ errors[0] }}</div>
-          </validation-provider>
+          <form-component
+            input-type="select"
+            name="organization"
+            label="Parent organization"
+            select-label="name"
+            rules="required"
+            v-model="organization"
+            :select-options="organizations"
+          />
         </form>
       </validation-observer>
 
@@ -47,10 +43,12 @@ import { extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import FormComponent from '../../components/FormComponent.vue';
 
 extend('required', required);
 
 export default {
+  components: { FormComponent },
   data: () => ({
     name: '',
     missionStatement: '',

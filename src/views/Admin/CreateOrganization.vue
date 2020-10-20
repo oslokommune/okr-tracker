@@ -3,19 +3,22 @@
     <h1 class="title-1">Create new organization</h1>
 
     <div class="container">
-      <form>
-        <label class="form-group">
-          <span class="form-label">Name</span>
-          <input class="form__field" type="text" v-model="name" />
-        </label>
-        <label class="form-group">
-          <span class="form-label">Mission statement</span>
-          <textarea class="form__field" v-model="missionStatement" rows="4"></textarea>
-        </label>
-      </form>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form id="createOrganization" @submit.prevent="handleSubmit(save)">
+          <form-component input-type="input" name="name" rules="required" label="Name" v-model="name" type="text" />
+
+          <form-component
+            input-type="textarea"
+            name="missionStatement"
+            label="Mission statement"
+            rules="required"
+            v-model="missionStatement"
+          />
+        </form>
+      </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" @click="save" :disabled="loading">
+        <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading">
           <span class="icon fa fa-fw fa-save"></span> Create
         </button>
       </div>
@@ -24,8 +27,12 @@
 </template>
 
 <script>
+import { required } from 'vee-validate/dist/rules';
+import { extend } from 'vee-validate';
 import Organization from '@/db/Organization';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+
+extend('required', required);
 
 export default {
   data: () => ({
@@ -33,6 +40,10 @@ export default {
     missionStatement: '',
     loading: false,
   }),
+
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
 
   methods: {
     async save() {

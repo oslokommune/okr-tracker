@@ -1,37 +1,50 @@
 <template>
   <div v-if="activeItem">
-    <form>
-      <label class="form-group">
-        <span class="form-label">Name</span>
-        <input class="form__field" type="text" v-model="activeItem.name" />
-      </label>
-      <label class="form-group">
-        <span class="form-label">Slug</span>
-        <input class="form__field" type="text" v-model="activeItem.slug" disabled />
-      </label>
-      <label class="form-group">
-        <span class="form-label">Mission statement</span>
-        <textarea class="form__field" v-model="activeItem.missionStatement" rows="4"></textarea>
-      </label>
-      <div class="form-group">
-        <span class="form-label">Parent department</span>
-        <v-select label="name" v-model="activeItem.department" :options="departments" :clearable="false"></v-select>
-      </div>
-      <div class="form-group">
-        <span class="form-label">Team members</span>
-        <v-select
-          multiple
-          v-model="activeItem.team"
-          :options="users"
-          :get-option-label="option => option.displayName || option.id"
-        >
-          <template #option="option">
-            {{ option.displayName || option.id }}
-            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-          </template>
-        </v-select>
-      </div>
-    </form>
+    <validation-observer v-slot="{ handleSubmit }">
+      <form id="update-product" @submit.prevent="handleSubmit(update)">
+        <form-component
+          input-type="input"
+          name="name"
+          label="Name"
+          rules="required"
+          v-model="activeItem.name"
+          type="text"
+        />
+
+        <label class="form-group">
+          <span class="form-label">Slug</span>
+          <input class="form__field" type="text" v-model="activeItem.slug" disabled />
+        </label>
+
+        <form-component
+          input-type="textarea"
+          name="missionStatement"
+          label="Mission Statement"
+          rules="required"
+          v-model="activeItem.missionStatement"
+          type="text"
+        />
+
+        <div class="form-group">
+          <span class="form-label">Parent department</span>
+          <v-select label="name" v-model="activeItem.department" :options="departments" :clearable="false"></v-select>
+        </div>
+        <div class="form-group">
+          <span class="form-label">Team members</span>
+          <v-select
+            multiple
+            v-model="activeItem.team"
+            :options="users"
+            :get-option-label="option => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+      </form>
+    </validation-observer>
 
     <div class="form-group">
       <span class="form-label">Image</span>
@@ -56,7 +69,7 @@
     </div>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-product" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived" :disabled="loading">
@@ -70,8 +83,15 @@
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
+import { extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
+import FormComponent from '../../components/FormComponent.vue';
+
+extend('required', required);
 
 export default {
+  components: { FormComponent },
+
   data: () => ({
     users: [],
     image: null,

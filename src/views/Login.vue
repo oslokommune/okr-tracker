@@ -19,21 +19,23 @@
           <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
           <validation-observer v-slot="{ handleSubmit }">
             <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
-              <validation-provider name="email" rules="required|email" v-slot="{ errors }">
-                <label class="form-group">
-                  <span class="form-label">{{ $t('login.email') }}</span>
-                  <input class="form__field" type="email" v-model="email" />
-                </label>
-                <div class="form-field--error">{{ errors[0] }}</div>
-              </validation-provider>
+              <form-component
+                :label="$t('login.email')"
+                input-type="input"
+                name="email"
+                rules="required|email"
+                v-model="email"
+                type="email"
+              />
 
-              <validation-provider name="password" rules="required" v-slot="{ errors }">
-                <label class="form-field">
-                  <span class="form-label">{{ $t('login.password') }}</span>
-                  <input class="form__field" type="password" v-model="password" />
-                </label>
-                <div class="form-field--error">{{ errors[0] }}</div>
-              </validation-provider>
+              <form-component
+                :label="$t('login.password')"
+                input-type="input"
+                name="password"
+                rules="required"
+                v-model="password"
+                type="password"
+              />
             </form>
           </validation-observer>
           <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
@@ -59,11 +61,13 @@ import { extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
+import FormComponent from '../components/FormComponent.vue';
 
 extend('email', email);
 extend('required', required);
 
 export default {
+  components: { FormComponent },
   data: () => ({
     email: '',
     password: '',
