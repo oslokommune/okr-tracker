@@ -3,23 +3,36 @@
     <h1 class="title-1">Create new department</h1>
 
     <div class="container">
-      <form>
-        <label class="form-group">
-          <span class="form-label">Name</span>
-          <input class="form__field" type="text" v-model="name" />
-        </label>
-        <label class="form-group">
-          <span class="form-label">Mission statement</span>
-          <textarea class="form__field" v-model="missionStatement" rows="4"></textarea>
-        </label>
-        <div class="form-group">
-          <span class="form-label">Parent organization</span>
-          <v-select label="name" v-model="organization" :options="organizations" :clearable="false"></v-select>
-        </div>
-      </form>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form id="createDepartment" @submit.prevent="handleSubmit(save)">
+          <validation-provider name="name" rules="required" v-slot="{ errors }">
+            <label class="form-group">
+              <span class="form-label">Name</span>
+              <input class="form__field" type="text" v-model="name" />
+            </label>
+            <div class="form-field--error">{{ errors[0] }}</div>
+          </validation-provider>
+
+          <validation-provider name="missionStatement" rules="required" v-slot="{ errors }">
+            <label class="form-group">
+              <span class="form-label">Mission statement</span>
+              <textarea class="form__field" v-model="missionStatement" rows="4"></textarea>
+            </label>
+            <div class="form-field--error">{{ errors[0] }}</div>
+          </validation-provider>
+
+          <validation-provider name="organization" rules="required" v-slot="{ errors }">
+            <div class="form-group">
+              <span class="form-label">Parent organization</span>
+              <v-select label="name" v-model="organization" :options="organizations" :clearable="false"></v-select>
+            </div>
+            <div class="form-field--error">{{ errors[0] }}</div>
+          </validation-provider>
+        </form>
+      </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" @click="save" :disabled="loading">
+        <button class="btn btn--icon btn--pri" form="createDepartment" :disabled="loading">
           <span class="icon fa fa-fw fa-save"></span> Create
         </button>
       </div>
@@ -30,8 +43,12 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
+import { extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+
+extend('required', required);
 
 export default {
   data: () => ({
