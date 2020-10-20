@@ -23,15 +23,16 @@
                 <label class="form-group">
                   <span class="form-label">{{ $t('login.email') }}</span>
                   <input class="form__field" type="email" v-model="email" />
-                  <span>{{ errors[0] }}</span>
                 </label>
+                <div class="form-field--error">{{ errors[0] }}</div>
               </validation-provider>
+
               <validation-provider name="password" rules="required" v-slot="{ errors }">
                 <label class="form-field">
                   <span class="form-label">{{ $t('login.password') }}</span>
                   <input class="form__field" type="password" v-model="password" />
-                  <span>{{ errors[0] }}</span>
                 </label>
+                <div class="form-field--error">{{ errors[0] }}</div>
               </validation-provider>
             </form>
           </validation-observer>

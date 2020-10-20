@@ -23,9 +23,10 @@
               <label class="form-group modal__main--input-label">
                 <span class="form-label">Ny verdi:</span>
                 <input class="form__field modal__main--input-value" type="number" v-model="value" />
-                <span>{{ errors[0] }}</span>
               </label>
+              <div class="form-field--error">{{ errors[0] }}</div>
             </validation-provider>
+
             <validation-provider name="range" rules="required" v-slot="{ errors }">
               <label class="form-group modal__main--input-label">
                 <span class="form-label">Dato og tid:</span>
@@ -36,9 +37,10 @@
                   name="date"
                   placeholder="Velg dato"
                 ></flat-pickr>
-                <span>{{ errors[0] }}</span>
               </label>
+              <div class="form-field--error">{{ errors[0] }}</div>
             </validation-provider>
+
             <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
               {{ $t('keyResultPage.add.today') }}
             </button>

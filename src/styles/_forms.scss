@@ -58,6 +58,7 @@ textarea {
   padding: 1rem 0;
 
   &--error {
+    margin-top: -1rem;
     margin-bottom: 0;
     color: $color-red;
   }
