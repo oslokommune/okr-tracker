@@ -1,31 +1,34 @@
 <template>
   <div v-if="activePeriod">
-    <form>
-      <validation-provider name="name" v-slot="{ errors }">
-        <label class="form-group">
-          <span class="form-label">Name</span>
-          <input class="form__field" type="text" v-model="activePeriod.name" />
-        </label>
-        <span>{{ errors[0] }}</span>
-      </validation-provider>
+    <validation-observer v-slot="{ handleSubmit }">
+      <form id="update-period" @submit.prevent="handleSubmit(update)">
+        <form-component
+          input-type="input"
+          name="name"
+          label="Name"
+          rules="required"
+          v-model="activePeriod.name"
+          type="text"
+        />
 
-      <validation-provider name="range" v-slot="{ errors }">
-        <label class="form-field">
-          <span class="form-label">{{ $t('period.dateRange') }}</span>
-          <flat-pickr
-            v-model="range"
-            :config="flatPickerConfig"
-            class="form-control cy-datepicker"
-            name="date"
-            placeholder="Velg start- og sluttdato"
-          ></flat-pickr>
-        </label>
-        <span>{{ errors[0] }}</span>
-      </validation-provider>
-    </form>
+        <validation-provider name="range" v-slot="{ errors }">
+          <label class="form-field">
+            <span class="form-label">{{ $t('period.dateRange') }}</span>
+            <flat-pickr
+              v-model="range"
+              :config="flatPickerConfig"
+              class="form-control cy-datepicker"
+              name="date"
+              placeholder="Velg start- og sluttdato"
+            ></flat-pickr>
+          </label>
+          <span>{{ errors[0] }}</span>
+        </validation-provider>
+      </form>
+    </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-period" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!activePeriod.archived">
@@ -48,6 +51,8 @@ extend('required', required);
 export default {
   name: 'ItemAdminPeriod',
 
+  components: { FormComponent: () => import('@/components/FormComponent.vue') },
+
   props: {
     data: {
       type: Object,
@@ -68,7 +73,7 @@ export default {
       locale: locale.no,
     },
     range: null,
-    laoding: false,
+    loading: false,
   }),
 
   watch: {
