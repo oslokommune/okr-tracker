@@ -3,22 +3,9 @@
     <label class="form-group">
       <span class="form-label">{{ label || name }}</span>
       <slot name="help"></slot>
-      <input
-        v-if="inputType === 'input'"
-        :type="type"
-        :disabled="disabled"
-        class="form__field"
-        v-model="innerValue"
-        :placeholder="placeholder"
-      />
+      <input v-if="inputType === 'input'" :type="type" :disabled="disabled" class="form__field" v-model="innerValue" />
 
-      <textarea
-        v-if="inputType === 'textarea'"
-        :placeholder="placeholder"
-        class="form__field"
-        v-model="innerValue"
-        rows="4"
-      />
+      <textarea v-if="inputType === 'textarea'" class="form__field" v-model="innerValue" rows="4" />
 
       <v-select
         v-if="inputType === 'select'"
@@ -54,11 +41,6 @@ export default {
     },
     rules: {
       type: [Object, String],
-      required: false,
-      default: '',
-    },
-    placeholder: {
-      type: String,
       required: false,
       default: '',
     },

@@ -6,7 +6,7 @@ import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric } from 'vee-validate/dist/rules';
 
 import { firestorePlugin } from 'vuefire';
@@ -45,6 +45,14 @@ Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+
+configure({
+  defaultMessage: (field, values) => {
+    values._field_ = i18n.t(`fields.${field}`);
+
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
 
 extend('required', required);
 extend('email', email);
