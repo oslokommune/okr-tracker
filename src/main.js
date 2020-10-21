@@ -6,7 +6,8 @@ import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { required, email, numeric } from 'vee-validate/dist/rules';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -44,6 +45,10 @@ Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+
+extend('required', required);
+extend('email', email);
+extend('numeric', numeric);
 
 Vue.config.productionTip = false;
 

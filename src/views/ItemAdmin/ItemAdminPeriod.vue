@@ -42,11 +42,7 @@
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
-import { extend } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
 import Period from '@/db/Period';
-
-extend('required', required);
 
 export default {
   name: 'ItemAdminPeriod',

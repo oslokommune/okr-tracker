@@ -57,14 +57,9 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import { extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import FormComponent from '../components/FormComponent.vue';
-
-extend('email', email);
-extend('required', required);
 
 export default {
   components: { FormComponent },

@@ -57,11 +57,7 @@
 
 <script>
 import locale from 'flatpickr/dist/l10n/no';
-import { extend } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
 import Progress from '@/db/Progress';
-
-extend('required', required);
 
 export default {
   name: 'Modal',

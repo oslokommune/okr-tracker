@@ -54,12 +54,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
-import { extend } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
-
-extend('required', required);
 
 export default {
   data: () => ({

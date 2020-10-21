@@ -39,13 +39,9 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
-import { extend } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import FormComponent from '../../components/FormComponent.vue';
-
-extend('required', required);
 
 export default {
   components: { FormComponent },

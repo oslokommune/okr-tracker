@@ -27,12 +27,8 @@
 </template>
 
 <script>
-import { required } from 'vee-validate/dist/rules';
-import { extend } from 'vee-validate';
 import Organization from '@/db/Organization';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
-
-extend('required', required);
 
 export default {
   data: () => ({

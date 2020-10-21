@@ -83,11 +83,7 @@
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
-import { extend } from 'vee-validate';
-import { required } from 'vee-validate/dist/rules';
 import FormComponent from '../../components/FormComponent.vue';
-
-extend('required', required);
 
 export default {
   components: { FormComponent },

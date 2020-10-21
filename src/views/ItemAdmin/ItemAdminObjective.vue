@@ -62,11 +62,6 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
-import { extend } from 'vee-validate';
-import { required, numeric } from 'vee-validate/dist/rules';
-
-extend('required', required);
-extend('numeric', numeric);
 
 export default {
   components: { FormComponent: () => import('@/components/FormComponent.vue') },
