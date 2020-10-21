@@ -391,6 +391,12 @@ async function handleKeyResults(doc) {
     delete data.description;
   }
 
+  if (!data.auto) {
+    delete data.sheetId;
+    delete data.sheetName;
+    delete data.sheetCell;
+  }
+
   delete data.longDescription;
   delete data.ref;
 

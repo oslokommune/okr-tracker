@@ -2,6 +2,7 @@
   <validation-provider :rules="rules" :name="name || label" v-slot="{ errors }">
     <label class="form-group">
       <span class="form-label">{{ label || name }}</span>
+      <slot name="help"></slot>
       <input
         v-if="inputType === 'input'"
         :type="type"
@@ -25,7 +26,12 @@
         :options="selectOptions"
         :clearable="false"
         v-model="innerValue"
-      />
+      >
+        <template #option="option">
+          {{ option.name }}
+          <span v-if="option.period && option.period.name"> ({{ option.period.name }}) </span>
+        </template>
+      </v-select>
     </label>
     <div v-if="errors[0]" class="form-field--error">{{ errors[0] }}</div>
   </validation-provider>
