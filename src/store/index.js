@@ -42,6 +42,10 @@ export const mutations = {
   SET_LOGIN_ERROR(state, payload) {
     state.loginError = payload;
   },
+
+  SET_LOADING(state, payload) {
+    state.loading = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -65,6 +69,7 @@ export default new Vuex.Store({
       { label: 'Kompakt', id: 'compact', icon: '' },
       { label: 'Detaljer', id: 'details', icon: '' },
     ],
+    loading: false,
   },
   getters,
   mutations,

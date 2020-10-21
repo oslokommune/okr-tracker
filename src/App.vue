@@ -7,7 +7,8 @@
         <SidebarNavigation v-if="user"></SidebarNavigation>
       </div>
       <div class="main-view">
-        <router-view class="router-view"></router-view>
+        <spinner v-if="loading"></spinner>
+        <router-view v-else class="router-view"></router-view>
         <footer class="footer"></footer>
       </div>
     </main>
@@ -30,10 +31,11 @@ export default {
     SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
     Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
+    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'loading']),
   },
 
   created() {

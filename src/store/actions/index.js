@@ -9,6 +9,10 @@ import reset_state from './reset_state';
 import set_user from './set_user';
 import update_preferences from './update_preferences';
 
+const setLoading = ({ commit }, payload) => {
+  commit('SET_LOADING', payload);
+};
+
 export default {
   set_sidebar_items,
   set_active_item,
@@ -19,4 +23,5 @@ export default {
   reset_state,
   set_user,
   update_preferences,
+  setLoading,
 };
