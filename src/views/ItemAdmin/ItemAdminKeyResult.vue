@@ -31,8 +31,8 @@
                 <span v-if="option.period && option.period.name"> ({{ option.period.name }}) </span>
               </template>
             </v-select>
+            <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
           </label>
-          <div v-if="errors[0]" class="form-field--error">{{ errors[0] }}</div>
         </validation-provider>
 
         <form-component

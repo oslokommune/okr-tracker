@@ -22,7 +22,7 @@
               placeholder="Velg start- og sluttdato"
             ></flat-pickr>
           </label>
-          <span>{{ errors[0] }}</span>
+          <span class="form-field--error">{{ errors[0] }}</span>
         </validation-provider>
       </form>
     </validation-observer>
