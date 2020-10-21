@@ -1,42 +1,55 @@
 <template>
   <div v-if="objective">
-    <form>
-      <label class="form-group">
-        <span class="form-label">Name</span>
-        <input class="form__field" type="text" v-model="objective.name" />
-      </label>
+    <validation-observer v-slot="{ handleSubmit }">
+      <form id="update-objective" @submit.prevent="handleSubmit(update)">
+        <form-component
+          input-type="input"
+          name="name"
+          label="Name"
+          rules="required"
+          v-model="objective.name"
+          type="text"
+        />
 
-      <label class="form-group">
-        <span class="form-label">Description</span>
-        <input class="form__field" type="text" v-model="objective.description" />
-      </label>
+        <label class="form-group">
+          <span class="form-label">Description</span>
+          <input class="form__field" type="text" v-model="objective.description" />
+        </label>
 
-      <label class="form-group">
-        <span class="form-label">Weight</span>
-        <input class="form__field" type="number" min="1" v-model.number="objective.weight" />
-      </label>
+        <form-component
+          input-type="input"
+          name="weight"
+          label="Weight"
+          rules="required|numeric"
+          v-model="objective.weight"
+          type="number"
+        />
 
-      <label class="form-group">
-        <span class="form-label">Icon</span>
-        <input class="form__field" type="text" v-model="objective.icon" />
-      </label>
+        <label class="form-group">
+          <span class="form-label">Icon</span>
+          <input class="form__field" type="text" v-model="objective.icon" />
+        </label>
 
-      <div class="form-group">
-        <span class="form-label">Period</span>
-        <v-select
-          label="name"
-          v-model="objective.period"
-          :options="periods"
-          :clearable="false"
-          @input="changedPeriod = true"
-        >
-          <template #option="option"> {{ option.name }} </template>
-        </v-select>
-      </div>
-    </form>
+        <validation-provider rules="required" name="period" v-slot="{ errors }">
+          <label class="form-group">
+            <span class="form-label">Period</span>
+            <v-select
+              label="name"
+              v-model="objective.period"
+              :options="periods"
+              :clearable="false"
+              @input="changedPeriod = true"
+            >
+              <template #option="option"> {{ option.name }} </template>
+            </v-select>
+          </label>
+          <div v-if="errors[0]" class="form-field--error">{{ errors[0] }}</div>
+        </validation-provider>
+      </form>
+    </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!objective.archived">
@@ -49,8 +62,14 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
+import { extend } from 'vee-validate';
+import { required, numeric } from 'vee-validate/dist/rules';
+
+extend('required', required);
+extend('numeric', numeric);
 
 export default {
+  components: { FormComponent: () => import('@/components/FormComponent.vue') },
   data: () => ({
     objective: null,
     periods: [],
