@@ -5,7 +5,7 @@
     </div>
     <div v-if="kpis.length" class="kpis">
       <div class="kpi" v-for="kpi in kpis" :key="kpi.id">
-        <form @submit.prevent="save(kpi)">
+        <form @submit.prevent="save(kpi)" :id="`kpi_${kpi.id}`">
           <label class="form-group">
             <span class="form-label">Type</span>
             <input class="form__field" type="text" v-model="kpi.type" disabled="disabled" />
@@ -30,9 +30,19 @@
             </label>
           </div>
 
-          <button class="btn btn--primary">Save changes</button>
+          <button class="btn btn--primary" :form="`kpi_${kpi.id}`">Save changes</button>
           <button class="btn btn--danger" @click="deleteDeep(kpi.id)">Delete</button>
         </form>
+
+        <div class="kpi__validation">
+          <div v-if="kpi.error" class="kpi__error">
+            <span class="fa fa-exclamation-triangle"></span> {{ kpi.error }}
+          </div>
+          <div v-if="kpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
+          <div v-if="!kpi.valid && !kpi.error" class="kpi__loading">
+            <span class="fa fa-spinner fa-pulse"></span> Loading
+          </div>
+        </div>
       </div>
     </div>
 
@@ -43,7 +53,6 @@
 <script>
 import { mapState } from 'vuex';
 import Kpi from '@/db/Kpi';
-import { db } from '@/config/firebaseConfig';
 
 export default {
   data: () => ({
@@ -60,7 +69,9 @@ export default {
 
   methods: {
     async save(kpi) {
-      kpi.parent = db.doc(kpi.parent);
+      kpi.error = false;
+      kpi.valid = false;
+      delete kpi.parent;
       await Kpi.update(kpi.id, kpi);
     },
     async deleteDeep(id) {
@@ -105,5 +116,25 @@ export default {
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+}
+
+.kpi__valid {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: $color-green;
+  border-radius: 2px;
+}
+
+.kpi__loading {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 2px;
+}
+
+.kpi__error {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: $color-red;
+  border-radius: 2px;
 }
 </style>

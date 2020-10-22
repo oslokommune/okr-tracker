@@ -3,9 +3,18 @@
     <h2 class="title-2">KPI-er</h2>
 
     <div class="kpis__list">
-      <router-link v-for="kpi in kpis" :key="kpi.id" :to="{ name: 'KpiHome', params: { kpiId: kpi.id } }" class="kpi">
+      <router-link
+        v-for="kpi in kpis"
+        :key="kpi.id"
+        :to="{ name: 'KpiHome', params: { kpiId: kpi.id } }"
+        class="kpi"
+        :class="{ disabled: kpi.error }"
+      >
         <div class="kpi__name">{{ kpi.name }}</div>
-        <div class="kpi__value">{{ getValue(kpi) }}</div>
+        <div class="kpi__value">
+          <span v-if="kpi.error || !kpi.valid">–––</span>
+          <span v-else>{{ getValue(kpi) }}</span>
+        </div>
         <span class="kpi__icon far" :class="getKpiIcon(kpi)"></span>
       </router-link>
     </div>
@@ -26,7 +35,7 @@ export default {
   methods: {
     getKpiIcon({ type }) {
       if (type === 'users') return 'fa-user';
-      if (type === 'satisfation') return 'fa-smile';
+      if (type === 'satisfaction') return 'fa-smile';
       if (type === 'conversion') return 'fa-check-square';
       return '';
     },
@@ -34,10 +43,9 @@ export default {
     getValue({ type, currentValue }) {
       const numFormat = (() => {
         if (type === 'users') return format('.2s');
-        if (type === 'satisfation') return format('.2p');
+        if (type === 'satisfaction') return format('.2p');
         if (type === 'conversion') return format('.2p');
       })();
-
       return numFormat(currentValue);
     },
   },
@@ -54,7 +62,7 @@ export default {
 .kpis__list {
   display: grid;
   grid-gap: 0.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
 
 .kpi {
@@ -71,6 +79,10 @@ export default {
 
   &:hover {
     background: darken($color-purple, 6%);
+  }
+
+  &.disabled {
+    opacity: 0.6;
   }
 }
 

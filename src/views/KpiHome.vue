@@ -5,10 +5,11 @@
 
       <p>{{ activeKpi.description }}</p>
 
-      <div class="current-value">
+      <div class="current-value" v-if="activeKpi.valid">
         <div class="current-value__label">Current value</div>
         <div class="current-value__value">{{ activeKpi.currentValue }}</div>
       </div>
+      <router-link v-if="hasEditRights" class="btn btn--ghost" :to="{ name: 'ItemAdminKPIs' }">Edit KPI</router-link>
 
       <hr />
 
@@ -36,7 +37,6 @@
         </tr>
       </table>
     </div>
-    <router-link v-if="hasEditRights" class="btn btn--ghost" :to="{ name: 'ItemAdminKPIs' }">Edit KPI</router-link>
   </div>
 </template>
 
