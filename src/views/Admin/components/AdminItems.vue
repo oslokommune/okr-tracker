@@ -94,7 +94,7 @@ export default {
   display: grid;
   grid-gap: span(0, 1, span(12));
   grid-template-rows: repeat(auto-fill, auto);
-  grid-template-columns: repeat(1, fr);
+  grid-template-columns: repeat(1, 1fr);
 
   @media screen and (min-width: bp(s)) {
     grid-gap: span(0, 1, span(6));

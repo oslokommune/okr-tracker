@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import VueSelect from 'vue-select';
-import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
+import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
+import { required, email, numeric } from 'vee-validate/dist/rules';
+
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
 
@@ -25,7 +27,6 @@ const { auth } = require('./config/firebaseConfig');
 Vue.config.productionTip = false;
 
 // Use plugins
-Vue.use(Vuelidate);
 Vue.use(VueResize);
 Vue.use(Toasted, {
   position: 'bottom-right',
@@ -40,6 +41,20 @@ Vue.use(VueFlatPickr);
 // Global components
 Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
+
+configure({
+  defaultMessage: (field, values) => {
+    values._field_ = i18n.t(`fields.${field}`);
+
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
+
+extend('required', required);
+extend('email', email);
+extend('numeric', numeric);
 
 Vue.config.productionTip = false;
 
