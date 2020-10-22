@@ -162,3 +162,11 @@ export const createProduct = () => {
     label: 'Create Product',
   };
 };
+
+export const kpi = () => {
+  const { activeKpi } = state;
+  return {
+    icon: 'chart-line',
+    label: activeKpi.name,
+  };
+};
