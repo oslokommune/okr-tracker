@@ -17,6 +17,11 @@
           </label>
 
           <label class="form-group">
+            <span class="form-label">Name</span>
+            <input class="form__field" type="text" v-model="kpi.name" />
+          </label>
+
+          <label class="form-group">
             <span class="form-label">Description</span>
             <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
           </label>
@@ -59,10 +64,11 @@ export default {
     loading: false,
     type: 'users',
     kpi: {
-      description: 'null',
-      sheetId: 'null',
-      sheetName: 'null',
-      sheetCell: 'null',
+      name: '',
+      description: '',
+      sheetId: '',
+      sheetName: 'Sheet1',
+      sheetCell: 'A1',
     },
     types: [
       { id: 'users', label: 'Brukere' },
@@ -75,7 +81,7 @@ export default {
     ...mapState(['kpis', 'activeItem', 'activeItemRef']),
 
     availableTypes() {
-      return this.types.filter(type => !this.kpis.map(({ type }) => type).includes(type.id));
+      return this.types.filter(type => !this.kpis.map(kpi => kpi.type).includes(type.id));
     },
   },
 
