@@ -46,49 +46,9 @@ async function handleSlackInteractive(req) {
 
   // Check which type of action the user sends from slack
   if (action_id === 'accept') {
-    try {
-      // Get the email from the id
-      const { email } = await requestAccessCollection
-        .doc(value)
-        .get()
-        .then(snapshot => snapshot.data());
-
-      // Check if user already exists
-      const { exists } = await usersCollection.doc(email).get();
-
-      if (exists) throw new Error(`User ${email} already exists!`);
-
-      // Add user if it does not exist
-      await usersCollection.doc(email).set({
-        id: email,
-        email,
-        preferences,
-      });
-
-      // Remove from requestAccessCollection
-      await requestAccessCollection.doc(value).delete();
-
-      // Send a message to slack
-      await webhookReturn.send(acceptMessage(email, user.username));
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    await handleAcceptRequest(webhookReturn, value, user.username);
   } else if (action_id === 'reject') {
-    try {
-      // Find email from the user id
-      const { email } = await requestAccessCollection
-        .doc(value)
-        .get()
-        .then(snapshot => snapshot.data());
-
-      // Remove from requestAccessCollection
-      await requestAccessCollection.doc(value).delete();
-
-      // Send a message to slack
-      await webhookReturn.send(rejectMessage(email, user.username));
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    await handleRejectRequest(webhookReturn, value, user.username);
   } else if (action_id === 'ignore') {
     // Delete a message from slack channel
     await webhookReturn.send({
@@ -101,6 +61,55 @@ async function handleSlackInteractive(req) {
 
   return true;
 }
+
+const handleAcceptRequest = async (webhook, value, user) => {
+  try {
+    // Get the email from the id
+    const { email } = await requestAccessCollection
+      .doc(value)
+      .get()
+      .then(snapshot => snapshot.data());
+
+    // Check if user already exists
+    const { exists } = await usersCollection.doc(email).get();
+
+    if (exists) throw new Error(`User ${email} already exists!`);
+
+    // Add user if it does not exist
+    await usersCollection.doc(email).set({
+      id: email,
+      email,
+      preferences,
+    });
+
+    // Remove from requestAccessCollection
+    await requestAccessCollection.doc(value).delete();
+
+    // Send a message to slack
+    await webhook.send(acceptMessage(email, user));
+  } catch (e) {
+    throw new Error(e.message);
+  }
+  return true;
+};
+
+const handleRejectRequest = async (webhook, value, user) => {
+  try {
+    // Find email from the user id
+    const { email } = await requestAccessCollection
+      .doc(value)
+      .get()
+      .then(snapshot => snapshot.data());
+
+    // Remove from requestAccessCollection
+    await requestAccessCollection.doc(value).delete();
+
+    // Send a message to slack
+    await webhook.send(rejectMessage(email, user));
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
 
 exports.handleSlackRequest = handleSlackRequest;
 exports.handleSlackInteractive = handleSlackInteractive;
