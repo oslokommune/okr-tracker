@@ -8,42 +8,63 @@
         </button>
       </div>
       <div class="modal__main">
-        <form @submit.prevent="add">
-          <label class="form-group">
-            <span class="form-label">Choose KPI type</span>
-            <select class="form__field" v-model="type">
-              <option v-for="{ id, label } in availableTypes" :key="id" :value="id">{{ label }}</option>
-            </select>
-          </label>
+        <validation-observer v-slot="{ handleSubmit }">
+          <form @submit.prevent="handleSubmit(add)" id="addKpi">
+            <validation-provider rules="required" name="type" v-slot="{ errors }">
+              <label class="form-group">
+                <span class="form-label">Choose KPI type</span>
+                <select class="form__field" v-model="type">
+                  <option v-for="{ id, label } in availableTypes" :key="id" :value="id">{{ label }}</option>
+                </select>
+                <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
+              </label>
+            </validation-provider>
 
-          <label class="form-group">
-            <span class="form-label">Name</span>
-            <input class="form__field" type="text" v-model="kpi.name" />
-          </label>
+            <form-component
+              input-type="input"
+              name="sheetCell"
+              label="Name"
+              rules="required"
+              v-model="kpi.name"
+              type="text"
+            />
 
-          <label class="form-group">
-            <span class="form-label">Description</span>
-            <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
-          </label>
-          <h3 class="title-2">Sheet details</h3>
-          <div class="form-row">
             <label class="form-group">
-              <span class="form-label">Id</span>
-              <input class="form__field" type="text" v-model="kpi.sheetId" />
+              <span class="form-label">Description</span>
+              <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
             </label>
-            <label class="form-group">
-              <span class="form-label">Name</span>
-              <input class="form__field" type="text" v-model="kpi.sheetName" />
-            </label>
-            <label class="form-group">
-              <span class="form-label">Cell</span>
-              <input class="form__field" type="text" v-model="kpi.sheetCell" />
-            </label>
-          </div>
-        </form>
+            <h3 class="title-2">Sheet details</h3>
+            <div class="form-row">
+              <form-component
+                input-type="input"
+                name="sheetId"
+                label="Id"
+                rules="required"
+                v-model="kpi.sheetId"
+                type="text"
+              />
+              <form-component
+                input-type="input"
+                name="sheetTab"
+                label="Name"
+                rules="required"
+                v-model="kpi.sheetName"
+                type="text"
+              />
+              <form-component
+                input-type="input"
+                name="sheetCell"
+                label="Cell"
+                rules="required"
+                v-model="kpi.sheetCell"
+                type="text"
+              />
+            </div>
+          </form>
+        </validation-observer>
       </div>
       <div class="modal__footer">
-        <button @click="add" :disabled="loading" class="btn btn--sec">Add</button>
+        <button form="addKpi" :disabled="loading" class="btn btn--sec">Add</button>
         <button @click="close" class="btn btn--ghost btn--space">Cancel</button>
       </div>
     </div>
@@ -57,12 +78,14 @@ import { mapState } from 'vuex';
 export default {
   name: 'Modal',
 
-  props: {},
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
 
   data: () => ({
     value: 0,
     loading: false,
-    type: 'users',
+    type: null,
     kpi: {
       name: '',
       description: '',

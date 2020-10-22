@@ -21,7 +21,7 @@
           name="weight"
           label="Weight"
           rules="required|numeric"
-          v-model="objective.weight"
+          v-model.number="objective.weight"
           type="number"
         />
 

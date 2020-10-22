@@ -5,34 +5,61 @@
     </div>
     <div v-if="kpis.length" class="kpis">
       <div class="kpi" v-for="kpi in kpis" :key="kpi.id">
-        <form @submit.prevent="save(kpi)" :id="`kpi_${kpi.id}`">
-          <label class="form-group">
-            <span class="form-label">Type</span>
-            <input class="form__field" type="text" v-model="kpi.type" disabled="disabled" />
-          </label>
-          <label class="form-group">
-            <span class="form-label">Description</span>
-            <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
-          </label>
-          <h3 class="title-2">Sheet details</h3>
-          <div class="form-row">
+        <validation-observer v-slot="{ handleSubmit }">
+          <form @submit.prevent="handleSubmit(save.bind(null, kpi))" :id="`kpi_${kpi.id}`">
             <label class="form-group">
-              <span class="form-label">Id</span>
-              <input class="form__field" type="text" v-model="kpi.sheetId" />
+              <span class="form-label">Type</span>
+              <input class="form__field" type="text" v-model="kpi.type" disabled="disabled" />
             </label>
-            <label class="form-group">
-              <span class="form-label">Name</span>
-              <input class="form__field" type="text" v-model="kpi.sheetName" />
-            </label>
-            <label class="form-group">
-              <span class="form-label">Cell</span>
-              <input class="form__field" type="text" v-model="kpi.sheetCell" />
-            </label>
-          </div>
 
-          <button class="btn btn--primary" :form="`kpi_${kpi.id}`">Save changes</button>
-          <button class="btn btn--danger" @click="deleteDeep(kpi.id)">Delete</button>
-        </form>
+            <form-component
+              input-type="input"
+              name="name"
+              label="Name"
+              rules="required"
+              v-model="kpi.name"
+              type="text"
+            />
+
+            <label class="form-group">
+              <span class="form-label">Description</span>
+              <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
+            </label>
+
+            <h3 class="title-2">Sheet details</h3>
+            <div class="form-row">
+              <form-component
+                input-type="input"
+                name="sheetId"
+                label="Id"
+                rules="required"
+                v-model="kpi.sheetId"
+                type="text"
+              />
+
+              <form-component
+                input-type="input"
+                name="sheetTab"
+                label="Name"
+                rules="required"
+                v-model="kpi.sheetName"
+                type="text"
+              />
+
+              <form-component
+                input-type="input"
+                name="sheetCell"
+                label="Cell"
+                rules="required"
+                v-model="kpi.sheetCell"
+                type="text"
+              />
+            </div>
+
+            <button class="btn btn--primary" :form="`kpi_${kpi.id}`">Save changes</button>
+            <button class="btn btn--danger" @click="deleteDeep(kpi.id)">Delete</button>
+          </form>
+        </validation-observer>
 
         <div class="kpi__validation">
           <div v-if="kpi.error" class="kpi__error">
@@ -65,6 +92,7 @@ export default {
 
   components: {
     AddKpiModal: () => import('@/components/AddKPIModal.vue'),
+    FormComponent: () => import('@/components/FormComponent.vue'),
   },
 
   methods: {

@@ -95,7 +95,7 @@ export default {
   },
 
   created() {
-    if (this.value) {
+    if (this.value !== undefined) {
       this.innerValue = this.value;
     }
   },
