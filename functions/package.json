@@ -12,6 +12,7 @@
     "node": "12"
   },
   "dependencies": {
+    "@slack/webhook": "^5.0.3",
     "d3": "^6.2.0",
     "d3-scale": "^3.2.3",
     "firebase-admin": "^9.2.0",
