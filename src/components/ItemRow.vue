@@ -96,7 +96,7 @@ export default {
           if (type === 'satisfaction') return format('.2p');
           return format();
         })();
-        const kpi = this.kpis.find(kpi => kpi.type === type);
+        const kpi = this.kpis.find(obj => obj.type === type);
         return formatNumber(kpi.currentValue);
       } catch {
         return '–––';
