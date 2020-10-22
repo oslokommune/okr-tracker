@@ -1,91 +1,135 @@
 <template>
   <div v-if="keyResult">
-    <form>
-      <label class="form-group">
-        <span class="form-label">Name</span>
-        <input class="form__field" type="text" v-model="keyResult.name" />
-      </label>
-
-      <label class="form-group">
-        <span class="form-label">Description</span>
-        <input class="form__field" type="text" v-model="keyResult.description" />
-      </label>
-
-      <div class="form-group">
-        <span class="form-label">Objective</span>
-        <v-select
-          label="name"
-          v-model="keyResult.objective"
-          :options="objectives"
-          :clearable="false"
-          @input="changedObjective = true"
-        >
-          <template #option="option">
-            {{ option.name }}
-            <span v-if="option.period && option.period.name"> ({{ option.period.name }}) </span>
-          </template>
-        </v-select>
-      </div>
-
-      <label class="form-group">
-        <span class="form-label">Unit</span>
-        <input class="form__field" type="text" v-model="keyResult.unit" />
-      </label>
-
-      <div class="form-row">
-        <label class="form-group">
-          <span class="form-label">Start value</span>
-          <input class="form__field" type="number" v-model.number="keyResult.startValue" />
-        </label>
+    <validation-observer v-slot="{ handleSubmit }">
+      <form id="update-keyresult" @submit.prevent="handleSubmit(update)">
+        <form-component
+          input-type="input"
+          name="name"
+          label="Name"
+          rules="required"
+          v-model="keyResult.name"
+          type="text"
+        />
 
         <label class="form-group">
-          <span class="form-label">Target value</span>
-          <input class="form__field" type="number" v-model.number="keyResult.targetValue" />
+          <span class="form-label">Description</span>
+          <input class="form__field" type="text" v-model="keyResult.description" />
         </label>
 
-        <label class="form-group">
-          <span class="form-label">Weight</span>
-          <input class="form__field" type="number" min="1" v-model.number="keyResult.weight" />
-        </label>
-      </div>
+        <validation-provider rules="required" name="objective" v-slot="{ errors }">
+          <label class="form-group">
+            <span class="form-label">Objective</span>
+            <v-select
+              label="name"
+              v-model="keyResult.objective"
+              :options="objectives"
+              :clearable="false"
+              @input="changedObjective = true"
+            >
+              <template #option="option">
+                {{ option.name }}
+                <span v-if="option.period && option.period.name"> ({{ option.period.name }}) </span>
+              </template>
+            </v-select>
+            <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
+          </label>
+        </validation-provider>
 
-      <hr />
+        <form-component
+          input-type="input"
+          name="unit"
+          label="Unit"
+          rules="required"
+          v-model="keyResult.unit"
+          type="text"
+        />
 
-      <div class="toggle__container">
-        <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
-        <label class="toggle">
-          <input class="toggle__input" type="checkbox" v-model="keyResult.auto" />
-          <span class="toggle__switch"></span>
-        </label>
-      </div>
+        <div class="form-row">
+          <form-component
+            input-type="input"
+            name="startValue"
+            label="Start Value"
+            rules="required|numeric"
+            v-model.number="keyResult.startValue"
+            type="number"
+          />
 
-      <div v-if="keyResult.auto">
-        <p>
-          <router-link :to="{ name: 'Help' }">{{ $t('keyres.automation.readMore') }}</router-link>
-        </p>
+          <form-component
+            input-type="input"
+            name="targetValue"
+            label="Target Value"
+            rules="required|numeric"
+            v-model.number="keyResult.targetValue"
+            type="number"
+          />
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('keyres.automation.googleSheetId') }}</span>
-          <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
-          <input class="form__field" type="text" v-model="keyResult.sheetId" />
-        </label>
+          <form-component
+            input-type="input"
+            name="weight"
+            label="Weight"
+            rules="required|numeric"
+            v-model.number="keyResult.weight"
+            type="number"
+          />
+        </div>
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('keyres.automation.sheetsTab') }}</span>
-          <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
-          <input class="form__field" type="text" v-model="keyResult.sheetName" />
-        </label>
+        <div class="toggle__container">
+          <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
+          <label class="toggle">
+            <input class="toggle__input" type="checkbox" v-model="keyResult.auto" />
+            <span class="toggle__switch"></span>
+          </label>
+        </div>
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('keyres.automation.sheetsCell') }}</span>
-          <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
-          <input class="form__field" type="text" v-model="keyResult.sheetCell" />
-        </label>
-      </div>
-    </form>
+        <div v-if="keyResult.auto">
+          <p>
+            <router-link :to="{ name: 'Help' }">{{ $t('keyres.automation.readMore') }}</router-link>
+          </p>
+
+          <form-component
+            :label="$t('keyres.automation.googleSheetId')"
+            :rules="`${keyResult.auto ? 'required' : ''}`"
+            input-type="input"
+            name="sheetId"
+            v-model="keyResult.sheetId"
+            type="text"
+          >
+            <template #help>
+              <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+            </template>
+          </form-component>
+
+          <form-component
+            :label="$t('keyres.automation.sheetsTab')"
+            :rules="`${keyResult.auto ? 'required' : ''}`"
+            input-type="input"
+            name="sheetTab"
+            v-model="keyResult.sheetName"
+            type="text"
+          >
+            <template #help>
+              <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
+            </template>
+          </form-component>
+
+          <form-component
+            :label="$t('keyres.automation.sheetsCell')"
+            :rules="`${keyResult.auto ? 'required' : ''}`"
+            input-type="input"
+            name="sheetCell"
+            v-model="keyResult.sheetCell"
+            type="text"
+          >
+            <template #help>
+              <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
+            </template>
+          </form-component>
+        </div>
+      </form>
+    </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" @click="update">
+      <button class="btn btn--icon btn--pri" form="update-keyresult">
         <span class="icon fa fa-fw fa-save"></span> Save changes
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" v-if="!keyResult.archived">
@@ -98,8 +142,11 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
+import FormComponent from '@/components/FormComponent.vue';
 
 export default {
+  components: { FormComponent },
+
   data: () => ({
     keyResult: null,
     objectives: [],
@@ -201,5 +248,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 1rem;
 }
 </style>

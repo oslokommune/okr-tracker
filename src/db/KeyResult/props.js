@@ -31,4 +31,20 @@ export default {
     type: 'number',
     required: true,
   },
+  auto: {
+    type: 'boolean',
+    required: false,
+  },
+  sheetCell: {
+    type: 'string',
+    required: false,
+  },
+  sheetId: {
+    type: 'string',
+    required: false,
+  },
+  sheetName: {
+    type: 'string',
+    required: false,
+  },
 };

@@ -1,4 +1,23 @@
 {
+  "fields": {
+    "email": "E-post",
+    "password": "Passord",
+    "name": "Navn",
+    "missionStatement": "Mission Statement",
+    "value": "Verdi",
+    "range": "Dato- og klokkeslett",
+    "organization": "Organisasjon",
+    "department": "Produktområde",
+    "product": "Produkt",
+    "objective": "Objekt",
+    "unit": "Måleenhet",
+    "startValue": "Startverdi",
+    "targetValue": "Målverdi",
+    "weight": "Vekt",
+    "sheetId": "Google Sheet ID",
+    "sheetTab": "Fane",
+    "sheetCell": "Celle"
+  },
   "general": {
     "team": "Team",
     "project": "OKR",
