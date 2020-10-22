@@ -3,7 +3,12 @@
     <header class="widget__header">
       <span class="widget__icon fas fa-fw" :class="`fa-${icon}`"></span>
       <span class="widget__title">{{ title }}</span>
-      <button class="widget__toggle fas fa-fw" :class="isOpen ? 'fa-minus' : 'fa-plus'" @click="toggle"></button>
+      <button
+        v-if="collapsible"
+        class="widget__toggle fas fa-fw"
+        :class="isOpen ? 'fa-minus' : 'fa-plus'"
+        @click="toggle"
+      ></button>
     </header>
     <div class="widget__body" v-show="isOpen">
       <slot></slot>
@@ -27,6 +32,11 @@ export default {
     title: {
       type: String,
       required: true,
+    },
+    collapsible: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
 
