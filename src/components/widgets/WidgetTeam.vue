@@ -1,19 +1,16 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeItem.team" title="Team" icon="users">
+  <Widget :widget-id="widgetId" v-if="activeItem.team" :title="$t('general.team')" icon="users">
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">
         <router-link :to="{ name: 'User', params: { id: user.id } }" class="user__link" v-if="user.id">
-          <img
-            :src="user.photoURL || '/placeholder-image.svg'"
-            :alt="user.photoURL"
-            aria-hidden="true"
-            class="user__image"
-          />
+          <img :src="user.photoURL || '/placeholder-image.svg'" :aria-hidden="true" class="user__image" />
           <span class="user__name">{{ user.displayName || user.id }}</span>
         </router-link>
       </li>
     </ul>
-    <router-link :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter" v-if="memberOrAdmin">+ Legg til</router-link>
+    <router-link :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter" v-if="memberOrAdmin">{{
+      $t('btn.add')
+    }}</router-link>
   </Widget>
 </template>
 

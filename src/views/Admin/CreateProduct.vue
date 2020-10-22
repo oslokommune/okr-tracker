@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title-1">Create new product</h1>
+    <h1 class="title-1">{{ $t('admin.product.create') }}</h1>
 
     <div class="container">
       <validation-observer v-slot="{ handleSubmit }">
@@ -26,7 +26,7 @@
           />
 
           <div class="form-group">
-            <span class="form-label">Team members</span>
+            <span class="form-label">{{ $t('general.teamMembers') }}</span>
             <v-select
               multiple
               v-model="team"
@@ -44,7 +44,7 @@
 
       <div class="button-row">
         <button class="btn btn--icon btn--pri" form="createProduct" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> Create
+          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
         </button>
       </div>
     </div>

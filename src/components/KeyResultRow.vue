@@ -15,7 +15,7 @@
 
     <form v-if="view !== 'compact' && hasEditRights" class="keyResult__form" @submit.prevent="isOpen = true">
       <input type="number" v-model.number="keyRow.currentValue" class="keyResult__input" />
-      <button class="btn">Update value</button>
+      <button class="btn">{{ $t('keyres.updateValue') }}</button>
     </form>
 
     <modal v-if="isOpen" @close="isOpen = false" :keyres="keyRow"></modal>

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
+import i18n from '@/locale/i18n';
 
 import actions from './actions';
 
@@ -66,8 +67,8 @@ export default new Vuex.Store({
     kpis: [],
     loginError: null,
     views: [
-      { label: 'Kompakt', id: 'compact', icon: '' },
-      { label: 'Detaljer', id: 'details', icon: '' },
+      { label: i18n.t('view.compact'), id: 'compact', icon: '' },
+      { label: i18n.t('view.details'), id: 'details', icon: '' },
     ],
     loading: false,
   },

@@ -1,16 +1,23 @@
 <template>
   <div>
-    <h1 class="title-1">Create new department</h1>
+    <h1 class="title-1">{{ $t('admin.department.create') }}</h1>
 
     <div class="container">
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createDepartment" @submit.prevent="handleSubmit(save)">
-          <form-component input-type="input" name="name" label="Name" rules="required" v-model="name" type="text" />
+          <form-component
+            input-type="input"
+            name="name"
+            :label="$t('fields.name')"
+            rules="required"
+            v-model="name"
+            type="text"
+          />
 
           <form-component
             input-type="textarea"
             name="missionStatement"
-            label="Mission statement"
+            :label="$t('fields.missionStatement')"
             rules="required"
             v-model="missionStatement"
           />
@@ -18,7 +25,7 @@
           <form-component
             input-type="select"
             name="organization"
-            label="Parent organization"
+            :label="$t('admin.department.parentOrganisation')"
             select-label="name"
             rules="required"
             v-model="organization"
@@ -29,7 +36,7 @@
 
       <div class="button-row">
         <button class="btn btn--icon btn--pri" form="createDepartment" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> Create
+          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
         </button>
       </div>
     </div>

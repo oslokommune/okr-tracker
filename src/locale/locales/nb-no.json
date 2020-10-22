@@ -1,9 +1,20 @@
 {
+  "kpi": {
+    "add": "Legg til",
+    "description": "Beskrivelse",
+    "chooseType": "Velg KPI-type",
+    "types": {
+      "users": "Volum",
+      "satisfaction": "Brukertilfredshet",
+      "conversion": "Måloppnåelse"
+    },
+    "heading": "KPI-er"
+  },
   "fields": {
     "email": "E-post",
     "password": "Passord",
     "name": "Navn",
-    "missionStatement": "Mission Statement",
+    "missionStatement": "Oppdragsbeskrivelse",
     "value": "Verdi",
     "range": "Dato- og klokkeslett",
     "organization": "Organisasjon",
@@ -17,9 +28,14 @@
     "sheetId": "Google Sheet ID",
     "sheetTab": "Fane",
     "sheetCell": "Celle",
-    "type": "Type"
+    "type": "Type",
+    "displayName": "Visningsnavn"
   },
   "general": {
+    "edit": "Administrer «{item}»",
+    "general": "Generelt",
+    "OKRs": "OKR-er",
+    "KPIs": "KPI-er",
     "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
@@ -32,13 +48,34 @@
     "help": "Hjelp",
     "objAndKeyres": "Mål og nøkkelresultater",
     "admin": "Admin",
-    "dashboard": "Dashboard",
-    "success": "Suksess!"
+    "dashboard": "Vis dashboard",
+    "success": "Suksess!",
+    "signOut": "Logg ut",
+    "createdBy": "Opprettet av",
+    "lastUpdate": "Sist oppdatert",
+    "details": "Detaljer",
+    "products": "Produkter",
+    "organizations": "Organisasjoner",
+    "departments": "Produktområder",
+    "teamMembers": "Team-medlemmer",
+    "users": "Brukere",
+    "home": "Hjem"
   },
   "btn": {
     "close": "Lukk",
     "save": "Lagre",
-    "saveChanges": "Lagre endringer"
+    "saveChanges": "Lagre endringer",
+    "add": "Legg til",
+    "editNotes": "Endre notater",
+    "addOrganization": "Ny organisasjon",
+    "addProduct": "Nytt produkt",
+    "addDepartment": "Nytt produktområde",
+    "acceptRequest": "Gi tilgang",
+    "rejectRequest": "Slett forespørsel",
+    "deleteImage": "Slett bilde",
+    "deleteUser": "Slett bruker",
+    "create": "Opprett",
+    "delete": "Slett"
   },
   "pageHeader": {
     "header": "Hjem",
@@ -121,6 +158,7 @@
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
+    "newValue": "Ny verdi",
     "unitDescription": "Hva er det som måles (klikk, prosent, brukere etc)?",
     "automation": {
       "header": "Automatisk registrering av progresjon",
@@ -144,11 +182,19 @@
       "previous": "Forrige",
       "jumpOver": "Hopp over",
       "save": "Lagre og gå videre"
-    }
+    },
+    "updateValue": "Oppdater verdi",
+    "dateAndTime": "Dato og tid",
+    "addComment": "Legg ved kommentarer (valgfritt)",
+    "chooseDate": "Velg dato",
+    "belongsTo": "Tilhører mål",
+    "numberOfUpdates": "Antall oppdateringer"
   },
   "objective": {
     "period": "Periode",
     "icon": "Ikon",
+    "progression": "Progresjon",
+    "weight": "Vekt",
     "description": "Beskrivelse",
     "title": "Tittel",
     "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå.",
@@ -166,7 +212,8 @@
     "dateRange": "Start- og sluttdato",
     "deletePeriod": "Slett periode",
     "hasObjectives": "Kan ikke slette periode som har tilknyttet mål",
-    "range": "{startDate} til {endDate}"
+    "range": "{startDate} til {endDate}",
+    "period": "Periode"
   },
   "tooltip": {
     "newValue": "Ny verdi",
@@ -291,17 +338,20 @@
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Mission statement",
+      "missionStatement": "Oppdragsbeskrivelse",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
-      "delete": "Slett"
+      "delete": "Slett",
+      "create": "Opprett nytt produktområde",
+      "parentOrganisation": "Tilhører organisasjon"
     },
     "organization": {
       "title": "Administrer organisasjon",
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Mission statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>"
+      "missionStatement": "Oppdragsbeskrivelse",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
+      "create": "Opprett ny organisasjon"
     },
     "product": {
       "title": "Administrer produkt",
@@ -311,10 +361,11 @@
       "slug": "Slug",
       "slugHelp": "Hvordan navnet fremstår i URL-en",
       "picture": "Bilde",
-      "missionStatement": "Mission statement",
+      "missionStatement": "Oppdragsbeskrivelse",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
-      "delete": "Slett"
+      "delete": "Slett",
+      "create": "Opprett nytt produkt"
     },
     "home": {
       "users": "Brukere",
@@ -338,7 +389,15 @@
       "delete": "Slett",
       "addEmails": "Legg til e-post-adresser",
       "addEmailsHelp": "Én adresse per rad",
-      "add": "Legg til"
+      "add": "Legg til",
+      "edit": "Endre bruker",
+      "image": "Profilbilde",
+      "backToUsers": "Tilbake til brukere",
+      "addUsers": "Legg til bruker(e)",
+      "users": "Brukere",
+      "search": "Søk {count} brukere",
+      "registerUsersButton": "Registrer brukere",
+      "registerUsersText": "Skriv inn e-postadresser (én adresse per linje):"
     }
   },
   "keyResultPage": {
@@ -373,7 +432,11 @@
         "three": "Les mer"
       }
     },
-    "flatPickrPlaceholder": "Velg dato og tid"
+    "flatPickrPlaceholder": "Velg dato og tid",
+    "history": "Historikk",
+    "registeredBy": "Registrert av",
+    "value": "Verdi",
+    "date": "Dato"
   },
   "product": {
     "title": "Produkt",
@@ -393,6 +456,7 @@
     "title": "Innhold"
   },
   "profile": {
+    "myProfile": "Min profil",
     "changePicture": "Endre bilde",
     "name": "Display name",
     "hasAdmin": "Har administratortilgang",
@@ -404,5 +468,22 @@
     "archivedRestore": {
       "message": "Dette objektet er arkivert."
     }
+  },
+  "view": {
+    "compact": "Kompakt",
+    "details": "Detaljer"
+  },
+  "keyResultsPage": {
+    "notes": {
+      "heading": "Notater"
+    }
+  },
+  "weight": {
+    "heading": "Vekting",
+    "keyresFor": "Nøkkelresultater for",
+    "objectivesFor": "Mål for"
+  },
+  "accessRequests": {
+    "heading": "Tilgangsforespørsler"
   }
 }

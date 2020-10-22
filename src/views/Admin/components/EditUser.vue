@@ -3,20 +3,20 @@
     <slot name="back"></slot>
 
     <div class="selected-user__main">
-      <h2 class="title-2">Edit user</h2>
+      <h2 class="title-2">{{ $t('admin.users.edit') }}</h2>
       <form id="user-form" @submit.prevent="save(thisUser)">
         <label class="form-group">
-          <span class="form-label">Email</span>
+          <span class="form-label">{{ $t('fields.email') }}</span>
           <input class="form__field" type="email" v-model="thisUser.id" disabled />
         </label>
 
         <label class="form-group">
-          <span class="form-label">Display name</span>
+          <span class="form-label">{{ $t('fields.displayName') }}</span>
           <input class="form__field" type="text" v-model="thisUser.displayName" />
         </label>
 
         <label class="form-group--checkbox">
-          <span class="form-label">Admin</span>
+          <span class="form-label">{{ $t('general.admin') }}</span>
           <input
             class="form__checkbox"
             type="checkbox"
@@ -26,25 +26,25 @@
         </label>
       </form>
       <div>
-        <span class="form-label">Profile image</span>
+        <span class="form-label">{{ $t('admin.users.image') }}</span>
         <div class="image">
           <img :src="selectedUser.photoURL" class="image__image" v-if="selectedUser.photoURL" />
           <input type="file" @input="setImage" accept="image/png, image/jpeg" class="image__field" />
           <button v-if="selectedUser.photoURL" class="btn" @click="deleteImage" :disabled="loading">
-            Delete image
+            {{ $t('btn.deleteImage') }}
           </button>
         </div>
       </div>
     </div>
 
     <div class="selected-user__footer">
-      <button class="btn" form="user-form" :disabled="loading">Save changes</button>
+      <button class="btn" form="user-form" :disabled="loading">{{ $t('btn.saveChanges') }}</button>
       <button
         class="btn btn--danger"
         @click="remove(selectedUser)"
         :disabled="user.email === selectedUser.email || loading"
       >
-        Remove user
+        {{ $t('btn.deleteUser') }}
       </button>
     </div>
   </div>

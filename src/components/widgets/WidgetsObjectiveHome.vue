@@ -6,7 +6,7 @@
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
       >
         <i class="icon fa fa-edit"></i>
-        Edit objective
+        {{ $t('objective.change') }}
       </router-link>
     </div>
 

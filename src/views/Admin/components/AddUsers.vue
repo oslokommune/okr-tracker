@@ -3,11 +3,11 @@
     <slot name="back"></slot>
 
     <div class="add-users__body">
-      <p>Enter email addresses <br />(one address per line):</p>
+      <p>{{ $t('admin.users.registerUsersText') }}</p>
       <textarea class="add-users__input form-field" v-model="emails"></textarea>
     </div>
     <div class="add-users__footer">
-      <button class="btn btn--fw" @click="save" :disabled="loading">Register users</button>
+      <button class="btn btn--fw" @click="save" :disabled="loading">{{ $t('admin.users.registerUsersButton') }}</button>
     </div>
   </div>
 </template>

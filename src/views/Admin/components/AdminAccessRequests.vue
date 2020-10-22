@@ -1,14 +1,14 @@
 <template>
   <div class="access-requests">
-    <h2 class="title-2">Access requests</h2>
+    <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
 
     <ul class="access-requests__list">
       <li v-for="request in requestAccess" :key="request.id" class="access-requests__item">
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button class="btn btn--ghost" @click="acceptRequest(request.id)">Accept</button>
-          <button class="btn btn--ghost" @click="rejectRequest(request.id)">Reject</button>
+          <button class="btn btn--ghost" @click="acceptRequest(request.id)">{{ $t('btn.acceptRequest') }}</button>
+          <button class="btn btn--ghost" @click="rejectRequest(request.id)">{{ $t('btn.rejectRequest') }}</button>
         </div>
       </li>
     </ul>

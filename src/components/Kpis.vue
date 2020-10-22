@@ -1,6 +1,6 @@
 <template>
   <section class="kpis">
-    <h2 class="title-2">KPI-er</h2>
+    <h2 class="title-2">{{ $t('kpi.heading') }}</h2>
 
     <div class="kpis__list">
       <router-link

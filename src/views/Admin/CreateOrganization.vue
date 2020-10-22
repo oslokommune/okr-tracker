@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title-1">Create new organization</h1>
+    <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
 
     <div class="container">
       <validation-observer v-slot="{ handleSubmit }">
@@ -19,7 +19,7 @@
 
       <div class="button-row">
         <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> Create
+          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
         </button>
       </div>
     </div>

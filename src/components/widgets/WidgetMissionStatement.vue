@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeItem.missionStatement" :widget-id="widgetId" title="Oppdrag" icon="file">
+  <Widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')" icon="file">
     {{ activeItem.missionStatement }}
   </Widget>
 </template>

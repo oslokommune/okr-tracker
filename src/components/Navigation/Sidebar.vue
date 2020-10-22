@@ -27,15 +27,15 @@
     <div class="sidebar__group sidebar__bottom button-col">
       <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-cogs"></span>
-        <span class="btn--label">Admin</span>
+        <span class="btn--label">{{ $t('general.admin') }}</span>
       </router-link>
       <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-question-circle"></span>
-        <span class="btn--label">Help</span>
+        <span class="btn--label">{{ $t('general.help') }}</span>
       </router-link>
       <button @click="signOut" class="btn btn--ter btn--icon">
         <span class="icon fa fa-fw fa-sign-out-alt"></span>
-        <span class="btn--label">Sign out</span>
+        <span class="btn--label">{{ $t('general.signOut') }}</span>
       </button>
     </div>
   </aside>

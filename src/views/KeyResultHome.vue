@@ -18,28 +18,28 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button @click="isOpen = true" class="btn btn--ter">Oppdater verdi</button>
+          <button @click="isOpen = true" class="btn btn--ter">{{ $t('keyres.updateValue') }}</button>
         </div>
 
         <div class="main-widgets__graph">
           <h3 class="main-widgets__title">
             <i class="fas fa-chart-line"></i>
-            Progresjon
+            {{ $t('objective.progression') }}
           </h3>
 
           <svg class="graph" ref="graph"></svg>
         </div>
       </div>
 
-      <h2 class="title-2">Historikk</h2>
+      <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
 
       <div class="main__table">
         <table v-if="progress" class="table">
           <thead>
             <tr>
-              <th>Verdi</th>
-              <th>Dato</th>
-              <th>Registrert av</th>
+              <th>{{ $t('keyResultPage.value') }}</th>
+              <th>{{ $t('keyResultPage.date') }}</th>
+              <th>{{ $t('keyResultPage.registeredBy') }}</th>
               <th></th>
               <th></th>
             </tr>
@@ -48,12 +48,16 @@
             <tr v-for="p in progress" :key="p.id">
               <td>{{ p.value }}</td>
               <td>{{ formatDate(p.timestamp.toDate()) }}</td>
-              <td>{{ p.createdBy.displayName || p.createdBy.id }}</td>
+              <td>
+                <router-link v-if="p.createdBy" :to="{ name: 'User', params: { id: p.createdBy.id } }">
+                  {{ p.createdBy.displayName || p.createdBy.id }}
+                </router-link>
+              </td>
               <td><i v-if="p.comment" class="fa fa-comment-alt"></i></td>
               <td v-if="hasEditPermissions" style="width: 1rem">
                 <button @click="remove(p.id)" class="btn btn--ter btn--icon">
                   <i class="icon far fa-trash-alt"></i>
-                  Slett
+                  {{ $t('btn.delete') }}
                 </button>
               </td>
             </tr>

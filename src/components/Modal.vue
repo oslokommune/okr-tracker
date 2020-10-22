@@ -2,7 +2,7 @@
   <div class="overlay">
     <div class="modal">
       <div class="modal__header">
-        <h2 class="title-2">Oppdater verdi for nøkkelresultatet</h2>
+        <h2 class="title-2">{{ $t('keyres.updateKeyres') }}</h2>
         <button class="btn btn--ter" @click="close">
           <i class="fa fa-times" />
         </button>
@@ -14,14 +14,14 @@
           <hr />
 
           <label>
-            <span class="title-3">Legg ved kommentarer (valgfritt)</span>
+            <span class="title-3">{{ $t('keyres.addComment') }}</span>
             <textarea class="modal__textarea" rows="3" v-model="note"></textarea>
           </label>
 
           <div class="modal__main--flex">
             <validation-provider name="value" rules="required" v-slot="{ errors }">
               <label class="form-group modal__main--input-label">
-                <span class="form-label">Ny verdi:</span>
+                <span class="form-label">{{ $t('keyres.newValue') }}</span>
                 <input class="form__field modal__main--input-value" type="number" v-model="value" />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
@@ -29,13 +29,13 @@
 
             <validation-provider name="range" rules="required" v-slot="{ errors }">
               <label class="form-group modal__main--input-label">
-                <span class="form-label">Dato og tid:</span>
+                <span class="form-label">{{ $t('keyres.dateAndTime') }}</span>
                 <flat-pickr
                   v-model="date"
                   :config="flatPickerConfig"
                   class="form-control"
                   name="date"
-                  placeholder="Velg dato"
+                  :placeholder="$t('keyres.chooseDate')"
                 ></flat-pickr>
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
@@ -48,8 +48,8 @@
         </form>
       </validation-observer>
       <div class="modal__footer">
-        <button form="modal" :disabled="loading" class="btn btn--sec">Lagre</button>
-        <button @click="close" class="btn btn--ghost btn--space">Avbryt</button>
+        <button form="modal" :disabled="loading" class="btn btn--sec">{{ $t('btn.save') }}</button>
+        <button @click="close" class="btn btn--ghost btn--space">{{ $t('btn.close') }}</button>
       </div>
     </div>
   </div>
