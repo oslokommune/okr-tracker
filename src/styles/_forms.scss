@@ -69,10 +69,19 @@ textarea {
 
 .form-row {
   display: flex;
+  justify-content: space-between;
   margin: -1rem 0;
 
   .form-field + .form-field {
     margin-left: 1rem;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: bp(s)) {
+    flex-direction: column;
   }
 }
 

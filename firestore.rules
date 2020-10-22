@@ -16,11 +16,19 @@ service cloud.firestore {
     }
 
     function isMemberOfParent() {
+      return /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(request.resource.data.parent).data.team
+    }
+
+    function isMemberOfParentDelete() {
       return /databases/$(database)/documents/users/$(request.auth.token.email) in get(resource.data.parent).data.team
     }
 
     function isMemberOfKeyResParent(document) {
-      return /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team
+      return /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team
+    }
+
+    function isMemberOfKpiParent(document) {
+      return /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team
     }
 
     function isSelf(document) {
@@ -95,13 +103,13 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow create: if isAdmin() || isMemberOfParent();
       allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow delete: if isAdmin() || isMemberOfParentDelete();
     }
 
     match /kpis/{document}/progress/{progress} {
       allow read: if isSignedIn();
       allow create: if false;
-      allow delete: if isAdmin();
+      allow delete: if isAdmin() || isMemberOfKpiParent(document);
     }
 
     match /slugs/{document} {

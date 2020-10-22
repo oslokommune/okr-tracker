@@ -13,15 +13,12 @@
 
     <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
 
-    <form
-      v-if="view !== 'compact' && hasEditRights"
-      class="keyResult__form"
-      @submit.prevent="update"
-      @click.stop="false"
-    >
+    <form v-if="view !== 'compact' && hasEditRights" class="keyResult__form" @submit.prevent="isOpen = true">
       <input type="number" v-model.number="keyRow.currentValue" class="keyResult__input" />
       <button class="btn">Update value</button>
     </form>
+
+    <modal v-if="isOpen" @close="isOpen = false" :keyres="keyRow"></modal>
   </div>
 </template>
 
@@ -43,6 +40,7 @@ export default {
 
   data: () => ({
     keyRow: null,
+    isOpen: false,
   }),
 
   computed: {
@@ -57,6 +55,7 @@ export default {
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
+    Modal: () => import('@/components/Modal.vue'),
   },
 
   watch: {

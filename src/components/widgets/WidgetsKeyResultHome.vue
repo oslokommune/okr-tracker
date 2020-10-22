@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeKeyResult" class="wrapper">
-    <div class="keyresult" v-if="editRights">
+    <div class="keyresult" v-if="hasEditRights">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
@@ -21,19 +21,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'WidgetsKeyResultHome',
 
   computed: {
     ...mapState(['activeKeyResult', 'user']),
-    editRights() {
-      if (this.user.admin) return true;
-      const { team } = this.activeKeyResult.parent;
-      if (!team) return false;
-      return team.includes(this.user.ref.path);
-    },
+    ...mapGetters(['hasEditRights']),
   },
   components: {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),

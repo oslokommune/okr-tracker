@@ -133,6 +133,14 @@ const routes = [
         component: () => import('@/views/ObjectiveHome.vue'),
         beforeEnter: routerGuards.objectiveHome,
       },
+
+      {
+        path: 'kpi/:kpiId',
+        name: 'KpiHome',
+        meta: { breadcrumbs: ['home', 'item', 'kpi'] },
+        component: () => import('@/views/KpiHome.vue'),
+        beforeEnter: routerGuards.kpiHome,
+      },
     ],
   },
 ];

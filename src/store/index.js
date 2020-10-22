@@ -23,7 +23,7 @@ export const getters = {
 
   hasEditRights: state => {
     const { user, activeItem } = state;
-    if (!user || !activeItem) return;
+    if (!user || !activeItem || !activeItem.team) return;
     return user.admin || activeItem.team.map(({ id }) => id).includes(user.id);
   },
 };
