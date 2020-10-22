@@ -16,7 +16,8 @@
     "weight": "Vekt",
     "sheetId": "Google Sheet ID",
     "sheetTab": "Fane",
-    "sheetCell": "Celle"
+    "sheetCell": "Celle",
+    "type": "Type"
   },
   "general": {
     "team": "Team",

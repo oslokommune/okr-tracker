@@ -12,10 +12,8 @@ export default async function createDocument(collection, data) {
   data = { ...data, ...metadata.created() };
 
   try {
-    return collection.add(data).catch(reason => {
-      throw new Error(reason);
-    });
+    return collection.add(data);
   } catch (error) {
-    throw new Error('Could not create department');
+    throw new Error('Could not create document', error);
   }
 }

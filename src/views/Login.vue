@@ -15,7 +15,7 @@
             {{ $t('login.error.googleError') }}
           </div>
         </div>
-        <div class="login__form">
+        <div class="login__form" v-if="showForm">
           <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
           <validation-observer v-slot="{ handleSubmit }">
             <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
@@ -42,13 +42,17 @@
         </div>
 
         <div class="login__footer">
-          <button class="btn btn--ghost btn--icon" @click="loginWithGoogle">
+          <button class="btn btn--icon btn--pri" @click="loginWithGoogle">
             <span class="icon fab fa-fw fa-google"></span>
             {{ $t('login.google') }}
           </button>
-          <router-link class="btn btn--pri" :to="{ name: 'request-access' }">{{
-            $t('login.requestAccess')
-          }}</router-link>
+
+          <div class="login__secondary">
+            <button class="btn btn--ghost" @click="showForm = true">Logg inn med brukernavn</button>
+            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">{{
+              $t('login.requestAccess')
+            }}</router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -67,6 +71,7 @@ export default {
     email: '',
     password: '',
     pending: false,
+    showForm: false,
   }),
 
   metaInfo() {
@@ -150,7 +155,12 @@ export default {
 }
 
 .login__footer {
+  margin-top: 2rem;
+}
+
+.login__secondary {
   display: flex;
+  flex-wrap: wrap;
   margin: 1.75rem -0.25rem -0.25rem;
 
   & > .btn {

@@ -33,7 +33,11 @@ export default class LineChart {
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
 
-    this.x.domain([period.startDate.toDate(), period.endDate.toDate()]);
+    const startDate =
+      period.startDate && period.startDate.toDate ? period.startDate.toDate() : new Date(period.startDate);
+    const endDate = period.endDate && period.endDate.toDate ? period.endDate.toDate() : new Date(period.endDate);
+
+    this.x.domain([startDate, endDate]);
     this.y.domain(extent([obj.startValue, obj.targetValue]));
 
     this.yAxis.transition().call(axisLeft(this.y));

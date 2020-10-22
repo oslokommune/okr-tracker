@@ -86,14 +86,14 @@ async function getAndSaveDataFromSheets(document) {
  * @param {String} cell - Cell name of value
  * @returns {Number} - Value of the cell
  */
-async function getSheetsData(sheetId, sheetName, cell) {
+async function getSheetsData({ sheetId, sheetName, sheetCell }) {
   const sheets = google.sheets('v4');
-  if (!sheetId || !sheetName || !cell) return false;
+  if (!sheetId || !sheetName || !sheetCell) return false;
 
   const sheetRequest = {
     auth: jwtClient,
     spreadsheetId: sheetId,
-    range: `${sheetName}!${cell}`,
+    range: `${sheetName}!${sheetCell}`,
   };
 
   return sheets.spreadsheets.values

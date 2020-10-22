@@ -5,3 +5,4 @@ exports.runtimeOpts = {
   timeoutSeconds: 300,
   memory: '2GB',
 };
+exports.autoKpiFetchFrequency = '0 6,18 * * *';
