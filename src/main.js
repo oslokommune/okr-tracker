@@ -89,6 +89,18 @@ auth.onAuthStateChanged(async user => {
       i18n,
       render: h => h(App),
     });
+
+    router.beforeEach((to, from, next) => {
+      if (from.name === 'KeyResultHome' && to.name === 'KeyResultHome') {
+        next();
+      }
+      store.dispatch('setLoading', true);
+      next();
+    });
+
+    router.afterEach(() => {
+      store.dispatch('setLoading', false);
+    });
   }
 });
 
