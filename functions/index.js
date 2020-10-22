@@ -58,6 +58,6 @@ exports.SlugProducts = require('./slug').SlugProducts;
 /**
  * Listen for changes in progress and update key results and items accordingly
  */
-exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
-exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
-exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
+// exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
+// exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
+// exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
