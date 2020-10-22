@@ -53,7 +53,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['organizations']),
+    ...mapState(['organizations', 'user']),
+  },
+
+  async mounted() {
+    if (!this.user.admin) {
+      await this.$router.push({ name: 'Home' });
+    }
   },
 
   methods: {

@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 
 export default {
@@ -26,6 +27,16 @@ export default {
 
   firestore: {
     requestAccess: db.collection('requestAccess'),
+  },
+
+  computed: {
+    ...mapState(['user']),
+  },
+
+  async mounted() {
+    if (!this.user.admin) {
+      await this.$router.push({ name: 'Home' });
+    }
   },
 };
 </script>

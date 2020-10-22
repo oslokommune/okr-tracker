@@ -72,11 +72,17 @@ export default {
   },
 
   computed: {
-    ...mapState(['departments']),
+    ...mapState(['departments', 'user']),
   },
 
   firestore: {
     users: db.collection('users'),
+  },
+
+  async mounted() {
+    if (!this.user.admin) {
+      await this.$router.push({ name: 'Home' });
+    }
   },
 
   methods: {

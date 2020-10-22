@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
-    <div class="login">
+    <spinner v-if="pending"></spinner>
+    <div v-else class="login">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div class="sections">
         <div class="section">
@@ -63,10 +64,12 @@
 import { mapMutations, mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
-import FormComponent from '../components/FormComponent.vue';
 
 export default {
-  components: { FormComponent },
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+    Spinner: () => import('@/components/Spinner.vue'),
+  },
   data: () => ({
     email: '',
     password: '',
