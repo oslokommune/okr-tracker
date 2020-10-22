@@ -8,19 +8,19 @@
     <div v-if="type === 'product'" class="item__kpis">
       <div class="item__kpi">
         <span class="item__kpi-icon fas fa-chart-line"></span>
-        <span class="item__kpi-value">124</span>
+        <span class="item__kpi-value">{{ getKpi('users') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
       <div class="item__kpi">
         <span class="item__kpi-icon far fa-smile"></span>
-        <span class="item__kpi-value">124</span>
+        <span class="item__kpi-value">{{ getKpi('satisfaction') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
       <div class="item__kpi">
         <span class="item__kpi-icon far fa-check-square"></span>
-        <span class="item__kpi-value">124</span>
+        <span class="item__kpi-value">{{ getKpi('conversion') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
     </div>
@@ -32,9 +32,13 @@
 </template>
 
 <script>
+import { db } from '@/config/firebaseConfig';
+import { format } from 'd3';
+
 export default {
   data: () => ({
     progression: null,
+    kpis: [],
   }),
 
   components: {
@@ -71,12 +75,32 @@ export default {
     data: {
       immediate: true,
       async handler(data) {
+        const ref = db.doc(data.path);
+        this.$bind('kpis', db.collection('kpis').where('parent', '==', ref));
+
         data.onProgressionSnapshot(({ docs }) => {
           if (docs.length) {
             this.progression = docs[0].data().progression;
           }
         });
       },
+    },
+  },
+
+  methods: {
+    getKpi(type) {
+      try {
+        const formatNumber = (() => {
+          if (type === 'users') return format('.2s');
+          if (type === 'conversion') return format('.2p');
+          if (type === 'satisfaction') return format('.2p');
+          return format();
+        })();
+        const kpi = this.kpis.find(kpi => kpi.type === type);
+        return formatNumber(kpi.currentValue);
+      } catch {
+        return '–––';
+      }
     },
   },
 };
@@ -153,12 +177,15 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
+  border-right: 1px solid $color-grey-100;
 }
 
 .item__kpi-value {
+  width: 2rem;
   color: #686876;
   font-weight: 500;
   font-size: 0.7rem;
+  text-align: right;
 }
 
 .item__kpi-icon {
