@@ -42,31 +42,35 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'Admin',
     beforeEnter: routerGuards.admin,
     meta: { breadcrumbs: ['home', 'admin'] },
-    component: () => import('@/views/Admin/Admin.vue'),
-  },
-  {
-    path: '/admin/create-organization',
-    name: 'CreateOrganization',
-    beforeEnter: routerGuards.admin,
-    meta: { breadcrumbs: ['home', 'admin', 'createOrganization'] },
-    component: () => import('@/views/Admin/CreateOrganization.vue'),
-  },
-  {
-    path: '/admin/create-department',
-    name: 'CreateDepartment',
-    beforeEnter: routerGuards.admin,
-    meta: { breadcrumbs: ['home', 'admin', 'createDepartment'] },
-    component: () => import('@/views/Admin/CreateDepartment.vue'),
-  },
-  {
-    path: '/admin/create-product',
-    name: 'CreateProduct',
-    beforeEnter: routerGuards.admin,
-    meta: { breadcrumbs: ['home', 'admin', 'createProduct'] },
-    component: () => import('@/views/Admin/CreateProduct.vue'),
+    component: () => import('@/views/Admin/AdminWrapper.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Admin',
+        meta: { breadcrumbs: ['home', 'admin', 'createOrganization'] },
+        component: () => import('@/views/Admin/Admin.vue'),
+      },
+      {
+        path: '/admin/create-organization',
+        name: 'CreateOrganization',
+        meta: { breadcrumbs: ['home', 'admin', 'createOrganization'] },
+        component: () => import('@/views/Admin/CreateOrganization.vue'),
+      },
+      {
+        path: '/admin/create-department',
+        name: 'CreateDepartment',
+        meta: { breadcrumbs: ['home', 'admin', 'createDepartment'] },
+        component: () => import('@/views/Admin/CreateDepartment.vue'),
+      },
+      {
+        path: '/admin/create-product',
+        name: 'CreateProduct',
+        meta: { breadcrumbs: ['home', 'admin', 'createProduct'] },
+        component: () => import('@/views/Admin/CreateProduct.vue'),
+      },
+    ],
   },
   {
     path: '/help',
