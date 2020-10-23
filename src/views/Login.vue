@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper">
-    <spinner v-if="pending"></spinner>
-    <div v-else class="login">
+    <div class="login">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div class="sections">
         <div class="section">
@@ -66,9 +65,10 @@ import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 
 export default {
+  name: 'Login',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
-    Spinner: () => import('@/components/Spinner.vue'),
   },
   data: () => ({
     email: '',
