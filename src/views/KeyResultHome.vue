@@ -49,8 +49,18 @@
               <td>{{ p.value }}</td>
               <td>{{ formatDate(p.timestamp.toDate()) }}</td>
               <td>
-                <router-link v-if="p.createdBy" :to="{ name: 'User', params: { id: p.createdBy.id } }">
-                  {{ p.createdBy.displayName || p.createdBy.id }}
+                <router-link
+                  :to="{ name: 'User', params: { id: p.createdBy.id } }"
+                  class="user__link"
+                  v-if="p.createdBy"
+                >
+                  <img
+                    :src="p.createdBy.photoURL || '/placeholder-image.svg'"
+                    :alt="p.createdBy.photoURL"
+                    aria-hidden="true"
+                    class="user__image"
+                  />
+                  <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
                 </router-link>
               </td>
               <td><i v-if="p.comment" class="fa fa-comment-alt"></i></td>
@@ -292,5 +302,19 @@ export default {
     vertical-align: middle;
     border-top: 1px solid $color-border;
   }
+}
+
+.user__link {
+  display: flex;
+  align-items: center;
+  color: $color-purple;
+  text-decoration: none;
+}
+
+.user__image {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: 0.35rem;
+  border-radius: 1rem;
 }
 </style>
