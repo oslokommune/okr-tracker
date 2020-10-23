@@ -68,3 +68,6 @@ exports.AuditKeyResultDelete = require('./audit').KeyResultDelete;
 exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
 exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
 exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
+
+exports.slackNotificationOnUserRequest = require('./requestAccess').slackNotificationOnUserRequest;
+exports.slackNotificationInteractiveOnRequest = require('./requestAccess').slackNotificationInteractiveOnRequest;
