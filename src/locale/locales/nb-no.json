@@ -258,7 +258,8 @@
     "addObjectiveForPeriod": "Legg til et mål for valgt kvartal",
     "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål",
     "cantChange": "Dette kan ikke endres",
-    "hideActivity": "Skjul aktivitet"
+    "hideActivity": "Skjul aktivitet",
+    "changeView": "Endre visning til {view}"
   },
   "document": {
     "changeProduct": "Endre produkt",

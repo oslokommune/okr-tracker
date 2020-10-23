@@ -1,10 +1,6 @@
 <template>
   <div class="action-bar">
-    <div class="period-dates" v-if="activePeriod">
-      {{ activePeriod.startDate | formatDate }}
-      –
-      {{ activePeriod.endDate | formatDate }}
-    </div>
+    <div class="period-dates" v-if="activePeriod">{{ periodDates(activePeriod) }}</div>
 
     <div class="views">
       <button
@@ -13,6 +9,7 @@
         :class="{ active: view.id === user.preferences.view }"
         :key="view.id"
         @click="updateView(view.id)"
+        v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
       >
         <span class="view__icon"></span>
         <span class="view__name">{{ view.label }}</span>
@@ -23,7 +20,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { format } from 'date-fns';
+import { periodDates } from '@/util/formatDate';
 
 export default {
   computed: {
@@ -36,13 +33,7 @@ export default {
       this.user.preferences.view = view;
       this.update_preferences();
     },
-  },
-
-  filters: {
-    formatDate(date) {
-      // TODO: Locale
-      return format(date.toDate(), 'd MMMM Y');
-    },
+    periodDates,
   },
 };
 </script>

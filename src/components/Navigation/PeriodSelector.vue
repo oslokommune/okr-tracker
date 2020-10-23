@@ -1,6 +1,6 @@
 <template>
   <ul v-if="periods" class="tabs">
-    <li v-for="period in periods" :key="period.id">
+    <li v-for="period in periods" :key="period.id" v-tooltip.right="periodDates(period)">
       <button
         @click="set_active_period_and_data(period.id)"
         :disabled="activePeriod && period.id === activePeriod.id"
@@ -19,6 +19,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { periodDates } from '@/util/formatDate';
 
 export default {
   computed: {
@@ -33,6 +34,14 @@ export default {
       await this.set_active_period_and_data(id);
       this.loading = false;
     },
+
+    periodDates,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.tab {
+  position: relative;
+}
+</style>
