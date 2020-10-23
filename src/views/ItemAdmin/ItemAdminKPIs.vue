@@ -26,7 +26,7 @@
               <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
             </label>
 
-            <h3 class="title-2">Sheet details</h3>
+            <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
             <div class="form-row">
               <form-component
                 input-type="input"
@@ -40,7 +40,7 @@
               <form-component
                 input-type="input"
                 name="sheetTab"
-                :label="Na$t('keyres.automation.sheetsTab')"
+                :label="$t('keyres.automation.sheetsTab')"
                 rules="required"
                 v-model="kpi.sheetName"
                 type="text"
@@ -49,15 +49,15 @@
               <form-component
                 input-type="input"
                 name="sheetCell"
-                :label="Ce$t('keyres.automation.sheetsCell')"
+                :label="$t('keyres.automation.sheetsCell')"
                 rules="required"
                 v-model="kpi.sheetCell"
                 type="text"
               />
             </div>
 
-            <button class="btn btn--primary" :form="`kpi_${kpi.id}`">Save changes</button>
-            <button class="btn btn--danger" @click="deleteDeep(kpi.id)">Delete</button>
+            <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
+            <button class="btn btn--danger" @click="deleteDeep(kpi.id)">{{ $t('btn.delete') }}</button>
           </form>
         </validation-observer>
 
@@ -67,7 +67,7 @@
           </div>
           <div v-if="kpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
           <div v-if="!kpi.valid && !kpi.error" class="kpi__loading">
-            <span class="fa fa-spinner fa-pulse"></span> Loading
+            <span class="fa fa-spinner fa-pulse"></span> {{ $t('general.loading') }}
           </div>
         </div>
       </div>

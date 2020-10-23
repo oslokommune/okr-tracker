@@ -8,7 +8,7 @@
         <div class="main-widgets__current main-widgets__current__children">
           <h3 class="main-widgets__title">
             <i class="fas fa-chart-line"></i>
-            Verdi
+            {{ $t('keyres.registerProgression.value') }}
           </h3>
           <div class="main-widgets__current__value">
             {{ activeKeyResult.currentValue }}

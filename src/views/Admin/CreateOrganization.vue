@@ -5,12 +5,19 @@
     <div class="container">
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createOrganization" @submit.prevent="handleSubmit(save)">
-          <form-component input-type="input" name="name" rules="required" label="Name" v-model="name" type="text" />
+          <form-component
+            input-type="input"
+            name="name"
+            rules="required"
+            :label="$t('fields.name')"
+            v-model="name"
+            type="text"
+          />
 
           <form-component
             input-type="textarea"
             name="missionStatement"
-            label="Mission statement"
+            :label="$t('fields.missionStatement')"
             rules="required"
             v-model="missionStatement"
           />
