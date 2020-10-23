@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="kpis.length < 3">
-      <button class="btn btn--ghost" @click="showAddKPIModal = true">Add KPI</button>
+      <button class="btn btn--ghost" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
     </div>
     <div v-if="kpis.length" class="kpis">
       <div class="kpi" v-for="kpi in kpis" :key="kpi.id">
@@ -15,14 +15,14 @@
             <form-component
               input-type="input"
               name="name"
-              label="Name"
+              :label="$t('fields.name')"
               rules="required"
               v-model="kpi.name"
               type="text"
             />
 
             <label class="form-group">
-              <span class="form-label">Description</span>
+              <span class="form-label">{{ $t('fields.description') }}</span>
               <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
             </label>
 
@@ -31,7 +31,7 @@
               <form-component
                 input-type="input"
                 name="sheetId"
-                label="Id"
+                :label="$t('keyres.automation.googleSheetId')"
                 rules="required"
                 v-model="kpi.sheetId"
                 type="text"
@@ -40,7 +40,7 @@
               <form-component
                 input-type="input"
                 name="sheetTab"
-                label="Name"
+                :label="Na$t('keyres.automation.sheetsTab')"
                 rules="required"
                 v-model="kpi.sheetName"
                 type="text"
@@ -49,7 +49,7 @@
               <form-component
                 input-type="input"
                 name="sheetCell"
-                label="Cell"
+                :label="Ce$t('keyres.automation.sheetsCell')"
                 rules="required"
                 v-model="kpi.sheetCell"
                 type="text"

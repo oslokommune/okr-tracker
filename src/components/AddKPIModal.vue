@@ -22,8 +22,8 @@
 
             <form-component
               input-type="input"
-              name="sheetCell"
-              label="Name"
+              name="name"
+              :label="$t('fields.name')"
               rules="required"
               v-model="kpi.name"
               type="text"
@@ -33,12 +33,12 @@
               <span class="form-label">{{ $t('kpi.description') }}</span>
               <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
             </label>
-            <h3 class="title-2">Sheet details</h3>
+            <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
             <div class="form-row">
               <form-component
                 input-type="input"
                 name="sheetId"
-                label="Id"
+                :label="$t('fields.sheetId')"
                 rules="required"
                 v-model="kpi.sheetId"
                 type="text"
@@ -46,7 +46,7 @@
               <form-component
                 input-type="input"
                 name="sheetTab"
-                label="Name"
+                :label="$t('fields.sheetTab')"
                 rules="required"
                 v-model="kpi.sheetName"
                 type="text"
@@ -54,7 +54,7 @@
               <form-component
                 input-type="input"
                 name="sheetCell"
-                label="Cell"
+                :label="$t('fields.sheetCell')"
                 rules="required"
                 v-model="kpi.sheetCell"
                 type="text"
@@ -93,15 +93,18 @@ export default {
       sheetName: 'Sheet1',
       sheetCell: 'A1',
     },
-    types: [
-      { id: 'users', label: this.$t('kpi.types.users') },
-      { id: 'satisfaction', label: this.$t('kpi.types.satisfaction') },
-      { id: 'conversion', label: this.$t('kpi.types.conversion') },
-    ],
   }),
 
   computed: {
     ...mapState(['kpis', 'activeItem', 'activeItemRef']),
+
+    types() {
+      return [
+        { id: 'users', label: this.$t('kpi.types.users') },
+        { id: 'satisfaction', label: this.$t('kpi.types.satisfaction') },
+        { id: 'conversion', label: this.$t('kpi.types.conversion') },
+      ];
+    },
 
     availableTypes() {
       return this.types.filter(type => !this.kpis.map(kpi => kpi.type).includes(type.id));

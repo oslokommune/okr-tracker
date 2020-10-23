@@ -5,20 +5,20 @@
         <form-component
           input-type="input"
           name="name"
-          label="Name"
+          :label="$t('fields.name')"
           rules="required"
           v-model="keyResult.name"
           type="text"
         />
 
         <label class="form-group">
-          <span class="form-label">Description</span>
+          <span class="form-label">{{ $t('keyres.description') }}</span>
           <input class="form__field" type="text" v-model="keyResult.description" />
         </label>
 
         <validation-provider rules="required" name="objective" v-slot="{ errors }">
           <label class="form-group">
-            <span class="form-label">Objective</span>
+            <span class="form-label">{{ $t('keyres.objective') }}</span>
             <v-select
               label="name"
               v-model="keyResult.objective"
@@ -38,7 +38,7 @@
         <form-component
           input-type="input"
           name="unit"
-          label="Unit"
+          :label="$t('keyres.unit')"
           rules="required"
           v-model="keyResult.unit"
           type="text"
@@ -48,7 +48,7 @@
           <form-component
             input-type="input"
             name="startValue"
-            label="Start Value"
+            :label="$t('keyres.startValue')"
             rules="required|numeric"
             v-model.number="keyResult.startValue"
             type="number"
@@ -57,7 +57,7 @@
           <form-component
             input-type="input"
             name="targetValue"
-            label="Target Value"
+            :label="$t('keyres.targetValue')"
             rules="required|numeric"
             v-model.number="keyResult.targetValue"
             type="number"
@@ -66,7 +66,7 @@
           <form-component
             input-type="input"
             name="weight"
-            label="Weight"
+            :label="$t('keyres.weight')"
             rules="required|numeric"
             v-model.number="keyResult.weight"
             type="number"
@@ -130,10 +130,10 @@
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-keyresult">
-        <span class="icon fa fa-fw fa-save"></span> Save changes
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" v-if="!keyResult.archived">
-        <span class="icon fa fa-fw fa-trash"></span> Archive key result
+        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
   </div>

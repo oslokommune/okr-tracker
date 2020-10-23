@@ -3,7 +3,7 @@
     <div class="itemHome">
       <router-link class="btn btn--ter btn--icon" v-if="hasEditRights" :to="{ name: 'ItemAdmin' }">
         <i class="icon fa fa-cog"></i>
-        {{ $t('general.edit', { item: this.activeItem.name }) }}
+        {{ $t('btn.editItem', { item: this.activeItem.name }) }}
       </router-link>
       <router-link class="btn btn--ter btn--icon" :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }">
         <i class="icon fas fa-tachometer-alt"></i>
