@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Organization from '@/db/Organization';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
@@ -40,16 +39,6 @@ export default {
 
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
-  },
-
-  computed: {
-    ...mapState(['user']),
-  },
-
-  async mounted() {
-    if (!this.user.admin) {
-      await this.$router.push({ name: 'Home' });
-    }
   },
 
   methods: {
