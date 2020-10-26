@@ -16,6 +16,7 @@
           :class="{ active: showUserMenu }"
           v-if="user"
           @click="showUserMenu = !showUserMenu"
+          v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
         >
           <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
           <img v-if="user.photoURL" :src="user.photoURL" class="user__image" />
@@ -269,6 +270,10 @@ export default {
   .btn {
     width: 100%;
   }
+}
+
+.user {
+  display: relative;
 }
 
 .menu__list {

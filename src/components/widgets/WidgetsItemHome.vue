@@ -1,11 +1,20 @@
 <template>
   <aside v-if="activeItem" class="wrapper">
     <div class="itemHome">
-      <router-link class="btn btn--ter btn--icon" v-if="hasEditRights" :to="{ name: 'ItemAdmin' }">
+      <router-link
+        class="btn btn--ter btn--icon"
+        v-if="hasEditRights"
+        :to="{ name: 'ItemAdmin' }"
+        v-tooltip="$t('tooltip.editItem')"
+      >
         <i class="icon fa fa-cog"></i>
         {{ $t('btn.editItem', { item: this.activeItem.name }) }}
       </router-link>
-      <router-link class="btn btn--ter btn--icon" :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }">
+      <router-link
+        class="btn btn--ter btn--icon"
+        :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }"
+        v-tooltip="$t('tooltip.dashboard')"
+      >
         <i class="icon fas fa-tachometer-alt"></i>
         {{ $t('general.dashboard') }}
       </router-link>

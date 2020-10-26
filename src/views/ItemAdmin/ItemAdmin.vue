@@ -7,7 +7,11 @@
           <span class="tab__name">{{ link.label }}</span>
         </router-link>
       </li>
-      <li class="tab--right" v-if="activeItem">
+      <li
+        class="tab--right"
+        v-if="activeItem"
+        v-tooltip.right="$t('tooltip.navigateToItem', { item: activeItem.name })"
+      >
         <router-link class="tab" :to="{ name: 'ItemHome' }" exact>
           <span class="tab__icon fa fa-arrow-right"></span>
           <span class="tab__name">{{ activeItem.name }}</span>
@@ -23,29 +27,30 @@
 import { mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    links: [
-      {
-        icon: 'cogs',
-        to: { name: 'ItemAdmin' },
-        label: 'General',
-        exact: true,
-      },
-      {
-        icon: 'chart-pie',
-        to: { name: 'ItemAdminOKRs' },
-        label: 'OKRs',
-        exact: false,
-      },
-      {
-        icon: 'chart-line',
-        to: { name: 'ItemAdminKPIs' },
-        label: 'KPIs',
-        exact: false,
-      },
-    ],
-  }),
   computed: {
+    links() {
+      return [
+        {
+          icon: 'cogs',
+          to: { name: 'ItemAdmin' },
+          label: this.$t('general.general'),
+          exact: true,
+        },
+        {
+          icon: 'chart-pie',
+          to: { name: 'ItemAdminOKRs' },
+          label: this.$t('general.OKRsLong'),
+          exact: false,
+        },
+        {
+          icon: 'chart-line',
+          to: { name: 'ItemAdminKPIs' },
+          label: this.$t('general.KPIs'),
+          exact: false,
+        },
+      ];
+    },
+
     ...mapState(['activeItem']),
   },
 };

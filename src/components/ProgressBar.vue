@@ -1,15 +1,23 @@
 <template>
-  <div class="progression__container">
-    <div class="progression__bar" :style="{ width: `${progression * 100}%` }"></div>
+  <div class="progression__container" v-tooltip="percent(progression)">
+    <div class="progression__bar" :style="{ width: percent(progression) }"></div>
   </div>
 </template>
 
 <script>
+import { format } from 'd3';
+
 export default {
   props: {
     progression: {
       type: Number,
       default: 0,
+    },
+  },
+
+  methods: {
+    percent(value) {
+      return format('.0%')(value);
     },
   },
 };

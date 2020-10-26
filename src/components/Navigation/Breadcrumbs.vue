@@ -2,7 +2,7 @@
   <div class="breadcrumbs">
     <nav class="breadcrumbs__nav">
       <ul class="breadcrumbs__list" :data-count="breadcrumbs.length">
-        <li class="breadcrumbs__item" v-for="{ id, route, icon, label } in breadcrumbs" :key="id">
+        <li class="breadcrumbs__item" v-for="{ id, route, icon, label } in breadcrumbs" :key="id" v-tooltip="label">
           <router-link v-if="route" class="breadcrumbs__link" :to="route">
             <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
             <span class="breadcrumbs__label">{{ label }}</span>

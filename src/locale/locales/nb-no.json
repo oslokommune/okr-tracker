@@ -4,12 +4,15 @@
   },
   "kpi": {
     "add": "Legg til KPI",
+    "edit": "Endre KPI",
+    "currentValue": "Siste verdi",
+    "progresjon": "Progresjon",
     "description": "Beskrivelse",
     "chooseType": "Velg KPI-type",
     "types": {
       "users": "Volum",
       "satisfaction": "Brukertilfredshet",
-      "conversion": "Måloppnåelse"
+      "conversion": "Fullføringsgrad"
     },
     "heading": "KPI-er",
     "sheetsDetails": "Sheets-detaljer"
@@ -88,7 +91,9 @@
     "delete": "Slett",
     "archive": "Arkiver",
     "editItem": "Endre «{item}»",
-    "upload": "Last opp"
+    "upload": "Last opp",
+    "minimize": "Minimer",
+    "expand": "Ekspander"
   },
   "pageHeader": {
     "header": "Hjem",
@@ -258,7 +263,13 @@
     "addObjectiveForPeriod": "Legg til et mål for valgt kvartal",
     "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål",
     "cantChange": "Dette kan ikke endres",
-    "hideActivity": "Skjul aktivitet"
+    "hideActivity": "Skjul aktivitet",
+    "changeView": "Endre visning til {view}",
+    "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
+    "deleteProgresjon": "Slett målepunkt",
+    "editKpi": "Endre detaljer eller slett KPI",
+    "kpiDetails": "Vis detaljer for {type}",
+    "navigateToItem": "Gå til {item}"
   },
   "document": {
     "changeProduct": "Endre produkt",

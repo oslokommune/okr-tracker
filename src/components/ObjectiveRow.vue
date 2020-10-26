@@ -7,7 +7,7 @@
     <span class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`"></span>
     <span class="objective__name">{{ objective.name }}</span>
 
-    <span class="objective__progression-text">{{ Math.round(objective.progression * 100) }} %</span>
+    <span class="objective__progression-text">{{ percent(objective.progression) }}</span>
     <ProgressBar class="objective__progression" :progression="objective.progression"></ProgressBar>
 
     <span v-if="user.preferences.view !== 'compact'" class="objective__description">{{ objective.description }}</span>
@@ -16,6 +16,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { format } from 'd3';
 
 export default {
   props: {
@@ -31,6 +32,12 @@ export default {
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
+  },
+
+  methods: {
+    percent(value) {
+      return format('.0%')(value);
+    },
   },
 };
 </script>

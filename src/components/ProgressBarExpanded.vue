@@ -1,8 +1,8 @@
 <template>
   <div class="progression">
     <div class="progression__unit">{{ keyResult.unit }}</div>
-    <div class="progression__container">
-      <div class="progression__bar" :style="{ width: `${keyResult.progression * 100}%` }">
+    <div class="progression__container" v-tooltip="percent(keyResult.progression)">
+      <div class="progression__bar" :style="{ width: percent(keyResult.progression) }">
         {{ keyResult.currentValue }}
       </div>
     </div>
@@ -12,11 +12,19 @@
 </template>
 
 <script>
+import { format } from 'd3';
+
 export default {
   props: {
     keyResult: {
       type: Object,
       required: true,
+    },
+  },
+
+  methods: {
+    percent(value) {
+      return format('.0%')(value);
     },
   },
 };

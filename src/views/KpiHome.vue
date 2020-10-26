@@ -6,14 +6,20 @@
       <p>{{ activeKpi.description }}</p>
 
       <div class="current-value" v-if="activeKpi.valid">
-        <div class="current-value__label">Current value</div>
+        <div class="current-value__label">{{ $t('kpi.currentValue') }}</div>
         <div class="current-value__value">{{ activeKpi.currentValue }}</div>
       </div>
-      <router-link v-if="hasEditRights" class="btn btn--ghost" :to="{ name: 'ItemAdminKPIs' }">Edit KPI</router-link>
+      <router-link
+        v-if="hasEditRights"
+        class="btn btn--ghost"
+        :to="{ name: 'ItemAdminKPIs' }"
+        v-tooltip="$t('tooltip.editKpi')"
+        >{{ $t('kpi.edit') }}</router-link
+      >
 
       <hr />
 
-      <widget widget-id="kpiProgression" icon="chart-line" title="Progression" :collapsible="false">
+      <widget widget-id="kpiProgression" icon="chart-line" :title="$t('kpi.progresjon')" :collapsible="false">
         <svg class="graph" ref="graph"></svg>
       </widget>
 
@@ -32,7 +38,9 @@
           <td>{{ formatDate(timestamp) }}</td>
           <td>{{ value }}</td>
           <td v-if="hasEditRights">
-            <button class="btn btn--ter" @click="remove(id)">Remove</button>
+            <button class="btn btn--ter" @click="remove(id)" v-tooltip="$t('tooltip.deleteProgresjon')">
+              {{ $t('btn.delete') }}
+            </button>
           </td>
         </tr>
       </table>
