@@ -15,7 +15,8 @@
       "conversion": "Fullføringsgrad"
     },
     "heading": "KPI-er",
-    "sheetsDetails": "Sheets-detaljer"
+    "sheetsDetails": "Sheets-detaljer",
+    "itemRowError": "feil"
   },
   "fields": {
     "email": "E-post",
@@ -520,5 +521,14 @@
   },
   "accessRequests": {
     "heading": "Tilgangsforespørsler"
+  },
+  "select": {
+    "noIcons": "Ingen treff"
+  },
+  "widget": {
+    "progression": {
+      "objective": "Progresjon for mål",
+      "period": "Progresjon for periode"
+    }
   }
 }

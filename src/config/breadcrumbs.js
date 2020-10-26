@@ -60,9 +60,10 @@ export const objective = () => {
 
   const label = activeObjective ? activeObjective.name : activeKeyResult.objective.name;
   const objectiveId = activeObjective ? activeObjective.id : activeKeyResult.objective.id;
+  const icon = activeObjective ? activeObjective.icon : activeKeyResult.objective.icon;
 
   return {
-    icon: 'trophy',
+    icon,
     label,
     route: { name: 'ObjectiveHome', params: { objectiveId } },
   };

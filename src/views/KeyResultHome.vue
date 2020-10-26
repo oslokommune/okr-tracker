@@ -50,9 +50,9 @@
               <td>{{ formatDate(p.timestamp.toDate()) }}</td>
               <td>
                 <router-link
+                  v-if="p.createdBy && p.createdBy.id"
                   :to="{ name: 'User', params: { id: p.createdBy.id } }"
                   class="user__link"
-                  v-if="p.createdBy"
                 >
                   <img
                     :src="p.createdBy.photoURL || '/placeholder-image.svg'"

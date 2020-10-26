@@ -63,7 +63,10 @@ export default {
 .kpis__list {
   display: grid;
   grid-gap: 0.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+
+  @media screen and (min-width: bp(m)) {
+    grid-template-columns: repeat(3, minmax(15rem, 1fr));
+  }
 }
 
 .kpi {

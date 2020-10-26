@@ -1,8 +1,13 @@
 <template>
   <div class="objective" v-if="activeObjective">
     <div class="main">
-      <h1 class="title-1">{{ activeObjective.name }}</h1>
-      <p>{{ activeObjective.description }}</p>
+      <div class="objective__heading">
+        <div class="objective__heading-text">
+          <h1 class="title-1">{{ activeObjective.name }}</h1>
+          <p>{{ activeObjective.description }}</p>
+        </div>
+        <div class="objective__icon fa fa-fw" :class="`fa-${activeObjective.icon}`"></div>
+      </div>
 
       <section class="key-results">
         <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
@@ -88,6 +93,10 @@ export default {
   @media screen and (min-width: bp(l)) {
     width: span(7, 0, span(10));
   }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, 0, span(10));
+  }
 }
 
 .key-results {
@@ -107,5 +116,30 @@ export default {
   &:first-child {
     border-top: 0;
   }
+}
+
+.objective__heading {
+  display: flex;
+}
+
+.objective__heading-text {
+  max-width: 46rem;
+  margin-right: 2.5rem;
+}
+
+.objective__icon {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-right: 0.5rem;
+  margin-left: auto;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.15rem;
+  text-align: center;
+  background: $color-yellow;
+  border-radius: 2rem;
 }
 </style>

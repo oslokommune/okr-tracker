@@ -8,19 +8,19 @@
     <div class="item__kpis">
       <div class="item__kpi" v-tooltip="`${$t('kpi.types.users')}:<br> ${getKpiName('users')}`">
         <span class="item__kpi-icon fas fa-chart-line"></span>
-        <span class="item__kpi-value">{{ getKpi('users') }}</span>
+        <span class="item__kpi-value">{{ getKpiValue('users') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
       <div class="item__kpi" v-tooltip="`${$t('kpi.types.satisfaction')}:<br> ${getKpiName('satisfaction')}`">
         <span class="item__kpi-icon far fa-smile"></span>
-        <span class="item__kpi-value">{{ getKpi('satisfaction') }}</span>
+        <span class="item__kpi-value">{{ getKpiValue('satisfaction') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
       <div class="item__kpi" v-tooltip="`${$t('kpi.types.conversion')}:<br> ${getKpiName('conversion')}`">
         <span class="item__kpi-icon far fa-check-square"></span>
-        <span class="item__kpi-value">{{ getKpi('conversion') }}</span>
+        <span class="item__kpi-value">{{ getKpiValue('conversion') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
     </div>
@@ -92,7 +92,7 @@ export default {
   },
 
   methods: {
-    getKpi(type) {
+    getKpiValue(type) {
       try {
         const formatNumber = (() => {
           if (type === 'users') return format('.2s');
@@ -101,6 +101,10 @@ export default {
           return format();
         })();
         const kpi = this.kpis.find(obj => obj.type === type);
+        if (kpi.error || !kpi.valid) {
+          return this.$t('kpi.itemRowError');
+        }
+
         return formatNumber(kpi.currentValue);
       } catch {
         return '–––';
