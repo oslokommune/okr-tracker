@@ -4,27 +4,33 @@
 
     <div class="selected-user__main">
       <h2 class="title-2">{{ $t('admin.users.edit') }}</h2>
-      <form id="user-form" @submit.prevent="save(thisUser)">
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.email') }}</span>
-          <input class="form__field" type="email" v-model="thisUser.id" disabled />
-        </label>
+      <validation-observer v-slot="{ handleSubmit }">
+        <form id="user-form" @submit.prevent="handleSubmit(save)">
+          <label class="form-group">
+            <span class="form-label">{{ $t('fields.email') }}</span>
+            <input class="form__field" type="email" v-model="thisUser.id" disabled />
+          </label>
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.displayName') }}</span>
-          <input class="form__field" type="text" v-model="thisUser.displayName" />
-        </label>
-
-        <label class="form-group--checkbox">
-          <span class="form-label">{{ $t('general.admin') }}</span>
-          <input
-            class="form__checkbox"
-            type="checkbox"
-            v-model="thisUser.admin"
-            :disabled="user.email === selectedUser.email"
+          <form-component
+            input-type="input"
+            name="name"
+            :label="$t('fields.displayName')"
+            rules="required"
+            v-model="thisUser.displayName"
+            type="text"
           />
-        </label>
-      </form>
+
+          <label class="form-group--checkbox">
+            <span class="form-label">{{ $t('general.admin') }}</span>
+            <input
+              class="form__checkbox"
+              type="checkbox"
+              v-model="thisUser.admin"
+              :disabled="user.email === selectedUser.email"
+            />
+          </label>
+        </form>
+      </validation-observer>
       <div>
         <span class="form-label">{{ $t('admin.users.image') }}</span>
         <div class="image">
@@ -55,6 +61,10 @@ import User from '@/db/User';
 import { mapState } from 'vuex';
 
 export default {
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
+
   props: {
     selectedUser: {
       required: true,
@@ -110,11 +120,11 @@ export default {
 
       this.loading = false;
     },
-    async save(user) {
+    async save() {
       this.loading = true;
       try {
         this.image = null;
-        await User.update(user);
+        await User.update(this.thisUser);
         this.$toasted.show('Success');
       } catch {
         this.$toasted.show('Failed');

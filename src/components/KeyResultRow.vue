@@ -14,12 +14,10 @@
     <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
 
     <form v-if="view !== 'compact' && hasEditRights" class="keyResult__form" @submit.prevent="isOpen = true">
-      <input
-        type="number"
-        v-model.number="keyRow.currentValue"
-        class="keyResult__input"
-        v-tooltip="$t('tooltip.keyresValue')"
-      />
+      <label class="keyResult__input">
+        <input type="number" v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" />
+      </label>
+
       <button class="btn">{{ $t('keyres.updateValue') }}</button>
     </form>
 
