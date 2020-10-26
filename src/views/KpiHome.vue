@@ -17,33 +17,39 @@
         >{{ $t('kpi.edit') }}</router-link
       >
 
-      <hr />
-
       <widget widget-id="kpiProgression" icon="chart-line" :title="$t('kpi.progresjon')" :collapsible="false">
         <svg class="graph" ref="graph"></svg>
       </widget>
 
-      <hr />
+      <div class="history">
+        <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
+        <empty-state
+          v-if="!progress.length"
+          :icon="'history'"
+          :heading="$t('empty.kpiProgress.heading')"
+          :body="$t('empty.kpiProgress.body')"
+        ></empty-state>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>{{ $t('keyres.dateAndTime') }}</th>
-            <th>{{ $t('keyResultPage.table.value') }}</th>
-            <th v-if="hasEditRights"></th>
+        <table class="table" v-if="progress.length">
+          <thead>
+            <tr>
+              <th>{{ $t('keyres.dateAndTime') }}</th>
+              <th>{{ $t('keyResultPage.table.value') }}</th>
+              <th v-if="hasEditRights"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tr v-for="{ timestamp, value, id } in progress" :key="id">
+            <td>{{ formatDate(timestamp) }}</td>
+            <td>{{ value }}</td>
+            <td v-if="hasEditRights">
+              <button class="btn btn--ter" @click="remove(id)" v-tooltip="$t('tooltip.deleteProgresjon')">
+                {{ $t('btn.delete') }}
+              </button>
+            </td>
           </tr>
-        </thead>
-        <tbody></tbody>
-        <tr v-for="{ timestamp, value, id } in progress" :key="id">
-          <td>{{ formatDate(timestamp) }}</td>
-          <td>{{ value }}</td>
-          <td v-if="hasEditRights">
-            <button class="btn btn--ter" @click="remove(id)" v-tooltip="$t('tooltip.deleteProgresjon')">
-              {{ $t('btn.delete') }}
-            </button>
-          </td>
-        </tr>
-      </table>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +76,7 @@ export default {
 
   components: {
     Widget,
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   mounted() {
@@ -164,6 +171,10 @@ export default {
     vertical-align: middle;
     border-top: 1px solid $color-border;
   }
+}
+
+.history {
+  margin: 2.5rem 0 1.5rem;
 }
 
 .current-value {
