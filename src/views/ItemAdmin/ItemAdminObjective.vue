@@ -27,7 +27,17 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <input class="form__field" type="text" v-model="objective.icon" />
+          <v-select class="form-field" :options="icons" v-model="objective.icon" @input="dirty = true">
+            <template #selected-option="{ label }">
+              <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
+              {{ label }}
+            </template>
+            <template #option="option">
+              <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+              <span>{{ option.label }}</span>
+            </template>
+            <template #no-options="{}">{{ $t('select.noIcons') }}</template>
+          </v-select>
         </label>
 
         <validation-provider rules="required" name="period" v-slot="{ errors }">
@@ -62,6 +72,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
+import icons from '@/config/icons';
 
 export default {
   components: { FormComponent: () => import('@/components/FormComponent.vue') },
@@ -70,6 +81,7 @@ export default {
     periods: [],
     changedPeriod: false,
     loading: false,
+    icons,
   }),
   props: {
     data: {
@@ -147,5 +159,10 @@ export default {
   > .btn {
     margin: 0.25rem;
   }
+}
+
+.selected-icon {
+  display: inline-block;
+  margin-right: 0.5rem;
 }
 </style>
