@@ -1,7 +1,17 @@
 <template>
   <div>
-    <div v-if="kpis.length < 3">
+    <div v-if="kpis.length && kpi.length < 3">
       <button class="btn btn--ghost" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
+    </div>
+    <div class="empty">
+      <empty-state
+        v-if="!kpis.length"
+        :icon="'lightbulb'"
+        :heading="$t('empty.noKPIs.heading')"
+        :body="$t('empty.noKPIs.body')"
+      >
+        <button class="btn btn--ter" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
+      </empty-state>
     </div>
     <div v-if="kpis.length" class="kpis">
       <div class="kpi" v-for="kpi in kpis" :key="kpi.id">
@@ -93,6 +103,7 @@ export default {
   components: {
     AddKpiModal: () => import('@/components/AddKPIModal.vue'),
     FormComponent: () => import('@/components/FormComponent.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   methods: {
@@ -117,6 +128,17 @@ export default {
   grid-gap: span(0, 1);
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
 
+  @media screen and (min-width: bp(l)) {
+    grid-gap: span(0, 1, span(10));
+    width: span(7, 0, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, 0, span(10));
+  }
+}
+
+.empty {
   @media screen and (min-width: bp(l)) {
     grid-gap: span(0, 1, span(10));
     width: span(7, 0, span(10));
