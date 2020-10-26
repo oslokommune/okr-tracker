@@ -1,6 +1,6 @@
 <template>
-  <Widget :widget-id="widgetId" title="Vekting" icon="balance-scale" :open="false">
-    Mål for {{ activeObjective.period.name }}
+  <Widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
+    {{ $t('weight.objectivesFor') }} {{ activeObjective.period.name }}
     <div class="scales">
       <router-link
         :to="{ params: { objectiveId: id } }"

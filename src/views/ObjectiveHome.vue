@@ -5,7 +5,7 @@
       <p>{{ activeObjective.description }}</p>
 
       <section class="key-results">
-        <h2 class="title-2">Key results</h2>
+        <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
         <div class="key-results__list">
           <KeyResultRow
             v-for="keyResult in keyResults"

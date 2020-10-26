@@ -26,22 +26,22 @@
           <ul class="menu__list">
             <li class="menu__list-item">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'User', params: { id: user.id } }"
-                ><i class="icon fa fa-fw fa-user"></i> My Profile</router-link
+                ><i class="icon fa fa-fw fa-user"></i> {{ $t('profile.myProfile') }}</router-link
               >
             </li>
             <li class="menu__list-item" v-if="user.admin">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }"
-                ><i class="icon fa fa-fw fa-cogs"></i> Admin</router-link
+                ><i class="icon fa fa-fw fa-cogs"></i> {{ $t('general.admin') }}</router-link
               >
             </li>
             <li class="menu__list-item show-mobile">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }"
-                ><i class="icon fa fa-fw fa-question-circle"></i> Help</router-link
+                ><i class="icon fa fa-fw fa-question-circle"></i> {{ $t('general.help') }}</router-link
               >
             </li>
             <li>
               <button class="btn btn--ter btn--icon" @click="signOut">
-                <i class="icon fa fa-fw fa-sign-out-alt"></i> Sign out
+                <i class="icon fa fa-fw fa-sign-out-alt"></i> {{ $t('general.signOut') }}
               </button>
             </li>
           </ul>

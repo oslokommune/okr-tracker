@@ -1,6 +1,6 @@
 <template>
-  <Widget :widget-id="widgetId" title="Vekting" icon="balance-scale" :open="false">
-    Nøkkelresultater for {{ activeKeyResult.objective.name }}
+  <Widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
+    {{ $t('weight.keyresFor') }} {{ activeKeyResult.objective.name }}
     <div class="scales">
       <router-link
         :to="{ params: { keyResultId: id } }"

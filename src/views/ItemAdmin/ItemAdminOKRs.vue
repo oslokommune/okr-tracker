@@ -3,7 +3,7 @@
     <div class="action-bar">
       <label class="form-group--checkbox">
         <input class="form__checkbox" type="checkbox" v-model="showArchived" />
-        <span class="form-label">Show archived</span>
+        <span class="form-label">{{ $t('admin.objects.showArchived') }}</span>
       </label>
     </div>
 
@@ -34,7 +34,7 @@
           </ul>
           <button v-if="!notSelected" class="miller__add btn btn--ter btn--icon btn--fw" @click="addEvent">
             <span class="icon fa fa-plus"></span>
-            <span>Create new</span>
+            <span>{{ $t('btn.create') }}</span>
           </button>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default {
     columns() {
       return [
         {
-          heading: 'Select Period',
+          heading: this.$t('admin.showPeriods'),
           items: this.periods,
           type: 'period',
           icon: 'fa-calendar-alt',
@@ -84,23 +84,24 @@ export default {
           addEvent: this.createPeriod,
         },
         {
-          heading: 'Select objective',
+          heading: this.$t('admin.showObjectives'),
           items: this.objectives,
           type: 'objective',
           icon: 'fa-trophy',
           activeClass: id => this.editObject && id === this.editObject.id,
           selectedClass: id => id === this.selectedObjectiveId,
-          notSelected: !this.selectedType ? 'No period selected' : false,
+          notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
         },
         {
-          heading: 'Select key results',
+          heading: this.$t('admin.showKeyResults'),
           items: this.keyResults,
           type: 'keyResult',
           icon: 'fa-chart-pie',
           activeClass: id => this.editObject && id === this.editObject.id,
           selectedClass: () => false,
-          notSelected: !this.selectedType || this.selectedType === 'period' ? 'No objective selected' : false,
+          notSelected:
+            !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
         },
       ];

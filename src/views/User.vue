@@ -5,9 +5,9 @@
 
     <div v-if="me">
       <input type="file" @input="setImage" accept="image/png, image/jpeg" />
-      <button @click="uploadImage">Upload</button>
+      <button @click="uploadImage">{{ $t('btn.upload') }}</button>
 
-      <button @click="save" :disabled="loading">Save</button>
+      <button @click="save" :disabled="loading">{{ $t('btn.save') }}</button>
     </div>
 
     <div>

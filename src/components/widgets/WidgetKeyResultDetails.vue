@@ -1,19 +1,19 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeKeyResult" title="Detaljer" icon="info-circle">
+  <Widget :widget-id="widgetId" v-if="activeKeyResult" :title="$t('general.details')" icon="info-circle">
     <div class="details">
-      <h3 class="title-3">Tilhører mål</h3>
+      <h3 class="title-3">{{ $t('keyres.belongsTo') }}</h3>
       <span class="details--margin-bottom" v-if="activeKeyResult.objective">
         <i class="fa fa-trophy"></i>
         {{ activeKeyResult.objective.name }}
       </span>
 
-      <h3 class="title-3">Created By</h3>
+      <h3 class="title-3">{{ $t('general.createdBy') }}</h3>
       <span class="details--margin-bottom">
         <i class="fa fa-user"></i>
         {{ activeKeyResult.createdBy.displayName || activeKeyResult.createdBy.id }}
       </span>
 
-      <h3 class="title-3">Periode</h3>
+      <h3 class="title-3">{{ $t('period.period') }}</h3>
       <div class="details__period" v-if="activePeriod">
         <span>
           <i class="fa fa-calendar-alt"></i>
@@ -22,7 +22,7 @@
         <span> {{ formatDate(activePeriod.startDate) }} - {{ formatDate(activePeriod.endDate) }} </span>
       </div>
 
-      <h3 class="title-3">Antall oppdateringer</h3>
+      <h3 class="title-3">{{ $t('keyres.numberOfUpdates') }}</h3>
       <span class="details--margin-bottom">
         <i class="fa fa-chart-line"></i>
         {{ progress.length }}
@@ -34,13 +34,13 @@
         {{ activeKeyResult.editedBy.displayName || activeKeyResult.editedBy.id }}
       </span>
 
-      <h3 class="title-3">Target value</h3>
+      <h3 class="title-3">{{ $t('keyres.targetValue') }}</h3>
       <span class="details--margin-bottom">
         <i class="fa fa-bullseye" />
         {{ activeKeyResult.unit }}: {{ activeKeyResult.targetValue }}
       </span>
 
-      <h3 class="title-3">Last update:</h3>
+      <h3 class="title-3">{{ $t('general.lastUpdate') }}</h3>
       <span class="details--margin-bottom">
         <i class="fa fa-user-edit" />
         {{ formatDate(activePeriod.edited) }}

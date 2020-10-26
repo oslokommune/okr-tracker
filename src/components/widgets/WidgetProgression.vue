@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" title="Progression" icon="chart-pie">
+  <Widget :widget-id="widgetId" :title="$t('objective.progression')" icon="chart-pie">
     <svg ref="svg"></svg>
   </Widget>
 </template>

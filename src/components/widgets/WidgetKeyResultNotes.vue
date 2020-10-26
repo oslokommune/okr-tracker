@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" title="Notater" icon="pencil-alt">
+  <Widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
     <div class="notes">
       <div class="notes--margin-bottom" v-if="editNotes">
         <textarea rows="20" @input="dirty = true" v-model="activeKeyResult.notes"></textarea>
@@ -14,10 +14,10 @@
         <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty || loading">
           {{ $t('keyResultPage.notes.save') }}
         </button>
-        <button @click="editNotes = false" class="btn btn--ter">Lukk</button>
+        <button @click="editNotes = false" class="btn btn--ter">{{ $t('btn.close') }}</button>
       </div>
       <div v-else>
-        <button @click="editNotes = !editNotes" class="btn btn--ter">Endre notater</button>
+        <button @click="editNotes = !editNotes" class="btn btn--ter">{{ $t('btn.editNotes') }}</button>
       </div>
     </div>
   </Widget>

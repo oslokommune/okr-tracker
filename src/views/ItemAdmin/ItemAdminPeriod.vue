@@ -5,7 +5,7 @@
         <form-component
           input-type="input"
           name="name"
-          label="Name"
+          :label="$t('fields.name')"
           rules="required"
           v-model="activePeriod.name"
           type="text"
@@ -29,10 +29,10 @@
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-period" :disabled="loading">
-        <span class="icon fa fa-fw fa-save"></span> Save changes
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!activePeriod.archived">
-        <span class="icon fa fa-fw fa-trash"></span> Archive Period
+        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
   </div>

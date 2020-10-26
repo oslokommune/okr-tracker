@@ -1,3 +1,5 @@
+import i18n from '@/locale/i18n';
+
 export default async ({ state, commit }) => {
   const { organizations, departments, products, activeItem } = state;
 
@@ -21,9 +23,9 @@ export default async ({ state, commit }) => {
   };
 
   const groups = [
-    { name: 'Organizations', items: organizations, icon: 'industry' },
-    { name: 'Departments', items: departments.filter(filterDepartments), icon: 'cubes' },
-    { name: 'Products', items: products.filter(filterProducts), icon: 'cube' },
+    { name: i18n.t('general.organizations'), items: organizations, icon: 'industry' },
+    { name: i18n.t('general.departments'), items: departments.filter(filterDepartments), icon: 'cubes' },
+    { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
   ];
 
   if (state.sidebarGroups && JSON.stringify(groups) === JSON.stringify(state.sidebarGroups)) return true;

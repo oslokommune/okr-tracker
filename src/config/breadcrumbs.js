@@ -1,4 +1,6 @@
 import store from '@/store';
+import i18n from '@/locale/i18n';
+import router from '@/router';
 
 const { state } = store;
 
@@ -8,13 +10,13 @@ const { state } = store;
 
 export const home = () => ({
   icon: 'home',
-  label: 'Home',
+  label: i18n.t('general.home'),
   route: { name: 'Home' },
 });
 
 export const help = () => ({
   icon: 'question-circle',
-  label: 'Help',
+  label: i18n.t('general.help'),
   route: { name: 'Help' },
 });
 
@@ -79,7 +81,7 @@ export const keyResult = () => {
 export const admin = () => {
   return {
     icon: 'user-cog',
-    label: 'Admin',
+    label: i18n.t('general.admin'),
     route: { name: 'Admin' },
   };
 };
@@ -87,7 +89,7 @@ export const admin = () => {
 export const login = () => {
   return {
     icon: 'sign-in-alt',
-    label: 'Login',
+    label: i18n.t('login.login'),
     route: { name: 'Login' },
   };
 };
@@ -95,28 +97,28 @@ export const login = () => {
 export const requestAccess = () => {
   return {
     icon: 'pray',
-    label: 'Request Access',
+    label: i18n.t('login.requestAccess'),
   };
 };
 
 export const users = () => {
   return {
     icon: 'users',
-    label: 'Users',
+    label: i18n.t('general.users'),
   };
 };
 
 export const user = () => {
   return {
     icon: 'user',
-    label: state.user.id,
+    label: router.currentRoute.params.id,
   };
 };
 
 export const itemAdmin = () => {
   return {
     icon: 'user-cog',
-    label: 'Edit',
+    label: i18n.t('general.edit'),
     route: { name: 'ItemAdmin' },
   };
 };
@@ -124,42 +126,42 @@ export const itemAdmin = () => {
 export const itemAdminGeneral = () => {
   return {
     icon: 'cogs',
-    label: 'General',
+    label: i18n.t('general.general'),
   };
 };
 
 export const itemAdminOKR = () => {
   return {
     icon: 'chart-pie',
-    label: 'OKRs',
+    label: i18n.t('general.OKRs'),
   };
 };
 
 export const itemAdminKPI = () => {
   return {
     icon: 'chart-line',
-    label: 'KPIs',
+    label: i18n.t('general.KPIs'),
   };
 };
 
 export const createOrganization = () => {
   return {
     icon: 'plus-square',
-    label: 'Create Organization',
+    label: i18n.t('admin.organization.create'),
   };
 };
 
 export const createDepartment = () => {
   return {
     icon: 'plus-square',
-    label: 'Create Department',
+    label: i18n.t('admin.department.create'),
   };
 };
 
 export const createProduct = () => {
   return {
     icon: 'plus-square',
-    label: 'Create Product',
+    label: i18n.t('admin.product.create'),
   };
 };
 

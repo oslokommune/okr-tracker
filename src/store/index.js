@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
+import i18n from '@/locale/i18n';
 
 import actions from './actions';
 
@@ -22,9 +23,11 @@ export const getters = {
   },
 
   hasEditRights: state => {
+    // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
-    if (!user || !activeItem || !activeItem.team) return;
-    return user.admin || activeItem.team.map(({ id }) => id).includes(user.id);
+    if (user && user.admin) return true;
+    if (!user || !activeItem || !activeItem.team) return false;
+    return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 };
 
@@ -66,8 +69,8 @@ export default new Vuex.Store({
     kpis: [],
     loginError: null,
     views: [
-      { label: 'Kompakt', id: 'compact', icon: '' },
-      { label: 'Detaljer', id: 'details', icon: '' },
+      { label: i18n.t('view.compact'), id: 'compact', icon: '' },
+      { label: i18n.t('view.details'), id: 'details', icon: '' },
     ],
     loading: false,
   },

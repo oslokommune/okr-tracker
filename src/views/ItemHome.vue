@@ -3,7 +3,7 @@
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
-      <h2 class="title-2">Mål og nøkkelresultater</h2>
+      <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
       <period-selector></period-selector>
       <action-bar></action-bar>
 

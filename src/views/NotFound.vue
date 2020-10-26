@@ -1,5 +1,7 @@
 <template>
-  <h1>404</h1>
+  <div>
+    <h1 class="title-1">{{ $t('404.title') }}</h1>
+  </div>
 </template>
 
 <script>

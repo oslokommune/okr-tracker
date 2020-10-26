@@ -1,7 +1,7 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeObjective" title="Detaljer" icon="info-circle">
+  <Widget :widget-id="widgetId" v-if="activeObjective" :title="$t('general.details')" icon="info-circle">
     <div class="details">
-      <h3 class="title-3">Periode</h3>
+      <h3 class="title-3">{{ $t('objective.period') }}</h3>
 
       <div class="details__period" v-if="activeObjective.period && activeObjective.period.startDate">
         <span>
@@ -13,13 +13,13 @@
         </span>
       </div>
 
-      <h3 class="title-3">Progresjon</h3>
+      <h3 class="title-3">{{ $t('objective.progression') }}</h3>
       <span class="details--margin-bottom">
         <i class="fa fa-chart-line"></i>
         {{ activeObjective.progression }}
       </span>
 
-      <h3 class="title-3">Vekt</h3>
+      <h3 class="title-3">{{ $t('objective.weight') }}</h3>
       <span class="details--margin-bottom">
         <i class="fa fa-balance-scale"></i>
         {{ activeObjective.weight }}

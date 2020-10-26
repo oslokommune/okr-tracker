@@ -1,9 +1,24 @@
 {
+  "404": {
+    "title": "404"
+  },
+  "kpi": {
+    "add": "Legg til KPI",
+    "description": "Beskrivelse",
+    "chooseType": "Velg KPI-type",
+    "types": {
+      "users": "Volum",
+      "satisfaction": "Brukertilfredshet",
+      "conversion": "Måloppnåelse"
+    },
+    "heading": "KPI-er",
+    "sheetsDetails": "Sheets-detaljer"
+  },
   "fields": {
     "email": "E-post",
     "password": "Passord",
     "name": "Navn",
-    "missionStatement": "Mission Statement",
+    "missionStatement": "Oppdragsbeskrivelse",
     "value": "Verdi",
     "range": "Dato- og klokkeslett",
     "organization": "Organisasjon",
@@ -17,9 +32,19 @@
     "sheetId": "Google Sheet ID",
     "sheetTab": "Fane",
     "sheetCell": "Celle",
-    "type": "Type"
+    "type": "Type",
+    "displayName": "Visningsnavn",
+    "icon": "Ikon",
+    "period": "Periode",
+    "description": "Beskrivelse",
+    "slug": "Slug"
   },
   "general": {
+    "edit": "Endre",
+    "general": "Generelt",
+    "OKRs": "OKR-er",
+    "OKRsLong": "Mål og nøkkelresulater",
+    "KPIs": "KPI-er",
     "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
@@ -32,13 +57,38 @@
     "help": "Hjelp",
     "objAndKeyres": "Mål og nøkkelresultater",
     "admin": "Admin",
-    "dashboard": "Dashboard",
-    "success": "Suksess!"
+    "dashboard": "Vis dashboard",
+    "success": "Suksess!",
+    "signOut": "Logg ut",
+    "createdBy": "Opprettet av",
+    "lastUpdate": "Sist oppdatert",
+    "details": "Detaljer",
+    "products": "Produkter",
+    "organizations": "Organisasjoner",
+    "departments": "Produktområder",
+    "teamMembers": "Team-medlemmer",
+    "users": "Brukere",
+    "home": "Hjem",
+    "keyresults": "Nøkkelresultater"
   },
   "btn": {
     "close": "Lukk",
     "save": "Lagre",
-    "saveChanges": "Lagre endringer"
+    "saveChanges": "Lagre endringer",
+    "add": "Legg til",
+    "editNotes": "Endre notater",
+    "addOrganization": "Ny organisasjon",
+    "addProduct": "Nytt produkt",
+    "addDepartment": "Nytt produktområde",
+    "acceptRequest": "Gi tilgang",
+    "rejectRequest": "Slett forespørsel",
+    "deleteImage": "Slett bilde",
+    "deleteUser": "Slett bruker",
+    "create": "Opprett",
+    "delete": "Slett",
+    "archive": "Arkiver",
+    "editItem": "Endre «{item}»",
+    "upload": "Last opp"
   },
   "pageHeader": {
     "header": "Hjem",
@@ -56,7 +106,8 @@
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
       "wrongPassword": "Passordet er feil."
-    }
+    },
+    "loginWithUsername": "Logg inn med brukernavn"
   },
   "header": {
     "changeProfile": "Endre profil",
@@ -116,11 +167,12 @@
   "keyres": {
     "name": "nøkkelresultat",
     "objective": "Tilknyttet mål",
-    "description": "Navn på nøkkelresultat",
+    "description": "Beskrivelse",
     "longDescription": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
+    "newValue": "Ny verdi",
     "unitDescription": "Hva er det som måles (klikk, prosent, brukere etc)?",
     "automation": {
       "header": "Automatisk registrering av progresjon",
@@ -144,11 +196,20 @@
       "previous": "Forrige",
       "jumpOver": "Hopp over",
       "save": "Lagre og gå videre"
-    }
+    },
+    "updateValue": "Oppdater verdi",
+    "dateAndTime": "Dato og tid",
+    "addComment": "Legg ved kommentarer (valgfritt)",
+    "chooseDate": "Velg dato",
+    "belongsTo": "Tilhører mål",
+    "numberOfUpdates": "Antall oppdateringer",
+    "weight": "Vekt"
   },
   "objective": {
     "period": "Periode",
     "icon": "Ikon",
+    "progression": "Progresjon",
+    "weight": "Vekt",
     "description": "Beskrivelse",
     "title": "Tittel",
     "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå.",
@@ -166,7 +227,8 @@
     "dateRange": "Start- og sluttdato",
     "deletePeriod": "Slett periode",
     "hasObjectives": "Kan ikke slette periode som har tilknyttet mål",
-    "range": "{startDate} til {endDate}"
+    "range": "{startDate} til {endDate}",
+    "period": "Periode"
   },
   "tooltip": {
     "newValue": "Ny verdi",
@@ -291,17 +353,20 @@
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Mission statement",
+      "missionStatement": "Oppdragsbeskrivelse",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
-      "delete": "Slett"
+      "delete": "Slett",
+      "create": "Opprett nytt produktområde",
+      "parentOrganisation": "Tilhører organisasjon"
     },
     "organization": {
       "title": "Administrer organisasjon",
       "name": "Navn",
       "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Mission statement",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>"
+      "missionStatement": "Oppdragsbeskrivelse",
+      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
+      "create": "Opprett ny organisasjon"
     },
     "product": {
       "title": "Administrer produkt",
@@ -311,10 +376,12 @@
       "slug": "Slug",
       "slugHelp": "Hvordan navnet fremstår i URL-en",
       "picture": "Bilde",
-      "missionStatement": "Mission statement",
+      "missionStatement": "Oppdragsbeskrivelse",
       "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
       "teamHelp": "Medlemmer får tilgang til å administrere produktet",
-      "delete": "Slett"
+      "delete": "Slett",
+      "create": "Opprett nytt produkt",
+      "parentDepartment": "Tilhører produktområde"
     },
     "home": {
       "users": "Brukere",
@@ -338,8 +405,21 @@
       "delete": "Slett",
       "addEmails": "Legg til e-post-adresser",
       "addEmailsHelp": "Én adresse per rad",
-      "add": "Legg til"
-    }
+      "add": "Legg til",
+      "edit": "Endre bruker",
+      "image": "Profilbilde",
+      "backToUsers": "Tilbake til brukere",
+      "addUsers": "Legg til bruker(e)",
+      "users": "Brukere",
+      "search": "Søk {count} brukere",
+      "registerUsersButton": "Registrer brukere",
+      "registerUsersText": "Skriv inn e-postadresser (én adresse per linje):"
+    },
+    "showObjectives": "Vis mål",
+    "showPeriods": "Vis perioder",
+    "showKeyResults": "Vis nøkkelresultater",
+    "noObjectiveSelected": "Ingen mål valgt",
+    "noPeriodSelected": "Ingen periode valgt"
   },
   "keyResultPage": {
     "change": "Endre nøkkelresultat",
@@ -373,7 +453,11 @@
         "three": "Les mer"
       }
     },
-    "flatPickrPlaceholder": "Velg dato og tid"
+    "flatPickrPlaceholder": "Velg dato og tid",
+    "history": "Historikk",
+    "registeredBy": "Registrert av",
+    "value": "Verdi",
+    "date": "Dato"
   },
   "product": {
     "title": "Produkt",
@@ -393,6 +477,7 @@
     "title": "Innhold"
   },
   "profile": {
+    "myProfile": "Min profil",
     "changePicture": "Endre bilde",
     "name": "Display name",
     "hasAdmin": "Har administratortilgang",
@@ -400,9 +485,29 @@
     "audit": "Audit",
     "noActivity": "Ingen handlinger fra brukeren."
   },
-  "callout": {
-    "archivedRestore": {
-      "message": "Dette objektet er arkivert."
+  "archivedRestore": {
+    "heading": "Arkivert",
+    "message": "Dette objektet er arkivert. Ved å permanent slette dette objektet, alle relaterte KPI-er, mål, nøkkelresultater og progresjon blir slettet for alltid.",
+    "btn": {
+      "restore": "Gjenopprett",
+      "delete": "Slett data"
     }
+  },
+  "view": {
+    "compact": "Kompakt",
+    "details": "Detaljer"
+  },
+  "keyResultsPage": {
+    "notes": {
+      "heading": "Notater"
+    }
+  },
+  "weight": {
+    "heading": "Vekting",
+    "keyresFor": "Nøkkelresultater for",
+    "objectivesFor": "Mål for"
+  },
+  "accessRequests": {
+    "heading": "Tilgangsforespørsler"
   }
 }

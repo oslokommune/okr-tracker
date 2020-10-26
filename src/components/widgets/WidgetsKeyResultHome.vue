@@ -6,7 +6,7 @@
         :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
       >
         <i class="icon fa fa-edit"></i>
-        Endre nøkkelresultat
+        {{ $t('keyResultPage.change') }}
       </router-link>
     </div>
 

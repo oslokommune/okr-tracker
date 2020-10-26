@@ -22,8 +22,8 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Date and time</th>
-            <th>Value</th>
+            <th>{{ $t('keyres.dateAndTime') }}</th>
+            <th>{{ $t('keyResultPage.table.value') }}</th>
             <th v-if="hasEditRights"></th>
           </tr>
         </thead>

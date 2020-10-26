@@ -5,34 +5,34 @@
         <form-component
           input-type="input"
           name="name"
-          label="Name"
+          :label="$t('fields.name')"
           rules="required"
           v-model="objective.name"
           type="text"
         />
 
         <label class="form-group">
-          <span class="form-label">Description</span>
+          <span class="form-label">{{ $t('fields.description') }}</span>
           <input class="form__field" type="text" v-model="objective.description" />
         </label>
 
         <form-component
           input-type="input"
           name="weight"
-          label="Weight"
+          :label="$t('fields.weight')"
           rules="required|numeric"
           v-model.number="objective.weight"
           type="number"
         />
 
         <label class="form-group">
-          <span class="form-label">Icon</span>
+          <span class="form-label">{{ $t('fields.icon') }}</span>
           <input class="form__field" type="text" v-model="objective.icon" />
         </label>
 
         <validation-provider rules="required" name="period" v-slot="{ errors }">
           <label class="form-group">
-            <span class="form-label">Period</span>
+            <span class="form-label">{{ $t('fields.period') }}</span>
             <v-select
               label="name"
               v-model="objective.period"
@@ -50,10 +50,10 @@
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading">
-        <span class="icon fa fa-fw fa-save"></span> Save changes
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!objective.archived">
-        <span class="icon fa fa-fw fa-trash"></span> Archive objective
+        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
   </div>

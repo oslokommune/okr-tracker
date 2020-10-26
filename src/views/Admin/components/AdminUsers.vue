@@ -1,11 +1,16 @@
 <template>
   <div>
-    <h2 class="title-2">Users</h2>
+    <h2 class="title-2">{{ $t('admin.users.users') }}</h2>
 
     <div class="users" v-if="!selectedUser && !viewAddUsers">
       <div class="search">
         <label class="form__group">
-          <input class="form__field" type="text" v-model="query" :placeholder="`Search ${users.length} users`" />
+          <input
+            class="form__field"
+            type="text"
+            v-model="query"
+            :placeholder="$t('admin.users.search', { count: users.length })"
+          />
         </label>
       </div>
 
@@ -19,18 +24,22 @@
         </button>
       </div>
       <div class="users__footer">
-        <button class="btn btn--fw" @click="viewAddUsers = true">Add users</button>
+        <button class="btn btn--fw" @click="viewAddUsers = true">{{ $t('admin.users.addUsers') }}</button>
       </div>
     </div>
 
     <edit-user v-if="selectedUser && !viewAddUsers" :selected-user="selectedUser" @close="selectedUser = null">
       <template #back>
-        <div><button class="btn" @click="selectedUser = null">Back to users</button></div>
+        <div>
+          <button class="btn" @click="selectedUser = null">{{ $t('admin.users.backToUsers') }}</button>
+        </div>
       </template>
     </edit-user>
     <add-users v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
-        <div><button class="btn" @click="viewAddUsers = false">Back to users</button></div>
+        <div>
+          <button class="btn" @click="viewAddUsers = false">{{ $t('admin.users.backToUsers') }}</button>
+        </div>
       </template>
     </add-users>
   </div>

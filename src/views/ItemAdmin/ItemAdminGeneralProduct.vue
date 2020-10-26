@@ -5,32 +5,32 @@
         <form-component
           input-type="input"
           name="name"
-          label="Name"
+          :label="$t('fields.name')"
           rules="required"
           v-model="activeItem.name"
           type="text"
         />
 
         <label class="form-group">
-          <span class="form-label">Slug</span>
+          <span class="form-label">{{ $t('fields.slug') }}</span>
           <input class="form__field" type="text" v-model="activeItem.slug" disabled />
         </label>
 
         <form-component
           input-type="textarea"
           name="missionStatement"
-          label="Mission Statement"
+          :label="$t('fields.missionStatement')"
           rules="required"
           v-model="activeItem.missionStatement"
           type="text"
         />
 
         <div class="form-group">
-          <span class="form-label">Parent department</span>
+          <span class="form-label">{{ $t('admin.product.parentDepartment') }}</span>
           <v-select label="name" v-model="activeItem.department" :options="departments" :clearable="false"></v-select>
         </div>
         <div class="form-group">
-          <span class="form-label">Team members</span>
+          <span class="form-label">{{ $t('general.teamMembers') }}</span>
           <v-select
             multiple
             v-model="activeItem.team"
@@ -47,33 +47,30 @@
     </validation-observer>
 
     <div class="form-group">
-      <span class="form-label">Image</span>
+      <span class="form-label">{{ $t('admin.product.picture') }}</span>
       <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
       <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
     </div>
 
     <div v-if="activeItem.archived" class="archived">
-      <h2 class="title-2">Archived</h2>
-      <p>
-        This object is archived. By permanently deleting this object, all of its related KPIs, objectives, key results
-        and progress will forever be gone.
-      </p>
+      <h2 class="title-2">{{ $t('archivedRestore.heading') }}</h2>
+      <p>{{ $t('archivedRestore.message') }}</p>
       <div class="button-row">
         <button class="btn btn--icon" @click="restore" :disabled="loading">
-          <span class="icon fa fa-fw fa-recycle"></span> Restore product
+          <span class="icon fa fa-fw fa-recycle"></span> {{ $t('archivedRestore.btn.restore') }}
         </button>
         <button class="btn btn--icon btn--danger" @click="deleteDeep" :disabled="loading">
-          <span class="icon fa fa-fw fa-trash"></span> Permanently delete
+          <span class="icon fa fa-fw fa-trash"></span> {{ $t('archivedRestore.btn.delete') }}
         </button>
       </div>
     </div>
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-product" :disabled="loading">
-        <span class="icon fa fa-fw fa-save"></span> Save changes
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
       <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived" :disabled="loading">
-        <span class="icon fa fa-fw fa-trash"></span> Archive product
+        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div>
     <div class="columns">
       <div>
-        <h2 class="title-2">Organizations</h2>
+        <h2 class="title-2">{{ $t('general.organizations') }}</h2>
 
         <div class="col">
           <div class="col__body">
@@ -14,13 +14,15 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }">+ Add organization</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }">{{
+              $t('btn.addOrganization')
+            }}</router-link>
           </div>
         </div>
       </div>
 
       <div>
-        <h2 class="title-2">Departments</h2>
+        <h2 class="title-2">{{ $t('general.departments') }}</h2>
         <div class="col">
           <div class="col__body">
             <div class="col__row" v-for="department in departments" :key="department.id">
@@ -31,13 +33,15 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }">+ Add department</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }">{{
+              $t('btn.addDepartment')
+            }}</router-link>
           </div>
         </div>
       </div>
 
       <div>
-        <h2 class="title-2">Products</h2>
+        <h2 class="title-2">{{ $t('general.products') }}</h2>
         <div class="col">
           <div class="col__body">
             <div class="col__row" v-for="product in products" :key="product.id">
@@ -48,7 +52,7 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }">+ Add product</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }">{{ $t('btn.addProduct') }}</router-link>
           </div>
         </div>
       </div>
@@ -57,7 +61,7 @@
     <div class="actions">
       <label class="form-group--checkbox">
         <input type="checkbox" class="form__checkbox" v-model="showArchived" />
-        <span class="form-label">Show archived</span>
+        <span class="form-label">{{ $t('admin.objects.showArchived') }}</span>
       </label>
     </div>
   </div>
