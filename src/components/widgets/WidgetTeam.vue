@@ -21,9 +21,13 @@ export default {
   computed: {
     ...mapState(['activeItem', 'user']),
     memberOrAdmin() {
-      const isAdmin = this.user.admin;
-      const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
-      return isAdmin || isMember;
+      try {
+        const isAdmin = this.user.admin;
+        const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
+        return isAdmin || isMember;
+      } catch {
+        return false;
+      }
     },
   },
 

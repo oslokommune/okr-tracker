@@ -1,6 +1,6 @@
 <template>
   <ul v-if="periods" class="tabs">
-    <li v-for="period in periods" :key="period.id" v-tooltip.right="periodDates(period)">
+    <li v-for="period in filteredPeriods" :key="period.id" v-tooltip.right="periodDates(period)">
       <button
         @click="set_active_period_and_data(period.id)"
         :disabled="activePeriod && period.id === activePeriod.id"
@@ -18,12 +18,23 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { isBefore, addDays } from 'date-fns';
 import { periodDates } from '@/util/formatDate';
 
 export default {
   computed: {
     ...mapState(['periods', 'activePeriod']),
+    ...mapGetters(['hasEditRights']),
+
+    filteredPeriods() {
+      if (this.hasEditRights) return this.periods;
+      const daysInAdvance = 7; // Prior to period start
+
+      return this.periods.filter(({ startDate }) => {
+        return isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance));
+      });
+    },
   },
 
   methods: {
