@@ -36,7 +36,7 @@ const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
 const functions = firebase.functions();
-const { serverTimestamp } = firebase.firestore.FieldValue;
+const { serverTimestamp, arrayRemove } = firebase.firestore.FieldValue;
 
 if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
@@ -46,4 +46,4 @@ if (process.env.NODE_ENV === 'development' || window.Cypress) {
   console.log('Established connection to Firestore server');
 }
 
-export { db, auth, loginProvider, storage, analytics, functions, serverTimestamp };
+export { db, auth, loginProvider, storage, analytics, functions, serverTimestamp, arrayRemove };
