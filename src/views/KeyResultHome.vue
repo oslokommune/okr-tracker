@@ -32,9 +32,14 @@
       </div>
 
       <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
-
       <div class="main__table">
-        <table v-if="progress" class="table">
+        <empty-state
+          v-if="!progress.length"
+          :icon="'history'"
+          :heading="$t('empty.keyResultProgress.heading')"
+          :body="$t('empty.keyResultProgress.body')"
+        ></empty-state>
+        <table v-if="progress.length" class="table">
           <thead>
             <tr>
               <th>{{ $t('keyResultPage.value') }}</th>
@@ -96,6 +101,7 @@ export default {
   components: {
     WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
     Modal: () => import('@/components/Modal.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
   data: () => ({
     progress: [],
