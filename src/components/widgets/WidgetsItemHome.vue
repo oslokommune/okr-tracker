@@ -20,16 +20,14 @@
       </router-link>
     </div>
 
-    <img v-if="activeItem.photoURL" :src="activeItem.photoURL" :alt="activeItem.photoURL" class="image" />
-
     <div class="widgets">
+      <WidgetMissionStatement widget-id="itemHome.missionStatement" v-if="activeItem"></WidgetMissionStatement>
       <WidgetProgression
         widget-id="itemHome.progression"
         v-if="activePeriod"
         type="period"
         :data="activePeriod"
       ></WidgetProgression>
-      <WidgetMissionStatement widget-id="itemHome.missionStatement" v-if="activeItem"></WidgetMissionStatement>
       <WidgetTeam widget-id="itemHome.team" v-if="activePeriod"></WidgetTeam>
       <WidgetChildItems widget-id="itemHome.children"></WidgetChildItems>
     </div>
