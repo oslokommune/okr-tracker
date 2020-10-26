@@ -8,6 +8,7 @@
         class="widget__toggle fas fa-fw"
         :class="isOpen ? 'fa-minus' : 'fa-plus'"
         @click="toggle"
+        v-tooltip="isOpen ? $t('btn.minimize') : $t('btn.expand')"
       ></button>
     </header>
     <div class="widget__body" v-show="isOpen">

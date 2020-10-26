@@ -5,20 +5,20 @@
 
     <span class="item__name">{{ data.name }}</span>
 
-    <div v-if="type === 'product'" class="item__kpis">
-      <div class="item__kpi">
+    <div class="item__kpis">
+      <div class="item__kpi" v-tooltip="`${$t('kpi.types.users')}:<br> ${getKpiName('users')}`">
         <span class="item__kpi-icon fas fa-chart-line"></span>
         <span class="item__kpi-value">{{ getKpi('users') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
-      <div class="item__kpi">
+      <div class="item__kpi" v-tooltip="`${$t('kpi.types.satisfaction')}:<br> ${getKpiName('satisfaction')}`">
         <span class="item__kpi-icon far fa-smile"></span>
         <span class="item__kpi-value">{{ getKpi('satisfaction') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
-      <div class="item__kpi">
+      <div class="item__kpi" v-tooltip="`${$t('kpi.types.conversion')}:<br> ${getKpiName('conversion')}`">
         <span class="item__kpi-icon far fa-check-square"></span>
         <span class="item__kpi-value">{{ getKpi('conversion') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
@@ -104,6 +104,13 @@ export default {
         return formatNumber(kpi.currentValue);
       } catch {
         return '–––';
+      }
+    },
+    getKpiName(type) {
+      try {
+        return this.kpis.find(obj => obj.type === type).name;
+      } catch {
+        return '';
       }
     },
   },

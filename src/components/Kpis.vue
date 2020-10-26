@@ -9,6 +9,7 @@
         :to="{ name: 'KpiHome', params: { kpiId: kpi.id } }"
         class="kpi"
         :class="{ disabled: kpi.error }"
+        v-tooltip="$t(`kpi.types.${kpi.type}`)"
       >
         <div class="kpi__name">{{ kpi.name }}</div>
         <div class="kpi__value">
