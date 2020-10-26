@@ -1,4 +1,4 @@
-import { db, storage } from '@/config/firebaseConfig';
+import { db, storage, arrayRemove } from '@/config/firebaseConfig';
 import preferences from './defaultPreferences';
 import UploadImage from '../common/uploadImage';
 
@@ -28,7 +28,8 @@ export const remove = async user => {
   if (!user) throw new Error('Missing user');
 
   try {
-    return collectionReference.doc(user.id).delete();
+    const docRef = collectionReference.doc(user.id);
+    return Promise.all([removeFromTeams(docRef), docRef.delete()]);
   } catch (error) {
     throw new Error(`Could not delete user ${user.id}`);
   }
@@ -74,3 +75,19 @@ export const deleteImage = async id => {
     throw new Error(error);
   }
 };
+
+async function removeFromTeams(docRef) {
+  try {
+    const products = await db.collection('products').where('team', 'array-contains', docRef).get();
+
+    return Promise.all(
+      products.docs.map(({ ref }) => {
+        return ref.update({
+          team: arrayRemove(docRef),
+        });
+      })
+    );
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
