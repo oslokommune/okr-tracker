@@ -1,5 +1,6 @@
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
+import User from '@/db/User';
 
 export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, user) => {
   const rejectAccess = () => {
@@ -12,8 +13,14 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   // Check if user is whitelisted
   const userRef = db.collection('users').doc(user.email);
-  const { exists } = await userRef.get();
-  if (!exists) rejectAccess();
+  const documentSnapshot = await userRef.get();
+  if (!documentSnapshot.exists) rejectAccess();
+
+  const { email, displayName } = await documentSnapshot.data();
+
+  if (!displayName) {
+    await User.update({ id: email, displayName: user.displayName });
+  }
 
   // Bind the user object
   const options = {
