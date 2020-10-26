@@ -63,10 +63,13 @@
 import { mapMutations, mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
-import FormComponent from '../components/FormComponent.vue';
 
 export default {
-  components: { FormComponent },
+  name: 'Login',
+
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
   data: () => ({
     email: '',
     password: '',
