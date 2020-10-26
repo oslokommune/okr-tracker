@@ -45,8 +45,7 @@
           <ul class="grid-system">
             <li v-for="product in products" :key="product.id">
               <router-link :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-                <div clasS="product">
-                  <img class="product__image" :src="product.photoURL || '/placeholder-user.svg'" :alt="product.name" />
+                <div class="product">
                   <div class="product__title">
                     <h1>{{ product.department.name }}</h1>
                     <h1 class="product__h2">{{ product.name }}</h1>
@@ -257,16 +256,6 @@ export default {
   display: flex;
   flex-direction: row;
   color: $color-purple;
-
-  &__image {
-    width: 4rem;
-    height: 4rem;
-    border: 0.4rem solid white;
-    border-radius: 0.8rem;
-    -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.99);
-    -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.99);
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.99);
-  }
 
   &__title {
     display: flex;
