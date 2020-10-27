@@ -43,13 +43,12 @@ const routes = [
   {
     path: '/admin',
     beforeEnter: routerGuards.admin,
-    meta: { breadcrumbs: ['home', 'admin'] },
     component: () => import('@/views/Admin/AdminWrapper.vue'),
     children: [
       {
         path: '',
         name: 'Admin',
-        meta: { breadcrumbs: ['home', 'admin', 'createOrganization'] },
+        meta: { breadcrumbs: ['home', 'admin'] },
         component: () => import('@/views/Admin/Admin.vue'),
       },
       {
