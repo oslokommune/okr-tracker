@@ -43,6 +43,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'ItemAdminPeriod',
@@ -104,11 +105,15 @@ export default {
       this.loading = true;
       try {
         await Period.archive(this.activePeriod.id);
+
+        const restoreCallback = await Period.restore.bind(null, this.activeItem.id);
+
         await this.$router.push({ query: {} });
-        this.$toasted.show('Archived');
+
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive product');
+        Toast.showError('Could not archive product');
       }
 
       this.loading = false;
@@ -120,10 +125,10 @@ export default {
         const { id, name } = this.activePeriod;
 
         await Period.update(id, { name, startDate: new Date(this.startDate), endDate: new Date(this.endDate) });
-        this.$toasted.show('Successfully saved changes');
+        Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.showError('Could not save changes');
       }
 
       this.loading = false;

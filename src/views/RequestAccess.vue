@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="back">
-      <router-link class="btn btn--icon btn--ghost" :to="{ name: 'login' }">
+      <router-link class="btn btn--icon btn--ghost" :to="{ name: 'Login' }">
         <i class="icon fa-xs fa fa-fw fa-chevron-left"></i>
         {{ $t('login.backToLogin') }}
       </router-link>
@@ -12,9 +12,7 @@
       <form @submit.prevent="send">
         <label class="form-field">
           <span class="form-label">{{ $t('login.email') }}</span>
-          <div class="form-login">
-            <input class="field" type="email" v-model="email" required />
-          </div>
+          <input class="field" type="email" v-model="email" required />
         </label>
         <button class="btn btn--pri" :disabled="loading">{{ $t('login.requestButton') }}</button>
       </form>
@@ -25,6 +23,7 @@
 <script>
 import RequestAccess from '@/db/RequestAccess';
 import { mapMutations } from 'vuex';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -42,11 +41,11 @@ export default {
       this.loading = true;
       try {
         await RequestAccess.create({ email: this.email });
-        this.$toasted.show('Successfully registered your access request');
+        Toast.show('Successfully registered your access request');
         await this.$router.push({ name: 'Login', query: { redirectFrom: '/' } });
       } catch {
         this.email = '';
-        this.$toasted.error('Could not register your access request');
+        Toast.showError('Could not register your access request');
       }
 
       this.loading = false;

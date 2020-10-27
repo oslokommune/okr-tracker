@@ -58,6 +58,7 @@
 
 <script>
 import Organization from '@/db/Organization';
+import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 import FormComponent from '../../components/FormComponent.vue';
 
@@ -82,10 +83,10 @@ export default {
         }
 
         await Organization.update(id, data);
-        this.$toasted.show('Saved successfully');
+        Toast.savedChanges();
       } catch (error) {
         console.error(error);
-        this.$toasted.show('Could not save changes');
+        Toast.showError('Could not save changes');
       }
     },
 
@@ -99,31 +100,32 @@ export default {
     async archive() {
       try {
         await Organization.archive(this.activeItem.id);
-        this.$toasted.show('Archived');
+        const restoreCallback = await Organization.restore.bind(null, this.activeItem.id);
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not archive organization');
+        Toast.showError('Could not archive organization');
       }
     },
 
     async restore() {
       try {
         await Organization.restore(this.activeItem.id);
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not restore organization');
+        Toast.showError('Could not restore organization');
       }
     },
 
     async deleteDeep() {
       try {
         await Organization.deleteDeep(this.activeItem.id);
-        this.$toasted.show('Permanently deleted organization');
-        this.$router.push('/');
+        Toast.deletedPermanently();
+        await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not delete organization');
+        Toast.showError('Could not delete organization');
       }
     },
   },

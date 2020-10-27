@@ -69,6 +69,7 @@
 <script>
 import Department from '@/db/Department';
 import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 import FormComponent from '../../components/FormComponent.vue';
 
@@ -95,10 +96,10 @@ export default {
         }
 
         await Department.update(id, data);
-        this.$toasted.show('Saved successfully');
+        Toast.savedChanges();
       } catch (error) {
         console.error(error);
-        this.$toasted.show('Could not save changes');
+        Toast.showError('Could not save changes');
       }
 
       this.loading = false;
@@ -115,10 +116,11 @@ export default {
       this.loading = true;
       try {
         await Department.archive(this.activeItem.id);
-        this.$toasted.show('Archived');
+        const restoreCallback = await Department.restore.bind(null, this.activeItem.id);
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not archive department');
+        Toast.showError('Could not archive department');
       }
 
       this.loading = false;
@@ -128,10 +130,10 @@ export default {
       this.loading = true;
       try {
         await Department.restore(this.activeItem.id);
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not restore department');
+        Toast.showError('Could not restore department');
       }
 
       this.loading = false;
@@ -141,11 +143,11 @@ export default {
       this.loading = true;
       try {
         await Department.deleteDeep(this.activeItem.id);
-        this.$toasted.show('Permanently deleted department');
-        this.$router.push('/');
+        Toast.deletedPermanently();
+        await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not delete department');
+        Toast.showError('Could not delete department');
       }
 
       this.loading = false;

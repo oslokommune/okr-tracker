@@ -28,6 +28,7 @@ import { mapState } from 'vuex';
 import marked from 'marked';
 import { sanitize } from 'dompurify';
 import KeyResult from '@/db/KeyResult';
+import * as Toast from '@/util/toasts';
 
 marked.setOptions({
   smartypants: true,
@@ -67,6 +68,7 @@ export default {
       this.loading = true;
       const { notes, id } = this.activeKeyResult;
       await KeyResult.update(id, { notes });
+      Toast.savedChanges();
       this.dirty = false;
       this.loading = false;
       this.editNotes = false;

@@ -15,13 +15,10 @@
         </ul>
       </li>
     </ul>
-
-    <button v-if="!user" @click="login">Login</button>
   </div>
 </template>
 
 <script>
-import { auth, loginProvider } from '@/config/firebaseConfig';
 import { mapGetters, mapState } from 'vuex';
 
 export default {
@@ -32,18 +29,6 @@ export default {
 
   components: {
     ItemRow: () => import('@/components/ItemRow.vue'),
-  },
-
-  methods: {
-    logout() {
-      auth.signOut();
-    },
-
-    login() {
-      auth.signInWithPopup(loginProvider).catch(error => {
-        console.error(error);
-      });
-    },
   },
 };
 </script>

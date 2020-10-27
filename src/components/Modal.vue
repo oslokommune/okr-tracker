@@ -58,6 +58,7 @@
 <script>
 import locale from 'flatpickr/dist/l10n/no';
 import Progress from '@/db/Progress';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Modal',
@@ -99,6 +100,7 @@ export default {
         timestamp: new Date(this.date),
       });
       this.loading = false;
+      Toast.savedChanges();
       this.$emit('close');
     },
   },

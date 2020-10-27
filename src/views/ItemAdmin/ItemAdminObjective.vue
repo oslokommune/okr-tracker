@@ -73,6 +73,7 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
+import * as Toast from '@/util/toasts';
 
 export default {
   components: { FormComponent: () => import('@/components/FormComponent.vue') },
@@ -125,10 +126,10 @@ export default {
           await this.$router.push({ query: { type: 'objective', id } });
         }
 
-        this.$toasted.show('Successfully saved changes');
+        Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.showError('Could not save changes');
       }
 
       this.loading = false;
@@ -137,11 +138,13 @@ export default {
       this.loading = true;
       try {
         await Objective.archive(this.objective.id);
-        this.$router.push({ query: {} });
-        this.$toasted.show('Archived');
+        const restoreCallback = await Objective.restore.bind(null, this.activeItem.id);
+        await this.$router.push({ query: {} });
+
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive product');
+        Toast.showError('Could not archive product');
       }
 
       this.loading = false;

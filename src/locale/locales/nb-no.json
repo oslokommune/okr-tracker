@@ -131,7 +131,8 @@
       "objective": "Lagt til nytt mål for {object}",
       "progression": "Lagt til ny verdi",
       "department": "Lagt til nytt produktområde",
-      "keyResult": "Lagt til nytt nøkkelresultat"
+      "keyResult": "Lagt til nytt nøkkelresultat",
+      "document": "Lagt til nytt dokument"
     },
     "delete": {
       "user": "Slettet bruker {user}",
@@ -161,7 +162,11 @@
       "never": "Lukk og ikke vis igjen"
     },
     "invalidName": "Ugyldig navn",
-    "invalidDate": "Ugyldig dato"
+    "invalidDate": "Ugyldig dato",
+    "request": {
+      "accepted": "Lagt til: {user}",
+      "rejected": "Fjernet: {user}"
+    }
   },
   "validations": {
     "empty": "Kan ikke være tom",

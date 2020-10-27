@@ -15,6 +15,7 @@
 <script>
 import User from '@/db/User';
 import validateEmail from '@/util/validateEmail';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -28,16 +29,16 @@ export default {
       const list = this.emails.trim().split('\n').filter(Boolean).filter(validateEmail);
 
       if (!list.length) {
-        this.$toasted.show('Ugyldig e-postadresse');
+        Toast.showError('Ugyldig e-postadresse');
         return;
       }
 
       try {
         await User.addUsers(list);
         this.$emit('close');
-        this.$toasted.show(`Successfully added ${list.length} users`);
+        Toast.show(`Successfully added ${list.length} users`);
       } catch (error) {
-        this.$toasted.show(`Could not add users`);
+        Toast.showError(`Could not add users`);
         throw new Error(error);
       }
 

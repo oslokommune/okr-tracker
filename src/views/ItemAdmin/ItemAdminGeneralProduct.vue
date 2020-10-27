@@ -79,6 +79,7 @@
 <script>
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 import FormComponent from '../../components/FormComponent.vue';
 
@@ -113,10 +114,10 @@ export default {
         }
 
         Product.update(id, data);
-        this.$toasted.show('Saved successfully');
+        Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.showError('Could not save changes');
       }
       this.loading = false;
     },
@@ -132,11 +133,12 @@ export default {
       this.loading = true;
       try {
         await Product.archive(this.activeItem.id);
-        this.$toasted.show('Archived');
+        const restoreCallback = await Product.restore.bind(null, this.activeItem.id);
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive product');
+        Toast.showError('Could not archive product');
       }
       this.loading = false;
     },
@@ -145,10 +147,10 @@ export default {
       this.loading = true;
       try {
         await Product.restore(this.activeItem.id);
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not restore product');
+        Toast.showError('Could not restore product');
       }
       this.loading = false;
     },
@@ -157,11 +159,11 @@ export default {
       this.loading = true;
       try {
         await Product.deleteDeep(this.activeItem.id);
-        this.$toasted.show('Permanently deleted product');
+        Toast.deletedPermanently();
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not delete product');
+        Toast.showError('Could not delete product');
       }
       this.loading = false;
     },

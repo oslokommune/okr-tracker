@@ -53,3 +53,8 @@ body.using-mouse :focus {
 *:focus {
   outline: 2px solid $color-link;
 }
+
+.toast {
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+}

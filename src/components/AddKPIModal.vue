@@ -74,6 +74,7 @@
 <script>
 import Kpi from '@/db/Kpi';
 import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Modal',
@@ -123,8 +124,10 @@ export default {
 
       try {
         await Kpi.create(data);
+        Toast.createdDocument();
         this.close();
       } catch (error) {
+        Toast.error();
         throw new Error(error);
       }
 

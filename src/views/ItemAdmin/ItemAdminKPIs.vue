@@ -80,6 +80,7 @@
 <script>
 import { mapState } from 'vuex';
 import Kpi from '@/db/Kpi';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -101,9 +102,11 @@ export default {
       kpi.valid = false;
       delete kpi.parent;
       await Kpi.update(kpi.id, kpi);
+      Toast.savedChanges();
     },
     async deleteDeep(id) {
       await Kpi.deleteDeep(id);
+      Toast.deletedPermanently();
     },
   },
 };

@@ -59,6 +59,7 @@
 <script>
 import User from '@/db/User';
 import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
 
 export default {
   components: {
@@ -83,12 +84,14 @@ export default {
   },
 
   methods: {
-    remove(user) {
+    async remove(user) {
       this.loading = true;
-      User.remove(user);
+      await User.remove(user);
       this.$emit('close');
+      Toast.deletedUser(user.displayName);
       this.loading = false;
     },
+
     setImage({ target }) {
       const { files } = target;
       if (files.length !== 1) return;
@@ -96,6 +99,7 @@ export default {
       this.image = image;
       this.uploadImage();
     },
+
     async uploadImage() {
       this.loading = true;
       try {
@@ -125,9 +129,9 @@ export default {
       try {
         this.image = null;
         await User.update(this.thisUser);
-        this.$toasted.show('Success');
+        Toast.savedChanges();
       } catch {
-        this.$toasted.show('Failed');
+        Toast.savedChanges();
       }
 
       this.loading = false;

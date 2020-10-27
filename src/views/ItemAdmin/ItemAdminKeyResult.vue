@@ -143,6 +143,7 @@
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import FormComponent from '@/components/FormComponent.vue';
+import * as Toast from '@/util/toasts';
 
 export default {
   components: { FormComponent },
@@ -213,20 +214,22 @@ export default {
           await this.$router.push({ query: { type: 'keyResult', id } });
         }
 
-        this.$toasted.show('Successfully saved changes');
+        Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.showError('Could not save changes');
       }
     },
     async archive() {
       try {
         await KeyResult.archive(this.keyResult.id);
-        this.$router.push({ query: {} });
-        this.$toasted.show('Archived');
+        const restoreCallback = await KeyResult.restore.bind(null, this.activeItem.id);
+
+        await this.$router.push({ query: {} });
+
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
       } catch (error) {
-        console.log(error);
-        this.$toasted.show('Could not archive product');
+        Toast.showError('Could not archive product');
       }
     },
   },
