@@ -40,7 +40,7 @@
           </thead>
           <tbody></tbody>
           <tr v-for="{ timestamp, value, id } in progress" :key="id">
-            <td>{{ formatDate(timestamp) }}</td>
+            <td>{{ dateTimeShort(timestamp) }}</td>
             <td>{{ value }}</td>
             <td v-if="hasEditRights">
               <button class="btn btn--ter" @click="remove(id)" v-tooltip="$t('tooltip.deleteProgresjon')">
@@ -59,9 +59,9 @@ import { mapGetters, mapState } from 'vuex';
 import Widget from '@/components/widgets/Widget.vue';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
+import { dateTimeShort } from '@/util/formatDate';
 import { extent } from 'd3';
-import { format } from 'date-fns';
-import { nb } from 'date-fns/locale';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -86,8 +86,11 @@ export default {
   },
 
   methods: {
+    dateTimeShort,
+
     remove(id) {
       db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
+      Toast.show(this.$t('toaster.delete.progression'));
     },
 
     renderGraph() {
@@ -107,10 +110,6 @@ export default {
         },
         this.progress
       );
-    },
-
-    formatDate(date) {
-      return format(date.toDate(), 'd/M/Y HH:mm', { locale: nb });
     },
   },
 

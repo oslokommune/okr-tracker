@@ -46,7 +46,6 @@ export default {
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
-    // WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
     WidgetObjectiveWeights: () => import('./WidgetObjectiveWeights.vue'),
   },
 };

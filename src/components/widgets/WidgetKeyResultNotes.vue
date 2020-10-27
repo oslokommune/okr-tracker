@@ -2,7 +2,7 @@
   <Widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
     <div class="notes">
       <div class="notes--margin-bottom" v-if="editNotes">
-        <textarea rows="20" @input="dirty = true" v-model="activeKeyResult.notes"></textarea>
+        <textarea rows="20" @input="dirty = true" v-model="thisKey.notes"></textarea>
       </div>
 
       <div class="notes--margin-bottom" v-else>
@@ -14,7 +14,7 @@
         <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty || loading">
           {{ $t('keyResultPage.notes.save') }}
         </button>
-        <button @click="editNotes = false" class="btn btn--ter">{{ $t('btn.close') }}</button>
+        <button @click="closeNotes" class="btn btn--ter">{{ $t('btn.close') }}</button>
       </div>
       <div v-else>
         <button @click="editNotes = !editNotes" class="btn btn--ter">{{ $t('btn.editNotes') }}</button>
@@ -28,6 +28,7 @@ import { mapState } from 'vuex';
 import marked from 'marked';
 import { sanitize } from 'dompurify';
 import KeyResult from '@/db/KeyResult';
+import * as Toast from '@/util/toasts';
 
 marked.setOptions({
   smartypants: true,
@@ -40,6 +41,7 @@ export default {
     editNotes: false,
     dirty: false,
     loading: false,
+    thisKey: null,
   }),
 
   props: {
@@ -53,8 +55,8 @@ export default {
     ...mapState(['activeKeyResult']),
 
     markdown() {
-      if (!this.activeKeyResult.notes) return null;
-      return sanitize(this.activeKeyResult.notes);
+      if (!this.thisKey.notes) return null;
+      return sanitize(this.thisKey.notes);
     },
   },
 
@@ -65,11 +67,32 @@ export default {
   methods: {
     async saveNotes() {
       this.loading = true;
-      const { notes, id } = this.activeKeyResult;
-      await KeyResult.update(id, { notes });
+      const { notes, id } = this.thisKey;
+
+      try {
+        await KeyResult.update(id, { notes });
+        Toast.savedChanges();
+      } catch {
+        Toast.error(this.$t('toaster.error.notes'));
+      }
+
       this.dirty = false;
-      this.loading = false;
       this.editNotes = false;
+      this.loading = false;
+    },
+
+    closeNotes() {
+      this.editNotes = false;
+      this.thisKey.notes = this.activeKeyResult.notes;
+    },
+  },
+
+  watch: {
+    activeKeyResult: {
+      immediate: true,
+      handler() {
+        this.thisKey = { ...this.activeKeyResult, id: this.activeKeyResult.id };
+      },
     },
   },
 };

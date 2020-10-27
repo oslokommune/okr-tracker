@@ -31,7 +31,7 @@ Vue.use(VueResize);
 Vue.use(Toasted, {
   position: 'bottom-right',
   className: 'toast',
-  duration: 5000,
+  duration: 3500,
 });
 Vue.use(VTooltip);
 Vue.use(VueMeta);
