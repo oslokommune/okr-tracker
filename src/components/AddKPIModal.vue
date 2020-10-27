@@ -34,6 +34,15 @@
               <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
             </label>
             <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
+
+            <div class="sheets-info">
+              <i class="sheets-info__icon fa fa-info-circle"></i>
+              <div>
+                {{ $t('sheet.infoText') }} <br />
+                <strong>{{ serviceAccountAddress }}</strong>
+              </div>
+            </div>
+
             <div class="form-row">
               <form-component
                 input-type="input"
@@ -97,6 +106,10 @@ export default {
 
   computed: {
     ...mapState(['kpis', 'activeItem', 'activeItemRef']),
+
+    serviceAccountAddress() {
+      return process.env.VUE_APP_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
+    },
 
     types() {
       return [
@@ -177,5 +190,22 @@ export default {
   & > .form-group {
     margin: 0;
   }
+}
+
+.sheets-info {
+  display: flex;
+  padding: 1rem;
+  font-size: 0.9rem;
+  background: rgba($color-yellow, 0.2);
+  border-radius: 3px;
+}
+
+.sheets-info__icon {
+  margin-top: 0.2rem;
+  margin-right: 0.5rem;
+}
+
+strong {
+  font-weight: 500;
 }
 </style>
