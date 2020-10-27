@@ -1,6 +1,6 @@
 <template>
   <div v-if="objective">
-    <archived-restore v-if="objective.archived" :deleteDeep="deleteDeep" :restore="restore"></archived-restore>
+    <archived-restore v-if="objective.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-objective" @submit.prevent="handleSubmit(update)">

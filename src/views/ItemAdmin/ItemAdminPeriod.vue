@@ -1,6 +1,6 @@
 <template>
   <div v-if="activePeriod">
-    <archived-restore v-if="activePeriod.archived" :deleteDeep="deleteDeep" :restore="restore"></archived-restore>
+    <archived-restore v-if="activePeriod.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-period" @submit.prevent="handleSubmit(update)">

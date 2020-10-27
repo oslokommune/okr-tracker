@@ -1,6 +1,6 @@
 <template>
   <div v-if="keyResult">
-    <archived-restore v-if="keyResult.archived" :deleteDeep="deleteDeep" :restore="restore"></archived-restore>
+    <archived-restore v-if="keyResult.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-keyresult" @submit.prevent="handleSubmit(update)">
