@@ -76,8 +76,8 @@ export default {
     objectives: [],
     keyResults: [],
     selectedType: null,
-    selectedPeriod: null,
-    selectedObjective: null,
+    selectedPeriodId: null,
+    selectedObjectiveId: null,
   }),
 
   components: {
