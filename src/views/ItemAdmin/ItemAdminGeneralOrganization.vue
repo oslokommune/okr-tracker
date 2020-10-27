@@ -28,17 +28,11 @@
       </form>
     </validation-observer>
 
-    <div class="form-group">
-      <span class="form-label">{{ $t('admin.organization.picture') }}</span>
-      <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
-      <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
-    </div>
-
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-organization">
+      <button class="btn btn--icon btn--pri" form="update-organization" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived">
+      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived" :disabled="loading">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -56,7 +50,7 @@ export default {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
   data: () => ({
-    image: null,
+    loading: false,
   }),
 
   computed: {
@@ -65,13 +59,11 @@ export default {
 
   methods: {
     async update() {
+      this.loading = true;
       try {
         const { id, name, missionStatement } = this.activeItem;
 
         const data = { name, missionStatement };
-        if (this.image) {
-          data.photoURL = await Organization.uploadImage(id, this.image);
-        }
 
         await Organization.update(id, data);
         Toast.savedChanges();
@@ -79,16 +71,13 @@ export default {
         Toast.errorSave();
         throw new Error(error.message);
       }
-    },
 
-    async setImage({ target }) {
-      const { files } = target;
-      if (files.length !== 1) return;
-      const [image] = files;
-      this.image = image;
+      this.loading = false;
     },
 
     async archive() {
+      this.loading = true;
+
       try {
         this.activeItem.archived = true;
         await Organization.archive(this.activeItem.id);
@@ -100,9 +89,13 @@ export default {
         this.activeItem.archived = false;
         throw new Error(error.message);
       }
+
+      this.loading = false;
     },
 
     async restore() {
+      this.loading = true;
+
       try {
         await Organization.restore(this.activeItem.id);
         Toast.revertedDeletion();
@@ -111,9 +104,13 @@ export default {
         Toast.errorRestore(this.activeItem.name);
         throw new Error(error.message);
       }
+
+      this.loading = false;
     },
 
     async deleteDeep() {
+      this.loading = true;
+
       try {
         await Organization.deleteDeep(this.activeItem.id);
         Toast.deletedPermanently();
@@ -123,17 +120,11 @@ export default {
         Toast.errorDelete(this.activeItem.name);
         throw new Error(error.message);
       }
+
+      this.loading = false;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.image {
-  width: 10rem;
-  height: 10rem;
-  margin: 1rem 0;
-  object-fit: cover;
-  border-radius: 3px;
-}
-</style>
+<style lang="scss" scoped></style>
