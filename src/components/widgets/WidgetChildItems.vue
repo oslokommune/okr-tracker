@@ -1,12 +1,16 @@
 <template>
   <Widget :widget-id="widgetId" v-if="children.length" :title="title" :icon="icon">
-    <ul>
-      <li v-for="child in children" :key="child.id">
-        <router-link :to="child.slug">
-          {{ child.name }}
-        </router-link>
-      </li>
-    </ul>
+    <div class="list">
+      <router-link
+        v-for="child in children"
+        :key="child.id"
+        :to="{ name: 'ItemHome', params: { slug: child.slug } }"
+        class="list__link btn btn--ter btn--fw btn--icon"
+      >
+        <span class="icon fa fa-fw fa-chevron-right"></span>
+        {{ child.name }}
+      </router-link>
+    </div>
   </Widget>
 </template>
 
@@ -64,3 +68,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list__link {
+  justify-content: flex-start;
+}
+</style>

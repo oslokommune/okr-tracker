@@ -18,7 +18,9 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button @click="isOpen = true" class="btn btn--ter">{{ $t('keyres.updateValue') }}</button>
+          <button v-if="!activeKeyResult.auto" @click="isOpen = true" class="btn btn--ter">
+            {{ $t('keyres.updateValue') }}
+          </button>
         </div>
 
         <div class="main-widgets__graph">
@@ -28,6 +30,13 @@
           </h3>
 
           <svg class="graph" ref="graph"></svg>
+        </div>
+      </div>
+
+      <div v-if="activeKeyResult.auto" class="auto">
+        <div class="auto__icon fa fa-magic"></div>
+        <div class="auto__text">
+          {{ $t('keyres.autoHelpText') }}
         </div>
       </div>
 
@@ -316,5 +325,21 @@ export default {
   height: 1.75rem;
   margin-right: 0.35rem;
   border-radius: 1rem;
+}
+
+.auto {
+  display: flex;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  font-weight: 500;
+  background: rgba($color-yellow, 0.25);
+  border: 1px solid $color-yellow;
+  border-radius: 3px;
+}
+
+.auto__icon {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  margin-right: 0.75rem;
 }
 </style>

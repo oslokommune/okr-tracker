@@ -1,8 +1,11 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <router-link class="keyResult__name" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
-      >{{ keyRow.name }}
+    <router-link class="keyResult__name" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
+      <div>{{ keyRow.name }}</div>
+      <div v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</div>
     </router-link>
+
+    <div class="keyResult__auto fa fa-magic" v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')"></div>
 
     <ProgressBar
       v-if="view === 'compact'"
@@ -11,9 +14,11 @@
     ></ProgressBar>
     <ProgressBarExpanded v-else class="keyResult__progression" :key-result="keyRow"></ProgressBarExpanded>
 
-    <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
-
-    <form v-if="view !== 'compact' && hasEditRights" class="keyResult__form" @submit.prevent="isOpen = true">
+    <form
+      v-if="view !== 'compact' && hasEditRights && !keyRow.auto"
+      class="keyResult__form"
+      @submit.prevent="isOpen = true"
+    >
       <label class="keyResult__input">
         <input type="number" v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" />
       </label>
@@ -104,6 +109,16 @@ export default {
 
 .keyResult__progression {
   grid-column: 3;
+}
+
+.keyResult__auto {
+  grid-row: 1;
+  grid-column: 1;
+  width: auto;
+  height: 100%;
+  margin-right: 0.5rem;
+  text-align: center;
+  opacity: 0.5;
 }
 
 .keyResult__description {
