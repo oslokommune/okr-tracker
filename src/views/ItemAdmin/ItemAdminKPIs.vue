@@ -1,10 +1,30 @@
 <template>
   <div>
-    <div v-if="kpis.length < 3">
+    <div v-if="kpis.length && kpis.length < 3">
       <button class="btn btn--ghost" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
     </div>
+    <div class="empty">
+      <empty-state
+        v-if="!kpis.length"
+        :icon="'lightbulb'"
+        :heading="$t('empty.noKPIs.heading')"
+        :body="$t('empty.noKPIs.body')"
+      >
+        <button class="btn btn--ter" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
+      </empty-state>
+    </div>
     <div v-if="kpis.length" class="kpis">
-      <div class="kpi" v-for="kpi in kpis" :key="kpi.id">
+      <div class="kpi" v-for="kpi in kpis" :key="kpi.id" :class="{ 'kpi--error': !!kpi.error }">
+        <div class="kpi__validation">
+          <div v-if="kpi.error" class="kpi__error">
+            <span class="fa fa-exclamation-triangle"></span> {{ kpi.error }}
+          </div>
+          <div v-if="kpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
+          <div v-if="!kpi.valid && !kpi.error" class="kpi__loading">
+            <span class="fa fa-spinner fa-pulse"></span> {{ $t('general.loading') }}
+          </div>
+        </div>
+
         <validation-observer v-slot="{ handleSubmit }">
           <form @submit.prevent="handleSubmit(save.bind(null, kpi))" :id="`kpi_${kpi.id}`">
             <label class="form-group">
@@ -56,20 +76,12 @@
               />
             </div>
 
-            <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
-            <button class="btn btn--danger" @click="deleteDeep(kpi.id)">{{ $t('btn.delete') }}</button>
+            <div class="button-row">
+              <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
+              <button class="btn btn--danger" @click="deleteDeep(kpi.id)">{{ $t('btn.delete') }}</button>
+            </div>
           </form>
         </validation-observer>
-
-        <div class="kpi__validation">
-          <div v-if="kpi.error" class="kpi__error">
-            <span class="fa fa-exclamation-triangle"></span> {{ kpi.error }}
-          </div>
-          <div v-if="kpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
-          <div v-if="!kpi.valid && !kpi.error" class="kpi__loading">
-            <span class="fa fa-spinner fa-pulse"></span> {{ $t('general.loading') }}
-          </div>
-        </div>
       </div>
     </div>
 
@@ -94,6 +106,7 @@ export default {
   components: {
     AddKpiModal: () => import('@/components/AddKPIModal.vue'),
     FormComponent: () => import('@/components/FormComponent.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   methods: {
@@ -119,7 +132,19 @@ export default {
   display: grid;
   grid-gap: span(0, 1);
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin-top: 1.5rem;
 
+  @media screen and (min-width: bp(l)) {
+    grid-gap: span(0, 1, span(10));
+    width: span(7, 0, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, 0, span(10));
+  }
+}
+
+.empty {
   @media screen and (min-width: bp(l)) {
     grid-gap: span(0, 1, span(10));
     width: span(7, 0, span(10));
@@ -134,7 +159,6 @@ export default {
   display: grid;
   grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  margin: 0.5rem 0 1rem;
 
   & > .form-group {
     margin: 0;
@@ -147,23 +171,30 @@ export default {
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+
+  &--error {
+    box-shadow: 0 0 2px 3px rgba($color-red, 0.4);
+  }
+}
+
+.kpi__validation {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $color-grey-100;
 }
 
 .kpi__valid {
-  margin-top: 1rem;
   padding: 0.5rem;
   background: $color-green;
   border-radius: 2px;
 }
 
 .kpi__loading {
-  margin-top: 1rem;
   padding: 0.5rem;
   border-radius: 2px;
 }
 
 .kpi__error {
-  margin-top: 1rem;
   padding: 0.5rem;
   background: $color-red;
   border-radius: 2px;

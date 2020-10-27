@@ -1,5 +1,7 @@
 <template>
   <div v-if="activeItem">
+    <archived-restore v-if="activeItem.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
+
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-organization" @submit.prevent="handleSubmit(update)">
         <form-component
@@ -32,19 +34,6 @@
       <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
     </div>
 
-    <div v-if="activeItem.archived" class="archived">
-      <h2 class="title-2">{{ $t('archivedRestore.heading') }}</h2>
-      <p>{{ $t('archivedRestore.message') }}</p>
-      <div class="button-row">
-        <button class="btn btn--icon" @click="restore" :disabled="loading">
-          <span class="icon fa fa-fw fa-recycle"></span> {{ $t('archivedRestore.btn.restore') }}
-        </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep" :disabled="loading">
-          <span class="icon fa fa-fw fa-trash"></span> {{ $t('archivedRestore.btn.delete') }}
-        </button>
-      </div>
-    </div>
-
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-organization">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
@@ -60,10 +49,11 @@
 import Organization from '@/db/Organization';
 import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import FormComponent from '../../components/FormComponent.vue';
 
 export default {
-  components: { FormComponent },
+  components: { FormComponent, ArchivedRestore },
   data: () => ({
     image: null,
   }),
@@ -99,12 +89,14 @@ export default {
 
     async archive() {
       try {
+        this.activeItem.archived = true;
         await Organization.archive(this.activeItem.id);
         const restoreCallback = await Organization.restore.bind(null, this.activeItem.id);
         Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
       } catch {
         Toast.showError('Could not archive organization');
+        this.activeItem.archived = false;
       }
     },
 
@@ -133,16 +125,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2.5rem -0.25rem -0.25rem;
-
-  > .btn {
-    margin: 0.25rem;
-  }
-}
-
 .image {
   width: 10rem;
   height: 10rem;

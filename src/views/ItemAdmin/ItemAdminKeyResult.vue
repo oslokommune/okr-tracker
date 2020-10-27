@@ -1,5 +1,7 @@
 <template>
   <div v-if="keyResult">
+    <archived-restore v-if="keyResult.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
+
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-keyresult" @submit.prevent="handleSubmit(update)">
         <form-component
@@ -144,9 +146,10 @@ import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import FormComponent from '@/components/FormComponent.vue';
 import * as Toast from '@/util/toasts';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
-  components: { FormComponent },
+  components: { FormComponent, ArchivedRestore },
 
   data: () => ({
     keyResult: null,
@@ -222,14 +225,36 @@ export default {
     },
     async archive() {
       try {
+        await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
         await KeyResult.archive(this.keyResult.id);
         const restoreCallback = await KeyResult.restore.bind(null, this.activeItem.id);
 
-        await this.$router.push({ query: {} });
-
         Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
       } catch (error) {
-        Toast.showError('Could not archive product');
+        this.$toasted.show('Could not archive product');
+        throw new Error(error.message);
+      }
+    },
+
+    async restore() {
+      try {
+        await KeyResult.restore(this.keyResult.id);
+        this.keyResult.archived = false;
+        this.$toasted.show('Restored');
+      } catch (error) {
+        this.$toasted.show('Could not restore product');
+        throw new Error(error.message);
+      }
+    },
+
+    async deleteDeep() {
+      try {
+        await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
+        await KeyResult.deleteDeep(this.keyResult.id);
+        this.$toasted.show('Successfully deleted');
+      } catch (error) {
+        this.$toasted.show('Could not delete product');
+        throw new Error(error.message);
       }
     },
   },
@@ -237,16 +262,6 @@ export default {
 </script>
 
 <style lang="scss">
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2.5rem -0.25rem -0.25rem;
-
-  > .btn {
-    margin: 0.25rem;
-  }
-}
-
 .toggle__container {
   display: flex;
   align-items: center;

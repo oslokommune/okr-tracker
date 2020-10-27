@@ -53,10 +53,14 @@ export default {
 
   @media screen and (min-width: bp(m)) {
     grid-row: 1;
-    grid-column: 1 / span 6;
+    grid-column: 1 / span all;
   }
 
   @media screen and (min-width: bp(l)) {
+    grid-column: 1 / span 8;
+  }
+
+  @media screen and (min-width: bp(xl)) {
     grid-column: 1 / span 7;
   }
 }
@@ -66,8 +70,8 @@ export default {
   grid-column: 1 / span 12;
 
   @media screen and (min-width: bp(m)) {
-    grid-row: 1;
-    grid-column: 7 / span 3;
+    grid-row: 2;
+    grid-column: 1 / span all;
   }
 
   @media screen and (min-width: bp(l)) {

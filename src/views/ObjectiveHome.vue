@@ -11,6 +11,18 @@
 
       <section class="key-results">
         <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
+
+        <empty-state
+          v-if="!keyResults.length"
+          :icon="'poop'"
+          :heading="$t('empty.noKeyResults.heading')"
+          :body="$t('empty.noKeyResults.body')"
+        >
+          <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">{{
+            $t('empty.noKeyResults.linkText')
+          }}</router-link>
+        </empty-state>
+
         <div class="key-results__list">
           <KeyResultRow
             v-for="keyResult in keyResults"
@@ -27,7 +39,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import routerGuard from '@/router/router-guards/objectiveHome';
 
@@ -38,6 +50,7 @@ export default {
 
   computed: {
     ...mapState(['activeObjective']),
+    ...mapGetters(['hasEditRights']),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -70,6 +83,7 @@ export default {
   components: {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 };
 </script>
