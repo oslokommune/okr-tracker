@@ -11,7 +11,10 @@ async function handleKeyResultProgress(change, { params }) {
   const { keyResultId } = params;
   const keyResultRef = db.doc(`keyResults/${keyResultId}`);
 
-  const { startValue, targetValue, objective } = await keyResultRef.get().then(snapshot => snapshot.data());
+  const keyres = await keyResultRef.get();
+  if (!keyres.exists) return false;
+
+  const { startValue, targetValue, objective } = keyres.data();
 
   const currentValue = await keyResultRef
     .collection('progress')

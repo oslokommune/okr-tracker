@@ -15,7 +15,7 @@ export const getters = {
       org.children = departments
         .filter(({ organization }) => organization.id === org.id)
         .map(dept => {
-          dept.children = products.filter(({ department }) => department.id === dept.id);
+          dept.children = products.filter(({ department }) => department && department.id === dept.id);
           return dept;
         });
       return org;
