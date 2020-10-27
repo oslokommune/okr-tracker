@@ -103,6 +103,7 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort } from '@/util/formatDate';
 import routerGuard from '@/router/router-guards/keyResultHome';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'KeyResultHome',
@@ -148,7 +149,7 @@ export default {
 
     remove(id) {
       Progress.remove(this.activeKeyResult.id, id);
-      this.$toasted.show(this.$tc('toaster.delete.progression'));
+      Toast.show(this.$t('toaster.delete.progression'));
     },
 
     hasEditPermissions() {

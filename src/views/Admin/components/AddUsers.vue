@@ -15,6 +15,7 @@
 <script>
 import User from '@/db/User';
 import validateEmail from '@/util/validateEmail';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -28,16 +29,16 @@ export default {
       const list = this.emails.trim().split('\n').filter(Boolean).filter(validateEmail);
 
       if (!list.length) {
-        this.$toasted.error(this.$tc('toaster.error.email'));
+        Toast.error(this.$t('toaster.error.email'));
         return;
       }
 
       try {
         await User.addUsers(list);
         this.$emit('close');
-        this.$toasted.show(this.$tc('toaster.add.users', list.length, { count: list.length }));
+        Toast.show(this.$tc('toaster.add.users', list.length, { count: list.length }));
       } catch (error) {
-        this.$toasted.error(this.$tc('toaster.error.users', list.length));
+        Toast.error(this.$tc('toaster.error.users', list.length));
         throw new Error(error);
       }
 

@@ -61,6 +61,7 @@ import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort } from '@/util/formatDate';
 import { extent } from 'd3';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -89,7 +90,7 @@ export default {
 
     remove(id) {
       db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
-      this.$toasted.show(this.$tc('toaster.delete.progression'));
+      Toast.show(this.$t('toaster.delete.progression'));
     },
 
     renderGraph() {

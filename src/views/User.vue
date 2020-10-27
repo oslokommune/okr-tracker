@@ -127,7 +127,7 @@ export default {
         Toast.savedChanges();
       } catch (error) {
         console.error(error);
-        Toast.error();
+        Toast.errorSave();
       }
 
       this.loading = false;

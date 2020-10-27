@@ -18,6 +18,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import requestAccess from '@/db/RequestAccess';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -31,11 +32,11 @@ export default {
   methods: {
     async acceptRequest(obj) {
       await requestAccess.accept(obj.id);
-      this.$toasted.show(this.$tc('toaster.request.accepted', null, { user: obj.email }));
+      Toast.show(this.$t('toaster.request.accepted', { user: obj.email }));
     },
     async rejectRequest(obj) {
       await requestAccess.reject(obj.id);
-      this.$toasted.error(this.$tc('toaster.request.rejected', null, { user: obj.email }));
+      Toast.error(this.$t('toaster.request.rejected', { user: obj.email }));
     },
   },
 };

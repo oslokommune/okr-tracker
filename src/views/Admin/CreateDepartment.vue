@@ -48,6 +48,7 @@ import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import * as Toast from '@/util/toasts';
 
 export default {
   components: {
@@ -80,9 +81,9 @@ export default {
 
       try {
         await Department.create(data).then(this.findSlugAndRedirect);
-        this.$toasted.show(this.$tc('toaster.add.department'));
+        Toast.show(this.$t('toaster.add.department'));
       } catch (error) {
-        this.$toasted.error(this.$tc('toaster.error.department'));
+        Toast.error(this.$t('toaster.error.department'));
         throw new Error(error);
       }
 

@@ -88,10 +88,10 @@ export default {
       this.loading = true;
       try {
         await User.remove(user);
-        this.$toasted.show(this.$tc('toaster.delete.user', null, { user: user.displayName }));
+        Toast.show(this.$t('toaster.delete.user', { user: user.displayName }));
         this.$emit('close');
       } catch {
-        this.$toasted.error(this.$tc('toaster.error.user', null, { user: user.displayName }));
+        Toast.error(this.$t('toaster.error.user', { user: user.displayName }));
       }
       this.loading = false;
     },

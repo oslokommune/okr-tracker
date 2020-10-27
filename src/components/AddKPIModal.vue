@@ -83,6 +83,7 @@
 <script>
 import Kpi from '@/db/Kpi';
 import { mapState } from 'vuex';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Modal',
@@ -136,10 +137,10 @@ export default {
 
       try {
         await Kpi.create(data);
-        this.$toasted.show(this.$tc('toaster.add.kpi'));
+        Toast.show(this.$t('toaster.add.kpi'));
         this.close();
       } catch (error) {
-        this.$toasted.error(this.$tc('toaster.error.kpi'));
+        Toast.error(this.$t('toaster.error.kpi'));
         throw new Error(error);
       }
 

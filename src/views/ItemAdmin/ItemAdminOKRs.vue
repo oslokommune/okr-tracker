@@ -260,7 +260,7 @@ export default {
       try {
         const { id } = await Period.create({ name: 'placeholder', parent: this.activeItemRef, startDate, endDate });
 
-        this.$toasted.show(this.$tc('toaster.add.period'));
+        Toast.show(this.$t('toaster.add.period'));
 
         this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
@@ -273,7 +273,7 @@ export default {
         const period = db.collection('periods').doc(this.selectedPeriodId);
         const { id } = await Objective.create({ name: 'placeholder', parent: this.activeItemRef, weight: 1, period });
 
-        this.$toasted.show(this.$tc('toaster.add.objective', null, { period: period.name }));
+        Toast.show(this.$t('toaster.add.objective', { period: period.name }));
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
@@ -295,7 +295,7 @@ export default {
 
         const { id } = await KeyResult.create(data);
 
-        this.$toasted.show(this.$tc('toaster.add.keyResult'));
+        Toast.show(this.$t('toaster.add.keyResult'));
 
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {

@@ -73,7 +73,7 @@ export default {
         await KeyResult.update(id, { notes });
         Toast.savedChanges();
       } catch {
-        this.$toasted.error(this.$tc('toaster.error.notes'));
+        Toast.error(this.$t('toaster.error.notes'));
       }
 
       this.dirty = false;

@@ -17,10 +17,6 @@ const close = (e, toastObject) => {
   toastObject.goAway(0);
 };
 
-export function error() {
-  return showError(i18n.tc('toaster.error'));
-}
-
 export function errorSave() {
   return showError(i18n.tc('toaster.error.save'));
 }
