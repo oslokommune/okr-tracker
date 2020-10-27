@@ -60,8 +60,6 @@ import Department from '@/db/Department';
 import { db } from '@/config/firebaseConfig';
 import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import FormComponent from '@/components/FormComponent.vue';
 
 export default {
   data: () => ({
@@ -71,7 +69,10 @@ export default {
   computed: {
     ...mapState(['activeItem', 'organizations']),
   },
-  components: { FormComponent, ArchivedRestore },
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+  },
 
   methods: {
     async update() {

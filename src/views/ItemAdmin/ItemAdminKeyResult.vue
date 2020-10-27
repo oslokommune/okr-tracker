@@ -144,12 +144,13 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
-import FormComponent from '@/components/FormComponent.vue';
 import * as Toast from '@/util/toasts';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
-  components: { FormComponent, ArchivedRestore },
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+  },
 
   data: () => ({
     keyResult: null,

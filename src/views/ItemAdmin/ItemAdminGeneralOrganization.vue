@@ -49,11 +49,12 @@
 import Organization from '@/db/Organization';
 import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import FormComponent from '../../components/FormComponent.vue';
 
 export default {
-  components: { FormComponent, ArchivedRestore },
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+  },
   data: () => ({
     image: null,
   }),

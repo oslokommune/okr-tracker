@@ -48,10 +48,12 @@ import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
-import FormComponent from '@/components/FormComponent.vue';
 
 export default {
-  components: { FormComponent },
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
+
   data: () => ({
     name: '',
     missionStatement: '',
