@@ -6,6 +6,8 @@ export default async ({ state, commit }) => {
   const filterDepartments = ({ organization }) => {
     // No active item is set, show no departments
     if (!activeItem) return false;
+    if (!organization) return false;
+
     // Active item is organization, show all its departments
     if (activeItem.id === organization.id) return true;
     // Active item is a child of organization, show its all departments
