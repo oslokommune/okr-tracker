@@ -39,7 +39,7 @@ export default {
   methods: {
     update() {
       // const myCall = functions.httpsCallable('triggerScheduledFunction');
-      console.log(this.activeKeyResult.path);
+      console.log(this.activeKeyResult);
     },
   },
 };

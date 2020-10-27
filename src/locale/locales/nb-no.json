@@ -211,7 +211,9 @@
     "chooseDate": "Velg dato",
     "belongsTo": "Tilhører mål",
     "numberOfUpdates": "Antall oppdateringer",
-    "weight": "Vekt"
+    "weight": "Vekt",
+    "automatic": "Oppdateres automatisk",
+    "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument."
   },
   "objective": {
     "period": "Periode",
