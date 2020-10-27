@@ -40,7 +40,7 @@
               >
                 <span class="miller__icon fa" :class="icon"></span>
                 <span class="miller__label">{{ name }}</span>
-                <span class="miller__archived fa fa-recycle" v-if="archived"></span>
+                <span class="miller__archived fa fa-file-archive" v-if="archived"></span>
               </router-link>
             </li>
           </ul>
@@ -131,8 +131,8 @@ export default {
     '$route.query': {
       immediate: true,
       async handler(query) {
-        await this.setItems(query);
         this.setFormComponent(query);
+        this.setItems(query);
       },
     },
     async showArchived() {
@@ -178,7 +178,7 @@ export default {
       }
 
       if (!this.selectedType) {
-        this.bindPeriods();
+        await this.bindPeriods();
       }
 
       if (type === 'period') {
@@ -400,12 +400,17 @@ export default {
 }
 
 .miller__icon {
+  align-self: flex-start;
   margin-right: 0.35rem;
+  padding-top: 0.2rem;
   opacity: 0.75;
 }
 
 .miller__archived {
+  align-self: flex-start;
   margin-left: auto;
+  padding-top: 0.2rem;
+  padding-left: 0.5rem;
 }
 
 .details {

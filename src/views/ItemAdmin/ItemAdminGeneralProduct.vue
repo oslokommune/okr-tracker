@@ -1,5 +1,7 @@
 <template>
   <div v-if="activeItem">
+    <archived-restore v-if="activeItem.archived" :deleteDeep="deleteDeep" :restore="restore"></archived-restore>
+
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-product" @submit.prevent="handleSubmit(update)">
         <form-component
@@ -52,19 +54,6 @@
       <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
     </div>
 
-    <div v-if="activeItem.archived" class="archived">
-      <h2 class="title-2">{{ $t('archivedRestore.heading') }}</h2>
-      <p>{{ $t('archivedRestore.message') }}</p>
-      <div class="button-row">
-        <button class="btn btn--icon" @click="restore" :disabled="loading">
-          <span class="icon fa fa-fw fa-recycle"></span> {{ $t('archivedRestore.btn.restore') }}
-        </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep" :disabled="loading">
-          <span class="icon fa fa-fw fa-trash"></span> {{ $t('archivedRestore.btn.delete') }}
-        </button>
-      </div>
-    </div>
-
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-product" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
@@ -80,10 +69,11 @@
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
-import FormComponent from '../../components/FormComponent.vue';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import FormComponent from '@/components/FormComponent.vue';
 
 export default {
-  components: { FormComponent },
+  components: { FormComponent, ArchivedRestore },
 
   data: () => ({
     users: [],
@@ -131,11 +121,13 @@ export default {
     async archive() {
       this.loading = true;
       try {
+        this.activeItem.archived = true;
         await Product.archive(this.activeItem.id);
         this.$toasted.show('Archived');
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
         console.log(error);
+        this.activeItem.archived = false;
         this.$toasted.show('Could not archive product');
       }
       this.loading = false;
@@ -170,15 +162,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2.5rem -0.25rem -0.25rem;
-
-  > .btn {
-    margin: 0.25rem;
-  }
-}
 .image {
   width: 10rem;
   height: 10rem;

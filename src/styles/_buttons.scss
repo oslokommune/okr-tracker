@@ -3,6 +3,16 @@
   flex-direction: column;
 }
 
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2.5rem -0.25rem -0.25rem;
+
+  > .btn {
+    margin: 0.25rem;
+  }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

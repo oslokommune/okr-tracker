@@ -9,8 +9,9 @@
             <div class="col__row" v-for="organization in organizations" :key="organization.id">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }">
                 <span class="col__icon fa fa-industry"></span>
-                {{ organization.name }}</router-link
-              >
+                {{ organization.name }}
+                <span v-if="organization.archived" class="col__archived fa fa-file-archive"></span>
+              </router-link>
             </div>
           </div>
           <div class="col__footer">
@@ -28,8 +29,9 @@
             <div class="col__row" v-for="department in departments" :key="department.id">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: department.slug } }">
                 <span class="col__icon fa fa-cubes"></span>
-                {{ department.name }}</router-link
-              >
+                {{ department.name }}
+                <span v-if="department.archived" class="col__archived fa fa-file-archive"></span>
+              </router-link>
             </div>
           </div>
           <div class="col__footer">
@@ -47,8 +49,9 @@
             <div class="col__row" v-for="product in products" :key="product.id">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: product.slug } }">
                 <span class="col__icon fa fa-cube"></span>
-                {{ product.name }}</router-link
-              >
+                {{ product.name }}
+                <span v-if="product.archived" class="col__archived fa fa-file-archive"></span>
+              </router-link>
             </div>
           </div>
           <div class="col__footer">
@@ -142,11 +145,18 @@ export default {
 }
 
 .col__icon {
+  flex-shrink: 0;
   margin-right: 0.25rem;
 }
 
+.col__archived {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .col__link {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 0.5rem 1rem;
   color: $color-purple;
   font-weight: 500;

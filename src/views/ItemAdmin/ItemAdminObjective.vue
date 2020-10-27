@@ -1,5 +1,7 @@
 <template>
   <div v-if="objective">
+    <archived-restore v-if="objective.archived" :deleteDeep="deleteDeep" :restore="restore"></archived-restore>
+
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-objective" @submit.prevent="handleSubmit(update)">
         <form-component
@@ -73,9 +75,10 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
-  components: { FormComponent: () => import('@/components/FormComponent.vue') },
+  components: { FormComponent: () => import('@/components/FormComponent.vue'), ArchivedRestore },
   data: () => ({
     objective: null,
     periods: [],
@@ -136,31 +139,43 @@ export default {
     async archive() {
       this.loading = true;
       try {
+        await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.archive(this.objective.id);
-        this.$router.push({ query: {} });
         this.$toasted.show('Archived');
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive product');
+        this.$toasted.show('Could not archive objective');
       }
 
       this.loading = false;
+    },
+
+    async restore() {
+      try {
+        await Objective.restore(this.objective.id);
+        this.objective.archived = false;
+        this.$toasted.show('Restored');
+      } catch (error) {
+        this.$toasted.show('Could not restore objective');
+        throw new Error(error.message);
+      }
+    },
+
+    async deleteDeep() {
+      try {
+        await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
+        await Objective.deleteDeep(this.objective.id);
+        this.$toasted.show('Successfully deleted');
+      } catch (error) {
+        this.$toasted.show('Could not delete objective');
+        throw new Error(error.message);
+      }
     },
   },
 };
 </script>
 
 <style lang="scss">
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2.5rem -0.25rem -0.25rem;
-
-  > .btn {
-    margin: 0.25rem;
-  }
-}
-
 .selected-icon {
   display: inline-block;
   margin-right: 0.5rem;

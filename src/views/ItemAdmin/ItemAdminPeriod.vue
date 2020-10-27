@@ -1,5 +1,7 @@
 <template>
   <div v-if="activePeriod">
+    <archived-restore v-if="activePeriod.archived" :deleteDeep="deleteDeep" :restore="restore"></archived-restore>
+
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-period" @submit.prevent="handleSubmit(update)">
         <form-component
@@ -43,11 +45,12 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
   name: 'ItemAdminPeriod',
 
-  components: { FormComponent: () => import('@/components/FormComponent.vue') },
+  components: { FormComponent: () => import('@/components/FormComponent.vue'), ArchivedRestore },
 
   props: {
     data: {
@@ -103,15 +106,38 @@ export default {
     async archive() {
       this.loading = true;
       try {
-        await Period.archive(this.activePeriod.id);
+        this.activePeriod.archived = true;
         await this.$router.push({ query: {} });
+        await Period.archive(this.activePeriod.id);
         this.$toasted.show('Archived');
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive product');
+        this.$toasted.show('Could not archive period');
       }
 
       this.loading = false;
+    },
+
+    async restore() {
+      try {
+        await Period.restore(this.activePeriod.id);
+        this.activePeriod.archived = false;
+        this.$toasted.show('Restored');
+      } catch (error) {
+        this.$toasted.show('Could not restore period');
+        throw new Error(error.message);
+      }
+    },
+
+    async deleteDeep() {
+      try {
+        await this.$router.push({ query: {} });
+        await Period.deleteDeep(this.activePeriod.id);
+        this.$toasted.show('Successfully deleted');
+      } catch (error) {
+        this.$toasted.show('Could not delete period');
+        throw new Error(error.message);
+      }
     },
 
     async update() {
@@ -132,14 +158,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2.5rem -0.25rem -0.25rem;
-
-  > .btn {
-    margin: 0.25rem;
-  }
-}
-</style>
+<style lang="scss"></style>
