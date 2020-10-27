@@ -94,7 +94,9 @@
     "editItem": "Endre «{item}»",
     "upload": "Last opp",
     "minimize": "Minimer",
-    "expand": "Ekspander"
+    "expand": "Ekspander",
+    "deletePermanently": "Slett permanent",
+    "restore": "Gjenopprett"
   },
   "pageHeader": {
     "header": "Hjem",
@@ -563,5 +565,9 @@
       "body": "«Team Ninja» much?",
       "heading": "Ingen teammedlemmer"
     }
+  },
+  "archived": {
+    "heading": "Arkivert",
+    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet. Ved å permanent slette objektet slettes også tilknyttet data."
   }
 }
