@@ -75,8 +75,8 @@ export default {
         await Organization.update(id, data);
         Toast.savedChanges();
       } catch (error) {
-        console.error(error);
-        Toast.showError('Could not save changes');
+        Toast.errorSave();
+        throw new Error(error.message);
       }
     },
 
@@ -94,9 +94,10 @@ export default {
         const restoreCallback = await Organization.restore.bind(null, this.activeItem.id);
         Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
-        Toast.showError('Could not archive organization');
+      } catch (error) {
+        Toast.errorArchive(this.activeItem.name);
         this.activeItem.archived = false;
+        throw new Error(error.message);
       }
     },
 
@@ -105,8 +106,9 @@ export default {
         await Organization.restore(this.activeItem.id);
         Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
-        Toast.showError('Could not restore organization');
+      } catch (error) {
+        Toast.errorRestore(this.activeItem.name);
+        throw new Error(error.message);
       }
     },
 
@@ -116,8 +118,9 @@ export default {
         Toast.deletedPermanently();
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
-        Toast.showError('Could not delete organization');
+      } catch (error) {
+        Toast.errorDelete(this.activeItem.name);
+        throw new Error(error.message);
       }
     },
   },

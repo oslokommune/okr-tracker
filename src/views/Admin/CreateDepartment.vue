@@ -49,7 +49,6 @@ import Department from '@/db/Department';
 import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import FormComponent from '@/components/FormComponent.vue';
-import * as Toast from '@/util/toasts';
 
 export default {
   components: { FormComponent },
@@ -79,9 +78,9 @@ export default {
 
       try {
         await Department.create(data).then(this.findSlugAndRedirect);
-        Toast.createdDocument();
+        this.$toasted.show(this.$tc('toaster.add.department'));
       } catch (error) {
-        Toast.showError('Could not create department');
+        this.$toasted.error(this.$tc('toaster.error.department'));
         throw new Error(error);
       }
 

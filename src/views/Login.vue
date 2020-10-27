@@ -63,7 +63,6 @@
 import { mapMutations, mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Login',
@@ -94,7 +93,7 @@ export default {
       this.pending = true;
       try {
         const user = await auth.signInWithPopup(loginProvider);
-        Toast.loggedIn(user.additionalUserInfo.profile);
+        this.$toasted.show(this.$tc('toaster.welcome', null, { user: user.name ? user.name : '' }));
       } catch (e) {
         this.pending = false;
         this.SET_LOGIN_ERROR(2);

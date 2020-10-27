@@ -114,12 +114,20 @@ export default {
       kpi.error = false;
       kpi.valid = false;
       delete kpi.parent;
-      await Kpi.update(kpi.id, kpi);
-      Toast.savedChanges();
+      try {
+        await Kpi.update(kpi.id, kpi);
+        Toast.savedChanges();
+      } catch {
+        Toast.errorSave();
+      }
     },
     async deleteDeep(id) {
-      await Kpi.deleteDeep(id);
-      Toast.deletedPermanently();
+      try {
+        await Kpi.deleteDeep(id);
+        Toast.deletedPermanently();
+      } catch {
+        Toast.errorDelete();
+      }
     },
   },
 };

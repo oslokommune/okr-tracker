@@ -88,8 +88,8 @@ export default {
         await Department.update(id, data);
         Toast.savedChanges();
       } catch (error) {
-        console.error(error);
-        Toast.showError('Could not save changes');
+        Toast.errorSave();
+        throw new Error(error.message);
       }
 
       this.loading = false;
@@ -110,9 +110,10 @@ export default {
         const restoreCallback = await Department.restore.bind(null, this.activeItem.id);
         Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
-        Toast.showError('Could not archive department');
+      } catch (error) {
+        Toast.errorArchive(this.activeItem.name);
         this.activeItem.archived = false;
+        throw new Error(error.message);
       }
 
       this.loading = false;
@@ -124,8 +125,9 @@ export default {
         await Department.restore(this.activeItem.id);
         Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
-        Toast.showError('Could not restore department');
+      } catch (error) {
+        Toast.errorRestore(this.activeItem.name);
+        throw new Error(error.message);
       }
 
       this.loading = false;
@@ -139,7 +141,7 @@ export default {
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
-        Toast.showError('Could not delete department');
+        Toast.errorDelete(this.activeItem.name);
         throw new Error(error.message);
       }
 

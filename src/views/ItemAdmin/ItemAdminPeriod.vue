@@ -111,12 +111,12 @@ export default {
         await this.$router.push({ query: {} });
         await Period.archive(this.activePeriod.id);
 
-        const restoreCallback = await Period.restore.bind(null, this.activeItem.id);
+        const restoreCallback = await Period.restore.bind(null, this.activePeriod.id);
 
-        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
+        Toast.deletedRegret({ name: this.activePeriod.name, callback: restoreCallback });
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive period');
+        Toast.errorArchive(this.activePeriod.name);
       }
 
       this.loading = false;
@@ -126,9 +126,9 @@ export default {
       try {
         await Period.restore(this.activePeriod.id);
         this.activePeriod.archived = false;
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
       } catch (error) {
-        this.$toasted.show('Could not restore period');
+        Toast.errorRestore(this.activePeriod.name);
         throw new Error(error.message);
       }
     },
@@ -137,9 +137,9 @@ export default {
       try {
         await this.$router.push({ query: {} });
         await Period.deleteDeep(this.activePeriod.id);
-        this.$toasted.show('Successfully deleted');
+        Toast.deletedPermanently();
       } catch (error) {
-        this.$toasted.show('Could not delete period');
+        Toast.errorDelete(this.activePeriod.name);
         throw new Error(error.message);
       }
     },
@@ -153,7 +153,7 @@ export default {
         Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        Toast.showError('Could not save changes');
+        Toast.errorSave();
       }
 
       this.loading = false;

@@ -131,10 +131,10 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-keyresult">
+      <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!keyResult.archived">
+      <button class="btn btn--icon btn--danger" @click="archive" v-if="!keyResult.archived" :disabled="loading">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -155,6 +155,7 @@ export default {
     keyResult: null,
     objectives: [],
     changedObjective: false,
+    loading: false,
   }),
   props: {
     data: {
@@ -180,6 +181,8 @@ export default {
 
   methods: {
     async update() {
+      this.loading = true;
+
       try {
         const {
           id,
@@ -220,42 +223,54 @@ export default {
         Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        Toast.showError('Could not save changes');
+        Toast.errorSave();
       }
+
+      this.loading = false;
     },
     async archive() {
+      this.loading = true;
       try {
         await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
         await KeyResult.archive(this.keyResult.id);
         const restoreCallback = await KeyResult.restore.bind(null, this.activeItem.id);
 
-        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
+        Toast.deletedRegret({ name: this.keyResult.name, callback: restoreCallback });
       } catch (error) {
-        this.$toasted.show('Could not archive product');
+        Toast.errorArchive(this.keyResult.name);
         throw new Error(error.message);
       }
+
+      this.loading = false;
     },
 
     async restore() {
+      this.loading = true;
+
       try {
         await KeyResult.restore(this.keyResult.id);
         this.keyResult.archived = false;
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
       } catch (error) {
-        this.$toasted.show('Could not restore product');
+        Toast.errorRestore(this.keyResult.name);
         throw new Error(error.message);
       }
+      this.loading = false;
     },
 
     async deleteDeep() {
+      this.loading = true;
+
       try {
         await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
         await KeyResult.deleteDeep(this.keyResult.id);
-        this.$toasted.show('Successfully deleted');
+        Toast.deletedPermanently();
       } catch (error) {
-        this.$toasted.show('Could not delete product');
+        Toast.errorDelete(this.keyResult.name);
         throw new Error(error.message);
       }
+
+      this.loading = false;
     },
   },
 };

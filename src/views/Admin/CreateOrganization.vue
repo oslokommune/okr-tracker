@@ -36,7 +36,6 @@
 <script>
 import Organization from '@/db/Organization';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
-import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -62,9 +61,9 @@ export default {
 
       try {
         await Organization.create(data).then(findSlugAndRedirect);
-        Toast.createdDocument();
+        this.$toasted.show('toaster.add.organization');
       } catch (error) {
-        Toast.showError('Could not create organization');
+        this.$toasted.error('toaster.error.organization');
         throw new Error(error);
       }
 

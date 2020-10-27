@@ -105,9 +105,8 @@ export default {
 
         Product.update(id, data);
         Toast.savedChanges();
-      } catch (error) {
-        console.log(error);
-        Toast.showError('Could not save changes');
+      } catch {
+        Toast.errorSave();
       }
       this.loading = false;
     },
@@ -127,9 +126,8 @@ export default {
         const restoreCallback = await Product.restore.bind(null, this.activeItem.id);
         Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
-      } catch (error) {
-        console.log(error);
-        Toast.showError('Could not archive product');
+      } catch {
+        Toast.errorArchive(this.activeItem.name);
         this.activeItem.archived = false;
       }
       this.loading = false;
@@ -142,7 +140,7 @@ export default {
         Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        Toast.showError('Could not restore product');
+        Toast.errorRestore(this.activeItem.id);
       }
       this.loading = false;
     },
@@ -155,7 +153,7 @@ export default {
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        Toast.showError('Could not delete product');
+        Toast.errorDelete(this.activeItem.name);
       }
       this.loading = false;
     },

@@ -86,9 +86,13 @@ export default {
   methods: {
     async remove(user) {
       this.loading = true;
-      await User.remove(user);
-      this.$emit('close');
-      Toast.deletedUser(user.displayName);
+      try {
+        await User.remove(user);
+        this.$toasted.show(this.$tc('toaster.delete.user', null, { user: user.displayName }));
+        this.$emit('close');
+      } catch {
+        this.$toasted.error(this.$tc('toaster.error.user', null, { user: user.displayName }));
+      }
       this.loading = false;
     },
 
@@ -111,6 +115,7 @@ export default {
       }
       this.loading = false;
     },
+
     async deleteImage() {
       this.loading = true;
       try {
@@ -119,11 +124,12 @@ export default {
         await this.save(this.thisUser);
         await User.deleteImage(this.user.id);
       } catch (error) {
-        // throw new Error(error);
+        throw new Error(error.message);
       }
 
       this.loading = false;
     },
+
     async save() {
       this.loading = true;
       try {
@@ -131,7 +137,7 @@ export default {
         await User.update(this.thisUser);
         Toast.savedChanges();
       } catch {
-        Toast.savedChanges();
+        Toast.errorSave();
       }
 
       this.loading = false;

@@ -64,6 +64,7 @@ import { db } from '@/config/firebaseConfig';
 import Period from '@/db/Period';
 import Objective from '@/db/Objective';
 import KeyResult from '@/db/KeyResult';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'ItemAdminOKRs',
@@ -76,8 +77,8 @@ export default {
     objectives: [],
     keyResults: [],
     selectedType: null,
-    selectedPeriod: null,
-    selectedObjective: null,
+    selectedPeriodId: null,
+    selectedObjectiveId: null,
   }),
 
   components: {
@@ -132,7 +133,7 @@ export default {
       immediate: true,
       async handler(query) {
         this.setFormComponent(query);
-        this.setItems(query);
+        await this.setItems(query);
       },
     },
     async showArchived() {
@@ -258,8 +259,12 @@ export default {
       const endDate = new Date();
       try {
         const { id } = await Period.create({ name: 'placeholder', parent: this.activeItemRef, startDate, endDate });
+
+        this.$toasted.show(this.$tc('toaster.add.period'));
+
         this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
+        Toast.errorAdd();
         throw new Error(error);
       }
     },
@@ -267,8 +272,12 @@ export default {
       try {
         const period = db.collection('periods').doc(this.selectedPeriodId);
         const { id } = await Objective.create({ name: 'placeholder', parent: this.activeItemRef, weight: 1, period });
+
+        this.$toasted.show(this.$tc('toaster.add.objective', null, { period: period.name }));
+
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
+        Toast.errorAdd();
         throw new Error(error);
       }
     },
@@ -285,8 +294,12 @@ export default {
         };
 
         const { id } = await KeyResult.create(data);
+
+        this.$toasted.show(this.$tc('toaster.add.keyResult'));
+
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {
+        Toast.errorAdd();
         throw new Error(error);
       }
     },

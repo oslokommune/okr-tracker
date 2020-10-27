@@ -127,27 +127,45 @@
     "addedTo": "Lagt til",
     "addComment": "Legg til kommentar",
     "add": {
-      "users": "user | users",
+      "users": "Lagt til en bruker | {count} brukere",
       "admin": "Gitt {user} admintilgang",
-      "product": "Lagt til nytt produkt",
-      "objective": "Lagt til nytt mål for {object}",
+      "product": "Opprettet nytt produkt",
+      "objective": "Lagt til nytt mål for {period}",
       "progression": "Lagt til ny verdi",
-      "department": "Lagt til nytt produktområde",
+      "department": "Opprettet nytt produktområde",
       "keyResult": "Lagt til nytt nøkkelresultat",
-      "document": "Lagt til nytt dokument"
+      "period": "Opprettet ny periode",
+      "organization": "Opprettet ny organisasjon",
+      "kpi": "Opprettet ny kpi"
     },
     "delete": {
       "user": "Slettet bruker {user}",
       "permanently": "Slettet dokumentet permanent",
       "object": "Slettet «{name}»",
-      "keyResult": "Slettet nøkkelresultat"
+      "keyResult": "Slettet nøkkelresultat",
+      "progression": "Slettet målepunkt"
     },
     "action": {
       "regret": "Angre",
       "close": "Lukk"
     },
+    "error": {
+      "save": "Kunne ikke lagre endringene",
+      "archive": "Kunne ikke arkivere {document}",
+      "delete": "Kunne ikke slette {document}",
+      "restore": "Kunne ikke gjenopprette {document}",
+      "create": "Kunne ikke opprette {document}",
+      "department": "Kunne ikke opprette produktområde",
+      "organization": "Kunne ikke opprette organisasjonen",
+      "product": "Kunne ikke opprette produkt",
+      "users": "Kunne ikke legge til bruker | brukere",
+      "user": "Kunne ikke slette bruker: {user}",
+      "progression": "Kunne ikke legge til ny verdi",
+      "email": "Ugyldige e-postadresser",
+      "kpi": "Kunne ikke opprette kpi",
+      "notes": "Kunne ikke oppdatere notater"
+    },
     "removedAdmin": "Fjernet admintilgang for {user}",
-    "error": "Noe gikk galt!",
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
     "uploadedPhoto": "Lastet opp bilde",
@@ -166,6 +184,8 @@
     "invalidName": "Ugyldig navn",
     "invalidDate": "Ugyldig dato",
     "request": {
+      "requested": "Forespørsel om tilgang sendt til admin",
+      "error": "Noe gikk galt med forespørselen, vennligst prøv igjen senere.",
       "accepted": "Lagt til: {user}",
       "rejected": "Fjernet: {user}"
     }

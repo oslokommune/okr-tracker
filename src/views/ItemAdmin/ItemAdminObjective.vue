@@ -130,9 +130,8 @@ export default {
         }
 
         Toast.savedChanges();
-      } catch (error) {
-        console.log(error);
-        Toast.showError('Could not save changes');
+      } catch {
+        Toast.errorSave();
       }
 
       this.loading = false;
@@ -142,11 +141,10 @@ export default {
       try {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.archive(this.objective.id);
-        const restoreCallback = await Objective.restore.bind(null, this.activeItem.id);
-        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
+        const restoreCallback = await Objective.restore.bind(null, this.objective.id);
+        Toast.deletedRegret({ name: this.objective.name, callback: restoreCallback });
       } catch (error) {
-        console.log(error);
-        this.$toasted.show('Could not archive objective');
+        Toast.errorArchive(this.objective.name);
       }
 
       this.loading = false;
@@ -156,10 +154,9 @@ export default {
       try {
         await Objective.restore(this.objective.id);
         this.objective.archived = false;
-        this.$toasted.show('Restored');
-      } catch (error) {
-        this.$toasted.show('Could not restore objective');
-        throw new Error(error.message);
+        Toast.revertedDeletion();
+      } catch {
+        Toast.errorRestore(this.objective.id);
       }
     },
 
@@ -167,10 +164,9 @@ export default {
       try {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.deleteDeep(this.objective.id);
-        this.$toasted.show('Successfully deleted');
-      } catch (error) {
-        this.$toasted.show('Could not delete objective');
-        throw new Error(error.message);
+        Toast.deletedPermanently();
+      } catch {
+        Toast.errorDelete(this.objective.name);
       }
     },
   },
