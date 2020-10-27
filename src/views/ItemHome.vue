@@ -5,7 +5,18 @@
 
       <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
       <period-selector></period-selector>
-      <action-bar></action-bar>
+      <action-bar v-if="tree.length"></action-bar>
+
+      <empty-state
+        v-if="!tree.length"
+        :icon="'exclamation'"
+        :heading="$t('empty.noPeriods.heading')"
+        :body="$t('empty.noPeriods.body')"
+      >
+        <router-link class="btn btn--ter" v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }">{{
+          $t('empty.noPeriods.buttonText')
+        }}</router-link>
+      </empty-state>
 
       <ul v-if="tree">
         <li v-for="objective in tree" :key="objective.id">
@@ -24,7 +35,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   components: {
@@ -34,10 +45,12 @@ export default {
     Kpis: () => import('@/components/Kpis.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   computed: {
     ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis']),
+    ...mapGetters(['hasEditRights']),
 
     tree() {
       return this.objectives.map(objective => {

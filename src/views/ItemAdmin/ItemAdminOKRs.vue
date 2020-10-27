@@ -11,12 +11,24 @@
       <div class="miller">
         <div
           class="miller__col"
-          v-for="{ type, heading, activeClass, selectedClass, items, icon, notSelected, addEvent } in columns"
+          v-for="{
+            type,
+            heading,
+            activeClass,
+            selectedClass,
+            items,
+            icon,
+            notSelected,
+            nonexistent,
+            addEvent,
+          } in columns"
           :key="type"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <div class="miller__not-selected" v-if="notSelected">{{ notSelected }}</div>
+          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected"></empty-state>
+
           <ul class="miller__list" v-else>
+            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent"></empty-state>
             <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
               <router-link
                 class="miller__link"
@@ -68,6 +80,10 @@ export default {
     selectedObjective: null,
   }),
 
+  components: {
+    EmptyState: () => import('@/components/EmptyState.vue'),
+  },
+
   computed: {
     ...mapState(['activeItemRef']),
 
@@ -82,6 +98,7 @@ export default {
           selectedClass: id => id === this.selectedPeriodId,
           notSelected: false,
           addEvent: this.createPeriod,
+          nonexistent: this.$t('empty.itemAdmin.period'),
         },
         {
           heading: this.$t('admin.showObjectives'),
@@ -92,6 +109,7 @@ export default {
           selectedClass: id => id === this.selectedObjectiveId,
           notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
+          nonexistent: this.$t('empty.itemAdmin.objective'),
         },
         {
           heading: this.$t('admin.showKeyResults'),
@@ -103,6 +121,7 @@ export default {
           notSelected:
             !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
+          nonexistent: this.$t('empty.itemAdmin.keyResult'),
         },
       ];
     },
@@ -378,12 +397,6 @@ export default {
 .miller__add {
   margin-top: auto;
   border-top: 1px solid $color-grey-100;
-}
-
-.miller__not-selected {
-  padding: 0.5rem 0.75rem;
-  color: $color-grey-500;
-  font-style: italic;
 }
 
 .miller__icon {

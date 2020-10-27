@@ -430,8 +430,8 @@
     "showObjectives": "Vis mål",
     "showPeriods": "Vis perioder",
     "showKeyResults": "Vis nøkkelresultater",
-    "noObjectiveSelected": "Ingen mål valgt",
-    "noPeriodSelected": "Ingen periode valgt"
+    "noObjectiveSelected": "Velg mål for å se nøkkelresultater",
+    "noPeriodSelected": "Velg periode for å se mål"
   },
   "keyResultPage": {
     "change": "Endre nøkkelresultat",
@@ -529,6 +529,39 @@
     "progression": {
       "objective": "Progresjon for mål",
       "period": "Progresjon for periode"
+    }
+  },
+  "empty": {
+    "keyResultProgress": {
+      "heading": "Ingen historikk",
+      "body": "Dette nøkkelresultatet har ingen registrerte verdier."
+    },
+    "noKeyResults": {
+      "heading": "Ingen nøkkelresultater",
+      "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",
+      "linkText": "Opprett et nøkkelresultat"
+    },
+    "itemAdmin": {
+      "keyResult": "Ingen nøkkelresultater for mål",
+      "objective": "Ingen mål for periode",
+      "period": "Ingen perioder"
+    },
+    "noKPIs": {
+      "heading": "Ingen KPI-er",
+      "body": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. "
+    },
+    "noPeriods": {
+      "heading": "Tomt?",
+      "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
+      "buttonText": "Opprett mål og nøkkelresultater her"
+    },
+    "kpiProgress": {
+      "body": "Finner ingen historikk over målepunkter for dette KPI-et",
+      "heading": "Ingen historikk"
+    },
+    "team": {
+      "body": "«Team Ninja» much?",
+      "heading": "Ingen teammedlemmer"
     }
   }
 }
