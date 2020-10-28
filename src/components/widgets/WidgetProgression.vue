@@ -41,24 +41,32 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem']),
+    ...mapState(['activeItem', 'activePeriod']),
   },
 
   mounted() {
     setTimeout(() => {
       this.svg = this.$refs.svg;
       this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
-      this.chart.render(this.data);
+      this.chart.render(this.activePeriod);
     }, 1);
   },
 
   watch: {
-    activePeriod(period) {
-      if (!this.chart) return;
-      this.chart.render(period);
+    activePeriod: {
+      immediate: true,
+      deep: true,
+      handler(period) {
+        if (!this.chart) return;
+        this.chart.render(period);
+      },
     },
-    activeItem() {
-      this.chart.render(this.activePeriod);
+    activeItem: {
+      immediate: true,
+      handler() {
+        if (!this.chart) return;
+        this.chart.render(this.activePeriod);
+      },
     },
   },
 
