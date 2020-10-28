@@ -43,9 +43,18 @@
             <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
             <td>{{ value }}</td>
             <td v-if="hasEditRights">
-              <button class="btn btn--ter" @click="remove(id)" v-tooltip="$t('tooltip.deleteProgresjon')">
-                {{ $t('btn.delete') }}
-              </button>
+              <v-popover offset="16" placement="top" show="true">
+                <button class="btn btn--ter btn--icon">
+                  <i class="icon far fa-trash-alt"></i>
+                  {{ $t('btn.delete') }}
+                </button>
+
+                <template slot="popover">
+                  <button class="btn btn--ter btn--negative" @click="remove(id)">
+                    {{ $t('btn.confirmDeleteProgress') }}
+                  </button>
+                </template>
+              </v-popover>
             </td>
           </tr>
         </table>
@@ -88,9 +97,13 @@ export default {
   methods: {
     dateTimeShort,
 
-    remove(id) {
-      db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
-      Toast.show(this.$t('toaster.delete.progression'));
+    async remove(id) {
+      try {
+        await db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
+        Toast.show(this.$t('toaster.delete.progression'));
+      } catch {
+        Toast.error(this.$t('toaster.error.deleteProgress'));
+      }
     },
 
     renderGraph() {
