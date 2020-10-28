@@ -8,14 +8,6 @@
 import { itemHome as routerGuard } from '@/router/router-guards';
 
 export default {
-  data: () => ({
-    loading: true,
-  }),
-
-  mounted() {
-    this.loading = false;
-  },
-
   async beforeRouteUpdate(to, from, next) {
     this.loading = true;
     if (to.params.slug !== from.params.slug) {
@@ -25,6 +17,13 @@ export default {
       this.loading = false;
       next();
     }
+  },
+  data: () => ({
+    loading: true,
+  }),
+
+  mounted() {
+    this.loading = false;
   },
 };
 </script>

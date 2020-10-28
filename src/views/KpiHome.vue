@@ -1,24 +1,24 @@
 <template>
-  <div class="kpi" v-if="activeKpi">
+  <div v-if="activeKpi" class="kpi">
     <div class="main">
       <h1 class="title-1">{{ activeKpi.name }}</h1>
 
       <p>{{ activeKpi.description }}</p>
 
-      <div class="current-value" v-if="activeKpi.valid">
+      <div v-if="activeKpi.valid" class="current-value">
         <div class="current-value__label">{{ $t('kpi.currentValue') }}</div>
         <div class="current-value__value">{{ activeKpi.currentValue }}</div>
       </div>
       <router-link
         v-if="hasEditRights"
+        v-tooltip="$t('tooltip.editKpi')"
         class="btn btn--ghost"
         :to="{ name: 'ItemAdminKPIs' }"
-        v-tooltip="$t('tooltip.editKpi')"
         >{{ $t('kpi.edit') }}</router-link
       >
 
       <widget widget-id="kpiProgression" icon="chart-line" :title="$t('kpi.progresjon')" :collapsible="false">
-        <svg class="graph" ref="graph"></svg>
+        <svg ref="graph" class="graph"></svg>
       </widget>
 
       <div class="history">
@@ -30,7 +30,7 @@
           :body="$t('empty.kpiProgress.body')"
         ></empty-state>
 
-        <table class="table" v-if="progress.length">
+        <table v-if="progress.length" class="table">
           <thead>
             <tr>
               <th>{{ $t('keyres.dateAndTime') }}</th>
@@ -88,6 +88,18 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
+  watch: {
+    activeKpi: {
+      immediate: true,
+      handler({ id }) {
+        this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+      },
+    },
+    progress() {
+      this.renderGraph();
+    },
+  },
+
   mounted() {
     if (this.$refs.graph) {
       this.graph = new LineChart(this.$refs.graph);
@@ -123,18 +135,6 @@ export default {
         },
         this.progress
       );
-    },
-  },
-
-  watch: {
-    activeKpi: {
-      immediate: true,
-      handler({ id }) {
-        this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
-      },
-    },
-    progress() {
-      this.renderGraph();
     },
   },
 };

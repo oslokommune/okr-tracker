@@ -8,7 +8,7 @@
     </div>
 
     <!-- List key results for objective -->
-    <div class="key-result panel" v-for="keyres in objective.keyResults" :key="keyres.id">
+    <div v-for="keyres in objective.keyResults" :key="keyres.id" class="key-result panel">
       <div class="key-result__description">
         {{ keyres.description }}
       </div>

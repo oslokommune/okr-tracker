@@ -1,8 +1,8 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeKeyResult" :title="$t('general.details')" icon="info-circle">
+  <Widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
       <h3 class="title-3">{{ $t('keyres.belongsTo') }}</h3>
-      <span class="details--margin-bottom" v-if="activeKeyResult.objective">
+      <span v-if="activeKeyResult.objective" class="details--margin-bottom">
         <i class="fa fa-trophy"></i>
         {{ activeKeyResult.objective.name }}
       </span>
@@ -14,7 +14,7 @@
       </span>
 
       <h3 class="title-3">{{ $t('period.period') }}</h3>
-      <div class="details__period" v-if="activePeriod">
+      <div v-if="activePeriod" class="details__period">
         <span>
           <i class="fa fa-calendar-alt"></i>
           {{ activePeriod.name }}
@@ -28,7 +28,7 @@
         {{ progress.length }}
       </span>
 
-      <h3 class="title-3" v-if="activeKeyResult.editedBy">Edited by</h3>
+      <h3 v-if="activeKeyResult.editedBy" class="title-3">Edited by</h3>
       <span v-if="activeKeyResult.editedBy" class="details--margin-bottom">
         <i class="fa fa-user"></i>
         {{ activeKeyResult.editedBy.displayName || activeKeyResult.editedBy.id }}
@@ -58,16 +58,16 @@ import { nb } from 'date-fns/locale';
 export default {
   name: 'WidgetKeyResultDetails',
 
-  data: () => ({
-    progress: [],
-  }),
-
   props: {
     widgetId: {
       type: String,
       required: true,
     },
   },
+
+  data: () => ({
+    progress: [],
+  }),
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod']),

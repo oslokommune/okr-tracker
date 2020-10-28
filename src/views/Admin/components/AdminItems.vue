@@ -6,7 +6,7 @@
 
         <div class="col">
           <div class="col__body">
-            <div class="col__row" v-for="organization in organizations" :key="organization.id">
+            <div v-for="organization in organizations" :key="organization.id" class="col__row">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }">
                 <span class="col__icon fa fa-industry"></span>
                 {{ organization.name }}
@@ -26,7 +26,7 @@
         <h2 class="title-2">{{ $t('general.departments') }}</h2>
         <div class="col">
           <div class="col__body">
-            <div class="col__row" v-for="department in departments" :key="department.id">
+            <div v-for="department in departments" :key="department.id" class="col__row">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: department.slug } }">
                 <span class="col__icon fa fa-cubes"></span>
                 {{ department.name }}
@@ -46,7 +46,7 @@
         <h2 class="title-2">{{ $t('general.products') }}</h2>
         <div class="col">
           <div class="col__body">
-            <div class="col__row" v-for="product in products" :key="product.id">
+            <div v-for="product in products" :key="product.id" class="col__row">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: product.slug } }">
                 <span class="col__icon fa fa-cube"></span>
                 {{ product.name }}
@@ -63,7 +63,7 @@
 
     <div class="actions">
       <label class="form-group--checkbox">
-        <input type="checkbox" class="form__checkbox" v-model="showArchived" />
+        <input v-model="showArchived" type="checkbox" class="form__checkbox" />
         <span class="form-label">{{ $t('admin.objects.showArchived') }}</span>
       </label>
     </div>

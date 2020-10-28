@@ -1,5 +1,5 @@
 <template>
-  <div class="objective" v-if="activeObjective">
+  <div v-if="activeObjective" class="objective">
     <div class="main">
       <div class="objective__heading">
         <div class="objective__heading-text">
@@ -53,6 +53,12 @@ export default {
     ...mapGetters(['hasEditRights']),
   },
 
+  components: {
+    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
+    WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
+  },
+
   beforeRouteUpdate: routerGuard,
 
   async beforeRouteLeave(to, from, next) {
@@ -78,12 +84,6 @@ export default {
         );
       },
     },
-  },
-
-  components: {
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
-    WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 };
 </script>

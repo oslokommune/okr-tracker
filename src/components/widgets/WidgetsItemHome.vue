@@ -2,18 +2,18 @@
   <aside v-if="activeItem" class="wrapper">
     <div class="itemHome">
       <router-link
-        class="btn btn--ter btn--icon"
         v-if="hasEditRights"
-        :to="{ name: 'ItemAdmin' }"
         v-tooltip="$t('tooltip.editItem')"
+        class="btn btn--ter btn--icon"
+        :to="{ name: 'ItemAdmin' }"
       >
         <i class="icon fa fa-cog"></i>
         {{ $t('btn.editItem', { item: this.activeItem.name }) }}
       </router-link>
       <router-link
+        v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
         class="btn btn--ter btn--icon"
         :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
-        v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
       >
         <i class="icon fas fa-tachometer-alt"></i>
         {{ $t('general.dashboard') }}
@@ -21,14 +21,14 @@
     </div>
 
     <div class="widgets">
-      <WidgetMissionStatement widget-id="itemHome.missionStatement" v-if="activeItem"></WidgetMissionStatement>
+      <WidgetMissionStatement v-if="activeItem" widget-id="itemHome.missionStatement"></WidgetMissionStatement>
       <WidgetProgression
-        widget-id="itemHome.progression"
         v-if="activePeriod"
+        widget-id="itemHome.progression"
         type="period"
         :data="activePeriod"
       ></WidgetProgression>
-      <WidgetTeam widget-id="itemHome.team" v-if="activePeriod"></WidgetTeam>
+      <WidgetTeam v-if="activePeriod" widget-id="itemHome.team"></WidgetTeam>
       <WidgetChildItems widget-id="itemHome.children"></WidgetChildItems>
     </div>
   </aside>

@@ -14,7 +14,7 @@
       </empty-state>
     </div>
     <div v-if="kpis.length" class="kpis">
-      <div class="kpi" v-for="kpi in kpis" :key="kpi.id" :class="{ 'kpi--error': !!kpi.error }">
+      <div v-for="kpi in kpis" :key="kpi.id" class="kpi" :class="{ 'kpi--error': !!kpi.error }">
         <div class="kpi__validation">
           <div v-if="kpi.error" class="kpi__error">
             <span class="fa fa-exclamation-triangle"></span> {{ kpi.error }}
@@ -26,52 +26,52 @@
         </div>
 
         <validation-observer v-slot="{ handleSubmit }">
-          <form @submit.prevent="handleSubmit(save.bind(null, kpi))" :id="`kpi_${kpi.id}`">
+          <form :id="`kpi_${kpi.id}`" @submit.prevent="handleSubmit(save.bind(null, kpi))">
             <label class="form-group">
               <span class="form-label">Type</span>
-              <input class="form__field" type="text" v-model="kpi.type" disabled="disabled" />
+              <input v-model="kpi.type" class="form__field" type="text" disabled="disabled" />
             </label>
 
             <form-component
+              v-model="kpi.name"
               input-type="input"
               name="name"
               :label="$t('fields.name')"
               rules="required"
-              v-model="kpi.name"
               type="text"
             />
 
             <label class="form-group">
               <span class="form-label">{{ $t('fields.description') }}</span>
-              <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
+              <textarea v-model="kpi.description" class="form__field" rows="4"></textarea>
             </label>
 
             <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
             <div class="form-row">
               <form-component
+                v-model="kpi.sheetId"
                 input-type="input"
                 name="sheetId"
                 :label="$t('keyres.automation.googleSheetId')"
                 rules="required"
-                v-model="kpi.sheetId"
                 type="text"
               />
 
               <form-component
+                v-model="kpi.sheetName"
                 input-type="input"
                 name="sheetTab"
                 :label="$t('keyres.automation.sheetsTab')"
                 rules="required"
-                v-model="kpi.sheetName"
                 type="text"
               />
 
               <form-component
+                v-model="kpi.sheetCell"
                 input-type="input"
                 name="sheetCell"
                 :label="$t('keyres.automation.sheetsCell')"
                 rules="required"
-                v-model="kpi.sheetCell"
                 type="text"
               />
             </div>

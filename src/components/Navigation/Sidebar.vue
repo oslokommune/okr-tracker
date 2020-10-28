@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
-    <div v-for="group in sidebarGroups" class="sidebar__group" :key="group.name">
-      <h4 class="label" v-if="group.items.length">{{ group.name }}</h4>
+    <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
+      <h4 v-if="group.items.length" class="label">{{ group.name }}</h4>
       <ul class="sidebar__list">
         <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
           <router-link
@@ -16,8 +16,8 @@
             <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
             {{ item.name }}
             <span
-              class="sidebar__user-icon fas fa-user-circle"
               v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
+              class="sidebar__user-icon fas fa-user-circle"
             ></span>
           </router-link>
         </li>
@@ -33,7 +33,7 @@
         <span class="icon fa fa-fw fa-question-circle"></span>
         <span class="btn--label">{{ $t('general.help') }}</span>
       </router-link>
-      <button @click="signOut" class="btn btn--ter btn--icon">
+      <button class="btn btn--ter btn--icon" @click="signOut">
         <span class="icon fa fa-fw fa-sign-out-alt"></span>
         <span class="btn--label">{{ $t('general.signOut') }}</span>
       </button>

@@ -5,13 +5,13 @@
       <span class="widget__title">{{ title }}</span>
       <button
         v-if="collapsible"
+        v-tooltip="isOpen ? $t('btn.minimize') : $t('btn.expand')"
         class="widget__toggle fas fa-fw"
         :class="isOpen ? 'fa-minus' : 'fa-plus'"
         @click="toggle"
-        v-tooltip="isOpen ? $t('btn.minimize') : $t('btn.expand')"
       ></button>
     </header>
-    <div class="widget__body" v-show="isOpen">
+    <div v-show="isOpen" class="widget__body">
       <slot></slot>
     </div>
   </section>

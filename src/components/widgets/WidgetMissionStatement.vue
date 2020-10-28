@@ -12,15 +12,15 @@ export default {
     ...mapState(['activeItem']),
   },
 
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
+
   props: {
     widgetId: {
       type: String,
       required: true,
     },
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 };
 </script>

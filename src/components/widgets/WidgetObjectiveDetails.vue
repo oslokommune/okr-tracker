@@ -1,9 +1,9 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeObjective" :title="$t('general.details')" icon="info-circle">
+  <Widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
       <h3 class="title-3">{{ $t('objective.period') }}</h3>
 
-      <div class="details__period" v-if="activeObjective.period && activeObjective.period.startDate">
+      <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__period">
         <span>
           <i class="fa fa-calendar-alt"></i>
           {{ activeObjective.period.name }}
@@ -44,15 +44,15 @@ export default {
     ...mapState(['activeObjective']),
   },
 
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
+
   props: {
     widgetId: {
       type: String,
       required: true,
     },
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 
   methods: {

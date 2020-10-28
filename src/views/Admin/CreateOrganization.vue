@@ -6,20 +6,20 @@
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createOrganization" @submit.prevent="handleSubmit(save)">
           <form-component
+            v-model="name"
             input-type="input"
             name="name"
             rules="required"
             :label="$t('fields.name')"
-            v-model="name"
             type="text"
           />
 
           <form-component
+            v-model="missionStatement"
             input-type="textarea"
             name="missionStatement"
             :label="$t('fields.missionStatement')"
             rules="required"
-            v-model="missionStatement"
           />
         </form>
       </validation-observer>
@@ -39,15 +39,14 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import * as Toast from '@/util/toasts';
 
 export default {
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
   data: () => ({
     name: '',
     missionStatement: '',
     loading: false,
   }),
-
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
 
   methods: {
     async save() {

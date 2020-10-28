@@ -13,7 +13,7 @@
         :heading="$t('empty.noPeriods.heading')"
         :body="$t('empty.noPeriods.body')"
       >
-        <router-link class="btn btn--ter" v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }">{{
+        <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">{{
           $t('empty.noPeriods.buttonText')
         }}</router-link>
       </empty-state>

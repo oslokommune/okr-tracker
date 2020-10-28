@@ -5,37 +5,37 @@
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-product" @submit.prevent="handleSubmit(update)">
         <form-component
+          v-model="activeItem.name"
           input-type="input"
           name="name"
           :label="$t('fields.name')"
           rules="required"
-          v-model="activeItem.name"
           type="text"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.slug') }}</span>
-          <input class="form__field" type="text" v-model="activeItem.slug" disabled />
+          <input v-model="activeItem.slug" class="form__field" type="text" disabled />
         </label>
 
         <form-component
+          v-model="activeItem.missionStatement"
           input-type="textarea"
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
-          v-model="activeItem.missionStatement"
           type="text"
         />
 
         <div class="form-group">
           <span class="form-label">{{ $t('admin.product.parentDepartment') }}</span>
-          <v-select label="name" v-model="activeItem.department" :options="departments" :clearable="false"></v-select>
+          <v-select v-model="activeItem.department" label="name" :options="departments" :clearable="false"></v-select>
         </div>
         <div class="form-group">
           <span class="form-label">{{ $t('general.teamMembers') }}</span>
           <v-select
-            multiple
             v-model="activeItem.team"
+            multiple
             :options="users"
             :get-option-label="option => option.displayName || option.id"
           >
@@ -52,7 +52,7 @@
       <button class="btn btn--icon btn--pri" form="update-product" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived" :disabled="loading">
+      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>

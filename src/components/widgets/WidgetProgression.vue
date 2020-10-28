@@ -8,10 +8,9 @@
 import PieChart from '@/util/PieChart';
 
 export default {
-  data: () => ({
-    svg: null,
-    chart: null,
-  }),
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
 
   props: {
     widgetId: {
@@ -32,20 +31,10 @@ export default {
       required: true,
     },
   },
-
-  methods: {
-    getTitle() {
-      return this.$t(`widget.progression.${this.type}`);
-    },
-  },
-
-  mounted() {
-    setTimeout(() => {
-      this.svg = this.$refs.svg;
-      this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
-      this.chart.render(this.data);
-    }, 150);
-  },
+  data: () => ({
+    svg: null,
+    chart: null,
+  }),
 
   watch: {
     data: {
@@ -58,8 +47,18 @@ export default {
     },
   },
 
-  components: {
-    Widget: () => import('./Widget.vue'),
+  mounted() {
+    setTimeout(() => {
+      this.svg = this.$refs.svg;
+      this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
+      this.chart.render(this.data);
+    }, 150);
+  },
+
+  methods: {
+    getTitle() {
+      return this.$t(`widget.progression.${this.type}`);
+    },
   },
 };
 </script>

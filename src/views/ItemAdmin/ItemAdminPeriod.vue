@@ -5,15 +5,15 @@
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-period" @submit.prevent="handleSubmit(update)">
         <form-component
+          v-model="activePeriod.name"
           input-type="input"
           name="name"
           :label="$t('fields.name')"
           rules="required"
-          v-model="activePeriod.name"
           type="text"
         />
 
-        <validation-provider name="range" v-slot="{ errors }">
+        <validation-provider v-slot="{ errors }" name="range">
           <label class="form-field">
             <span class="form-label">{{ $t('period.dateRange') }}</span>
             <flat-pickr
@@ -33,7 +33,7 @@
       <button class="btn btn--icon btn--pri" form="update-period" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!activePeriod.archived">
+      <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>

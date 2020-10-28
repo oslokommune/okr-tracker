@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="children.length" :title="title" :icon="icon">
+  <Widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
     <div class="list">
       <router-link
         v-for="child in children"
@@ -26,6 +26,10 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'departments', 'products']),
+  },
+
+  components: {
+    Widget: () => import('./Widget.vue'),
   },
 
   props: {
@@ -61,10 +65,6 @@ export default {
         this.icon = '';
       }
     },
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 };
 </script>

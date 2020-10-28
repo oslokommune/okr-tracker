@@ -1,5 +1,5 @@
 <template>
-  <div class="user" v-if="user">
+  <div v-if="user" class="user">
     <div class="main">
       <h1 class="title-1">{{ user.displayName || user.id }}</h1>
 
@@ -12,7 +12,7 @@
           />
 
           <template v-if="me">
-            <input type="file" @input="setImage" accept="image/png, image/jpeg" />
+            <input type="file" accept="image/png, image/jpeg" @input="setImage" />
             <button class="btn btn--pri" @click="uploadImage">{{ $t('btn.upload') }}</button>
           </template>
         </div>
@@ -21,11 +21,11 @@
           <validation-observer v-if="me" v-slot="{ handleSubmit }">
             <form id="updateUser" @submit.prevent="handleSubmit(save)">
               <form-component
+                v-model="updatedUser.displayName"
                 input-type="input"
                 name="name"
                 :label="$t('fields.name')"
                 rules="required"
-                v-model="updatedUser.displayName"
                 type="text"
               />
             </form>
@@ -99,6 +99,29 @@ export default {
     },
   },
 
+  watch: {
+    '$route.params.id': {
+      immediate: true,
+      handler(id) {
+        const userRef = db.doc(`users/${id}`);
+        const productsRef = db.collection('products').where('team', 'array-contains', userRef);
+        const auditRef = db.collection('audit').where('user', '==', userRef).orderBy('timestamp', 'desc').limit(10);
+
+        this.$bind('user', userRef);
+        this.$bind('products', productsRef, { maxRefDepth: 1 });
+        this.$bind('audit', auditRef, { maxRefDepth: 1 });
+      },
+    },
+    user: {
+      immediate: true,
+      handler() {
+        if (this.user) {
+          this.updatedUser = { ...this.user, id: this.user.id };
+        }
+      },
+    },
+  },
+
   created() {
     const { id } = this.$route.params;
 
@@ -137,29 +160,6 @@ export default {
       }
 
       this.loading = false;
-    },
-  },
-
-  watch: {
-    '$route.params.id': {
-      immediate: true,
-      handler(id) {
-        const userRef = db.doc(`users/${id}`);
-        const productsRef = db.collection('products').where('team', 'array-contains', userRef);
-        const auditRef = db.collection('audit').where('user', '==', userRef).orderBy('timestamp', 'desc').limit(10);
-
-        this.$bind('user', userRef);
-        this.$bind('products', productsRef, { maxRefDepth: 1 });
-        this.$bind('audit', auditRef, { maxRefDepth: 1 });
-      },
-    },
-    user: {
-      immediate: true,
-      handler() {
-        if (this.user) {
-          this.updatedUser = { ...this.user, id: this.user.id };
-        }
-      },
     },
   },
 };

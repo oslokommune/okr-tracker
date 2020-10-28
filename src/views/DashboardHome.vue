@@ -1,5 +1,5 @@
 <template>
-  <div class="db" ref="dashboard">
+  <div ref="dashboard" class="db">
     <aside v-if="activeItem" class="meta">
       <div class="panel product">
         <div class="product__image">
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel__header" v-if="activePeriod">
+        <div v-if="activePeriod" class="panel__header">
           <i class="fa fa-fw fa-chart-pie"></i>Progresjon {{ activePeriod.name }}
         </div>
         <svg ref="piechart"></svg>
@@ -31,9 +31,9 @@
 
     <div class="close__container">
       <router-link
+        v-tooltip="$t('btn.close')"
         class="close"
         :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
-        v-tooltip="$t('btn.close')"
         ><i class="fa fa-times"></i
       ></router-link>
     </div>
@@ -71,15 +71,6 @@ export default {
     DashboardObjective: () => import('@/components/DashboardObjective.vue'),
   },
 
-  mounted() {
-    if (!this.$refs.piechart) return;
-
-    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true });
-    this.piegraph.render(this.activePeriod);
-
-    this.enterFullscreen();
-  },
-
   watch: {
     keyResults: {
       immediate: true,
@@ -92,6 +83,15 @@ export default {
         });
       },
     },
+  },
+
+  mounted() {
+    if (!this.$refs.piechart) return;
+
+    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true });
+    this.piegraph.render(this.activePeriod);
+
+    this.enterFullscreen();
   },
 
   methods: {

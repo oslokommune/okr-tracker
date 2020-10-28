@@ -5,31 +5,31 @@
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-objective" @submit.prevent="handleSubmit(update)">
         <form-component
+          v-model="objective.name"
           input-type="input"
           name="name"
           :label="$t('fields.name')"
           rules="required"
-          v-model="objective.name"
           type="text"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <input class="form__field" type="text" v-model="objective.description" />
+          <input v-model="objective.description" class="form__field" type="text" />
         </label>
 
         <form-component
+          v-model.number="objective.weight"
           input-type="input"
           name="weight"
           :label="$t('fields.weight')"
           rules="required|numeric"
-          v-model.number="objective.weight"
           type="number"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select class="form-field" :options="icons" v-model="objective.icon" @input="dirty = true">
+          <v-select v-model="objective.icon" class="form-field" :options="icons" @input="dirty = true">
             <template #selected-option="{ label }">
               <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
               {{ label }}
@@ -42,12 +42,12 @@
           </v-select>
         </label>
 
-        <validation-provider rules="required" name="period" v-slot="{ errors }">
+        <validation-provider v-slot="{ errors }" rules="required" name="period">
           <label class="form-group">
             <span class="form-label">{{ $t('fields.period') }}</span>
             <v-select
-              label="name"
               v-model="objective.period"
+              label="name"
               :options="periods"
               :clearable="false"
               @input="changedPeriod = true"
@@ -64,7 +64,7 @@
       <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" :disabled="loading" v-if="!objective.archived">
+      <button v-if="!objective.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -80,6 +80,12 @@ import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
   components: { FormComponent: () => import('@/components/FormComponent.vue'), ArchivedRestore },
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
   data: () => ({
     objective: null,
     periods: [],
@@ -87,12 +93,6 @@ export default {
     loading: false,
     icons,
   }),
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
 
   watch: {
     data: {

@@ -6,37 +6,37 @@
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createProduct" @submit.prevent="handleSubmit(save)">
           <form-component
+            v-model="name"
             input-type="input"
             name="name"
             :label="$t('fields.name')"
             rules="required"
             type="text"
-            v-model="name"
           />
 
           <form-component
+            v-model="missionStatement"
             input-type="textarea"
             name="missionStatement"
             :label="$t('fields.missionStatement')"
             rules="required"
-            v-model="missionStatement"
           />
 
           <form-component
+            v-model="department"
             input-type="select"
             name="department"
             :label="$t('admin.product.parentDepartment')"
             select-label="name"
             rules="required"
-            v-model="department"
             :select-options="departments"
           />
 
           <div class="form-group">
             <span class="form-label">{{ $t('general.teamMembers') }}</span>
             <v-select
-              multiple
               v-model="team"
+              multiple
               :options="users"
               :get-option-label="option => option.displayName || option.id"
             >
@@ -66,6 +66,9 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import * as Toast from '@/util/toasts';
 
 export default {
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
   data: () => ({
     name: '',
     missionStatement: '',
@@ -74,10 +77,6 @@ export default {
     users: [],
     loading: false,
   }),
-
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
 
   computed: {
     ...mapState(['departments']),

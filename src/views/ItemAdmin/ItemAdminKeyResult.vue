@@ -5,25 +5,25 @@
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-keyresult" @submit.prevent="handleSubmit(update)">
         <form-component
+          v-model="keyResult.name"
           input-type="input"
           name="name"
           :label="$t('fields.name')"
           rules="required"
-          v-model="keyResult.name"
           type="text"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('keyres.description') }}</span>
-          <input class="form__field" type="text" v-model="keyResult.description" />
+          <input v-model="keyResult.description" class="form__field" type="text" />
         </label>
 
-        <validation-provider rules="required" name="objective" v-slot="{ errors }">
+        <validation-provider v-slot="{ errors }" rules="required" name="objective">
           <label class="form-group">
             <span class="form-label">{{ $t('keyres.objective') }}</span>
             <v-select
-              label="name"
               v-model="keyResult.objective"
+              label="name"
               :options="objectives"
               :clearable="false"
               @input="changedObjective = true"
@@ -38,39 +38,39 @@
         </validation-provider>
 
         <form-component
+          v-model="keyResult.unit"
           input-type="input"
           name="unit"
           :label="$t('keyres.unit')"
           rules="required"
-          v-model="keyResult.unit"
           type="text"
         />
 
         <div class="form-row">
           <form-component
+            v-model.number="keyResult.startValue"
             input-type="input"
             name="startValue"
             :label="$t('keyres.startValue')"
             rules="required|numeric"
-            v-model.number="keyResult.startValue"
             type="number"
           />
 
           <form-component
+            v-model.number="keyResult.targetValue"
             input-type="input"
             name="targetValue"
             :label="$t('keyres.targetValue')"
             rules="required|numeric"
-            v-model.number="keyResult.targetValue"
             type="number"
           />
 
           <form-component
+            v-model.number="keyResult.weight"
             input-type="input"
             name="weight"
             :label="$t('keyres.weight')"
             rules="required|numeric"
-            v-model.number="keyResult.weight"
             type="number"
           />
         </div>
@@ -78,7 +78,7 @@
         <div class="toggle__container">
           <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
           <label class="toggle">
-            <input class="toggle__input" type="checkbox" v-model="keyResult.auto" />
+            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -89,11 +89,11 @@
           </p>
 
           <form-component
+            v-model="keyResult.sheetId"
             :label="$t('keyres.automation.googleSheetId')"
             :rules="`${keyResult.auto ? 'required' : ''}`"
             input-type="input"
             name="sheetId"
-            v-model="keyResult.sheetId"
             type="text"
           >
             <template #help>
@@ -102,11 +102,11 @@
           </form-component>
 
           <form-component
+            v-model="keyResult.sheetName"
             :label="$t('keyres.automation.sheetsTab')"
             :rules="`${keyResult.auto ? 'required' : ''}`"
             input-type="input"
             name="sheetTab"
-            v-model="keyResult.sheetName"
             type="text"
           >
             <template #help>
@@ -115,11 +115,11 @@
           </form-component>
 
           <form-component
+            v-model="keyResult.sheetCell"
             :label="$t('keyres.automation.sheetsCell')"
             :rules="`${keyResult.auto ? 'required' : ''}`"
             input-type="input"
             name="sheetCell"
-            v-model="keyResult.sheetCell"
             type="text"
           >
             <template #help>
@@ -134,7 +134,7 @@
       <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!keyResult.archived" :disabled="loading">
+      <button v-if="!keyResult.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -151,6 +151,12 @@ export default {
     FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
 
   data: () => ({
     keyResult: null,
@@ -158,12 +164,6 @@ export default {
     changedObjective: false,
     loading: false,
   }),
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
 
   watch: {
     data: {

@@ -8,24 +8,24 @@
         <form id="user-form" @submit.prevent="handleSubmit(save)">
           <label class="form-group">
             <span class="form-label">{{ $t('fields.email') }}</span>
-            <input class="form__field" type="email" v-model="thisUser.id" disabled />
+            <input v-model="thisUser.id" class="form__field" type="email" disabled />
           </label>
 
           <form-component
+            v-model="thisUser.displayName"
             input-type="input"
             name="name"
             :label="$t('fields.displayName')"
             rules="required"
-            v-model="thisUser.displayName"
             type="text"
           />
 
           <label class="form-group--checkbox">
             <span class="form-label">{{ $t('general.admin') }}</span>
             <input
+              v-model="thisUser.admin"
               class="form__checkbox"
               type="checkbox"
-              v-model="thisUser.admin"
               :disabled="user.email === selectedUser.email"
             />
           </label>
@@ -34,9 +34,9 @@
       <div>
         <span class="form-label">{{ $t('admin.users.image') }}</span>
         <div class="image">
-          <img :src="selectedUser.photoURL" class="image__image" v-if="selectedUser.photoURL" />
-          <input type="file" @input="setImage" accept="image/png, image/jpeg" class="image__field" />
-          <button v-if="selectedUser.photoURL" class="btn" @click="deleteImage" :disabled="loading">
+          <img v-if="selectedUser.photoURL" :src="selectedUser.photoURL" class="image__image" />
+          <input type="file" accept="image/png, image/jpeg" class="image__field" @input="setImage" />
+          <button v-if="selectedUser.photoURL" class="btn" :disabled="loading" @click="deleteImage">
             {{ $t('btn.deleteImage') }}
           </button>
         </div>
@@ -47,8 +47,8 @@
       <button class="btn" form="user-form" :disabled="loading">{{ $t('btn.saveChanges') }}</button>
       <button
         class="btn btn--danger"
-        @click="remove(selectedUser)"
         :disabled="user.email === selectedUser.email || loading"
+        @click="remove(selectedUser)"
       >
         {{ $t('btn.deleteUser') }}
       </button>
@@ -81,6 +81,16 @@ export default {
 
   computed: {
     ...mapState(['user']),
+  },
+
+  watch: {
+    selectedUser: {
+      immediate: true,
+      handler() {
+        this.image = null;
+        this.thisUser = this.selectedUser;
+      },
+    },
   },
 
   methods: {
@@ -141,16 +151,6 @@ export default {
       }
 
       this.loading = false;
-    },
-  },
-
-  watch: {
-    selectedUser: {
-      immediate: true,
-      handler() {
-        this.image = null;
-        this.thisUser = this.selectedUser;
-      },
     },
   },
 };

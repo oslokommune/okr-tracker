@@ -3,13 +3,13 @@
     {{ $t('weight.keyresFor', { name: activeObjective.period.name }) }}
     <div class="scales">
       <router-link
-        :to="{ name: 'ObjectiveHome', params: { objectiveId: id } }"
-        class="bar"
         v-for="{ id, weight, active, name } in weights"
         :key="id"
+        v-tooltip.bottom="name"
+        :to="{ name: 'ObjectiveHome', params: { objectiveId: id } }"
+        class="bar"
         :style="{ height: getHeight(weight) }"
         :class="{ active }"
-        v-tooltip.bottom="name"
       >
         {{ weight }}
       </router-link>
@@ -46,6 +46,10 @@ export default {
     },
   },
 
+  components: {
+    Widget,
+  },
+
   props: {
     widgetId: {
       type: String,
@@ -65,10 +69,6 @@ export default {
 
   mounted() {
     if (this.$refs.svg) this.init();
-  },
-
-  components: {
-    Widget,
   },
 
   methods: {

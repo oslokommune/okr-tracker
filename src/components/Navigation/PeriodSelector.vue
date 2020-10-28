@@ -2,10 +2,10 @@
   <ul v-if="periods" class="tabs">
     <li v-for="period in filteredPeriods" :key="period.id" v-tooltip.right="periodDates(period)">
       <button
-        @click="set_active_period_and_data(period.id)"
         :disabled="activePeriod && period.id === activePeriod.id"
         class="tab"
         :class="{ active: activePeriod && period.id === activePeriod.id }"
+        @click="set_active_period_and_data(period.id)"
       >
         <span
           class="tab__icon"

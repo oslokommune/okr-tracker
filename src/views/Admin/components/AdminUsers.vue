@@ -2,20 +2,20 @@
   <div>
     <h2 class="title-2">{{ $t('admin.users.users') }}</h2>
 
-    <div class="users" v-if="!selectedUser && !viewAddUsers">
+    <div v-if="!selectedUser && !viewAddUsers" class="users">
       <div class="search">
         <label class="form__group">
           <input
+            v-model="query"
             class="form__field"
             type="text"
-            v-model="query"
             :placeholder="$t('admin.users.search', { count: users.length })"
           />
         </label>
       </div>
 
       <div class="users__list">
-        <button class="users__list-item" v-for="user in filteredUsers" :key="user.id" @click="selectedUser = user">
+        <button v-for="user in filteredUsers" :key="user.id" class="users__list-item" @click="selectedUser = user">
           <span class="users__list-item-icon fa" :class="user.admin ? 'fa-user-cog' : 'fa-user'"></span>
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
@@ -68,6 +68,10 @@ const fuseSettings = {
 };
 
 export default {
+  components: {
+    EditUser: () => import('./EditUser.vue'),
+    AddUsers: () => import('./AddUsers.vue'),
+  },
   data: () => ({
     users: [],
     query: '',
@@ -76,11 +80,6 @@ export default {
     filteredUsers: [],
     fuse: null,
   }),
-
-  components: {
-    EditUser: () => import('./EditUser.vue'),
-    AddUsers: () => import('./AddUsers.vue'),
-  },
 
   watch: {
     users: {

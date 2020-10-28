@@ -1,23 +1,23 @@
 <template>
   <Widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
     <div class="notes">
-      <div class="notes--margin-bottom" v-if="editNotes">
-        <textarea rows="20" @input="dirty = true" v-model="thisKey.notes"></textarea>
+      <div v-if="editNotes" class="notes--margin-bottom">
+        <textarea v-model="thisKey.notes" rows="20" @input="dirty = true"></textarea>
       </div>
 
-      <div class="notes--margin-bottom" v-else>
-        <div class="notes__markdown" v-if="markdown" v-html="markdown"></div>
+      <div v-else class="notes--margin-bottom">
+        <div v-if="markdown" class="notes__markdown" v-html="markdown"></div>
         <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
       </div>
 
       <div v-if="editNotes" class="notes__btn">
-        <button @click="saveNotes" class="btn btn--ter" :disabled="!dirty || loading">
+        <button class="btn btn--ter" :disabled="!dirty || loading" @click="saveNotes">
           {{ $t('keyResultPage.notes.save') }}
         </button>
-        <button @click="closeNotes" class="btn btn--ter">{{ $t('btn.close') }}</button>
+        <button class="btn btn--ter" @click="closeNotes">{{ $t('btn.close') }}</button>
       </div>
       <div v-else>
-        <button @click="editNotes = !editNotes" class="btn btn--ter">{{ $t('btn.editNotes') }}</button>
+        <button class="btn btn--ter" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
       </div>
     </div>
   </Widget>
@@ -37,19 +37,19 @@ marked.setOptions({
 export default {
   name: 'WidgetKeyResultNotes',
 
-  data: () => ({
-    editNotes: false,
-    dirty: false,
-    loading: false,
-    thisKey: null,
-  }),
-
   props: {
     widgetId: {
       type: String,
       required: true,
     },
   },
+
+  data: () => ({
+    editNotes: false,
+    dirty: false,
+    loading: false,
+    thisKey: null,
+  }),
 
   computed: {
     ...mapState(['activeKeyResult']),
@@ -62,6 +62,15 @@ export default {
 
   components: {
     Widget: () => import('./Widget.vue'),
+  },
+
+  watch: {
+    activeKeyResult: {
+      immediate: true,
+      handler() {
+        this.thisKey = { ...this.activeKeyResult, id: this.activeKeyResult.id };
+      },
+    },
   },
 
   methods: {
@@ -84,15 +93,6 @@ export default {
     closeNotes() {
       this.editNotes = false;
       this.thisKey.notes = this.activeKeyResult.notes;
-    },
-  },
-
-  watch: {
-    activeKeyResult: {
-      immediate: true,
-      handler() {
-        this.thisKey = { ...this.activeKeyResult, id: this.activeKeyResult.id };
-      },
     },
   },
 };

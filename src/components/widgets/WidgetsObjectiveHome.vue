@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeObjective" class="wrapper">
-    <div class="keyresult" v-if="editRights">
+    <div v-if="editRights" class="keyresult">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"

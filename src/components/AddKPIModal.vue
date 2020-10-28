@@ -9,11 +9,11 @@
       </div>
       <div class="modal__main">
         <validation-observer v-slot="{ handleSubmit }">
-          <form @submit.prevent="handleSubmit(add)" id="addKpi">
-            <validation-provider rules="required" name="type" v-slot="{ errors }">
+          <form id="addKpi" @submit.prevent="handleSubmit(add)">
+            <validation-provider v-slot="{ errors }" rules="required" name="type">
               <label class="form-group">
                 <span class="form-label">{{ $t('kpi.chooseType') }}</span>
-                <select class="form__field" v-model="type">
+                <select v-model="type" class="form__field">
                   <option v-for="{ id, label } in availableTypes" :key="id" :value="id">{{ label }}</option>
                 </select>
                 <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
@@ -21,17 +21,17 @@
             </validation-provider>
 
             <form-component
+              v-model="kpi.name"
               input-type="input"
               name="name"
               :label="$t('fields.name')"
               rules="required"
-              v-model="kpi.name"
               type="text"
             />
 
             <label class="form-group">
               <span class="form-label">{{ $t('kpi.description') }}</span>
-              <textarea class="form__field" v-model="kpi.description" rows="4"></textarea>
+              <textarea v-model="kpi.description" class="form__field" rows="4"></textarea>
             </label>
             <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
 
@@ -45,27 +45,27 @@
 
             <div class="form-row">
               <form-component
+                v-model="kpi.sheetId"
                 input-type="input"
                 name="sheetId"
                 :label="$t('fields.sheetId')"
                 rules="required"
-                v-model="kpi.sheetId"
                 type="text"
               />
               <form-component
+                v-model="kpi.sheetName"
                 input-type="input"
                 name="sheetTab"
                 :label="$t('fields.sheetTab')"
                 rules="required"
-                v-model="kpi.sheetName"
                 type="text"
               />
               <form-component
+                v-model="kpi.sheetCell"
                 input-type="input"
                 name="sheetCell"
                 :label="$t('fields.sheetCell')"
                 rules="required"
-                v-model="kpi.sheetCell"
                 type="text"
               />
             </div>
@@ -74,7 +74,7 @@
       </div>
       <div class="modal__footer">
         <button form="addKpi" :disabled="loading" class="btn btn--sec">{{ $t('btn.add') }}</button>
-        <button @click="close" class="btn btn--ghost btn--space">{{ $t('btn.close') }}</button>
+        <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>
   </div>

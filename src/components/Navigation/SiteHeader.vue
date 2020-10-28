@@ -4,33 +4,33 @@
       <router-link :to="{ name: 'Home' }" class="logo">
         <img src="/oslo-logo.svg" alt="Logo" class="logo__img" />
       </router-link>
-      <div class="title" v-if="title">
+      <div v-if="title" class="title">
         <h1 class="title__name">
           {{ title }}
         </h1>
       </div>
 
-      <div class="userMenu" v-click-outside="hideUserMenu">
+      <div v-click-outside="hideUserMenu" class="userMenu">
         <button
+          v-if="user"
+          v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
           class="btn btn--ter user"
           :class="{ active: showUserMenu }"
-          v-if="user"
           @click="showUserMenu = !showUserMenu"
-          v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
         >
           <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
           <img v-if="user.photoURL" :src="user.photoURL" class="user__image" />
           <span class="user__name">{{ user.displayName }}</span>
           <span class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'"></span>
         </button>
-        <nav class="menu" v-if="user && showUserMenu">
+        <nav v-if="user && showUserMenu" class="menu">
           <ul class="menu__list">
             <li class="menu__list-item">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'User', params: { id: user.id } }"
                 ><i class="icon fa fa-fw fa-user"></i> {{ $t('profile.myProfile') }}</router-link
               >
             </li>
-            <li class="menu__list-item" v-if="user.admin">
+            <li v-if="user.admin" class="menu__list-item">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }"
                 ><i class="icon fa fa-fw fa-cogs"></i> {{ $t('general.admin') }}</router-link
               >
@@ -58,6 +58,9 @@ import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 
 export default {
+  directives: {
+    ClickOutside,
+  },
   data: () => ({
     showUserMenu: false,
   }),
@@ -66,10 +69,6 @@ export default {
     $route() {
       this.hideUserMenu();
     },
-  },
-
-  directives: {
-    ClickOutside,
   },
 
   computed: {
