@@ -146,31 +146,6 @@ export default {
     width: span(6, 0, span(10));
   }
 }
-.table,
-.md table {
-  width: 100%;
-  margin: 2rem 0 1rem;
-  border-bottom: 1px solid $color-border;
-
-  th {
-    font-weight: 500;
-  }
-
-  thead {
-    th {
-      border-top: none;
-    }
-  }
-
-  th,
-  td {
-    height: 3rem;
-    padding: 0 0.5rem;
-    text-align: left;
-    vertical-align: middle;
-    border-top: 1px solid $color-border;
-  }
-}
 
 .history {
   margin: 2.5rem 0 1.5rem;

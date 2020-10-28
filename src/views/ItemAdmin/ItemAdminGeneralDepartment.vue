@@ -75,9 +75,6 @@ export default {
 
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
         const data = { name, missionStatement, organization };
-        if (this.image) {
-          data.photoURL = await Department.uploadImage(id, this.image);
-        }
 
         await Department.update(id, data);
         Toast.savedChanges();
@@ -87,13 +84,6 @@ export default {
       }
 
       this.loading = false;
-    },
-
-    async setImage({ target }) {
-      const { files } = target;
-      if (files.length !== 1) return;
-      const [image] = files;
-      this.image = image;
     },
 
     async archive() {
