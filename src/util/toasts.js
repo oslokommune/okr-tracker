@@ -8,7 +8,7 @@ export const show = (msg, options = standardOption) => {
   return true;
 };
 
-export const showError = (msg, options = standardOption) => {
+export const error = (msg, options = standardOption) => {
   Vue.toasted.error(msg, options);
   return true;
 };
@@ -18,23 +18,23 @@ const close = (e, toastObject) => {
 };
 
 export function errorSave() {
-  return showError(i18n.tc('toaster.error.save'));
+  return error(i18n.tc('toaster.error.save'));
 }
 
 export function errorArchive(document) {
-  return showError(i18n.tc('toaster.error.archive', null, { document }));
+  return error(i18n.tc('toaster.error.archive', null, { document }));
 }
 
 export function errorDelete(document) {
-  return showError(i18n.tc('toaster.error.delete', null, { document }));
+  return error(i18n.tc('toaster.error.delete', null, { document }));
 }
 
 export function errorRestore(document) {
-  return showError(i18n.tc('toaster.error.restore', null, { document }));
+  return error(i18n.tc('toaster.error.restore', null, { document }));
 }
 
 export function errorAdd() {
-  return showError(i18n.tc('toaster.error.create'));
+  return error(i18n.tc('toaster.error.create'));
 }
 
 export function savedChanges() {

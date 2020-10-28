@@ -2,8 +2,8 @@
   <div class="breadcrumbs">
     <nav class="breadcrumbs__nav">
       <ul class="breadcrumbs__list" :data-count="breadcrumbs.length">
-        <li class="breadcrumbs__item" v-for="{ id, route, icon, label } in breadcrumbs" :key="id" v-tooltip="label">
-          <router-link v-if="route" class="breadcrumbs__link" :to="route">
+        <li class="breadcrumbs__item" v-for="({ route, icon, label }, i) in breadcrumbs" :key="`breadcrumb_${i}`">
+          <router-link v-if="route" :ref="`breadcrumb_${i}`" class="breadcrumbs__link" :to="route">
             <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
             <span class="breadcrumbs__label">{{ label }}</span>
           </router-link>
@@ -119,6 +119,10 @@ export default {
   white-space: nowrap;
   text-decoration: none;
   text-overflow: ellipsis;
+
+  &:hover {
+    background: rgba($color-grey-500, 0.1);
+  }
 
   &::after {
     position: absolute;

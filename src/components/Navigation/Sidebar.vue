@@ -64,6 +64,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors.scss';
+
 .sidebar {
   position: sticky;
   top: 7.5rem;
@@ -71,6 +73,10 @@ export default {
   flex-direction: column;
   min-height: calc(100vh - 8rem);
   padding: 1.5rem 0;
+}
+
+.sidebar__group {
+  margin-bottom: 1rem;
 }
 
 .sidebar__bottom {
@@ -81,7 +87,6 @@ export default {
 
 .label {
   padding: 0.25rem 0 0.3rem;
-  padding-left: 1.7rem;
   color: rgba(black, 0.4);
   font-weight: 500;
   font-size: 12px;
@@ -104,9 +109,13 @@ export default {
   border-radius: 2px;
   -webkit-user-drag: none;
 
+  &:hover {
+    background: rgba($color-grey-500, 0.1);
+  }
+
   &.router-link-active {
     font-weight: 500;
-    background: #f9c66b;
+    background: $color-yellow;
   }
 
   &.router-link-active-parent {
@@ -121,6 +130,9 @@ export default {
 }
 
 .sidebar__category-icon {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0.15rem;
   margin-right: 0.35rem;
 }
 </style>
