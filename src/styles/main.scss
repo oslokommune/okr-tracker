@@ -58,3 +58,10 @@ body.using-mouse :focus {
   font-weight: 500 !important;
   font-size: 1rem !important;
 }
+
+hr {
+  height: 1px;
+  margin: 1rem 0;
+  background: $color-grey-100;
+  border: none;
+}
