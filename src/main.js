@@ -96,8 +96,6 @@ auth.onAuthStateChanged(async user => {
     });
 
     router.beforeEach((to, from, next) => {
-      console.log('to: ', to);
-      console.log('from: ', from);
       store.dispatch('setLoading', true);
       next();
     });
