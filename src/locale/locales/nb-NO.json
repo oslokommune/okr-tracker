@@ -136,7 +136,7 @@
       "keyResult": "Lagt til nytt nøkkelresultat",
       "period": "Opprettet ny periode",
       "organization": "Opprettet ny organisasjon",
-      "kpi": "Opprettet ny kpi"
+      "kpi": "Opprettet ny KPI"
     },
     "delete": {
       "user": "Slettet bruker {user}",
