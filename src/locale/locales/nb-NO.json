@@ -20,23 +20,12 @@
   },
   "fields": {
     "email": "E-post",
-    "password": "Passord",
     "name": "Navn",
     "missionStatement": "Oppdragsbeskrivelse",
-    "value": "Verdi",
-    "range": "Dato- og klokkeslett",
-    "organization": "Organisasjon",
-    "department": "Produktområde",
-    "product": "Produkt",
-    "objective": "Objekt",
-    "unit": "Måleenhet",
-    "startValue": "Startverdi",
-    "targetValue": "Målverdi",
     "weight": "Vekt",
     "sheetId": "Google Sheet ID",
     "sheetTab": "Fane",
     "sheetCell": "Celle",
-    "type": "Type",
     "displayName": "Visningsnavn",
     "icon": "Ikon",
     "period": "Periode",
@@ -52,17 +41,11 @@
     "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
-    "product": "Produkt",
-    "organization": "Organisasjon",
-    "department": "Produktområde",
     "owner": "Oslo kommune",
-    "keyres": "Nøkkelresultat",
     "notFound": "Not found",
     "help": "Hjelp",
-    "objAndKeyres": "Mål og nøkkelresultater",
     "admin": "Admin",
     "dashboard": "Vis dashboard",
-    "success": "Suksess!",
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
     "lastUpdate": "Sist oppdatert",
@@ -98,10 +81,6 @@
     "deletePermanently": "Slett permanent",
     "restore": "Gjenopprett"
   },
-  "pageHeader": {
-    "header": "Hjem",
-    "error": "Cannot find document type"
-  },
   "login": {
     "login": "Logg inn",
     "requestAccess": "Be om tilgang",
@@ -117,18 +96,10 @@
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },
-  "header": {
-    "changeProfile": "Endre profil",
-    "logout": "Logg ut",
-    "newsfeed": "Aktivitet"
-  },
   "toaster": {
     "welcome": "Velkommen {user}",
-    "addedTo": "Lagt til",
-    "addComment": "Legg til kommentar",
     "add": {
       "users": "Lagt til en bruker | {count} brukere",
-      "admin": "Gitt {user} admintilgang",
       "product": "Opprettet nytt produkt",
       "objective": "Lagt til nytt mål for {period}",
       "progression": "Lagt til ny verdi",
@@ -142,12 +113,10 @@
       "user": "Slettet bruker {user}",
       "permanently": "Slettet dokumentet permanent",
       "object": "Slettet «{name}»",
-      "keyResult": "Slettet nøkkelresultat",
       "progression": "Slettet målepunkt"
     },
     "action": {
-      "regret": "Angre",
-      "close": "Lukk"
+      "regret": "Angre"
     },
     "error": {
       "save": "Kunne ikke lagre endringene",
@@ -165,24 +134,9 @@
       "kpi": "Kunne ikke opprette kpi",
       "notes": "Kunne ikke oppdatere notater"
     },
-    "removedAdmin": "Fjernet admintilgang for {user}",
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
-    "uploadedPhoto": "Lastet opp bilde",
-    "fourOhFour": "Siden eksisterer ikke",
     "restored": "Gjenopprettet dokument",
-    "removed": "Slettet",
-    "callout": {
-      "restore": "Gjenopprett",
-      "delete": "Slett permanent"
-    },
-    "calloutPictures": {
-      "information": "Her mangler det et produktbilde. Vil du laste opp et?",
-      "yes": "Let's go!",
-      "never": "Lukk og ikke vis igjen"
-    },
-    "invalidName": "Ugyldig navn",
-    "invalidDate": "Ugyldig dato",
     "request": {
       "requested": "Forespørsel om tilgang sendt til admin",
       "error": "Noe gikk galt med forespørselen, vennligst prøv igjen senere.",
@@ -190,23 +144,13 @@
       "rejected": "Fjernet: {user}"
     }
   },
-  "validations": {
-    "empty": "Kan ikke være tom",
-    "required": "Nødvendige felt kan ikke være tomme",
-    "submit": "Lagre nytt {object}",
-    "add": "Legg til",
-    "stop": "Avbryt"
-  },
   "keyres": {
-    "name": "nøkkelresultat",
     "objective": "Tilknyttet mål",
     "description": "Beskrivelse",
-    "longDescription": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
     "newValue": "Ny verdi",
-    "unitDescription": "Hva er det som måles (klikk, prosent, brukere etc)?",
     "automation": {
       "header": "Automatisk registrering av progresjon",
       "readMore": "Les mer",
@@ -217,18 +161,9 @@
       "sheetsCell": "Celle",
       "sheetsCellHelp": "For eksempel «A12»"
     },
-    "change": "Endre nøkkelresultat",
-    "delete": "Slett nøkkelresultat",
-    "close": "Lukk",
     "updateKeyres": "Oppdater verdi for nøkkelresultat",
-    "lastUpdated": "Sist oppdatert {date}",
     "registerProgression": {
-      "register": "Registrere progresjon",
-      "value": "Verdi",
-      "noKeyres": "Ingen nøkkelresultater",
-      "previous": "Forrige",
-      "jumpOver": "Hopp over",
-      "save": "Lagre og gå videre"
+      "value": "Verdi"
     },
     "updateValue": "Oppdater verdi",
     "dateAndTime": "Dato og tid",
@@ -242,211 +177,47 @@
   },
   "objective": {
     "period": "Periode",
-    "icon": "Ikon",
     "progression": "Progresjon",
     "weight": "Vekt",
-    "description": "Beskrivelse",
-    "title": "Tittel",
-    "emptyKeyres": "Oops! Her er det ingen nøkkelresultater ennå.",
-    "objectiveForPeriod": "Mål for perioden ({count})",
-    "empty": "Oops! Her finnes det ingen mål.",
-    "addObjectiveAndKeyres": "Legg til mål og nøkkelresultater",
-    "delete": "Slett mål",
-    "change": "Endre mål",
-    "keyres": "Nøkkelresultater"
+    "change": "Endre mål"
   },
   "period": {
-    "change": "Endre periode",
-    "name": "Navn på periode",
-    "nameHelp": "F.eks. Q1 2021 / Vår 2021",
     "dateRange": "Start- og sluttdato",
-    "deletePeriod": "Slett periode",
-    "hasObjectives": "Kan ikke slette periode som har tilknyttet mål",
     "range": "{startDate} til {endDate}",
     "period": "Periode"
   },
   "tooltip": {
-    "newValue": "Ny verdi",
-    "showDetails": "Vis detaljer",
-    "icon": "Søk og velg ikon fra listen",
-    "closeMenu": "Lukk meny",
     "openMenu": "Åpne meny",
-    "toAdmin": "Gå til adminpanelet",
-    "changeDetailsAndTeam": "Endre detaljer og team",
-    "addObjective": "Legg til et nytt mål",
-    "addKeyresToObjective": "Legg til nytt nøkkelresultat for eksisterende mål",
-    "updateKeyres": "Registrere nye verdier til nøkkelresultatene",
     "dashboard": "Gå til dashboard-visning",
-    "export": "Eksporter skjermbilder til presentasjoner (1920x1080)",
-    "auto": "Automatisk",
-    "team": "Klikk for å legge til",
-    "adminOnly": "Kun administrator kan gjenopprette et slettet produkt",
-    "uploadRequired": "You need to upload some files first",
-    "departmentDetails": "Se detaljer for tjenesteområdet",
-    "keyresChange": "Endre detailjer for nøkkelresulta",
     "keyresValue": "Skriv inn ny måleverdi",
-    "keyresDate": "Hvilket tidspunkt gjelder måleverdien for",
-    "saveKeyresValue": "Lagre nytt målepunkt",
-    "deleteKeyresValue": "Slett målepunkt",
-    "emptyMiller": "Tomt? Velg et mål eller nøkkelresultat i listen",
-    "addPeriod": "Legg til ny periode",
-    "addObjectiveForPeriod": "Legg til et mål for valgt kvartal",
-    "addKeyresForObjective": "Legg til et nøkkelresultat for valgt mål",
-    "cantChange": "Dette kan ikke endres",
-    "hideActivity": "Skjul aktivitet",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "deleteProgresjon": "Slett målepunkt",
     "editKpi": "Endre detaljer eller slett KPI",
-    "kpiDetails": "Vis detaljer for {type}",
     "navigateToItem": "Gå til {item}"
   },
   "document": {
-    "changeProduct": "Endre produkt",
-    "addObjective": "Legg til mål",
-    "newKeyres": "Nytt nøkkelresultat",
-    "updateData": "Oppdater data",
-    "edited": "Endret {date}",
-    "export": "Eksporter grafikk",
-    "showMembers": "Vis medlemmer",
-    "mission": "Oppdrag",
-    "missing": {
-      "first": "Uh-oh!",
-      "second": "Her mangler det noe viktig!"
-    },
-    "addDescription": "Legg inn en beskrivelse",
-    "product": "Produkter",
-    "period": "Denne perioden",
-    "members": "Medlemmer"
-  },
-  "home": {
-    "newsfeed": "Aktivitet",
-    "newsfeedCard": {
-      "updatedKeyres": {
-        "one": "har oppdatert fremdrift for ",
-        "two": "et nøkkelresultat ",
-        "three": "for"
-      },
-      "adminAdded": "fikk admintilgang",
-      "adminRemoved": "mistet admintilgang",
-      "removedUser": "fjernet bruker {user}",
-      "objectiveAdded": "opprettet et nytt mål for ",
-      "objectiveArchived": "arkiverte målet «{objective}» for ",
-      "objectiveUpdated": "endret målet «{objective}» for ",
-      "productAdded": "opprettet et nytt produkt under ",
-      "productArchived": "arkiverte «{product}»",
-      "productUpdated": "endret ",
-      "productUpdatedImage": "lastet opp et nytt bilde til ",
-      "usersAdded": {
-        "one": "har invitert ",
-        "two": "{length} {users}"
-      },
-      "keyresAdded": {
-        "one": "opprettet ",
-        "two": "et nøkkelresultat ",
-        "three": "for"
-      },
-      "keyresUpdated": {
-        "one": "endret ",
-        "two": "et nøkkelresultat ",
-        "three": "for"
-      },
-      "keyresArchived": "arkiverte et nøkkelresultat for",
-      "departmentUpdated": "endret produktområdet"
-    },
-    "productList": {
-      "details": "Vis detaljer",
-      "lastUpdated": "Sist oppdatert {product}"
-    }
-  },
-  "membersList": {
-    "title": {
-      "organization": "Produktområder",
-      "department": "Produkter"
-    },
-    "empty": {
-      "organization": "Finner ingen produktområder",
-      "department": "Finner ingen produkter",
-      "product": "Finner ingen teammedlemmer - kanskje det bare er ninjaer her?"
-    }
-  },
-  "keyresHandler": {
-    "description": "Navn på nøkkelresultatet",
-    "longDescription": "Beskrivelse",
-    "keyresCap": "Kan ikke ha flere enn 5 nøkkelresultat",
-    "maxSizeError": "Maximum key results"
-  },
-  "errorHandler": {
-    "insufficient": "Insufficient permissions",
-    "missingKeyRes": "Corrupt or missing key result object",
-    "process": "Cannot process provided value: {value}",
-    "noAdding": "Not allowed to add progress",
-    "noDeletion": "Not allowed to delete this",
-    "missing": "Missing document",
-    "noPeriods": "Unable to find current period",
-    "noAccess": "You do not have access to this page!"
+    "mission": "Oppdrag"
   },
   "admin": {
     "department": {
-      "title": "Administrer produktområde",
-      "defaultName": "Nytt produktområde",
-      "defaultSlug": "nytt-produktområde",
-      "name": "Navn",
-      "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Oppdragsbeskrivelse",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
-      "delete": "Slett",
       "create": "Opprett nytt produktområde",
       "parentOrganisation": "Tilhører organisasjon"
     },
     "organization": {
-      "title": "Administrer organisasjon",
-      "name": "Navn",
-      "slug": "Slug",
       "picture": "Bilde",
-      "missionStatement": "Oppdragsbeskrivelse",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
       "create": "Opprett ny organisasjon"
     },
     "product": {
-      "title": "Administrer produkt",
-      "defaultName": "Nytt produkt",
-      "defaultSlug": "nytt-produkt",
-      "name": "Navn",
-      "slug": "Slug",
-      "slugHelp": "Hvordan navnet fremstår i URL-en",
       "picture": "Bilde",
-      "missionStatement": "Oppdragsbeskrivelse",
-      "missionStatementHelp": "Her kan du skrive <router-link :to=\"{ name: 'Help' }\">Markdown</router-link>",
-      "teamHelp": "Medlemmer får tilgang til å administrere produktet",
-      "delete": "Slett",
       "create": "Opprett nytt produkt",
       "parentDepartment": "Tilhører produktområde"
     },
-    "home": {
-      "users": "Brukere",
-      "depsAndProds": "Produkter og produktområder"
-    },
     "objects": {
-      "title": "Administrer produkter og produktområder",
-      "subtitle": "Legg til, endre eller slett produkter og produktområder. Utover admin-brukere har kun team-medlemmer av et produkt mulighet til å redigere mål og nøkkelresultater",
-      "showArchived": "Vis arkiverte objekter",
-      "organization": "Velg organisasjon",
-      "department": "Velg produktområde",
-      "product": "Velg produkt",
-      "add": "+ Legg til"
+      "showArchived": "Vis arkiverte objekter"
     },
     "users": {
-      "find": "Finn bruker",
-      "title": "Brukeradministrasjon",
-      "subtitle": "Kun registrerte e-post-adresser har tilgang til systemet. Legg til eller fjern adresser her for å styre tilgang. Administratorer har tilgang til å redigere (og slette) produkter og produktområder samt redigere denne tilgangskontrollen",
-      "email": "E-post",
-      "name": "Navn",
-      "delete": "Slett",
-      "addEmails": "Legg til e-post-adresser",
-      "addEmailsHelp": "Én adresse per rad",
-      "add": "Legg til",
       "edit": "Endre bruker",
       "image": "Profilbilde",
       "backToUsers": "Tilbake til brukere",
@@ -464,75 +235,28 @@
   },
   "keyResultPage": {
     "change": "Endre nøkkelresultat",
-    "changed": "Endret {keyres}",
-    "period": "Progresjon gjennom {period}",
-    "auto": "Dette er et automatisk nøkkelresultat.",
-    "autoUpdate": "Hent data nå",
-    "addResValue": "Legg til nytt målepunkt",
-    "save": "Legg til",
-    "registered": "Registrerte målepunkter",
-    "empty": "Det er ingen registrerte målepunkter",
     "add": {
-      "value": "Verdi",
-      "date": "Dato",
       "today": "I dag"
     },
     "table": {
-      "value": "Verdi",
-      "date": "Dato",
-      "by": "Registrert av",
-      "delete": "Slett"
+      "value": "Verdi"
     },
     "notes": {
-      "title": "Notater",
-      "edit": "Endre",
       "empty": "Her kan du skrive notater som bare teamet ditt kan se.",
-      "save": "Lagre notater",
-      "tips": {
-        "one": "Tips!",
-        "two": "Her kan du skrive markdown",
-        "three": "Les mer"
-      }
+      "save": "Lagre notater"
     },
-    "flatPickrPlaceholder": "Velg dato og tid",
     "history": "Historikk",
     "registeredBy": "Registrert av",
     "value": "Verdi",
     "date": "Dato"
-  },
-  "product": {
-    "title": "Produkt",
-    "objAndKeyres": "Mål og nøkkelresultater",
-    "editObjectivesAndKeyresults": {
-      "title": "Administrer mål og nøkkelresultater",
-      "period": "Periode",
-      "addPeriod": "+ Legg til periode",
-      "objective": "Mål",
-      "add": "+ Legg til",
-      "keyres": "Nøkkelresultat",
-      "max": "Kan ikke ha flere enn 4 mål",
-      "newPeriod": "Ny periode"
-    }
   },
   "help": {
     "title": "Innhold"
   },
   "profile": {
     "myProfile": "Min profil",
-    "changePicture": "Endre bilde",
-    "name": "Display name",
     "hasAdmin": "Har administratortilgang",
-    "products": "Mine produkter",
-    "audit": "Audit",
-    "noActivity": "Ingen handlinger fra brukeren."
-  },
-  "archivedRestore": {
-    "heading": "Arkivert",
-    "message": "Dette objektet er arkivert. Ved å permanent slette dette objektet, alle relaterte KPI-er, mål, nøkkelresultater og progresjon blir slettet for alltid.",
-    "btn": {
-      "restore": "Gjenopprett",
-      "delete": "Slett data"
-    }
+    "products": "Mine produkter"
   },
   "view": {
     "compact": "Kompakt",
@@ -553,12 +277,6 @@
   },
   "select": {
     "noIcons": "Ingen treff"
-  },
-  "widget": {
-    "progression": {
-      "objective": "Progresjon for mål",
-      "period": "Progresjon for periode"
-    }
   },
   "empty": {
     "keyResultProgress": {
@@ -600,5 +318,11 @@
   "sheet": {
     "infoText": "Merk: Google Sheets-dokumentet må deles med følgende addresse:",
     "missingServiceAccount": "Feil: Ingen adresse funnet – ta kontakt med systemadministrator."
+  },
+  "widget": {
+    "progression": {
+      "period": "Progresjon for periode",
+      "objective": "Progresjon for mål"
+    }
   }
 }
