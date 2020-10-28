@@ -182,7 +182,11 @@
     "period": "Periode",
     "progression": "Progresjon",
     "weight": "Vekt",
-    "change": "Endre mål"
+    "change": "Endre mål",
+    "createdBy": "Opprettet av",
+    "editedBy": "Endret av",
+    "created": "Opprettet",
+    "edited": "Sist endret"
   },
   "period": {
     "dateRange": "Start- og sluttdato",
