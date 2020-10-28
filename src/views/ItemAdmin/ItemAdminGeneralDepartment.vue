@@ -56,15 +56,19 @@ import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    loading: false,
-  }),
-  computed: {
-    ...mapState(['activeItem', 'organizations']),
-  },
+  name: 'ItemAdminGeneralDepartment',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+  },
+
+  data: () => ({
+    loading: false,
+  }),
+
+  computed: {
+    ...mapState(['activeItem', 'organizations']),
   },
 
   methods: {

@@ -8,6 +8,8 @@
 import { itemHome as routerGuard } from '@/router/router-guards';
 
 export default {
+  name: 'ItemWrapper',
+
   async beforeRouteUpdate(to, from, next) {
     this.loading = true;
     if (to.params.slug !== from.params.slug) {

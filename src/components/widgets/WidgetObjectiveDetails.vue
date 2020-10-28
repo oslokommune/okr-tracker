@@ -36,14 +36,6 @@ import { nb } from 'date-fns/locale';
 export default {
   name: 'WidgetObjectiveDetails',
 
-  data: () => ({
-    progress: [],
-  }),
-
-  computed: {
-    ...mapState(['activeObjective']),
-  },
-
   components: {
     Widget: () => import('./Widget.vue'),
   },
@@ -53,6 +45,14 @@ export default {
       type: String,
       required: true,
     },
+  },
+
+  data: () => ({
+    progress: [],
+  }),
+
+  computed: {
+    ...mapState(['activeObjective']),
   },
 
   methods: {

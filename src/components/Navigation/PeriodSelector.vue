@@ -23,6 +23,8 @@ import { isBefore, addDays } from 'date-fns';
 import { periodDates } from '@/util/formatDate';
 
 export default {
+  name: 'PeriodSelector',
+
   computed: {
     ...mapState(['periods', 'activePeriod']),
     ...mapGetters(['hasEditRights']),

@@ -18,15 +18,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    children: [],
-    title: '',
-    icon: '',
-  }),
-
-  computed: {
-    ...mapState(['activeItem', 'departments', 'products']),
-  },
+  name: 'WidgetChildItems',
 
   components: {
     Widget: () => import('./Widget.vue'),
@@ -37,6 +29,16 @@ export default {
       type: String,
       required: true,
     },
+  },
+
+  data: () => ({
+    children: [],
+    title: '',
+    icon: '',
+  }),
+
+  computed: {
+    ...mapState(['activeItem', 'departments', 'products']),
   },
 
   watch: {

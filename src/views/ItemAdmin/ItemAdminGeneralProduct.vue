@@ -66,6 +66,8 @@ import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemAdminGeneralProduct',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),

@@ -19,7 +19,7 @@
           @click="showUserMenu = !showUserMenu"
         >
           <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
-          <img v-if="user.photoURL" :src="user.photoURL" class="user__image" />
+          <img v-if="user.photoURL" :src="user.photoURL" class="user__image" :alt="user.photoUrl" />
           <span class="user__name">{{ user.displayName }}</span>
           <span class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'"></span>
         </button>
@@ -58,18 +58,15 @@ import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 
 export default {
+  name: 'SiteHeader',
+
   directives: {
     ClickOutside,
   },
+
   data: () => ({
     showUserMenu: false,
   }),
-
-  watch: {
-    $route() {
-      this.hideUserMenu();
-    },
-  },
 
   computed: {
     ...mapState(['activeItem', 'user']),
@@ -85,6 +82,12 @@ export default {
       if ((parts.includes('ItemHome') || parts.includes('ItemAdmin')) && this.activeItem) return this.activeItem.name;
 
       return 'OKR Tracker';
+    },
+  },
+
+  watch: {
+    $route() {
+      this.hideUserMenu();
     },
   },
 

@@ -1,6 +1,6 @@
 import store from '@/store';
 
-export default async function (to, from, next) {
+export default async function keyResultHome(to, from, next) {
   const { keyResultId } = to.params;
 
   try {

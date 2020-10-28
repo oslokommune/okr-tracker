@@ -20,10 +20,13 @@
 <script>
 import { mapState } from 'vuex';
 import { scaleLinear, max } from 'd3';
-import Widget from './Widget.vue';
 
 export default {
   name: 'WidgetKeyResultWeights',
+
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
 
   props: {
     widgetId: {
@@ -65,10 +68,6 @@ export default {
 
   mounted() {
     if (this.$refs.svg) this.init();
-  },
-
-  components: {
-    Widget,
   },
 
   methods: {

@@ -58,6 +58,10 @@ import { nb } from 'date-fns/locale';
 export default {
   name: 'WidgetKeyResultDetails',
 
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
+
   props: {
     widgetId: {
       type: String,
@@ -71,10 +75,6 @@ export default {
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod']),
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 
   watch: {

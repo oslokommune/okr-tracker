@@ -37,6 +37,10 @@ marked.setOptions({
 export default {
   name: 'WidgetKeyResultNotes',
 
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
+
   props: {
     widgetId: {
       type: String,
@@ -58,10 +62,6 @@ export default {
       if (!this.thisKey.notes) return null;
       return sanitize(this.thisKey.notes);
     },
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 
   watch: {

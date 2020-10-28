@@ -22,6 +22,8 @@ import { mapState } from 'vuex';
 import * as breadcrumbList from '@/config/breadcrumbs';
 
 export default {
+  name: 'Breadcrumbs',
+
   data: () => ({
     breadcrumbs: [],
   }),

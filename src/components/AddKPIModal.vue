@@ -86,7 +86,7 @@ import { mapState } from 'vuex';
 import * as Toast from '@/util/toasts';
 
 export default {
-  name: 'Modal',
+  name: 'AddKPIModal',
 
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),

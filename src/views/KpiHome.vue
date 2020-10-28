@@ -73,6 +73,13 @@ import { extent } from 'd3';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'KpiHome',
+
+  components: {
+    Widget,
+    EmptyState: () => import('@/components/EmptyState.vue'),
+  },
+
   data: () => ({
     progress: [],
     graph: null,
@@ -81,11 +88,6 @@ export default {
   computed: {
     ...mapState(['activeKpi']),
     ...mapGetters(['hasEditRights']),
-  },
-
-  components: {
-    Widget,
-    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   watch: {

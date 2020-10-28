@@ -21,6 +21,8 @@ import requestAccess from '@/db/RequestAccess';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'AdminAccessRequests',
+
   data: () => ({
     requestAccess: [],
   }),

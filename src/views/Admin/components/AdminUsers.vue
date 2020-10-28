@@ -68,6 +68,8 @@ const fuseSettings = {
 };
 
 export default {
+  name: 'AdminUsers',
+
   components: {
     EditUser: () => import('./EditUser.vue'),
     AddUsers: () => import('./AddUsers.vue'),

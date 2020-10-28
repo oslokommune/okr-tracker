@@ -79,7 +79,10 @@ import * as Toast from '@/util/toasts';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
+  name: 'ItemAdminObjective',
+
   components: { FormComponent: () => import('@/components/FormComponent.vue'), ArchivedRestore },
+
   props: {
     data: {
       type: Object,

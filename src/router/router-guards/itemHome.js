@@ -6,7 +6,7 @@ const { state } = store;
 /**
  * Router guard for organization, department, and product 'home' pages.
  */
-export default async function (to, from, next) {
+export default async function itemHome(to, from, next) {
   const { activeItem } = state;
   const { slug } = to.params;
 
@@ -21,7 +21,7 @@ export default async function (to, from, next) {
       await store.dispatch('set_sidebar_items');
     }
 
-    return next();
+    next();
   } catch (error) {
     console.log(error);
     next({ name: 'Not found' });

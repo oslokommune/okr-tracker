@@ -46,6 +46,11 @@ import PieChart from '@/util/PieChart';
 
 export default {
   name: 'DashboardHome',
+
+  components: {
+    DashboardObjective: () => import('@/components/DashboardObjective.vue'),
+  },
+
   data: () => ({
     piegraph: null,
     tree: [],
@@ -65,10 +70,6 @@ export default {
       }
       return 'fa-industry';
     },
-  },
-
-  components: {
-    DashboardObjective: () => import('@/components/DashboardObjective.vue'),
   },
 
   watch: {

@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 /* eslint-disable valid-typeof */
-export default function (props, data) {
+export default function validateUpdateProps(props, data) {
   Object.entries(props).forEach(([prop, { type }]) => {
     // eslint-disable-next-line valid-typeof
     if (Object.hasOwnProperty.call(data, prop)) {

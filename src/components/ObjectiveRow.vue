@@ -19,6 +19,12 @@ import { mapState } from 'vuex';
 import { format } from 'd3';
 
 export default {
+  name: 'ObjectiveRow',
+
+  components: {
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
+  },
+
   props: {
     objective: {
       type: Object,
@@ -28,10 +34,6 @@ export default {
 
   computed: {
     ...mapState(['user']),
-  },
-
-  components: {
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
   },
 
   methods: {

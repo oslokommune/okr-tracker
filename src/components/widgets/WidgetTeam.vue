@@ -25,18 +25,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState(['activeItem', 'user']),
-    memberOrAdmin() {
-      try {
-        const isAdmin = this.user.admin;
-        const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
-        return isAdmin || isMember;
-      } catch {
-        return false;
-      }
-    },
-  },
+  name: 'WidgetTeam',
 
   components: {
     Widget: () => import('./Widget.vue'),
@@ -47,6 +36,20 @@ export default {
     widgetId: {
       type: String,
       required: true,
+    },
+  },
+
+  computed: {
+    ...mapState(['activeItem', 'user']),
+
+    memberOrAdmin() {
+      try {
+        const isAdmin = this.user.admin;
+        const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
+        return isAdmin || isMember;
+      } catch {
+        return false;
+      }
     },
   },
 };

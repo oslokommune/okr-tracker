@@ -19,6 +19,8 @@
 
 <script>
 export default {
+  name: 'ArchivedRestore',
+
   props: {
     restore: {
       type: Function,

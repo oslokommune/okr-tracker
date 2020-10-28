@@ -10,6 +10,8 @@
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemAdminGeneral',
+
   components: {
     ItemAdminGeneralProduct: () => import('./ItemAdminGeneralProduct'),
     ItemAdminGeneralDepartment: () => import('./ItemAdminGeneralDepartment'),

@@ -15,6 +15,8 @@
 import { format } from 'd3';
 
 export default {
+  name: 'ProgressBarExpanded',
+
   props: {
     keyResult: {
       type: Object,

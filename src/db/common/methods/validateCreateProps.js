@@ -2,11 +2,11 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 /* eslint-disable valid-typeof */
-export default function (props, data) {
+export default function validateCreateProps(props, data) {
   Object.entries(props).forEach(async ([prop, { type, required }]) => {
     // Check existence
     if (required && !Object.hasOwnProperty.call(data, prop)) {
-      throw new Error(`Cannot create ${name}. Missing required property "${prop}".`);
+      throw new Error(`Cannot create ${data.name}. Missing required property "${prop}".`);
     }
 
     // If property is included

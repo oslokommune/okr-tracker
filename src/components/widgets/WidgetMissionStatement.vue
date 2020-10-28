@@ -8,9 +8,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState(['activeItem']),
-  },
+  name: 'WidgetMissionStatement',
 
   components: {
     Widget: () => import('./Widget.vue'),
@@ -21,6 +19,10 @@ export default {
       type: String,
       required: true,
     },
+  },
+
+  computed: {
+    ...mapState(['activeItem']),
   },
 };
 </script>

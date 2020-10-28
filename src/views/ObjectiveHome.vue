@@ -44,14 +44,7 @@ import { db } from '@/config/firebaseConfig';
 import routerGuard from '@/router/router-guards/objectiveHome';
 
 export default {
-  data: () => ({
-    keyResults: [],
-  }),
-
-  computed: {
-    ...mapState(['activeObjective']),
-    ...mapGetters(['hasEditRights']),
-  },
+  name: 'ObjectiveHome',
 
   components: {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
@@ -64,11 +57,20 @@ export default {
   async beforeRouteLeave(to, from, next) {
     try {
       await this.$store.dispatch('set_active_key_result', null);
-      return next();
+      next();
     } catch (error) {
       console.error(error);
       next(false);
     }
+  },
+
+  data: () => ({
+    keyResults: [],
+  }),
+
+  computed: {
+    ...mapState(['activeObjective']),
+    ...mapGetters(['hasEditRights']),
   },
 
   watch: {

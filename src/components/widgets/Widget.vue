@@ -21,6 +21,8 @@
 import { mapActions, mapState } from 'vuex';
 
 export default {
+  name: 'Widget',
+
   props: {
     widgetId: {
       type: String,

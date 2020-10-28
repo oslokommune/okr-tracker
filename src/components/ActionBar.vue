@@ -23,6 +23,8 @@ import { mapState, mapActions } from 'vuex';
 import { periodDates } from '@/util/formatDate';
 
 export default {
+  name: 'ActionBar',
+
   computed: {
     ...mapState(['activePeriod', 'views', 'user']),
   },

@@ -80,6 +80,7 @@ import * as Toast from '@/util/toasts';
 
 export default {
   name: 'User',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
   },

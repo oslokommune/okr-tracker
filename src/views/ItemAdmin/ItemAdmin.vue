@@ -27,6 +27,8 @@
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemAdmin',
+
   computed: {
     links() {
       return [

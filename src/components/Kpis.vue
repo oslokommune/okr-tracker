@@ -46,6 +46,7 @@ export default {
         if (type === 'users') return format('.2s');
         if (type === 'satisfaction') return format('.2p');
         if (type === 'conversion') return format('.2p');
+        return '';
       })();
       return numFormat(currentValue);
     },

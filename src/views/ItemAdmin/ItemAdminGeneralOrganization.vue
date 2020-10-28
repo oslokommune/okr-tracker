@@ -45,10 +45,13 @@ import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemAdminGeneralOrganization',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
+
   data: () => ({
     loading: false,
   }),

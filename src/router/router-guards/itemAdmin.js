@@ -4,7 +4,7 @@ import store from '@/store';
  * Router guard for admin pages for organizations, departments and products.
  * Checks if the user is an admin or a member of the team before allowing access to the page.
  */
-export default async function (to, from, next) {
+export default async function itemHome(to, from, next) {
   const {
     state: {
       activeItem: { team },

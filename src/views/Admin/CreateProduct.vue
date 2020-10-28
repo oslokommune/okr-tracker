@@ -66,6 +66,8 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'CreateProduct',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
   },

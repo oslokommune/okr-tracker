@@ -8,6 +8,8 @@
 import { format } from 'd3';
 
 export default {
+  name: 'ProgressBar',
+
   props: {
     progression: {
       type: Number,

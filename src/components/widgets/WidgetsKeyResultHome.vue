@@ -26,14 +26,15 @@ import { mapState, mapGetters } from 'vuex';
 export default {
   name: 'WidgetsKeyResultHome',
 
-  computed: {
-    ...mapState(['activeKeyResult', 'user']),
-    ...mapGetters(['hasEditRights']),
-  },
   components: {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
     WidgetKeyResultWeights: () => import('./WidgetKeyResultWeights.vue'),
+  },
+
+  computed: {
+    ...mapState(['activeKeyResult', 'user']),
+    ...mapGetters(['hasEditRights']),
   },
 
   methods: {

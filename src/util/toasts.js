@@ -45,10 +45,14 @@ export function deletedPermanently() {
   return show(i18n.tc('toaster.delete.permanently'));
 }
 
+export function revertedDeletion() {
+  return show(i18n.tc('toaster.restored'));
+}
+
 export function deletedRegret(obj) {
   const { name, callback } = obj;
 
-  if (!callback) return;
+  if (!callback) return null;
 
   const options = {
     duration: 4000,
@@ -70,8 +74,4 @@ export function deletedRegret(obj) {
     return show(i18n.tc('toaster.delete.object', null, { name }), options);
   }
   return show(i18n.tc('toaster.deleted'), options);
-}
-
-export function revertedDeletion() {
-  return show(i18n.tc('toaster.restored'));
 }

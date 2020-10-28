@@ -26,6 +26,8 @@ import { mapMutations } from 'vuex';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'RequestAccess',
+
   data: () => ({
     email: '',
     loading: false,

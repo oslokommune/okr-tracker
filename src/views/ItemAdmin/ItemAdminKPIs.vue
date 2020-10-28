@@ -95,18 +95,20 @@ import Kpi from '@/db/Kpi';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'ItemAdminKPIs',
+
+  components: {
+    AddKpiModal: () => import('@/components/AddKPIModal.vue'),
+    FormComponent: () => import('@/components/FormComponent.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
+  },
+
   data: () => ({
     showAddKPIModal: false,
   }),
 
   computed: {
     ...mapState(['kpis']),
-  },
-
-  components: {
-    AddKpiModal: () => import('@/components/AddKPIModal.vue'),
-    FormComponent: () => import('@/components/FormComponent.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   methods: {

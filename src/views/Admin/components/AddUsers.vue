@@ -18,6 +18,8 @@ import validateEmail from '@/util/validateEmail';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'AddUsers',
+
   data: () => ({
     emails: '',
     loading: false,

@@ -74,6 +74,8 @@
 import { db } from '@/config/firebaseConfig';
 
 export default {
+  name: 'AdminItems',
+
   data: () => ({
     showArchived: false,
     organizations: [],

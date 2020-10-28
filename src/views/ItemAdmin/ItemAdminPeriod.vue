@@ -98,7 +98,7 @@ export default {
 
   methods: {
     generateRange() {
-      if (!this.activePeriod.startDate || !this.activePeriod.endDate) return;
+      if (!this.activePeriod.startDate || !this.activePeriod.endDate) return '';
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
       const endDate = format(this.activePeriod.endDate.toDate(), 'yyyy-MM-dd');
       return this.$t('period.range', { startDate, endDate });

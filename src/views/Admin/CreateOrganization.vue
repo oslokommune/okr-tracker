@@ -39,6 +39,8 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'CreateOrganization',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
   },

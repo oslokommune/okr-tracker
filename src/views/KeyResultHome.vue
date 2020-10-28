@@ -137,12 +137,13 @@ export default {
   async beforeRouteLeave(to, from, next) {
     try {
       await this.$store.dispatch('set_active_key_result', null);
-      return next();
+      next();
     } catch (error) {
       console.error(error);
       next(false);
     }
   },
+
   data: () => ({
     progress: [],
     newValue: null,

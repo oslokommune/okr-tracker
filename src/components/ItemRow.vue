@@ -56,9 +56,23 @@ import { format } from 'd3';
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemRow',
+
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
   },
+
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+  },
+
   data: () => ({
     progression: null,
     kpis: [],
@@ -81,17 +95,6 @@ export default {
         default:
           return '';
       }
-    },
-  },
-
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
     },
   },
 

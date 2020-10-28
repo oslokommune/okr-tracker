@@ -147,6 +147,8 @@ import KeyResult from '@/db/KeyResult';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'ItemAdminKeResult',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),

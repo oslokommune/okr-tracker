@@ -22,13 +22,15 @@
 import { mapGetters, mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapGetters(['tree']),
-    ...mapState(['user']),
-  },
+  name: 'Home',
 
   components: {
     ItemRow: () => import('@/components/ItemRow.vue'),
+  },
+
+  computed: {
+    ...mapGetters(['tree']),
+    ...mapState(['user']),
   },
 };
 </script>

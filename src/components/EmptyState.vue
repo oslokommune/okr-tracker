@@ -12,6 +12,8 @@
 
 <script>
 export default {
+  name: 'EmptyState',
+
   props: {
     icon: {
       type: String,

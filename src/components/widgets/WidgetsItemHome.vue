@@ -8,7 +8,7 @@
         :to="{ name: 'ItemAdmin' }"
       >
         <i class="icon fa fa-cog"></i>
-        {{ $t('btn.editItem', { item: this.activeItem.name }) }}
+        {{ $t('btn.editItem', { item: activeItem.name }) }}
       </router-link>
       <router-link
         v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
@@ -40,6 +40,13 @@ import { mapState, mapGetters } from 'vuex';
 export default {
   name: 'WidgetsItemHome',
 
+  components: {
+    WidgetProgression: () => import('./WidgetProgression.vue'),
+    WidgetMissionStatement: () => import('./WidgetMissionStatement.vue'),
+    WidgetTeam: () => import('./WidgetTeam.vue'),
+    WidgetChildItems: () => import('./WidgetChildItems.vue'),
+  },
+
   data: () => ({
     disabled: false,
   }),
@@ -47,13 +54,6 @@ export default {
   computed: {
     ...mapState(['activeItem', 'activePeriod', 'user']),
     ...mapGetters(['hasEditRights']),
-  },
-
-  components: {
-    WidgetProgression: () => import('./WidgetProgression.vue'),
-    WidgetMissionStatement: () => import('./WidgetMissionStatement.vue'),
-    WidgetTeam: () => import('./WidgetTeam.vue'),
-    WidgetChildItems: () => import('./WidgetChildItems.vue'),
   },
 
   watch: {

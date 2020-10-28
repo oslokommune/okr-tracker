@@ -8,6 +8,8 @@
 import PieChart from '@/util/PieChart';
 
 export default {
+  name: 'WidgetProgression',
+
   components: {
     Widget: () => import('./Widget.vue'),
   },

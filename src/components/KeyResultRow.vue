@@ -34,6 +34,14 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
+  name: 'KeyResultRow',
+
+  components: {
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
+    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
+    Modal: () => import('@/components/Modal.vue'),
+  },
+
   props: {
     keyResult: {
       type: Object,
@@ -58,12 +66,6 @@ export default {
       if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
     },
-  },
-
-  components: {
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
-    Modal: () => import('@/components/Modal.vue'),
   },
 
   watch: {

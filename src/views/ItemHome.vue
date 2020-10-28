@@ -38,6 +38,8 @@
 import { mapGetters, mapState } from 'vuex';
 
 export default {
+  name: 'ItemHome',
+
   components: {
     PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),

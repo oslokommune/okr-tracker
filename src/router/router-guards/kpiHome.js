@@ -1,6 +1,6 @@
 import store from '@/store';
 
-export default async function (to, from, next) {
+export default async function kpiHome(to, from, next) {
   const { kpiId } = to.params;
 
   try {

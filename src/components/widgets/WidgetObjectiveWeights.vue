@@ -20,10 +20,20 @@
 <script>
 import { mapState } from 'vuex';
 import { scaleLinear, max } from 'd3';
-import Widget from './Widget.vue';
 
 export default {
   name: 'WidgetObjectiveWeights',
+
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
+  },
 
   data: () => ({
     chart: null,
@@ -43,17 +53,6 @@ export default {
       });
 
       return this.objectives.filter(siblings).map(processWeights);
-    },
-  },
-
-  components: {
-    Widget,
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
     },
   },
 

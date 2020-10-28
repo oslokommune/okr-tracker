@@ -1,11 +1,26 @@
 import { stratify } from 'd3';
 
-export default function (markup) {
-  const root = { id: 'root', text: '', parent: '', level: 0 };
-  const headings = getHeadings(markup);
-  const tree = stratify().parentId(d => d.parent)([root, ...headings]);
+/**
+ * Finds the parent node for the provided node
+ * by matching its level with its leading nodes in
+ * the list.
+ * @param {Object} node -
+ * @param {Number} index - Index of current node
+ * @param {Array} list - List of nodes
+ * @returns {String} - Parent id
+ */
+function getParent(node, index, list) {
+  let parentId;
 
-  return tree;
+  for (let i = 0; i < index; i += 1) {
+    if (+list[i][1] < +node[1]) {
+      parentId = list[i][2]; // eslint-disable-line
+    } else if (+list[i][1] > +node[1]) {
+      parentId = null;
+    }
+  }
+
+  return parentId || 'root';
 }
 
 /**
@@ -28,25 +43,9 @@ function getHeadings(markup) {
   });
 }
 
-/**
- * Finds the parent node for the provided node
- * by matching its level with its leading nodes in
- * the list.
- * @param {Object} node -
- * @param {Number} index - Index of current node
- * @param {Array} list - List of nodes
- * @returns {String} - Parent id
- */
-function getParent(node, index, list) {
-  let parentId;
+export default function tableOfContent(markup) {
+  const root = { id: 'root', text: '', parent: '', level: 0 };
+  const headings = getHeadings(markup);
 
-  for (let i = 0; i < index; i += 1) {
-    if (+list[i][1] < +node[1]) {
-      parentId = list[i][2]; // eslint-disable-line
-    } else if (+list[i][1] > +node[1]) {
-      parentId = null;
-    }
-  }
-
-  return parentId || 'root';
+  return stratify().parentId(d => d.parent)([root, ...headings]);
 }
