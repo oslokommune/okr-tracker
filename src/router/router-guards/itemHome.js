@@ -24,6 +24,6 @@ export default async function (to, from, next) {
     return next();
   } catch (error) {
     console.log(error);
-    next('/404');
+    next({ name: 'Not found' });
   }
 }

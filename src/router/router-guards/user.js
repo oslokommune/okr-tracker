@@ -12,7 +12,7 @@ export default async function RouterGuardUser(to, from, next) {
 
       next();
     } catch {
-      next('/404');
+      next({ name: 'Not found' });
     }
   }
 }
