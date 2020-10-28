@@ -52,19 +52,19 @@ const routes = [
         component: () => import('@/views/Admin/Admin.vue'),
       },
       {
-        path: '/admin/create-organization',
+        path: 'admin/create-organization',
         name: 'CreateOrganization',
         meta: { breadcrumbs: ['home', 'admin', 'createOrganization'] },
         component: () => import('@/views/Admin/CreateOrganization.vue'),
       },
       {
-        path: '/admin/create-department',
+        path: 'admin/create-department',
         name: 'CreateDepartment',
         meta: { breadcrumbs: ['home', 'admin', 'createDepartment'] },
         component: () => import('@/views/Admin/CreateDepartment.vue'),
       },
       {
-        path: '/admin/create-product',
+        path: 'admin/create-product',
         name: 'CreateProduct',
         meta: { breadcrumbs: ['home', 'admin', 'createProduct'] },
         component: () => import('@/views/Admin/CreateProduct.vue'),
@@ -90,7 +90,7 @@ const routes = [
         beforeEnter: routerGuards.itemHome,
       },
       {
-        path: '/admin',
+        path: 'admin',
         meta: { breadcrumbs: ['home', 'item', 'itemAdmin'] },
         component: () => import('@/views/ItemAdmin/ItemAdmin.vue'),
         beforeEnter: routerGuards.itemAdmin,
@@ -102,13 +102,13 @@ const routes = [
             component: () => import('@/views/ItemAdmin/ItemAdminGeneral.vue'),
           },
           {
-            path: '/okr',
+            path: 'okr',
             name: 'ItemAdminOKRs',
             meta: { breadcrumbs: ['home', 'item', 'itemAdmin', 'itemAdminOKR'] },
             component: () => import('@/views/ItemAdmin/ItemAdminOKRs.vue'),
           },
           {
-            path: '/kpi',
+            path: 'kpi',
             name: 'ItemAdminKPIs',
             meta: { breadcrumbs: ['home', 'item', 'itemAdmin', 'itemAdminKPI'] },
             component: () => import('@/views/ItemAdmin/ItemAdminKPIs.vue'),
@@ -116,21 +116,21 @@ const routes = [
         ],
       },
       {
-        path: '/dashboard',
+        path: 'dashboard',
         name: 'Dashboard',
         meta: { breadcrumbs: ['home', 'item'] },
         component: () => import('@/views/DashboardHome.vue'),
         beforeEnter: routerGuards.dashboard,
       },
       {
-        path: '/k/:keyResultId',
+        path: 'k/:keyResultId',
         name: 'KeyResultHome',
         meta: { breadcrumbs: ['home', 'item', 'objective', 'keyResult'] },
         component: () => import('@/views/KeyResultHome.vue'),
         beforeEnter: routerGuards.keyResultHome,
       },
       {
-        path: '/o/:objectiveId',
+        path: 'o/:objectiveId',
         name: 'ObjectiveHome',
         meta: { breadcrumbs: ['home', 'item', 'objective'] },
         component: () => import('@/views/ObjectiveHome.vue'),
@@ -138,7 +138,7 @@ const routes = [
       },
 
       {
-        path: '/kpi/:kpiId',
+        path: 'kpi/:kpiId',
         name: 'KpiHome',
         meta: { breadcrumbs: ['home', 'item', 'kpi'] },
         component: () => import('@/views/KpiHome.vue'),
