@@ -31,6 +31,12 @@
             </form>
           </validation-observer>
 
+          <div v-if="me" class="main__user--info-btn">
+            <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+          </div>
+
+          <hr class="divider" />
+
           <template v-if="user.admin">
             <h2 class="title-2">
               <i class="fas fa-user-shield"></i>
@@ -44,20 +50,12 @@
           <h2 class="title-2">{{ $t('profile.products') }}</h2>
           <ul class="grid-system">
             <li v-for="product in products" :key="product.id">
-              <router-link :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-                <div class="product">
-                  <div class="product__title">
-                    <h1>{{ product.department.name }}</h1>
-                    <h1 class="product__h2">{{ product.name }}</h1>
-                  </div>
-                </div>
+              <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
+                <div class="product__parent">{{ product.department.name }}</div>
+                <div class="product__name"><span class="product__icon fa fa-cube"></span>{{ product.name }}</div>
               </router-link>
             </li>
           </ul>
-
-          <div v-if="me" class="main__user--info-btn">
-            <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
-          </div>
         </div>
       </div>
     </div>
@@ -265,31 +263,38 @@ export default {
 
 .product {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  padding: 0.75rem;
   color: $color-purple;
+  text-decoration: none;
+  border: 1px solid $color-grey-100;
 
-  &__title {
+  &:hover {
+    background: rgba($color-grey-500, 0.1);
+  }
+
+  &__icon {
+    margin-right: 0.5rem;
+  }
+
+  &__parent {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 1rem;
+    margin-bottom: 0.25rem;
+    color: $color-grey-600;
+    font-size: 0.85rem;
   }
 
-  &__h2 {
-    margin: 0.25rem 0 0;
+  &__name {
     font-weight: 500;
-    font-size: 1.35rem;
-    line-height: 1.15;
   }
 }
 
 .grid-system {
   display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  margin: 2rem 0;
-  @media screen and (min-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  }
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  margin: 1rem 0 2rem;
 }
 </style>

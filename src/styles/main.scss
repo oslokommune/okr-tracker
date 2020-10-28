@@ -84,3 +84,10 @@ body.using-mouse :focus {
     border-top: 1px solid $color-border;
   }
 }
+
+hr {
+  height: 1px;
+  margin: 1rem 0;
+  background: $color-grey-100;
+  border: none;
+}

@@ -1,6 +1,6 @@
 <template>
   <Widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
-    {{ $t('weight.objectivesFor') }} {{ activeObjective.period.name }}
+    {{ $t('weight.keyresFor', { name: activeObjective.period.name }) }}
     <div class="scales">
       <router-link
         :to="{ name: 'ObjectiveHome', params: { objectiveId: id } }"

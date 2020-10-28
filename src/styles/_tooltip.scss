@@ -96,3 +96,11 @@
     transition: opacity 0.15s;
   }
 }
+
+.tooltip.popover {
+  pointer-events: all;
+
+  .tooltip-inner {
+    font-size: 1rem !important;
+  }
+}
