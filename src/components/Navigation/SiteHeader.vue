@@ -83,6 +83,7 @@ export default {
       const parts = this.$route.matched.map(({ name }) => name);
 
       if (parts.includes('Admin')) return 'Admin';
+      if (parts.includes('ItemAdmin') && this.activeItem) return this.activeItem.name;
       if (parts.includes('ItemHome') && this.activeItem) return this.activeItem.name;
 
       return 'OKR Tracker';
