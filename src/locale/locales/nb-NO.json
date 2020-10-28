@@ -79,7 +79,8 @@
     "minimize": "Minimer",
     "expand": "Ekspander",
     "deletePermanently": "Slett permanent",
-    "restore": "Gjenopprett"
+    "restore": "Gjenopprett",
+    "confirmDeleteProgress": "Bekreft sletting"
   },
   "login": {
     "login": "Logg inn",
@@ -132,7 +133,8 @@
       "progression": "Kunne ikke legge til ny verdi",
       "email": "Ugyldige e-postadresser",
       "kpi": "Kunne ikke opprette kpi",
-      "notes": "Kunne ikke oppdatere notater"
+      "notes": "Kunne ikke oppdatere notater",
+      "deleteProgress": "Kunne ikke slette målepunkt"
     },
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
@@ -173,7 +175,8 @@
     "numberOfUpdates": "Antall oppdateringer",
     "weight": "Vekt",
     "automatic": "Oppdateres automatisk",
-    "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument."
+    "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
+    "showComment": "Vis kommentar"
   },
   "objective": {
     "period": "Periode",
@@ -192,9 +195,10 @@
     "keyresValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
-    "deleteProgresjon": "Slett målepunkt",
     "editKpi": "Endre detaljer eller slett KPI",
-    "navigateToItem": "Gå til {item}"
+    "navigateToItem": "Gå til {item}",
+    "deleteProgress": "Slett målepunkt",
+    "isMember": "Medlem av team"
   },
   "document": {
     "mission": "Oppdrag"
@@ -269,7 +273,7 @@
   },
   "weight": {
     "heading": "Vekting",
-    "keyresFor": "Nøkkelresultater for",
+    "keyresFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
   },
   "accessRequests": {

@@ -77,5 +77,10 @@ export default {
 
 .list__link {
   justify-content: flex-start;
+  white-space: pre-wrap;
+}
+
+.icon {
+  flex-shrink: 0;
 }
 </style>

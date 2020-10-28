@@ -3,22 +3,37 @@
     <span class="indent" v-if="type === 'product'"></span>
     <span class="item__icon fas fa-fw" :class="`fa-${icon}`"></span>
 
-    <span class="item__name">{{ data.name }}</span>
+    <span class="item__name">
+      {{ data.name }}
+      <i v-if="isMember" class="item__user-icon fa fa-user-circle" v-tooltip="$t('tooltip.isMember')"></i>
+    </span>
 
     <div class="item__kpis">
-      <div class="item__kpi" v-tooltip="`${$t('kpi.types.users')}:<br> ${getKpiName('users')}`">
+      <div
+        class="item__kpi"
+        v-tooltip="`${$t('kpi.types.users')}:<br> ${getKpiName('users')}`"
+        :class="{ disabled: getKpiValue('users') === '–––' }"
+      >
         <span class="item__kpi-icon fas fa-chart-line"></span>
         <span class="item__kpi-value">{{ getKpiValue('users') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
-      <div class="item__kpi" v-tooltip="`${$t('kpi.types.satisfaction')}:<br> ${getKpiName('satisfaction')}`">
+      <div
+        class="item__kpi"
+        v-tooltip="`${$t('kpi.types.satisfaction')}:<br> ${getKpiName('satisfaction')}`"
+        :class="{ disabled: getKpiValue('satisfaction') === '–––' }"
+      >
         <span class="item__kpi-icon far fa-smile"></span>
         <span class="item__kpi-value">{{ getKpiValue('satisfaction') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
       </div>
 
-      <div class="item__kpi" v-tooltip="`${$t('kpi.types.conversion')}:<br> ${getKpiName('conversion')}`">
+      <div
+        class="item__kpi"
+        v-tooltip="`${$t('kpi.types.conversion')}:<br> ${getKpiName('conversion')}`"
+        :class="{ disabled: getKpiValue('conversion') === '–––' }"
+      >
         <span class="item__kpi-icon far fa-check-square"></span>
         <span class="item__kpi-value">{{ getKpiValue('conversion') }}</span>
         <span class="item__kpi-arrow item__kpi-arrow--up"></span>
@@ -38,6 +53,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import { format } from 'd3';
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -50,6 +66,11 @@ export default {
   },
 
   computed: {
+    ...mapState(['user']),
+    isMember() {
+      return !!this.data.team && this.data.team.find(({ id }) => id === this.user.id);
+    },
+
     icon() {
       switch (this.type) {
         case 'product':
@@ -140,11 +161,12 @@ export default {
 }
 
 .item__name {
-  flex-shrink: 1;
+  display: flex;
+  flex: 1 1 100%;
+  align-items: center;
   margin-right: auto;
   padding-right: 0.5rem;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -160,6 +182,8 @@ export default {
 
 .item__icon {
   flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0.15rem;
   margin-right: 0.5rem;
 }
 
@@ -181,7 +205,7 @@ export default {
 
 .item__kpis {
   display: none;
-  margin: 0 1rem;
+  margin-right: 1rem;
 
   @media screen and (min-width: bp(s)) {
     display: flex;
@@ -193,6 +217,10 @@ export default {
   align-items: center;
   padding: 0 0.5rem;
   border-right: 1px solid $color-grey-100;
+
+  &.disabled {
+    opacity: 0.4;
+  }
 }
 
 .item__kpi-value {
@@ -208,7 +236,16 @@ export default {
   color: $color-purple;
 }
 
+.item__user-icon {
+  display: inline-block;
+  margin-left: auto;
+  padding: 0 0.5rem;
+  color: $color-purple;
+  text-align: center;
+}
+
 .indent {
+  flex-shrink: 0;
   width: 1.6rem;
 }
 </style>

@@ -77,12 +77,28 @@
                   <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
                 </router-link>
               </td>
-              <td><i v-if="p.comment" class="fa fa-comment-alt"></i></td>
+              <td>
+                <v-popover placement="top" v-if="p.comment">
+                  <i class="fa fa-comment-alt comment-icon" v-tooltip="$t('keyres.showComment')"></i>
+
+                  <template slot="popover">
+                    {{ p.comment }}
+                  </template>
+                </v-popover>
+              </td>
               <td v-if="hasEditPermissions" style="width: 1rem">
-                <button @click="remove(p.id)" class="btn btn--ter btn--icon">
-                  <i class="icon far fa-trash-alt"></i>
-                  {{ $t('btn.delete') }}
-                </button>
+                <v-popover offset="16" placement="top" show="true">
+                  <button class="btn btn--ter btn--icon">
+                    <i class="icon far fa-trash-alt"></i>
+                    {{ $t('btn.delete') }}
+                  </button>
+
+                  <template slot="popover">
+                    <button class="btn btn--ter btn--negative" @click="remove(p.id)">
+                      {{ $t('btn.confirmDeleteProgress') }}
+                    </button>
+                  </template>
+                </v-popover>
               </td>
             </tr>
           </tbody>
@@ -98,6 +114,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { VPopover } from 'v-tooltip';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
@@ -112,6 +129,7 @@ export default {
     WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
     Modal: () => import('@/components/Modal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    VPopover,
   },
   data: () => ({
     progress: [],
@@ -147,9 +165,13 @@ export default {
   methods: {
     dateTimeShort,
 
-    remove(id) {
-      Progress.remove(this.activeKeyResult.id, id);
-      Toast.show(this.$t('toaster.delete.progression'));
+    async remove(id) {
+      try {
+        await Progress.remove(this.activeKeyResult.id, id);
+        Toast.show(this.$t('toaster.delete.progression'));
+      } catch {
+        Toast.error(this.$t('toaster.error.deleteProgress'));
+      }
     },
 
     hasEditPermissions() {
@@ -286,6 +308,18 @@ export default {
   margin-bottom: 1rem;
   background: white;
   box-shadow: 0 2px 2px rgba(black, 0.06);
+}
+
+.comment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 3px;
+
+  &:hover {
+    background: rgba($color-grey-500, 0.1);
+  }
 }
 
 .table,

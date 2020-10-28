@@ -57,11 +57,24 @@
   &:hover {
     background: rgba($color-grey-500, 0.1);
   }
+
+  &.btn--negative {
+    color: white;
+
+    &:hover {
+      background: rgba(white, 0.1);
+    }
+  }
 }
 
 .btn--ghost {
   background: none;
   border: 1px solid currentColor;
+
+  &.btn--negative {
+    color: white;
+    border-color: white;
+  }
 }
 
 .btn--fw {
