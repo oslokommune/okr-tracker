@@ -78,9 +78,8 @@
                 </router-link>
               </td>
               <td>
-                <v-popover v-if="p.comment" placement="top">
+                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)" :auto-hide="true">
                   <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon"></i>
-
                   <template slot="popover">
                     {{ p.comment }}
                   </template>
@@ -178,6 +177,11 @@ export default {
 
   methods: {
     dateTimeShort,
+
+    isFirstProgressWithComment({ id }) {
+      const firstProgressWithComment = this.progress.find(({ comment }) => comment);
+      return id === firstProgressWithComment.id;
+    },
 
     async remove(id) {
       try {
