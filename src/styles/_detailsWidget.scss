@@ -1,0 +1,21 @@
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
+.details__item {
+  margin: 0.5rem 0;
+  line-height: 1.2rem;
+}
+
+.details__item-body {
+  display: flex;
+}
+
+.details__item-icon {
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: 1.5rem;
+  margin-top: 0.1rem;
+  margin-left: 0.15rem;
+}
