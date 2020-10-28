@@ -85,7 +85,7 @@ async function updatePeriodProgression(periodRef) {
   }
 
   try {
-    if (progression) {
+    if (typeof progression === 'number') {
       await periodRef.update({ progression });
     }
   } catch (error) {

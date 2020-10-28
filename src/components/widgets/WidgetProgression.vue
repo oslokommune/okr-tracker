@@ -6,7 +6,6 @@
 
 <script>
 import PieChart from '@/util/PieChart';
-import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -40,32 +39,21 @@ export default {
     },
   },
 
-  computed: {
-    ...mapState(['activeItem', 'activePeriod']),
-  },
-
   mounted() {
     setTimeout(() => {
       this.svg = this.$refs.svg;
       this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
-      this.chart.render(this.activePeriod);
-    }, 1);
+      this.chart.render(this.data);
+    }, 150);
   },
 
   watch: {
-    activePeriod: {
+    data: {
       immediate: true,
       deep: true,
-      handler(period) {
+      handler(data) {
         if (!this.chart) return;
-        this.chart.render(period);
-      },
-    },
-    activeItem: {
-      immediate: true,
-      handler() {
-        if (!this.chart) return;
-        this.chart.render(this.activePeriod);
+        this.chart.render(data);
       },
     },
   },
