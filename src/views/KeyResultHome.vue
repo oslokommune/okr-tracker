@@ -69,7 +69,7 @@
                   class="user__link"
                 >
                   <img
-                    :src="p.createdBy.photoURL || '/placeholder-image.svg'"
+                    :src="p.createdBy.photoURL || '/placeholder-user.svg'"
                     :alt="p.createdBy.photoURL"
                     aria-hidden="true"
                     class="user__image"
@@ -324,32 +324,6 @@ export default {
 
   &:hover {
     background: rgba($color-grey-500, 0.1);
-  }
-}
-
-.table,
-.md table {
-  width: 100%;
-  margin: 2rem 0 1rem;
-  border-bottom: 1px solid $color-border;
-
-  th {
-    font-weight: 500;
-  }
-
-  thead {
-    th {
-      border-top: none;
-    }
-  }
-
-  th,
-  td {
-    height: 3rem;
-    padding: 0 0.5rem;
-    text-align: left;
-    vertical-align: middle;
-    border-top: 1px solid $color-border;
   }
 }
 

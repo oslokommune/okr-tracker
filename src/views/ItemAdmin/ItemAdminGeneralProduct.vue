@@ -48,12 +48,6 @@
       </form>
     </validation-observer>
 
-    <div class="form-group">
-      <span class="form-label">{{ $t('admin.product.picture') }}</span>
-      <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
-      <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
-    </div>
-
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-product" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
@@ -79,9 +73,9 @@ export default {
 
   data: () => ({
     users: [],
-    image: null,
     loading: false,
   }),
+
   computed: {
     ...mapState(['activeItem', 'departments']),
   },
@@ -100,23 +94,12 @@ export default {
 
         const data = { name, team, missionStatement, department };
 
-        if (this.image) {
-          data.photoURL = await Product.uploadImage(id, this.image);
-        }
-
         Product.update(id, data);
         Toast.savedChanges();
       } catch {
         Toast.errorSave();
       }
       this.loading = false;
-    },
-
-    async setImage({ target }) {
-      const { files } = target;
-      if (files.length !== 1) return;
-      const [image] = files;
-      this.image = image;
     },
 
     async archive() {
@@ -162,12 +145,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.image {
-  width: 10rem;
-  height: 10rem;
-  margin: 1rem 0;
-  object-fit: cover;
-  border-radius: 3px;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -6,11 +6,13 @@ $font-size-4: 1.36rem;
 $font-size-5: 1.71rem;
 $font-size-7: 2.28rem;
 
+.md h1,
 .title-1 {
   margin-bottom: 0.5em;
   font-size: $font-size-4;
 }
 
+.md h2,
 .title-2 {
   margin-bottom: 0.5rem;
   font-weight: 500;
@@ -18,9 +20,73 @@ $font-size-7: 2.28rem;
   letter-spacing: -0.03rem;
 }
 
+.md h3,
 .title-3 {
   margin-bottom: 0.5rem;
   font-weight: 500;
   font-size: $font-size-2;
   letter-spacing: -0.03rem;
+}
+
+.md h4,
+.title-4 {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: $font-size-1;
+  letter-spacing: -0.03rem;
+}
+
+
+.md {
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+  }
+
+  ul {
+    margin: 1em 0;
+    padding-left: 2em;
+    list-style-type: disc;
+  }
+
+  .table {
+    margin-bottom: 2rem;
+  }
+
+  ol {
+    margin: 1em 0;
+    padding-left: 2em;
+    list-style-type: decimal;
+  }
+}
+
+code {
+  margin: 0 0.25em;
+  padding: 0.25em 0.3em;
+  font-size: 0.9em;
+  font-family: Monaco, monospace;
+  line-height: 100%;
+  letter-spacing: -0.05em;
+  word-break: normal;
+  background-color: #eeeeee;
+  border-radius: 2px;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 500;
+}
+
+p + p {
+  margin-top: 1em;
 }

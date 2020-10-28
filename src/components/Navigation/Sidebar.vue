@@ -5,7 +5,7 @@
       <ul class="sidebar__list">
         <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
           <router-link
-            :to="`/${item.slug}`"
+            :to="{ name: 'ItemHome', params: { slug: item.slug } }"
             class="sidebar__link"
             :class="{
               'router-link-active-parent':

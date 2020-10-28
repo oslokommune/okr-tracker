@@ -6,6 +6,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
     unbindFirestoreRef('periods');
     unbindFirestoreRef('objectives');
     unbindFirestoreRef('keyResults');
+    unbindFirestoreRef('activePeriod');
     return false;
   }
 

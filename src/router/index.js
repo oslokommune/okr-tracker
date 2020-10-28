@@ -34,7 +34,7 @@ const routes = [
     component: () => import('@/views/NotFound.vue'),
   },
   {
-    path: '/user/:id',
+    path: '/user/:id?',
     name: 'User',
     component: () => import('@/views/User.vue'),
     meta: { breadcrumbs: ['home', 'users', 'user'] },
@@ -52,19 +52,19 @@ const routes = [
         component: () => import('@/views/Admin/Admin.vue'),
       },
       {
-        path: '/admin/create-organization',
+        path: 'admin/create-organization',
         name: 'CreateOrganization',
         meta: { breadcrumbs: ['home', 'admin', 'createOrganization'] },
         component: () => import('@/views/Admin/CreateOrganization.vue'),
       },
       {
-        path: '/admin/create-department',
+        path: 'admin/create-department',
         name: 'CreateDepartment',
         meta: { breadcrumbs: ['home', 'admin', 'createDepartment'] },
         component: () => import('@/views/Admin/CreateDepartment.vue'),
       },
       {
-        path: '/admin/create-product',
+        path: 'admin/create-product',
         name: 'CreateProduct',
         meta: { breadcrumbs: ['home', 'admin', 'createProduct'] },
         component: () => import('@/views/Admin/CreateProduct.vue'),

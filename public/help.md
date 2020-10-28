@@ -8,7 +8,7 @@ Nei.
 
 ### Jeg kan ikke logge inn, hva gjør jeg?
 
-Kun godkjente brukere har adgang til systemet. Er ikke e-post-adressen du prøver å logge inn med lagt inn som bruker i systemet, vil du ikke ha mulighet til å logge inn. Be en systemadministrator om tilgang.
+Kun godkjente brukere har adgang til systemet. Er ikke e-post-adressen du prøver å logge inn med lagt inn som bruker i systemet, vil du ikke ha mulighet til å logge inn. Be en systemadministrator om tilgang eller [be om tilgang](/request-access) ved å sende inn mailen din via skjema.
 
 ### ... men jeg er allerede lagt inn!
 
@@ -28,7 +28,7 @@ Kontakt en systemadministrator for å legge deg inn som medlem av et team.
 
 ### Legge til team-medlemmer
 
-På produktsiden klikk på «Endre produkt» i [sidemenyen](/sidebar.png), og deretter skriv inn navn eller e-post addresse under «Team»-feltet.
+På produktsiden klikk på «Endre 'produkt'» i [sidemenyen](/sidebar.png), og deretter skriv inn navn eller e-post addresse under «Team»-feltet.
 
 Dersom en persom du ønsker å legge til ikke eksisterer i listen må en systemadministrator legge til brukeren til systemet først.
 
@@ -40,11 +40,11 @@ Kun systemadministratorer og eksisterende team-medlemmer har rettigheter til å 
 
 ### Hvordan kan jeg endre profilbilde?
 
-Gå til [profilsiden](/me) og `Velg fil` under «Endre bilde» for å laste opp nytt profilbilde.
+Gå til [profilsiden](/user) og `Velg fil` under «Endre bilde» for å laste opp nytt profilbilde.
 
 ### Hvordan kan jeg endre visningsnavnet mitt?
 
-Gå til [profilsiden](/me) og endre feltet «Display name» og trykk `Lagre`.
+Gå til [profilsiden](/user) og endre feltet «Navn» og trykk `Lagre`.
 
 ---
 
@@ -84,7 +84,7 @@ Her kan du finne [fullstendig liste av formater](https://github.com/adam-p/markd
 
 ### Åpne adminpanelet
 
-Administratorer har tilgang til adminpanelet. Klikk på ditt navn i toppmenyen og velg «Admin».
+Administratorer har tilgang til adminpanelet. Klikk på ditt navn i toppmenyen og velg «Admin» eller nede til venstre på siden.
 
 ### Legge til en ny bruker til systemet
 

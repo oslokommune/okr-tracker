@@ -3,7 +3,7 @@
     {{ $t('weight.keyresFor', { name: activeKeyResult.objective.name }) }}
     <div class="scales">
       <router-link
-        :to="{ params: { keyResultId: id } }"
+        :to="{ name: 'KeyResultHome', params: { keyResultId: id } }"
         class="bar"
         v-for="{ id, weight, active, name } in weights"
         :key="id"

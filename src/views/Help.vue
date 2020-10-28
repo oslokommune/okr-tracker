@@ -1,6 +1,6 @@
 <template>
-  <div class="container" v-if="markdown">
-    <h2 class="title-2">{{ $t('help.title') }}</h2>
+  <div class="main" v-if="markdown">
+    <h1 class="title-1">{{ $t('help.title') }}</h1>
     <ul class="toc" v-if="toc">
       <li v-for="levelOne in toc.children" :key="levelOne.id">
         <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
@@ -57,9 +57,16 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/_colors';
 
-.md {
-  max-width: 600px;
-  font-size: 1rem;
+.main {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9, 0, span(9));
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(7, 0, span(10));
+  }
 }
 
 /deep/a[href*='thumbnail'] img {
@@ -71,16 +78,10 @@ export default {
   border: 1px solid rgba(black, 0.1);
 }
 
-.container {
-  margin-top: 3rem;
-  margin-bottom: 5rem;
-}
-
 .toc {
   margin: 2rem 0 5rem;
   padding: 1.5rem;
   font-size: 1rem;
-  background: white;
   border: 1px solid $color-grey-100;
 
   li {
