@@ -13,9 +13,9 @@ export default async function (to, from, next) {
   if (from.params && from.params.slug === slug) next();
   if (activeItem && activeItem.slug === slug) next();
 
-  const slugRef = await getSlugRef(slug, next);
-
   try {
+    const slugRef = await getSlugRef(slug);
+
     if (!activeItem || !slugRef || activeItem.id !== slugRef.id) {
       await store.dispatch('set_active_item', slugRef);
       await store.dispatch('set_sidebar_items');
@@ -24,6 +24,6 @@ export default async function (to, from, next) {
     return next();
   } catch (error) {
     console.log(error);
-    next(false);
+    next({ name: 'Not found' });
   }
 }

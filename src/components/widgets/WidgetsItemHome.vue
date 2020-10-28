@@ -12,8 +12,8 @@
       </router-link>
       <router-link
         class="btn btn--ter btn--icon"
-        :to="{ name: 'Dashboard', params: { slug: activeItem.slug } }"
-        v-tooltip="$t('tooltip.dashboard')"
+        :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
+        v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
       >
         <i class="icon fas fa-tachometer-alt"></i>
         {{ $t('general.dashboard') }}
@@ -38,15 +38,31 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
+  name: 'WidgetsItemHome',
+
+  data: () => ({
+    disabled: false,
+  }),
+
   computed: {
     ...mapState(['activeItem', 'activePeriod', 'user']),
     ...mapGetters(['hasEditRights']),
   },
+
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetMissionStatement: () => import('./WidgetMissionStatement.vue'),
     WidgetTeam: () => import('./WidgetTeam.vue'),
     WidgetChildItems: () => import('./WidgetChildItems.vue'),
+  },
+
+  watch: {
+    activePeriod: {
+      immediate: true,
+      handler() {
+        this.disabled = !this.activePeriod;
+      },
+    },
   },
 };
 </script>

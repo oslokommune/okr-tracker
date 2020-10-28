@@ -94,7 +94,7 @@ export default {
       this.pending = true;
       try {
         const user = await auth.signInWithPopup(loginProvider);
-        Toast.show(this.$t('toaster.welcome', null, { user: user.name ? user.name : '' }));
+        Toast.show(this.$t('toaster.welcome', { user: user.name ? user.name : '' }));
       } catch (e) {
         this.pending = false;
         this.SET_LOGIN_ERROR(2);
@@ -106,7 +106,6 @@ export default {
 
       try {
         await auth.signInWithEmailAndPassword(this.email, this.password);
-        await this.$router.push({ path: `${this.$route.query.redirectFrom || '/'}` });
       } catch (err) {
         this.pending = false;
         if (err.code === 'auth/wrong-password') {

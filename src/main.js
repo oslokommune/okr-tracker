@@ -64,9 +64,10 @@ auth.onAuthStateChanged(async user => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
-    await router.push({
-      path: `${router.currentRoute.query.redirectFrom || router.history.getCurrentLocation() || '/'}`,
-    });
+
+    if (router.currentRoute.query.redirectFrom) {
+      await router.push({ path: router.currentRoute.query.redirectFrom });
+    }
   } catch {
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);
@@ -75,10 +76,14 @@ auth.onAuthStateChanged(async user => {
     await auth.signOut();
     await store.dispatch('reset_state');
 
-    await router.push({
-      name: 'Login',
-      query: { redirectFrom: router.currentRoute.fullPath },
-    });
+    if (!router.currentRoute.name && router.currentRoute.fullPath !== '/') {
+      await router.push(router.history.getCurrentLocation());
+    } else {
+      await router.push({
+        name: 'Login',
+        query: { redirectFrom: router.currentRoute.fullPath },
+      });
+    }
   }
 
   if (!app) {
@@ -91,9 +96,6 @@ auth.onAuthStateChanged(async user => {
     });
 
     router.beforeEach((to, from, next) => {
-      if (from.name === 'KeyResultHome' && to.name === 'KeyResultHome') {
-        next();
-      }
       store.dispatch('setLoading', true);
       next();
     });

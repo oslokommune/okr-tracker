@@ -38,12 +38,6 @@
       </form>
     </validation-observer>
 
-    <div class="form-group">
-      <span class="form-label">{{ $t('admin.department.picture') }}</span>
-      <img v-if="activeItem.photoURL" :src="activeItem.photoURL" class="image" />
-      <input type="file" class="btn" @input="setImage" accept="image/png, image/jpeg" />
-    </div>
-
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-department" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
@@ -63,7 +57,6 @@ import { mapState } from 'vuex';
 
 export default {
   data: () => ({
-    image: null,
     loading: false,
   }),
   computed: {
@@ -82,9 +75,6 @@ export default {
 
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
         const data = { name, missionStatement, organization };
-        if (this.image) {
-          data.photoURL = await Department.uploadImage(id, this.image);
-        }
 
         await Department.update(id, data);
         Toast.savedChanges();
@@ -94,13 +84,6 @@ export default {
       }
 
       this.loading = false;
-    },
-
-    async setImage({ target }) {
-      const { files } = target;
-      if (files.length !== 1) return;
-      const [image] = files;
-      this.image = image;
     },
 
     async archive() {

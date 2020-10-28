@@ -2,7 +2,9 @@
   <div class="db" ref="dashboard">
     <aside v-if="activeItem" class="meta">
       <div class="panel product">
-        <img class="product__image" :src="activeItem.photoURL || '/placeholder-image.svg'" :alt="activeItem.name" />
+        <div class="product__image">
+          <i :class="`fa ${getIcon} fa-5x`" />
+        </div>
         <div class="product__name">{{ activeItem.name }}</div>
       </div>
       <div v-if="activeItem.team" class="panel team">
@@ -51,6 +53,18 @@ export default {
 
   computed: {
     ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults']),
+
+    getIcon() {
+      const { organization, department } = this.activeItem;
+
+      if (organization && department) {
+        return 'fa-cube';
+      }
+      if (organization && !department) {
+        return 'fa-cubes';
+      }
+      return 'fa-industry';
+    },
   },
 
   components: {
@@ -185,10 +199,15 @@ export default {
   text-align: center;
 
   &__image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 12em;
     height: 12em;
     margin: 0 auto;
     object-fit: cover;
+    color: black;
+    background: #f8c66b;
     border: 5px solid white;
     border-radius: 0.25em;
     box-shadow: 0 0.4em 1.6em 0.5em rgba($color-yellow, 0.4);

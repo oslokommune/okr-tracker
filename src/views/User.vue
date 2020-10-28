@@ -99,6 +99,14 @@ export default {
     },
   },
 
+  created() {
+    const { id } = this.$route.params;
+
+    if (!id) {
+      this.$router.push({ name: 'User', params: { id: this.$store.state.user.id } });
+    }
+  },
+
   methods: {
     formatDate(date) {
       return format(date.toDate(), 'dd/MM/yyyy HH:mm');

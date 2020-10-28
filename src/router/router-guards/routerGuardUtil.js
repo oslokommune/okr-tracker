@@ -1,11 +1,10 @@
 import { db } from '@/config/firebaseConfig';
 
-const getSlugRef = async (slug, next) => {
+const getSlugRef = async slug => {
   const slugSnapshot = await db.doc(`slugs/${slug}`).get();
   if (!slugSnapshot.exists) {
     console.error(`cannot find ${slug}`);
-    next('/404');
-    return;
+    throw new Error(`cannot find ${slug}`);
   }
 
   const { reference } = slugSnapshot.data();
