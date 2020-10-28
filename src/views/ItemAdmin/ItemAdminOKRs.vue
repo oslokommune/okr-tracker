@@ -32,7 +32,7 @@
             <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
               <router-link
                 class="miller__link"
-                :to="{ query: { type, id } }"
+                :to="{ name: 'ItemAdminOKRs', query: { type, id } }"
                 :class="{
                   active: activeClass(id),
                   selected: selectedClass(id),

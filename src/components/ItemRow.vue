@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="`/${data.slug}`" class="item" :class="`item--${type}`">
+  <router-link :to="{ name: 'ItemHome', params: { slug: data.slug } }" class="item" :class="`item--${type}`">
     <span class="indent" v-if="type === 'product'"></span>
     <span class="item__icon fas fa-fw" :class="`fa-${icon}`"></span>
 
