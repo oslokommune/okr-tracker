@@ -76,7 +76,7 @@ auth.onAuthStateChanged(async user => {
     await auth.signOut();
     await store.dispatch('reset_state');
 
-    if (!router.currentRoute.name && router.currentRoute.fullPath !== '/') {
+    if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
       await router.push(router.history.getCurrentLocation());
     } else {
       await router.push({
