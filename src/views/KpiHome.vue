@@ -40,7 +40,7 @@
           </thead>
           <tbody></tbody>
           <tr v-for="{ timestamp, value, id } in progress" :key="id">
-            <td>{{ dateTimeShort(timestamp) }}</td>
+            <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
             <td>{{ value }}</td>
             <td v-if="hasEditRights">
               <button class="btn btn--ter" @click="remove(id)" v-tooltip="$t('tooltip.deleteProgresjon')">
