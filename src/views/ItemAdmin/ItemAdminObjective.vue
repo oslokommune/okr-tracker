@@ -75,6 +75,7 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
+import * as Toast from '@/util/toasts';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
@@ -128,10 +129,9 @@ export default {
           await this.$router.push({ query: { type: 'objective', id } });
         }
 
-        this.$toasted.show('Successfully saved changes');
-      } catch (error) {
-        console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.savedChanges();
+      } catch {
+        Toast.errorSave();
       }
 
       this.loading = false;
@@ -141,10 +141,10 @@ export default {
       try {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.archive(this.objective.id);
-        this.$toasted.show('Archived');
+        const restoreCallback = await Objective.restore.bind(null, this.objective.id);
+        Toast.deletedRegret({ name: this.objective.name, callback: restoreCallback });
       } catch (error) {
-        console.log(error);
-        this.$toasted.show('Could not archive objective');
+        Toast.errorArchive(this.objective.name);
       }
 
       this.loading = false;
@@ -154,10 +154,9 @@ export default {
       try {
         await Objective.restore(this.objective.id);
         this.objective.archived = false;
-        this.$toasted.show('Restored');
-      } catch (error) {
-        this.$toasted.show('Could not restore objective');
-        throw new Error(error.message);
+        Toast.revertedDeletion();
+      } catch {
+        Toast.errorRestore(this.objective.id);
       }
     },
 
@@ -165,10 +164,9 @@ export default {
       try {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.deleteDeep(this.objective.id);
-        this.$toasted.show('Successfully deleted');
-      } catch (error) {
-        this.$toasted.show('Could not delete objective');
-        throw new Error(error.message);
+        Toast.deletedPermanently();
+      } catch {
+        Toast.errorDelete(this.objective.name);
       }
     },
   },

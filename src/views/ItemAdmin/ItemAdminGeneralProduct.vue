@@ -68,12 +68,14 @@
 <script>
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
+import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import FormComponent from '@/components/FormComponent.vue';
 
 export default {
-  components: { FormComponent, ArchivedRestore },
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+  },
 
   data: () => ({
     users: [],
@@ -103,10 +105,9 @@ export default {
         }
 
         Product.update(id, data);
-        this.$toasted.show('Saved successfully');
-      } catch (error) {
-        console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.savedChanges();
+      } catch {
+        Toast.errorSave();
       }
       this.loading = false;
     },
@@ -123,12 +124,12 @@ export default {
       try {
         this.activeItem.archived = true;
         await Product.archive(this.activeItem.id);
-        this.$toasted.show('Archived');
+        const restoreCallback = await Product.restore.bind(null, this.activeItem.id);
+        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
         // TODO: Refresh store and sidebar navigation tree
-      } catch (error) {
-        console.log(error);
+      } catch {
+        Toast.errorArchive(this.activeItem.name);
         this.activeItem.archived = false;
-        this.$toasted.show('Could not archive product');
       }
       this.loading = false;
     },
@@ -137,10 +138,10 @@ export default {
       this.loading = true;
       try {
         await Product.restore(this.activeItem.id);
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not restore product');
+        Toast.errorRestore(this.activeItem.id);
       }
       this.loading = false;
     },
@@ -149,11 +150,11 @@ export default {
       this.loading = true;
       try {
         await Product.deleteDeep(this.activeItem.id);
-        this.$toasted.show('Permanently deleted product');
+        Toast.deletedPermanently();
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        this.$toasted.show('Could not delete product');
+        Toast.errorDelete(this.activeItem.name);
       }
       this.loading = false;
     },

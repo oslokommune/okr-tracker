@@ -58,6 +58,7 @@
 <script>
 import locale from 'flatpickr/dist/l10n/no';
 import Progress from '@/db/Progress';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Modal',
@@ -93,11 +94,16 @@ export default {
 
     async saveProgress() {
       this.loading = true;
-      await Progress.create(this.keyres.id, {
-        value: +this.value,
-        comment: this.note,
-        timestamp: new Date(this.date),
-      });
+      try {
+        await Progress.create(this.keyres.id, {
+          value: +this.value,
+          comment: this.note,
+          timestamp: new Date(this.date),
+        });
+        Toast.show(this.$t('toaster.add.progression'));
+      } catch {
+        Toast.error(this.$t('toaster.error.progression'));
+      }
       this.loading = false;
       this.$emit('close');
     },

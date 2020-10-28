@@ -78,6 +78,7 @@
 import { db } from '@/config/firebaseConfig';
 import { format } from 'date-fns';
 import User from '@/db/User';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'User',
@@ -123,8 +124,10 @@ export default {
       this.loading = true;
       try {
         await User.update(this.updatedUser);
+        Toast.savedChanges();
       } catch (error) {
         console.error(error);
+        Toast.errorSave();
       }
 
       this.loading = false;

@@ -45,6 +45,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
+import * as Toast from '@/util/toasts';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
@@ -100,7 +101,7 @@ export default {
       if (!this.activePeriod.startDate || !this.activePeriod.endDate) return;
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
       const endDate = format(this.activePeriod.endDate.toDate(), 'yyyy-MM-dd');
-      return this.$tc('period.range', null, { startDate, endDate });
+      return this.$t('period.range', { startDate, endDate });
     },
 
     async archive() {
@@ -109,10 +110,13 @@ export default {
         this.activePeriod.archived = true;
         await this.$router.push({ query: {} });
         await Period.archive(this.activePeriod.id);
-        this.$toasted.show('Archived');
+
+        const restoreCallback = await Period.restore.bind(null, this.activePeriod.id);
+
+        Toast.deletedRegret({ name: this.activePeriod.name, callback: restoreCallback });
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not archive period');
+        Toast.errorArchive(this.activePeriod.name);
       }
 
       this.loading = false;
@@ -122,9 +126,9 @@ export default {
       try {
         await Period.restore(this.activePeriod.id);
         this.activePeriod.archived = false;
-        this.$toasted.show('Restored');
+        Toast.revertedDeletion();
       } catch (error) {
-        this.$toasted.show('Could not restore period');
+        Toast.errorRestore(this.activePeriod.name);
         throw new Error(error.message);
       }
     },
@@ -133,9 +137,9 @@ export default {
       try {
         await this.$router.push({ query: {} });
         await Period.deleteDeep(this.activePeriod.id);
-        this.$toasted.show('Successfully deleted');
+        Toast.deletedPermanently();
       } catch (error) {
-        this.$toasted.show('Could not delete period');
+        Toast.errorDelete(this.activePeriod.name);
         throw new Error(error.message);
       }
     },
@@ -146,10 +150,10 @@ export default {
         const { id, name } = this.activePeriod;
 
         await Period.update(id, { name, startDate: new Date(this.startDate), endDate: new Date(this.endDate) });
-        this.$toasted.show('Successfully saved changes');
+        Toast.savedChanges();
       } catch (error) {
         console.log(error);
-        this.$toasted.show('Could not save changes');
+        Toast.errorSave();
       }
 
       this.loading = false;

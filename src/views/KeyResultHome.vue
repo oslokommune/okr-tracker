@@ -61,7 +61,7 @@
           <tbody>
             <tr v-for="p in progress" :key="p.id">
               <td>{{ p.value }}</td>
-              <td>{{ formatDate(p.timestamp.toDate()) }}</td>
+              <td>{{ dateTimeShort(p.timestamp.toDate()) }}</td>
               <td>
                 <router-link
                   v-if="p.createdBy && p.createdBy.id"
@@ -98,11 +98,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import { format } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
+import { dateTimeShort } from '@/util/formatDate';
 import routerGuard from '@/router/router-guards/keyResultHome';
+import * as Toast from '@/util/toasts';
 
 export default {
   name: 'KeyResultHome',
@@ -144,17 +145,11 @@ export default {
   },
 
   methods: {
-    async addValue() {
-      await Progress.create(this.activeKeyResult.id, { value: +this.newValue });
-      this.newValue = null;
-    },
+    dateTimeShort,
 
     remove(id) {
       Progress.remove(this.activeKeyResult.id, id);
-    },
-
-    formatDate(date) {
-      return format(date, 'dd.MM.yyyy HH:mm');
+      Toast.show(this.$t('toaster.delete.progression'));
     },
 
     hasEditPermissions() {

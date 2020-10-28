@@ -7,8 +7,8 @@
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button class="btn btn--ghost" @click="acceptRequest(request.id)">{{ $t('btn.acceptRequest') }}</button>
-          <button class="btn btn--ghost" @click="rejectRequest(request.id)">{{ $t('btn.rejectRequest') }}</button>
+          <button class="btn btn--ghost" @click="acceptRequest(request)">{{ $t('btn.acceptRequest') }}</button>
+          <button class="btn btn--ghost" @click="rejectRequest(request)">{{ $t('btn.rejectRequest') }}</button>
         </div>
       </li>
     </ul>
@@ -18,6 +18,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import requestAccess from '@/db/RequestAccess';
+import * as Toast from '@/util/toasts';
 
 export default {
   data: () => ({
@@ -29,8 +30,14 @@ export default {
   },
 
   methods: {
-    acceptRequest: requestAccess.accept,
-    rejectRequest: requestAccess.reject,
+    async acceptRequest(obj) {
+      await requestAccess.accept(obj.id);
+      Toast.show(this.$t('toaster.request.accepted', { user: obj.email }));
+    },
+    async rejectRequest(obj) {
+      await requestAccess.reject(obj.id);
+      Toast.error(this.$t('toaster.request.rejected', { user: obj.email }));
+    },
   },
 };
 </script>
