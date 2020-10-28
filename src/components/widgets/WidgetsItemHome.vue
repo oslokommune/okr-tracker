@@ -13,7 +13,7 @@
       <router-link
         class="btn btn--ter btn--icon"
         :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
-        v-tooltip="disabled ? '' : $t('tooltip.dashboard')"
+        v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
       >
         <i class="icon fas fa-tachometer-alt"></i>
         {{ $t('general.dashboard') }}

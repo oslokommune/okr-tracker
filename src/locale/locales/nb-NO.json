@@ -198,7 +198,8 @@
     "editKpi": "Endre detaljer eller slett KPI",
     "navigateToItem": "Gå til {item}",
     "deleteProgress": "Slett målepunkt",
-    "isMember": "Medlem av team"
+    "isMember": "Medlem av team",
+    "emptyPeriod": "Ingen aktiv periode"
   },
   "document": {
     "mission": "Oppdrag"
