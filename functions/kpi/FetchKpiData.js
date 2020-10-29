@@ -1,5 +1,5 @@
 const firebase = require('firebase-admin');
-const getSheetsData = require('./getSheetsData');
+const getSheetsData = require('../util/getSheetsData');
 
 module.exports = async function FetchKpiDataOnUpdate(doc) {
   if (!doc || !doc.ref || !doc.ref.update) {
@@ -11,6 +11,7 @@ module.exports = async function FetchKpiDataOnUpdate(doc) {
   try {
     const value = await getSheetsData(doc.data());
 
+    // eslint-disable-next-line no-restricted-globals
     if (!value || isNaN(value)) {
       return ref.update({ error: 'Invalid data returned' });
     }

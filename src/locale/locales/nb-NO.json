@@ -56,7 +56,8 @@
     "teamMembers": "Team-medlemmer",
     "users": "Brukere",
     "home": "Hjem",
-    "keyresults": "Nøkkelresultater"
+    "keyresults": "Nøkkelresultater",
+    "success": "Suksess"
   },
   "btn": {
     "close": "Lukk",
@@ -176,7 +177,8 @@
     "weight": "Vekt",
     "automatic": "Oppdateres automatisk",
     "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
-    "showComment": "Vis kommentar"
+    "showComment": "Vis kommentar",
+    "autoError": "Feil i henting av data fra Google Sheets:"
   },
   "objective": {
     "period": "Periode",
