@@ -360,6 +360,22 @@ På nøkkelresultatsiden (trykk på et nøkkelresultat for å åpne), kan du sle
 
 Det er ingen måte å endre et eksisterende målepunkt, så det må i så fall slettes og legges inn på nytt med de nye verdiene.
 
+# KPI-er
+Det finnes tre ulike KPI-er: «Volum» (absolutt verdi), «Brukertilfredshet» (prosent) og «Fullføringsgrad» (prosent). Disse KPI-ene kan legges til organisasjoner, produktområder og produkter.
+
+KPI-verdiene kan ikke oppdateres direkte i OKR-trackeren.
+
+KPI-en må knyttes til et Google Sheet-dokument med verdien som lastes automatisk inn i OKR-trackeren med gitt tidsintervall (to ganger daglig).
+
+## Legge til ny KPI
+
+1. Naviger til ditt produkt (eventuelt produktområde eller organisasjon for systemadministratorer).
+2. Klikk «Endre \<navn\>».
+3. Velg «KPI-er».
+4. Klikk «Legg til KPI».
+5. I skjemaet må du velge KPI-type (se over), navn og beskrivelse (valgfritt). Her ser du også e-post-adressen som Google Sheets-dokumentet må deles med. Google Sheet ID-en finner du i URL-en til dokumentet: `.../spreadsheets/d/<dokument-id>/edit`
+6. Trykk «Legg til» og vent til du får grønn «OK» for bekreftelse på gyldig kobling.
+
 ## Google Sheets-integrasjon
 
 Med hjelp av Google Sheets kan du konfigurere automatisk oppdatering av progresjon for et nøkkelresultat.
