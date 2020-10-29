@@ -10,7 +10,7 @@
       <div class="modal__main">
         <validation-observer v-slot="{ handleSubmit }">
           <form id="addKpi" @submit.prevent="handleSubmit(add)">
-            <validation-provider v-slot="{ errors }" rules="required" name="type">
+            <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
               <label class="form-group">
                 <span class="form-label">{{ $t('kpi.chooseType') }}</span>
                 <select v-model="type" class="form__field">

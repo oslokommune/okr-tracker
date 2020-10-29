@@ -1,19 +1,21 @@
 <template>
-  <div v-if="user" class="user">
+  <div v-if="thisUser" class="user">
     <div class="main">
-      <h1 class="title-1">{{ user.displayName || user.id }}</h1>
+      <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
 
       <div class="main__user">
         <div class="main__user--image">
           <img
             class="main__user--image-size"
-            :src="user.photoURL || '/placeholder-user.svg'"
-            :alt="user.displayName || user.id"
+            :src="thisUser.photoURL || '/placeholder-user.svg'"
+            :alt="thisUser.displayName || user.id"
           />
 
           <template v-if="me">
             <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-            <button class="btn btn--pri" @click="uploadImage">{{ $t('btn.upload') }}</button>
+            <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
+              {{ $t('btn.upload') }}
+            </button>
           </template>
         </div>
 
@@ -21,7 +23,7 @@
           <validation-observer v-if="me" v-slot="{ handleSubmit }">
             <form id="updateUser" @submit.prevent="handleSubmit(save)">
               <form-component
-                v-model="updatedUser.displayName"
+                v-model="thisUser.displayName"
                 input-type="input"
                 name="name"
                 :label="$t('fields.name')"
@@ -91,7 +93,7 @@ export default {
     audit: [],
     image: null,
     loading: false,
-    updatedUser: null,
+    thisUser: null,
   }),
 
   computed: {
@@ -117,7 +119,7 @@ export default {
       immediate: true,
       handler() {
         if (this.user) {
-          this.updatedUser = { ...this.user, id: this.user.id };
+          this.thisUser = { ...this.user, id: this.user.id };
         }
       },
     },
@@ -142,18 +144,21 @@ export default {
       this.image = image;
     },
     async uploadImage() {
+      this.loading = true;
       try {
-        const url = await User.uploadImage(this.updatedUser.id, this.image);
+        const url = await User.uploadImage(this.thisUser.id, this.image);
         this.image = null;
-        this.updatedUser.photoURL = url;
+        this.thisUser.photoURL = url;
+        await this.save();
       } catch (error) {
         console.error(error);
       }
+      this.loading = false;
     },
     async save() {
       this.loading = true;
       try {
-        await User.update(this.updatedUser);
+        await User.update(this.thisUser);
         Toast.savedChanges();
       } catch (error) {
         console.error(error);
