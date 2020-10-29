@@ -104,7 +104,7 @@ Organisasjoner er det overordnede nivået som inneholder _produktområder_. Orga
 
 Administratorer kan opprette nye produktområder fra [adminpanelet](/admin) i adminpanelet.
 
-Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
+Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet.
 
 - I kolonnen «Organisasjoner», klikk `Ny organisasjon*`
 - Skriv inn navn og oppdragsbeskrivelse
@@ -116,7 +116,7 @@ Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdena
 
 Administratorer kan arkivere ekisterende organisasjoner fra [adminpanelet](/admin). Arkiverte organisasjoner kan gjenopprettes.
 
-Hvis du er inne på en organisasjon, kan du også trykke på `Endre <organisasjonsnavn>` for å komme til adminpanelet for organisasjonen
+Hvis du er inne på en organisasjon, kan du også trykke på `Endre <organisasjonsnavn>` for å komme til adminpanelet for organisasjonen.
 
 - Velg organisasjon fra menyen
 - Trykk `Arkiver`
@@ -151,7 +151,7 @@ Produktområder inneholder _produkter_, _mål_ og _nøkkelresultater_.
 
 Administratorer kan opprette nye produktområder fra [adminpanelet](/admin) i adminpanelet.
 
-Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
+Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet.
 
 - I kolonnen "Produktområder", klikk `Nytt produktområde`
 - Skriv inn navn og oppdragsbeskrivelse
@@ -164,7 +164,7 @@ Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdena
 
 Administratorer kan arkivere ekisterende produktområder fra [adminpanelet](/admin). Arkiverte produkter kan gjenopprettes.
 
-Hvis du er inne på et produktområde, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
+Hvis du er inne på et produktområde, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet.
 
 - Velg produkt fra menyen
 - Trykk `Arkiver`
@@ -206,7 +206,7 @@ Administratorer kan opprette nye produkter fra [adminpanelet](/admin).
 
 Administratorer kan arkivere ekisterende produkter fra [adminpanelet](/admin). Arkiverte produkter kan gjenopprettes.
 
-Hvis du er inne på et produkt, kan du også trykke på `Endre <produktnavn>` for å komme til adminpanelet for produktet
+Hvis du er inne på et produkt, kan du også trykke på `Endre <produktnavn>` for å komme til adminpanelet for produktet.
 
 - Velg produkt fra menyen
 - Trykk `Arkiver`
@@ -256,7 +256,7 @@ Mål og nøkkelresultater for fremtidige perioder vil ikke vises til andre enn d
 
 ### Arkivere en periode
 
-Det er mulig å arkivere en periode, men det er viktig å poengtere at Mål og nøkkelresultater vil _ikke_ bli arkivert
+Det er mulig å arkivere en periode, men det er viktig å poengtere at Mål og nøkkelresultater vil _ikke_ bli arkivert.
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
@@ -275,7 +275,7 @@ Det er mulig å permanent slette en periode etter at den har blitt arkivert. Da 
 
 ### Kan jeg gjenbruke et tidligere mål?
 
-Det er ikke mulig å kopiere et mål over til en ny periode, men det er mulig å flytte et mål over til en periode
+Det er ikke mulig å kopiere et mål over til en ny periode, men det er mulig å flytte et mål over til en periode.
 
 ### Opprette nytt mål
 
