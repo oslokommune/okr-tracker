@@ -26,7 +26,7 @@
               v-model="thisUser.admin"
               class="form__checkbox"
               type="checkbox"
-              :disabled="user.email === selectedUser.email"
+              :disabled="user.email === thisUser.email"
             />
           </label>
         </form>
@@ -34,9 +34,9 @@
       <div>
         <span class="form-label">{{ $t('admin.users.image') }}</span>
         <div class="image">
-          <img v-if="selectedUser.photoURL" :src="selectedUser.photoURL" class="image__image" />
+          <img v-if="thisUser.photoURL" :src="thisUser.photoURL" class="image__image" />
           <input type="file" accept="image/png, image/jpeg" class="image__field" @input="setImage" />
-          <button v-if="selectedUser.photoURL" class="btn" :disabled="loading" @click="deleteImage">
+          <button v-if="thisUser.photoURL" class="btn" :disabled="!image || loading" @click="deleteImage">
             {{ $t('btn.deleteImage') }}
           </button>
         </div>
@@ -45,11 +45,7 @@
 
     <div class="selected-user__footer">
       <button class="btn" form="user-form" :disabled="loading">{{ $t('btn.saveChanges') }}</button>
-      <button
-        class="btn btn--danger"
-        :disabled="user.email === selectedUser.email || loading"
-        @click="remove(selectedUser)"
-      >
+      <button class="btn btn--danger" :disabled="user.email === thisUser.email || loading" @click="remove(thisUser)">
         {{ $t('btn.deleteUser') }}
       </button>
     </div>
@@ -122,6 +118,7 @@ export default {
         const url = await User.uploadImage(this.user.id, this.image);
         this.image = null;
         this.thisUser.photoURL = url;
+        await this.save();
       } catch (error) {
         console.error(error);
       }

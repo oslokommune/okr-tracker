@@ -31,7 +31,8 @@
     "period": "Periode",
     "description": "Beskrivelse",
     "slug": "Slug",
-    "department": "Produktområde"
+    "department": "Produktområde",
+    "kpitype": "KPI-type"
   },
   "general": {
     "edit": "Endre",
