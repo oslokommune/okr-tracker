@@ -62,14 +62,6 @@ export default {
 
 .main {
   width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    // width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    // width: span(7, 0, span(10));
-  }
 }
 
 .help {
