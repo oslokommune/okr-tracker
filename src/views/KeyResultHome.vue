@@ -40,6 +40,14 @@
         </div>
       </div>
 
+      <div v-if="activeKeyResult.auto && activeKeyResult.error" class="auto auto--invalid">
+        <div class="auto__icon fa fa-exclamation-triangle"></div>
+        <div class="auto__text">
+          <p>{{ $t('keyres.autoError') }}</p>
+          <pre class="auto__errormsg">{{ activeKeyResult.error }}</pre>
+        </div>
+      </div>
+
       <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
       <div class="main__table">
         <empty-state
@@ -349,11 +357,30 @@ export default {
   background: rgba($color-yellow, 0.25);
   border: 1px solid $color-yellow;
   border-radius: 3px;
+
+  &--invalid {
+    background: rgba($color-red, 0.25);
+    border: 1px solid $color-red;
+  }
+}
+
+.auto__text {
+  width: 100%;
 }
 
 .auto__icon {
   flex-shrink: 0;
   margin-top: 0.2rem;
   margin-right: 0.75rem;
+}
+
+.auto__errormsg {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 1rem;
+  color: white;
+  font-family: monospace;
+  background: rgba(black, 0.75);
+  border-radius: 3px;
 }
 </style>

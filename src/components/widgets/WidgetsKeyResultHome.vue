@@ -10,8 +10,6 @@
       </router-link>
     </div>
 
-    <button v-if="activeKeyResult.auto" @click="update">Oppdater automatisk verdi</button>
-
     <div v-if="activeKeyResult" class="widgets">
       <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
       <widget-key-result-notes widget-id="keyResultHome.notes"></widget-key-result-notes>
@@ -35,13 +33,6 @@ export default {
   computed: {
     ...mapState(['activeKeyResult', 'user']),
     ...mapGetters(['hasEditRights']),
-  },
-
-  methods: {
-    update() {
-      // const myCall = functions.httpsCallable('triggerScheduledFunction');
-      console.log(this.activeKeyResult);
-    },
   },
 };
 </script>

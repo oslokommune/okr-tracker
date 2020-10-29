@@ -18,35 +18,35 @@ const close = (e, toastObject) => {
 };
 
 export function errorSave() {
-  return error(i18n.tc('toaster.error.save'));
+  return error(i18n.t('toaster.error.save'));
 }
 
 export function errorArchive(document) {
-  return error(i18n.tc('toaster.error.archive', null, { document }));
+  return error(i18n.t('toaster.error.archive', null, { document }));
 }
 
 export function errorDelete(document) {
-  return error(i18n.tc('toaster.error.delete', null, { document }));
+  return error(i18n.t('toaster.error.delete', null, { document }));
 }
 
 export function errorRestore(document) {
-  return error(i18n.tc('toaster.error.restore', null, { document }));
+  return error(i18n.t('toaster.error.restore', null, { document }));
 }
 
 export function errorAdd() {
-  return error(i18n.tc('toaster.error.create'));
+  return error(i18n.t('toaster.error.create'));
 }
 
 export function savedChanges() {
-  return show(i18n.tc('toaster.savedChanges'));
+  return show(i18n.t('toaster.savedChanges'));
 }
 
 export function deletedPermanently() {
-  return show(i18n.tc('toaster.delete.permanently'));
+  return show(i18n.t('toaster.delete.permanently'));
 }
 
 export function revertedDeletion() {
-  return show(i18n.tc('toaster.restored'));
+  return show(i18n.t('toaster.restored'));
 }
 
 export function deletedRegret(obj) {
@@ -58,20 +58,20 @@ export function deletedRegret(obj) {
     duration: 4000,
     action: [
       {
-        text: i18n.tc('toaster.action.regret'),
+        text: i18n.t('toaster.action.regret'),
         onClick: () => {
           callback().then(revertedDeletion);
         },
       },
       {
-        text: i18n.tc('btn.close'),
+        text: i18n.t('btn.close'),
         onClick: close,
       },
     ],
   };
 
   if (name) {
-    return show(i18n.tc('toaster.delete.object', null, { name }), options);
+    return show(i18n.t('toaster.delete.object', null, { name }), options);
   }
-  return show(i18n.tc('toaster.deleted'), options);
+  return show(i18n.t('toaster.deleted'), options);
 }

@@ -126,6 +126,22 @@
               <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
             </template>
           </form-component>
+
+          <div class="validation">
+            <div class="validation__loading" v-if="loadingConnection">
+              <span class="fa fa-spinner fa-pulse"></span>
+              {{ $t('general.loading') }}
+            </div>
+            <div class="validation__error" v-if="!loadingConnection && keyResult.error">
+              <span class="fa fa-exclamation-triangle"></span>
+              {{ keyResult.error }}
+            </div>
+            <div class="validation__valid" v-if="!loadingConnection && keyResult.valid">
+              <span class="fa fa-check-circle"></span>
+              OK
+            </div>
+            <button class="btn validation-check" type="button" @click="testConnection">Save and test connection</button>
+          </div>
         </div>
       </form>
     </validation-observer>
@@ -142,7 +158,7 @@
 </template>
 
 <script>
-import { db } from '@/config/firebaseConfig';
+import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import * as Toast from '@/util/toasts';
 
@@ -165,6 +181,7 @@ export default {
     objectives: [],
     changedObjective: false,
     loading: false,
+    loadingConnection: false,
   }),
 
   watch: {
@@ -177,7 +194,7 @@ export default {
           .get()
           .then(snapshot => snapshot.data().reference);
         this.$bind('objectives', db.collection('objectives').where('parent', '==', parent));
-        this.keyResult = { ...this.data, id: this.data.id };
+        this.$bind('keyResult', db.collection('keyResults').doc(this.data.id));
       },
     },
   },
@@ -240,10 +257,10 @@ export default {
 
         Toast.deletedRegret({ name: this.keyResult.name, callback: restoreCallback });
       } catch (error) {
+        this.loading = false;
         Toast.errorArchive(this.keyResult.name);
         throw new Error(error.message);
       }
-
       this.loading = false;
     },
 
@@ -275,15 +292,59 @@ export default {
 
       this.loading = false;
     },
+
+    async testConnection() {
+      this.loadingConnection = true;
+      await this.update();
+      try {
+        const myCall = functions.httpsCallable('triggerScheduledFunction');
+        await myCall(this.keyResult.id);
+        Toast.show(this.$t('general.success'));
+      } catch (error) {
+        this.loadingConnection = false;
+        Toast.error(error.message);
+        throw new Error(error.message);
+      }
+      this.loadingConnection = false;
+    },
   },
 };
 </script>
 
 <style lang="scss">
+@import '@/styles/_colors.scss';
+
 .toggle__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
+}
+
+.validation {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $color-grey-100;
+}
+
+.validation__valid {
+  padding: 0.5rem;
+  background: $color-green;
+  border-radius: 2px;
+}
+
+.validation__loading {
+  padding: 0.5rem;
+  border-radius: 2px;
+}
+
+.validation__error {
+  padding: 0.5rem;
+  background: $color-red;
+  border-radius: 2px;
+}
+
+.validation-check {
+  margin-top: 0.5rem;
 }
 </style>
