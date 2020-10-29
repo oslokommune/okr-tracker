@@ -265,7 +265,8 @@
     "date": "Dato"
   },
   "help": {
-    "title": "Innhold"
+    "title": "Hjelp",
+    "toc": "Innhold"
   },
   "profile": {
     "myProfile": "Min profil",
