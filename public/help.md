@@ -96,46 +96,50 @@ Administratorer kan legge til eller fjerne admintilganger for brukere fra [admin
 
 ---
 
-## Produkter
+## Organisasjon
 
-Produkter er underordnet et _produktområde_ og inneholder _mål_ og _nøkkelresultater_.
+Organisasjoner er det overordnede nivået som inneholder _produktområder_. Organisasjoner kan også inneholder egne _mål_ og _nøkkelresultater_.
 
-### Opprette et nytt produkt
+### Opprette en ny organisasjon
 
-Administratorer kan opprette nye produkter fra [adminpanelet](/admin).
+Administratorer kan opprette nye produktområder fra [adminpanelet](/admin) i adminpanelet.
 
-- I kolonnen "Produkter", klikk `Nytt produkt*`
+Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
+
+- I kolonnen «Organisasjoner», klikk `Ny organisasjon*`
 - Skriv inn navn og oppdragsbeskrivelse
 - Velg hvilket produktområde det skal tilhøre til
 - Legg inn teammedlemmer av produktet
 - Trykk `Opprett`
 
-*Et produktområde må være opprettet før du kan opprette et produkt
+### Arkivere en organisasjon
 
-### Arkivere et produkt
+Administratorer kan arkivere ekisterende organisasjoner fra [adminpanelet](/admin). Arkiverte organisasjoner kan gjenopprettes.
 
-Administratorer kan arkivere ekisterende produkter fra [adminpanelet](/admin). Arkiverte produkter kan gjenopprettes.
+Hvis du er inne på en organisasjon, kan du også trykke på `Endre <organisasjonsnavn>` for å komme til adminpanelet for organisasjonen
 
-Hvis du er inne på et produkt, kan du også trykke på `Endre <produktnavn>` for å komme til adminpanelet for produktet
+- Velg organisasjon fra menyen
+- Trykk `Arkiver`
 
-- Velg produkt fra menyen
-- Trykk `Arkiver`.
+### Gjenopprette en organisasjon
 
-### Gjenopprette et arkivert produkt
+Arkiverte organisasjoner kan gjenopprettes av systemadministratorer fra [adminpanelet](/admin).
 
-Arkiverte produkter kan gjenopprettes av systemadministratorer fra [adminpanelet](/admin).
+- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
+- Velg det arkiverte organisasjonen som skal gjenopprettes
+- Trykk «Gjenopprett»
 
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene.
-- Velg det arkiverte produktet som skal gjenopprettes.
-- Trykk «Gjenopprett».
+### Permanent slette en organisasjon
 
-### Permanent slette et produkt
+Dette er ikke mulig å gjennomføre.
 
-For å permanent slette et produkt må produktet allerede vært «arkivert» (se over).
+### Administrere mål og nøkkelresultater for en organisasjon
 
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene.
-- Velg det arkiverte produktet som skal slettes permanent.
-- Trykk «Slett permanent»
+Kun administratorer har rettigheter til å opprette, endre og slette _mål_ og _nøkkelresultater_ for en organisasjon.
+
+- Naviger til organisasjonssiden (klikk på organisasjonens navn på forsiden)
+- Velg «Endre produkt»
+- Følg oppskriften beskrevet under _mål_ og _nøkkelresultater_ på denne hjelpesiden
 
 ---
 
@@ -149,10 +153,12 @@ Administratorer kan opprette nye produktområder fra [adminpanelet](/admin) i ad
 
 Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
 
-- I kolonnen "Produktområder", klikk `Nytt produktområde*`
+- I kolonnen "Produktområder", klikk `Nytt produktområde`
 - Skriv inn navn og oppdragsbeskrivelse
 - Velg hvilken organisasjon det skal tilhøre til
 - Trykk `Opprett`
+
+\* En organisasjon må være opprettet før du kan opprette et produktområde
 
 ### Arkivere et produktområde
 
@@ -161,69 +167,65 @@ Administratorer kan arkivere ekisterende produktområder fra [adminpanelet](/adm
 Hvis du er inne på et produktområde, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
 
 - Velg produkt fra menyen
-- Trykk `Arkiver`.
+- Trykk `Arkiver`
 
 ### Gjenopprette et produktområde
 
 Arkiverte produktområder kan gjenopprettes av systemadministratorer fra [adminpanelet](/admin).
 
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene.
-- Velg det arkiverte produktet som skal gjenopprettes.
-- Trykk «Gjenopprett».
+- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
+- Velg det arkiverte produktet som skal gjenopprettes
+- Trykk «Gjenopprett»
 
 ### Permanent slette et produkt
 
 For å permanent slette et produktområde må produktområdet allerede være «arkivert» (se over).
 
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene.
-- Velg det arkiverte produktet som skal slettes permanent.
+- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
+- Velg det arkiverte produktet som skal slettes permanent
 - Trykk «Slett permanent»
 ---
 
-## Organisasjon
+## Produkter
 
-Organisasjoner er det overordnede nivået som inneholder _produktområder_. Organisasjoner kan også inneholder egne _mål_ og _nøkkelresultater_.
+Produkter er underordnet et _produktområde_ og inneholder _mål_ og _nøkkelresultater_.
 
-### Opprette en ny organisasjon
+### Opprette et nytt produkt
 
-Administratorer kan opprette nye produktområder fra [adminpanelet](/admin) i adminpanelet.
+Administratorer kan opprette nye produkter fra [adminpanelet](/admin).
 
-Hvis du er inne på et produkt, kan du også trykke på `Endre <produktområdenavn>` for å komme til adminpanelet for produktet
-
-- I kolonnen "Organisasjoner", klikk `Ny organisasjon*`
+- I kolonnen "Produkter", klikk `Nytt produkt`*
 - Skriv inn navn og oppdragsbeskrivelse
 - Velg hvilket produktområde det skal tilhøre til
 - Legg inn teammedlemmer av produktet
 - Trykk `Opprett`
 
-### Arkivere en organisasjon
+\* Et produktområde må være opprettet før du kan opprette et produkt
 
-Administratorer kan arkivere ekisterende organisasjoner fra [adminpanelet](/admin). Arkiverte organisasjoner kan gjenopprettes.
+### Arkivere et produkt
 
-Hvis du er inne på en organisasjon, kan du også trykke på `Endre <organisasjonsnavn>` for å komme til adminpanelet for organisasjonen
+Administratorer kan arkivere ekisterende produkter fra [adminpanelet](/admin). Arkiverte produkter kan gjenopprettes.
 
-- Velg organisasjon fra menyen
-- Trykk `Arkiver`.
+Hvis du er inne på et produkt, kan du også trykke på `Endre <produktnavn>` for å komme til adminpanelet for produktet
 
-### Gjenopprette en organisasjon
+- Velg produkt fra menyen
+- Trykk `Arkiver`
 
-Arkiverte organisasjoner kan gjenopprettes av systemadministratorer fra [adminpanelet](/admin).
+### Gjenopprette et arkivert produkt
 
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene.
-- Velg det arkiverte organisasjonen som skal gjenopprettes.
-- Trykk «Gjenopprett».
+Arkiverte produkter kan gjenopprettes av systemadministratorer fra [adminpanelet](/admin).
 
-### Permanent slette en organisasjon
+- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
+- Velg det arkiverte produktet som skal gjenopprettes
+- Trykk «Gjenopprett»
 
-Dette er ikke mulig å gjennomføre.
+### Permanent slette et produkt
 
-### Administrere mål og nøkkelresultater for en organisasjon
+For å permanent slette et produkt må produktet allerede vært «arkivert» (se over).
 
-Kun administratorer har rettigheter til å opprette, endre og slette _mål_ og _nøkkelresultater_ for en organisasjon.
-
-- Naviger til organisasjonssiden (klikk på organisasjonens navn på forsiden).
-- Velg «Endre produkt»
-- Følg oppskriften beskrevet under _mål_ og _nøkkelresultater_ på denne hjelpesiden.
+- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
+- Velg det arkiverte produktet som skal slettes permanent
+- Trykk «Slett permanent»
 
 ---
 
@@ -233,7 +235,7 @@ Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være 
 
 | Felt        | Format     | Beskrivelse                                           |
 | ----------- | ---------- | ----------------------------------------------------- |
-| Tittel      | `Tekst`    | Skriv en kort (1--2 ord) tittel for målet.            |
+| Tittel      | `Tekst`    | Skriv en kort (1-2 ord) tittel for målet.            |
 | Beskrivelse | `Tekst`    | En kort (cirka en setning) tekst som beskriver målet. |
 | Vekt        | `Tall`     | Hvor mye målet skal veie for progresjonen             |
 | Ikon        | `Menyvalg` | Velg et passende ikon for målet.                      |
@@ -243,10 +245,10 @@ Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være 
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk `+ Oprett` i kolonnen «Vis perioder».
-- Skriv et kort og beskrivende navn for perioden (f.eks.: «Q4 2020» eller «Høst 2020»).
-- Velg start- og sluttdato for perioden i datovelgeren.
-- Trykk `Lagre endringer`.
+- Trykk `+ Opprett` i kolonnen «Vis perioder»
+- Skriv et kort og beskrivende navn for perioden (f.eks.: «Q4 2020» eller «Høst 2020»)
+- Velg start- og sluttdato for perioden i datovelgeren
+- Trykk `Lagre endringer`
 
 Nå kan nye mål knyttes til denne perioden.
 
@@ -258,17 +260,17 @@ Det er mulig å arkivere en periode, men det er viktig å poengtere at Mål og n
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Velg perioden som skal arkiveres.
+- Velg perioden som skal arkiveres
 - Trykk `Arkiver`
 
 ### Slette en periode
 
-Det er mulig å permanent slette en periode etter at den har blitt arkivert. Da vil også alle mål og nøkkelresultater også bli slettet
+Det er mulig å permanent slette en periode etter at den har blitt arkivert. Da vil også alle mål og nøkkelresultater også bli slettet.
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
 - Trykk på `Vis arkiverte objekter`
-- Velg perioden som skal slettes.
+- Velg perioden som skal slettes
 - Trykk `Slett permanent`
 
 ### Kan jeg gjenbruke et tidligere mål?
@@ -279,11 +281,11 @@ Det er ikke mulig å kopiere et mål over til en ny periode, men det er mulig å
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk `+ Oprett` i kolonnen «Vis mål» for valgt Periode.
-- Skriv inn navn og beskrivelse.
+- Trykk `+ Opprett` i kolonnen «Vis mål» for valgt Periode
+- Skriv inn navn og beskrivelse
 - Velg en vekt på målet og ikon
 - Velg hvilken periode målet skal knyttes til (blir automatisk satt til valgt periode)
-- Trykk `Lagre endringer`.
+- Trykk `Lagre endringer`
 
 Nå kan nye nøkkelresultater knyttes til dette målet.
 
@@ -291,7 +293,7 @@ Nå kan nye nøkkelresultater knyttes til dette målet.
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Velg målet som skal arkiveres under valgt periode.
+- Velg målet som skal arkiveres under valgt periode
 - Trykk `Arkiver`
 
 ### Slette et mål
@@ -299,7 +301,7 @@ Nå kan nye nøkkelresultater knyttes til dette målet.
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
 - Trykk på `Vis arkiverte objekter`
-- Velg målet som skal permanent slettes, under valgt periode.
+- Velg målet som skal permanent slettes, under valgt periode
 - Trykk `Slett permanent`
 
 MERK: Da blir alle nøkkelresultater knyttet til målet sletter permanent
@@ -324,15 +326,15 @@ Nøkkelresultater er det du _måler_ for et spesifikt **mål**.
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk `+ Oprett` i kolonnen «Vis nøkkelresultater» for valgt mål.
+- Trykk `+ Oprett` i kolonnen «Vis nøkkelresultater» for valgt mål
 - Fyll inn feltene
-- Trykk `Lagre endringer`.
+- Trykk `Lagre endringer`
 
 ### Arkivere et mål
 
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
-- Velg nøkkelresultatet som skal arkiveres under valgt mål.
+- Velg nøkkelresultatet som skal arkiveres under valgt mål
 - Trykk `Arkiver`
 
 ### Slette et mål
@@ -340,7 +342,7 @@ Nøkkelresultater er det du _måler_ for et spesifikt **mål**.
 - Gå til `Endre <navn på org/produktområde/produkt>`
 - Naviger til `Mål og nøkkelresultater`-fanen
 - Trykk på `Vis arkiverte objekter`
-- Velg nøkkelresultatet som skal permanent slettes, under valgt mål.
+- Velg nøkkelresultatet som skal permanent slettes, under valgt mål
 - Trykk `Slett permanent`
 
 ### Registrere progresjon for et nøkkelresultat
