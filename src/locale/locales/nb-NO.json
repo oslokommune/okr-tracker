@@ -30,7 +30,8 @@
     "icon": "Ikon",
     "period": "Periode",
     "description": "Beskrivelse",
-    "slug": "Slug"
+    "slug": "Slug",
+    "department": "Produktområde"
   },
   "general": {
     "edit": "Endre",
