@@ -132,7 +132,6 @@ export default {
       }
     },
     showError(msg) {
-      console.log(msg);
       if (msg === '403') return this.$t('error.403');
       if (msg === '404') return this.$t('error.404');
 
