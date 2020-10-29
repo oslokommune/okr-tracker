@@ -12,7 +12,7 @@
       <form @submit.prevent="send">
         <label class="form-field">
           <span class="form-label">{{ $t('login.email') }}</span>
-          <input class="field" type="email" v-model="email" required />
+          <input v-model="email" class="field" type="email" required />
         </label>
         <button class="btn btn--pri" :disabled="loading">{{ $t('login.requestButton') }}</button>
       </form>
@@ -26,6 +26,8 @@ import { mapMutations } from 'vuex';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'RequestAccess',
+
   data: () => ({
     email: '',
     loading: false,

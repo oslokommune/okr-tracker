@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeObjective" class="wrapper">
-    <div class="keyresult" v-if="editRights">
+    <div v-if="editRights" class="keyresult">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
@@ -29,6 +29,12 @@ import { mapState } from 'vuex';
 export default {
   name: 'WidgetsObjectiveHome',
 
+  components: {
+    WidgetProgression: () => import('./WidgetProgression.vue'),
+    WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
+    WidgetObjectiveWeights: () => import('./WidgetObjectiveWeights.vue'),
+  },
+
   computed: {
     ...mapState(['activeObjective', 'user', 'activePeriod']),
     editRights() {
@@ -42,11 +48,6 @@ export default {
     progressionData() {
       return { ...this.activeObjective.period, progression: this.activeObjective.progression };
     },
-  },
-  components: {
-    WidgetProgression: () => import('./WidgetProgression.vue'),
-    WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
-    WidgetObjectiveWeights: () => import('./WidgetObjectiveWeights.vue'),
   },
 };
 </script>

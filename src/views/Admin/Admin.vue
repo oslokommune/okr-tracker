@@ -14,15 +14,15 @@ import { db } from '@/config/firebaseConfig';
 export default {
   name: 'Admin',
 
-  data: () => ({
-    requestAccess: [],
-  }),
-
   components: {
     AdminAccessRequests: () => import('./components/AdminAccessRequests.vue'),
     AdminUsers: () => import('./components/AdminUsers.vue'),
     AdminItems: () => import('./components/AdminItems.vue'),
   },
+
+  data: () => ({
+    requestAccess: [],
+  }),
 
   firestore: {
     requestAccess: db.collection('requestAccess'),

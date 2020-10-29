@@ -4,7 +4,7 @@
       <li v-for="org in tree" :key="org.id">
         <ItemRow :data="org" type="organization"></ItemRow>
         <ul>
-          <li class="card" v-for="dept in org.children" :key="dept.id">
+          <li v-for="dept in org.children" :key="dept.id" class="card">
             <itemRow :data="dept" type="department"></itemRow>
             <ul>
               <li v-for="prod in dept.children" :key="prod.id">
@@ -22,13 +22,15 @@
 import { mapGetters, mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapGetters(['tree']),
-    ...mapState(['user']),
-  },
+  name: 'Home',
 
   components: {
     ItemRow: () => import('@/components/ItemRow.vue'),
+  },
+
+  computed: {
+    ...mapGetters(['tree']),
+    ...mapState(['user']),
   },
 };
 </script>

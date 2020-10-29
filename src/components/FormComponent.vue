@@ -1,18 +1,18 @@
 <template>
-  <validation-provider :rules="rules" :name="name || label" v-slot="{ errors }">
+  <validation-provider v-slot="{ errors }" :rules="rules" :name="name || label">
     <label class="form-group">
       <span class="form-label">{{ label || name }}</span>
       <slot name="help"></slot>
-      <input v-if="inputType === 'input'" :type="type" :disabled="disabled" class="form__field" v-model="innerValue" />
+      <input v-if="inputType === 'input'" v-model="innerValue" :type="type" :disabled="disabled" class="form__field" />
 
-      <textarea v-if="inputType === 'textarea'" class="form__field" v-model="innerValue" rows="4" />
+      <textarea v-if="inputType === 'textarea'" v-model="innerValue" class="form__field" rows="4" />
 
       <v-select
         v-if="inputType === 'select'"
+        v-model="innerValue"
         :label="selectLabel"
         :options="selectOptions"
         :clearable="false"
-        v-model="innerValue"
       >
         <template #option="option">
           {{ option.name }}

@@ -6,29 +6,29 @@
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createDepartment" @submit.prevent="handleSubmit(save)">
           <form-component
+            v-model="name"
             input-type="input"
             name="name"
             :label="$t('fields.name')"
             rules="required"
-            v-model="name"
             type="text"
           />
 
           <form-component
+            v-model="missionStatement"
             input-type="textarea"
             name="missionStatement"
             :label="$t('fields.missionStatement')"
             rules="required"
-            v-model="missionStatement"
           />
 
           <form-component
+            v-model="organization"
             input-type="select"
             name="organization"
             :label="$t('admin.department.parentOrganisation')"
             select-label="name"
             rules="required"
-            v-model="organization"
             :select-options="organizations"
           />
         </form>
@@ -51,6 +51,8 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 import * as Toast from '@/util/toasts';
 
 export default {
+  name: 'CreateDepartment',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
   },

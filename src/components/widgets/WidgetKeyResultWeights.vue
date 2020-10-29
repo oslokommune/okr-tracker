@@ -3,13 +3,13 @@
     {{ $t('weight.keyresFor', { name: activeKeyResult.objective.name }) }}
     <div class="scales">
       <router-link
-        :to="{ name: 'KeyResultHome', params: { keyResultId: id } }"
-        class="bar"
         v-for="{ id, weight, active, name } in weights"
         :key="id"
+        v-tooltip.bottom="name"
+        :to="{ name: 'KeyResultHome', params: { keyResultId: id } }"
+        class="bar"
         :style="{ height: getHeight(weight) }"
         :class="{ active }"
-        v-tooltip.bottom="name"
       >
         {{ weight }}
       </router-link>
@@ -20,15 +20,13 @@
 <script>
 import { mapState } from 'vuex';
 import { scaleLinear, max } from 'd3';
-import Widget from './Widget.vue';
 
 export default {
   name: 'WidgetKeyResultWeights',
 
-  data: () => ({
-    chart: null,
-    scale: scaleLinear(),
-  }),
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
 
   props: {
     widgetId: {
@@ -36,6 +34,11 @@ export default {
       required: true,
     },
   },
+
+  data: () => ({
+    chart: null,
+    scale: scaleLinear(),
+  }),
 
   computed: {
     ...mapState(['activeKeyResult', 'keyResults']),
@@ -65,10 +68,6 @@ export default {
 
   mounted() {
     if (this.$refs.svg) this.init();
-  },
-
-  components: {
-    Widget,
   },
 
   methods: {

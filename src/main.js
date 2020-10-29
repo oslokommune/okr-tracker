@@ -44,6 +44,7 @@ Vue.component('Griddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 
+/* eslint-disable */
 configure({
   defaultMessage: (field, values) => {
     values._field_ = i18n.t(`fields.${field}`);
@@ -51,6 +52,7 @@ configure({
     return i18n.t(`validation.${values._rule_}`, values);
   },
 });
+/* eslint-enable */
 
 extend('required', required);
 extend('email', email);

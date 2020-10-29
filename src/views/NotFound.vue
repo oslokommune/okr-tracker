@@ -9,6 +9,7 @@ import i18n from '@/locale/i18n';
 
 export default {
   name: 'NotFound',
+
   metaInfo() {
     return {
       title: `${i18n.t('general.notFound')} | ${i18n.t('general.project')}`,

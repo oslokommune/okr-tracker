@@ -1,17 +1,17 @@
 <template>
   <router-link :to="{ name: 'ItemHome', params: { slug: data.slug } }" class="item" :class="`item--${type}`">
-    <span class="indent" v-if="type === 'product'"></span>
+    <span v-if="type === 'product'" class="indent"></span>
     <span class="item__icon fas fa-fw" :class="`fa-${icon}`"></span>
 
     <span class="item__name">
       {{ data.name }}
-      <i v-if="isMember" class="item__user-icon fa fa-user-circle" v-tooltip="$t('tooltip.isMember')"></i>
+      <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle"></i>
     </span>
 
     <div class="item__kpis">
       <div
-        class="item__kpi"
         v-tooltip="`${$t('kpi.types.users')}:<br> ${getKpiName('users')}`"
+        class="item__kpi"
         :class="{ disabled: getKpiValue('users') === '–––' }"
       >
         <span class="item__kpi-icon fas fa-chart-line"></span>
@@ -20,8 +20,8 @@
       </div>
 
       <div
-        class="item__kpi"
         v-tooltip="`${$t('kpi.types.satisfaction')}:<br> ${getKpiName('satisfaction')}`"
+        class="item__kpi"
         :class="{ disabled: getKpiValue('satisfaction') === '–––' }"
       >
         <span class="item__kpi-icon far fa-smile"></span>
@@ -30,8 +30,8 @@
       </div>
 
       <div
-        class="item__kpi"
         v-tooltip="`${$t('kpi.types.conversion')}:<br> ${getKpiName('conversion')}`"
+        class="item__kpi"
         :class="{ disabled: getKpiValue('conversion') === '–––' }"
       >
         <span class="item__kpi-icon far fa-check-square"></span>
@@ -41,9 +41,9 @@
     </div>
 
     <ProgressBar
+      v-tooltip="`${Math.round(progression * 100)}%`"
       class="progress-bar"
       :progression="progression"
-      v-tooltip="`${Math.round(progression * 100)}%`"
     ></ProgressBar>
 
     <span class="item__chevron fas fa-chevron-right"></span>
@@ -56,14 +56,27 @@ import { format } from 'd3';
 import { mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    progression: null,
-    kpis: [],
-  }),
+  name: 'ItemRow',
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
   },
+
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+  },
+
+  data: () => ({
+    progression: null,
+    kpis: [],
+  }),
 
   computed: {
     ...mapState(['user']),
@@ -82,17 +95,6 @@ export default {
         default:
           return '';
       }
-    },
-  },
-
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
     },
   },
 

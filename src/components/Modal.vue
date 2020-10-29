@@ -15,19 +15,19 @@
 
           <label>
             <span class="title-3">{{ $t('keyres.addComment') }}</span>
-            <textarea class="modal__textarea" rows="3" v-model="note"></textarea>
+            <textarea v-model="note" class="modal__textarea" rows="3"></textarea>
           </label>
 
           <div class="modal__main--flex">
-            <validation-provider name="value" rules="required" v-slot="{ errors }">
+            <validation-provider v-slot="{ errors }" name="value" rules="required">
               <label class="form-group modal__main--input-label">
                 <span class="form-label">{{ $t('keyres.newValue') }}</span>
-                <input class="form__field modal__main--input-value" type="number" v-model="value" />
+                <input v-model="value" class="form__field modal__main--input-value" type="number" />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>
 
-            <validation-provider name="range" rules="required" v-slot="{ errors }">
+            <validation-provider v-slot="{ errors }" name="range" rules="required">
               <label class="form-group modal__main--input-label">
                 <span class="form-label">{{ $t('keyres.dateAndTime') }}</span>
                 <flat-pickr
@@ -49,7 +49,7 @@
       </validation-observer>
       <div class="modal__footer">
         <button form="modal" :disabled="loading" class="btn btn--sec">{{ $t('btn.save') }}</button>
-        <button @click="close" class="btn btn--ghost btn--space">{{ $t('btn.close') }}</button>
+        <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>
   </div>
@@ -87,6 +87,15 @@ export default {
     loading: false,
   }),
 
+  watch: {
+    keyres: {
+      immediate: true,
+      async handler() {
+        this.value = this.keyres.currentValue || this.keyres.startValue || 0;
+      },
+    },
+  },
+
   methods: {
     close() {
       this.$emit('close');
@@ -106,15 +115,6 @@ export default {
       }
       this.loading = false;
       this.$emit('close');
-    },
-  },
-
-  watch: {
-    keyres: {
-      immediate: true,
-      async handler() {
-        this.value = this.keyres.currentValue || this.keyres.startValue || 0;
-      },
     },
   },
 };

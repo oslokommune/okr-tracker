@@ -8,9 +8,9 @@
         </router-link>
       </li>
       <li
-        class="tab--right"
         v-if="activeItem"
         v-tooltip.right="$t('tooltip.navigateToItem', { item: activeItem.name })"
+        class="tab--right"
       >
         <router-link class="tab" :to="{ name: 'ItemHome' }" exact>
           <span class="tab__icon fa fa-arrow-right"></span>
@@ -27,6 +27,8 @@
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemAdmin',
+
   computed: {
     links() {
       return [

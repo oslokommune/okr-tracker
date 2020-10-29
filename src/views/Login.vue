@@ -15,25 +15,25 @@
             {{ $t('login.error.googleError') }}
           </div>
         </div>
-        <div class="login__form" v-if="showForm">
+        <div v-if="showForm" class="login__form">
           <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
           <validation-observer v-slot="{ handleSubmit }">
             <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
               <form-component
+                v-model="email"
                 :label="$t('login.email')"
                 input-type="input"
                 name="email"
                 rules="required|email"
-                v-model="email"
                 type="email"
               />
 
               <form-component
+                v-model="password"
                 :label="$t('login.password')"
                 input-type="input"
                 name="password"
                 rules="required"
-                v-model="password"
                 type="password"
               />
             </form>

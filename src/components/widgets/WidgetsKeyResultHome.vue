@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeKeyResult" class="wrapper">
-    <div class="keyresult" v-if="hasEditRights">
+    <div v-if="hasEditRights" class="keyresult">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
@@ -12,7 +12,7 @@
 
     <button v-if="activeKeyResult.auto" @click="update">Oppdater automatisk verdi</button>
 
-    <div class="widgets" v-if="activeKeyResult">
+    <div v-if="activeKeyResult" class="widgets">
       <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
       <widget-key-result-notes widget-id="keyResultHome.notes"></widget-key-result-notes>
       <widget-key-result-weights widget-id="keyResultHome.weights"></widget-key-result-weights>
@@ -26,14 +26,15 @@ import { mapState, mapGetters } from 'vuex';
 export default {
   name: 'WidgetsKeyResultHome',
 
-  computed: {
-    ...mapState(['activeKeyResult', 'user']),
-    ...mapGetters(['hasEditRights']),
-  },
   components: {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
     WidgetKeyResultWeights: () => import('./WidgetKeyResultWeights.vue'),
+  },
+
+  computed: {
+    ...mapState(['activeKeyResult', 'user']),
+    ...mapGetters(['hasEditRights']),
   },
 
   methods: {

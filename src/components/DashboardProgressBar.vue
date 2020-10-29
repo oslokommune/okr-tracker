@@ -2,13 +2,13 @@
   <div class="progress__container">
     <div class="progress__unit">{{ keyres.unit }}</div>
     <div class="progress__bar-container">
-      <div class="progress__bar" ref="bar" :class="{ completed }" style="width: 0%">
+      <div ref="bar" class="progress__bar" :class="{ completed }" style="width: 0%">
         <div class="progress__current-value" :data-progress="keyres.currentValue || keyres.startValue">
           {{ keyres.currentValue || keyres.startValue }}
         </div>
       </div>
       <div class="progress__change-container">
-        <div class="progress__change" ref="change"></div>
+        <div ref="change" class="progress__change"></div>
       </div>
     </div>
     <div class="progress__startValue">{{ keyres.startValue }}</div>
@@ -22,16 +22,16 @@ import { scaleLinear, format, select } from 'd3';
 export default {
   name: 'DashboardProgressBar',
 
-  data: () => ({
-    completed: false,
-  }),
-
   props: {
     keyres: {
       type: Object,
       required: true,
     },
   },
+
+  data: () => ({
+    completed: false,
+  }),
 
   computed: {
     bar() {
@@ -40,6 +40,17 @@ export default {
     change() {
       return select(this.$refs.change);
     },
+  },
+
+  watch: {
+    keyres() {
+      this.bar.transition().duration(1000).style('width', this.getWidth());
+    },
+  },
+
+  mounted() {
+    this.bar.style('width', this.getWidth());
+    this.getChangeStyle(this.change);
   },
 
   methods: {
@@ -79,17 +90,6 @@ export default {
       el.style('width', this.format(width));
       el.style('left', this.format(fromPos));
       el.classed(direction, true);
-    },
-  },
-
-  mounted() {
-    this.bar.style('width', this.getWidth());
-    this.getChangeStyle(this.change);
-  },
-
-  watch: {
-    keyres() {
-      this.bar.transition().duration(1000).style('width', this.getWidth());
     },
   },
 };

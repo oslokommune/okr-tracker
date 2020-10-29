@@ -2,15 +2,14 @@
   <div>
     <div class="action-bar">
       <label class="form-group--checkbox">
-        <input class="form__checkbox" type="checkbox" v-model="showArchived" />
+        <input v-model="showArchived" class="form__checkbox" type="checkbox" />
         <span class="form-label">{{ $t('admin.objects.showArchived') }}</span>
       </label>
     </div>
 
-    <div class="wrapper" v-if="activeItemRef">
+    <div v-if="activeItemRef" class="wrapper">
       <div class="miller">
         <div
-          class="miller__col"
           v-for="{
             type,
             heading,
@@ -23,11 +22,12 @@
             addEvent,
           } in columns"
           :key="type"
+          class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
           <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected"></empty-state>
 
-          <ul class="miller__list" v-else>
+          <ul v-else class="miller__list">
             <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent"></empty-state>
             <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
               <router-link
@@ -40,7 +40,7 @@
               >
                 <span class="miller__icon fa" :class="icon"></span>
                 <span class="miller__label">{{ name }}</span>
-                <span class="miller__archived fa fa-file-archive" v-if="archived"></span>
+                <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
               </router-link>
             </li>
           </ul>
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div class="details" v-if="editObject && editForm">
+      <div v-if="editObject && editForm" class="details">
         <component :is="editForm" :data="editObject"></component>
       </div>
     </div>
@@ -69,6 +69,10 @@ import * as Toast from '@/util/toasts';
 export default {
   name: 'ItemAdminOKRs',
 
+  components: {
+    EmptyState: () => import('@/components/EmptyState.vue'),
+  },
+
   data: () => ({
     editForm: null,
     editObject: null,
@@ -80,10 +84,6 @@ export default {
     selectedPeriodId: null,
     selectedObjectiveId: null,
   }),
-
-  components: {
-    EmptyState: () => import('@/components/EmptyState.vue'),
-  },
 
   computed: {
     ...mapState(['activeItemRef']),

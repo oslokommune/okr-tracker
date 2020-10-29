@@ -1,5 +1,5 @@
 <template>
-  <div class="keyres" v-if="activeKeyResult">
+  <div v-if="activeKeyResult" class="keyres">
     <div class="main">
       <h1 class="title-1">{{ activeKeyResult.name }}</h1>
       <p>{{ activeKeyResult.description }}</p>
@@ -18,7 +18,7 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button v-if="!activeKeyResult.auto" @click="isOpen = true" class="btn btn--ter">
+          <button v-if="!activeKeyResult.auto" class="btn btn--ter" @click="isOpen = true">
             {{ $t('keyres.updateValue') }}
           </button>
         </div>
@@ -29,7 +29,7 @@
             {{ $t('objective.progression') }}
           </h3>
 
-          <svg class="graph" ref="graph"></svg>
+          <svg ref="graph" class="graph"></svg>
         </div>
       </div>
 
@@ -78,9 +78,8 @@
                 </router-link>
               </td>
               <td>
-                <v-popover placement="top" v-if="p.comment" :open="isFirstProgressWithComment(p)" :autoHide="true">
-                  <i class="fa fa-comment-alt comment-icon" v-tooltip="$t('keyres.showComment')"></i>
-
+                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)" :auto-hide="true">
+                  <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon"></i>
                   <template slot="popover">
                     {{ p.comment }}
                   </template>
@@ -108,7 +107,7 @@
 
     <widgets-key-result-home class="aside"></widgets-key-result-home>
 
-    <modal v-if="isOpen" @close="closeModal" :keyres="activeKeyResult"></modal>
+    <modal v-if="isOpen" :keyres="activeKeyResult" @close="closeModal"></modal>
   </div>
 </template>
 
@@ -131,6 +130,19 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     VPopover,
   },
+
+  beforeRouteUpdate: routerGuard,
+
+  async beforeRouteLeave(to, from, next) {
+    try {
+      await this.$store.dispatch('set_active_key_result', null);
+      next();
+    } catch (error) {
+      console.error(error);
+      next(false);
+    }
+  },
+
   data: () => ({
     progress: [],
     newValue: null,
@@ -138,20 +150,21 @@ export default {
     isOpen: false,
   }),
 
-  beforeRouteUpdate: routerGuard,
-
-  async beforeRouteLeave(to, from, next) {
-    try {
-      await this.$store.dispatch('set_active_key_result', null);
-      return next();
-    } catch (error) {
-      console.error(error);
-      next(false);
-    }
-  },
-
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+  },
+
+  watch: {
+    activeKeyResult: {
+      immediate: true,
+      async handler(keyresult) {
+        if (!keyresult) return;
+        await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`).orderBy('timestamp', 'desc'));
+
+        this.graph = new LineChart(this.$refs.graph);
+        this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
+      },
+    },
   },
 
   mounted() {
@@ -185,19 +198,6 @@ export default {
 
     closeModal() {
       this.isOpen = false;
-    },
-  },
-
-  watch: {
-    activeKeyResult: {
-      immediate: true,
-      async handler(keyresult) {
-        if (!keyresult) return;
-        await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`).orderBy('timestamp', 'desc'));
-
-        this.graph = new LineChart(this.$refs.graph);
-        this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
-      },
     },
   },
 };

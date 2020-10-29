@@ -1,7 +1,7 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeKeyResult" :title="$t('general.details')" icon="info-circle">
+  <Widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
-      <div class="details__item" v-if="activeKeyResult.objective">
+      <div v-if="activeKeyResult.objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyres.belongsTo') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa" :class="`fa-${activeKeyResult.objective.icon}`"></div>
@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activePeriod && activePeriod.startDate">
+      <div v-if="activePeriod && activePeriod.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-calendar-alt"></div>
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.created">
+      <div v-if="activeKeyResult.created" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.created') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-calendar"></div>
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.createdBy">
+      <div v-if="activeKeyResult.createdBy" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.createdBy') }}</h3>
 
         <div class="details__item-body">
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.edited">
+      <div v-if="activeKeyResult.edited" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.edited') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-calendar"></div>
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.editedBy">
+      <div v-if="activeKeyResult.editedBy" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
 
         <div class="details__item-body">
@@ -71,7 +71,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.startValue !== undefined">
+      <div v-if="activeKeyResult.startValue !== undefined" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyres.startValue') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-hashtag"></div>
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.targetValue !== undefined">
+      <div v-if="activeKeyResult.targetValue !== undefined" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyres.targetValue') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-hashtag"></div>
@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeKeyResult.unit">
+      <div v-if="activeKeyResult.unit" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyres.unit') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-ruler"></div>
@@ -106,9 +106,9 @@ import { periodDates, dateShort, dateLong } from '@/util/formatDate';
 export default {
   name: 'WidgetKeyResultDetails',
 
-  data: () => ({
-    progress: [],
-  }),
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
 
   props: {
     widgetId: {
@@ -117,12 +117,12 @@ export default {
     },
   },
 
+  data: () => ({
+    progress: [],
+  }),
+
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod']),
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 
   watch: {

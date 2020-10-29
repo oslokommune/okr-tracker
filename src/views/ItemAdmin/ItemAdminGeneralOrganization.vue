@@ -5,25 +5,25 @@
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-organization" @submit.prevent="handleSubmit(update)">
         <form-component
+          v-model="activeItem.name"
           input-type="input"
           name="name"
           :label="$t('fields.name')"
           rules="required"
-          v-model="activeItem.name"
           type="text"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.slug') }}</span>
-          <input class="form__field" type="text" v-model="activeItem.slug" disabled />
+          <input v-model="activeItem.slug" class="form__field" type="text" disabled />
         </label>
 
         <form-component
+          v-model="activeItem.missionStatement"
           input-type="textarea"
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
-          v-model="activeItem.missionStatement"
         />
       </form>
     </validation-observer>
@@ -32,7 +32,7 @@
       <button class="btn btn--icon btn--pri" form="update-organization" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button class="btn btn--icon btn--danger" @click="archive" v-if="!activeItem.archived" :disabled="loading">
+      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -45,10 +45,13 @@ import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 
 export default {
+  name: 'ItemAdminGeneralOrganization',
+
   components: {
     FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
+
   data: () => ({
     loading: false,
   }),

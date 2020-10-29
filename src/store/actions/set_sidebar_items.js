@@ -11,17 +11,16 @@ export default async ({ state, commit }) => {
     // Active item is organization, show all its departments
     if (activeItem.id === organization.id) return true;
     // Active item is a child of organization, show its all departments
-    if (activeItem.organization && activeItem.organization.id === organization.id) return true;
-    return false;
+    return !!(activeItem.organization && activeItem.organization.id === organization.id);
   };
+
   const filterProducts = ({ department }) => {
     // No active item is set, show no products
     if (!activeItem) return false;
     // Active item is a department, show all its products
     if (activeItem.id === department.id) return true;
     // Active item is a product, show all its siblings
-    if (activeItem.department && activeItem.department.id === department.id) return true;
-    return false;
+    return !!(activeItem.department && activeItem.department.id === department.id);
   };
 
   const groups = [
@@ -33,4 +32,6 @@ export default async ({ state, commit }) => {
   if (state.sidebarGroups && JSON.stringify(groups) === JSON.stringify(state.sidebarGroups)) return true;
 
   commit('SET_SIDEBAR_GROUPS', groups);
+
+  return true;
 };

@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeItem.team" :title="$t('general.team')" icon="users">
+  <Widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')" icon="users">
     <empty-state
       v-if="!activeItem.team.length"
       :icon="'user-ninja'"
@@ -9,13 +9,13 @@
 
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">
-        <router-link :to="{ name: 'User', params: { id: user.id } }" class="user__link" v-if="user.id">
+        <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
           <img :src="user.photoURL || '/placeholder-image.svg'" :aria-hidden="true" class="user__image" />
           <span class="user__name">{{ user.displayName || user.id }}</span>
         </router-link>
       </li>
     </ul>
-    <router-link :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter" v-if="memberOrAdmin">{{
+    <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">{{
       $t('btn.add')
     }}</router-link>
   </Widget>
@@ -25,17 +25,11 @@
 import { mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState(['activeItem', 'user']),
-    memberOrAdmin() {
-      try {
-        const isAdmin = this.user.admin;
-        const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
-        return isAdmin || isMember;
-      } catch {
-        return false;
-      }
-    },
+  name: 'WidgetTeam',
+
+  components: {
+    Widget: () => import('./Widget.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   props: {
@@ -45,9 +39,18 @@ export default {
     },
   },
 
-  components: {
-    Widget: () => import('./Widget.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
+  computed: {
+    ...mapState(['activeItem', 'user']),
+
+    memberOrAdmin() {
+      try {
+        const isAdmin = this.user.admin;
+        const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
+        return isAdmin || isMember;
+      } catch {
+        return false;
+      }
+    },
   },
 };
 </script>

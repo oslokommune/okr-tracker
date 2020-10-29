@@ -1,7 +1,7 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="activeObjective" :title="$t('general.details')" icon="info-circle">
+  <Widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
-      <div class="details__item" v-if="activeObjective.period && activeObjective.period.startDate">
+      <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-calendar-alt"></div>
@@ -11,7 +11,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeObjective.created">
+      <div v-if="activeObjective.created" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.created') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-calendar"></div>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeObjective.createdBy">
+      <div v-if="activeObjective.createdBy" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.createdBy') }}</h3>
 
         <div class="details__item-body">
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeObjective.edited">
+      <div v-if="activeObjective.edited" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.edited') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-calendar"></div>
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="details__item" v-if="activeObjective.editedBy">
+      <div v-if="activeObjective.editedBy" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
 
         <div class="details__item-body">
@@ -79,12 +79,8 @@ import { periodDates, dateShort, dateLong } from '@/util/formatDate';
 export default {
   name: 'WidgetObjectiveDetails',
 
-  data: () => ({
-    progress: [],
-  }),
-
-  computed: {
-    ...mapState(['activeObjective']),
+  components: {
+    Widget: () => import('./Widget.vue'),
   },
 
   props: {
@@ -94,8 +90,12 @@ export default {
     },
   },
 
-  components: {
-    Widget: () => import('./Widget.vue'),
+  data: () => ({
+    progress: [],
+  }),
+
+  computed: {
+    ...mapState(['activeObjective']),
   },
 
   methods: {

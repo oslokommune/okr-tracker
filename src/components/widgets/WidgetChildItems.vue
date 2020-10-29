@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" v-if="children.length" :title="title" :icon="icon">
+  <Widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
     <div class="list">
       <router-link
         v-for="child in children"
@@ -18,6 +18,19 @@
 import { mapState } from 'vuex';
 
 export default {
+  name: 'WidgetChildItems',
+
+  components: {
+    Widget: () => import('./Widget.vue'),
+  },
+
+  props: {
+    widgetId: {
+      type: String,
+      required: true,
+    },
+  },
+
   data: () => ({
     children: [],
     title: '',
@@ -26,13 +39,6 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'departments', 'products']),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
   },
 
   watch: {
@@ -61,10 +67,6 @@ export default {
         this.icon = '';
       }
     },
-  },
-
-  components: {
-    Widget: () => import('./Widget.vue'),
   },
 };
 </script>

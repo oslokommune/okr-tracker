@@ -5,7 +5,7 @@
       <div v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</div>
     </router-link>
 
-    <div class="keyResult__auto fa fa-magic" v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')"></div>
+    <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
 
     <ProgressBar
       v-if="view === 'compact'"
@@ -20,13 +20,13 @@
       @submit.prevent="isOpen = true"
     >
       <label class="keyResult__input">
-        <input type="number" v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" />
+        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" />
       </label>
 
       <button class="btn">{{ $t('keyres.updateValue') }}</button>
     </form>
 
-    <modal v-if="isOpen" @close="isOpen = false" :keyres="keyRow"></modal>
+    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false"></modal>
   </div>
 </template>
 
@@ -34,6 +34,14 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
+  name: 'KeyResultRow',
+
+  components: {
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
+    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
+    Modal: () => import('@/components/Modal.vue'),
+  },
+
   props: {
     keyResult: {
       type: Object,
@@ -58,12 +66,6 @@ export default {
       if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
     },
-  },
-
-  components: {
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
-    Modal: () => import('@/components/Modal.vue'),
   },
 
   watch: {

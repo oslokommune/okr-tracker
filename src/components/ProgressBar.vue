@@ -1,5 +1,5 @@
 <template>
-  <div class="progression__container" v-tooltip="percent(progression)">
+  <div v-tooltip="percent(progression)" class="progression__container">
     <div class="progression__bar" :style="{ width: percent(progression) }"></div>
   </div>
 </template>
@@ -8,6 +8,8 @@
 import { format } from 'd3';
 
 export default {
+  name: 'ProgressBar',
+
   props: {
     progression: {
       type: Number,

@@ -21,6 +21,8 @@ import { mapState } from 'vuex';
 import i18n from '@/locale/i18n';
 
 export default {
+  name: 'App',
+
   metaInfo() {
     return {
       title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,

@@ -8,8 +8,10 @@
 import { mapState } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState(['activeItem']),
+  name: 'WidgetMissionStatement',
+
+  components: {
+    Widget: () => import('./Widget.vue'),
   },
 
   props: {
@@ -19,8 +21,8 @@ export default {
     },
   },
 
-  components: {
-    Widget: () => import('./Widget.vue'),
+  computed: {
+    ...mapState(['activeItem']),
   },
 };
 </script>

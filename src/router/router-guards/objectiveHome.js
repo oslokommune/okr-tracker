@@ -1,6 +1,6 @@
 import store from '@/store';
 
-export default async function (to, from, next) {
+export default async function objectiveHome(to, from, next) {
   const { objectiveId } = to.params;
 
   try {

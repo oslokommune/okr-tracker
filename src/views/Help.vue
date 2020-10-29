@@ -1,7 +1,7 @@
 <template>
-  <div class="main" v-if="markdown">
+  <div v-if="markdown" class="main">
     <h1 class="title-1">{{ $t('help.title') }}</h1>
-    <ul class="toc" v-if="toc">
+    <ul v-if="toc" class="toc">
       <li v-for="levelOne in toc.children" :key="levelOne.id">
         <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
         <ul v-if="levelOne.children">

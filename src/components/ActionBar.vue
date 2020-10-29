@@ -1,15 +1,15 @@
 <template>
   <div class="action-bar">
-    <div class="period-dates" v-if="activePeriod">{{ periodDates(activePeriod) }}</div>
+    <div v-if="activePeriod" class="period-dates">{{ periodDates(activePeriod) }}</div>
 
     <div class="views">
       <button
         v-for="view in views"
+        :key="view.id"
+        v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
         class="view"
         :class="{ active: view.id === user.preferences.view }"
-        :key="view.id"
         @click="updateView(view.id)"
-        v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
       >
         <span class="view__icon"></span>
         <span class="view__name">{{ view.label }}</span>
@@ -23,6 +23,8 @@ import { mapState, mapActions } from 'vuex';
 import { periodDates } from '@/util/formatDate';
 
 export default {
+  name: 'ActionBar',
+
   computed: {
     ...mapState(['activePeriod', 'views', 'user']),
   },

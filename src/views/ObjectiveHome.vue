@@ -1,5 +1,5 @@
 <template>
-  <div class="objective" v-if="activeObjective">
+  <div v-if="activeObjective" class="objective">
     <div class="main">
       <div class="objective__heading">
         <div class="objective__heading-text">
@@ -44,13 +44,12 @@ import { db } from '@/config/firebaseConfig';
 import routerGuard from '@/router/router-guards/objectiveHome';
 
 export default {
-  data: () => ({
-    keyResults: [],
-  }),
+  name: 'ObjectiveHome',
 
-  computed: {
-    ...mapState(['activeObjective']),
-    ...mapGetters(['hasEditRights']),
+  components: {
+    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
+    WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
+    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -58,11 +57,20 @@ export default {
   async beforeRouteLeave(to, from, next) {
     try {
       await this.$store.dispatch('set_active_key_result', null);
-      return next();
+      next();
     } catch (error) {
       console.error(error);
       next(false);
     }
+  },
+
+  data: () => ({
+    keyResults: [],
+  }),
+
+  computed: {
+    ...mapState(['activeObjective']),
+    ...mapGetters(['hasEditRights']),
   },
 
   watch: {
@@ -78,12 +86,6 @@ export default {
         );
       },
     },
-  },
-
-  components: {
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
-    WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
   },
 };
 </script>

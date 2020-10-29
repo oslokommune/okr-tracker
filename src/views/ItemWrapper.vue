@@ -8,13 +8,7 @@
 import { itemHome as routerGuard } from '@/router/router-guards';
 
 export default {
-  data: () => ({
-    loading: true,
-  }),
-
-  mounted() {
-    this.loading = false;
-  },
+  name: 'ItemWrapper',
 
   async beforeRouteUpdate(to, from, next) {
     this.loading = true;
@@ -25,6 +19,13 @@ export default {
       this.loading = false;
       next();
     }
+  },
+  data: () => ({
+    loading: true,
+  }),
+
+  mounted() {
+    this.loading = false;
   },
 };
 </script>

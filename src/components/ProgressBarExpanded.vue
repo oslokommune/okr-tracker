@@ -1,7 +1,7 @@
 <template>
   <div class="progression">
     <div class="progression__unit">{{ keyResult.unit }}</div>
-    <div class="progression__container" v-tooltip="percent(keyResult.progression)">
+    <div v-tooltip="percent(keyResult.progression)" class="progression__container">
       <div class="progression__bar" :style="{ width: percent(keyResult.progression) }">
         {{ keyResult.currentValue }}
       </div>
@@ -15,6 +15,8 @@
 import { format } from 'd3';
 
 export default {
+  name: 'ProgressBarExpanded',
+
   props: {
     keyResult: {
       type: Object,
