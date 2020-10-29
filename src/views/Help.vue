@@ -1,23 +1,26 @@
 <template>
   <div v-if="markdown" class="main">
     <h1 class="title-1">{{ $t('help.title') }}</h1>
-    <ul v-if="toc" class="toc">
-      <li v-for="levelOne in toc.children" :key="levelOne.id">
-        <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
-        <ul v-if="levelOne.children">
-          <li v-for="levelTwo in levelOne.children" :key="levelTwo.id">
-            <a :href="`#${levelTwo.data.id}`">{{ levelTwo.data.text }}</a>
-            <ul v-if="levelTwo.children">
-              <li v-for="levelThree in levelTwo.children" :key="levelThree.id">
-                <a :href="`#${levelThree.data.id}`">{{ levelThree.data.text }}</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <div class="help">
+      <ul v-if="toc" class="toc help__toc">
+        <h1 class="title-1">{{ $t('help.toc') }}</h1>
+        <li v-for="levelOne in toc.children" :key="levelOne.id">
+          <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
+          <ul v-if="levelOne.children">
+            <li v-for="levelTwo in levelOne.children" :key="levelTwo.id">
+              <a :href="`#${levelTwo.data.id}`">{{ levelTwo.data.text }}</a>
+              <ul v-if="levelTwo.children">
+                <li v-for="levelThree in levelTwo.children" :key="levelThree.id">
+                  <a :href="`#${levelThree.data.id}`">{{ levelThree.data.text }}</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
 
-    <div class="md" v-html="markdown"></div>
+      <div class="help__content md" v-html="markdown"></div>
+    </div>
   </div>
 </template>
 
@@ -61,11 +64,39 @@ export default {
   width: span(12);
 
   @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
+    // width: span(9, 0, span(9));
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
+    // width: span(7, 0, span(10));
+  }
+}
+
+.help {
+  @media screen and (min-width: bp(l)) {
+    display: grid;
+    grid-gap: span(0, 1);
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+.help__toc {
+  align-self: start;
+  @media screen and (min-width: bp(l)) {
+    grid-row: 1;
+    grid-column: 7 / span 4;
+  }
+}
+
+.help__content {
+  @media screen and (min-width: bp(l)) {
+    grid-row: 1;
+    grid-column: 1 / span 5;
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    grid-row: 1;
+    grid-column: 1 / span 4;
   }
 }
 

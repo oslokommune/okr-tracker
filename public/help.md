@@ -1,9 +1,3 @@
-### Kan jeg bruke den gamle løsningen?
-
-Nei.
-
----
-
 ## Innlogging
 
 ### Jeg kan ikke logge inn, hva gjør jeg?
@@ -50,7 +44,7 @@ Gå til [profilsiden](/user) og endre feltet «Navn» og trykk `Lagre`.
 
 ### Hvordan beregnes progresjon for et produkt
 
-Den totale progresjonen for et produkt eller produktområde beregnes ut fra gjennomsnitt av progresjonen for _målene_ innenfor en periode (kvartal). Alle målene vektes likt uavhengig av antall nøkkelresultater for målet.
+Den totale progresjonen for et produkt eller produktområde beregnes ut fra gjennomsnitt av progresjonen for _målene_ innenfor en periode (kvartal). Alle målene vektes ut fra «vekt»-verdien som er satt.
 
 Progresjonen for et nøkkelresultat er prosent av nåværende verdi sammenlignet med avstanden mellom start- og målverdiene. Dersom nåværende verdi er lavere enn startverdien blir den satt til 0% og dersom den er passert målverdien blir progresjonen satt til 100%.
 
@@ -59,6 +53,35 @@ Progresjonen for et nøkkelresultat er prosent av nåværende verdi sammenlignet
 Ved å logge inn som «dashboard-bruker» kan du få lesetilgang til systemet uten å logge inn med en personlig brukerkonto. Dette kan være nyttig for å logge inn på «felles» maskiner for å for eksempel ha åpent dashboard-visningen.
 
 Ta kontakt med en systemadministrator for å få brukernavn og passord til brukeren.
+
+---
+
+## KPI-er
+
+KPI-verdiene kan ikke oppdateres direkte i OKR-trackeren.
+
+KPI-en må knyttes til et Google Sheet-dokument med verdien som lastes automatisk inn i OKR-trackeren med gitt tidsintervall (to ganger daglig).
+
+Viktig: Google Sheets-dokumentet må **deles** med OKR-trackerens _service account_. Adressen til denne finner du under «Sheets-detaljer» når du oppretter ny KPI.
+
+### KPI-typer
+
+Det finnes tre ulike KPI-er:
+
+- _Volum_ (absolutt verdi)
+- _Brukertilfredshet_ (prosent)
+- _Fullføringsgrad_ (prosent)
+
+Disse KPI-ene kan legges til organisasjoner, produktområder og produkter.
+
+### Legge til ny KPI
+
+1. Naviger til ditt produkt (eventuelt produktområde eller organisasjon for systemadministratorer).
+2. Klikk «Endre \<navn\>».
+3. Velg «KPI-er».
+4. Klikk «Legg til KPI».
+5. I skjemaet må du velge KPI-type (se over), navn og beskrivelse (valgfritt). Her ser du også e-post-adressen som Google Sheets-dokumentet må deles med. Google Sheet ID-en finner du i URL-en til dokumentet: `.../spreadsheets/d/<dokument-id>/edit`
+6. Trykk «Legg til» og vent til du får grønn «OK» for bekreftelse på gyldig kobling.
 
 ---
 
@@ -184,6 +207,7 @@ For å permanent slette et produktområde må produktområdet allerede være «a
 - Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
 - Velg det arkiverte produktet som skal slettes permanent
 - Trykk «Slett permanent»
+
 ---
 
 ## Produkter
@@ -194,7 +218,7 @@ Produkter er underordnet et _produktområde_ og inneholder _mål_ og _nøkkelres
 
 Administratorer kan opprette nye produkter fra [adminpanelet](/admin).
 
-- I kolonnen "Produkter", klikk `Nytt produkt`*
+- I kolonnen "Produkter", klikk `Nytt produkt`\*
 - Skriv inn navn og oppdragsbeskrivelse
 - Velg hvilket produktområde det skal tilhøre til
 - Legg inn teammedlemmer av produktet
@@ -235,7 +259,7 @@ Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være 
 
 | Felt        | Format     | Beskrivelse                                           |
 | ----------- | ---------- | ----------------------------------------------------- |
-| Tittel      | `Tekst`    | Skriv en kort (1-2 ord) tittel for målet.            |
+| Tittel      | `Tekst`    | Skriv en kort (1-2 ord) tittel for målet.             |
 | Beskrivelse | `Tekst`    | En kort (cirka en setning) tekst som beskriver målet. |
 | Vekt        | `Tall`     | Hvor mye målet skal veie for progresjonen             |
 | Ikon        | `Menyvalg` | Velg et passende ikon for målet.                      |
@@ -320,7 +344,7 @@ Nøkkelresultater er det du _måler_ for et spesifikt **mål**.
 | Måleenhet     | `Tekst`    | Hva er det som måles (skriv så kort som mulig). Måler du prosent, skriv «%», eller måler du **antall brukere**, skriv «# brukere». |
 | Startverdi    | `Tall`     | Hvilken verdi som nøkkelresultatet starter på                                                                                      |
 | Målverdi      | `Tall`     | Verdien som skal oppnås                                                                                                            |
-| Vekt          | `Tall`     | Hvor mye nøkkelresultatet skal veie opp mot hverandre for progresjon
+| Vekt          | `Tall`     | Hvor mye nøkkelresultatet skal veie opp mot hverandre for progresjon                                                               |
 
 ### Opprette nytt nøkkelresultat
 
@@ -362,23 +386,9 @@ På nøkkelresultatsiden (trykk på et nøkkelresultat for å åpne), kan du sle
 
 Det er ingen måte å endre et eksisterende målepunkt, så det må i så fall slettes og legges inn på nytt med de nye verdiene.
 
-# KPI-er
-Det finnes tre ulike KPI-er: «Volum» (absolutt verdi), «Brukertilfredshet» (prosent) og «Fullføringsgrad» (prosent). Disse KPI-ene kan legges til organisasjoner, produktområder og produkter.
+---
 
-KPI-verdiene kan ikke oppdateres direkte i OKR-trackeren.
-
-KPI-en må knyttes til et Google Sheet-dokument med verdien som lastes automatisk inn i OKR-trackeren med gitt tidsintervall (to ganger daglig).
-
-## Legge til ny KPI
-
-1. Naviger til ditt produkt (eventuelt produktområde eller organisasjon for systemadministratorer).
-2. Klikk «Endre \<navn\>».
-3. Velg «KPI-er».
-4. Klikk «Legg til KPI».
-5. I skjemaet må du velge KPI-type (se over), navn og beskrivelse (valgfritt). Her ser du også e-post-adressen som Google Sheets-dokumentet må deles med. Google Sheet ID-en finner du i URL-en til dokumentet: `.../spreadsheets/d/<dokument-id>/edit`
-6. Trykk «Legg til» og vent til du får grønn «OK» for bekreftelse på gyldig kobling.
-
-## Google Sheets-integrasjon
+## Google Sheets-integrasjon for nøkkelresultater
 
 Med hjelp av Google Sheets kan du konfigurere automatisk oppdatering av progresjon for et nøkkelresultat.
 
@@ -390,7 +400,7 @@ Progresjonen for det «automatiske» nøkkelresultatet vil bli oppdatert to gang
 | Fane            | Navnet på fanen hvor cellen ligger                                                        |
 | Celle           | Navnet på cellen (f.eks.: «A1»)                                                           |
 
-Dokumentet må deles med OKR-trackeren via applikasjonens _service account_ (`origo-okr-tracker@appspot.gserviceaccount.com`).
+Dokumentet må deles med OKR-trackeren via applikasjonens _service account_.
 
 ### Opprette et «automatisk» nøkkelresultat
 
@@ -399,7 +409,7 @@ Dokumentet må deles med OKR-trackeren via applikasjonens _service account_ (`or
 - Gå til [Google Sheets](https://sheets.google.com)
 - Opprett nytt regneark
 - Trykk på «Del»
-- Del dokumentet med `origo-okr-tracker@appspot.gserviceaccount.com`
+- Del dokumentet med applikasjonens _service account_.
 - Finn dokument-id-en i URL-en (.../spreadsheets/d/`<ID>`/edit)
 - Finn navnet på _fanen_ som verdien du ønsker å bruke ligger i
 
