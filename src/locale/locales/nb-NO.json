@@ -163,7 +163,8 @@
       "sheetsTab": "Fane",
       "sheetsTabHelp": "Samme som navnet på fanen i Google Sheets",
       "sheetsCell": "Celle",
-      "sheetsCellHelp": "For eksempel «A12»"
+      "sheetsCellHelp": "For eksempel «A12»",
+      "testConnection": "Lagre og test kobling"
     },
     "updateKeyres": "Oppdater verdi for nøkkelresultat",
     "registerProgression": {
@@ -336,5 +337,10 @@
       "period": "Progresjon for periode",
       "objective": "Progresjon for mål"
     }
+  },
+  "error": {
+    "403": "Systemet har ikke tilgang til å lese dokumentet",
+    "404": "Fant ikke dokumentet. Feil ID?",
+    "noDataInCell": "Celle {cell} er tom"
   }
 }

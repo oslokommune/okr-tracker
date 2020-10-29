@@ -128,19 +128,21 @@
           </form-component>
 
           <div class="validation">
-            <div class="validation__loading" v-if="loadingConnection">
+            <div v-if="loadingConnection" class="validation__loading">
               <span class="fa fa-spinner fa-pulse"></span>
               {{ $t('general.loading') }}
             </div>
-            <div class="validation__error" v-if="!loadingConnection && keyResult.error">
+            <div v-if="!loadingConnection && keyResult.error" class="validation__error">
               <span class="fa fa-exclamation-triangle"></span>
-              {{ keyResult.error }}
+              {{ showError(keyResult.error) }}
             </div>
-            <div class="validation__valid" v-if="!loadingConnection && keyResult.valid">
+            <div v-if="!loadingConnection && keyResult.valid" class="validation__valid">
               <span class="fa fa-check-circle"></span>
               OK
             </div>
-            <button class="btn validation-check" type="button" @click="testConnection">Save and test connection</button>
+            <button class="btn validation-check" type="button" @click="testConnection">
+              {{ $t('keyres.automation.testConnection') }}
+            </button>
           </div>
         </div>
       </form>
@@ -306,6 +308,17 @@ export default {
         throw new Error(error.message);
       }
       this.loadingConnection = false;
+    },
+
+    showError(msg) {
+      if (msg === '403') return this.$t('error.403');
+      if (msg === '404') return this.$t('error.404');
+
+      if (msg.includes('Cannot find data in cell')) {
+        const cell = msg.split('cell ')[1];
+        return this.$t('error.noDataInCell', { cell });
+      }
+      return msg;
     },
   },
 };

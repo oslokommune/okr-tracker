@@ -17,7 +17,7 @@
       <div v-for="kpi in kpis" :key="kpi.id" class="kpi" :class="{ 'kpi--error': !!kpi.error }">
         <div class="kpi__validation">
           <div v-if="kpi.error" class="kpi__error">
-            <span class="fa fa-exclamation-triangle"></span> {{ kpi.error }}
+            <span class="fa fa-exclamation-triangle"></span> {{ showError(kpi.error) }}
           </div>
           <div v-if="kpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
           <div v-if="!kpi.valid && !kpi.error" class="kpi__loading">
@@ -130,6 +130,17 @@ export default {
       } catch {
         Toast.errorDelete();
       }
+    },
+    showError(msg) {
+      console.log(msg);
+      if (msg === '403') return this.$t('error.403');
+      if (msg === '404') return this.$t('error.404');
+
+      if (msg.includes('Cannot find data in cell')) {
+        const cell = msg.split('cell ')[1];
+        return this.$t('error.noDataInCell', { cell });
+      }
+      return msg;
     },
   },
 };
