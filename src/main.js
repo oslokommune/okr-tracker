@@ -6,7 +6,7 @@ import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
-import { required, email, numeric } from 'vee-validate/dist/rules';
+import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -57,6 +57,10 @@ configure({
 extend('required', required);
 extend('email', email);
 extend('numeric', numeric);
+extend('min', min);
+extend('max', max);
+extend('decimal', num => typeof num === 'number');
+extend('positiveNotZero', num => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 

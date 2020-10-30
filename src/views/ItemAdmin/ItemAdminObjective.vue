@@ -23,8 +23,8 @@
           input-type="input"
           name="weight"
           :label="$t('fields.weight')"
-          rules="required|numeric"
-          type="number"
+          rules="required|decimal|positiveNotZero"
+          type="text"
         />
 
         <label class="form-group">
