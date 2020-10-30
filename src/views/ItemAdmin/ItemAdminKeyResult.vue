@@ -42,7 +42,7 @@
           input-type="input"
           name="unit"
           :label="$t('keyres.unit')"
-          rules="required"
+          rules="required|max:25"
           type="text"
         />
 
@@ -70,8 +70,8 @@
             input-type="input"
             name="weight"
             :label="$t('keyres.weight')"
-            rules="required|numeric"
-            type="number"
+            rules="required|decimal|positiveNotZero"
+            type="text"
           />
         </div>
 
