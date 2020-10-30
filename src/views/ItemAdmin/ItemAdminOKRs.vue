@@ -64,7 +64,6 @@ import { db } from '@/config/firebaseConfig';
 import Period from '@/db/Period';
 import Objective from '@/db/Objective';
 import KeyResult from '@/db/KeyResult';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'ItemAdminOKRs',
@@ -260,11 +259,11 @@ export default {
       try {
         const { id } = await Period.create({ name: 'placeholder', parent: this.activeItemRef, startDate, endDate });
 
-        Toast.show(this.$t('toaster.add.period'));
+        this.$toasted.show(this.$t('toaster.add.period'));
 
-        this.$router.push({ query: { type: 'period', id } });
+        await this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
-        Toast.errorAdd();
+        this.$toasted.error(this.$t('toaster.error.create'));
         throw new Error(error);
       }
     },
@@ -273,11 +272,11 @@ export default {
         const period = db.collection('periods').doc(this.selectedPeriodId);
         const { id } = await Objective.create({ name: 'placeholder', parent: this.activeItemRef, weight: 1, period });
 
-        Toast.show(this.$t('toaster.add.objective', { period: period.name }));
+        this.$toasted.show(this.$t('toaster.add.objective', { period: period.name }));
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
-        Toast.errorAdd();
+        this.$toasted.error(this.$t('toaster.error.create'));
         throw new Error(error);
       }
     },
@@ -295,11 +294,11 @@ export default {
 
         const { id } = await KeyResult.create(data);
 
-        Toast.show(this.$t('toaster.add.keyResult'));
+        this.$toasted.show(this.$t('toaster.add.keyResult'));
 
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {
-        Toast.errorAdd();
+        this.$toasted.error(this.$t('toaster.error.create'));
         throw new Error(error);
       }
     },

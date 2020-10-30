@@ -52,7 +52,6 @@
 <script>
 import Department from '@/db/Department';
 import { db } from '@/config/firebaseConfig';
-import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
 
 export default {
@@ -81,9 +80,9 @@ export default {
         const data = { name, missionStatement, organization };
 
         await Department.update(id, data);
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
         throw new Error(error.message);
       }
 
@@ -95,11 +94,25 @@ export default {
       try {
         this.activeItem.archived = true;
         await Department.archive(this.activeItem.id);
-        const restoreCallback = await Department.restore.bind(null, this.activeItem.id);
-        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
+        this.$toasted.show(this.$t('toaster.delete.object', { name: this.activeItem.name }), {
+          action: [
+            {
+              text: this.$t('toaster.action.regret'),
+              onClick: () => {
+                this.restore();
+              },
+            },
+            {
+              text: this.$t('btn.close'),
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        });
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
-        Toast.errorArchive(this.activeItem.name);
+        this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
         this.activeItem.archived = false;
         throw new Error(error.message);
       }
@@ -111,10 +124,10 @@ export default {
       this.loading = true;
       try {
         await Department.restore(this.activeItem.id);
-        Toast.revertedDeletion();
+        this.$toasted.show(this.$t('toaster.restored'));
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
-        Toast.errorRestore(this.activeItem.name);
+        this.$toasted.error(this.$t('toaster.error.restore', { document: this.activeItem.name }));
         throw new Error(error.message);
       }
 
@@ -125,11 +138,11 @@ export default {
       this.loading = true;
       try {
         await Department.deleteDeep(this.activeItem.id);
-        Toast.deletedPermanently();
+        this.$toasted.show(this.$t('toaster.delete.permanently'));
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
-        Toast.errorDelete(this.activeItem.name);
+        this.$toasted.error(this.$t('toaster.error.delete', { document: this.activeItem.name }));
         throw new Error(error.message);
       }
 

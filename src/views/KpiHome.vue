@@ -70,7 +70,6 @@ import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort } from '@/util/formatDate';
 import { extent } from 'd3';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'KpiHome',
@@ -114,9 +113,9 @@ export default {
     async remove(id) {
       try {
         await db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
-        Toast.show(this.$t('toaster.delete.progression'));
+        this.$toasted.show(this.$t('toaster.delete.progression'));
       } catch {
-        Toast.error(this.$t('toaster.error.deleteProgress'));
+        this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }
     },
 

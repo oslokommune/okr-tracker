@@ -78,7 +78,7 @@
 
             <div class="button-row">
               <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
-              <button class="btn btn--danger" @click="deleteDeep(kpi.id)">{{ $t('btn.delete') }}</button>
+              <button class="btn btn--danger" @click="deleteDeep(kpi)">{{ $t('btn.delete') }}</button>
             </div>
           </form>
         </validation-observer>
@@ -92,7 +92,6 @@
 <script>
 import { mapState } from 'vuex';
 import Kpi from '@/db/Kpi';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'ItemAdminKPIs',
@@ -118,17 +117,17 @@ export default {
       delete kpi.parent;
       try {
         await Kpi.update(kpi.id, kpi);
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
       }
     },
-    async deleteDeep(id) {
+    async deleteDeep(kpi) {
       try {
-        await Kpi.deleteDeep(id);
-        Toast.deletedPermanently();
+        await Kpi.deleteDeep(kpi.id);
+        this.$toasted.show(this.$t('toaster.delete.permanently'));
       } catch {
-        Toast.errorDelete();
+        this.$toasted.error(this.$t('toaster.error.delete', { document: kpi.name }));
       }
     },
     showError(msg) {

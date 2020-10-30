@@ -45,7 +45,6 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
-import * as Toast from '@/util/toasts';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
@@ -111,12 +110,25 @@ export default {
         await this.$router.push({ query: {} });
         await Period.archive(this.activePeriod.id);
 
-        const restoreCallback = await Period.restore.bind(null, this.activePeriod.id);
-
-        Toast.deletedRegret({ name: this.activePeriod.name, callback: restoreCallback });
+        this.$toasted.show(this.$t('toaster.delete.object', { name: this.activePeriod.name }), {
+          action: [
+            {
+              text: this.$t('toaster.action.regret'),
+              onClick: () => {
+                this.restore();
+              },
+            },
+            {
+              text: this.$t('btn.close'),
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        });
       } catch (error) {
         console.log(error);
-        Toast.errorArchive(this.activePeriod.name);
+        this.$toasted.error(this.$t('toaster.error.archive', { document: this.activePeriod.name }));
       }
 
       this.loading = false;
@@ -126,9 +138,9 @@ export default {
       try {
         await Period.restore(this.activePeriod.id);
         this.activePeriod.archived = false;
-        Toast.revertedDeletion();
+        this.$toasted.show(this.$t('toaster.restored'));
       } catch (error) {
-        Toast.errorRestore(this.activePeriod.name);
+        this.$toasted.error(this.$t('toaster.error.restore', { document: this.activePeriod.name }));
         throw new Error(error.message);
       }
     },
@@ -137,9 +149,9 @@ export default {
       try {
         await this.$router.push({ query: {} });
         await Period.deleteDeep(this.activePeriod.id);
-        Toast.deletedPermanently();
+        this.$toasted.show(this.$t('toaster.delete.permanently'));
       } catch (error) {
-        Toast.errorDelete(this.activePeriod.name);
+        this.$toasted.error(this.$t('toaster.error.delete', { document: this.activePeriod.name }));
         throw new Error(error.message);
       }
     },
@@ -150,10 +162,10 @@ export default {
         const { id, name } = this.activePeriod;
 
         await Period.update(id, { name, startDate: new Date(this.startDate), endDate: new Date(this.endDate) });
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
         console.log(error);
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
       }
 
       this.loading = false;

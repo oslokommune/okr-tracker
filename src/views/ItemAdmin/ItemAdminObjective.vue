@@ -75,7 +75,6 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
-import * as Toast from '@/util/toasts';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 
 export default {
@@ -132,9 +131,9 @@ export default {
           await this.$router.push({ query: { type: 'objective', id } });
         }
 
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
       }
 
       this.loading = false;
@@ -144,10 +143,25 @@ export default {
       try {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.archive(this.objective.id);
-        const restoreCallback = await Objective.restore.bind(null, this.objective.id);
-        Toast.deletedRegret({ name: this.objective.name, callback: restoreCallback });
+
+        this.$toasted.show(this.$t('toaster.delete.object', { name: this.objective.name }), {
+          action: [
+            {
+              text: this.$t('toaster.action.regret'),
+              onClick: () => {
+                this.restore();
+              },
+            },
+            {
+              text: this.$t('btn.close'),
+              onClick: (e, toastObject) => {
+                toastObject.goAway(0);
+              },
+            },
+          ],
+        });
       } catch (error) {
-        Toast.errorArchive(this.objective.name);
+        this.$toasted.error(this.$t('toaster.error.archive', { document: this.objective.name }));
       }
 
       this.loading = false;
@@ -157,9 +171,9 @@ export default {
       try {
         await Objective.restore(this.objective.id);
         this.objective.archived = false;
-        Toast.revertedDeletion();
+        this.$toasted.show(this.$t('toaster.restored'));
       } catch {
-        Toast.errorRestore(this.objective.id);
+        this.$toasted.error(this.$t('toaster.error.restore', { document: this.objective.id }));
       }
     },
 
@@ -167,9 +181,9 @@ export default {
       try {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.deleteDeep(this.objective.id);
-        Toast.deletedPermanently();
+        this.$toasted.show(this.$t('toaster.delete.permanently'));
       } catch {
-        Toast.errorDelete(this.objective.name);
+        this.$toasted.error(this.$t('toaster.error.delete', { document: this.objective.name }));
       }
     },
   },
