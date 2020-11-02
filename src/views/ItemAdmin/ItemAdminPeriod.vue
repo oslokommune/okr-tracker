@@ -46,6 +46,7 @@ import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminPeriod',
@@ -110,22 +111,9 @@ export default {
         await this.$router.push({ query: {} });
         await Period.archive(this.activePeriod.id);
 
-        this.$toasted.show(this.$t('toaster.delete.object', { name: this.activePeriod.name }), {
-          action: [
-            {
-              text: this.$t('toaster.action.regret'),
-              onClick: () => {
-                this.restore();
-              },
-            },
-            {
-              text: this.$t('btn.close'),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.activePeriod.name, callback: restoreCallback });
       } catch (error) {
         console.log(error);
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.activePeriod.name }));

@@ -63,6 +63,7 @@
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminGeneralProduct',
@@ -109,22 +110,9 @@ export default {
         this.activeItem.archived = true;
         await Product.archive(this.activeItem.id);
 
-        this.$toasted.show(this.$t('toaster.delete.object', { name: this.activeItem.name }), {
-          action: [
-            {
-              text: this.$t('toaster.action.regret'),
-              onClick: () => {
-                this.restore();
-              },
-            },
-            {
-              text: this.$t('btn.close'),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.activeItem.name, callback: restoreCallback });
 
         // TODO: Refresh store and sidebar navigation tree
       } catch {

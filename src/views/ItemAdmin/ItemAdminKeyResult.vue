@@ -162,6 +162,7 @@
 <script>
 import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminKeResult',
@@ -255,22 +256,9 @@ export default {
         await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
         await KeyResult.archive(this.keyResult.id);
 
-        this.$toasted.show(this.$t('toaster.delete.object', { name: this.keyResult.name }), {
-          action: [
-            {
-              text: this.$t('toaster.action.regret'),
-              onClick: () => {
-                this.restore();
-              },
-            },
-            {
-              text: this.$t('btn.close'),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.keyResult.name, callback: restoreCallback });
       } catch (error) {
         this.loading = false;
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.keyResult.name }));

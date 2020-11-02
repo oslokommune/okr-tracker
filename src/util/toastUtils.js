@@ -1,24 +1,30 @@
-export function deletedRegret(obj) {
-  const { name, ref, callback } = obj;
+import Vue from 'vue';
+import i18n from '@/locale/i18n';
 
-  if (!ref && !callback) return;
+export function toastArchiveAndRevert(obj) {
+  const { name, callback } = obj;
 
   const options = {
     duration: 4000,
     action: [
       {
-        text: i18n.tc('toaster.action.regret'),
-        onClick: callback || unDelete.bind(null, ref),
+        text: i18n.t('toaster.action.regret'),
+        onClick: callback,
       },
       {
-        text: i18n.tc('btn.close'),
-        onClick: close,
+        text: i18n.t('btn.close'),
+        onClick: (e, toastObject) => {
+          toastObject.goAway(0);
+        },
       },
     ],
   };
 
   if (name) {
-    return show(i18n.tc('toaster.delete.object', null, { name }), options);
+    Vue.toasted.show(i18n.t('toaster.delete.object', { name }), options);
+  } else {
+    Vue.toasted.show(i18n.t('toaster.deleted'), options);
   }
-  return show(i18n.tc('toaster.deleted'), options);
 }
+
+export default { toastArchiveAndRevert };

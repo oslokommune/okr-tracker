@@ -76,6 +76,7 @@ import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminObjective',
@@ -144,22 +145,9 @@ export default {
         await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
         await Objective.archive(this.objective.id);
 
-        this.$toasted.show(this.$t('toaster.delete.object', { name: this.objective.name }), {
-          action: [
-            {
-              text: this.$t('toaster.action.regret'),
-              onClick: () => {
-                this.restore();
-              },
-            },
-            {
-              text: this.$t('btn.close'),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.objective.name, callback: restoreCallback });
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.objective.name }));
       }

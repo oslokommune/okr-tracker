@@ -53,6 +53,7 @@
 import Department from '@/db/Department';
 import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminGeneralDepartment',
@@ -94,22 +95,11 @@ export default {
       try {
         this.activeItem.archived = true;
         await Department.archive(this.activeItem.id);
-        this.$toasted.show(this.$t('toaster.delete.object', { name: this.activeItem.name }), {
-          action: [
-            {
-              text: this.$t('toaster.action.regret'),
-              onClick: () => {
-                this.restore();
-              },
-            },
-            {
-              text: this.$t('btn.close'),
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0);
-              },
-            },
-          ],
-        });
+
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.activeItem.name, callback: restoreCallback });
+
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
