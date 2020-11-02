@@ -33,5 +33,5 @@ firebase-debug.log
 firebase-export-metadata.json
 
 # Custom users in test data
-/src/mock/users/customUsers.json
+/mock
 .runtimeconfig.json
