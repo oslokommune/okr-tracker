@@ -58,7 +58,6 @@
 <script>
 import locale from 'flatpickr/dist/l10n/no';
 import Progress from '@/db/Progress';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'Modal',
@@ -109,9 +108,9 @@ export default {
           comment: this.note,
           timestamp: new Date(this.date),
         });
-        Toast.show(this.$t('toaster.add.progression'));
+        this.$toasted.show(this.$t('toaster.add.progression'));
       } catch {
-        Toast.error(this.$t('toaster.error.progression'));
+        this.$toasted.error(this.$t('toaster.error.progression'));
       }
       this.loading = false;
       this.$emit('close');

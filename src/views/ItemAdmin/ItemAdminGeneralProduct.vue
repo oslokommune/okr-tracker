@@ -62,8 +62,8 @@
 <script>
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
-import * as Toast from '@/util/toasts';
 import { mapState } from 'vuex';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminGeneralProduct',
@@ -97,9 +97,9 @@ export default {
         const data = { name, team, missionStatement, department };
 
         Product.update(id, data);
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
       }
       this.loading = false;
     },
@@ -109,11 +109,14 @@ export default {
       try {
         this.activeItem.archived = true;
         await Product.archive(this.activeItem.id);
-        const restoreCallback = await Product.restore.bind(null, this.activeItem.id);
-        Toast.deletedRegret({ name: this.activeItem.name, callback: restoreCallback });
+
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.activeItem.name, callback: restoreCallback });
+
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        Toast.errorArchive(this.activeItem.name);
+        this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
         this.activeItem.archived = false;
       }
       this.loading = false;
@@ -123,10 +126,10 @@ export default {
       this.loading = true;
       try {
         await Product.restore(this.activeItem.id);
-        Toast.revertedDeletion();
+        this.$toasted.show(this.$t('toaster.restored'));
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        Toast.errorRestore(this.activeItem.id);
+        this.$toasted.error(this.$t('toaster.error.restore', { document: this.activeItem.id }));
       }
       this.loading = false;
     },
@@ -135,11 +138,11 @@ export default {
       this.loading = true;
       try {
         await Product.deleteDeep(this.activeItem.id);
-        Toast.deletedPermanently();
+        this.$toasted.show(this.$t('toaster.delete.permanently'));
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch {
-        Toast.errorDelete(this.activeItem.name);
+        this.$toasted.error(this.$t('toaster.error.delete', { document: this.activeItem.name }));
       }
       this.loading = false;
     },

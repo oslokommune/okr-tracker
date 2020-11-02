@@ -42,7 +42,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         event,
         timestamp: new Date(),
         documentRef: collectionRef.doc(documentId),
-        user,
+        user: user || 'system',
         diff,
       });
     });

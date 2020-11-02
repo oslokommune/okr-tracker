@@ -55,7 +55,6 @@
 <script>
 import User from '@/db/User';
 import { mapState } from 'vuex';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'EditUser',
@@ -96,10 +95,10 @@ export default {
       this.loading = true;
       try {
         await User.remove(user);
-        Toast.show(this.$t('toaster.delete.user', { user: user.displayName }));
+        this.$toasted.show(this.$t('toaster.delete.user', { user: user.displayName }));
         this.$emit('close');
       } catch {
-        Toast.error(this.$t('toaster.error.user', { user: user.displayName }));
+        this.$toasted.error(this.$t('toaster.error.user', { user: user.displayName }));
       }
       this.loading = false;
     },
@@ -144,9 +143,9 @@ export default {
       try {
         this.image = null;
         await User.update(this.thisUser);
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
       }
 
       this.loading = false;

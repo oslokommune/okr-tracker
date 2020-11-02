@@ -23,7 +23,6 @@
 <script>
 import RequestAccess from '@/db/RequestAccess';
 import { mapMutations } from 'vuex';
-import * as Toast from '@/util/toasts';
 
 export default {
   name: 'RequestAccess',
@@ -43,11 +42,11 @@ export default {
       this.loading = true;
       try {
         await RequestAccess.create({ email: this.email });
-        Toast.show(this.$t('toaster.request.requested'));
+        this.$toasted.show(this.$t('toaster.request.requested'));
         await this.$router.push({ name: 'Login', query: { redirectFrom: '/' } });
       } catch {
         this.email = '';
-        Toast.error(this.$t('toaster.request.error'));
+        this.$toasted.error(this.$t('toaster.request.error'));
       }
 
       this.loading = false;

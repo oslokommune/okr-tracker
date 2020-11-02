@@ -162,7 +162,7 @@
 <script>
 import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
-import * as Toast from '@/util/toasts';
+import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminKeResult',
@@ -242,10 +242,10 @@ export default {
           await this.$router.push({ query: { type: 'keyResult', id } });
         }
 
-        Toast.savedChanges();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
         console.log(error);
-        Toast.errorSave();
+        this.$toasted.error(this.$t('toaster.error.save'));
       }
 
       this.loading = false;
@@ -255,12 +255,13 @@ export default {
       try {
         await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
         await KeyResult.archive(this.keyResult.id);
-        const restoreCallback = await KeyResult.restore.bind(null, this.activeItem.id);
 
-        Toast.deletedRegret({ name: this.keyResult.name, callback: restoreCallback });
+        const restoreCallback = this.restore.bind(this);
+
+        toastArchiveAndRevert({ name: this.keyResult.name, callback: restoreCallback });
       } catch (error) {
         this.loading = false;
-        Toast.errorArchive(this.keyResult.name);
+        this.$toasted.error(this.$t('toaster.error.archive', { document: this.keyResult.name }));
         throw new Error(error.message);
       }
       this.loading = false;
@@ -272,9 +273,9 @@ export default {
       try {
         await KeyResult.restore(this.keyResult.id);
         this.keyResult.archived = false;
-        Toast.revertedDeletion();
+        this.$toasted.show(this.$t('toaster.restored'));
       } catch (error) {
-        Toast.errorRestore(this.keyResult.name);
+        this.$toasted.error(this.$t('toaster.error.restore', { document: this.keyResult.name }));
         throw new Error(error.message);
       }
       this.loading = false;
@@ -286,9 +287,9 @@ export default {
       try {
         await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
         await KeyResult.deleteDeep(this.keyResult.id);
-        Toast.deletedPermanently();
+        this.$toasted.show(this.$t('toaster.delete.permanently'));
       } catch (error) {
-        Toast.errorDelete(this.keyResult.name);
+        this.$toasted.error(this.$t('toaster.error.delete', { document: this.keyResult.name }));
         throw new Error(error.message);
       }
 
@@ -301,10 +302,10 @@ export default {
       try {
         const myCall = functions.httpsCallable('triggerScheduledFunction');
         await myCall(this.keyResult.id);
-        Toast.show(this.$t('general.success'));
+        this.$toasted.show(this.$t('general.success'));
       } catch (error) {
         this.loadingConnection = false;
-        Toast.error(error.message);
+        this.$toasted.error(error.message);
         throw new Error(error.message);
       }
       this.loadingConnection = false;
