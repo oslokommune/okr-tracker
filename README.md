@@ -1,5 +1,31 @@
 # OKR Tracker
 
+* [OKR Tracker](#okr-tracker)
+  * [Clone and install](#clone-and-install)
+  * [Set up new instance](#set-up-new-instance)
+    * [Create Firebase project](#create-firebase-project)
+      * [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
+    * [Environment variables](#environment-variables)
+    * [Link project](#link-project)
+    * [Create mock data](#create-mock-data)
+      * [Whitelist yourself](#whitelist-yourself)
+      * [Generate mock data](#generate-mock-data)
+      * [Exporting mock data](#exporting-mock-data)
+      * [Update mock data](#update-mock-data)
+  * [Run locally](#run-locally)
+  * [Build and deploy](#build-and-deploy)
+  * [Lint and fix](#lint-and-fix)
+  * [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
+    * [Requirements](#requirements)
+    * [Export production data](#export-production-data)
+  * [Import production data](#import-production-data)
+  * [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
+    * [Requirements for automated backups](#requirements-for-automated-backups)
+    * [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
+  * [Slack Integration](#slack-integration)
+    * [Set up](#set-up)
+
+
 ## Clone and install
 
 Clone repository and run install:
@@ -137,7 +163,7 @@ Build and deploy to production:
 npm run deploy
 ```
 
-## **Lint and fix**
+## Lint and fix
 
 Run linter
 
