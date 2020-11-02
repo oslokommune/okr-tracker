@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
-const d3 = require('d3');
+const { scaleLinear } = require('d3-scale');
+const { sum } = require('d3-array');
 
 const db = admin.firestore();
 
@@ -24,7 +25,7 @@ async function handleKeyResultProgress(change, { params }) {
     .then(snapshot => snapshot.docs)
     .then(docs => (docs.length ? docs[0].data().value : startValue));
 
-  const scale = d3.scaleLinear().domain([startValue, targetValue]).clamp(true);
+  const scale = scaleLinear().domain([startValue, targetValue]).clamp(true);
   const progression = scale(currentValue);
 
   try {
@@ -96,7 +97,7 @@ async function updatePeriodProgression(periodRef) {
 function getWeightedProgression({ docs }) {
   if (!docs.length) return 0;
 
-  const totalWeight = d3.sum(docs.map(doc => doc.data().weight));
+  const totalWeight = sum(docs.map(doc => doc.data().weight));
 
   const weightedProgressions = docs.map(doc => {
     const { weight, progression } = doc.data();
@@ -104,7 +105,7 @@ function getWeightedProgression({ docs }) {
     return progression * normalizedWeight;
   });
 
-  return d3.sum(weightedProgressions);
+  return sum(weightedProgressions);
 }
 
 exports.handleKeyResultProgress = handleKeyResultProgress;
