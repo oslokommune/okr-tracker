@@ -24,18 +24,6 @@ exports.FetchKpiDataOnCreate = require('./kpi').FetchKpiDataOnCreate;
 exports.FetchKpiDataOnUpdate = require('./kpi').FetchKpiDataOnUpdate;
 exports.FetchKpiDataOnSchedule = require('./kpi').FetchKpiDataOnSchedule;
 
-/**
- * Function for populating mock data to Firebase emulator when developing
- * locally. Will not be used in production.
- */
-exports.populateFirestoreEmulator = require('./populateFirestoreEmulator');
-
-/**
- * Transforms the old data model to a new flatter one
- */
-exports.transformDataModelOnPubsub = require('./transformDataModel').transformOnPubsub();
-exports.transformDataModelOnRequest = require('./transformDataModel').transformOnRequest;
-
 exports.SlugDepartment = require('./slug').SlugDepartment;
 exports.SlugOrganization = require('./slug').SlugOrganization;
 exports.SlugProducts = require('./slug').SlugProducts;
