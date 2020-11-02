@@ -47,6 +47,6 @@ exports.auditOnDeleteGenerator = function ({ docPath, collectionRef, documentTyp
         auditData.parent = documentData.parent;
       }
 
-      await db.collection('audit').add(auditData);
+      return db.collection('audit').add(auditData);
     });
 };

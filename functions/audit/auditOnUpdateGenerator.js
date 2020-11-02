@@ -28,11 +28,11 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       const { documentId } = context.params;
       const { editedBy: user } = after.data();
 
-      await db.collection('audit').add({
+      return db.collection('audit').add({
         event,
         timestamp: new Date(),
         documentRef: collectionRef.doc(documentId),
-        user,
+        user: user || 'system',
         diff,
       });
     });
