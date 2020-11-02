@@ -172,6 +172,11 @@ export default {
         this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
       },
     },
+    progress() {
+      if (this.graph) {
+        this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
+      }
+    },
   },
 
   mounted() {

@@ -131,8 +131,8 @@ export default {
     '$route.query': {
       immediate: true,
       async handler(query) {
-        this.setFormComponent(query);
         await this.setItems(query);
+        this.setFormComponent(query);
       },
     },
     async showArchived() {
