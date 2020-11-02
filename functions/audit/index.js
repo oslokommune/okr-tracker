@@ -49,7 +49,18 @@ const objectivesConfig = {
 };
 const keyResultsConfig = {
   docPath: 'keyResults/{documentId}',
-  fields: ['name', 'archived', 'description', 'longDescription', 'unit', 'targetValue', 'startValue', 'auto', 'weight'],
+  fields: [
+    'name',
+    'archived',
+    'description',
+    'longDescription',
+    'unit',
+    'targetValue',
+    'startValue',
+    'auto',
+    'weight',
+    'progression',
+  ],
   collectionRef: db.collection('keyResults'),
   documentType: 'KeyResult',
 };
