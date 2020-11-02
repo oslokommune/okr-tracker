@@ -22,8 +22,8 @@ export default async function itemHome(to, from, next) {
     }
 
     next();
-  } catch (error) {
-    console.log(error);
+  } catch ({ message }) {
     next({ name: 'Not found' });
+    throw new Error(message);
   }
 }
