@@ -26,17 +26,40 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       }
 
       const { documentId } = context.params;
-      const { editedBy: user } = after.data();
+
+      const user = await (async () => {
+        try {
+          if ('progression' in diff) {
+            return getProgressionCreator(collectionRef.doc(documentId));
+          }
+          return after.data().editedBy;
+        } catch {
+          return 'system';
+        }
+      })();
 
       return db.collection('audit').add({
         event,
         timestamp: new Date(),
         documentRef: collectionRef.doc(documentId),
-        user: user || 'system',
+        user,
         diff,
       });
     });
 };
+
+function getProgressionCreator(document) {
+  try {
+    return document
+      .collection('progress')
+      .orderBy('timestamp', 'asc')
+      .limit(1)
+      .get()
+      .then(snap => snap.docs[0].data().createdBy);
+  } catch {
+    throw new Error('Could not find progression creator');
+  }
+}
 
 function getDiff({ before, after }, keys) {
   const diff = {};
