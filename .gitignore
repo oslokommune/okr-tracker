@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 dist/
-/docs
+docs/
 tests/e2e/videos/*
 tests/e2e/screenshots/*
 
@@ -10,10 +10,7 @@ tests/e2e/screenshots/*
 cypress.env.json
 
 # Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-firebase-debug.log
+*.log
 
 # Editor directories and files
 .idea
@@ -23,15 +20,10 @@ firebase-debug.log
 *.njsproj
 *.sln
 *.sw?
-*.log
 
+# Firebase files
 .firebase/
 .firebaserc
-/functions/.runtimeconfig.json
-/functions/okr-tracker-backup-2
-/functions/backup
-firebase-export-metadata.json
 
-# Custom users in test data
-/mock
-.runtimeconfig.json
+# Mock data
+mock/
