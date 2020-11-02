@@ -29,6 +29,6 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
         auditData.department = documentData.department;
       }
 
-      await db.collection('audit').add(auditData);
+      return db.collection('audit').add(auditData);
     });
 };

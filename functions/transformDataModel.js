@@ -436,4 +436,5 @@ function getParentRef(ref) {
   if (parts.includes('orgs')) {
     return db.collection('organizations').doc(parts[1]);
   }
+  return false;
 }

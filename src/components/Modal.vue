@@ -80,7 +80,7 @@ export default {
       enableTime: true,
       locale: locale.no,
     },
-    date: null,
+    date: new Date(),
     note: '',
     value: 0,
     loading: false,
