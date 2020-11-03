@@ -2,25 +2,9 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.0.0-beta] - 2020-11-04
 
-### Added
-
-- e2e tests with Cypress. See [documentation](/tests/e2e/README.md) and [test plan](/tests/e2e/test-plan.md).
-- Local development with Firebase Emulator and mock data:
-  - Use `npm run local` to run Emulator Suite, development server and inject mock data til emulated Firestore
-
-### Changed
-
-- Improve documentation
-- Update prettier to version 2.0
-- Update dependencies
-
-### Fixed
-
-- Typo in documentation
-- Fix bug in manual testing of automatic key results (trigger cloud function) in UI with better feedback and error handling
-- Gitignore `.firebaserc`
+Several breaking changes. See [release notes](./documentation/release-notes_v2.0.0-beta.md).
 
 ## [1.4.2] - 2020-04-22
 
