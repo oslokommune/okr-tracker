@@ -1,67 +1,80 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <div class="login">
-      <div class="section">
-        <h1 class="title-1">{{ $t('login.notLoggedIn') }}</h1>
-      </div>
-
-      <hr />
-
-      <div class="section">
-        <h2 class="title title-3">{{ $t('login.google.title') }}</h2>
-        <p>{{ $t('login.google.info') }}</p>
-
-        <div v-if="error === 1" class="error">
-          {{ $t('login.error.wrongEmail') }}
-        </div>
-        <div v-if="error === 2" class="error">
-          {{ $t('login.error.googleError') }}
-        </div>
-
-        <div class="form-field">
-          <button class="btn" @click="loginWithGoogle">{{ $t('login.google.btn') }}</button>
-        </div>
-      </div>
-      <hr />
-      <div class="section">
-        <h2 class="title title-3">{{ $t('login.dashboard.title') }}</h2>
-        <p>{{ $t('login.dashboard.info') }}</p>
+      <h1 class="title-1">{{ $t('login.login') }}</h1>
+      <div class="sections">
         <div class="section">
-          <div v-if="error === 3" class="error">
-            {{ $t('login.error.wrongPassword') }}
+          <div v-if="loginError === 1" class="error">
+            {{ $t('login.error.notRegistered') }}
+
+            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }}</router-link
+            >.
           </div>
-          <form @submit.prevent="submitPassword()">
-            <label class="form-field">
-              <span class="form-label">Passord</span>
-              <div class="form-login">
-                <input class="field" type="password" v-model="password" />
-                <button class="btn">
-                  {{ $t('login.dashboard.btn') }}
-                </button>
-              </div>
-            </label>
-          </form>
+
+          <div v-if="loginError === 2" class="error">
+            {{ $t('login.error.googleError') }}
+          </div>
         </div>
-        <hr />
+        <div v-if="showForm" class="login__form">
+          <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
+          <validation-observer v-slot="{ handleSubmit }">
+            <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
+              <form-component
+                v-model="email"
+                :label="$t('login.email')"
+                input-type="input"
+                name="email"
+                rules="required|email"
+                type="email"
+              />
+
+              <form-component
+                v-model="password"
+                :label="$t('login.password')"
+                input-type="input"
+                name="password"
+                rules="required"
+                type="password"
+              />
+            </form>
+          </validation-observer>
+          <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
+        </div>
+
+        <div class="login__footer">
+          <button class="btn btn--icon btn--pri" @click="loginWithGoogle">
+            <span class="icon fab fa-fw fa-google"></span>
+            {{ $t('login.google') }}
+          </button>
+
+          <div class="login__secondary">
+            <button class="btn btn--ghost" @click="showForm = true">{{ $t('login.loginWithUsername') }}</button>
+            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">{{
+              $t('login.requestAccess')
+            }}</router-link>
+          </div>
+        </div>
       </div>
     </div>
-
-    <the-spinner v-if="pending"></the-spinner>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import { auth, loginProvider } from '@/config/firebaseConfig';
-import TheSpinner from '@/components/TheSpinner.vue';
-import Audit from '@/db/audit';
 import i18n from '@/locale/i18n';
 
 export default {
+  name: 'Login',
+
+  components: {
+    FormComponent: () => import('@/components/FormComponent.vue'),
+  },
   data: () => ({
-    error: true,
+    email: '',
     password: '',
     pending: false,
+    showForm: false,
   }),
 
   metaInfo() {
@@ -70,59 +83,35 @@ export default {
     };
   },
 
-  components: {
-    TheSpinner,
-  },
-
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'loginError']),
   },
 
   methods: {
-    loginWithGoogle() {
+    ...mapMutations(['SET_LOGIN_ERROR']),
+    async loginWithGoogle() {
       this.pending = true;
-      auth
-        .signInWithPopup(loginProvider)
-        .then(response => {
-          Audit.login(response.user.email);
-          this.$router.push('/');
-        })
-        .catch(err => {
-          this.pending = false;
-          this.error = 2;
-          this.$errorHandler('login_error', err);
-        });
-    },
-
-    async submitPassword() {
-      this.pending = true;
-      const email = process.env.VUE_APP_DASHBOARD_USER;
-      const user = await auth.signInWithEmailAndPassword(email, this.password).catch(err => {
+      try {
+        const user = await auth.signInWithPopup(loginProvider);
+        this.$toasted.show(this.$t('toaster.welcome', { user: user.name ? user.name : '' }));
+      } catch (e) {
         this.pending = false;
-        if (err.code === 'auth/wrong-password') {
-          this.error = 3;
-        }
-        this.$errorHandler('login_error', err);
-      });
-
-      if (user) {
-        this.$router.push('/');
-      } else {
-        this.error = 3;
+        this.SET_LOGIN_ERROR(2);
       }
     },
-  },
 
-  beforeRouteEnter(to, from, next) {
-    if (auth.currentUser) {
-      next('/');
-    } else {
-      next();
-    }
-  },
+    async loginWithEmail() {
+      this.pending = true;
 
-  mounted() {
-    this.error = this.$route.params.error;
+      try {
+        await auth.signInWithEmailAndPassword(this.email, this.password);
+      } catch (err) {
+        this.pending = false;
+        if (err.code === 'auth/wrong-password') {
+          this.SET_LOGIN_ERROR(3);
+        }
+      }
+    },
   },
 };
 </script>
@@ -131,17 +120,54 @@ export default {
 @import '../styles/_colors.scss';
 
 .login {
-  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  width: span(10);
+  margin-left: span(1, 1);
+  padding: 2rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+
+  @media screen and (min-width: bp(xs)) {
+    width: span(8);
+    margin-top: 2rem;
+    margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(s)) {
+    width: span(6);
+    margin-top: 3rem;
+    margin-left: 0;
+  }
+
+  @media screen and (min-width: bp(m)) {
+    width: span(5, 0, span(9));
+    margin-top: 5rem;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(4, 0, span(10));
+  }
 }
 
-.form-login {
-  display: flex;
+.login__form {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid $color-grey-100;
 }
 
-.container {
+.login__footer {
+  margin-top: 2rem;
+}
+
+.login__secondary {
   display: flex;
-  align-items: center;
-  min-height: calc(80vh - 5rem);
+  flex-wrap: wrap;
+  margin: 1.75rem -0.25rem -0.25rem;
+
+  & > .btn {
+    margin: 0.25rem;
+  }
 }
 
 .error {
@@ -149,7 +175,7 @@ export default {
   padding: 1em 1.5em;
   color: black;
   background: rgba($color-red, 0.25);
-  border: 2px solid $color-red;
-  border-radius: 4px;
+  border: 1px solid $color-red;
+  border-radius: 2px;
 }
 </style>

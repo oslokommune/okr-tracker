@@ -1,0 +1,380 @@
+{
+  "404": {
+    "title": "404"
+  },
+  "kpi": {
+    "add": "Legg til KPI",
+    "edit": "Endre KPI",
+    "currentValue": "Siste verdi",
+    "progresjon": "Progresjon",
+    "description": "Beskrivelse",
+    "chooseType": "Velg KPI-type",
+    "types": {
+      "users": "Volum",
+      "satisfaction": "Brukertilfredshet",
+      "conversion": "Fullføringsgrad"
+    },
+    "heading": "KPI-er",
+    "sheetsDetails": "Sheets-detaljer",
+    "itemRowError": "feil"
+  },
+  "fields": {
+    "email": "E-post",
+    "name": "Navn",
+    "missionStatement": "Oppdragsbeskrivelse",
+    "weight": "Vekt",
+    "sheetId": "Google Sheet ID",
+    "sheetTab": "Fane",
+    "sheetCell": "Celle",
+    "displayName": "Visningsnavn",
+    "icon": "Ikon",
+    "period": "Periode",
+    "description": "Beskrivelse",
+    "slug": "Slug",
+    "department": "Produktområde",
+    "kpitype": "KPI-type",
+    "unit": "Måleenhet",
+    "startValue": "Startverdi",
+    "targetValue": "Målverdi",
+    "value": "Verdi"
+  },
+  "validation": {
+    "alpha": "Kan bare inneholde bokstaver",
+    "alpha_dash": "Kan bare inneholde alfanumeriske tegn, samt bindestrek og understrek",
+    "alpha_num": "Kan bare inneholde alfanumeriske tegn",
+    "alpha_spaces": "Kan bare inneholde alfanumeriske tegn og mellomrom",
+    "between": "Må være imellom {min} og {max}",
+    "confirmed": "Kan ikke bekreftes",
+    "digits": "Må være numerisk og inneholde nøyaktig {length} siffer",
+    "dimensions": "Må være {width} ganger {height} piksler",
+    "email": "Må være en gyldig e-postadresse",
+    "excluded": "Må være en gyldig verdi",
+    "ext": "Må være en gyldig fil",
+    "image": "Må være et bilde",
+    "oneOf": "Må være en gyldig verdi",
+    "max": "Kan ikke være lengre enn {length} tegn",
+    "max_value": "Må være {max} eller mindre",
+    "mimes": "Må ha en gyldig filtype",
+    "min": "Må være minst {length} tegn",
+    "min_value": "Må være {min} eller mer",
+    "numeric": "Kan bare inneholde nummer",
+    "regex": "Formatering er ugyldig",
+    "required": "Obligatorisk",
+    "required_if": "Obligatorisk",
+    "size": "Må være mindre enn {size}KB",
+    "double": "Må være en gyldig desimal",
+    "positiveNotZero": "Ugyldig verdi",
+    "decimal": "Må være tall"
+  },
+  "general": {
+    "edit": "Endre",
+    "general": "Generelt",
+    "OKRs": "OKR-er",
+    "OKRsLong": "Mål og nøkkelresulater",
+    "KPIs": "KPI-er",
+    "team": "Team",
+    "project": "OKR",
+    "loading": "Laster ...",
+    "owner": "Oslo kommune",
+    "notFound": "Not found",
+    "help": "Hjelp",
+    "admin": "Admin",
+    "dashboard": "Vis dashboard",
+    "signOut": "Logg ut",
+    "createdBy": "Opprettet av",
+    "lastUpdate": "Sist oppdatert",
+    "details": "Detaljer",
+    "products": "Produkter",
+    "organizations": "Organisasjoner",
+    "departments": "Produktområder",
+    "teamMembers": "Team-medlemmer",
+    "users": "Brukere",
+    "home": "Hjem",
+    "keyresults": "Nøkkelresultater",
+    "success": "Suksess"
+  },
+  "btn": {
+    "close": "Lukk",
+    "save": "Lagre",
+    "saveChanges": "Lagre endringer",
+    "add": "Legg til",
+    "editNotes": "Endre notater",
+    "addOrganization": "Ny organisasjon",
+    "addProduct": "Nytt produkt",
+    "addDepartment": "Nytt produktområde",
+    "acceptRequest": "Gi tilgang",
+    "rejectRequest": "Slett forespørsel",
+    "deleteImage": "Slett bilde",
+    "deleteUser": "Slett bruker",
+    "create": "Opprett",
+    "delete": "Slett",
+    "archive": "Arkiver",
+    "editItem": "Endre «{item}»",
+    "upload": "Last opp",
+    "minimize": "Minimer",
+    "expand": "Ekspander",
+    "deletePermanently": "Slett permanent",
+    "restore": "Gjenopprett",
+    "confirmDeleteProgress": "Bekreft sletting"
+  },
+  "login": {
+    "login": "Logg inn",
+    "requestAccess": "Be om tilgang",
+    "requestButton": "Send forespørsel",
+    "backToLogin": "Tilbake til innlogging",
+    "google": "Logg inn med Google",
+    "email": "E-post",
+    "password": "Passord",
+    "error": {
+      "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
+      "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
+      "wrongPassword": "Passordet er feil."
+    },
+    "loginWithUsername": "Logg inn med brukernavn"
+  },
+  "toaster": {
+    "welcome": "Velkommen {user}",
+    "add": {
+      "users": "Lagt til en bruker | {count} brukere",
+      "product": "Opprettet nytt produkt",
+      "objective": "Lagt til nytt mål for {period}",
+      "progression": "Lagt til ny verdi",
+      "department": "Opprettet nytt produktområde",
+      "keyResult": "Lagt til nytt nøkkelresultat",
+      "period": "Opprettet ny periode",
+      "organization": "Opprettet ny organisasjon",
+      "kpi": "Opprettet ny KPI"
+    },
+    "delete": {
+      "user": "Slettet bruker {user}",
+      "permanently": "Slettet dokumentet permanent",
+      "object": "Slettet «{name}»",
+      "progression": "Slettet målepunkt"
+    },
+    "action": {
+      "regret": "Angre"
+    },
+    "error": {
+      "save": "Kunne ikke lagre endringene",
+      "archive": "Kunne ikke arkivere {document}",
+      "delete": "Kunne ikke slette {document}",
+      "restore": "Kunne ikke gjenopprette {document}",
+      "create": "Kunne ikke opprette {document}",
+      "department": "Kunne ikke opprette produktområde",
+      "organization": "Kunne ikke opprette organisasjonen",
+      "product": "Kunne ikke opprette produkt",
+      "users": "Kunne ikke legge til bruker | brukere",
+      "user": "Kunne ikke slette bruker: {user}",
+      "progression": "Kunne ikke legge til ny verdi",
+      "email": "Ugyldige e-postadresser",
+      "kpi": "Kunne ikke opprette kpi",
+      "notes": "Kunne ikke oppdatere notater",
+      "deleteProgress": "Kunne ikke slette målepunkt"
+    },
+    "savedChanges": "Lagret endringer",
+    "deleted": "Slettet object",
+    "restored": "Gjenopprettet dokument",
+    "request": {
+      "requested": "Forespørsel om tilgang sendt til admin",
+      "error": "Noe gikk galt med forespørselen, vennligst prøv igjen senere.",
+      "accepted": "Lagt til: {user}",
+      "rejected": "Fjernet: {user}"
+    }
+  },
+  "keyres": {
+    "objective": "Tilknyttet mål",
+    "description": "Beskrivelse",
+    "startValue": "Startverdi",
+    "targetValue": "Målverdi",
+    "unit": "Måleenhet",
+    "newValue": "Ny verdi",
+    "automation": {
+      "header": "Automatisk registrering av progresjon",
+      "readMore": "Les mer",
+      "googleSheetId": "Google Sheet ID",
+      "googleSheetIdHelp": "Kode fra URL .../spreadsheets/d/<strong><d></strong>",
+      "sheetsTab": "Fane",
+      "sheetsTabHelp": "Samme som navnet på fanen i Google Sheets",
+      "sheetsCell": "Celle",
+      "sheetsCellHelp": "For eksempel «A12»",
+      "testConnection": "Lagre og test kobling"
+    },
+    "updateKeyres": "Oppdater verdi for nøkkelresultat",
+    "registerProgression": {
+      "value": "Verdi"
+    },
+    "updateValue": "Oppdater verdi",
+    "dateAndTime": "Dato og tid",
+    "addComment": "Legg ved kommentarer (valgfritt)",
+    "chooseDate": "Velg dato",
+    "belongsTo": "Tilhører mål",
+    "numberOfUpdates": "Antall oppdateringer",
+    "weight": "Vekt",
+    "automatic": "Oppdateres automatisk",
+    "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
+    "showComment": "Vis kommentar",
+    "autoError": "Feil i henting av data fra Google Sheets:"
+  },
+  "objective": {
+    "period": "Periode",
+    "progression": "Progresjon",
+    "weight": "Vekt",
+    "change": "Endre mål",
+    "createdBy": "Opprettet av",
+    "editedBy": "Endret av",
+    "created": "Opprettet",
+    "edited": "Sist endret"
+  },
+  "period": {
+    "dateRange": "Start- og sluttdato",
+    "range": "{startDate} til {endDate}",
+    "period": "Periode"
+  },
+  "tooltip": {
+    "openMenu": "Åpne meny",
+    "dashboard": "Gå til dashboard-visning",
+    "keyresValue": "Skriv inn ny måleverdi",
+    "changeView": "Endre visning til {view}",
+    "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
+    "editKpi": "Endre detaljer eller slett KPI",
+    "navigateToItem": "Gå til {item}",
+    "deleteProgress": "Slett målepunkt",
+    "isMember": "Medlem av team",
+    "emptyPeriod": "Ingen aktiv periode"
+  },
+  "document": {
+    "mission": "Oppdrag"
+  },
+  "admin": {
+    "department": {
+      "picture": "Bilde",
+      "create": "Opprett nytt produktområde",
+      "parentOrganisation": "Tilhører organisasjon"
+    },
+    "organization": {
+      "picture": "Bilde",
+      "create": "Opprett ny organisasjon"
+    },
+    "product": {
+      "picture": "Bilde",
+      "create": "Opprett nytt produkt",
+      "parentDepartment": "Tilhører produktområde"
+    },
+    "objects": {
+      "showArchived": "Vis arkiverte objekter"
+    },
+    "users": {
+      "edit": "Endre bruker",
+      "image": "Profilbilde",
+      "backToUsers": "Tilbake til brukere",
+      "addUsers": "Legg til bruker(e)",
+      "users": "Brukere",
+      "search": "Søk {count} brukere",
+      "registerUsersButton": "Registrer brukere",
+      "registerUsersText": "Skriv inn e-postadresser (én adresse per linje):"
+    },
+    "showObjectives": "Vis mål",
+    "showPeriods": "Vis perioder",
+    "showKeyResults": "Vis nøkkelresultater",
+    "noObjectiveSelected": "Velg mål for å se nøkkelresultater",
+    "noPeriodSelected": "Velg periode for å se mål"
+  },
+  "keyResultPage": {
+    "change": "Endre nøkkelresultat",
+    "add": {
+      "today": "I dag"
+    },
+    "table": {
+      "value": "Verdi"
+    },
+    "notes": {
+      "empty": "Her kan du skrive notater som bare teamet ditt kan se.",
+      "save": "Lagre notater"
+    },
+    "history": "Historikk",
+    "registeredBy": "Registrert av",
+    "value": "Verdi",
+    "date": "Dato"
+  },
+  "help": {
+    "title": "Hjelp",
+    "toc": "Innhold"
+  },
+  "profile": {
+    "myProfile": "Min profil",
+    "hasAdmin": "Har administratortilgang",
+    "products": "Mine produkter"
+  },
+  "view": {
+    "compact": "Kompakt",
+    "details": "Detaljer"
+  },
+  "keyResultsPage": {
+    "notes": {
+      "heading": "Notater"
+    }
+  },
+  "weight": {
+    "heading": "Vekting",
+    "keyresFor": "Nøkkelresultater for «{name}»",
+    "objectivesFor": "Mål for"
+  },
+  "accessRequests": {
+    "heading": "Tilgangsforespørsler"
+  },
+  "select": {
+    "noIcons": "Ingen treff"
+  },
+  "empty": {
+    "keyResultProgress": {
+      "heading": "Ingen historikk",
+      "body": "Dette nøkkelresultatet har ingen registrerte verdier."
+    },
+    "noKeyResults": {
+      "heading": "Ingen nøkkelresultater",
+      "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",
+      "linkText": "Opprett et nøkkelresultat"
+    },
+    "itemAdmin": {
+      "keyResult": "Ingen nøkkelresultater for mål",
+      "objective": "Ingen mål for periode",
+      "period": "Ingen perioder"
+    },
+    "noKPIs": {
+      "heading": "Ingen KPI-er",
+      "body": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. "
+    },
+    "noPeriods": {
+      "heading": "Tomt?",
+      "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
+      "buttonText": "Opprett mål og nøkkelresultater her"
+    },
+    "kpiProgress": {
+      "body": "Finner ingen historikk over målepunkter for dette KPI-et",
+      "heading": "Ingen historikk"
+    },
+    "team": {
+      "body": "«Team Ninja» much?",
+      "heading": "Ingen teammedlemmer"
+    }
+  },
+  "archived": {
+    "heading": "Arkivert",
+    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet. Ved å permanent slette objektet slettes også tilknyttet data."
+  },
+  "sheet": {
+    "infoText": "Merk: Google Sheets-dokumentet må deles med følgende addresse:",
+    "missingServiceAccount": "Feil: Ingen adresse funnet – ta kontakt med systemadministrator."
+  },
+  "widget": {
+    "progression": {
+      "period": "Progresjon for periode",
+      "objective": "Progresjon for mål"
+    }
+  },
+  "error": {
+    "403": "Systemet har ikke tilgang til å lese dokumentet",
+    "404": "Fant ikke dokumentet. Feil ID?",
+    "noDataInCell": "Celle {cell} er tom"
+  }
+}

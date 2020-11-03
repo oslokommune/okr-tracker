@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <PageHeader :data="{ name: 'Hjelp', icon: 'user' }" :toc="true" toc-id="toc" toc-first-level="2"></PageHeader>
-
-    <div class="container" v-if="markdown">
-      <h2 class="title-2">{{ $t('help.title') }}</h2>
-      <ul class="toc" v-if="toc">
+  <div v-if="markdown" class="main">
+    <h1 class="title-1">{{ $t('help.title') }}</h1>
+    <div class="help">
+      <ul v-if="toc" class="toc help__toc">
+        <h1 class="title-1">{{ $t('help.toc') }}</h1>
         <li v-for="levelOne in toc.children" :key="levelOne.id">
           <a :href="`#${levelOne.data.id}`">{{ levelOne.data.text }}</a>
           <ul v-if="levelOne.children">
@@ -20,7 +19,7 @@
         </li>
       </ul>
 
-      <div class="md" v-html="markdown"></div>
+      <div class="help__content md" v-html="markdown"></div>
     </div>
   </div>
 </template>
@@ -28,8 +27,7 @@
 <script>
 import marked from 'marked';
 import { sanitize } from 'dompurify';
-import PageHeader from '@/components/PageHeader.vue';
-import toc from '@/util/toc';
+import toc from '@/util/tableOfContent';
 import i18n from '@/locale/i18n';
 
 marked.setOptions({
@@ -37,14 +35,12 @@ marked.setOptions({
 });
 
 export default {
+  name: 'Help',
+
   data: () => ({
     markdown: '',
     toc: [],
   }),
-
-  components: {
-    PageHeader,
-  },
 
   metaInfo() {
     return {
@@ -64,9 +60,36 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/_colors';
 
-.md {
-  max-width: 600px;
-  font-size: 1rem;
+.main {
+  width: span(12);
+}
+
+.help {
+  @media screen and (min-width: bp(l)) {
+    display: grid;
+    grid-gap: span(0, 1);
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+.help__toc {
+  align-self: start;
+  @media screen and (min-width: bp(l)) {
+    grid-row: 1;
+    grid-column: 7 / span 4;
+  }
+}
+
+.help__content {
+  @media screen and (min-width: bp(l)) {
+    grid-row: 1;
+    grid-column: 1 / span 5;
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    grid-row: 1;
+    grid-column: 1 / span 4;
+  }
 }
 
 /deep/a[href*='thumbnail'] img {
@@ -78,17 +101,11 @@ export default {
   border: 1px solid rgba(black, 0.1);
 }
 
-.container {
-  margin-top: 3rem;
-  margin-bottom: 5rem;
-}
-
 .toc {
   margin: 2rem 0 5rem;
   padding: 1.5rem;
   font-size: 1rem;
-  background: $color-bg;
-  border: 1px solid $color-border;
+  border: 1px solid $color-grey-100;
 
   li {
     padding: 0.25rem 0;

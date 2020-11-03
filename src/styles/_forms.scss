@@ -8,17 +8,20 @@ textarea {
   width: 100%;
   padding: 0.75rem 0.75rem 0.6rem 0.75rem;
   color: $color-purple;
+  font-weight: 500;
   font-size: 1rem;
-  border: 2.5px solid $color-border;
+  background: rgba($color-grey-100, 0.5);
+  border: 0;
+  border-radius: 3px;
 
   &:disabled {
     color: $color-grey-500;
-    background: $color-bg;
+    background: $color-grey-100;
     cursor: not-allowed;
   }
 }
 
-.v-select:not(.vs--single) {
+.v-select {
   width: 100%;
   .vs__selected-options {
     padding: 0.25rem !important;
@@ -26,27 +29,28 @@ textarea {
 
   .vs__dropdown-toggle {
     min-height: 3rem !important;
-    border: 2.5px solid $color-border !important;
-    border-radius: 0 !important;
+    padding-right: 0.5rem;
+    background: rgba($color-grey-100, 0.5);
+    border: 0;
+    border-radius: 3px;
   }
 
   .vs__selected {
     margin-right: 0.25rem;
     padding: 0.25rem 0.75rem !important;
-    background: rgba($color-bg, 0.5) !important;
-    border: 1px solid $color-border !important;
+    background: white;
     border-radius: 0 !important;
   }
+}
+
+.form-group {
+  display: block;
+  margin: 1rem 0;
 }
 
 .form-label {
   display: block;
   margin-bottom: 0.25rem;
-  font-weight: 500;
-}
-
-.form-group {
-  max-width: 600px;
 }
 
 .form-field {
@@ -65,10 +69,19 @@ textarea {
 
 .form-row {
   display: flex;
+  justify-content: space-between;
   margin: -1rem 0;
 
   .form-field + .form-field {
     margin-left: 1rem;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: bp(s)) {
+    flex-direction: column;
   }
 }
 
@@ -79,66 +92,27 @@ textarea {
   font-size: 0.85rem;
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  height: 3rem;
-  padding: 0 1rem;
-  color: $color-purple;
-  font-weight: 500;
-  white-space: nowrap;
-  background: $color-light-blue;
-  border: 0;
-  border-radius: 1px;
-  cursor: pointer;
+.form__checkbox {
+  position: relative;
+}
 
-  &--ghost {
-    background: transparent;
-    border: 1px solid $color-purple;
+.form-group--checkbox {
+  display: flex;
+  margin: 1.5rem 0;
+
+  .form__checkbox {
+    z-index: 2;
+    width: auto;
   }
 
-  &--borderless {
-    background: transparent;
-    border: 0;
-    &:hover {
-      background: $color-bg;
-    }
+  .form-label {
+    display: block;
+    flex-grow: 1;
   }
+}
 
-  &--fw {
-    width: 100%;
-  }
-
-  &:not(&--icon) > .fa,
-  &:not(&--icon) > .far,
-  &:not(&--icon) > .fas {
-    margin-right: 0.5rem;
-  }
-
-  & + & {
-    margin-left: 0.5rem;
-  }
-
-  &--icon {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.15rem;
-  }
-
-  &--danger {
-    color: darken($color-red, 10%);
-    background: transparent;
-    border: 1px solid darken($color-red, 10%);
-    border: 1px solid transparent;
-  }
-
-  &:disabled {
-    color: #aaaaaa;
-    background: #dedede;
-    cursor: default;
-  }
+.preview-image {
+  max-width: 200px;
 }
 
 .toggle {
@@ -193,7 +167,6 @@ textarea {
       width: 1.5rem;
       height: 1.5rem;
       font-weight: 900;
-      font-weight: 900;
 
       // color: white;
       font-family: 'Font Awesome 5 Free';
@@ -223,8 +196,4 @@ textarea {
     display: inline-block;
     margin-right: 1rem;
   }
-}
-
-.preview-image {
-  max-width: 200px;
 }

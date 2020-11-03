@@ -1,47 +1,59 @@
 <template>
   <div class="app">
-    <main class="main">
-      <the-header></the-header>
-      <router-view class="home"></router-view>
+    <SiteHeader class="header"></SiteHeader>
+    <Breadcrumbs></Breadcrumbs>
+    <main class="container">
+      <div class="sidebarContainer">
+        <SidebarNavigation v-if="user"></SidebarNavigation>
+      </div>
+      <div class="main-view">
+        <spinner v-if="loading"></spinner>
+        <router-view v-else class="router-view"></router-view>
+        <footer class="footer"></footer>
+      </div>
     </main>
-    <transition>
-      <Newsfeed v-if="user" v-show="showNewsfeed" class="newsfeed" @close="SET_SHOW_NEWSFEED(false)"></Newsfeed>
-    </transition>
+    <Griddle v-if="isDev" />
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import TheHeader from '@/components/TheHeader.vue';
-import Newsfeed from '@/views/Home/components/Newsfeed.vue';
+import { mapState } from 'vuex';
 import i18n from '@/locale/i18n';
 
 export default {
+  name: 'App',
+
   metaInfo() {
     return {
       title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,
     };
   },
 
-  computed: {
-    ...mapState(['user', 'showNewsfeed']),
-  },
-
-  methods: {
-    ...mapMutations(['SET_SHOW_NEWSFEED']),
-  },
-
   components: {
-    TheHeader,
-    Newsfeed,
+    SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
+    SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
+    Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
+    Spinner: () => import('@/components/Spinner.vue'),
+  },
+
+  computed: {
+    ...mapState(['user', 'loading']),
+
+    isDev() {
+      return process.env.NODE_ENV !== 'production';
+    },
+  },
+
+  created() {
+    document.querySelector('#spinner').remove();
   },
 };
 
 // Using a class on body to determine how to style focus states
-document.body.addEventListener('mousedown', function() {
+document.body.addEventListener('mousedown', function () {
   document.body.classList.add('using-mouse');
 });
-document.body.addEventListener('keydown', function() {
+document.body.addEventListener('keydown', function () {
   document.body.classList.remove('using-mouse');
 });
 </script>
@@ -51,16 +63,60 @@ document.body.addEventListener('keydown', function() {
 </style>
 
 <style lang="scss" scoped>
+@import '@/styles/_colors.scss';
 .app {
+  min-height: 100vh;
+  background: $color-bg;
+}
+
+.container {
+  @include container();
   display: flex;
+  flex-wrap: wrap;
 }
 
-.main {
-  flex-grow: 1;
+.sidebarContainer {
+  display: none;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(3);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(2);
+  }
 }
 
-.home {
-  min-height: calc(100vh - 5rem);
-  padding-bottom: 4rem;
+.main-view {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-left: span(0, 1);
+  }
+  @media screen and (min-width: bp(l)) {
+    width: span(10);
+  }
+}
+
+.router-view {
+  min-height: calc(100vh - 20rem);
+}
+
+.footer {
+  width: 100%;
+  margin: 2rem 0;
+  padding-top: 2rem;
+  text-align: center;
+  // border-top: 1px solid $color-grey-300;
+
+  @media screen and (min-width: bp(l)) {
+    width: span(7, 0, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, 0, span(10));
+  }
 }
 </style>
