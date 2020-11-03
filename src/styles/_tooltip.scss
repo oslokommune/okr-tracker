@@ -3,9 +3,10 @@
 .tooltip {
   z-index: 10000;
   display: block !important;
+  pointer-events: none;
 
   .tooltip-inner {
-    max-width: 500px;
+    max-width: 14rem;
     padding: 0.5em 1em;
     color: rgba(white, 0.9);
     font-weight: 500;
@@ -93,5 +94,13 @@
     visibility: visible;
     opacity: 1;
     transition: opacity 0.15s;
+  }
+}
+
+.tooltip.popover {
+  pointer-events: all;
+
+  .tooltip-inner {
+    font-size: 1rem !important;
   }
 }

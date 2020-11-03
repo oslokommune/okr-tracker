@@ -1,55 +1,96 @@
 import Vue from 'vue';
 import VueSelect from 'vue-select';
-import Vuelidate from 'vuelidate';
 import VueResize from 'vue-resize';
-import VueScrollTo from 'vue-scrollto';
-import ImageUploader from 'vue-image-upload-resize';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
+import VueFlatPickr from 'vue-flatpickr-component';
+import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
+import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
 
-import { errorHandler, logHandler } from '@/util/utils';
+import { firestorePlugin } from 'vuefire';
+import { VueGriddle } from '@braid/griddle';
+
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
 
-import handleUserAuthStateChange from '@/util/authChangeHelper';
-
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import 'flatpickr/dist/flatpickr.css';
 
-const fb = require('./config/firebaseConfig');
+const { auth } = require('./config/firebaseConfig');
 
 Vue.config.productionTip = false;
 
 // Use plugins
-Vue.use(Vuelidate);
 Vue.use(VueResize);
 Vue.use(Toasted, {
   position: 'bottom-right',
   className: 'toast',
+  duration: 3500,
 });
-Vue.use(VueScrollTo);
-Vue.use(ImageUploader);
 Vue.use(VTooltip);
 Vue.use(VueMeta);
-
-// Bind instance properties
-Vue.prototype.$errorHandler = errorHandler;
-Vue.prototype.$logHandler = logHandler;
+Vue.use(firestorePlugin);
+Vue.use(VueFlatPickr);
 
 // Global components
-Vue.component('v-select', VueSelect);
+Vue.component('VSelect', VueSelect);
+Vue.component('Griddle', VueGriddle);
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
+
+/* eslint-disable */
+configure({
+  defaultMessage: (field, values) => {
+    values._field_ = i18n.t(`fields.${field}`);
+
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
+/* eslint-enable */
+
+extend('required', required);
+extend('email', email);
+extend('numeric', numeric);
+extend('min', min);
+extend('max', max);
+extend('decimal', num => typeof num === 'number');
+extend('positiveNotZero', num => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 
-// handle page reloads
 let app;
-fb.auth.onAuthStateChanged(user => {
-  handleUserAuthStateChange.call(app, user);
+
+auth.onAuthStateChanged(async user => {
+  try {
+    await store.dispatch('set_user', user);
+    await store.dispatch('init_state');
+
+    if (router.currentRoute.query.redirectFrom) {
+      await router.push({ path: router.currentRoute.query.redirectFrom });
+    }
+  } catch {
+    if (user) {
+      store.commit('SET_LOGIN_ERROR', 1);
+    }
+
+    await auth.signOut();
+    await store.dispatch('reset_state');
+
+    if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
+      await router.push(router.history.getCurrentLocation());
+    } else {
+      await router.push({
+        name: 'Login',
+        query: { redirectFrom: router.currentRoute.fullPath },
+      });
+    }
+  }
 
   if (!app) {
     app = new Vue({
@@ -58,6 +99,15 @@ fb.auth.onAuthStateChanged(user => {
       store,
       i18n,
       render: h => h(App),
+    });
+
+    router.beforeEach((to, from, next) => {
+      store.dispatch('setLoading', true);
+      next();
+    });
+
+    router.afterEach(() => {
+      store.dispatch('setLoading', false);
     });
   }
 });

@@ -1,83 +1,39 @@
+$font-size-0: 0.79rem;
+$font-size-1: 0.91rem;
+$font-size-2: 1rem;
+$font-size-3: 1.14rem;
+$font-size-4: 1.36rem;
+$font-size-5: 1.71rem;
+$font-size-7: 2.28rem;
+
 .md h1,
 .title-1 {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 1.4;
-  letter-spacing: -0.03rem;
+  margin-bottom: 0.5em;
+  font-size: $font-size-4;
 }
 
 .md h2,
 .title-2 {
-  margin: 0.25rem 0 0.75rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  font-size: 1.35rem;
-  line-height: 1.15;
+  font-size: $font-size-3;
+  letter-spacing: -0.03rem;
 }
 
 .md h3,
 .title-3 {
-  margin: 1.25rem 0 0.75rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  font-size: 1.2rem;
-  line-height: 1.15;
+  font-size: $font-size-2;
+  letter-spacing: -0.03rem;
 }
 
 .md h4,
 .title-4 {
-  margin: 1rem 0 0.5rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  font-size: 1.1rem;
-  line-height: 1.15;
-}
-
-a {
-  color: $color-link;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.pill {
-  display: inline-block;
-  margin-bottom: 0.75rem;
-  padding: 0.25em 0.65em 0.15em;
-  font-weight: 500;
-
-  font-size: 0.85rem;
-  background: $color-light-blue;
-  border-radius: 3px;
-}
-
-p,
-h1,
-h2,
-h3 {
-  width: 100%;
-  max-width: 640px;
-}
-
-strong {
-  font-weight: 500;
-}
-
-p + p {
-  margin-top: 1em;
-}
-
-code {
-  margin: 0 0.25em;
-  padding: 0.25em 0.3em;
-  font-size: 0.9em;
-  font-family: Monaco, monospace;
-  line-height: 100%;
-  letter-spacing: -0.05em;
-  word-break: normal;
-  background-color: #eeeeee;
-  border-radius: 2px;
-}
-
-em {
-  font-style: italic;
+  font-size: $font-size-1;
+  letter-spacing: -0.03rem;
 }
 
 .md {
@@ -108,4 +64,28 @@ em {
     padding-left: 2em;
     list-style-type: decimal;
   }
+}
+
+code {
+  margin: 0 0.25em;
+  padding: 0.25em 0.3em;
+  font-size: 0.9em;
+  font-family: Monaco, monospace;
+  line-height: 100%;
+  letter-spacing: -0.05em;
+  word-break: normal;
+  background-color: #eeeeee;
+  border-radius: 2px;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 500;
+}
+
+p + p {
+  margin-top: 1em;
 }
