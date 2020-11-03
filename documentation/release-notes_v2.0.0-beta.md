@@ -1,6 +1,6 @@
 # Release v2.0.0-beta
 
-Lots of changes in version 2. Most noteably a new data model and restructured front end components.
+Lots of changes in version 2. Most notably a new data model and restructured front end components.
 
 ## What’s new
 
@@ -10,7 +10,7 @@ _Key performance indicators_ (KPIs) can now be registered and tracked in the OKR
 
 ### Access requests
 
-Users who are not _whitelisted_ may now ask permission to gain access to the system. They must submit their email address, which will be registered to a separate Firestore collection. A Cloud function will trigger a message to the connected Slack channel where system administrators can grant or deny their request directly.
+Users who are not _whitelisted_ may now ask permission to gain access to the system. They must submit their email address, which will be registered to a separate Firestore collection. A Cloud Function will trigger a message to the connected Slack channel where system administrators can grant or deny their request directly.
 
 ### Weighted objectives and key results
 
@@ -22,7 +22,7 @@ It is now easier to get started setting up a new instance of the OKR Tracker or 
 
 ### Progression is handled on server
 
-There are now Firestore Cloud functions that monitor CRUD operations to periods, objectives, key results, and their progressions, and automatically handling updating progression for the affected objects.
+There are now Firestore Cloud Functions that monitor CRUD operations to periods, objectives, key results, and their progressions, and automatically handling updating progression for the affected objects.
 
 ### Firestore rules
 
@@ -38,12 +38,12 @@ Users’ view preferences are stored in the database each time they make a chang
 
 ### Audit logging on server
 
-All CRUD events are audited and stored by Cloud functions containing the affected object, the performing user and a timestamp. Updates include the before and after values.
+All CRUD events are audited and stored by Cloud Functions containing the affected object, the performing user and a timestamp. Updates include the before and after values.
 
 ## Changed
 
 - Several user interface changes
-- More constitent styles and visual design
+- More consistent styles and visual design
 - Dashboard view available for organisations and departments
 - Improved responsive design
 
