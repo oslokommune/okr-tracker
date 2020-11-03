@@ -14,7 +14,7 @@ Users who are not _whitelisted_ may now ask permission to gain access to the sys
 
 ### Weighted objectives and key results
 
-All objectives and key results now contains a _weight_ property for which administrators or team members may customise the weight. The weight of an object affects how progression is calculated. Objectives’ weights affects their period’s overall progression and the weights of key results affect their parent objective’s progression.
+All objectives and key results now contain a _weight_ property for which administrators or team members may customise the weight. The weight of an object affects how progression is calculated. Objectives’ weight affects their period’s overall progression and the weight of key results affect their parent objective’s progression.
 
 ### Improved development experience
 
