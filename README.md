@@ -132,7 +132,7 @@ After successfully logging in to the OKR Tracker, navigate to the [Admin panel](
 To export your mock data run the following command:
 
 ```bash
-npm run dev:export
+firebase emulators:export ./mock
 ```
 
 #### Update mock data
