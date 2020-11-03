@@ -35,7 +35,8 @@
     "kpitype": "KPI-type",
     "unit": "Måleenhet",
     "startValue": "Startverdi",
-    "targetValue": "Målverdi"
+    "targetValue": "Målverdi",
+    "value": "Verdi"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",

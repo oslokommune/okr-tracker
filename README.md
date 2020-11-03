@@ -219,22 +219,22 @@ gcloud projects list
 gcloud config set project <your project id>
 ```
 
-For the sake of this how to, we'll be using `okr-tracker-production` (production) for gcloud, and `origo-okr-tracker` (development) for the Firebase. The reason is that we use auth from our development Firebase instance, and not from the production instance.
+For the sake of this how to, we'll be using `okr-tracker-production` (production) for gcloud, and `origo-okr-tracker` (development) for the Firebase. The reason is that we use auth from our development Firebase instance, and not from the production instance.
 
-If you don't already have automated backups of your production data, we will need to export the production data to a backup on GCP:
+If you don't already have automated backups of your production data, we will need to export the production data to a backup on GCP:
 
 ```bash
 gcloud firestore export gs://okr-tracker-production.appspot.com/<backup-folder-name>
 ```
 
-Now copy the new folder to your local machine, we are going to do this from our functions folder:
+Now copy the new folder to your local machine, we are going to do this from our functions folder:
 
 ```bash
 cd functions
 gsutil -m cp -r gs://okr-tracker-production.appspot.com/<backup-folder-name> .
 ```
 
-If you already have automated backups of your production data, you don't need to export the production data, only import it. For this application our backup folder is not part of the Firebase storage bucket:
+If you already have automated backups of your production data, you don't need to export the production data, only import it. For this application our backup folder is not part of the Firebase storage bucket:
 
 ```bash
 gsutil -m cp -r gs://okr-tracker-backup/<YYYY-MM-DD>
@@ -242,7 +242,7 @@ gsutil -m cp -r gs://okr-tracker-backup/<YYYY-MM-DD>
 
 ## Import production data
 
-To import the production data into your local Firebase emulator, you will need a metadata-file on the root folder, named `firebase-export-metadata.json`:
+To import the production data into your local Firebase emulator, you will need a metadata-file on the root folder, named `firebase-export-metadata.json`:
 
 ```json
 {
@@ -255,7 +255,7 @@ To import the production data into your local Firebase emulator, you will need 
 }
 ```
 
-Start your local Firebase emulator suite with the imported data. Firebase will read the metadata-json file automatically.
+Start your local Firebase emulator suite with the imported data. Firebase will read the metadata-json file automatically.
 
 ```bash
 firebase emulators:start --import=./
@@ -305,8 +305,8 @@ We have a slack integration that is connected with a couple of cloud functions.
 
 There are two cloud functions that integrate with slack
 
-1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
-2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
+1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
+2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
 
 For these cloud functions to work you need to add a webhook url from a slack app.
 
@@ -315,12 +315,12 @@ For these cloud functions to work you need to add a webhook url from a slack app
 Firebase steps:
 
 1. Open your gcloud console and go to IAM section
-2. Give your Firebase account `Pub/Sub subscriber` role
+2. Give your Firebase account `Pub/Sub subscriber` role
 
 Slack steps:
 
 1. Go to slack application page and create a new app or go to your existing app
-2. Activate `Incoming Webhooks` and create a new Webhook URL
+2. Activate `Incoming Webhooks` and create a new Webhook URL
 3. Activate `Interactivity and Shortcuts` and add a new request URL which points to your Cloud Function
 
 Copy the webhook URL and inject it into Firebase as an environment variable:

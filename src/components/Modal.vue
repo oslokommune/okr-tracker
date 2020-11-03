@@ -13,6 +13,10 @@
 
           <hr />
 
+          <progress-bar-expanded :key-result="keyres" />
+
+          <hr />
+
           <label>
             <span class="title-3">{{ $t('keyres.addComment') }}</span>
             <textarea v-model="note" class="modal__textarea" rows="3"></textarea>
@@ -61,6 +65,10 @@ import Progress from '@/db/Progress';
 
 export default {
   name: 'Modal',
+
+  components: {
+    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
+  },
 
   props: {
     keyres: {

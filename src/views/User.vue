@@ -61,22 +61,11 @@
         </div>
       </div>
     </div>
-
-    <div class="side">
-      <h2 class="title-2">Audit</h2>
-      <table>
-        <tr v-for="event in audit" :key="event.id">
-          <td>{{ formatDate(event.timestamp) }}</td>
-          <td>{{ event.event }}</td>
-        </tr>
-      </table>
-    </div>
   </div>
 </template>
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import { format } from 'date-fns';
 import User from '@/db/User';
 
 export default {
@@ -106,7 +95,10 @@ export default {
       immediate: true,
       handler(id) {
         const userRef = db.doc(`users/${id}`);
-        const productsRef = db.collection('products').where('team', 'array-contains', userRef);
+        const productsRef = db
+          .collection('products')
+          .where('team', 'array-contains', userRef)
+          .where('archived', '==', false);
         const auditRef = db.collection('audit').where('user', '==', userRef).orderBy('timestamp', 'desc').limit(10);
 
         this.$bind('user', userRef);
@@ -133,15 +125,13 @@ export default {
   },
 
   methods: {
-    formatDate(date) {
-      return format(date.toDate(), 'dd/MM/yyyy HH:mm');
-    },
     setImage({ target }) {
       const { files } = target;
       if (files.length !== 1) return;
       const [image] = files;
       this.image = image;
     },
+
     async uploadImage() {
       this.loading = true;
       try {
@@ -154,6 +144,7 @@ export default {
       }
       this.loading = false;
     },
+
     async save() {
       this.loading = true;
       try {
