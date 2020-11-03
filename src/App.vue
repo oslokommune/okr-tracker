@@ -12,7 +12,7 @@
         <footer class="footer"></footer>
       </div>
     </main>
-    <Griddle v-if="isProduction" />
+    <Griddle v-if="isDev" />
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
   computed: {
     ...mapState(['user', 'loading']),
 
-    isProduction() {
+    isDev() {
       return process.env.NODE_ENV !== 'production';
     },
   },
