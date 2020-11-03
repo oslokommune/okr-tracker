@@ -1,8 +1,7 @@
-import store from '@/store'; // eslint-disable-line
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
 
-export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, id) => {
+export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, state }, id) => {
   if (!id) {
     return unbindFirestoreRef('activeKeyResult');
   }
@@ -10,7 +9,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   const { objective } = await reference.get().then(snapshot => snapshot.data());
 
-  if (!store.state.activeObjective || store.state.activeObjective.id !== objective.id) {
+  if (!state.activeObjective || state.activeObjective.id !== objective.id) {
     await bindFirestoreRef('activeObjective', objective, { maxRefDepth: 1 });
   }
 

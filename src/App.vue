@@ -12,7 +12,7 @@
         <footer class="footer"></footer>
       </div>
     </main>
-    <Griddle />
+    <Griddle v-if="isDev" />
   </div>
 </template>
 
@@ -38,6 +38,10 @@ export default {
 
   computed: {
     ...mapState(['user', 'loading']),
+
+    isDev() {
+      return process.env.NODE_ENV !== 'production';
+    },
   },
 
   created() {
