@@ -2,7 +2,7 @@
 
 Lots of changes in version 2. Most noteably a new data model and restructured front end components.
 
-## What's new
+## What’s new
 
 ### Introducing KPIs
 
@@ -14,7 +14,7 @@ Users who are not _whitelisted_ may now ask permission to gain access to the sys
 
 ### Weighted objectives and key results
 
-All objectives and key results now contains a _weight_ property for which administrators or team members may customise the weight. The weight of an object affects how progression is calculated. Objectives' weights affects their period's overall progression and the weights of key results affect their parent objective's progression.
+All objectives and key results now contains a _weight_ property for which administrators or team members may customise the weight. The weight of an object affects how progression is calculated. Objectives’ weights affects their period’s overall progression and the weights of key results affect their parent objective’s progression.
 
 ### Improved development experience
 
@@ -26,15 +26,15 @@ There are now Firestore Cloud functions that monitor CRUD operations to periods,
 
 ### Firestore rules
 
-Version 2.0.0 introduces better security. All documents in Firestore is now protected by database rules dictating read, write, and delete permissions based on document type and the user attempting to perform the action.
+Version 2.0.0 introduces better security. All documents in Firestore are now protected by database rules dictating read, write, and delete permissions based on document type and the user attempting to perform the action.
 
 ### Move products, objectives and key results
 
-It is now possible to move a product from one department to another. There also support for moving objectives and key results to different periods and objective respectively.
+It is now possible to move a product from one department to another. There is also support for moving objectives and key results to different periods and objective respectively.
 
 ### Save view preferences
 
-Users' view preferences are stored in the database each time they make a change to their view (including minimize/expand widgets).
+Users’ view preferences are stored in the database each time they make a change to their view (including minimize/expand widgets).
 
 ### Audit logging on server
 
