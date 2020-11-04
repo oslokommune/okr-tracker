@@ -1,0 +1,8 @@
+{
+  "version": "8.14.1",
+  "firestore": {
+    "version": "1.11.9",
+    "path": "mock",
+    "metadata_file": "mock/mock.overall_export_metadata"
+  }
+}
