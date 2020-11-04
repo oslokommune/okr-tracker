@@ -4,7 +4,6 @@ module.exports = {
     mocha: true,
     'cypress/globals': true,
   },
-  rules: {
-    strict: 'off',
-  },
+
+  extends: ['plugin:cypress/recommended'],
 };

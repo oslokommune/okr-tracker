@@ -1,4 +1,3 @@
-/* eslint-disable */
 describe('Test Admin Login', () => {
   before(() => {
     cy.visit('/').wait(2000);

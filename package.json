@@ -53,6 +53,7 @@
     "babel-eslint": "^10.1.0",
     "data-dir": "^1.2.3",
     "eslint": "^7.11.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^7.1.0",
     "firebase-tools": "^8.14.1",
