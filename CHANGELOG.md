@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fix issue with findSlugAndRedirect-method - returns redirect and increased delay
 - Add defaultPreferences on user if not existing (simplifies mock data creation)
+- Remove misplaced markup on objective details widget
 
 ## [2.0.0-beta] - 2020-11-04
 
