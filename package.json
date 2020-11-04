@@ -6,7 +6,7 @@
     "dev": "firebase emulators:start --import=./tests & vue-cli-service serve",
     "dev:test": "firebase emulators:start --import=./tests & vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:e2e": "vue-cli-service test:e2e --mode e2e",
+    "test:e2e": "firebase emulators:start --import=./tests & vue-cli-service test:e2e --mode e2e",
     "test:e2e:headless": "firebase emulators:exec --project origo-okr-tracker 'node ./src/mock & (sleep 15 && vue-cli-service test:e2e --mode e2e --headless)'",
     "deploy": "npm run build && firebase deploy --project=production",
     "lint": "vue-cli-service lint",

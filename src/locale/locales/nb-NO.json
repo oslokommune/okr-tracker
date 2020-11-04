@@ -37,7 +37,7 @@
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "value": "Verdi",
-    "passwrod": "Passord"
+    "password": "Passord"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",

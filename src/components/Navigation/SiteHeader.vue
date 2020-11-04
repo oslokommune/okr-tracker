@@ -16,6 +16,7 @@
           v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
           class="btn btn--ter user"
           :class="{ active: showUserMenu }"
+          data-cy="usermenu"
           @click="showUserMenu = !showUserMenu"
         >
           <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
@@ -41,7 +42,7 @@
               >
             </li>
             <li>
-              <button class="btn btn--ter btn--icon" @click="signOut">
+              <button class="btn btn--ter btn--icon" data-cy="site-header-signout" @click="signOut">
                 <i class="icon fa fa-fw fa-sign-out-alt"></i> {{ $t('general.signOut') }}
               </button>
             </li>

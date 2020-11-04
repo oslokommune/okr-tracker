@@ -26,6 +26,7 @@
                 name="email"
                 rules="required|email"
                 type="email"
+                data-cy="login-username-input"
               />
 
               <form-component
@@ -35,6 +36,7 @@
                 name="password"
                 rules="required"
                 type="password"
+                data-cy="login-username-password"
               />
             </form>
           </validation-observer>
@@ -48,7 +50,9 @@
           </button>
 
           <div class="login__secondary">
-            <button class="btn btn--ghost" @click="showForm = true">{{ $t('login.loginWithUsername') }}</button>
+            <button class="btn btn--ghost" @click="showForm = true" data-cy="login-username">
+              {{ $t('login.loginWithUsername') }}
+            </button>
             <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">{{
               $t('login.requestAccess')
             }}</router-link>
