@@ -6,7 +6,7 @@ import router from '@/router';
  * @param {FirestoreDocumentReference} reference
  */
 export default function findSlugAndRedirect(reference) {
-  const delay = 500;
+  const delay = 5000;
 
   setTimeout(async () => {
     try {
