@@ -68,7 +68,6 @@ export default {
   },
 
   methods: {
-    findSlugAndRedirect,
     async save() {
       const { name, missionStatement, organization } = this;
       const data = {
@@ -81,7 +80,10 @@ export default {
       this.loading = true;
 
       try {
-        await Department.create(data).then(this.findSlugAndRedirect);
+        const depRef = await Department.create(data);
+
+        await findSlugAndRedirect(depRef);
+
         this.$toasted.show(this.$t('toaster.add.department'));
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.department'));
