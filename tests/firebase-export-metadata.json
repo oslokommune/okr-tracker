@@ -1,5 +1,5 @@
 {
-  "version": "8.14.1",
+  "version": "8.13.1",
   "firestore": {
     "version": "1.11.9",
     "path": "mock",
