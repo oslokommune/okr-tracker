@@ -4,9 +4,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- English locale
+- Store language preference on user
+- Change language preference on profile page
+
 ### Fixed
 
 - Fix issue with findSlugAndRedirect-method - returns redirect and increased delay
+- Add defaultPreferences on user if not existing (simplifies mock data creation)
 
 ## [2.0.0-beta] - 2020-11-04
 

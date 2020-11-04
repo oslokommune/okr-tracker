@@ -376,5 +376,12 @@
     "403": "Systemet har ikke tilgang til å lese dokumentet",
     "404": "Fant ikke dokumentet. Feil ID?",
     "noDataInCell": "Celle {cell} er tom"
+  },
+  "user": {
+    "selectLanguage": "Velg språk"
+  },
+  "languages": {
+    "en-US": "Engelsk",
+    "nb-NO": "Norsk"
   }
 }

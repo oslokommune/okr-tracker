@@ -1,0 +1,389 @@
+{
+  "404": {
+    "title": "404"
+  },
+  "kpi": {
+    "add": "Add KPI",
+    "edit": "Edit KPI",
+    "currentValue": "Current value",
+    "progresjon": "Progress",
+    "description": "Description",
+    "chooseType": "Select KPI type",
+    "types": {
+      "users": "Volume",
+      "satisfaction": "Satisfaction rate",
+      "conversion": "Conversion rate"
+    },
+    "heading": "KPIs",
+    "sheetsDetails": "Sheets details",
+    "itemRowError": "error"
+  },
+  "fields": {
+    "email": "Email",
+    "name": "Name",
+    "missionStatement": "Mission statement",
+    "weight": "Weight",
+    "sheetId": "Google Sheet ID",
+    "sheetTab": "Tab",
+    "sheetCell": "Cell",
+    "displayName": "Display name",
+    "icon": "Icon",
+    "period": "Period",
+    "description": "Description",
+    "slug": "Slug",
+    "department": "Department",
+    "kpitype": "KPI type",
+    "unit": "Unit of measurement",
+    "startValue": "Start value",
+    "targetValue": "Target value",
+    "value": "Value"
+  },
+  "validation": {
+    "alpha": "The {_field_} field may only contain alphabetic characters",
+    "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
+    "alpha_dash": "The {_field_} field may contain alpha-numeric characters as well as dashes and underscores",
+    "alpha_spaces": "The {_field_} field may only contain alphabetic characters as well as spaces",
+    "between": "The {_field_} field must be between {min} and {max}",
+    "confirmed": "The {_field_} field confirmation does not match",
+    "digits": "The {_field_} field must be numeric and exactly contain {length} digits",
+    "dimensions": "The {_field_} field must be {width} pixels by {height} pixels",
+    "email": "The {_field_} field must be a valid email",
+    "excluded": "The {_field_} field is not a valid value",
+    "ext": "The {_field_} field is not a valid file",
+    "image": "The {_field_} field must be an image",
+    "integer": "The {_field_} field must be an integer",
+    "length": "The {_field_} field must be {length} long",
+    "max_value": "The {_field_} field must be {max} or less",
+    "max": "The {_field_} field may not be greater than {length} characters",
+    "mimes": "The {_field_} field must have a valid file type",
+    "min_value": "The {_field_} field must be {min} or more",
+    "min": "The {_field_} field must be at least {length} characters",
+    "numeric": "The {_field_} field may only contain numeric characters",
+    "oneOf": "The {_field_} field is not a valid value",
+    "regex": "The {_field_} field format is invalid",
+    "required_if": "The {_field_} field is required",
+    "required": "The {_field_} field is required",
+    "size": "The {_field_} field size must be less than {size}KB",
+    "double": "The {_field_} field must be a valid decimal",
+    "positiveNotZero": "Ugyldig verdi",
+    "decimal": "Må være tall"
+  },
+  "general": {
+    "edit": "Edit",
+    "general": "General",
+    "OKRs": "OKRs",
+    "OKRsLong": "Objectives and Key results",
+    "KPIs": "KPIs",
+    "team": "Team",
+    "project": "OKR",
+    "loading": "Loading ...",
+    "owner": "City of Oslo",
+    "notFound": "Not found",
+    "help": "Help",
+    "admin": "Admin",
+    "dashboard": "View dashboard",
+    "signOut": "Sign out",
+    "createdBy": "Created by",
+    "lastUpdate": "Updated",
+    "details": "Details",
+    "products": "Products",
+    "organizations": "Organizations",
+    "departments": "Departments",
+    "teamMembers": "Team members",
+    "users": "Users",
+    "home": "Home",
+    "keyresults": "Key results",
+    "success": "Success"
+  },
+  "btn": {
+    "close": "Close",
+    "save": "Save",
+    "saveChanges": "Save changes",
+    "add": "Add",
+    "editNotes": "Change notes",
+    "addOrganization": "Add organization",
+    "addProduct": "Add product",
+    "addDepartment": "Add department",
+    "acceptRequest": "Grant access",
+    "rejectRequest": "Delete request",
+    "deleteImage": "Delete image",
+    "deleteUser": "Delte user",
+    "create": "Create",
+    "delete": "Delete",
+    "archive": "Archive",
+    "editItem": "Change «{item}»",
+    "upload": "Upload",
+    "minimize": "Minimize",
+    "expand": "Expand",
+    "deletePermanently": "Delete permanently",
+    "restore": "Restore",
+    "confirmDeleteProgress": "Confirm delete"
+  },
+  "login": {
+    "login": "Sign in",
+    "requestAccess": "Request access",
+    "requestButton": "Send request",
+    "backToLogin": "Back to login",
+    "google": "Sign in with Google",
+    "email": "Email",
+    "password": "Password",
+    "error": {
+      "notRegistered": "Your account is not registered",
+      "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",
+      "wrongPassword": "Wrong password."
+    },
+    "loginWithUsername": "Sign in with username"
+  },
+  "toaster": {
+    "welcome": "Welcome {user}",
+    "add": {
+      "users": "Add user | {count} users",
+      "product": "Created new product",
+      "objective": "Created an objective for  {period}",
+      "progression": "Created new value",
+      "department": "Created new department",
+      "keyResult": "Created new key result",
+      "period": "Created new period",
+      "organization": "Created new organisation",
+      "kpi": "Created new KPI"
+    },
+    "delete": {
+      "user": "Deleted user {user}",
+      "permanently": "Deleted permanently",
+      "object": "Deleted «{name}»",
+      "progression": "Deleted value"
+    },
+    "action": {
+      "regret": "Undo"
+    },
+    "error": {
+      "save": "Could not save changes",
+      "archive": "Could not archive {document}",
+      "delete": "Could not delete {document}",
+      "restore": "Could not restore {document}",
+      "create": "Could not create {document}",
+      "department": "Could not create department",
+      "organization": "Could not create organization",
+      "product": "Could not create product",
+      "users": "Could not add user | users",
+      "user": "Could not delete user {user}",
+      "progression": "Could not add value",
+      "email": "Invalid email address",
+      "kpi": "Could not create KPI",
+      "notes": "Could not update notes",
+      "deleteProgress": "Could not delete value"
+    },
+    "savedChanges": "Saved changes",
+    "deleted": "Deleted",
+    "restored": "Restored",
+    "request": {
+      "requested": "Access request sent",
+      "error": "Could not send request. Please try again.",
+      "accepted": "Added {user}",
+      "rejected": "Removed {user}"
+    }
+  },
+  "keyres": {
+    "objective": "Related objective",
+    "description": "Description",
+    "startValue": "Start value",
+    "targetValue": "Target value",
+    "unit": "Unit of measurement",
+    "newValue": "New value",
+    "automation": {
+      "header": "Automatic progress registration",
+      "readMore": "Learn more",
+      "googleSheetId": "Google Sheet ID",
+      "googleSheetIdHelp": "ID from URL .../spreadsheets/d/<strong><d></strong>",
+      "sheetsTab": "Tab",
+      "sheetsTabHelp": "Same as the tab name in Google Sheets",
+      "sheetsCell": "Cell",
+      "sheetsCellHelp": "E.g. «A12»",
+      "testConnection": "Save and test connection"
+    },
+    "updateKeyres": "Update value for key result",
+    "registerProgression": {
+      "value": "Value"
+    },
+    "updateValue": "Update value",
+    "dateAndTime": "Date and time",
+    "addComment": "Add comment (optional)",
+    "chooseDate": "Select date",
+    "belongsTo": "Related objective",
+    "numberOfUpdates": "Update count",
+    "weight": "Weight",
+    "automatic": "Automatic",
+    "autoHelpText": "The value for this key result gets updated automatically from Google Sheets.",
+    "showComment": "View comment",
+    "autoError": "Issue fetching data from Google Sheets:"
+  },
+  "objective": {
+    "period": "Period",
+    "progression": "Progress",
+    "weight": "Weight",
+    "change": "Change objective",
+    "createdBy": "Created by",
+    "editedBy": "Changed by",
+    "created": "Created",
+    "edited": "Changed"
+  },
+  "period": {
+    "dateRange": "Start and end dates",
+    "range": "{startDate} to {endDate}",
+    "period": "Period"
+  },
+  "tooltip": {
+    "openMenu": "Open menu",
+    "dashboard": "Go to dashboard",
+    "keyresValue": "Insert new value",
+    "changeView": "Change view to {view}",
+    "editItem": "Create, update or delete periods, objectives, key results and KPIs",
+    "editKpi": "Update details or delete KPI",
+    "navigateToItem": "Go to {item}",
+    "deleteProgress": "Delete value",
+    "isMember": "Member of team",
+    "emptyPeriod": "No active period"
+  },
+  "document": {
+    "mission": "Mission statement"
+  },
+  "admin": {
+    "department": {
+      "picture": "Image",
+      "create": "Create new department",
+      "parentOrganisation": "Related organization"
+    },
+    "organization": {
+      "picture": "Image",
+      "create": "Create new organization"
+    },
+    "product": {
+      "picture": "Image",
+      "create": "Create new product",
+      "parentDepartment": "Related department"
+    },
+    "objects": {
+      "showArchived": "View archived objects"
+    },
+    "users": {
+      "edit": "Change user",
+      "image": "Profile image",
+      "backToUsers": "Back to users",
+      "addUsers": "Add user(s)",
+      "users": "Users",
+      "search": "Search {count} users",
+      "registerUsersButton": "Register",
+      "registerUsersText": "Insert email addresses (one address per line):"
+    },
+    "showObjectives": "View objectives",
+    "showPeriods": "View periods",
+    "showKeyResults": "View key results",
+    "noObjectiveSelected": "Select objective to view key results",
+    "noPeriodSelected": "Select period to view objectives"
+  },
+  "keyResultPage": {
+    "change": "Update key result",
+    "add": {
+      "today": "Today"
+    },
+    "table": {
+      "value": "Value"
+    },
+    "notes": {
+      "empty": "Notes can only be seen by team members",
+      "save": "Save notes"
+    },
+    "history": "History",
+    "registeredBy": "Registered by",
+    "value": "Value",
+    "date": "Date"
+  },
+  "help": {
+    "title": "Help",
+    "toc": "Content"
+  },
+  "profile": {
+    "myProfile": "My profile",
+    "hasAdmin": "Has admin rights",
+    "products": "My products"
+  },
+  "view": {
+    "compact": "Compact",
+    "details": "Details"
+  },
+  "keyResultsPage": {
+    "notes": {
+      "heading": "Notes"
+    }
+  },
+  "weight": {
+    "heading": "Weights",
+    "keyresFor": "Key results for “{name}”",
+    "objectivesFor": "Objectives for"
+  },
+  "accessRequests": {
+    "heading": "Access requests"
+  },
+  "select": {
+    "noIcons": "No hits"
+  },
+  "empty": {
+    "keyResultProgress": {
+      "heading": "No history",
+      "body": "This key result has no registered values."
+    },
+    "noKeyResults": {
+      "heading": "No key results",
+      "body": "Oops! Could not find any key results.",
+      "linkText": "Create a key result"
+    },
+    "itemAdmin": {
+      "keyResult": "No key results for selected objective",
+      "objective": "No objectives for selected period",
+      "period": "No periods"
+    },
+    "noKPIs": {
+      "heading": "No KPIs",
+      "body": "Add KPIs that automatically fetch data from Google Sheets."
+    },
+    "noPeriods": {
+      "heading": "Empty?",
+      "body": "It looks like there are no objectives and key results here ...",
+      "buttonText": "Create objectives and key results"
+    },
+    "kpiProgress": {
+      "body": "Could not find historical data for this KPI",
+      "heading": "No history found"
+    },
+    "team": {
+      "body": "Team Ninja much?",
+      "heading": "No team members"
+    }
+  },
+  "archived": {
+    "heading": "Archived",
+    "body": "This object is archived and is hidden. You may change details before restoring it. By permanently deleting this object, all related data will also be deleted."
+  },
+  "sheet": {
+    "infoText": "Note: The Google Sheets document must be shared with the following address:",
+    "missingServiceAccount": "Error: No address found. Please contact system administrator."
+  },
+  "widget": {
+    "progression": {
+      "period": "Progress for period",
+      "objective": "Progress for objective"
+    }
+  },
+  "error": {
+    "403": "Restricted access",
+    "404": "Could not find document. Wrong ID?",
+    "noDataInCell": "Cell {cell} is empty"
+  },
+  "user": {
+    "selectLanguage": "Select language"
+  },
+  "languages": {
+    "en-US": "English",
+    "nb-NO": "Norwegian"
+  }
+}
