@@ -36,7 +36,10 @@
     "unit": "Unit of measurement",
     "startValue": "Start value",
     "targetValue": "Target value",
-    "value": "Value"
+    "value": "Value",
+    "organization": "Organization",
+    "date": "Date",
+    "password": "Password"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",

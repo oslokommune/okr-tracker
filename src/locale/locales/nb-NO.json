@@ -36,7 +36,10 @@
     "unit": "Måleenhet",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
-    "value": "Verdi"
+    "value": "Verdi",
+    "organization": "Organisasjon",
+    "date": "Dato",
+    "password": "Passord"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
