@@ -6,10 +6,14 @@ import router from '@/router';
  * @param {FirestoreDocumentReference} reference
  */
 export default function findSlugAndRedirect(reference) {
-  const delay = 250;
+  const delay = 5000;
 
   setTimeout(async () => {
-    const { slug } = await reference.get().then(snapshot => snapshot.data());
-    router.push({ name: 'ItemHome', params: { slug } });
+    try {
+      const { slug } = await reference.get().then(snapshot => snapshot.data());
+      return router.push({ name: 'ItemHome', params: { slug } });
+    } catch {
+      return router.push({ name: 'Home' });
+    }
   }, delay);
 }

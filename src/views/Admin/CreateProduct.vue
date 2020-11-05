@@ -101,7 +101,9 @@ export default {
       };
 
       try {
-        await Product.create(data).then(findSlugAndRedirect);
+        const productRef = await Product.create(data);
+
+        await findSlugAndRedirect(productRef);
 
         this.$toasted.show(this.$t('toaster.add.product'));
       } catch {

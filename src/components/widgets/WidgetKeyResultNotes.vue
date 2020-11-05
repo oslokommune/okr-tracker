@@ -6,7 +6,7 @@
       </div>
 
       <div v-else class="notes--margin-bottom">
-        <div v-if="markdown" class="notes__markdown" v-html="markdown"></div>
+        <div v-if="md.length" class="notes__markdown md" v-html="md"></div>
         <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
       </div>
 
@@ -52,22 +52,19 @@ export default {
     dirty: false,
     loading: false,
     thisKey: null,
+    md: '',
   }),
 
   computed: {
     ...mapState(['activeKeyResult']),
-
-    markdown() {
-      if (!this.thisKey.notes) return null;
-      return sanitize(this.thisKey.notes);
-    },
   },
 
   watch: {
     activeKeyResult: {
       immediate: true,
-      handler() {
-        this.thisKey = { ...this.activeKeyResult, id: this.activeKeyResult.id };
+      handler(keyres) {
+        this.thisKey = { ...keyres, id: keyres.id };
+        this.md = sanitize(marked(keyres.notes));
       },
     },
   },

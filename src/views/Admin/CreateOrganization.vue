@@ -61,7 +61,8 @@ export default {
       this.loading = true;
 
       try {
-        await Organization.create(data).then(findSlugAndRedirect);
+        const orgRef = await Organization.create(data);
+        await findSlugAndRedirect(orgRef);
         this.$toasted.show(this.$t('toaster.add.organization'));
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.organization'));

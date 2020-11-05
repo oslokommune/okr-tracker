@@ -60,14 +60,6 @@
           </div>
         </div>
       </div>
-
-      <div class="details__item">
-        <h3 class="title-3 details__item-heading">Heading</h3>
-        <div class="details__item-body">
-          <div class="details__item-icon fa fa-user"></div>
-          <div class="details__item-value">User</div>
-        </div>
-      </div>
     </div>
   </Widget>
 </template>
