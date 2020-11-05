@@ -10,33 +10,14 @@
 
     <div class="item__kpis">
       <div
-        v-tooltip="`${$t('kpi.types.users')}:<br> ${getKpiName('users')}`"
+        v-for="(kpi, id) in kpiTypes"
+        :key="id"
+        v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
         class="item__kpi"
-        :class="{ disabled: getKpiValue('users') === '–––' }"
+        :class="{ disabled: getKpiValue(id) === '–––' }"
       >
-        <span class="item__kpi-icon fas fa-chart-line"></span>
-        <span class="item__kpi-value">{{ getKpiValue('users') }}</span>
-        <span class="item__kpi-arrow item__kpi-arrow--up"></span>
-      </div>
-
-      <div
-        v-tooltip="`${$t('kpi.types.satisfaction')}:<br> ${getKpiName('satisfaction')}`"
-        class="item__kpi"
-        :class="{ disabled: getKpiValue('satisfaction') === '–––' }"
-      >
-        <span class="item__kpi-icon far fa-smile"></span>
-        <span class="item__kpi-value">{{ getKpiValue('satisfaction') }}</span>
-        <span class="item__kpi-arrow item__kpi-arrow--up"></span>
-      </div>
-
-      <div
-        v-tooltip="`${$t('kpi.types.conversion')}:<br> ${getKpiName('conversion')}`"
-        class="item__kpi"
-        :class="{ disabled: getKpiValue('conversion') === '–––' }"
-      >
-        <span class="item__kpi-icon far fa-check-square"></span>
-        <span class="item__kpi-value">{{ getKpiValue('conversion') }}</span>
-        <span class="item__kpi-arrow item__kpi-arrow--up"></span>
+        <span class="item__kpi-icon far" :class="kpi.icon"></span>
+        <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
       </div>
     </div>
 
@@ -51,9 +32,9 @@
 </template>
 
 <script>
-import { db } from '@/config/firebaseConfig';
-import { format } from 'd3';
 import { mapState } from 'vuex';
+import { db } from '@/config/firebaseConfig';
+import kpiTypes from '@/config/kpiTypes';
 
 export default {
   name: 'ItemRow',
@@ -76,6 +57,7 @@ export default {
   data: () => ({
     progression: null,
     kpis: [],
+    kpiTypes,
   }),
 
   computed: {
@@ -117,18 +99,7 @@ export default {
   methods: {
     getKpiValue(type) {
       try {
-        const formatNumber = (() => {
-          if (type === 'users') return format('.2s');
-          if (type === 'conversion') return format('.2p');
-          if (type === 'satisfaction') return format('.2p');
-          return format();
-        })();
-        const kpi = this.kpis.find(obj => obj.type === type);
-        if (kpi.error || !kpi.valid) {
-          return this.$t('kpi.itemRowError');
-        }
-
-        return formatNumber(kpi.currentValue);
+        return kpiTypes[type].formatValue(this.kpis.find(obj => obj.type === type).currentValue);
       } catch {
         return '–––';
       }
