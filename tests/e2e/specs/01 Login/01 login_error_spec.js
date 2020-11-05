@@ -2,7 +2,7 @@ import i18n from '../../../../src/locale/i18n';
 
 describe('Login error', () => {
   beforeEach(() => {
-    cy.visit('/').wait(2000);
+    cy.visit('/').wait(200);
 
     cy.get('body').then($body => {
       if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VUE_APP_TESTUSER_USER'))) {

@@ -1,7 +1,14 @@
+export const testOrganization = {
+  name: 'Test Org',
+  mission_statement: 'This is my mission statement for the test Org.',
+  slug: 'test-org',
+};
+
 export const testDepartment = {
   name: 'Test Department',
   mission_statement: 'This is my mission statement for the test department.',
   slug: 'test-department',
+  parentOrg: 'Test Org',
 };
 
 export const testProducts = [
