@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file. The format 
 - Add defaultPreferences on user if not existing (simplifies mock data creation)
 - Remove misplaced markup on objective details widget
 - Add missing translations
+- Replaced 'deleted' with 'archived' in toaster
+- Automatically archives related objectives and key results when archiving periods and objectives
 - Improved Google Sheets integration guide on help page
 - Display startValue if no currentValue is set on key result home view
 

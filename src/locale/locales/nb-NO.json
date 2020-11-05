@@ -151,7 +151,7 @@
     "delete": {
       "user": "Slettet bruker {user}",
       "permanently": "Slettet dokumentet permanent",
-      "object": "Slettet «{name}»",
+      "object": "Arkiverte «{name}»",
       "progression": "Slettet målepunkt"
     },
     "action": {
