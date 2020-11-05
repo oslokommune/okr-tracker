@@ -57,7 +57,7 @@
             <button class="btn btn--ghost" data-cy="login-username" @click="showForm = true">
               {{ $t('login.loginWithUsername') }}
             </button>
-            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">{{
+            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">{{
               $t('login.requestAccess')
             }}</router-link>
           </div>
