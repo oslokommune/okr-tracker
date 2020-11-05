@@ -1,5 +1,7 @@
+import i18n from '../../../../src/locale/i18n';
+
 describe('Login error', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/').wait(2000);
 
     cy.get('body').then($body => {
@@ -18,7 +20,7 @@ describe('Login error', () => {
     cy.get('[data-cy="login-username-input"]').type('wrong-mail@internet.com');
     cy.get('input[type="password"]').type('wrongpassword');
     cy.get('form').submit();
-    cy.get('.error').contains('Kunne ikke finne bruker');
+    cy.get('.error').contains(i18n.t('login.error.userNotFound'));
   });
 
   it('Try to login with a correct username but wrong pass - get an wrongPass error', () => {
@@ -26,6 +28,6 @@ describe('Login error', () => {
     cy.get('[data-cy="login-username-input"]').type(Cypress.env('VUE_APP_TESTADMIN_USER'));
     cy.get('input[type="password"]').type('wrongpassword');
     cy.get('form').submit();
-    cy.get('.error').contains('Passordet er feil.');
+    cy.get('.error').contains(i18n.t('login.error.wrongPassword'));
   });
 });

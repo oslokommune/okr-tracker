@@ -10,13 +10,12 @@
         </h1>
       </div>
 
-      <div v-click-outside="hideUserMenu" class="userMenu">
+      <div v-click-outside="hideUserMenu" class="userMenu" data-cy="usermenu">
         <button
           v-if="user"
           v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
           class="btn btn--ter user"
           :class="{ active: showUserMenu }"
-          data-cy="usermenu"
           @click="showUserMenu = !showUserMenu"
         >
           <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
@@ -27,18 +26,22 @@
         <nav v-if="user && showUserMenu" class="menu">
           <ul class="menu__list">
             <li class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'User', params: { id: user.id } }"
-                ><i class="icon fa fa-fw fa-user"></i> {{ $t('profile.myProfile') }}</router-link
+              <router-link
+                class="btn btn--ter btn--icon"
+                :to="{ name: 'User', params: { id: user.id } }"
+                data-cy="site-header-profile"
+              >
+                <i class="icon fa fa-fw fa-user"></i> {{ $t('profile.myProfile') }}</router-link
               >
             </li>
             <li v-if="user.admin" class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }"
-                ><i class="icon fa fa-fw fa-cogs"></i> {{ $t('general.admin') }}</router-link
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }" data-cy="site-header-admin">
+                <i class="icon fa fa-fw fa-cogs"></i> {{ $t('general.admin') }}</router-link
               >
             </li>
             <li class="menu__list-item show-mobile">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }"
-                ><i class="icon fa fa-fw fa-question-circle"></i> {{ $t('general.help') }}</router-link
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }" data-cy="site-header-help">
+                <i class="icon fa fa-fw fa-question-circle"></i> {{ $t('general.help') }}</router-link
               >
             </li>
             <li>

@@ -121,8 +121,6 @@ export default {
         } else if (err.code === 'auth/user-not-found') {
           this.SET_LOGIN_ERROR(4);
         }
-        this.email = '';
-        this.password = '';
       }
     },
   },
