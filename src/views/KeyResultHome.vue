@@ -11,7 +11,11 @@
             {{ $t('keyres.registerProgression.value') }}
           </h3>
           <div class="main-widgets__current__value">
-            {{ activeKeyResult.currentValue }}
+            {{
+              typeof activeKeyResult.currentValue === 'undefined'
+                ? activeKeyResult.startValue
+                : activeKeyResult.currentValue
+            }}
           </div>
 
           <div class="main-widgets__current__unit">

@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. The format 
 - English locale
 - Store language preference on user
 - Change language preference on profile page
+- Markdown support on mission statements and key result notes
 
 ### Fixed
 
@@ -18,6 +19,8 @@ All notable changes to this project will be documented in this file. The format 
 - Add missing translations
 - Replaced 'deleted' with 'archived' in toaster
 - Automatically archives related objectives and key results when archiving periods and objectives
+- Improved Google Sheets integration guide on help page
+- Display startValue if no currentValue is set on key result home view
 
 ## [2.0.0-beta] - 2020-11-04
 
