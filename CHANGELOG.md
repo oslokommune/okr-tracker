@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. The format 
 - Add defaultPreferences on user if not existing (simplifies mock data creation)
 - Remove misplaced markup on objective details widget
 - Add missing translations
+- Improved Google Sheets integration guide on help page
 
 ## [2.0.0-beta] - 2020-11-04
 
