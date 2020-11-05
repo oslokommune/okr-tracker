@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. The format 
 - Store language preference on user
 - Change language preference on profile page
 - Markdown support on mission statements and key result notes
+- Force order of KPIs + include non-existent KPIs on ItemHome
 
 ### Fixed
 
