@@ -1,11 +1,11 @@
-import { testOrganization } from '../../config';
+import { testOrganization, testPeriod, testObjective, testKeyResult } from '../../config';
 
 describe('Create department', () => {
   before(() => {
     cy.visit('/').wait(200);
   });
 
-  it('Creates a new department', () => {
+  it('Creates a new organization', () => {
     cy.createTestOrg();
   });
 
@@ -21,25 +21,27 @@ describe('Create department', () => {
   });
 });
 
-describe('Create data for department', () => {
+describe('Create data for organization', () => {
   it('Navigates to edit page', () => {
-    cy.get('[data-cy="edit_object_link"]').click().wait(750);
+    cy.get('[data-cy="edit_object_link"]').click();
 
-    cy.get('[data-cy="dep-name"]').should('have.value', testDepartment.name);
+    cy.get('[data-cy="org-name"]').should('have.value', testOrganization.name);
 
-    cy.get('[data-cy="objectives_key_results_tab"]').click().wait(750);
+    cy.get('[data-cy="admin-okr"]').click();
   });
 
   it('Creates a new period with mock data', () => {
-    cy.get('[data-cy="add_period_button"]').click().wait(750);
+    cy.get('[data-cy="okr-create-period"]').click();
 
     cy.get('[data-cy="period_name"]').clear().type(testPeriod.name);
+
+    cy.get('[input="hidden"]').type(testPeriod.date);
 
     cy.get('[data-cy="save_period"]').click();
   });
 
   it('Creates an objective for the period', () => {
-    cy.get('[data-cy="add_objective_button"]').click().wait(750);
+    cy.get('[data-cy="okr-create-objective"]').click();
 
     cy.get('[data-cy="objective_name_field"]').clear().type(testObjective.name);
 
@@ -49,7 +51,7 @@ describe('Create data for department', () => {
   });
 
   it('Creates a key result for the objective', () => {
-    cy.get('[data-cy="add_keyres_button"]').click().wait(750);
+    cy.get('[data-cy="okr-create-keyresult"]').click().wait(750);
 
     cy.get('[data-cy="keyres_name_field"]').clear().type(testKeyResult.name);
 

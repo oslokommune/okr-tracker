@@ -20,6 +20,7 @@
             notSelected,
             nonexistent,
             addEvent,
+            cyCreate,
           } in columns"
           :key="type"
           class="miller__col"
@@ -44,7 +45,12 @@
               </router-link>
             </li>
           </ul>
-          <button v-if="!notSelected" class="miller__add btn btn--ter btn--icon btn--fw" @click="addEvent">
+          <button
+            v-if="!notSelected"
+            class="miller__add btn btn--ter btn--icon btn--fw"
+            :data-cy="cyCreate"
+            @click="addEvent"
+          >
             <span class="icon fa fa-plus"></span>
             <span>{{ $t('btn.create') }}</span>
           </button>
@@ -99,6 +105,7 @@ export default {
           notSelected: false,
           addEvent: this.createPeriod,
           nonexistent: this.$t('empty.itemAdmin.period'),
+          cyCreate: 'okr-create-period',
         },
         {
           heading: this.$t('admin.showObjectives'),
@@ -110,6 +117,7 @@ export default {
           notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
           nonexistent: this.$t('empty.itemAdmin.objective'),
+          cyCreate: 'okr-create-objective',
         },
         {
           heading: this.$t('admin.showKeyResults'),
@@ -122,6 +130,7 @@ export default {
             !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
           nonexistent: this.$t('empty.itemAdmin.keyResult'),
+          cyCreate: 'okr-create-keyresult',
         },
       ];
     },

@@ -2,7 +2,7 @@
   <div>
     <ul class="tabs">
       <li v-for="link in links" :key="link.label">
-        <router-link :to="link.to" class="tab" active-class="active" :exact="link.exact">
+        <router-link :to="link.to" class="tab" active-class="active" :exact="link.exact" :data-cy="link.cy">
           <span class="tab__icon fa" :class="`fa-${link.icon}`"></span>
           <span class="tab__name">{{ link.label }}</span>
         </router-link>
@@ -37,18 +37,21 @@ export default {
           to: { name: 'ItemAdmin' },
           label: this.$t('general.general'),
           exact: true,
+          cy: 'admin-general',
         },
         {
           icon: 'chart-pie',
           to: { name: 'ItemAdminOKRs' },
           label: this.$t('general.OKRsLong'),
           exact: false,
+          cy: 'admin-okr',
         },
         {
           icon: 'chart-line',
           to: { name: 'ItemAdminKPIs' },
           label: this.$t('general.KPIs'),
           exact: false,
+          cy: 'admin-kpi',
         },
       ];
     },

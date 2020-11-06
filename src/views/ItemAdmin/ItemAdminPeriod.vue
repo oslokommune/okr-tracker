@@ -11,6 +11,7 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
+          data-cy="period_name"
         />
 
         <validation-provider v-slot="{ errors }" name="range">
@@ -30,7 +31,7 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-period" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
       <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">

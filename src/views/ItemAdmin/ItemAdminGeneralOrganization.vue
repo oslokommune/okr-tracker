@@ -11,6 +11,7 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
+          data-cy="org-name"
         />
 
         <label class="form-group">

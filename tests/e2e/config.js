@@ -32,6 +32,7 @@ export const testProducts = [
 
 export const testPeriod = {
   name: 'Q1 TEST',
+  date: '2021-01-01 til 2021-06-31',
 };
 
 export const testObjective = {
