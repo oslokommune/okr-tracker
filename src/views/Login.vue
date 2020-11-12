@@ -49,9 +49,9 @@
 
           <div class="login__secondary">
             <button class="btn btn--ghost" @click="showForm = true">{{ $t('login.loginWithUsername') }}</button>
-            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">{{
-              $t('login.requestAccess')
-            }}</router-link>
+            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">
+              {{ $t('login.requestAccess') }}
+            </router-link>
           </div>
         </div>
       </div>

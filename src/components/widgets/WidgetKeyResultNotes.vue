@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
+  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <textarea v-model="thisKey.notes" rows="20" @input="dirty = true"></textarea>
@@ -20,7 +20,7 @@
         <button class="btn btn--ter" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
       </div>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>
@@ -64,7 +64,7 @@ export default {
       immediate: true,
       handler(keyres) {
         this.thisKey = { ...keyres, id: keyres.id };
-        this.md = sanitize(marked(keyres.notes));
+        this.md = sanitize(marked(keyres.notes || ''));
       },
     },
   },

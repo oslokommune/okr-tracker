@@ -13,7 +13,7 @@
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
   },
   "dependencies": {
-    "@braid/griddle": "^1.3.0",
+    "@braid/griddle": "^2.0.1",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@fortawesome/free-regular-svg-icons": "5.15.1",
     "babel-runtime": "^6.26.0",

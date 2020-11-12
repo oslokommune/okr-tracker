@@ -9,7 +9,6 @@
       <div class="main-view">
         <spinner v-if="loading"></spinner>
         <router-view v-else class="router-view"></router-view>
-        <footer class="footer"></footer>
       </div>
     </main>
     <Griddle v-if="isDev" />
@@ -50,20 +49,17 @@ export default {
 };
 
 // Using a class on body to determine how to style focus states
-document.body.addEventListener('mousedown', function () {
+document.body.addEventListener('mousedown', () => {
   document.body.classList.add('using-mouse');
 });
-document.body.addEventListener('keydown', function () {
+document.body.addEventListener('keydown', () => {
   document.body.classList.remove('using-mouse');
 });
 </script>
 
-<style lang="scss">
-@import '@/styles/main.scss';
-</style>
-
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+
 .app {
   min-height: 100vh;
   background: $color-bg;
@@ -102,21 +98,5 @@ document.body.addEventListener('keydown', function () {
 
 .router-view {
   min-height: calc(100vh - 20rem);
-}
-
-.footer {
-  width: 100%;
-  margin: 2rem 0;
-  padding-top: 2rem;
-  text-align: center;
-  // border-top: 1px solid $color-grey-300;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
 }
 </style>

@@ -16,6 +16,8 @@ import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
 
+import './styles/main.scss';
+
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';

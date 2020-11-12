@@ -21,11 +21,11 @@
       </div>
     </div>
 
-    <ProgressBar
+    <progress-bar
       v-tooltip="`${Math.round(progression * 100)}%`"
       class="progress-bar"
       :progression="progression"
-    ></ProgressBar>
+    ></progress-bar>
 
     <span class="item__chevron fas fa-chevron-right"></span>
   </router-link>

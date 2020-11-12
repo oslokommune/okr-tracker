@@ -8,7 +8,7 @@
     <span class="objective__name">{{ objective.name }}</span>
 
     <span class="objective__progression-text">{{ percent(objective.progression) }}</span>
-    <ProgressBar class="objective__progression" :progression="objective.progression"></ProgressBar>
+    <progress-bar class="objective__progression" :progression="objective.progression"></progress-bar>
 
     <span v-if="user.preferences.view !== 'compact'" class="objective__description">{{ objective.description }}</span>
   </router-link>

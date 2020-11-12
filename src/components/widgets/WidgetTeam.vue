@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')" icon="users">
+  <widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')" icon="users">
     <empty-state
       v-if="!activeItem.team.length"
       :icon="'user-ninja'"
@@ -15,10 +15,10 @@
         </router-link>
       </li>
     </ul>
-    <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">{{
-      $t('btn.add')
-    }}</router-link>
-  </Widget>
+    <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
+      {{ $t('btn.add') }}
+    </router-link>
+  </widget>
 </template>
 
 <script>

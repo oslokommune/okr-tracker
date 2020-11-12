@@ -90,7 +90,12 @@
                 </router-link>
               </td>
               <td>
-                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)" :auto-hide="true">
+                <v-popover
+                  v-if="p.comment"
+                  x-placement="bottom"
+                  :open="isFirstProgressWithComment(p)"
+                  :auto-hide="true"
+                >
                   <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon"></i>
                   <template slot="popover">
                     {{ p.comment }}
@@ -230,9 +235,14 @@ export default {
 
 .main-widgets {
   display: flex;
+  flex-direction: row;
   width: 100%;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
+
+  @media screen and (max-width: bp(s)) {
+    flex-direction: column;
+  }
 
   &__title {
     margin-bottom: 0.5rem;
@@ -251,12 +261,20 @@ export default {
     background: white;
     box-shadow: 0 2px 3px rgba(black, 0.1);
 
+    @media screen and (max-width: bp(s)) {
+      width: span(9);
+    }
+
     @media screen and (min-width: bp(m)) {
       width: span(2, 0, span(9));
     }
 
     @media screen and (min-width: bp(l)) {
       width: span(2, 0, span(7));
+    }
+
+    @media screen and (min-width: bp(xl)) {
+      width: span(2, 0, span(6));
     }
 
     &__value {
@@ -286,6 +304,10 @@ export default {
     background: white;
     box-shadow: 0 2px 3px rgba(black, 0.1);
 
+    @media screen and (max-width: bp(s)) {
+      margin-left: span(0);
+    }
+
     @media screen and (min-width: bp(m)) {
       width: span(7, 0, span(9));
       margin-left: span(0, 1, span(9));
@@ -297,26 +319,9 @@ export default {
     }
 
     @media screen and (min-width: bp(xl)) {
-      width: span(5, 0, span(7));
-      margin-left: span(0, 1, span(7));
+      width: span(4, 0, span(6));
+      margin-left: span(0, 1, span(6));
     }
-  }
-}
-
-.main {
-  width: span(12);
-  padding-top: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
   }
 }
 

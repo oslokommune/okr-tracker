@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
+  <widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
     <div class="list">
       <router-link
         v-for="child in children"
@@ -11,7 +11,7 @@
         {{ child.name }}
       </router-link>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>

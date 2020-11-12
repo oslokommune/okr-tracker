@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <router-view v-show="!loading"></router-view>
-  </div>
+  <router-view v-show="!loading"></router-view>
 </template>
 
 <script>

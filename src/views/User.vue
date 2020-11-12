@@ -178,39 +178,6 @@ export default {
   flex-wrap: wrap;
 }
 
-.main {
-  width: span(12);
-  padding-top: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
-}
-
-.side {
-  position: relative;
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
-  }
-}
-
 .main__user {
   display: flex;
   width: 100%;

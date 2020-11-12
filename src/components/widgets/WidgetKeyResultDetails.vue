@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
+  <widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
       <div v-if="activeKeyResult.objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyres.belongsTo') }}</h3>
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>

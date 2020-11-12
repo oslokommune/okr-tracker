@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="activeKeyResult" class="wrapper">
+  <aside v-if="activeKeyResult" class="aside">
     <div v-if="hasEditRights" class="keyresult">
       <router-link
         class="btn btn--ter btn--icon"
@@ -38,21 +38,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  position: relative;
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
-  }
-}
 .keyresult {
   display: flex;
   width: 100%;
