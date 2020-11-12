@@ -87,10 +87,6 @@ import { mapState } from 'vuex';
 export default {
   name: 'AddKPIModal',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
-
   data: () => ({
     value: 0,
     loading: false,

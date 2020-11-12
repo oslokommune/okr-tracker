@@ -69,7 +69,6 @@ export default {
   name: 'ItemAdminGeneralProduct',
 
   components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
 

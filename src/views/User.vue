@@ -78,10 +78,6 @@ import User from '@/db/User';
 export default {
   name: 'User',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
-
   data: () => ({
     user: null,
     products: [],

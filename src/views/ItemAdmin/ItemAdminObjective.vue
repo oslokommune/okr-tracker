@@ -81,8 +81,6 @@ import { toastArchiveAndRevert } from '@/util/toastUtils';
 export default {
   name: 'ItemAdminObjective',
 
-  components: { FormComponent: () => import('@/components/FormComponent.vue'), ArchivedRestore },
-
   props: {
     data: {
       type: Object,

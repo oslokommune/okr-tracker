@@ -45,6 +45,7 @@ Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));
 
 /* eslint-disable */
 configure({

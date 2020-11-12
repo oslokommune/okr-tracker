@@ -52,10 +52,6 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 export default {
   name: 'CreateDepartment',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
-
   data: () => ({
     name: '',
     missionStatement: '',

@@ -48,7 +48,6 @@ export default {
   name: 'ItemAdminGeneralOrganization',
 
   components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
 

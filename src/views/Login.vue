@@ -67,9 +67,6 @@ import i18n from '@/locale/i18n';
 export default {
   name: 'Login',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
   data: () => ({
     email: '',
     password: '',

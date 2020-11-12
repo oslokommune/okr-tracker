@@ -98,7 +98,6 @@ export default {
 
   components: {
     AddKpiModal: () => import('@/components/AddKPIModal.vue'),
-    FormComponent: () => import('@/components/FormComponent.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
   },
 

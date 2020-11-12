@@ -67,9 +67,6 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 export default {
   name: 'CreateProduct',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
   data: () => ({
     name: '',
     missionStatement: '',

@@ -168,7 +168,6 @@ export default {
   name: 'ItemAdminKeResult',
 
   components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
   props: {

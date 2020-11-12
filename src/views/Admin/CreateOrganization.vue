@@ -40,9 +40,6 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 export default {
   name: 'CreateOrganization',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
   data: () => ({
     name: '',
     missionStatement: '',
