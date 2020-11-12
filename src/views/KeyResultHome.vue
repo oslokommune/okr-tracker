@@ -7,7 +7,7 @@
       <div class="main-widgets">
         <div class="main-widgets__current main-widgets__current__children">
           <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-chart-line" />
             {{ $t('keyres.registerProgression.value') }}
           </h3>
           <div class="main-widgets__current__value">
@@ -29,7 +29,7 @@
 
         <div class="main-widgets__graph">
           <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-chart-line" />
             {{ $t('objective.progression') }}
           </h3>
 
@@ -59,7 +59,7 @@
           :icon="'history'"
           :heading="$t('empty.keyResultProgress.heading')"
           :body="$t('empty.keyResultProgress.body')"
-        ></empty-state>
+        />
         <table v-if="progress.length" class="table">
           <thead>
             <tr>
@@ -96,7 +96,7 @@
                   :open="isFirstProgressWithComment(p)"
                   :auto-hide="true"
                 >
-                  <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon"></i>
+                  <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon" />
                   <template slot="popover">
                     {{ p.comment }}
                   </template>
@@ -105,7 +105,7 @@
               <td v-if="hasEditPermissions" style="width: 1rem">
                 <v-popover offset="16" placement="top" show="true">
                   <button class="btn btn--ter btn--icon">
-                    <i class="icon far fa-trash-alt"></i>
+                    <i class="icon far fa-trash-alt" />
                     {{ $t('btn.delete') }}
                   </button>
 

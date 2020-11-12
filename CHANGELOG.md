@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Moved duplicate css-code to global
 - Renamed html-tags to kebab-case
+- Minor improvements to the code
 
 ## [2.0.0-beta.2] - 2020-11-05
 

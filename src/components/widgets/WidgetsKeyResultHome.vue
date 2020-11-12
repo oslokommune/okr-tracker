@@ -5,15 +5,15 @@
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
       >
-        <i class="icon fa fa-edit"></i>
+        <i class="icon fa fa-edit" />
         {{ $t('keyResultPage.change') }}
       </router-link>
     </div>
 
     <div v-if="activeKeyResult" class="widgets">
-      <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
-      <widget-key-result-notes widget-id="keyResultHome.notes"></widget-key-result-notes>
-      <widget-key-result-weights widget-id="keyResultHome.weights"></widget-key-result-weights>
+      <widget-key-result-details widget-id="keyResultHome.details" />
+      <widget-key-result-notes widget-id="keyResultHome.notes" />
+      <widget-key-result-weights widget-id="keyResultHome.weights" />
     </div>
   </aside>
 </template>

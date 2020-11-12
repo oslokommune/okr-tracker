@@ -6,9 +6,9 @@
         <div class="details__item-body">
           <div class="details__item-icon fa" :class="`fa-${activeKeyResult.objective.icon}`"></div>
           <div class="details__item-value">
-            <router-link :to="{ name: 'ObjectiveHome', params: { objectiveId: activeKeyResult.objective.id } }">{{
-              activeKeyResult.objective.name
-            }}</router-link>
+            <router-link :to="{ name: 'ObjectiveHome', params: { objectiveId: activeKeyResult.objective.id } }">
+              {{ activeKeyResult.objective.name }}
+            </router-link>
           </div>
         </div>
       </div>

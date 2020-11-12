@@ -2,8 +2,8 @@
   <div class="grid">
     <admin-items class="admin-items"></admin-items>
     <div class="admin-users">
-      <admin-access-requests v-if="requestAccess.length"></admin-access-requests>
-      <admin-users></admin-users>
+      <admin-access-requests v-if="requestAccess.length" />
+      <admin-users />
     </div>
   </div>
 </template>

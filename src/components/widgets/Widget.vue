@@ -1,7 +1,7 @@
 <template>
   <section class="widget">
     <header class="widget__header">
-      <span class="widget__icon fas fa-fw" :class="`fa-${icon}`"></span>
+      <i class="widget__icon fas fa-fw" :class="`fa-${icon}`" />
       <span class="widget__title">{{ title }}</span>
       <button
         v-if="collapsible"
@@ -9,7 +9,7 @@
         class="widget__toggle fas fa-fw"
         :class="isOpen ? 'fa-minus' : 'fa-plus'"
         @click="toggle"
-      ></button>
+      />
     </header>
     <div v-show="isOpen" class="widget__body">
       <slot></slot>

@@ -8,7 +8,7 @@
         :type="type"
         :kpi="kpi"
         :data="kpis.find(k => k.type === type)"
-      ></kpi-link>
+      />
     </div>
   </section>
 </template>

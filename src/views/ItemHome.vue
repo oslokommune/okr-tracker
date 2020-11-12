@@ -4,8 +4,8 @@
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
       <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
-      <period-selector></period-selector>
-      <action-bar v-if="tree.length"></action-bar>
+      <period-selector />
+      <action-bar v-if="tree.length" />
 
       <empty-state
         v-if="!tree.length"

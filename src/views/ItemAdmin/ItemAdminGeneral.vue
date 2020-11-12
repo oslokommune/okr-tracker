@@ -1,8 +1,8 @@
 <template>
   <div v-if="activeItem" class="wrapper">
-    <item-admin-general-product v-if="type === 'product'"></item-admin-general-product>
-    <item-admin-general-department v-if="type === 'department'"></item-admin-general-department>
-    <item-admin-general-organization v-if="type === 'organization'"></item-admin-general-organization>
+    <item-admin-general-product v-if="type === 'product'" />
+    <item-admin-general-department v-if="type === 'department'" />
+    <item-admin-general-organization v-if="type === 'organization'" />
   </div>
 </template>
 
@@ -17,8 +17,10 @@ export default {
     ItemAdminGeneralDepartment: () => import('./ItemAdminGeneralDepartment'),
     ItemAdminGeneralOrganization: () => import('./ItemAdminGeneralOrganization'),
   },
+
   computed: {
     ...mapState(['activeItem']),
+
     type() {
       const { department, organization } = this.activeItem;
       if (organization && department) return 'product';

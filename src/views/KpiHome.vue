@@ -29,8 +29,7 @@
           :icon="'history'"
           :heading="$t('empty.kpiProgress.heading')"
           :body="$t('empty.kpiProgress.body')"
-        >
-        </empty-state>
+        />
 
         <table v-if="progress.length" class="table">
           <thead>
@@ -47,7 +46,7 @@
             <td v-if="hasEditRights">
               <v-popover offset="16" placement="top" show="true">
                 <button class="btn btn--ter btn--icon">
-                  <i class="icon far fa-trash-alt"></i>
+                  <i class="icon far fa-trash-alt" />
                   {{ $t('btn.delete') }}
                 </button>
 

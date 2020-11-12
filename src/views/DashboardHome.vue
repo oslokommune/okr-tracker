@@ -16,26 +16,23 @@
       </div>
       <div class="panel">
         <div v-if="activePeriod" class="panel__header">
-          <i class="fa fa-fw fa-chart-pie"></i>Progresjon {{ activePeriod.name }}
+          <i class="fa fa-fw fa-chart-pie" />
+          Progresjon {{ activePeriod.name }}
         </div>
         <svg ref="piechart"></svg>
       </div>
     </aside>
 
-    <dashboard-objective
-      v-for="objective in tree"
-      :key="objective.id"
-      :objective="objective"
-      class="objective"
-    ></dashboard-objective>
+    <dashboard-objective v-for="objective in tree" :key="objective.id" :objective="objective" class="objective" />
 
     <div class="close__container">
       <router-link
         v-tooltip="$t('btn.close')"
         class="close"
         :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
-        ><i class="fa fa-times"></i
-      ></router-link>
+      >
+        <i class="fa fa-times" />
+      </router-link>
     </div>
   </div>
 </template>

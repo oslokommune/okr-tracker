@@ -2,7 +2,7 @@
   <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
-        <textarea v-model="thisKey.notes" rows="20" @input="dirty = true"></textarea>
+        <textarea v-model="thisKey.notes" rows="20" @input="dirty = true" />
       </div>
 
       <div v-else class="notes--margin-bottom">

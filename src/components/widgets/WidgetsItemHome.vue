@@ -7,7 +7,7 @@
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdmin' }"
       >
-        <i class="icon fa fa-cog"></i>
+        <i class="icon fa fa-cog" />
         {{ $t('btn.editItem', { item: activeItem.name }) }}
       </router-link>
       <router-link
@@ -15,21 +15,16 @@
         class="btn btn--ter btn--icon"
         :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
       >
-        <i class="icon fas fa-tachometer-alt"></i>
+        <i class="icon fas fa-tachometer-alt" />
         {{ $t('general.dashboard') }}
       </router-link>
     </div>
 
     <div class="widgets">
-      <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement"></widget-mission-statement>
-      <widget-progression
-        v-if="activePeriod"
-        widget-id="itemHome.progression"
-        type="period"
-        :data="activePeriod"
-      ></widget-progression>
-      <widget-team v-if="activePeriod" widget-id="itemHome.team"></widget-team>
-      <widget-child-items widget-id="itemHome.children"></widget-child-items>
+      <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
+      <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
+      <widget-team v-if="activePeriod" widget-id="itemHome.team" />
+      <widget-child-items widget-id="itemHome.children" />
     </div>
   </aside>
 </template>

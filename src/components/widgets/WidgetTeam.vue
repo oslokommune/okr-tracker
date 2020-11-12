@@ -5,7 +5,7 @@
       :icon="'user-ninja'"
       :heading="$t('empty.team.heading')"
       :body="$t('empty.team.body')"
-    ></empty-state>
+    />
 
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">

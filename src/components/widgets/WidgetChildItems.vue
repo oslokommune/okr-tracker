@@ -7,7 +7,7 @@
         :to="{ name: 'ItemHome', params: { slug: child.slug } }"
         class="list__link btn btn--ter btn--fw btn--icon"
       >
-        <span class="icon fa fa-fw fa-chevron-right"></span>
+        <i class="icon fa fa-fw fa-chevron-right" />
         {{ child.name }}
       </router-link>
     </div>

@@ -7,12 +7,9 @@
 
     <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
 
-    <progress-bar
-      v-if="view === 'compact'"
-      class="keyResult__progression"
-      :progression="keyRow.progression"
-    ></progress-bar>
-    <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow"></progress-bar-expanded>
+    <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
+
+    <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow" />
 
     <form
       v-if="view !== 'compact' && hasEditRights && !keyRow.auto"

@@ -26,7 +26,8 @@
 
       <div class="button-row">
         <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
+          <i class="icon fa fa-fw fa-save" />
+          {{ $t('btn.create') }}
         </button>
       </div>
     </div>

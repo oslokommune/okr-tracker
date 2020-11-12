@@ -5,7 +5,7 @@
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
       >
-        <i class="icon fa fa-edit"></i>
+        <i class="icon fa fa-edit" />
         {{ $t('objective.change') }}
       </router-link>
     </div>
@@ -16,9 +16,9 @@
         type="objective"
         :data="progressionData"
         :dimmed="true"
-      ></widget-progression>
-      <widget-objective-details widget-id="objectiveHome.details"></widget-objective-details>
-      <widget-objective-weights widget-id="objectiveHome.weights"></widget-objective-weights>
+      />
+      <widget-objective-details widget-id="objectiveHome.details" />
+      <widget-objective-weights widget-id="objectiveHome.weights" />
     </div>
   </aside>
 </template>

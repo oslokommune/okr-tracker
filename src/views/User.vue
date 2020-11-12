@@ -48,7 +48,7 @@
 
           <template v-if="user.admin">
             <h2 class="title-2">
-              <i class="fas fa-user-shield"></i>
+              <i class="fas fa-user-shield" />
               Admin
             </h2>
             <div>
@@ -61,7 +61,10 @@
             <li v-for="product in products" :key="product.id">
               <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
                 <div class="product__parent">{{ product.department.name }}</div>
-                <div class="product__name"><span class="product__icon fa fa-cube"></span>{{ product.name }}</div>
+                <div class="product__name">
+                  <i class="product__icon fa fa-cube" />
+                  {{ product.name }}
+                </div>
               </router-link>
             </li>
           </ul>

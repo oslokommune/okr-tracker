@@ -7,8 +7,7 @@
           <div v-if="loginError === 1" class="error">
             {{ $t('login.error.notRegistered') }}
 
-            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }}</router-link
-            >.
+            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
           </div>
 
           <div v-if="loginError === 2" class="error">
@@ -43,7 +42,7 @@
 
         <div class="login__footer">
           <button class="btn btn--icon btn--pri" @click="loginWithGoogle">
-            <span class="icon fab fa-fw fa-google"></span>
+            <i class="icon fab fa-fw fa-google" />
             {{ $t('login.google') }}
           </button>
 

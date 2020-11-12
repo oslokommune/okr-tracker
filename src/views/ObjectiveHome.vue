@@ -18,9 +18,9 @@
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
         >
-          <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">{{
-            $t('empty.noKeyResults.linkText')
-          }}</router-link>
+          <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">
+            {{ $t('empty.noKeyResults.linkText') }}
+          </router-link>
         </empty-state>
 
         <div class="key-results__list">
@@ -30,11 +30,11 @@
             :key-result="keyResult"
             :force-expanded="true"
             class="keyResultRow"
-          ></key-result-row>
+          />
         </div>
       </section>
     </div>
-    <widgets-objective-home class="aside"></widgets-objective-home>
+    <widgets-objective-home class="aside" />
   </div>
 </template>
 
