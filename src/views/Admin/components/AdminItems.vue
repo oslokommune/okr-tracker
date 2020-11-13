@@ -15,9 +15,9 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }">{{
-              $t('btn.addOrganization')
-            }}</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }" data-cy="create-organization">
+              {{ $t('btn.addOrganization') }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -35,9 +35,9 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }">{{
-              $t('btn.addDepartment')
-            }}</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }" data-cy="create-department">
+              {{ $t('btn.addDepartment') }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -55,7 +55,9 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }">{{ $t('btn.addProduct') }}</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }" data-cy="create-product">
+              {{ $t('btn.addProduct') }}
+            </router-link>
           </div>
         </div>
       </div>

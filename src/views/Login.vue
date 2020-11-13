@@ -16,6 +16,10 @@
         </div>
         <div v-if="showForm" class="login__form">
           <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
+
+          <div v-if="loginError === 4" class="error">
+            {{ $t('login.error.userNotFound') }}
+          </div>
           <validation-observer v-slot="{ handleSubmit }">
             <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
               <form-component
@@ -25,6 +29,7 @@
                 name="email"
                 rules="required|email"
                 type="email"
+                data-cy="login-username-input"
               />
 
               <form-component
@@ -34,6 +39,7 @@
                 name="password"
                 rules="required"
                 type="password"
+                data-cy="login-username-password"
               />
             </form>
           </validation-observer>
@@ -47,8 +53,10 @@
           </button>
 
           <div class="login__secondary">
-            <button class="btn btn--ghost" @click="showForm = true">{{ $t('login.loginWithUsername') }}</button>
-            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">
+            <button class="btn btn--ghost" data-cy="login-username" @click="showForm = true">
+              {{ $t('login.loginWithUsername') }}
+            </button>
+            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
               {{ $t('login.requestAccess') }}
             </router-link>
           </div>
@@ -102,9 +110,12 @@ export default {
       try {
         await auth.signInWithEmailAndPassword(this.email, this.password);
       } catch (err) {
+        console.log(err);
         this.pending = false;
         if (err.code === 'auth/wrong-password') {
           this.SET_LOGIN_ERROR(3);
+        } else if (err.code === 'auth/user-not-found') {
+          this.SET_LOGIN_ERROR(4);
         }
       }
     },

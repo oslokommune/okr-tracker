@@ -131,7 +131,8 @@
     "error": {
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
-      "wrongPassword": "Passordet er feil."
+      "wrongPassword": "Passordet er feil.",
+      "userNotFound": "Kunne ikke finne bruker"
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },

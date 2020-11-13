@@ -1,17 +1,17 @@
 import { testDepartment } from '../config';
 
 Cypress.Commands.add('createTestDepartment', () => {
-  cy.visit('/admin').wait(3000);
+  cy.visit('/admin');
 
-  cy.get('[data-cy="admin-depsAndProds"]').click().wait(600);
+  cy.get('[data-cy="create-department"]').click();
 
-  cy.url().should('include', '/admin/data');
-
-  cy.get('[data-cy="admin-addDepartment"]').click().wait(600);
+  cy.url().should('include', '/admin/create-department');
 
   cy.get('[data-cy="dep-name"]').clear().type(testDepartment.name);
 
   cy.get('[data-cy="dep-missionStatement"]').clear().type(testDepartment.mission_statement);
 
-  cy.get('[data-cy="btn-saveDep"]').click();
+  cy.get('[data-cy="dep-parentOrg"]').select(testDepartment.parentOrg).should('have.value', testDepartment.parentOrg);
+
+  cy.get('[data-cy="btn-createDep"]').click();
 });

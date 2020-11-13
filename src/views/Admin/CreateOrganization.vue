@@ -12,6 +12,7 @@
             rules="required"
             :label="$t('fields.name')"
             type="text"
+            data-cy="org-name"
           />
 
           <form-component
@@ -20,12 +21,13 @@
             name="missionStatement"
             :label="$t('fields.missionStatement')"
             rules="required"
+            data-cy="org-missionStatement"
           />
         </form>
       </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading">
+        <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading" data-cy="btn-createOrg">
           <i class="icon fa fa-fw fa-save" />
           {{ $t('btn.create') }}
         </button>

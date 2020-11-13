@@ -2,21 +2,7 @@ import { testDepartment, testPeriod, testObjective, testKeyResult } from '../../
 
 describe('Create department', () => {
   before(() => {
-    cy.visit('/').wait(3000);
-
-    // Log in as admin if not already logged in
-    cy.get('body').then($body => {
-      if (!$body.text().includes('Hjem')) {
-        cy.signInAdminUser();
-      }
-    });
-
-    // Delete the test department if it already exists
-    cy.get('.productList').then($el => {
-      if ($el.text().includes(testDepartment.name)) {
-        cy.deleteTestDepartment();
-      }
-    });
+    cy.visit('/').wait(200);
   });
 
   it('Creates a new department', () => {

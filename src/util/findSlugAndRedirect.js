@@ -11,6 +11,10 @@ export default function findSlugAndRedirect(reference) {
   setTimeout(async () => {
     try {
       const { slug } = await reference.get().then(snapshot => snapshot.data());
+
+      if (!slug) {
+        return router.push({ name: 'Home' });
+      }
       return router.push({ name: 'ItemHome', params: { slug } });
     } catch {
       return router.push({ name: 'Home' });

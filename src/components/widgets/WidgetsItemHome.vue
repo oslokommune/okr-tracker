@@ -6,6 +6,7 @@
         v-tooltip="$t('tooltip.editItem')"
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdmin' }"
+        data-cy="edit_object_link"
       >
         <i class="icon fa fa-cog" />
         {{ $t('btn.editItem', { item: activeItem.name }) }}

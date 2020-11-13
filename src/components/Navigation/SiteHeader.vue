@@ -10,7 +10,7 @@
         </h1>
       </div>
 
-      <div v-click-outside="hideUserMenu" class="userMenu">
+      <div v-click-outside="hideUserMenu" class="userMenu" data-cy="usermenu">
         <button
           v-if="user"
           v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
@@ -26,25 +26,29 @@
         <nav v-if="user && showUserMenu" class="menu">
           <ul class="menu__list">
             <li class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'User', params: { id: user.id } }">
+              <router-link
+                class="btn btn--ter btn--icon"
+                :to="{ name: 'User', params: { id: user.id } }"
+                data-cy="site-header-profile"
+              >
                 <i class="icon fa fa-fw fa-user" />
                 {{ $t('profile.myProfile') }}
               </router-link>
             </li>
             <li v-if="user.admin" class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }">
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }" data-cy="site-header-admin">
                 <i class="icon fa fa-fw fa-cogs" />
                 {{ $t('general.admin') }}
               </router-link>
             </li>
             <li class="menu__list-item show-mobile">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }">
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }" data-cy="site-header-help">
                 <i class="icon fa fa-fw fa-question-circle" />
                 {{ $t('general.help') }}
               </router-link>
             </li>
             <li>
-              <button class="btn btn--ter btn--icon" @click="signOut">
+              <button class="btn btn--ter btn--icon" data-cy="site-header-signout" @click="signOut">
                 <i class="icon fa fa-fw fa-sign-out-alt" />
                 {{ $t('general.signOut') }}
               </button>

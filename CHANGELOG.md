@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- E2E-tests (alpha)
+
 ### Changes
 
 - Moved duplicate css-code to global
