@@ -39,8 +39,8 @@ jobs:
 
 
       # Runs a single command using the runners shell
-      - name: Use Node.js {{matrix.node-version}}
-        uses: actions/setup-node@v1.4.2
+      - name: Use Node.js ${{matrix.node-version}}
+        uses: actions/setup-node@v2-beta
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install
