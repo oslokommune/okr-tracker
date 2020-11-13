@@ -7,10 +7,10 @@
         :class="{ active: activePeriod && period.id === activePeriod.id }"
         @click="set_active_period_and_data(period.id)"
       >
-        <span
+        <i
           class="tab__icon"
           :class="activePeriod && period.id === activePeriod.id ? 'fas fa-calendar-alt' : 'far fa-calendar'"
-        ></span>
+        />
         <span class="tab__name">{{ period.name }}</span>
       </button>
     </li>

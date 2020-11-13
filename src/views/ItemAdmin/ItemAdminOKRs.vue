@@ -26,10 +26,10 @@
           class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected"></empty-state>
+          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
 
           <ul v-else class="miller__list">
-            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent"></empty-state>
+            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent" />
             <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
               <router-link
                 class="miller__link"
@@ -39,7 +39,7 @@
                   selected: selectedClass(id),
                 }"
               >
-                <span class="miller__icon fa" :class="icon"></span>
+                <i class="miller__icon fa" :class="icon" />
                 <span class="miller__label">{{ name }}</span>
                 <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
               </router-link>
@@ -51,7 +51,7 @@
             :data-cy="cyCreate"
             @click="addEvent"
           >
-            <span class="icon fa fa-plus"></span>
+            <i class="icon fa fa-plus" />
             <span>{{ $t('btn.create') }}</span>
           </button>
         </div>

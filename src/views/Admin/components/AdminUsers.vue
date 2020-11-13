@@ -20,7 +20,7 @@
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
           </span>
-          <span class="users__list-item-chevron fa fa-chevron-right"></span>
+          <i class="users__list-item-chevron fa fa-chevron-right" />
         </button>
       </div>
       <div class="users__footer">

@@ -4,11 +4,11 @@
     :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
     :class="{ expanded: user.preferences.view !== 'compact' }"
   >
-    <span class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`"></span>
+    <i class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`" />
     <span class="objective__name">{{ objective.name }}</span>
 
     <span class="objective__progression-text">{{ percent(objective.progression) }}</span>
-    <ProgressBar class="objective__progression" :progression="objective.progression"></ProgressBar>
+    <progress-bar class="objective__progression" :progression="objective.progression" />
 
     <span v-if="user.preferences.view !== 'compact'" class="objective__description">{{ objective.description }}</span>
   </router-link>

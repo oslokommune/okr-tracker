@@ -1,5 +1,5 @@
 <template>
-  <Widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
+  <widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
     {{ $t('weight.keyresFor', { name: activeKeyResult.objective.name }) }}
     <div class="scales">
       <router-link
@@ -14,7 +14,7 @@
         {{ weight }}
       </router-link>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>

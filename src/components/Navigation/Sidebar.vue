@@ -15,10 +15,10 @@
           >
             <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
             {{ item.name }}
-            <span
+            <i
               v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
               class="sidebar__user-icon fas fa-user-circle"
-            ></span>
+            />
           </router-link>
         </li>
       </ul>
@@ -26,15 +26,15 @@
 
     <div class="sidebar__group sidebar__bottom button-col">
       <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
-        <span class="icon fa fa-fw fa-cogs"></span>
+        <i class="icon fa fa-fw fa-cogs" />
         <span class="btn--label">{{ $t('general.admin') }}</span>
       </router-link>
       <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
-        <span class="icon fa fa-fw fa-question-circle"></span>
+        <i class="icon fa fa-fw fa-question-circle" />
         <span class="btn--label">{{ $t('general.help') }}</span>
       </router-link>
       <button class="btn btn--ter btn--icon" @click="signOut">
-        <span class="icon fa fa-fw fa-sign-out-alt"></span>
+        <i class="icon fa fa-fw fa-sign-out-alt" />
         <span class="btn--label">{{ $t('general.signOut') }}</span>
       </button>
     </div>

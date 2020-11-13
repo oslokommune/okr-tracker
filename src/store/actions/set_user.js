@@ -1,6 +1,8 @@
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
 import User from '@/db/User';
+import defaultPreferences from '@/db/User/defaultPreferences';
+import { setLanguage } from '@/locale/i18n';
 
 export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, user) => {
   const rejectAccess = () => {
@@ -16,7 +18,15 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   const documentSnapshot = await userRef.get();
   if (!documentSnapshot.exists) rejectAccess();
 
-  const { email, displayName } = await documentSnapshot.data();
+  const { email, displayName, preferences } = await documentSnapshot.data();
+
+  if (!preferences) {
+    await User.update({ id: email, preferences: defaultPreferences });
+  }
+
+  if (preferences.lang) {
+    setLanguage(preferences.lang);
+  }
 
   if (!displayName) {
     await User.update({ id: email, displayName: user.displayName });

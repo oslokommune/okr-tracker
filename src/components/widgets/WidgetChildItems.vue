@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
+  <widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
     <div class="list">
       <router-link
         v-for="child in children"
@@ -7,11 +7,11 @@
         :to="{ name: 'ItemHome', params: { slug: child.slug } }"
         class="list__link btn btn--ter btn--fw btn--icon"
       >
-        <span class="icon fa fa-fw fa-chevron-right"></span>
+        <i class="icon fa fa-fw fa-chevron-right" />
         {{ child.name }}
       </router-link>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>
@@ -55,11 +55,11 @@ export default {
 
       if (childProducts.length) {
         this.children = childProducts;
-        this.title = 'Produkter';
+        this.title = this.$t('general.products');
         this.icon = 'cube';
       } else if (childDepartments.length) {
         this.children = childDepartments;
-        this.title = 'Produktområder';
+        this.title = this.$t('general.departments');
         this.icon = 'cubes';
       } else {
         this.children = [];

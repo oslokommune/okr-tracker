@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="activeItem" class="wrapper">
+  <aside v-if="activeItem" class="aside">
     <div class="itemHome">
       <router-link
         v-if="hasEditRights"
@@ -8,7 +8,7 @@
         :to="{ name: 'ItemAdmin' }"
         data-cy="edit_object_link"
       >
-        <i class="icon fa fa-cog"></i>
+        <i class="icon fa fa-cog" />
         {{ $t('btn.editItem', { item: activeItem.name }) }}
       </router-link>
       <router-link
@@ -16,21 +16,16 @@
         class="btn btn--ter btn--icon"
         :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
       >
-        <i class="icon fas fa-tachometer-alt"></i>
+        <i class="icon fas fa-tachometer-alt" />
         {{ $t('general.dashboard') }}
       </router-link>
     </div>
 
     <div class="widgets">
-      <WidgetMissionStatement v-if="activeItem" widget-id="itemHome.missionStatement"></WidgetMissionStatement>
-      <WidgetProgression
-        v-if="activePeriod"
-        widget-id="itemHome.progression"
-        type="period"
-        :data="activePeriod"
-      ></WidgetProgression>
-      <WidgetTeam v-if="activePeriod" widget-id="itemHome.team"></WidgetTeam>
-      <WidgetChildItems widget-id="itemHome.children"></WidgetChildItems>
+      <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
+      <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
+      <widget-team v-if="activePeriod" widget-id="itemHome.team" />
+      <widget-child-items widget-id="itemHome.children" />
     </div>
   </aside>
 </template>
@@ -69,10 +64,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  position: relative;
-  margin-top: 0.5rem;
-}
 .widgets > .btn {
   margin-bottom: 1.5rem;
 }
@@ -88,7 +79,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 1.75rem 0 1rem;
+  padding: 1.5rem 0;
 
   & > .btn {
     width: 100%;

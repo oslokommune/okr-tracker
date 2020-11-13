@@ -4,11 +4,34 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Changes
+
+- Moved duplicate css-code to global
+- Renamed html-tags to kebab-case
+- Minor improvements to the code
+
+## [2.0.0-beta.2] - 2020-11-05
+
+### Added
+
+- English locale
+- Store language preference on user
+- Change language preference on profile page
+- Markdown support on mission statements and key result notes
+- Force order of KPIs + include non-existent KPIs on ItemHome
+
 ### Fixed
 
 - Fix issue with findSlugAndRedirect-method - returns redirect and increased delay
+- Add defaultPreferences on user if not existing (simplifies mock data creation)
+- Remove misplaced markup on objective details widget
+- Add missing translations
+- Replaced 'deleted' with 'archived' in toaster
+- Automatically archives related objectives and key results when archiving periods and objectives
+- Improved Google Sheets integration guide on help page
+- Display startValue if no currentValue is set on key result home view
 
-## [2.0.0-beta] - 2020-11-04
+## [2.0.0-beta] - 2020-11-03
 
 Several breaking changes. See [release notes](./documentation/release-notes_v2.0.0-beta.md).
 

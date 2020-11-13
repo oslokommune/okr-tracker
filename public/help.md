@@ -76,12 +76,18 @@ Disse KPI-ene kan legges til organisasjoner, produktområder og produkter.
 
 ### Legge til ny KPI
 
-1. Naviger til ditt produkt (eventuelt produktområde eller organisasjon for systemadministratorer).
-2. Klikk «Endre \<navn\>».
-3. Velg «KPI-er».
-4. Klikk «Legg til KPI».
-5. I skjemaet må du velge KPI-type (se over), navn og beskrivelse (valgfritt). Her ser du også e-post-adressen som Google Sheets-dokumentet må deles med. Google Sheet ID-en finner du i URL-en til dokumentet: `.../spreadsheets/d/<dokument-id>/edit`
-6. Trykk «Legg til» og vent til du får grønn «OK» for bekreftelse på gyldig kobling.
+#### Steg 1: Sette opp Google Sheets
+
+- Se [Google analytics-integrasjon](#google-analytics-integrasjon).
+
+#### Steg 2: Fyll inn detaljer
+
+- Naviger til ditt produkt (eventuelt produktområde eller organisasjon for systemadministratorer).
+- Klikk «Endre \<navn\>».
+- Velg «KPI-er».
+- Klikk «Legg til KPI».
+- I skjemaet må du velge KPI-type (se over), navn og beskrivelse (valgfritt). Her ser du også e-post-adressen (service account) som Google Sheets-dokumentet må deles med. Google Sheet ID-en finner du i URL-en til dokumentet: `.../spreadsheets/d/<dokument-id>/edit`
+- Trykk «Legg til» og vent til du får grønn «OK» for bekreftelse på gyldig kobling.
 
 ---
 
@@ -404,14 +410,9 @@ Dokumentet må deles med OKR-trackeren via applikasjonens _service account_.
 
 ### Opprette et «automatisk» nøkkelresultat
 
-**Steg 1: Forberede Google Sheets-dokument**
+**Steg 1: Sett opp Google Sheets**
 
-- Gå til [Google Sheets](https://sheets.google.com)
-- Opprett nytt regneark
-- Trykk på «Del»
-- Del dokumentet med applikasjonens _service account_.
-- Finn dokument-id-en i URL-en (.../spreadsheets/d/`<ID>`/edit)
-- Finn navnet på _fanen_ som verdien du ønsker å bruke ligger i
+- Se [Google analytics-integrasjon](#google-analytics-integrasjon).
 
 **Steg 2: Opprette nøkkelresultat**
 
@@ -424,20 +425,29 @@ _Ønsker du datauthenting fra Google Analytics bør du følge guiden for dette f
 - Fyll inn «Google Sheet ID», «Fane» og «Celle»
 - Klikk «Lagre nytt nøkkelresultat»
 
-### Google Analytics
+## Google Analytics-integrasjon
 
 Via en Google Analytics-plugin til Google Sheets kan du automatisk hente ut verdier fra analytics.
 
 **Obs!** Din innloggede bruker må allerede ha tilgang til Analytics-rapporten som du ønsker å hente ut verdi(er) fra.
 
-**Steg 1: Installer Plugin til dokumentet**
+**Steg 1: Opprett og del Google Sheets-dokument**
+
+- Gå til [Google Sheets](https://sheets.google.com)
+- Opprett nytt regneark
+- Trykk på «Del»
+- Del dokumentet med applikasjonens _service account_.
+- Finn dokument-id-en i URL-en (.../spreadsheets/d/`<ID>`/edit)
+- Finn navnet på _fanen_ som verdien du ønsker å bruke ligger i
+
+**Steg 2: Installer Plugin til dokumentet**
 
 - Åpne Google Sheets-dokumentet
 - Velg «Add-ons» fra toppmenyen
 - Klikk på «Get add-ons»
 - Søk etter og velg på «Google Analytics» og klikk på «Install»
 
-**Steg 2: Hent ut data**
+**Steg 3: Hent ut data**
 
 - Velg «Add-ons» → «Google Analytics» → «Create new report» fra toppmenyen
 - Skriv inn et navn (dette blir også navnet på fanen)

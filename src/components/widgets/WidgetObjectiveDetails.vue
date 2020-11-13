@@ -1,5 +1,5 @@
 <template>
-  <Widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
+  <widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
       <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
@@ -60,16 +60,8 @@
           </div>
         </div>
       </div>
-
-      <div class="details__item">
-        <h3 class="title-3 details__item-heading">Heading</h3>
-        <div class="details__item-body">
-          <div class="details__item-icon fa fa-user"></div>
-          <div class="details__item-value">User</div>
-        </div>
-      </div>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>

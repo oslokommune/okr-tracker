@@ -58,6 +58,5 @@ describe('Request access', () => {
       });
 
     cy.get('.toasted').should('contain', i18n.t('toaster.request.rejected', { user: 'rejectme@internet.com' }));
-
   });
 });

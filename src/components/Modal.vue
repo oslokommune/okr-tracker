@@ -19,7 +19,7 @@
 
           <label>
             <span class="title-3">{{ $t('keyres.addComment') }}</span>
-            <textarea v-model="note" class="modal__textarea" rows="3"></textarea>
+            <textarea v-model="note" class="modal__textarea" rows="3" />
           </label>
 
           <div class="modal__main--flex">
@@ -40,7 +40,7 @@
                   class="form-control"
                   name="date"
                   :placeholder="$t('keyres.chooseDate')"
-                ></flat-pickr>
+                />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>

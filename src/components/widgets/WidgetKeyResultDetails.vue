@@ -1,14 +1,14 @@
 <template>
-  <Widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
+  <widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
     <div class="details">
       <div v-if="activeKeyResult.objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyres.belongsTo') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa" :class="`fa-${activeKeyResult.objective.icon}`"></div>
           <div class="details__item-value">
-            <router-link :to="{ name: 'ObjectiveHome', params: { objectiveId: activeKeyResult.objective.id } }">{{
-              activeKeyResult.objective.name
-            }}</router-link>
+            <router-link :to="{ name: 'ObjectiveHome', params: { objectiveId: activeKeyResult.objective.id } }">
+              {{ activeKeyResult.objective.name }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-  </Widget>
+  </widget>
 </template>
 
 <script>

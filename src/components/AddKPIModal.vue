@@ -31,12 +31,12 @@
 
             <label class="form-group">
               <span class="form-label">{{ $t('kpi.description') }}</span>
-              <textarea v-model="kpi.description" class="form__field" rows="4"></textarea>
+              <textarea v-model="kpi.description" class="form__field" rows="4" />
             </label>
             <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
 
             <div class="sheets-info">
-              <i class="sheets-info__icon fa fa-info-circle"></i>
+              <i class="sheets-info__icon fa fa-info-circle" />
               <div>
                 {{ $t('sheet.infoText') }} <br />
                 <strong>{{ serviceAccountAddress }}</strong>
@@ -86,10 +86,6 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'AddKPIModal',
-
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
 
   data: () => ({
     value: 0,

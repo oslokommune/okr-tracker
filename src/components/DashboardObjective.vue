@@ -1,7 +1,7 @@
 <template>
   <div class="objective">
     <div class="objective__head">
-      <i class="objective__icon fa fa-fw fa-trophy"></i>
+      <i class="objective__icon fa fa-fw fa-trophy" />
       <div class="objective__name">
         {{ objective.name }}
       </div>
@@ -13,7 +13,7 @@
         {{ keyres.description }}
       </div>
       <div class="key-result__progress">
-        <dashboard-progress-bar :keyres="keyres" :darkmode="true"></dashboard-progress-bar>
+        <dashboard-progress-bar :keyres="keyres" :darkmode="true" />
       </div>
     </div>
   </div>

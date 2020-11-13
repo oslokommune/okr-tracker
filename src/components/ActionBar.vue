@@ -11,7 +11,7 @@
         :class="{ active: view.id === user.preferences.view }"
         @click="updateView(view.id)"
       >
-        <span class="view__icon"></span>
+        <i class="view__icon" />
         <span class="view__name">{{ view.label }}</span>
       </button>
     </div>

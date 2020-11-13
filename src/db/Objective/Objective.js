@@ -19,7 +19,14 @@ const update = (id, data) => {
   return updateDocument(collection.doc(id), data);
 };
 
-const archive = id => update(id, { archived: true });
+const archive = id => {
+  db.collection('keyResults')
+    .where('objective', '==', collection.doc(id))
+    .get()
+    .then(({ docs }) => docs.forEach(({ ref }) => KeyResult.archive(ref.id)));
+
+  update(id, { archived: true });
+};
 const restore = id => update(id, { archived: false });
 
 const deleteDeep = async id => {

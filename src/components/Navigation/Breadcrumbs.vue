@@ -4,11 +4,11 @@
       <ul class="breadcrumbs__list" :data-count="breadcrumbs.length">
         <li v-for="({ route, icon, label }, i) in breadcrumbs" :key="`breadcrumb_${i}`" class="breadcrumbs__item">
           <router-link v-if="route" :ref="`breadcrumb_${i}`" class="breadcrumbs__link" :to="route">
-            <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
+            <i class="breadcrumbs__icon fas" :class="`fa-${icon}`" />
             <span class="breadcrumbs__label">{{ label }}</span>
           </router-link>
           <span v-else class="breadcrumbs__link">
-            <span class="breadcrumbs__icon fas" :class="`fa-${icon}`"></span>
+            <i class="breadcrumbs__icon fas" :class="`fa-${icon}`" />
             <span class="breadcrumbs__label">{{ label }}</span>
           </span>
         </li>
