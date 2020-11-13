@@ -133,7 +133,8 @@
     "error": {
       "notRegistered": "Your account is not registered",
       "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",
-      "wrongPassword": "Wrong password."
+      "wrongPassword": "Wrong password.",
+      "userNotFound": "Could not find user."
     },
     "loginWithUsername": "Sign in with username"
   },

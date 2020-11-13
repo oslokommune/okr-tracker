@@ -3,7 +3,6 @@ describe('Page navigation', () => {
   before(() => {
     cy.visit('/');
 
-    cy.signInAdminUser();
   })
 
   it('Navigates to help page', () => {
