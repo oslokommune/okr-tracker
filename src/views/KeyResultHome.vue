@@ -90,12 +90,7 @@
                 </router-link>
               </td>
               <td>
-                <v-popover
-                  v-if="p.comment"
-                  x-placement="bottom"
-                  :open="isFirstProgressWithComment(p)"
-                  :auto-hide="true"
-                >
+                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)">
                   <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon" />
                   <template slot="popover">
                     {{ p.comment }}
@@ -103,7 +98,7 @@
                 </v-popover>
               </td>
               <td v-if="hasEditPermissions" style="width: 1rem">
-                <v-popover offset="16" placement="top" show="true">
+                <v-popover offset="16" placement="top">
                   <button class="btn btn--ter btn--icon">
                     <i class="icon far fa-trash-alt" />
                     {{ $t('btn.delete') }}
