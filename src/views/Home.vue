@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <ul v-if="user" class="items">
+  <div class="main">
+    <ul v-if="user">
       <li v-for="org in tree" :key="org.id">
-        <ItemRow :data="org" type="organization"></ItemRow>
+        <item-row :data="org" type="organization"></item-row>
         <ul>
           <li v-for="dept in org.children" :key="dept.id" class="card">
-            <itemRow :data="dept" type="department"></itemRow>
+            <item-row :data="dept" type="department"></item-row>
             <ul>
               <li v-for="prod in dept.children" :key="prod.id">
-                <itemRow :data="prod" type="product"></itemRow>
+                <item-row :data="prod" type="product"></item-row>
               </li>
             </ul>
           </li>
@@ -36,24 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.items {
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-    margin-top: 1rem;
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(8, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    margin-top: 1.5rem;
-  }
-}
-
 .card {
   background: white;
   border-radius: 2px;

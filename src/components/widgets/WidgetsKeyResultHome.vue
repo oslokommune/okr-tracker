@@ -1,19 +1,19 @@
 <template>
-  <aside v-if="activeKeyResult" class="wrapper">
+  <aside v-if="activeKeyResult" class="aside">
     <div v-if="hasEditRights" class="keyresult">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
       >
-        <i class="icon fa fa-edit"></i>
+        <i class="icon fa fa-edit" />
         {{ $t('keyResultPage.change') }}
       </router-link>
     </div>
 
     <div v-if="activeKeyResult" class="widgets">
-      <widget-key-result-details widget-id="keyResultHome.details"></widget-key-result-details>
-      <widget-key-result-notes widget-id="keyResultHome.notes"></widget-key-result-notes>
-      <widget-key-result-weights widget-id="keyResultHome.weights"></widget-key-result-weights>
+      <widget-key-result-details widget-id="keyResultHome.details" />
+      <widget-key-result-notes widget-id="keyResultHome.notes" />
+      <widget-key-result-weights widget-id="keyResultHome.weights" />
     </div>
   </aside>
 </template>
@@ -38,21 +38,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  position: relative;
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
-  }
-}
 .keyresult {
   display: flex;
   width: 100%;

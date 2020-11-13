@@ -18,31 +18,35 @@
           :class="{ active: showUserMenu }"
           @click="showUserMenu = !showUserMenu"
         >
-          <span v-if="!user.photoURL" class="user__icon fa fa-user-circle"></span>
+          <i v-if="!user.photoURL" class="user__icon fa fa-user-circle" />
           <img v-if="user.photoURL" :src="user.photoURL" class="user__image" :alt="user.photoUrl" />
           <span class="user__name">{{ user.displayName }}</span>
-          <span class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'"></span>
+          <i class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'" />
         </button>
         <nav v-if="user && showUserMenu" class="menu">
           <ul class="menu__list">
             <li class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'User', params: { id: user.id } }"
-                ><i class="icon fa fa-fw fa-user"></i> {{ $t('profile.myProfile') }}</router-link
-              >
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'User', params: { id: user.id } }">
+                <i class="icon fa fa-fw fa-user" />
+                {{ $t('profile.myProfile') }}
+              </router-link>
             </li>
             <li v-if="user.admin" class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }"
-                ><i class="icon fa fa-fw fa-cogs"></i> {{ $t('general.admin') }}</router-link
-              >
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }">
+                <i class="icon fa fa-fw fa-cogs" />
+                {{ $t('general.admin') }}
+              </router-link>
             </li>
             <li class="menu__list-item show-mobile">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }"
-                ><i class="icon fa fa-fw fa-question-circle"></i> {{ $t('general.help') }}</router-link
-              >
+              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }">
+                <i class="icon fa fa-fw fa-question-circle" />
+                {{ $t('general.help') }}
+              </router-link>
             </li>
             <li>
               <button class="btn btn--ter btn--icon" @click="signOut">
-                <i class="icon fa fa-fw fa-sign-out-alt"></i> {{ $t('general.signOut') }}
+                <i class="icon fa fa-fw fa-sign-out-alt" />
+                {{ $t('general.signOut') }}
               </button>
             </li>
           </ul>

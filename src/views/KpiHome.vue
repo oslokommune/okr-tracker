@@ -14,8 +14,9 @@
         v-tooltip="$t('tooltip.editKpi')"
         class="btn btn--ghost"
         :to="{ name: 'ItemAdminKPIs' }"
-        >{{ $t('kpi.edit') }}</router-link
       >
+        {{ $t('kpi.edit') }}
+      </router-link>
 
       <widget widget-id="kpiProgression" icon="chart-line" :title="$t('kpi.progresjon')" :collapsible="false">
         <svg ref="graph" class="graph"></svg>
@@ -28,7 +29,7 @@
           :icon="'history'"
           :heading="$t('empty.kpiProgress.heading')"
           :body="$t('empty.kpiProgress.body')"
-        ></empty-state>
+        />
 
         <table v-if="progress.length" class="table">
           <thead>
@@ -45,7 +46,7 @@
             <td v-if="hasEditRights">
               <v-popover offset="16" placement="top" show="true">
                 <button class="btn btn--ter btn--icon">
-                  <i class="icon far fa-trash-alt"></i>
+                  <i class="icon far fa-trash-alt" />
                   {{ $t('btn.delete') }}
                 </button>
 
@@ -144,23 +145,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
 
-.main {
-  width: span(12);
-  padding-top: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
-}
-
 .history {
   margin: 2.5rem 0 1.5rem;
 }
@@ -172,19 +156,19 @@ export default {
   border-radius: 2px;
   box-shadow: 0 2px 5px rgba(black, 0.1);
 
-  @media screen and (min-width: bp('s')) {
+  @media screen and (min-width: bp(s)) {
     width: span(4, 0, span(12));
   }
 
-  @media screen and (min-width: bp('m')) {
+  @media screen and (min-width: bp(m)) {
     width: span(3, 0, span(9));
   }
 
-  @media screen and (min-width: bp('l')) {
+  @media screen and (min-width: bp(l)) {
     width: span(2, 0, span(7));
   }
 
-  @media screen and (min-width: bp('l')) {
+  @media screen and (min-width: bp(xl)) {
     width: span(2, 0, span(6));
   }
 }

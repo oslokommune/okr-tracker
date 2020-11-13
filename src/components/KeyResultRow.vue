@@ -7,12 +7,9 @@
 
     <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
 
-    <ProgressBar
-      v-if="view === 'compact'"
-      class="keyResult__progression"
-      :progression="keyRow.progression"
-    ></ProgressBar>
-    <ProgressBarExpanded v-else class="keyResult__progression" :key-result="keyRow"></ProgressBarExpanded>
+    <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
+
+    <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow" />
 
     <form
       v-if="view !== 'compact' && hasEditRights && !keyRow.auto"
@@ -104,7 +101,7 @@ export default {
   color: $color-grey-800;
   text-decoration: none;
 
-  @media screen and (min-width: bp('m')) {
+  @media screen and (min-width: bp(m)) {
     padding-right: 1rem;
   }
 }
@@ -130,7 +127,7 @@ export default {
   margin-top: 0.5rem;
   font-size: 0.8rem;
 
-  @media screen and (min-width: bp('m')) {
+  @media screen and (min-width: bp(m)) {
     padding-right: 1rem;
   }
 }
@@ -142,12 +139,12 @@ export default {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 
-  @media screen and (min-width: bp('m')) {
+  @media screen and (min-width: bp(m)) {
     grid-row: 3;
     grid-column: 2;
   }
 
-  @media screen and (min-width: bp('m')) {
+  @media screen and (min-width: bp(m)) {
     grid-row: 2;
     grid-column: 3;
   }

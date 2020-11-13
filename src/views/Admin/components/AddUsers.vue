@@ -4,7 +4,7 @@
 
     <div class="add-users__body">
       <p>{{ $t('admin.users.registerUsersText') }}</p>
-      <textarea v-model="emails" class="add-users__input form-field"></textarea>
+      <textarea v-model="emails" class="add-users__input form-field" />
     </div>
     <div class="add-users__footer">
       <button class="btn btn--fw" :disabled="loading" @click="save">{{ $t('admin.users.registerUsersButton') }}</button>

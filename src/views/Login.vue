@@ -7,8 +7,7 @@
           <div v-if="loginError === 1" class="error">
             {{ $t('login.error.notRegistered') }}
 
-            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }}</router-link
-            >.
+            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
           </div>
 
           <div v-if="loginError === 2" class="error">
@@ -43,15 +42,15 @@
 
         <div class="login__footer">
           <button class="btn btn--icon btn--pri" @click="loginWithGoogle">
-            <span class="icon fab fa-fw fa-google"></span>
+            <i class="icon fab fa-fw fa-google" />
             {{ $t('login.google') }}
           </button>
 
           <div class="login__secondary">
             <button class="btn btn--ghost" @click="showForm = true">{{ $t('login.loginWithUsername') }}</button>
-            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">{{
-              $t('login.requestAccess')
-            }}</router-link>
+            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }">
+              {{ $t('login.requestAccess') }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -67,9 +66,6 @@ import i18n from '@/locale/i18n';
 export default {
   name: 'Login',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
   data: () => ({
     email: '',
     password: '',

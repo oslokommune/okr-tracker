@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="back">
       <router-link class="btn btn--icon btn--ghost" :to="{ name: 'Login' }">
-        <i class="icon fa-xs fa fa-fw fa-chevron-left"></i>
+        <i class="icon fa-xs fa fa-fw fa-chevron-left" />
         {{ $t('login.backToLogin') }}
       </router-link>
     </div>

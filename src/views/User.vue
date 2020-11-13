@@ -48,7 +48,7 @@
 
           <template v-if="user.admin">
             <h2 class="title-2">
-              <i class="fas fa-user-shield"></i>
+              <i class="fas fa-user-shield" />
               Admin
             </h2>
             <div>
@@ -61,7 +61,10 @@
             <li v-for="product in products" :key="product.id">
               <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
                 <div class="product__parent">{{ product.department.name }}</div>
-                <div class="product__name"><span class="product__icon fa fa-cube"></span>{{ product.name }}</div>
+                <div class="product__name">
+                  <i class="product__icon fa fa-cube" />
+                  {{ product.name }}
+                </div>
               </router-link>
             </li>
           </ul>
@@ -77,10 +80,6 @@ import User from '@/db/User';
 
 export default {
   name: 'User',
-
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
 
   data: () => ({
     user: null,
@@ -176,39 +175,6 @@ export default {
 .user {
   display: flex;
   flex-wrap: wrap;
-}
-
-.main {
-  width: span(12);
-  padding-top: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
-}
-
-.side {
-  position: relative;
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
-  }
 }
 
 .main__user {

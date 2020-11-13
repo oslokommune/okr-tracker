@@ -1,6 +1,6 @@
 <template>
   <div v-if="activeItem">
-    <archived-restore v-if="activeItem.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
+    <archived-restore v-if="activeItem.archived" :delete-deep="deleteDeep" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-product" @submit.prevent="handleSubmit(update)">
@@ -50,10 +50,12 @@
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-product" :disabled="loading">
-        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
+        <i class="icon fa fa-fw fa-save" />
+        {{ $t('btn.saveChanges') }}
       </button>
       <button v-if="!activeItem.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
+        <i class="icon fa fa-fw fa-trash" />
+        {{ $t('btn.archive') }}
       </button>
     </div>
   </div>
@@ -69,7 +71,6 @@ export default {
   name: 'ItemAdminGeneralProduct',
 
   components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
 

@@ -1,16 +1,18 @@
 <template>
   <div class="archived">
-    <span class="archived__icon fa fa-file-archive"></span>
+    <i class="archived__icon fa fa-file-archive" />
     <div class="archived__content">
       <h3 class="title-2 archived__title">{{ $t('archived.heading') }}</h3>
       <p>{{ $t('archived.body') }}</p>
 
       <div class="button-row">
         <button class="btn btn--icon btn--sec" @click="restore">
-          <span class="icon fa fa-trash-restore-alt"></span>{{ $t('btn.restore') }}
+          <i class="icon fa fa-trash-restore-alt" />
+          {{ $t('btn.restore') }}
         </button>
         <button class="btn btn--icon btn--danger" @click="deleteDeep">
-          <span class="icon fa fa-exclamation-triangle"></span>{{ $t('btn.deletePermanently') }}
+          <i class="icon fa fa-exclamation-triangle" />
+          {{ $t('btn.deletePermanently') }}
         </button>
       </div>
     </div>

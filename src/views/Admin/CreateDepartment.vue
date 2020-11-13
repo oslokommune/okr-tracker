@@ -36,7 +36,8 @@
 
       <div class="button-row">
         <button class="btn btn--icon btn--pri" form="createDepartment" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
+          <i class="icon fa fa-fw fa-save" />
+          {{ $t('btn.create') }}
         </button>
       </div>
     </div>
@@ -51,10 +52,6 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
   name: 'CreateDepartment',
-
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
 
   data: () => ({
     name: '',

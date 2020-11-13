@@ -4,8 +4,8 @@
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
       <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
-      <period-selector></period-selector>
-      <action-bar v-if="tree.length"></action-bar>
+      <period-selector />
+      <action-bar v-if="tree.length" />
 
       <empty-state
         v-if="!tree.length"
@@ -13,24 +13,24 @@
         :heading="$t('empty.noPeriods.heading')"
         :body="$t('empty.noPeriods.body')"
       >
-        <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">{{
-          $t('empty.noPeriods.buttonText')
-        }}</router-link>
+        <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
+          {{ $t('empty.noPeriods.buttonText') }}
+        </router-link>
       </empty-state>
 
       <ul v-if="tree">
         <li v-for="objective in tree" :key="objective.id">
-          <ObjectiveRow :objective="objective"></ObjectiveRow>
+          <objective-row :objective="objective"></objective-row>
           <ul v-if="objective.keyResults" class="group">
             <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
-              <KeyResultRow :key-result="keyResult"></KeyResultRow>
+              <key-result-row :key-result="keyResult"></key-result-row>
             </li>
           </ul>
         </li>
       </ul>
     </div>
 
-    <Widgets class="aside"></Widgets>
+    <widgets></widgets>
   </div>
 </template>
 
@@ -72,35 +72,6 @@ export default {
 .item {
   display: flex;
   flex-wrap: wrap;
-}
-
-.main {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-}
-
-.aside {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-  }
 }
 
 .group {
