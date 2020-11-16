@@ -21,7 +21,7 @@
     "core-js": "^3.7.0",
     "d3": "^6.2.0",
     "date-fns": "^2.16.1",
-    "firebase": "^8.0.2",
+    "firebase": "^7.24.0",
     "dompurify": "^2.2.2",
     "flatpickr": "^4.6.6",
     "fuse.js": "^6.4.3",

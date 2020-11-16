@@ -7,6 +7,7 @@ import 'firebase/functions';
 
 import { emulators } from '../../firebase.json';
 
+const functionsEmulator = `http://localhost:${emulators.functions.port}`;
 const firestoreEmulator = {
   host: `localhost:${emulators.firestore.port}`,
   ssl: false,
@@ -39,7 +40,7 @@ const { serverTimestamp, arrayRemove } = firebase.firestore.FieldValue;
 
 if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
-  functions.useEmulator('localhost', emulators.functions.port);
+  functions.useFunctionsEmulator(functionsEmulator);
   console.log('Established connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
