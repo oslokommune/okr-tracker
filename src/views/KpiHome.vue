@@ -5,24 +5,26 @@
 
       <p>{{ activeKpi.description }}</p>
 
-      <div v-if="activeKpi.valid" class="current-value">
-        <div class="current-value__label">{{ $t('kpi.currentValue') }}</div>
-        <div class="current-value__value">
-          {{ filteredProgress.length ? filteredProgress[0].value : activeKpi.currentValue }}
+      <div class="main-widgets">
+        <div v-if="activeKpi.valid" class="main-widgets__current">
+          <h3 class="main-widgets__title">
+            <i class="fas fa-chart-line" />
+            {{ $t('kpi.currentValue') }}
+          </h3>
+          <div class="main-widgets__current--value">
+            {{ filteredProgress.length ? filteredProgress[0].value : activeKpi.currentValue }}
+          </div>
+        </div>
+
+        <div class="main-widgets__graph">
+          <h3 class="main-widgets__title">
+            <i class="fas fa-chart-line" />
+            {{ $t('kpi.progresjon') }}
+          </h3>
+
+          <svg ref="graph" class="graph"></svg>
         </div>
       </div>
-      <router-link
-        v-if="hasEditRights"
-        v-tooltip="$t('tooltip.editKpi')"
-        class="btn btn--ghost"
-        :to="{ name: 'ItemAdminKPIs' }"
-      >
-        {{ $t('kpi.edit') }}
-      </router-link>
-
-      <widget widget-id="kpiProgression" icon="chart-line" :title="$t('kpi.progresjon')" :collapsible="false">
-        <svg ref="graph" class="graph"></svg>
-      </widget>
 
       <div class="history">
         <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
@@ -65,6 +67,18 @@
     </div>
 
     <div class="aside">
+      <div class="itemHome">
+        <router-link
+          v-if="hasEditRights"
+          v-tooltip="$t('tooltip.editKpi')"
+          class="btn btn--ter btn--icon"
+          :to="{ name: 'ItemAdminKPIs' }"
+        >
+          <i class="icon fa fa-cog" />
+          {{ $t('kpi.edit') }}
+        </router-link>
+      </div>
+
       <h2 class="title-2">{{ $t('keyResultPage.filter') }}</h2>
       <label v-if="progress.length" class="form-field">
         <span class="form-label">{{ $t('period.dateRange') }}</span>
@@ -89,7 +103,6 @@ import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
-import Widget from '@/components/widgets/Widget.vue';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort } from '@/util/formatDate';
@@ -98,7 +111,6 @@ export default {
   name: 'KpiHome',
 
   components: {
-    Widget,
     EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
@@ -226,38 +238,20 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+@import '@/styles/typography.scss';
 
 .history {
   margin: 2.5rem 0 1.5rem;
 }
 
-.current-value {
-  margin: 1rem 0;
-  padding: 1rem;
-  background: $color-yellow;
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(black, 0.1);
+.itemHome {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1.5rem 0;
 
-  @media screen and (min-width: bp(s)) {
-    width: span(4, 0, span(12));
+  & > .btn {
+    width: 100%;
   }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(3, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(2, 0, span(7));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(2, 0, span(6));
-  }
-}
-
-.current-value__value {
-  margin-top: 0.5rem;
-  font-weight: 500;
-  font-size: 2rem;
 }
 </style>

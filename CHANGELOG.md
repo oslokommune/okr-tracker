@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- Updated the design of `KpiHome.vue`
 - Moved duplicate css-code to global
 - Renamed html-tags to kebab-case
 - Minor improvements to the code
