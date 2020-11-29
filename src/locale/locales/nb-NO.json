@@ -118,7 +118,8 @@
     "expand": "Ekspander",
     "deletePermanently": "Slett permanent",
     "restore": "Gjenopprett",
-    "confirmDeleteProgress": "Bekreft sletting"
+    "confirmDeleteProgress": "Bekreft sletting",
+    "reset": "Nullstill"
   },
   "login": {
     "login": "Logg inn",
@@ -298,7 +299,8 @@
     "history": "Historikk",
     "registeredBy": "Registrert av",
     "value": "Verdi",
-    "date": "Dato"
+    "date": "Dato",
+    "filter": "Filtrer"
   },
   "help": {
     "title": "Hjelp",

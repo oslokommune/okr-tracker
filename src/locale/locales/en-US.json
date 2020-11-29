@@ -120,7 +120,8 @@
     "expand": "Expand",
     "deletePermanently": "Delete permanently",
     "restore": "Restore",
-    "confirmDeleteProgress": "Confirm delete"
+    "confirmDeleteProgress": "Confirm delete",
+    "reset": "Reset"
   },
   "login": {
     "login": "Sign in",
@@ -300,7 +301,8 @@
     "history": "History",
     "registeredBy": "Registered by",
     "value": "Value",
-    "date": "Date"
+    "date": "Date",
+    "filter": "Filter"
   },
   "help": {
     "title": "Help",

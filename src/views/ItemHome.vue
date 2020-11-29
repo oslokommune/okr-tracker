@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="flex-container">
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
@@ -68,11 +68,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
-
-.item {
-  display: flex;
-  flex-wrap: wrap;
-}
 
 .group {
   margin-bottom: 1rem;
