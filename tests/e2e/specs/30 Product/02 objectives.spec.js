@@ -5,7 +5,7 @@ describe('Create objectives', () => {
     cy.visit('/').wait(3000);
 
     // Log in as admin if not already logged in
-    cy.get('body').then($body => {
+    cy.get('body').then(($body) => {
       if (!$body.text().includes('Hjem')) {
         cy.log('Signing in as admin user');
         cy.signInAdminUser();
@@ -15,7 +15,7 @@ describe('Create objectives', () => {
     });
 
     // Check if products exist
-    cy.get('.productList').then($el => {
+    cy.get('.productList').then(($el) => {
       if ($el.text().includes(testProducts[0].name)) {
         cy.log('Test product one exists');
       } else {
@@ -32,7 +32,7 @@ describe('Create objectives', () => {
     // check if periods exist
     cy.visit(`/product/${testProducts[0].slug}`)
       .get('.sub-nav')
-      .then($body => {
+      .then(($body) => {
         if (!$body.text().includes(testPeriod.name)) {
           cy.log('Period exists');
         } else {
@@ -44,7 +44,7 @@ describe('Create objectives', () => {
     // check if periods exist
     cy.visit(`/product/${testProducts[1].slug}`)
       .get('.sub-nav')
-      .then($body => {
+      .then(($body) => {
         if (!$body.text().includes(testPeriod.name)) {
           cy.log('Period exists');
         } else {
@@ -56,7 +56,7 @@ describe('Create objectives', () => {
     cy.visit(`/product/${testProducts[0].slug}`)
       .wait(3000)
       .get('[data-cy="objectives_list"]')
-      .then($body => {
+      .then(($body) => {
         if ($body.text().includes(testObjective.name)) {
           cy.get('[data-cy="edit_object_link"]')
             .click()
@@ -81,7 +81,7 @@ describe('Create objectives', () => {
     cy.visit(`/product/${testProducts[1].slug}`)
       .wait(3000)
       .get('[data-cy="objectives_list"]')
-      .then($body => {
+      .then(($body) => {
         if ($body.text().includes(testObjective.name)) {
           cy.get('[data-cy="edit_object_link"]')
             .click()

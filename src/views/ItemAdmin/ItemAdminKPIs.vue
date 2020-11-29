@@ -17,11 +17,13 @@
       <div v-for="kpi in kpis" :key="kpi.id" class="kpi" :class="{ 'kpi--error': !!kpi.error }">
         <div class="kpi__validation">
           <div v-if="kpi.error" class="kpi__error">
-            <span class="fa fa-exclamation-triangle"></span> {{ showError(kpi.error) }}
+            <i class="fa fa-exclamation-triangle" />
+            {{ showError(kpi.error) }}
           </div>
           <div v-if="kpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
           <div v-if="!kpi.valid && !kpi.error" class="kpi__loading">
-            <span class="fa fa-spinner fa-pulse"></span> {{ $t('general.loading') }}
+            <i class="fa fa-spinner fa-pulse" />
+            {{ $t('general.loading') }}
           </div>
         </div>
 
@@ -43,7 +45,7 @@
 
             <label class="form-group">
               <span class="form-label">{{ $t('fields.description') }}</span>
-              <textarea v-model="kpi.description" class="form__field" rows="4"></textarea>
+              <textarea v-model="kpi.description" class="form__field" rows="4" />
             </label>
 
             <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
@@ -85,7 +87,7 @@
       </div>
     </div>
 
-    <add-kpi-modal v-if="showAddKPIModal" @close="showAddKPIModal = false"></add-kpi-modal>
+    <add-kpi-modal v-if="showAddKPIModal" @close="showAddKPIModal = false" />
   </div>
 </template>
 
@@ -98,7 +100,6 @@ export default {
 
   components: {
     AddKpiModal: () => import('@/components/AddKPIModal.vue'),
-    FormComponent: () => import('@/components/FormComponent.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
   },
 

@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+## [2.0.0-beta.3] - 2020-11-29
+
+### Added
+
+- Filter KPI-progression
+- E2E-tests (alpha)
+
+### Changes
+
+- Updated the design of `KpiHome.vue`
+- Moved duplicate css-code to global
+- Renamed html-tags to kebab-case
+- Minor improvements to the code
+- Updated prettier-config `arrowParens` from `avoid` to `always`
+
 ## [2.0.0-beta.2] - 2020-11-05
 
 ### Added

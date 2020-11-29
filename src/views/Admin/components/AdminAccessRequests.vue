@@ -7,8 +7,12 @@
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button class="btn btn--ghost" @click="acceptRequest(request)">{{ $t('btn.acceptRequest') }}</button>
-          <button class="btn btn--ghost" @click="rejectRequest(request)">{{ $t('btn.rejectRequest') }}</button>
+          <button class="btn btn--ghost" data-cy="request-accept" @click="acceptRequest(request)">
+            {{ $t('btn.acceptRequest') }}
+          </button>
+          <button class="btn btn--ghost" data-cy="request-reject" @click="rejectRequest(request)">
+            {{ $t('btn.rejectRequest') }}
+          </button>
         </div>
       </li>
     </ul>

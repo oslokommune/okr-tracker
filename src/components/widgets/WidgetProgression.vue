@@ -1,7 +1,7 @@
 <template>
-  <Widget :widget-id="widgetId" :title="getTitle()" icon="chart-pie">
+  <widget :widget-id="widgetId" :title="getTitle()" icon="chart-pie">
     <svg ref="svg"></svg>
-  </Widget>
+  </widget>
 </template>
 
 <script>

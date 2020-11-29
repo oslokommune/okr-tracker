@@ -16,6 +16,8 @@ const variables = [
   'VUE_APP_TESTADMIN_PASSWORD',
   'VUE_APP_TESTUSER_USER',
   'VUE_APP_TESTUSER_PASSWORD',
+  'VUE_APP_I18N_LOCALE',
+  'VUE_APP_I18N_FALLBACK_LOCALE',
   'NODE_ENV',
 ];
 
@@ -27,7 +29,7 @@ module.exports = (on, config) => {
 
   // Copy environment variables
   config.env = config.env || {};
-  variables.forEach(variable => {
+  variables.forEach((variable) => {
     config.env[variable] = process.env[variable];
   });
 

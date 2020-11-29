@@ -12,6 +12,7 @@
             :label="$t('fields.name')"
             rules="required"
             type="text"
+            data-cy="dep-name"
           />
 
           <form-component
@@ -20,6 +21,7 @@
             name="missionStatement"
             :label="$t('fields.missionStatement')"
             rules="required"
+            data-cy="dep-missionStatement"
           />
 
           <form-component
@@ -30,13 +32,15 @@
             select-label="name"
             rules="required"
             :select-options="organizations"
+            data-cy="dep-parentOrg"
           />
         </form>
       </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" form="createDepartment" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
+        <button class="btn btn--icon btn--pri" form="createDepartment" :disabled="loading" data-cy="btn-createDep">
+          <i class="icon fa fa-fw fa-save" />
+          {{ $t('btn.create') }}
         </button>
       </div>
     </div>
@@ -51,10 +55,6 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
   name: 'CreateDepartment',
-
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
 
   data: () => ({
     name: '',

@@ -59,10 +59,6 @@ import { mapState } from 'vuex';
 export default {
   name: 'EditUser',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
-
   props: {
     selectedUser: {
       required: true,

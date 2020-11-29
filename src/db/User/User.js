@@ -5,7 +5,7 @@ import UploadImage from '../common/uploadImage';
 const collectionReference = db.collection('users');
 
 export const getAllUserIds = () => collectionReference.get().then(({ docs }) => docs.map(({ id }) => id));
-export const getUserFromId = id => collectionReference.doc(id).get();
+export const getUserFromId = (id) => collectionReference.doc(id).get();
 
 export const create = async ({ email }) => {
   try {
@@ -24,7 +24,7 @@ export const create = async ({ email }) => {
   }
 };
 
-export const remove = async user => {
+export const remove = async (user) => {
   if (!user) throw new Error('Missing user');
 
   try {
@@ -35,7 +35,7 @@ export const remove = async user => {
   }
 };
 
-export const update = async user => {
+export const update = async (user) => {
   if (!user) throw new Error('Missing user');
 
   try {
@@ -45,9 +45,9 @@ export const update = async user => {
   }
 };
 
-export const addUsers = async userList => {
+export const addUsers = async (userList) => {
   if (!userList || !userList.length) throw new Error('Invalid data');
-  const promises = userList.map(email => ({ email })).map(create);
+  const promises = userList.map((email) => ({ email })).map(create);
 
   try {
     return Promise.all(promises);
@@ -60,12 +60,12 @@ export const uploadImage = (id, image) => {
   return UploadImage(id, image, 'photos');
 };
 
-export const deleteImage = async id => {
+export const deleteImage = async (id) => {
   try {
     const { photoURL } = await collectionReference
       .doc(id)
       .get()
-      .then(snap => snap.data());
+      .then((snap) => snap.data());
 
     await storage.refFromURL(photoURL).delete();
     await update({ id, photoURL: null });

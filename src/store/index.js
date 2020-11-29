@@ -8,13 +8,13 @@ import actions from './actions';
 Vue.use(Vuex);
 
 export const getters = {
-  tree: state => {
+  tree: (state) => {
     const { organizations, departments, products } = state;
 
-    return organizations.map(org => {
+    return organizations.map((org) => {
       org.children = departments
         .filter(({ organization }) => organization.id === org.id)
-        .map(dept => {
+        .map((dept) => {
           dept.children = products.filter(({ department }) => department && department.id === dept.id);
           return dept;
         });
@@ -22,7 +22,7 @@ export const getters = {
     });
   },
 
-  hasEditRights: state => {
+  hasEditRights: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
     if (user && user.admin) return true;

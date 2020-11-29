@@ -86,7 +86,7 @@ function updatePercentText(el, tweenTo) {
     .ease(ease)
     .attrTween('text', (d, i, j) => {
       const counter = interpolate(j[i].current || 0, tweenTo);
-      return t => {
+      return (t) => {
         j[i].current = counter(t);
         select(j[i]).text(formatPercent(counter(t) || 0));
       };
@@ -138,7 +138,7 @@ function updateTodayLine(el, targetAngle) {
     .attrTween('todayText', (d, i, j) => {
       const angleInterpolator = interpolate(j[i].current || 0, targetAngle);
 
-      return t => {
+      return (t) => {
         const angle = angleInterpolator(t);
         j[i].current = angle;
 
@@ -153,7 +153,7 @@ function updateTodayLine(el, targetAngle) {
 // Tweens arc paths using the provided arc generator and target angles
 function arcTween(target, el, generator) {
   const i = interpolate(el.current || { startAngle: 0, endAngle: 0 }, target);
-  return t => {
+  return (t) => {
     el.current = i(t);
     return generator(i(t));
   };

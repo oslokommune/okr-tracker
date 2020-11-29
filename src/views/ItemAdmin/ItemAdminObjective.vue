@@ -1,6 +1,6 @@
 <template>
   <div v-if="objective">
-    <archived-restore v-if="objective.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
+    <archived-restore v-if="objective.archived" :delete-deep="deleteDeep" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-objective" @submit.prevent="handleSubmit(update)">
@@ -35,7 +35,7 @@
               {{ label }}
             </template>
             <template #option="option">
-              <i :class="`fas fa-fw fa-${option.label}`"></i>&nbsp;
+              <i :class="`fas fa-fw fa-${option.label}`" />&nbsp;
               <span>{{ option.label }}</span>
             </template>
             <template #no-options="{}">{{ $t('select.noIcons') }}</template>
@@ -75,13 +75,14 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import { toastArchiveAndRevert } from '@/util/toastUtils';
 
 export default {
   name: 'ItemAdminObjective',
 
-  components: { FormComponent: () => import('@/components/FormComponent.vue'), ArchivedRestore },
+  components: {
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+  },
 
   props: {
     data: {
@@ -105,7 +106,7 @@ export default {
           .collection('slugs')
           .doc(this.data.parent.slug)
           .get()
-          .then(snapshot => snapshot.data().reference);
+          .then((snapshot) => snapshot.data().reference);
         this.$bind('periods', db.collection('periods').where('parent', '==', parent));
         this.objective = { ...this.data, id: this.data.id };
       },

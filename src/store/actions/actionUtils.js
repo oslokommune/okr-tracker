@@ -11,7 +11,7 @@ export default async function getActivePeriod(slugRef) {
     .where('parent', '==', slugRef)
     .orderBy('startDate', 'desc');
 
-  const filterPeriodsIncludeToday = doc => {
+  const filterPeriodsIncludeToday = (doc) => {
     const now = new Date();
     const { startDate, endDate } = doc.data();
     if (startDate.toDate() > now) return false;
@@ -21,11 +21,11 @@ export default async function getActivePeriod(slugRef) {
 
   let activePeriodRef = await periodsRef
     .get()
-    .then(snapshot => snapshot.docs.filter(filterPeriodsIncludeToday))
-    .then(list => (list[0] && list[0].ref ? list[0].ref : null));
+    .then((snapshot) => snapshot.docs.filter(filterPeriodsIncludeToday))
+    .then((list) => (list[0] && list[0].ref ? list[0].ref : null));
 
   if (!activePeriodRef) {
-    activePeriodRef = await periodsRef.get().then(snapshot => snapshot.docs[0]);
+    activePeriodRef = await periodsRef.get().then((snapshot) => snapshot.docs[0]);
   }
 
   return { activePeriodRef, periodsRef };

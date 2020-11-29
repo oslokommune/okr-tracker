@@ -1,11 +1,11 @@
 <template>
-  <aside v-if="activeObjective" class="wrapper">
+  <aside v-if="activeObjective" class="aside">
     <div v-if="editRights" class="keyresult">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
       >
-        <i class="icon fa fa-edit"></i>
+        <i class="icon fa fa-edit" />
         {{ $t('objective.change') }}
       </router-link>
     </div>
@@ -16,9 +16,9 @@
         type="objective"
         :data="progressionData"
         :dimmed="true"
-      ></widget-progression>
-      <widget-objective-details widget-id="objectiveHome.details"></widget-objective-details>
-      <widget-objective-weights widget-id="objectiveHome.weights"></widget-objective-weights>
+      />
+      <widget-objective-details widget-id="objectiveHome.details" />
+      <widget-objective-weights widget-id="objectiveHome.weights" />
     </div>
   </aside>
 </template>
@@ -53,21 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  position: relative;
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
-  }
-}
 .keyresult {
   display: flex;
   width: 100%;

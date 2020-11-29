@@ -11,7 +11,7 @@ export default async function compressImage(file, width) {
 }
 
 async function getAspectRatio(file) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const objURL = URL.createObjectURL(file);
     const img = new Image();
 
@@ -21,7 +21,7 @@ async function getAspectRatio(file) {
     };
 
     img.src = objURL;
-  }).catch(error => {
+  }).catch((error) => {
     throw new Error(error);
   });
 }

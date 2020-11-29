@@ -1,6 +1,6 @@
 import { testDepartment, testProducts } from '../config';
 
-Cypress.Commands.add('deleteProduct', productIndex => {
+Cypress.Commands.add('deleteProduct', (productIndex) => {
   cy.visit('/admin').wait(2000);
 
   cy.get('[data-cy="admin-depsAndProds"]').click().wait(1000);

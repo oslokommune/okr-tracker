@@ -1,11 +1,11 @@
 <template>
   <router-link :to="{ name: 'ItemHome', params: { slug: data.slug } }" class="item" :class="`item--${type}`">
-    <span v-if="type === 'product'" class="indent"></span>
-    <span class="item__icon fas fa-fw" :class="`fa-${icon}`"></span>
+    <span v-if="type === 'product'" class="indent" />
+    <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
     <span class="item__name">
       {{ data.name }}
-      <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle"></i>
+      <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
     </span>
 
     <div class="item__kpis">
@@ -16,18 +16,14 @@
         class="item__kpi"
         :class="{ disabled: getKpiValue(id) === '–––' }"
       >
-        <span class="item__kpi-icon far" :class="kpi.icon"></span>
+        <i class="item__kpi-icon far" :class="kpi.icon" />
         <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
       </div>
     </div>
 
-    <ProgressBar
-      v-tooltip="`${Math.round(progression * 100)}%`"
-      class="progress-bar"
-      :progression="progression"
-    ></ProgressBar>
+    <progress-bar v-tooltip="`${Math.round(progression * 100)}%`" class="progress-bar" :progression="progression" />
 
-    <span class="item__chevron fas fa-chevron-right"></span>
+    <i class="item__chevron fas fa-chevron-right" />
   </router-link>
 </template>
 
@@ -99,14 +95,14 @@ export default {
   methods: {
     getKpiValue(type) {
       try {
-        return kpiTypes[type].formatValue(this.kpis.find(obj => obj.type === type).currentValue);
+        return kpiTypes[type].formatValue(this.kpis.find((obj) => obj.type === type).currentValue);
       } catch {
         return '–––';
       }
     },
     getKpiName(type) {
       try {
-        return this.kpis.find(obj => obj.type === type).name;
+        return this.kpis.find((obj) => obj.type === type).name;
       } catch {
         return '';
       }

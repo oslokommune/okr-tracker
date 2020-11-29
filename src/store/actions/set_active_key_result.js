@@ -7,7 +7,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, st
   }
   const reference = db.collection('keyResults').doc(id);
 
-  const { objective } = await reference.get().then(snapshot => snapshot.data());
+  const { objective } = await reference.get().then((snapshot) => snapshot.data());
 
   if (!state.activeObjective || state.activeObjective.id !== objective.id) {
     await bindFirestoreRef('activeObjective', objective, { maxRefDepth: 1 });

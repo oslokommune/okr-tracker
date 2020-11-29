@@ -3,9 +3,16 @@
     <label class="form-group">
       <span class="form-label">{{ label || name }}</span>
       <slot name="help"></slot>
-      <input v-if="inputType === 'input'" v-model="innerValue" :type="type" :disabled="disabled" class="form__field" />
+      <input
+        v-if="inputType === 'input'"
+        v-model="innerValue"
+        :type="type"
+        :disabled="disabled"
+        class="form__field"
+        :data-cy="dataCy"
+      />
 
-      <textarea v-if="inputType === 'textarea'" v-model="innerValue" class="form__field" rows="4" />
+      <textarea v-if="inputType === 'textarea'" v-model="innerValue" class="form__field" rows="4" :data-cy="dataCy" />
 
       <v-select
         v-if="inputType === 'select'"
@@ -13,6 +20,7 @@
         :label="selectLabel"
         :options="selectOptions"
         :clearable="false"
+        :data-cy="dataCy"
       >
         <template #option="option">
           {{ option.name }}
@@ -75,6 +83,11 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    dataCy: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
 

@@ -1,6 +1,6 @@
 <template>
   <div v-if="keyResult">
-    <archived-restore v-if="keyResult.archived" :delete-deep="deleteDeep" :restore="restore"></archived-restore>
+    <archived-restore v-if="keyResult.archived" :delete-deep="deleteDeep" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-keyresult" @submit.prevent="handleSubmit(update)">
@@ -129,15 +129,15 @@
 
           <div class="validation">
             <div v-if="loadingConnection" class="validation__loading">
-              <span class="fa fa-spinner fa-pulse"></span>
+              <i class="fa fa-spinner fa-pulse" />
               {{ $t('general.loading') }}
             </div>
             <div v-if="!loadingConnection && keyResult.error" class="validation__error">
-              <span class="fa fa-exclamation-triangle"></span>
+              <i class="fa fa-exclamation-triangle" />
               {{ showError(keyResult.error) }}
             </div>
             <div v-if="!loadingConnection && keyResult.valid" class="validation__valid">
-              <span class="fa fa-check-circle"></span>
+              <i class="fa fa-check-circle" />
               OK
             </div>
             <button class="btn validation-check" type="button" @click="testConnection">
@@ -150,10 +150,12 @@
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading">
-        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
+        <i class="icon fa fa-fw fa-save" />
+        {{ $t('btn.saveChanges') }}
       </button>
       <button v-if="!keyResult.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
+        <i class="icon fa fa-fw fa-trash" />
+        {{ $t('btn.archive') }}
       </button>
     </div>
   </div>
@@ -168,7 +170,6 @@ export default {
   name: 'ItemAdminKeResult',
 
   components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
   props: {
@@ -194,7 +195,7 @@ export default {
           .collection('slugs')
           .doc(this.data.parent.slug)
           .get()
-          .then(snapshot => snapshot.data().reference);
+          .then((snapshot) => snapshot.data().reference);
         this.$bind('objectives', db.collection('objectives').where('parent', '==', parent));
         this.$bind('keyResult', db.collection('keyResults').doc(this.data.id));
       },

@@ -8,16 +8,16 @@
           <div class="col__body">
             <div v-for="organization in organizations" :key="organization.id" class="col__row">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }">
-                <span class="col__icon fa fa-industry"></span>
+                <i class="col__icon fa fa-industry" />
                 {{ organization.name }}
                 <span v-if="organization.archived" class="col__archived fa fa-file-archive"></span>
               </router-link>
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }">{{
-              $t('btn.addOrganization')
-            }}</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }" data-cy="create-organization">
+              {{ $t('btn.addOrganization') }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -28,16 +28,16 @@
           <div class="col__body">
             <div v-for="department in departments" :key="department.id" class="col__row">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: department.slug } }">
-                <span class="col__icon fa fa-cubes"></span>
+                <i class="col__icon fa fa-cubes" />
                 {{ department.name }}
                 <span v-if="department.archived" class="col__archived fa fa-file-archive"></span>
               </router-link>
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }">{{
-              $t('btn.addDepartment')
-            }}</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }" data-cy="create-department">
+              {{ $t('btn.addDepartment') }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -48,14 +48,16 @@
           <div class="col__body">
             <div v-for="product in products" :key="product.id" class="col__row">
               <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: product.slug } }">
-                <span class="col__icon fa fa-cube"></span>
+                <i class="col__icon fa fa-cube" />
                 {{ product.name }}
-                <span v-if="product.archived" class="col__archived fa fa-file-archive"></span>
+                <i v-if="product.archived" class="col__archived fa fa-file-archive" />
               </router-link>
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }">{{ $t('btn.addProduct') }}</router-link>
+            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }" data-cy="create-product">
+              {{ $t('btn.addProduct') }}
+            </router-link>
           </div>
         </div>
       </div>

@@ -18,23 +18,23 @@
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
         >
-          <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">{{
-            $t('empty.noKeyResults.linkText')
-          }}</router-link>
+          <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">
+            {{ $t('empty.noKeyResults.linkText') }}
+          </router-link>
         </empty-state>
 
         <div class="key-results__list">
-          <KeyResultRow
+          <key-result-row
             v-for="keyResult in keyResults"
             :key="keyResult.id"
             :key-result="keyResult"
             :force-expanded="true"
             class="keyResultRow"
-          ></KeyResultRow>
+          />
         </div>
       </section>
     </div>
-    <widgets-objective-home class="aside"></widgets-objective-home>
+    <widgets-objective-home class="aside" />
   </div>
 </template>
 
@@ -96,23 +96,6 @@ export default {
 .objective {
   display: flex;
   flex-wrap: wrap;
-}
-
-.main {
-  width: span(12);
-  padding-top: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
 }
 
 .key-results {

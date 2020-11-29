@@ -120,7 +120,8 @@
     "expand": "Expand",
     "deletePermanently": "Delete permanently",
     "restore": "Restore",
-    "confirmDeleteProgress": "Confirm delete"
+    "confirmDeleteProgress": "Confirm delete",
+    "reset": "Reset"
   },
   "login": {
     "login": "Sign in",
@@ -133,7 +134,8 @@
     "error": {
       "notRegistered": "Your account is not registered",
       "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",
-      "wrongPassword": "Wrong password."
+      "wrongPassword": "Wrong password.",
+      "userNotFound": "Could not find user."
     },
     "loginWithUsername": "Sign in with username"
   },
@@ -299,7 +301,8 @@
     "history": "History",
     "registeredBy": "Registered by",
     "value": "Value",
-    "date": "Date"
+    "date": "Date",
+    "filter": "Filter"
   },
   "help": {
     "title": "Help",

@@ -3,7 +3,7 @@ describe('Whitelist user', () => {
     cy.visit('/').wait(3000);
 
     // Log in as admin if not already logged in
-    cy.get('body').then($body => {
+    cy.get('body').then(($body) => {
       if (!$body.text().includes('Hjem')) {
         cy.log('Signing in as admin user');
         cy.signInAdminUser();

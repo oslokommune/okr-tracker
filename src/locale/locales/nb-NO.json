@@ -118,7 +118,8 @@
     "expand": "Ekspander",
     "deletePermanently": "Slett permanent",
     "restore": "Gjenopprett",
-    "confirmDeleteProgress": "Bekreft sletting"
+    "confirmDeleteProgress": "Bekreft sletting",
+    "reset": "Nullstill"
   },
   "login": {
     "login": "Logg inn",
@@ -131,7 +132,8 @@
     "error": {
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
-      "wrongPassword": "Passordet er feil."
+      "wrongPassword": "Passordet er feil.",
+      "userNotFound": "Kunne ikke finne bruker"
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },
@@ -297,7 +299,8 @@
     "history": "Historikk",
     "registeredBy": "Registrert av",
     "value": "Verdi",
-    "date": "Dato"
+    "date": "Dato",
+    "filter": "Filtrer"
   },
   "help": {
     "title": "Hjelp",

@@ -18,7 +18,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
     .where('archived', '==', false)
     .where('period', '==', activePeriodRef);
 
-  const activeObjectivesList = await objectivesRef.get().then(snapshot => snapshot.docs.map(doc => doc.ref));
+  const activeObjectivesList = await objectivesRef.get().then((snapshot) => snapshot.docs.map((doc) => doc.ref));
 
   if (activeObjectivesList.length) {
     const keyResultsRef = db

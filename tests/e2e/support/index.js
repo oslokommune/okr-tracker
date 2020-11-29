@@ -8,3 +8,4 @@ import './deleteProduct';
 import './createPeriod';
 import './createObjective';
 import './createKeyres';
+import './createOrg';

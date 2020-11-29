@@ -16,9 +16,9 @@ export function getProgression(objectives) {
   return (
     mean(
       objectives
-        .map(objective => objective.children)
+        .map((objective) => objective.children)
         .flat()
-        .map(keyres => {
+        .map((keyres) => {
           const scale = scaleLinear()
             .domain([+keyres.startValue, +keyres.targetValue])
             .clamp(true);

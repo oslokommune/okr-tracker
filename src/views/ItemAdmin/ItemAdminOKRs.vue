@@ -20,15 +20,16 @@
             notSelected,
             nonexistent,
             addEvent,
+            cyCreate,
           } in columns"
           :key="type"
           class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected"></empty-state>
+          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
 
           <ul v-else class="miller__list">
-            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent"></empty-state>
+            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent" />
             <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
               <router-link
                 class="miller__link"
@@ -38,14 +39,19 @@
                   selected: selectedClass(id),
                 }"
               >
-                <span class="miller__icon fa" :class="icon"></span>
+                <i class="miller__icon fa" :class="icon" />
                 <span class="miller__label">{{ name }}</span>
                 <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
               </router-link>
             </li>
           </ul>
-          <button v-if="!notSelected" class="miller__add btn btn--ter btn--icon btn--fw" @click="addEvent">
-            <span class="icon fa fa-plus"></span>
+          <button
+            v-if="!notSelected"
+            class="miller__add btn btn--ter btn--icon btn--fw"
+            :data-cy="cyCreate"
+            @click="addEvent"
+          >
+            <i class="icon fa fa-plus" />
             <span>{{ $t('btn.create') }}</span>
           </button>
         </div>
@@ -94,34 +100,37 @@ export default {
           items: this.periods,
           type: 'period',
           icon: 'fa-calendar-alt',
-          activeClass: id => this.editObject && id === this.editObject.id,
-          selectedClass: id => id === this.selectedPeriodId,
+          activeClass: (id) => this.editObject && id === this.editObject.id,
+          selectedClass: (id) => id === this.selectedPeriodId,
           notSelected: false,
           addEvent: this.createPeriod,
           nonexistent: this.$t('empty.itemAdmin.period'),
+          cyCreate: 'okr-create-period',
         },
         {
           heading: this.$t('admin.showObjectives'),
           items: this.objectives,
           type: 'objective',
           icon: 'fa-trophy',
-          activeClass: id => this.editObject && id === this.editObject.id,
-          selectedClass: id => id === this.selectedObjectiveId,
+          activeClass: (id) => this.editObject && id === this.editObject.id,
+          selectedClass: (id) => id === this.selectedObjectiveId,
           notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
           nonexistent: this.$t('empty.itemAdmin.objective'),
+          cyCreate: 'okr-create-objective',
         },
         {
           heading: this.$t('admin.showKeyResults'),
           items: this.keyResults,
           type: 'keyResult',
           icon: 'fa-chart-pie',
-          activeClass: id => this.editObject && id === this.editObject.id,
+          activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: () => false,
           notSelected:
             !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
           nonexistent: this.$t('empty.itemAdmin.keyResult'),
+          cyCreate: 'okr-create-keyresult',
         },
       ];
     },
@@ -154,15 +163,15 @@ export default {
       switch (type) {
         case 'period':
           this.editForm = () => import('./ItemAdminPeriod.vue');
-          this.editObject = this.periods.find(obj => obj.id === id);
+          this.editObject = this.periods.find((obj) => obj.id === id);
           break;
         case 'objective':
           this.editForm = () => import('./ItemAdminObjective.vue');
-          this.editObject = this.objectives.find(obj => obj.id === id);
+          this.editObject = this.objectives.find((obj) => obj.id === id);
           break;
         case 'keyResult':
           this.editForm = () => import('./ItemAdminKeyResult.vue');
-          this.editObject = this.keyResults.find(obj => obj.id === id);
+          this.editObject = this.keyResults.find((obj) => obj.id === id);
           break;
         default:
           this.editForm = null;
@@ -193,7 +202,7 @@ export default {
           .collection('objectives')
           .doc(id)
           .get()
-          .then(snap => snap.data());
+          .then((snap) => snap.data());
 
         if (objective && objective.period) {
           await this.bindObjectives({ parentId: objective.period.id });
@@ -206,13 +215,13 @@ export default {
           .collection('keyResults')
           .doc(id)
           .get()
-          .then(snap => snap.data());
+          .then((snap) => snap.data());
 
         const objective = await db
           .collection('objectives')
           .doc(keyRes.objective.id)
           .get()
-          .then(snap => snap.data());
+          .then((snap) => snap.data());
 
         this.selectedPeriodId = objective.period.id;
         this.selectedObjectiveId = keyRes.objective.id;

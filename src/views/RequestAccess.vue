@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="back">
       <router-link class="btn btn--icon btn--ghost" :to="{ name: 'Login' }">
-        <i class="icon fa-xs fa fa-fw fa-chevron-left"></i>
+        <i class="icon fa-xs fa fa-fw fa-chevron-left" />
         {{ $t('login.backToLogin') }}
       </router-link>
     </div>
@@ -12,9 +12,9 @@
       <form @submit.prevent="send">
         <label class="form-field">
           <span class="form-label">{{ $t('login.email') }}</span>
-          <input v-model="email" class="field" type="email" required />
+          <input v-model="email" class="field" type="email" required data-cy="request-input" />
         </label>
-        <button class="btn btn--pri" :disabled="loading">{{ $t('login.requestButton') }}</button>
+        <button class="btn btn--pri" :disabled="loading" data-cy="request-btn">{{ $t('login.requestButton') }}</button>
       </form>
     </div>
   </div>

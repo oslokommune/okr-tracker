@@ -16,6 +16,8 @@ import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
 
+import './styles/main.scss';
+
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import 'vue-resize/dist/vue-resize.css';
@@ -43,6 +45,7 @@ Vue.component('VSelect', VueSelect);
 Vue.component('Griddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));
 
 /* eslint-disable */
 configure({
@@ -59,14 +62,14 @@ extend('email', email);
 extend('numeric', numeric);
 extend('min', min);
 extend('max', max);
-extend('decimal', num => typeof num === 'number');
-extend('positiveNotZero', num => typeof num === 'number' && num > 0);
+extend('decimal', (num) => typeof num === 'number');
+extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 
 let app;
 
-auth.onAuthStateChanged(async user => {
+auth.onAuthStateChanged(async (user) => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
@@ -98,7 +101,7 @@ auth.onAuthStateChanged(async user => {
       router,
       store,
       i18n,
-      render: h => h(App),
+      render: (h) => h(App),
     });
 
     router.beforeEach((to, from, next) => {

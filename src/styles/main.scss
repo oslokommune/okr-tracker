@@ -5,12 +5,12 @@
 @import '_buttons';
 @import '_tabs';
 @import 'forms';
-@import '_tooltip';
 @import 'widgets';
 @import '_modal';
-@import '_detailsWidget';
+@import 'widgets';
+@import '_tooltip';
 
-@import '@braid/griddle/scss/griddle-overlay.scss';
+@import '~@braid/griddle/scss/griddle-overlay.scss';
 
 html,
 body {
@@ -87,4 +87,42 @@ hr {
   margin: 1rem 0;
   background: $color-grey-100;
   border: none;
+}
+
+.main {
+  position: relative;
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9, 0, span(9));
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(7, 0, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(7, 0, span(10));
+  }
+}
+
+.aside {
+  position: relative;
+  width: span(12);
+  margin-top: 0.5rem;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9, 0, span(9));
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(3, 0, span(10));
+    margin-left: span(0, 1, span(10));
+  }
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
 }

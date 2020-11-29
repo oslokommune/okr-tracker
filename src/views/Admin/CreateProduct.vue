@@ -38,7 +38,7 @@
               v-model="team"
               multiple
               :options="users"
-              :get-option-label="option => option.displayName || option.id"
+              :get-option-label="(option) => option.displayName || option.id"
             >
               <template #option="option">
                 {{ option.displayName || option.id }}
@@ -51,7 +51,8 @@
 
       <div class="button-row">
         <button class="btn btn--icon btn--pri" form="createProduct" :disabled="loading">
-          <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.create') }}
+          <i class="icon fa fa-fw fa-save" />
+          {{ $t('btn.create') }}
         </button>
       </div>
     </div>
@@ -67,9 +68,6 @@ import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 export default {
   name: 'CreateProduct',
 
-  components: {
-    FormComponent: () => import('@/components/FormComponent.vue'),
-  },
   data: () => ({
     name: '',
     missionStatement: '',

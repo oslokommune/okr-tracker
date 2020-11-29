@@ -5,12 +5,12 @@
       <p>{{ activeKeyResult.description }}</p>
 
       <div class="main-widgets">
-        <div class="main-widgets__current main-widgets__current__children">
+        <div class="main-widgets__current main-widgets__current--children">
           <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-chart-line" />
             {{ $t('keyres.registerProgression.value') }}
           </h3>
-          <div class="main-widgets__current__value">
+          <div class="main-widgets__current--value">
             {{
               typeof activeKeyResult.currentValue === 'undefined'
                 ? activeKeyResult.startValue
@@ -18,7 +18,7 @@
             }}
           </div>
 
-          <div class="main-widgets__current__unit">
+          <div class="main-widgets__current--unit">
             {{ activeKeyResult.unit }}
           </div>
 
@@ -29,7 +29,7 @@
 
         <div class="main-widgets__graph">
           <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-chart-line" />
             {{ $t('objective.progression') }}
           </h3>
 
@@ -59,7 +59,7 @@
           :icon="'history'"
           :heading="$t('empty.keyResultProgress.heading')"
           :body="$t('empty.keyResultProgress.body')"
-        ></empty-state>
+        />
         <table v-if="progress.length" class="table">
           <thead>
             <tr>
@@ -90,17 +90,17 @@
                 </router-link>
               </td>
               <td>
-                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)" :auto-hide="true">
-                  <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon"></i>
+                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)">
+                  <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon" />
                   <template slot="popover">
                     {{ p.comment }}
                   </template>
                 </v-popover>
               </td>
               <td v-if="hasEditPermissions" style="width: 1rem">
-                <v-popover offset="16" placement="top" show="true">
+                <v-popover offset="16" placement="top">
                   <button class="btn btn--ter btn--icon">
-                    <i class="icon far fa-trash-alt"></i>
+                    <i class="icon far fa-trash-alt" />
                     {{ $t('btn.delete') }}
                   </button>
 
@@ -226,98 +226,6 @@ export default {
 .keyres {
   display: flex;
   flex-wrap: wrap;
-}
-
-.main-widgets {
-  display: flex;
-  width: 100%;
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
-
-  &__title {
-    margin-bottom: 0.5rem;
-    color: $color-grey-400;
-    font-weight: 500;
-    font-size: $font-size-0;
-    text-transform: uppercase;
-  }
-
-  &__current {
-    align-self: flex-start;
-    width: span(3);
-    margin-bottom: 0.5rem;
-
-    padding: 1rem;
-    background: white;
-    box-shadow: 0 2px 3px rgba(black, 0.1);
-
-    @media screen and (min-width: bp(m)) {
-      width: span(2, 0, span(9));
-    }
-
-    @media screen and (min-width: bp(l)) {
-      width: span(2, 0, span(7));
-    }
-
-    &__value {
-      color: $color-yellow;
-      font-weight: 700;
-      font-size: 50px;
-    }
-
-    &__unit {
-      margin-top: -0.5rem;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      text-transform: capitalize;
-    }
-
-    &__children {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  &__graph {
-    width: span(9);
-
-    margin-left: span(0, 1);
-    padding: 1rem;
-    background: white;
-    box-shadow: 0 2px 3px rgba(black, 0.1);
-
-    @media screen and (min-width: bp(m)) {
-      width: span(7, 0, span(9));
-      margin-left: span(0, 1, span(9));
-    }
-
-    @media screen and (min-width: bp(l)) {
-      width: span(5, 0, span(7));
-      margin-left: span(0, 1, span(7));
-    }
-
-    @media screen and (min-width: bp(xl)) {
-      width: span(5, 0, span(7));
-      margin-left: span(0, 1, span(7));
-    }
-  }
-}
-
-.main {
-  width: span(12);
-  padding-top: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
 }
 
 .main__table {

@@ -5,7 +5,7 @@ import KeyResult from '../KeyResult';
 
 const collection = db.collection('objectives');
 
-const create = data => {
+const create = (data) => {
   if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
@@ -19,7 +19,7 @@ const update = (id, data) => {
   return updateDocument(collection.doc(id), data);
 };
 
-const archive = id => {
+const archive = (id) => {
   db.collection('keyResults')
     .where('objective', '==', collection.doc(id))
     .get()
@@ -27,9 +27,9 @@ const archive = id => {
 
   update(id, { archived: true });
 };
-const restore = id => update(id, { archived: false });
+const restore = (id) => update(id, { archived: false });
 
-const deleteDeep = async id => {
+const deleteDeep = async (id) => {
   // Delete affected key results
   db.collection('keyResults')
     .where('objective', '==', collection.doc(id))

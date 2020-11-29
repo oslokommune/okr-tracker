@@ -5,7 +5,7 @@ describe('Create products for test department', () => {
     cy.visit('/').wait(3000);
 
     // Log in as admin if not already logged in
-    cy.get('body').then($body => {
+    cy.get('body').then(($body) => {
       if (!$body.text().includes('Hjem')) {
         cy.log('Signing in as admin user');
         cy.signInAdminUser();
@@ -15,7 +15,7 @@ describe('Create products for test department', () => {
     });
 
     // Delete the test department if it already exists
-    cy.get('.productList').then($el => {
+    cy.get('.productList').then(($el) => {
       if ($el.text().includes(testDepartment.name)) {
         cy.log('Test department exists');
 

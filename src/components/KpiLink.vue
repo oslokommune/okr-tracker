@@ -2,7 +2,7 @@
   <div>
     <div v-if="!data.created" class="kpi kpi--empty">
       <div class="kpi__name">{{ kpi.label }}</div>
-      <span class="kpi__icon far" :class="kpi.icon"></span>
+      <i class="kpi__icon far" :class="kpi.icon" />
     </div>
 
     <router-link
@@ -17,7 +17,7 @@
         <span v-if="data.error || !data.valid">–––</span>
         <span v-else>{{ kpi.formatValue(data.currentValue) }}</span>
       </div>
-      <span class="kpi__icon far" :class="kpi.icon"></span>
+      <i class="kpi__icon far" :class="kpi.icon" />
     </router-link>
   </div>
 </template>
