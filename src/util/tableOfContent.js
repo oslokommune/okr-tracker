@@ -47,5 +47,5 @@ export default function tableOfContent(markup) {
   const root = { id: 'root', text: '', parent: '', level: 0 };
   const headings = getHeadings(markup);
 
-  return stratify().parentId(d => d.parent)([root, ...headings]);
+  return stratify().parentId((d) => d.parent)([root, ...headings]);
 }

@@ -4,7 +4,7 @@ import { validateCreateProps, createDocument, validateUpdateProps, updateDocumen
 
 const collection = db.collection('kpis');
 
-const create = data => {
+const create = (data) => {
   if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
@@ -16,10 +16,10 @@ const update = (id, data) => {
   return updateDocument(collection.doc(id), data);
 };
 
-const archive = id => update(id, { archived: true });
-const restore = id => update(id, { archived: false });
+const archive = (id) => update(id, { archived: true });
+const restore = (id) => update(id, { archived: false });
 
-const deleteDeep = async id => {
+const deleteDeep = async (id) => {
   // Delete affected progress
   collection
     .doc(id)

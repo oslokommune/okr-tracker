@@ -55,8 +55,8 @@ export default {
     ...mapGetters(['hasEditRights']),
 
     tree() {
-      return this.objectives.map(objective => {
-        objective.keyResults = this.keyResults.filter(keyRes => {
+      return this.objectives.map((objective) => {
+        objective.keyResults = this.keyResults.filter((keyRes) => {
           return keyRes.objective === `objectives/${objective.id}`;
         });
         return objective;

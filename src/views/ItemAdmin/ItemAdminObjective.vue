@@ -106,7 +106,7 @@ export default {
           .collection('slugs')
           .doc(this.data.parent.slug)
           .get()
-          .then(snapshot => snapshot.data().reference);
+          .then((snapshot) => snapshot.data().reference);
         this.$bind('periods', db.collection('periods').where('parent', '==', parent));
         this.objective = { ...this.data, id: this.data.id };
       },

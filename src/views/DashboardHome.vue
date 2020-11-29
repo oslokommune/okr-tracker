@@ -73,8 +73,8 @@ export default {
     keyResults: {
       immediate: true,
       handler() {
-        this.tree = this.objectives.map(objective => {
-          objective.keyResults = this.keyResults.filter(keyRes => {
+        this.tree = this.objectives.map((objective) => {
+          objective.keyResults = this.keyResults.filter((keyRes) => {
             return keyRes.objective === `objectives/${objective.id}`;
           });
           return objective;

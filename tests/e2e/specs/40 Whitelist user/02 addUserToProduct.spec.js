@@ -5,7 +5,7 @@ describe('Add user to product', () => {
     cy.visit('/')
       .wait(1000)
       .get('.usernav__name')
-      .then($el => {
+      .then(($el) => {
         if (!$el.text().includes(Cypress.env('Test Admin'))) {
           cy.signOut();
           cy.signInAdminUser();

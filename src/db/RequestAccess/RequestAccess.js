@@ -5,7 +5,7 @@ import { validateCreateProps } from '../common';
 
 const collection = db.collection('requestAccess');
 
-export const create = data => {
+export const create = (data) => {
   try {
     validateCreateProps(props, data);
 
@@ -15,7 +15,7 @@ export const create = data => {
   }
 };
 
-export const reject = id => {
+export const reject = (id) => {
   try {
     return collection.doc(id).delete();
   } catch {
@@ -23,12 +23,12 @@ export const reject = id => {
   }
 };
 
-export const accept = async id => {
+export const accept = async (id) => {
   try {
     const { email } = await collection
       .doc(id)
       .get()
-      .then(snapshot => snapshot.data());
+      .then((snapshot) => snapshot.data());
 
     return User.create({ email }).then(reject.bind(null, id));
   } catch {

@@ -62,14 +62,14 @@ extend('email', email);
 extend('numeric', numeric);
 extend('min', min);
 extend('max', max);
-extend('decimal', num => typeof num === 'number');
-extend('positiveNotZero', num => typeof num === 'number' && num > 0);
+extend('decimal', (num) => typeof num === 'number');
+extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 
 let app;
 
-auth.onAuthStateChanged(async user => {
+auth.onAuthStateChanged(async (user) => {
   try {
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
@@ -101,7 +101,7 @@ auth.onAuthStateChanged(async user => {
       router,
       store,
       i18n,
-      render: h => h(App),
+      render: (h) => h(App),
     });
 
     router.beforeEach((to, from, next) => {

@@ -116,7 +116,7 @@ export default {
     },
 
     availableTypes() {
-      return this.types.filter(type => !this.kpis.map(kpi => kpi.type).includes(type.id));
+      return this.types.filter((type) => !this.kpis.map((kpi) => kpi.type).includes(type.id));
     },
   },
 

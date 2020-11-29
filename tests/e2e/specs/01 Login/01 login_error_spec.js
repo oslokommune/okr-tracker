@@ -4,7 +4,7 @@ describe('Login error', () => {
   beforeEach(() => {
     cy.visit('/').wait(500);
 
-    cy.get('body').then($body => {
+    cy.get('body').then(($body) => {
       if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VUE_APP_TESTUSER_USER'))) {
         cy.signOut();
       }

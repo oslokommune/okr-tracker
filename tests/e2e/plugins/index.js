@@ -29,7 +29,7 @@ module.exports = (on, config) => {
 
   // Copy environment variables
   config.env = config.env || {};
-  variables.forEach(variable => {
+  variables.forEach((variable) => {
     config.env[variable] = process.env[variable];
   });
 

@@ -37,7 +37,7 @@
             v-model="activeItem.team"
             multiple
             :options="users"
-            :get-option-label="option => option.displayName || option.id"
+            :get-option-label="(option) => option.displayName || option.id"
           >
             <template #option="option">
               {{ option.displayName || option.id }}
@@ -92,7 +92,7 @@ export default {
       try {
         const { id, name, missionStatement } = this.activeItem;
 
-        const team = this.activeItem.team.map(user => db.collection('users').doc(user.id));
+        const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
         const department = db.collection('departments').doc(this.activeItem.department.id);
 
         const data = { name, team, missionStatement, department };

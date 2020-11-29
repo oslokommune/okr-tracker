@@ -7,7 +7,7 @@
         :key="type"
         :type="type"
         :kpi="kpi"
-        :data="kpis.find(k => k.type === type)"
+        :data="kpis.find((k) => k.type === type)"
       />
     </div>
   </section>

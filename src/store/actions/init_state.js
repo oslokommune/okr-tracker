@@ -20,7 +20,7 @@ export default firestoreAction(async ({ bindFirestoreRef }) => {
  * and the its progression in the current period
  */
 function serialize(snapshot) {
-  const onProgressionSnapshot = callback =>
+  const onProgressionSnapshot = (callback) =>
     db
       .collection('periods')
       .where('archived', '==', false)

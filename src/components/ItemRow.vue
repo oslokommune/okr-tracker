@@ -95,14 +95,14 @@ export default {
   methods: {
     getKpiValue(type) {
       try {
-        return kpiTypes[type].formatValue(this.kpis.find(obj => obj.type === type).currentValue);
+        return kpiTypes[type].formatValue(this.kpis.find((obj) => obj.type === type).currentValue);
       } catch {
         return '–––';
       }
     },
     getKpiName(type) {
       try {
-        return this.kpis.find(obj => obj.type === type).name;
+        return this.kpis.find((obj) => obj.type === type).name;
       } catch {
         return '';
       }

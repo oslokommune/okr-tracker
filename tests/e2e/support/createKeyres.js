@@ -1,6 +1,6 @@
 import { testObjective, testProducts, testKeyResult } from '../config';
 
-Cypress.Commands.add('createKeyres', index => {
+Cypress.Commands.add('createKeyres', (index) => {
   cy.visit(`/product/${testProducts[index].slug}`)
     .wait(1500)
     .get('[data-cy="add_keyres"]')

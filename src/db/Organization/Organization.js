@@ -4,7 +4,7 @@ import { validateCreateProps, createDocument, validateUpdateProps, updateDocumen
 
 const collection = db.collection('organizations');
 
-const create = data => {
+const create = (data) => {
   if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
@@ -17,8 +17,8 @@ const update = (id, data) => {
   return updateDocument(collection.doc(id), data);
 };
 
-const archive = id => update(id, { archived: true });
-const restore = id => update(id, { archived: false });
+const archive = (id) => update(id, { archived: true });
+const restore = (id) => update(id, { archived: false });
 
 const deleteDeep = () => {
   throw new Error('Organizations can only be deleted from the Firestore console');

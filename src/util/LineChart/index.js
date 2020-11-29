@@ -16,14 +16,14 @@ export default class LineChart {
     this.y = scaleLinear().nice();
 
     this.area = area()
-      .x0(d => this.x(d.timestamp))
-      .x1(d => this.x(d.timestamp))
-      .y1(d => this.y(d.value))
-      .y0(d => this.y(d.startValue));
+      .x0((d) => this.x(d.timestamp))
+      .x1((d) => this.x(d.timestamp))
+      .y1((d) => this.y(d.value))
+      .y0((d) => this.y(d.startValue));
 
     this.line = line()
-      .x(d => this.x(d.timestamp))
-      .y(d => this.y(d.value));
+      .x((d) => this.x(d.timestamp))
+      .y((d) => this.y(d.value));
   }
 
   render(obj, period, progressionList) {
@@ -52,7 +52,7 @@ export default class LineChart {
     };
 
     const datapoints = progressionList
-      .map(d => {
+      .map((d) => {
         return {
           timestamp: d.timestamp.toDate(),
           value: +d.value,

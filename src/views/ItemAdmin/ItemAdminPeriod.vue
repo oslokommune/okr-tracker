@@ -91,7 +91,7 @@ export default {
 
     range(range) {
       if (!range) return;
-      const parts = this.range.split(' til ').map(d => new Date(d));
+      const parts = this.range.split(' til ').map((d) => new Date(d));
       if (parts.length === 1) return;
       this.dirty = true;
       const [startDate, endDate] = parts;

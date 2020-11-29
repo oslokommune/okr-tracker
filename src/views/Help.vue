@@ -49,7 +49,7 @@ export default {
   },
 
   async created() {
-    fetch('./help.md').then(async response => {
+    fetch('./help.md').then(async (response) => {
       this.markdown = sanitize(marked(await response.text()));
       this.toc = toc(this.markdown);
     });

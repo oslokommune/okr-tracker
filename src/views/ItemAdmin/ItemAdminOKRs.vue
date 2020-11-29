@@ -100,8 +100,8 @@ export default {
           items: this.periods,
           type: 'period',
           icon: 'fa-calendar-alt',
-          activeClass: id => this.editObject && id === this.editObject.id,
-          selectedClass: id => id === this.selectedPeriodId,
+          activeClass: (id) => this.editObject && id === this.editObject.id,
+          selectedClass: (id) => id === this.selectedPeriodId,
           notSelected: false,
           addEvent: this.createPeriod,
           nonexistent: this.$t('empty.itemAdmin.period'),
@@ -112,8 +112,8 @@ export default {
           items: this.objectives,
           type: 'objective',
           icon: 'fa-trophy',
-          activeClass: id => this.editObject && id === this.editObject.id,
-          selectedClass: id => id === this.selectedObjectiveId,
+          activeClass: (id) => this.editObject && id === this.editObject.id,
+          selectedClass: (id) => id === this.selectedObjectiveId,
           notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
           nonexistent: this.$t('empty.itemAdmin.objective'),
@@ -124,7 +124,7 @@ export default {
           items: this.keyResults,
           type: 'keyResult',
           icon: 'fa-chart-pie',
-          activeClass: id => this.editObject && id === this.editObject.id,
+          activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: () => false,
           notSelected:
             !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
@@ -163,15 +163,15 @@ export default {
       switch (type) {
         case 'period':
           this.editForm = () => import('./ItemAdminPeriod.vue');
-          this.editObject = this.periods.find(obj => obj.id === id);
+          this.editObject = this.periods.find((obj) => obj.id === id);
           break;
         case 'objective':
           this.editForm = () => import('./ItemAdminObjective.vue');
-          this.editObject = this.objectives.find(obj => obj.id === id);
+          this.editObject = this.objectives.find((obj) => obj.id === id);
           break;
         case 'keyResult':
           this.editForm = () => import('./ItemAdminKeyResult.vue');
-          this.editObject = this.keyResults.find(obj => obj.id === id);
+          this.editObject = this.keyResults.find((obj) => obj.id === id);
           break;
         default:
           this.editForm = null;
@@ -202,7 +202,7 @@ export default {
           .collection('objectives')
           .doc(id)
           .get()
-          .then(snap => snap.data());
+          .then((snap) => snap.data());
 
         if (objective && objective.period) {
           await this.bindObjectives({ parentId: objective.period.id });
@@ -215,13 +215,13 @@ export default {
           .collection('keyResults')
           .doc(id)
           .get()
-          .then(snap => snap.data());
+          .then((snap) => snap.data());
 
         const objective = await db
           .collection('objectives')
           .doc(keyRes.objective.id)
           .get()
-          .then(snap => snap.data());
+          .then((snap) => snap.data());
 
         this.selectedPeriodId = objective.period.id;
         this.selectedObjectiveId = keyRes.objective.id;

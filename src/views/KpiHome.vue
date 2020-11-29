@@ -143,13 +143,13 @@ export default {
             name: 'KpiHome',
             params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
           })
-          .catch(err => console.log(err));
+          .catch((err) => console.log(err));
         this.startDate = null;
         this.endDate = null;
         this.filteredProgress = this.progress;
         return;
       }
-      const parts = this.range.split(' til ').map(d => new Date(d));
+      const parts = this.range.split(' til ').map((d) => new Date(d));
       if (parts.length === 1) return;
       this.dirty = true;
       const [startDate, endDate] = parts;
@@ -162,7 +162,7 @@ export default {
           params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
           query: { startDate: formatISOShort(this.startDate), endDate: formatISOShort(this.endDate) },
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
 
       this.filterProgress();
     },
@@ -216,7 +216,7 @@ export default {
         this.filteredProgress = this.progress;
       } else {
         this.filteredProgress = this.progress.filter(
-          a => a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
+          (a) => a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
         );
       }
     },
