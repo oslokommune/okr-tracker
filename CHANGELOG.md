@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-beta.3] - 2020-11-29
+
 ### Added
 
 - Filter KPI-progression
