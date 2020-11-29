@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-beta.4] - 2020-11-29
+
+### Changes
+
+- Updated firebase storage rules to v2
+
 ## [2.0.0-beta.3] - 2020-11-29
 
 ### Added
