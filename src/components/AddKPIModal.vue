@@ -3,7 +3,7 @@
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">{{ $t('kpi.add') }}</h2>
-        <button class="btn btn--ter close" @click="close">
+        <button class="btn btn--ter btn--close" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>
@@ -175,19 +175,8 @@ export default {
   margin-left: 1rem;
 }
 
-.close {
+.btn--close {
   height: 3rem;
-}
-
-.form-row {
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  margin: 0.5rem 0 1rem;
-
-  & > .form-group {
-    margin: 0;
-  }
 }
 
 .sheets-info {

@@ -1,21 +1,25 @@
 <template>
-  <div ref="dashboard" class="db">
+  <div ref="dashboard" class="dashboard">
     <aside v-if="activeItem" class="meta">
-      <div class="panel product">
-        <div class="product__image">
+      <div class="meta__panel meta__product">
+        <div class="meta__product--image">
           <i :class="`fa ${getIcon} fa-5x`" />
         </div>
-        <div class="product__name">{{ activeItem.name }}</div>
+        <div class="meta__product--name">{{ activeItem.name }}</div>
       </div>
-      <div v-if="activeItem.team" class="panel team">
-        <div class="panel__header"><i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}</div>
-        <div v-for="user in activeItem.team" :key="user.id" class="team__member">
-          <img :src="user.photoURL || '/placeholder-user.svg'" :alt="user.displayName || user.id" class="team__image" />
-          <div class="team__name">{{ user.displayName || user.id }}</div>
+      <div v-if="activeItem.team" class="meta__panel meta__team">
+        <div class="meta__panel--header"><i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}</div>
+        <div v-for="user in activeItem.team" :key="user.id" class="meta__team--member">
+          <img
+            :src="user.photoURL || '/placeholder-user.svg'"
+            :alt="user.displayName || user.id"
+            class="meta__team--image"
+          />
+          <div class="meta__team--name">{{ user.displayName || user.id }}</div>
         </div>
       </div>
-      <div class="panel">
-        <div v-if="activePeriod" class="panel__header">
+      <div class="meta__panel">
+        <div v-if="activePeriod" class="meta__panel--header">
           <i class="fa fa-fw fa-chart-pie" />
           Progresjon {{ activePeriod.name }}
         </div>
@@ -23,12 +27,31 @@
       </div>
     </aside>
 
-    <dashboard-objective v-for="objective in tree" :key="objective.id" :objective="objective" class="objective" />
+    <template v-for="objective in tree" :objective="objective">
+      <div :key="objective.id" class="objective">
+        <div class="objective__head">
+          <i class="objective__icon fa fa-fw fa-trophy" />
+          <div class="objective__name">
+            {{ objective.name }}
+          </div>
+        </div>
 
-    <div class="close__container">
+        <!-- List key results for objective -->
+        <div v-for="keyres in objective.keyResults" :key="keyres.id" class="key-result">
+          <div class="key-result__description">
+            {{ keyres.description }}
+          </div>
+          <div class="key-result__progress">
+            <dashboard-progress-bar :keyres="keyres" :darkmode="true" />
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div class="close">
       <router-link
         v-tooltip="$t('btn.close')"
-        class="close"
+        class="close--btn"
         :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
       >
         <i class="fa fa-times" />
@@ -45,7 +68,7 @@ export default {
   name: 'DashboardHome',
 
   components: {
-    DashboardObjective: () => import('@/components/DashboardObjective.vue'),
+    DashboardProgressBar: () => import('@/components/DashboardProgressBar.vue'),
   },
 
   data: () => ({
@@ -113,7 +136,9 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/_colors';
 
-.db {
+$imageSize: 1.75em;
+
+.dashboard {
   --columns: 3;
 
   position: fixed;
@@ -145,87 +170,86 @@ export default {
   margin-right: 1em;
 }
 
-.panel {
+.meta__panel {
   height: 100%;
   padding: 1em;
   background: rgba(black, 0.35);
   border-radius: 0.15em;
+}
 
-  &__header {
-    margin-bottom: 0.5em;
-    padding-bottom: 0.5em;
-    color: $color-yellow;
-    font-weight: 500;
-    border-bottom: 1px solid rgba(white, 0.1);
+.meta__panel--header {
+  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
+  color: $color-yellow;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(white, 0.1);
 
-    > .fa {
-      margin-right: 0.5em;
-    }
+  > .fa {
+    margin-right: 0.5em;
   }
 }
 
-.team {
-  $imageSize: 1.75em;
+.meta__team {
   display: flex;
   flex-direction: column;
 
   overflow: hidden;
-
-  &__member {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5em;
-  }
-
-  &__name {
-    margin-left: 0.5em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  &__image {
-    width: $imageSize;
-    height: $imageSize;
-    border-radius: $imageSize / 2;
-  }
 }
 
-.product {
+.meta__team--member {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.meta__team--name {
+  margin-left: 0.5em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.meta__team--image {
+  width: $imageSize;
+  height: $imageSize;
+  border-radius: $imageSize / 2;
+}
+
+.meta__product {
   display: flex;
   flex-direction: column;
   text-align: center;
-
-  &__image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 12em;
-    height: 12em;
-    margin: 0 auto;
-    object-fit: cover;
-    color: black;
-    background: #f8c66b;
-    border: 5px solid white;
-    border-radius: 0.25em;
-    box-shadow: 0 0.4em 1.6em 0.5em rgba($color-yellow, 0.4);
-  }
-
-  &__name {
-    margin-top: 1em;
-    color: $color-yellow;
-    font-weight: 500;
-    font-size: 1.25em;
-  }
 }
 
-.close__container {
+.meta__product--image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12em;
+  height: 12em;
+  margin: 0 auto;
+  object-fit: cover;
+  color: black;
+  background: #f8c66b;
+  border: 5px solid white;
+  border-radius: 0.25em;
+  box-shadow: 0 0.4em 1.6em 0.5em rgba($color-yellow, 0.4);
+}
+
+.meta__product--name {
+  margin-top: 1em;
+  color: $color-yellow;
+  font-weight: 500;
+  font-size: 1.25em;
+}
+
+.close {
   grid-column: 6;
   justify-self: end;
   width: 100%;
 }
 
-.close {
+.close--btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,5 +261,69 @@ export default {
   &:hover {
     background: rgba(white, 0.1);
   }
+}
+
+.objective {
+  display: grid;
+  grid-gap: 1em;
+  grid-row: 1 / span 6;
+  grid-template-rows: repeat(6, 1fr);
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.objective__head {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-template-rows: 2.5em auto;
+  align-content: center;
+  text-align: center;
+}
+
+.objective__icon {
+  display: flex;
+  grid-row: 1;
+  align-items: center;
+  align-self: end;
+  justify-content: center;
+  justify-self: center;
+  width: 2.5em;
+  height: 2.5em;
+  color: $color-purple;
+  background: $color-yellow;
+}
+
+.objective__name {
+  grid-row: 2;
+  font-weight: 500;
+  font-size: 1.2em;
+}
+
+.objective__tag {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  color: $color-purple;
+  font-weight: 500;
+  background: white;
+}
+
+.key-result {
+  display: grid;
+  grid-gap: 0.5em;
+  grid-row: auto 3rem;
+  grid-column: 1fr;
+  height: 100%;
+  padding: 1em;
+  color: rgba(white, 0.85);
+  font-weight: 300;
+  background: rgba(black, 0.35);
+  border-radius: 0.15em;
+}
+
+.key-result__progress {
+  align-self: end;
+  justify-content: end;
 }
 </style>
