@@ -182,6 +182,10 @@ Automatically fix lint issues
 npm run lint:style:fix
 ```
 
+## Google Sheets integration
+
+If you want to use Google Sheets API for automatic key results or automatic KPIs, you will need to enable the Google Sheets API in Google Cloud Console.
+
 ## Import production data from Cloud Firestore to local Firestore
 
 Based on [this tutorial](https://medium.com/firebase-developers/how-to-import-production-data-from-cloud-firestore-to-the-local-emulator-e82ae1c6ed8) with a few differences for our use case.

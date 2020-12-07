@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- Information about enabling Google Sheets API
+
 ### Changes
 
 - Updated dependencies
