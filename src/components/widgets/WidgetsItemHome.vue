@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeItem" class="aside">
-    <div class="itemHome">
+    <div class="widgets__links">
       <router-link
         v-if="hasEditRights"
         v-tooltip="$t('tooltip.editItem')"
@@ -21,7 +21,7 @@
       </router-link>
     </div>
 
-    <div class="widgets">
+    <div class="">
       <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
       <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
       <widget-team v-if="activePeriod" widget-id="itemHome.team" />
@@ -62,27 +62,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.widgets > .btn {
-  margin-bottom: 1.5rem;
-}
-
-.image {
-  width: 100%;
-  height: 20rem;
-  margin-bottom: 3rem;
-  object-fit: cover;
-}
-
-.itemHome {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 1.5rem 0;
-
-  & > .btn {
-    width: 100%;
-  }
-}
-</style>

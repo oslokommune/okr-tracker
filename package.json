@@ -22,7 +22,7 @@
     "d3": "^6.3.0",
     "date-fns": "^2.16.1",
     "dompurify": "^2.2.2",
-    "firebase": "^7.24.0",
+    "firebase": "^8.1.2",
     "flatpickr": "^4.6.6",
     "fuse.js": "^6.4.3",
     "image-file-resize": "^1.0.3",
@@ -34,13 +34,12 @@
     "vue-flatpickr-component": "^8.1.6",
     "vue-i18n": "^8.22.2",
     "vue-meta": "^2.4.0",
-    "vue-resize": "^0.5.0",
     "vue-router": "^3.4.9",
     "vue-select": "^3.10.8",
     "vue-toasted": "^1.1.28",
-    "vuefire": "^2.2.4",
+    "vuefire": "^2.2.5",
     "vuex": "^3.6.0",
-    "vuexfire": "^3.2.4"
+    "vuexfire": "^3.2.5"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^1.1.4",

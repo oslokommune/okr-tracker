@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeObjective" class="aside">
-    <div v-if="editRights" class="keyresult">
+    <div v-if="editRights" class="widgets__links">
       <router-link
         class="btn btn--ter btn--icon"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
@@ -51,15 +51,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.keyresult {
-  display: flex;
-  width: 100%;
-  margin: 1.75rem 0 1rem;
-
-  & > .btn {
-    width: 100%;
-  }
-}
-</style>
