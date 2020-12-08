@@ -2,7 +2,7 @@
   <div>
     <h1 class="title-1">{{ $t('admin.department.create') }}</h1>
 
-    <div class="container">
+    <div class="create-container">
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createDepartment" @submit.prevent="handleSubmit(save)">
           <form-component
@@ -95,29 +95,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles/_colors';
-
-.container {
-  padding: 1rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
-
-  @media screen and (min-width: bp(s)) {
-    width: span(8);
-    padding: 1.5rem;
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(5, 0, span(9));
-    padding: 1.5rem;
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(4, 0, span(10));
-    padding: 1.5rem;
-  }
-}
-</style>

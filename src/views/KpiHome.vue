@@ -67,7 +67,7 @@
     </div>
 
     <div class="aside">
-      <div class="itemHome">
+      <div class="widgets__links">
         <router-link
           v-if="hasEditRights"
           v-tooltip="$t('tooltip.editKpi')"
@@ -237,21 +237,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-@import '@/styles/typography.scss';
-
 .history {
   margin: 2.5rem 0 1.5rem;
-}
-
-.itemHome {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 1.5rem 0;
-
-  & > .btn {
-    width: 100%;
-  }
 }
 </style>

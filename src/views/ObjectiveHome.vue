@@ -29,7 +29,7 @@
             :key="keyResult.id"
             :key-result="keyResult"
             :force-expanded="true"
-            class="keyResultRow"
+            class="key-results__list--row"
           />
         </div>
       </section>
@@ -109,7 +109,7 @@ export default {
   box-shadow: 0 2px 5px rgba(black, 0.1);
 }
 
-.keyResultRow {
+.key-results__list--row {
   border-top: 1px solid $color-grey-100;
 
   &:first-child {

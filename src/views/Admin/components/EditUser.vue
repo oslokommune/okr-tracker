@@ -33,9 +33,9 @@
       </validation-observer>
       <div>
         <span class="form-label">{{ $t('admin.users.image') }}</span>
-        <div class="image">
-          <img v-if="thisUser.photoURL" :src="thisUser.photoURL" class="image__image" />
-          <input type="file" accept="image/png, image/jpeg" class="image__field" @input="setImage" />
+        <div class="selected-user__image--flex">
+          <img v-if="thisUser.photoURL" :src="thisUser.photoURL" class="selected-user__image--img" />
+          <input type="file" accept="image/png, image/jpeg" @input="setImage" />
           <button v-if="thisUser.photoURL" class="btn" :disabled="!image || loading" @click="deleteImage">
             {{ $t('btn.deleteImage') }}
           </button>
@@ -170,11 +170,11 @@ export default {
   }
 }
 
-.image {
+.selected-user__image--flex {
   display: flex;
 }
 
-.image__image {
+.selected-user__image--img {
   width: 3rem;
   height: 3rem;
   object-fit: cover;
