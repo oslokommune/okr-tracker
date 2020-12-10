@@ -233,12 +233,6 @@ export default {
   overflow: auto;
 }
 
-.group {
-  margin-bottom: 1rem;
-  background: white;
-  box-shadow: 0 2px 2px rgba(black, 0.06);
-}
-
 .comment-icon {
   display: flex;
   align-items: center;
@@ -273,11 +267,11 @@ export default {
   background: rgba($color-yellow, 0.25);
   border: 1px solid $color-yellow;
   border-radius: 3px;
+}
 
-  &--invalid {
-    background: rgba($color-red, 0.25);
-    border: 1px solid $color-red;
-  }
+.auto--invalid {
+  background: rgba($color-red, 0.25);
+  border: 1px solid $color-red;
 }
 
 .auto__text {

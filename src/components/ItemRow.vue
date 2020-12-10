@@ -139,16 +139,6 @@ export default {
   text-overflow: ellipsis;
 }
 
-.item--department {
-  margin-top: 0.5rem;
-  font-weight: 500;
-  border-top: none;
-}
-
-.item--product {
-  border-top: 1px solid rgba($color-border, 0.5);
-}
-
 .item__icon {
   flex-shrink: 0;
   align-self: flex-start;

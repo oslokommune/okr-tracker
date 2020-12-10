@@ -100,18 +100,18 @@ export default {
 .notes {
   display: flex;
   flex-direction: column;
+}
 
-  &--margin-bottom {
-    margin-bottom: 1rem;
-  }
+.notes--margin-bottom {
+  margin-bottom: 1rem;
+}
 
-  &__markdown {
-    padding: 0.75rem 0.75rem 0.6rem 0rem;
-  }
+.notes__markdown {
+  padding: 0.75rem 0.75rem 0.6rem 0rem;
+}
 
-  &__btn {
-    display: flex;
-    flex-direction: row;
-  }
+.notes__btn {
+  display: flex;
+  flex-direction: row;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
-      <h4 v-if="group.items.length" class="label">{{ group.name }}</h4>
+      <h4 v-if="group.items.length" class="sidebar__label">{{ group.name }}</h4>
       <ul class="sidebar__list">
         <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
           <router-link
@@ -85,7 +85,7 @@ export default {
   margin-top: auto;
 }
 
-.label {
+.sidebar__label {
   padding: 0.25rem 0 0.3rem;
   color: rgba(black, 0.4);
   font-weight: 500;

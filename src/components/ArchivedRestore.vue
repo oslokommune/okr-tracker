@@ -1,8 +1,8 @@
 <template>
   <div class="archived">
     <i class="archived__icon fa fa-file-archive" />
-    <div class="archived__content">
-      <h3 class="title-2 archived__title">{{ $t('archived.heading') }}</h3>
+    <div>
+      <h3 class="title-2">{{ $t('archived.heading') }}</h3>
       <p>{{ $t('archived.body') }}</p>
 
       <div class="button-row">

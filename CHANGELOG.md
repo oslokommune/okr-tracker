@@ -8,8 +8,15 @@ All notable changes to this project will be documented in this file. The format 
 
 - Information about enabling Google Sheets API
 
+### Removed
+
+- vue-resize is not used
+- Unused css-styles
+
 ### Changes
 
+- Updated Firebase to 8.1.2
+- More consistent BEM-naming
 - Updated dependencies
 
 ## [2.0.0-beta.4] - 2020-11-29

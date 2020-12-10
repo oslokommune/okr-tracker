@@ -1,74 +1,72 @@
 <template>
-  <div v-if="thisUser" class="user">
-    <div class="main">
-      <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
+  <div v-if="thisUser" class="main">
+    <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
 
-      <div class="main__user">
-        <div class="main__user--image">
-          <img
-            class="main__user--image-size"
-            :src="thisUser.photoURL || '/placeholder-user.svg'"
-            :alt="thisUser.displayName || user.id"
-          />
+    <div class="user">
+      <div class="user__image">
+        <img
+          class="user__image-size"
+          :src="thisUser.photoURL || '/placeholder-user.svg'"
+          :alt="thisUser.displayName || user.id"
+        />
 
-          <template v-if="me">
-            <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-            <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
-              {{ $t('btn.upload') }}
-            </button>
-          </template>
+        <template v-if="me">
+          <input type="file" accept="image/png, image/jpeg" @input="setImage" />
+          <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
+            {{ $t('btn.upload') }}
+          </button>
+        </template>
+      </div>
+
+      <div class="user__info">
+        <validation-observer v-if="me" v-slot="{ handleSubmit }">
+          <form id="updateUser" @submit.prevent="handleSubmit(save)">
+            <form-component
+              v-model="thisUser.displayName"
+              input-type="input"
+              name="name"
+              :label="$t('fields.name')"
+              rules="required"
+              type="text"
+            />
+          </form>
+        </validation-observer>
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('user.selectLanguage') }}</span>
+          <select v-model="thisUser.preferences.lang" class="form__field">
+            <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
+          </select>
+        </label>
+
+        <div v-if="me" class="user__info-btn">
+          <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
         </div>
 
-        <div class="main__user--info">
-          <validation-observer v-if="me" v-slot="{ handleSubmit }">
-            <form id="updateUser" @submit.prevent="handleSubmit(save)">
-              <form-component
-                v-model="thisUser.displayName"
-                input-type="input"
-                name="name"
-                :label="$t('fields.name')"
-                rules="required"
-                type="text"
-              />
-            </form>
-          </validation-observer>
+        <hr class="divider" />
 
-          <label class="form-group">
-            <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-            <select v-model="thisUser.preferences.lang" class="form__field">
-              <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
-            </select>
-          </label>
-
-          <div v-if="me" class="main__user--info-btn">
-            <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+        <template v-if="user.admin">
+          <h2 class="title-2">
+            <i class="fas fa-user-shield" />
+            Admin
+          </h2>
+          <div>
+            {{ $t('profile.hasAdmin') }}
           </div>
+        </template>
 
-          <hr class="divider" />
-
-          <template v-if="user.admin">
-            <h2 class="title-2">
-              <i class="fas fa-user-shield" />
-              Admin
-            </h2>
-            <div>
-              {{ $t('profile.hasAdmin') }}
-            </div>
-          </template>
-
-          <h2 class="title-2">{{ $t('profile.products') }}</h2>
-          <ul class="grid-system">
-            <li v-for="product in products" :key="product.id">
-              <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-                <div class="product__parent">{{ product.department.name }}</div>
-                <div class="product__name">
-                  <i class="product__icon fa fa-cube" />
-                  {{ product.name }}
-                </div>
-              </router-link>
-            </li>
-          </ul>
-        </div>
+        <h2 class="title-2">{{ $t('profile.products') }}</h2>
+        <ul class="grid-system">
+          <li v-for="product in products" :key="product.id">
+            <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
+              <div class="product__parent">{{ product.department.name }}</div>
+              <div class="product__name">
+                <i class="product__icon fa fa-cube" />
+                {{ product.name }}
+              </div>
+            </router-link>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -174,17 +172,17 @@ export default {
 
 .user {
   display: flex;
-  flex-wrap: wrap;
-}
-
-.main__user {
-  display: flex;
+  flex-direction: column;
   width: 100%;
+
+  @media screen and (min-width: bp(s)) {
+    flex-direction: row;
+  }
 }
 
-.main__user--image {
+.user__image {
   align-self: flex-start;
-  width: span(4);
+  width: span(12);
   margin-bottom: 0.5rem;
 
   padding: 1rem;
@@ -204,12 +202,12 @@ export default {
   }
 }
 
-.main__user--info-btn {
+.user__info-btn {
   margin-top: 1rem;
 }
 
-.main__user--info {
-  width: span(8);
+.user__info {
+  width: span(12);
 
   margin-left: span(0, 1);
   padding: 1rem;
@@ -243,23 +241,23 @@ export default {
   &:hover {
     background: rgba($color-grey-500, 0.1);
   }
+}
 
-  &__icon {
-    margin-right: 0.5rem;
-  }
+.product__icon {
+  margin-right: 0.5rem;
+}
 
-  &__parent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-bottom: 0.25rem;
-    color: $color-grey-600;
-    font-size: 0.85rem;
-  }
+.product__parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+  color: $color-grey-600;
+  font-size: 0.85rem;
+}
 
-  &__name {
-    font-weight: 500;
-  }
+.product__name {
+  font-weight: 500;
 }
 
 .grid-system {
