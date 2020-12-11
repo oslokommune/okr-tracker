@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Information about enabling Google Sheets API
+- Allow use of decimal-numbers
 
 ### Removed
 
