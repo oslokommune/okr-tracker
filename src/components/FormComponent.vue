@@ -10,6 +10,7 @@
         :disabled="disabled"
         class="form__field"
         :data-cy="dataCy"
+        step="any"
       />
 
       <textarea v-if="inputType === 'textarea'" v-model="innerValue" class="form__field" rows="4" :data-cy="dataCy" />

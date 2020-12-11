@@ -26,7 +26,7 @@
             <validation-provider v-slot="{ errors }" name="value" rules="required">
               <label class="form-group modal__main--input-label">
                 <span class="form-label">{{ $t('keyres.newValue') }}</span>
-                <input v-model="value" class="form__field modal__main--input-value" type="number" />
+                <input v-model="value" class="form__field modal__main--input-value" type="number" step="any" />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>

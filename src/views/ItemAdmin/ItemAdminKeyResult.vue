@@ -52,7 +52,7 @@
             input-type="input"
             name="startValue"
             :label="$t('keyres.startValue')"
-            rules="required|numeric"
+            rules="required"
             type="number"
           />
 
@@ -61,7 +61,7 @@
             input-type="input"
             name="targetValue"
             :label="$t('keyres.targetValue')"
-            rules="required|numeric"
+            rules="required"
             type="number"
           />
 
