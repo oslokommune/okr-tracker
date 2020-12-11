@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-beta.5] - 2020-12-11
+
+### Added
+
+- Information about enabling Google Sheets API
+- Allow use of decimal-numbers
+
+### Removed
+
+- vue-resize is not used
+- Unused css-styles
+
+### Changes
+
+- Updated Firebase to 8.1.2
+- More consistent BEM-naming
+- Updated dependencies
+
 ## [2.0.0-beta.4] - 2020-11-29
 
 ### Changes

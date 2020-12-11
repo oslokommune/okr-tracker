@@ -1,18 +1,17 @@
 <template>
   <div class="action-bar">
-    <div v-if="activePeriod" class="period-dates">{{ periodDates(activePeriod) }}</div>
+    <div v-if="activePeriod" class="action-bar__period-dates">{{ periodDates(activePeriod) }}</div>
 
     <div class="views">
       <button
         v-for="view in views"
         :key="view.id"
         v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
-        class="view"
+        class="action-bar__view"
         :class="{ active: view.id === user.preferences.view }"
         @click="updateView(view.id)"
       >
-        <i class="view__icon" />
-        <span class="view__name">{{ view.label }}</span>
+        <span>{{ view.label }}</span>
       </button>
     </div>
   </div>
@@ -59,7 +58,7 @@ export default {
   }
 }
 
-.period-dates {
+.action-bar__period-dates {
   margin-bottom: 1.5rem;
   color: $color-grey-700;
   font-size: 0.9em;
@@ -70,7 +69,7 @@ export default {
   }
 }
 
-.view {
+.action-bar__view {
   font-weight: 500;
   background: none;
   border: none;
@@ -78,7 +77,7 @@ export default {
   opacity: 0.6;
 }
 
-.view.active {
+.action-bar__view.active {
   opacity: 1;
 }
 </style>

@@ -2,13 +2,13 @@
 @import 'colors';
 @import 'fonts';
 @import 'typography';
-@import '_buttons';
-@import '_tabs';
+@import 'buttons';
+@import 'tabs';
 @import 'forms';
 @import 'widgets';
-@import '_modal';
+@import 'modal';
 @import 'widgets';
-@import '_tooltip';
+@import 'tooltip';
 
 @import '~@braid/griddle/scss/griddle-overlay.scss';
 
