@@ -139,13 +139,19 @@ export default {
   watch: {
     '$route.query': {
       immediate: true,
-      async handler(query) {
-        await this.setItems(query);
-        this.setFormComponent(query);
+      async handler(newQuery, oldQuery) {
+        if (newQuery && !oldQuery) {
+          await this.setItems(newQuery);
+        } else if (newQuery.type !== 'keyResult') {
+          await this.setItems(newQuery);
+        }
+        this.setFormComponent(newQuery);
       },
     },
+
     async showArchived() {
       const { query } = this.$route;
+
       await this.bindPeriods();
       await this.setItems(query);
       this.setFormComponent(query);
@@ -164,10 +170,13 @@ export default {
         case 'period':
           this.editForm = () => import('./ItemAdminPeriod.vue');
           this.editObject = this.periods.find((obj) => obj.id === id);
+          this.selectedObjectiveId = null;
+          this.selectedPeriodId = id;
           break;
         case 'objective':
           this.editForm = () => import('./ItemAdminObjective.vue');
           this.editObject = this.objectives.find((obj) => obj.id === id);
+          this.selectedObjectiveId = id;
           break;
         case 'keyResult':
           this.editForm = () => import('./ItemAdminKeyResult.vue');
@@ -193,8 +202,6 @@ export default {
       if (type === 'period') {
         await this.bindObjectives({ parentId: id });
         if (this.keyResults.length) this.$unbind('keyResults');
-        this.selectedObjectiveId = null;
-        this.selectedPeriodId = id;
       } else if (type === 'objective') {
         await this.bindKeyResults({ parentId: id });
 
