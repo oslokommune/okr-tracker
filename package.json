@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "2.0.0-beta.4",
+  "version": "2.0.0-beta.7",
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --import=./mock & vue-cli-service serve",
@@ -22,7 +22,7 @@
     "d3": "^6.3.1",
     "date-fns": "^2.16.1",
     "dompurify": "^2.2.3",
-    "firebase": "^8.1.2",
+    "firebase": "^8.2.0",
     "flatpickr": "^4.6.6",
     "fuse.js": "^6.4.3",
     "image-file-resize": "^1.0.3",
@@ -42,7 +42,7 @@
     "vuexfire": "^3.2.5"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^1.1.4",
+    "@firebase/rules-unit-testing": "^1.1.5",
     "@vue/cli-plugin-babel": "^4.5.9",
     "@vue/cli-plugin-eslint": "^4.5.9",
     "@vue/cli-service": "^4.5.9",
@@ -53,9 +53,9 @@
     "data-dir": "^1.2.3",
     "env-cmd": "^10.1.0",
     "eslint-plugin-cypress": "^2.11.2",
-    "firebase-tools": "^8.18.1",
+    "firebase-tools": "^8.19.0",
     "eslint": "^7.15.0",
-    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-vue": "^7.2.0",
     "node-sass": "^5.0.0",
     "prettier": "^2.2.1",
