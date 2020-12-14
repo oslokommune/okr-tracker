@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [2.0.0-beta.5] - 2020-12-14
 
-### Changes
+### Fixed
 
 - Fixed admin-okr panels not updating correctly
 
