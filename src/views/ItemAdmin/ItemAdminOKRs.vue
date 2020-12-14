@@ -141,9 +141,9 @@ export default {
       immediate: true,
       async handler(newQuery, oldQuery) {
         if (newQuery && !oldQuery) {
-          await this.setItems(newQuery);
-        } else if (newQuery.type !== 'keyResult') {
-          await this.setItems(newQuery);
+          await this.setItems(newQuery, true);
+        } else {
+          await this.setItems(newQuery, false);
         }
         this.setFormComponent(newQuery);
       },
@@ -188,7 +188,7 @@ export default {
       }
     },
 
-    async setItems({ type, id }) {
+    async setItems({ type, id }, update) {
       if (!type || !id) {
         if (this.objectives.length) this.$unbind('objectives');
         if (this.keyResults.length) this.$unbind('keyResults');
@@ -205,19 +205,21 @@ export default {
       } else if (type === 'objective') {
         await this.bindKeyResults({ parentId: id });
 
-        const objective = await db
-          .collection('objectives')
-          .doc(id)
-          .get()
-          .then((snap) => snap.data());
+        if (update) {
+          const objective = await db
+            .collection('objectives')
+            .doc(id)
+            .get()
+            .then((snap) => snap.data());
 
-        if (objective && objective.period) {
-          await this.bindObjectives({ parentId: objective.period.id });
-          this.selectedPeriodId = objective.period.id;
+          if (objective && objective.period) {
+            await this.bindObjectives({ parentId: objective.period.id });
+            this.selectedPeriodId = objective.period.id;
+          }
         }
 
         this.selectedObjectiveId = id;
-      } else if (type === 'keyResult') {
+      } else if (type === 'keyResult' && update) {
         const keyRes = await db
           .collection('keyResults')
           .doc(id)
