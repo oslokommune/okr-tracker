@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
-## [2.0.0-beta.5] - 2020-12-14
+## [2.0.0-beta.6] - 2020-12-14
 
 ### Fixed
 
