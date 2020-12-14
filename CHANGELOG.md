@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-beta.7] - 2020-12-14
+
 ### Changes
 
 - Admin OKRs component - No need to fetch data every single time
