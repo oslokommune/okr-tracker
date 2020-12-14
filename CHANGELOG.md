@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- Fixed admin-okr panels not updating correctly
+- Components in admin-okr not updating correctly
 
 ## [2.0.0-beta.5] - 2020-12-11
 
