@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file. The format 
 - Better explanation about the Google Sheets information when adding KPIs
 - Objectives/KeyResults are ordered alphabetically
 - Updated dependencies
+- Updated firestore indexes
 
 ## [2.0.0-beta.7] - 2020-12-14
 
