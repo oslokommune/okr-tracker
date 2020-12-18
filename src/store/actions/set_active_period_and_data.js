@@ -16,7 +16,8 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   const objectivesRef = db
     .collection('objectives')
     .where('archived', '==', false)
-    .where('period', '==', activePeriodRef);
+    .where('period', '==', activePeriodRef)
+    .orderBy('name');
 
   const activeObjectivesList = await objectivesRef.get().then((snapshot) => snapshot.docs.map((doc) => doc.ref));
 
@@ -24,7 +25,8 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
     const keyResultsRef = db
       .collection('keyResults')
       .where('archived', '==', false)
-      .where('objective', 'in', activeObjectivesList);
+      .where('objective', 'in', activeObjectivesList)
+      .orderBy('name');
 
     await bindFirestoreRef('objectives', objectivesRef, { maxRefDepth: 0 });
     await bindFirestoreRef('keyResults', keyResultsRef, { maxRefDepth: 0 });

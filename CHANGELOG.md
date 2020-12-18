@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-beta.8] - 2020-12-18
+
+### Added
+
+- Access to Team Drives for service accounts (if strict domain policy is enabled)
+
+### Changes
+
+- Better explanation about the Google Sheets information when adding KPIs
+- Objectives/KeyResults are ordered alphabetically
+- Updated dependencies
+- Updated firestore indexes
+
 ## [2.0.0-beta.7] - 2020-12-14
 
 ### Changes

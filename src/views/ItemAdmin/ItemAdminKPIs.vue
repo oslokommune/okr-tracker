@@ -49,34 +49,45 @@
             </label>
 
             <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
-            <div class="form-row">
-              <form-component
-                v-model="kpi.sheetId"
-                input-type="input"
-                name="sheetId"
-                :label="$t('keyres.automation.googleSheetId')"
-                rules="required"
-                type="text"
-              />
 
-              <form-component
-                v-model="kpi.sheetName"
-                input-type="input"
-                name="sheetTab"
-                :label="$t('keyres.automation.sheetsTab')"
-                rules="required"
-                type="text"
-              />
+            <form-component
+              v-model="kpi.sheetId"
+              input-type="input"
+              name="sheetId"
+              :label="$t('keyres.automation.googleSheetId')"
+              rules="required"
+              type="text"
+            >
+              <template #help>
+                <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+              </template>
+            </form-component>
 
-              <form-component
-                v-model="kpi.sheetCell"
-                input-type="input"
-                name="sheetCell"
-                :label="$t('keyres.automation.sheetsCell')"
-                rules="required"
-                type="text"
-              />
-            </div>
+            <form-component
+              v-model="kpi.sheetName"
+              input-type="input"
+              name="sheetTab"
+              :label="$t('keyres.automation.sheetsTab')"
+              rules="required"
+              type="text"
+            >
+              <template #help>
+                <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+              </template>
+            </form-component>
+
+            <form-component
+              v-model="kpi.sheetCell"
+              input-type="input"
+              name="sheetCell"
+              :label="$t('keyres.automation.sheetsCell')"
+              rules="required"
+              type="text"
+            >
+              <template #help>
+                <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+              </template>
+            </form-component>
 
             <div class="button-row">
               <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
