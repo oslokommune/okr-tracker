@@ -199,7 +199,7 @@
       "header": "Automatic progress registration",
       "readMore": "Learn more",
       "googleSheetId": "Google Sheet ID",
-      "googleSheetIdHelp": "ID from URL .../spreadsheets/d/<strong><d></strong>",
+      "googleSheetIdHelp": "ID between /d/ and /edit/ from the Google Sheets URL",
       "sheetsTab": "Tab",
       "sheetsTabHelp": "Same as the tab name in Google Sheets",
       "sheetsCell": "Cell",

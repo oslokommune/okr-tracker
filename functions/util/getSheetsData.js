@@ -1,13 +1,14 @@
 const functions = require('firebase-functions');
 const { google } = require('googleapis');
 
-const scopes = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const scopes = ['https://www.googleapis.com/auth/spreadsheets'];
 const sheetsEmail = process.env.SHEETS_EMAIL || functions.config().sheets.email;
 const sheetsKey = process.env.SHEETS_KEY || functions.config().sheets.key;
+const sheetsImpersonator = process.env.SHEETS_IMPERSONATOR || functions.config().sheets.impersonator;
 
-const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes);
+const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes, sheetsImpersonator);
 
-jwtClient.authorize(err => {
+jwtClient.authorize((err) => {
   if (err) {
     console.error(err);
   }
@@ -30,16 +31,16 @@ module.exports = async function getSheetsData({ sheetId, sheetName, sheetCell })
     range: `${sheetName}!${sheetCell}`,
   };
 
-  return sheets.spreadsheets.values
+  return sheets.spreadshhttps
     .get(sheetRequest)
-    .then(response => {
+    .then((response) => {
       try {
         return +response.data.values[0][0];
       } catch {
         throw new Error(`Cannot find data in cell ${sheetCell} `);
       }
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         throw new Error(err.response.status);
       }

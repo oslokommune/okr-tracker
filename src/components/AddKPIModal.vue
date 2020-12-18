@@ -43,32 +43,43 @@
               </div>
             </div>
 
-            <div class="form-row">
-              <form-component
-                v-model="kpi.sheetId"
-                input-type="input"
-                name="sheetId"
-                :label="$t('fields.sheetId')"
-                rules="required"
-                type="text"
-              />
-              <form-component
-                v-model="kpi.sheetName"
-                input-type="input"
-                name="sheetTab"
-                :label="$t('fields.sheetTab')"
-                rules="required"
-                type="text"
-              />
-              <form-component
-                v-model="kpi.sheetCell"
-                input-type="input"
-                name="sheetCell"
-                :label="$t('fields.sheetCell')"
-                rules="required"
-                type="text"
-              />
-            </div>
+            <form-component
+              v-model="kpi.sheetId"
+              input-type="input"
+              name="sheetId"
+              :label="$t('fields.sheetId')"
+              rules="required"
+              type="text"
+            >
+              <template #help>
+                <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+              </template>
+            </form-component>
+
+            <form-component
+              v-model="kpi.sheetName"
+              input-type="input"
+              name="sheetTab"
+              :label="$t('fields.sheetTab')"
+              rules="required"
+              type="text"
+            >
+              <template #help>
+                <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+              </template>
+            </form-component>
+            <form-component
+              v-model="kpi.sheetCell"
+              input-type="input"
+              name="sheetCell"
+              :label="$t('fields.sheetCell')"
+              rules="required"
+              type="text"
+            >
+              <template #help>
+                <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+              </template>
+            </form-component>
           </form>
         </validation-observer>
       </div>
