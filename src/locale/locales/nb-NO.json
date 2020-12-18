@@ -197,7 +197,7 @@
       "header": "Automatisk registrering av progresjon",
       "readMore": "Les mer",
       "googleSheetId": "Google Sheet ID",
-      "googleSheetIdHelp": "Kode fra URL .../spreadsheets/d/<strong><d></strong>",
+      "googleSheetIdHelp": "Koden mellom /d/ og /edit/ fra URLen til Google Sheets arket",
       "sheetsTab": "Fane",
       "sheetsTabHelp": "Samme som navnet på fanen i Google Sheets",
       "sheetsCell": "Celle",
