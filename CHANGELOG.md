@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Changes
+
+- Updated dependencies
+
 ## [2.0.0-beta.8] - 2020-12-18
 
 ### Added
