@@ -1,34 +1,44 @@
 <template>
-  <router-link :to="{ name: 'ItemHome', params: { slug: data.slug } }" class="item" :class="`item--${type}`">
-    <span v-if="type === 'product'" class="indent" />
-    <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+  <div style="display: flex; align-items: center">
+    <i v-if="type === 'department'" class="fas fa-chevron-right" style="margin-left: 1rem" />
+    <i v-if="type === 'organization'" class="fas fa-chevron-right" style="margin-left: 1rem" />
 
-    <span class="item__name">
-      {{ data.name }}
-      <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
-    </span>
+    <router-link
+      :to="{ name: 'ItemHome', params: { slug: data.slug } }"
+      style="width: 100%"
+      class="item"
+      :class="`item--${type}`"
+    >
+      <span v-if="type === 'product'" class="indent" />
+      <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
-    <div class="item__kpis">
-      <div
-        v-for="(kpi, id) in kpiTypes"
-        :key="id"
-        v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
-        class="item__kpi"
-        :class="{ disabled: getKpiValue(id) === '–––' }"
-      >
-        <i class="item__kpi-icon far" :class="kpi.icon" />
-        <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
+      <span class="item__name">
+        {{ data.name }}
+        <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
+      </span>
+
+      <div class="item__kpis">
+        <div
+          v-for="(kpi, id) in kpiTypes"
+          :key="id"
+          v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
+          class="item__kpi"
+          :class="{ disabled: getKpiValue(id) === '–––' }"
+        >
+          <i class="item__kpi-icon far" :class="kpi.icon" />
+          <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
+        </div>
       </div>
-    </div>
 
-    <progress-bar v-tooltip="`${Math.round(progression * 100)}%`" class="progress-bar" :progression="progression" />
+      <progress-bar v-tooltip="`${Math.round(progression * 100)}%`" class="progress-bar" :progression="progression" />
 
-    <i class="item__chevron fas fa-chevron-right" />
-  </router-link>
+      <i class="item__chevron fas fa-chevron-right" />
+    </router-link>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import kpiTypes from '@/config/kpiTypes';
 
@@ -93,6 +103,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['update_preferences']),
     getKpiValue(type) {
       try {
         return kpiTypes[type].formatValue(this.kpis.find((obj) => obj.type === type).currentValue);
@@ -106,6 +117,13 @@ export default {
       } catch {
         return '';
       }
+    },
+
+    toggle(id) {
+      if (this.user.preferences['home'][id] === undefined) {
+
+      }
+      this.update_preferences();
     },
   },
 };
@@ -205,6 +223,6 @@ export default {
 
 .indent {
   flex-shrink: 0;
-  width: 1.6rem;
+  width: 2.6rem;
 }
 </style>

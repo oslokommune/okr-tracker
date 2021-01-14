@@ -19,6 +19,9 @@ const preferences = {
       weights: true,
     },
   },
+  home: {
+    collapse: {},
+  },
 };
 
 exports.preferences = preferences;

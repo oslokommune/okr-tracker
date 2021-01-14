@@ -19,4 +19,7 @@ export default {
       weights: true,
     },
   },
+  home: {
+    collapse: {},
+  },
 };
