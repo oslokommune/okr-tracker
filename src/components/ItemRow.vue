@@ -1,7 +1,12 @@
 <template>
   <div style="display: flex; align-items: center">
-    <i v-if="type === 'department'" class="fas fa-chevron-right" style="margin-left: 1rem" />
-    <i v-if="type === 'organization'" class="fas fa-chevron-right" style="margin-left: 1rem" />
+    <button
+      v-if="type === 'department' || type === 'organization'"
+      v-tooltip="user.preferences.home.collapse[data.id] ? $t('btn.minimize') : $t('btn.expand')"
+      class="widget__toggle fas fa-fw"
+      :class="user.preferences.home.collapse[data.id] ? 'fa-minus' : 'fa-plus'"
+      @click="toggle(data.id)"
+    />
 
     <router-link
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
@@ -111,6 +116,7 @@ export default {
         return '–––';
       }
     },
+
     getKpiName(type) {
       try {
         return this.kpis.find((obj) => obj.type === type).name;
@@ -120,8 +126,16 @@ export default {
     },
 
     toggle(id) {
-      if (this.user.preferences['home'][id] === undefined) {
+      if (this.user.preferences.home === undefined) {
+        this.user.preferences.home = {
+          collapse: {},
+        };
+      }
 
+      if (this.user.preferences.home.collapse[id] === undefined) {
+        this.user.preferences.home.collapse[id] = this.user.preferences.home.collapse[id] === undefined;
+      } else {
+        this.user.preferences.home.collapse[id] = !this.user.preferences.home.collapse[id];
       }
       this.update_preferences();
     },
@@ -135,8 +149,7 @@ export default {
 .item {
   display: flex;
   align-items: center;
-  margin: 0;
-  margin-right: auto;
+  margin: 0 auto 0 0;
   padding: 0.5rem span(0, 1);
   color: $color-grey-900;
   text-decoration: none;
@@ -223,6 +236,15 @@ export default {
 
 .indent {
   flex-shrink: 0;
-  width: 2.6rem;
+  width: 3.5rem;
+}
+
+.widget__toggle {
+  width: auto;
+  margin-left: auto;
+  padding: 0.5rem 0.25rem 0.5rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 </style>

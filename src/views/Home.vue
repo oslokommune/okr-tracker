@@ -3,10 +3,10 @@
     <ul v-if="user">
       <li v-for="org in tree" :key="org.id">
         <item-row :data="org" type="organization"></item-row>
-        <ul>
+        <ul v-if="user.preferences.home.collapse[org.id]">
           <li v-for="dept in org.children" :key="dept.id" class="card">
             <item-row :data="dept" type="department"></item-row>
-            <ul>
+            <ul v-if="user.preferences.home.collapse[dept.id]">
               <li v-for="prod in dept.children" :key="prod.id">
                 <item-row :data="prod" type="product"></item-row>
               </li>
