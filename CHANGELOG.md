@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Fixed
+
+- Typo in cloud function code for KPIs
+
 ### Changes
 
 - Updated dependencies
