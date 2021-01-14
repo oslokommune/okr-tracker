@@ -31,7 +31,7 @@ module.exports = async function getSheetsData({ sheetId, sheetName, sheetCell })
     range: `${sheetName}!${sheetCell}`,
   };
 
-  return sheets.spreadshhttps
+  return sheets.spreadsheets.values
     .get(sheetRequest)
     .then((response) => {
       try {
