@@ -256,16 +256,19 @@
     "department": {
       "picture": "Image",
       "create": "Create new department",
-      "parentOrganisation": "Related organization"
+      "parentOrganisation": "Related organization",
+      "search": "Search {count} organizations"
     },
     "organization": {
       "picture": "Image",
-      "create": "Create new organization"
+      "create": "Create new organization",
+      "search": "Search {count} departments"
     },
     "product": {
       "picture": "Image",
       "create": "Create new product",
-      "parentDepartment": "Related department"
+      "parentDepartment": "Related department",
+      "search": "Search {count} products"
     },
     "objects": {
       "showArchived": "View archived objects"
