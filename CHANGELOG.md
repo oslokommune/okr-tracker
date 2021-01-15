@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - KeyResult: allow target value to be 0
 
+### Changes
+
+- Updated dependencies
+
 ## [2.0.0-beta.9] - 2021-01-15
 
 ### Fixed
