@@ -34,12 +34,12 @@ const loginProvider = new firebase.auth.GoogleAuthProvider();
 const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
-const functions = firebase.functions();
+const functions = firebase.app().functions(process.env.VUE_APP_REGION);
 const { serverTimestamp, arrayRemove } = firebase.firestore.FieldValue;
 
 if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
-  functions.useEmulator('http://localhost', emulators.functions.port);
+  functions.useEmulator('localhost', emulators.functions.port);
   console.log('Established connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
