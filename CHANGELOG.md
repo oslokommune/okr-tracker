@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Typo in cloud function code for KPIs
+- Call cloud function in correct region - change from central1 to europe-west2
 
 ### Changes
 
