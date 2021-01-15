@@ -2,10 +2,10 @@
   <div style="display: flex; align-items: center">
     <button
       v-if="type === 'department' || type === 'organization'"
-      v-tooltip="getCollapse(data.id) ? $t('btn.minimize') : $t('btn.expand')"
+      v-tooltip="getCollapse(type, data.slug) ? $t('btn.minimize') : $t('btn.expand')"
       class="widget__toggle fas fa-fw"
-      :class="getCollapse(data.id) ? 'fa-minus' : 'fa-plus'"
-      @click="toggle(data.id)"
+      :class="getCollapse(type, data.slug) ? 'fa-minus' : 'fa-plus'"
+      @click="toggle(type, data.slug)"
     />
 
     <router-link
@@ -17,7 +17,7 @@
       <span v-if="type === 'product'" class="indent" />
       <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
-      <span class="item__name">
+      <span class="item__name" :class="`item__font--${type}`">
         {{ data.name }}
         <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
       </span>
@@ -125,26 +125,29 @@ export default {
       }
     },
 
-    toggle(id) {
+    toggle(type, slug) {
       if (this.user.preferences.home === undefined) {
         this.user.preferences.home = {
-          collapse: {},
+          collapse: {
+            organization: {},
+            department: {},
+          },
         };
       }
 
-      if (this.user.preferences.home.collapse[id] === undefined) {
-        this.user.preferences.home.collapse[id] = this.user.preferences.home.collapse[id] === undefined;
+      if (this.user.preferences.home.collapse[type][slug] === undefined) {
+        this.user.preferences.home.collapse[type][slug] = this.user.preferences.home.collapse[type][slug] === undefined;
       } else {
-        this.user.preferences.home.collapse[id] = !this.user.preferences.home.collapse[id];
+        this.user.preferences.home.collapse[type][slug] = !this.user.preferences.home.collapse[type][slug];
       }
       this.update_preferences();
     },
 
-    getCollapse(id) {
-      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[id] === undefined) {
+    getCollapse(type, slug) {
+      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[type][slug] === undefined) {
         return false;
       }
-      return this.user.preferences.home.collapse[id];
+      return this.user.preferences.home.collapse[type][slug];
     },
   },
 };
@@ -152,6 +155,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+@import '@/styles/typography';
 
 .item {
   display: flex;
@@ -253,5 +257,10 @@ export default {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.item__font--organization {
+  font-weight: 500;
+  font-size: $font-size-3;
 }
 </style>
