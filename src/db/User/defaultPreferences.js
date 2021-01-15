@@ -20,6 +20,9 @@ export default {
     },
   },
   home: {
-    collapse: {},
+    collapse: {
+      organizations: {},
+      departments: {},
+    },
   },
 };

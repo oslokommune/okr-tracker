@@ -20,7 +20,10 @@ const preferences = {
     },
   },
   home: {
-    collapse: {},
+    collapse: {
+      organizations: {},
+      departments: {},
+    },
   },
 };
 
