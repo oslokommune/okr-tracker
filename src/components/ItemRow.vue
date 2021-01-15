@@ -2,9 +2,9 @@
   <div style="display: flex; align-items: center">
     <button
       v-if="type === 'department' || type === 'organization'"
-      v-tooltip="user.preferences.home.collapse[data.id] ? $t('btn.minimize') : $t('btn.expand')"
+      v-tooltip="getCollapse(data.id) ? $t('btn.minimize') : $t('btn.expand')"
       class="widget__toggle fas fa-fw"
-      :class="user.preferences.home.collapse[data.id] ? 'fa-minus' : 'fa-plus'"
+      :class="getCollapse(data.id) ? 'fa-minus' : 'fa-plus'"
       @click="toggle(data.id)"
     />
 
@@ -138,6 +138,13 @@ export default {
         this.user.preferences.home.collapse[id] = !this.user.preferences.home.collapse[id];
       }
       this.update_preferences();
+    },
+
+    getCollapse(id) {
+      if (this.user.preferences.home === undefined) {
+        return false;
+      }
+      return this.user.preference.home.collapse[id];
     },
   },
 };
