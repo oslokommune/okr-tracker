@@ -230,7 +230,7 @@ export default {
           auto: auto || false,
           unit: unit || '',
           startValue: startValue || 0,
-          targetValue: targetValue || 100,
+          targetValue: targetValue === undefined ? 100 : targetValue,
           sheetCell: sheetCell || '',
           sheetId: sheetId || '',
           sheetName: sheetName || '',

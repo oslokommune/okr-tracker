@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file. The format 
 - Items in the admin panel are sorted by name
 - Search through items in the admin panel - if there are over 15 items respectively
 
+### Fixed
+
+- KeyResult: allow target value to be 0
+
 ## [2.0.0-beta.9] - 2021-01-15
 
 ### Fixed
