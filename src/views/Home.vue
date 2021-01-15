@@ -35,10 +35,10 @@ export default {
 
   methods: {
     getCollapse(id) {
-      if (this.user.preferences.home === undefined) {
+      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[id] === undefined) {
         return false;
       }
-      return this.user.preference.home.collapse[id];
+      return this.user.preferences.home.collapse[id];
     },
   },
 };

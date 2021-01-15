@@ -89,9 +89,18 @@ export default {
     showArchived: {
       immediate: true,
       handler() {
-        this.$bind('organizations', db.collection('organizations').where('archived', 'in', [false, this.showArchived]).orderBy('name'));
-        this.$bind('departments', db.collection('departments').where('archived', 'in', [false, this.showArchived]).orderBy('name'));
-        this.$bind('products', db.collection('products').where('archived', 'in', [false, this.showArchived]).orderBy('name'));
+        this.$bind(
+          'organizations',
+          db.collection('organizations').where('archived', 'in', [false, this.showArchived]).orderBy('name')
+        );
+        this.$bind(
+          'departments',
+          db.collection('departments').where('archived', 'in', [false, this.showArchived]).orderBy('name')
+        );
+        this.$bind(
+          'products',
+          db.collection('products').where('archived', 'in', [false, this.showArchived]).orderBy('name')
+        );
       },
     },
   },

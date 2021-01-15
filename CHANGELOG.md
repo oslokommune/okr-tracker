@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- Collapse rows of organizations and departments on the front page - save to user objects (everyone starts with collapsed)
+- Items in the admin panel are sorted by name
+
 ## [2.0.0-beta.9] - 2021-01-15
 
 ### Fixed
