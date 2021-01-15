@@ -29,6 +29,20 @@
       ]
     },
     {
+      "collectionGroup": "departments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "slug",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "keyResults",
       "queryScope": "COLLECTION",
       "fields": [
@@ -133,6 +147,20 @@
         {
           "fieldPath": "startDate",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "products",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "slug",
+          "order": "ASCENDING"
         }
       ]
     }
