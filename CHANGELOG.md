@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Fixed
+
+- Typo in cloud function code for KPIs
+- Call cloud function in correct region - change from central1 to europe-west2
+
+### Changes
+
+- Updated dependencies
+
 ## [2.0.0-beta.8] - 2020-12-18
 
 ### Added
