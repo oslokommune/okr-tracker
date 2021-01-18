@@ -24,7 +24,7 @@
     <div class="">
       <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
       <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
-      <widget-team v-if="activePeriod" widget-id="itemHome.team" />
+      <widget-team v-if="activeItem" widget-id="itemHome.team" />
       <widget-child-items widget-id="itemHome.children" />
     </div>
   </aside>

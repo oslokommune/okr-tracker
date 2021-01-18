@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - KeyResult: allow target value to be 0
 - Allow decimals on inputs
+- Show team members even though a period is not present
 
 ### Changes
 
