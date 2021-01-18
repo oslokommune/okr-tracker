@@ -15,6 +15,7 @@
       <div class="kpi__name">{{ data.name }}</div>
       <div class="kpi__value">
         <span v-if="data.error || !data.valid">–––</span>
+        <span v-else-if="type === 'users'"> {{ data.currentValue }}</span>
         <span v-else>{{ kpi.formatValue(data.currentValue) }}</span>
       </div>
       <i class="kpi__icon far" :class="kpi.icon" />
