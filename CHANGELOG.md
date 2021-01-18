@@ -7,7 +7,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Collapse rows of organizations and departments on the front page - save to user objects (everyone starts with collapsed)
-- Items in the admin panel are sorted by name
 - Search through items in the admin panel - if there are over 15 items respectively
 
 ### Fixed
@@ -18,6 +17,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- Items in the admin panel are sorted by name
+- Departments and products are sorted by name in ASC order
 - Updated dependencies
 
 ## [2.0.0-beta.9] - 2021-01-15

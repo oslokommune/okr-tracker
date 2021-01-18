@@ -9,6 +9,7 @@
     "test:e2e": "firebase emulators:start --import=./tests & vue-cli-service serve & env-cmd -f ./.env.local cypress open",
     "test:e2e:headless": "firebase emulators:exec --project origo-okr-tracker --import=./tests & vue-cli-service serve & (sleep 10 && env-cmd -f ./.env.local cypress run --headless)",
     "deploy": "npm run build && firebase deploy --project=production",
+    "deploy:test": "vue-cli-service build --mode staging && firebase deploy --project=development",
     "lint": "vue-cli-service lint",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
@@ -32,7 +33,7 @@
     "vue": "^2.6.12",
     "vue-click-outside": "^1.1.0",
     "vue-flatpickr-component": "^8.1.6",
-    "vue-i18n": "^8.22.3",
+    "vue-i18n": "^8.22.4",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.4.9",
     "vue-select": "^3.11.2",
