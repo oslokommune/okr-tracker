@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - KeyResult: allow target value to be 0
+- Allow decimals on inputs
 
 ### Changes
 
