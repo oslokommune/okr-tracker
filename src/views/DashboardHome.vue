@@ -39,7 +39,7 @@
         <!-- List key results for objective -->
         <div v-for="keyres in objective.keyResults" :key="keyres.id" class="key-result">
           <div class="key-result__description">
-            {{ keyres.description }}
+            {{ keyres.name }}
           </div>
           <div class="key-result__progress">
             <dashboard-progress-bar :keyres="keyres" :darkmode="true" />

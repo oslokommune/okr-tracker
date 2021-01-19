@@ -21,3 +21,18 @@
     padding: 1.5rem;
   }
 }
+
+.search {
+  padding: 0;
+}
+
+.form__field {
+  width: 100%;
+  padding: 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  background: $color-grey-50;
+  border: none;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}

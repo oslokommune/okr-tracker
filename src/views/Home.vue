@@ -3,10 +3,10 @@
     <ul v-if="user">
       <li v-for="org in tree" :key="org.id">
         <item-row :data="org" type="organization"></item-row>
-        <ul>
+        <ul v-if="getCollapse('organization', org.slug)">
           <li v-for="dept in org.children" :key="dept.id" class="card">
             <item-row :data="dept" type="department"></item-row>
-            <ul>
+            <ul v-if="getCollapse('department', dept.slug)">
               <li v-for="prod in dept.children" :key="prod.id">
                 <item-row :data="prod" type="product"></item-row>
               </li>
@@ -31,6 +31,15 @@ export default {
   computed: {
     ...mapGetters(['tree']),
     ...mapState(['user']),
+  },
+
+  methods: {
+    getCollapse(type, slug) {
+      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[type][slug] === undefined) {
+        return false;
+      }
+      return this.user.preferences.home.collapse[type][slug];
+    },
   },
 };
 </script>

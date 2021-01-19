@@ -254,16 +254,19 @@
     "department": {
       "picture": "Bilde",
       "create": "Opprett nytt produktområde",
-      "parentOrganisation": "Tilhører organisasjon"
+      "parentOrganisation": "Tilhører organisasjon",
+      "search": "Søk {count} organisasjoner"
     },
     "organization": {
       "picture": "Bilde",
-      "create": "Opprett ny organisasjon"
+      "create": "Opprett ny organisasjon",
+      "search": "Søk {count} produktområder"
     },
     "product": {
       "picture": "Bilde",
       "create": "Opprett nytt produkt",
-      "parentDepartment": "Tilhører produktområde"
+      "parentDepartment": "Tilhører produktområde",
+      "search": "Søk {count} produkter"
     },
     "objects": {
       "showArchived": "Vis arkiverte objekter"

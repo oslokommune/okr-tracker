@@ -17,7 +17,7 @@
       @submit.prevent="isOpen = true"
     >
       <label class="keyResult__input">
-        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" />
+        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" step="any" />
       </label>
 
       <button class="btn">{{ $t('keyres.updateValue') }}</button>

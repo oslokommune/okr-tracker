@@ -89,7 +89,8 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_APP_ID`                 | _from SDK snippet_        |
 | `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_        |
 | `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\> |
-| `VUE_APP_I18N_LOCALE`            | `nb-NO \| en-US`          |
+| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`          |
+| `VUE_APP_REGION`                 | `europe-west2`            |
 
 ### Link project
 

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
+import { sortByLocale } from '@/store/actions/actionUtils';
 
 import actions from './actions';
 
@@ -11,11 +12,14 @@ export const getters = {
   tree: (state) => {
     const { organizations, departments, products } = state;
 
+    const sortedDepartments = sortByLocale(departments);
+    const sortedProducts = sortByLocale(products);
+
     return organizations.map((org) => {
-      org.children = departments
+      org.children = sortedDepartments
         .filter(({ organization }) => organization.id === org.id)
         .map((dept) => {
-          dept.children = products.filter(({ department }) => department && department.id === dept.id);
+          dept.children = sortedProducts.filter(({ department }) => department && department.id === dept.id);
           return dept;
         });
       return org;

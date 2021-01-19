@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-rc.1] - 2021-01-18
+
+### Added
+
+- Collapse rows of organizations and departments on the front page - save to user objects (everyone starts with collapsed)
+- Search through items in the admin panel - if there are over 15 items respectively
+
+### Fixed
+
+- KeyResult: allow target value to be 0
+- Allow decimals on inputs
+- Show team members even though a period is not present
+
+### Changes
+
+- Items in the admin panel are sorted by name
+- Departments and products are sorted by name in ASC order
+- Small change to KPI for users - no number formatting when in ItemHome-view only in Home-view
+- Updated dependencies
+
 ## [2.0.0-beta.9] - 2021-01-15
 
 ### Fixed

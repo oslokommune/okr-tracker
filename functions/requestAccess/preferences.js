@@ -19,6 +19,12 @@ const preferences = {
       weights: true,
     },
   },
+  home: {
+    collapse: {
+      organization: {},
+      department: {},
+    },
+  },
 };
 
 exports.preferences = preferences;
