@@ -21,8 +21,8 @@ const preferences = {
   },
   home: {
     collapse: {
-      organizations: {},
-      departments: {},
+      organization: {},
+      department: {},
     },
   },
 };

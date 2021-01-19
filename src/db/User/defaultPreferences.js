@@ -21,8 +21,8 @@ export default {
   },
   home: {
     collapse: {
-      organizations: {},
-      departments: {},
+      organization: {},
+      department: {},
     },
   },
 };
