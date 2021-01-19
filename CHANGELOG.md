@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
-## [2.0.0-rc.1] - 2021-01-18
+## [2.0.0-rc.1] - 2021-01-19
 
 ### Added
 
