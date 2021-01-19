@@ -1,34 +1,49 @@
 <template>
-  <router-link :to="{ name: 'ItemHome', params: { slug: data.slug } }" class="item" :class="`item--${type}`">
-    <span v-if="type === 'product'" class="indent" />
-    <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+  <div style="display: flex; align-items: center">
+    <button
+      v-if="type === 'department' || type === 'organization'"
+      v-tooltip="getCollapse(type, data.slug) ? $t('btn.minimize') : $t('btn.expand')"
+      class="widget__toggle fas fa-fw"
+      :class="getCollapse(type, data.slug) ? 'fa-minus' : 'fa-plus'"
+      @click="toggle(type, data.slug)"
+    />
 
-    <span class="item__name">
-      {{ data.name }}
-      <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
-    </span>
+    <router-link
+      :to="{ name: 'ItemHome', params: { slug: data.slug } }"
+      style="width: 100%"
+      class="item"
+      :class="`item--${type}`"
+    >
+      <span v-if="type === 'product'" class="indent" />
+      <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
-    <div class="item__kpis">
-      <div
-        v-for="(kpi, id) in kpiTypes"
-        :key="id"
-        v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
-        class="item__kpi"
-        :class="{ disabled: getKpiValue(id) === '–––' }"
-      >
-        <i class="item__kpi-icon far" :class="kpi.icon" />
-        <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
+      <span class="item__name" :class="`item__font--${type}`">
+        {{ data.name }}
+        <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
+      </span>
+
+      <div class="item__kpis">
+        <div
+          v-for="(kpi, id) in kpiTypes"
+          :key="id"
+          v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
+          class="item__kpi"
+          :class="{ disabled: getKpiValue(id) === '–––' }"
+        >
+          <i class="item__kpi-icon far" :class="kpi.icon" />
+          <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
+        </div>
       </div>
-    </div>
 
-    <progress-bar v-tooltip="`${Math.round(progression * 100)}%`" class="progress-bar" :progression="progression" />
+      <progress-bar v-tooltip="`${Math.round(progression * 100)}%`" class="progress-bar" :progression="progression" />
 
-    <i class="item__chevron fas fa-chevron-right" />
-  </router-link>
+      <i class="item__chevron fas fa-chevron-right" />
+    </router-link>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import kpiTypes from '@/config/kpiTypes';
 
@@ -93,6 +108,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['update_preferences']),
     getKpiValue(type) {
       try {
         return kpiTypes[type].formatValue(this.kpis.find((obj) => obj.type === type).currentValue);
@@ -100,6 +116,7 @@ export default {
         return '–––';
       }
     },
+
     getKpiName(type) {
       try {
         return this.kpis.find((obj) => obj.type === type).name;
@@ -107,18 +124,43 @@ export default {
         return '';
       }
     },
+
+    toggle(type, slug) {
+      if (this.user.preferences.home === undefined) {
+        this.user.preferences.home = {
+          collapse: {
+            organization: {},
+            department: {},
+          },
+        };
+      }
+
+      if (this.user.preferences.home.collapse[type][slug] === undefined) {
+        this.user.preferences.home.collapse[type][slug] = this.user.preferences.home.collapse[type][slug] === undefined;
+      } else {
+        this.user.preferences.home.collapse[type][slug] = !this.user.preferences.home.collapse[type][slug];
+      }
+      this.update_preferences();
+    },
+
+    getCollapse(type, slug) {
+      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[type][slug] === undefined) {
+        return false;
+      }
+      return this.user.preferences.home.collapse[type][slug];
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+@import '@/styles/typography';
 
 .item {
   display: flex;
   align-items: center;
-  margin: 0;
-  margin-right: auto;
+  margin: 0 auto 0 0;
   padding: 0.5rem span(0, 1);
   color: $color-grey-900;
   text-decoration: none;
@@ -205,6 +247,20 @@ export default {
 
 .indent {
   flex-shrink: 0;
-  width: 1.6rem;
+  width: 3.5rem;
+}
+
+.widget__toggle {
+  width: auto;
+  margin-left: auto;
+  padding: 0.5rem 0.25rem 0.5rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.item__font--organization {
+  font-weight: 500;
+  font-size: $font-size-3;
 }
 </style>

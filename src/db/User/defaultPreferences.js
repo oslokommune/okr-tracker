@@ -19,4 +19,10 @@ export default {
       weights: true,
     },
   },
+  home: {
+    collapse: {
+      organization: {},
+      department: {},
+    },
+  },
 };

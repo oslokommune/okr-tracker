@@ -74,6 +74,7 @@ export default {
     EditUser: () => import('./EditUser.vue'),
     AddUsers: () => import('./AddUsers.vue'),
   },
+
   data: () => ({
     users: [],
     query: '',
@@ -108,21 +109,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
-
-.search {
-  padding: 0rem;
-}
-
-.form__field {
-  width: 100%;
-  padding: 1rem;
-  font-weight: 500;
-  font-size: 1rem;
-  background: $color-grey-50;
-  border: none;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
 
 .users,
 .selected-user,
