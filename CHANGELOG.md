@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-rc.2] - 2021-01-20
+
 ### Added
 
 - Show all comments in progression list for a key result
