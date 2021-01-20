@@ -66,7 +66,15 @@
               <th>{{ $t('keyResultPage.value') }}</th>
               <th>{{ $t('keyResultPage.date') }}</th>
               <th>{{ $t('keyResultPage.registeredBy') }}</th>
-              <th></th>
+              <th>
+                <button v-if="hasComments" class="btn btn--ter" @click="showComments = !showComments">
+                  <span
+                    v-tooltip="!showComments ? $t('keyres.showComments') : $t('keyres.hideComments')"
+                    class="fa"
+                    :class="showComments ? 'fa-eye' : 'fa-eye-slash'"
+                  ></span>
+                </button>
+              </th>
               <th></th>
             </tr>
           </thead>
@@ -89,8 +97,11 @@
                   <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
                 </router-link>
               </td>
-              <td>
-                <v-popover v-if="p.comment" placement="top" :open="isFirstProgressWithComment(p)">
+              <td style="max-width: 200px; padding: 0.25rem">
+                <span v-if="p.comment && showComments">
+                  {{ p.comment }}
+                </span>
+                <v-popover v-if="p.comment && !showComments" placement="top">
                   <i v-tooltip="$t('keyres.showComment')" class="fa fa-comment-alt comment-icon" />
                   <template slot="popover">
                     {{ p.comment }}
@@ -159,10 +170,16 @@ export default {
     newValue: null,
     graph: null,
     isOpen: false,
+    showComments: false,
   }),
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+
+    hasComments() {
+      const firstProgressWithComment = this.progress.find(({ comment }) => comment);
+      return firstProgressWithComment !== undefined;
+    },
   },
 
   watch: {
@@ -193,11 +210,6 @@ export default {
 
   methods: {
     dateTimeShort,
-
-    isFirstProgressWithComment({ id }) {
-      const firstProgressWithComment = this.progress.find(({ comment }) => comment);
-      return id === firstProgressWithComment.id;
-    },
 
     async remove(id) {
       try {

@@ -14,7 +14,7 @@ exports.automatedRestore = require('./backupAndRestore').automatedRestore();
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.scheduledFunction = require('./automatedKeyResults').scheduledFunction;
+exports.fetchAutomatedKeyResOnSchedule = require('./automatedKeyResults').fetchAutomatedKeyResOnSchedule;
 exports.triggerScheduledFunction = require('./automatedKeyResults').triggerScheduledFunction;
 
 /**

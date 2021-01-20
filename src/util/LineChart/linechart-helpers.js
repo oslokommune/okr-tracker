@@ -1,4 +1,4 @@
-const padding = { left: 40, top: 20, right: 10, bottom: 20 };
+const padding = { left: 60, top: 20, right: 10, bottom: 20 };
 
 const colors = {
   purple: '#2A2859',
