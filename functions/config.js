@@ -1,5 +1,5 @@
 exports.region = 'europe-west2';
-exports.autoKeyresFetchFrequency = 'every 12 hours';
+exports.autoKeyresFetchFrequency = '0 6 * * *';
 exports.backupFrequency = '0 0 * * *';
 exports.runtimeOpts = {
   timeoutSeconds: 300,

@@ -23,7 +23,13 @@ export default async function itemHome(to, from, next) {
 
     next();
   } catch ({ message }) {
-    next({ name: 'Not found' });
-    throw new Error(message);
+    if (!state.user) {
+      next({
+        name: 'Login',
+        query: { redirectFrom: to.fullPath },
+      });
+    } else {
+      next({ name: 'Not found' });
+    }
   }
 }

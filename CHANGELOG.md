@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Fixed
+
+- Loading loop if trying to access site without credentials
+- Automated keyresults not actually running automatically
+
+### Changes
+
+- Give cloud functions more memory and a longer timeout
+
 ## [2.0.0-rc.1] - 2021-01-19
 
 ### Added
