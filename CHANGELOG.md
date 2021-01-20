@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- Show all comments in progression list for a key result
+
 ### Fixed
 
 - Loading loop when trying to access site without credentials
-- Automated keyresults not actually running automatically (cron job set to once a day)
+- Automated key results not actually running automatically (cron job set to once a day)
 - Line graph handling numbers >100k
-- Progression not updating when archiving keyresults
+- Progression not updating when archiving key results
 
 ### Changes
 

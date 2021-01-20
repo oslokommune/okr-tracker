@@ -218,6 +218,8 @@
     "automatic": "Oppdateres automatisk",
     "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
     "showComment": "Vis kommentar",
+    "showComments": "Vis kommentarer",
+    "hideComments": "Skjul kommentarer",
     "autoError": "Feil i henting av data fra Google Sheets:"
   },
   "objective": {
