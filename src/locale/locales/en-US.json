@@ -220,6 +220,8 @@
     "automatic": "Automatic",
     "autoHelpText": "The value for this key result gets updated automatically from Google Sheets.",
     "showComment": "View comment",
+    "showComments": "Show comments",
+    "hideComments": "Hide comments",
     "autoError": "Issue fetching data from Google Sheets:"
   },
   "objective": {

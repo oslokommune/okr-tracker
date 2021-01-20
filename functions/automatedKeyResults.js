@@ -11,27 +11,29 @@ const db = admin.firestore();
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.scheduledFunction = function () {
-  return functions
-    .region(config.region)
-    .pubsub.schedule(config.autoKeyresFetchFrequency)
-    .onRun(() => {
-      return db
-        .collection('keyResults')
-        .where('archived', '==', false)
-        .where('auto', '==', true)
-        .get()
-        .then(snapshot => snapshot.docs.map(({ id }) => updateAutomaticKeyResult(id)))
-        .catch(e => {
-          throw new Error(e);
-        });
-    });
-};
+exports.fetchAutomatedKeyResOnSchedule = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .pubsub.schedule(config.autoKeyresFetchFrequency)
+  .onRun(() => {
+    return db
+      .collection('keyResults')
+      .where('archived', '==', false)
+      .where('auto', '==', true)
+      .get()
+      .then((snapshot) => snapshot.docs.map(({ id }) => updateAutomaticKeyResult(id)))
+      .catch((e) => {
+        throw new Error(e);
+      });
+  });
 
 /**
  * Manually trigger the scheduled function
  */
-exports.triggerScheduledFunction = functions.region(config.region).https.onCall(updateAutomaticKeyResult);
+exports.triggerScheduledFunction = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .https.onCall(updateAutomaticKeyResult);
 
 /**
  * Finds the value from the saved sheets data and creates a progress entry for the provided key result id
@@ -43,7 +45,7 @@ async function updateAutomaticKeyResult(id) {
   const progressRef = docRef.collection(`progress`);
 
   try {
-    const { sheetId, sheetName, sheetCell } = await docRef.get().then(d => d.data());
+    const { sheetId, sheetName, sheetCell } = await docRef.get().then((d) => d.data());
     if (!sheetId || !sheetName || !sheetCell) throw new Error('Missing Sheets details');
 
     const value = await getSheetsData({ sheetId, sheetName, sheetCell });

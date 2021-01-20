@@ -83,7 +83,11 @@ auth.onAuthStateChanged(async (user) => {
     await store.dispatch('reset_state');
 
     if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
-      await router.push(router.history.getCurrentLocation());
+      await router.push(router.history.getCurrentLocation()).catch(() => {
+        if (document.querySelector('#spinner')) {
+          document.querySelector('#spinner').remove();
+        }
+      });
     } else {
       await router.push({
         name: 'Login',

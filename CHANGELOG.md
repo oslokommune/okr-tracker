@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-rc.2] - 2021-01-20
+
+### Added
+
+- Show all comments in progression list for a key result
+
+### Fixed
+
+- Loading loop when trying to access site without credentials
+- Automated key results not actually running automatically (cron job set to once a day)
+- Line graph handling numbers >100k
+- Progression not updating when archiving key results
+
+### Changes
+
+- Give cloud functions more memory and a longer timeout
+- Better filter support in details page of a kpi
+
 ## [2.0.0-rc.1] - 2021-01-19
 
 ### Added
