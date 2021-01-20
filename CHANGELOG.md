@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- Loading loop if trying to access site without credentials
-- Automated keyresults not actually running automatically
+- Loading loop when trying to access site without credentials
+- Automated keyresults not actually running automatically (cron job set to once a day)
 - Line graph handling numbers >100k
 - Progression not updating when archiving keyresults
 
