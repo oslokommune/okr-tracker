@@ -13,9 +13,9 @@ exports.handleKeyResultProgressOnKeyResultUpdate = functions
   .region(config.region)
   .firestore.document(`keyResults/{keyResultId}`)
   .onUpdate(({ before, after }, context) => {
-    const fields = ['startValue', 'targetValue', 'currentValue', 'weight'];
+    const fields = ['startValue', 'targetValue', 'currentValue', 'weight', 'archived'];
 
-    const fieldsHaveChanged = fields.some(field => before.data()[field] !== after.data()[field]);
+    const fieldsHaveChanged = fields.some((field) => before.data()[field] !== after.data()[field]);
 
     if (fieldsHaveChanged) return handleKeyResultProgress(null, context);
 

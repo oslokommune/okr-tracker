@@ -129,6 +129,7 @@ export default {
     startDate: null,
     endDate: null,
     filteredProgress: [],
+    isFiltered: false,
   }),
 
   computed: {
@@ -145,7 +146,6 @@ export default {
     },
     progress() {
       this.filterProgress();
-      this.renderGraph();
     },
 
     range(range) {
@@ -159,6 +159,7 @@ export default {
         this.startDate = null;
         this.endDate = null;
         this.filteredProgress = this.progress;
+        this.filterProgress();
         return;
       }
       const parts = this.range.split(' til ').map((d) => new Date(d));
@@ -167,6 +168,7 @@ export default {
       const [startDate, endDate] = parts;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
+      this.isFiltered = true;
 
       this.$router
         .push({
@@ -206,9 +208,9 @@ export default {
 
     renderGraph() {
       const [startValue, targetValue] = extent(this.filteredProgress.map(({ value }) => value));
-      const [startDate] = extent(this.filteredProgress.map(({ timestamp }) => timestamp));
+      const [startDate, endDate] = extent(this.filteredProgress.map(({ timestamp }) => timestamp));
 
-      if (!this.graph) return;
+      if (!this.graph || !startValue || !targetValue) return;
 
       this.graph.render(
         {
@@ -216,7 +218,7 @@ export default {
           targetValue,
         },
         {
-          endDate: new Date(),
+          endDate: this.isFiltered ? endDate : new Date(),
           startDate,
         },
         this.filteredProgress
@@ -231,6 +233,7 @@ export default {
           (a) => a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
         );
       }
+      this.renderGraph();
     },
   },
 };
