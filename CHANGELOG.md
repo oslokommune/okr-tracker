@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Fixed
+
+- Line chart should handle higher values even if it is higher than target value
+
 ### Changes
 
 - Cron job changes to scheduled cloud functions
