@@ -55,7 +55,7 @@ function getProgressionCreator(document) {
       .orderBy('timestamp', 'asc')
       .limit(1)
       .get()
-      .then(snap => snap.docs[0].data().createdBy);
+      .then((snap) => snap.docs[0].data().createdBy);
   } catch {
     throw new Error('Could not find progression creator');
   }
@@ -66,7 +66,7 @@ function getDiff({ before, after }, keys) {
   before = before.data();
   after = after.data();
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (before[key] && before[key].seconds) {
       before[key] = before[key].seconds;
     }

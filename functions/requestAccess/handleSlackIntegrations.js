@@ -68,7 +68,7 @@ const handleAcceptRequest = async (webhook, value, user) => {
     const { email } = await requestAccessCollection
       .doc(value)
       .get()
-      .then(snapshot => snapshot.data());
+      .then((snapshot) => snapshot.data());
 
     // Check if user already exists
     const { exists } = await usersCollection.doc(email).get();
@@ -99,7 +99,7 @@ const handleRejectRequest = async (webhook, value, user) => {
     const { email } = await requestAccessCollection
       .doc(value)
       .get()
-      .then(snapshot => snapshot.data());
+      .then((snapshot) => snapshot.data());
 
     // Remove from requestAccessCollection
     await requestAccessCollection.doc(value).delete();

@@ -15,6 +15,7 @@ exports.fetchAutomatedKeyResOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .pubsub.schedule(config.autoKeyresFetchFrequency)
+  .timeZone(config.timeZone)
   .onRun(() => {
     return db
       .collection('keyResults')

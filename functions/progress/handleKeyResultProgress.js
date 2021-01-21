@@ -22,8 +22,8 @@ async function handleKeyResultProgress(change, { params }) {
     .orderBy('timestamp', 'desc')
     .limit(1)
     .get()
-    .then(snapshot => snapshot.docs)
-    .then(docs => (docs.length ? docs[0].data().value : startValue));
+    .then((snapshot) => snapshot.docs)
+    .then((docs) => (docs.length ? docs[0].data().value : startValue));
 
   const scale = scaleLinear().domain([startValue, targetValue]).clamp(true);
   const progression = scale(currentValue);
@@ -60,7 +60,7 @@ async function updateObjectiveProgression(objectiveRef) {
 
   // Update progression for Items or Periods
   try {
-    const { period } = await objectiveRef.get().then(doc => doc.data());
+    const { period } = await objectiveRef.get().then((doc) => doc.data());
     if (period.id) {
       await updatePeriodProgression(period);
     }
@@ -97,9 +97,9 @@ async function updatePeriodProgression(periodRef) {
 function getWeightedProgression({ docs }) {
   if (!docs.length) return 0;
 
-  const totalWeight = sum(docs.map(doc => doc.data().weight));
+  const totalWeight = sum(docs.map((doc) => doc.data().weight));
 
-  const weightedProgressions = docs.map(doc => {
+  const weightedProgressions = docs.map((doc) => {
     const { weight, progression } = doc.data();
     const normalizedWeight = weight / totalWeight;
     return progression * normalizedWeight;
