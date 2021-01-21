@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Changes
+
+- Cron job changes to scheduled cloud functions
+- Set time zone to Europe/Oslo for scheduled cloud functions
+
 ## [2.0.0-rc.2] - 2021-01-20
 
 ### Added
