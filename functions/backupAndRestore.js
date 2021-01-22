@@ -5,7 +5,11 @@ const config = require('./config');
 const storageBucketName = process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
 
 exports.automatedBackups = function () {
-  return functions.region(config.region).pubsub.schedule(config.backupFrequency).onRun(generateBackup);
+  return functions
+    .region(config.region)
+    .pubsub.schedule(config.backupFrequency)
+    .timeZone(config.timeZone)
+    .onRun(generateBackup);
 };
 
 exports.automatedRestore = function () {
@@ -37,7 +41,7 @@ exports.automatedRestore = function () {
         console.log(`Backup restored from folder ${backupRoute}`);
         return Promise.resolve();
       })
-      .catch(async error => {
+      .catch(async (error) => {
         console.error('Error message: ', error.message);
         return Promise.reject(new Error({ message: error.message }));
       });
@@ -68,7 +72,7 @@ async function generateBackup() {
       console.log(`Backup saved to folder on ${backupRoute}`);
       return Promise.resolve();
     })
-    .catch(async error => {
+    .catch(async (error) => {
       console.error('Error message: ', error.message);
       return Promise.reject(new Error({ message: error.message }));
     });

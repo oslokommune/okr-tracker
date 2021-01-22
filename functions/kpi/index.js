@@ -22,12 +22,13 @@ exports.FetchKpiDataOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .pubsub.schedule(config.autoKpiFetchFrequency)
+  .timeZone(config.timeZone)
   .onRun(() => {
     return db
       .collection('kpis')
       .get()
-      .then(list => list.docs.map(FetchKpiData))
-      .catch(e => {
+      .then((list) => list.docs.map(FetchKpiData))
+      .catch((e) => {
         throw new Error(e);
       });
   });

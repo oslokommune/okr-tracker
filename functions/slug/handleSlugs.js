@@ -44,7 +44,7 @@ module.exports = async function handleSlugs({ before, after }) {
       .collection('slugs')
       .where('reference', '==', after.ref)
       .get()
-      .then(snapshot => snapshot.docs.forEach(doc => doc.ref.delete()));
+      .then((snapshot) => snapshot.docs.forEach((doc) => doc.ref.delete()));
 
     if (await slugExists(slug)) {
       slug += `-${after.id}`;

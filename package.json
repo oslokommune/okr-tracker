@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0-rc.3",
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --import=./mock & vue-cli-service serve",
@@ -51,13 +51,12 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "cypress": "^6.2.1",
-    "data-dir": "^1.2.3",
     "env-cmd": "^10.1.0",
-    "eslint-plugin-cypress": "^2.11.2",
-    "firebase-tools": "^9.2.1",
     "eslint": "^7.18.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.4.1",
+    "firebase-tools": "^9.2.1",
     "node-sass": "^5.0.0",
     "prettier": "^2.2.1",
     "sass-loader": "^10.1.1",
