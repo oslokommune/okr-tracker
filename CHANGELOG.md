@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-rc.3] 2021-01-22
+
 ### Fixed
 
 - Line chart should handle higher values even if it is higher than target value
