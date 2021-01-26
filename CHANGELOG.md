@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
-## [2.0.0-rc.3] 2021-01-22
+## [2.0.0-rc.3] 2021-01-26
+
+### Added
+
+- Drop IE 11 support
+- Meta-tags for fb/twitter/open graph
+- robots.txt
 
 ### Fixed
 
@@ -14,6 +20,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Cron job changes to scheduled cloud functions
 - Set time zone to Europe/Oslo for scheduled cloud functions
+- Updated dependencies
 
 ## [2.0.0-rc.2] - 2021-01-20
 
