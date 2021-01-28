@@ -95,15 +95,12 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakProvider = store.state.providers.includes('keycloak');
 
     if (user && !user.email && keycloakParsedToken.email && keycloakProvider) {
-      console.log('new user');
       await store.dispatch('setLoading', true);
-      console.log('update email');
       await user.updateEmail(keycloakParsedToken.email);
-      console.log('create user in db');
       await User.create({ email: keycloakParsedToken.email });
       await store.dispatch('setLoading', false);
     }
-    console.log('set user');
+
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
 
