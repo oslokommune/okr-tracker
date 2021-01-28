@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Experimental
+
+- (WIP) Keycloak integration: User a Keycloak token to create custom Firebase token
+
 ## [2.0.0-rc.3] 2021-01-26
 
 ### Added

@@ -47,13 +47,34 @@
         </div>
 
         <div class="login__footer">
-          <button class="btn btn--icon btn--pri" @click="loginWithGoogle">
+          <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
             <i class="icon fab fa-fw fa-google" />
             {{ $t('login.google') }}
           </button>
 
           <div class="login__secondary">
-            <button class="btn btn--ghost" data-cy="login-username" @click="showForm = true">
+            <button
+              v-if="providers.includes('keycloak')"
+              class="btn btn--ghost"
+              data-cy="login-username"
+              @click="loginWithKeycloak"
+            >
+              {{ 'Login with Keycloak' }}
+            </button>
+            <button
+              v-if="providers.includes('keycloak')"
+              class="btn btn--ghost"
+              data-cy="login-username"
+              @click="logout"
+            >
+              {{ 'LogOut' }}
+            </button>
+            <button
+              v-if="providers.includes('email')"
+              class="btn btn--ghost"
+              data-cy="login-username"
+              @click="showForm = true"
+            >
               {{ $t('login.loginWithUsername') }}
             </button>
             <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
@@ -67,8 +88,8 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
-import { auth, loginProvider } from '@/config/firebaseConfig';
+import { mapMutations, mapState, mapActions } from 'vuex';
+import { auth, functions, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -88,11 +109,36 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'loginError']),
+    ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated']),
+  },
+
+  async mounted() {
+    if (this.providers.includes('keycloak')) {
+      if (this.authenticated) {
+        const myCall = functions.httpsCallable('createCustomToken');
+        const test = await myCall(this.keycloak.idTokenParsed);
+        await auth.signInWithCustomToken(test.data);
+      }
+    }
   },
 
   methods: {
     ...mapMutations(['SET_LOGIN_ERROR']),
+    ...mapActions(['initKeycloak', 'cleanKeycloak', 'setLoading']),
+
+    async loginWithKeycloak() {
+      this.pending = true;
+      try {
+        await this.keycloak.login();
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
+
+    async logout() {
+      await this.cleanKeycloak();
+    },
+
     async loginWithGoogle() {
       this.pending = true;
       try {

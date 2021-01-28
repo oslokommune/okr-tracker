@@ -27,6 +27,7 @@
     "flatpickr": "^4.6.9",
     "fuse.js": "^6.4.6",
     "image-file-resize": "^1.0.3",
+    "keycloak-js": "^10.0.2",
     "marked": "^1.2.7",
     "v-tooltip": "^2.1.2",
     "vee-validate": "^3.4.5",

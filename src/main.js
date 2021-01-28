@@ -14,6 +14,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
+import User from '@/db/User';
 
 import './styles/main.scss';
 
@@ -21,6 +22,7 @@ import './styles/main.scss';
 import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
+import Keycloak from 'keycloak-js';
 
 const { auth } = require('./config/firebaseConfig');
 
@@ -64,17 +66,52 @@ extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 
+// Support keycloak as a OIDC provider
+if (store.state.providers.includes('keycloak')) {
+  const keycloak = new Keycloak({
+    url: process.env.VUE_APP_KEYCLOAK_URL,
+    realm: process.env.VUE_APP_KEYCLOAK_REALM,
+    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+  });
+  keycloak
+    .init({
+      onLoad: 'check-sso',
+      token: localStorage.getItem('accessToken') !== 'undefined' ? localStorage.getItem('accessToken') : '',
+      refreshToken: localStorage.getItem('refreshToken') !== 'undefined' ? localStorage.getItem('refreshToken') : '',
+      idToken: localStorage.getItem('idToken') !== 'undefined' ? localStorage.getItem('idToken') : '',
+      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+    })
+    .then((authenticated) => {
+      store.commit('SET_AUTHENTICATION', authenticated);
+      store.dispatch('initKeycloak', keycloak);
+    });
+}
+
 let app;
 
 auth.onAuthStateChanged(async (user) => {
   try {
+    const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
+    const keycloakProvider = store.state.providers.includes('keycloak');
+
+    if (user && !user.email && keycloakParsedToken.email && keycloakProvider) {
+      console.log('new user');
+      await store.dispatch('setLoading', true);
+      console.log('update email');
+      await user.updateEmail(keycloakParsedToken.email);
+      console.log('create user in db');
+      await User.create({ email: keycloakParsedToken.email });
+      await store.dispatch('setLoading', false);
+    }
+    console.log('set user');
     await store.dispatch('set_user', user);
     await store.dispatch('init_state');
 
     if (router.currentRoute.query.redirectFrom) {
       await router.push({ path: router.currentRoute.query.redirectFrom });
     }
-  } catch {
+  } catch (e) {
+    console.log(e);
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);
     }

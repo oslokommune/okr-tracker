@@ -91,6 +91,11 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\> |
 | `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`          |
 | `VUE_APP_REGION`                 | `europe-west2`            |
+| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
+| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (optional)    |
+| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (optional)    |
+| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (optional)    |
+| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | `app url`                 |
 
 ### Link project
 

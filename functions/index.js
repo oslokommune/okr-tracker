@@ -1,7 +1,10 @@
 const admin = require('firebase-admin');
+const serviceAccount = require('./origo-okr-tracker-private-key.json');
 
 // Initialize the app to get everything started
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 /**
  * Functions for backup and restoring the Firestore database
@@ -59,3 +62,5 @@ exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleK
 
 exports.slackNotificationOnUserRequest = require('./requestAccess').slackNotificationOnUserRequest;
 exports.slackNotificationInteractiveOnRequest = require('./requestAccess').slackNotificationInteractiveOnRequest;
+
+exports.createCustomToken = require('./tokenCreator').createCustomToken;

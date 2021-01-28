@@ -16,8 +16,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapMutations, mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
+import store from '@/store';
+import Keycloak from 'keycloak-js';
 
 export default {
   name: 'App',
@@ -47,6 +49,10 @@ export default {
     if (document.querySelector('#spinner')) {
       document.querySelector('#spinner').remove();
     }
+  },
+  methods: {
+    ...mapActions(['initKeycloak']),
+    ...mapMutations(['SET_AUTHENTICATION']),
   },
 };
 

@@ -1,4 +1,4 @@
-import { db, storage, arrayRemove } from '@/config/firebaseConfig';
+import { arrayRemove, db, storage } from '@/config/firebaseConfig';
 import preferences from './defaultPreferences';
 import UploadImage from '../common/uploadImage';
 
@@ -14,11 +14,13 @@ export const create = async ({ email }) => {
     const { exists } = await collectionReference.doc(email).get();
     if (exists) throw new Error(`User ${email} already exists!`);
 
-    return collectionReference.doc(email).set({
+    await collectionReference.doc(email).set({
       id: email,
       email,
       preferences,
     });
+
+    return true;
   } catch (error) {
     throw new Error(`Could not add user ${email}`);
   }

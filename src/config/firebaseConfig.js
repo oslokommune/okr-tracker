@@ -40,7 +40,7 @@ const { serverTimestamp, arrayRemove } = firebase.firestore.FieldValue;
 if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);
-  console.log('Established connection to Firestore emulators');
+  console.log('Established dev connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
 }
