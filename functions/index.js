@@ -1,9 +1,9 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./origo-okr-tracker-private-key.json');
+const functions = require('firebase-functions');
 
 // Initialize the app to get everything started
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(functions.config().service_account),
 });
 
 /**

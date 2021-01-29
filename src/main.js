@@ -15,6 +15,7 @@ import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
 import User from '@/db/User';
+import { capitalizeFirstLetterOfNames } from '@/util/';
 
 import './styles/main.scss';
 
@@ -95,13 +96,21 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakProvider = store.state.providers.includes('keycloak');
 
     if (user && !user.email && keycloakParsedToken.email && keycloakProvider) {
+      const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
+      const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
+
       await store.dispatch('setLoading', true);
       await user.updateEmail(keycloakParsedToken.email);
       await User.create({ email: keycloakParsedToken.email });
+      const newUser = {
+        ...user,
+        displayName: `${firstName} ${lastName}`,
+      };
+      await store.dispatch('set_user', newUser);
       await store.dispatch('setLoading', false);
+    } else {
+      await store.dispatch('set_user', user);
     }
-
-    await store.dispatch('set_user', user);
     await store.dispatch('init_state');
 
     if (router.currentRoute.query.redirectFrom) {

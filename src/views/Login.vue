@@ -112,14 +112,19 @@ export default {
     ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated']),
   },
 
-  async mounted() {
-    if (this.providers.includes('keycloak')) {
-      if (this.authenticated) {
-        const myCall = functions.httpsCallable('createCustomToken');
-        const test = await myCall(this.keycloak.idTokenParsed);
-        await auth.signInWithCustomToken(test.data);
-      }
-    }
+  watch: {
+    authenticated: {
+      immediate: true,
+      async handler() {
+        if (this.providers.includes('keycloak')) {
+          if (this.authenticated) {
+            const myCall = functions.httpsCallable('createCustomToken');
+            const test = await myCall(this.keycloak.idTokenParsed);
+            await auth.signInWithCustomToken(test.data);
+          }
+        }
+      },
+    },
   },
 
   methods: {

@@ -23,6 +23,8 @@
   - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
 - [Slack Integration](#slack-integration)
   - [Set up](#set-up)
+- [Supported Providers](#supported-providers)
+  - [Keycloak integration](#keycloak-integration)
 
 ## Clone and install
 
@@ -57,6 +59,7 @@ firebase functions:config:set
   sheets.email="<service account email>"
   sheets.key="<service account private key>"
   sheets.impersonator="email-address" (optional)
+  service_account="<service account private key json-file>"
 ```
 
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
@@ -344,3 +347,20 @@ firebase functions:config:set slack.deploymentWebhook="YOUR SLACK WEBHOOK HERE"
 
 Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
 ```
+
+## Supported providers
+
+OKR-tracker supports for the time being only three login providers: Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+
+### Keycloak integration
+
+We support Keycloak as a login provider, but since Firebase does not support this out of the box, we have set up our own integration with Firebase' SignInWithCustomToken-method that is supplied by them.
+
+For the integration to work you need to give your service account access to create tokens. You can do this by going to your GCP project, under the IAM and admin section and grant the service account access to `Service Account Token Creator` permission. Read more about it [here](https://firebase.google.com/docs/auth/admin/create-custom-tokens).
+
+Download a new service account private key json-file and add it to your firebase config:
+```
+firebase functions:set service_account="$(cat private-key.json)"
+```
+
+DO NOT share your private key with anyone.

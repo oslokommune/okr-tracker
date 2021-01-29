@@ -4,15 +4,21 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### BREAKING CHANGE
+
+- Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the README)
+
 ### Experimental
 
 - (WIP) Keycloak integration: User a Keycloak token to create custom Firebase token
 
 ## [2.0.0-rc.3] 2021-01-26
 
+### BREAKING CHANGE
+- Drop IE 11 support
+
 ### Added
 
-- Drop IE 11 support
 - Meta-tags for fb/twitter/open graph
 - robots.txt
 
