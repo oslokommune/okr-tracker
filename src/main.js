@@ -95,18 +95,25 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
     const keycloakProvider = store.state.providers.includes('keycloak');
 
+    // Handle keycloak integration
     if (user && !user.email && keycloakParsedToken.email && keycloakProvider) {
       const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
       const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
 
       await store.dispatch('setLoading', true);
       await user.updateEmail(keycloakParsedToken.email);
-      await User.create({ email: keycloakParsedToken.email });
-      const newUser = {
-        ...user,
-        displayName: `${firstName} ${lastName}`,
-      };
-      await store.dispatch('set_user', newUser);
+
+      if (!(await User.getUserFromId(keycloakParsedToken.email))) {
+        await User.create({ email: keycloakParsedToken.email });
+        const newUser = {
+          ...user,
+          displayName: `${firstName} ${lastName}`,
+        };
+        await store.dispatch('set_user', newUser);
+      } else {
+        await store.dispatch('set_user', user);
+      }
+
       await store.dispatch('setLoading', false);
     } else {
       await store.dispatch('set_user', user);

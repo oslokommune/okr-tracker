@@ -5,13 +5,14 @@ const config = require('./config');
 const auth = admin.auth();
 
 /**
- * Manually trigger the scheduled function
+ * CreateCustomToken
+ * @token: keycloak token
+ * @returns: firebase token
  */
 exports.createCustomToken = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
-  .https.onCall((token, context) => {
-    console.log(context);
+  .https.onCall((token) => {
     console.log(token);
     const userId = token.preferred_username;
     const additionalClaims = {
