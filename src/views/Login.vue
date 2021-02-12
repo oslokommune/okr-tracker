@@ -1,86 +1,82 @@
 <template>
-  <div class="wrapper">
+  <div class="main">
     <div class="login">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
-      <div class="sections">
-        <div class="section">
-          <div v-if="loginError === 1" class="error">
-            {{ $t('login.error.notRegistered') }}
+      <div v-if="pending">Logger den inn, vennligst vent</div>
+      <div v-else class="section">
+        <div v-if="loginError === 1" class="error">
+          {{ $t('login.error.notRegistered') }}
 
-            <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
-          </div>
-
-          <div v-if="loginError === 2" class="error">
-            {{ $t('login.error.googleError') }}
-          </div>
-        </div>
-        <div v-if="showForm" class="login__form">
-          <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
-
-          <div v-if="loginError === 4" class="error">
-            {{ $t('login.error.userNotFound') }}
-          </div>
-          <validation-observer v-slot="{ handleSubmit }">
-            <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
-              <form-component
-                v-model="email"
-                :label="$t('login.email')"
-                input-type="input"
-                name="email"
-                rules="required|email"
-                type="email"
-                data-cy="login-username-input"
-              />
-
-              <form-component
-                v-model="password"
-                :label="$t('login.password')"
-                input-type="input"
-                name="password"
-                rules="required"
-                type="password"
-                data-cy="login-username-password"
-              />
-            </form>
-          </validation-observer>
-          <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
+          <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
         </div>
 
-        <div class="login__footer">
-          <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
-            <i class="icon fab fa-fw fa-google" />
-            {{ $t('login.google') }}
+        <div v-if="loginError === 2" class="error">
+          {{ $t('login.error.googleError') }}
+        </div>
+
+        <div v-if="loginError === 4" class="error">You do not have the right permissions, missing okr-property</div>
+      </div>
+      <div v-if="showForm" class="login__form">
+        <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
+
+        <div v-if="loginError === 4" class="error">
+          {{ $t('login.error.userNotFound') }}
+        </div>
+        <validation-observer v-slot="{ handleSubmit }">
+          <form id="login" @submit.prevent="handleSubmit(loginWithEmail)">
+            <form-component
+              v-model="email"
+              :label="$t('login.email')"
+              input-type="input"
+              name="email"
+              rules="required|email"
+              type="email"
+              data-cy="login-username-input"
+            />
+
+            <form-component
+              v-model="password"
+              :label="$t('login.password')"
+              input-type="input"
+              name="password"
+              rules="required"
+              type="password"
+              data-cy="login-username-password"
+            />
+          </form>
+        </validation-observer>
+        <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
+      </div>
+
+      <div v-if="!pending" class="login__footer">
+        <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
+          <i class="icon fab fa-fw fa-google" />
+          {{ $t('login.google') }}
+        </button>
+
+        <div class="login__secondary">
+          <button
+            v-if="providers.includes('keycloak')"
+            class="btn btn--ghost"
+            data-cy="login-username"
+            @click="loginWithKeycloak"
+          >
+            {{ 'Login with Keycloak' }}
           </button>
-
-          <div class="login__secondary">
-            <button
-              v-if="providers.includes('keycloak')"
-              class="btn btn--ghost"
-              data-cy="login-username"
-              @click="loginWithKeycloak"
-            >
-              {{ 'Login with Keycloak' }}
-            </button>
-            <button
-              v-if="providers.includes('keycloak')"
-              class="btn btn--ghost"
-              data-cy="login-username"
-              @click="logout"
-            >
-              {{ 'LogOut' }}
-            </button>
-            <button
-              v-if="providers.includes('email')"
-              class="btn btn--ghost"
-              data-cy="login-username"
-              @click="showForm = true"
-            >
-              {{ $t('login.loginWithUsername') }}
-            </button>
-            <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
-              {{ $t('login.requestAccess') }}
-            </router-link>
-          </div>
+          <button v-if="providers.includes('keycloak')" class="btn btn--ghost" data-cy="login-username" @click="logout">
+            {{ 'LogOut' }}
+          </button>
+          <button
+            v-if="providers.includes('email')"
+            class="btn btn--ghost"
+            data-cy="login-username"
+            @click="showForm = true"
+          >
+            {{ $t('login.loginWithUsername') }}
+          </button>
+          <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
+            {{ $t('login.requestAccess') }}
+          </router-link>
         </div>
       </div>
     </div>
@@ -116,11 +112,14 @@ export default {
     authenticated: {
       immediate: true,
       async handler() {
-        if (this.providers.includes('keycloak')) {
-          if (this.authenticated) {
+        if (this.providers.includes('keycloak') && this.authenticated) {
+          this.pending = true;
+          try {
             const myCall = functions.httpsCallable('createCustomToken');
-            const test = await myCall(this.keycloak.idTokenParsed);
-            await auth.signInWithCustomToken(test.data);
+            const login = await myCall(this.keycloak.idTokenParsed);
+            await auth.signInWithCustomToken(login.data);
+          } catch (e) {
+            this.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
           }
         }
       },
@@ -181,32 +180,10 @@ export default {
   display: flex;
   flex-direction: column;
   width: span(10);
-  margin-left: span(1, 1);
   padding: 2rem;
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
-
-  @media screen and (min-width: bp(xs)) {
-    width: span(8);
-    margin-top: 2rem;
-    margin-left: span(2, 1);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    width: span(6);
-    margin-top: 3rem;
-    margin-left: 0;
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(5, 0, span(9));
-    margin-top: 5rem;
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(4, 0, span(10));
-  }
 }
 
 .login__form {

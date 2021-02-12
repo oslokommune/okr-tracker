@@ -14,6 +14,14 @@ exports.createCustomToken = functions
   .region(config.region)
   .https.onCall((token) => {
     console.log(token);
+
+    if (!token.okr) {
+      throw new functions.https.HttpsError(
+        'permission-denied',
+        'The user does not have the correct permissions, missing okr-property'
+      );
+    }
+
     const userId = token.preferred_username;
     const additionalClaims = {
       email: token.email,

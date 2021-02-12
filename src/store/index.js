@@ -53,8 +53,9 @@ export const actions = {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('idToken');
 
-    state.keycloak.logout({ redirectUri: process.env.VUE_APP_KEYCLOAK_LOGOUT_URL });
+    state.keycloak.logout({ redirectUri: window.location.href });
 
+    commit('SET_AUTHENTICATION', false);
     commit('DELETE_KEYCLOAK');
 
     return true;

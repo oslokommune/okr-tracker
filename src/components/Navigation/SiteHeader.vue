@@ -77,7 +77,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'user', 'providers']),
+    ...mapState(['activeItem', 'user', 'providers', 'authenticated']),
 
     /**
      * Dynamically determines the page title based on the route
@@ -107,7 +107,7 @@ export default {
     },
 
     async signOut() {
-      if (this.providers.includes('keycloak')) {
+      if (this.providers.includes('keycloak') && this.authenticated) {
         await this.cleanKeycloak();
       }
       await auth.signOut();

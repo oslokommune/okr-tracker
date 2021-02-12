@@ -2,6 +2,7 @@ import store from '@/store';
 
 export default async function routerGuardHome(to, from, next) {
   if (!store.state || !store.state.user) {
+    console.log('yo');
     next({
       name: 'Login',
       query: { redirectFrom: to.fullPath },

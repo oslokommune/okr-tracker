@@ -18,8 +18,6 @@
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
-import store from '@/store';
-import Keycloak from 'keycloak-js';
 
 export default {
   name: 'App',
