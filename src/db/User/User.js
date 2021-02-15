@@ -1,4 +1,4 @@
-import { arrayRemove, db, storage } from '@/config/firebaseConfig';
+import { arrayRemove, arrayUnion, db, storage } from '@/config/firebaseConfig';
 import preferences from './defaultPreferences';
 import UploadImage from '../common/uploadImage';
 
@@ -7,22 +7,21 @@ const collectionReference = db.collection('users');
 export const getAllUserIds = () => collectionReference.get().then(({ docs }) => docs.map(({ id }) => id));
 export const getUserFromId = (id) => collectionReference.doc(id).get();
 
-export const create = async ({ email }) => {
+export const create = async (user) => {
   try {
-    if (!email) throw new Error('Invalid email');
+    if (!user.email) throw new Error('Invalid email');
 
-    const { exists } = await collectionReference.doc(email).get();
-    if (exists) throw new Error(`User ${email} already exists!`);
+    const { exists } = await collectionReference.doc(user.id).get();
+    if (exists) throw new Error(`User ${user.id} already exists!`);
 
-    await collectionReference.doc(email).set({
-      id: email,
-      email,
+    await collectionReference.doc(user.id).set({
+      ...user,
       preferences,
     });
 
     return true;
   } catch (error) {
-    throw new Error(`Could not add user ${email}`);
+    throw new Error(`Could not add user ${user.id}`);
   }
 };
 
@@ -49,7 +48,7 @@ export const update = async (user) => {
 
 export const addUsers = async (userList) => {
   if (!userList || !userList.length) throw new Error('Invalid data');
-  const promises = userList.map((email) => ({ email })).map(create);
+  const promises = userList.map((email) => ({ id: email, email })).map(create);
 
   try {
     return Promise.all(promises);
@@ -93,3 +92,29 @@ async function removeFromTeams(docRef) {
     throw new Error(error.message);
   }
 }
+
+export const replaceFromTeams = async (oldDocId, newDocId) => {
+  try {
+    const oldDocRef = collectionReference.doc(oldDocId);
+    const newDocRef = collectionReference.doc(newDocId);
+    const products = await db.collection('products').where('team', 'array-contains', oldDocRef).get();
+
+    await Promise.all(
+      products.docs.map(({ ref }) => {
+        return ref.update({
+          team: arrayRemove(oldDocRef),
+        });
+      })
+    );
+
+    return Promise.all(
+      products.docs.map(({ ref }) => {
+        return ref.update({
+          team: arrayUnion(newDocRef),
+        });
+      })
+    );
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

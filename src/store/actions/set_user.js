@@ -14,14 +14,14 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   if (!user || !user.email) rejectAccess();
 
   // Check if user is whitelisted
-  const userRef = db.collection('users').doc(user.email);
+  const userRef = db.collection('users').doc(user.uid);
   const documentSnapshot = await userRef.get();
   if (!documentSnapshot.exists) rejectAccess();
 
-  const { email, displayName, preferences } = await documentSnapshot.data();
+  const { id, email, displayName, preferences } = await documentSnapshot.data();
 
   if (!preferences) {
-    await User.update({ id: email, preferences: defaultPreferences });
+    await User.update({ id, email, preferences: defaultPreferences });
   }
 
   if (preferences.lang) {
@@ -29,7 +29,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   }
 
   if (!displayName) {
-    await User.update({ id: email, displayName: user.displayName });
+    await User.update({ id, email, displayName: user.displayName });
   }
 
   // Bind the user object

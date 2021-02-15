@@ -16,7 +16,7 @@
             <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
             {{ item.name }}
             <i
-              v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
+              v-if="item.team && item.team.map(({ id }) => id).includes(user.id)"
               class="sidebar__user-icon fas fa-user-circle"
             />
           </router-link>

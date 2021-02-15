@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### BREAKING CHANGE
 
+- FIRESTORE RULES ARE CHANGED - We now check for uid and not email when accessing documents. THIS WILL BREAK YOUR INSTANCE. Check the readme for more information
 - Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the README)
 
 ### Experimental

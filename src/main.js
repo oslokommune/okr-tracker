@@ -95,16 +95,33 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
     const keycloakProvider = store.state.providers.includes('keycloak');
 
-    // Handle keycloak integration
-    if (user && !user.email && keycloakParsedToken.email && keycloakProvider) {
+    if (user && keycloakProvider && keycloakParsedToken) {
       const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
       const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
+      const { preferred_username, email } = keycloakParsedToken; // eslint-disable-line
 
       await store.dispatch('setLoading', true);
-      await user.updateEmail(keycloakParsedToken.email);
 
-      if (!(await User.getUserFromId(keycloakParsedToken.email))) {
-        await User.create({ email: keycloakParsedToken.email });
+      if (!user.email) {
+        try {
+          await user.updateEmail(email);
+        } catch (e) {
+          store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+        }
+      }
+
+      const { exists } = await User.getUserFromId(preferred_username);
+      if (!exists) {
+        const oldUserRef = await User.getUserFromId(email);
+
+        await User.create({ ...oldUserRef.data(), id: preferred_username, email });
+        const newUserRef = await User.getUserFromId(preferred_username);
+
+        if (oldUserRef) {
+          await User.replaceFromTeams(oldUserRef.id, newUserRef.id);
+          await User.remove(oldUserRef.data());
+        }
+
         const newUser = {
           ...user,
           displayName: `${firstName} ${lastName}`,
@@ -113,11 +130,10 @@ auth.onAuthStateChanged(async (user) => {
       } else {
         await store.dispatch('set_user', user);
       }
-
-      await store.dispatch('setLoading', false);
     } else {
       await store.dispatch('set_user', user);
     }
+
     await store.dispatch('init_state');
 
     if (router.currentRoute.query.redirectFrom) {
