@@ -32,7 +32,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
     await User.update({ id, email, displayName: user.displayName });
   }
 
-  if (user.username && user.username !== uid) {
+  if (user.uuid && user.uuid !== uid) {
     await User.update({ id, email, uid: user.uid });
   }
 

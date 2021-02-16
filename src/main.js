@@ -110,7 +110,7 @@ auth.onAuthStateChanged(async (user) => {
       const newUser = {
         ...user,
         displayName: `${firstName} ${lastName}`,
-        username: preferred_username,
+        uuid: preferred_username,
       };
 
       await store.dispatch('set_user', newUser);
