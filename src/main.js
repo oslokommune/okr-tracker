@@ -95,10 +95,9 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakProvider = store.state.providers.includes('keycloak');
 
     if (user && !user.email && keycloakProvider && keycloakParsedToken) {
-      console.log(user);
       const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
       const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
-      const { email } = keycloakParsedToken; // eslint-disable-line
+      const { preferred_username, email } = keycloakParsedToken; // eslint-disable-line
 
       await store.dispatch('setLoading', true);
 
@@ -111,6 +110,7 @@ auth.onAuthStateChanged(async (user) => {
       const newUser = {
         ...user,
         displayName: `${firstName} ${lastName}`,
+        username: preferred_username,
       };
 
       await store.dispatch('set_user', newUser);

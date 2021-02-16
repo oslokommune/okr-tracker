@@ -20,8 +20,6 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   const { id, email, displayName, preferences, uid } = await documentSnapshot.data();
 
-  console.log(id);
-
   if (!preferences) {
     await User.update({ id, email, preferences: defaultPreferences });
   }
@@ -34,7 +32,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
     await User.update({ id, email, displayName: user.displayName });
   }
 
-  if (!uid) {
+  if (user.username && user.username !== uid) {
     await User.update({ id, email, uid: user.uid });
   }
 
