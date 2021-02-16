@@ -2,7 +2,10 @@
   <div class="main">
     <div class="login">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
-      <div v-if="pending">Logger den inn, vennligst vent</div>
+      <div v-if="pending && loginError === null">
+        <loading-small></loading-small>
+        {{ $t('login.loading') }}
+      </div>
       <div v-else class="section">
         <div v-if="loginError === 1" class="error">
           {{ $t('login.error.notRegistered') }}
@@ -13,8 +16,6 @@
         <div v-if="loginError === 2" class="error">
           {{ $t('login.error.googleError') }}
         </div>
-
-        <div v-if="loginError === 4" class="error">You do not have the right permissions, missing okr-property</div>
       </div>
       <div v-if="showForm" class="login__form">
         <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
@@ -48,7 +49,7 @@
         <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
       </div>
 
-      <div v-if="!pending" class="login__footer">
+      <div v-if="!pending || loginError !== null" class="login__footer">
         <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
           <i class="icon fab fa-fw fa-google" />
           {{ $t('login.google') }}
@@ -61,10 +62,7 @@
             data-cy="login-username"
             @click="loginWithKeycloak"
           >
-            {{ 'Login with Keycloak' }}
-          </button>
-          <button v-if="providers.includes('keycloak')" class="btn btn--ghost" data-cy="login-username" @click="logout">
-            {{ 'LogOut' }}
+            {{ $t('login.keycloak') }}
           </button>
           <button
             v-if="providers.includes('email')"
@@ -87,9 +85,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import { auth, functions, loginProvider } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
+import LoadingSmall from '@/components/LoadingSmall.vue';
 
 export default {
   name: 'Login',
+
+  components: { LoadingSmall },
 
   data: () => ({
     email: '',
@@ -114,6 +115,7 @@ export default {
       async handler() {
         if (this.providers.includes('keycloak') && this.authenticated) {
           this.pending = true;
+          this.SET_LOGIN_ERROR(null);
           try {
             const myCall = functions.httpsCallable('createCustomToken');
             const login = await myCall(this.keycloak.idTokenParsed);
@@ -132,19 +134,18 @@ export default {
 
     async loginWithKeycloak() {
       this.pending = true;
+      this.SET_LOGIN_ERROR(null);
       try {
         await this.keycloak.login();
       } catch (e) {
         throw new Error(e);
       }
-    },
-
-    async logout() {
-      await this.cleanKeycloak();
+      this.pending = false;
     },
 
     async loginWithGoogle() {
       this.pending = true;
+      this.SET_LOGIN_ERROR(null);
       try {
         const user = await auth.signInWithPopup(loginProvider);
         this.$toasted.show(this.$t('toaster.welcome', { user: user.name ? user.name : '' }));
@@ -156,6 +157,7 @@ export default {
 
     async loginWithEmail() {
       this.pending = true;
+      this.SET_LOGIN_ERROR(null);
 
       try {
         await auth.signInWithEmailAndPassword(this.email, this.password);

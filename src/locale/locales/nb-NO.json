@@ -127,8 +127,10 @@
     "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "google": "Logg inn med Google",
+    "keycloak": "Logg inn med Keycloak",
     "email": "E-post",
     "password": "Passord",
+    "loading": "Logger deg inn, vennligst vent",
     "error": {
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
