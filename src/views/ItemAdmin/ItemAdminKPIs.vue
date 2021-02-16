@@ -1,4 +1,4 @@
-<template>
+k<template>
   <div>
     <div v-if="kpis.length && kpis.length < 3">
       <button class="btn btn--ghost" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>

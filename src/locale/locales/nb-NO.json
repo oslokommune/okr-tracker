@@ -137,6 +137,15 @@
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },
+  "logout": {
+    "header": "Du har blitt logget ut!",
+    "reasons": {
+      "internal": "Det oppstod en intern feil når du prøvde å logge deg på. Vennligst prøv å logg inn på nytt. Kontakt administratoren hvis problemet vedvarer.",
+      "permission-denied": "Kontoen du prøvde å logge på med oppfyller ikke de nødvendige tillatelsene for å få tilgang til nettstedet. Kontakt administratoren for å få de riktige tillatelsene.",
+      "email-in-use": "E-posten du prøve å logge på med er allerede i bruk. Kontakt administratoren for ytterligere hjelp.",
+      "default": "Noe gikk galt med innloggingen din. Vennligst ta kontakt med administratoren og henvis til url-en din."
+    }
+  },
   "toaster": {
     "welcome": "Velkommen {user}",
     "add": {
