@@ -14,7 +14,6 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
-import User from '@/db/User';
 import { capitalizeFirstLetterOfNames } from '@/util/';
 
 import './styles/main.scss';
@@ -95,41 +94,26 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
     const keycloakProvider = store.state.providers.includes('keycloak');
 
-    if (user && keycloakProvider && keycloakParsedToken) {
+    if (user && !user.email && keycloakProvider && keycloakParsedToken) {
+      console.log(user);
       const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
       const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
-      const { preferred_username, email } = keycloakParsedToken; // eslint-disable-line
+      const { email } = keycloakParsedToken; // eslint-disable-line
 
       await store.dispatch('setLoading', true);
 
-      if (!user.email) {
-        try {
-          await user.updateEmail(email);
-        } catch (e) {
-          store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
-        }
+      try {
+        await user.updateEmail(email);
+      } catch (e) {
+        store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
       }
 
-      const { exists } = await User.getUserFromId(preferred_username);
-      if (!exists) {
-        const oldUserRef = await User.getUserFromId(email);
+      const newUser = {
+        ...user,
+        displayName: `${firstName} ${lastName}`,
+      };
 
-        await User.create({ ...oldUserRef.data(), id: preferred_username, email });
-        const newUserRef = await User.getUserFromId(preferred_username);
-
-        if (oldUserRef) {
-          await User.replaceFromTeams(oldUserRef.id, newUserRef.id);
-          await User.remove(oldUserRef.data());
-        }
-
-        const newUser = {
-          ...user,
-          displayName: `${firstName} ${lastName}`,
-        };
-        await store.dispatch('set_user', newUser);
-      } else {
-        await store.dispatch('set_user', user);
-      }
+      await store.dispatch('set_user', newUser);
     } else {
       await store.dispatch('set_user', user);
     }

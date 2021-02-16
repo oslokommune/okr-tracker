@@ -1,3 +1,5 @@
+// TODO: Migrate from email-check to uid-check
+// Allow both at first and then remove email-check later on
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
