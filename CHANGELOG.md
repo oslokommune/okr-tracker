@@ -16,10 +16,17 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Keycloak integration
+- Functions: tokenCreator - create custom tokens for custom auth integration with firebase
+- LodingSmall-component: a loading-animation that is smaller than the normal one
+- Logout page: user is redirected here if there is a problem with signing in
+- Store new uid's to user-object for later migration to uid-controll
+- Alert-components
 
 ### Changes
 
 - firestore-rules: Not allowed to read the user-objects without being signed in
+- Better support to handling errors or if user does not have access to a resource
+- Design of login page
 
 ## [2.0.0-rc.3] 2021-01-26
 

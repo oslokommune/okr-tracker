@@ -110,7 +110,7 @@ export default {
   watch: {
     authenticated: {
       immediate: true,
-      async handler(test) {
+      async handler() {
         if (this.providers.includes('keycloak') && this.authenticated) {
           await this.setLoginLoading(true);
           await this.setLoginError(null);
