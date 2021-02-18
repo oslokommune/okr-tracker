@@ -39,10 +39,6 @@ export const actions = {
   ...moduleActions,
 
   initKeycloak: async ({ commit }, keycloak) => {
-    localStorage.setItem('accessToken', keycloak.token);
-    localStorage.setItem('refreshToken', keycloak.refreshToken);
-    localStorage.setItem('idToken', keycloak.idToken);
-
     commit('SET_KEYCLOAK', keycloak);
 
     return true;
@@ -57,6 +53,12 @@ export const actions = {
 
     commit('SET_AUTHENTICATION', false);
     commit('DELETE_KEYCLOAK');
+
+    return true;
+  },
+
+  updateKeycloakLoading: async ({ commit }, payload) => {
+    commit('SET_KEYCLOAK_LOADING', payload);
 
     return true;
   },
@@ -83,6 +85,10 @@ export const mutations = {
 
   SET_KEYCLOAK(state, payload) {
     state.keycloak = payload;
+  },
+
+  SET_KEYCLOAK_LOADING(state, payload) {
+    state.keycloakLoading = payload;
   },
 
   DELETE_KEYCLOAK(state) {
@@ -119,6 +125,7 @@ export default new Vuex.Store({
     providers: process.env.VUE_APP_LOGIN_PROVIDERS.split('-'),
     keycloak: null,
     authenticated: false,
+    keycloakLoading: false,
   },
   getters,
   mutations,

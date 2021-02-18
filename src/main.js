@@ -73,6 +73,7 @@ if (store.state.providers.includes('keycloak')) {
     realm: process.env.VUE_APP_KEYCLOAK_REALM,
     clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
   });
+  store.dispatch('updateKeycloakLoading', true);
   keycloak
     .init({
       onLoad: 'check-sso',
@@ -82,7 +83,14 @@ if (store.state.providers.includes('keycloak')) {
       silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
     })
     .then((authenticated) => {
-      store.commit('SET_AUTHENTICATION', authenticated);
+      if (authenticated) {
+        localStorage.setItem('accessToken', keycloak.token);
+        localStorage.setItem('refreshToken', keycloak.refreshToken);
+        localStorage.setItem('idToken', keycloak.idToken);
+        store.commit('SET_AUTHENTICATION', authenticated);
+      } else {
+        store.dispatch('updateKeycloakLoading', false);
+      }
       store.dispatch('initKeycloak', keycloak);
     });
 }

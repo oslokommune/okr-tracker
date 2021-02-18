@@ -64,7 +64,7 @@ document.body.addEventListener('keydown', () => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@import '@/styles/_colors';
 
 .app {
   min-height: 100vh;
