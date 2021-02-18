@@ -6,20 +6,21 @@ All notable changes to this project will be documented in this file. The format 
 
 ### BREAKING CHANGE
 
-- Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the README)
-- Changes to environment variables - please read the readme
+- Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the [README](./README.md#supported-providers))
+- Changes to environment variables - please read the [README](./README.md#environment-variables)
+- Node >= 14.x
 
 ### Experimental
 
-- (WIP) Keycloak integration: sign in using keycloak and use the keycloak token to create a custom token for firebase
+- Keycloak integration: sign in using keycloak and use the keycloak token to create a custom token for firebase
 
 ### Added
 
 - Keycloak integration
 - Functions: tokenCreator - create custom tokens for custom auth integration with firebase
-- LodingSmall-component: a loading-animation that is smaller than the normal one
+- LoadingSmall-component: a loading-animation that is smaller than the normal one
 - Logout page: user is redirected here if there is a problem with signing in
-- Store new uid's to user-object for later migration to uid-controll
+- Store new unique id's to user-object for later migration to uid-control
 - Alert-components
 
 ### Changes
@@ -27,6 +28,10 @@ All notable changes to this project will be documented in this file. The format 
 - firestore-rules: Not allowed to read the user-objects without being signed in
 - Better support to handling errors or if user does not have access to a resource
 - Design of login page
+
+### Removed
+
+- Support for Node < 14.x
 
 ## [2.0.0-rc.3] 2021-01-26
 

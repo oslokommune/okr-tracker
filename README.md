@@ -1,5 +1,6 @@
 # OKR Tracker
 
+- [Project requirements](#project-requirements)
 - [Clone and install](#clone-and-install)
 - [Set up new instance](#set-up-new-instance)
   - [Create Firebase project](#create-firebase-project)
@@ -25,6 +26,11 @@
   - [Set up](#set-up)
 - [Supported Providers](#supported-providers)
   - [Keycloak integration](#keycloak-integration)
+
+## Project requirements
+
+- Node 14.x
+- Firebase >9.x
 
 ## Clone and install
 
