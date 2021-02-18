@@ -132,7 +132,7 @@
     "keycloak": "Sign in with Keycloak",
     "email": "Email",
     "password": "Password",
-    "loading": "Signing in progress, please wait",
+    "loading": "We are signing you in, please wait",
     "error": {
       "notRegistered": "Your account is not registered",
       "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",

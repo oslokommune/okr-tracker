@@ -73,7 +73,7 @@ if (store.state.providers.includes('keycloak')) {
     realm: process.env.VUE_APP_KEYCLOAK_REALM,
     clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
   });
-  store.dispatch('updateKeycloakLoading', true);
+  store.dispatch('setLoginLoading', true);
   keycloak
     .init({
       onLoad: 'check-sso',
@@ -89,7 +89,7 @@ if (store.state.providers.includes('keycloak')) {
         localStorage.setItem('idToken', keycloak.idToken);
         store.commit('SET_AUTHENTICATION', authenticated);
       } else {
-        store.dispatch('updateKeycloakLoading', false);
+        store.dispatch('setLoginLoading', false);
       }
       store.dispatch('initKeycloak', keycloak);
     });
@@ -102,22 +102,29 @@ auth.onAuthStateChanged(async (user) => {
     const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
     const keycloakProvider = store.state.providers.includes('keycloak');
 
-    if (user && !user.email && keycloakProvider && keycloakParsedToken) {
+    if (user && keycloakProvider && keycloakParsedToken) {
       const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
       const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
       const { preferred_username, email } = keycloakParsedToken; // eslint-disable-line
+      let displayName = '';
 
       await store.dispatch('setLoading', true);
 
-      try {
-        await user.updateEmail(email);
-      } catch (e) {
-        store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+      if (!user.email) {
+        try {
+          await user.updateEmail(email);
+        } catch (e) {
+          store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+        }
+      }
+
+      if (!user.displayName) {
+        displayName = `${firstName} ${lastName}`;
       }
 
       const newUser = {
         ...user,
-        displayName: `${firstName} ${lastName}`,
+        displayName,
         uuid: preferred_username,
       };
 

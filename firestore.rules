@@ -62,7 +62,7 @@ service cloud.firestore {
     }
 
     match /users/{user} {
-      allow read: if true;
+      allow read: if isSignedIn();
       allow write: if isAdmin() || isSelf(user);
     }
 

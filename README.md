@@ -81,24 +81,25 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 - Under **Your apps**, find Firebase SDK snippet and press **Config**
 - Copy the following secrets to a `.env.production` file in the root directory.
 
-| Secret                           | Description               |
-| -------------------------------- | ------------------------- |
-| `VUE_APP_API_KEY`                | _from SDK snippet_        |
-| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_        |
-| `VUE_APP_DATABASE_URL`           | _from SDK snippet_        |
-| `VUE_APP_PROJECT_ID`             | _from SDK snippet_        |
-| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_        |
-| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_        |
-| `VUE_APP_APP_ID`                 | _from SDK snippet_        |
-| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_        |
-| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\> |
-| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`          |
-| `VUE_APP_REGION`                 | `europe-west2`            |
+| Secret                           | Description                                                                                                              |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `VUE_APP_API_KEY`                | _from SDK snippet_                                                                                                       |
+| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
+| `VUE_APP_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
+| `VUE_APP_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
+| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
+| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
+| `VUE_APP_APP_ID`                 | _from SDK snippet_                                                                                                       |
+| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
+| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
+| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
+| `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
 | `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
-| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (optional)    |
-| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (optional)    |
-| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (optional)    |
-| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | `app url`                 |
+| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
+| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
+| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
+| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
+| `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
 
 ### Link project
 
@@ -359,6 +360,7 @@ We support Keycloak as a login provider, but since Firebase does not support thi
 For the integration to work you need to give your service account access to create tokens. You can do this by going to your GCP project, under the IAM and admin section and grant the service account access to `Service Account Token Creator` permission. Read more about it [here](https://firebase.google.com/docs/auth/admin/create-custom-tokens).
 
 Download a new service account private key json-file and add it to your firebase config:
+
 ```
 firebase functions:set service_account="$(cat private-key.json)"
 ```

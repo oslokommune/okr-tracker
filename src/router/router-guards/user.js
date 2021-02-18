@@ -1,4 +1,7 @@
 import { db } from '@/config/firebaseConfig';
+import store from '@/store';
+
+const { state } = store;
 
 export default async function RouterGuardUser(to, from, next) {
   const { id } = to.params;
@@ -11,8 +14,15 @@ export default async function RouterGuardUser(to, from, next) {
       if (!exists) throw new Error();
 
       next();
-    } catch {
-      next({ name: 'Not found' });
+    } catch (e) {
+      if (!state.user) {
+        next({
+          name: 'Login',
+          query: { redirectFrom: to.fullPath },
+        });
+      } else {
+        next({ name: 'Not found' });
+      }
     }
   }
 }

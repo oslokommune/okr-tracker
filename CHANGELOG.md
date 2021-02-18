@@ -6,12 +6,20 @@ All notable changes to this project will be documented in this file. The format 
 
 ### BREAKING CHANGE
 
-- FIRESTORE RULES ARE CHANGED - We now check for uid and not email when accessing documents. THIS WILL BREAK YOUR INSTANCE. Check the readme for more information
 - Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the README)
+- Changes to environment variables - please read the readme
 
 ### Experimental
 
-- (WIP) Keycloak integration: User a Keycloak token to create custom Firebase token
+- (WIP) Keycloak integration: sign in using keycloak and use the keycloak token to create a custom token for firebase
+
+### Added
+
+- Keycloak integration
+
+### Changes
+
+- firestore-rules: Not allowed to read the user-objects without being signed in
 
 ## [2.0.0-rc.3] 2021-01-26
 

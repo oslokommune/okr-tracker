@@ -107,9 +107,10 @@ export default {
     },
 
     async signOut() {
-      if (this.providers.includes('keycloak') && this.authenticated) {
-        await this.cleanKeycloak();
+      if (this.providers.includes('keycloak')) {
+        await this.cleanKeycloak(this.$route.path);
       }
+
       await auth.signOut();
       await this.reset_state();
     },
