@@ -1,0 +1,94 @@
+@import '_colors.scss';
+@import 'typography.scss';
+
+$borderRadius: 1.5px;
+
+@mixin boxShadow($color) {
+  box-shadow: 0 1px 3px rgba($color, 0.2), 0 3px 12px rgba($color, 0.05);
+}
+
+@mixin boxColor($color, $shadowColor: $color-purple) {
+  background: rgba($color, 0.1);
+  @include boxShadow($shadowColor);
+
+  &::after {
+    background: linear-gradient($color, darken($color, 5%));
+  }
+
+  &::before {
+    background: $color;
+  }
+}
+
+.ok-alert {
+  position: relative;
+  margin: 0.5rem 0 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border-radius: $borderRadius;
+
+  @media screen and (min-width: bp(m)) {
+    padding-top: 1rem;
+    padding-right: 2.5rem;
+    padding-left: 1.5rem;
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 0.25rem;
+    padding-left: 1rem;
+    font-size: 1.75rem;
+    content: '';
+
+    @media screen and (min-width: bp(m)) {
+      bottom: 0;
+      align-items: inherit;
+      justify-content: center;
+      width: 0.25rem;
+      height: 100%;
+      padding-top: 1rem;
+      padding-left: 0;
+      text-align: center;
+    }
+  }
+}
+
+.ok-alert {
+  @include boxColor($color-grey-100);
+}
+
+.ok-alert--success {
+  @include boxColor($color-green, darken($color-green, 20%));
+}
+
+.ok-alert--danger {
+  @include boxColor($color-red, darken($color-red, 20%));
+}
+
+.ok-alert--warning {
+  @include boxColor($color-yellow, darken($color-yellow, 20%));
+}
+
+.ok-alert--white {
+  background: white;
+}
+
+.ok-alert--dark {
+  background: $color-blue;
+  @include boxShadow($color-purple);
+
+  &::after {
+    color: $color-blue;
+    background: linear-gradient($color-purple, darken($color-purple, 5%));
+  }
+
+  &::before {
+    color: white;
+    background: $color-purple;
+  }
+}

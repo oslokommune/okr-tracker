@@ -32,7 +32,12 @@
           </form>
         </validation-observer>
 
-        <label class="form-group">
+        <label v-if="thisUser.uid" class="form-group">
+          <span class="form-label">{{ $t('fields.uid') }}</span>
+          <input v-model="thisUser.uid" class="form__field" type="email" disabled />
+        </label>
+
+        <label v-if="me" class="form-group">
           <span class="form-label">{{ $t('user.selectLanguage') }}</span>
           <select v-model="thisUser.preferences.lang" class="form__field">
             <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>

@@ -4,7 +4,7 @@ import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
 import { sortByLocale } from '@/store/actions/actionUtils';
 
-import actions from './actions';
+import moduleActions from './actions';
 
 Vue.use(Vuex);
 
@@ -35,6 +35,41 @@ export const getters = {
   },
 };
 
+export const actions = {
+  ...moduleActions,
+
+  initKeycloak: async ({ commit }, keycloak) => {
+    commit('SET_KEYCLOAK', keycloak);
+
+    return true;
+  },
+
+  cleanKeycloak: async ({ commit, state }, uri) => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('idToken');
+
+    state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_LOGOUT_URL}${uri}` });
+
+    commit('SET_AUTHENTICATION', false);
+    commit('DELETE_KEYCLOAK');
+
+    return true;
+  },
+
+  setLoginLoading: async ({ commit }, payload) => {
+    commit('SET_LOGIN_LOADING', payload);
+
+    return true;
+  },
+
+  setLoginError: async ({ commit }, payload) => {
+    commit('SET_LOGIN_ERROR', payload);
+
+    return true;
+  },
+};
+
 export const mutations = {
   ...vuexfireMutations,
 
@@ -52,6 +87,22 @@ export const mutations = {
 
   SET_LOADING(state, payload) {
     state.loading = payload;
+  },
+
+  SET_KEYCLOAK(state, payload) {
+    state.keycloak = payload;
+  },
+
+  SET_LOGIN_LOADING(state, payload) {
+    state.loginLoading = payload;
+  },
+
+  DELETE_KEYCLOAK(state) {
+    state.keycloak = null;
+  },
+
+  SET_AUTHENTICATION(state, payload) {
+    state.authenticated = payload;
   },
 };
 
@@ -77,6 +128,10 @@ export default new Vuex.Store({
       { label: i18n.t('view.details'), id: 'details', icon: '' },
     ],
     loading: false,
+    providers: process.env.VUE_APP_LOGIN_PROVIDERS.split('-'),
+    keycloak: null,
+    authenticated: false,
+    loginLoading: false,
   },
   getters,
   mutations,

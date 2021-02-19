@@ -30,7 +30,7 @@ export const accept = async (id) => {
       .get()
       .then((snapshot) => snapshot.data());
 
-    return User.create({ email }).then(reject.bind(null, id));
+    return User.create({ id: email, email }).then(reject.bind(null, id));
   } catch {
     throw new Error(`Cannot accept access request (${id})`);
   }

@@ -1,9 +1,13 @@
+// TODO: Migrate from email-check to uid-check
+// Allow both at first and then remove email-check later on
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin == true
+      let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin == true;
+      let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.admin == true;
+      return isSignedIn() && (oldUser || newUser);
     }
 
     function isSignedIn() {
@@ -12,27 +16,39 @@ service cloud.firestore {
     }
 
     function isTeamMember() {
-      return /databases/$(database)/documents/users/$(request.auth.token.email) in resource.data.team;
+      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in resource.data.team;
+      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in resource.data.team;
+      return oldUser || newUser;
     }
 
     function isMemberOfParent() {
-      return /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(request.resource.data.parent).data.team
+      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(request.resource.data.parent).data.team;
+      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(request.resource.data.parent).data.team;
+      return oldUser || newUser;
     }
 
     function isMemberOfParentDelete() {
-      return /databases/$(database)/documents/users/$(request.auth.token.email) in get(resource.data.parent).data.team
+      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in get(resource.data.parent).data.team;
+      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in get(resource.data.parent).data.team;
+      return oldUser || newUser;
     }
 
     function isMemberOfKeyResParent(document) {
-      return /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team
+      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
+      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
+      return oldUser || newUser;
     }
 
     function isMemberOfKpiParent(document) {
-      return /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team
+      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team;
+      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team;
+      return oldUser || newUser;
     }
 
     function isSelf(document) {
-      return document == request.auth.token.email
+      let oldUser = document == request.auth.token.email;
+      let newUser = document == request.auth.token.uid;
+      return oldUser || newUser;
     }
 
 
@@ -46,7 +62,7 @@ service cloud.firestore {
     }
 
     match /users/{user} {
-      allow read: if true;
+      allow read: if isSignedIn();
       allow write: if isAdmin() || isSelf(user);
     }
 
