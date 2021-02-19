@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the [README](./README.md#supported-providers))
 - Changes to environment variables - please read the [README](./README.md#environment-variables)
-- Node >= 14.x
+- Dropped support for Node < 14.x
+- Required Node >= 14.x
 
 ### Experimental
 
