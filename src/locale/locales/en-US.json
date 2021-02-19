@@ -20,6 +20,7 @@
   },
   "fields": {
     "email": "Email",
+    "uid": "Unique ID",
     "name": "Name",
     "missionStatement": "Mission statement",
     "weight": "Weight",

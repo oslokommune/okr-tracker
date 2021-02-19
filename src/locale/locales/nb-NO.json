@@ -20,6 +20,7 @@
   },
   "fields": {
     "email": "E-post",
+    "uid": "Unik ID",
     "name": "Navn",
     "missionStatement": "Oppdragsbeskrivelse",
     "weight": "Vekt",
