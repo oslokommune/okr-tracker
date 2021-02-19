@@ -77,7 +77,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'user']),
+    ...mapState(['activeItem', 'user', 'providers', 'authenticated']),
 
     /**
      * Dynamically determines the page title based on the route
@@ -100,13 +100,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state']),
+    ...mapActions(['reset_state', 'cleanKeycloak']),
 
     hideUserMenu() {
       this.showUserMenu = false;
     },
 
     async signOut() {
+      if (this.providers.includes('keycloak')) {
+        await this.cleanKeycloak(this.$route.path);
+      }
+
       await auth.signOut();
       await this.reset_state();
     },

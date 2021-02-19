@@ -14,6 +14,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
+import { capitalizeFirstLetterOfNames } from '@/util/';
 
 import './styles/main.scss';
 
@@ -21,6 +22,7 @@ import './styles/main.scss';
 import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
+import Keycloak from 'keycloak-js';
 
 const { auth } = require('./config/firebaseConfig');
 
@@ -64,17 +66,83 @@ extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 
+// Support keycloak as a OIDC provider
+if (store.state.providers.includes('keycloak')) {
+  const keycloak = new Keycloak({
+    url: process.env.VUE_APP_KEYCLOAK_URL,
+    realm: process.env.VUE_APP_KEYCLOAK_REALM,
+    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+  });
+  store.dispatch('setLoginLoading', true);
+  keycloak
+    .init({
+      onLoad: 'check-sso',
+      token: localStorage.getItem('accessToken') !== 'undefined' ? localStorage.getItem('accessToken') : '',
+      refreshToken: localStorage.getItem('refreshToken') !== 'undefined' ? localStorage.getItem('refreshToken') : '',
+      idToken: localStorage.getItem('idToken') !== 'undefined' ? localStorage.getItem('idToken') : '',
+      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+    })
+    .then((authenticated) => {
+      if (authenticated) {
+        localStorage.setItem('accessToken', keycloak.token);
+        localStorage.setItem('refreshToken', keycloak.refreshToken);
+        localStorage.setItem('idToken', keycloak.idToken);
+        store.commit('SET_AUTHENTICATION', authenticated);
+      } else {
+        store.dispatch('setLoginLoading', false);
+      }
+      store.dispatch('initKeycloak', keycloak);
+    });
+}
+
 let app;
 
 auth.onAuthStateChanged(async (user) => {
   try {
-    await store.dispatch('set_user', user);
+    const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
+    const keycloakProvider = store.state.providers.includes('keycloak');
+
+    if (user && keycloakProvider && keycloakParsedToken) {
+      const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
+      const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
+      const { preferred_username, email } = keycloakParsedToken; // eslint-disable-line
+      let displayName = '';
+
+      await store.dispatch('setLoading', true);
+
+      if (!user.email) {
+        try {
+          await user.updateEmail(email);
+        } catch (e) {
+          store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+        }
+      }
+
+      if (!user.displayName) {
+        displayName = `${firstName} ${lastName}`;
+      }
+
+      const newUser = {
+        ...user,
+        displayName,
+        uuid: preferred_username,
+      };
+
+      await store.dispatch('set_user', newUser);
+    } else {
+      await store.dispatch('set_user', user);
+    }
+
     await store.dispatch('init_state');
 
     if (router.currentRoute.query.redirectFrom) {
       await router.push({ path: router.currentRoute.query.redirectFrom });
+    } else if (router.currentRoute.name === 'Login' && !router.currentRoute.query.redirectFrom) {
+      await router.push({
+        name: 'Home',
+      });
     }
-  } catch {
+  } catch (e) {
     if (user) {
       store.commit('SET_LOGIN_ERROR', 1);
     }
@@ -88,7 +156,7 @@ auth.onAuthStateChanged(async (user) => {
           document.querySelector('#spinner').remove();
         }
       });
-    } else {
+    } else if (!router.currentRoute.query.redirectFrom) {
       await router.push({
         name: 'Login',
         query: { redirectFrom: router.currentRoute.fullPath },

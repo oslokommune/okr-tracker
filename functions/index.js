@@ -1,7 +1,10 @@
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
 
 // Initialize the app to get everything started
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.cert(functions.config().service_account),
+});
 
 /**
  * Functions for backup and restoring the Firestore database
@@ -59,3 +62,5 @@ exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleK
 
 exports.slackNotificationOnUserRequest = require('./requestAccess').slackNotificationOnUserRequest;
 exports.slackNotificationInteractiveOnRequest = require('./requestAccess').slackNotificationInteractiveOnRequest;
+
+exports.createCustomToken = require('./tokenCreator').createCustomToken;

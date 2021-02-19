@@ -127,8 +127,10 @@
     "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "google": "Logg inn med Google",
+    "keycloak": "Logg inn med Keycloak",
     "email": "E-post",
     "password": "Passord",
+    "loading": "Logger deg inn, vennligst vent",
     "error": {
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
@@ -136,6 +138,15 @@
       "userNotFound": "Kunne ikke finne bruker"
     },
     "loginWithUsername": "Logg inn med brukernavn"
+  },
+  "logout": {
+    "header": "Du har blitt logget ut!",
+    "reasons": {
+      "internal": "Det oppstod en intern feil når du prøvde å logge deg på. Vennligst prøv å logg inn på nytt. Kontakt administratoren hvis problemet vedvarer.",
+      "permission-denied": "Kontoen du prøvde å logge på med oppfyller ikke de nødvendige tillatelsene for å få tilgang til nettstedet. Kontakt administratoren for å få de riktige tillatelsene.",
+      "email-in-use": "E-posten du prøve å logge på med er allerede i bruk. Kontakt administratoren for ytterligere hjelp.",
+      "default": "Noe gikk galt med innloggingen din. Vennligst ta kontakt med administratoren og henvis til url-en din."
+    }
   },
   "toaster": {
     "welcome": "Velkommen {user}",

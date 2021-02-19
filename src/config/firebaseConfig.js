@@ -35,14 +35,14 @@ const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
 const functions = firebase.app().functions(process.env.VUE_APP_REGION);
-const { serverTimestamp, arrayRemove } = firebase.firestore.FieldValue;
+const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
 
 if (process.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);
-  console.log('Established connection to Firestore emulators');
+  console.log('Established dev connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
 }
 
-export { db, auth, loginProvider, storage, analytics, functions, serverTimestamp, arrayRemove };
+export { db, auth, loginProvider, storage, analytics, functions, serverTimestamp, arrayRemove, arrayUnion };

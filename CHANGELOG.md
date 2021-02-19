@@ -4,11 +4,43 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
-## [2.0.0-rc.3] 2021-01-26
+### BREAKING CHANGE
+
+- Service account private key is not optional - it is required to add the private key json-file to firebase functions config (check out the [README](./README.md#supported-providers))
+- Changes to environment variables - please read the [README](./README.md#environment-variables)
+- Dropped support for Node < 14.x
+- Required Node >= 14.x
+
+### Experimental
+
+- Keycloak integration: sign in using keycloak and use the keycloak token to create a custom token for firebase
 
 ### Added
 
+- Keycloak integration
+- Functions: tokenCreator - create custom tokens for custom auth integration with firebase
+- LoadingSmall-component: a loading-animation that is smaller than the normal one
+- Logout page: user is redirected here if there is a problem with signing in
+- Store new unique id's to user-object for later migration to uid-control
+- Alert-components
+
+### Changes
+
+- firestore-rules: Not allowed to read the user-objects without being signed in
+- Better support to handling errors or if user does not have access to a resource
+- Design of login page
+
+### Removed
+
+- Support for Node < 14.x
+
+## [2.0.0-rc.3] 2021-01-26
+
+### BREAKING CHANGE
 - Drop IE 11 support
+
+### Added
+
 - Meta-tags for fb/twitter/open graph
 - robots.txt
 

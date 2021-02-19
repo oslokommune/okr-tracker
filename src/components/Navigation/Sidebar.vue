@@ -49,13 +49,17 @@ export default {
   name: 'Sidebar',
 
   computed: {
-    ...mapState(['activeItem', 'sidebarGroups', 'user']),
+    ...mapState(['activeItem', 'sidebarGroups', 'user', 'providers']),
   },
 
   methods: {
-    ...mapActions(['reset_state']),
+    ...mapActions(['reset_state', 'cleanKeycloak']),
 
     async signOut() {
+      if (this.providers.includes('keycloak')) {
+        await this.cleanKeycloak(this.$route.path);
+      }
+
       await auth.signOut();
       await this.reset_state();
     },

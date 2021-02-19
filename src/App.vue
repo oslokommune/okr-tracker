@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapMutations, mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -48,6 +48,10 @@ export default {
       document.querySelector('#spinner').remove();
     }
   },
+  methods: {
+    ...mapActions(['initKeycloak']),
+    ...mapMutations(['SET_AUTHENTICATION']),
+  },
 };
 
 // Using a class on body to determine how to style focus states
@@ -60,7 +64,7 @@ document.body.addEventListener('keydown', () => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@import '@/styles/_colors';
 
 .app {
   min-height: 100vh;

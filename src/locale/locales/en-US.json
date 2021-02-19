@@ -110,7 +110,7 @@
     "acceptRequest": "Grant access",
     "rejectRequest": "Delete request",
     "deleteImage": "Delete image",
-    "deleteUser": "Delte user",
+    "deleteUser": "Delete user",
     "create": "Create",
     "delete": "Delete",
     "archive": "Archive",
@@ -129,8 +129,10 @@
     "requestButton": "Send request",
     "backToLogin": "Back to login",
     "google": "Sign in with Google",
+    "keycloak": "Sign in with Keycloak",
     "email": "Email",
     "password": "Password",
+    "loading": "We are signing you in, please wait",
     "error": {
       "notRegistered": "Your account is not registered",
       "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",
@@ -138,6 +140,15 @@
       "userNotFound": "Could not find user."
     },
     "loginWithUsername": "Sign in with username"
+  },
+  "logout": {
+    "header": "You have been logged out!",
+    "reasons": {
+      "internal": "There was an internal error when trying to log you in. Please try to log in again. Contact the administrator of the site if the problem persists.",
+      "permission-denied": "The account you tried to log in with does not meet the required permissions to access the site. Contact the administrator to get the right permissions.",
+      "email-in-use": "The e-mail you tried to log in with is already in use. Contact the administrator for further assistance.",
+      "default": "Something went wrong with your sign in. Please contact the administrator and refer to your url."
+    }
   },
   "toaster": {
     "welcome": "Welcome {user}",

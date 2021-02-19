@@ -1,5 +1,6 @@
 # OKR Tracker
 
+- [Project requirements](#project-requirements)
 - [Clone and install](#clone-and-install)
 - [Set up new instance](#set-up-new-instance)
   - [Create Firebase project](#create-firebase-project)
@@ -23,6 +24,13 @@
   - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
 - [Slack Integration](#slack-integration)
   - [Set up](#set-up)
+- [Supported Providers](#supported-providers)
+  - [Keycloak integration](#keycloak-integration)
+
+## Project requirements
+
+- Node 14.x
+- Firebase >9.x
 
 ## Clone and install
 
@@ -57,6 +65,7 @@ firebase functions:config:set
   sheets.email="<service account email>"
   sheets.key="<service account private key>"
   sheets.impersonator="email-address" (optional)
+  service_account="<service account private key json-file>"
 ```
 
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
@@ -78,19 +87,25 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 - Under **Your apps**, find Firebase SDK snippet and press **Config**
 - Copy the following secrets to a `.env.production` file in the root directory.
 
-| Secret                           | Description               |
-| -------------------------------- | ------------------------- |
-| `VUE_APP_API_KEY`                | _from SDK snippet_        |
-| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_        |
-| `VUE_APP_DATABASE_URL`           | _from SDK snippet_        |
-| `VUE_APP_PROJECT_ID`             | _from SDK snippet_        |
-| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_        |
-| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_        |
-| `VUE_APP_APP_ID`                 | _from SDK snippet_        |
-| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_        |
-| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\> |
-| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`          |
-| `VUE_APP_REGION`                 | `europe-west2`            |
+| Secret                           | Description                                                                                                              |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `VUE_APP_API_KEY`                | _from SDK snippet_                                                                                                       |
+| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
+| `VUE_APP_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
+| `VUE_APP_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
+| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
+| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
+| `VUE_APP_APP_ID`                 | _from SDK snippet_                                                                                                       |
+| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
+| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
+| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
+| `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
+| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
+| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
+| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
+| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
+| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
+| `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
 
 ### Link project
 
@@ -339,3 +354,21 @@ firebase functions:config:set slack.deploymentWebhook="YOUR SLACK WEBHOOK HERE"
 
 Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
 ```
+
+## Supported providers
+
+OKR-tracker supports for the time being only three login providers: Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+
+### Keycloak integration
+
+We support Keycloak as a login provider, but since Firebase does not support this out of the box, we have set up our own integration with Firebase' SignInWithCustomToken-method that is supplied by them.
+
+For the integration to work you need to give your service account access to create tokens. You can do this by going to your GCP project, under the IAM and admin section and grant the service account access to `Service Account Token Creator` permission. Read more about it [here](https://firebase.google.com/docs/auth/admin/create-custom-tokens).
+
+Download a new service account private key json-file and add it to your firebase config:
+
+```
+firebase functions:set service_account="$(cat private-key.json)"
+```
+
+DO NOT share your private key with anyone.
