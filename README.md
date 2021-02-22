@@ -1,5 +1,6 @@
 # OKR Tracker
 
+- [Demo](#demo)
 - [Project requirements](#project-requirements)
 - [Clone and install](#clone-and-install)
 - [Set up new instance](#set-up-new-instance)
