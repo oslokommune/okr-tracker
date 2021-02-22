@@ -27,6 +27,13 @@
 - [Supported Providers](#supported-providers)
   - [Keycloak integration](#keycloak-integration)
 
+## Demo
+
+If you would like to check out how the application works, you can go to the demo-site and sign in with a test-user
+
+- Site:  https://origo-okr-tracker.web.app
+- User/pass: testuser@okr.com / testuser
+
 ## Project requirements
 
 - Node 14.x

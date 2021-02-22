@@ -1,3 +1,4 @@
 node_modules/
 .runtimeconfig.json
 origo-okr-tracker-private-key.json
+okr-tracker-production-private-key.json

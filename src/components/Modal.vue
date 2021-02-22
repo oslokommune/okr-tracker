@@ -117,7 +117,7 @@ export default {
           timestamp: new Date(this.date),
         });
         this.$toasted.show(this.$t('toaster.add.progression'));
-      } catch {
+      } catch (e) {
         this.$toasted.error(this.$t('toaster.error.progression'));
       }
       this.loading = false;

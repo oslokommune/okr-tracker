@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- Dev-environment for users outside of Oslo kommune to test our application before forking/using
+- Show User UID in profile
+
+# Fixed
+
+- Firestore rules: KeyRes were only allowed for uid-objects and not email-objects
+
 ## [2.0.0-rc.4] 2021-02-19
 
 ### BREAKING CHANGE
