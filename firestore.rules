@@ -34,7 +34,7 @@ service cloud.firestore {
     }
 
     function isMemberOfKeyResParent(document) {
-      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
+      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
       let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
       return oldUser || newUser;
     }

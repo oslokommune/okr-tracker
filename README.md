@@ -1,5 +1,6 @@
 # OKR Tracker
 
+- [Demo](#demo)
 - [Project requirements](#project-requirements)
 - [Clone and install](#clone-and-install)
 - [Set up new instance](#set-up-new-instance)
@@ -26,6 +27,13 @@
   - [Set up](#set-up)
 - [Supported Providers](#supported-providers)
   - [Keycloak integration](#keycloak-integration)
+
+## Demo
+
+If you would like to check out how the application works, you can go to the demo-site and sign in with a test-user
+
+- Site: https://origo-okr-tracker.web.app
+- User/pass: testuser@okr.com / testuser
 
 ## Project requirements
 
@@ -106,6 +114,7 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
 | `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
+| `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
 
 ### Link project
 

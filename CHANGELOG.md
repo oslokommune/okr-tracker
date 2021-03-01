@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+## [2.0.0-rc.5] 2021-03-01
+
+### Added
+
+- Dev-environment for users outside of Oslo kommune to test our application before forking/using
+- Show User UID in profile
+- Custom personalized sign in text for the keycloak sign-in button (default is `Sign in with keycloak`, new environment variable)
+
+# Fixed
+
+- Firestore rules: KeyRes were only allowed for uid-objects and not email-objects
+
 ## [2.0.0-rc.4] 2021-02-19
 
 ### BREAKING CHANGE
@@ -39,6 +51,7 @@ All notable changes to this project will be documented in this file. The format 
 ## [2.0.0-rc.3] 2021-01-26
 
 ### BREAKING CHANGE
+
 - Drop IE 11 support
 
 ### Added

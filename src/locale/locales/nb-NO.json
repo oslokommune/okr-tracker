@@ -127,6 +127,7 @@
     "requestAccess": "Be om tilgang",
     "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
+    "with": "Logg inn med {provider} bruker",
     "google": "Logg inn med Google",
     "keycloak": "Logg inn med Keycloak",
     "email": "E-post",
