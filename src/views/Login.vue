@@ -61,7 +61,7 @@
           data-cy="login-username"
           @click="loginWithKeycloak"
         >
-          {{ $t('login.keycloak') }}
+          {{ getKeycloakText }}
         </button>
 
         <button
@@ -105,6 +105,13 @@ export default {
 
   computed: {
     ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated', 'loginLoading']),
+
+    getKeycloakText() {
+      if (process.env.VUE_APP_KEYCLOAK_SIGN_IN_TEXT) {
+        return this.$t('login.with', { provider: process.env.VUE_APP_KEYCLOAK_SIGN_IN_TEXT });
+      }
+      return this.$t('login.keycloak');
+    },
   },
 
   watch: {
