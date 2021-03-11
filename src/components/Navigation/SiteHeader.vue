@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <router-link :to="{ name: 'Home' }" class="logo">
-        <img src="/oslo-logo.svg" alt="Logo" class="logo__img" />
+        <img src="/Logotype-Knowit-Digital-black.svg" alt="Logo" class="logo__img" />
       </router-link>
       <div v-if="title" class="title">
         <h1 class="title__name">

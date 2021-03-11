@@ -230,7 +230,7 @@ $imageSize: 1.75em;
   margin: 0 auto;
   object-fit: cover;
   color: black;
-  background: #f8c66b;
+  background: #4B6455; // Knowit forest
   border: 5px solid white;
   border-radius: 0.25em;
   box-shadow: 0 0.4em 1.6em 0.5em rgba($color-yellow, 0.4);

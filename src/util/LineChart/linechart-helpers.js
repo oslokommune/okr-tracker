@@ -3,7 +3,7 @@ const padding = { left: 60, top: 20, right: 10, bottom: 20 };
 const colors = {
   purple: '#2A2859',
   grey: '#F2F2F2',
-  yellow: '#F9C66B',
+  yellow: '#4B6455',
 };
 
 export function initSvg(svg) {

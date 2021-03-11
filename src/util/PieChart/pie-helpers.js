@@ -8,7 +8,7 @@ const ease = easeCircleOut;
 const colors = {
   purple: '#2A2859',
   grey: '#a2a2a2',
-  yellow: '#F9C66B',
+  yellow: '#4B6455',
   dimmed: '#c7c7c7',
 };
 export const formatPercent = format('.0%');
