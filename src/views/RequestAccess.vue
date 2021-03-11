@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import RequestAccess from '@/db/RequestAccess';
 import { mapMutations } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'RequestAccess',
@@ -41,10 +41,11 @@ export default {
     async send() {
       this.loading = true;
       try {
-        await RequestAccess.create({ email: this.email });
+        await axios.post(`${process.env.VUE_APP_HOST_URL}/access/${this.email}/create`);
         this.$toasted.show(this.$t('toaster.request.requested'));
         await this.$router.push({ name: 'Login', query: { redirectFrom: '/' } });
-      } catch {
+      } catch (e) {
+        console.log(e);
         this.email = '';
         this.$toasted.error(this.$t('toaster.request.error'));
       }

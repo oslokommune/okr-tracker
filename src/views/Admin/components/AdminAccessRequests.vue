@@ -22,6 +22,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import requestAccess from '@/db/RequestAccess';
+import axios from 'axios';
 
 export default {
   name: 'AdminAccessRequests',
@@ -36,12 +37,25 @@ export default {
 
   methods: {
     async acceptRequest(obj) {
-      await requestAccess.accept(obj.id);
-      this.$toasted.show(this.$t('toaster.request.accepted', { user: obj.email }));
+      try {
+        await requestAccess.accept(obj.id);
+        await axios.post(`${process.env.VUE_APP_HOST_URL}/user/create`, {
+          email: obj.email,
+          id: obj.email,
+        });
+        await axios.post(`${process.env.VUE_APP_HOST_URL}/access/${obj.email}`);
+        this.$toasted.show(this.$t('toaster.request.accepted', { user: obj.email }));
+      } catch (e) {
+        console.log(e);
+      }
     },
     async rejectRequest(obj) {
-      await requestAccess.reject(obj.id);
-      this.$toasted.show(this.$t('toaster.request.rejected', { user: obj.email }));
+      try {
+        await axios.delete(`${process.env.VUE_APP_HOST_URL}/access/${obj.id}`);
+        this.$toasted.show(this.$t('toaster.request.rejected', { user: obj.email }));
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

@@ -2,6 +2,7 @@
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
+    <button @click="functionCall">Click meg</button>
     <main class="container">
       <div class="sidebarContainer">
         <SidebarNavigation v-if="user"></SidebarNavigation>
@@ -17,6 +18,7 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
+import axios from 'axios';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -51,6 +53,16 @@ export default {
   methods: {
     ...mapActions(['initKeycloak']),
     ...mapMutations(['SET_AUTHENTICATION']),
+
+    async functionCall() {
+      try {
+        const res = await axios.get(`${process.env.VUE_APP_HOST_URL}/hello`);
+
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 };
 

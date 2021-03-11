@@ -14,7 +14,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
-import { capitalizeFirstLetterOfNames } from '@/util/';
+import { capitalizeFirstLetterOfNames, axiosInterceptor } from '@/util/';
 
 import './styles/main.scss';
 
@@ -23,6 +23,8 @@ import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
 import Keycloak from 'keycloak-js';
+
+axiosInterceptor();
 
 const { auth } = require('./config/firebaseConfig');
 
