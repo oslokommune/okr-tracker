@@ -229,9 +229,9 @@ $imageSize: 1.75em;
   height: 12em;
   margin: 0 auto;
   object-fit: cover;
-  color: var(--color-black);
-  background: var(--color-yellow);
-  border: 5px solid var(--color-white);
+  color: black;
+  background: #4B6455; // Knowit forest
+  border: 5px solid white;
   border-radius: 0.25em;
   box-shadow: 0 0.4em 1.6em 0.5em rgba(var(--color-yellow-rgb), 0.4);
 }
