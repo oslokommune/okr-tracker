@@ -16,7 +16,7 @@
     "d3-array": "^2.11.0",
     "d3-scale": "^3.2.3",
     "firebase-admin": "^9.5.0",
-    "firebase-functions": "^3.13.1",
+    "firebase-functions": "^3.13.2",
     "google-auth-library": "^7.0.2",
     "googleapis": "^67.1.0",
     "jsonwebtoken": "^8.5.1"
