@@ -92,7 +92,7 @@ export default {
   }
 }
 
-/deep/a[href*='thumbnail'] img {
+::v-deep a[href*='thumbnail'] img {
   float: left;
   width: 6em;
   height: 6em;
