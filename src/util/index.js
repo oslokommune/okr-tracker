@@ -5,4 +5,4 @@ export const capitalizeFirstLetterOfNames = (names) =>
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 
-export { default as axiosInterceptor } from './axios';
+export { default as api } from './axios';
