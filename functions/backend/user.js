@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const admin = require('firebase-admin');
+const { body } = require('express-validator');
 
 const db = admin.firestore();
 
@@ -8,23 +9,29 @@ const preferences = require('./defaultPreferences');
 
 const collection = db.collection('users');
 
-router.post('/create', validateFirebaseIdToken, async (req, res) => {
-  const { body } = req;
+const validateUser = [
+  body('email').isEmail().trim().escape().normalizeEmail(),
+  body('id').trim().escape(),
+  body('displayName').escape(),
+];
+
+router.post('/create', validateFirebaseIdToken, ...validateUser, async (req, res) => {
+  const { email, id } = req.body;
   try {
-    if (!body.email) {
+    if (!email) {
       res.status(400).send('User object is not present, or at least some properties are not present');
       return;
     }
 
-    const { exists } = await collection.doc(body.id).get();
+    const { exists } = await collection.doc(id).get();
 
     if (exists) {
       res.status(409).send('User already exists');
       return;
     }
 
-    await collection.doc(body.id).set({
-      ...body,
+    await collection.doc(id).set({
+      ...req.body,
       preferences,
     });
 
