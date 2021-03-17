@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "2.0.0-rc.5",
+  "version": "2.0.0-rc.6",
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --import=./mock & vue-cli-service serve",
