@@ -9,7 +9,6 @@ const collection = db.collection('requestAccess');
 
 router.post('/:id/create', async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   try {
     await collection.add({ email: id, created: new Date() });
 
@@ -23,7 +22,7 @@ router.delete('/:id', validateFirebaseIdToken, async (req, res) => {
   const { id } = req.params;
 
   try {
-    await db.collection.doc(id).delete();
+    await collection.doc(id).delete();
 
     res.send(`Request deleted (${id})`);
   } catch (e) {

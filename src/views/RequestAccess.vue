@@ -45,7 +45,7 @@ export default {
         this.$toasted.show(this.$t('toaster.request.requested'));
         await this.$router.push({ name: 'Login', query: { redirectFrom: '/' } });
       } catch (e) {
-        console.log(e);
+        console.log(e.response);
         this.email = '';
         this.$toasted.error(this.$t('toaster.request.error'));
       }

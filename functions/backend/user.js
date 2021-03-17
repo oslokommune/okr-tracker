@@ -12,14 +12,14 @@ router.post('/create', validateFirebaseIdToken, async (req, res) => {
   const { body } = req;
   try {
     if (!body.email) {
-      res.status(500).send('User object is not present');
+      res.status(400).send('User object is not present, or at least some properties are not present');
       return;
     }
 
     const { exists } = await collection.doc(body.id).get();
 
     if (exists) {
-      res.status(500).send('User already exists');
+      res.status(409).send('User already exists');
       return;
     }
 
