@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const admin = require('firebase-admin');
-const { param } = require('express-validator');
+const { param, matchedData } = require('express-validator');
 
 const db = admin.firestore();
 
@@ -9,7 +9,9 @@ const validateFirebaseIdToken = require('./middlewares');
 const collection = db.collection('requestAccess');
 
 router.post('/:id/create', param('id').isEmail().trim().escape().normalizeEmail(), async (req, res) => {
-  const { id } = req.params;
+  const sanitized = matchedData(req);
+  const { id } = sanitized;
+
   try {
     await collection.add({ email: id, created: new Date() });
 
@@ -20,7 +22,8 @@ router.post('/:id/create', param('id').isEmail().trim().escape().normalizeEmail(
 });
 
 router.delete('/:id', validateFirebaseIdToken, param('id').trim().escape(), async (req, res) => {
-  const { id } = req.params;
+  const sanitized = matchedData(req);
+  const { id } = sanitized;
 
   try {
     await collection.doc(id).delete();
