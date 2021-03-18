@@ -9,14 +9,14 @@ const collection = db.collection('requestAccess');
 
 router.post('/:email/create', param('email').isEmail().trim().escape().normalizeEmail(), async (req, res) => {
   const sanitized = matchedData(req);
-  const { id } = sanitized;
+  const { email } = sanitized;
 
   try {
-    await collection.add({ email: id, created: new Date() });
+    await collection.add({ email, created: new Date() });
 
-    res.send(`Access request created (${id})`);
+    res.send(`Access request created (${email})`);
   } catch (e) {
-    res.status(500).send(`Cannot create access request (${id}}`);
+    res.status(500).send(`Cannot create access request (${email}}`);
   }
 });
 
