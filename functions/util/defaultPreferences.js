@@ -1,4 +1,4 @@
-const preferences = {
+module.exports = {
   view: 'compact',
   startPage: null,
   widgets: {
@@ -26,5 +26,3 @@ const preferences = {
     },
   },
 };
-
-exports.preferences = preferences;

@@ -4,7 +4,7 @@ const { IncomingWebhook } = require('@slack/webhook');
 const firebaseAdmin = require('firebase-admin');
 
 const { createFirstMessage, acceptMessage, rejectMessage } = require('./createSlackMessage');
-const { preferences } = require('./preferences');
+const { preferences } = require('../util/defaultPreferences');
 
 const environment = functions.config();
 
