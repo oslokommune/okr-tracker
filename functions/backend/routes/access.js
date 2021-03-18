@@ -1,14 +1,13 @@
 const router = require('express').Router();
 const admin = require('firebase-admin');
 const { param, matchedData } = require('express-validator');
+const validateFirebaseIdToken = require('../validateFirebaseToken');
 
 const db = admin.firestore();
 
-const validateFirebaseIdToken = require('./middlewares');
-
 const collection = db.collection('requestAccess');
 
-router.post('/:id/create', param('id').isEmail().trim().escape().normalizeEmail(), async (req, res) => {
+router.post('/:email/create', param('email').isEmail().trim().escape().normalizeEmail(), async (req, res) => {
   const sanitized = matchedData(req);
   const { id } = sanitized;
 
