@@ -6,16 +6,38 @@ const db = admin.firestore();
 
 const collection = db.collection('kpis');
 
-router.post('/:id', body('progress').escape(), async (req, res) => {
+const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
+
+router.post('/:id', ...validate, async (req, res) => {
   const sanitized = matchedData(req);
-  const { progress } = sanitized;
+  const { progress, id } = sanitized;
 
   try {
-    await collection.add({ email, created: new Date() });
+    if (!progress || Number.isNaN(progress)) {
+      res.status(400).send('Invalid number');
+      return;
+    }
 
-    res.send(`Access request created (${email})`);
+    if (!id) {
+      res.status(400).send('Invalid ID');
+      return;
+    }
+
+    const kpi = await collection.doc(id).get();
+
+    const { exists, ref } = kpi;
+
+    if (!exists) {
+      res.status(404).send(`Could not find KPI with ID: ${id}`);
+      return;
+    }
+
+    await ref.collection('progress').add({ value: progress, timestamp: new Date() });
+    await ref.update({ error: admin.firestore.FieldValue.delete(), currentValue: progress, valid: true });
+
+    res.send(`Updated KPI (${id}) with progress: ${progress}`);
   } catch (e) {
-    res.status(500).send(`Cannot create access request (${email}}`);
+    res.status(500).send(e.message);
   }
 });
 
