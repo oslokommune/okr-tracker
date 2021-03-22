@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changes
 
 - Disable KPI auto update functionality if you would rather update through the API yourself
+- Updated dependencies
 
 ### Fixed
 
