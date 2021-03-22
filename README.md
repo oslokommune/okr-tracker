@@ -115,6 +115,7 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
 | `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
 | `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| `VUE_APP_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
 
 ### Link project
 
