@@ -59,7 +59,7 @@ async function updateAutomaticKeyResult(id) {
 
     return value;
   } catch ({ message }) {
-    docRef.update({ valid: false, error: message });
+    await docRef.update({ valid: false, error: message });
     throw new functions.https.HttpsError('cancelled', message);
   }
 }

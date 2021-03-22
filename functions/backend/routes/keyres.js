@@ -1,10 +1,50 @@
 const router = require('express').Router();
 const admin = require('firebase-admin');
-const { param, matchedData } = require('express-validator');
+const { param, matchedData, body } = require('express-validator');
 
 const db = admin.firestore();
 
 const collection = db.collection('keyResults');
+
+const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
+
+router.post('/:id', ...validate, async (req, res) => {
+  const sanitized = matchedData(req);
+  const { progress, id } = sanitized;
+
+  let keyres;
+
+  try {
+    if (!progress || Number.isNaN(progress)) {
+      res.status(400).send('Invalid number');
+      return;
+    }
+
+    if (!id) {
+      res.status(400).send('Invalid ID');
+    }
+
+    keyres = await collection.doc(id).get();
+
+    const { exists, ref } = keyres;
+
+    if (!exists) {
+      res.status(404).send(`Could not find KPI with ID: ${id}`);
+    }
+
+    await ref
+      .collection('progress')
+      .add({ created: new Date(), archived: false, createdBy: 'API', value: progress, timestamp: new Date() });
+    await ref.update({ valid: true, error: false });
+
+    res.send(`Updated Key result (${id}) with progress: ${progress}`);
+  } catch (e) {
+    if (keyres && keyres.ref) {
+      await keyres.ref.update({ valid: false, error: e.message });
+    }
+    res.status(500).send(e.message);
+  }
+});
 
 router.get('/:id', param('id').trim().escape(), async (req, res) => {
   const sanitized = matchedData(req);
