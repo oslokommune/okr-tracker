@@ -90,13 +90,11 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     if (progress) {
       let progressCreatedBy;
       if (typeof progress.createdBy.get === 'function') {
-        progressCreatedBy = await createdBy
-          .get()
-          .then((snapshot) => snapshot.data())
-          .then((d) => d.displayName);
+        const tmp = await progress.createdBy.get().then((snapshot) => snapshot.data());
+        progressCreatedBy = tmp.displayName;
       } else {
         // eslint-disable-next-line prefer-destructuring
-        progressCreatedBy = createdBy;
+        progressCreatedBy = progress.createdBy;
       }
 
       res.json({
@@ -119,7 +117,8 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
       ...returnData,
     });
   } catch (e) {
-    res.status(500).send(`Cannot remove access request (${id}}`);
+    console.log(e);
+    res.status(500).send(`Cannot get Key result (${id}}`);
   }
 });
 

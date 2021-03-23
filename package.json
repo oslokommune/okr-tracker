@@ -30,6 +30,7 @@
     "image-file-resize": "^1.0.3",
     "keycloak-js": "^10.0.2",
     "marked": "^2.0.1",
+    "swagger-ui": "^3.45.1",
     "v-tooltip": "^2.1.3",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.12",
