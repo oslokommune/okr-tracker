@@ -13,6 +13,7 @@
     - [Generate mock data](#generate-mock-data)
     - [Exporting mock data](#exporting-mock-data)
     - [Update mock data](#update-mock-data)
+  - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
 - [Run locally](#run-locally)
 - [Build and deploy](#build-and-deploy)
 - [Lint and fix](#lint-and-fix)
@@ -115,6 +116,7 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
 | `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
 | `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| `VUE_APP_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
 
 ### Link project
 
@@ -165,6 +167,26 @@ firebase emulators:export ./mock
 #### Update mock data
 
 To update existing mock data, simply run the export command above and confirm overwrite existing export.
+
+## Create Google Cloud API Gateway
+
+It is possible to set up open API end points for users outside of the OKR-tracker frontend to update progress of Key Results and KPI's. To do so, you only need to deploy all the functions as usual, and then give the users the Cloud Function URL, but we do not recommend to call the Cloud Function directly. The better approach would be to set up a Google Cloud API Gateway and then reroute all the calls to the right Cloud Function.
+
+We have set up an Open API specification which you can check out [here](./public/openapi/v1.0.1.yaml).
+
+You can read more about on how to set up an API Gateway [here](https://cloud.google.com/api-gateway/docs/quickstart).
+
+The TL;DR is:
+
+- Enable [required services](https://cloud.google.com/api-gateway/docs/quickstart#enabling_required_services)
+- Create an API
+- Create a new service account which has the correct access rights - we use the roles `APIGateway Admin` dsds `Cloud Functions Invoker`
+- Create an API config
+- Create a gateway
+
+After an API Gateway has been set up, we have closed the gateway with an API Key, which means that you would need to create an API Key through the Google Cloud Console
+
+If there are any questions regarding this, do not hesitate to get in contact with us and we will gladly help (i.e. create an issue)
 
 ## Run locally
 

@@ -2,7 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.0.0-rc.7] 2021-03-23
+
+### Added
+
+- Cloud Functions: CRUD API for KPI and Key Results. It is now possible to call an end point if you want to update progress through the API and not through the frontend. Locked behind API Gateway with API key, get in contact to get a key.
+- API Gateway: added gateway for users to call if they want access to API for KPI and Key Results. Needs API Key from us, contact us to get a key for your own team
+- Swagger doc: read more about the new open API end points at https://okr.oslo.systems/api
+
+### Changes
+
+- Disable KPI auto update functionality if you would rather update through the API yourself
+- Updated dependencies
+
+### Fixed
+
+- Key result progress "registered by" never showed anything if it was registered automatically by Cloud Functions
 
 ## [2.0.0-rc.6] 2021-03-17
 
