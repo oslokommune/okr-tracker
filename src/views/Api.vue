@@ -22,8 +22,8 @@ export default {
 
 <style lang="scss">
 pre > code {
-  background: none;
   margin: 0;
   padding: 0;
+  background: none;
 }
 </style>
