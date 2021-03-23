@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file. The format 
 
 ## Unreleased
 
+### Added
+
+- Cloud Functions: CRUD API for KPI and Key Results. It is now possible to call an end point if you want to update progress through the API and not through the frontend. Locked behind API Gateway with API key, get in contact to get a key.
+- API Gateway: added gateway for users to call if they want access to API for KPI and Key Results. Needs API Key from us, contact us to get a key for your own team
+- Swagger doc: read more about the new open API end points at https://okr.oslo.systems/api
+
+### Changes
+
+- Disable KPI auto update functionality if you would rather update through the API yourself
+- Updated dependencies
+
+### Fixed
+
+- Key result progress "registered by" never showed anything if it was registered automatically by Cloud Functions
+
 ## [2.0.0-rc.6] 2021-03-17
 
 OKR-tracker will get out of beta/RC by the end of June 2021. It has been in a beta-state for quite some time now, and we feel it has matured enough for a full release. This does not mean we will stop working on it, since we do have some milestones we would like to hit.

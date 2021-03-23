@@ -22,7 +22,7 @@
     "firebase-admin": "^9.5.0",
     "firebase-functions": "^3.13.2",
     "google-auth-library": "^7.0.2",
-    "googleapis": "^67.1.1",
+    "googleapis": "^68.0.0",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {

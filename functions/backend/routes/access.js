@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const admin = require('firebase-admin');
 const { param, matchedData } = require('express-validator');
-const validateFirebaseIdToken = require('../validateFirebaseToken');
+const validateFirebaseIdToken = require('../../util/validateFirebaseToken');
 
 const db = admin.firestore();
 

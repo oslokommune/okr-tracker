@@ -48,46 +48,60 @@
               <textarea v-model="kpi.description" class="form__field" rows="4" />
             </label>
 
-            <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
+            <div class="toggle__container">
+              <span class="toggle__label">{{ $t('kpi.api.radio') }}</span>
+              <label class="toggle">
+                <input v-model="kpi.api" class="toggle__input" type="checkbox" />
+                <span class="toggle__switch"></span>
+              </label>
+            </div>
 
-            <form-component
-              v-model="kpi.sheetId"
-              input-type="input"
-              name="sheetId"
-              :label="$t('keyres.automation.googleSheetId')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
-              </template>
-            </form-component>
+            <template v-if="kpi.api">
+              {{ $t('kpi.api.help') }}
+            </template>
 
-            <form-component
-              v-model="kpi.sheetName"
-              input-type="input"
-              name="sheetTab"
-              :label="$t('keyres.automation.sheetsTab')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
-              </template>
-            </form-component>
+            <template v-if="!kpi.api">
+              <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
 
-            <form-component
-              v-model="kpi.sheetCell"
-              input-type="input"
-              name="sheetCell"
-              :label="$t('keyres.automation.sheetsCell')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
-              </template>
-            </form-component>
+              <form-component
+                v-model="kpi.sheetId"
+                input-type="input"
+                name="sheetId"
+                :label="$t('keyres.automation.googleSheetId')"
+                rules="required"
+                type="text"
+              >
+                <template #help>
+                  <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+                </template>
+              </form-component>
+
+              <form-component
+                v-model="kpi.sheetName"
+                input-type="input"
+                name="sheetTab"
+                :label="$t('keyres.automation.sheetsTab')"
+                rules="required"
+                type="text"
+              >
+                <template #help>
+                  <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+                </template>
+              </form-component>
+
+              <form-component
+                v-model="kpi.sheetCell"
+                input-type="input"
+                name="sheetCell"
+                :label="$t('keyres.automation.sheetsCell')"
+                rules="required"
+                type="text"
+              >
+                <template #help>
+                  <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+                </template>
+              </form-component>
+            </template>
 
             <div class="button-row">
               <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
@@ -128,6 +142,12 @@ export default {
       kpi.valid = false;
       delete kpi.parent;
       try {
+        if (kpi.api) {
+          kpi.sheetCell = '';
+          kpi.sheetId = '';
+          kpi.sheetName = '';
+        }
+
         await Kpi.update(kpi.id, kpi);
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {

@@ -329,13 +329,6 @@ export default {
 <style lang="scss">
 @import '@/styles/_colors.scss';
 
-.toggle__container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
 .validation {
   margin-bottom: 2rem;
   padding-bottom: 1rem;

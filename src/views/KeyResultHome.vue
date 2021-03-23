@@ -96,6 +96,7 @@
                   />
                   <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
                 </router-link>
+                <span v-else>{{ p.createdBy }}</span>
               </td>
               <td style="max-width: 200px; padding: 0.25rem">
                 <span v-if="p.comment && showComments">
