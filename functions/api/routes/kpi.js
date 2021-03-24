@@ -37,6 +37,7 @@ router.post('/:id', ...validate, async (req, res) => {
 
     res.send(`Updated KPI (${id}) with progress: ${progress}`);
   } catch (e) {
+    console.error('ERROR: ', e.message);
     res.status(500).send(e.message);
   }
 });
@@ -104,7 +105,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
       });
     }
   } catch (e) {
-    console.log(e);
+    console.error('ERROR: ', e.message);
     res.status(500).send(`Cannot get KPI by ID: (${id}}`);
   }
 });

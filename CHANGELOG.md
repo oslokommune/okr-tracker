@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [2.0.0-rc.8] 2021-03-XX
 
-# Fixed
+### Added
+
+- CF/API: better logging express middleware morgan
+
+### Fixed
 
 - CF/API: Fixed a bug with the KeyRes GET return two responses on the same GET-call which caused the API to crash
 

@@ -12,8 +12,6 @@ router.post('/:id', ...validate, async (req, res) => {
   const sanitized = matchedData(req);
   const { progress, id } = sanitized;
 
-  console.log('DEBUG: PROGRESS AND ID IS: ', progress, id);
-
   let keyres;
 
   try {
@@ -43,7 +41,7 @@ router.post('/:id', ...validate, async (req, res) => {
 
     res.send(`Updated Key result (${id}) with progress: ${progress}`);
   } catch (e) {
-    console.log('ERROR: ', e.message);
+    console.error('ERROR: ', e.message);
     if (keyres && keyres.ref) {
       await keyres.ref.update({ valid: false, error: e.message });
     }
@@ -119,7 +117,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
       });
     }
   } catch (e) {
-    console.log(e);
+    console.error('ERROR: ', e.message);
     res.status(500).send(`Cannot get Key result (${id}}`);
   }
 });
