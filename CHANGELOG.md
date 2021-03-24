@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.8] 2021-03-XX
+
+# Fixed
+
+- CF/API: Fixed a bug with the KeyRes GET return two responses on the same GET-call which caused the API to crash
+
 ## [2.0.0-rc.7] 2021-03-23
 
 ### Added
