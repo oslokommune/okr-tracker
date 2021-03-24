@@ -52,6 +52,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
 
     if (!exists) {
       res.status(404).send(`Could not find KPI with ID: ${id}`);
+      return;
     }
 
     const data = kpi.data();
