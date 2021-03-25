@@ -1,5 +1,13 @@
-import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, area, max } from 'd3';
+import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, area, max, format } from 'd3';
+import kpiTypes from '@/config/kpiTypes';
 import { initSvg, resize } from './linechart-helpers';
+
+const formatValue = (value, item) => {
+  if (item && item.type) {
+    return kpiTypes[item.type].formatValue(value);
+  }
+  return value;
+};
 
 export default class LineChart {
   constructor(svgElement) {
@@ -26,7 +34,7 @@ export default class LineChart {
       .y((d) => this.y(d.value));
   }
 
-  render(obj, period, progressionList) {
+  render(obj, period, progressionList, item) {
     this.period = period;
     this.obj = obj;
 
@@ -47,7 +55,7 @@ export default class LineChart {
       ])
     );
 
-    this.yAxis.transition().call(axisLeft(this.y));
+    this.yAxis.transition().call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)));
     this.xAxis.transition().call(axisBottom(this.x).ticks(4));
 
     this.today.attr('x1', this.x(new Date())).attr('x2', this.x(new Date())).attr('y2', 0).attr('y1', this.innerHeight);

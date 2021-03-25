@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- KPIHome: format all values to correct format. Instead of floats -> format to percentage
 - Better OpenSpec and API-gateway support.
 - Moved API-KEY for Gateway from query-param to header
 
