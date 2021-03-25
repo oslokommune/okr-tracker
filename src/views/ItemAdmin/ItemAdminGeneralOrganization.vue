@@ -26,6 +26,12 @@
           :label="$t('fields.missionStatement')"
           rules="required"
         />
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('fields.secret') }}</span>
+          <span class="form-help" v-html="$t('admin.apiSecret')"></span>
+          <input v-model="activeItem.secret" type="text" class="form__field" />
+        </label>
       </form>
     </validation-observer>
 

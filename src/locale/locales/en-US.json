@@ -19,7 +19,8 @@
     "itemRowError": "error",
     "api": {
       "radio": "Update via API?",
-      "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access."
+      "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access.",
+      "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
     }
   },
   "fields": {
@@ -44,7 +45,8 @@
     "value": "Value",
     "organization": "Organization",
     "date": "Date",
-    "password": "Password"
+    "password": "Password",
+    "secret": "API Secret"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
@@ -213,7 +215,7 @@
     "unit": "Unit of measurement",
     "newValue": "New value",
     "automation": {
-      "header": "Automatic progress registration",
+      "header": "Automatic progress registration (Google Sheets)",
       "readMore": "Learn more",
       "googleSheetId": "Google Sheet ID",
       "googleSheetIdHelp": "ID between /d/ and /edit/ from the Google Sheets URL",
@@ -239,7 +241,12 @@
     "showComment": "View comment",
     "showComments": "Show comments",
     "hideComments": "Hide comments",
-    "autoError": "Issue fetching data from Google Sheets:"
+    "autoError": "Issue fetching data from Google Sheets:",
+    "api": {
+      "radio": "Update via API?",
+      "tooltip": "Toggle this if you have plans to update your Key Results yourself via the OKR-tracker API - you can still update manually as well"
+    },
+    "apiAndKeyRes": "We do not recommend toggling both at the same time. This may create problem your Key Result progression"
   },
   "objective": {
     "period": "Period",
@@ -272,6 +279,7 @@
     "mission": "Mission statement"
   },
   "admin": {
+    "apiSecret": "If you are using the API to update Key Results and/or KPI, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "department": {
       "picture": "Image",
       "create": "Create new department",

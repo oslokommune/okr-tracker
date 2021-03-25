@@ -65,6 +65,10 @@ paths:
             type: number
             example:
               progress: 123
+        - name: okr-team-secret
+          in: header
+          description: Identify yourself with the secret you chose in your Team's settings
+          type: string
       responses:
         '200':
           description: A successful response
@@ -125,6 +129,10 @@ paths:
             type: number
             example:
               progress: 123
+        - name: okr-team-secret
+          in: header
+          description: Identify yourself with the secret you chose in your Team's settings
+          type: string
       responses:
         '200':
           description: A successful response
@@ -137,9 +145,6 @@ paths:
           $ref: '#/responses/NotFound'
         500:
           $ref: '#/responses/Unavailable'
-
-parameters:
-
 
 securityDefinitions:
   api_key:

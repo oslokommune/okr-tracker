@@ -35,7 +35,10 @@
             </label>
 
             <div class="toggle__container">
-              <span class="toggle__label">{{ $t('kpi.api.radio') }}</span>
+              <span class="toggle__label">
+                {{ $t('kpi.api.radio') }}
+                <i class="icon fa fa-info-circle" v-tooltip="$t('kpi.api.tooltip')" />
+              </span>
               <label class="toggle">
                 <input v-model="kpi.api" class="toggle__input" type="checkbox" />
                 <span class="toggle__switch"></span>
@@ -91,6 +94,7 @@
           </form>
         </validation-observer>
       </div>
+
       <div class="modal__footer" style="background: white">
         <button form="addKpi" :disabled="loading" class="btn btn--sec">{{ $t('btn.add') }}</button>
         <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>

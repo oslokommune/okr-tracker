@@ -11,6 +11,12 @@ const validate = [body('progress').isFloat().escape(), param('id').trim().escape
 router.post('/:id', ...validate, async (req, res) => {
   const sanitized = matchedData(req);
   const { progress, id } = sanitized;
+  const teamSecret = req.header('okr-team-secret');
+
+  if (!teamSecret || teamSecret.length === 0) {
+    res.status(400).send('Missing okr-team-secret in header');
+    return;
+  }
 
   let keyres;
 
@@ -34,9 +40,22 @@ router.post('/:id', ...validate, async (req, res) => {
       return;
     }
 
-    await ref
-      .collection('progress')
-      .add({ created: new Date(), archived: false, createdBy: 'API', value: progress, timestamp: new Date() });
+    const { parent } = keyres.data();
+
+    const parentData = await parent.get().then((snapshot) => snapshot.data());
+
+    if (parentData.secret && parentData.secret !== teamSecret) {
+      res.status(401).send('The okr-team-secret and the secret which the keyRes has are not the same');
+      return;
+    }
+
+    await ref.collection('progress').add({
+      created: new Date(),
+      archived: false,
+      createdBy: 'API',
+      value: Number.parseFloat(progress),
+      timestamp: new Date(),
+    });
     await ref.update({ valid: true, error: false });
 
     res.send(`Updated Key result (${id}) with progress: ${progress}`);
