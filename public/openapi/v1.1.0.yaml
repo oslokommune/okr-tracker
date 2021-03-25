@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   title: OKR-tracker API
   description: Serverless APIs with API Gateway
-  version: 1.0.0
+  version: 1.1.0
   contact:
     name: Visualiseringsteamet
     url: https://okr.oslo.systems

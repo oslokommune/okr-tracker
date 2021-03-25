@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0-rc.8] 2021-03-XX
+## [2.0.0-rc.8] 2021-03-26
 
 ### Added
 
@@ -10,10 +10,11 @@ All notable changes to this project will be documented in this file. The format 
   - Go to your Org/Dep/Product and add a secret under `API Secret`-input
 - KPI: Show curl-example after adding a new KPI and toggled on updated via API
 - Key Result: Show curl-example if you toggle the option "update via API"
-- CF/API: better logging express middleware morgan
+- CF/API: better logging with express middleware morgan
 
 ### Changes
 
+- KeyRes-Graph: if target value is higher than the current value, then expand the y-axis to not go under the x-axis or over the top of the y-axis
 - KPIHome: format all values to correct format. Instead of floats -> format to percentage
 - Better OpenSpec and API-gateway support.
 - Moved API-KEY for Gateway from query-param to header
