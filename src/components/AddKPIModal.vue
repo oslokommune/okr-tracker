@@ -37,7 +37,7 @@
             <div class="toggle__container">
               <span class="toggle__label">
                 {{ $t('kpi.api.radio') }}
-                <i class="icon fa fa-info-circle" v-tooltip="$t('kpi.api.tooltip')" />
+                <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
               </span>
               <label class="toggle">
                 <input v-model="kpi.api" class="toggle__input" type="checkbox" />
