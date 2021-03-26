@@ -45,10 +45,6 @@ paths:
     post:
       summary: Post KPI progression.
       operationId: postKPI
-      x-google-backend:
-        address: https://<location>-<project-id>.cloudfunctions.net/<CF-location>
-        path_translation: APPEND_PATH_TO_ADDRESS
-        protocol: h2
       security:
         - api_key: []
       parameters:
@@ -85,10 +81,6 @@ paths:
     get:
       summary: Get key result
       operationId: getKeyRes
-      x-google-backend:
-        address: https://<location>-<project-id>.cloudfunctions.net/<CF-location>
-        path_translation: APPEND_PATH_TO_ADDRESS
-        protocol: h2
       security:
         - api_key: []
       parameters:
@@ -109,10 +101,6 @@ paths:
     post:
       summary: Post Key result progression.
       operationId: postKeyRes
-      x-google-backend:
-        address: https://<location>-<project-id>.cloudfunctions.net/<CF-location>
-        path_translation: APPEND_PATH_TO_ADDRESS
-        protocol: h2
       security:
         - api_key: []
       parameters:
