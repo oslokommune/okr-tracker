@@ -11,6 +11,12 @@ const validate = [body('progress').isFloat().escape(), param('id').trim().escape
 router.post('/:id', ...validate, async (req, res) => {
   const sanitized = matchedData(req);
   const { progress, id } = sanitized;
+  const teamSecret = req.header('okr-team-secret');
+
+  if (!teamSecret || teamSecret.length === 0) {
+    res.status(400).send('Missing okr-team-secret in header');
+    return;
+  }
 
   let keyres;
 
@@ -22,6 +28,7 @@ router.post('/:id', ...validate, async (req, res) => {
 
     if (!id) {
       res.status(400).send('Invalid ID');
+      return;
     }
 
     keyres = await collection.doc(id).get();
@@ -30,15 +37,30 @@ router.post('/:id', ...validate, async (req, res) => {
 
     if (!exists) {
       res.status(404).send(`Could not find KPI with ID: ${id}`);
+      return;
     }
 
-    await ref
-      .collection('progress')
-      .add({ created: new Date(), archived: false, createdBy: 'API', value: progress, timestamp: new Date() });
+    const { parent } = keyres.data();
+
+    const parentData = await parent.get().then((snapshot) => snapshot.data());
+
+    if (parentData.secret && parentData.secret !== teamSecret) {
+      res.status(401).send('The okr-team-secret and the secret which the keyRes has are not the same');
+      return;
+    }
+
+    await ref.collection('progress').add({
+      created: new Date(),
+      archived: false,
+      createdBy: 'API',
+      value: Number.parseFloat(progress),
+      timestamp: new Date(),
+    });
     await ref.update({ valid: true, error: false });
 
     res.send(`Updated Key result (${id}) with progress: ${progress}`);
   } catch (e) {
+    console.error('ERROR: ', e.message);
     if (keyres && keyres.ref) {
       await keyres.ref.update({ valid: false, error: e.message });
     }
@@ -57,6 +79,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
 
     if (!exists) {
       res.status(404).send(`Could not find Key Result with ID: ${id}`);
+      return;
     }
 
     const data = keyRes.data();
@@ -112,12 +135,8 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
         lastUpdated: null,
       });
     }
-
-    res.json({
-      ...returnData,
-    });
   } catch (e) {
-    console.log(e);
+    console.error('ERROR: ', e.message);
     res.status(500).send(`Cannot get Key result (${id}}`);
   }
 });

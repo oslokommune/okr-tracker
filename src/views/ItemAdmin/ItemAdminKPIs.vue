@@ -49,7 +49,10 @@
             </label>
 
             <div class="toggle__container">
-              <span class="toggle__label">{{ $t('kpi.api.radio') }}</span>
+              <span class="toggle__label">
+                {{ $t('kpi.api.radio') }}
+                <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
+              </span>
               <label class="toggle">
                 <input v-model="kpi.api" class="toggle__input" type="checkbox" />
                 <span class="toggle__switch"></span>
@@ -102,6 +105,12 @@
                 </template>
               </form-component>
             </template>
+
+            <label v-if="kpi.api" class="form-group">
+              <span class="form-label">API</span>
+              <span class="form-help">Push updates with curl</span>
+              <input :value="apiCurl(kpi)" type="text" disabled class="form__field" />
+            </label>
 
             <div class="button-row">
               <button class="btn btn--primary" :form="`kpi_${kpi.id}`">{{ $t('btn.saveChanges') }}</button>
@@ -171,6 +180,10 @@ export default {
         return this.$t('error.noDataInCell', { cell });
       }
       return msg;
+    },
+
+    apiCurl: (kpi) => {
+      return `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }'  ${process.env.VUE_APP_API_GATEWAY_URL}/kpi/${kpi.id}`;
     },
   },
 };
