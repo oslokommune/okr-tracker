@@ -13,7 +13,7 @@ export default {
 
   mounted() {
     SwaggerUi({
-      url: './openapi/v1.0.1.yaml',
+      url: './openapi/v1.1.0.yaml',
       dom_id: '#swagger-ui',
     });
   },

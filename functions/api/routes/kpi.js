@@ -11,6 +11,12 @@ const validate = [body('progress').isFloat().escape(), param('id').trim().escape
 router.post('/:id', ...validate, async (req, res) => {
   const sanitized = matchedData(req);
   const { progress, id } = sanitized;
+  const teamSecret = req.header('okr-team-secret');
+
+  if (!teamSecret || teamSecret.length === 0) {
+    res.status(400).send('Missing okr-team-secret in header');
+    return;
+  }
 
   try {
     if (!progress || Number.isNaN(progress)) {
@@ -32,11 +38,21 @@ router.post('/:id', ...validate, async (req, res) => {
       return;
     }
 
-    await ref.collection('progress').add({ value: progress, timestamp: new Date() });
+    const { parent } = kpi.data();
+
+    const parentData = await parent.get().then((snapshot) => snapshot.data());
+
+    if (parentData.secret && parentData.secret !== teamSecret) {
+      res.status(401).send('The okr-team-secret and the secret which the keyRes has are not the same');
+      return;
+    }
+
+    await ref.collection('progress').add({ value: Number.parseFloat(progress), timestamp: new Date() });
     await ref.update({ error: admin.firestore.FieldValue.delete(), currentValue: progress, valid: true });
 
     res.send(`Updated KPI (${id}) with progress: ${progress}`);
   } catch (e) {
+    console.error('ERROR: ', e.message);
     res.status(500).send(e.message);
   }
 });
@@ -52,6 +68,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
 
     if (!exists) {
       res.status(404).send(`Could not find KPI with ID: ${id}`);
+      return;
     }
 
     const data = kpi.data();
@@ -103,7 +120,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
       });
     }
   } catch (e) {
-    console.log(e);
+    console.error('ERROR: ', e.message);
     res.status(500).send(`Cannot get KPI by ID: (${id}}`);
   }
 });

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.8] 2021-03-26
+
+### Added
+
+- Added a security UUID for each team that needs to be sent with the api-call if you want to update KPI/KeyRes for better security.
+  - Go to your Org/Dep/Product and add a secret under `API Secret`-input
+- KPI: Show curl-example after adding a new KPI and toggled on updated via API
+- Key Result: Show curl-example if you toggle the option "update via API"
+- CF/API: better logging with express middleware morgan
+
+### Changes
+
+- KeyRes-Graph: if target value is higher than the current value, then expand the y-axis to not go under the x-axis or over the top of the y-axis
+- KPIHome: format all values to correct format. Instead of floats -> format to percentage
+- Better OpenSpec and API-gateway support.
+- Moved API-KEY for Gateway from query-param to header
+
+### Fixed
+
+- CF/API: save progress (KPI/KeyRes) as a number and not a string
+- CF/API: Fixed a bug with the KeyRes GET return two responses on the same GET-call which caused the API to crash
+
 ## [2.0.0-rc.7] 2021-03-23
 
 ### Added
