@@ -72,9 +72,9 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement } = this.activeItem;
+        const { id, name, missionStatement, secret } = this.activeItem;
 
-        const data = { name, missionStatement };
+        const data = { name, missionStatement, secret: secret === undefined ? '' : secret };
 
         await Organization.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));

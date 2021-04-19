@@ -77,10 +77,10 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement } = this.activeItem;
+        const { id, name, missionStatement, secret } = this.activeItem;
 
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-        const data = { name, missionStatement, organization };
+        const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret };
 
         await Department.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));
