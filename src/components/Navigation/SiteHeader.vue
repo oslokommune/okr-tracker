@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <router-link :to="{ name: 'Home' }" class="logo">
-        <img src="/oslo-logo.svg" alt="Logo" class="logo__img" />
+        <oslo-logo class="logo__img" />
       </router-link>
       <div v-if="title" class="title">
         <h1 class="title__name">
@@ -64,9 +64,14 @@
 import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
+import OsloLogo from '@/assets/oslo-logo.svg';
 
 export default {
   name: 'SiteHeader',
+
+  components: {
+    OsloLogo,
+  },
 
   directives: {
     ClickOutside,
@@ -125,7 +130,8 @@ export default {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: $color-yellow;
+  color: var(--color-text-secondary);
+  background: var(--color-primary);
 }
 
 .container {
@@ -164,6 +170,10 @@ export default {
 .logo__img {
   display: block;
   height: 100%;
+
+  &--color {
+    fill: var(--color-text-secondary);
+  }
 }
 
 .title {
@@ -268,7 +278,6 @@ export default {
   z-index: 100;
   width: 100%;
   padding: 0.5rem;
-  color: black;
   background: white;
   border-radius: 3px;
   box-shadow: 0 3px 4px rgba($color-grey-500, 0.5);

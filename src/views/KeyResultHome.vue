@@ -261,7 +261,7 @@ export default {
 .user__link {
   display: flex;
   align-items: center;
-  color: $color-purple;
+  color: var(--color-text);
   text-decoration: none;
 }
 
@@ -278,7 +278,7 @@ export default {
   padding: 1rem;
   font-weight: 500;
   background: rgba($color-yellow, 0.25);
-  border: 1px solid $color-yellow;
+  border: 1px solid var(--color-primary);
   border-radius: 3px;
 }
 

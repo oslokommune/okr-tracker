@@ -57,7 +57,7 @@ export default {
   color: white;
   font-weight: 500;
   text-decoration: none;
-  background: $color-purple;
+  background: var(--color-primary);
 
   &:hover {
     background: darken($color-purple, 6%);

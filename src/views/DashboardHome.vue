@@ -291,8 +291,8 @@ $imageSize: 1.75em;
   justify-self: center;
   width: 2.5em;
   height: 2.5em;
-  color: $color-purple;
-  background: $color-yellow;
+  color: var(--color-text);
+  background: var(--color-primary);
 }
 
 .objective__name {

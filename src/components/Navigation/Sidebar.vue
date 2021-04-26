@@ -25,6 +25,7 @@
     </div>
 
     <div class="sidebar__group sidebar__bottom button-col">
+      <theme-toggle />
       <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
         <i class="icon fa fa-fw fa-cogs" />
         <span class="btn--label">{{ $t('general.admin') }}</span>
@@ -44,9 +45,14 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
   name: 'Sidebar',
+
+  components: {
+    ThemeToggle,
+  },
 
   computed: {
     ...mapState(['activeItem', 'sidebarGroups', 'user', 'providers']),
@@ -119,7 +125,7 @@ export default {
 
   &.router-link-active {
     font-weight: 500;
-    background: $color-yellow;
+    background: var(--color-primary);
   }
 
   &.router-link-active-parent {

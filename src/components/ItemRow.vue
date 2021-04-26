@@ -234,14 +234,14 @@ export default {
 
 .item__kpi-icon {
   margin-right: 0.25rem;
-  color: $color-purple;
+  color: var(--color-text);
 }
 
 .item__user-icon {
   display: inline-block;
   margin-left: auto;
   padding: 0 0.5rem;
-  color: $color-purple;
+  color: var(--color-text);
   text-align: center;
 }
 

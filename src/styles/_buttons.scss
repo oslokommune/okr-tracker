@@ -19,7 +19,7 @@
   display: inline-flex;
   align-items: center;
   padding: 0.5rem;
-  color: $color-purple;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
   white-space: nowrap;
@@ -36,13 +36,13 @@
 }
 
 .btn--pri {
-  color: $color-purple;
-  background: $color-yellow;
+  color: var(--color-text);
+  background: var(--color-primary);
 }
 
 .btn--sec {
-  color: white;
-  background: $color-purple;
+  color: var(--color-text-secondary);
+  background: var(--color-secondary);
 }
 
 .btn--icon {
