@@ -260,10 +260,10 @@ export default {
 .user__name {
   display: none;
   overflow: hidden;
+  color: var(--color-text-secondary);
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: var(--color-text-secondary);
 
   @media screen and (min-width: bp(s)) {
     display: block;

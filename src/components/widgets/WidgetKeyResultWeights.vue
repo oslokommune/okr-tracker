@@ -110,9 +110,9 @@ export default {
   }
 
   &.active {
+    color: var(--color-text-secondary);
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: var(--color-text-secondary);
 
     &:hover {
       background: darken($color-yellow, 10%);

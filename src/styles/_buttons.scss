@@ -85,8 +85,8 @@
 }
 
 .btn:disabled {
+  color: var(--color-text-secondary);
   cursor: not-allowed;
   opacity: 0.6;
   filter: saturate(0.5);
-  color: var(--color-text-secondary);
 }
