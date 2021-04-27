@@ -183,7 +183,7 @@ export default {
 
 .modal__main--input-value {
   width: 75px;
-  border: 1px solid $color-purple !important;
+  border: 1px solid var(--color-primary) !important;
 }
 
 .modal__main--input-label {

@@ -70,7 +70,7 @@ export default {
 .user__link {
   display: flex;
   align-items: center;
-  color: $color-purple;
+  color: var(--color-text);
   text-decoration: none;
 }
 

@@ -38,6 +38,6 @@ export default {
 
 .progression__bar {
   height: 100%;
-  background: $color-yellow;
+  background: var(--color-primary);
 }
 </style>

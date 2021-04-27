@@ -19,7 +19,7 @@
   display: inline-flex;
   align-items: center;
   padding: 0.5rem;
-  color: $color-purple;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
   white-space: nowrap;
@@ -31,18 +31,18 @@
 }
 
 .btn--danger {
-  color: darken($color-red, 55%);
-  background: lighten($color-red, 5%);
+  color: var(--color-red-dark);
+  background: var(--color-red-light);
 }
 
 .btn--pri {
-  color: $color-purple;
-  background: $color-yellow;
+  color: var(--color-text);
+  background: var(--color-primary);
 }
 
 .btn--sec {
-  color: white;
-  background: $color-purple;
+  color: var(--color-text);
+  background: var(--color-secondary);
 }
 
 .btn--icon {
@@ -74,8 +74,8 @@
   border: 1px solid currentColor;
 
   &.btn--negative {
-    color: white;
-    border-color: white;
+    color: var(--color-white);
+    border-color: var(--color-white);
   }
 }
 
@@ -85,6 +85,7 @@
 }
 
 .btn:disabled {
+  color: var(--color-text-secondary);
   cursor: not-allowed;
   opacity: 0.6;
   filter: saturate(0.5);

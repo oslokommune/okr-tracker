@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "2.0.0-rc.9",
+  "version": "2.0.0-rc.10",
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --import=./mock & vue-cli-service serve",
@@ -15,16 +15,16 @@
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
   },
   "dependencies": {
-    "@braid/griddle": "^2.2.1",
+    "@braid/griddle": "^2.3.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
     "axios": "^0.21.1",
     "babel-runtime": "^6.26.0",
-    "core-js": "^3.10.1",
+    "core-js": "^3.11.0",
     "d3": "^6.7.0",
     "date-fns": "^2.21.1",
     "dompurify": "^2.2.7",
-    "firebase": "^8.4.1",
+    "firebase": "^8.4.2",
     "flatpickr": "^4.6.9",
     "fuse.js": "^6.4.6",
     "image-file-resize": "^1.0.3",
@@ -46,7 +46,7 @@
     "vuexfire": "^3.2.5"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^1.2.9",
+    "@firebase/rules-unit-testing": "^1.2.10",
     "@vue/cli-plugin-babel": "^4.5.12",
     "@vue/cli-plugin-eslint": "^4.5.12",
     "@vue/cli-service": "^4.5.12",
@@ -55,19 +55,20 @@
     "babel-eslint": "^10.1.0",
     "cypress": "^7.1.0",
     "env-cmd": "^10.1.0",
-    "eslint": "^7.24.0",
+    "eslint": "^7.25.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.9.0",
     "firebase-tools": "^9.10.0",
     "prettier": "^2.2.1",
-    "sass": "^1.32.10",
+    "sass": "^1.32.11",
     "sass-loader": "^10.1.1",
-    "stylelint": "^13.12.0",
+    "stylelint": "^13.13.0",
     "stylelint-config-rational-order": "^0.1.2",
-    "stylelint-config-standard": "^21.0.0",
+    "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.19.0",
+    "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.12"
   }
 }

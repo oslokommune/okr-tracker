@@ -2,6 +2,15 @@
   "404": {
     "title": "404"
   },
+  "theme": {
+    "colors": {
+      "yellow": "Yellow",
+      "blue": "Blue",
+      "green": "Green"
+    },
+    "toggle": "Toggle theme: {mode}",
+    "aria": "Current theme is {current}, next theme is {next}"
+  },
   "kpi": {
     "add": "Add KPI",
     "edit": "Edit KPI",

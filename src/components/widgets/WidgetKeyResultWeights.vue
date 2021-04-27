@@ -97,7 +97,7 @@ export default {
   align-self: end;
   justify-content: flex-end;
   padding-bottom: 0.15rem;
-  color: $color-purple;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 0.85rem;
   text-align: center;
@@ -110,8 +110,9 @@ export default {
   }
 
   &.active {
-    background: $color-yellow;
-    border-color: $color-yellow;
+    color: var(--color-text-secondary);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
 
     &:hover {
       background: darken($color-yellow, 10%);

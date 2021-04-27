@@ -403,7 +403,7 @@ export default {
   &.active {
     color: black;
     font-weight: 500;
-    background: $color-yellow;
+    background: var(--color-primary);
   }
 }
 
