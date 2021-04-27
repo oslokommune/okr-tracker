@@ -278,8 +278,8 @@ export default {
 
 .user__chevron {
   margin-left: auto;
-  opacity: 0.5;
   color: var(--color-text-secondary);
+  opacity: 0.5;
 }
 
 .menu {
