@@ -36,7 +36,7 @@ export default {
       this.mode = this.getLocalThemeMode();
       this.setThemeMode();
     } else {
-      this.mode = window && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      this.mode = 'yellow';
       this.setThemeMode();
     }
   },
