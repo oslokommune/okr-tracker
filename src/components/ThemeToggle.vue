@@ -1,11 +1,11 @@
 <template>
   <button
     class="btn btn--ter btn--icon"
-    :aria-label="`Current theme is ${mode}, next theme is ${nextThemeMode}`"
+    :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
     @click="handleClick"
   >
     <span class="icon fas fa-palette" />
-    Toggle Theme: {{ mode }}
+    {{ $t('theme.toggle', { mode: $t(`theme.colors.${mode}`) }) }}
   </button>
 </template>
 
@@ -22,9 +22,9 @@ export default {
   computed: {
     nextThemeMode() {
       if (this.mode === 'yellow') {
-        return 'purple';
+        return 'blue';
       }
-      if (this.mode === 'purple') {
+      if (this.mode === 'blue') {
         return 'green';
       }
       return 'yellow';

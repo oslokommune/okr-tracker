@@ -31,8 +31,8 @@
 }
 
 .btn--danger {
-  color: darken($color-red, 55%);
-  background: lighten($color-red, 5%);
+  color: var(--color-red-dark);
+  background: var(--color-red-light);
 }
 
 .btn--pri {
@@ -41,7 +41,7 @@
 }
 
 .btn--sec {
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   background: var(--color-secondary);
 }
 
@@ -74,8 +74,8 @@
   border: 1px solid currentColor;
 
   &.btn--negative {
-    color: white;
-    border-color: white;
+    color: var(--color-white);
+    border-color: var(--color-white);
   }
 }
 
@@ -88,4 +88,5 @@
   cursor: not-allowed;
   opacity: 0.6;
   filter: saturate(0.5);
+  color: var(--color-text-secondary);
 }

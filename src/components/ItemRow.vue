@@ -162,7 +162,7 @@ export default {
   align-items: center;
   margin: 0 auto 0 0;
   padding: 0.5rem span(0, 1);
-  color: $color-grey-900;
+  color: var(--color-text);
   text-decoration: none;
 
   &:hover &__chevron {

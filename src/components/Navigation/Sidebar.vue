@@ -113,7 +113,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0.35rem;
-  color: #2a2859;
+  color: var(--color-text);
   font-weight: 400;
   text-decoration: none;
   border-radius: 2px;
@@ -126,6 +126,7 @@ export default {
   &.router-link-active {
     font-weight: 500;
     background: var(--color-primary);
+    color: var(--color-text-secondary);
   }
 
   &.router-link-active-parent {

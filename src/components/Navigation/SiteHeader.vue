@@ -41,6 +41,7 @@
                 {{ $t('general.admin') }}
               </router-link>
             </li>
+            <theme-toggle />
             <li class="menu__list-item show-mobile">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }" data-cy="site-header-help">
                 <i class="icon fa fa-fw fa-question-circle" />
@@ -65,12 +66,14 @@ import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 import OsloLogo from '@/assets/oslo-logo.svg';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
   name: 'SiteHeader',
 
   components: {
     OsloLogo,
+    ThemeToggle,
   },
 
   directives: {
@@ -260,6 +263,7 @@ export default {
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: var(--color-text-secondary);
 
   @media screen and (min-width: bp(s)) {
     display: block;

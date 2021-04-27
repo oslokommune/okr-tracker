@@ -139,6 +139,7 @@ export default {
   font-size: 1.15rem;
   text-align: center;
   background: var(--color-primary);
+  color: var(--color-text-secondary);
   border-radius: 2rem;
 }
 </style>

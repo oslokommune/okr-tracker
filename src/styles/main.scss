@@ -149,6 +149,8 @@ hr {
   --color-purple: #292858;
   --color-yellow: #f8c66b;
   --color-red: #ff8174;
+  --color-red-dark: #5b0800;
+  --color-red-light: #ff988e;
   --color-beige: #f8f0dd;
   --color-beige-dark: #d0bfae;
 
@@ -174,9 +176,9 @@ hr {
 }
 
 [data-theme='green'] {
-  --color-text: var(--color-purple);
-  --color-text-secondary: var(--color-purple);
-  --color-primary: var(--color-green);
+  --color-text: var(--color-green-dark);
+  --color-text-secondary: var(--color-white);
+  --color-primary: var(--color-green-dark);
   --color-secondary: var(--color-green-light);
   --color-tertiary: var(--color-green-dark);
 }
