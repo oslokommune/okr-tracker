@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "2.0.0-rc.10",
+  "version": "2.0.0-rc.11",
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --import=./mock & vue-cli-service serve",
@@ -68,7 +68,6 @@
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.19.0",
-    "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.12"
   }
 }

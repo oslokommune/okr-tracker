@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-rc.11] 2021-04-27
+
+### Fixed
+
+- Removed svg-loader - Icons were not showing correctly for some users
+- Fixed SiteHeader not showing correct Prod/Dep/Org-name when doing changes to KPIs/OKRs
+- Small fixes to components not using the correct color-styles
+
 ## [2.0.0-rc.10] 2021-04-27
 
 We are looking at doing some design changes to the Objective/KeyRes-view, which means that some changes need to be made beforehand. We have therefore implemented a Theme Toggle! You can now toggle between Blue, Yellow and Green color themes.
