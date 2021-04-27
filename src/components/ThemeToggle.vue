@@ -10,7 +10,7 @@
 </template>
 
 <script>
-const LS_MODE = 'dev-theme-mode';
+const LS_MODE = 'okr-tracker-theme';
 
 export default {
   name: 'ThemeToggle',
