@@ -34,7 +34,7 @@ $circ: $size / 3;
   left: 0;
   width: $circ;
   height: $circ;
-  background: $color-yellow;
+  background: var(--color-primary);
   border-radius: $circ / 2;
   animation: loader $dura;
   animation-timing-function: linear;

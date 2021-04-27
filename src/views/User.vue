@@ -239,7 +239,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 0.75rem;
-  color: $color-purple;
+  color: var(--color-text);
   text-decoration: none;
   border: 1px solid $color-grey-100;
 

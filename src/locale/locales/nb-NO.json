@@ -2,6 +2,14 @@
   "404": {
     "title": "404"
   },
+  "theme": {
+    "colors": {
+      "yellow": "Gul",
+      "blue": "Blå",
+      "green": "Grønn"
+    },
+    "toggle": "Skift fargetema: {mode}"
+  },
   "kpi": {
     "add": "Legg til KPI",
     "edit": "Endre KPI",
