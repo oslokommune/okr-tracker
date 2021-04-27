@@ -65,7 +65,7 @@
 import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
-import OsloLogo from '@/assets/oslo-logo.svg';
+import OsloLogo from '@/components/OsloLogo.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
@@ -94,8 +94,18 @@ export default {
     title() {
       const parts = this.$route.matched.map(({ name }) => name);
 
-      if (parts.includes('Admin')) return 'Admin';
-      if ((parts.includes('ItemHome') || parts.includes('ItemAdmin')) && this.activeItem) return this.activeItem.name;
+      if (parts.includes('Admin')) {
+        return 'Admin';
+      }
+      if (
+        (parts.includes('ItemHome') ||
+          parts.includes('ItemAdmin') ||
+          parts.includes('ItemAdminOKRs') ||
+          parts.includes('ItemAdminKPIs')) &&
+        this.activeItem
+      ) {
+        return this.activeItem.name;
+      }
 
       return 'OKR Tracker';
     },
@@ -173,10 +183,6 @@ export default {
 .logo__img {
   display: block;
   height: 100%;
-
-  &--color {
-    fill: var(--color-text-secondary);
-  }
 }
 
 .title {
@@ -272,6 +278,7 @@ export default {
 
 .user__chevron {
   margin-left: auto;
+  color: var(--color-text-secondary);
   opacity: 0.5;
 }
 
