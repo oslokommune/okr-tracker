@@ -81,15 +81,16 @@ export default {
   position: relative;
   display: flex;
   align-items: baseline;
-  padding: 0.5rem;
+  padding: 1.5rem;
 
   @media screen and (min-width: bp(m)) {
-    padding: 1rem 1rem 0.75rem;
+    padding: 1.5rem;
   }
 }
 
 .widget__title {
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .widget__toggle {
@@ -110,10 +111,10 @@ export default {
 }
 
 .widget__body {
-  padding: 0.5rem;
+  padding: 1.5rem;
 
   @media screen and (min-width: bp(m)) {
-    padding: 0 1rem 1rem;
+    padding: 0 1.5rem 1.5rem;
   }
 }
 </style>

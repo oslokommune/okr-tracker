@@ -10,7 +10,6 @@
     <ul class="users__list">
       <li v-for="user in activeItem.team" :key="user.id" class="user">
         <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
-          <img :src="user.photoURL || '/placeholder-image.svg'" :aria-hidden="true" class="user__image" />
           <span class="user__name">{{ user.displayName || user.id }}</span>
         </router-link>
       </li>
@@ -56,15 +55,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .users__list {
   display: flex;
   flex-direction: column;
-  margin-right: -1rem;
-  margin-bottom: 1rem;
-  margin-left: -1rem;
-  border-bottom: 1px solid $color-grey-100;
 }
 
 .user__link {
@@ -74,15 +67,7 @@ export default {
   text-decoration: none;
 }
 
-.user__image {
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.35rem;
-  border-radius: 1rem;
-}
-
 .user {
-  padding: 0.5rem 1rem;
-  border-top: 1px solid $color-grey-100;
+  padding-bottom: 0.2rem;
 }
 </style>

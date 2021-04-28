@@ -90,17 +90,17 @@ export default {
 
 .itemHome {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 0;
   grid-row-gap: 0;
+  grid-column-gap: 0;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: 1fr;
 }
 
 .itemHome--header {
   grid-area: 1 / 1 / 3 / 2;
-  background: white;
-  padding: 1rem;
   margin-bottom: 8rem;
+  padding: 1rem;
+  background: white;
 }
 
 .itemHome--tree {
@@ -108,9 +108,9 @@ export default {
 }
 
 .itemHome--tree--item {
-  background: white;
   margin: 0 1rem 1rem 1rem;
   padding: 1rem;
-  box-shadow: -2px 1px 5px 2px rgb(147 147 153 / 30%)
+  background: white;
+  box-shadow: -2px 1px 5px 2px rgb(147 147 153 / 30%);
 }
 </style>
