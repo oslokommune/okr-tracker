@@ -83,19 +83,19 @@ export default {
   display: grid;
   grid-row-gap: 0;
   grid-column-gap: 0;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: 1fr;
   grid-template-columns: 1fr;
 }
 
 .itemHome--header {
-  grid-area: 1 / 1 / 2 / 3;
+  grid-area: 1 / 1 / 1 / 2;
   margin-bottom: 32rem;
   padding: 1rem;
   background: white;
 }
 
 .itemHome--tree {
-  grid-area: 1 / 1 / 2 / 3;
+  grid-area: 1 / 1 / 1 / 3;
   margin-top: 12rem;
 }
 

@@ -14,7 +14,7 @@
     bottom: 4px;
     left: 0;
     height: 1px;
-    background: $color-grey-200;
+    background: var(--color-grey-700);
     content: '';
   }
 
@@ -39,8 +39,9 @@
 .tab {
   position: relative;
   display: block;
-  padding: 0.5rem 0.5rem;
-  color: $color-grey-700;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
@@ -49,19 +50,9 @@
   border-bottom: 2px solid transparent;
   cursor: pointer;
 
-  &::after {
-    position: absolute;
-    right: 0;
-    bottom: -3px;
-    left: 0;
-    height: 1px;
-    background: $color-grey-200;
-    content: '';
-  }
-
   &.active {
     color: $color-grey-900;
-    border-bottom-color: black;
+    background-color: var(--color-secondary)
   }
 }
 
