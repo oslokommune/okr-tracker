@@ -32,9 +32,54 @@
           <v-select v-model="activeItem.department" label="name" :options="departments" :clearable="false"></v-select>
         </div>
         <div class="form-group">
-          <span class="form-label">{{ $t('general.teamMembers') }}</span>
+          <span class="form-label">Produktområdeleder</span>
           <v-select
-            v-model="activeItem.team"
+            v-model="activeItem.team.productOwner"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Teamleder</span>
+          <v-select
+            v-model="activeItem.team.teamLead"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Design</span>
+          <v-select
+            v-model="activeItem.team.design"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}bli med oss på vårt start-up eventyr. Det synes jeg e
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Utvikling</span>
+          <v-select
+            v-model="activeItem.team.development"
             multiple
             :options="users"
             :get-option-label="(option) => option.displayName || option.id"
@@ -98,7 +143,15 @@ export default {
       try {
         const { id, name, missionStatement, secret } = this.activeItem;
 
-        const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
+        const team = {
+          productOwner: this.activeItem.team.productOwner.map(async (user) => await db.collection('users').doc(user.id)),
+          teamLead: this.activeItem.team.teamLead.map(async (user) => await db.collection('users').doc(user.id)),
+          design: this.activeItem.team.design.map(async (user) => await db.collection('users').doc(user.id)),
+          development: this.activeItem.development.map(async (user) => await db.collection('users').doc(user.id)),
+        };
+
+        console.log(team);
+
         const department = db.collection('departments').doc(this.activeItem.department.id);
 
         const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret };

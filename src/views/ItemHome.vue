@@ -3,8 +3,8 @@
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
-      <div class="itemHome">
-        <div class="itemHome--header">
+      <div>
+        <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />
           <action-bar v-if="tree.length" />
@@ -21,8 +21,8 @@
           </router-link>
         </empty-state>
 
-        <ul v-if="tree" class="itemHome--tree">
-          <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome--tree--item">
+        <ul v-if="tree" class="itemHome__tree itemHome__tree--hover">
+          <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
             <objective-row :objective="objective" :index="++index"></objective-row>
             <ul v-if="objective.keyResults" class="group">
               <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
@@ -79,27 +79,22 @@ export default {
   }
 }
 
-.itemHome {
-  display: grid;
-  grid-row-gap: 0;
-  grid-column-gap: 0;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-}
-
-.itemHome--header {
-  grid-area: 1 / 1 / 1 / 2;
-  margin-bottom: 32rem;
-  padding: 1rem;
+.itemHome__header {
+  display: block;
+  padding: 1rem 1rem 3rem 1rem;
   background: white;
 }
 
-.itemHome--tree {
-  grid-area: 1 / 1 / 1 / 3;
-  margin-top: 12rem;
+.itemHome__tree {
+  display: block;
 }
 
-.itemHome--tree--item {
+.itemHome__tree--hover {
+  position: relative;
+  bottom: 2rem;
+}
+
+.itemHome__tree--item {
   margin: 0 1rem 1rem 1rem;
   padding-bottom: 1rem;
   background: white;

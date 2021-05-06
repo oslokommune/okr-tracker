@@ -99,7 +99,7 @@ export default {
 
 .keyResult__progress {
   grid-column: 2;
-  padding: 1.5rem 1.75rem;
+  padding: 1.75rem 1.75rem 1.5rem 1.75rem;
   background-color: var(--color-primary);
 }
 
