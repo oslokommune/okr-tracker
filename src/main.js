@@ -6,6 +6,7 @@ import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
+import { ContentLoader } from 'vue-content-loader';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -45,6 +46,7 @@ Vue.component('Griddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));
+Vue.component('ContentLoader', ContentLoader);
 
 /* eslint-disable */
 configure({

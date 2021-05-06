@@ -1,19 +1,11 @@
 <template>
-  <router-link
-    class="objective"
-    :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
-    :class="{ expanded: user.preferences.view !== 'compact' }"
-  >
+  <router-link class="objective" :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }">
     <h3 class="objective__header title-2">
       <i class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`" />
       <span>Objective {{ index }}</span>
       <span class="objective__progression-text">{{ percent(objective.progression) }}</span>
     </h3>
-
-    <div>
-      <span class="objective__name">{{ objective.name }}</span>
-      <span v-if="user.preferences.view !== 'compact'" class="objective__description">{{ objective.description }}</span>
-    </div>
+    <span>{{ objective.description }}</span>
   </router-link>
 </template>
 
@@ -61,9 +53,6 @@ export default {
 
 .objective__header {
   text-transform: uppercase;
-}
-
-.objective__description {
 }
 
 .objective__icon {

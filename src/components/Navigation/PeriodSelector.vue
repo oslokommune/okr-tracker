@@ -5,7 +5,7 @@
         :disabled="activePeriod && period.id === activePeriod.id"
         class="tab"
         :class="{ active: activePeriod && period.id === activePeriod.id }"
-        @click="set_active_period_and_data(period.id)"
+        @click="setPeriod(period.id)"
       >
         <i
           class="tab__icon"
@@ -40,12 +40,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(['set_active_period_and_data']),
+    ...mapActions(['set_active_period_and_data', 'setDataLoading']),
 
     async setPeriod(id) {
-      this.loading = true;
-      await this.set_active_period_and_data(id);
-      this.loading = false;
+      try {
+        await this.setDataLoading(true);
+        await this.set_active_period_and_data(id);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        await this.setDataLoading(false);
+      }
     },
 
     periodDates,

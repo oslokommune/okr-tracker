@@ -68,6 +68,10 @@ export const actions = {
 
     return true;
   },
+
+  setDataLoading: async ({ commit }, payload) => {
+    commit('SET_DATA_LOADING', payload);
+  },
 };
 
 export const mutations = {
@@ -104,6 +108,10 @@ export const mutations = {
   SET_AUTHENTICATION(state, payload) {
     state.authenticated = payload;
   },
+
+  SET_DATA_LOADING(state, payload) {
+    state.dataLoading = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -132,6 +140,7 @@ export default new Vuex.Store({
     keycloak: null,
     authenticated: false,
     loginLoading: false,
+    dataLoading: false,
   },
   getters,
   mutations,

@@ -7,11 +7,14 @@
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />
-          <action-bar v-if="tree.length" />
+          <content-loader-action-bar v-if="dataLoading"></content-loader-action-bar>
+          <action-bar v-else-if="tree.length & !dataLoading" />
         </div>
 
+        <content-loader-item v-if="dataLoading"></content-loader-item>
+
         <empty-state
-          v-if="!tree.length"
+          v-else-if="!tree.length && !dataLoading"
           :icon="'exclamation'"
           :heading="$t('empty.noPeriods.heading')"
           :body="$t('empty.noPeriods.body')"
@@ -21,7 +24,7 @@
           </router-link>
         </empty-state>
 
-        <ul v-if="tree" class="itemHome__tree itemHome__tree--hover">
+        <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
           <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
             <objective-row :objective="objective" :index="++index"></objective-row>
             <ul v-if="objective.keyResults" class="group">
@@ -52,10 +55,12 @@ export default {
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    ContentLoaderItem: () => import('@/components/ContentLoader/ContentLoaderItem.vue'),
+    ContentLoaderActionBar: () => import('@/components/ContentLoader/ContentLoaderActionBar.vue'),
   },
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis']),
+    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading']),
     ...mapGetters(['hasEditRights']),
 
     tree() {
