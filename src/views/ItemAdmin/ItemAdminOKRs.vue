@@ -112,7 +112,6 @@ export default {
     selectedObjectiveId: null,
     isLoadingPeriod: false,
     isLoadingObjective: false,
-    isLoadingDetails: false,
   }),
 
   computed: {
@@ -170,8 +169,6 @@ export default {
         } else {
           await this.setItems(newQuery, false);
         }
-        this.isLoadingDetails = true;
-        console.log(this.isLoadingDetails);
         await this.setFormComponent(newQuery);
       },
     },
@@ -181,9 +178,7 @@ export default {
 
       await this.bindPeriods();
       await this.setItems(query);
-      this.isLoadingDetails = true;
-      console.log(this.isLoadingDetails);
-      await this.setFormComponent(query);
+      this.setFormComponent(query);
     },
   },
 
@@ -194,8 +189,6 @@ export default {
         this.editObject = null;
         return;
       }
-
-      console.log(this.isLoadingDetails);
 
       switch (type) {
         case 'period':
@@ -208,9 +201,6 @@ export default {
           this.editForm = () => import('./ItemAdminObjective.vue');
           this.editObject = this.objectives.find((obj) => obj.id === id);
           this.selectedObjectiveId = id;
-          console.log(this.isLoadingDetails);
-          this.isLoadingDetails = false;
-          console.log(this.isLoadingDetails);
           break;
         case 'keyResult':
           this.editForm = () => import('./ItemAdminKeyResult.vue');
