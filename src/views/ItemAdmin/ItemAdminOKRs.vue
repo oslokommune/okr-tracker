@@ -80,9 +80,7 @@
         </div>
       </div>
 
-      <div v-if="editObject && editForm" class="details">
-        <component :is="editForm" :data="editObject"></component>
-      </div>
+      <component :is="editForm" :data="editObject"></component>
     </div>
   </div>
 </template>
@@ -114,6 +112,7 @@ export default {
     selectedObjectiveId: null,
     isLoadingPeriod: false,
     isLoadingObjective: false,
+    isLoadingDetails: false,
   }),
 
   computed: {
@@ -171,7 +170,9 @@ export default {
         } else {
           await this.setItems(newQuery, false);
         }
-        this.setFormComponent(newQuery);
+        this.isLoadingDetails = true;
+        console.log(this.isLoadingDetails);
+        await this.setFormComponent(newQuery);
       },
     },
 
@@ -180,7 +181,9 @@ export default {
 
       await this.bindPeriods();
       await this.setItems(query);
-      this.setFormComponent(query);
+      this.isLoadingDetails = true;
+      console.log(this.isLoadingDetails);
+      await this.setFormComponent(query);
     },
   },
 
@@ -191,6 +194,8 @@ export default {
         this.editObject = null;
         return;
       }
+
+      console.log(this.isLoadingDetails);
 
       switch (type) {
         case 'period':
@@ -203,6 +208,9 @@ export default {
           this.editForm = () => import('./ItemAdminObjective.vue');
           this.editObject = this.objectives.find((obj) => obj.id === id);
           this.selectedObjectiveId = id;
+          console.log(this.isLoadingDetails);
+          this.isLoadingDetails = false;
+          console.log(this.isLoadingDetails);
           break;
         case 'keyResult':
           this.editForm = () => import('./ItemAdminKeyResult.vue');
@@ -474,25 +482,5 @@ export default {
   margin-left: auto;
   padding-top: 0.2rem;
   padding-left: 0.5rem;
-}
-
-.details {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
-
-  @media screen and (min-width: bp(l)) {
-    align-self: flex-start;
-    width: span(3, 0, span(10));
-    margin-top: 0;
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
-  }
 }
 </style>
