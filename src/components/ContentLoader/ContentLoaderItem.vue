@@ -2,15 +2,24 @@
   <ul class="content-loader-item-container content-loader-item-container--hover">
     <li class="content-loader-item__objective">
       <div class="objective">
-        <content-loader class="objective__header title-2" height="33" width="790">
+        <content-loader class="objective__header title-2" height="20" width="790">
           <rect x="0" y="2" ry="3" rx="3" width="780" height="20" />
         </content-loader>
       </div>
       <ul>
         <li class="content-loader-item__key-res">
-          <content-loader height="33" width="790">
-            <rect x="0" y="2" ry="3" rx="3" width="780" height="18" />
-          </content-loader>
+          <div class="keyResult">
+            <div class="keyResult__info">
+              <content-loader height="15" width="700">
+                <rect x="0" y="2" ry="3" rx="3" width="700" height="15" />
+              </content-loader>
+            </div>
+            <div class="keyResult__progress">
+              <content-loader height="15" width="350">
+                <rect x="0" y="8" ry="0" rx="0" width="350" height="15" />
+              </content-loader>
+            </div>
+          </div>
         </li>
       </ul>
     </li>
@@ -18,8 +27,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'ContentLoaderItem',
+
+  computed: {
+    ...mapState(['user']),
+  },
 };
 </script>
 
@@ -49,13 +64,26 @@ export default {
 }
 
 .objective {
-  display: grid;
-  grid-gap: 0.25rem;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr;
-  align-items: center;
   padding: 1.5rem 1.75rem;
-  color: var(--color-text);
+}
+
+.keyResult {
+  display: grid;
+  grid-row-gap: 0.5rem;
+  grid-template-columns: 1fr span(2, 0, span(6));
+}
+
+.keyResult__info {
+  grid-column: 1;
+  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  color: var(--color-grey-800);
   text-decoration: none;
+  background-color: var(--color-secondary);
+}
+
+.keyResult__progress {
+  grid-column: 2;
+  padding: 1.1rem 1.75rem 0.5rem 1.75rem;
+  background-color: var(--color-primary);
 }
 </style>
