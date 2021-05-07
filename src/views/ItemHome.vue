@@ -8,7 +8,7 @@
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />
           <content-loader-action-bar v-if="dataLoading"></content-loader-action-bar>
-          <action-bar v-else-if="tree.length & !dataLoading" />
+          <action-bar v-else-if="tree.length" />
         </div>
 
         <content-loader-item v-if="dataLoading"></content-loader-item>

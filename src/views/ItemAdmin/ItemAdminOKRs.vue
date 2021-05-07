@@ -29,21 +29,44 @@
           <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
 
           <ul v-else class="miller__list">
-            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent" />
-            <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
-              <router-link
-                class="miller__link"
-                :to="{ name: 'ItemAdminOKRs', query: { type, id } }"
-                :class="{
-                  active: activeClass(id),
-                  selected: selectedClass(id),
-                }"
-              >
-                <i class="miller__icon fa" :class="icon" />
-                <span class="miller__label">{{ name }}</span>
-                <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
-              </router-link>
-            </li>
+            <template v-if="!items.length && type === 'objective'">
+              <empty-state v-if="!items.length && !isLoadingPeriod" :icon="'exclamation'" :heading="nonexistent" />
+              <template v-if="isLoadingPeriod">
+                <template v-for="index in 2">
+                  <content-loader-okr-row :key="`okr-row-objective-${index}`"></content-loader-okr-row>
+                </template>
+              </template>
+            </template>
+
+            <template v-else-if="!items.length && type === 'keyResult'">
+              <empty-state
+                v-if="!items.length && !isLoadingObjective && type === 'keyResult'"
+                :icon="'exclamation'"
+                :heading="nonexistent"
+              />
+              <template v-if="isLoadingObjective">
+                <template v-for="index in 3">
+                  <content-loader-okr-row :key="`okr-row-objective-${index}`"></content-loader-okr-row>
+                </template>
+              </template>
+            </template>
+
+            <template v-else>
+              <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
+                <router-link
+                  class="miller__link"
+                  :to="{ name: 'ItemAdminOKRs', query: { type, id } }"
+                  :class="{
+                    active: activeClass(id),
+                    selected: selectedClass(id),
+                  }"
+                >
+                  <i class="miller__icon fa" :class="icon" />
+                  <span class="miller__label">{{ name }}</span>
+                  <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
+                </router-link>
+              </li>
+            </template>
           </ul>
           <button
             v-if="!notSelected"
@@ -76,6 +99,7 @@ export default {
 
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
+    ContentLoaderOkrRow: () => import('@/components/ContentLoader/ContentLoaderOKRRow.vue'),
   },
 
   data: () => ({
@@ -88,6 +112,8 @@ export default {
     selectedType: null,
     selectedPeriodId: null,
     selectedObjectiveId: null,
+    isLoadingPeriod: false,
+    isLoadingObjective: false,
   }),
 
   computed: {
@@ -200,9 +226,13 @@ export default {
       }
 
       if (type === 'period') {
+        this.isLoadingPeriod = true;
+        this.keyResults = [];
         await this.bindObjectives({ parentId: id });
         if (this.keyResults.length) this.$unbind('keyResults');
+        this.isLoadingPeriod = false;
       } else if (type === 'objective') {
+        this.isLoadingObjective = true;
         await this.bindKeyResults({ parentId: id });
 
         if (update) {
@@ -214,11 +244,14 @@ export default {
 
           if (objective && objective.period) {
             await this.bindObjectives({ parentId: objective.period.id });
-            this.selectedPeriodId = objective.period.id;
+            if (this.selectedPeriodId !== objective.period.id) {
+              this.selectedPeriodId = objective.period.id;
+            }
           }
         }
 
         this.selectedObjectiveId = id;
+        this.isLoadingObjective = false;
       } else if (type === 'keyResult' && update) {
         const keyRes = await db
           .collection('keyResults')

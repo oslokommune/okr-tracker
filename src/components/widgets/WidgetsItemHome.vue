@@ -48,7 +48,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'activePeriod', 'user']),
+    ...mapState(['activeItem', 'activePeriod', 'user', 'dataLoading']),
     ...mapGetters(['hasEditRights']),
   },
 

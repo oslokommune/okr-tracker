@@ -33,6 +33,7 @@ export default {
       required: true,
     },
   },
+
   data: () => ({
     svg: null,
     chart: null,

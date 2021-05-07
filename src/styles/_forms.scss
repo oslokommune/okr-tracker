@@ -114,6 +114,7 @@ textarea {
 .toggle {
   position: relative;
   display: inline-block;
+  grid-area: 1 / 2 / 2 / 3;
   width: 5rem;
   transform: translateY(0.15rem);
 
@@ -190,14 +191,16 @@ textarea {
 
   &__label {
     display: inline-block;
+    grid-area: 1 / 1 / 2 / 2;
     margin-right: 1rem;
   }
 }
 
 .toggle__container {
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 5rem;
   align-items: center;
-  justify-content: space-between;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
