@@ -28,10 +28,6 @@ export default {
     ...mapState(['activePeriod', 'views', 'user']),
   },
 
-  mounted() {
-    console.log(this.activePeriod)
-  },
-
   methods: {
     ...mapActions(['update_preferences']),
     updateView(view) {

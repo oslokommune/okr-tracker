@@ -1,9 +1,6 @@
 <template>
   <div class="details">
-    <content-loader
-      width="100%"
-      :height="350"
-    >
+    <content-loader width="300" height="350">
       <rect x="10" y="15" rx="5" ry="5" width="20%" height="10" />
       <rect x="10" y="32" rx="5" ry="5" width="100%" height="10" />
       <rect x="10" y="75" rx="5" ry="5" width="100%" height="10" />

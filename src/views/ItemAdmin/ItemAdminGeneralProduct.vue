@@ -144,10 +144,10 @@ export default {
         const { id, name, missionStatement, secret } = this.activeItem;
 
         const team = {
-          productOwner: this.activeItem.team.productOwner.map(async (user) => await db.collection('users').doc(user.id)),
-          teamLead: this.activeItem.team.teamLead.map(async (user) => await db.collection('users').doc(user.id)),
-          design: this.activeItem.team.design.map(async (user) => await db.collection('users').doc(user.id)),
-          development: this.activeItem.development.map(async (user) => await db.collection('users').doc(user.id)),
+          productOwner: this.activeItem.team.productOwner.map(async (user) => db.collection('users').doc(user.id)),
+          teamLead: this.activeItem.team.teamLead.map(async (user) => db.collection('users').doc(user.id)),
+          design: this.activeItem.team.design.map(async (user) => db.collection('users').doc(user.id)),
+          development: this.activeItem.development.map(async (user) => db.collection('users').doc(user.id)),
         };
 
         console.log(team);
