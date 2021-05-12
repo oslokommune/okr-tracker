@@ -76,10 +76,10 @@ export default {
 
 .tabs {
   @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
+    width: span(7, span(10));
   }
   @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
+    width: span(6, span(10));
   }
 }
 </style>

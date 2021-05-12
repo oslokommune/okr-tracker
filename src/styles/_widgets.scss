@@ -56,15 +56,15 @@
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(2, 0, span(9));
+    width: span(2, span(9));
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(2, 0, span(7));
+    width: span(2, span(7));
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(2, 0, span(6));
+    width: span(2, span(6));
   }
 }
 
@@ -99,34 +99,34 @@
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(7, 0, span(9));
-    margin-left: span(0, 1, span(9));
+    width: span(7, span(9));
+    margin-left: span(0, span(9));
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(5, 0, span(7));
-    margin-left: span(0, 1, span(7));
+    width: span(5, span(7));
+    margin-left: span(0, span(7));
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(4, 0, span(6));
-    margin-left: span(0, 1, span(6));
+    width: span(4, span(6));
+    margin-left: span(0, span(6));
   }
 }
 
 
 .widgets {
   display: grid;
-  grid-gap: span(0, 1, span(12));
+  grid-gap: span(0, span(12));
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   width: 100%;
 
   @media screen and (min-width: bp(m)) {
-    grid-gap: span(0, 1, span(9));
+    grid-gap: span(0, span(9));
   }
 
   @media screen and (min-width: bp(l)) {
-    grid-gap: span(0, 1, span(10));
+    grid-gap: span(0, span(10));
     grid-template-columns: 1fr;
   }
 }

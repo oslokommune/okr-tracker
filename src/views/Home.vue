@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="home">
     <ul v-if="user">
       <li v-for="org in tree" :key="org.id">
         <item-row :data="org" type="organization"></item-row>
@@ -51,6 +51,16 @@ export default {
 
   @media screen and (min-width: bp(l)) {
     margin-bottom: 1rem;
+  }
+}
+
+.home {
+  position: relative;
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(l)) {
+    width: span(8, span(10));
   }
 }
 </style>
