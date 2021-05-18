@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/colors';
 
 .kpi {
   position: relative;
@@ -69,11 +69,11 @@ export default {
 }
 
 .kpi--empty {
-  color: rgba($color-purple, 0.25);
-  background: rgba($color-grey-100, 0.5);
+  color: rgba(colors.$color-purple, 0.25);
+  background: rgba(colors.$color-grey-100, 0.5);
 
   &:hover {
-    background: rgba($color-grey-100, 0.4);
+    background: rgba(colors.$color-grey-100, 0.4);
   }
 
   & > .kpi__icon {

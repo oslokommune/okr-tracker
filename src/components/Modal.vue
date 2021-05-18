@@ -128,8 +128,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .modal__textarea {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }

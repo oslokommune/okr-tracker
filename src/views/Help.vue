@@ -58,8 +58,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
 .main {
   width: span(12);
 }
@@ -105,7 +103,7 @@ export default {
   margin: 2rem 0 5rem;
   padding: 1.5rem;
   font-size: 1rem;
-  border: 1px solid $color-grey-100;
+  border: 1px solid var(--color-grey-100);
 
   li {
     padding: 0.25rem 0;

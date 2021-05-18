@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/colors';
 
 .sidebar {
   position: sticky;
@@ -120,7 +120,7 @@ export default {
   -webkit-user-drag: none;
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(colors.$color-grey-500, 0.1);
   }
 
   &.router-link-active {

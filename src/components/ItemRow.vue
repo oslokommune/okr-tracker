@@ -154,7 +154,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/typography';
 @import '@/styles/typography';
 
 .item {
@@ -189,7 +189,7 @@ export default {
 }
 
 .item__chevron {
-  color: $color-grey-500;
+  color: var(--color-grey-500);
   transform: translateX(-0.5rem);
   opacity: 0;
   transition: all 0.1s ease-in;
@@ -217,7 +217,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  border-right: 1px solid $color-grey-100;
+  border-right: 1px solid var(--color-grey-100);
 
   &.disabled {
     opacity: 0.4;

@@ -1,18 +1,19 @@
-@import 'reset';
-@import 'colors';
-@import 'fonts';
-@import 'typography';
-@import 'buttons';
-@import 'tabs';
-@import 'forms';
-@import 'widgets';
-@import 'modal';
-@import 'widgets';
-@import 'tooltip';
-@import 'admin';
-@import 'alerts';
+@use 'reset';
+@use 'colors';
+@use 'fonts';
+@use 'typography';
+@use 'buttons';
+@use 'tabs';
+@use 'forms';
+@use 'widgets';
+@use 'modal';
+@use 'tooltip';
+@use 'admin';
+@use 'alerts';
 
-@import '~@braid/griddle/scss/griddle-overlay.scss';
+@use 'griddle-overrides' as *;
+@use '~@braid/griddle/scss/griddle' as *;
+@use '~@braid/griddle/scss/griddle-overlay.scss' as *;
 
 html,
 body {
@@ -50,7 +51,7 @@ body.using-mouse :focus {
 }
 
 *:focus {
-  outline: 2px solid $color-link;
+  outline: 2px solid colors.$color-link;
 }
 
 .toast {
@@ -62,7 +63,7 @@ body.using-mouse :focus {
 .md table {
   width: 100%;
   margin: 2rem 0 1rem;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid colors.$color-border;
 
   th {
     font-weight: 500;
@@ -80,14 +81,14 @@ body.using-mouse :focus {
     padding: 0 0.5rem;
     text-align: left;
     vertical-align: middle;
-    border-top: 1px solid $color-border;
+    border-top: 1px solid colors.$color-border;
   }
 }
 
 hr {
   height: 1px;
   margin: 1rem 0;
-  background: $color-grey-100;
+  background: colors.$color-grey-100;
   border: none;
 }
 

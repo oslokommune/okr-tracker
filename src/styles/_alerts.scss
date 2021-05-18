@@ -1,5 +1,6 @@
-@import '_colors.scss';
-@import 'typography.scss';
+@use "sass:color";
+@use '_colors.scss';
+@use 'typography.scss';
 
 $borderRadius: 1.5px;
 
@@ -7,12 +8,12 @@ $borderRadius: 1.5px;
   box-shadow: 0 1px 3px rgba($color, 0.2), 0 3px 12px rgba($color, 0.05);
 }
 
-@mixin boxColor($color, $shadowColor: $color-purple) {
+@mixin boxColor($color, $shadowColor: colors.$color-purple) {
   background: rgba($color, 0.1);
   @include boxShadow($shadowColor);
 
   &::after {
-    background: linear-gradient($color, darken($color, 5%));
+    background: linear-gradient($color, color.adjust($color, $lightness: -5%));
   }
 
   &::before {
@@ -59,19 +60,19 @@ $borderRadius: 1.5px;
 }
 
 .ok-alert {
-  @include boxColor($color-grey-100);
+  @include boxColor(colors.$color-grey-100);
 }
 
 .ok-alert--success {
-  @include boxColor($color-green, darken($color-green, 20%));
+  @include boxColor(colors.$color-green, color.adjust(colors.$color-green, $lightness: -20%));
 }
 
 .ok-alert--danger {
-  @include boxColor($color-red, darken($color-red, 20%));
+  @include boxColor(colors.$color-red, color.adjust(colors.$color-red, $lightness: -20%));
 }
 
 .ok-alert--warning {
-  @include boxColor($color-yellow, darken($color-yellow, 20%));
+  @include boxColor(colors.$color-yellow, color.adjust(colors.$color-yellow, $lightness: -20%));
 }
 
 .ok-alert--white {
@@ -79,12 +80,12 @@ $borderRadius: 1.5px;
 }
 
 .ok-alert--dark {
-  background: $color-blue;
-  @include boxShadow($color-purple);
+  background: colors.$color-blue;
+  @include boxShadow(colors.$color-purple);
 
   &::after {
-    color: $color-blue;
-    background: linear-gradient($color-purple, darken($color-purple, 5%));
+    color: colors.$color-blue;
+    background: linear-gradient(colors.$color-purple, color.adjust(colors.$color-purple, $lightness: -5%));
   }
 
   &::before {

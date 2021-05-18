@@ -1,4 +1,4 @@
-@import 'colors';
+@use 'colors';
 
 $dark-background: #020218;
 $dark-border: #262639;
@@ -151,7 +151,7 @@ $duration: 20s;
   }
   &__name {
     margin: 0;
-    color: $color-yellow;
+    color: var(--color-yellow);
     font-weight: 500;
     font-size: 2.75em;
     line-height: 1.12;
@@ -164,7 +164,7 @@ $duration: 20s;
     grid-area: progress;
     align-self: end;
     padding-right: 0.5em;
-    color: $color-yellow;
+    color: var(--color-yellow);
     font-weight: 500;
     font-size: 9em;
     text-align: right;
@@ -187,7 +187,7 @@ $duration: 20s;
 
   &__lead {
     margin: 1em 0;
-    color: $color-yellow;
+    color: var(--color-yellow);
     font-weight: 500;
     font-size: 1.35em;
   }
@@ -199,12 +199,12 @@ $duration: 20s;
   &__graph {
     margin-top: auto;
 
-    /deep/ svg text {
+    ::v-deep svg text {
       font-size: 0.7rem;
     }
 
-    /deep/ svg path.valueLine {
-      stroke: $color-yellow;
+    ::v-deep svg path.valueLine {
+      stroke: var(--color-yellow);
       stroke-width: 3px;
     }
   }
@@ -252,6 +252,6 @@ $duration: 20s;
   background: none;
   &.autoplay {
     color: var(--color-primary) !important;
-    background: $color-blue;
+    background: var(--color-blue);
   }
 }

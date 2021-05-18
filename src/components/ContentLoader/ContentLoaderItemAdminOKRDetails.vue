@@ -26,14 +26,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/colors';
 
 .details {
   margin-top: 1rem;
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

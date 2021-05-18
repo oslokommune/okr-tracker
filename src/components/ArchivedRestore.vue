@@ -37,13 +37,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/colors';
 
 .archived {
   display: flex;
   margin-bottom: 1rem;
   padding: 1.5rem 1rem;
-  background: rgba($color-yellow, 0.25);
+  background: rgba(colors.$color-yellow, 0.25);
   border-radius: 3px;
 }
 

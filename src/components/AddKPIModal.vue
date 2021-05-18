@@ -170,7 +170,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/colors';
 
 .modal__textarea {
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -207,7 +207,7 @@ export default {
   display: flex;
   padding: 1rem;
   font-size: 0.9rem;
-  background: rgba($color-yellow, 0.2);
+  background: rgba(colors.$color-yellow, 0.2);
   border-radius: 3px;
 }
 

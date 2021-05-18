@@ -12,8 +12,10 @@ module.exports = {
     loaderOptions: {
       sass: {
         additionalData: `
-        @import "@/styles/griddle-overrides.scss";
-        @import "@braid/griddle/scss/griddle.scss";
+        @use "@/styles/griddle-overrides.scss" as *;
+        @use "@braid/griddle/scss/computed-variables" as *;
+        @use "@braid/griddle/scss/functions" as *;
+        @use "@braid/griddle/scss/mixins" as *;
         `,
       },
     },

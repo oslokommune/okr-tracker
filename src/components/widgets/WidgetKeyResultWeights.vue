@@ -79,7 +79,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use 'sass:color';
+@use '@/styles/colors';
 
 .scales {
   position: relative;
@@ -102,11 +103,11 @@ export default {
   font-size: 0.85rem;
   text-align: center;
   text-decoration: none;
-  background: $color-grey-100;
-  border: 1px solid $color-grey-200;
+  background: var(--color-grey-100);
+  border: 1px solid var(--color-grey-200);
 
   &:hover {
-    background: $color-grey-200;
+    background: var(--color-grey-200);
   }
 
   &.active {
@@ -115,8 +116,8 @@ export default {
     border-color: var(--color-primary);
 
     &:hover {
-      background: darken($color-yellow, 10%);
-      border-color: darken($color-yellow, 10%);
+      background: color.adjust(colors.$color-yellow, $blackness: 10%);
+      border-color: color.adjust(colors.$color-yellow, $blackness: 10%);
     }
   }
 }

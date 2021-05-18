@@ -233,8 +233,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-@import '@/styles/typography.scss';
+@use '@/styles/_colors.scss';
 
 .keyres {
   display: flex;
@@ -254,7 +253,7 @@ export default {
   border-radius: 3px;
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(colors.$color-grey-500, 0.1);
   }
 }
 
@@ -277,14 +276,14 @@ export default {
   margin: 1.5rem 0;
   padding: 1rem;
   font-weight: 500;
-  background: rgba($color-yellow, 0.25);
+  background: rgba(colors.$color-yellow, 0.25);
   border: 1px solid var(--color-primary);
   border-radius: 3px;
 }
 
 .auto--invalid {
-  background: rgba($color-red, 0.25);
-  border: 1px solid $color-red;
+  background: rgba(colors.$color-red, 0.25);
+  border: 1px solid var(--color-red);
 }
 
 .auto__text {

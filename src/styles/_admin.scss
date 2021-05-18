@@ -1,10 +1,10 @@
-@import 'colors';
+@use 'colors';
 
 .create-container {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
 
   @media screen and (min-width: bp(s)) {
     width: span(8);
@@ -31,7 +31,7 @@
   padding: 1rem;
   font-weight: 500;
   font-size: 1rem;
-  background: $color-grey-50;
+  background: var(--color-grey-50);
   border: none;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;

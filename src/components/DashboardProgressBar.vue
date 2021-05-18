@@ -96,7 +96,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
+@use '@/styles/colors';
+
+$positive: rgba(#dddddd, 0.55);
+$negative: rgba(red, 0.08);
 
 .progress {
   display: grid;
@@ -117,7 +120,7 @@ export default {
   height: 1.7em;
   padding: 2px;
   background: rgba(white, 0.1);
-  border: 1px solid $color-bg;
+  border: 1px solid var(--color-bg);
   border-radius: 4px;
 }
 
@@ -176,9 +179,6 @@ export default {
   left: 0;
   height: 100%;
   border-radius: 3px;
-
-  $positive: rgba(#dddddd, 0.55);
-  $negative: rgba(red, 0.08);
 
   &.positive {
     background: repeating-linear-gradient(-45deg, transparent, transparent 2.5px, $positive 2.5px, $positive 5px);

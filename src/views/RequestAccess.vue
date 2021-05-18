@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/_colors.scss';
+@use '@/styles/colors';
 
 .login {
   display: flex;
@@ -67,7 +67,7 @@ export default {
   padding: 2rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
 
   @media screen and (min-width: bp(xs)) {
     width: span(8);

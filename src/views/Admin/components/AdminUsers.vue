@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
+@use '@/styles/colors';
 
 .users,
 .selected-user,
@@ -118,7 +118,7 @@ export default {
   height: 32rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
 }
 
 .users__list {
@@ -135,11 +135,11 @@ export default {
   font-weight: 500;
   background: none;
   border: 0;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
   cursor: pointer;
 
   &:hover {
-    background: $color-grey-50;
+    background: var(--color-grey-50);
 
     & > .users__list-item-chevron {
       opacity: 1;

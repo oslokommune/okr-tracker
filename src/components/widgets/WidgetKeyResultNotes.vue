@@ -95,8 +95,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .notes {
   display: flex;
   flex-direction: column;
@@ -107,7 +105,7 @@ export default {
 }
 
 .notes__markdown {
-  padding: 0.75rem 0.75rem 0.6rem 0rem;
+  padding: 0.75rem 0.75rem 0.6rem 0;
 }
 
 .notes__btn {

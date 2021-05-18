@@ -1,4 +1,4 @@
-@import 'colors';
+@use 'colors';
 
 .button-col {
   display: flex;
@@ -24,7 +24,7 @@
   font-size: 1rem;
   white-space: nowrap;
   text-decoration: none;
-  background: $color-grey-100;
+  background: var(--color-grey-100);
   border: none;
   border-radius: 2px;
   cursor: pointer;
@@ -57,7 +57,7 @@
 .btn--ter {
   background: none;
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(colors.$color-grey-500, 0.1);
   }
 
   &.btn--negative {
