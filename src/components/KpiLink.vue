@@ -54,13 +54,13 @@ export default {
   height: 8rem;
   padding: 1rem;
   overflow: hidden;
-  color: white;
+  color: var(--color-text-secondary);
   font-weight: 500;
   text-decoration: none;
   background: var(--color-primary);
 
   &:hover {
-    background: darken($color-purple, 6%);
+    background: var(--color-primary-dark);
   }
 
   &.disabled {
