@@ -1,4 +1,4 @@
-# OKR Tracker
+# OKR Tracker (knowit)
 
 - [Demo](#demo)
 - [Project requirements](#project-requirements)
