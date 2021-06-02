@@ -1,4 +1,4 @@
-# OKR Tracker
+# OKR Tracker (knowit)
 
 - [OKR Tracker](#okr-tracker)
   - [Demo](#demo)
