@@ -86,3 +86,4 @@ if (isSlackActive) {
   slackNotificationUserRequest = slackNotificationOnUserRequest;
   slackNotificationInteractiveRequest = slackNotificationInteractiveOnRequest;
 }
+exports.createCustomToken = require('./tokenCreator').createCustomToken;

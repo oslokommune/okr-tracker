@@ -134,6 +134,7 @@
     "addDepartment": "Nytt produktområde",
     "acceptRequest": "Gi tilgang",
     "rejectRequest": "Slett forespørsel",
+    "deleteImage": "Slett bilde",
     "deleteUser": "Slett bruker",
     "create": "Opprett",
     "delete": "Slett",
@@ -149,8 +150,6 @@
   },
   "login": {
     "login": "Logg inn",
-    "requestAccess": "Be om tilgang",
-    "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "with": "Logg inn med {provider} bruker",
     "microsoft": "Logg inn med Microsoft",
@@ -376,9 +375,6 @@
     "heading": "Vekting",
     "keyResultFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
-  },
-  "accessRequests": {
-    "heading": "Tilgangsforespørsler"
   },
   "select": {
     "noIcons": "Ingen treff"

@@ -137,6 +137,7 @@
     "addDepartment": "Add department",
     "acceptRequest": "Grant access",
     "rejectRequest": "Delete request",
+    "deleteImage": "Delete image",
     "deleteUser": "Delete user",
     "create": "Create",
     "delete": "Delete",
@@ -152,8 +153,6 @@
   },
   "login": {
     "login": "Sign in",
-    "requestAccess": "Request access",
-    "requestButton": "Send request",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
     "microsoft": "Sign in with Microsoft",
@@ -379,9 +378,6 @@
     "heading": "Weights",
     "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
-  },
-  "accessRequests": {
-    "heading": "Access requests"
   },
   "select": {
     "noIcons": "No hits"
