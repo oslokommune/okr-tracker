@@ -20,7 +20,11 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   if (!documentSnapshot.exists) {
     // Add user if it does not exist
-    await User.set({id: user.email, email: user.email, preferences: defaultPreferences});
+    await userRef.set({
+      id: user.email,
+      email: user.email,
+      preferences: defaultPreferences,
+    });
     documentSnapshot = await userRef.get();
   }
 
