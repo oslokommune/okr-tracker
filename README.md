@@ -27,7 +27,6 @@
   - [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
     - [Requirements for automated backups](#requirements-for-automated-backups)
     - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
-  - [Slack Integration](#slack-integration)
     - [Set up](#set-up)
     - [Push audit log to slack channels](#push-audit-log-to-slack-channels)
   - [Supported providers](#supported-providers)
@@ -406,16 +405,6 @@ Gif of the process:
 ![Gif of the process src: thecloudfunction-blog](./documentation/recovery.gif)
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
-
-## Slack Integration
-
-We have a slack integration that is connected with a couple of cloud functions.
-
-One cloud function integrate with slack
-
-1. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
-
-For these cloud functions to work you need to add a webhook url from a slack app.
 
 ### Set up
 
