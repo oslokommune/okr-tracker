@@ -108,8 +108,6 @@
     "addOrganization": "Add organization",
     "addProduct": "Add product",
     "addDepartment": "Add department",
-    "acceptRequest": "Grant access",
-    "rejectRequest": "Delete request",
     "deleteImage": "Delete image",
     "deleteUser": "Delete user",
     "create": "Create",
@@ -126,8 +124,6 @@
   },
   "login": {
     "login": "Sign in",
-    "requestAccess": "Request access",
-    "requestButton": "Send request",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
     "google": "Sign in with Google",
@@ -193,13 +189,7 @@
     },
     "savedChanges": "Saved changes",
     "deleted": "Deleted",
-    "restored": "Restored",
-    "request": {
-      "requested": "Access request sent",
-      "error": "Could not send request. Please try again.",
-      "accepted": "Added {user}",
-      "rejected": "Removed {user}"
-    }
+    "restored": "Restored"
   },
   "keyres": {
     "objective": "Related objective",
@@ -344,9 +334,6 @@
     "heading": "Weights",
     "keyresFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
-  },
-  "accessRequests": {
-    "heading": "Access requests"
   },
   "select": {
     "noIcons": "No hits"

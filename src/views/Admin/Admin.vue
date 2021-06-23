@@ -2,30 +2,19 @@
   <div class="grid">
     <admin-items class="admin-items"></admin-items>
     <div class="admin-users">
-      <admin-access-requests v-if="requestAccess.length" />
       <admin-users />
     </div>
   </div>
 </template>
 
 <script>
-import { db } from '@/config/firebaseConfig';
 
 export default {
   name: 'Admin',
 
   components: {
-    AdminAccessRequests: () => import('./components/AdminAccessRequests.vue'),
     AdminUsers: () => import('./components/AdminUsers.vue'),
     AdminItems: () => import('./components/AdminItems.vue'),
-  },
-
-  data: () => ({
-    requestAccess: [],
-  }),
-
-  firestore: {
-    requestAccess: db.collection('requestAccess'),
   },
 };
 </script>

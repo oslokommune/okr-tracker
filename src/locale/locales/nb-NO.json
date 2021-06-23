@@ -106,8 +106,6 @@
     "addOrganization": "Ny organisasjon",
     "addProduct": "Nytt produkt",
     "addDepartment": "Nytt produktområde",
-    "acceptRequest": "Gi tilgang",
-    "rejectRequest": "Slett forespørsel",
     "deleteImage": "Slett bilde",
     "deleteUser": "Slett bruker",
     "create": "Opprett",
@@ -124,8 +122,6 @@
   },
   "login": {
     "login": "Logg inn",
-    "requestAccess": "Be om tilgang",
-    "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "with": "Logg inn med {provider} bruker",
     "google": "Logg inn med Google",
@@ -191,13 +187,7 @@
     },
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
-    "restored": "Gjenopprettet dokument",
-    "request": {
-      "requested": "Forespørsel om tilgang sendt til admin",
-      "error": "Noe gikk galt med forespørselen, vennligst prøv igjen senere.",
-      "accepted": "Lagt til: {user}",
-      "rejected": "Fjernet: {user}"
-    }
+    "restored": "Gjenopprettet dokument"
   },
   "keyres": {
     "objective": "Tilknyttet mål",
@@ -342,9 +332,6 @@
     "heading": "Vekting",
     "keyresFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
-  },
-  "accessRequests": {
-    "heading": "Tilgangsforespørsler"
   },
   "select": {
     "noIcons": "Ingen treff"

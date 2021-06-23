@@ -95,13 +95,6 @@ export const login = () => {
   };
 };
 
-export const requestAccess = () => {
-  return {
-    icon: 'pray',
-    label: i18n.t('login.requestAccess'),
-  };
-};
-
 export const users = () => {
   return {
     icon: 'users',

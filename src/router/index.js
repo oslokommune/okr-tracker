@@ -21,13 +21,6 @@ const routes = [
     beforeEnter: routerGuards.login,
   },
   {
-    path: '/request-access',
-    name: 'request-access',
-    meta: { breadcrumbs: ['login', 'requestAccess'] },
-    component: () => import('@/views/RequestAccess.vue'),
-    beforeEnter: routerGuards.requestAccess,
-  },
-  {
     path: '/logout',
     name: 'Logout',
     meta: { breadcrumbs: ['login'] },

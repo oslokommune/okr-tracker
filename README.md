@@ -1,32 +1,34 @@
 # OKR Tracker (knowit)
 
-- [Demo](#demo)
-- [Project requirements](#project-requirements)
-- [Clone and install](#clone-and-install)
-- [Set up new instance](#set-up-new-instance)
-  - [Create Firebase project](#create-firebase-project)
-    - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
-  - [Environment variables](#environment-variables)
-  - [Link project](#link-project)
-  - [Create mock data](#create-mock-data)
-    - [Whitelist yourself](#whitelist-yourself)
-    - [Generate mock data](#generate-mock-data)
-    - [Exporting mock data](#exporting-mock-data)
-    - [Update mock data](#update-mock-data)
-- [Run locally](#run-locally)
-- [Build and deploy](#build-and-deploy)
-- [Lint and fix](#lint-and-fix)
-- [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
-  - [Requirements](#requirements)
-  - [Export production data](#export-production-data)
-- [Import production data](#import-production-data)
-- [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
-  - [Requirements for automated backups](#requirements-for-automated-backups)
-  - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
-- [Slack Integration](#slack-integration)
-  - [Set up](#set-up)
-- [Supported Providers](#supported-providers)
-  - [Keycloak integration](#keycloak-integration)
+- [OKR Tracker (knowit)](#okr-tracker-knowit)
+  - [Demo](#demo)
+  - [Project requirements](#project-requirements)
+  - [Clone and install](#clone-and-install)
+  - [Set up new instance](#set-up-new-instance)
+    - [Create Firebase project](#create-firebase-project)
+      - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
+    - [Environment variables](#environment-variables)
+    - [Link project](#link-project)
+    - [Create mock data](#create-mock-data)
+      - [Whitelist yourself](#whitelist-yourself)
+      - [Generate mock data](#generate-mock-data)
+      - [Exporting mock data](#exporting-mock-data)
+      - [Update mock data](#update-mock-data)
+  - [Run locally](#run-locally)
+  - [Build and deploy](#build-and-deploy)
+  - [Lint and fix](#lint-and-fix)
+  - [Google Sheets integration](#google-sheets-integration)
+  - [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
+    - [Requirements](#requirements)
+    - [Export production data](#export-production-data)
+  - [Import production data](#import-production-data)
+  - [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
+    - [Requirements for automated backups](#requirements-for-automated-backups)
+    - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
+  - [Slack Integration](#slack-integration)
+    - [Set up](#set-up)
+  - [Supported providers](#supported-providers)
+    - [Keycloak integration](#keycloak-integration)
 
 ## Demo
 
@@ -336,10 +338,9 @@ Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/fireba
 
 We have a slack integration that is connected with a couple of cloud functions.
 
-There are two cloud functions that integrate with slack
+One cloud function integrate with slack
 
-1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
-2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
+1. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
 
 For these cloud functions to work you need to add a webhook url from a slack app.
 

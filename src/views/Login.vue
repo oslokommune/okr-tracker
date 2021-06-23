@@ -9,8 +9,6 @@
       <div v-else class="section">
         <div v-if="loginError === 1" class="error">
           {{ $t('login.error.notRegistered') }}
-
-          <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
         </div>
 
         <div v-if="loginError === 2" class="error">
@@ -72,9 +70,6 @@
         >
           {{ $t('login.loginWithUsername') }}
         </button>
-        <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
-          {{ $t('login.requestAccess') }}
-        </router-link>
       </div>
     </div>
   </div>

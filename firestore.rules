@@ -52,11 +52,6 @@ service cloud.firestore {
     }
 
 
-    match /requestAccess/{document} {
-      allow read: if isAdmin();
-      allow write: if true;
-    }
-
     match /audit/{document} {
       allow read: if isSignedIn();
     }
