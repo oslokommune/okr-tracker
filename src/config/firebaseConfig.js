@@ -35,7 +35,7 @@ const loginProviderMS = new firebase.auth.OAuthProvider('microsoft.com');
 loginProviderMS.setCustomParameters({
   // "tenant" parameter in case you are using an Azure AD tenant.
   // The default value is "common".
-  tenant: process.env.VUE_APP_MICROSOFT_TENANT
+  tenant: process.env.VUE_APP_MICROSOFT_TENANT || 'common'
 });
 const storage = firebase.storage();
 const auth = firebase.auth();
