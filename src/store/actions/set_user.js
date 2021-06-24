@@ -12,8 +12,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   // Check if user is valid Google account and within the knowit.no-domain
   if (!user || !user.email) rejectAccess();
-  if (!user.email.endsWith('knowit.no')) rejectAccess();
-
+ 
   // Check if user is whitelisted
   const userRef = db.collection('users').doc(user.email);
   let documentSnapshot = await userRef.get();

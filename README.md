@@ -34,6 +34,8 @@
     - [Google integration](#google-integration)
   - [Common problems](#common-problems)
   - [Supported providers](#supported-providers)
+    - [Microsoft integration](#microsoft-integration)
+    - [Google integration](#google-integration)
     - [Keycloak integration](#keycloak-integration)
 
 ## Demo

@@ -84,7 +84,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
+import { auth, functions, loginProviderMS, loginProviderGoogle } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
