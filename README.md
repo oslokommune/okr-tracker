@@ -27,6 +27,8 @@
     - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
     - [Set up](#set-up)
   - [Supported providers](#supported-providers)
+    - [Microsoft integration](#microsoft-integration)
+    - [Google integration](#google-integration)
     - [Keycloak integration](#keycloak-integration)
 
 ## Demo
@@ -109,13 +111,14 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
 | `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
 | `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
-| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
+| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented microsoft, google, email and keycloak. Ex: `google-keycloak-email` |
 | `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
 | `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
 | `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| `VUE_APP_MICROSOFT_TENANT`       | To limit the authentication to a certain TENANT, e.g. knowit.no                                                          | 
 
 ### Link project
 
@@ -356,7 +359,13 @@ Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotifi
 
 ## Supported providers
 
-OKR-tracker supports for the time being only three login providers: Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+
+### Microsoft integration
+For the Microsoft-integration a TENANT must be specified as the environment-variable VUE_APP_MICROSOFT_TENANT.
+
+### Google integration
+Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('knowit.no')) rejectAccess();`
 
 ### Keycloak integration
 

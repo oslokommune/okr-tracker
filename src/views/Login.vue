@@ -12,7 +12,7 @@
         </div>
 
         <div v-if="loginError === 2" class="error">
-          {{ $t('login.error.googleError') }}
+          {{ $t('login.error.providerError') }}
         </div>
       </div>
       <div v-if="showForm" class="login__form">
@@ -48,6 +48,12 @@
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
+
+        <button v-if="providers.includes('microsoft')" class="btn btn--icon btn--pri" @click="loginWithMicrosoft">
+          <i class="icon fab fa-fw fa-microsoft" />
+          {{ $t('login.microsoft') }}
+        </button>
+
         <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
           <i class="icon fab fa-fw fa-google" />
           {{ $t('login.google') }}
@@ -77,7 +83,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, functions, loginProvider } from '@/config/firebaseConfig';
+import { auth, functions, loginProviderMS, loginProviderGoogle } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
@@ -148,7 +154,19 @@ export default {
       await this.setLoginLoading(true);
       await this.setLoginError(null);
       try {
-        const { user } = await auth.signInWithPopup(loginProvider);
+        const { user } = await auth.signInWithPopup(loginProviderGoogle);
+        this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
+      } catch (e) {
+        await this.setLoginError(2);
+      }
+      await this.setLoginLoading(false);
+    },
+
+    async loginWithMicrosoft() {
+      await this.setLoginLoading(true);
+      await this.setLoginError(null);
+      try {
+        const { user } = await auth.signInWithRedirect(loginProviderMS);
         this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
       } catch (e) {
         await this.setLoginError(2);
