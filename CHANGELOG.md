@@ -9,6 +9,12 @@ All notable changes to this project will be documented in this file. The format 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
 
+### Fixed
+
+- Sort organizations by name
+- Small style fixes
+- Correct modal size
+
 ## [2.0.0-rc.11] 2021-04-27
 
 ### Fixed

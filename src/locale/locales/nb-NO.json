@@ -54,7 +54,7 @@
     "organization": "Organisasjon",
     "date": "Dato",
     "password": "Passord",
-    "secret": "API nøkkel"
+    "secret": "API Hemmelighet"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
