@@ -1,6 +1,20 @@
 <template>
   <header class="header">
     <div class="container">
+      <a
+        href=""
+        role="menuitem"
+        class="header__navbutton"
+        :class="{ 'is-open': sidebarOpen }"
+        aria-expanded="false"
+        data-th-aria-label="${portal.localize({'_key=aria.openMenu'})}"
+        @click.prevent="sidebarOpen = !sidebarOpen"
+      >
+        <div class="header__navicon" role="presentation"><span></span> <span></span> <span></span> <span></span></div>
+      </a>
+      <div class="section drawer" :class="{ 'is-open': sidebarOpen }">
+        <sidebar-navigation v-if="user"></sidebar-navigation>
+      </div>
       <router-link :to="{ name: 'Home' }" class="logo">
         <oslo-logo class="logo__img" />
       </router-link>
@@ -67,6 +81,7 @@ import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 import OsloLogo from '@/components/OsloLogo.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
+import SidebarNavigation from '@/components/Navigation/Sidebar.vue';
 
 export default {
   name: 'SiteHeader',
@@ -74,6 +89,7 @@ export default {
   components: {
     OsloLogo,
     ThemeToggle,
+    SidebarNavigation,
   },
 
   directives: {
@@ -82,6 +98,7 @@ export default {
 
   data: () => ({
     showUserMenu: false,
+    sidebarOpen: false,
   }),
 
   computed: {
@@ -124,6 +141,10 @@ export default {
       this.showUserMenu = false;
     },
 
+    hideSidebar() {
+      this.sidebarOpen = false;
+    },
+
     async signOut() {
       if (this.providers.includes('keycloak')) {
         await this.cleanKeycloak(this.$route.path);
@@ -138,6 +159,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+
+$header-height: 4em;
 
 .header {
   position: sticky;
@@ -169,14 +192,21 @@ export default {
 
   @media screen and (min-width: bp(s)) {
     display: block;
+    width: span(2);
+    margin-left: span(1, 1);
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(3);
+    width: span(2);
   }
 
   @media screen and (min-width: bp(l)) {
+    width: span(1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
     width: span(2);
+    margin-left: span(0);
   }
 }
 
@@ -187,9 +217,10 @@ export default {
 
 .title {
   width: span(9);
+  margin-left: span(3, 1);
 
   @media screen and (min-width: bp(s)) {
-    width: span(7);
+    width: span(6);
     margin-left: span(0, 1);
   }
 
@@ -198,6 +229,10 @@ export default {
   }
 
   @media screen and (min-width: bp(l)) {
+    width: span(7);
+  }
+
+  @media screen and (min-width: bp(xl)) {
     width: span(7);
   }
 }
@@ -324,6 +359,140 @@ export default {
 .show-mobile {
   @media screen and (min-width: bp(m)) {
     display: none;
+  }
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 90%;
+  max-width: 600px;
+  height: 100vh;
+  padding: 3em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--color-primary) !important;
+  transform: translateX(-100vw);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0s linear 0.4s;
+
+  .page_item {
+    visibility: hidden;
+    opacity: 1;
+  }
+
+  &.is-open {
+    .page_item {
+      visibility: visible;
+      opacity: 0;
+    }
+
+    transform: translate(0);
+    opacity: 1;
+    transition: transform 0.3s ease-in-out, opacity 0s linear 0s;
+
+    .page_item {
+      transform: translateX(0);
+      opacity: 1;
+      &:nth-child(1) {
+        transition-delay: 0.4s;
+      }
+      &:nth-child(2) {
+        transition-delay: 0.45s;
+      }
+      &:nth-child(3) {
+        transition-delay: 0.5s;
+      }
+      &:nth-child(4) {
+        transition-delay: 0.55s;
+      }
+      &:nth-child(5) {
+        transition-delay: 0.6s;
+      }
+      &:nth-child(6) {
+        transition-delay: 0.65s;
+      }
+      &:nth-child(7) {
+        transition-delay: 0.7s;
+      }
+      &:nth-child(8) {
+        transition-delay: 0.75s;
+      }
+      &:nth-child(9) {
+        transition-delay: 0.8s;
+      }
+    }
+  }
+}
+
+.header__navbutton {
+  z-index: 3;
+  display: flex;
+  width: $header-height;
+  height: $header-height;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1rem;
+  background: var(--color-primary);
+  border: 0;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  &.is-open {
+    span {
+      &:nth-child(1),
+      &:nth-child(4) {
+        opacity: 0;
+        transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+      }
+      &:nth-child(2) {
+        transform: translateY(1em) rotate(45deg);
+        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+      &:nth-child(3) {
+        transform: translateY(1em) rotate(-45deg);
+        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+    }
+  }
+}
+
+.header__navicon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+
+  $bar-height: 0.15em;
+  $center: 1em - ($bar-height/2);
+  span {
+    position: absolute;
+    top: $center;
+    left: 1.25em;
+    display: block;
+    width: 1.5em;
+    height: $bar-height;
+    background: var(--color-text);
+    border-radius: 0.075em;
+    transform-origin: 50% 50%;
+
+    &:nth-child(1) {
+      transform: translateY($center - 0.35em) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      transform: translateY(1em) rotate(0deg);
+      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+    }
+    &:nth-child(4) {
+      transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
   }
 }
 </style>

@@ -3,9 +3,7 @@
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
     <main class="container">
-      <div class="sidebarContainer">
-        <SidebarNavigation v-if="user"></SidebarNavigation>
-      </div>
+      <div class="sidebarContainer"></div>
       <div class="main-view">
         <spinner v-if="loading"></spinner>
         <router-view v-else class="router-view"></router-view>
@@ -18,6 +16,7 @@
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'App',
@@ -29,10 +28,10 @@ export default {
   },
 
   components: {
-    SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
     Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
     Spinner: () => import('@/components/Spinner.vue'),
+    ThemeToggle: () => import('@/components/ThemeToggle.vue'),
   },
 
   computed: {
@@ -49,8 +48,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['initKeycloak']),
+    ...mapActions(['initKeycloak', 'reset_state', 'cleanKeycloak']),
     ...mapMutations(['SET_AUTHENTICATION']),
+
+    async signOut() {
+      if (this.providers.includes('keycloak')) {
+        await this.cleanKeycloak(this.$route.path);
+      }
+
+      await auth.signOut();
+      await this.reset_state();
+    },
   },
 };
 
@@ -102,5 +110,24 @@ document.body.addEventListener('keydown', () => {
 
 .router-view {
   min-height: calc(100vh - 20rem);
+}
+
+.sidebar {
+  position: sticky;
+  top: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
+  padding: 1.5rem 0;
+}
+
+.sidebar__group {
+  margin-bottom: 1rem;
+}
+
+.sidebar__bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
 }
 </style>
