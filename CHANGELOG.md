@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Sort organizations by name
 - Small style fixes
+- Correct modal size
 
 ## [2.0.0-rc.11] 2021-04-27
 

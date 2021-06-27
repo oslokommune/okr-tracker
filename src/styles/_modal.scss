@@ -12,6 +12,7 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  overflow-y: auto;
   background: rgba(black, 0.5);
 }
 
@@ -22,7 +23,7 @@
 
   width: 100%;
   max-width: 550px;
-  overflow: hidden;
+  max-height: 90%;
   background: white;
   border-radius: 3px;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
