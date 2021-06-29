@@ -1,44 +1,48 @@
 <template>
   <aside class="sidebar">
-    <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
-      <h4 v-if="group.items.length" class="sidebar__label">{{ group.name }}</h4>
-      <ul class="sidebar__list">
-        <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
-          <router-link
-            :to="{ name: 'ItemHome', params: { slug: item.slug } }"
-            class="sidebar__link"
-            :class="{
-              'router-link-active-parent':
-                (activeItem && activeItem.department && activeItem.department.id === item.id) ||
-                (activeItem && activeItem.organization && activeItem.organization.id === item.id),
-            }"
-          >
-            <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
-            {{ item.name }}
-            <i
-              v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
-              class="sidebar__user-icon fas fa-user-circle"
-            />
-          </router-link>
-        </li>
-      </ul>
-    </div>
+    <h1 class="title-1">OKR-tracker</h1>
+    <div v-if="!user">Please sign in</div>
+    <template v-if="user">
+      <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
+        <h4 v-if="group.items.length" class="sidebar__label">{{ group.name }}</h4>
+        <ul class="sidebar__list">
+          <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
+            <router-link
+              :to="{ name: 'ItemHome', params: { slug: item.slug } }"
+              class="sidebar__link"
+              :class="{
+                'router-link-active-parent':
+                  (activeItem && activeItem.department && activeItem.department.id === item.id) ||
+                  (activeItem && activeItem.organization && activeItem.organization.id === item.id),
+              }"
+            >
+              <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
+              {{ item.name }}
+              <i
+                v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
+                class="sidebar__user-icon fas fa-user-circle"
+              />
+            </router-link>
+          </li>
+        </ul>
+      </div>
 
-    <div class="sidebar__group sidebar__bottom button-col">
-      <theme-toggle />
-      <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
-        <i class="icon fa fa-fw fa-cogs" />
-        <span class="btn--label">{{ $t('general.admin') }}</span>
-      </router-link>
-      <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
-        <i class="icon fa fa-fw fa-question-circle" />
-        <span class="btn--label">{{ $t('general.help') }}</span>
-      </router-link>
-      <button class="btn btn--ter btn--icon" @click="signOut">
-        <i class="icon fa fa-fw fa-sign-out-alt" />
-        <span class="btn--label">{{ $t('general.signOut') }}</span>
-      </button>
-    </div>
+      <div class="sidebar__group sidebar__bottom button-col">
+        <theme-toggle />
+        <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
+          <i class="icon fa fa-fw fa-cogs" />
+          <span class="btn--label">{{ $t('general.admin') }}</span>
+        </router-link>
+        <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
+          <i class="icon fa fa-fw fa-question-circle" />
+          <span class="btn--label">{{ $t('general.help') }}</span>
+        </router-link>
+        <button class="btn btn--ter btn--icon" @click="signOut">
+          <i class="icon fa fa-fw fa-sign-out-alt" />
+          <span class="btn--label">{{ $t('general.signOut') }}</span>
+        </button>
+      </div>
+    </template>
   </aside>
 </template>
 

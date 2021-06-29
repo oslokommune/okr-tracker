@@ -31,7 +31,6 @@ export default {
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
     Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
     Spinner: () => import('@/components/Spinner.vue'),
-    ThemeToggle: () => import('@/components/ThemeToggle.vue'),
   },
 
   computed: {

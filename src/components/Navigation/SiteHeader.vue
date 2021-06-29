@@ -12,8 +12,10 @@
       >
         <div class="header__navicon" role="presentation"><span></span> <span></span> <span></span> <span></span></div>
       </a>
-      <div class="section drawer" :class="{ 'is-open': sidebarOpen }">
-        <sidebar-navigation v-if="user"></sidebar-navigation>
+      <div :class="{ overlay: sidebarOpen }">
+        <div class="section drawer" :class="{ 'is-open': sidebarOpen }">
+          <sidebar-navigation></sidebar-navigation>
+        </div>
       </div>
       <router-link :to="{ name: 'Home' }" class="logo">
         <oslo-logo class="logo__img" />
@@ -321,7 +323,7 @@ $header-height: 4em;
   position: absolute;
   top: 3.5rem;
   right: 0;
-  z-index: 100;
+  z-index: 50;
   width: 100%;
   padding: 0.5rem;
   background: white;
@@ -366,9 +368,9 @@ $header-height: 4em;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 150;
   width: 90%;
-  max-width: 600px;
+  max-width: 400px;
   height: 100vh;
   padding: 3em;
   overflow-x: hidden;
@@ -376,58 +378,19 @@ $header-height: 4em;
   background-color: var(--color-primary) !important;
   transform: translateX(-100vw);
   opacity: 0;
-  transition: transform 0.3s ease-in-out, opacity 0s linear 0.4s;
-
-  .page_item {
-    visibility: hidden;
-    opacity: 1;
-  }
+  transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
 
   &.is-open {
-    .page_item {
-      visibility: visible;
-      opacity: 0;
-    }
-
     transform: translate(0);
     opacity: 1;
-    transition: transform 0.3s ease-in-out, opacity 0s linear 0s;
-
-    .page_item {
-      transform: translateX(0);
-      opacity: 1;
-      &:nth-child(1) {
-        transition-delay: 0.4s;
-      }
-      &:nth-child(2) {
-        transition-delay: 0.45s;
-      }
-      &:nth-child(3) {
-        transition-delay: 0.5s;
-      }
-      &:nth-child(4) {
-        transition-delay: 0.55s;
-      }
-      &:nth-child(5) {
-        transition-delay: 0.6s;
-      }
-      &:nth-child(6) {
-        transition-delay: 0.65s;
-      }
-      &:nth-child(7) {
-        transition-delay: 0.7s;
-      }
-      &:nth-child(8) {
-        transition-delay: 0.75s;
-      }
-      &:nth-child(9) {
-        transition-delay: 0.8s;
-      }
-    }
+    transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
   }
 }
 
 .header__navbutton {
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 3;
   display: flex;
   width: $header-height;
@@ -435,14 +398,15 @@ $header-height: 4em;
   margin: 0 !important;
   padding: 0 !important;
   font-size: 1rem;
-  background: var(--color-primary);
   border: 0;
   cursor: pointer;
-  position: fixed;
-  top: 0;
-  left: 0;
 
   &.is-open {
+    z-index: 200;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    transform: translateX(400px);
+    transition: transform 0.3s ease-in-out, background-color 0.3s;
     span {
       &:nth-child(1),
       &:nth-child(4) {
