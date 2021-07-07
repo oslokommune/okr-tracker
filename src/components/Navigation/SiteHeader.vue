@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <router-link :to="{ name: 'Home' }" class="logo">
-        <img src="/Logotype-Knowit-Digital-black.svg" alt="Logo" class="logo__img" />
+        <knowit-logo alt="Logo" class="logo__img" />
       </router-link>
       <div v-if="title" class="title">
         <h1 class="title__name">
@@ -65,14 +65,14 @@
 import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
-import OsloLogo from '@/components/OsloLogo.vue';
+import KnowitLogo from '@/components/KnowitLogo.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
   name: 'SiteHeader',
 
   components: {
-    OsloLogo,
+    KnowitLogo,
     ThemeToggle,
   },
 
