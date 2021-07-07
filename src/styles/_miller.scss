@@ -63,7 +63,7 @@
           bottom: 0;
           left: 0;
           width: 2px;
-          background: $color-purple;
+          background: var(--color-primary);
           content: '';
         }
 
@@ -73,7 +73,7 @@
           right: 10px;
           border-top: 5px solid transparent;
           border-bottom: 5px solid transparent;
-          border-left: 6px solid $color-purple;
+          border-left: 6px solid var(--color-primary);
           transform: translateY(-5px);
           content: '';
         }

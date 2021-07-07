@@ -136,9 +136,10 @@ export default {
   margin-right: 0.5rem;
   margin-left: auto;
   padding: 0.5rem 1.5rem;
+  color: var(--color-text-secondary);
   font-size: 1.15rem;
   text-align: center;
-  background: $color-yellow;
+  background: var(--color-primary);
   border-radius: 2rem;
 }
 </style>

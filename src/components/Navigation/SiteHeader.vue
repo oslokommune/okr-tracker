@@ -41,6 +41,7 @@
                 {{ $t('general.admin') }}
               </router-link>
             </li>
+            <theme-toggle />
             <li class="menu__list-item show-mobile">
               <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }" data-cy="site-header-help">
                 <i class="icon fa fa-fw fa-question-circle" />
@@ -64,9 +65,16 @@
 import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
+import OsloLogo from '@/components/OsloLogo.vue';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
   name: 'SiteHeader',
+
+  components: {
+    OsloLogo,
+    ThemeToggle,
+  },
 
   directives: {
     ClickOutside,
@@ -86,8 +94,18 @@ export default {
     title() {
       const parts = this.$route.matched.map(({ name }) => name);
 
-      if (parts.includes('Admin')) return 'Admin';
-      if ((parts.includes('ItemHome') || parts.includes('ItemAdmin')) && this.activeItem) return this.activeItem.name;
+      if (parts.includes('Admin')) {
+        return 'Admin';
+      }
+      if (
+        (parts.includes('ItemHome') ||
+          parts.includes('ItemAdmin') ||
+          parts.includes('ItemAdminOKRs') ||
+          parts.includes('ItemAdminKPIs')) &&
+        this.activeItem
+      ) {
+        return this.activeItem.name;
+      }
 
       return 'OKR Tracker';
     },
@@ -125,7 +143,8 @@ export default {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: $color-yellow;
+  color: var(--color-text-secondary);
+  background: var(--color-primary);
 }
 
 .container {
@@ -247,6 +266,7 @@ export default {
 .user__name {
   display: none;
   overflow: hidden;
+  color: var(--color-text-secondary);
   font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -258,6 +278,7 @@ export default {
 
 .user__chevron {
   margin-left: auto;
+  color: var(--color-text-secondary);
   opacity: 0.5;
 }
 
@@ -268,7 +289,6 @@ export default {
   z-index: 100;
   width: 100%;
   padding: 0.5rem;
-  color: black;
   background: white;
   border-radius: 3px;
   box-shadow: 0 3px 4px rgba($color-grey-500, 0.5);

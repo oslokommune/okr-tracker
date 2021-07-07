@@ -117,7 +117,7 @@ export default {
   max-width: none;
   padding: 0.5rem;
   overflow: hidden;
-  color: $color-grey-900;
+  color: var(--color-text);
   white-space: nowrap;
   text-decoration: none;
   text-overflow: ellipsis;

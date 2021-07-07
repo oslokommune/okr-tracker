@@ -30,6 +30,12 @@
           <span class="form-label">{{ $t('admin.department.parentOrganisation') }}</span>
           <v-select v-model="activeItem.organization" label="name" :options="organizations" :clearable="false" />
         </div>
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('fields.secret') }}</span>
+          <span class="form-help" v-html="$t('admin.apiSecret')"></span>
+          <input v-model="activeItem.secret" type="text" class="form__field" />
+        </label>
       </form>
     </validation-observer>
 
@@ -71,10 +77,10 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement } = this.activeItem;
+        const { id, name, missionStatement, secret } = this.activeItem;
 
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-        const data = { name, missionStatement, organization };
+        const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret };
 
         await Department.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));

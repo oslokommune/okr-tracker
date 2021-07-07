@@ -390,20 +390,20 @@ export default {
   display: flex;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  color: $color-grey-800;
+  color: var(--color-text);
   text-decoration: none;
   border-bottom: 1px solid $color-grey-100;
 
   &.selected {
-    color: black;
+    color: var(--color-text);
     font-weight: 500;
     background: $color-grey-50;
   }
 
   &.active {
-    color: black;
+    color: var(--color-text-secondary);
     font-weight: 500;
-    background: $color-yellow;
+    background: var(--color-primary);
   }
 }
 

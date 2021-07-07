@@ -13,16 +13,21 @@
   },
   "dependencies": {
     "@slack/webhook": "^6.0.0",
-    "d3-array": "^2.11.0",
-    "d3-scale": "^3.2.3",
-    "firebase-admin": "^9.5.0",
-    "firebase-functions": "^3.13.2",
-    "google-auth-library": "^7.0.2",
-    "googleapis": "^67.1.0",
-    "jsonwebtoken": "^8.5.1"
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "d3-array": "^2.12.1",
+    "d3-scale": "^3.3.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.11.1",
+    "firebase-admin": "^9.9.0",
+    "firebase-functions": "^3.14.1",
+    "google-auth-library": "^7.1.1",
+    "googleapis": "^75.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.2.3"
+    "firebase-functions-test": "^0.3.0"
   },
   "private": true
 }

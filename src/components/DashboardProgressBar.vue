@@ -133,7 +133,7 @@ export default {
   border-radius: 3px;
 
   &.completed {
-    background: $color-yellow;
+    background: var(--color-primary);
 
     &::before {
       display: inline-block;

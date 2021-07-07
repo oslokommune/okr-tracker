@@ -7,7 +7,7 @@ option,
 textarea {
   width: 100%;
   padding: 0.75rem 0.75rem 0.6rem 0.75rem;
-  color: $color-purple;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
   background: rgba($color-grey-100, 0.5);
@@ -126,11 +126,11 @@ textarea {
 
     &:focus ~ .toggle__switch {
       background: $color-link !important;
-      outline: 4px solid $color-yellow;
+      outline: 4px solid var(--color-primary);
     }
 
     &:checked ~ .toggle__switch {
-      background: $color-purple;
+      background: var(--color-primary);
 
       &::before {
         left: 1.25rem;
@@ -192,4 +192,12 @@ textarea {
     display: inline-block;
     margin-right: 1rem;
   }
+}
+
+.toggle__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

@@ -7,10 +7,10 @@
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button class="btn btn--ghost" data-cy="request-accept" @click="acceptRequest(request)">
+          <button :disabled="accepting" class="btn btn--ghost" data-cy="request-accept" @click="acceptRequest(request)">
             {{ $t('btn.acceptRequest') }}
           </button>
-          <button class="btn btn--ghost" data-cy="request-reject" @click="rejectRequest(request)">
+          <button :disabled="rejecting" class="btn btn--ghost" data-cy="request-reject" @click="rejectRequest(request)">
             {{ $t('btn.rejectRequest') }}
           </button>
         </div>
@@ -21,13 +21,15 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import requestAccess from '@/db/RequestAccess';
+import { api } from '@/util';
 
 export default {
   name: 'AdminAccessRequests',
 
   data: () => ({
     requestAccess: [],
+    accepting: false,
+    rejecting: false,
   }),
 
   firestore: {
@@ -36,12 +38,34 @@ export default {
 
   methods: {
     async acceptRequest(obj) {
-      await requestAccess.accept(obj.id);
-      this.$toasted.show(this.$t('toaster.request.accepted', { user: obj.email }));
+      this.accepting = true;
+
+      try {
+        await api.post('/user/create', {
+          email: obj.email,
+          id: obj.email,
+        });
+
+        await api.delete(`/access/${obj.id}`);
+        this.$toasted.show(this.$t('toaster.request.accepted', { user: obj.email }));
+      } catch (e) {
+        console.log(e.response);
+      }
+
+      this.accepting = false;
     },
+
     async rejectRequest(obj) {
-      await requestAccess.reject(obj.id);
-      this.$toasted.show(this.$t('toaster.request.rejected', { user: obj.email }));
+      this.rejecting = true;
+
+      try {
+        await api.delete(`/access/${obj.id}`);
+        this.$toasted.show(this.$t('toaster.request.rejected', { user: obj.email }));
+      } catch (e) {
+        this.$toasted.error(e.response.data);
+      }
+
+      this.rejecting = false;
     },
   },
 };

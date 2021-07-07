@@ -32,5 +32,5 @@ export default async function getActivePeriod(slugRef) {
 }
 
 export const sortByLocale = (arr) => {
-  return arr.sort((a, b) => a.name.trim().toUpperCase().localeCompare(b.name.trim().toUpperCase()));
+  return arr.sort((a, b) => a.slug.trim().toUpperCase().localeCompare(b.slug.trim().toUpperCase()));
 };

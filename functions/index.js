@@ -64,3 +64,7 @@ exports.slackNotificationOnUserRequest = require('./requestAccess').slackNotific
 exports.slackNotificationInteractiveOnRequest = require('./requestAccess').slackNotificationInteractiveOnRequest;
 
 exports.createCustomToken = require('./tokenCreator').createCustomToken;
+
+// Express servers run via Cloud Functions
+exports.api = require('./api').app;
+exports.internal = require('./backend').app;
