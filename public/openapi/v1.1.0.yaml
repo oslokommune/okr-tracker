@@ -5,9 +5,9 @@ info:
   description: Serverless APIs with API Gateway
   version: 1.1.0
   contact:
-    name: Visualiseringsteamet
-    url: https://okr.oslo.systems
-    email: annemerete.pettersen@origo.oslo.kommune.no
+    name: Dataplattform
+    url: https://okr.knowit.no
+    email: aulon.mujaj@knowit.no
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -61,10 +61,6 @@ paths:
             type: number
             example:
               progress: 123
-        - name: okr-team-secret
-          in: header
-          description: Identify yourself with the secret you chose in your Team's settings
-          type: string
       responses:
         '200':
           description: A successful response
@@ -117,10 +113,6 @@ paths:
             type: number
             example:
               progress: 123
-        - name: okr-team-secret
-          in: header
-          description: Identify yourself with the secret you chose in your Team's settings
-          type: string
       responses:
         '200':
           description: A successful response
