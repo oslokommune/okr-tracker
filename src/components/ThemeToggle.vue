@@ -16,7 +16,7 @@ export default {
   name: 'ThemeToggle',
 
   data: () => ({
-    mode: 'yellow',
+    mode: 'knowit',
   }),
 
   computed: {
@@ -26,6 +26,9 @@ export default {
       }
       if (this.mode === 'blue') {
         return 'green';
+      }
+      if (this.mode === 'green') {
+        return 'knowit';
       }
       return 'yellow';
     },
@@ -47,6 +50,8 @@ export default {
         this.mode = 'blue';
       } else if (this.mode === 'blue') {
         this.mode = 'green';
+      } else if (this.mode === 'green') {
+        this.mode = 'knowit';
       } else {
         this.mode = 'yellow';
       }

@@ -6,7 +6,8 @@
     "colors": {
       "yellow": "Yellow",
       "blue": "Blue",
-      "green": "Green"
+      "green": "Green",
+      "knowit": "Knowit"
     },
     "toggle": "Toggle theme: {mode}",
     "aria": "Current theme is {current}, next theme is {next}"

@@ -6,7 +6,8 @@
     "colors": {
       "yellow": "Gul",
       "blue": "Blå",
-      "green": "Grønn"
+      "green": "Grønn",
+      "knowit": "Knowit"
     },
     "toggle": "Skift fargetema: {mode}"
   },

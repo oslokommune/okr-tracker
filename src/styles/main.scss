@@ -62,7 +62,7 @@ body.using-mouse :focus {
 .md table {
   width: 100%;
   margin: 2rem 0 1rem;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid var(--color-border);
 
   th {
     font-weight: 500;
@@ -80,7 +80,7 @@ body.using-mouse :focus {
     padding: 0 0.5rem;
     text-align: left;
     vertical-align: middle;
-    border-top: 1px solid $color-border;
+    border-top: 1px solid var(--color-border);
   }
 }
 
@@ -130,12 +130,19 @@ hr {
 }
 
 :root {
-  --color-text: var(--color-purple);
-  --color-text-secondary: var(--color-purple);
-  --color-primary: var(--color-yellow);
-  --color-primary-dark: var(--color-yellow-dark);
-  --color-secondary: var(--color-beige);
-  --color-tertiary: var(--color-beige-dark);
+  --color-text: var(--color-digital-black);
+  --color-text-secondary: var(--color-digital-black);
+  --color-primary: var(--color-pear);
+  --color-primary-dark: var(--color-pear-dark);
+  --color-secondary: var(--color-flamingo);
+  --color-tertiary: var(--color-flamingo-dark);
+
+  --color-mint: #DBEEDE;
+  --color-digital-black: #333333;
+  --color-pear: #B7DEBD;
+  --color-pear-dark: #7b957f;
+  --color-flamingo: #aa887a;
+  --color-flamingo-dark: #FAC0B1;
 
   --color-danger: #ff8174;
   --color-success: #43f8b6;
@@ -163,7 +170,7 @@ hr {
   --color-green-light: #c7f6c9;
 
   --color-bg: #f9f9fa;
-  --color-border: #dae3e5;
+  --color-border: #DBEEDE;
 
   --color-grey-50: #f7f7f7;
   --color-grey-100: #e1e1e6;
@@ -186,6 +193,7 @@ hr {
   --color-primary-dark: var(--color-green-dark-2);
   --color-secondary: var(--color-green-light);
   --color-tertiary: var(--color-green-dark);
+  --color-border: #dae3e5;
 }
 
 [data-theme='blue'] {
@@ -195,4 +203,15 @@ hr {
   --color-primary-dark: var(--color-purple-dark);
   --color-secondary: var(--color-blue);
   --color-tertiary: var(--color-purple);
+  --color-border: #dae3e5;
+}
+
+[data-theme="yellow"] {
+  --color-text: var(--color-purple);
+  --color-text-secondary: var(--color-purple);
+  --color-primary: var(--color-yellow);
+  --color-primary-dark: var(--color-yellow-dark);
+  --color-secondary: var(--color-beige);
+  --color-tertiary: var(--color-beige-dark);
+  --color-border: #dae3e5;
 }
