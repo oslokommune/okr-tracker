@@ -16,7 +16,7 @@ schemes:
 produces:
   - application/json
 x-google-backend:
-  address: https://<location>-<project-id>.cloudfunctions.net/<CF-location>
+  address: https://europe-west2-okr-tracker-knowit.cloudfunctions.net/api
   path_translation: APPEND_PATH_TO_ADDRESS
   protocol: h2
 security:
