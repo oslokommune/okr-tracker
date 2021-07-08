@@ -5,7 +5,8 @@
   "theme": {
     "colors": {
       "blue": "Blå",
-      "green": "Grønn"
+      "green": "Grønn",
+      "knowit": "Knowit"
     },
     "header": "Tilpass",
     "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"

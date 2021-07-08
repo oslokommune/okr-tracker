@@ -30,17 +30,46 @@ export default {
   },
 
   data: () => ({
-    selectedMode: 'blue',
-    modes: [{ id: 'blue' }, { id: 'green' }],
+    mode: 'knowit',
   }),
 
   computed: {
-    ...mapState(['theme', 'LS_MODE']),
+    nextThemeMode() {
+      if (this.mode === 'yellow') {
+        return 'blue';
+      }
+      if (this.mode === 'blue') {
+        return 'green';
+      }
+      if (this.mode === 'green') {
+        return 'knowit';
+      }
+      return 'yellow';
+    },
+  },
+
+  mounted() {
+    if (this.hasInStorage()) {
+      this.mode = this.getLocalThemeMode();
+      this.setThemeMode();
+    } else {
+      this.mode = 'yellow';
+      this.setThemeMode();
+    }
   },
 
   methods: {
-    ...mapActions(['setTheme']),
-
+    handleClick() {
+      if (this.mode === 'yellow') {
+        this.mode = 'blue';
+      } else if (this.mode === 'blue') {
+        this.mode = 'green';
+      } else if (this.mode === 'green') {
+        this.mode = 'knowit';
+      } else {
+        this.mode = 'yellow';
+      }
+    }, 
     setThemeMode(mode) {
       this.saveThemeMode(mode);
       this.setTheme(mode);
