@@ -39,7 +39,7 @@ export default {
       this.mode = this.getLocalThemeMode();
       this.setThemeMode();
     } else {
-      this.mode = 'yellow';
+      this.mode = 'knowit';
       this.setThemeMode();
     }
   },
