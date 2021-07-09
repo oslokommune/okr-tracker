@@ -58,7 +58,7 @@ export default {
   padding-right: 0.25rem;
   font-weight: 500;
   text-align: right;
-  background: $color-yellow;
+  background: var(--color-primary);
 }
 
 .progression__unit {

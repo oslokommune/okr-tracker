@@ -2,6 +2,15 @@
   "404": {
     "title": "404"
   },
+  "theme": {
+    "colors": {
+      "yellow": "Gul",
+      "blue": "Blå",
+      "green": "Grønn",
+      "knowit": "Knowit"
+    },
+    "toggle": "Skift fargetema: {mode}"
+  },
   "kpi": {
     "add": "Legg til KPI",
     "edit": "Endre KPI",
@@ -16,7 +25,12 @@
     },
     "heading": "KPI-er",
     "sheetsDetails": "Sheets-detaljer",
-    "itemRowError": "feil"
+    "itemRowError": "feil",
+    "api": {
+      "radio": "Oppdatere via API?",
+      "help": "Det er ikke mulig å oppdatere KPIer manuelt via OKR-trackeren, men det er satt opp et API for å kalle OKR-trackeren direkte for å oppdatere KPIene. Ta kontakt med administrator om å få tilgang til dette APIet.",
+      "tooltip": "Skru på denne hvis du har planer om å oppdatere KPIen selv via OKR-tracker sitt API"
+    }
   },
   "fields": {
     "email": "E-post",
@@ -40,7 +54,8 @@
     "value": "Verdi",
     "organization": "Organisasjon",
     "date": "Dato",
-    "password": "Passord"
+    "password": "Passord",
+    "secret": "API Hemmelighet"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -198,7 +213,7 @@
     "unit": "Måleenhet",
     "newValue": "Ny verdi",
     "automation": {
-      "header": "Automatisk registrering av progresjon",
+      "header": "Automatisk registrering av progresjon (Google Sheets)",
       "readMore": "Les mer",
       "googleSheetId": "Google Sheet ID",
       "googleSheetIdHelp": "Koden mellom /d/ og /edit/ fra URLen til Google Sheets arket",
@@ -224,7 +239,12 @@
     "showComment": "Vis kommentar",
     "showComments": "Vis kommentarer",
     "hideComments": "Skjul kommentarer",
-    "autoError": "Feil i henting av data fra Google Sheets:"
+    "autoError": "Feil i henting av data fra Google Sheets:",
+    "api": {
+      "radio": "Oppdatere via API?",
+      "tooltip": "Skru på denne hvis du har planer om å oppdatere nøkkelresultatet selv via OKR-tracker sitt API - du kan fortsatt oppdatere manuelt også"
+    },
+    "apiAndKeyRes": "Vi anbefaler ikke å skru på begge samtidig. Dette kan forårsake problemer med progresjonen til ditt nøkkelresultat"
   },
   "objective": {
     "period": "Periode",
@@ -257,6 +277,7 @@
     "mission": "Oppdrag"
   },
   "admin": {
+    "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere Nøkkelresultater og/eller KPIer, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "department": {
       "picture": "Bilde",
       "create": "Opprett nytt produktområde",

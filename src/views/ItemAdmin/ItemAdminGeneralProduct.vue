@@ -45,6 +45,12 @@
             </template>
           </v-select>
         </div>
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('fields.secret') }}</span>
+          <span class="form-help" v-html="$t('admin.apiSecret')"></span>
+          <input v-model="activeItem.secret" type="text" class="form__field" />
+        </label>
       </form>
     </validation-observer>
 
@@ -90,17 +96,18 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement } = this.activeItem;
+        const { id, name, missionStatement, secret } = this.activeItem;
 
         const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
         const department = db.collection('departments').doc(this.activeItem.department.id);
 
-        const data = { name, team, missionStatement, department };
+        const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret };
 
         Product.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch {
+      } catch (e) {
         this.$toasted.error(this.$t('toaster.error.save'));
+        throw new Error(e);
       }
       this.loading = false;
     },
@@ -116,9 +123,10 @@ export default {
         toastArchiveAndRevert({ name: this.activeItem.name, callback: restoreCallback });
 
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
+      } catch (e) {
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
         this.activeItem.archived = false;
+        throw new Error(e);
       }
       this.loading = false;
     },
@@ -129,8 +137,9 @@ export default {
         await Product.restore(this.activeItem.id);
         this.$toasted.show(this.$t('toaster.restored'));
         // TODO: Refresh store and sidebar navigation tree
-      } catch {
+      } catch (e) {
         this.$toasted.error(this.$t('toaster.error.restore', { document: this.activeItem.id }));
+        throw new Error(e);
       }
       this.loading = false;
     },

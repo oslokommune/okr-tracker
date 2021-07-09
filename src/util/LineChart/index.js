@@ -1,5 +1,13 @@
-import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, area, max } from 'd3';
+import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, area, max, min } from 'd3';
+import kpiTypes from '@/config/kpiTypes';
 import { initSvg, resize } from './linechart-helpers';
+
+const formatValue = (value, item) => {
+  if (item && item.type) {
+    return kpiTypes[item.type].formatValue(value);
+  }
+  return value;
+};
 
 export default class LineChart {
   constructor(svgElement) {
@@ -26,11 +34,12 @@ export default class LineChart {
       .y((d) => this.y(d.value));
   }
 
-  render(obj, period, progressionList) {
+  render(obj, period, progressionList, item) {
     this.period = period;
     this.obj = obj;
 
     const highestValue = max(progressionList, (d) => d.value);
+    const lowestValue = min(progressionList, (d) => d.value);
 
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
@@ -40,14 +49,24 @@ export default class LineChart {
     const endDate = period.endDate && period.endDate.toDate ? period.endDate.toDate() : new Date(period.endDate);
 
     this.x.domain([startDate, endDate]);
-    this.y.domain(
-      extent([
-        obj.startValue,
-        obj.startValue < obj.targetValue && highestValue > obj.targetValue ? highestValue : obj.targetValue,
-      ])
-    );
 
-    this.yAxis.transition().call(axisLeft(this.y));
+    if (obj.startValue > obj.targetValue) {
+      this.y.domain(
+        extent([
+          obj.startValue < highestValue ? highestValue : obj.startValue,
+          obj.startValue > obj.targetValue && lowestValue < obj.targetValue ? lowestValue : obj.targetValue,
+        ])
+      );
+    } else {
+      this.y.domain(
+        extent([
+          obj.startValue,
+          obj.startValue < obj.targetValue && highestValue > obj.targetValue ? highestValue : obj.targetValue,
+        ])
+      );
+    }
+
+    this.yAxis.transition().call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)));
     this.xAxis.transition().call(axisBottom(this.x).ticks(4));
 
     this.today.attr('x1', this.x(new Date())).attr('x2', this.x(new Date())).attr('y2', 0).attr('y1', this.innerHeight);

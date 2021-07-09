@@ -9,6 +9,13 @@ module.exports = async function FetchKpiDataOnUpdate(doc) {
   const { ref } = doc;
 
   try {
+    const { api } = doc.data();
+
+    if (api) {
+      await ref.update({ error: firebase.firestore.FieldValue.delete(), valid: true });
+      return true;
+    }
+
     const value = await getSheetsData(doc.data());
 
     // eslint-disable-next-line no-restricted-globals

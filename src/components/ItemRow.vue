@@ -162,7 +162,7 @@ export default {
   align-items: center;
   margin: 0 auto 0 0;
   padding: 0.5rem span(0, 1);
-  color: $color-grey-900;
+  color: var(--color-text);
   text-decoration: none;
 
   &:hover &__chevron {
@@ -234,14 +234,14 @@ export default {
 
 .item__kpi-icon {
   margin-right: 0.25rem;
-  color: $color-purple;
+  color: var(--color-text);
 }
 
 .item__user-icon {
   display: inline-block;
   margin-left: auto;
   padding: 0 0.5rem;
-  color: $color-purple;
+  color: var(--color-text);
   text-align: center;
 }
 
