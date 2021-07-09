@@ -26,6 +26,12 @@
           :label="$t('fields.missionStatement')"
           rules="required"
         />
+
+        <label class="form-group">
+          <span class="form-label">{{ $t('fields.secret') }}</span>
+          <span class="form-help" v-html="$t('admin.apiSecret')"></span>
+          <input v-model="activeItem.secret" type="text" class="form__field" />
+        </label>
       </form>
     </validation-observer>
 
@@ -66,9 +72,9 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement } = this.activeItem;
+        const { id, name, missionStatement, secret } = this.activeItem;
 
-        const data = { name, missionStatement };
+        const data = { name, missionStatement, secret: secret === undefined ? '' : secret };
 
         await Organization.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));

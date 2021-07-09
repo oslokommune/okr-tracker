@@ -12,7 +12,11 @@
             {{ $t('kpi.currentValue') }}
           </h3>
           <div class="main-widgets__current--value">
-            {{ filteredProgress.length ? filteredProgress[0].value : activeKpi.currentValue }}
+            {{
+              filteredProgress.length
+                ? formatKPIValue(filteredProgress[0].value)
+                : formatKPIValue(activeKpi.currentValue)
+            }}
           </div>
         </div>
 
@@ -46,7 +50,7 @@
           <tbody></tbody>
           <tr v-for="{ timestamp, value, id } in filteredProgress" :key="id">
             <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
-            <td>{{ value }}</td>
+            <td>{{ formatKPIValue(value) }}</td>
             <td v-if="hasEditRights">
               <v-popover offset="16" placement="top" show="true">
                 <button class="btn btn--ter btn--icon">
@@ -106,6 +110,7 @@ import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort } from '@/util/formatDate';
+import kpiTypes from '@/config/kpiTypes';
 
 export default {
   name: 'KpiHome',
@@ -221,7 +226,8 @@ export default {
           endDate: this.isFiltered ? endDate : new Date(),
           startDate,
         },
-        this.filteredProgress
+        this.filteredProgress,
+        this.activeKpi
       );
     },
 
@@ -234,6 +240,14 @@ export default {
         );
       }
       this.renderGraph();
+    },
+
+    formatKPIValue(value) {
+      console.log(kpiTypes[this.activeKpi.type].formatValue(value));
+      if (kpiTypes[this.activeKpi.type].type === 'users') {
+        return value;
+      }
+      return kpiTypes[this.activeKpi.type].formatValue(value);
     },
   },
 };

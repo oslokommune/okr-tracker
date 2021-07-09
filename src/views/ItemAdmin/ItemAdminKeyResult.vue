@@ -76,11 +76,26 @@
         </div>
 
         <div class="toggle__container">
+          <span class="toggle__label">
+            {{ $t('keyres.api.radio') }}
+            <i v-tooltip="$t('keyres.api.tooltip')" class="icon fa fa-info-circle" />
+          </span>
+          <label class="toggle">
+            <input v-model="keyResult.api" class="toggle__input" type="checkbox" />
+            <span class="toggle__switch"></span>
+          </label>
+        </div>
+
+        <div class="toggle__container">
           <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
           <label class="toggle">
             <input v-model="keyResult.auto" class="toggle__input" type="checkbox" />
             <span class="toggle__switch"></span>
           </label>
+        </div>
+
+        <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
+          {{ $t('keyres.apiAndKeyRes') }}
         </div>
 
         <div v-if="keyResult.auto">
@@ -147,6 +162,12 @@
         </div>
       </form>
     </validation-observer>
+
+    <label v-if="keyResult.api" class="form-group">
+      <span class="form-label">API</span>
+      <span class="form-help">Push updates with curl</span>
+      <input :value="apiCurl(keyResult)" type="text" disabled class="form__field" />
+    </label>
 
     <div class="button-row">
       <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading">
@@ -220,6 +241,7 @@ export default {
           sheetId,
           sheetName,
           sheetCell,
+          api,
         } = this.keyResult;
 
         const data = {
@@ -234,6 +256,7 @@ export default {
           sheetCell: sheetCell || '',
           sheetId: sheetId || '',
           sheetName: sheetName || '',
+          api: api || false,
         };
 
         await KeyResult.update(id, data);
@@ -322,19 +345,16 @@ export default {
       }
       return msg;
     },
+
+    apiCurl: (keyResult) => {
+      return `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }'  ${process.env.VUE_APP_API_GATEWAY_URL}/kpi/${keyResult.id}`;
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import '@/styles/_colors.scss';
-
-.toggle__container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
 
 .validation {
   margin-bottom: 2rem;

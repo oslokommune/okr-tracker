@@ -60,7 +60,8 @@ exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
 exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
 exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
 
-exports.slackNotificationOnUserRequest = require('./requestAccess').slackNotificationOnUserRequest;
-exports.slackNotificationInteractiveOnRequest = require('./requestAccess').slackNotificationInteractiveOnRequest;
-
 exports.createCustomToken = require('./tokenCreator').createCustomToken;
+
+// Express servers run via Cloud Functions
+exports.api = require('./api').app;
+exports.internal = require('./backend').app;

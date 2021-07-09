@@ -23,4 +23,8 @@ export default {
     type: 'string',
     required: false,
   },
+  secret: {
+    type: 'string',
+    required: false,
+  },
 };

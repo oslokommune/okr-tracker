@@ -2,7 +2,99 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.0.0-rc.12] UNRELEASED
+
+### Fixed
+
+- Sort organizations by name
+- Small style fixes
+- Correct modal size
+
+## [2.0.0-rc.11] 2021-04-27
+
+### Fixed
+
+- Removed svg-loader - Icons were not showing correctly for some users
+- Fixed SiteHeader not showing correct Prod/Dep/Org-name when doing changes to KPIs/OKRs
+- Small fixes to components not using the correct color-styles
+
+## [2.0.0-rc.10] 2021-04-27
+
+We are looking at doing some design changes to the Objective/KeyRes-view, which means that some changes need to be made beforehand. We have therefore implemented a Theme Toggle! You can now toggle between Blue, Yellow and Green color themes.
+
+### Added
+
+- (Beta) Theme Toggle: toggle between Blue, Green or Yellow color themes
+  - Switch color theme at the bottom of the sidebar or in the user-menu in the top right corner
+
+### Changes
+
+- Updated dependencies
+
+## [2.0.0-rc.9] 2021-04-19
+
+### Fixed
+
+- ItemAdmin(org/dep/prod): Update failed if API Secret was empty
+
+### Changes
+
+- Updated dependencies
+
+## [2.0.0-rc.8] 2021-03-26
+
+### Added
+
+- Added a security UUID for each team that needs to be sent with the api-call if you want to update KPI/KeyRes for better security.
+  - Go to your Org/Dep/Product and add a secret under `API Secret`-input
+- KPI: Show curl-example after adding a new KPI and toggled on updated via API
+- Key Result: Show curl-example if you toggle the option "update via API"
+- CF/API: better logging with express middleware morgan
+
+### Changes
+
+- KeyRes-Graph: if target value is higher than the current value, then expand the y-axis to not go under the x-axis or over the top of the y-axis
+- KPIHome: format all values to correct format. Instead of floats -> format to percentage
+- Better OpenSpec and API-gateway support.
+- Moved API-KEY for Gateway from query-param to header
+
+### Fixed
+
+- CF/API: save progress (KPI/KeyRes) as a number and not a string
+- CF/API: Fixed a bug with the KeyRes GET return two responses on the same GET-call which caused the API to crash
+
+## [2.0.0-rc.7] 2021-03-23
+
+### Added
+
+- Cloud Functions: CRUD API for KPI and Key Results. It is now possible to call an end point if you want to update progress through the API and not through the frontend. Locked behind API Gateway with API key, get in contact to get a key.
+- API Gateway: added gateway for users to call if they want access to API for KPI and Key Results. Needs API Key from us, contact us to get a key for your own team
+- Swagger doc: read more about the new open API end points at https://okr.oslo.systems/api
+
+### Changes
+
+- Disable KPI auto update functionality if you would rather update through the API yourself
+- Updated dependencies
+
+### Fixed
+
+- Key result progress "registered by" never showed anything if it was registered automatically by Cloud Functions
+
+## [2.0.0-rc.6] 2021-03-17
+
+OKR-tracker will get out of beta/RC by the end of June 2021. It has been in a beta-state for quite some time now, and we feel it has matured enough for a full release. This does not mean we will stop working on it, since we do have some milestones we would like to hit.
+
+- Remove all client side db-changes. Move everything to a Cloud Function, in that way we can set up a more normal API CRUD backend and not rely on the client db-access.
+- Most importantly: refactor RBAC - add different roles with different accesses
+
+### Added
+
+- Cloud Function: CRUD API for requestAccess and creation of user
+
+### Changes
+
+- Drop node-sass support
+- Add dart-sass support
 
 ## [2.0.0-rc.5] 2021-03-01
 

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/views/Home.vue';
+import Api from '@/views/Api.vue';
 import * as routerGuards from './router-guards';
 
 Vue.use(Router);
@@ -12,6 +13,12 @@ const routes = [
     component: Home,
     meta: { breadcrumbs: ['home'] },
     beforeEnter: routerGuards.home,
+  },
+  {
+    path: '/api',
+    name: 'Api',
+    component: Api,
+    meta: { breadcrumbs: ['home'] },
   },
   {
     path: '/login',

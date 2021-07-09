@@ -273,7 +273,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  color: $color-purple;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
   text-decoration: none;

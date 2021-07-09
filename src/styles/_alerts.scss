@@ -89,6 +89,6 @@ $borderRadius: 1.5px;
 
   &::before {
     color: white;
-    background: $color-purple;
+    background: var(--color-primary);
   }
 }
