@@ -84,11 +84,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, functions, loginProviderMS, loginProviderGoogle } from '@/config/firebaseConfig';
+import { auth, loginProviderMS, loginProviderGoogle } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Login',
 
   components: { LoadingSmall },
