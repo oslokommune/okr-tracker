@@ -48,7 +48,6 @@
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
-
         <button v-if="providers.includes('microsoft')" class="btn btn--icon btn--pri" @click="loginWithMicrosoft">
           <i class="icon fab fa-fw fa-microsoft" />
           {{ $t('login.microsoft') }}

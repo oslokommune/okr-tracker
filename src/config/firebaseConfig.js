@@ -11,6 +11,7 @@ const firestoreEmulator = {
   host: `localhost:${emulators.firestore.port}`,
   ssl: false,
   experimentalForceLongPolling: true,
+  merge: true,
 };
 
 export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;
@@ -35,7 +36,7 @@ const loginProviderMS = new firebase.auth.OAuthProvider('microsoft.com');
 loginProviderMS.setCustomParameters({
   // "tenant" parameter in case you are using an Azure AD tenant.
   // The default value is "common".
-  tenant: process.env.VUE_APP_MICROSOFT_TENANT || 'common'
+  tenant: process.env.VUE_APP_MICROSOFT_TENANT || 'common',
 });
 const storage = firebase.storage();
 const auth = firebase.auth();
@@ -51,4 +52,15 @@ if (process.env.NODE_ENV === 'development' || window.Cypress) {
   console.log('Established connection to Firestore server');
 }
 
-export { db, auth, loginProviderGoogle, loginProviderMS, storage, analytics, functions, serverTimestamp, arrayRemove, arrayUnion };
+export {
+  db,
+  auth,
+  loginProviderGoogle,
+  loginProviderMS,
+  storage,
+  analytics,
+  functions,
+  serverTimestamp,
+  arrayRemove,
+  arrayUnion,
+};
