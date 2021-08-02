@@ -30,7 +30,13 @@ firebase.initializeApp(config);
 
 // firebase utils
 const db = firebase.firestore();
-const loginProvider = new firebase.auth.GoogleAuthProvider();
+const loginProviderGoogle = new firebase.auth.GoogleAuthProvider();
+const loginProviderMS = new firebase.auth.OAuthProvider('microsoft.com');
+loginProviderMS.setCustomParameters({
+  // "tenant" parameter in case you are using an Azure AD tenant.
+  // The default value is "common".
+  tenant: process.env.VUE_APP_MICROSOFT_TENANT || 'common'
+});
 const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
@@ -45,4 +51,4 @@ if (process.env.NODE_ENV === 'development' || window.Cypress) {
   console.log('Established connection to Firestore server');
 }
 
-export { db, auth, loginProvider, storage, analytics, functions, serverTimestamp, arrayRemove, arrayUnion };
+export { db, auth, loginProviderGoogle, loginProviderMS, storage, analytics, functions, serverTimestamp, arrayRemove, arrayUnion };

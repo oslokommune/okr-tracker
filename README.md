@@ -1,33 +1,36 @@
-# OKR Tracker
+# OKR Tracker (knowit)
 
-- [Demo](#demo)
-- [Project requirements](#project-requirements)
-- [Clone and install](#clone-and-install)
-- [Set up new instance](#set-up-new-instance)
-  - [Create Firebase project](#create-firebase-project)
-    - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
-  - [Environment variables](#environment-variables)
-  - [Link project](#link-project)
-  - [Create mock data](#create-mock-data)
-    - [Whitelist yourself](#whitelist-yourself)
-    - [Generate mock data](#generate-mock-data)
-    - [Exporting mock data](#exporting-mock-data)
-    - [Update mock data](#update-mock-data)
-  - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
-- [Run locally](#run-locally)
-- [Build and deploy](#build-and-deploy)
-- [Lint and fix](#lint-and-fix)
-- [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
-  - [Requirements](#requirements)
-  - [Export production data](#export-production-data)
-- [Import production data](#import-production-data)
-- [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
-  - [Requirements for automated backups](#requirements-for-automated-backups)
-  - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
-- [Slack Integration](#slack-integration)
-  - [Set up](#set-up)
-- [Supported Providers](#supported-providers)
-  - [Keycloak integration](#keycloak-integration)
+- [OKR Tracker (knowit)](#okr-tracker-knowit)
+  - [Demo](#demo)
+  - [Project requirements](#project-requirements)
+  - [Clone and install](#clone-and-install)
+  - [Set up new instance](#set-up-new-instance)
+    - [Create Firebase project](#create-firebase-project)
+      - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
+    - [Environment variables](#environment-variables)
+    - [Link project](#link-project)
+    - [Create mock data](#create-mock-data)
+      - [Whitelist yourself](#whitelist-yourself)
+      - [Generate mock data](#generate-mock-data)
+      - [Exporting mock data](#exporting-mock-data)
+      - [Update mock data](#update-mock-data)
+    - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
+  - [Run locally](#run-locally)
+  - [Build and deploy](#build-and-deploy)
+  - [Lint and fix](#lint-and-fix)
+  - [Google Sheets integration](#google-sheets-integration)
+  - [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
+    - [Requirements](#requirements)
+    - [Export production data](#export-production-data)
+  - [Import production data](#import-production-data)
+  - [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
+    - [Requirements for automated backups](#requirements-for-automated-backups)
+    - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
+    - [Set up](#set-up)
+  - [Supported providers](#supported-providers)
+    - [Microsoft integration](#microsoft-integration)
+    - [Google integration](#google-integration)
+    - [Keycloak integration](#keycloak-integration)
 
 ## Demo
 
@@ -109,13 +112,14 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
 | `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
 | `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
-| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
+| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented microsoft, google, email and keycloak. Ex: `google-keycloak-email` |
 | `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
 | `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
 | `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
 | `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| `VUE_APP_MICROSOFT_TENANT`       | To limit the authentication to a certain TENANT, e.g. knowit.no                                                          |
 | `VUE_APP_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
 
 ### Link project
@@ -354,17 +358,6 @@ Gif of the process:
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
-## Slack Integration
-
-We have a slack integration that is connected with a couple of cloud functions.
-
-There are two cloud functions that integrate with slack
-
-1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
-2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
-
-For these cloud functions to work you need to add a webhook url from a slack app.
-
 ### Set up
 
 Firebase steps:
@@ -388,7 +381,13 @@ Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotifi
 
 ## Supported providers
 
-OKR-tracker supports for the time being only three login providers: Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+
+### Microsoft integration
+For the Microsoft-integration a TENANT must be specified as the environment-variable VUE_APP_MICROSOFT_TENANT.
+
+### Google integration
+Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('knowit.no')) rejectAccess();`
 
 ### Keycloak integration
 
