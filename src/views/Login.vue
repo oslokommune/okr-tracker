@@ -165,7 +165,7 @@ export default {
       await this.setLoginLoading(true);
       await this.setLoginError(null);
       try {
-        const { user } = await auth.signInWithRedirect(loginProviderMS);
+        const { user } = await auth.signInWithPopup(loginProviderMS);
         this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
       } catch (e) {
         await this.setLoginError(2);
