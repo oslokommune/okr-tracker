@@ -87,3 +87,10 @@ if (isSlackActive) {
   slackNotificationInteractiveRequest = slackNotificationInteractiveOnRequest;
 }
 exports.createCustomToken = require('./tokenCreator').createCustomToken;
+
+// Express servers run via Cloud Functions
+exports.api = require('./api').app;
+exports.internal = require('./backend').app;
+
+// Verify emails that are created with Microsoft accounts
+exports.verifyMicrosoftAccount = require('./verifyMicrosoftAccounts').verifyMicrosoftAccount;

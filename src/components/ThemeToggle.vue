@@ -1,10 +1,11 @@
 <template>
   <div>
     <h2 class="widget__title">{{ $t('theme.header') }}</h2>
+
     <div v-for="mode in modes" :key="mode.id" class="ods-form-group">
       <input
-        type="radio"
         :id="mode.id"
+        type="radio"
         class="ods-form-radio"
         name="radio-group"
         :checked="theme === mode.id"
@@ -16,7 +17,6 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'ThemeToggle',
