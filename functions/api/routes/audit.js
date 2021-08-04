@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const admin = require('firebase-admin');
-const { param, query, matchedData } = require('express-validator');
+const { query, matchedData } = require('express-validator');
 const parse = require('date-fns/parseISO');
 
 const db = admin.firestore();
