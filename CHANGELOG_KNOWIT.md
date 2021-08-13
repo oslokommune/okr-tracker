@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 - Removed user request logic
 - All new users are automatically created in the database when signing in with Microsoft AD
 - New API endpoints - getting the audit log
+- Possible to add team members to organizations and departments
 
 ## [2.0.0-rc.12] UNRELEASED
 
