@@ -63,21 +63,21 @@ service cloud.firestore {
 
     match /organizations/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin();
-      allow update: if isAdmin();
+      allow create: if isAdmin() || isTeamMember();
+      allow update: if isAdmin() || isTeamMember();
       allow delete: if isAdmin();
     }
 
     match /departments/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin();
-      allow update: if isAdmin();
+      allow create: if isAdmin() || isTeamMember();
+      allow update: if isAdmin() || isTeamMember();
       allow delete: if isAdmin();
     }
 
     match /products/{document} {
       allow read: if isSignedIn();
-      allow create: if true;
+      allow create: if isAdmin() || isTeamMember();
       allow update: if isAdmin() || isTeamMember();
       allow delete: if isAdmin();
     }
