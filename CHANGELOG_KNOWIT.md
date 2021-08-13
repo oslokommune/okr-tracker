@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. The format 
 - Microsoft AD integration
 - Removed user request logic
 - All new users are automatically created in the database when signing in with Microsoft AD
+- New API endpoints - getting the audit log
 
 ## [2.0.0-rc.12] UNRELEASED
 
