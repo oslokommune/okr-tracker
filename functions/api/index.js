@@ -10,6 +10,7 @@ const config = require('../config');
 // Routes
 const kpiRoutes = require('./routes/kpi');
 const keyresRoutes = require('./routes/keyres');
+const auditRoutes = require('./routes/audit');
 
 const app = express();
 
@@ -21,5 +22,7 @@ app.use(morgan('combined'));
 app.use('/kpi', kpiRoutes);
 
 app.use('/keyres', keyresRoutes);
+
+app.use('/audit', auditRoutes);
 
 exports.app = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
