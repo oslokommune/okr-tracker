@@ -147,10 +147,15 @@ auth.onAuthStateChanged(async (user) => {
       store.commit('SET_LOGIN_ERROR', 1);
     }
 
+    const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
+    const keycloakProvider = store.state.providers.includes('keycloak');
+
     await auth.signOut();
     await store.dispatch('reset_state');
 
-    if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
+    if (keycloakProvider && keycloakParsedToken) {
+      store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}email-not-whitelisted` });
+    } else if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
       await router.push(router.history.getCurrentLocation()).catch(() => {
         if (document.querySelector('#spinner')) {
           document.querySelector('#spinner').remove();
