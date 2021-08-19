@@ -54,7 +54,7 @@
     "organization": "Organisasjon",
     "date": "Dato",
     "password": "Passord",
-    "secret": "API nøkkel"
+    "secret": "API Hemmelighet"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -160,8 +160,9 @@
     "reasons": {
       "internal": "Det oppstod en intern feil når du prøvde å logge deg på. Vennligst prøv å logg inn på nytt. Kontakt administratoren hvis problemet vedvarer.",
       "permission-denied": "Kontoen du prøvde å logge på med oppfyller ikke de nødvendige tillatelsene for å få tilgang til nettstedet. Kontakt administratoren for å få de riktige tillatelsene.",
-      "email-in-use": "E-posten du prøve å logge på med er allerede i bruk. Kontakt administratoren for ytterligere hjelp.",
-      "default": "Noe gikk galt med innloggingen din. Vennligst ta kontakt med administratoren og henvis til url-en din."
+      "email-in-use": "E-posten du prøvde å logge på med er allerede i bruk. Kontakt administratoren for ytterligere hjelp.",
+      "default": "Noe gikk galt med innloggingen din. Vennligst ta kontakt med administratoren og henvis til url-en din.",
+      "email-not-whitelisted": "E-posten du prøvde å logge på med er ikke hvitelistet for tilgang til hjemmesiden. Kontakt administratoren for ytterligere hjelp."
     }
   },
   "toaster": {

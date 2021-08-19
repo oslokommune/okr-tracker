@@ -12,10 +12,11 @@ export const getters = {
   tree: (state) => {
     const { organizations, departments, products } = state;
 
+    const sortedOrganziations = sortByLocale(organizations);
     const sortedDepartments = sortByLocale(departments);
     const sortedProducts = sortByLocale(products);
 
-    return organizations.map((org) => {
+    return sortedOrganziations.map((org) => {
       org.children = sortedDepartments
         .filter(({ organization }) => organization.id === org.id)
         .map((dept) => {

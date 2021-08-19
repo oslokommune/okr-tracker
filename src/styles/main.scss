@@ -133,6 +133,7 @@ hr {
   --color-text: var(--color-purple);
   --color-text-secondary: var(--color-purple);
   --color-primary: var(--color-yellow);
+  --color-primary-dark: var(--color-yellow-dark);
   --color-secondary: var(--color-beige);
   --color-tertiary: var(--color-beige-dark);
 
@@ -147,7 +148,9 @@ hr {
   --color-blue-light: #b3f5ff;
   --color-blue-light-2: #b2d2d8;
   --color-purple: #292858;
+  --color-purple-dark: #1f1e43;
   --color-yellow: #f8c66b;
+  --color-yellow-dark: #ba944fff;
   --color-red: #ff8174;
   --color-red-dark: #5b0800;
   --color-red-light: #ff988e;
@@ -156,6 +159,7 @@ hr {
 
   --color-green: #43f8b6;
   --color-green-dark: #034b45;
+  --color-green-dark-2: #023834;
   --color-green-light: #c7f6c9;
 
   --color-bg: #f9f9fa;
@@ -179,6 +183,7 @@ hr {
   --color-text: var(--color-green-dark);
   --color-text-secondary: var(--color-white);
   --color-primary: var(--color-green-dark);
+  --color-primary-dark: var(--color-green-dark-2);
   --color-secondary: var(--color-green-light);
   --color-tertiary: var(--color-green-dark);
 }
@@ -187,6 +192,7 @@ hr {
   --color-text: var(--color-purple);
   --color-text-secondary: var(--color-white);
   --color-primary: var(--color-purple);
+  --color-primary-dark: var(--color-purple-dark);
   --color-secondary: var(--color-blue);
   --color-tertiary: var(--color-purple);
 }
