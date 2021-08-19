@@ -12,10 +12,9 @@
       >
         <div class="header__navicon" role="presentation"><span></span> <span></span> <span></span> <span></span></div>
       </a>
-      <div :class="{ overlay: sidebarOpen }">
-        <div class="section drawer" :class="{ 'is-open': sidebarOpen }">
-          <sidebar-navigation></sidebar-navigation>
-        </div>
+      <div :class="{ overlay: sidebarOpen }"></div>
+      <div class="section drawer" :class="{ 'is-open': sidebarOpen }">
+        <sidebar-navigation></sidebar-navigation>
       </div>
       <router-link :to="{ name: 'Home' }" class="logo">
         <oslo-logo class="logo__img" />
@@ -143,10 +142,6 @@ export default {
       this.showUserMenu = false;
     },
 
-    hideSidebar() {
-      this.sidebarOpen = false;
-    },
-
     async signOut() {
       if (this.providers.includes('keycloak')) {
         await this.cleanKeycloak(this.$route.path);
@@ -207,7 +202,7 @@ $header-height: 4em;
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(2);
+    width: span(3);
     margin-left: span(0);
   }
 }
@@ -219,7 +214,7 @@ $header-height: 4em;
 
 .title {
   width: span(9);
-  margin-left: span(3, 1);
+  margin-left: span(4, 1);
 
   @media screen and (min-width: bp(s)) {
     width: span(6);
@@ -231,11 +226,11 @@ $header-height: 4em;
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(7);
+    width: span(6);
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(7);
+    width: span(6);
   }
 }
 

@@ -3,7 +3,6 @@
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
     <main class="container">
-      <div class="sidebarContainer"></div>
       <div class="main-view">
         <spinner v-if="loading"></spinner>
         <router-view v-else class="router-view"></router-view>
