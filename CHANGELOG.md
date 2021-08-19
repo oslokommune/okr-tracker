@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file. The format 
 - Small style fixes
 - Correct modal size
 
+### Changes
+
+- Updated dependencies
+
 ## [2.0.0-rc.11] 2021-04-27
 
 ### Fixed
