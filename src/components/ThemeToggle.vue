@@ -1,6 +1,7 @@
 <template>
   <button
     class="btn btn--ter btn--icon"
+    :class="{ 'menu__list--label': header }"
     :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
     @click="handleClick"
   >
@@ -14,6 +15,14 @@ const LS_MODE = 'okr-tracker-theme';
 
 export default {
   name: 'ThemeToggle',
+
+  props: {
+    header: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
 
   data: () => ({
     mode: 'yellow',
@@ -74,3 +83,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.menu__list--label {
+  color: var(--color-text);
+}
+</style>

@@ -101,7 +101,7 @@ export default {
 
 .sidebar__label {
   padding: 0.25rem 0 0.3rem;
-  color: rgba(black, 0.4);
+  color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 12px;
   letter-spacing: 0.4px;
@@ -117,7 +117,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0.35rem;
-  color: var(--color-text);
+  color: var(--color-text-secondary);
   font-weight: 400;
   text-decoration: none;
   border-radius: 2px;
@@ -149,5 +149,9 @@ export default {
   align-self: flex-start;
   margin-top: 0.15rem;
   margin-right: 0.35rem;
+}
+
+.btn--label {
+  color: var(--color-text-secondary);
 }
 </style>
