@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeKeyResult" class="keyres">
+  <div v-if="activeKeyResult" class="container">
     <div class="main">
       <h1 class="title-1">{{ activeKeyResult.name }}</h1>
       <p>{{ activeKeyResult.description }}</p>
@@ -111,7 +111,7 @@
               </td>
               <td v-if="hasEditPermissions" style="width: 1rem">
                 <v-popover offset="16" placement="top">
-                  <button class="btn btn--ter btn--icon">
+                  <button class="btn btn--ter btn--icon btn--icon-pri">
                     <i class="icon far fa-trash-alt" />
                     {{ $t('btn.delete') }}
                   </button>

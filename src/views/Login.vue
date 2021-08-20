@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="container">
     <div class="login">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div v-if="loginLoading && loginError === null">
@@ -193,12 +193,23 @@ export default {
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
 
-  @media screen and (min-width: bp(m)) {
-    width: span(4);
-  }
-
   @media screen and (min-width: bp(s)) {
     width: span(6);
+  }
+
+  @media screen and (min-width: bp(m)) {
+    width: span(4);
+    margin-left: span(3, 1);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(4);
+    margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(4);
+    margin-left: span(3, 1);
   }
 }
 

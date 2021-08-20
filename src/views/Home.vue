@@ -1,20 +1,22 @@
 <template>
-  <div class="home">
-    <ul v-if="user">
-      <li v-for="org in tree" :key="org.id">
-        <item-row :data="org" type="organization"></item-row>
-        <ul v-if="getCollapse('organization', org.slug)">
-          <li v-for="dept in org.children" :key="dept.id" class="card">
-            <item-row :data="dept" type="department"></item-row>
-            <ul v-if="getCollapse('department', dept.slug)">
-              <li v-for="prod in dept.children" :key="prod.id">
-                <item-row :data="prod" type="product"></item-row>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
+  <div class="container">
+    <div class="home">
+      <ul v-if="user">
+        <li v-for="org in tree" :key="org.id">
+          <item-row :data="org" type="organization"></item-row>
+          <ul v-if="getCollapse('organization', org.slug)">
+            <li v-for="dept in org.children" :key="dept.id" class="card">
+              <item-row :data="dept" type="department"></item-row>
+              <ul v-if="getCollapse('department', dept.slug)">
+                <li v-for="prod in dept.children" :key="prod.id">
+                  <item-row :data="prod" type="product"></item-row>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -55,6 +57,26 @@ export default {
 }
 
 .home {
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-left: span(3, 1);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(8);
+    margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(10);
+    margin-left: span(3, 1);
+  }
+}
+
+.main-view {
   position: relative;
   width: span(12);
   padding: 1.5rem 0;

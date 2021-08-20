@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeObjective" class="objective">
+  <div v-if="activeObjective" class="container">
     <div class="main">
       <div class="objective__heading">
         <div class="objective__heading-text">
@@ -92,11 +92,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
-
-.objective {
-  display: flex;
-  flex-wrap: wrap;
-}
 
 .key-results {
   margin-top: 2.5rem;

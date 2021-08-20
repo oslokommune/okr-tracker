@@ -1,5 +1,7 @@
 <template>
-  <div class="flex-container">
+  <div class="container">
+    <widgets class="aside--left"></widgets>
+
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
@@ -37,7 +39,8 @@
       </div>
     </div>
 
-    <widgets></widgets>
+    <widgets class="aside--right"></widgets>
+    <widgets class="aside--bottom"></widgets>
   </div>
 </template>
 
@@ -104,5 +107,33 @@ export default {
   padding-bottom: 1rem;
   background: white;
   box-shadow: -2px 1px 5px 2px rgb(147 147 153 / 30%);
+}
+
+.aside--left {
+  display: none;
+  margin-top: 0.5rem;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(3);
+  }
+}
+
+.aside--right {
+  width: span(12);
+  margin-top: 0.5rem;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(3);
+  }
+}
+
+.aside--bottom {
+  width: span(12);
+  margin-top: 0.5rem;
+
+  @media screen and (min-width: bp(m)) {
+    display: none;
+  }
 }
 </style>

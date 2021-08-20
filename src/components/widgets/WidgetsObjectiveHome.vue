@@ -2,7 +2,7 @@
   <aside v-if="activeObjective" class="aside">
     <div v-if="editRights" class="widgets__links">
       <router-link
-        class="btn btn--ter btn--icon"
+        class="btn btn--ter btn--icon btn--icon-pri"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
       >
         <i class="icon fa fa-edit" />

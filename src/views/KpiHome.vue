@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeKpi" class="flex-container">
+  <div v-if="activeKpi" class="container">
     <div class="main">
       <h1 class="title-1">{{ activeKpi.name }}</h1>
 

@@ -1,7 +1,7 @@
 <template>
   <button
     class="btn btn--ter btn--icon"
-    :class="{ 'menu__list--label': header }"
+    :class="{ 'btn--icon-pri': header }"
     :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
     @click="handleClick"
   >
@@ -83,9 +83,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.menu__list--label {
-  color: var(--color-text);
-}
-</style>

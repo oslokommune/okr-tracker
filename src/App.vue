@@ -2,12 +2,8 @@
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
-    <main class="container">
-      <div class="main-view">
-        <spinner v-if="loading"></spinner>
-        <router-view v-else class="router-view"></router-view>
-      </div>
-    </main>
+    <spinner v-if="loading"></spinner>
+    <router-view v-else></router-view>
     <Griddle v-if="isDev" />
   </div>
 </template>
@@ -73,41 +69,6 @@ document.body.addEventListener('keydown', () => {
 .app {
   min-height: 100vh;
   background: var(--color-bg);
-}
-
-.container {
-  @include container();
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.sidebarContainer {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(3);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(2);
-  }
-}
-
-.main-view {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9);
-    margin-left: span(0, 1);
-  }
-  @media screen and (min-width: bp(l)) {
-    width: span(10);
-  }
-}
-
-.router-view {
-  min-height: calc(100vh - 20rem);
 }
 
 .sidebar {

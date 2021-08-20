@@ -42,7 +42,7 @@
           <ul class="menu__list">
             <li class="menu__list-item">
               <router-link
-                class="btn btn--ter btn--icon menu__list--label"
+                class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'User', params: { id: user.id } }"
                 data-cy="site-header-profile"
               >
@@ -52,7 +52,7 @@
             </li>
             <li v-if="user.admin" class="menu__list-item">
               <router-link
-                class="btn btn--ter btn--icon menu__list--label"
+                class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'Admin' }"
                 data-cy="site-header-admin"
               >
@@ -63,7 +63,7 @@
             <theme-toggle header />
             <li class="menu__list-item show-mobile">
               <router-link
-                class="btn btn--ter btn--icon menu__list--label"
+                class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'Help' }"
                 data-cy="site-header-help"
               >
@@ -72,7 +72,7 @@
               </router-link>
             </li>
             <li>
-              <button class="btn btn--ter btn--icon menu__list--label" data-cy="site-header-signout" @click="signOut">
+              <button class="btn btn--ter btn--icon btn--icon-pri" data-cy="site-header-signout" @click="signOut">
                 <i class="icon fa fa-fw fa-sign-out-alt" />
                 {{ $t('general.signOut') }}
               </button>
@@ -359,10 +359,6 @@ $header-height: 4em;
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.menu__list--label {
-  color: var(--color-text);
 }
 
 .show-mobile {

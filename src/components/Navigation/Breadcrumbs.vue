@@ -95,6 +95,10 @@ export default {
   }
 
   @media screen and (min-width: bp(l)) {
+    margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
     margin-left: span(3, 1);
   }
 }
