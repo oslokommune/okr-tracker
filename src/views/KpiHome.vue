@@ -1,6 +1,6 @@
 <template>
   <div v-if="activeKpi" class="container">
-    <div class="main">
+    <div class="kpi">
       <h1 class="title-1">{{ activeKpi.name }}</h1>
 
       <p>{{ activeKpi.description }}</p>
@@ -254,6 +254,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.kpi {
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-right: span(0, 1);
+  }
+}
+
 .history {
   margin: 2.5rem 0 1.5rem;
 }

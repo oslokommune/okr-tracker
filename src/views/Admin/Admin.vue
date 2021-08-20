@@ -1,9 +1,13 @@
 <template>
-  <div class="grid">
-    <admin-items class="admin-items"></admin-items>
-    <div class="admin-users">
-      <admin-access-requests v-if="requestAccess.length" />
-      <admin-users />
+  <div class="container">
+    <div class="admin">
+      <div class="grid">
+        <admin-items class="admin-items"></admin-items>
+        <div class="admin-users">
+          <admin-access-requests v-if="requestAccess.length" />
+          <admin-users />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -78,5 +82,10 @@ export default {
     grid-row: 1;
     grid-column: 8 / span 3;
   }
+}
+
+.admin {
+  width: span(12);
+  padding: 1.5rem 0;
 }
 </style>

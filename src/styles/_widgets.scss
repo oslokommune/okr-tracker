@@ -57,6 +57,7 @@
 
   @media screen and (min-width: bp(m)) {
     width: span(2, span(9));
+    margin-right: span(0, 2);
   }
 
   @media screen and (min-width: bp(l)) {
@@ -113,7 +114,6 @@
     margin-left: span(0, span(6));
   }
 }
-
 
 .widgets {
   display: grid;

@@ -1,6 +1,6 @@
 <template>
   <div v-if="activeObjective" class="container">
-    <div class="main">
+    <div class="objective">
       <div class="objective__heading">
         <div class="objective__heading-text">
           <h1 class="title-1">{{ activeObjective.name }}</h1>
@@ -34,7 +34,7 @@
         </div>
       </section>
     </div>
-    <widgets-objective-home class="aside" />
+    <widgets-objective-home class="aside--right" />
   </div>
 </template>
 
@@ -92,6 +92,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+
+.objective {
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-right: span(0, 1);
+  }
+}
 
 .key-results {
   margin-top: 2.5rem;

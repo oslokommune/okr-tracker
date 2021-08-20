@@ -27,9 +27,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.logout {
-  display: flex;
-  flex-direction: column;
+.main {
+  position: relative;
   width: span(8);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(5);
+    margin-left: span(3, 1);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    margin-left: span(3, 1);
+  }
 }
 </style>

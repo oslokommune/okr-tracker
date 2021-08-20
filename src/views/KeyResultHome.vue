@@ -1,6 +1,6 @@
 <template>
   <div v-if="activeKeyResult" class="container">
-    <div class="main">
+    <div class="keyres">
       <h1 class="title-1">{{ activeKeyResult.name }}</h1>
       <p>{{ activeKeyResult.description }}</p>
 
@@ -237,8 +237,13 @@ export default {
 @import '@/styles/typography.scss';
 
 .keyres {
-  display: flex;
-  flex-wrap: wrap;
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-right: span(0, 1);
+  }
 }
 
 .main__table {
