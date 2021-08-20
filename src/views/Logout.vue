@@ -13,6 +13,9 @@
           {{ $t('logout.reasons.email-in-use') }}
         </div>
       </div>
+      <div v-if="$route.query.reason === 'email-not-whitelisted'" class="ok-alert ok-alert--warning">
+        {{ $t('logout.reasons.email-not-whitelisted') }}
+      </div>
     </div>
   </div>
 </template>
