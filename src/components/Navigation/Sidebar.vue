@@ -128,7 +128,7 @@ export default {
   }
 
   &.router-link-active {
-    color: var(--color-text-secondary);
+    color: var(--color-text);
     font-weight: 500;
     background: var(--color-secondary);
   }

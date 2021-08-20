@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-## [2.0.0-rc.12] 2021-08-19
-
 ### Added
 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
+
+## [2.0.0-rc.12] 2021-08-19
 
 ### Fixed
 
