@@ -23,7 +23,6 @@
 
     <div class="widgets">
       <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
-      <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
       <widget-team v-if="activeItem" widget-id="itemHome.team" />
       <widget-child-items widget-id="itemHome.children" />
     </div>
@@ -34,10 +33,9 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
-  name: 'WidgetsItemHome',
+  name: 'WidgetsItemHomeLeft',
 
   components: {
-    WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetMissionStatement: () => import('./WidgetMissionStatement.vue'),
     WidgetTeam: () => import('./WidgetTeam.vue'),
     WidgetChildItems: () => import('./WidgetChildItems.vue'),

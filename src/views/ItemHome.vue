@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <widgets class="aside--left"></widgets>
+    <widgets-left class="aside--left"></widgets-left>
 
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
@@ -39,8 +39,8 @@
       </div>
     </div>
 
-    <widgets class="aside--right"></widgets>
-    <widgets class="aside--bottom"></widgets>
+    <widgets-left class="aside--bottom"></widgets-left>
+    <widgets-right class="aside--right"></widgets-right>
   </div>
 </template>
 
@@ -53,7 +53,8 @@ export default {
   components: {
     PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),
-    Widgets: () => import('@/components/widgets/WidgetsItemHome.vue'),
+    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
     Kpis: () => import('@/components/Kpis.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
