@@ -65,7 +65,12 @@
       <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button v-if="!objective.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
+      <button
+        v-if="!objective.archived"
+        class="btn btn--icon btn--danger btn--icon-pri"
+        :disabled="loading"
+        @click="archive"
+      >
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>

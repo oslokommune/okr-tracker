@@ -70,7 +70,7 @@
           </ul>
           <button
             v-if="!notSelected"
-            class="miller__add btn btn--ter btn--icon btn--fw"
+            class="miller__add btn btn--ter btn--icon btn--fw btn--icon-pri"
             :data-cy="cyCreate"
             @click="addEvent"
           >
