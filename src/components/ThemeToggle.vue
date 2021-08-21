@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 const LS_MODE = 'okr-tracker-theme';
 
 export default {
@@ -51,6 +53,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setTheme']),
+
     handleClick() {
       if (this.mode === 'yellow') {
         this.mode = 'blue';
@@ -65,6 +69,7 @@ export default {
 
     setThemeMode() {
       this.saveThemeMode(this.mode);
+      this.setTheme(this.mode);
       document.body.setAttribute('data-theme', this.mode);
     },
 

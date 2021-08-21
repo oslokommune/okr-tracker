@@ -1,77 +1,79 @@
 <template>
-  <div v-if="thisUser" class="main">
-    <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
+  <div v-if="thisUser" class="container">
+    <div class="main">
+      <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
 
-    <div class="user">
-      <div class="user__image">
-        <img
-          class="user__image-size"
-          :src="thisUser.photoURL || '/placeholder-user.svg'"
-          :alt="thisUser.displayName || user.id"
-        />
+      <div class="user">
+        <div class="user__image">
+          <img
+            class="user__image-size"
+            :src="thisUser.photoURL || '/placeholder-user.svg'"
+            :alt="thisUser.displayName || user.id"
+          />
 
-        <template v-if="me">
-          <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-          <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
-            {{ $t('btn.upload') }}
-          </button>
-        </template>
-      </div>
-
-      <div class="user__info">
-        <validation-observer v-if="me" v-slot="{ handleSubmit }">
-          <form id="updateUser" @submit.prevent="handleSubmit(save)">
-            <form-component
-              v-model="thisUser.displayName"
-              input-type="input"
-              name="name"
-              :label="$t('fields.name')"
-              rules="required"
-              type="text"
-            />
-          </form>
-        </validation-observer>
-
-        <label v-if="thisUser.uid" class="form-group">
-          <span class="form-label">{{ $t('fields.uid') }}</span>
-          <input v-model="thisUser.uid" class="form__field" type="email" disabled />
-        </label>
-
-        <label v-if="me" class="form-group">
-          <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-          <select v-model="thisUser.preferences.lang" class="form__field">
-            <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
-          </select>
-        </label>
-
-        <div v-if="me" class="user__info-btn">
-          <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+          <template v-if="me">
+            <input type="file" accept="image/png, image/jpeg" @input="setImage" />
+            <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
+              {{ $t('btn.upload') }}
+            </button>
+          </template>
         </div>
 
-        <hr class="divider" />
+        <div class="user__info">
+          <validation-observer v-if="me" v-slot="{ handleSubmit }">
+            <form id="updateUser" @submit.prevent="handleSubmit(save)">
+              <form-component
+                v-model="thisUser.displayName"
+                input-type="input"
+                name="name"
+                :label="$t('fields.name')"
+                rules="required"
+                type="text"
+              />
+            </form>
+          </validation-observer>
 
-        <template v-if="user.admin">
-          <h2 class="title-2">
-            <i class="fas fa-user-shield" />
-            Admin
-          </h2>
-          <div>
-            {{ $t('profile.hasAdmin') }}
+          <label v-if="thisUser.uid" class="form-group">
+            <span class="form-label">{{ $t('fields.uid') }}</span>
+            <input v-model="thisUser.uid" class="form__field" type="email" disabled />
+          </label>
+
+          <label v-if="me" class="form-group">
+            <span class="form-label">{{ $t('user.selectLanguage') }}</span>
+            <select v-model="thisUser.preferences.lang" class="form__field">
+              <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
+            </select>
+          </label>
+
+          <div v-if="me" class="user__info-btn">
+            <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
           </div>
-        </template>
 
-        <h2 class="title-2">{{ $t('profile.products') }}</h2>
-        <ul class="grid-system">
-          <li v-for="product in products" :key="product.id">
-            <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-              <div class="product__parent">{{ product.department.name }}</div>
-              <div class="product__name">
-                <i class="product__icon fa fa-cube" />
-                {{ product.name }}
-              </div>
-            </router-link>
-          </li>
-        </ul>
+          <hr class="divider" />
+
+          <template v-if="user.admin">
+            <h2 class="title-2">
+              <i class="fas fa-user-shield" />
+              Admin
+            </h2>
+            <div>
+              {{ $t('profile.hasAdmin') }}
+            </div>
+          </template>
+
+          <h2 class="title-2">{{ $t('profile.products') }}</h2>
+          <ul class="grid-system">
+            <li v-for="product in products" :key="product.id">
+              <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
+                <div class="product__parent">{{ product.department.name }}</div>
+                <div class="product__name">
+                  <i class="product__icon fa fa-cube" />
+                  {{ product.name }}
+                </div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -174,6 +176,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/_colors';
+
+.main {
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-left: span(2, 1);
+  }
+}
 
 .user {
   display: flex;

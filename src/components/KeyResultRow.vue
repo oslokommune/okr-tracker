@@ -91,7 +91,7 @@ export default {
   grid-template-columns: 1fr span(2, span(6));
 
   &.expanded {
-    grid-template-columns: 1fr span(3, span(8));
+    grid-template-columns: 1fr span(3, span(7));
   }
 }
 
