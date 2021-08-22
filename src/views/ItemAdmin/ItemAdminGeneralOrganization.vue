@@ -27,6 +27,21 @@
           rules="required"
         />
 
+        <div class="form-group">
+          <span class="form-label">{{ $t('general.teamMembers') }}</span>
+          <v-select
+            v-model="activeItem.team"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
         <label class="form-group">
           <span class="form-label">{{ $t('fields.secret') }}</span>
           <span class="form-help" v-html="$t('admin.apiSecret')"></span>
@@ -50,6 +65,7 @@
 
 <script>
 import Organization from '@/db/Organization';
+import { db } from '@/config/firebaseConfig';
 import { mapState } from 'vuex';
 import { toastArchiveAndRevert } from '@/util/toastUtils';
 
@@ -62,10 +78,15 @@ export default {
 
   data: () => ({
     loading: false,
+    users: [],
   }),
 
   computed: {
     ...mapState(['activeItem']),
+  },
+
+  firestore: {
+    users: db.collection('users'),
   },
 
   methods: {
@@ -74,7 +95,9 @@ export default {
       try {
         const { id, name, missionStatement, secret } = this.activeItem;
 
-        const data = { name, missionStatement, secret: secret === undefined ? '' : secret };
+        const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
+
+        const data = { name, missionStatement, secret: secret === undefined ? '' : secret, team };
 
         await Organization.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));

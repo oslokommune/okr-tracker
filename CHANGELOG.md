@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.0.0] 2021-08-23
+
+We've decided to release v2 out of RC after almost a year of updates. We feel like the code is stable enough to warrant a v2 release. We haven't managed to develop all the features that we wanted, but we have already been working on a redesign for v2.1 for a couple of months now.
+
+Our next steps are continuing to rewrite the way data is written to the database, move more and more out to a better API and hopefully open up our APIs to our users. And to look at a more robust RBAC with different levels.
+
+See [release notes](./documentation/release-notes_v2.0.0.md).
+
+### Added
+
+- Add team members to Organizations and Departments to offload admin access
+
 ## [2.0.0-rc.12] 2021-08-19
 
 ### Fixed
