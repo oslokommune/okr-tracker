@@ -4,7 +4,7 @@
     <Breadcrumbs></Breadcrumbs>
     <spinner v-if="loading"></spinner>
     <router-view v-else></router-view>
-    <Griddle v-if="isDev" />
+    <Griddle />
   </div>
 </template>
 
