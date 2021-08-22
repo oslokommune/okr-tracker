@@ -31,6 +31,21 @@
           <v-select v-model="activeItem.organization" label="name" :options="organizations" :clearable="false" />
         </div>
 
+        <div class="form-group">
+          <span class="form-label">{{ $t('general.teamMembers') }}</span>
+          <v-select
+            v-model="activeItem.team"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
         <label class="form-group">
           <span class="form-label">{{ $t('fields.secret') }}</span>
           <span class="form-help" v-html="$t('admin.apiSecret')"></span>
@@ -67,10 +82,15 @@ export default {
 
   data: () => ({
     loading: false,
+    users: [],
   }),
 
   computed: {
     ...mapState(['activeItem', 'organizations']),
+  },
+
+  firestore: {
+    users: db.collection('users'),
   },
 
   methods: {
@@ -79,8 +99,10 @@ export default {
       try {
         const { id, name, missionStatement, secret } = this.activeItem;
 
+        const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
+
         const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-        const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret };
+        const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team };
 
         await Department.update(id, data);
         this.$toasted.show(this.$t('toaster.savedChanges'));

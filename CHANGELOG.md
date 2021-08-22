@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Add team members to Organizations and Departments to off load admin access
+
 ## [2.0.0-rc.12] 2021-08-19
 
 ### Fixed
