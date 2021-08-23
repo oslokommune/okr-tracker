@@ -33,6 +33,64 @@
         </div>
 
         <div class="form-group">
+          <span class="form-label">Produktområdeleder</span>
+          <v-select
+            v-model="activeItem.departmentleader"
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Team lead</span>
+          <v-select
+            v-model="activeItem.teamlead"
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Design</span>
+          <v-select
+            v-model="activeItem.design"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Utvkling</span>
+          <v-select
+            v-model="activeItem.developers"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <div class="form-group">
           <span class="form-label">{{ $t('general.team') }}</span>
           <v-select
             v-model="activeItem.team"

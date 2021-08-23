@@ -138,6 +138,13 @@ export const itemAdminOKR = () => {
   };
 };
 
+export const itemAdminTeam = () => {
+  return {
+    icon: 'users',
+    label: 'Team',
+  };
+};
+
 export const itemAdminKPI = () => {
   return {
     icon: 'chart-line',

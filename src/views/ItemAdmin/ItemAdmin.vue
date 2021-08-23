@@ -42,6 +42,13 @@ export default {
           cy: 'admin-general',
         },
         {
+          icon: 'users',
+          to: { name: 'ItemAdminTeam' },
+          label: 'Team',
+          exact: false,
+          cy: 'admin-team',
+        },
+        {
           icon: 'chart-pie',
           to: { name: 'ItemAdminOKRs' },
           label: this.$t('general.OKRsLong'),

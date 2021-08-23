@@ -127,6 +127,7 @@ export default {
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
           parts.includes('ItemAdminOKRs') ||
+          parts.includes('ItemAdminTeam') ||
           parts.includes('ItemAdminKPIs')) &&
         this.activeItem
       ) {
