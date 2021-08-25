@@ -11,6 +11,7 @@ const firestoreEmulator = {
   host: `localhost:${emulators.firestore.port}`,
   ssl: false,
   experimentalForceLongPolling: true,
+  merge: true,
 };
 
 export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;

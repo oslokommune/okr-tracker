@@ -178,13 +178,13 @@ auth.onAuthStateChanged(async (user) => {
       render: (h) => h(App),
     });
 
-    router.beforeEach((to, from, next) => {
-      store.dispatch('setLoading', true);
+    router.beforeEach(async (to, from, next) => {
+      await store.dispatch('setLoading', true);
       next();
     });
 
-    router.afterEach(() => {
-      store.dispatch('setLoading', false);
+    router.afterEach(async () => {
+      await store.dispatch('setLoading', false);
     });
   }
 });

@@ -69,6 +69,12 @@ export const actions = {
 
     return true;
   },
+
+  setLoading: async ({ commit }, payload) => {
+    commit('SET_LOADING', payload);
+
+    return true;
+  },
 };
 
 export const mutations = {
