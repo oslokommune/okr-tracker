@@ -136,7 +136,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['initKeycloak', 'cleanKeycloak', 'setLoading', 'setLoginLoading', 'setLoginError']),
+    ...mapActions(['initKeycloak', 'cleanKeycloak', 'setLoginLoading', 'setLoginError']),
 
     async loginWithKeycloak() {
       await this.setLoginLoading(true);
