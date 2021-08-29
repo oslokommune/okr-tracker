@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - Use Firebase auth emulator to emulate authentication
 
+### Changes
+
+- Removed collapse-icon if the item has no children
+
 ## [2.0.1] 2021-08-25
 
 ### Changes
