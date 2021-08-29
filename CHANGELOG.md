@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Use Firebase auth emulator to emulate authentication
+
 ## [2.0.1] 2021-08-25
 
 ### Changes

@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "private": true,
   "scripts": {
-    "dev": "firebase emulators:start --import=./mock & vue-cli-service serve",
+    "dev": "firebase emulators:start --import=./mock_data & vue-cli-service serve",
     "dev:test": "firebase emulators:start --import=./tests & vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:e2e": "firebase emulators:start --import=./tests & vue-cli-service serve & env-cmd -f ./.env.local cypress open",

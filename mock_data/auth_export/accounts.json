@@ -1,0 +1,25 @@
+{
+  "kind": "identitytoolkit#DownloadAccountResponse",
+  "users": [
+    {
+      "localId": "ecgfw8rRdJLi6N7zhu32o3jGqlZx",
+      "createdAt": "1630263218794",
+      "lastLoginAt": "1630263250630",
+      "displayName": "Mountain Peach",
+      "screenName": "peach_mountain",
+      "email": "mountain.peach.258@example.com",
+      "emailVerified": true,
+      "providerUserInfo": [
+        {
+          "providerId": "google.com",
+          "rawId": "9104339525396553214463797690465472545383",
+          "federatedId": "9104339525396553214463797690465472545383",
+          "displayName": "Mountain Peach",
+          "email": "mountain.peach.258@example.com",
+          "screenName": "peach_mountain"
+        }
+      ],
+      "lastRefreshAt": "2021-08-29T18:54:10.630Z"
+    }
+  ]
+}
