@@ -3,7 +3,7 @@ import axios from 'axios';
 import { auth } from '@/config/firebaseConfig';
 
 const api = axios.create({
-  baseURL: process.env.VUE_APP_HOST_URL,
+  baseURL: import.meta.env.VITE_HOST_URL,
 });
 
 api.interceptors.request.use(

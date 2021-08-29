@@ -111,7 +111,7 @@ describe('Create progress for key result', () => {
     cy.get('.table tbody')
       .should('not.be.empty')
       .should('contain', testKeyResult.progressValue)
-      .should('contain', Cypress.env('VUE_APP_TESTADMIN_USER'));
+      .should('contain', Cypress.env('VITE_TESTADMIN_USER'));
   });
 
   it('Verifies the progress on department page', () => {

@@ -69,9 +69,9 @@ Vue.config.productionTip = false;
 // Support keycloak as a OIDC provider
 if (store.state.providers.includes('keycloak')) {
   const keycloak = new Keycloak({
-    url: process.env.VUE_APP_KEYCLOAK_URL,
-    realm: process.env.VUE_APP_KEYCLOAK_REALM,
-    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+    url: import.meta.env.VITE_KEYCLOAK_URL,
+    realm: import.meta.env.VITE_KEYCLOAK_REALM,
+    clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
   });
   store.dispatch('setLoginLoading', true);
   keycloak
@@ -114,7 +114,7 @@ auth.onAuthStateChanged(async (user) => {
         try {
           await user.updateEmail(email);
         } catch (e) {
-          store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+          store.state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}${e.code}` });
         }
       }
 
@@ -154,7 +154,7 @@ auth.onAuthStateChanged(async (user) => {
     await store.dispatch('reset_state');
 
     if (keycloakProvider && keycloakParsedToken) {
-      store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}email-not-whitelisted` });
+      store.state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}email-not-whitelisted` });
     } else if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
       await router.push(router.history.getCurrentLocation()).catch(() => {
         if (document.querySelector('#spinner')) {

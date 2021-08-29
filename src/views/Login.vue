@@ -107,8 +107,8 @@ export default {
     ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated', 'loginLoading']),
 
     getKeycloakText() {
-      if (process.env.VUE_APP_KEYCLOAK_SIGN_IN_TEXT) {
-        return this.$t('login.with', { provider: process.env.VUE_APP_KEYCLOAK_SIGN_IN_TEXT });
+      if (import.meta.env.VITE_KEYCLOAK_SIGN_IN_TEXT) {
+        return this.$t('login.with', { provider: import.meta.env.VITE_KEYCLOAK_SIGN_IN_TEXT });
       }
       return this.$t('login.keycloak');
     },
@@ -128,7 +128,7 @@ export default {
             await this.setLoginLoading(false);
             this.$toasted.show(this.$t('toaster.welcome', { user: this.keycloak.idTokenParsed.name }));
           } catch (e) {
-            this.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+            this.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}${e.code}` });
           }
         }
       },

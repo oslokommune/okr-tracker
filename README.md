@@ -98,25 +98,25 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 
 | Secret                           | Description                                                                                                              |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `VUE_APP_API_KEY`                | _from SDK snippet_                                                                                                       |
-| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
-| `VUE_APP_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
-| `VUE_APP_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
-| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
-| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
-| `VUE_APP_APP_ID`                 | _from SDK snippet_                                                                                                       |
-| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
-| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
-| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
-| `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
-| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
-| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
-| `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
-| `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
-| `VUE_APP_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
+| `VITE_API_KEY`                | _from SDK snippet_                                                                                                       |
+| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
+| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
+| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
+| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
+| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
+| `VITE_APP_ID`                 | _from SDK snippet_                                                                                                       |
+| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
+| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
+| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
+| `VITE_REGION`                 | `europe-west2`                                                                                                           |
+| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
+| `VITE_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
+| `VITE_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
+| `VITE_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
+| `VITE_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                |
+| `VITE_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                         |
+| `VITE_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
 
 ### Link project
 
