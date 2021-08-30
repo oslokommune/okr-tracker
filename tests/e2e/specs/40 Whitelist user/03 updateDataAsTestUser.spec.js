@@ -6,11 +6,11 @@ describe('Verifies restrictions for test user', () => {
   });
 
   it('Logs in as test user', () => {
-    cy.get('input[type="password"]').type(Cypress.env('VUE_APP_TESTUSER_PASSWORD'));
+    cy.get('input[type="password"]').type(Cypress.env('VITE_TESTUSER_PASSWORD'));
     cy.get('form').submit();
     cy.wait(1000);
 
-    cy.visit('/me').wait(1000).get('.page-header__name').should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
+    cy.visit('/me').wait(1000).get('.page-header__name').should('contain', Cypress.env('VITE_TESTUSER_USER'));
   });
 
   it('Verifies team membership (Product one)', () => {
@@ -33,7 +33,7 @@ describe('Verifies restrictions for test user', () => {
 
     cy.get('.sub-nav').should('contain', testPeriod.name);
 
-    cy.get('.team__list').should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
+    cy.get('.team__list').should('contain', Cypress.env('VITE_TESTUSER_USER'));
 
     cy.get('.list')
       .should('contain', testObjective.name)

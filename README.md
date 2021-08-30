@@ -39,7 +39,8 @@ If you would like to check out how the application works, you can go to the demo
 ## Project requirements
 
 - Node 14.x
-- Firebase >9.x
+- Firebase >8.x
+- Firebase tools >9.x
 
 ## Clone and install
 
@@ -95,28 +96,29 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 - Navigate to **Project settings**
 - Under **Your apps**, find Firebase SDK snippet and press **Config**
 - Copy the following secrets to a `.env.production` file in the root directory.
+- Use also need `.env.local` to run this locally
 
 | Secret                           | Description                                                                                                              |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `VUE_APP_API_KEY`                | _from SDK snippet_                                                                                                       |
-| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
-| `VUE_APP_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
-| `VUE_APP_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
-| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
-| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
-| `VUE_APP_APP_ID`                 | _from SDK snippet_                                                                                                       |
-| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
-| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
-| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
-| `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
-| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
-| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
-| `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
-| `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
-| `VUE_APP_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
+| `VITE_API_KEY`                | _from SDK snippet_                                                                                                       |
+| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
+| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
+| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
+| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
+| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
+| `VITE_APP_ID`                 | _from SDK snippet_                                                                                                       |
+| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
+| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
+| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
+| `VITE_REGION`                 | `europe-west2`                                                                                                           |
+| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
+| `VITE_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
+| `VITE_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
+| `VITE_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
+| `VITE_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                |
+| `VITE_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                         |
+| `VITE_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
 
 ### Link project
 
@@ -124,33 +126,15 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 firebase use --add
 ```
 
-### Create mock data
+### Run locally
 
-The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. The Auth module is still remote, so you will need to add your own email address to the emulated store before getting started.
+The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. There is no need to do anything, only run the development script and everything is set up with a local user through Google auth.
 
 Start the Firebase Emulator:
 
 ```bash
-firebase emulators:start
+npm run dev
 ```
-
-In a new terminal window, start run the local web server:
-
-```bash
-npx vue-cli-service serve
-```
-
-#### Whitelist yourself
-
-Then whitelist your own email address by manually inserting it to the emulated Firestore:
-
-1. Navigate to [http://localhost:7777/firestore](http://localhost:7777/firestore)
-2. Click **Start collection**
-3. Type 'users' as collection ID and hit **Next**
-4. Insert your own Google Account-email as Document ID. Create a new field 'admin' with type _boolean_ and value `true` and a new field 'email' with type _string_ and the same email address as value.
-5. Click **Save**
-
-Confirm the access by visiting [http://localhost:8080/](http://localhost:8080/), press **Sign in with Google** and select your Google Account.
 
 #### Generate mock data
 

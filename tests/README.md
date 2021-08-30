@@ -7,10 +7,10 @@ The e2e tests use [Cypress](https://www.cypress.io/) in headless mode.
 In the .env.local file add the following lines
 
 ```
-VUE_APP_TESTADMIN_USER=<testadmin email>
-VUE_APP_TESTADMIN_PASSWORD=<testadmin password>
-VUE_APP_TESTUSER_USER=<testuser email>
-VUE_APP_TESTUSER_PASSWORD=<testuser password>
+VITE_TESTADMIN_USER=<testadmin email>
+VITE_TESTADMIN_PASSWORD=<testadmin password>
+VITE_TESTUSER_USER=<testuser email>
+VITE_TESTUSER_PASSWORD=<testuser password>
 ```
 
 ## Run tests

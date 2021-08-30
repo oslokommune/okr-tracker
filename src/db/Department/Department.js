@@ -45,8 +45,6 @@ const deleteDeep = async (id) => {
   return deleteDocument(update, collection.doc(id));
 };
 
-const uploadImage = (id, image) => {
-  return UploadImage(id, image, 'departments');
-};
+const uploadImage = (id, image) => UploadImage(id, image, 'departments');
 
 export default { create, update, archive, restore, deleteDeep, uploadImage };

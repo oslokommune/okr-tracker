@@ -128,7 +128,7 @@ export default {
     ...mapState(['kpis', 'activeItem', 'activeItemRef']),
 
     serviceAccountAddress() {
-      return process.env.VUE_APP_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
+      return import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
     },
 
     types() {

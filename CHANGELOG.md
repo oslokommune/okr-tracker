@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.1.0] 2021-08-30
+
+We have removed vue-cli and moved to vitejs for better develop experience and faster build and deploy times. This also means that from now on that we won't support IE11 at all. The chance that IE11 shows only a white screen is highly possible. We only support evergreen/modern browsers
+
+### Added
+
+- Use Firebase auth emulator to emulate authentication (only for developers)
+
+### Changes
+
+- Moved from vue-cli to vitejs for our frontend build tool 🎉⚡🔥 Better, faster and leaner developer experience 🎉⚡🔥
+- Removed collapse-icon if the item has no children
+
 ## [2.0.1] 2021-08-25
 
 ### Changes

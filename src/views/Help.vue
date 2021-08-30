@@ -26,7 +26,7 @@
 
 <script>
 import marked from 'marked';
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 import toc from '@/util/tableOfContent';
 import i18n from '@/locale/i18n';
 
@@ -50,7 +50,7 @@ export default {
 
   async created() {
     fetch('./help.md').then(async (response) => {
-      this.markdown = sanitize(marked(await response.text()));
+      this.markdown = dompurify.sanitize(marked(await response.text()));
       this.toc = toc(this.markdown);
     });
   },
