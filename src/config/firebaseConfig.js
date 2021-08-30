@@ -41,6 +41,8 @@ const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldVal
 if (import.meta.env.NODE_ENV === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);
+  auth.useEmulator(`http://localhost:${emulators.auth.port}`);
+  storage.useEmulator('localhost', emulators.storage.port);
   console.log('Established dev connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');

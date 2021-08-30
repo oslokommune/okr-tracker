@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "private": true,
   "scripts": {
-    "dev": "firebase emulators:start --import=./mock & vite",
+    "dev": "firebase emulators:start --import=./mock_data & vite",
     "dev:test": "firebase emulators:start --import=./tests & vite",
     "build": "vite build --mode production",
     "build:test": "vite build --mode staging",
