@@ -79,92 +79,68 @@ export const keyResult = () => {
   };
 };
 
-export const admin = () => {
-  return {
-    icon: 'user-cog',
-    label: i18n.t('general.admin'),
-    route: { name: 'Admin' },
-  };
-};
+export const admin = () => ({
+  icon: 'user-cog',
+  label: i18n.t('general.admin'),
+  route: { name: 'Admin' },
+});
 
-export const login = () => {
-  return {
+export const login = () => ({
     icon: 'sign-in-alt',
     label: i18n.t('login.login'),
     route: { name: 'Login' },
-  };
-};
+  });
 
-export const requestAccess = () => {
-  return {
+export const requestAccess = () => ({
     icon: 'pray',
     label: i18n.t('login.requestAccess'),
-  };
-};
+  });
 
-export const users = () => {
-  return {
+export const users = () => ({
     icon: 'users',
     label: i18n.t('general.users'),
-  };
-};
+  });
 
-export const user = () => {
-  return {
+export const user = () => ({
     icon: 'user',
     label: router.currentRoute.params.id,
-  };
-};
+  });
 
-export const itemAdmin = () => {
-  return {
+export const itemAdmin = () => ({
     icon: 'user-cog',
     label: i18n.t('general.edit'),
     route: { name: 'ItemAdmin' },
-  };
-};
+  });
 
-export const itemAdminGeneral = () => {
-  return {
+export const itemAdminGeneral = () => ({
     icon: 'cogs',
     label: i18n.t('general.general'),
-  };
-};
+  });
 
-export const itemAdminOKR = () => {
-  return {
+export const itemAdminOKR = () => ({
     icon: 'chart-pie',
     label: i18n.t('general.OKRs'),
-  };
-};
+  });
 
-export const itemAdminKPI = () => {
-  return {
+export const itemAdminKPI = () => ({
     icon: 'chart-line',
     label: i18n.t('general.KPIs'),
-  };
-};
+  });
 
-export const createOrganization = () => {
-  return {
+export const createOrganization = () => ({
     icon: 'plus-square',
     label: i18n.t('admin.organization.create'),
-  };
-};
+  });
 
-export const createDepartment = () => {
-  return {
+export const createDepartment = () => ({
     icon: 'plus-square',
     label: i18n.t('admin.department.create'),
-  };
-};
+  });
 
-export const createProduct = () => {
-  return {
+export const createProduct = () => ({
     icon: 'plus-square',
     label: i18n.t('admin.product.create'),
-  };
-};
+  });
 
 export const kpi = () => {
   const { activeKpi } = state;

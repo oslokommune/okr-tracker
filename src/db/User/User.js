@@ -57,9 +57,7 @@ export const addUsers = async (userList) => {
   }
 };
 
-export const uploadImage = (id, image) => {
-  return UploadImage(id, image, 'photos');
-};
+export const uploadImage = (id, image) => UploadImage(id, image, 'photos');
 
 export const deleteImage = async (id) => {
   try {
@@ -82,11 +80,9 @@ async function removeFromTeams(docRef) {
     const products = await db.collection('products').where('team', 'array-contains', docRef).get();
 
     return Promise.all(
-      products.docs.map(({ ref }) => {
-        return ref.update({
+      products.docs.map(({ ref }) => ref.update({
           team: arrayRemove(docRef),
-        });
-      })
+        }))
     );
   } catch (error) {
     throw new Error(error.message);
@@ -100,19 +96,15 @@ export const replaceFromTeams = async (oldDocId, newDocId) => {
     const products = await db.collection('products').where('team', 'array-contains', oldDocRef).get();
 
     await Promise.all(
-      products.docs.map(({ ref }) => {
-        return ref.update({
+      products.docs.map(({ ref }) => ref.update({
           team: arrayRemove(oldDocRef),
-        });
-      })
+        }))
     );
 
     return Promise.all(
-      products.docs.map(({ ref }) => {
-        return ref.update({
+      products.docs.map(({ ref }) => ref.update({
           team: arrayUnion(newDocRef),
-        });
-      })
+        }))
     );
   } catch (error) {
     throw new Error(error.message);

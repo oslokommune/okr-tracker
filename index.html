@@ -32,7 +32,7 @@
       content="«OKR-tracker» is a tool to map and coordinate Objective Key Results across organizations, departments and products"
     />
 
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <link rel="icon" href="/favicon.ico" />
     <title>OKR | Oslo kommune</title>
 
     <style>
@@ -159,12 +159,13 @@
       </div>
     </div>
     <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
     <!-- built files will be auto injected -->
 
     <script>
       // Add dark / light detection that runs before Vue.js load. Borrowed from overreacted.io
-      ;(function() {
-        window.__onThemeChange = function() {}
+      (function () {
+        window.__onThemeChange = function () {};
         function setTheme(newTheme) {
           window.__theme = newTheme;
           preferredTheme = newTheme;
@@ -177,15 +178,15 @@
           preferredTheme = localStorage.getItem('okr-tracker-theme');
         } catch (err) {}
 
-        window.__setPreferredTheme = function(newTheme) {
+        window.__setPreferredTheme = function (newTheme) {
           setTheme(newTheme);
           try {
             localStorage.setItem('okr-tracker-theme', newTheme);
           } catch (err) {}
-        }
+        };
 
         setTheme(preferredTheme || 'yellow');
-      })()
+      })();
     </script>
   </body>
 </html>

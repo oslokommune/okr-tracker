@@ -16,21 +16,21 @@ describe('Whitelist user', () => {
   it('Creates a new whitelisted user', () => {
     cy.visit('/admin').wait(2000);
 
-    cy.get('.whitelist__body').should('not.contain', Cypress.env('VUE_APP_TESTUSER_USER'));
+    cy.get('.whitelist__body').should('not.contain', Cypress.env('VITE_TESTUSER_USER'));
 
     cy.get('[data-cy="email_list"]')
       .clear()
-      .type(Cypress.env('VUE_APP_TESTUSER_USER'))
+      .type(Cypress.env('VITE_TESTUSER_USER'))
       .get('[data-cy="add_users_button"]')
       .click()
       .wait(100);
 
-    cy.get('.whitelist__body').should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
+    cy.get('.whitelist__body').should('contain', Cypress.env('VITE_TESTUSER_USER'));
   });
 
   it('Finds the test user with search', () => {
-    cy.get('[data-cy="user_search_field"]').clear().type(Cypress.env('VUE_APP_TESTUSER_USER')).wait(100);
+    cy.get('[data-cy="user_search_field"]').clear().type(Cypress.env('VITE_TESTUSER_USER')).wait(100);
 
-    cy.get('.whitelist__body').should('contain', Cypress.env('VUE_APP_TESTUSER_USER'));
+    cy.get('.whitelist__body').should('contain', Cypress.env('VITE_TESTUSER_USER'));
   });
 });

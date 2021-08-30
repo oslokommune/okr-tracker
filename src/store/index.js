@@ -50,7 +50,7 @@ export const actions = {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('idToken');
 
-    state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_LOGOUT_URL}${uri}` });
+    state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_LOGOUT_URL}${uri}` });
 
     commit('SET_AUTHENTICATION', false);
     commit('DELETE_KEYCLOAK');
@@ -135,7 +135,7 @@ export default new Vuex.Store({
       { label: i18n.t('view.details'), id: 'details', icon: '' },
     ],
     loading: false,
-    providers: process.env.VUE_APP_LOGIN_PROVIDERS.split('-'),
+    providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     keycloak: null,
     authenticated: false,
     loginLoading: false,

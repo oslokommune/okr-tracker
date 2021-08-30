@@ -1,5 +1,6 @@
 import { select, arc, interpolate, format, easeCircleOut } from 'd3';
 
+
 const size = 250;
 const padding = 50;
 const radius = (size - padding * 2) / 2;
@@ -120,9 +121,7 @@ function updateOuterArcs(el, data) {
     .selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', () => {
-      return this.darkmode ? 'white' : colors.yellow;
-    })
+    .attr('fill', () => this.darkmode ? 'white' : colors.yellow)
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0))
     .transition()
     .duration(duration)

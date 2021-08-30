@@ -18,7 +18,7 @@ describe('Delete department', () => {
 
     cy.get('.whitelist__body')
       .find('.whitelist__row')
-      .filter(`:contains(${Cypress.env('VUE_APP_TESTUSER_USER')})`)
+      .filter(`:contains(${Cypress.env('VITE_TESTUSER_USER')})`)
       .find('.btn--borderless')
       .click()
       .wait(1000);
