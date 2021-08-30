@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-We have removed vue-cli and moved to vitejs for better develop experience and faster build and deploy times. This also means that from now on that we won't support IE11 at all, even though we have said it earlier on. The chance that IE11 shows only a white screen is highly possible.
+## [2.1.0] 2021-08-30
+
+We have removed vue-cli and moved to vitejs for better develop experience and faster build and deploy times. This also means that from now on that we won't support IE11 at all. The chance that IE11 shows only a white screen is highly possible. We only support evergreen/modern browsers
 
 ### Added
 
@@ -12,7 +14,7 @@ We have removed vue-cli and moved to vitejs for better develop experience and fa
 
 ### Changes
 
-- Moved away from vue-cli to vitejs 🎉⚡🔥 Better, faster and leaner developer experience 🎉⚡🔥 (dev server start time down from 35 sec to 12 sec)
+- Moved from vue-cli to vitejs for our frontend build tool 🎉⚡🔥 Better, faster and leaner developer experience 🎉⚡🔥
 - Removed collapse-icon if the item has no children
 
 ## [2.0.1] 2021-08-25
