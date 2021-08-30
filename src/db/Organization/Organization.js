@@ -24,8 +24,6 @@ const deleteDeep = () => {
   throw new Error('Organizations can only be deleted from the Firestore console');
 };
 
-const uploadImage = (id, image) => {
-  return UploadImage(id, image, 'organizations');
-};
+const uploadImage = (id, image) => UploadImage(id, image, 'organizations');
 
 export default { create, update, archive, restore, deleteDeep, uploadImage };

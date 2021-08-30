@@ -78,13 +78,11 @@ export default class LineChart {
     };
 
     const datapoints = progressionList
-      .map((d) => {
-        return {
+      .map((d) => ({
           timestamp: d.timestamp.toDate(),
           value: +d.value,
           startValue: +obj.startValue,
-        };
-      })
+        }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
     const lastValue = datapoints.length ? +datapoints[datapoints.length - 1].value : startValue.value;
