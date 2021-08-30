@@ -6,6 +6,7 @@ import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
+import Keycloak from 'keycloak-js';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -16,17 +17,15 @@ import store from '@/store';
 import i18n from '@/locale/i18n';
 import { capitalizeFirstLetterOfNames } from '@/util/';
 
+import { auth } from './config/firebaseConfig';
+
+
 import './styles/main.scss';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
-import Keycloak from 'keycloak-js';
-
-const { auth } = require('./config/firebaseConfig');
-
-Vue.config.productionTip = false;
 
 // Use plugins
 Vue.use(Toasted, {

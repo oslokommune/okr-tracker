@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ['plugin:vue/recommended', 'airbnb', 'prettier'],
+  extends: ['plugin:vue/recommended', 'airbnb-base', 'prettier'],
   plugins: ['prettier'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -15,5 +15,12 @@ module.exports = {
   },
   parserOptions: {
     parser: 'babel-eslint',
+  },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+      },
+    },
   },
 };
