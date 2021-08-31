@@ -84,6 +84,12 @@ export default {
     showUserMenu: false,
   }),
 
+  metaInfo() {
+    return {
+      title: `OKR | ${this.title}`,
+    };
+  },
+
   computed: {
     ...mapState(['activeItem', 'user', 'providers', 'authenticated']),
 
