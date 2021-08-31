@@ -19,13 +19,13 @@ const db = admin.firestore();
 
 const organizationsConfig = {
   docPath: 'organizations/{documentId}',
-  fields: ['name', 'archived', 'missionStatement'],
+  fields: ['name', 'archived', 'missionStatement', 'team'],
   collectionRef: db.collection('organizations'),
   documentType: 'Organization',
 };
 const departmentsConfig = {
   docPath: 'departments/{documentId}',
-  fields: ['name', 'archived', 'missionStatement'],
+  fields: ['name', 'archived', 'missionStatement', 'team'],
   collectionRef: db.collection('departments'),
   documentType: 'Department',
 };

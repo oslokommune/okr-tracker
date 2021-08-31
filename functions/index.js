@@ -68,3 +68,7 @@ exports.createCustomToken = require('./tokenCreator').createCustomToken;
 // Express servers run via Cloud Functions
 exports.api = require('./api').app;
 exports.internal = require('./backend').app;
+
+
+// OKR-Tracker slackbot
+exports.okrTrackerSlackBot = require('./okrTrackerSlackBot').okrTrackerSlackBot;
