@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.1.2] 2021-09-02
+
+### Fixed
+
+- Nothing happened when trying to archive Periods/Objectives/Key Results
+
 ## [2.1.1] 2021-08-31
 
 ### Changes
