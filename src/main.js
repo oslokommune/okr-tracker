@@ -19,7 +19,6 @@ import { capitalizeFirstLetterOfNames } from '@/util/';
 
 import { auth } from './config/firebaseConfig';
 
-
 import './styles/main.scss';
 
 // import plugin styles
@@ -177,13 +176,13 @@ auth.onAuthStateChanged(async (user) => {
       render: (h) => h(App),
     });
 
-    router.beforeEach(async (to, from, next) => {
-      await store.dispatch('setLoading', true);
+    router.beforeEach((to, from, next) => {
+      store.dispatch('setLoading', true);
       next();
     });
 
-    router.afterEach(async () => {
-      await store.dispatch('setLoading', false);
+    router.afterEach(() => {
+      store.dispatch('setLoading', false);
     });
   }
 });
