@@ -21,6 +21,32 @@
           />
 
           <label class="form-group--checkbox">
+            <span class="form-label">Super admin</span>
+            <input
+              v-model="thisUser.superadmin"
+              class="form__checkbox"
+              type="checkbox"
+              :disabled="user.email === thisUser.email"
+            />
+          </label>
+
+          <label class="form-group">
+            <span class="form-label">Admin</span>
+            <v-select
+              v-model="thisUser.admin"
+              multiple
+              :options="organizations"
+              :get-option-label="(option) => option.name || option.slug"
+              :disabled="user.email === thisUser.email && !thisUser.superadmin"
+            >
+              <template #option="option">
+                {{ option.name || option.slug }}
+                <span v-if="option.name !== option.slug">({{ option.slug }})</span>
+              </template>
+            </v-select>
+          </label>
+
+          <label class="form-group--checkbox">
             <span class="form-label">{{ $t('general.admin') }}</span>
             <input
               v-model="thisUser.admin"
@@ -53,8 +79,9 @@
 </template>
 
 <script>
-import User from '@/db/User';
 import { mapState } from 'vuex';
+import User from '@/db/User';
+import { db } from '@/config/firebaseConfig';
 
 export default {
   name: 'EditUser',
@@ -73,7 +100,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'organizations']),
   },
 
   watch: {
@@ -137,6 +164,8 @@ export default {
     async save() {
       this.loading = true;
       try {
+        this.thisUser.admin = this.thisUser.admin.map((org) => db.collection('organizations').doc(org.id));
+
         this.image = null;
         await User.update(this.thisUser);
         this.$toasted.show(this.$t('toaster.savedChanges'));

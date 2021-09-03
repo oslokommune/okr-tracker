@@ -4,6 +4,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isSuperAdmin() {
+      let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.superadmin == true;
+      let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.superadmin == true;
+      return isSignedIn() && (oldUser || newUser);
+    }
+
     function isAdmin() {
       let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin == true;
       let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.admin == true;
@@ -53,7 +59,7 @@ service cloud.firestore {
 
 
     match /requestAccess/{document} {
-      allow read: if isAdmin();
+      allow read: if isSuperAdmin();
       allow write: if true;
     }
 
@@ -63,69 +69,69 @@ service cloud.firestore {
 
     match /users/{user} {
       allow read: if isSignedIn();
-      allow write: if isAdmin() || isSelf(user);
+      allow write: if isSuperAdmin() || isSelf(user);
     }
 
     match /organizations/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isTeamMember();
-      allow update: if isAdmin() || isTeamMember();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isTeamMember();
+      allow update: if isSuperAdmin() || isTeamMember();
+      allow delete: if isSuperAdmin();
     }
 
     match /departments/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isTeamMember();
-      allow update: if isAdmin() || isTeamMember();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isTeamMember();
+      allow update: if isSuperAdmin() || isTeamMember();
+      allow delete: if isSuperAdmin();
     }
 
     match /products/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isTeamMember();
-      allow update: if isAdmin() || isTeamMember();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isTeamMember();
+      allow update: if isSuperAdmin() || isTeamMember();
+      allow delete: if isSuperAdmin();
     }
 
     match /keyResults/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isMemberOfParent();
+      allow update: if isSuperAdmin() || isMemberOfParent();
+      allow delete: if isSuperAdmin();
     }
 
     match /keyResults/{document}/progress/{progress} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfKeyResParent(document);
-      allow update: if isAdmin() || isMemberOfKeyResParent(document);
-      allow delete: if isAdmin() || isMemberOfKeyResParent(document);
+      allow create: if isSuperAdmin() || isMemberOfKeyResParent(document);
+      allow update: if isSuperAdmin() || isMemberOfKeyResParent(document);
+      allow delete: if isSuperAdmin() || isMemberOfKeyResParent(document);
     }
 
     match /objectives/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isMemberOfParent();
+      allow update: if isSuperAdmin() || isMemberOfParent();
+      allow delete: if isSuperAdmin();
     }
 
     match /periods/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isMemberOfParent();
+      allow update: if isSuperAdmin() || isMemberOfParent();
+      allow delete: if isSuperAdmin();
     }
 
     match /kpis/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin() || isMemberOfParentDelete();
+      allow create: if isSuperAdmin() || isMemberOfParent();
+      allow update: if isSuperAdmin() || isMemberOfParent();
+      allow delete: if isSuperAdmin() || isMemberOfParentDelete();
     }
 
     match /kpis/{document}/progress/{progress} {
       allow read: if isSignedIn();
       allow create: if false;
-      allow delete: if isAdmin() || isMemberOfKpiParent(document);
+      allow delete: if isSuperAdmin() || isMemberOfKpiParent(document);
     }
 
     match /slugs/{document} {

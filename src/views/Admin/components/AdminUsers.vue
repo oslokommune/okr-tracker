@@ -115,10 +115,14 @@ export default {
 .add-users {
   display: flex;
   flex-direction: column;
-  height: 32rem;
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+}
+
+.add-users,
+.users {
+  height: 32rem;
 }
 
 .users__list {
