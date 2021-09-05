@@ -128,6 +128,8 @@ exports.okrTrackerSlackBot = functions
       return res.status(200).send('OK');
     }
     if (subcommands[0] === 'unsubscribe' && allowedSub.includes(subcommands[1])) {
+      // TODO: check if it has a deep connection, if it does then say that you need to run unsubscribe/all
+
       const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
       if (collection.docs.length === 0 || !collection.docs[0].exists) {
         return res
@@ -167,6 +169,8 @@ exports.okrTrackerSlackBot = functions
     }
 
     if (subcommands[0] === 'subscribe/all' && allowedDeepSub.includes(subcommands[1])) {
+      // TODO: add organization and department to the product-doc in slack-collection. Easier to find all documents that are under an organization/department
+
       // If organization
       // Find all departments, and all products that are within that organization
 
@@ -281,6 +285,8 @@ exports.okrTrackerSlackBot = functions
         });
 
         await Promise.all(promises);
+      } else {
+        // TODO: tell them that you only support organizations and departments
       }
 
       await postToSlack(subcommands[2], req.body.channel_id, req.body.channel_name);
@@ -289,6 +295,130 @@ exports.okrTrackerSlackBot = functions
     }
 
     if (subcommands[0] === 'unsubscribe/all' && allowedDeepSub.includes(subcommands[1])) {
+      // If organization
+      // Find all departments, and all products that are within that organization
+
+      // Get the slack document
+      const slackDoc = await slackCollection.doc(subcommands[2]).get();
+
+      // If it doesnt exist, then add a new document with the information
+      if (!slackDoc.exists) {
+        return res.status(200).send(`No subscription found for ${subcommands[1]}?`);
+      }
+
+      const doc = slackDoc.data();
+      let hasDeep = false;
+
+      for (let i = 0; i < doc.channels.length; i += 1) {
+        if (doc.channels[i].channel === req.body.channel_id && doc.channels[i].deep === true) {
+          hasDeep = true;
+          break;
+        }
+      }
+
+      if (!hasDeep) {
+        res.status(200).send(`You do not subscribe to everything for ${subcommands[2]}`);
+      }
+
+      if (subcommands[1] === 'organization') {
+        const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
+        if (collection.docs.length === 0 || !collection.docs[0].exists) {
+          return res
+            .status(200)
+            .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
+        }
+        const org = collection.docs[0].id;
+
+        // TODO: Run a query to find all the documents that are within the same organization;
+
+        const deps = await db
+          .collection('departments')
+          .where('organization', '==', organizationCollection.doc(org))
+          .get();
+        const prods = await db
+          .collection('products')
+          .where('organization', '==', organizationCollection.doc(org))
+          .get();
+
+        const slackPromises = [];
+        const depsAndProds = [];
+        deps.docs.forEach((dep) => {
+          const data = dep.data();
+          depsAndProds.push(data);
+          slackPromises.push(slackCollection.doc(data.slug).get());
+        });
+        prods.docs.forEach((prod) => {
+          const data = prod.data();
+          depsAndProds.push(data);
+          slackPromises.push(slackCollection.doc(data.slug).get());
+        });
+
+        const slackResult = await Promise.all(slackPromises);
+
+        const promises = [];
+        slackResult.forEach((result, index) => {
+          const doc = result.data();
+          if (!result.exists) {
+            const type = depsAndProds[index].department ? 'products' : 'departments';
+            const name = depsAndProds[index].slug;
+            promises.push(addChannelToDoc(slackCollection, type, name, req.body.channel_id, false));
+          } else {
+            doc.channels.push({ channel: req.body.channel_id, deep: false });
+            promises.push(
+              slackCollection.doc(depsAndProds[index].slug).update({
+                channels: doc.channels,
+              })
+            );
+          }
+        });
+
+        await Promise.all(promises);
+      } else if (subcommands[1] === 'department') {
+        const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
+        if (collection.docs.length === 0 || !collection.docs[0].exists) {
+          return res
+            .status(200)
+            .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
+        }
+
+        // TODO: Run a query to find all the documents that are within the same department;
+
+        const org = collection.docs[0].id;
+
+        const prods = await db.collection('products').where('department', '==', departmentCollection.doc(org)).get();
+
+        const slackPromises = [];
+        const allProds = [];
+        prods.docs.forEach((prod) => {
+          const data = prod.data();
+          allProds.push(data);
+          slackPromises.push(slackCollection.doc(data.slug).get());
+        });
+
+        const slackResult = await Promise.all(slackPromises);
+
+        const promises = [];
+        slackResult.forEach((result, index) => {
+          const doc = result.data();
+          if (!result.exists) {
+            const type = allProds[index].department ? 'products' : 'departments';
+            const name = allProds[index].slug;
+            promises.push(addChannelToDoc(slackCollection, type, name, req.body.channel_id, false));
+          } else {
+            doc.channels.push({ channel: req.body.channel_id, deep: false });
+            promises.push(
+              slackCollection.doc(allProds[index].slug).update({
+                channels: doc.channels,
+              })
+            );
+          }
+        });
+
+        await Promise.all(promises);
+
+        await postToSlack(subcommands[2], req.body.channel_id, req.body.channel_name);
+      }
+      return true;
     }
 
     return res.status(200).send(slackMessageHelp);
