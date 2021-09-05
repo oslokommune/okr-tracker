@@ -10,6 +10,12 @@ service cloud.firestore {
       return isSignedIn() && (oldUser || newUser);
     }
 
+    function newIsAdmin() {
+      let oldUser = getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.organization.data.name in get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin;
+
+      return isSignedIn() && oldUser;
+    }
+
     function isAdmin() {
       let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin == true;
       let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.admin == true;
