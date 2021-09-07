@@ -125,7 +125,7 @@ exports.okrTrackerSlackBot = functions
 
       await postToSlack(subcommands[2], req.body.channel_id, req.body.channel_name);
 
-      return res.status(200).send('OK');
+      return res.status(200).send();
     }
     if (subcommands[0] === 'unsubscribe' && allowedSub.includes(subcommands[1])) {
       // TODO: check if it has a deep connection, if it does then say that you need to run unsubscribe/all
@@ -165,14 +165,37 @@ exports.okrTrackerSlackBot = functions
 
       console.log(`Successfully send message ${result.ts} in conversation ${req.body.channel_name}`);
 
-      return res.status(200).send('OK');
+      return res.status(200).send();
     }
 
     if (subcommands[0] === 'subscribe/all' && allowedDeepSub.includes(subcommands[1])) {
-      // TODO: add organization and department to the product-doc in slack-collection. Easier to find all documents that are under an organization/department
+      const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
+      if (collection.docs.length === 0 || !collection.docs[0].exists) {
+        return res
+          .status(200)
+          .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
+      }
+      const orgId = collection.docs[0].id;
 
-      // If organization
-      // Find all departments, and all products that are within that organization
+      if (subcommands[1] === 'organization') {
+        const { slackPromises, depsAndProds } = await getAllDepsAndProds(orgId, slackCollection);
+
+        const slackResult = await Promise.all(slackPromises);
+
+        const promises = await updateChannelsFromDoc(slackResult, depsAndProds, slackCollection, req.body.channel_id);
+
+        await Promise.all(promises);
+      } else if (subcommands[1] === 'department') {
+        const { slackPromises, allProducts } = await getAllProductss(orgId, slackCollection);
+
+        const slackResult = await Promise.all(slackPromises);
+
+        const promises = await updateChannelsFromDoc(slackResult, allProducts, slackCollection, req.body.channel_id);
+
+        await Promise.all(promises);
+      } else {
+        return res.status(200).send('You can only run subscribe/all on a department or organization');
+      }
 
       // Get the slack document
       const slackDoc = await slackCollection.doc(subcommands[2]).get();
@@ -194,109 +217,19 @@ exports.okrTrackerSlackBot = functions
         }
       }
 
-      if (subcommands[1] === 'organization') {
-        const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
-        if (collection.docs.length === 0 || !collection.docs[0].exists) {
-          return res
-            .status(200)
-            .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
-        }
-        const org = collection.docs[0].id;
-
-        const deps = await db
-          .collection('departments')
-          .where('organization', '==', organizationCollection.doc(org))
-          .get();
-        const prods = await db
-          .collection('products')
-          .where('organization', '==', organizationCollection.doc(org))
-          .get();
-
-        const slackPromises = [];
-        const depsAndProds = [];
-        deps.docs.forEach((dep) => {
-          const data = dep.data();
-          depsAndProds.push(data);
-          slackPromises.push(slackCollection.doc(data.slug).get());
-        });
-        prods.docs.forEach((prod) => {
-          const data = prod.data();
-          depsAndProds.push(data);
-          slackPromises.push(slackCollection.doc(data.slug).get());
-        });
-
-        const slackResult = await Promise.all(slackPromises);
-
-        const promises = [];
-        slackResult.forEach((result, index) => {
-          const doc = result.data();
-          if (!result.exists) {
-            const type = depsAndProds[index].department ? 'products' : 'departments';
-            const name = depsAndProds[index].slug;
-            promises.push(addChannelToDoc(slackCollection, type, name, req.body.channel_id, false));
-          } else {
-            doc.channels.push({ channel: req.body.channel_id, deep: false });
-            promises.push(
-              slackCollection.doc(depsAndProds[index].slug).update({
-                channels: doc.channels,
-              })
-            );
-          }
-        });
-
-        await Promise.all(promises);
-      } else if (subcommands[1] === 'department') {
-        const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
-        if (collection.docs.length === 0 || !collection.docs[0].exists) {
-          return res
-            .status(200)
-            .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
-        }
-
-        const org = collection.docs[0].id;
-
-        const prods = await db.collection('products').where('department', '==', departmentCollection.doc(org)).get();
-
-        const slackPromises = [];
-        const allProds = [];
-        prods.docs.forEach((prod) => {
-          const data = prod.data();
-          allProds.push(data);
-          slackPromises.push(slackCollection.doc(data.slug).get());
-        });
-
-        const slackResult = await Promise.all(slackPromises);
-
-        const promises = [];
-        slackResult.forEach((result, index) => {
-          const doc = result.data();
-          if (!result.exists) {
-            const type = allProds[index].department ? 'products' : 'departments';
-            const name = allProds[index].slug;
-            promises.push(addChannelToDoc(slackCollection, type, name, req.body.channel_id, false));
-          } else {
-            doc.channels.push({ channel: req.body.channel_id, deep: false });
-            promises.push(
-              slackCollection.doc(allProds[index].slug).update({
-                channels: doc.channels,
-              })
-            );
-          }
-        });
-
-        await Promise.all(promises);
-      } else {
-        // TODO: tell them that you only support organizations and departments
-      }
-
       await postToSlack(subcommands[2], req.body.channel_id, req.body.channel_name);
 
-      return true;
+      return res.status(200).send();
     }
 
     if (subcommands[0] === 'unsubscribe/all' && allowedDeepSub.includes(subcommands[1])) {
-      // If organization
-      // Find all departments, and all products that are within that organization
+      const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
+      if (collection.docs.length === 0 || !collection.docs[0].exists) {
+        return res
+          .status(200)
+          .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
+      }
+      const orgId = collection.docs[0].id;
 
       // Get the slack document
       const slackDoc = await slackCollection.doc(subcommands[2]).get();
@@ -317,108 +250,48 @@ exports.okrTrackerSlackBot = functions
       }
 
       if (!hasDeep) {
-        res.status(200).send(`You do not subscribe to everything for ${subcommands[2]}`);
+        return res.status(200).send(`You do not subscribe to everything for ${subcommands[2]}`);
       }
 
       if (subcommands[1] === 'organization') {
-        const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
-        if (collection.docs.length === 0 || !collection.docs[0].exists) {
-          return res
-            .status(200)
-            .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
-        }
-        const org = collection.docs[0].id;
-
-        // TODO: Run a query to find all the documents that are within the same organization;
-
-        const deps = await db
-          .collection('departments')
-          .where('organization', '==', organizationCollection.doc(org))
-          .get();
-        const prods = await db
-          .collection('products')
-          .where('organization', '==', organizationCollection.doc(org))
-          .get();
-
-        const slackPromises = [];
-        const depsAndProds = [];
-        deps.docs.forEach((dep) => {
-          const data = dep.data();
-          depsAndProds.push(data);
-          slackPromises.push(slackCollection.doc(data.slug).get());
-        });
-        prods.docs.forEach((prod) => {
-          const data = prod.data();
-          depsAndProds.push(data);
-          slackPromises.push(slackCollection.doc(data.slug).get());
-        });
+        const { slackPromises, depsAndProds } = await getAllDepsAndProds(orgId, slackCollection);
 
         const slackResult = await Promise.all(slackPromises);
 
-        const promises = [];
-        slackResult.forEach((result, index) => {
-          const doc = result.data();
-          if (!result.exists) {
-            const type = depsAndProds[index].department ? 'products' : 'departments';
-            const name = depsAndProds[index].slug;
-            promises.push(addChannelToDoc(slackCollection, type, name, req.body.channel_id, false));
-          } else {
-            doc.channels.push({ channel: req.body.channel_id, deep: false });
-            promises.push(
-              slackCollection.doc(depsAndProds[index].slug).update({
-                channels: doc.channels,
-              })
-            );
-          }
-        });
+        const promises = await filterOutChannelsFromDoc(
+          slackResult,
+          depsAndProds,
+          slackCollection,
+          req.body.channel_id
+        );
 
         await Promise.all(promises);
       } else if (subcommands[1] === 'department') {
-        const collection = await db.collection(`${subcommands[1]}s`).where('slug', '==', subcommands[2]).get();
-        if (collection.docs.length === 0 || !collection.docs[0].exists) {
-          return res
-            .status(200)
-            .send(`Could not find the ${subcommands[1]}, are you sure you've typed in the correct name?`);
-        }
-
-        // TODO: Run a query to find all the documents that are within the same department;
-
-        const org = collection.docs[0].id;
-
-        const prods = await db.collection('products').where('department', '==', departmentCollection.doc(org)).get();
-
-        const slackPromises = [];
-        const allProds = [];
-        prods.docs.forEach((prod) => {
-          const data = prod.data();
-          allProds.push(data);
-          slackPromises.push(slackCollection.doc(data.slug).get());
-        });
+        const { slackPromises, allProducts } = await getAllProductss(orgId, slackCollection);
 
         const slackResult = await Promise.all(slackPromises);
 
-        const promises = [];
-        slackResult.forEach((result, index) => {
-          const doc = result.data();
-          if (!result.exists) {
-            const type = allProds[index].department ? 'products' : 'departments';
-            const name = allProds[index].slug;
-            promises.push(addChannelToDoc(slackCollection, type, name, req.body.channel_id, false));
-          } else {
-            doc.channels.push({ channel: req.body.channel_id, deep: false });
-            promises.push(
-              slackCollection.doc(allProds[index].slug).update({
-                channels: doc.channels,
-              })
-            );
-          }
-        });
+        const promises = await filterOutChannelsFromDoc(slackResult, allProducts, slackCollection, req.body.channel_id);
 
         await Promise.all(promises);
-
-        await postToSlack(subcommands[2], req.body.channel_id, req.body.channel_name);
+      } else {
+        return res.status(200).send('You can only run subscribe/all on a department or organization');
       }
-      return true;
+
+      doc.channels = doc.channels.filter((channel) => channel.channel !== req.body.channel_id);
+
+      await slackCollection.doc(subcommands[2]).update({
+        channels: doc.channels,
+      });
+
+      const result = await web.chat.postMessage({
+        text: `You have successfully unsubscribed to ${subcommands[2]}`,
+        channel: req.body.channel_id,
+      });
+
+      console.log(`Successfully send message ${result.ts} in conversation ${req.body.channel_name}`);
+
+      return res.status(200).send();
     }
 
     return res.status(200).send(slackMessageHelp);
@@ -451,7 +324,7 @@ const addChannelToDoc = (collection, type, name, channelId, deep) =>
     channels: [{ channel: channelId, deep }],
   });
 
-const updateChannelsToDoc = async (slackDoc, slackCollection, channelId, name, deep, res) => {
+const updateChannelsToDoc = async (slackDoc, slackCollection, channelId, name, deep) => {
   const doc = slackDoc.data();
   // Run through array and check if the channel exists
   const channelExists = inChannels(channelId, doc.channels);
@@ -465,4 +338,76 @@ const updateChannelsToDoc = async (slackDoc, slackCollection, channelId, name, d
     channels: doc.channels,
   });
   return true;
+};
+
+const getAllDepsAndProds = async (orgId, slackCollection) => {
+  const deps = await db.collection('departments').where('organization', '==', organizationCollection.doc(orgId)).get();
+  const prods = await db.collection('products').where('organization', '==', organizationCollection.doc(orgId)).get();
+
+  const slackPromises = [];
+  const depsAndProds = [];
+  deps.docs.forEach((dep) => {
+    const data = dep.data();
+    depsAndProds.push(data);
+    slackPromises.push(slackCollection.doc(data.slug).get());
+  });
+  prods.docs.forEach((prod) => {
+    const data = prod.data();
+    depsAndProds.push(data);
+    slackPromises.push(slackCollection.doc(data.slug).get());
+  });
+
+  return { slackPromises, depsAndProds };
+};
+
+const getAllProductss = async (orgId, slackCollection) => {
+  const prods = await db.collection('products').where('department', '==', departmentCollection.doc(orgId)).get();
+
+  const slackPromises = [];
+  const allProducts = [];
+  prods.docs.forEach((prod) => {
+    const data = prod.data();
+    allProducts.push(data);
+    slackPromises.push(slackCollection.doc(data.slug).get());
+  });
+
+  return { slackPromises, allProducts };
+};
+
+const filterOutChannelsFromDoc = async (slackArr, docsArr, slackCollection, channelId) => {
+  const promises = [];
+  slackArr.forEach((result, index) => {
+    const data = result.data();
+    if (result.exists) {
+      data.channels = data.channels.filter((channel) => channel.channel !== channelId);
+      promises.push(
+        slackCollection.doc(docsArr[index].slug).update({
+          channels: data.channels,
+        })
+      );
+    }
+  });
+
+  return promises;
+};
+
+const updateChannelsFromDoc = async (slackArr, docsArr, slackCollection, channelId) => {
+  const promises = [];
+  slackArr.forEach((result, index) => {
+    const doc = result.data();
+    if (!result.exists) {
+      const type = docsArr[index].department ? 'products' : 'departments';
+      const name = docsArr[index].slug;
+      promises.push(addChannelToDoc(slackCollection, type, name, channelId, false));
+    } else {
+      doc.channels.push({ channel: channelId, deep: false });
+      promises.push(
+        slackCollection.doc(docsArr[index].slug).update({
+          channels: doc.channels,
+        })
+      );
+    }
+  });
+
+  return promises;
 };
