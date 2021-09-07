@@ -45,7 +45,35 @@ const slackMessageHelp = {
       type: 'section',
       text: {
         type: 'mrkdwn',
+        text: 'Subscribe to notifications for all products and departments in an organization\n`/okr subscribe/all organization organization-slug`\nExample: `/okr subscribe/all organization oslo-origo`',
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: 'Unsubscribe to notifications for all products and departments in an organization\n`/okr unsubscribe/all organization organization-slug`\nExample: `/okr unsubscribe/all organization oslo-origo`',
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
         text: 'Subscribe to notifications for a department\n`/okr subscribe department department-slug`\nExample: `/okr subscribe department apen-by`',
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: 'Subscribe to notifications for all products in a department\n`/okr subscribe/all department department-slug`\nExample: `/okr subscribe/all department apen-by`',
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: 'Unsubscribe to notifications for all products in a department\n`/okr unsubscribe/all department department-slug`\nExample: `/okr unsubscribe/all department apen-by`',
       },
     },
     {
