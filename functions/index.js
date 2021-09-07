@@ -71,4 +71,4 @@ exports.internal = require('./backend').app;
 
 
 // OKR-Tracker slackbot
-exports.okrTrackerSlackBot = require('./okrTrackerSlackBot').okrTrackerSlackBot;
+exports.okrTrackerSlackBot = require('./slackbot').okrTrackerSlackBot;
