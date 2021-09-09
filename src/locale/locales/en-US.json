@@ -348,11 +348,6 @@
     "title": "Help",
     "toc": "Content"
   },
-  "profile": {
-    "myProfile": "My profile",
-    "hasAdmin": "Has admin rights",
-    "products": "My products"
-  },
   "view": {
     "compact": "Compact",
     "details": "Details"
@@ -426,7 +421,29 @@
     "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select language",
+    "myProfile": "My profile",
+    "hasAdmin": "Has admin rights",
+    "products": "My products",
+    "position": {
+      "frontendDeveloper": "Front-end developer",
+      "backendDeveloper": "Back-end developer",
+      "fullStackDeveloper": "Full stack developer",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaction designer",
+      "serviceDesigner": "Service designer",
+      "contentDesigner": "Content designer",
+      "graphicDesigner": "Graphic designer",
+      "informationArchitect": "Information Architect",
+      "dataScientist": "Data scientist",
+      "teamLead": "Team lead",
+      "productOwner": "Product owner",
+      "businessAnalyst": "Business Analyst",
+      "businessDeveloper": "Business Developer",
+      "departmentDirector": "Department director",
+      "director": "Director",
+      "organizationDeveloper": "Organization Developer"
+    }
   },
   "languages": {
     "en-US": "English",

@@ -56,11 +56,11 @@
             Admin
           </h2>
           <div>
-            {{ $t('profile.hasAdmin') }}
+            {{ $t('user.hasAdmin') }}
           </div>
         </template>
 
-        <h2 class="title-2">{{ $t('profile.products') }}</h2>
+        <h2 class="title-2">{{ $t('user.products') }}</h2>
         <ul class="grid-system">
           <li v-for="product in products" :key="product.id">
             <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">

@@ -345,11 +345,6 @@
     "title": "Hjelp",
     "toc": "Innhold"
   },
-  "profile": {
-    "myProfile": "Min profil",
-    "hasAdmin": "Har administratortilgang",
-    "products": "Mine produkter"
-  },
   "view": {
     "compact": "Kompakt",
     "details": "Detaljer"
@@ -423,7 +418,29 @@
     "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
-    "selectLanguage": "Velg språk"
+    "myProfile": "Min profil",
+    "hasAdmin": "Har administratortilgang",
+    "products": "Mine produkter",
+    "selectLanguage": "Velg språk",
+    "position": {
+      "frontendDeveloper": "Frontend-utvikler",
+      "backendDeveloper": "Backend-utvikler",
+      "fullStackDeveloper": "Fullstack-utvikler",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaksjonsdesigner",
+      "serviceDesigner": "Tjenestedesigner",
+      "contentDesigner": "Innholdsdesigner",
+      "graphicDesigner": "Grafisk designer",
+      "informationArchitect": "informasjonsarkitekt",
+      "dataScientist": "Data scientist",
+      "teamLead": "Team lead",
+      "productOwner": "Produktområdeleder",
+      "businessAnalyst": "Forretningsanalytiker",
+      "businessDeveloper": "Forretningsutvikler",
+      "departmentDirector": "Avdelingsdirektør",
+      "director": "Direktør",
+      "organizationDeveloper": "Organisasjonsutvikler"
+    }
   },
   "languages": {
     "en-US": "Engelsk",

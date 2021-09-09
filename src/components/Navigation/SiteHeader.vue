@@ -32,7 +32,7 @@
                 data-cy="site-header-profile"
               >
                 <i class="icon fa fa-fw fa-user" />
-                {{ $t('profile.myProfile') }}
+                {{ $t('user.myProfile') }}
               </router-link>
             </li>
             <li v-if="user.admin" class="menu__list-item">
