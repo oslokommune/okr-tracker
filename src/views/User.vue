@@ -38,10 +38,23 @@
         </label>
 
         <label v-if="me" class="form-group">
+          <span class="form-label">{{ $t('user.position.title') }}</span>
+          <v-select
+            v-model="thisUser.position"
+            :options="positions"
+            :get-option-label="(option) => $t(`user.position.${option}`)"
+          >
+          </v-select>
+        </label>
+
+        <label v-if="me" class="form-group">
           <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-          <select v-model="thisUser.preferences.lang" class="form__field">
-            <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
-          </select>
+          <v-select
+            v-model="thisUser.preferences.lang"
+            :options="languages"
+            :get-option-label="(option) => $t(`languages.${option}`)"
+          >
+          </v-select>
         </label>
 
         <div v-if="me" class="user__info-btn">
@@ -92,6 +105,27 @@ export default {
     loading: false,
     thisUser: null,
     languages: ['nb-NO', 'en-US'],
+    positions: [
+      'backendDeveloper',
+      'contentDesigner',
+      'graphicDesigner',
+      'frontendDeveloper',
+      'fullStackDeveloper',
+      'informationArchitect',
+      'interactionDesigner',
+      'serviceDesigner',
+      'techLead',
+      'dataScientist',
+      'teamLead',
+      'productOwner',
+      'businessAnalyst',
+      'businessDeveloper',
+      'departmentDirector',
+      'director',
+      'organizationDeveloper',
+      'lawyer',
+      'principalEngineer'
+    ],
   }),
 
   computed: {

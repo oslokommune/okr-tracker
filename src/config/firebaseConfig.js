@@ -38,7 +38,7 @@ const analytics = firebase.analytics();
 const functions = firebase.app().functions(import.meta.env.VITE_REGION);
 const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
 
-if (import.meta.env.NODE_ENV === 'development' || window.Cypress) {
+if (import.meta.env.MODE === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);
   auth.useEmulator(`http://localhost:${emulators.auth.port}`);

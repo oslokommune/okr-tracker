@@ -426,6 +426,7 @@
     "hasAdmin": "Has admin rights",
     "products": "My products",
     "position": {
+      "title": "Position",
       "frontendDeveloper": "Front-end developer",
       "backendDeveloper": "Back-end developer",
       "fullStackDeveloper": "Full stack developer",
@@ -442,7 +443,8 @@
       "businessDeveloper": "Business Developer",
       "departmentDirector": "Department director",
       "director": "Director",
-      "organizationDeveloper": "Organization Developer"
+      "organizationDeveloper": "Organization Developer",
+      "lawyer": "Lawyer"
     }
   },
   "languages": {

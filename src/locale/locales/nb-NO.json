@@ -423,6 +423,7 @@
     "products": "Mine produkter",
     "selectLanguage": "Velg språk",
     "position": {
+      "title": "Stilling",
       "frontendDeveloper": "Frontend-utvikler",
       "backendDeveloper": "Backend-utvikler",
       "fullStackDeveloper": "Fullstack-utvikler",
@@ -431,15 +432,17 @@
       "serviceDesigner": "Tjenestedesigner",
       "contentDesigner": "Innholdsdesigner",
       "graphicDesigner": "Grafisk designer",
-      "informationArchitect": "informasjonsarkitekt",
+      "informationArchitect": "Informasjonsarkitekt",
       "dataScientist": "Data scientist",
-      "teamLead": "Team lead",
+      "teamLead": "Teamleder",
       "productOwner": "Produktområdeleder",
       "businessAnalyst": "Forretningsanalytiker",
       "businessDeveloper": "Forretningsutvikler",
       "departmentDirector": "Avdelingsdirektør",
       "director": "Direktør",
-      "organizationDeveloper": "Organisasjonsutvikler"
+      "organizationDeveloper": "Organisasjonsutvikler",
+      "principalEngineer": "Virksomhetsarkitekt",
+      "lawyer": "Gladjurist"
     }
   },
   "languages": {
