@@ -52,6 +52,9 @@ exports.AuditObjectiveDelete = require('./audit').ObjectiveDelete;
 exports.AuditKeyResultUpdate = require('./audit').KeyResultUpdate;
 exports.AuditKeyResultCreate = require('./audit').KeyResultCreate;
 exports.AuditKeyResultDelete = require('./audit').KeyResultDelete;
+exports.AuditKPICreate = require('./audit').KPICreate;
+exports.AuditKPIUpdate = require('./audit').KPIUpdate;
+exports.AuditKPIDelete = require('./audit').KPIDelete;
 
 /**
  * Listen for changes in progress and update key results and items accordingly

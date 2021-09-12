@@ -114,8 +114,6 @@ exports.runSlackBot = async (req, res) => {
 
   const subcommands = req.body.text.split(' ');
 
-  console.log(subcommands);
-
   // If user sends subscribe
   if (subcommands[0] === 'subscribe' && allowedSub.includes(subcommands[1])) {
     // Check if user wants to subscribe to everything from top to bottom of org/dep

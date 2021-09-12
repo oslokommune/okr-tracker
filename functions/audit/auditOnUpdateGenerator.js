@@ -1,8 +1,17 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
+const { WebClient } = require('@slack/web-api');
+
 const config = require('../config');
 
+const environment = functions.config();
+
+const { token } = environment.slack;
+const slack = new WebClient(token);
+
 const db = admin.firestore();
+
+const collection = db.collection('slack');
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
   return functions
@@ -38,13 +47,15 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         }
       })();
 
-      return db.collection('audit').add({
+      const auditData = {
         event,
         timestamp: new Date(),
         documentRef: collectionRef.doc(documentId),
         user: user || 'system',
         diff,
-      });
+      };
+
+      return db.collection('audit').add(auditData);
     });
 };
 
@@ -85,3 +96,18 @@ function getDiff({ before, after }, keys) {
 
   return diff;
 }
+
+const pushToSlack = (documentType) => {
+  if (documentType === 'Organization') {
+  }
+  if (documentType === 'Department') {
+  }
+  if (documentType === 'Product') {
+  }
+  if (documentType === 'Period') {
+  }
+  if (documentType === 'Objective') {
+  }
+  if (documentType === 'KeyResult') {
+  }
+};

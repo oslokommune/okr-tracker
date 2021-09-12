@@ -8,7 +8,6 @@
  */
 
 // TODO: Audit for key result progress
-// TODO: Audit for KPIs
 
 const admin = require('firebase-admin');
 const { auditOnUpdateGenerator } = require('./auditOnUpdateGenerator');
@@ -65,6 +64,19 @@ const keyResultsConfig = {
   documentType: 'KeyResult',
 };
 
+const kpiConfig = {
+  docPath: 'kpis/{documentId}',
+  fields: [
+    'api',
+    'name',
+    'description',
+    'type',
+    'currentValue',
+  ],
+  collectionRef: db.collection('kpis'),
+  documentType: 'KPI',
+}
+
 exports.OrganizationCreate = auditOnCreateGenerator(organizationsConfig);
 exports.OrganizationUpdate = auditOnUpdateGenerator(organizationsConfig);
 exports.OrganizationDelete = auditOnDeleteGenerator(organizationsConfig);
@@ -88,3 +100,7 @@ exports.ObjectiveDelete = auditOnDeleteGenerator(objectivesConfig);
 exports.KeyResultCreate = auditOnCreateGenerator(keyResultsConfig);
 exports.KeyResultUpdate = auditOnUpdateGenerator(keyResultsConfig);
 exports.KeyResultDelete = auditOnDeleteGenerator(keyResultsConfig);
+
+exports.KPICreate = auditOnDeleteGenerator(kpiConfig);
+exports.KPIUpdate = auditOnUpdateGenerator(kpiConfig);
+exports.KPIDelete = auditOnDeleteGenerator(kpiConfig);
