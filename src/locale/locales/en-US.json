@@ -444,7 +444,16 @@
       "departmentDirector": "Department director",
       "director": "Director",
       "organizationDeveloper": "Organization Developer",
-      "lawyer": "Lawyer"
+      "legalAdvisor": "Legal advisor",
+      "itCustodian": "IT-Custodian",
+      "hr": "HR og personnel management",
+      "hardwareDeveloper": "Hardware developer",
+      "humanResourcesManager": "Human resources manager",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobile developer",
+      "securityExpert": "Security expert",
+      "administration": "Administration",
+      "contentProducer": "Content producer"
     }
   },
   "languages": {

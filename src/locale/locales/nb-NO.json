@@ -442,7 +442,16 @@
       "director": "Direktør",
       "organizationDeveloper": "Organisasjonsutvikler",
       "principalEngineer": "Virksomhetsarkitekt",
-      "lawyer": "Gladjurist"
+      "legalAdvisor": "Gladjurist",
+      "itCustodian": "IT-vaktmester",
+      "hr": "HR og personalansvarlig",
+      "hardwareDeveloper": "hardware-utvikler",
+      "humanResourcesManager": "Personalleder",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobilutvikler",
+      "securityExpert": "Sikekrhetsekspert",
+      "administration": "Administrasjon",
+      "contentProducer": "Innholdsprodusent"
     }
   },
   "languages": {
