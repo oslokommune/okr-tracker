@@ -435,7 +435,8 @@
         "members": "Team members",
         "productOwner": "Product owner",
         "director": "Director",
-        "others": "Members"
+        "others": "Members",
+        "departmentDirector": "Department director"
       },
       "title": "Position",
       "frontendDeveloper": "Front-end developer",

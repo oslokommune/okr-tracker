@@ -8,7 +8,7 @@
     />
 
     <template v-if="director">
-      <h4 class="title-4">{{ $t('user.position.groups.director') }}</h4>
+      <h4 class="user__title">{{ $t('user.position.groups.director') }}</h4>
       <ul class="users__list">
         <li class="user">
           <router-link v-if="director.id" :to="{ name: 'User', params: { id: director.id } }" class="user__link">
@@ -18,8 +18,23 @@
       </ul>
     </template>
 
+    <template v-if="departmentDirector">
+      <h4 class="user__title">{{ $t('user.position.groups.departmentDirector') }}</h4>
+      <ul class="users__list">
+        <li class="user">
+          <router-link
+            v-if="departmentDirector.id"
+            :to="{ name: 'User', params: { id: departmentDirector.id } }"
+            class="user__link"
+          >
+            <span class="user__name">{{ departmentDirector.displayName || departmentDirector.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
     <template v-if="productOwner">
-      <div>{{ $t('user.position.groups.productOwner') }}</div>
+      <div class="user__title">{{ $t('user.position.groups.productOwner') }}</div>
       <ul class="users__list">
         <li class="user">
           <router-link
@@ -34,7 +49,7 @@
     </template>
 
     <template v-if="teamLead">
-      <div>{{ $t('user.position.groups.teamLead') }}</div>
+      <div class="user__title">{{ $t('user.position.groups.teamLead') }}</div>
       <ul class="users__list">
         <li class="user">
           <router-link v-if="teamLead.id" :to="{ name: 'User', params: { id: teamLead.id } }" class="user__link">
@@ -45,7 +60,7 @@
     </template>
 
     <template v-if="techLead">
-      <div>{{ $t('user.position.groups.techLead') }}</div>
+      <div class="user__title">{{ $t('user.position.groups.techLead') }}</div>
       <ul class="users__list">
         <li class="user">
           <router-link v-if="techLead.id" :to="{ name: 'User', params: { id: techLead.id } }" class="user__link">
@@ -56,7 +71,7 @@
     </template>
 
     <template v-if="designers.length > 0">
-      <div>{{ $t('user.position.groups.designers') }}</div>
+      <div class="user__title">{{ $t('user.position.groups.designers') }}</div>
       <ul class="users__list">
         <li v-for="design in designers" :key="design.id" class="user">
           <router-link v-if="design.id" :to="{ name: 'User', params: { id: design.id } }" class="user__link">
@@ -67,7 +82,7 @@
     </template>
 
     <template v-if="developers.length > 0">
-      <div class="title-group">{{ $t('user.position.groups.developers') }}</div>
+      <div class="user__title">{{ $t('user.position.groups.developers') }}</div>
       <ul class="users__list">
         <li v-for="dev in developers" :key="dev.id" class="user">
           <router-link v-if="dev.id" :to="{ name: 'User', params: { id: dev.id } }" class="user__link">
@@ -78,7 +93,7 @@
     </template>
 
     <template v-if="administration.length > 0">
-      <div>{{ $t('user.position.groups.administration') }}</div>
+      <div class="user__title">{{ $t('user.position.groups.administration') }}</div>
       <ul class="users__list">
         <li v-for="adm in administration" :key="adm.id" class="user">
           <router-link v-if="adm.id" :to="{ name: 'User', params: { id: adm.id } }" class="user__link">
@@ -88,7 +103,7 @@
       </ul>
     </template>
 
-    <div class="title-group">{{ $t('user.position.groups.others') }}</div>
+    <div class="user__title">{{ $t('user.position.groups.others') }}</div>
     <ul class="users__list">
       <li v-for="user in others" :key="user.id" class="user">
         <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
@@ -129,6 +144,7 @@ export default {
     director: null,
     others: [],
     productOwner: null,
+    departmentDirector: null,
   }),
 
   computed: {
@@ -183,6 +199,8 @@ export default {
             this.teamLead = employee;
           } else if (employee.position === 'productOwner') {
             this.productOwner = employee;
+          } else if (employee.position === 'departmentDirector') {
+            this.departmentDirector = employee;
           } else {
             this.others.push(employee);
           }
@@ -218,7 +236,7 @@ export default {
   }
 }
 
-.title-group {
+.user__title {
   margin-top: 1rem;
   padding: 0.2rem;
   color: $color-grey-300;

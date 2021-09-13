@@ -432,7 +432,8 @@
         "administration": "Administrasjon",
         "productOwner": "Produktområdeleder",
         "director": "Direktør",
-        "others": "Medlemmer"
+        "others": "Medlemmer",
+        "departmentDirector": "Avdelingsdirektør"
       },
       "title": "Stilling",
       "frontendDeveloper": "Frontend-utvikler",
