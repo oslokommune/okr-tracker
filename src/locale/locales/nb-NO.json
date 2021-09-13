@@ -8,7 +8,8 @@
       "blue": "Blå",
       "green": "Grønn"
     },
-    "toggle": "Skift fargetema: {mode}"
+    "toggle": "Skift fargetema: {mode}",
+    "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {
     "add": "Legg til KPI",
@@ -423,6 +424,16 @@
     "products": "Mine produkter",
     "selectLanguage": "Velg språk",
     "position": {
+      "groups": {
+        "developers": "Utvikling",
+        "designers": "Design",
+        "teamLead": "Teamleder",
+        "techLead": "Tech lead",
+        "administration": "Administrasjon",
+        "productOwner": "Produktområdeleder",
+        "director": "Direktør",
+        "others": "Medlemmer"
+      },
       "title": "Stilling",
       "frontendDeveloper": "Frontend-utvikler",
       "backendDeveloper": "Backend-utvikler",

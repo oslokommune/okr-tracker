@@ -426,6 +426,17 @@
     "hasAdmin": "Has admin rights",
     "products": "My products",
     "position": {
+      "groups": {
+        "developers": "Developers",
+        "designers": "Designers",
+        "teamLead": "Team lead",
+        "techLead": "Tech lead",
+        "administration": "Administration",
+        "members": "Team members",
+        "productOwner": "Product owner",
+        "director": "Director",
+        "others": "Members"
+      },
       "title": "Position",
       "frontendDeveloper": "Front-end developer",
       "backendDeveloper": "Back-end developer",

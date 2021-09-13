@@ -7,10 +7,91 @@
       :body="$t('empty.team.body')"
     />
 
+    <template v-if="director">
+      <h4 class="title-4">{{ $t('user.position.groups.director') }}</h4>
+      <ul class="users__list">
+        <li class="user">
+          <router-link v-if="director.id" :to="{ name: 'User', params: { id: director.id } }" class="user__link">
+            <span class="user__name">{{ director.displayName || director.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <template v-if="productOwner">
+      <div>{{ $t('user.position.groups.productOwner') }}</div>
+      <ul class="users__list">
+        <li class="user">
+          <router-link
+            v-if="productOwner.id"
+            :to="{ name: 'User', params: { id: productOwner.id } }"
+            class="user__link"
+          >
+            <span class="user__name">{{ productOwner.displayName || productOwner.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <template v-if="teamLead">
+      <div>{{ $t('user.position.groups.teamLead') }}</div>
+      <ul class="users__list">
+        <li class="user">
+          <router-link v-if="teamLead.id" :to="{ name: 'User', params: { id: teamLead.id } }" class="user__link">
+            <span class="user__name">{{ teamLead.displayName || teamLead.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <template v-if="techLead">
+      <div>{{ $t('user.position.groups.techLead') }}</div>
+      <ul class="users__list">
+        <li class="user">
+          <router-link v-if="techLead.id" :to="{ name: 'User', params: { id: techLead.id } }" class="user__link">
+            <span class="user__name">{{ techLead.displayName || techLead.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <template v-if="designers.length > 0">
+      <div>{{ $t('user.position.groups.designers') }}</div>
+      <ul class="users__list">
+        <li v-for="design in designers" :key="design.id" class="user">
+          <router-link v-if="design.id" :to="{ name: 'User', params: { id: design.id } }" class="user__link">
+            <span class="user__name">{{ design.displayName || design.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <template v-if="developers.length > 0">
+      <div class="title-group">{{ $t('user.position.groups.developers') }}</div>
+      <ul class="users__list">
+        <li v-for="dev in developers" :key="dev.id" class="user">
+          <router-link v-if="dev.id" :to="{ name: 'User', params: { id: dev.id } }" class="user__link">
+            <span class="user__name">{{ dev.displayName || dev.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <template v-if="administration.length > 0">
+      <div>{{ $t('user.position.groups.administration') }}</div>
+      <ul class="users__list">
+        <li v-for="adm in administration" :key="adm.id" class="user">
+          <router-link v-if="adm.id" :to="{ name: 'User', params: { id: adm.id } }" class="user__link">
+            <span class="user__name">{{ adm.displayName || adm.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
+
+    <div class="title-group">{{ $t('user.position.groups.others') }}</div>
     <ul class="users__list">
-      <li v-for="user in activeItem.team" :key="user.id" class="user">
+      <li v-for="user in others" :key="user.id" class="user">
         <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
-          <img :src="user.photoURL || '/placeholder-image.svg'" :aria-hidden="true" class="user__image" />
           <span class="user__name">{{ user.displayName || user.id }}</span>
         </router-link>
       </li>
@@ -39,6 +120,17 @@ export default {
     },
   },
 
+  data: () => ({
+    developers: [],
+    designers: [],
+    administration: [],
+    techLead: null,
+    teamLead: null,
+    director: null,
+    others: [],
+    productOwner: null,
+  }),
+
   computed: {
     ...mapState(['activeItem', 'user']),
 
@@ -52,37 +144,86 @@ export default {
       }
     },
   },
+
+  watch: {
+    activeItem: {
+      immediate: true,
+      deep: true,
+      handler() {
+        const possibleDevelopers = [
+          'frontendDeveloper',
+          'backendDeveloper',
+          'fullStackDeveloper',
+          'dataScientist',
+          'dataEngineer',
+          'hardwareDeveloper',
+          'mobileDeveloper',
+        ];
+        const possibleDesigners = [
+          'interactionDesigner',
+          'serviceDesigner',
+          'contentDesigner',
+          'graphicDesigner',
+          'contentProducer',
+        ];
+        const possibleAdm = ['humanResourcesManager', 'administration'];
+
+        this.activeItem.team.forEach((employee) => {
+          if (possibleDevelopers.includes(employee.position)) {
+            this.developers.push(employee);
+          } else if (possibleDesigners.includes(employee.position)) {
+            this.designers.push(employee);
+          } else if (possibleAdm.includes(employee.position)) {
+            this.administration.push(employee);
+          } else if (employee.position === 'director') {
+            this.director = employee;
+          } else if (employee.position === 'techLead') {
+            this.techLead = employee;
+          } else if (employee.position === 'teamLead') {
+            this.teamLead = employee;
+          } else if (employee.position === 'productOwner') {
+            this.productOwner = employee;
+          } else {
+            this.others.push(employee);
+          }
+        });
+      },
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/_colors.scss';
+@import '@/styles/typography.scss';
 
 .users__list {
   display: flex;
   flex-direction: column;
-  margin-right: -1rem;
-  margin-bottom: 1rem;
-  margin-left: -1rem;
-  border-bottom: 1px solid $color-grey-100;
 }
 
 .user__link {
   display: flex;
   align-items: center;
   color: var(--color-text);
+  font-weight: 500;
   text-decoration: none;
 }
 
-.user__image {
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.35rem;
-  border-radius: 1rem;
+.user {
+  padding: 0.2rem;
+
+  &:hover {
+    background: rgba($color-grey-500, 0.1);
+  }
 }
 
-.user {
-  padding: 0.5rem 1rem;
-  border-top: 1px solid $color-grey-100;
+.title-group {
+  margin-top: 1rem;
+  padding: 0.2rem;
+  color: $color-grey-300;
+  font-weight: 500;
+  font-size: $font-size-2;
+  letter-spacing: -0.03rem;
 }
 </style>
