@@ -119,6 +119,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { possibleDevelopers, possibleAdm, possibleDesigners } from "@/config/jobPositions";
 
 export default {
   name: 'WidgetTeam',
@@ -139,10 +140,10 @@ export default {
     developers: [],
     designers: [],
     administration: [],
+    others: [],
     techLead: null,
     teamLead: null,
     director: null,
-    others: [],
     productOwner: null,
     departmentDirector: null,
   }),
@@ -166,33 +167,15 @@ export default {
       immediate: true,
       deep: true,
       handler() {
-        const possibleDevelopers = [
-          'frontendDeveloper',
-          'backendDeveloper',
-          'fullStackDeveloper',
-          'dataScientist',
-          'dataEngineer',
-          'hardwareDeveloper',
-          'mobileDeveloper',
-        ];
-        const possibleDesigners = [
-          'interactionDesigner',
-          'serviceDesigner',
-          'contentDesigner',
-          'graphicDesigner',
-          'contentProducer',
-        ];
-        const possibleAdm = ['humanResourcesManager', 'administration'];
-
         this.developers = [];
         this.designers = [];
         this.administration = [];
+        this.others = [];
         this.director = null;
         this.techLead = null;
         this.teamLead = null;
         this.productOwner = null;
         this.departmentDirector = null;
-        this.others = [];
 
         this.activeItem.team.forEach((employee) => {
           if (possibleDevelopers.includes(employee.position)) {

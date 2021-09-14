@@ -41,7 +41,7 @@
           <span class="form-label">{{ $t('user.position.title') }}</span>
           <v-select
             v-model="thisUser.position"
-            :options="positions"
+            :options="jobPositions"
             :get-option-label="(option) => $t(`user.position.${option}`)"
           >
           </v-select>
@@ -93,6 +93,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import User from '@/db/User';
+import { jobPositions } from '@/config/jobPositions';
 
 export default {
   name: 'User',
@@ -105,37 +106,7 @@ export default {
     loading: false,
     thisUser: null,
     languages: ['nb-NO', 'en-US'],
-    positions: [
-      'administration',
-      'backendDeveloper',
-      'businessAnalyst',
-      'businessDeveloper',
-      'contentDesigner',
-      'contentProducer',
-      'dataEngineer',
-      'dataScientist',
-      'departmentDirector',
-      'director',
-      'frontendDeveloper',
-      'fullStackDeveloper',
-      'graphicDesigner',
-      'hardwareDeveloper',
-      'hr',
-      'humanResourcesManager',
-      'informationArchitect',
-      'interactionDesigner',
-      'itCustodian',
-      'legalAdvisor',
-      'mobileDeveloper',
-      'organizationDeveloper',
-      'principalEngineer',
-      'productOwner',
-      'securityExpert',
-      'serviceDesigner',
-      'teamLead',
-      'techLead',
-      'other',
-    ],
+    jobPositions,
   }),
 
   computed: {
