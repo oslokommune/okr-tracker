@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.2.0] 2021-09-14
+
 ### Added
 
 - Users can choose what type of user they are from a predefined list of job positions. This is done in the `My Profile`-page
