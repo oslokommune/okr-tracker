@@ -348,11 +348,6 @@
     "title": "Help",
     "toc": "Content"
   },
-  "profile": {
-    "myProfile": "My profile",
-    "hasAdmin": "Has admin rights",
-    "products": "My products"
-  },
   "view": {
     "compact": "Compact",
     "details": "Details"
@@ -426,7 +421,53 @@
     "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select language",
+    "myProfile": "My profile",
+    "hasAdmin": "Has admin rights",
+    "products": "My products",
+    "position": {
+      "groups": {
+        "developers": "Developers",
+        "designers": "Designers",
+        "teamLead": "Team lead",
+        "techLead": "Tech lead",
+        "administration": "Administration",
+        "members": "Team members",
+        "productOwner": "Product owner",
+        "director": "Director",
+        "others": "Members",
+        "departmentDirector": "Department director"
+      },
+      "title": "Position",
+      "frontendDeveloper": "Front-end developer",
+      "backendDeveloper": "Back-end developer",
+      "fullStackDeveloper": "Full stack developer",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaction designer",
+      "serviceDesigner": "Service designer",
+      "contentDesigner": "Content designer",
+      "graphicDesigner": "Graphic designer",
+      "informationArchitect": "Information Architect",
+      "dataScientist": "Data scientist",
+      "teamLead": "Team lead",
+      "productOwner": "Product owner",
+      "businessAnalyst": "Business Analyst",
+      "businessDeveloper": "Business Developer",
+      "departmentDirector": "Department director",
+      "director": "Director",
+      "organizationDeveloper": "Organization Developer",
+      "legalAdvisor": "Legal advisor",
+      "itCustodian": "IT-Custodian",
+      "hr": "HR og personnel management",
+      "hardwareDeveloper": "Hardware developer",
+      "humanResourcesManager": "Human resources manager",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobile developer",
+      "securityExpert": "Security expert",
+      "administration": "Administration",
+      "contentProducer": "Content producer",
+      "other": "Other"
+    }
   },
   "languages": {
     "en-US": "English",
