@@ -8,7 +8,8 @@
       "blue": "Blå",
       "green": "Grønn"
     },
-    "toggle": "Skift fargetema: {mode}"
+    "toggle": "Skift fargetema: {mode}",
+    "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {
     "add": "Legg til KPI",
@@ -345,11 +346,6 @@
     "title": "Hjelp",
     "toc": "Innhold"
   },
-  "profile": {
-    "myProfile": "Min profil",
-    "hasAdmin": "Har administratortilgang",
-    "products": "Mine produkter"
-  },
   "view": {
     "compact": "Kompakt",
     "details": "Detaljer"
@@ -423,7 +419,53 @@
     "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
-    "selectLanguage": "Velg språk"
+    "myProfile": "Min profil",
+    "hasAdmin": "Har administratortilgang",
+    "products": "Mine produkter",
+    "selectLanguage": "Velg språk",
+    "position": {
+      "groups": {
+        "developers": "Utvikling",
+        "designers": "Design",
+        "teamLead": "Teamleder",
+        "techLead": "Tech lead",
+        "administration": "Administrasjon",
+        "productOwner": "Produktområdeleder",
+        "director": "Direktør",
+        "others": "Medlemmer",
+        "departmentDirector": "Avdelingsdirektør"
+      },
+      "title": "Stilling",
+      "frontendDeveloper": "Frontend-utvikler",
+      "backendDeveloper": "Backend-utvikler",
+      "fullStackDeveloper": "Fullstack-utvikler",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaksjonsdesigner",
+      "serviceDesigner": "Tjenestedesigner",
+      "contentDesigner": "Innholdsdesigner",
+      "graphicDesigner": "Grafisk designer",
+      "informationArchitect": "Informasjonsarkitekt",
+      "dataScientist": "Data scientist",
+      "teamLead": "Teamleder",
+      "productOwner": "Produktområdeleder",
+      "businessAnalyst": "Forretningsanalytiker",
+      "businessDeveloper": "Forretningsutvikler",
+      "departmentDirector": "Avdelingsdirektør",
+      "director": "Direktør",
+      "organizationDeveloper": "Organisasjonsutvikler",
+      "principalEngineer": "Virksomhetsarkitekt",
+      "legalAdvisor": "Gladjurist",
+      "itCustodian": "IT-vaktmester",
+      "hr": "HR og personalansvarlig",
+      "hardwareDeveloper": "hardware-utvikler",
+      "humanResourcesManager": "Personalleder",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobilutvikler",
+      "securityExpert": "Sikekrhetsekspert",
+      "administration": "Administrasjon",
+      "contentProducer": "Innholdsprodusent",
+      "other": "Annet"
+    }
   },
   "languages": {
     "en-US": "Engelsk",

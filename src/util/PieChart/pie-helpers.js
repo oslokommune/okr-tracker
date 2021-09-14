@@ -1,17 +1,31 @@
 import { select, arc, interpolate, format, easeCircleOut } from 'd3';
 
-
 const size = 250;
 const padding = 50;
 const radius = (size - padding * 2) / 2;
 const duration = 600;
 const ease = easeCircleOut;
 const colors = {
-  purple: '#2A2859',
-  grey: '#a2a2a2',
-  yellow: '#F9C66B',
-  dimmed: '#c7c7c7',
+  yellow: {
+    innerDone: '#ba944fff',
+    innerFull: '#a2a2a2',
+    outer: '#F9C66B',
+    dimmed: '#c7c7c7',
+  },
+  blue: {
+    innerDone: '#2A2859',
+    innerFull: '#a2a2a2',
+    outer: '#6ee9ff',
+    dimmed: '#c7c7c7',
+  },
+  green: {
+    innerDone: '#034b45',
+    innerFull: '#a2a2a2',
+    outer: '#43f8b6',
+    dimmed: '#c7c7c7',
+  },
 };
+
 export const formatPercent = format('.0%');
 
 function initSvg(el) {
@@ -43,7 +57,7 @@ function initOuterGroup(el) {
     .attr('font-size', 14)
     .attr('y', 5)
     .text('I dag')
-    .attr('fill', this.darkmode ? 'white' : 'black');
+    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
 }
 
 // Positions and styles the percentage text element
@@ -91,7 +105,8 @@ function updatePercentText(el, tweenTo) {
         j[i].current = counter(t);
         select(j[i]).text(formatPercent(counter(t) || 0));
       };
-    });
+    })
+    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
 }
 
 // Draws/redraws the shape of the inner arc
@@ -101,12 +116,12 @@ function updateInnerArcs(el, data) {
     .join('path')
     .attr('fill', (d, i) => {
       if (this.darkmode) {
-        return colors.yellow;
+        return colors[this.colorMode].outer;
       }
       if (this.dimmed) {
-        return i === 0 ? colors.dimmed : colors.grey;
+        return i === 0 ? colors[this.colorMode].dimmed : colors[this.colorMode].innerFull;
       }
-      return i === 0 ? colors.purple : colors.grey;
+      return i === 0 ? colors[this.colorMode].innerDone : colors[this.colorMode].innerFull;
     })
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0.15))
     .transition()
@@ -121,7 +136,7 @@ function updateOuterArcs(el, data) {
     .selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', () => this.darkmode ? 'white' : colors.yellow)
+    .attr('fill', () => (this.darkmode ? 'white' : colors[this.colorMode].outer))
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0))
     .transition()
     .duration(duration)

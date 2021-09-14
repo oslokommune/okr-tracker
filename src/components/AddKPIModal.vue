@@ -96,7 +96,7 @@
       </div>
 
       <div class="modal__footer" style="background: white">
-        <button form="addKpi" :disabled="loading" class="btn btn--sec">{{ $t('btn.add') }}</button>
+        <button form="addKpi" :disabled="loading" class="btn btn--pri">{{ $t('btn.add') }}</button>
         <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>

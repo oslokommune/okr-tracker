@@ -77,8 +77,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .keyResult {
   display: grid;
   grid-gap: 0.25rem;
@@ -98,7 +96,7 @@ export default {
 
 .keyResult__name {
   grid-column: 2;
-  color: $color-grey-800;
+  color: var(--color-grey-800);
   text-decoration: none;
 
   @media screen and (min-width: bp(m)) {

@@ -4,7 +4,7 @@
       <router-link
         v-if="hasEditRights"
         v-tooltip="$t('tooltip.editItem')"
-        class="btn btn--ter btn--icon"
+        class="btn btn--ter btn--icon btn--icon-pri"
         :to="{ name: 'ItemAdmin' }"
         data-cy="edit_object_link"
       >
@@ -13,7 +13,7 @@
       </router-link>
       <router-link
         v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
-        class="btn btn--ter btn--icon"
+        class="btn btn--ter btn--icon btn--icon-pri"
         :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
       >
         <i class="icon fas fa-tachometer-alt" />
@@ -24,7 +24,7 @@
     <div class="">
       <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
       <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
-      <widget-team v-if="activeItem" widget-id="itemHome.team" />
+      <widget-team v-if="activeItem.team" widget-id="itemHome.team" />
       <widget-child-items widget-id="itemHome.children" />
     </div>
   </aside>

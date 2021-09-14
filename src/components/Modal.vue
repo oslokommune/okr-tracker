@@ -52,7 +52,7 @@
         </form>
       </validation-observer>
       <div class="modal__footer">
-        <button form="modal" :disabled="loading" class="btn btn--sec">{{ $t('btn.save') }}</button>
+        <button form="modal" :disabled="loading" class="btn btn--pri">{{ $t('btn.save') }}</button>
         <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>
