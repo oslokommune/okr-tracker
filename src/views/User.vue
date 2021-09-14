@@ -133,7 +133,8 @@ export default {
       'securityExpert',
       'serviceDesigner',
       'teamLead',
-      'techLead'
+      'techLead',
+      'other',
     ],
   }),
 

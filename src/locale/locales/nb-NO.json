@@ -463,7 +463,8 @@
       "mobileDeveloper": "Mobilutvikler",
       "securityExpert": "Sikekrhetsekspert",
       "administration": "Administrasjon",
-      "contentProducer": "Innholdsprodusent"
+      "contentProducer": "Innholdsprodusent",
+      "other": "Annet"
     }
   },
   "languages": {

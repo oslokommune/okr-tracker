@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Users can choose what type of user they are from a predefined list of job positions. This is done in the `My Profile`-page
+
+### Changes
+
+- TeamWidget: Multiple job positions are grouped into a parent position, i.e.: backend-, frontend-, mobile-, hardware-developers are grouped into `Developers`
+
 ## [2.1.2] 2021-09-02
 
 ### Fixed

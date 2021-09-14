@@ -465,7 +465,8 @@
       "mobileDeveloper": "Mobile developer",
       "securityExpert": "Security expert",
       "administration": "Administration",
-      "contentProducer": "Content producer"
+      "contentProducer": "Content producer",
+      "other": "Other"
     }
   },
   "languages": {

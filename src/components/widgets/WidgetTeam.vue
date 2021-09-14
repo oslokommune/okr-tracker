@@ -184,6 +184,16 @@ export default {
         ];
         const possibleAdm = ['humanResourcesManager', 'administration'];
 
+        this.developers = [];
+        this.designers = [];
+        this.administration = [];
+        this.director = null;
+        this.techLead = null;
+        this.teamLead = null;
+        this.productOwner = null;
+        this.departmentDirector = null;
+        this.others = [];
+
         this.activeItem.team.forEach((employee) => {
           if (possibleDevelopers.includes(employee.position)) {
             this.developers.push(employee);
