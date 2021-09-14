@@ -14,7 +14,7 @@
         <button
           v-if="user"
           v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
-          class="btn btn--ter user"
+          class="btn btn--ter btn--icon user"
           :class="{ active: showUserMenu }"
           @click="showUserMenu = !showUserMenu"
         >
@@ -27,7 +27,7 @@
           <ul class="menu__list">
             <li class="menu__list-item">
               <router-link
-                class="btn btn--ter btn--icon"
+                class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'User', params: { id: user.id } }"
                 data-cy="site-header-profile"
               >
@@ -36,20 +36,28 @@
               </router-link>
             </li>
             <li v-if="user.admin" class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }" data-cy="site-header-admin">
+              <router-link
+                class="btn btn--ter btn--icon btn--icon-pri"
+                :to="{ name: 'Admin' }"
+                data-cy="site-header-admin"
+              >
                 <i class="icon fa fa-fw fa-cogs" />
                 {{ $t('general.admin') }}
               </router-link>
             </li>
-            <theme-toggle />
+            <theme-toggle header />
             <li class="menu__list-item show-mobile">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }" data-cy="site-header-help">
+              <router-link
+                class="btn btn--ter btn--icon btn--icon-pri"
+                :to="{ name: 'Help' }"
+                data-cy="site-header-help"
+              >
                 <i class="icon fa fa-fw fa-question-circle" />
                 {{ $t('general.help') }}
               </router-link>
             </li>
             <li>
-              <button class="btn btn--ter btn--icon" data-cy="site-header-signout" @click="signOut">
+              <button class="btn btn--ter btn--icon btn--icon-pri" data-cy="site-header-signout" @click="signOut">
                 <i class="icon fa fa-fw fa-sign-out-alt" />
                 {{ $t('general.signOut') }}
               </button>

@@ -25,16 +25,16 @@
     </div>
 
     <div class="sidebar__group sidebar__bottom button-col">
-      <theme-toggle />
-      <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
+      <theme-toggle header/>
+      <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon btn--icon-pri">
         <i class="icon fa fa-fw fa-cogs" />
         <span class="btn--label">{{ $t('general.admin') }}</span>
       </router-link>
-      <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
+      <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon btn--icon-pri">
         <i class="icon fa fa-fw fa-question-circle" />
         <span class="btn--label">{{ $t('general.help') }}</span>
       </router-link>
-      <button class="btn btn--ter btn--icon" @click="signOut">
+      <button class="btn btn--ter btn--icon btn--icon-pri" @click="signOut">
         <i class="icon fa fa-fw fa-sign-out-alt" />
         <span class="btn--label">{{ $t('general.signOut') }}</span>
       </button>
@@ -74,8 +74,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .sidebar {
   position: sticky;
   top: 7.5rem;
@@ -120,7 +118,7 @@ export default {
   -webkit-user-drag: none;
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: var(--color-grey-100);
   }
 
   &.router-link-active {
