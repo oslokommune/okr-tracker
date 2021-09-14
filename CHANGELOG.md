@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file. The format 
 - Styles
 - TeamWidget: Multiple job positions are grouped into a parent position, i.e.: backend-, frontend-, mobile-, hardware-developers are grouped into `Developers`
 - Updated dependencies
+- Removed redundant firebase config environment keys
+- Updated readme for a better understanding of firebase private keys
 
 ### Removed
 
