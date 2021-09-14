@@ -103,14 +103,16 @@
       </ul>
     </template>
 
-    <div class="user__title">{{ $t('user.position.groups.others') }}</div>
-    <ul class="users__list">
-      <li v-for="user in others" :key="user.id" class="user">
-        <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
-          <span class="user__name">{{ user.displayName || user.id }}</span>
-        </router-link>
-      </li>
-    </ul>
+    <template v-if="others.length > 0">
+      <div class="user__title">{{ $t('user.position.groups.others') }}</div>
+      <ul class="users__list">
+        <li v-for="user in others" :key="user.id" class="user">
+          <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
+            <span class="user__name">{{ user.displayName || user.id }}</span>
+          </router-link>
+        </li>
+      </ul>
+    </template>
     <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
       {{ $t('btn.add') }}
     </router-link>
