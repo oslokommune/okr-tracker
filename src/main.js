@@ -7,6 +7,7 @@ import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
 import { ContentLoader } from 'vue-content-loader';
+import Keycloak from 'keycloak-js';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -17,17 +18,14 @@ import store from '@/store';
 import i18n from '@/locale/i18n';
 import { capitalizeFirstLetterOfNames } from '@/util/';
 
+import { auth } from './config/firebaseConfig';
+
 import './styles/main.scss';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
-import Keycloak from 'keycloak-js';
-
-const { auth } = require('./config/firebaseConfig');
-
-Vue.config.productionTip = false;
 
 // Use plugins
 Vue.use(Toasted, {
@@ -71,9 +69,9 @@ Vue.config.productionTip = false;
 // Support keycloak as a OIDC provider
 if (store.state.providers.includes('keycloak')) {
   const keycloak = new Keycloak({
-    url: process.env.VUE_APP_KEYCLOAK_URL,
-    realm: process.env.VUE_APP_KEYCLOAK_REALM,
-    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+    url: import.meta.env.VITE_KEYCLOAK_URL,
+    realm: import.meta.env.VITE_KEYCLOAK_REALM,
+    clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
   });
   store.dispatch('setLoginLoading', true);
   keycloak
@@ -116,7 +114,7 @@ auth.onAuthStateChanged(async (user) => {
         try {
           await user.updateEmail(email);
         } catch (e) {
-          store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
+          store.state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}${e.code}` });
         }
       }
 
@@ -156,7 +154,7 @@ auth.onAuthStateChanged(async (user) => {
     await store.dispatch('reset_state');
 
     if (keycloakProvider && keycloakParsedToken) {
-      store.state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}email-not-whitelisted` });
+      store.state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}email-not-whitelisted` });
     } else if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
       await router.push(router.history.getCurrentLocation()).catch(() => {
         if (document.querySelector('#spinner')) {

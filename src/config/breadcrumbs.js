@@ -79,99 +79,68 @@ export const keyResult = () => {
   };
 };
 
-export const admin = () => {
-  return {
-    icon: 'user-cog',
-    label: i18n.t('general.admin'),
-    route: { name: 'Admin' },
-  };
-};
+export const admin = () => ({
+  icon: 'user-cog',
+  label: i18n.t('general.admin'),
+  route: { name: 'Admin' },
+});
 
-export const login = () => {
-  return {
-    icon: 'sign-in-alt',
-    label: i18n.t('login.login'),
-    route: { name: 'Login' },
-  };
-};
+export const login = () => ({
+  icon: 'sign-in-alt',
+  label: i18n.t('login.login'),
+  route: { name: 'Login' },
+});
 
-export const requestAccess = () => {
-  return {
-    icon: 'pray',
-    label: i18n.t('login.requestAccess'),
-  };
-};
+export const requestAccess = () => ({
+  icon: 'pray',
+  label: i18n.t('login.requestAccess'),
+});
 
-export const users = () => {
-  return {
-    icon: 'users',
-    label: i18n.t('general.users'),
-  };
-};
+export const users = () => ({
+  icon: 'users',
+  label: i18n.t('general.users'),
+});
 
-export const user = () => {
-  return {
-    icon: 'user',
-    label: router.currentRoute.params.id,
-  };
-};
+export const user = () => ({
+  icon: 'user',
+  label: router.currentRoute.params.id,
+});
 
-export const itemAdmin = () => {
-  return {
-    icon: 'user-cog',
-    label: i18n.t('general.edit'),
-    route: { name: 'ItemAdmin' },
-  };
-};
+export const itemAdmin = () => ({
+  icon: 'user-cog',
+  label: i18n.t('general.edit'),
+  route: { name: 'ItemAdmin' },
+});
 
-export const itemAdminGeneral = () => {
-  return {
-    icon: 'cogs',
-    label: i18n.t('general.general'),
-  };
-};
+export const itemAdminGeneral = () => ({
+  icon: 'cogs',
+  label: i18n.t('general.general'),
+});
 
-export const itemAdminOKR = () => {
-  return {
-    icon: 'chart-pie',
-    label: i18n.t('general.OKRs'),
-  };
-};
+export const itemAdminOKR = () => ({
+  icon: 'chart-pie',
+  label: i18n.t('general.OKRs'),
+});
 
-export const itemAdminTeam = () => {
-  return {
-    icon: 'users',
-    label: 'Team',
-  };
-};
+export const itemAdminKPI = () => ({
+  icon: 'chart-line',
+  label: i18n.t('general.KPIs'),
+});
 
-export const itemAdminKPI = () => {
-  return {
-    icon: 'chart-line',
-    label: i18n.t('general.KPIs'),
-  };
-};
+export const createOrganization = () => ({
+  icon: 'plus-square',
+  label: i18n.t('admin.organization.create'),
+});
 
-export const createOrganization = () => {
-  return {
-    icon: 'plus-square',
-    label: i18n.t('admin.organization.create'),
-  };
-};
+export const createDepartment = () => ({
+  icon: 'plus-square',
+  label: i18n.t('admin.department.create'),
+});
 
-export const createDepartment = () => {
-  return {
-    icon: 'plus-square',
-    label: i18n.t('admin.department.create'),
-  };
-};
-
-export const createProduct = () => {
-  return {
-    icon: 'plus-square',
-    label: i18n.t('admin.product.create'),
-  };
-};
+export const createProduct = () => ({
+  icon: 'plus-square',
+  label: i18n.t('admin.product.create'),
+});
 
 export const kpi = () => {
   const { activeKpi } = state;

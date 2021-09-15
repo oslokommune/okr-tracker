@@ -243,7 +243,6 @@ export default {
     },
 
     formatKPIValue(value) {
-      console.log(kpiTypes[this.activeKpi.type].formatValue(value));
       if (kpiTypes[this.activeKpi.type].type === 'users') {
         return value;
       }

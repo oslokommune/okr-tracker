@@ -26,7 +26,7 @@
 <script>
 import { mapState } from 'vuex';
 import marked from 'marked';
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 import KeyResult from '@/db/KeyResult';
 
 marked.setOptions({
@@ -64,7 +64,7 @@ export default {
       immediate: true,
       handler(keyres) {
         this.thisKey = { ...keyres, id: keyres.id };
-        this.md = sanitize(marked(keyres.notes || ''));
+        this.md = dompurify.sanitize(marked(keyres.notes || ''));
       },
     },
   },

@@ -22,7 +22,7 @@ describe('Add user to product', () => {
   it('Adds test user to product one', () => {
     cy.get('[data-cy="team_field"]')
       .click()
-      .type(Cypress.env('VUE_APP_TESTUSER_USER'))
+      .type(Cypress.env('VITE_TESTUSER_USER'))
       .get('.vs__dropdown-menu > li')
       .click();
   });

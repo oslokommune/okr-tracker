@@ -23,7 +23,7 @@
 
     <div class="widgets">
       <widget-mission-statement v-if="activeItem" widget-id="itemHome.missionStatement" />
-      <widget-team v-if="activeItem" widget-id="itemHome.team" />
+      <widget-team v-if="activeItem.team" widget-id="itemHome.team" />
       <widget-child-items widget-id="itemHome.children" />
     </div>
   </aside>

@@ -39,10 +39,23 @@
           </label>
 
           <label v-if="me" class="form-group">
+            <span class="form-label">{{ $t('user.position.title') }}</span>
+            <v-select
+              v-model="thisUser.position"
+              :options="jobPositions"
+              :get-option-label="(option) => $t(`user.position.${option}`)"
+            >
+            </v-select>
+          </label>
+
+          <label v-if="me" class="form-group">
             <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-            <select v-model="thisUser.preferences.lang" class="form__field">
-              <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
-            </select>
+            <v-select
+              v-model="thisUser.preferences.lang"
+              :options="languages"
+              :get-option-label="(option) => $t(`languages.${option}`)"
+            >
+            </v-select>
           </label>
 
           <div v-if="me" class="user__info-btn">
@@ -57,11 +70,11 @@
               Admin
             </h2>
             <div>
-              {{ $t('profile.hasAdmin') }}
+              {{ $t('user.hasAdmin') }}
             </div>
           </template>
 
-          <h2 class="title-2">{{ $t('profile.products') }}</h2>
+          <h2 class="title-2">{{ $t('user.products') }}</h2>
           <ul class="grid-system">
             <li v-for="product in products" :key="product.id">
               <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
@@ -82,6 +95,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import User from '@/db/User';
+import { jobPositions } from '@/config/jobPositions';
 
 export default {
   name: 'User',
@@ -94,6 +108,7 @@ export default {
     loading: false,
     thisUser: null,
     languages: ['nb-NO', 'en-US'],
+    jobPositions,
   }),
 
   computed: {

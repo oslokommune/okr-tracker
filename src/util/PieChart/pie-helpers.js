@@ -22,7 +22,7 @@ const colors = {
   green: {
     innerDone: '#034b45',
     innerFull: '#a2a2a2',
-    outer: '#c7f6c9',
+    outer: '#43f8b6',
     dimmed: '#c7c7c7',
   },
 };
@@ -58,7 +58,7 @@ function initOuterGroup(el) {
     .attr('font-size', 14)
     .attr('y', 5)
     .text('I dag')
-    .attr('fill', this.darkmode ? 'white' : 'black');
+    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
 }
 
 // Positions and styles the percentage text element
@@ -137,9 +137,7 @@ function updateOuterArcs(el, data) {
     .selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', () => {
-      return this.darkmode ? 'white' : colors[this.colorMode].outer;
-    })
+    .attr('fill', () => (this.darkmode ? 'white' : colors[this.colorMode].outer))
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0))
     .transition()
     .duration(duration)

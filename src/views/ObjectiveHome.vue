@@ -13,7 +13,7 @@
         <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
 
         <empty-state
-          v-if="!keyResults.length"
+          v-if="!keyRes.length"
           :icon="'poop'"
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
@@ -25,7 +25,7 @@
 
         <div class="key-results__list">
           <key-result-row
-            v-for="keyResult in keyResults"
+            v-for="keyResult in keyRes"
             :key="keyResult.id"
             :key-result="keyResult"
             :force-expanded="true"
@@ -40,7 +40,6 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
 import routerGuard from '@/router/router-guards/objectiveHome';
 
 export default {
@@ -65,11 +64,11 @@ export default {
   },
 
   data: () => ({
-    keyResults: [],
+    keyRes: [],
   }),
 
   computed: {
-    ...mapState(['activeObjective']),
+    ...mapState(['activeObjective', 'keyResults']),
     ...mapGetters(['hasEditRights']),
   },
 
@@ -79,11 +78,9 @@ export default {
       handler(objective) {
         if (!objective) return;
 
-        const ref = db.collection('objectives').doc(objective.id);
-        this.$bind(
-          'keyResults',
-          db.collection('keyResults').where('archived', '==', false).where('objective', '==', ref)
-        );
+        this.keyRes = this.keyResults.filter((keyRes) => {
+          return keyRes.objective === `objectives/${objective.id}`;
+        });
       },
     },
   },

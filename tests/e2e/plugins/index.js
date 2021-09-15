@@ -11,13 +11,13 @@
 
 // Which environment variables should be copied to cypress
 const variables = [
-  'VUE_APP_DASHBOARD_USER',
-  'VUE_APP_TESTADMIN_USER',
-  'VUE_APP_TESTADMIN_PASSWORD',
-  'VUE_APP_TESTUSER_USER',
-  'VUE_APP_TESTUSER_PASSWORD',
-  'VUE_APP_I18N_LOCALE',
-  'VUE_APP_I18N_FALLBACK_LOCALE',
+  'VITE_DASHBOARD_USER',
+  'VITE_TESTADMIN_USER',
+  'VITE_TESTADMIN_PASSWORD',
+  'VITE_TESTUSER_USER',
+  'VITE_TESTUSER_PASSWORD',
+  'VITE_I18N_LOCALE',
+  'VITE_I18N_FALLBACK_LOCALE',
   'NODE_ENV',
 ];
 
@@ -30,7 +30,7 @@ module.exports = (on, config) => {
   // Copy environment variables
   config.env = config.env || {};
   variables.forEach((variable) => {
-    config.env[variable] = process.env[variable];
+    config.env[variable] = import.meta.env[variable];
   });
 
   return {

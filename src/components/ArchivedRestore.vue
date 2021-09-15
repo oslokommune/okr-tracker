@@ -6,11 +6,11 @@
       <p>{{ $t('archived.body') }}</p>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--sec" @click="restore">
+        <button class="btn btn--icon btn--sec btn--icon-pri" @click="restore">
           <i class="icon fa fa-trash-restore-alt" />
           {{ $t('btn.restore') }}
         </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep">
+        <button class="btn btn--icon btn--danger btn--icon-pri" @click="deleteDeep">
           <i class="icon fa fa-exclamation-triangle" />
           {{ $t('btn.deletePermanently') }}
         </button>
