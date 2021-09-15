@@ -14,7 +14,7 @@ const usersCollection = db.collection('users');
 
 async function handleSlackRequest(document) {
   // Make a webhook connection for channel
-  const webhook = new IncomingWebhook(environment.slack.deploymentwebhook);
+  const webhook = new IncomingWebhook(environment.slack.webhook);
 
   const { id } = document;
   const { email } = document.data();

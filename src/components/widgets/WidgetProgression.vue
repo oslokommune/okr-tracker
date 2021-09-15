@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PieChart from '@/util/PieChart';
 
 export default {
@@ -33,10 +34,15 @@ export default {
       required: true,
     },
   },
+
   data: () => ({
     svg: null,
     chart: null,
   }),
+
+  computed: {
+    ...mapState(['theme']),
+  },
 
   watch: {
     data: {
@@ -44,7 +50,15 @@ export default {
       deep: true,
       handler(data) {
         if (!this.chart) return;
-        this.chart.render(data);
+        this.chart.render(data, this.theme);
+      },
+    },
+
+    theme: {
+      immediate: true,
+      handler() {
+        if (!this.chart) return;
+        this.chart.render(this.data, this.theme);
       },
     },
   },
@@ -52,8 +66,8 @@ export default {
   mounted() {
     setTimeout(() => {
       this.svg = this.$refs.svg;
-      this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
-      this.chart.render(this.data);
+      this.chart = new PieChart(this.svg, { dimmed: this.dimmed, colorMode: this.theme });
+      this.chart.render(this.data, this.theme);
     }, 150);
   },
 

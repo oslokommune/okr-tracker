@@ -38,7 +38,6 @@ const analytics = firebase.analytics();
 const functions = firebase.app().functions(import.meta.env.VITE_REGION);
 const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
 
-console.log(import.meta.env);
 if (import.meta.env.MODE === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);

@@ -40,6 +40,12 @@ export const getters = {
 export const actions = {
   ...moduleActions,
 
+  setTheme: async ({ commit }, payload) => {
+    commit('SET_THEME', payload);
+
+    return true;
+  },
+
   initKeycloak: async ({ commit }, keycloak) => {
     commit('SET_KEYCLOAK', keycloak);
 
@@ -112,6 +118,10 @@ export const mutations = {
   SET_AUTHENTICATION(state, payload) {
     state.authenticated = payload;
   },
+
+  SET_THEME(state, payload) {
+    state.theme = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -140,6 +150,7 @@ export default new Vuex.Store({
     keycloak: null,
     authenticated: false,
     loginLoading: false,
+    theme: 'yellow',
   },
   getters,
   mutations,

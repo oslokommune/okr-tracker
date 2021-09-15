@@ -72,12 +72,21 @@ This key is used for fetching data from Google Sheets (for automatically updatin
 
 ```bash
 firebase functions:config:set
-  sheets.email="<service account email>"
-  sheets.key="<service account private key>"
   sheets.impersonator="email-address" (optional)
   service_account="<service account private key json-file>"
 ```
 
+Cat the whole service account private key json file into the environment key `service_account`.
+
+```bash
+
+zsh
+firebase functions:config:set service_account="$(cat origo-okr-tracker-private-key.json)"
+
+sh
+firebase functions:config:set service_account="${cat origo-okr-tracker-private-key.json}"
+
+```
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
 
 #### Enable Google Auth in Firebase
@@ -365,7 +374,7 @@ Slack steps:
 Copy the webhook URL and inject it into Firebase as an environment variable:
 
 ```bash
-firebase functions:config:set slack.deploymentWebhook="YOUR SLACK WEBHOOK HERE"
+firebase functions:config:set slack.webhook="YOUR SLACK WEBHOOK HERE"
 
 Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
 ```

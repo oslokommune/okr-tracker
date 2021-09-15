@@ -1,6 +1,7 @@
 <template>
   <button
     class="btn btn--ter btn--icon"
+    :class="{ 'btn--icon-pri': header }"
     :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
     @click="handleClick"
   >
@@ -10,10 +11,20 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 const LS_MODE = 'okr-tracker-theme';
 
 export default {
   name: 'ThemeToggle',
+
+  props: {
+    header: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
 
   data: () => ({
     mode: 'yellow',
@@ -42,6 +53,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setTheme']),
+
     handleClick() {
       if (this.mode === 'yellow') {
         this.mode = 'blue';
@@ -56,6 +69,7 @@ export default {
 
     setThemeMode() {
       this.saveThemeMode(this.mode);
+      this.setTheme(this.mode);
       document.body.setAttribute('data-theme', this.mode);
     },
 

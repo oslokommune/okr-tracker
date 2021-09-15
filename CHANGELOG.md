@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- i18n corrections
+
+## [2.2.0] 2021-09-14
+
+### Added
+
+- Users can choose what type of user they are from a predefined list of job positions. This is done in the `My Profile`-page
+- PieChart follows color scheme
+
+### Changes
+
+- Styles
+- TeamWidget: Multiple job positions are grouped into a parent position, i.e.: backend-, frontend-, mobile-, hardware-developers are grouped into `Developers`
+- Updated dependencies
+- Removed redundant firebase config environment keys
+- Updated readme for a better understanding of firebase private keys
+
+### Removed
+
+- Removed sass-loader because we don't use webpack anymore
+
 ## [2.1.2] 2021-09-02
 
 ### Fixed
