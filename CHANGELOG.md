@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- i18n corrections
+
+## [2.2.0] 2021-09-14
+
+### Added
+
+- Users can choose what type of user they are from a predefined list of job positions. This is done in the `My Profile`-page
+- PieChart follows color scheme
+
+### Changes
+
+- Styles
+- TeamWidget: Multiple job positions are grouped into a parent position, i.e.: backend-, frontend-, mobile-, hardware-developers are grouped into `Developers`
+- Updated dependencies
+- Removed redundant firebase config environment keys
+- Updated readme for a better understanding of firebase private keys
+
+### Removed
+
+- Removed sass-loader because we don't use webpack anymore
+
+## [2.1.2] 2021-09-02
+
+### Fixed
+
+- Nothing happened when trying to archive Periods/Objectives/Key Results
+
+## [2.1.1] 2021-08-31
+
+### Changes
+
+- Tab title changes together with the navbar title
+
 ## [2.1.0] 2021-08-30
 
 We have removed vue-cli and moved to vitejs for better develop experience and faster build and deploy times. This also means that from now on that we won't support IE11 at all. The chance that IE11 shows only a white screen is highly possible. We only support evergreen/modern browsers

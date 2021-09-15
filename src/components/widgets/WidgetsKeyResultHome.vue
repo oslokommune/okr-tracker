@@ -2,7 +2,7 @@
   <aside v-if="activeKeyResult" class="aside">
     <div v-if="hasEditRights" class="widgets__links">
       <router-link
-        class="btn btn--ter btn--icon"
+        class="btn btn--ter btn--icon btn--icon-pri"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
       >
         <i class="icon fa fa-edit" />

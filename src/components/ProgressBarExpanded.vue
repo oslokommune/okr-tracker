@@ -56,6 +56,7 @@ export default {
   height: 100%;
   padding-top: 0.05rem;
   padding-right: 0.25rem;
+  color: var(--color-text-secondary);
   font-weight: 500;
   text-align: right;
   background: var(--color-primary);
