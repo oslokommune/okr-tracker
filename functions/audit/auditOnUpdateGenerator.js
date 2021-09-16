@@ -1,17 +1,27 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
+const { format } = require('date-fns');
+const { nb } = require('date-fns/locale');
+
 const { WebClient } = require('@slack/web-api');
 
 const config = require('../config');
 
+const HOST_URL = functions.config().host_url;
 const environment = functions.config();
 
 const { token } = environment.slack;
+
 const slack = new WebClient(token);
 
 const db = admin.firestore();
 
-const collection = db.collection('slack');
+const slackCollection = db.collection('slack');
+
+const options = { locale: nb };
+
+export const dateLong = (d) => format(d, 'PPP', options);
+export const dateShort = (d) => format(d, 'P', options);
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
   return functions
@@ -55,6 +65,10 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         diff,
       };
 
+      if (auditData.event.includes('Updated')) {
+        await pushToSlack(documentType, auditData);
+      }
+
       return db.collection('audit').add(auditData);
     });
 };
@@ -97,17 +111,154 @@ function getDiff({ before, after }, keys) {
   return diff;
 }
 
-const pushToSlack = (documentType) => {
+const pushToSlack = async (documentType, auditData) => {
+  const colors = {
+    created: '#43f8b6',
+    updated: '#f8c66b',
+    archived: '#ff8174',
+  };
+
+  const created = {
+    header: '',
+    owner: '',
+    context: '',
+    info: '',
+  };
+
+  console.log(auditData);
+  console.log(documentType);
   if (documentType === 'Organization') {
   }
   if (documentType === 'Department') {
   }
   if (documentType === 'Product') {
   }
-  if (documentType === 'Period') {
-  }
   if (documentType === 'Objective') {
+    const promises = [];
+
+    if (auditData.diff?.name?.before === 'placeholder') {
+      const doc = await auditData.documentRef.get();
+      const data = doc.data();
+
+      const parent = await data.parent.get();
+      const parentData = parent.data();
+      const period = await data.period.get();
+      const periodData = period.data();
+
+      const slackParentDoc = await slackCollection.doc(parentData.slug).get();
+
+      created.header = `:tada: ${documentType}`;
+      created.owner = `${parentData.name} has created a new ${documentType}`;
+      created.context = `[${periodData.name}] ${dateShort(periodData.startDate.toDate())} - ${dateShort(
+        periodData.endDate.toDate()
+      )}`;
+      created.info = `<${HOST_URL}/${parentData.slug}/k/${doc.id} | ${data.name}>`;
+
+      const slackMsg = await msg(colors.created, created);
+
+      if (slackParentDoc.exists) {
+        const slackParentData = slackParentDoc.data();
+
+        if (slackParentData.channels?.length > 0) {
+          slackParentData.channels.forEach((channel) => {
+            promises.push(
+              slack.chat.postMessage({
+                channel: channel.channel,
+                attachments: slackMsg.attachments,
+                fallback: 'fallback-text',
+              })
+            );
+          });
+        }
+      }
+
+      await Promise.all(promises);
+    }
   }
   if (documentType === 'KeyResult') {
+    const promises = [];
+
+    if (auditData.diff?.name?.before === 'placeholder') {
+      const doc = await auditData.documentRef.get();
+      const data = doc.data();
+      const objective = await data.objective.get();
+      const parent = await data.parent.get();
+      const objData = objective.data();
+      const parentData = parent.data();
+
+      const slackParentDoc = await slackCollection.doc(parentData.slug).get();
+
+      created.header = `:tada: ${documentType}`;
+      created.owner = `${parentData.name} has created a new ${documentType}`;
+      created.context = `${objData.name}`;
+      created.info = `<${HOST_URL}/${parentData.slug}/k/${doc.id} | ${data.name}>`;
+
+      const slackMsg = await msg(colors.created, created);
+
+      if (slackParentDoc.exists) {
+        const slackParentData = slackParentDoc.data();
+
+        if (slackParentData.channels?.length > 0) {
+          slackParentData.channels.forEach((channel) => {
+            promises.push(
+              slack.chat.postMessage({
+                channel: channel.channel,
+                attachments: slackMsg.attachments,
+                fallback: 'fallback-text',
+              })
+            );
+          });
+        }
+      }
+
+      await Promise.all(promises);
+    }
   }
+
+  return true;
 };
+
+const msg = async (color, created) => ({
+  attachments: [
+    {
+      color,
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: created.header,
+            emoji: true,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: created.owner,
+          },
+        },
+        {
+          type: 'divider',
+        },
+        {
+          type: 'context',
+          elements: [
+            {
+              type: 'plain_text',
+              text: created.context,
+              emoji: true,
+            },
+          ],
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: created.info,
+          },
+        },
+      ],
+    },
+  ],
+});
