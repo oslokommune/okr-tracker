@@ -5,14 +5,13 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isSuperAdmin() {
-      let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.superadmin == true;
-      let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.superadmin == true;
+      let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.superAdmin == true;
+      let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.superAdmin == true;
       return isSignedIn() && (oldUser || newUser);
     }
 
     function newIsAdmin() {
       let oldUser = getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.organization.data.name in get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin;
-
       return isSignedIn() && oldUser;
     }
 

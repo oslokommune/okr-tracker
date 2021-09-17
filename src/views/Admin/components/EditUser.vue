@@ -23,10 +23,10 @@
           <label class="form-group--checkbox">
             <span class="form-label">Super admin</span>
             <input
-              v-model="thisUser.superadmin"
+              v-model="thisUser.superAdmin"
               class="form__checkbox"
               type="checkbox"
-              :disabled="user.email === thisUser.email"
+              :disabled="user.email === thisUser.email || !user.superAdmin"
             />
           </label>
 
@@ -37,7 +37,7 @@
               multiple
               :options="organizations"
               :get-option-label="(option) => option.name || option.slug"
-              :disabled="user.email === thisUser.email && !thisUser.superadmin"
+              :disabled="user.email === thisUser.email || !user.superAdmin"
             >
               <template #option="option">
                 {{ option.name || option.slug }}
@@ -46,15 +46,6 @@
             </v-select>
           </label>
 
-          <label class="form-group--checkbox">
-            <span class="form-label">{{ $t('general.admin') }}</span>
-            <input
-              v-model="thisUser.admin"
-              class="form__checkbox"
-              type="checkbox"
-              :disabled="user.email === thisUser.email"
-            />
-          </label>
         </form>
       </validation-observer>
       <div>
