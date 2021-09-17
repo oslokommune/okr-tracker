@@ -20,8 +20,7 @@ const slackCollection = db.collection('slack');
 
 const options = { locale: nb };
 
-export const dateLong = (d) => format(d, 'PPP', options);
-export const dateShort = (d) => format(d, 'P', options);
+const dateShort = (d) => format(d, 'do MMM', options);
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
   return functions
@@ -125,8 +124,6 @@ const pushToSlack = async (documentType, auditData) => {
     info: '',
   };
 
-  console.log(auditData);
-  console.log(documentType);
   if (documentType === 'Organization') {
   }
   if (documentType === 'Department') {
@@ -152,7 +149,7 @@ const pushToSlack = async (documentType, auditData) => {
       created.context = `[${periodData.name}] ${dateShort(periodData.startDate.toDate())} - ${dateShort(
         periodData.endDate.toDate()
       )}`;
-      created.info = `<${HOST_URL}/${parentData.slug}/k/${doc.id} | ${data.name}>`;
+      created.info = `<${HOST_URL}/${parentData.slug}/o/${doc.id} | ${data.name}>`;
 
       const slackMsg = await msg(colors.created, created);
 
@@ -165,7 +162,6 @@ const pushToSlack = async (documentType, auditData) => {
               slack.chat.postMessage({
                 channel: channel.channel,
                 attachments: slackMsg.attachments,
-                fallback: 'fallback-text',
               })
             );
           });
@@ -204,7 +200,6 @@ const pushToSlack = async (documentType, auditData) => {
               slack.chat.postMessage({
                 channel: channel.channel,
                 attachments: slackMsg.attachments,
-                fallback: 'fallback-text',
               })
             );
           });
