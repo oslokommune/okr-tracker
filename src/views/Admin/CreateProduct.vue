@@ -60,9 +60,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
-import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
@@ -73,16 +73,11 @@ export default {
     missionStatement: '',
     department: null,
     team: [],
-    users: [],
     loading: false,
   }),
 
   computed: {
-    ...mapState(['departments']),
-  },
-
-  firestore: {
-    users: db.collection('users'),
+    ...mapState(['departments', 'users']),
   },
 
   methods: {

@@ -65,7 +65,12 @@
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger btn--icon-pri" :disabled="loading" @click="archive">
+      <button
+        v-if="!activeItem.archived"
+        class="btn btn--icon btn--danger btn--icon-pri"
+        :disabled="loading"
+        @click="archive"
+      >
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>
@@ -90,11 +95,10 @@ export default {
 
   data: () => ({
     loading: false,
-    users: [],
   }),
 
   computed: {
-    ...mapState(['activeItem', 'organizations', 'departments']),
+    ...mapState(['activeItem', 'organizations', 'departments', 'users']),
 
     type() {
       const { department, organization } = this.activeItem;
@@ -102,10 +106,6 @@ export default {
       if (organization) return 'department';
       return 'organization';
     },
-  },
-
-  firestore: {
-    users: db.collection('users'),
   },
 
   methods: {

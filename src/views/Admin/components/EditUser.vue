@@ -37,7 +37,7 @@
               multiple
               :options="organizations"
               :get-option-label="(option) => option.name || option.slug"
-              :disabled="user.email === thisUser.email || !user.superAdmin"
+              :disabled="!user.superAdmin"
             >
               <template #option="option">
                 {{ option.name || option.slug }}

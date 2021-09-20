@@ -127,6 +127,7 @@ export const mutations = {
 export default new Vuex.Store({
   state: {
     user: null,
+    users: [],
     sidebarGroups: [],
     departments: [],
     organizations: [],

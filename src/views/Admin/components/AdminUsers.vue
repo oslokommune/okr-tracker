@@ -46,8 +46,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Fuse from 'fuse.js';
-import { db } from '@/config/firebaseConfig';
 
 const fuseSettings = {
   threshold: 0.5,
@@ -76,13 +76,16 @@ export default {
   },
 
   data: () => ({
-    users: [],
     query: '',
     selectedUser: null,
     viewAddUsers: false,
     filteredUsers: [],
     fuse: null,
   }),
+
+  computed: {
+    ...mapState(['users']),
+  },
 
   watch: {
     users: {
@@ -99,10 +102,6 @@ export default {
         this.filteredUsers = this.fuse.search(str).map(({ item }) => item);
       }
     },
-  },
-
-  firestore: {
-    users: db.collection('users').orderBy('id', 'asc'),
   },
 };
 </script>
