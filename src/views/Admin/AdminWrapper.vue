@@ -13,7 +13,8 @@ export default {
   },
 
   created() {
-    if (!this.user.admin) {
+    console.log(this.user);
+    if (!this.user.admin && !this.user.superAdmin) {
       this.$router.push({ name: 'Home' });
     }
   },

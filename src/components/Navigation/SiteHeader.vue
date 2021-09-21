@@ -35,7 +35,7 @@
                 {{ $t('user.myProfile') }}
               </router-link>
             </li>
-            <li v-if="user.admin" class="menu__list-item">
+            <li v-if="user.admin || user.superAdmin" class="menu__list-item">
               <router-link
                 class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'Admin' }"

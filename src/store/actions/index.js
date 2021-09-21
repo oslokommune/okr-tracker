@@ -8,7 +8,6 @@ import set_active_objective from './set_active_objective';
 import set_active_period_and_data from './set_active_period_and_data';
 import reset_state from './reset_state';
 import set_user from './set_user';
-import set_users from './set_users';
 import update_preferences from './update_preferences';
 
 export default {
@@ -22,5 +21,4 @@ export default {
   set_user,
   set_active_kpi,
   update_preferences,
-  set_users,
 };

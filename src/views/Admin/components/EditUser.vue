@@ -41,23 +41,11 @@
             >
               <template #option="option">
                 {{ option.name || option.slug }}
-                <span v-if="option.name !== option.slug">({{ option.slug }})</span>
               </template>
             </v-select>
           </label>
-
         </form>
       </validation-observer>
-      <div>
-        <span class="form-label">{{ $t('admin.users.image') }}</span>
-        <div class="selected-user__image--flex">
-          <img v-if="thisUser.photoURL" :src="thisUser.photoURL" class="selected-user__image--img" />
-          <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-          <button v-if="thisUser.photoURL" class="btn" :disabled="!image || loading" @click="deleteImage">
-            {{ $t('btn.deleteImage') }}
-          </button>
-        </div>
-      </div>
     </div>
 
     <div class="selected-user__footer">
@@ -86,7 +74,6 @@ export default {
 
   data: () => ({
     thisUser: null,
-    image: null,
     loading: false,
   }),
 
@@ -97,7 +84,7 @@ export default {
   watch: {
     selectedUser: {
       immediate: true,
-      handler() {
+      async handler() {
         this.image = null;
         this.thisUser = this.selectedUser;
       },
@@ -117,48 +104,14 @@ export default {
       this.loading = false;
     },
 
-    setImage({ target }) {
-      const { files } = target;
-      if (files.length !== 1) return;
-      const [image] = files;
-      this.image = image;
-      this.uploadImage();
-    },
-
-    async uploadImage() {
-      this.loading = true;
-      try {
-        const url = await User.uploadImage(this.user.id, this.image);
-        this.image = null;
-        this.thisUser.photoURL = url;
-        await this.save();
-      } catch (error) {
-        console.error(error);
-      }
-      this.loading = false;
-    },
-
-    async deleteImage() {
-      this.loading = true;
-      try {
-        this.thisUser.photoURL = null;
-        this.image = null;
-        await this.save(this.thisUser);
-        await User.deleteImage(this.user.id);
-      } catch (error) {
-        throw new Error(error.message);
-      }
-
-      this.loading = false;
-    },
-
     async save() {
       this.loading = true;
       try {
-        this.thisUser.admin = this.thisUser.admin.map((org) => db.collection('organizations').doc(org.id));
+        const saveUser = this.thisUser;
+        saveUser.admin = this.thisUser.admin.map((org) => db.collection('organizations').doc(org.id));
+        console.log(this.thisUser);
 
-        this.image = null;
-        await User.update(this.thisUser);
+        await User.update(saveUser);
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.save'));

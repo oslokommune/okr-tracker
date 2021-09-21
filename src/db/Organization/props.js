@@ -19,4 +19,8 @@ export default {
     type: 'array',
     required: false,
   },
+  admins: {
+    type: 'array',
+    required: false,
+  },
 };

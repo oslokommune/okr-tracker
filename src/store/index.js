@@ -30,8 +30,14 @@ export const getters = {
   hasEditRights: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
+    const { organization, admins } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? organization.admins && organization.admins.map(({ id }) => id).includes(user.id)
+      : admins && admins.map(({ id }) => id).includes(user.id);
+
     if (user && user.superAdmin) return true;
-    if (user && user.admin) return true;
+    if (isAdminOfOrganization) return true;
     if (!user || !activeItem || !activeItem.team) return false;
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
