@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.2.1] 2021-09-23
+
 ### Added
 
 - Job positions: added Storyteller
