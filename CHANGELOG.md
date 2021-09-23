@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Job positions: added Storyteller
+
 ### Fixed
 
 - i18n corrections
+- Dashboard: PieChart not rendering correctly
 
 ## [2.2.0] 2021-09-14
 
