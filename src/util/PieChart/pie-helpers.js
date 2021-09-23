@@ -5,7 +5,7 @@ const padding = 50;
 const radius = (size - padding * 2) / 2;
 const duration = 600;
 const ease = easeCircleOut;
-const colors = {
+export const colors = {
   yellow: {
     innerDone: '#ba944fff',
     innerFull: '#a2a2a2',
@@ -67,7 +67,7 @@ function initPercentText(el) {
     .attr('text-anchor', 'middle')
     .attr('font-size', 24)
     .attr('font-weight', 'bold')
-    .attr('fill', this.darkmode ? 'white' : colors.purple)
+    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone)
     .attr('y', 8);
 }
 

@@ -89,7 +89,7 @@
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
-    "OKRsLong": "Mål og nøkkelresulater",
+    "OKRsLong": "Mål og nøkkelresultater",
     "KPIs": "KPI-er",
     "team": "Team",
     "project": "OKR",
@@ -457,14 +457,15 @@
       "legalAdvisor": "Gladjurist",
       "itCustodian": "IT-vaktmester",
       "hr": "HR og personalansvarlig",
-      "hardwareDeveloper": "hardware-utvikler",
+      "hardwareDeveloper": "Hardware-utvikler",
       "humanResourcesManager": "Personalleder",
       "dataEngineer": "Data engineer",
       "mobileDeveloper": "Mobilutvikler",
-      "securityExpert": "Sikekrhetsekspert",
+      "securityExpert": "Sikkerhetsekspert",
       "administration": "Administrasjon",
       "contentProducer": "Innholdsprodusent",
-      "other": "Annet"
+      "other": "Annet",
+      "storyteller": "Historieforteller"
     }
   },
   "languages": {
