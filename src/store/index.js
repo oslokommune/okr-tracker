@@ -27,6 +27,26 @@ export const getters = {
     });
   },
 
+  isAdmin: (state) => {
+    // Returns `true` if user has `admin: true` or if user is member of `activeItem`
+    const { user, activeItem, organizations } = state;
+
+    let isAdmin = false;
+
+    organizations.forEach(org => {
+      if (org.admins.map(({id}) => id).includes(user.id)) {
+        isAdmin = true;
+      }
+    })
+
+    console.log(isAdmin);
+
+    if (user && user.superAdmin) return true;
+    if (isAdmin) return true;
+    if (!user || !activeItem || !activeItem.team) return false;
+    return activeItem.team.map(({ id }) => id).includes(user.id);
+  },
+
   hasEditRights: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;

@@ -3,18 +3,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'AdminWrapper',
 
   computed: {
     ...mapState(['user']),
+    ...mapGetters(['isAdmin']),
   },
 
   created() {
     console.log(this.user);
-    if (!this.user.admin && !this.user.superAdmin) {
+    if (!this.isAdmin && !this.user.superAdmin) {
       this.$router.push({ name: 'Home' });
     }
   },

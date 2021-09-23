@@ -1,5 +1,5 @@
 <template>
-  <div class="selected-user">
+  <div v-if="thisUser" class="selected-user">
     <slot name="back"></slot>
 
     <div class="selected-user__main">
@@ -26,31 +26,32 @@
               v-model="thisUser.superAdmin"
               class="form__checkbox"
               type="checkbox"
-              :disabled="user.email === thisUser.email || !user.superAdmin"
+              :disabled="user.email === selectedUser.email || !user.superAdmin"
             />
           </label>
 
-          <label class="form-group">
+          <div class="form-group">
             <span class="form-label">Admin</span>
             <v-select
               v-model="thisUser.admin"
               multiple
               :options="organizations"
-              :get-option-label="(option) => option.name || option.slug"
+              :get-option-label="(option) => option.name"
               :disabled="!user.superAdmin"
             >
-              <template #option="option">
-                {{ option.name || option.slug }}
-              </template>
             </v-select>
-          </label>
+          </div>
         </form>
       </validation-observer>
     </div>
 
     <div class="selected-user__footer">
       <button class="btn" form="user-form" :disabled="loading">{{ $t('btn.saveChanges') }}</button>
-      <button class="btn btn--danger" :disabled="user.email === thisUser.email || loading" @click="remove(thisUser)">
+      <button
+        class="btn btn--danger"
+        :disabled="user.email === selectedUser.email || loading"
+        @click="remove(selectedUser)"
+      >
         {{ $t('btn.deleteUser') }}
       </button>
     </div>
@@ -78,7 +79,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user', 'organizations']),
+    ...mapState(['user', 'organizations', 'users']),
   },
 
   watch: {
@@ -88,6 +89,9 @@ export default {
         this.image = null;
         this.thisUser = this.selectedUser;
       },
+    },
+    users(newUsers) {
+      console.log(newUsers);
     },
   },
 
@@ -107,12 +111,20 @@ export default {
     async save() {
       this.loading = true;
       try {
-        const saveUser = this.thisUser;
-        saveUser.admin = this.thisUser.admin.map((org) => db.collection('organizations').doc(org.id));
-        console.log(this.thisUser);
+        const saveUser = this.selectedUser;
+        saveUser.admin = this.selectedUser.admin.map((org) => db.collection('organizations').doc(org.id));
 
         await User.update(saveUser);
         this.$toasted.show(this.$t('toaster.savedChanges'));
+
+        let newUser = null;
+        this.users.forEach((user) => {
+          if (user.id === this.selectedUser.id) {
+            newUser = user;
+          }
+        });
+        console.log(newUser);
+        this.thisUser = newUser;
       } catch {
         this.$toasted.error(this.$t('toaster.error.save'));
       }
