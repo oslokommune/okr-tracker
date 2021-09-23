@@ -89,7 +89,7 @@
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
-    "OKRsLong": "Mål og nøkkelresulater",
+    "OKRsLong": "Mål og nøkkelresultater",
     "KPIs": "KPI-er",
     "team": "Team",
     "project": "OKR",
@@ -464,7 +464,8 @@
       "securityExpert": "Sikkerhetsekspert",
       "administration": "Administrasjon",
       "contentProducer": "Innholdsprodusent",
-      "other": "Annet"
+      "other": "Annet",
+      "storyteller": "Historieforteller"
     }
   },
   "languages": {

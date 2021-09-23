@@ -77,7 +77,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults']),
+    ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults', 'theme']),
 
     getIcon() {
       const { organization, department } = this.activeItem;
@@ -104,13 +104,20 @@ export default {
         });
       },
     },
+    theme: {
+      immediate: true,
+      handler() {
+        if (!this.piegraph) return;
+        this.piegraph.render(this.activePeriod, this.theme);
+      },
+    },
   },
 
   mounted() {
     if (!this.$refs.piechart) return;
 
-    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true });
-    this.piegraph.render(this.activePeriod);
+    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true, colorMode: this.theme });
+    this.piegraph.render(this.activePeriod, this.theme);
 
     this.enterFullscreen();
   },
