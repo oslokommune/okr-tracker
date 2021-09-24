@@ -5,33 +5,33 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isSuperAdmin() {
-      let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
-      let hasProperty = 'superAdmin' in userDocument.data;
-      let userIsSuperAdmin = hasProperty && userDocument.data.superAdmin == true;
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let hasProperty = 'superAdmin' in userDoc.data;
+      let userIsSuperAdmin = hasProperty && userDoc.data.superAdmin == true;
       return isSignedIn() && userIsSuperAdmin;
     }
 
     function isAdmin() {
-      let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
-      let hasProperty = 'admin' in userDocument.data;
-      let userIsAdmin = hasProperty && userDocument.data.admin.size() > 0;
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let hasProperty = 'admin' in userDoc.data;
+      let userIsAdmin = hasProperty && userDoc.data.admin.size() > 0;
       return isSignedIn() && userIsAdmin;
     }
 
     function isAdminOfOrganizationForProdAndDep() {
-      let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
-      let hasProperty = 'admin' in userDocument.data && userDocument.data.admin.size() > 0;
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let hasProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
       let hasOrg = 'organization' in request.resource.data;
-      let isOrgAdmin = hasProperty && hasOrg && getAfter(request.resource.data.organization).data.id in userDocument.data.admin;
+      let isOrgAdmin = hasProperty && hasOrg && getAfter(request.resource.data.organization).data.id in userDoc.data.admin;
 
       return isSignedIn() && isOrgAdmin;
     }
 
     function isAdminOfOrganization() {
-      let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
       let orgDocument = request.source.data;
-      let hasProperty = 'admin' in userDocument.data && userDocument.data.admin.size() > 0;
-      let isOrgAdmin = hasProperty && orgDocument.id in userDocument.data.admin;
+      let hasProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
+      let isOrgAdmin = hasProperty && orgDocument.id in userDoc.data.admin;
 
       return isSignedIn() && isOrgAdmin;
     }
@@ -42,27 +42,36 @@ service cloud.firestore {
     }
 
     function isTeamMember() {
-      let user = /databases/$(database)/documents/users/$(request.auth.token.email) in resource.data.team;
-      return user;
+      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userIsTeamMember = userDoc in resource.data.team;
+      return userIsTeamMember;
     }
 
     function isMemberOfParent() {
-      let user = /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(request.resource.data.parent).data.team;
-      return user;
+      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let parentDoc = getAfter(request.resource.data.parent);
+      let userIsMemberOfParent = userDoc in parentDoc.data.team;
+      return userIsMemberOfParent;
     }
 
     function isMemberOfParentDelete() {
-      let user = /databases/$(database)/documents/users/$(request.auth.token.email) in get(resource.data.parent).data.team;
+      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let parentDoc = get(resource.data.parent);
+      let user = userDoc in parentDoc.data.team;
       return user;
     }
 
     function isMemberOfKeyResParent(document) {
-      let user = /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
+      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let parentDoc = getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent);
+      let user = userDoc in parentDoc.data.team;
       return user;
     }
 
     function isMemberOfKpiParent(document) {
-      let user = /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team;
+      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let parentDoc = get(get(/databases/$(database)/documents/kpis/$(document)).data.parent);
+      let user = userDoc in parentDoc.data.team;
       return user;
     }
 
