@@ -117,22 +117,17 @@ export default {
         const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
 
         if (this.type === 'organization') {
-          const data = {
-            name,
-            missionStatement,
-            secret: secret === undefined ? '' : secret,
-            team,
-          };
+          const data = { name, missionStatement, secret: secret === undefined ? '' : secret, team, id };
 
           await Organization.update(id, data);
         } else if (this.type === 'department') {
           const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-          const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team };
+          const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team, id };
 
           await Department.update(id, data);
         } else {
           const department = db.collection('departments').doc(this.activeItem.department.id);
-          const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret };
+          const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret, id };
 
           await Product.update(id, data);
         }

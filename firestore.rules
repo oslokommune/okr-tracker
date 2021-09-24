@@ -11,11 +11,29 @@ service cloud.firestore {
       return isSignedIn() && userIsSuperAdmin;
     }
 
-    function isAdminNew() {
+    function isAdmin() {
       let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
       let hasProperty = 'admin' in userDocument.data;
       let userIsAdmin = hasProperty && userDocument.data.admin.size() > 0;
       return isSignedIn() && userIsAdmin;
+    }
+
+    function isAdminOfOrganizationForProdAndDep() {
+      let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let hasProperty = 'admin' in userDocument.data && userDocument.data.admin.size() > 0;
+      let hasOrg = 'organization' in request.resource.data;
+      let isOrgAdmin = hasProperty && hasOrg && getAfter(request.resource.data.organization).data.id in userDocument.data.admin;
+
+      return isSignedIn() && isOrgAdmin;
+    }
+
+    function isAdminOfOrganization() {
+      let userDocument = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let orgDocument = request.source.data;
+      let hasProperty = 'admin' in userDocument.data && userDocument.data.admin.size() > 0;
+      let isOrgAdmin = hasProperty && orgDocument.id in userDocument.data.admin;
+
+      return isSignedIn() && isOrgAdmin;
     }
 
     function isSignedIn() {
@@ -65,27 +83,27 @@ service cloud.firestore {
 
     match /users/{user} {
       allow read: if isSignedIn();
-      allow write, update, delete: if isSuperAdmin() || isSelf(user) || isAdminNew();
+      allow write, update, delete: if isSuperAdmin() || isSelf(user) || isAdmin();
     }
 
     match /organizations/{document} {
       allow read: if isSignedIn();
-      allow create: if isSuperAdmin() || isTeamMember();
-      allow update: if isSuperAdmin() || isTeamMember();
+      allow create: if isSuperAdmin();
+      allow update: if isSuperAdmin() || isTeamMember() || isAdminOfOrganization();
       allow delete: if isSuperAdmin();
     }
 
     match /departments/{document} {
       allow read: if isSignedIn();
-      allow create: if isSuperAdmin() || isTeamMember();
-      allow update: if isSuperAdmin() || isTeamMember();
+      allow create: if isSuperAdmin() || isTeamMember() || isAdminOfOrganizationForProdAndDep();
+      allow update: if isSuperAdmin() || isTeamMember() || isAdminOfOrganizationForProdAndDep();
       allow delete: if isSuperAdmin();
     }
 
     match /products/{document} {
       allow read: if isSignedIn();
-      allow create: if isSuperAdmin() || isTeamMember();
-      allow update: if isSuperAdmin() || isTeamMember();
+      allow create: if isSuperAdmin() || isTeamMember() || isAdminOfOrganizationForProdAndDep();
+      allow update: if isSuperAdmin() || isTeamMember() || isAdminOfOrganizationForProdAndDep();
       allow delete: if isSuperAdmin();
     }
 

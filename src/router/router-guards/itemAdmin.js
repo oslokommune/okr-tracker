@@ -7,14 +7,14 @@ import store from '@/store';
 export default async function itemAdmin(to, from, next) {
   const {
     state: {
-      activeItem: { team, organization, admins },
-      user: { id: userId, superAdmin },
+      activeItem: { team, organization, id: activeItemId },
+      user: { id: userId, superAdmin, admin },
     },
   } = store;
 
   const isAdminOfOrganization = organization
-    ? organization.admins && organization.admins.map(({ id }) => id).includes(userId)
-    : admins && admins.map(({ id }) => id).includes(userId);
+    ? admin.includes(organization.id)
+    : admin.includes(activeItemId);
 
   const isMemberOfTeam = team && team.map(({ id }) => id).includes(userId);
 

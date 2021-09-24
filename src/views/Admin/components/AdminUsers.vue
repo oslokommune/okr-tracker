@@ -16,7 +16,10 @@
 
       <div class="users__list">
         <button v-for="user in filteredUsers" :key="user.id" class="users__list-item" @click="selectedUser = user">
-          <span class="users__list-item-icon fa" :class="user.admin ? 'fa-user-cog' : 'fa-user'"></span>
+          <span
+            class="users__list-item-icon fa"
+            :class="(user.admin && user.admin.length > 0) || user.superAdmin ? 'fa-user-cog' : 'fa-user'"
+          ></span>
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
           </span>

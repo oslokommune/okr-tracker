@@ -59,9 +59,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import User from '@/db/User';
-import { db } from '@/config/firebaseConfig';
+import { mapState } from "vuex";
+import User from "@/db/User";
+import { db } from "@/config/firebaseConfig";
 
 export default {
   name: 'EditUser',
@@ -88,6 +88,16 @@ export default {
       async handler() {
         this.image = null;
         this.thisUser = this.selectedUser;
+
+        if (this.selectedUser.admin?.length > 0) {
+          const orgs = [];
+          this.selectedUser.admin.forEach((org) => orgs.push(db.collection('organizations').doc(org).get()));
+          const dataArr = await Promise.all(orgs);
+          this.thisUser.admin = dataArr.map((org) => ({
+            ...org.data(),
+            id: org.id,
+          }));
+        }
       },
     },
   },
@@ -110,7 +120,7 @@ export default {
       try {
         const saveUser = { ...this.thisUser };
         if (this.thisUser.admin?.length > 0) {
-          saveUser.admin = saveUser.admin.map((org) => db.collection('organizations').doc(org.id));
+          saveUser.admin = saveUser.admin.map((org) => org.id);
         }
         await User.update(saveUser);
         this.$toasted.show(this.$t('toaster.savedChanges'));

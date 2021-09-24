@@ -43,8 +43,8 @@ export const getters = {
     const { organization } = activeItem;
 
     const isAdminOfOrganization = organization
-      ? user.admin.map(({ slug }) => slug).includes(organization.slug)
-      : user.admin.map(({ slug }) => slug).includes(activeItem.slug);
+      ? user.admin.includes(organization.id)
+      : user.admin.includes(activeItem.id);
 
     if (user && user.superAdmin) return true;
     if (isAdminOfOrganization) return true;
