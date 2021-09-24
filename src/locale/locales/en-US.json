@@ -423,7 +423,10 @@
   "user": {
     "selectLanguage": "Select language",
     "myProfile": "My profile",
-    "hasAdmin": "Has admin rights",
+    "superAdmin": "OKR-tracker Administrator",
+    "admin": "Administrator for Organizations",
+    "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
+    "hasAdmin": "Has admin rights for some organizations",
     "products": "My products",
     "position": {
       "groups": {

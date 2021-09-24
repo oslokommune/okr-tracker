@@ -420,7 +420,10 @@
   },
   "user": {
     "myProfile": "Min profil",
-    "hasAdmin": "Har administratortilgang",
+    "superAdmin": "OKR-tracker administrator",
+    "admin": "Organisasjonsadministrator",
+    "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
+    "hasAdmin": "Er administrator for en rekke organisasjoner",
     "products": "Mine produkter",
     "selectLanguage": "Velg språk",
     "position": {

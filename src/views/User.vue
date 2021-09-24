@@ -63,28 +63,40 @@
 
         <hr class="divider" />
 
-        <template v-if="user.admin">
+        <template v-if="user.superAdmin">
           <h2 class="title-2">
             <i class="fas fa-user-shield" />
-            Admin
+            {{ $t('user.superAdmin') }}
+          </h2>
+          <div>
+            {{ $t('user.hasSuperAdmin') }}
+          </div>
+        </template>
+
+        <template v-if="user.admin && user.admin.length > 0">
+          <h2 class="title-2">
+            <i class="fas fa-user-shield" />
+            {{ $t('user.admin') }}
           </h2>
           <div>
             {{ $t('user.hasAdmin') }}
           </div>
         </template>
 
-        <h2 class="title-2">{{ $t('user.products') }}</h2>
-        <ul class="grid-system">
-          <li v-for="product in products" :key="product.id">
-            <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-              <div class="product__parent">{{ product.department.name }}</div>
-              <div class="product__name">
-                <i class="product__icon fa fa-cube" />
-                {{ product.name }}
-              </div>
-            </router-link>
-          </li>
-        </ul>
+        <div class="product__header">
+          <h2 class="title-2">{{ $t('user.products') }}</h2>
+          <ul class="grid-system">
+            <li v-for="product in products" :key="product.id">
+              <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
+                <div class="product__parent">{{ product.department.name }}</div>
+                <div class="product__name">
+                  <i class="product__icon fa fa-cube" />
+                  {{ product.name }}
+                </div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -285,5 +297,9 @@ export default {
   grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin: 1rem 0 2rem;
+}
+
+.product__header {
+  margin-top: 1rem;
 }
 </style>

@@ -4,31 +4,35 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function getUserDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.token.email));
+    }
+
     function isSuperAdmin() {
-      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let userDoc = getUserDoc();
       let hasProperty = 'superAdmin' in userDoc.data;
       let userIsSuperAdmin = hasProperty && userDoc.data.superAdmin == true;
       return isSignedIn() && userIsSuperAdmin;
     }
 
     function isAdmin() {
-      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
-      let hasProperty = 'admin' in userDoc.data;
-      let userIsAdmin = hasProperty && userDoc.data.admin.size() > 0;
+      let userDoc = getUserDoc();
+      let hasAdminProperty = 'admin' in userDoc.data;
+      let userIsAdmin = hasAdminProperty && userDoc.data.admin.size() > 0;
       return isSignedIn() && userIsAdmin;
     }
 
     function isAdminOfOrganizationForProdAndDep() {
-      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
-      let hasProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
+      let userDoc = getUserDoc();
+      let hasAdminProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
       let hasOrg = 'organization' in request.resource.data;
-      let isOrgAdmin = hasProperty && hasOrg && getAfter(request.resource.data.organization).data.id in userDoc.data.admin;
+      let isOrgAdmin = hasAdminProperty && hasOrg && getAfter(request.resource.data.organization).data.id in userDoc.data.admin;
 
       return isSignedIn() && isOrgAdmin;
     }
 
     function isAdminOfOrganization() {
-      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.token.email));
+      let userDoc = getUserDoc();
       let orgDocument = request.source.data;
       let hasProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
       let isOrgAdmin = hasProperty && orgDocument.id in userDoc.data.admin;
@@ -42,34 +46,34 @@ service cloud.firestore {
     }
 
     function isTeamMember() {
-      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userDoc = getUserDoc();
       let userIsTeamMember = userDoc in resource.data.team;
       return userIsTeamMember;
     }
 
     function isMemberOfParent() {
-      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userDoc = getUserDoc();
       let parentDoc = getAfter(request.resource.data.parent);
       let userIsMemberOfParent = userDoc in parentDoc.data.team;
       return userIsMemberOfParent;
     }
 
     function isMemberOfParentDelete() {
-      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userDoc = getUserDoc();
       let parentDoc = get(resource.data.parent);
       let user = userDoc in parentDoc.data.team;
       return user;
     }
 
     function isMemberOfKeyResParent(document) {
-      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userDoc = getUserDoc();
       let parentDoc = getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent);
       let user = userDoc in parentDoc.data.team;
       return user;
     }
 
     function isMemberOfKpiParent(document) {
-      let userDoc = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userDoc = getUserDoc();
       let parentDoc = get(get(/databases/$(database)/documents/kpis/$(document)).data.parent);
       let user = userDoc in parentDoc.data.team;
       return user;
