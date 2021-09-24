@@ -14,7 +14,6 @@ export default {
   },
 
   created() {
-    console.log(this.user);
     if (!this.isAdmin && !this.user.superAdmin) {
       this.$router.push({ name: 'Home' });
     }

@@ -25,21 +25,6 @@
           />
 
           <div class="form-group">
-            <span class="form-label">Administrators</span>
-            <v-select
-              v-model="team"
-              multiple
-              :options="users"
-              :get-option-label="(option) => option.displayName || option.id"
-            >
-              <template #option="option">
-                {{ option.displayName || option.id }}
-                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-              </template>
-            </v-select>
-          </div>
-
-          <div class="form-group">
             <span class="form-label">{{ $t('general.teamMembers') }}</span>
             <v-select
               v-model="team"
@@ -80,7 +65,6 @@ export default {
     missionStatement: '',
     loading: false,
     team: [],
-    admins: [],
   }),
 
   computed: {
@@ -95,7 +79,6 @@ export default {
         missionStatement: missionStatement.trim(),
         archived: false,
         team: team.map(({ id }) => db.collection('users').doc(id)),
-        admins: admins.map(({ id }) => db.collection('users').doc(id)),
       };
 
       this.loading = true;

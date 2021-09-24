@@ -29,20 +29,10 @@ export const getters = {
 
   isAdmin: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
-    const { user, activeItem, organizations } = state;
-
-    let isAdmin = false;
-
-    organizations.forEach(org => {
-      if (org.admins.map(({id}) => id).includes(user.id)) {
-        isAdmin = true;
-      }
-    })
-
-    console.log(isAdmin);
+    const { user, activeItem } = state;
 
     if (user && user.superAdmin) return true;
-    if (isAdmin) return true;
+    if (user && user.admin.length > 0) return true;
     if (!user || !activeItem || !activeItem.team) return false;
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
@@ -50,11 +40,11 @@ export const getters = {
   hasEditRights: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
-    const { organization, admins } = activeItem;
+    const { organization } = activeItem;
 
     const isAdminOfOrganization = organization
-      ? organization.admins && organization.admins.map(({ id }) => id).includes(user.id)
-      : admins && admins.map(({ id }) => id).includes(user.id);
+      ? user.admin.map(({ slug }) => slug).includes(organization.slug)
+      : user.admin.map(({ slug }) => slug).includes(activeItem.slug);
 
     if (user && user.superAdmin) return true;
     if (isAdminOfOrganization) return true;

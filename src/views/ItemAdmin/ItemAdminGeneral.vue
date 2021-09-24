@@ -37,22 +37,6 @@
           <v-select v-model="activeItem.department" label="name" :options="departments" :clearable="false"></v-select>
         </div>
 
-        <div v-if="type === 'organization'" class="form-group">
-          <span class="form-label">Administrators</span>
-          <v-select
-            v-model="activeItem.admins"
-            multiple
-            :options="users"
-            :get-option-label="(option) => option.displayName || option.id"
-            :disabled="!user.superAdmin"
-          >
-            <template #option="option">
-              {{ option.displayName || option.id }}
-              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-            </template>
-          </v-select>
-        </div>
-
         <div class="form-group">
           <span class="form-label">{{ $t('general.teamMembers') }}</span>
           <v-select
@@ -114,7 +98,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'organizations', 'departments', 'users', 'user']),
+    ...mapState(['activeItem', 'organizations', 'departments', 'users']),
 
     type() {
       const { department, organization } = this.activeItem;
@@ -133,13 +117,11 @@ export default {
         const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
 
         if (this.type === 'organization') {
-          const admins = this.activeItem.admins.map((user) => db.collection('users').doc(user.id));
           const data = {
             name,
             missionStatement,
             secret: secret === undefined ? '' : secret,
             team,
-            admins,
           };
 
           await Organization.update(id, data);

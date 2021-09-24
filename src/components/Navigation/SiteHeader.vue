@@ -309,10 +309,14 @@ export default {
   box-shadow: 0 3px 4px rgba($color-grey-500, 0.5);
 
   @media screen and (min-width: bp(xs)) {
-    width: span(4);
+    width: span(5);
   }
 
   @media screen and (min-width: bp(s)) {
+    width: span(4);
+  }
+
+  @media screen and (min-width: bp(m)) {
     width: span(3);
   }
 

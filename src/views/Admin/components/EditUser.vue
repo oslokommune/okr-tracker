@@ -90,9 +90,6 @@ export default {
         this.thisUser = this.selectedUser;
       },
     },
-    users(newUsers) {
-      console.log(newUsers);
-    },
   },
 
   methods: {
@@ -111,21 +108,14 @@ export default {
     async save() {
       this.loading = true;
       try {
-        const saveUser = this.selectedUser;
-        saveUser.admin = this.selectedUser.admin.map((org) => db.collection('organizations').doc(org.id));
-
+        const saveUser = { ...this.thisUser };
+        if (this.thisUser.admin?.length > 0) {
+          saveUser.admin = saveUser.admin.map((org) => db.collection('organizations').doc(org.id));
+        }
         await User.update(saveUser);
         this.$toasted.show(this.$t('toaster.savedChanges'));
-
-        let newUser = null;
-        this.users.forEach((user) => {
-          if (user.id === this.selectedUser.id) {
-            newUser = user;
-          }
-        });
-        console.log(newUser);
-        this.thisUser = newUser;
-      } catch {
+      } catch (e) {
+        console.log(e);
         this.$toasted.error(this.$t('toaster.error.save'));
       }
 
