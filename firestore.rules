@@ -4,10 +4,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Get user document
     function getUserDoc() {
       return get(/databases/$(database)/documents/users/$(request.auth.token.email));
     }
 
+    // Check if user is a super admin
     function isSuperAdmin() {
       let userDoc = getUserDoc();
       let hasProperty = 'superAdmin' in userDoc.data;
@@ -15,6 +17,7 @@ service cloud.firestore {
       return isSignedIn() && userIsSuperAdmin;
     }
 
+    // CHeck if user is admin of at least one organization
     function isAdmin() {
       let userDoc = getUserDoc();
       let hasAdminProperty = 'admin' in userDoc.data;
@@ -22,6 +25,7 @@ service cloud.firestore {
       return isSignedIn() && userIsAdmin;
     }
 
+    // CHeck if user is admin from the organization that the product/department is part of
     function isAdminOfOrganizationForProdAndDep() {
       let userDoc = getUserDoc();
       let hasAdminProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
@@ -31,6 +35,28 @@ service cloud.firestore {
       return isSignedIn() && isOrgAdmin;
     }
 
+    // Admin of the organization for Product or Department for this KPI but not Organization KPIs
+    function isAdminOfKpiFromProdOrDepInOrganization() {
+      let userDoc = getUserDoc();
+      let hasAdminProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
+      let parentDoc = getAfter(request.resource.data.parent);
+      let hasOrg = 'organization' in parentDoc.data;
+      let isOrgAdmin = hasAdminProperty && hasOrg && getAfter(parentDoc.data.organization).data.id in userDoc.data.admin;
+
+      return isSignedIn() && isOrgAdmin;
+    }
+
+    // Check if person is admin of the KPIs parent which is an organization and not Product and Department
+    function isAdminOfKpiFromOrganization() {
+      let userDoc = getUserDoc();
+      let hasAdminProperty = 'admin' in userDoc.data && userDoc.data.admin.size() > 0;
+      let parentDoc = getAfter(request.resource.data.parent);
+      let isOrgAdmin = hasAdminProperty && parentDoc.data.id in userDoc.data.admin;
+
+      return isSignedIn() && isOrgAdmin;
+    }
+
+    // Check if user is admin of a specific organization
     function isAdminOfOrganization() {
       let userDoc = getUserDoc();
       let orgDocument = request.source.data;
@@ -40,17 +66,20 @@ service cloud.firestore {
       return isSignedIn() && isOrgAdmin;
     }
 
+    // Is user signed in
     function isSignedIn() {
       // TODO: Must be a verified (whitelisted) user
       return request.auth.uid != null;
     }
 
+    // Is user part of the team in the organization/department/product
     function isTeamMember() {
       let userDoc = getUserDoc();
       let userIsTeamMember = userDoc in resource.data.team;
       return userIsTeamMember;
     }
 
+    // Is a member from the parent of the Objective/KeyResult/Period/KPI
     function isMemberOfParent() {
       let userDoc = getUserDoc();
       let parentDoc = getAfter(request.resource.data.parent);
@@ -58,13 +87,7 @@ service cloud.firestore {
       return userIsMemberOfParent;
     }
 
-    function isMemberOfParentDelete() {
-      let userDoc = getUserDoc();
-      let parentDoc = get(resource.data.parent);
-      let user = userDoc in parentDoc.data.team;
-      return user;
-    }
-
+    // Is a member from the parent of the KeyResult (this is used to check if the user can delete progress from a KeyResult)
     function isMemberOfKeyResParent(document) {
       let userDoc = getUserDoc();
       let parentDoc = getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent);
@@ -72,6 +95,7 @@ service cloud.firestore {
       return user;
     }
 
+    // Is a member from the parent of the KPI (this is used to check if the user can delete progress from KPI)
     function isMemberOfKpiParent(document) {
       let userDoc = getUserDoc();
       let parentDoc = get(get(/databases/$(database)/documents/kpis/$(document)).data.parent);
@@ -150,15 +174,15 @@ service cloud.firestore {
 
     match /kpis/{document} {
       allow read: if isSignedIn();
-      allow create: if isSuperAdmin() || isMemberOfParent();
-      allow update: if isSuperAdmin() || isMemberOfParent();
-      allow delete: if isSuperAdmin() || isMemberOfParentDelete();
+      allow create: if isSuperAdmin() || isMemberOfParent() || isAdminOfKpiFromOrganization() || isAdminOfKpiFromProdOrDepInOrganization();
+      allow update: if isSuperAdmin() || isMemberOfParent() || isAdminOfKpiFromOrganization() || isAdminOfKpiFromProdOrDepInOrganization();
+      allow delete: if isSuperAdmin() || isMemberOfParent() || isAdminOfKpiFromOrganization() || isAdminOfKpiFromProdOrDepInOrganization();
     }
 
     match /kpis/{document}/progress/{progress} {
       allow read: if isSignedIn();
       allow create: if false;
-      allow delete: if isSuperAdmin() || isMemberOfKpiParent(document);
+      allow delete: if isSuperAdmin() || isMemberOfKpiParent(document) || isAdminOfKpiFromOrganization() || isAdminOfKpiFromProdOrDepInOrganization();
     }
 
     match /slugs/{document} {
