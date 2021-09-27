@@ -4,13 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-We have added another lever of admin, called super admin.
+We have added another lever of admin, called super admin. We are sorry, but you need to update some database documents to make this work.
 
 Super Admin can:
 - do the same things as an admin and normal member
 - restore backups
 - promote or demote admins
-- migrate
+- migrate data
 - create/restore/change organizations
 
 Admins can:
@@ -21,12 +21,19 @@ Admins can:
 - administrate multiple departments within the same organization
 
 Member of a product or department or organization
-- has rights to administrate product/org/departments
+- has rights to administrate its own product/org/departments
 - ... such as add/remove members from a product/org/department
+  - or update/delete/archive
 
 ### BREAKING CHANGES
 
-- Added another lever of admin - super admin
+- Added another lever of admin - super admin.
+  - Add superAdmin-property to one user, and then that person can give others superAdmin-access
+  - Super admin needs to go and update every single product/department/organization to support the new RBAC system (sorry for the inconvenience)
+
+### Fix
+
+- Users were not allowed to archive its own product or department
 
 ## [2.2.1] 2021-09-23
 
