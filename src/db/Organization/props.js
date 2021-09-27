@@ -18,9 +18,5 @@ export default {
   team: {
     type: 'array',
     required: false,
-  },
-  admins: {
-    type: 'array',
-    required: false,
-  },
+  }
 };
