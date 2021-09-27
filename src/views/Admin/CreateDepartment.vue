@@ -34,6 +34,21 @@
             :select-options="organizations"
             data-cy="dep-parentOrg"
           />
+
+          <div class="form-group">
+            <span class="form-label">{{ $t('general.teamMembers') }}</span>
+            <v-select
+              v-model="team"
+              multiple
+              :options="users"
+              :get-option-label="(option) => option.displayName || option.id"
+            >
+              <template #option="option">
+                {{ option.displayName || option.id }}
+                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+              </template>
+            </v-select>
+          </div>
         </form>
       </validation-observer>
 
@@ -48,9 +63,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
-import { mapState } from 'vuex';
 import findSlugAndRedirect from '@/util/findSlugAndRedirect';
 
 export default {
@@ -61,20 +76,22 @@ export default {
     missionStatement: '',
     organization: null,
     loading: false,
+    team: [],
   }),
 
   computed: {
-    ...mapState(['organizations']),
+    ...mapState(['organizations', 'users']),
   },
 
   methods: {
     async save() {
-      const { name, missionStatement, organization } = this;
+      const { name, missionStatement, organization, team } = this;
       const data = {
         name: name.trim(),
         missionStatement: missionStatement.trim(),
         organization: db.collection('organizations').doc(organization.id),
         archived: false,
+        team: team.map(({ id }) => db.collection('users').doc(id)),
       };
 
       this.loading = true;
@@ -88,9 +105,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.department'));
         throw new Error(error);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
   },
 };

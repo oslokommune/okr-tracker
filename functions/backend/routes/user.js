@@ -29,6 +29,8 @@ router.post('/create', ...validateUser, async (req, res) => {
 
     await collection.doc(id).set({
       ...sanitized,
+      admin: [],
+      superAdmin: false,
       preferences,
     });
 
