@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+We have added another lever of admin, called super admin.
+
+Super Admin can:
+- do the same things as an admin and normal member
+- restore backups
+- promote or demote admins
+- migrate
+- create/restore/change organizations
+
+Admins can:
+- do the same things as a member
+- add new users to the OKR-tracker
+- administrate an organization it is admin of
+- administrate multiple products within the same organization
+- administrate multiple departments within the same organization
+
+Member of a product or department or organization
+- has rights to administrate product/org/departments
+- ... such as add/remove members from a product/org/department
+
+### BREAKING CHANGES
+
+- Added another lever of admin - super admin
+
 ## [2.2.1] 2021-09-23
 
 ### Added

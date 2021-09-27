@@ -101,8 +101,9 @@ export default {
         this.$toasted.show(this.$t('toaster.add.product'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.product'));
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     },
   },
 };

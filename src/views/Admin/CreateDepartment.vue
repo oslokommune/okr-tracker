@@ -105,9 +105,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.department'));
         throw new Error(error);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
   },
 };

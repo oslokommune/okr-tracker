@@ -135,9 +135,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.save'));
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     async archive() {
@@ -156,9 +156,9 @@ export default {
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
         this.activeItem.archived = false;
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     async restore() {
@@ -171,9 +171,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.restore', { document: this.activeItem.name }));
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     async deleteDeep() {
@@ -187,9 +187,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.delete', { document: this.activeItem.name }));
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
   },
 };
