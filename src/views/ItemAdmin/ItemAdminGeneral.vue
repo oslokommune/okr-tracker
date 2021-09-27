@@ -145,7 +145,14 @@ export default {
 
       try {
         this.activeItem.archived = true;
-        await Organization.archive(this.activeItem.id);
+
+        if (this.type === 'organization') {
+          await Organization.archive(this.activeItem.id);
+        } else if (this.type === 'department') {
+          await Department.archive(this.activeItem.id);
+        } else if (this.type === 'product') {
+          await Product.archive(this.activeItem.id);
+        }
 
         const restoreCallback = this.restore.bind(this);
 
@@ -165,7 +172,14 @@ export default {
       this.loading = true;
 
       try {
-        await Organization.restore(this.activeItem.id);
+        if (this.type === 'organization') {
+          await Organization.restore(this.activeItem.id);
+        } else if (this.type === 'department') {
+          await Department.restore(this.activeItem.id);
+        } else if (this.type === 'product') {
+          await Product.restore(this.activeItem.id);
+        }
+
         this.$toasted.show(this.$t('toaster.restored'));
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
@@ -180,7 +194,14 @@ export default {
       this.loading = true;
 
       try {
-        await Organization.deleteDeep(this.activeItem.id);
+        if (this.type === 'organization') {
+          await Organization.deleteDeep(this.activeItem.id);
+        } else if (this.type === 'department') {
+          await Department.deleteDeep(this.activeItem.id);
+        } else if (this.type === 'product') {
+          await Product.deleteDeep(this.activeItem.id);
+        }
+
         this.$toasted.show(this.$t('toaster.delete.permanently'));
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
