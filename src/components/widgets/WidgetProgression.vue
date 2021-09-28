@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="getTitle()" icon="chart-pie">
+  <widget :widget-id="widgetId" :title="getTitle()">
     <svg ref="svg"></svg>
   </widget>
 </template>

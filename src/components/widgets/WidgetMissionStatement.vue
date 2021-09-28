@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')" icon="file">
+  <widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')">
     <div class="md" v-html="content"></div>
   </widget>
 </template>

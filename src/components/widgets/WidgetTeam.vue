@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')" icon="users">
+  <widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')">
     <empty-state
       v-if="!activeItem.team.length"
       :icon="'user-ninja'"

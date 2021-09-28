@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
+  <widget v-if="children.length" :widget-id="widgetId" :title="title">
     <div class="list">
       <router-link
         v-for="child in children"

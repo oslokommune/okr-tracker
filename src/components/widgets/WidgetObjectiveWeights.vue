@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
+  <widget :widget-id="widgetId" :title="$t('weight.heading')">
     {{ $t('weight.keyresFor', { name: activeObjective.period.name }) }}
     <div class="scales">
       <router-link

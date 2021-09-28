@@ -5,37 +5,40 @@
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
-      <div>
+      <div class="itemHome">
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />
-          <content-loader-action-bar v-if="dataLoading"></content-loader-action-bar>
+          <content-loader-action-bar
+            v-if="dataLoading"
+            class="itemHome__header--content-loader"
+          ></content-loader-action-bar>
           <action-bar v-else-if="tree.length" />
-
-          <content-loader-item v-if="dataLoading"></content-loader-item>
-
-          <empty-state
-            v-else-if="!tree.length && !dataLoading"
-            :icon="'exclamation'"
-            :heading="$t('empty.noPeriods.heading')"
-            :body="$t('empty.noPeriods.body')"
-          >
-            <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
-              {{ $t('empty.noPeriods.buttonText') }}
-            </router-link>
-          </empty-state>
-
-          <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
-            <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
-              <objective-row :objective="objective" :index="++index"></objective-row>
-              <ul v-if="objective.keyResults" class="group">
-                <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
-                  <key-result-row :key-result="keyResult"></key-result-row>
-                </li>
-              </ul>
-            </li>
-          </ul>
         </div>
+
+        <content-loader-item v-if="dataLoading"></content-loader-item>
+
+        <empty-state
+          v-else-if="!tree.length && !dataLoading"
+          :icon="'exclamation'"
+          :heading="$t('empty.noPeriods.heading')"
+          :body="$t('empty.noPeriods.body')"
+        >
+          <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
+            {{ $t('empty.noPeriods.buttonText') }}
+          </router-link>
+        </empty-state>
+
+        <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
+          <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
+            <objective-row :objective="objective" :index="++index"></objective-row>
+            <ul v-if="objective.keyResults" class="group">
+              <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
+                <key-result-row :key-result="keyResult"></key-result-row>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -88,11 +91,19 @@ export default {
   }
 }
 
-.itemHome__header {
-  display: block;
+.itemHome {
   padding: 1rem 1rem 3rem 1rem;
   background: rgb(255, 255, 255);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 30%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.itemHome__header--content-loader {
+  margin-bottom: 1.5rem;
 }
 
 .itemHome__tree--item {

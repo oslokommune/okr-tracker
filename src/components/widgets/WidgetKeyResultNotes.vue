@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
+  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <textarea v-model="thisKey.notes" rows="20" @input="dirty = true" />

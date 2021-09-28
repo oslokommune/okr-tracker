@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
+  <widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')">
     <div class="details">
       <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
