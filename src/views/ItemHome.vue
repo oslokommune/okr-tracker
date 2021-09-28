@@ -11,31 +11,31 @@
           <period-selector />
           <content-loader-action-bar v-if="dataLoading"></content-loader-action-bar>
           <action-bar v-else-if="tree.length" />
+
+          <content-loader-item v-if="dataLoading"></content-loader-item>
+
+          <empty-state
+            v-else-if="!tree.length && !dataLoading"
+            :icon="'exclamation'"
+            :heading="$t('empty.noPeriods.heading')"
+            :body="$t('empty.noPeriods.body')"
+          >
+            <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
+              {{ $t('empty.noPeriods.buttonText') }}
+            </router-link>
+          </empty-state>
+
+          <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
+            <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
+              <objective-row :objective="objective" :index="++index"></objective-row>
+              <ul v-if="objective.keyResults" class="group">
+                <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
+                  <key-result-row :key-result="keyResult"></key-result-row>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-
-        <content-loader-item v-if="dataLoading"></content-loader-item>
-
-        <empty-state
-          v-else-if="!tree.length && !dataLoading"
-          :icon="'exclamation'"
-          :heading="$t('empty.noPeriods.heading')"
-          :body="$t('empty.noPeriods.body')"
-        >
-          <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
-            {{ $t('empty.noPeriods.buttonText') }}
-          </router-link>
-        </empty-state>
-
-        <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
-          <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
-            <objective-row :objective="objective" :index="++index"></objective-row>
-            <ul v-if="objective.keyResults" class="group">
-              <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
-                <key-result-row :key-result="keyResult"></key-result-row>
-              </li>
-            </ul>
-          </li>
-        </ul>
       </div>
     </div>
 
@@ -91,23 +91,16 @@ export default {
 .itemHome__header {
   display: block;
   padding: 1rem 1rem 3rem 1rem;
-  background: white;
-}
-
-.itemHome__tree {
-  display: block;
-}
-
-.itemHome__tree--hover {
-  position: relative;
-  bottom: 2rem;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%);
 }
 
 .itemHome__tree--item {
-  margin: 0 1rem 1rem 1rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
-  box-shadow: -2px 1px 5px 2px rgb(147 147 153 / 30%);
+  box-shadow: 0 3px 21px rgba(0, 0, 0, 0.03), 0 6.7px 34.2px rgba(0, 0, 0, 0.04), 0 11.7px 43.8px rgba(0, 0, 0, 0.046),
+    0 18.5px 55.2px rgba(0, 0, 0, 0.059), 0 26px 80px rgba(0, 0, 0, 0.11);
 }
 
 .aside--left {
