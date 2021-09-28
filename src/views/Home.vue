@@ -61,7 +61,7 @@ export default {
   padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
-    width: span(9);
+    width: span(8);
     margin-left: span(2, 1);
   }
 }

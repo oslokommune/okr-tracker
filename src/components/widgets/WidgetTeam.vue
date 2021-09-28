@@ -7,15 +7,6 @@
       :body="$t('empty.team.body')"
     />
 
-    <<<<<<< HEAD
-    <ul class="users__list">
-      <li v-for="user in activeItem.team" :key="user.id" class="user">
-        <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
-          <span class="user__name">{{ user.displayName || user.id }}</span>
-        </router-link>
-      </li>
-    </ul>
-    =======
     <template v-if="director">
       <h4 class="user__title">{{ $t('user.position.groups.director') }}</h4>
       <ul class="users__list">
@@ -122,7 +113,6 @@
         </li>
       </ul>
     </template>
-    >>>>>>> develop
     <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
       {{ $t('btn.add') }}
     </router-link>
