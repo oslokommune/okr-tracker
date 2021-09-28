@@ -12,6 +12,7 @@ export default firestoreAction(async ({ bindFirestoreRef }) => {
     bindFirestoreRef('organizations', db.collection('organizations').where(...isNotArchived), options),
     bindFirestoreRef('departments', db.collection('departments').where(...isNotArchived), options),
     bindFirestoreRef('products', db.collection('products').where(...isNotArchived), options),
+    bindFirestoreRef('users', db.collection('users'), options),
   ]);
 });
 

@@ -104,6 +104,13 @@ export default {
         });
       },
     },
+    theme: {
+      immediate: true,
+      handler() {
+        if (!this.piegraph) return;
+        this.piegraph.render(this.activePeriod, this.theme);
+      },
+    },
   },
 
   mounted() {

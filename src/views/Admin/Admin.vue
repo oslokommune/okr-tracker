@@ -4,7 +4,7 @@
       <div class="grid">
         <admin-items class="admin-items"></admin-items>
         <div class="admin-users">
-          <admin-access-requests v-if="requestAccess.length" />
+          <admin-access-requests v-if="user.superAdmin" />
           <admin-users />
         </div>
       </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { db } from '@/config/firebaseConfig';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Admin',
@@ -24,12 +24,8 @@ export default {
     AdminItems: () => import('./components/AdminItems.vue'),
   },
 
-  data: () => ({
-    requestAccess: [],
-  }),
-
-  firestore: {
-    requestAccess: db.collection('requestAccess'),
+  computed: {
+    ...mapState(['user']),
   },
 };
 </script>

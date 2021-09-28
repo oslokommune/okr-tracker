@@ -5,8 +5,7 @@ const padding = 50;
 const radius = (size - padding * 2) / 2;
 const duration = 600;
 const ease = easeCircleOut;
-
-const colors = {
+export const colors = {
   yellow: {
     innerDone: '#ba944fff',
     innerFull: '#a2a2a2',

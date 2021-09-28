@@ -25,7 +25,12 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }" data-cy="create-organization">
+            <router-link
+              v-if="user.superAdmin"
+              class="btn btn--fw"
+              :to="{ name: 'CreateOrganization' }"
+              data-cy="create-organization"
+            >
               {{ $t('btn.addOrganization') }}
             </router-link>
           </div>
@@ -104,6 +109,7 @@
 
 <script>
 import Fuse from 'fuse.js';
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 
 const fuseSettings = {
@@ -138,6 +144,10 @@ export default {
     filteredDeps: [],
     filteredProds: [],
   }),
+
+  computed: {
+    ...mapState(['user']),
+  },
 
   watch: {
     showArchived: {

@@ -89,7 +89,7 @@
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
-    "OKRsLong": "Mål og nøkkelresulater",
+    "OKRsLong": "Mål og nøkkelresultater",
     "KPIs": "KPI-er",
     "team": "Team",
     "project": "OKR",
@@ -170,13 +170,13 @@
     "welcome": "Velkommen {user}",
     "add": {
       "users": "Lagt til en bruker | {count} brukere",
-      "product": "Opprettet nytt produkt",
+      "product": "Opprettet nytt produkt. Vennligst vent, du blir sendt videre om 5 sekunder",
       "objective": "Lagt til nytt mål for {period}",
       "progression": "Lagt til ny verdi",
-      "department": "Opprettet nytt produktområde",
+      "department": "Opprettet nytt produktområde. Vennligst vent, du blir sendt videre om 5 sekunder",
       "keyResult": "Lagt til nytt nøkkelresultat",
       "period": "Opprettet ny periode",
-      "organization": "Opprettet ny organisasjon",
+      "organization": "Opprettet ny organisasjon. Vennligst vent, du blir sendt videre om 5 sekunder",
       "kpi": "Opprettet ny KPI"
     },
     "delete": {
@@ -420,7 +420,10 @@
   },
   "user": {
     "myProfile": "Min profil",
-    "hasAdmin": "Har administratortilgang",
+    "superAdmin": "OKR-tracker administrator",
+    "admin": "Organisasjonsadministrator",
+    "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
+    "hasAdmin": "Er administrator for en rekke organisasjoner",
     "products": "Mine produkter",
     "selectLanguage": "Velg språk",
     "position": {
@@ -464,7 +467,8 @@
       "securityExpert": "Sikkerhetsekspert",
       "administration": "Administrasjon",
       "contentProducer": "Innholdsprodusent",
-      "other": "Annet"
+      "other": "Annet",
+      "storyteller": "Historieforteller"
     }
   },
   "languages": {

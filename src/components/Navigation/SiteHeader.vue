@@ -50,7 +50,7 @@
                 {{ $t('user.myProfile') }}
               </router-link>
             </li>
-            <li v-if="user.admin" class="menu__list-item">
+            <li v-if="isAdmin" class="menu__list-item">
               <router-link
                 class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'Admin' }"
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 import OsloLogo from '@/components/OsloLogo.vue';
@@ -118,6 +118,7 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'user', 'providers', 'authenticated']),
+    ...mapGetters(['isAdmin']),
 
     /**
      * Dynamically determines the page title based on the route
@@ -341,10 +342,14 @@ $header-height: 4em;
   box-shadow: 0 3px 4px rgba($color-grey-500, 0.5);
 
   @media screen and (min-width: bp(xs)) {
-    width: span(4);
+    width: span(5);
   }
 
   @media screen and (min-width: bp(s)) {
+    width: span(4);
+  }
+
+  @media screen and (min-width: bp(m)) {
     width: span(3);
   }
 

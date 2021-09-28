@@ -172,13 +172,13 @@
     "welcome": "Welcome {user}",
     "add": {
       "users": "Add user | {count} users",
-      "product": "Created new product",
+      "product": "Created new product. Please wait, you will be redirected in 5 seconds",
       "objective": "Created an objective for  {period}",
       "progression": "Created new value",
-      "department": "Created new department",
+      "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
       "period": "Created new period",
-      "organization": "Created new organisation",
+      "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
       "kpi": "Created new KPI"
     },
     "delete": {
@@ -423,7 +423,10 @@
   "user": {
     "selectLanguage": "Select language",
     "myProfile": "My profile",
-    "hasAdmin": "Has admin rights",
+    "superAdmin": "OKR-tracker Administrator",
+    "admin": "Administrator for Organizations",
+    "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
+    "hasAdmin": "Has admin rights for some organizations",
     "products": "My products",
     "position": {
       "groups": {
@@ -467,7 +470,8 @@
       "securityExpert": "Security expert",
       "administration": "Administration",
       "contentProducer": "Content producer",
-      "other": "Other"
+      "other": "Other",
+      "storyteller": "Storyteller"
     }
   },
   "languages": {
