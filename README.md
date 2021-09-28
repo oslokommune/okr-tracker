@@ -145,6 +145,8 @@ Start the Firebase Emulator:
 npm run dev
 ```
 
+### Create mock data
+
 #### Generate mock data
 
 After successfully logging in to the OKR Tracker, navigate to the [Admin panel](http://localhost:8080/admin). Here you can create new organisations, departments and products to use as your mock data. On each object you can also create periods, objectives, key results and KPIs.
@@ -154,12 +156,16 @@ After successfully logging in to the OKR Tracker, navigate to the [Admin panel](
 To export your mock data run the following command:
 
 ```bash
-firebase emulators:export ./mock
+firebase emulators:export ./mock_data
 ```
 
 #### Update mock data
 
 To update existing mock data, simply run the export command above and confirm overwrite existing export.
+
+#### Possible problems
+
+Firebase now exports storage emulator as well, even if you don't use it. These new folders are not checked into git because they are empty and git does not add empty folders. If you are a user that has problems running the mock data, you will need to add two folders to the `/mock_data/storage_export` folder. These are `blobs` and `metadata`.
 
 ## Create Google Cloud API Gateway
 
