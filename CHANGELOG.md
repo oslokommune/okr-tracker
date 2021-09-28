@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.3.0] 2021-09-28
+
 We have added another lever of admin, called super admin. We are sorry, but you need to update some database documents to make this work.
 
 Super Admin can:
@@ -16,7 +18,7 @@ Super Admin can:
 Admins can:
 - do the same things as a member
 - add new users to the OKR-tracker
-- administrate an organization it is admin of
+- administrate an organization they are apart of
 - administrate multiple products within the same organization
 - administrate multiple departments within the same organization
 
