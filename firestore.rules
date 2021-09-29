@@ -44,7 +44,7 @@ service cloud.firestore {
       let userDoc = getUserDoc();
       let userIsAdmin = isAdmin();
 
-      let parentDoc =getAfter(get(/databases/$(database)/documents/$(type)/$(document)).data.parent);
+      let parentDoc = getAfter(get(/databases/$(database)/documents/$(type)/$(document)).data.parent);
 
       // Check if the parentDoc the user tries to access has an organization - this means that is is a product or department
       let hasOrgDocumentInParent = 'organization' in parentDoc.data;
@@ -64,16 +64,16 @@ service cloud.firestore {
 
     // Is user part of the team in the organization/department/product
     function isTeamMember() {
-      let userDoc = getUserDoc();
-      let userIsTeamMember = userDoc in resource.data.team;
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userIsTeamMember = userDoc in request.resource.data.team;
       return userIsTeamMember;
     }
 
     // Is a member from the parent of the Objective/KeyResult/Period/KPI
     function isMemberOfParent(document, type) {
-      let userDoc = getUserDoc();
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
       let parentDoc = getAfter(get(/databases/$(database)/documents/$(type)/$(document)).data.parent);
-      let userIsMemberOfParent = userDoc in parentDoc.data.team;
+      let userIsMemberOfParent = userRef in parentDoc.data.team;
       return userIsMemberOfParent;
     }
 

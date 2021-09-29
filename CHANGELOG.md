@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.3.1] 2021-09-28
+
+### Fixed
+
+- Normal team members were not actually allowed to update their own organization/department/product
+
 ## [2.3.0] 2021-09-28
 
 We have added another lever of admin, called super admin. We are sorry, but you need to update some database documents to make this work.
@@ -33,7 +39,7 @@ Member of a product or department or organization
   - Add superAdmin-property to one user, and then that person can give others superAdmin-access
   - Super admin needs to go and update every single product/department/organization to support the new RBAC system (sorry for the inconvenience)
 
-### Fix
+### Fixed
 
 - Users were not allowed to archive its own product or department
 

@@ -13,8 +13,8 @@ export default async function itemAdmin(to, from, next) {
   } = store;
 
   const isAdminOfOrganization = organization
-    ? admin.includes(organization.id)
-    : admin.includes(activeItemId);
+    ? admin && admin.includes(organization.id)
+    : admin && admin.includes(activeItemId);
 
   const isMemberOfTeam = team && team.map(({ id }) => id).includes(userId);
 
