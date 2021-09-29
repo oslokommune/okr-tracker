@@ -65,7 +65,7 @@ service cloud.firestore {
     // Is user part of the team in the organization/department/product
     function isTeamMember() {
       let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
-      let userIsTeamMember = userDoc in request.resource.data.team;
+      let userIsTeamMember = userRef in request.resource.data.team;
       return userIsTeamMember;
     }
 
