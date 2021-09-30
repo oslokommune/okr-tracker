@@ -47,9 +47,21 @@ const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldVal
 if (import.meta.env.MODE === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);
+  auth.useEmulator(`http://localhost:${emulators.auth.port}`);
   console.log('Established dev connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
 }
 
-export { db, auth, loginProviderGoogle, storage, analytics, functions, serverTimestamp, arrayRemove, arrayUnion, loginProviderMS };
+export {
+  db,
+  auth,
+  loginProviderGoogle,
+  storage,
+  analytics,
+  functions,
+  serverTimestamp,
+  arrayRemove,
+  arrayUnion,
+  loginProviderMS,
+};
