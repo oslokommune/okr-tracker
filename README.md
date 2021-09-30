@@ -27,6 +27,8 @@
 - [Slack Integration](#slack-integration)
   - [Set up](#set-up)
 - [Supported Providers](#supported-providers)
+  - [Microsoft integration](#microsoft-integration)
+  - [Google integration](#google-integration)
   - [Keycloak integration](#keycloak-integration)
 
 ## Demo
@@ -121,13 +123,14 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
 | `VITE_REGION`                 | `europe-west2`                                                                                                           |
 | `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
-| `VITE_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
-| `VITE_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
-| `VITE_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                               |
-| `VITE_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                |
-| `VITE_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                         |
+| `VITE_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                                  |
+| `VITE_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                                  |
+| `VITE_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                                  |
+| `VITE_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                   |
+| `VITE_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                            |
 | `VITE_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
 | `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
+| `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in               |
 
 ### Link project
 
@@ -387,7 +390,13 @@ Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotifi
 
 ## Supported providers
 
-OKR-tracker supports for the time being only three login providers: Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+
+### Microsoft integration
+For the Microsoft-integration a TENANT must be specified as the environment-variable VITE_MICROSOFT_TENANT_ID.
+
+### Google integration
+Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('oslo.kommune.no')) rejectAccess();`
 
 ### Keycloak integration
 
