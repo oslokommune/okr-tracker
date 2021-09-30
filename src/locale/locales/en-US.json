@@ -146,7 +146,6 @@
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
     "google": "Sign in with Google",
-    "keycloak": "Sign in with Keycloak",
     "email": "Email",
     "password": "Password",
     "loading": "We are signing you in, please wait",

@@ -28,7 +28,6 @@
     "flatpickr": "^4.6.9",
     "fuse.js": "^6.4.6",
     "image-file-resize": "^1.0.4",
-    "keycloak-js": "^10.0.2",
     "marked": "^3.0.4",
     "swagger-ui": "^3.52.3",
     "v-tooltip": "^2.1.3",
