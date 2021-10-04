@@ -49,7 +49,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['initKeycloak']),
     ...mapMutations(['SET_AUTHENTICATION']),
   },
 };

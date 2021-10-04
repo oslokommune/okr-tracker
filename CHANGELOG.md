@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.4.0] 2021-10-04
+
 ### Added
 
 - Log in with Microsoft (Thank you, @knowit, for the changes)
+
+### Removed
+
+- Removed keycloak integration
 
 ## [2.3.1] 2021-09-28
 

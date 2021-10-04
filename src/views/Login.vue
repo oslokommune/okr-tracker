@@ -61,15 +61,6 @@
         </button>
 
         <button
-          v-if="providers.includes('keycloak')"
-          class="btn btn--pri"
-          data-cy="login-username"
-          @click="loginWithKeycloak"
-        >
-          {{ getKeycloakText }}
-        </button>
-
-        <button
           v-if="providers.includes('email')"
           class="btn btn--ghost"
           data-cy="login-username"
@@ -87,7 +78,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, functions, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
+import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
@@ -109,50 +100,11 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated', 'loginLoading']),
-
-    getKeycloakText() {
-      if (import.meta.env.VITE_KEYCLOAK_SIGN_IN_TEXT) {
-        return this.$t('login.with', { provider: import.meta.env.VITE_KEYCLOAK_SIGN_IN_TEXT });
-      }
-      return this.$t('login.keycloak');
-    },
-  },
-
-  watch: {
-    authenticated: {
-      immediate: true,
-      async handler() {
-        if (this.providers.includes('keycloak') && this.authenticated) {
-          await this.setLoginLoading(true);
-          await this.setLoginError(null);
-          try {
-            const myCall = functions.httpsCallable('createCustomToken');
-            const customToken = await myCall(this.keycloak.token);
-            await auth.signInWithCustomToken(customToken.data);
-            await this.setLoginLoading(false);
-            this.$toasted.show(this.$t('toaster.welcome', { user: this.keycloak.idTokenParsed.name }));
-          } catch (e) {
-            this.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}${e.code}` });
-          }
-        }
-      },
-    },
+    ...mapState(['user', 'loginError', 'providers', 'loginLoading']),
   },
 
   methods: {
-    ...mapActions(['initKeycloak', 'cleanKeycloak', 'setLoginLoading', 'setLoginError']),
-
-    async loginWithKeycloak() {
-      await this.setLoginLoading(true);
-      await this.setLoginError(null);
-      try {
-        await this.keycloak.login();
-      } catch (e) {
-        throw new Error(e);
-      }
-      await this.setLoginLoading(false);
-    },
+    ...mapActions(['setLoginLoading', 'setLoginError']),
 
     async loginWithMicrosoft() {
       await this.setLoginLoading(true);

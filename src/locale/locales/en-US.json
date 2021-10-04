@@ -147,7 +147,6 @@
     "with": "Sign in with {provider} user",
     "microsoft": "Sign in with Microsoft",
     "google": "Sign in with Google",
-    "keycloak": "Sign in with Keycloak",
     "email": "Email",
     "password": "Password",
     "loading": "We are signing you in, please wait",
