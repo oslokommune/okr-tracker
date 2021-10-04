@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Log in with Microsoft (Thank you, @knowit, for the changes)
+
 ## [2.3.1] 2021-09-28
 
 ### Fixed
