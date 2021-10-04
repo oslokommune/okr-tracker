@@ -117,7 +117,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'user', 'providers', 'authenticated']),
+    ...mapState(['activeItem', 'user']),
     ...mapGetters(['isAdmin']),
 
     /**
@@ -152,17 +152,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state', 'cleanKeycloak']),
+    ...mapActions(['reset_state']),
 
     hideUserMenu() {
       this.showUserMenu = false;
     },
 
     async signOut() {
-      if (this.providers.includes('keycloak')) {
-        await this.cleanKeycloak(this.$route.path);
-      }
-
       await auth.signOut();
       await this.reset_state();
     },

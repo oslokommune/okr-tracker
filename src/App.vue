@@ -42,14 +42,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['initKeycloak', 'reset_state', 'cleanKeycloak']),
+    ...mapActions(['reset_state']),
     ...mapMutations(['SET_AUTHENTICATION']),
 
     async signOut() {
-      if (this.providers.includes('keycloak')) {
-        await this.cleanKeycloak(this.$route.path);
-      }
-
       await auth.signOut();
       await this.reset_state();
     },

@@ -22,7 +22,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import { api } from '@/util';
+import api from '@/util/axios';
 
 export default {
   name: 'RequestAccess',

@@ -7,7 +7,6 @@ import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
 import { ContentLoader } from 'vue-content-loader';
-import Keycloak from 'keycloak-js';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -16,7 +15,6 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
-import { capitalizeFirstLetterOfNames } from '@/util/';
 
 import { auth } from './config/firebaseConfig';
 
@@ -66,72 +64,11 @@ extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
 
 Vue.config.productionTip = false;
 
-// Support keycloak as a OIDC provider
-if (store.state.providers.includes('keycloak')) {
-  const keycloak = new Keycloak({
-    url: import.meta.env.VITE_KEYCLOAK_URL,
-    realm: import.meta.env.VITE_KEYCLOAK_REALM,
-    clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-  });
-  store.dispatch('setLoginLoading', true);
-  keycloak
-    .init({
-      onLoad: 'check-sso',
-      token: localStorage.getItem('accessToken') !== 'undefined' ? localStorage.getItem('accessToken') : '',
-      refreshToken: localStorage.getItem('refreshToken') !== 'undefined' ? localStorage.getItem('refreshToken') : '',
-      idToken: localStorage.getItem('idToken') !== 'undefined' ? localStorage.getItem('idToken') : '',
-      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
-    })
-    .then((authenticated) => {
-      if (authenticated) {
-        localStorage.setItem('accessToken', keycloak.token);
-        localStorage.setItem('refreshToken', keycloak.refreshToken);
-        localStorage.setItem('idToken', keycloak.idToken);
-        store.commit('SET_AUTHENTICATION', authenticated);
-      } else {
-        store.dispatch('setLoginLoading', false);
-      }
-      store.dispatch('initKeycloak', keycloak);
-    });
-}
-
 let app;
 
 auth.onAuthStateChanged(async (user) => {
   try {
-    const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
-    const keycloakProvider = store.state.providers.includes('keycloak');
-
-    if (user && keycloakProvider && keycloakParsedToken) {
-      const firstName = capitalizeFirstLetterOfNames(keycloakParsedToken.given_name);
-      const lastName = capitalizeFirstLetterOfNames(keycloakParsedToken.family_name);
-      const { preferred_username, email } = keycloakParsedToken; // eslint-disable-line
-      let displayName = '';
-
-      await store.dispatch('setLoading', true);
-
-      if (!user.email) {
-        try {
-          await user.updateEmail(email);
-        } catch (e) {
-          store.state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}${e.code}` });
-        }
-      }
-
-      if (!user.displayName) {
-        displayName = `${firstName} ${lastName}`;
-      }
-
-      const newUser = {
-        ...user,
-        displayName,
-        uuid: preferred_username,
-      };
-
-      await store.dispatch('set_user', newUser);
-    } else {
-      await store.dispatch('set_user', user);
-    }
+    await store.dispatch('set_user', user);
 
     await store.dispatch('init_state');
 
@@ -147,15 +84,10 @@ auth.onAuthStateChanged(async (user) => {
       store.commit('SET_LOGIN_ERROR', 1);
     }
 
-    const keycloakParsedToken = store.state.keycloak ? store.state.keycloak.idTokenParsed : null;
-    const keycloakProvider = store.state.providers.includes('keycloak');
-
     await auth.signOut();
     await store.dispatch('reset_state');
 
-    if (keycloakProvider && keycloakParsedToken) {
-      store.state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}email-not-whitelisted` });
-    } else if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
+    if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
       await router.push(router.history.getCurrentLocation()).catch(() => {
         if (document.querySelector('#spinner')) {
           document.querySelector('#spinner').remove();

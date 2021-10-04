@@ -59,17 +59,13 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'sidebarGroups', 'user', 'providers']),
+    ...mapState(['activeItem', 'sidebarGroups', 'user']),
   },
 
   methods: {
-    ...mapActions(['reset_state', 'cleanKeycloak']),
+    ...mapActions(['reset_state']),
 
     async signOut() {
-      if (this.providers.includes('keycloak')) {
-        await this.cleanKeycloak(this.$route.path);
-      }
-
       await auth.signOut();
       await this.reset_state();
     },

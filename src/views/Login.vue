@@ -14,7 +14,7 @@
         </div>
 
         <div v-if="loginError === 2" class="error">
-          {{ $t('login.error.googleError') }}
+          {{ $t('login.error.providerError') }}
         </div>
       </div>
       <div v-if="showForm" class="login__form">
@@ -50,18 +50,14 @@
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
+        <button v-if="providers.includes('microsoft')" class="btn btn--icon btn--pri" @click="loginWithMicrosoft">
+          <i class="icon fab fa-fw fa-microsoft" />
+          {{ $t('login.microsoft') }}
+        </button>
+
         <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
           <i class="icon fab fa-fw fa-google" />
           {{ $t('login.google') }}
-        </button>
-
-        <button
-          v-if="providers.includes('keycloak')"
-          class="btn btn--pri"
-          data-cy="login-username"
-          @click="loginWithKeycloak"
-        >
-          {{ getKeycloakText }}
         </button>
 
         <button
@@ -82,7 +78,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, functions, loginProvider } from '@/config/firebaseConfig';
+import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
@@ -104,47 +100,21 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated', 'loginLoading']),
-
-    getKeycloakText() {
-      if (import.meta.env.VITE_KEYCLOAK_SIGN_IN_TEXT) {
-        return this.$t('login.with', { provider: import.meta.env.VITE_KEYCLOAK_SIGN_IN_TEXT });
-      }
-      return this.$t('login.keycloak');
-    },
-  },
-
-  watch: {
-    authenticated: {
-      immediate: true,
-      async handler() {
-        if (this.providers.includes('keycloak') && this.authenticated) {
-          await this.setLoginLoading(true);
-          await this.setLoginError(null);
-          try {
-            const myCall = functions.httpsCallable('createCustomToken');
-            const customToken = await myCall(this.keycloak.token);
-            await auth.signInWithCustomToken(customToken.data);
-            await this.setLoginLoading(false);
-            this.$toasted.show(this.$t('toaster.welcome', { user: this.keycloak.idTokenParsed.name }));
-          } catch (e) {
-            this.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_ERROR_URL}${e.code}` });
-          }
-        }
-      },
-    },
+    ...mapState(['user', 'loginError', 'providers', 'loginLoading']),
   },
 
   methods: {
-    ...mapActions(['initKeycloak', 'cleanKeycloak', 'setLoginLoading', 'setLoginError']),
+    ...mapActions(['setLoginLoading', 'setLoginError']),
 
-    async loginWithKeycloak() {
+    async loginWithMicrosoft() {
       await this.setLoginLoading(true);
       await this.setLoginError(null);
       try {
-        await this.keycloak.login();
+        const { user } = await auth.signInWithPopup(loginProviderMS);
+        this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
       } catch (e) {
-        throw new Error(e);
+        console.log(e);
+        await this.setLoginError(2);
       }
       await this.setLoginLoading(false);
     },
@@ -153,7 +123,7 @@ export default {
       await this.setLoginLoading(true);
       await this.setLoginError(null);
       try {
-        const { user } = await auth.signInWithPopup(loginProvider);
+        const { user } = await auth.signInWithPopup(loginProviderGoogle);
         this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
       } catch (e) {
         await this.setLoginError(2);

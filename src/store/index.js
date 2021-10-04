@@ -62,25 +62,6 @@ export const actions = {
     return true;
   },
 
-  initKeycloak: async ({ commit }, keycloak) => {
-    commit('SET_KEYCLOAK', keycloak);
-
-    return true;
-  },
-
-  cleanKeycloak: async ({ commit, state }, uri) => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('idToken');
-
-    state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_LOGOUT_URL}${uri}` });
-
-    commit('SET_AUTHENTICATION', false);
-    commit('DELETE_KEYCLOAK');
-
-    return true;
-  },
-
   setLoginLoading: async ({ commit }, payload) => {
     commit('SET_LOGIN_LOADING', payload);
 
@@ -124,20 +105,8 @@ export const mutations = {
     state.loading = payload;
   },
 
-  SET_KEYCLOAK(state, payload) {
-    state.keycloak = payload;
-  },
-
   SET_LOGIN_LOADING(state, payload) {
     state.loginLoading = payload;
-  },
-
-  DELETE_KEYCLOAK(state) {
-    state.keycloak = null;
-  },
-
-  SET_AUTHENTICATION(state, payload) {
-    state.authenticated = payload;
   },
 
   SET_DATA_LOADING(state, payload) {
@@ -173,8 +142,6 @@ export default new Vuex.Store({
     ],
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
-    keycloak: null,
-    authenticated: false,
     loginLoading: false,
     dataLoading: false,
     theme: 'yellow',
