@@ -121,17 +121,7 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
 | `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
 | `VITE_REGION`                 | `europe-west2`                                                                                                           |
-<<<<<<< HEAD
 | `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email` |
-=======
-| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
-| `VITE_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                                  |
-| `VITE_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                                  |
-| `VITE_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                                  |
-| `VITE_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                                   |
-| `VITE_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VITE_LOGIN_PROVIDERS`)                            |
-| `VITE_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
->>>>>>> develop
 | `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
 | `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in               |
 
