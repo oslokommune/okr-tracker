@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     ...mapActions(['reset_state']),
-    ...mapMutations(['SET_AUTHENTICATION']),
 
     async signOut() {
       await auth.signOut();
