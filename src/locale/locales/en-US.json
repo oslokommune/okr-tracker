@@ -145,14 +145,14 @@
     "requestButton": "Send request",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
+    "microsoft": "Sign in with Microsoft",
     "google": "Sign in with Google",
-    "keycloak": "Sign in with Keycloak",
     "email": "Email",
     "password": "Password",
     "loading": "We are signing you in, please wait",
     "error": {
       "notRegistered": "Your account is not registered",
-      "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",
+      "providerError": "Could not sign in. Please contact system administrator if the error persists.",
       "wrongPassword": "Wrong password.",
       "userNotFound": "Could not find user."
     },
