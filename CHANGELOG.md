@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.4.1] 2021-10-05
+
 ### Changes
 
 - Format numbers to norwegian locale - thousands are separated with a space (atm we do not support other formatting locales for numbers)
