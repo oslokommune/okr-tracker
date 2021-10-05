@@ -27,7 +27,7 @@
 <script>
 import marked from 'marked';
 import dompurify from 'dompurify';
-import toc from '@/util/tableOfContent';
+import { tableOfContent as toc } from '@/util';
 import i18n from '@/locale/i18n';
 
 marked.setOptions({

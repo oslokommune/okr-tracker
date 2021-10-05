@@ -63,7 +63,7 @@
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
-import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import { findSlugAndRedirect } from '@/util';
 
 export default {
   name: 'CreateProduct',

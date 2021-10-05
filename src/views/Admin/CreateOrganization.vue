@@ -55,7 +55,7 @@
 import { mapState } from 'vuex';
 import Organization from '@/db/Organization';
 import { db } from '@/config/firebaseConfig';
-import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import { findSlugAndRedirect } from '@/util';
 
 export default {
   name: 'CreateOrganization',

@@ -111,8 +111,11 @@
     "teamMembers": "Team members",
     "users": "Users",
     "home": "Home",
-    "keyresults": "Key results",
-    "success": "Success"
+    "keyResults": "Key results",
+    "success": "Success",
+    "objective": "Objective",
+    "keyResult": "Key result",
+    "period": "Period"
   },
   "btn": {
     "close": "Close",
@@ -173,7 +176,7 @@
     "add": {
       "users": "Add user | {count} users",
       "product": "Created new product. Please wait, you will be redirected in 5 seconds",
-      "objective": "Created an objective for  {period}",
+      "objective": "Created an objective for {period}",
       "progression": "Created new value",
       "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
