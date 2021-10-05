@@ -66,7 +66,7 @@
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
-import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import { findSlugAndRedirect } from '@/util';
 
 export default {
   name: 'CreateDepartment',

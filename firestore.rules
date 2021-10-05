@@ -72,7 +72,8 @@ service cloud.firestore {
     // Is a member from the parent of the Objective/KeyResult/Period/KPI
     function isMemberOfParent(document, type) {
       let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
-      let parentDoc = getAfter(get(/databases/$(database)/documents/$(type)/$(document)).data.parent);
+      let doc = getAfter(/databases/$(database)/documents/$(type)/$(document));
+      let parentDoc = getAfter(doc.data.parent);
       let userIsMemberOfParent = userRef in parentDoc.data.team;
       return userIsMemberOfParent;
     }

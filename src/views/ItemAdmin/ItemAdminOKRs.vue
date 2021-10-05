@@ -281,7 +281,7 @@ export default {
 
         await this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.period') }));
         throw new Error(error);
       }
     },
@@ -294,7 +294,7 @@ export default {
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.objective') }));
         throw new Error(error);
       }
     },
@@ -316,7 +316,7 @@ export default {
 
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.keyResult') }));
         throw new Error(error);
       }
     },

@@ -84,7 +84,7 @@ import Organization from '@/db/Organization';
 import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminGeneral',
