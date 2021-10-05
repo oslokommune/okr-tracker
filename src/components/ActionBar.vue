@@ -19,7 +19,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { periodDates } from '@/util/formatDate';
+import { periodDates } from '@/util';
 
 export default {
   name: 'ActionBar',
