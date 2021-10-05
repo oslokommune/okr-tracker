@@ -9,6 +9,19 @@ All notable changes to this project will be documented in this file. The format 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
 
+## [2.4.1] 2021-10-05
+
+### Changes
+
+- Format numbers to norwegian locale - thousands are separated with a space (atm we do not support other formatting locales for numbers)
+- Moved some util-functions around
+- Updated dependencies
+
+### Fixed
+
+- Team members could not create/update Periods/Objectives/KeyResults because of firestore rules
+- Toaster for errors from creating Periods/Objectives/KeyResults did not show correctly
+
 ## [2.4.0] 2021-10-04
 
 ### Added

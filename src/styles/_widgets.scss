@@ -52,7 +52,7 @@
   box-shadow: 0 2px 3px rgba(black, 0.1);
 
   @media screen and (max-width: bp(s)) {
-    width: span(9);
+    width: span(12);
   }
 
   @media screen and (min-width: bp(m)) {
@@ -73,6 +73,19 @@
   color: var(--color-primary);
   font-weight: 700;
   font-size: 50px;
+  word-wrap: break-word;
+
+  @media screen and (min-width: bp(s)) {
+    font-size: 30px;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    font-size: 40px;
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    font-size: 50px;
+  }
 }
 
 .main-widgets__current--unit {
@@ -88,7 +101,7 @@
 }
 
 .main-widgets__graph {
-  width: span(9);
+  width: span(12);
 
   margin-left: span(0, 1);
   padding: 1rem;

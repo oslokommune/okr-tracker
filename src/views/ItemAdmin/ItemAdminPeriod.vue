@@ -54,7 +54,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminPeriod',

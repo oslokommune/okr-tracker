@@ -21,7 +21,7 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import api from '@/util/axios';
+import { api } from '@/util';
 
 export default {
   name: 'AdminAccessRequests',

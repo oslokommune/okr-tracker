@@ -101,7 +101,7 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { periodDates, dateShort, dateLong } from '@/util/formatDate';
+import { periodDates, dateShort, dateLong } from '@/util';
 
 export default {
   name: 'WidgetKeyResultDetails',

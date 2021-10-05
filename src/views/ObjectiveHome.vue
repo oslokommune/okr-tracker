@@ -10,7 +10,7 @@
       </div>
 
       <section class="key-results">
-        <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
+        <h2 class="title-2">{{ $t('general.keyResults') }}</h2>
 
         <empty-state
           v-if="!keyRes.length"

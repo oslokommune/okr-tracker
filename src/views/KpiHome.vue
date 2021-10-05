@@ -109,8 +109,9 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort } from '@/util/formatDate';
+import { dateTimeShort, formatISOShort } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
+import { numberLocale } from '@/util';
 
 export default {
   name: 'KpiHome',
@@ -244,7 +245,7 @@ export default {
 
     formatKPIValue(value) {
       if (kpiTypes[this.activeKpi.type].type === 'users') {
-        return value;
+        return numberLocale.format(',')(value);
       }
       return kpiTypes[this.activeKpi.type].formatValue(value);
     },

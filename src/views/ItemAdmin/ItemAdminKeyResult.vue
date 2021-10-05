@@ -191,7 +191,7 @@
 <script>
 import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminKeResult',
