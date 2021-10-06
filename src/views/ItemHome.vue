@@ -42,8 +42,8 @@
       </div>
     </div>
 
-    <widgets-left class="aside--bottom"></widgets-left>
     <widgets-right class="aside--right"></widgets-right>
+    <widgets-left class="aside--bottom"></widgets-left>
   </div>
 </template>
 
