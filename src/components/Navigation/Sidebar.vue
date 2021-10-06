@@ -6,7 +6,7 @@
       <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
         <h4 v-if="group.items.length" class="sidebar__label">{{ group.name }}</h4>
         <ul class="sidebar__list">
-          <li v-for="item in group.items" :key="item.id" class="sidebar__listitem">
+          <li v-for="item in group.items" :key="item.id">
             <router-link
               :to="{ name: 'ItemHome', params: { slug: item.slug } }"
               class="sidebar__link"
@@ -118,7 +118,8 @@ export default {
   -webkit-user-drag: none;
 
   &:hover {
-    background: var(--color-grey-100);
+    color: var(--color-text);
+    background: var(--color-secondary);
   }
 
   &.router-link-active {

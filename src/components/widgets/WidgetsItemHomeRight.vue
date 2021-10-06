@@ -2,6 +2,7 @@
   <aside v-if="activeItem">
     <div class="widgets">
       <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
+      <widget-admin :active-item="activeItem" />
     </div>
   </aside>
 </template>
@@ -14,6 +15,7 @@ export default {
 
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
+    WidgetAdmin: () => import('./WidgetAdmin.vue'),
   },
 
   data: () => ({
