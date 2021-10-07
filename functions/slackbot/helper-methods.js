@@ -36,9 +36,9 @@ const inChannels = (channelId, arr) => {
  * @param subscribed true/false if it was a subscribe or unsubscribe
  * @returns {Promise<void>} dont return anything
  */
- const postToSlack = async (document, channelId, channelName, subscribed) => {
+ const postToSlack = async (document, channelId, channelName, subscribed, deep) => {
   const result = await web.chat.postMessage({
-    text: `You have successfully ${subscribed ? 'subscribed' : 'unsubscribed'} to ${document}`,
+    text: `You have successfully ${subscribed ? 'subscribed' : 'unsubscribed'} to ${document}${deep ? ', and all its children' : ''}`,
     channel: channelId,
   });
 
