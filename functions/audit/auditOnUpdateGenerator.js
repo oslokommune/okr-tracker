@@ -134,6 +134,7 @@ const pushToSlack = async (documentType, auditData) => {
     const promises = [];
 
     if (auditData.diff?.name?.before === 'placeholder') {
+      const user = await auditData.user.get();
       const doc = await auditData.documentRef.get();
       const data = doc.data();
 
@@ -141,8 +142,7 @@ const pushToSlack = async (documentType, auditData) => {
       const parentData = parent.data();
       const period = await data.period.get();
       const periodData = period.data();
-
-      const slackParentDoc = await slackCollection.doc(parentData.slug).get();
+      const userData = user.data();
 
       created.header = `:tada: ${documentType}`;
       created.owner = `${parentData.name} has created a new ${documentType}`;
@@ -151,21 +151,18 @@ const pushToSlack = async (documentType, auditData) => {
       )}`;
       created.info = `<${HOST_URL}/${parentData.slug}/o/${doc.id} | ${data.name}>`;
 
-      const slackMsg = await msg(colors.created, created);
+      const slackMsg = await createdMessage(colors.created, created);
 
-      if (slackParentDoc.exists) {
-        const slackParentData = slackParentDoc.data();
-
-        if (slackParentData.channels?.length > 0) {
-          slackParentData.channels.forEach((channel) => {
-            promises.push(
-              slack.chat.postMessage({
-                channel: channel.channel,
-                attachments: slackMsg.attachments,
-              })
-            );
-          });
-        }
+      if (parentData.slack) {
+        parentData.slack.forEach((channel) => {
+          promises.push(
+            slack.chat.postMessage({
+              channel,
+              attachments: slackMsg.attachments,
+              text: `New changes by ${userData.displayName}`
+            })
+          );
+        });
       }
 
       await Promise.all(promises);
@@ -175,35 +172,32 @@ const pushToSlack = async (documentType, auditData) => {
     const promises = [];
 
     if (auditData.diff?.name?.before === 'placeholder') {
+      const user = await auditData.user.get();
       const doc = await auditData.documentRef.get();
       const data = doc.data();
       const objective = await data.objective.get();
       const parent = await data.parent.get();
       const objData = objective.data();
       const parentData = parent.data();
-
-      const slackParentDoc = await slackCollection.doc(parentData.slug).get();
+      const userData = user.data();
 
       created.header = `:tada: ${documentType}`;
       created.owner = `${parentData.name} has created a new ${documentType}`;
       created.context = `${objData.name}`;
       created.info = `<${HOST_URL}/${parentData.slug}/k/${doc.id} | ${data.name}>`;
 
-      const slackMsg = await msg(colors.created, created);
+      const slackMsg = await createdMessage(colors.created, created);
 
-      if (slackParentDoc.exists) {
-        const slackParentData = slackParentDoc.data();
-
-        if (slackParentData.channels?.length > 0) {
-          slackParentData.channels.forEach((channel) => {
-            promises.push(
-              slack.chat.postMessage({
-                channel: channel.channel,
-                attachments: slackMsg.attachments,
-              })
-            );
-          });
-        }
+      if (parentData.slack) {
+        parentData.slack.forEach((channel) => {
+          promises.push(
+            slack.chat.postMessage({
+              channel,
+              attachments: slackMsg.attachments,
+              text: `New changes by ${userData.displayName}`,
+            })
+          );
+        });
       }
 
       await Promise.all(promises);
@@ -213,7 +207,7 @@ const pushToSlack = async (documentType, auditData) => {
   return true;
 };
 
-const msg = async (color, created) => ({
+const createdMessage = async (color, created) => ({
   attachments: [
     {
       color,
@@ -251,6 +245,48 @@ const msg = async (color, created) => ({
           text: {
             type: 'mrkdwn',
             text: created.info,
+          },
+        },
+      ],
+    },
+  ],
+});
+
+const updatedMessage = async () => ({
+  attachments: [
+    {
+      color: '#f2c744',
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: ':eyes: Updated Objective',
+            emoji: true,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: 'Helseveiviser has updated an objective',
+          },
+        },
+        {
+          type: 'divider',
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '~Vi skal ha et beskjedent økende antall besøk i Helseveiviser.~',
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '<https://google.com | Vi skal ha et drastisk økende antall besøk i Helseveiviser.>',
           },
         },
       ],
