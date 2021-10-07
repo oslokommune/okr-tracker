@@ -121,7 +121,7 @@ const postToSlack = async (document, channelId, channelName, subscribed, deep) =
  * @param collectionRef the reference to the document
  * @param collectionData the document data
  * @param channelId channelID of the slack channel
- * @returns {Promise<true/false>} return true/false
+ * @returns {Promise<Boolean>} return true/false
  */
 const addChannelToSlackArray = async (collectionRef, collectionData, channelId) => {
   if (!collectionData.slack) {
@@ -146,7 +146,7 @@ const addChannelToSlackArray = async (collectionRef, collectionData, channelId) 
  * @param collectionRef the reference to the document
  * @param collectionData the document data
  * @param channelId channelID of the slack channel
- * @returns {Promise<true/false>} return true/false
+ * @returns {Promise<Boolean>} return true/false
  */
 const removeChannelFromSlackArray = async (collectionRef, collectionData, channelId) => {
   if (!collectionData.slack || !collectionData.slack?.includes(channelId)) {
@@ -164,7 +164,7 @@ const removeChannelFromSlackArray = async (collectionRef, collectionData, channe
  * Remove channels from slack array of multiple documents
  * @param documents All documents to loop through
  * @param channelId channelID of the slack channel
- * @returns {Promise<batch>} Return the batch-object so that the information can be committed to firestore
+ * @returns {Promise<Object>} Return the batch-object so that the information can be committed to firestore
  */
 const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
   const batch = db.batch();
@@ -187,7 +187,7 @@ const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
  * Add new channels to the slack array of multiple documents
  * @param documents All documents to loop through
  * @param channelId channelID of the slack channel
- * @returns {Promise<batch>} Return the batch-object so that the information can be committed to firestore
+ * @returns {Promise<Object>} Return the batch-object so that the information can be committed to firestore
  */
 const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
   const batch = db.batch();
@@ -215,7 +215,7 @@ const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
  * Get departments and products from firestore
  * @param type document that the user subscribed to
  * @param documentId channelID of the slack channel
- * @returns {Promise<Array>} return array of departments and products
+ * @returns {Promise<Object>} return array of departments and products
  */
 const getDepsAndProds = async (type, documentId) => {
   const deps = await db
