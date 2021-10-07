@@ -1,5 +1,5 @@
 <template>
-  <div class="selected-user">
+  <div v-if="thisUser" class="selected-user">
     <slot name="back"></slot>
 
     <div class="selected-user__main">
@@ -21,31 +21,37 @@
           />
 
           <label class="form-group--checkbox">
-            <span class="form-label">{{ $t('general.admin') }}</span>
+            <span class="form-label">Super admin</span>
             <input
-              v-model="thisUser.admin"
+              v-model="thisUser.superAdmin"
               class="form__checkbox"
               type="checkbox"
-              :disabled="user.email === thisUser.email"
+              :disabled="user.email === selectedUser.email || !user.superAdmin"
             />
           </label>
+
+          <div class="form-group">
+            <span class="form-label">Admin</span>
+            <v-select
+              v-model="thisUser.admin"
+              multiple
+              :options="organizations"
+              :get-option-label="(option) => option.name"
+              :disabled="!user.superAdmin"
+            >
+            </v-select>
+          </div>
         </form>
       </validation-observer>
-      <div>
-        <span class="form-label">{{ $t('admin.users.image') }}</span>
-        <div class="selected-user__image--flex">
-          <img v-if="thisUser.photoURL" :src="thisUser.photoURL" class="selected-user__image--img" />
-          <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-          <button v-if="thisUser.photoURL" class="btn" :disabled="!image || loading" @click="deleteImage">
-            {{ $t('btn.deleteImage') }}
-          </button>
-        </div>
-      </div>
     </div>
 
     <div class="selected-user__footer">
       <button class="btn" form="user-form" :disabled="loading">{{ $t('btn.saveChanges') }}</button>
-      <button class="btn btn--danger" :disabled="user.email === thisUser.email || loading" @click="remove(thisUser)">
+      <button
+        class="btn btn--danger"
+        :disabled="user.email === selectedUser.email || loading"
+        @click="remove(selectedUser)"
+      >
         {{ $t('btn.deleteUser') }}
       </button>
     </div>
@@ -53,8 +59,9 @@
 </template>
 
 <script>
-import User from '@/db/User';
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
+import User from "@/db/User";
+import { db } from "@/config/firebaseConfig";
 
 export default {
   name: 'EditUser',
@@ -68,20 +75,29 @@ export default {
 
   data: () => ({
     thisUser: null,
-    image: null,
     loading: false,
   }),
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'organizations', 'users']),
   },
 
   watch: {
     selectedUser: {
       immediate: true,
-      handler() {
+      async handler() {
         this.image = null;
         this.thisUser = this.selectedUser;
+
+        if (this.selectedUser.admin?.length > 0) {
+          const orgs = [];
+          this.selectedUser.admin.forEach((org) => orgs.push(db.collection('organizations').doc(org).get()));
+          const dataArr = await Promise.all(orgs);
+          this.thisUser.admin = dataArr.map((org) => ({
+            ...org.data(),
+            id: org.id,
+          }));
+        }
       },
     },
   },
@@ -99,48 +115,17 @@ export default {
       this.loading = false;
     },
 
-    setImage({ target }) {
-      const { files } = target;
-      if (files.length !== 1) return;
-      const [image] = files;
-      this.image = image;
-      this.uploadImage();
-    },
-
-    async uploadImage() {
-      this.loading = true;
-      try {
-        const url = await User.uploadImage(this.user.id, this.image);
-        this.image = null;
-        this.thisUser.photoURL = url;
-        await this.save();
-      } catch (error) {
-        console.error(error);
-      }
-      this.loading = false;
-    },
-
-    async deleteImage() {
-      this.loading = true;
-      try {
-        this.thisUser.photoURL = null;
-        this.image = null;
-        await this.save(this.thisUser);
-        await User.deleteImage(this.user.id);
-      } catch (error) {
-        throw new Error(error.message);
-      }
-
-      this.loading = false;
-    },
-
     async save() {
       this.loading = true;
       try {
-        this.image = null;
-        await User.update(this.thisUser);
+        const saveUser = { ...this.thisUser };
+        if (this.thisUser.admin?.length > 0) {
+          saveUser.admin = saveUser.admin.map((org) => org.id);
+        }
+        await User.update(saveUser);
         this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch {
+      } catch (e) {
+        console.log(e);
         this.$toasted.error(this.$t('toaster.error.save'));
       }
 

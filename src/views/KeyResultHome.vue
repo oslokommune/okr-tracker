@@ -13,8 +13,8 @@
           <div class="main-widgets__current--value">
             {{
               typeof activeKeyResult.currentValue === 'undefined'
-                ? activeKeyResult.startValue
-                : activeKeyResult.currentValue
+                ? formatValue(activeKeyResult.startValue)
+                : formatValue(activeKeyResult.currentValue)
             }}
           </div>
 
@@ -141,7 +141,7 @@ import { VPopover } from 'v-tooltip';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort } from '@/util/formatDate';
+import { dateTimeShort, numberLocale } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
 
 export default {
@@ -227,6 +227,10 @@ export default {
 
     closeModal() {
       this.isOpen = false;
+    },
+
+    formatValue(value) {
+      return numberLocale.format(',')(value);
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="access-requests">
+  <div v-if="requestAccess.length" class="access-requests">
     <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
 
     <ul class="access-requests__list">

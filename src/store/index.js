@@ -27,10 +27,27 @@ export const getters = {
     });
   },
 
+  isAdmin: (state) => {
+    // Returns `true` if user has `admin: true` or if user is member of `activeItem`
+    const { user, activeItem } = state;
+
+    if (user && user.superAdmin) return true;
+    if (user && user.admin && user.admin.length > 0) return true;
+    if (!user || !activeItem || !activeItem.team) return false;
+    return activeItem.team.map(({ id }) => id).includes(user.id);
+  },
+
   hasEditRights: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
-    if (user && user.admin) return true;
+    const { organization } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? user.admin && user.admin.includes(organization.id)
+      : user.admin && user.admin.includes(activeItem.id);
+
+    if (user && user.superAdmin) return true;
+    if (isAdminOfOrganization) return true;
     if (!user || !activeItem || !activeItem.team) return false;
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
@@ -41,25 +58,6 @@ export const actions = {
 
   setTheme: async ({ commit }, payload) => {
     commit('SET_THEME', payload);
-
-    return true;
-  },
-
-  initKeycloak: async ({ commit }, keycloak) => {
-    commit('SET_KEYCLOAK', keycloak);
-
-    return true;
-  },
-
-  cleanKeycloak: async ({ commit, state }, uri) => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('idToken');
-
-    state.keycloak.logout({ redirectUri: `${import.meta.env.VITE_KEYCLOAK_LOGOUT_URL}${uri}` });
-
-    commit('SET_AUTHENTICATION', false);
-    commit('DELETE_KEYCLOAK');
 
     return true;
   },
@@ -102,20 +100,8 @@ export const mutations = {
     state.loading = payload;
   },
 
-  SET_KEYCLOAK(state, payload) {
-    state.keycloak = payload;
-  },
-
   SET_LOGIN_LOADING(state, payload) {
     state.loginLoading = payload;
-  },
-
-  DELETE_KEYCLOAK(state) {
-    state.keycloak = null;
-  },
-
-  SET_AUTHENTICATION(state, payload) {
-    state.authenticated = payload;
   },
 
   SET_THEME(state, payload) {
@@ -126,6 +112,7 @@ export const mutations = {
 export default new Vuex.Store({
   state: {
     user: null,
+    users: [],
     sidebarGroups: [],
     departments: [],
     organizations: [],
@@ -146,8 +133,6 @@ export default new Vuex.Store({
     ],
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
-    keycloak: null,
-    authenticated: false,
     loginLoading: false,
     theme: 'yellow',
   },

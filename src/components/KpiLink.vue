@@ -15,8 +15,7 @@
       <div class="kpi__name">{{ data.name }}</div>
       <div class="kpi__value">
         <span v-if="data.error || !data.valid">–––</span>
-        <span v-else-if="type === 'users'"> {{ data.currentValue }}</span>
-        <span v-else>{{ kpi.formatValue(data.currentValue) }}</span>
+        <span v-else>{{ formatKPIValue(data.currentValue) }}</span>
       </div>
       <i class="kpi__icon far" :class="kpi.icon" />
     </router-link>
@@ -24,6 +23,9 @@
 </template>
 
 <script>
+import kpiTypes from '@/config/kpiTypes';
+import { numberLocale } from '@/util';
+
 export default {
   props: {
     type: {
@@ -38,6 +40,15 @@ export default {
       type: Object,
       required: false,
       default: () => ({}),
+    },
+  },
+
+  methods: {
+    formatKPIValue(value) {
+      if (kpiTypes[this.type].type === 'users') {
+        return numberLocale.format(',')(value);
+      }
+      return kpiTypes[this.type].formatValue(value);
     },
   },
 };

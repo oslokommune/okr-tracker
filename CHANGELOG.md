@@ -4,9 +4,78 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.4.1] 2021-10-05
+
+### Changes
+
+- Format numbers to norwegian locale - thousands are separated with a space (atm we do not support other formatting locales for numbers)
+- Moved some util-functions around
+- Updated dependencies
+
+### Fixed
+
+- Team members could not create/update Periods/Objectives/KeyResults because of firestore rules
+- Toaster for errors from creating Periods/Objectives/KeyResults did not show correctly
+
+## [2.4.0] 2021-10-04
+
+### Added
+
+- Log in with Microsoft (Thank you, @knowit, for the changes)
+
+### Removed
+
+- Removed keycloak integration
+
+## [2.3.1] 2021-09-28
+
+### Fixed
+
+- Normal team members were not actually allowed to update their own organization/department/product
+
+## [2.3.0] 2021-09-28
+
+We have added another lever of admin, called super admin. We are sorry, but you need to update some database documents to make this work.
+
+Super Admin can:
+- do the same things as an admin and normal member
+- restore backups
+- promote or demote admins
+- migrate data
+- create/restore/change organizations
+
+Admins can:
+- do the same things as a member
+- add new users to the OKR-tracker
+- administrate an organization they are apart of
+- administrate multiple products within the same organization
+- administrate multiple departments within the same organization
+
+Member of a product or department or organization
+- has rights to administrate its own product/org/departments
+- ... such as add/remove members from a product/org/department
+  - or update/delete/archive
+
+### BREAKING CHANGES
+
+- Added another lever of admin - super admin.
+  - Add superAdmin-property to one user, and then that person can give others superAdmin-access
+  - Super admin needs to go and update every single product/department/organization to support the new RBAC system (sorry for the inconvenience)
+
+### Fixed
+
+- Users were not allowed to archive its own product or department
+
+## [2.2.1] 2021-09-23
+
+### Added
+
+- Job positions: added Storyteller
+
 ### Fixed
 
 - i18n corrections
+- Dashboard: PieChart not rendering correctly
 
 ## [2.2.0] 2021-09-14
 

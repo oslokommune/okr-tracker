@@ -60,10 +60,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
-import { mapState } from 'vuex';
-import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import { findSlugAndRedirect } from '@/util';
 
 export default {
   name: 'CreateProduct',
@@ -73,16 +73,11 @@ export default {
     missionStatement: '',
     department: null,
     team: [],
-    users: [],
     loading: false,
   }),
 
   computed: {
-    ...mapState(['departments']),
-  },
-
-  firestore: {
-    users: db.collection('users'),
+    ...mapState(['departments', 'users']),
   },
 
   methods: {
@@ -106,8 +101,9 @@ export default {
         this.$toasted.show(this.$t('toaster.add.product'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.product'));
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     },
   },
 };

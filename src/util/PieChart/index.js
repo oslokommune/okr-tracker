@@ -10,6 +10,7 @@ import {
   updateTodayLine,
   updateTodayTextPosition,
   updatePercentText,
+  colors,
 } from './pie-helpers';
 
 import { getTimeProgression } from './helpers';
@@ -51,7 +52,7 @@ export default class Pie {
     const todayAngle = outerArcs[0].endAngle;
     this.outer.select('line').call(updateTodayLine, todayAngle);
     this.outer.select('text').call(updateTodayTextPosition, todayAngle);
-
+    this.outer.select('text').attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
     // Update the percentage text by tweening to the provided value
     this.percentText.call(updatePercentText.bind(this), progression);
   }

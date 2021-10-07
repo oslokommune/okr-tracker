@@ -65,7 +65,12 @@
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger btn--icon-pri" :disabled="loading" @click="archive">
+      <button
+        v-if="!activeItem.archived"
+        class="btn btn--icon btn--danger btn--icon-pri"
+        :disabled="loading"
+        @click="archive"
+      >
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>
@@ -79,7 +84,7 @@ import Organization from '@/db/Organization';
 import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminGeneral',
@@ -90,11 +95,10 @@ export default {
 
   data: () => ({
     loading: false,
-    users: [],
   }),
 
   computed: {
-    ...mapState(['activeItem', 'organizations', 'departments']),
+    ...mapState(['activeItem', 'organizations', 'departments', 'users']),
 
     type() {
       const { department, organization } = this.activeItem;
@@ -102,10 +106,6 @@ export default {
       if (organization) return 'department';
       return 'organization';
     },
-  },
-
-  firestore: {
-    users: db.collection('users'),
   },
 
   methods: {
@@ -117,17 +117,17 @@ export default {
         const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
 
         if (this.type === 'organization') {
-          const data = { name, missionStatement, secret: secret === undefined ? '' : secret, team };
+          const data = { name, missionStatement, secret: secret === undefined ? '' : secret, team, id };
 
           await Organization.update(id, data);
         } else if (this.type === 'department') {
           const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-          const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team };
+          const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team, id };
 
           await Department.update(id, data);
         } else {
           const department = db.collection('departments').doc(this.activeItem.department.id);
-          const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret };
+          const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret, id };
 
           await Product.update(id, data);
         }
@@ -135,9 +135,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.save'));
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     async archive() {
@@ -145,7 +145,14 @@ export default {
 
       try {
         this.activeItem.archived = true;
-        await Organization.archive(this.activeItem.id);
+
+        if (this.type === 'organization') {
+          await Organization.archive(this.activeItem.id);
+        } else if (this.type === 'department') {
+          await Department.archive(this.activeItem.id);
+        } else if (this.type === 'product') {
+          await Product.archive(this.activeItem.id);
+        }
 
         const restoreCallback = this.restore.bind(this);
 
@@ -156,40 +163,54 @@ export default {
         this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
         this.activeItem.archived = false;
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     async restore() {
       this.loading = true;
 
       try {
-        await Organization.restore(this.activeItem.id);
+        if (this.type === 'organization') {
+          await Organization.restore(this.activeItem.id);
+        } else if (this.type === 'department') {
+          await Department.restore(this.activeItem.id);
+        } else if (this.type === 'product') {
+          await Product.restore(this.activeItem.id);
+        }
+
         this.$toasted.show(this.$t('toaster.restored'));
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.restore', { document: this.activeItem.name }));
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     async deleteDeep() {
       this.loading = true;
 
       try {
-        await Organization.deleteDeep(this.activeItem.id);
+        if (this.type === 'organization') {
+          await Organization.deleteDeep(this.activeItem.id);
+        } else if (this.type === 'department') {
+          await Department.deleteDeep(this.activeItem.id);
+        } else if (this.type === 'product') {
+          await Product.deleteDeep(this.activeItem.id);
+        }
+
         this.$toasted.show(this.$t('toaster.delete.permanently'));
         await this.$router.push('/');
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.delete', { document: this.activeItem.name }));
         throw new Error(error.message);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
   },
 };

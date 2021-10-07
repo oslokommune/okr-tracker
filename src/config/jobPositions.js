@@ -25,6 +25,7 @@ export const jobPositions = [
   'productOwner',
   'securityExpert',
   'serviceDesigner',
+  'storyteller',
   'teamLead',
   'techLead',
   'other',
