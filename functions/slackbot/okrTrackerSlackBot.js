@@ -4,7 +4,7 @@ const {
   postToSlack,
   addChannelToSlackArray,
   removeChannelFromSlackArray,
-  removeChannelFromMultipleSlackArrays,
+  removeChannelsFromMultipleSlackArrays,
   addChannelsToMultipleSlackArrays,
   getDepsAndProds,
   slackMessageHelp,
@@ -127,11 +127,11 @@ exports.runSlackBot = async (req, res) => {
 
     if (subcommands[1] === 'organization') {
       const depsAndProds = [...deps.docs, ...prods.docs];
-      const batch = await removeChannelFromMultipleSlackArrays(depsAndProds, req.body.channel_id);
+      const batch = await removeChannelsFromMultipleSlackArrays(depsAndProds, req.body.channel_id);
 
       await batch.commit();
     } else if (subcommands[1] === 'department') {
-      const batch = await removeChannelFromMultipleSlackArrays(prods.docs, req.body.channel_id);
+      const batch = await removeChannelsFromMultipleSlackArrays(prods.docs, req.body.channel_id);
 
       await batch.commit();
     } else {

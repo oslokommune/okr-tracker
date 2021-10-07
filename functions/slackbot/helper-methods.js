@@ -116,6 +116,13 @@ const postToSlack = async (document, channelId, channelName, subscribed, deep) =
   console.log(`Successfully send message ${result.ts} in conversation ${channelName}`);
 };
 
+/**
+ * Add channel to slack array of document
+ * @param collectionRef the reference to the document
+ * @param collectionData the document data
+ * @param channelId channelID of the slack channel
+ * @returns {Promise<true/false>} return true/false
+ */
 const addChannelToSlackArray = async (collectionRef, collectionData, channelId) => {
   if (!collectionData.slack) {
     await collectionRef.update({
@@ -134,6 +141,13 @@ const addChannelToSlackArray = async (collectionRef, collectionData, channelId) 
   return false;
 };
 
+/**
+ * Remove channel from slack array in document
+ * @param collectionRef the reference to the document
+ * @param collectionData the document data
+ * @param channelId channelID of the slack channel
+ * @returns {Promise<true/false>} return true/false
+ */
 const removeChannelFromSlackArray = async (collectionRef, collectionData, channelId) => {
   if (!collectionData.slack || !collectionData.slack?.includes(channelId)) {
     return false;
@@ -146,7 +160,13 @@ const removeChannelFromSlackArray = async (collectionRef, collectionData, channe
   return true;
 };
 
-const removeChannelFromMultipleSlackArrays = async (documents, channelId) => {
+/**
+ * Remove channels from slack array of multiple documents
+ * @param documents All documents to loop through
+ * @param channelId channelID of the slack channel
+ * @returns {Promise<batch>} Return the batch-object so that the information can be committed to firestore
+ */
+const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
   const batch = db.batch();
 
   documents.forEach((item) => {
@@ -163,6 +183,12 @@ const removeChannelFromMultipleSlackArrays = async (documents, channelId) => {
   return batch;
 };
 
+/**
+ * Add new channels to the slack array of multiple documents
+ * @param documents All documents to loop through
+ * @param channelId channelID of the slack channel
+ * @returns {Promise<batch>} Return the batch-object so that the information can be committed to firestore
+ */
 const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
   const batch = db.batch();
 
@@ -185,6 +211,12 @@ const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
   return batch;
 };
 
+/**
+ * Get departments and products from firestore
+ * @param type document that the user subscribed to
+ * @param documentId channelID of the slack channel
+ * @returns {Promise<Array>} return array of departments and products
+ */
 const getDepsAndProds = async (type, documentId) => {
   const deps = await db
     .collection('departments')
@@ -203,7 +235,7 @@ const getDepsAndProds = async (type, documentId) => {
 exports.postToSlack = postToSlack;
 exports.addChannelToSlackArray = addChannelToSlackArray;
 exports.removeChannelFromSlackArray = removeChannelFromSlackArray;
-exports.removeChannelFromMultipleSlackArrays = removeChannelFromMultipleSlackArrays;
+exports.removeChannelsFromMultipleSlackArrays = removeChannelsFromMultipleSlackArrays;
 exports.addChannelsToMultipleSlackArrays = addChannelsToMultipleSlackArrays;
 exports.getDepsAndProds = getDepsAndProds;
 exports.slackMessageHelp = slackMessageHelp;
