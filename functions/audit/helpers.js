@@ -4,9 +4,8 @@ const { format } = require('date-fns');
 const { nb } = require('date-fns/locale');
 
 const environment = functions.config();
-const { token } = environment.slack;
+const { token, host_url: HOST_URL } = environment.slack;
 const web = new WebClient(token);
-const HOST_URL = functions.config().host_url;
 
 const options = { locale: nb };
 const dateShort = (d) => format(d, 'do MMM', options);

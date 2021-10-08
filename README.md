@@ -400,7 +400,7 @@ Firebase needs a couple of new configs as well. These are `slack.token` and `hos
 
 ```
 firebase functions:config:set slack.token="YOUR SLACK OAUTH TOKEN HERE"
-firebase functions:config:set host_url="HOST URL"
+firebase functions:config:set slack.host_url="HOST URL"
 ```
 
 ## Supported providers
