@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## Added
+
+# TODO: Write the changelog
+- Slack bot!
+  -
+
 ## [2.4.1] 2021-10-05
 
 ### Changes

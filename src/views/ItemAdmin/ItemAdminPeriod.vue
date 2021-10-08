@@ -144,10 +144,10 @@ export default {
 
     async deleteDeep() {
       try {
-        await this.$router.push({ query: {} });
         await Period.deleteDeep(this.activePeriod.id);
         this.$toasted.show(this.$t('toaster.delete.permanently'));
       } catch (error) {
+        console.log(error);
         this.$toasted.error(this.$t('toaster.error.delete', { document: this.activePeriod.name }));
         throw new Error(error.message);
       }
