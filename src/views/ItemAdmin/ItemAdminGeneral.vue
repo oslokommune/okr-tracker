@@ -145,6 +145,7 @@ export default {
 
       try {
         this.activeItem.archived = true;
+        this.activeItem.slack = [];
 
         if (this.type === 'organization') {
           await Organization.archive(this.activeItem.id);

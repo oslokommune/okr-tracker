@@ -1,26 +1,10 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
-const { format } = require('date-fns');
-const { nb } = require('date-fns/locale');
-
-const { WebClient } = require('@slack/web-api');
-
 const config = require('../config');
 
-const HOST_URL = functions.config().host_url;
-const environment = functions.config();
-
-const { token } = environment.slack;
-
-const slack = new WebClient(token);
+const { checkIfRelevantToPushToSlack } = require('./helpers');
 
 const db = admin.firestore();
-
-const slackCollection = db.collection('slack');
-
-const options = { locale: nb };
-
-const dateShort = (d) => format(d, 'do MMM', options);
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
   return functions
@@ -65,7 +49,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       };
 
       if (auditData.event.includes('Updated')) {
-        await pushToSlack(documentType, auditData);
+        await checkIfRelevantToPushToSlack(documentType, auditData);
       }
 
       return db.collection('audit').add(auditData);
@@ -109,187 +93,3 @@ function getDiff({ before, after }, keys) {
 
   return diff;
 }
-
-const pushToSlack = async (documentType, auditData) => {
-  const colors = {
-    created: '#43f8b6',
-    updated: '#f8c66b',
-    archived: '#ff8174',
-  };
-
-  const created = {
-    header: '',
-    owner: '',
-    context: '',
-    info: '',
-  };
-
-  if (documentType === 'Organization') {
-  }
-  if (documentType === 'Department') {
-  }
-  if (documentType === 'Product') {
-  }
-  if (documentType === 'Objective') {
-    const promises = [];
-
-    if (auditData.diff?.name?.before === 'placeholder') {
-      const user = await auditData.user.get();
-      const doc = await auditData.documentRef.get();
-      const data = doc.data();
-
-      const parent = await data.parent.get();
-      const parentData = parent.data();
-      const period = await data.period.get();
-      const periodData = period.data();
-      const userData = user.data();
-
-      created.header = `:tada: ${documentType}`;
-      created.owner = `${parentData.name} has created a new ${documentType}`;
-      created.context = `[${periodData.name}] ${dateShort(periodData.startDate.toDate())} - ${dateShort(
-        periodData.endDate.toDate()
-      )}`;
-      created.info = `<${HOST_URL}/${parentData.slug}/o/${doc.id} | ${data.name}>`;
-
-      const slackMsg = await createdMessage(colors.created, created);
-
-      if (parentData.slack) {
-        parentData.slack.forEach((channel) => {
-          promises.push(
-            slack.chat.postMessage({
-              channel,
-              attachments: slackMsg.attachments,
-              text: `New changes by ${userData.displayName}`
-            })
-          );
-        });
-      }
-
-      await Promise.all(promises);
-    }
-  }
-  if (documentType === 'KeyResult') {
-    const promises = [];
-
-    if (auditData.diff?.name?.before === 'placeholder') {
-      const user = await auditData.user.get();
-      const doc = await auditData.documentRef.get();
-      const data = doc.data();
-      const objective = await data.objective.get();
-      const parent = await data.parent.get();
-      const objData = objective.data();
-      const parentData = parent.data();
-      const userData = user.data();
-
-      created.header = `:tada: ${documentType}`;
-      created.owner = `${parentData.name} has created a new ${documentType}`;
-      created.context = `${objData.name}`;
-      created.info = `<${HOST_URL}/${parentData.slug}/k/${doc.id} | ${data.name}>`;
-
-      const slackMsg = await createdMessage(colors.created, created);
-
-      if (parentData.slack) {
-        parentData.slack.forEach((channel) => {
-          promises.push(
-            slack.chat.postMessage({
-              channel,
-              attachments: slackMsg.attachments,
-              text: `New changes by ${userData.displayName}`,
-            })
-          );
-        });
-      }
-
-      await Promise.all(promises);
-    }
-  }
-
-  return true;
-};
-
-const createdMessage = async (color, created) => ({
-  attachments: [
-    {
-      color,
-      blocks: [
-        {
-          type: 'header',
-          text: {
-            type: 'plain_text',
-            text: created.header,
-            emoji: true,
-          },
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: created.owner,
-          },
-        },
-        {
-          type: 'divider',
-        },
-        {
-          type: 'context',
-          elements: [
-            {
-              type: 'plain_text',
-              text: created.context,
-              emoji: true,
-            },
-          ],
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: created.info,
-          },
-        },
-      ],
-    },
-  ],
-});
-
-const updatedMessage = async () => ({
-  attachments: [
-    {
-      color: '#f2c744',
-      blocks: [
-        {
-          type: 'header',
-          text: {
-            type: 'plain_text',
-            text: ':eyes: Updated Objective',
-            emoji: true,
-          },
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: 'Helseveiviser has updated an objective',
-          },
-        },
-        {
-          type: 'divider',
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: '~Vi skal ha et beskjedent økende antall besøk i Helseveiviser.~',
-          },
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: '<https://google.com | Vi skal ha et drastisk økende antall besøk i Helseveiviser.>',
-          },
-        },
-      ],
-    },
-  ],
-});

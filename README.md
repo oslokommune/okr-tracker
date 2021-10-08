@@ -381,6 +381,28 @@ firebase functions:config:set slack.webhook="YOUR SLACK WEBHOOK HERE"
 Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
 ```
 
+### Push audit log to slack channels
+
+We have added an integration with Slack, where a Slack user can subscribe to updates for an Organization, Department or Product.
+
+If you have already set up a Slack integration from the previous point with Slack request and Slack interactive, you can go to the Slack commands site and add a new Slack command. We use `/okr` as a Slack command. Find you app [here](https://api.slack.com/apps)
+
+The slash command requires a couple of variables:
+
+```
+Command: /okr
+Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/okrSlackBot
+Short Description: Subscribe to Org/Dep/Product
+Usage Hint: subscribe [org/dep/prod] slug
+```
+
+Firebase needs a couple of new configs as well. These are `slack.token` and `host_url`. The `host_url` is the URL of you okr-tracker site, for us, it is `https://okr.oslo.systems`, and the token is an OAuth token from you Slack App settings page, under the sub-page `OAuth & Permissions`, it is a Bot User OAuth Token.
+
+```
+firebase functions:config:set slack.token="YOUR SLACK OAUTH TOKEN HERE"
+firebase functions:config:set host_url="HOST URL"
+```
+
 ## Supported providers
 
 OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
