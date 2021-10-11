@@ -96,14 +96,14 @@ const slackMessageHelp = {
   ],
 };
 
-
 /**
  * Post message to slack
  * @param document document that the user subscribed to
  * @param channelId channelID of the slack channel
  * @param channelName Slack channelname
  * @param subscribed true/false if it was a subscribe or unsubscribe
- * @returns {Promise<void>} dont return anything
+ * @param deep subscribe/all or not
+ * @returns {Promise<boolean>} dont return anything
  */
 const postToSlack = async (document, channelId, channelName, subscribed, deep) => {
   const result = await web.chat.postMessage({
@@ -112,8 +112,9 @@ const postToSlack = async (document, channelId, channelName, subscribed, deep) =
     }`,
     channel: channelId,
   });
-
   console.log(`Successfully send message ${result.ts} in conversation ${channelName}`);
+
+  return true;
 };
 
 /**
@@ -175,9 +176,12 @@ const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
 
     if (data.slack && data.slack.includes(channelId)) {
       const filteredArr = data.slack.filter((channel) => channel !== channelId);
+      console.log(filteredArr);
       batch.update(docRef, { slack: filteredArr });
+    } else {
+      const slack = data.slack ? data.slack : [];
+      batch.update(docRef, { slack });
     }
-
   });
 
   return batch;
@@ -203,7 +207,7 @@ const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
     } else if (!data.slack.includes(channelId)) {
       data.slack.push(channelId);
       batch.update(docRef, {
-        slack: data.slack.push(channelId),
+        slack: data.slack,
       });
     }
   });
@@ -230,7 +234,7 @@ const getDepsAndProds = async (type, documentId) => {
     .get();
 
   return { deps, prods };
-}
+};
 
 exports.postToSlack = postToSlack;
 exports.addChannelToSlackArray = addChannelToSlackArray;

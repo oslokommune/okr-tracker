@@ -39,7 +39,7 @@ const pushToSlack = async (data, slackMsg, user) => {
       web.chat.postMessage({
         channel,
         attachments: slackMsg.attachments,
-        text: `New changes by ${user.displayName}`,
+        text: `New changes by ${user.displayName || user}`,
       })
     );
   });
@@ -145,10 +145,18 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
     archived: '#ff8174',
   };
 
-  const user = await auditData.user.get();
   const doc = await auditData.documentRef.get();
   const data = doc.data();
-  const userData = user.data();
+
+  if (data.slack && data.slack.length === 0) {
+    return false;
+  }
+
+  let userData = auditData.user;
+  if (auditData.user !== 'system' || auditData.user === 'API') {
+    const user = await auditData.user.get();
+    userData = user.data();
+  }
 
   let slackMsg = {};
   let attachmentObject = {};
