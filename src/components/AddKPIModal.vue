@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import Kpi from '@/db/Kpi';
 import { mapState } from 'vuex';
+import Kpi from '@/db/Kpi';
 
 export default {
   name: 'AddKPIModal',

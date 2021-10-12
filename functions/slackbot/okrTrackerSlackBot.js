@@ -27,7 +27,6 @@ exports.runSlackBot = async (req, res) => {
   const cmd = req.body.text.split(' ');
 
   if (!allowedCmd.includes(cmd[0]) || !allowedSub.includes(cmd[1])) {
-    console.log(cmd);
     return res.status(200).send(slackMessageHelp);
   }
 

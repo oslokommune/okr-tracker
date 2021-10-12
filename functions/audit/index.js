@@ -101,6 +101,6 @@ exports.KeyResultCreate = auditOnCreateGenerator(keyResultsConfig);
 exports.KeyResultUpdate = auditOnUpdateGenerator(keyResultsConfig);
 exports.KeyResultDelete = auditOnDeleteGenerator(keyResultsConfig);
 
-exports.KPICreate = auditOnDeleteGenerator(kpiConfig);
+exports.KPICreate = auditOnCreateGenerator(kpiConfig);
 exports.KPIUpdate = auditOnUpdateGenerator(kpiConfig);
 exports.KPIDelete = auditOnDeleteGenerator(kpiConfig);

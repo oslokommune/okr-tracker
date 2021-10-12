@@ -10,6 +10,12 @@ const web = new WebClient(token);
 const options = { locale: nb };
 const dateShort = (d) => format(d, 'do MMM', options);
 
+const colors = {
+  created: '#43f8b6',
+  updated: '#f8c66b',
+  archived: '#ff8174',
+};
+
 const createNameDiffSlackMsg = async (documentType, diff, slug) => ({
   header: `:eyes: Updated ${documentType}`,
   owner: `${diff.before} has a new name`,
@@ -22,6 +28,13 @@ const createMissionStatementDiffSlackMsg = async (documentType, diff, data) => (
   owner: `${data.name} has a new mission statement`,
   context: `~${diff.before}~`,
   info: `<${HOST_URL}/${data.slug} | ${diff.after}>`,
+});
+
+const createDescriptionDiffSlackMsg = async (documentType, parentData, diff, url) => ({
+  header: `:eyes: Updated ${documentType}`,
+  owner: `'${parentData.name}' has a new description`,
+  context: `~${diff.before}~`,
+  info: `<${HOST_URL}/${url} | ${diff.after}>`,
 });
 
 const createObjOrKeyResUpdatedSlackMsg = async (documentType, parentData, diff, url) => ({
@@ -139,18 +152,8 @@ const slackMessageUpdated = async (color, updated) => ({
 const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
   let hasChanges = false;
 
-  const colors = {
-    created: '#43f8b6',
-    updated: '#f8c66b',
-    archived: '#ff8174',
-  };
-
   const doc = await auditData.documentRef.get();
   const data = doc.data();
-
-  if (data.slack && data.slack.length === 0) {
-    return false;
-  }
 
   let userData = auditData.user;
   if (auditData.user !== 'system' || auditData.user === 'API') {
@@ -194,7 +197,7 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
       slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
     }
 
-    if (parentData.slack && hasChanges) {
+    if (parentData.slack && parentData.slack.length > 0 && hasChanges) {
       await pushToSlack(parentData, slackMsg, userData);
     }
 
@@ -202,7 +205,6 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
   }
 
   if (documentType === 'KeyResult') {
-    console.log('hello');
     const objective = await data.objective.get();
     const parent = await data.parent.get();
     const objData = objective.data();
@@ -233,7 +235,37 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
       slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
     }
 
-    if (parentData.slack && hasChanges) {
+    if (parentData.slack && parentData.slack.length > 0 && hasChanges) {
+      await pushToSlack(parentData, slackMsg, userData);
+    }
+
+    return true;
+  }
+
+  if (documentType === 'KPI') {
+    const parent = await data.parent.get();
+    const parentData = parent.data();
+
+    if (auditData.diff?.name) {
+      hasChanges = true;
+      attachmentObject = await createNameDiffSlackMsg(
+        `${documentType} (${data.type})`,
+        auditData.diff.name,
+        `${parentData.slug}/kpi/${doc.id}`
+      );
+    } else if (auditData.diff?.description) {
+      hasChanges = true;
+      attachmentObject = await createDescriptionDiffSlackMsg(
+        `${documentType} (${data.type})`,
+        data,
+        auditData.diff.description,
+        `${parentData.slug}/kpi/${doc.id}`
+      );
+    }
+
+    if (parentData.slack && parentData.slack.length > 0 && hasChanges) {
+      slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
+
       await pushToSlack(parentData, slackMsg, userData);
     }
 
@@ -291,3 +323,6 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
 };
 
 exports.checkIfRelevantToPushToSlack = checkIfRelevantToPushToSlack;
+exports.colors = colors;
+exports.pushToSlack = pushToSlack;
+exports.slackMessageCreated = slackMessageCreated;

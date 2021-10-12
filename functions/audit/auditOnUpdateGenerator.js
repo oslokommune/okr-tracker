@@ -40,6 +40,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         }
       })();
 
+
       const auditData = {
         event,
         timestamp: new Date(),
