@@ -91,7 +91,7 @@ export default {
       immediate: true,
       async handler() {
         this.image = null;
-        this.thisUser = this.selectedUser;
+        this.thisUser = { ...this.selectedUser };
 
         if (this.selectedUser.admin?.length > 0) {
           const orgs = [];
