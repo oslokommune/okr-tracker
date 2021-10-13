@@ -40,16 +40,25 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
     });
 };
 
+
+/**
+ * Check if the audit log is relevant to push to slack channels
+ * @param auditData audit data
+ * @param documentType type of document
+ * @return Promise<boolean> return true either way
+ */
 const checkIfRelevantToPushToSlack = async (auditData, documentType) => {
   const doc = await auditData.documentRef.get();
   const data = doc.data();
 
+  // get user data on who created the new document
   let userData = auditData.user;
   if (auditData.user !== 'system' || auditData.user === 'API') {
     const user = await auditData.user.get();
     userData = user.data();
   }
 
+  // If a new KPI has been created
   if (documentType === 'KPI') {
     const parent = await data.parent.get();
     const parentData = parent.data();
@@ -61,8 +70,10 @@ const checkIfRelevantToPushToSlack = async (auditData, documentType) => {
       info: `<${HOST_URL}/${parentData.slug}/kpi/${doc.id} | ${data.name}>`,
     };
 
+    // Get a slack attachments object
     const slackMsg = await slackMessageCreated(colors.created, attachmentObject);
 
+    // If the parent has slack channels then push to those channels
     if (parentData.slack && parentData.slack.length > 0) {
       await pushToSlack(parentData, slackMsg, userData);
     }

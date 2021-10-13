@@ -16,34 +16,43 @@ const colors = {
   archived: '#ff8174',
 };
 
-const createNameDiffSlackMsg = async (documentType, diff, slug) => ({
-  header: `:eyes: Updated ${documentType}`,
-  owner: `${diff.before} has a new name`,
-  context: `~${diff.before}~`,
-  info: `<${HOST_URL}${slug} | ${diff.after}>`,
-});
+/**
+ *
+ * @param documentType type of document
+ * @param diffType type of diff
+ * @param name name of the document or parent name
+ * @param diff diff object
+ * @param url url to the document
+ * @return {Promise<{owner: string, context: string, header: string, info: string}>}
+ */
+const createUpdatedSlackMsg = async (documentType, diffType, name, diff, url) => {
+  let owner = '';
 
-const createMissionStatementDiffSlackMsg = async (documentType, diff, data) => ({
-  header: `:eyes: Updated ${documentType}`,
-  owner: `${data.name} has a new mission statement`,
-  context: `~${diff.before}~`,
-  info: `<${HOST_URL}/${data.slug} | ${diff.after}>`,
-});
+  if (diffType === 'missionStatement') {
+    owner = `'${name}' has a new mission statement,`;
+  } else if (diffType === 'name') {
+    owner = `${name} has a new name`;
+  } else if (diffType === 'description') {
+    owner = `'${name}' has a new description`;
+  } else if (diffType === 'keyResOrObjective') {
+    owner = `${name} has updated ${documentType === 'Objective' ? 'an' : 'a'} ${documentType}`;
+  }
 
-const createDescriptionDiffSlackMsg = async (documentType, parentData, diff, url) => ({
-  header: `:eyes: Updated ${documentType}`,
-  owner: `'${parentData.name}' has a new description`,
-  context: `~${diff.before}~`,
-  info: `<${HOST_URL}/${url} | ${diff.after}>`,
-});
+  return {
+    header: `:eyes: Updated ${documentType}`,
+    owner,
+    context: `~${diff.before}~`,
+    info: `<${HOST_URL}/${url} | ${diff.after}>`,
+  };
+};
 
-const createObjOrKeyResUpdatedSlackMsg = async (documentType, parentData, diff, url) => ({
-  header: `:eyes: Updated ${documentType}`,
-  owner: `${parentData.name} has updated a ${documentType}`,
-  context: `~${diff.before}~`,
-  info: `<${HOST_URL}/${url} | ${diff.after}>`,
-});
-
+/**
+ *
+ * @param data
+ * @param slackMsg slack message to send
+ * @param user who has done the update
+ * @returns {Promise<boolean>}
+ */
 const pushToSlack = async (data, slackMsg, user) => {
   const promises = [];
 
@@ -62,6 +71,12 @@ const pushToSlack = async (data, slackMsg, user) => {
   return true;
 };
 
+/**
+ *
+ * @param color
+ * @param created
+ * @returns {Promise<{attachments: [{color, blocks: [{text: {emoji: boolean, text, type: string}, type: string}, {text: {text, type: string}, type: string}, {type: string}, {elements: [{emoji: boolean, text, type: string}], type: string}, {text: {text, type: string}, type: string}]}]}>}
+ */
 const slackMessageCreated = async (color, created) => ({
   attachments: [
     {
@@ -107,6 +122,12 @@ const slackMessageCreated = async (color, created) => ({
   ],
 });
 
+/**
+ *
+ * @param color
+ * @param updated
+ * @returns {Promise<{attachments: [{color: string, blocks: [{text: {emoji: boolean, text: string, type: string}, type: string}, {text: {text: string, type: string}, type: string}, {type: string}, {text: {text: string, type: string}, type: string}, {text: {text: string, type: string}, type: string}]}]}>}
+ */
 const slackMessageUpdated = async (color, updated) => ({
   attachments: [
     {
@@ -149,7 +170,15 @@ const slackMessageUpdated = async (color, updated) => ({
   ],
 });
 
+/**
+ *
+ * @param documentType
+ * @param auditData
+ * @returns {Promise<boolean>}
+ */
 const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
+  const possibleDocuments = ['Organization', 'Department', 'Product'];
+
   let hasChanges = false;
 
   const doc = await auditData.documentRef.get();
@@ -187,11 +216,12 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
     } else if (auditData.diff?.name) {
       hasChanges = true;
 
-      attachmentObject = await createObjOrKeyResUpdatedSlackMsg(
+      attachmentObject = await createUpdatedSlackMsg(
         documentType,
-        parentData,
+        'keyResOrObjective',
+        parentData.name,
         auditData.diff.name,
-        `${parentData.slug}/k/${doc.id}`
+        `${parentData.slug}/o/${doc.id}`
       );
 
       slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
@@ -225,9 +255,10 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
     } else if (auditData.diff?.name) {
       hasChanges = true;
 
-      attachmentObject = await createObjOrKeyResUpdatedSlackMsg(
+      attachmentObject = await createUpdatedSlackMsg(
         documentType,
-        parentData,
+        'keyResOrObjective',
+        parentData.name,
         auditData.diff.name,
         `${parentData.slug}/k/${doc.id}`
       );
@@ -248,16 +279,19 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
 
     if (auditData.diff?.name) {
       hasChanges = true;
-      attachmentObject = await createNameDiffSlackMsg(
+      attachmentObject = await createUpdatedSlackMsg(
         `${documentType} (${data.type})`,
+        'name',
+        auditData.diff.name.before,
         auditData.diff.name,
         `${parentData.slug}/kpi/${doc.id}`
       );
     } else if (auditData.diff?.description) {
       hasChanges = true;
-      attachmentObject = await createDescriptionDiffSlackMsg(
+      attachmentObject = await createUpdatedSlackMsg(
         `${documentType} (${data.type})`,
-        data,
+        'description',
+        data.name,
         auditData.diff.description,
         `${parentData.slug}/kpi/${doc.id}`
       );
@@ -272,44 +306,28 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
     return true;
   }
 
-  if (documentType === 'Organization') {
+  if (possibleDocuments.includes(documentType)) {
     if (auditData.diff?.name) {
       hasChanges = true;
-      attachmentObject = await createNameDiffSlackMsg(documentType, auditData.diff.name, data.slug);
+      attachmentObject = await createUpdatedSlackMsg(
+        documentType,
+        'name',
+        auditData.diff.name.before,
+        auditData.diff.name,
+        data.slug
+      );
 
       slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
     } else if (auditData.diff?.missionStatement) {
       hasChanges = true;
 
-      attachmentObject = await createMissionStatementDiffSlackMsg(documentType, auditData.diff.missionStatement, data);
-
-      slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
-    }
-  } else if (documentType === 'Department') {
-    if (auditData.diff?.name) {
-      hasChanges = true;
-
-      attachmentObject = await createNameDiffSlackMsg(documentType, auditData.diff.name, data.slug);
-
-      slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
-    } else if (auditData.diff?.missionStatement) {
-      hasChanges = true;
-
-      attachmentObject = await createMissionStatementDiffSlackMsg(documentType, auditData.diff.missionStatement, data);
-
-      slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
-    }
-  } else if (documentType === 'Product') {
-    if (auditData.diff?.name) {
-      hasChanges = true;
-
-      attachmentObject = await createNameDiffSlackMsg(documentType, auditData.diff.name, data.slug);
-
-      slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
-    } else if (auditData.diff?.missionStatement) {
-      hasChanges = true;
-
-      attachmentObject = await createMissionStatementDiffSlackMsg(documentType, auditData.diff.missionStatement, data);
+      attachmentObject = await createUpdatedSlackMsg(
+        documentType,
+        'missionStatement',
+        data.name,
+        auditData.diff.missionStatement,
+        data.slug
+      );
 
       slackMsg = await slackMessageUpdated(colors.updated, attachmentObject);
     }
