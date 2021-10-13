@@ -31,7 +31,7 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
@@ -83,6 +83,7 @@ export default {
     },
     range: null,
     loading: false,
+    changes: false
   }),
 
   watch: {
@@ -102,6 +103,7 @@ export default {
       const [startDate, endDate] = parts;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
+      this.changes = true
     },
   },
 
@@ -129,6 +131,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false
     },
 
     async restore() {
@@ -166,6 +169,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false
     },
   },
 };
