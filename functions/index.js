@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 
+const isSlackActive = functions.config().slack.active || false;
+
 // Initialize the app to get everything started
 admin.initializeApp({
   credential: admin.credential.cert(functions.config().service_account),
@@ -63,13 +65,16 @@ exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
 exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
 exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
 
-exports.slackNotificationOnUserRequest = require('./requestAccess').slackNotificationOnUserRequest;
-exports.slackNotificationInteractiveOnRequest = require('./requestAccess').slackNotificationInteractiveOnRequest;
-
 // Express servers run via Cloud Functions
 exports.api = require('./api').app;
 exports.internal = require('./backend').app;
 
+const { okrTrackerSlackBot } = require('./slackbot');
+const { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } = require('./requestAccess');
 
 // OKR-Tracker slackbot
-exports.okrTrackerSlackBot = require('./slackbot').okrTrackerSlackBot;
+if (isSlackActive) {
+  exports.okrTrackerSlackBot = okrTrackerSlackBot;
+  exports.slackNotificationOnUserRequest = slackNotificationOnUserRequest;
+  exports.slackNotificationInteractiveOnRequest = slackNotificationInteractiveOnRequest;
+}

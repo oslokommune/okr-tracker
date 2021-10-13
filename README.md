@@ -90,6 +90,15 @@ firebase functions:config:set service_account="${cat origo-okr-tracker-private-k
 ```
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
 
+We have Slack integrations. You can read about how to use the slack integration in the [slack section](#Slack Integration).
+
+If you want to activate them, then you would need to add it to the Firebase functions config. If you do not want to use the slack integrations, then you don't need to do anything.
+
+```
+firebase functions:config:set slack.active=true
+```
+
+
 #### Enable Google Auth in Firebase
 
 We use Google Auth to authenticate users and this needs to be enabled in the Firebase Console.
