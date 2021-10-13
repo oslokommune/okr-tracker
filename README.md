@@ -59,7 +59,7 @@ npm install -g firebase-tools
 
 ## Set up new instance
 
-Follow this guide to set up a new clean instance of the OKR-tracker.
+Follow this guide to set up a new clean instance of the OKR-tracker. Please read the whole readme and not sequentially. There are some steps throughout the readme that are important to set up a new instance.
 
 ### Create Firebase project
 
