@@ -17,13 +17,13 @@
       @submit.prevent="isOpen = true"
     >
       <label class="keyResult__input">
-        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" step="any" />
+        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" step="any" @input="changed = true"/>
       </label>
 
       <button class="btn">{{ $t('keyres.updateValue') }}</button>
     </form>
 
-    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false"></modal>
+    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
   data: () => ({
     keyRow: null,
     isOpen: false,
+    changed: false,
   }),
 
   computed: {

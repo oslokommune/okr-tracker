@@ -12,6 +12,7 @@
           rules="required"
           type="text"
           data-cy="org-name"
+          @edited-data="edit"
         />
 
         <label class="form-group">
@@ -25,16 +26,17 @@
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
+          @edited-data="edit"
         />
 
         <div v-if="type === 'department'" class="form-group">
           <span class="form-label">{{ $t('admin.department.parentOrganisation') }}</span>
-          <v-select v-model="activeItem.organization" label="name" :options="organizations" :clearable="false" />
+          <v-select v-model="activeItem.organization" label="name" :options="organizations" :clearable="false" @input="edit"/>
         </div>
 
         <div v-else-if="type === 'product'" class="form-group">
           <span class="form-label">{{ $t('admin.product.parentDepartment') }}</span>
-          <v-select v-model="activeItem.department" label="name" :options="departments" :clearable="false"></v-select>
+          <v-select v-model="activeItem.department" label="name" :options="departments" :clearable="false" @input="edit"></v-select>
         </div>
 
         <div class="form-group">
@@ -44,6 +46,7 @@
             multiple
             :options="users"
             :get-option-label="(option) => option.displayName || option.id"
+            @input="edit"
           >
             <template #option="option">
               {{ option.displayName || option.id }}
@@ -55,13 +58,13 @@
         <label class="form-group">
           <span class="form-label">{{ $t('fields.secret') }}</span>
           <span class="form-help" v-html="$t('admin.apiSecret')"></span>
-          <input v-model="activeItem.secret" type="text" class="form__field" />
+          <input v-model="activeItem.secret" type="text" class="form__field" @input="edit"/>
         </label>
       </form>
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-item" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-item" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
@@ -95,6 +98,7 @@ export default {
 
   data: () => ({
     loading: false,
+    changes: false
   }),
 
   computed: {
@@ -109,6 +113,9 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     async update() {
       this.loading = true;
       try {
@@ -137,6 +144,7 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
+        this.changes = false;
       }
     },
 
@@ -166,6 +174,7 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
+        this.changes = false;
       }
     },
 
@@ -188,6 +197,7 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
+        this.changes = false;
       }
     },
 
@@ -211,6 +221,7 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
+        this.changes = false;
       }
     },
   },

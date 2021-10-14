@@ -102,6 +102,7 @@ export default {
     },
 
     value(val) {
+      this.$emit('edited-data', val);
       if (val !== this.innerValue) {
         this.innerValue = val;
       }
