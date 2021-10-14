@@ -1,4 +1,4 @@
-import { formatLocale } from 'd3';
+import { formatLocale } from 'd3-format';
 import { format, parseISO, formatISO } from 'date-fns';
 import { nb as locale } from 'date-fns/locale';
 

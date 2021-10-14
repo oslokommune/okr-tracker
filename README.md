@@ -8,6 +8,7 @@
     - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
   - [Environment variables](#environment-variables)
   - [Link project](#link-project)
+  - [Make Firestore ready for production](#make-firestore-ready-for-production)
   - [Create mock data](#create-mock-data)
     - [Generate mock data](#generate-mock-data)
     - [Exporting mock data](#exporting-mock-data)
@@ -75,13 +76,13 @@ This key is used for fetching data from Google Sheets (for automatically updatin
 
 ```bash
 firebase functions:config:set
-  sheets.impersonator="email-address" (optional)
   service_account="<service account private key json-file>"
   storage.bucket="<your-storage-bucket-name>"
-  slack.active=true (optional)
+  slack.active=false
   slack.webhook="YOUR SLACK WEBHOOK HERE" (required if slack.active === true)
   slack.token="YOUR SLACK OAUTH TOKEN HERE" (required if slack.active === true)
   slack.host_url="HOST URL" (required if slack.active === true)
+  sheets.impersonator="email-address" (optional)
 ```
 
 Cat the whole service account private key json file into the environment key `service_account`.
@@ -109,6 +110,8 @@ firebase functions:config:set slack.active=true
 #### Enable Google Auth in Firebase
 
 We use Google Auth to authenticate users and this needs to be enabled in the Firebase Console.
+
+**NOTE: This does not apply if you are only running this locally. We support Google and Microsoft as authentications**
 
 - Navigate to your project in the [Firebase console](https://console.firebase.google.com/)
 - Press the **Authentication**-button in the side menu
@@ -163,6 +166,22 @@ Start Firebase emulators, import mock data and run the development server:
 ```bash
 npm run dev
 ```
+
+## Make Firestore ready for production
+
+If you want to deploy to production or staging, you need to create multiple collections manually. Go to the Firestore Database  in the [Firebase Cloud Console](https://console.firebase.google.com/)
+
+- audit
+- departments
+- keyResults
+- kpis
+- objectives
+- organizations
+- periods
+- products
+- requestAccess
+- slugs
+- users
 
 ### Create mock data
 

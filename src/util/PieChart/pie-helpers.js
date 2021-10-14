@@ -1,4 +1,9 @@
-import { select, arc, interpolate, format, easeCircleOut } from 'd3';
+import { select } from 'd3-selection';
+import { arc } from 'd3-shape';
+import { format } from 'd3-format';
+import { interpolate } from 'd3-interpolate';
+import { easeCircleOut } from 'd3-ease';
+import "d3-transition";
 
 const size = 250;
 const padding = 50;

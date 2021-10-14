@@ -17,7 +17,10 @@
 </template>
 
 <script>
-import { scaleLinear, format, select } from 'd3';
+import { scaleLinear } from 'd3-scale';
+import { format } from 'd3-format';
+import { select } from 'd3-selection';
+import "d3-transition";
 
 export default {
   name: 'DashboardProgressBar',

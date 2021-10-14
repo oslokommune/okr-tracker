@@ -1,4 +1,4 @@
-import { stratify } from 'd3';
+import { stratify } from 'd3-hierarchy';
 
 /**
  * Finds the parent node for the provided node
