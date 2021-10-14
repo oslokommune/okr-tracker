@@ -47,6 +47,7 @@ Now we would get updates to our slack channel with changes to our product, datas
 - Save-buttons are disabled until changes have been made.
 - Updated instructions on how to initialize a new okr-tracker instance
 - KeyResultHome: moved widgets around for easier access to the edit button
+- Updated dependencies
 
 ## [2.4.1] 2021-10-05
 
