@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+We have added another slackbot integration. The new slackbot integration pushes changes to organizations/departments/products.
+
+You can call the slack bot with the command `/okr`. The different commands to the slack bot are:
+- `subscribe organization/department/product slug` - subscribe to a specific org/dep/prod
+- `unsubscribe organization/department/product slug` - unsubscribe
+- `subscribe/all organization/department slug` - subscribe to a specific org/dep/prod and all its children (departments/products)
+- `unsubscribe/all organization/department slug` - unsubscribe to everything
+
+What types of updates does the bot push?
+Changes to the:
+- name
+- mission statement
+
+Creation of:
+- Objectives
+- Key Results
+
+## Added
+
+- Slack bot integration with channels in your slack organization. Push updates to a slack channel. (Read the readme about the changes and how to implement it)
+
+Example:
+`/okr subscribe product dataspeilet`
+
+Now we would get updates to our slack channel with changes to our product, dataspeilet. (Mountain Peach is the name of our test user)
+
+![img.png](documentation/images/img.png)
+
+![img_1.png](documentation/images/img_1.png)
+
+![img_2.png](documentation/images/img_2.png)
+
+![img_3.png](documentation/images/img_3.png)
+
 ## [2.4.1] 2021-10-05
 
 ### Changes

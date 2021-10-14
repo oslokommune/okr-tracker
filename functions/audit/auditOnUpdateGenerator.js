@@ -2,6 +2,8 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const config = require('../config');
 
+const { checkIfRelevantToPushToSlack } = require('./helpers');
+
 const db = admin.firestore();
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
@@ -38,13 +40,20 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         }
       })();
 
-      return db.collection('audit').add({
+
+      const auditData = {
         event,
         timestamp: new Date(),
         documentRef: collectionRef.doc(documentId),
         user: user || 'system',
         diff,
-      });
+      };
+
+      if (auditData.event.includes('Updated')) {
+        await checkIfRelevantToPushToSlack(documentType, auditData);
+      }
+
+      return db.collection('audit').add(auditData);
     });
 };
 

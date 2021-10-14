@@ -91,6 +91,7 @@ export default {
         organization: db.collection('organizations').doc(department.organization.id),
         team: team.map(({ id }) => db.collection('users').doc(id)),
         archived: false,
+        slack: [],
       };
 
       try {

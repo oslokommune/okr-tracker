@@ -92,6 +92,7 @@ export default {
         organization: db.collection('organizations').doc(organization.id),
         archived: false,
         team: team.map(({ id }) => db.collection('users').doc(id)),
+        slack: [],
       };
 
       this.loading = true;
