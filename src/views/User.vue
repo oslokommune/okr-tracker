@@ -12,7 +12,7 @@
 
         <template v-if="me">
           <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-          <div class="grid-buttons">
+          <div class="user__image-buttons">
             <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
               {{ $t('btn.upload') }}
             </button>
@@ -329,7 +329,7 @@ export default {
   margin: 1rem 0 2rem;
 }
 
-.grid-buttons {
+.user__image-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 0.5rem;
