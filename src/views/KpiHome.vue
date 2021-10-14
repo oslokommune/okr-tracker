@@ -104,14 +104,13 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { extent } from 'd3';
+import { extent } from 'd3-array';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort } from '@/util';
+import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
-import { numberLocale } from '@/util';
 
 export default {
   name: 'KpiHome',

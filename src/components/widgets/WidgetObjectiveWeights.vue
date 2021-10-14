@@ -19,7 +19,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { scaleLinear, max } from 'd3';
+import { scaleLinear } from 'd3-scale';
+import { max } from 'd3-array';
 
 export default {
   name: 'WidgetObjectiveWeights',

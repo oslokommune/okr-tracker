@@ -1,4 +1,5 @@
-import { select, pie } from 'd3';
+import { select } from 'd3-selection';
+import { pie } from 'd3-shape';
 
 import {
   initSvg,
