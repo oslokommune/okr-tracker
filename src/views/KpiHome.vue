@@ -53,7 +53,7 @@
             <td>{{ formatKPIValue(value) }}</td>
             <td v-if="hasEditRights">
               <v-popover offset="16" placement="top" show="true">
-                <button class="btn btn--ter btn--icon">
+                <button class="btn btn--ter btn--icon btn--icon-pri">
                   <i class="icon far fa-trash-alt" />
                   {{ $t('btn.delete') }}
                 </button>
@@ -75,7 +75,7 @@
         <router-link
           v-if="hasEditRights"
           v-tooltip="$t('tooltip.editKpi')"
-          class="btn btn--ter btn--icon"
+          class="btn btn--ter btn--icon btn--icon-pri"
           :to="{ name: 'ItemAdminKPIs' }"
         >
           <i class="icon fa fa-cog" />
