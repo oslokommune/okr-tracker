@@ -9,7 +9,6 @@
   - [Environment variables](#environment-variables)
   - [Link project](#link-project)
   - [Create mock data](#create-mock-data)
-    - [Whitelist yourself](#whitelist-yourself)
     - [Generate mock data](#generate-mock-data)
     - [Exporting mock data](#exporting-mock-data)
     - [Update mock data](#update-mock-data)
@@ -26,9 +25,11 @@
   - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
 - [Slack Integration](#slack-integration)
   - [Set up](#set-up)
+  - [Push audit log to slack channels](#push-audit-log-to-slack-channels)
 - [Supported Providers](#supported-providers)
   - [Microsoft integration](#microsoft-integration)
   - [Google integration](#google-integration)
+- [Common problems](#common-problems)
 
 ## Demo
 
@@ -40,8 +41,9 @@ If you would like to check out how the application works, you can go to the demo
 ## Project requirements
 
 - Node 14.x
-- Firebase >8.x
+- Firebase >=8.x (v9 is not supported)
 - Firebase tools >9.x
+- Firebase Blaze plan - Pay as you go
 
 ## Clone and install
 
@@ -75,6 +77,11 @@ This key is used for fetching data from Google Sheets (for automatically updatin
 firebase functions:config:set
   sheets.impersonator="email-address" (optional)
   service_account="<service account private key json-file>"
+  storage.bucket="<your-storage-bucket-name>"
+  slack.active=true (optional)
+  slack.webhook="YOUR SLACK WEBHOOK HERE" (required if slack.active === true)
+  slack.token="YOUR SLACK OAUTH TOKEN HERE" (required if slack.active === true)
+  slack.host_url="HOST URL" (required if slack.active === true)
 ```
 
 Cat the whole service account private key json file into the environment key `service_account`.
@@ -90,7 +97,7 @@ firebase functions:config:set service_account="${cat origo-okr-tracker-private-k
 ```
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
 
-We have Slack integrations. You can read about how to use the slack integration in the [slack section](#Slack Integration).
+We have Slack integrations. You can read about how to use the slack integration in the [slack section](#slack-integration).
 
 If you want to activate them, then you would need to add it to the Firebase functions config. If you do not want to use the slack integrations, then you don't need to do anything.
 
@@ -144,7 +151,14 @@ firebase use --add
 
 The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. There is no need to do anything, only run the development script and everything is set up with a local user through Google auth.
 
-Start the Firebase Emulator:
+
+Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
+
+```bash
+firebase functions:config:get > ./functions/.runtimeconfig.json
+```
+
+Start Firebase emulators, import mock data and run the development server:
 
 ```bash
 npm run dev
@@ -191,20 +205,6 @@ The TL;DR is:
 After an API Gateway has been set up, we have closed the gateway with an API Key, which means that you would need to create an API Key through the Google Cloud Console
 
 If there are any questions regarding this, do not hesitate to get in contact with us and we will gladly help (i.e. create an issue)
-
-## Run locally
-
-Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
-
-```bash
-firebase functions:config:get > ./functions/.runtimeconfig.json
-```
-
-Start Firebase emulators, import mock data and run the development server:
-
-```bash
-npm run dev
-```
 
 ## Build and deploy
 
@@ -331,8 +331,6 @@ We use cloud functions to backup our database every night and only keep backup o
 - Manually create a storage bucket
 - Cloud function
 
-You can follow [this tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-automated-backups/) on how to create automated backups.
-
 TLDR:
 
 - Navigate to **Google Cloud Console** and choose your project
@@ -343,8 +341,6 @@ TLDR:
 ### Automated Restore with Cloud Functions
 
 This is called automated restore but we still need to manually trigger a cloud function that does the restore from the Google Cloud Console
-
-Follow this [tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
 TLDR:
 
@@ -421,4 +417,22 @@ For the Microsoft-integration a TENANT must be specified as the environment-vari
 
 ### Google integration
 Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('oslo.kommune.no')) rejectAccess();`
+
+## Common problems
+
+If there are some problems running the project locally, or you get an infinite spinner: inspect the console in the browser, your terminal or `firebase-debug.log` file for error messages. Some common messages when firing up the project for the first time:
+
+1. "No such file or directory, scandir storage_export/metadata"
+   1. You need to create two directories under `mock_data/storage_export` - `blobs` and `metadata`
+2. It looks like you're trying to access functions.config().service_account but there is no value there
+   1. Check if you have set the config key for service_account correctly. Read the readme again and se how you need to cat the private-key file correctly
+3. Missing permissions required for functions deploy. You must have permission iam.serviceAccounts.ActAs on service account
+   1. Open the [Google Cloud Console](https://console.cloud.google.com/) (check that you are in the correct project).
+   2. Go to IAM & Admin -> Service Accounts
+   3. Find the service account and click on it
+   4. Click on the "Permissions" panel, then click `Grant Access`
+   5. Add your IAM member email address. For the role, select Service Accounts -> Service Account User
+   6. Click Save
+4. Cannot read property `bucket` of underfined
+   1. Set the config key `storage.bucket`. Please read the readme again
 
