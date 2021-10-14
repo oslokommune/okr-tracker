@@ -53,7 +53,7 @@
             <td>{{ formatKPIValue(value) }}</td>
             <td v-if="hasEditRights">
               <v-popover offset="16" placement="top" show="true">
-                <button class="btn btn--ter btn--icon">
+                <button class="btn btn--ter btn--icon btn--icon-pri">
                   <i class="icon far fa-trash-alt" />
                   {{ $t('btn.delete') }}
                 </button>
@@ -75,7 +75,7 @@
         <router-link
           v-if="hasEditRights"
           v-tooltip="$t('tooltip.editKpi')"
-          class="btn btn--ter btn--icon"
+          class="btn btn--ter btn--icon btn--icon-pri"
           :to="{ name: 'ItemAdminKPIs' }"
         >
           <i class="icon fa fa-cog" />
@@ -104,14 +104,13 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { extent } from 'd3';
+import { extent } from 'd3-array';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort } from '@/util';
+import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
-import { numberLocale } from '@/util';
 
 export default {
   name: 'KpiHome',

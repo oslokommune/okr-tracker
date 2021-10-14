@@ -12,9 +12,14 @@
 
         <template v-if="me">
           <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-          <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
-            {{ $t('btn.upload') }}
-          </button>
+          <div class="user__image-buttons">
+            <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
+              {{ $t('btn.upload') }}
+            </button>
+            <button class="btn" :disabled="!thisUser.photoURL" @click="deleteImage">
+              {{ $t('btn.deleteImage') }}
+            </button>
+          </div>
         </template>
       </div>
 
@@ -28,6 +33,7 @@
               :label="$t('fields.name')"
               rules="required"
               type="text"
+              @edited-data="edit"
             />
           </form>
         </validation-observer>
@@ -43,6 +49,7 @@
             v-model="thisUser.position"
             :options="jobPositions"
             :get-option-label="(option) => $t(`user.position.${option}`)"
+            @input="edit"
           >
           </v-select>
         </label>
@@ -53,12 +60,13 @@
             v-model="thisUser.preferences.lang"
             :options="languages"
             :get-option-label="(option) => $t(`languages.${option}`)"
+            @input="edit"
           >
           </v-select>
         </label>
 
         <div v-if="me" class="user__info-btn">
-          <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+          <button class="btn btn--sec" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
         </div>
 
         <hr class="divider" />
@@ -116,6 +124,7 @@ export default {
     audit: [],
     image: null,
     loading: false,
+    changes: false,
     thisUser: null,
     languages: ['nb-NO', 'en-US'],
     jobPositions,
@@ -162,6 +171,9 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     setImage({ target }) {
       const { files } = target;
       if (files.length !== 1) return;
@@ -180,6 +192,7 @@ export default {
         console.error(error);
       }
       this.loading = false;
+      this.changes = false;
     },
 
     async save() {
@@ -194,6 +207,23 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
+    },
+
+    async deleteImage() {
+      this.loading = true;
+      try {
+        this.thisUser.photoURL = null;
+        this.image = null;
+        await this.save(this.thisUser);
+        await User.deleteImage(this.user.id);
+      } catch (error) {
+        console.log("Error " + error)
+        throw new Error(error.message);
+      }
+
+      this.loading = false;
+      this.changes = false;
     },
   },
 };
@@ -297,6 +327,12 @@ export default {
   grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin: 1rem 0 2rem;
+}
+
+.user__image-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
 }
 
 .product__header {

@@ -18,15 +18,17 @@
             :label="$t('fields.displayName')"
             rules="required"
             type="text"
+            @edited-data="edit"
           />
 
           <label class="form-group--checkbox">
-            <span class="form-label">Super admin</span>
+            <span class="form-label">{{ $t('general.superAdmin') }}</span>
             <input
               v-model="thisUser.superAdmin"
               class="form__checkbox"
               type="checkbox"
               :disabled="user.email === selectedUser.email || !user.superAdmin"
+              @input="edit"
             />
           </label>
 
@@ -38,6 +40,7 @@
               :options="organizations"
               :get-option-label="(option) => option.name"
               :disabled="!user.superAdmin"
+              @input="edit"
             >
             </v-select>
           </div>
@@ -46,7 +49,7 @@
     </div>
 
     <div class="selected-user__footer">
-      <button class="btn" form="user-form" :disabled="loading">{{ $t('btn.saveChanges') }}</button>
+      <button class="btn btn--pri" form="user-form" :disabled="loading || !changes">{{ $t('btn.saveChanges') }}</button>
       <button
         class="btn btn--danger"
         :disabled="user.email === selectedUser.email || loading"
@@ -76,6 +79,7 @@ export default {
   data: () => ({
     thisUser: null,
     loading: false,
+    changes: false
   }),
 
   computed: {
@@ -87,7 +91,7 @@ export default {
       immediate: true,
       async handler() {
         this.image = null;
-        this.thisUser = this.selectedUser;
+        this.thisUser = { ...this.selectedUser };
 
         if (this.selectedUser.admin?.length > 0) {
           const orgs = [];
@@ -103,6 +107,9 @@ export default {
   },
 
   methods: {
+    edit(){
+      this.changes = true
+    },
     async remove(user) {
       this.loading = true;
       try {
@@ -113,6 +120,7 @@ export default {
         this.$toasted.error(this.$t('toaster.error.user', { user: user.displayName }));
       }
       this.loading = false;
+      this.changes = false;
     },
 
     async save() {
@@ -130,6 +138,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
   },
 };

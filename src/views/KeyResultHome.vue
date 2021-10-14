@@ -52,6 +52,9 @@
         </div>
       </div>
 
+      <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
+
+
       <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
       <div class="main__table">
         <empty-state
@@ -129,7 +132,7 @@
       </div>
     </div>
 
-    <widgets-key-result-home class="aside"></widgets-key-result-home>
+    <widgets-key-result-home class="aside--right"></widgets-key-result-home>
 
     <modal v-if="isOpen" :keyres="activeKeyResult" @close="closeModal"></modal>
   </div>

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import i18n from '@/locale/i18n';
 
-export function toastArchiveAndRevert(obj) {
+export default function toastArchiveAndRevert(obj) {
   const { name, callback } = obj;
 
   const options = {
@@ -26,5 +26,3 @@ export function toastArchiveAndRevert(obj) {
     Vue.toasted.show(i18n.t('toaster.deleted'), options);
   }
 }
-
-export default { toastArchiveAndRevert };

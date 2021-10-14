@@ -2,7 +2,52 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [2.5.0] 2021-10-14
+
+We have added another slackbot integration. The new slackbot integration pushes changes to organizations/departments/products.
+
+You can call the slack bot with the command `/okr`. The different commands to the slack bot are:
+- `subscribe organization/department/product slug` - subscribe to a specific org/dep/prod
+- `unsubscribe organization/department/product slug` - unsubscribe
+- `subscribe/all organization/department slug` - subscribe to a specific org/dep/prod and all its children (departments/products)
+- `unsubscribe/all organization/department slug` - unsubscribe to everything
+
+What types of updates does the bot push?
+Changes to the:
+- name
+- mission statement
+
+Creation of:
+- Objectives
+- Key Results
+
+Caveats:
+- If you run subscribe/all once on an organization/department and create a new product after that
+  - run subscribe/all again, because we don't add new children to the parent subscription
+
+## Added
+
+- Slack bot integration with channels in your slack organization. Push updates to a slack channel. (Read the readme about the changes and how to implement it)
+
+Example:
+`/okr subscribe product dataspeilet`
+
+Now we would get updates to our slack channel with changes to our product, dataspeilet. (Mountain Peach is the name of our test user)
+
+![img.png](documentation/images/img.png)
+
+![img_1.png](documentation/images/img_1.png)
+
+![img_2.png](documentation/images/img_2.png)
+
+![img_3.png](documentation/images/img_3.png)
+
+## Changes
+
+- Save-buttons are disabled until changes have been made.
+- Updated instructions on how to initialize a new okr-tracker instance
+- KeyResultHome: moved widgets around for easier access to the edit button
+- Updated dependencies
 
 ## [2.4.1] 2021-10-05
 

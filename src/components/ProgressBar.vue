@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { format } from 'd3';
+import { format } from 'd3-format';
 
 export default {
   name: 'ProgressBar',
