@@ -96,6 +96,7 @@ sh
 firebase functions:config:set service_account="${cat origo-okr-tracker-private-key.json}"
 
 ```
+
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
 
 We have Slack integrations. You can read about how to use the slack integration in the [slack section](#slack-integration).
@@ -105,7 +106,6 @@ If you want to activate them, then you would need to add it to the Firebase func
 ```
 firebase functions:config:set slack.active=true
 ```
-
 
 #### Enable Google Auth in Firebase
 
@@ -127,22 +127,22 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 - Copy the following secrets to a `.env.production` file in the root directory.
 - Use also need `.env.local` to run this locally
 
-| Secret                           | Description                                                                                                              |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `VITE_API_KEY`                | _from SDK snippet_                                                                                                       |
-| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
-| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
-| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
-| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
-| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
-| `VITE_APP_ID`                 | _from SDK snippet_                                                                                                       |
-| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
-| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
-| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
-| `VITE_REGION`                 | `europe-west2`                                                                                                           |
-| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email` |
-| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
-| `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in               |
+| Secret                        | Description                                                                                                |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `VITE_API_KEY`                | _from SDK snippet_                                                                                         |
+| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                         |
+| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                         |
+| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                         |
+| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                         |
+| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                         |
+| `VITE_APP_ID`                 | _from SDK snippet_                                                                                         |
+| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                         |
+| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                  |
+| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                           |
+| `VITE_REGION`                 | `europe-west2`                                                                                             |
+| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email`         |
+| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                  |
+| `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in |
 
 ### Link project
 
@@ -153,7 +153,6 @@ firebase use --add
 ### Run locally
 
 The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. There is no need to do anything, only run the development script and everything is set up with a local user through Google auth.
-
 
 Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
 
@@ -169,7 +168,7 @@ npm run dev
 
 ## Make Firestore ready for production
 
-If you want to deploy to production or staging, you need to create multiple collections manually. Go to the Firestore Database  in the [Firebase Cloud Console](https://console.firebase.google.com/)
+If you want to deploy to production or staging, you need to create multiple collections manually. Go to the Firestore Database in the [Firebase Cloud Console](https://console.firebase.google.com/)
 
 - audit
 - departments
@@ -182,6 +181,34 @@ If you want to deploy to production or staging, you need to create multiple coll
 - requestAccess
 - slugs
 - users
+
+The collection `users` needs one document with the first user. Create a document and add the following fields:
+
+```json
+{
+  "id": "<email the user is signing in with",
+  "email": "<email the user is signing in with",
+  "superAdmin": true,
+  "widgets": {
+    "itemHome": {
+      "children": true,
+      "missionStatement": true,
+      "progression": true,
+      "team": true
+    },
+    "keyResultHome": {
+      "details": true,
+      "notes": true,
+      "weights": true
+    },
+    "objectiveHome": {
+      "details": false,
+      "progression": true,
+      "weights": true
+    }
+  }
+}
+```
 
 ### Create mock data
 
@@ -432,9 +459,11 @@ firebase functions:config:set slack.host_url="HOST URL"
 OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
 
 ### Microsoft integration
+
 For the Microsoft-integration a TENANT must be specified as the environment-variable VITE_MICROSOFT_TENANT_ID.
 
 ### Google integration
+
 Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('oslo.kommune.no')) rejectAccess();`
 
 ## Common problems
@@ -454,4 +483,3 @@ If there are some problems running the project locally, or you get an infinite s
    6. Click Save
 4. Cannot read property `bucket` of underfined
    1. Set the config key `storage.bucket`. Please read the readme again
-

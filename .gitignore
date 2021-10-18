@@ -29,3 +29,5 @@ cypress.env.json
 mock/
 # Dont ignore the mock-folder for tests
 !tests/mock
+
+.npmrc
