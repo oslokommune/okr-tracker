@@ -88,8 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .objective {
   display: flex;
   flex-wrap: wrap;
@@ -107,7 +105,7 @@ export default {
 }
 
 .key-results__list--row {
-  border-top: 1px solid $color-grey-100;
+  border-top: 1px solid var(--color-grey-100);
 
   &:first-child {
     border-top: 0;

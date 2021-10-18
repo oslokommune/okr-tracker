@@ -40,8 +40,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .action-bar {
   display: flex;
   flex-direction: column;
@@ -60,7 +58,7 @@ export default {
 
 .action-bar__period-dates {
   margin-bottom: 1.5rem;
-  color: $color-grey-700;
+  color: var(--color-grey-700);
   font-size: 0.9em;
 
   @media screen and (min-width: bp(s)) {

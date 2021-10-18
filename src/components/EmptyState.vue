@@ -35,8 +35,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
 .empty {
   display: flex;
   flex-direction: column;
@@ -44,7 +42,7 @@ export default {
   max-width: 30rem;
   margin: 1.5rem auto 1rem;
   padding: 1rem 1.5rem;
-  color: $color-grey-400;
+  color: var(--color-grey-400);
   text-align: center;
   border-radius: 3px;
 }
@@ -56,10 +54,10 @@ export default {
   width: 7rem;
   height: 7rem;
   margin-bottom: 2rem;
-  color: $color-bg;
+  color: var(--color-bg);
   font-size: 2.5rem;
   text-align: center;
-  background: $color-grey-100;
+  background: var(--color-grey-100);
   border-radius: 3.5rem;
 }
 
@@ -69,7 +67,7 @@ export default {
 }
 
 .empty__body {
-  color: $color-grey-300;
+  color: var(--color-grey-300);
 }
 
 .empty__actions {

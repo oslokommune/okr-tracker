@@ -141,8 +141,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
 $imageSize: 1.75em;
 
 .dashboard {
@@ -187,7 +185,7 @@ $imageSize: 1.75em;
 .meta__panel--header {
   margin-bottom: 0.5em;
   padding-bottom: 0.5em;
-  color: $color-yellow;
+  color: var(--color-yellow);
   font-weight: 500;
   border-bottom: 1px solid rgba(white, 0.1);
 
@@ -240,12 +238,12 @@ $imageSize: 1.75em;
   background: #f8c66b;
   border: 5px solid white;
   border-radius: 0.25em;
-  box-shadow: 0 0.4em 1.6em 0.5em rgba($color-yellow, 0.4);
+  box-shadow: 0 0.4em 1.6em 0.5em rgba(var(--color-yellow-rgb), 0.4);
 }
 
 .meta__product--name {
   margin-top: 1em;
-  color: $color-yellow;
+  color: var(--color-yellow);
   font-weight: 500;
   font-size: 1.25em;
 }
@@ -311,7 +309,7 @@ $imageSize: 1.75em;
 .objective__tag {
   display: inline-block;
   padding: 0.25em 0.5em;
-  color: $color-purple;
+  color: var(--color-purple);
   font-weight: 500;
   background: white;
 }
