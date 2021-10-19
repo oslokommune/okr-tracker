@@ -230,8 +230,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
 .user {
   display: flex;
   flex-direction: column;
@@ -298,10 +296,10 @@ export default {
   padding: 0.75rem;
   color: var(--color-text);
   text-decoration: none;
-  border: 1px solid $color-grey-100;
+  border: 1px solid var(--color-grey-100);
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 }
 
@@ -314,7 +312,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   margin-bottom: 0.25rem;
-  color: $color-grey-600;
+  color: var(--color-grey-600);
   font-size: 0.85rem;
 }
 

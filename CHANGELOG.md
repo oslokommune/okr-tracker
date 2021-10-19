@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- Removed sass-variables for colors, using CSS Variables instead
 - Updated README with more information when deploying to prod for the first time
 
 ## [2.5.0] 2021-10-14

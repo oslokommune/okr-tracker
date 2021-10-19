@@ -95,8 +95,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .notes {
   display: flex;
   flex-direction: column;
