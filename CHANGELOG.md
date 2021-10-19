@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.5.1] 2021-10-19
+
 ### Fixed
 
 - `Update value`-button in KeyResultHome was shown even though you did not have access to update
