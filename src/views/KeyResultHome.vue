@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeKeyResult" class="keyres">
+  <div v-if="activeKeyResult" class="flex-container">
     <div class="main">
       <h1 class="title-1">{{ activeKeyResult.name }}</h1>
       <p>{{ activeKeyResult.description }}</p>
@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { VPopover } from 'v-tooltip';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
@@ -177,7 +177,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'hasEditRights']),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+    ...mapGetters(['hasEditRights']),
 
     hasComments() {
       const firstProgressWithComment = this.progress.find(({ comment }) => comment);
@@ -240,11 +241,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/typography.scss';
-
-.keyres {
-  display: flex;
-  flex-wrap: wrap;
-}
 
 .main__table {
   width: 100%;

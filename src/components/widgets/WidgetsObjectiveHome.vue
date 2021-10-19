@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: 'WidgetsObjectiveHome',
@@ -36,7 +36,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeObjective', 'user', 'activePeriod', 'hasEditRights']),
+    ...mapState(['activeObjective', 'user', 'activePeriod']),
+    ...mapGetters(['hasEditRights']),
 
     // Overwrite the period's progression with the objective's
     progressionData() {
