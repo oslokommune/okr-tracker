@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.5.2] 2021-10-19
+
+### Fixed
+
+- Actually fixed the bug showing `Update value`-button even if you did not have access
+
+### Changes
+
+- Small style changes for a better UX experience - in a series of different changes coming
+
 ## [2.5.1] 2021-10-19
 
 ### Fixed

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeObjective" class="objective">
+  <div v-if="activeObjective" class="flex-container">
     <div class="main">
       <div class="objective__heading">
         <div class="objective__heading-text">
@@ -88,11 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.objective {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .key-results {
   margin-top: 2.5rem;
 }
