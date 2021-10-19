@@ -1,6 +1,6 @@
 <template>
   <aside v-if="activeObjective" class="aside">
-    <div v-if="editRights" class="widgets__links">
+    <div v-if="hasEditRights" class="widgets__links">
       <router-link
         class="btn btn--ter btn--icon btn--icon-pri"
         :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
@@ -36,13 +36,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeObjective', 'user', 'activePeriod']),
-    editRights() {
-      if (this.user.admin) return true;
-      const { team } = this.activeObjective.parent;
-      if (!team) return false;
-      return team.includes(this.user.ref.path);
-    },
+    ...mapState(['activeObjective', 'user', 'activePeriod', 'hasEditRights']),
 
     // Overwrite the period's progression with the objective's
     progressionData() {

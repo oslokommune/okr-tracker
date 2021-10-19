@@ -4,10 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- `Update value`-button in KeyResultHome was shown even though you did not have access to update
+
 ### Changes
 
 - Removed sass-variables for colors, using CSS Variables instead
 - Updated README with more information when deploying to prod for the first time
+- Updated dependencies
 
 ## [2.5.0] 2021-10-14
 

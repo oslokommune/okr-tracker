@@ -22,7 +22,7 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button v-if="!activeKeyResult.auto" class="btn btn--ter" @click="isOpen = true">
+          <button v-if="!activeKeyResult.auto || hasEditRights" class="btn btn--ter" @click="isOpen = true">
             {{ $t('keyres.updateValue') }}
           </button>
         </div>
@@ -177,7 +177,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'hasEditRights']),
 
     hasComments() {
       const firstProgressWithComment = this.progress.find(({ comment }) => comment);
