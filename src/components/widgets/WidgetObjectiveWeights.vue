@@ -80,8 +80,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .scales {
   position: relative;
   display: grid;
@@ -103,11 +101,11 @@ export default {
   font-size: 0.85rem;
   text-align: center;
   text-decoration: none;
-  background: $color-grey-100;
-  border: 1px solid $color-grey-200;
+  background: var(--color-grey-100);
+  border: 1px solid var(--color-grey-100);
 
   &:hover {
-    background: $color-grey-200;
+    background: var(--color-grey-200);
   }
 
   &.active {
@@ -116,8 +114,8 @@ export default {
     border-color: var(--color-primary);
 
     &:hover {
-      background: darken($color-yellow, 10%);
-      border-color: darken($color-yellow, 10%);
+      background: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
     }
   }
 }

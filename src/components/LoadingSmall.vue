@@ -13,8 +13,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 $size: 1.25rem;
 $dura: 1.5s;
 $circ: $size / 3;

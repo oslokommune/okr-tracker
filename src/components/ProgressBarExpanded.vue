@@ -33,8 +33,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .progression {
   display: grid;
   grid-template-rows: auto auto auto;
@@ -49,7 +47,7 @@ export default {
   width: 100%;
   height: 1.2rem;
   margin-right: 1rem;
-  background: $color-grey-100;
+  background: var(--color-grey-100);
 }
 
 .progression__bar {

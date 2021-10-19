@@ -378,17 +378,15 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/styles/_colors.scss';
-
 .validation {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
 }
 
 .validation__valid {
   padding: 0.5rem;
-  background: $color-green;
+  background: var(--color-green);
   border-radius: 2px;
 }
 
@@ -399,7 +397,7 @@ export default {
 
 .validation__error {
   padding: 0.5rem;
-  background: $color-red;
+  background: var(--color-red);
   border-radius: 2px;
 }
 

@@ -46,8 +46,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .kpis {
   display: grid;
   grid-gap: span(0, 1);
@@ -80,10 +78,10 @@ export default {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   &--error {
-    box-shadow: 0 0 2px 3px rgba($color-red, 0.4);
+    box-shadow: 0 0 2px 3px rgba(var(--color-red-rgb), 0.4);
   }
 }
 

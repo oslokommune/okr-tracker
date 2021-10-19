@@ -148,8 +148,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .header {
   position: sticky;
   top: 0;
@@ -243,7 +241,7 @@ export default {
   border-radius: 3px;
 
   &.active {
-    background: rgba($color-purple, 0.1);
+    background: rgba(var(--color-purple-rgb), 0.1);
   }
 
   @media screen and (min-width: bp(s)) {
@@ -302,7 +300,7 @@ export default {
   padding: 0.5rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 3px 4px rgba($color-grey-500, 0.5);
+  box-shadow: 0 3px 4px rgba(var(--color-grey-500-rgb), 0.5);
 
   @media screen and (min-width: bp(xs)) {
     width: span(5);

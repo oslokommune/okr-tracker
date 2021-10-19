@@ -181,8 +181,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/styles/_colors.scss';
-
   .form-row {
     display: grid;
     grid-gap: 0.5rem;
@@ -198,22 +196,22 @@
     padding: 1rem;
     background: white;
     border-radius: 3px;
-    box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+    box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
     &--error {
-      box-shadow: 0 0 2px 3px rgba($color-red, 0.4);
+      box-shadow: 0 0 2px 3px rgba(var(--color-red-rgb), 0.4);
     }
   }
 
   .kpi__validation {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid $color-grey-100;
+    border-bottom: 1px solid var(--color-grey-100);
   }
 
   .kpi__valid {
     padding: 0.5rem;
-    background: $color-green;
+    background: var(--color-green);
     border-radius: 2px;
   }
 
@@ -224,7 +222,7 @@
 
   .kpi__error {
     padding: 0.5rem;
-    background: $color-red;
+    background: var(--color-red);
     border-radius: 2px;
   }
 </style>

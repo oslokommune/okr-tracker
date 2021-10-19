@@ -99,8 +99,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
 .progress {
   display: grid;
   grid-gap: 0.15em;
@@ -120,7 +118,7 @@ export default {
   height: 1.7em;
   padding: 2px;
   background: rgba(white, 0.1);
-  border: 1px solid $color-bg;
+  border: 1px solid var(--color-bg);
   border-radius: 4px;
 }
 
