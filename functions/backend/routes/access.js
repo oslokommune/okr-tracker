@@ -1,7 +1,9 @@
-const router = require('express').Router();
-const admin = require('firebase-admin');
-const { param, matchedData } = require('express-validator');
-const validateFirebaseIdToken = require('../../util/validateFirebaseToken');
+import express from 'express';
+import admin from 'firebase-admin';
+import { param, matchedData } from 'express-validator';
+import validateFirebaseIdToken from '../../util/validateFirebaseToken';
+
+const router = express.Router();
 
 const db = admin.firestore();
 

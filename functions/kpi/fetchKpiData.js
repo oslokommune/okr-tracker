@@ -1,7 +1,7 @@
-const firebase = require('firebase-admin');
-const getSheetsData = require('../util/getSheetsData');
+import firebase from 'firebase-admin';
+import getSheetsData from '../util/getSheetsData';
 
-module.exports = async function FetchKpiDataOnUpdate(doc) {
+const fetchKpiDataOnUpdate = async (doc) => {
   if (!doc || !doc.ref || !doc.ref.update) {
     throw new Error('Invalid document');
   }
@@ -16,7 +16,7 @@ module.exports = async function FetchKpiDataOnUpdate(doc) {
       return true;
     }
 
-    const value = await getSheetsData(doc.data());
+    const value = getSheetsData(doc.data());
 
     // eslint-disable-next-line no-restricted-globals
     if (!value || isNaN(value)) {
@@ -31,3 +31,5 @@ module.exports = async function FetchKpiDataOnUpdate(doc) {
     return ref.update({ error: message, valid: false });
   }
 };
+
+export default fetchKpiDataOnUpdate;

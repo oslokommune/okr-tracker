@@ -1,6 +1,6 @@
-const firebaseAdmin = require('firebase-admin');
+import firebaseAdmin from 'firebase-admin';
 
-const {
+import {
   postToSlack,
   addChannelToSlackArray,
   removeChannelFromSlackArray,
@@ -8,7 +8,7 @@ const {
   addChannelsToMultipleSlackArrays,
   getDepsAndProds,
   slackMessageHelp,
-} = require('./helper-methods');
+} from './helper-methods';
 
 const db = firebaseAdmin.firestore();
 
@@ -16,7 +16,7 @@ const allowedSub = ['product', 'department', 'organization'];
 const allowedDeepSub = ['organization', 'department'];
 const allowedCmd = ['subscribe', 'unsubscribe', 'subscribe/all', 'unsubscribe/all'];
 
-exports.runSlackBot = async (req, res) => {
+const runSlackBot = async (req, res) => {
   if (!req.body.text) {
     return res.status(200).send(slackMessageHelp);
   }
@@ -111,3 +111,5 @@ exports.runSlackBot = async (req, res) => {
 
   return res.status(200).send();
 };
+
+export default runSlackBot;

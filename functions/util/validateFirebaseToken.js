@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
 
-module.exports = async function validateFirebaseIdToken(req, res, next) {
+const validateFirebaseIdToken = async (req, res, next) => {
   console.log('Check if request is authorized with Firebase ID token');
 
   if (
@@ -39,3 +39,5 @@ module.exports = async function validateFirebaseIdToken(req, res, next) {
     res.status(403).send('Unauthorized');
   }
 };
+
+export default validateFirebaseIdToken;

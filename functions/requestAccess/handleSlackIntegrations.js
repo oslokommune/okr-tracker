@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-const functions = require('firebase-functions');
-const { IncomingWebhook } = require('@slack/webhook');
-const firebaseAdmin = require('firebase-admin');
+import functions from 'firebase-functions';
+import { IncomingWebhook } from '@slack/webhook';
+import firebaseAdmin from 'firebase-admin';
 
-const { createFirstMessage, acceptMessage, rejectMessage } = require('./createSlackMessage');
-const { preferences } = require('../util/defaultPreferences');
+import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage';
+import preferences from '../util/defaultPreferences';
 
 const environment = functions.config();
 
@@ -12,7 +12,7 @@ const db = firebaseAdmin.firestore();
 const requestAccessCollection = db.collection('requestAccess');
 const usersCollection = db.collection('users');
 
-async function handleSlackRequest(document) {
+export const handleSlackRequest = async (document) => {
   // Make a webhook connection for channel
   const webhook = new IncomingWebhook(environment.slack.webhook);
 
@@ -29,9 +29,9 @@ async function handleSlackRequest(document) {
   } catch (e) {
     throw new Error(e.message);
   }
-}
+};
 
-async function handleSlackInteractive(req) {
+export const handleSlackInteractive = async (req) => {
   // Parse the payload
   const payload = JSON.parse(req.body.payload);
 
@@ -60,7 +60,7 @@ async function handleSlackInteractive(req) {
   }
 
   return true;
-}
+};
 
 const handleAcceptRequest = async (webhook, value, user) => {
   try {
@@ -110,6 +110,3 @@ const handleRejectRequest = async (webhook, value, user) => {
     throw new Error(e.message);
   }
 };
-
-exports.handleSlackRequest = handleSlackRequest;
-exports.handleSlackInteractive = handleSlackInteractive;

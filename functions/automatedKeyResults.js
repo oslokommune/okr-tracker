@@ -11,13 +11,13 @@ const db = admin.firestore();
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.fetchAutomatedKeyResOnSchedule = functions
+export const fetchAutomatedKeyResOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .pubsub.schedule(config.autoKeyresFetchFrequency)
   .timeZone(config.timeZone)
-  .onRun(() => {
-    return db
+  .onRun(() =>
+    db
       .collection('keyResults')
       .where('archived', '==', false)
       .where('auto', '==', true)
@@ -25,13 +25,13 @@ exports.fetchAutomatedKeyResOnSchedule = functions
       .then((snapshot) => snapshot.docs.map(({ id }) => updateAutomaticKeyResult(id)))
       .catch((e) => {
         throw new Error(e);
-      });
-  });
+      })
+  );
 
 /**
  * Manually trigger the scheduled function
  */
-exports.triggerScheduledFunction = functions
+export const triggerScheduledFunction = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .https.onCall(updateAutomaticKeyResult);

@@ -4,8 +4,8 @@ const config = require('../config');
 
 const db = admin.firestore();
 
-exports.auditOnDeleteGenerator = function ({ docPath, collectionRef, documentType }) {
-  return functions
+const auditOnDeleteGenerator = ({ docPath, collectionRef, documentType }) =>
+  functions
     .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
@@ -49,4 +49,5 @@ exports.auditOnDeleteGenerator = function ({ docPath, collectionRef, documentTyp
 
       return db.collection('audit').add(auditData);
     });
-};
+
+export default auditOnDeleteGenerator;

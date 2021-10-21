@@ -1,9 +1,11 @@
-const functions = require('firebase-functions');
-const config = require('../config');
+import functions from 'firebase-functions';
+import config from '../config';
 
-const { runSlackBot } = require('./okrTrackerSlackBot');
+import runSlackBot from './okrTrackerSlackBot';
 
-exports.okrTrackerSlackBot = functions
+const okrTrackerSlackBot = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .https.onRequest(async (req, res) => runSlackBot(req, res));
+
+export default okrTrackerSlackBot;

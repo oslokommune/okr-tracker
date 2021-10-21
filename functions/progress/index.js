@@ -1,14 +1,14 @@
-const functions = require('firebase-functions');
-const config = require('../config');
-const { handleKeyResultProgress, updatePeriodProgression } = require('./handleKeyResultProgress');
+import functions from 'firebase-functions';
+import config from '../config';
+import { updateKeyResultProgress, updatePeriodProgression } from './handleKeyResultProgress';
 
-exports.handleKeyResultProgress = functions
+export const handleKeyResultProgress = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`keyResults/{keyResultId}/progress/{documentId}`)
-  .onWrite(handleKeyResultProgress);
+  .onWrite(updateKeyResultProgress);
 
-exports.handleKeyResultProgressOnKeyResultUpdate = functions
+export const handleKeyResultProgressOnKeyResultUpdate = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`keyResults/{keyResultId}`)
@@ -22,7 +22,7 @@ exports.handleKeyResultProgressOnKeyResultUpdate = functions
     return true;
   });
 
-exports.handleKeyResultProgressOnObjectiveUpdate = functions
+export const handleKeyResultProgressOnObjectiveUpdate = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`objectives/{objectiveId}`)

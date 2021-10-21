@@ -9,10 +9,11 @@
 
 // TODO: Audit for key result progress
 
-const admin = require('firebase-admin');
-const { auditOnUpdateGenerator } = require('./auditOnUpdateGenerator');
-const { auditOnCreateGenerator } = require('./auditOnCreateGenerator');
-const { auditOnDeleteGenerator } = require('./auditOnDeleteGenerator');
+import admin from 'firebase-admin';
+
+import auditOnDeleteGenerator from './auditOnDeleteGenerator';
+import auditOnUpdateGenerator from './auditOnUpdateGenerator';
+import auditOnCreateGenerator from './auditOnCreateGenerator';
 
 const db = admin.firestore();
 
@@ -66,41 +67,35 @@ const keyResultsConfig = {
 
 const kpiConfig = {
   docPath: 'kpis/{documentId}',
-  fields: [
-    'api',
-    'name',
-    'description',
-    'type',
-    'currentValue',
-  ],
+  fields: ['api', 'name', 'description', 'type', 'currentValue'],
   collectionRef: db.collection('kpis'),
   documentType: 'KPI',
-}
+};
 
-exports.OrganizationCreate = auditOnCreateGenerator(organizationsConfig);
-exports.OrganizationUpdate = auditOnUpdateGenerator(organizationsConfig);
-exports.OrganizationDelete = auditOnDeleteGenerator(organizationsConfig);
+export const organizationCreate = auditOnCreateGenerator(organizationsConfig);
+export const organizationUpdate = auditOnUpdateGenerator(organizationsConfig);
+export const organizationDelete = auditOnDeleteGenerator(organizationsConfig);
 
-exports.DepartmentCreate = auditOnCreateGenerator(departmentsConfig);
-exports.DepartmentUpdate = auditOnUpdateGenerator(departmentsConfig);
-exports.DepartmentDelete = auditOnDeleteGenerator(departmentsConfig);
+export const departmentCreate = auditOnCreateGenerator(departmentsConfig);
+export const departmentUpdate = auditOnUpdateGenerator(departmentsConfig);
+export const departmentDelete = auditOnDeleteGenerator(departmentsConfig);
 
-exports.ProductCreate = auditOnCreateGenerator(productsConfig);
-exports.ProductUpdate = auditOnUpdateGenerator(productsConfig);
-exports.ProductDelete = auditOnDeleteGenerator(productsConfig);
+export const productCreate = auditOnCreateGenerator(productsConfig);
+export const productUpdate = auditOnUpdateGenerator(productsConfig);
+export const productDelete = auditOnDeleteGenerator(productsConfig);
 
-exports.PeriodCreate = auditOnCreateGenerator(periodsConfig);
-exports.PeriodUpdate = auditOnUpdateGenerator(periodsConfig);
-exports.PeriodDelete = auditOnDeleteGenerator(periodsConfig);
+export const periodCreate = auditOnCreateGenerator(periodsConfig);
+export const periodUpdate = auditOnUpdateGenerator(periodsConfig);
+export const periodDelete = auditOnDeleteGenerator(periodsConfig);
 
-exports.ObjectiveCreate = auditOnCreateGenerator(objectivesConfig);
-exports.ObjectiveUpdate = auditOnUpdateGenerator(objectivesConfig);
-exports.ObjectiveDelete = auditOnDeleteGenerator(objectivesConfig);
+export const objectiveCreate = auditOnCreateGenerator(objectivesConfig);
+export const objectiveUpdate = auditOnUpdateGenerator(objectivesConfig);
+export const objectiveDelete = auditOnDeleteGenerator(objectivesConfig);
 
-exports.KeyResultCreate = auditOnCreateGenerator(keyResultsConfig);
-exports.KeyResultUpdate = auditOnUpdateGenerator(keyResultsConfig);
-exports.KeyResultDelete = auditOnDeleteGenerator(keyResultsConfig);
+export const keyResultCreate = auditOnCreateGenerator(keyResultsConfig);
+export const keyResultUpdate = auditOnUpdateGenerator(keyResultsConfig);
+export const keyResultDelete = auditOnDeleteGenerator(keyResultsConfig);
 
-exports.KPICreate = auditOnCreateGenerator(kpiConfig);
-exports.KPIUpdate = auditOnUpdateGenerator(kpiConfig);
-exports.KPIDelete = auditOnDeleteGenerator(kpiConfig);
+export const KPICreate = auditOnCreateGenerator(kpiConfig);
+export const KPIUpdate = auditOnUpdateGenerator(kpiConfig);
+export const KPIDelete = auditOnDeleteGenerator(kpiConfig);

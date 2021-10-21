@@ -4,15 +4,14 @@ const config = require('./config');
 
 const storageBucketName = process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
 
-exports.automatedBackups = function () {
-  return functions
+export const automatedBackups = () =>
+  functions
     .region(config.region)
     .pubsub.schedule(config.backupFrequency)
     .timeZone(config.timeZone)
     .onRun(generateBackup);
-};
 
-exports.automatedRestore = function () {
+export const automatedRestore = () => {
   return functions.region(config.region).pubsub.topic('restore-backup').onPublish(restoreBackup);
 
   async function restoreBackup() {

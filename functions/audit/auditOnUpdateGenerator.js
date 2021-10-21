@@ -6,8 +6,8 @@ const { checkIfRelevantToPushToSlack } = require('./helpers');
 
 const db = admin.firestore();
 
-exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
-  return functions
+const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }) =>
+  functions
     .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
@@ -40,7 +40,6 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         }
       })();
 
-
       const auditData = {
         event,
         timestamp: new Date(),
@@ -55,7 +54,6 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
 
       return db.collection('audit').add(auditData);
     });
-};
 
 function getProgressionCreator(document) {
   try {
@@ -94,3 +92,5 @@ function getDiff({ before, after }, keys) {
 
   return diff;
 }
+
+export default auditOnUpdateGenerator;

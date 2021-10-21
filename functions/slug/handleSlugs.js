@@ -4,7 +4,7 @@ const slugify = require('./slugify');
 
 const db = admin.firestore();
 
-module.exports = async function handleSlugs({ before, after }) {
+const handleSlugs = async ({ before, after }) => {
   const created = before.data() === undefined;
   const deleted = after.data() === undefined;
   const updated = before.data() !== undefined && after.data() !== undefined;
@@ -70,3 +70,5 @@ async function slugExists(slug) {
     .get()
     .then(({ exists }) => exists);
 }
+
+export default handleSlugs;

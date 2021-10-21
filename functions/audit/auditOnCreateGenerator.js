@@ -9,8 +9,8 @@ const { pushToSlack, colors, slackMessageCreated } = require('./helpers');
 
 const db = admin.firestore();
 
-exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentType }) {
-  return functions
+const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
+  functions
     .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
@@ -38,8 +38,6 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
 
       return db.collection('audit').add(auditData);
     });
-};
-
 
 /**
  * Check if the audit log is relevant to push to slack channels
@@ -81,3 +79,5 @@ const checkIfRelevantToPushToSlack = async (auditData, documentType) => {
 
   return true;
 };
+
+export default auditOnCreateGenerator;

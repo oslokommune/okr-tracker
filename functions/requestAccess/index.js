@@ -3,13 +3,13 @@ const config = require('../config');
 
 const { handleSlackRequest, handleSlackInteractive } = require('./handleSlackIntegrations');
 
-exports.slackNotificationOnUserRequest = functions
+export const slackNotificationOnUserRequest = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`requestAccess/{user}`)
   .onCreate(handleSlackRequest);
 
-exports.slackNotificationInteractiveOnRequest = functions
+export const slackNotificationInteractiveOnRequest = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .https.onRequest(async (req, res) => {

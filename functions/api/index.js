@@ -1,15 +1,15 @@
-const functions = require('firebase-functions');
+import functions from 'firebase-functions';
 
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
-const config = require('../config');
+import config from '../config';
 
 // Routes
-const kpiRoutes = require('./routes/kpi');
-const keyresRoutes = require('./routes/keyres');
+import kpiRoutes from './routes/kpi';
+import keyResRoutes from './routes/keyres';
 
 const app = express();
 
@@ -20,6 +20,6 @@ app.use(morgan('combined'));
 
 app.use('/kpi', kpiRoutes);
 
-app.use('/keyres', keyresRoutes);
+app.use('/keyres', keyResRoutes);
 
 exports.app = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);

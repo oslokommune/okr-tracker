@@ -1,6 +1,8 @@
-const router = require('express').Router();
-const admin = require('firebase-admin');
-const { body, param, matchedData } = require('express-validator');
+import express from 'express';
+import admin from 'firebase-admin';
+import { body, param, matchedData } from 'express-validator';
+
+const router = express.Router();
 
 const db = admin.firestore();
 
