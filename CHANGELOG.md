@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changes
+
+- Showing loading spinner when fetching KPI/KeyResult progress
+- Moved widgets around for a better UX experience for mobile users
+
 ## [2.5.2] 2021-10-19
 
 ### Fixed
