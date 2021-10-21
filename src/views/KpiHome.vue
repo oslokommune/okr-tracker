@@ -34,14 +34,17 @@
 
       <div class="history">
         <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
+
+        <spinner v-if="isLoading"></spinner>
+
         <empty-state
-          v-if="!filteredProgress.length"
+          v-else-if="!filteredProgress.length || filteredProgress.length === 0"
           :icon="'history'"
           :heading="$t('empty.kpiProgress.heading')"
           :body="$t('empty.kpiProgress.body')"
         />
 
-        <table v-if="filteredProgress.length" class="table">
+        <table v-else class="table">
           <thead>
             <tr>
               <th>{{ $t('keyres.dateAndTime') }}</th>
@@ -91,6 +94,7 @@ export default {
   components: {
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   data: () => ({
@@ -101,6 +105,7 @@ export default {
     endDate: null,
     filteredProgress: [],
     isFiltered: false,
+    isLoading: false,
   }),
 
   computed: {
@@ -111,8 +116,10 @@ export default {
   watch: {
     activeKpi: {
       immediate: true,
-      handler({ id }) {
-        this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+      async handler({ id }) {
+        this.isLoading = true;
+        await this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+        this.isLoading = false;
       },
     },
     progress() {
