@@ -1,14 +1,14 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import { scaleLinear } from 'd3-scale';
 import { sum } from 'd3-array';
-
-const db = admin.firestore();
 
 /**
  * Listens for changes in progress for a key result. Updates the 'progression' Field for
  * the key result accordingly
  */
 export const updateKeyResultProgress = async (change, { params }) => {
+  const db = getFirestore();
+
   const { keyResultId } = params;
   const keyResultRef = db.doc(`keyResults/${keyResultId}`);
 
@@ -34,7 +34,7 @@ export const updateKeyResultProgress = async (change, { params }) => {
     console.log('Could not update key result', keyResultId);
   }
 
-  await updateObjectiveProgression(objective);
+  await updateObjectiveProgression(objective, db);
 
   return true;
 };
@@ -43,7 +43,7 @@ export const updateKeyResultProgress = async (change, { params }) => {
  * Updates the progression for the related Objective once
  * the key result progression has been updated
  */
-export const updateObjectiveProgression = async (objectiveRef) => {
+export const updateObjectiveProgression = async (objectiveRef, db) => {
   // Finds all progression for related key results and updates the objective's progression
   const progression = await db
     .collection('keyResults')
@@ -71,6 +71,8 @@ export const updateObjectiveProgression = async (objectiveRef) => {
 
 export const updatePeriodProgression = async (periodRef) => {
   // Finds all progressions for related objectives and updates the period's progression
+
+  const db = getFirestore();
 
   let progression = 0;
 

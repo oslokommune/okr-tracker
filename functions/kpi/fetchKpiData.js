@@ -1,4 +1,4 @@
-import firebase from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import getSheetsData from '../util/getSheetsData.js';
 
 const fetchKpiDataOnUpdate = async (doc) => {
@@ -12,7 +12,7 @@ const fetchKpiDataOnUpdate = async (doc) => {
     const { api } = doc.data();
 
     if (api) {
-      await ref.update({ error: firebase.firestore.FieldValue.delete(), valid: true });
+      await ref.update({ error: FieldValue.delete(), valid: true });
       return true;
     }
 
@@ -24,7 +24,7 @@ const fetchKpiDataOnUpdate = async (doc) => {
     }
 
     await ref.collection('progress').add({ value, timestamp: new Date() });
-    await ref.update({ error: firebase.firestore.FieldValue.delete(), currentValue: value, valid: true });
+    await ref.update({ error: FieldValue.delete(), currentValue: value, valid: true });
 
     return true;
   } catch ({ message }) {

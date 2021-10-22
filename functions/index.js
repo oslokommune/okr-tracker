@@ -1,22 +1,22 @@
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
 
-import okrTrackerSlackBot from './slackbot/index.js';
-import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
-
-import api from './api/index.js';
-import internal from './backend/index.js';
-
-const isSlackActive = functions.config().slack.active || false;
-
 // Initialize the app to get everything started
 initializeApp({
   credential: cert(functions.config().service_account),
 });
 
-/**
- * Functions for backup and restoring the Firestore database
- */
+import okrTrackerSlackBot from './slackbot/index.js';
+// import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
+//
+// import api from './api/index.js';
+// import internal from './backend/index.js';
+
+// const isSlackActive = functions.config().slack.active || false;
+
+// /**
+//  * Functions for backup and restoring the Firestore database
+//  */
 export { automatedBackups } from './backupAndRestore.js';
 export { automatedRestore } from './backupAndRestore.js';
 /**
@@ -27,9 +27,6 @@ export { automatedRestore } from './backupAndRestore.js';
 export { fetchAutomatedKeyResOnSchedule } from './automatedKeyResults.js';
 export { triggerScheduledFunction } from './automatedKeyResults.js';
 
-/**
- * KPI functions
- */
 export { fetchKpiDataOnUpdate } from './kpi/index.js';
 export { fetchKpiDataOnCreate } from './kpi/index.js';
 export { fetchKpiDataOnSchedule } from './kpi/index.js';
@@ -76,8 +73,8 @@ export { handleKeyResultProgress } from './progress/index.js';
 export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
 export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 
-// Express servers run via Cloud Functions
-export { api, internal };
+// // Express servers run via Cloud Functions
+// export { api, internal };
 
 // // OKR-Tracker slackbot
 // if (isSlackActive) {

@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import functions from 'firebase-functions';
 import config from '../config.js';
 import { pushToSlack, colors, slackMessageCreated } from './helpers.js';
@@ -7,7 +7,6 @@ const environment = functions.config();
 
 const { host_url: HOST_URL } = environment.slack;
 
-const db = admin.firestore();
 
 const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
   functions
@@ -15,6 +14,8 @@ const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
     .region(config.region)
     .firestore.document(docPath)
     .onCreate(async (snapshot, context) => {
+      const db = getFirestore();
+
       const { documentId } = context.params;
 
       const auditData = {

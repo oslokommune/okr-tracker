@@ -1,10 +1,8 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import functions from 'firebase-functions';
 
 import getSheetsData from './util/getSheetsData.js';
 import config from './config.js';
-
-const db = admin.firestore();
 
 /**
  * Scheduled function that automatically updates the progress for all key results
@@ -16,17 +14,17 @@ export const fetchAutomatedKeyResOnSchedule = functions
   .region(config.region)
   .pubsub.schedule(config.autoKeyResFetchFrequency)
   .timeZone(config.timeZone)
-  .onRun(() =>
-    db
-      .collection('keyResults')
+  .onRun(() => {
+    const db = getFirestore();
+    return db.collection('keyResults')
       .where('archived', '==', false)
       .where('auto', '==', true)
       .get()
       .then((snapshot) => snapshot.docs.map(({ id }) => updateAutomaticKeyResult(id)))
       .catch((e) => {
         throw new Error(e);
-      })
-  );
+      });
+  });
 
 /**
  * Manually trigger the scheduled function
@@ -42,6 +40,7 @@ export const triggerScheduledFunction = functions
  * @returns {number}
  */
 async function updateAutomaticKeyResult(id) {
+  const db = getFirestore();
   const docRef = db.doc(`keyResults/${id}`);
   const progressRef = docRef.collection(`progress`);
 
@@ -49,7 +48,7 @@ async function updateAutomaticKeyResult(id) {
     const { sheetId, sheetName, sheetCell } = await docRef.get().then((d) => d.data());
     if (!sheetId || !sheetName || !sheetCell) throw new Error('Missing Sheets details');
 
-    const value = await getSheetsData({ sheetId, sheetName, sheetCell });
+    const value = getSheetsData({ sheetId, sheetName, sheetCell });
 
     if (value === null || value === undefined) throw new Error('Data not found');
     if (isNaN(value)) throw new Error('Invalid data format'); // eslint-disable-line no-restricted-globals

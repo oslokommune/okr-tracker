@@ -1,8 +1,6 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import functions from 'firebase-functions';
 import config from '../config.js';
-
-const db = admin.firestore();
 
 const auditOnDeleteGenerator = ({ docPath, collectionRef, documentType }) =>
   functions
@@ -10,6 +8,8 @@ const auditOnDeleteGenerator = ({ docPath, collectionRef, documentType }) =>
     .region(config.region)
     .firestore.document(docPath)
     .onDelete(async (snapshot, context) => {
+      const db = getFirestore();
+
       const { documentId } = context.params;
 
       const auditData = {

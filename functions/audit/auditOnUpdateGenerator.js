@@ -1,10 +1,8 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import functions from 'firebase-functions';
 import config from '../config.js';
 
 import { checkIfRelevantToPushToSlack } from './helpers.js';
-
-const db = admin.firestore();
 
 const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }) =>
   functions
@@ -12,6 +10,8 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
     .region(config.region)
     .firestore.document(docPath)
     .onUpdate(async ({ before, after }, context) => {
+      const db = getFirestore();
+
       let event;
       const diff = getDiff({ before, after }, fields);
 

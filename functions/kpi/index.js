@@ -4,8 +4,6 @@ import config from '../config.js';
 
 import fetchKpiData from './fetchKpiData.js';
 
-const db = getFirestore();
-
 export const fetchKpiDataOnCreate = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
@@ -23,10 +21,14 @@ export const fetchKpiDataOnSchedule = functions
   .region(config.region)
   .pubsub.schedule(config.autoKpiFetchFrequency)
   .timeZone(config.timeZone)
-  .onRun(() => db
+  .onRun(() => {
+    const db = getFirestore();
+
+    return db
       .collection('kpis')
       .get()
       .then((list) => list.docs.map(fetchKpiData))
       .catch((e) => {
         throw new Error(e);
-      }));
+      });
+  });

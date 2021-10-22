@@ -1,9 +1,8 @@
 import functions from 'firebase-functions';
-import firebaseAdmin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import { WebClient } from '@slack/web-api';
 
 const environment = functions.config();
-const db = firebaseAdmin.firestore();
 const { token } = environment.slack;
 const web = new WebClient(token);
 
@@ -167,7 +166,7 @@ export const removeChannelFromSlackArray = async (collectionRef, collectionData,
  * @param channelId channelID of the slack channel
  * @returns {Promise<Object>} Return the batch-object so that the information can be committed to firestore
  */
-export const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
+export const removeChannelsFromMultipleSlackArrays = async (documents, channelId, db) => {
   const batch = db.batch();
 
   documents.forEach((item) => {
@@ -192,7 +191,7 @@ export const removeChannelsFromMultipleSlackArrays = async (documents, channelId
  * @param channelId channelID of the slack channel
  * @returns {Promise<Object>} Return the batch-object so that the information can be committed to firestore
  */
-export const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
+export const addChannelsToMultipleSlackArrays = async (documents, channelId, db) => {
   const batch = db.batch();
 
   documents.forEach((prod) => {
@@ -220,7 +219,7 @@ export const addChannelsToMultipleSlackArrays = async (documents, channelId) => 
  * @param documentId channelID of the slack channel
  * @returns {Promise<Object>} return array of departments and products
  */
-export const getDepsAndProds = async (type, documentId) => {
+export const getDepsAndProds = async (type, documentId, db) => {
   const deps = await db
     .collection('departments')
     .where('archived', '==', false)

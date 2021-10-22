@@ -1,11 +1,11 @@
 import express from 'express';
-import { getFirestore } from 'firebase-admin/firestore';
+import admin from 'firebase-admin';
 import { param, matchedData } from 'express-validator';
 import validateFirebaseIdToken from '../../util/validateFirebaseToken.js';
 
 const router = express.Router();
 
-const db = getFirestore();
+const db = admin.firestore();
 
 const collection = db.collection('requestAccess');
 

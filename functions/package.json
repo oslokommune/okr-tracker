@@ -2,6 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "serve": "firebase serve --only functions",
     "shell": "firebase functions:shell",

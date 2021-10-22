@@ -1,10 +1,10 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 
 import slugify from './slugify.js';
 
-const db = admin.firestore();
-
 const handleSlugs = async ({ before, after }) => {
+  const db = getFirestore();
+
   const created = before.data() === undefined;
   const deleted = after.data() === undefined;
   const updated = before.data() !== undefined && after.data() !== undefined;
@@ -14,7 +14,7 @@ const handleSlugs = async ({ before, after }) => {
   if (created) {
     slug = slugify(after.data().name);
 
-    if (await slugExists(slug)) {
+    if (await slugExists(slug, db)) {
       slug += '-';
       slug += after.id;
     }
@@ -60,10 +60,10 @@ const handleSlugs = async ({ before, after }) => {
 /**
  * Checks whether a slug already exists
  * @param {string} slug - slug
- * @param {object} ref - document reference
+ * @param {object} db - database reference
  * @returns {Promise} - resolves true/false
  */
-async function slugExists(slug) {
+async function slugExists(slug, db) {
   return db
     .collection('slugs')
     .doc(slug)
