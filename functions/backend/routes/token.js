@@ -17,4 +17,4 @@ router.get('/', (req, res) => {
   res.status(200).send(`Bearer ${token}`);
 });
 
-module.exports = router;
+export default router;

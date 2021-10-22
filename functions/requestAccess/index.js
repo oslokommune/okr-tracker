@@ -1,7 +1,7 @@
-const functions = require('firebase-functions');
-const config = require('../config');
+import functions from 'firebase-functions';
+import config from '../config.js';
 
-const { handleSlackRequest, handleSlackInteractive } = require('./handleSlackIntegrations');
+import { handleSlackRequest, handleSlackInteractive } from './handleSlackIntegrations.js';
 
 export const slackNotificationOnUserRequest = functions
   .runWith(config.runtimeOpts)

@@ -1,7 +1,7 @@
 import functions from 'firebase-functions';
-import config from '../config';
+import config from '../config.js';
 
-import handleSlugs from './handleSlugs';
+import handleSlugs from './handleSlugs.js';
 
 export const slugDepartment = functions
   .runWith(config.runtimeOpts)

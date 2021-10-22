@@ -8,7 +8,7 @@ import {
   addChannelsToMultipleSlackArrays,
   getDepsAndProds,
   slackMessageHelp,
-} from './helper-methods';
+} from './helper-methods.js';
 
 const db = firebaseAdmin.firestore();
 

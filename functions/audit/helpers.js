@@ -1,7 +1,9 @@
 import functions from 'firebase-functions';
 import { WebClient } from '@slack/web-api';
-import { format } from 'date-fns';
-import { nb } from 'date-fns/locale';
+import fns from 'date-fns';
+
+const { format, locale } = fns;
+const { nb } = locale;
 
 const environment = functions.config();
 const { token, host_url: HOST_URL } = environment.slack;

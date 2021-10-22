@@ -1,8 +1,8 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const config = require('../config');
+import admin from 'firebase-admin';
+import functions from 'firebase-functions';
+import config from '../config.js';
 
-const { checkIfRelevantToPushToSlack } = require('./helpers');
+import { checkIfRelevantToPushToSlack } from './helpers.js';
 
 const db = admin.firestore();
 

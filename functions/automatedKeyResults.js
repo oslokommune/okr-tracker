@@ -1,8 +1,8 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
+import admin from 'firebase-admin';
+import functions from 'firebase-functions';
 
-const getSheetsData = require('./util/getSheetsData');
-const config = require('./config');
+import getSheetsData from './util/getSheetsData.js';
+import config from './config.js';
 
 const db = admin.firestore();
 
@@ -14,7 +14,7 @@ const db = admin.firestore();
 export const fetchAutomatedKeyResOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
-  .pubsub.schedule(config.autoKeyresFetchFrequency)
+  .pubsub.schedule(config.autoKeyResFetchFrequency)
   .timeZone(config.timeZone)
   .onRun(() =>
     db

@@ -1,5 +1,5 @@
 import firebase from 'firebase-admin';
-import getSheetsData from '../util/getSheetsData';
+import getSheetsData from '../util/getSheetsData.js';
 
 const fetchKpiDataOnUpdate = async (doc) => {
   if (!doc || !doc.ref || !doc.ref.update) {

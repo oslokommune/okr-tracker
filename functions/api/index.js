@@ -5,11 +5,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
-import config from '../config';
+import config from '../config.js';
 
 // Routes
-import kpiRoutes from './routes/kpi';
-import keyResRoutes from './routes/keyres';
+import kpiRoutes from './routes/kpi.js';
+import keyResRoutes from './routes/keyres.js';
 
 const app = express();
 
@@ -22,4 +22,6 @@ app.use('/kpi', kpiRoutes);
 
 app.use('/keyres', keyResRoutes);
 
-exports.app = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
+const api = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
+
+export default api;

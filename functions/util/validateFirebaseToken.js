@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import admin from 'firebase-admin';
+import { getAuth } from 'firebase-admin/auth';
 
 const validateFirebaseIdToken = async (req, res, next) => {
   console.log('Check if request is authorized with Firebase ID token');
@@ -32,7 +32,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
   }
 
   try {
-    req.user = await admin.auth().verifyIdToken(idToken);
+    req.user = await getAuth().verifyIdToken(idToken);
     next();
   } catch (error) {
     console.error('Error while verifying Firebase ID token:', error);

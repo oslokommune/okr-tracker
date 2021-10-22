@@ -1,7 +1,7 @@
 import functions from 'firebase-functions';
-import config from '../config';
+import config from '../config.js';
 
-import runSlackBot from './okrTrackerSlackBot';
+import runSlackBot from './okrTrackerSlackBot.js';
 
 const okrTrackerSlackBot = functions
   .runWith(config.runtimeOpts)

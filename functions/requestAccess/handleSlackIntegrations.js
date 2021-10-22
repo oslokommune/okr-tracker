@@ -3,8 +3,8 @@ import functions from 'firebase-functions';
 import { IncomingWebhook } from '@slack/webhook';
 import firebaseAdmin from 'firebase-admin';
 
-import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage';
-import preferences from '../util/defaultPreferences';
+import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage.js';
+import preferences from '../util/defaultPreferences.js';
 
 const environment = functions.config();
 

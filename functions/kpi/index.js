@@ -1,10 +1,10 @@
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import functions from 'firebase-functions';
-import config from '../config';
+import config from '../config.js';
 
-import fetchKpiData from './fetchKpiData';
+import fetchKpiData from './fetchKpiData.js';
 
-const db = admin.firestore();
+const db = getFirestore();
 
 export const fetchKpiDataOnCreate = functions
   .runWith(config.runtimeOpts)
@@ -23,12 +23,10 @@ export const fetchKpiDataOnSchedule = functions
   .region(config.region)
   .pubsub.schedule(config.autoKpiFetchFrequency)
   .timeZone(config.timeZone)
-  .onRun(() => {
-    return db
+  .onRun(() => db
       .collection('kpis')
       .get()
       .then((list) => list.docs.map(fetchKpiData))
       .catch((e) => {
         throw new Error(e);
-      });
-  });
+      }));

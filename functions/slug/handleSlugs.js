@@ -1,6 +1,6 @@
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
 
-const slugify = require('./slugify');
+import slugify from './slugify.js';
 
 const db = admin.firestore();
 

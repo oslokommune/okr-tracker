@@ -11,9 +11,9 @@
 
 import admin from 'firebase-admin';
 
-import auditOnDeleteGenerator from './auditOnDeleteGenerator';
-import auditOnUpdateGenerator from './auditOnUpdateGenerator';
-import auditOnCreateGenerator from './auditOnCreateGenerator';
+import auditOnDeleteGenerator from './auditOnDeleteGenerator.js';
+import auditOnUpdateGenerator from './auditOnUpdateGenerator.js';
+import auditOnCreateGenerator from './auditOnCreateGenerator.js';
 
 const db = admin.firestore();
 

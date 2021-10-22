@@ -1,11 +1,11 @@
 import express from 'express';
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import { param, matchedData } from 'express-validator';
-import validateFirebaseIdToken from '../../util/validateFirebaseToken';
+import validateFirebaseIdToken from '../../util/validateFirebaseToken.js';
 
 const router = express.Router();
 
-const db = admin.firestore();
+const db = getFirestore();
 
 const collection = db.collection('requestAccess');
 
@@ -35,4 +35,4 @@ router.delete('/:id', validateFirebaseIdToken, param('id').trim().escape(), asyn
   }
 });
 
-module.exports = router;
+export default router;

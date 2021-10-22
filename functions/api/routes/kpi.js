@@ -127,4 +127,4 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

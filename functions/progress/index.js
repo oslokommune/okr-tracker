@@ -1,6 +1,6 @@
 import functions from 'firebase-functions';
-import config from '../config';
-import { updateKeyResultProgress, updatePeriodProgression } from './handleKeyResultProgress';
+import config from '../config.js';
+import { updateKeyResultProgress, updatePeriodProgression } from './handleKeyResultProgress.js';
 
 export const handleKeyResultProgress = functions
   .runWith(config.runtimeOpts)

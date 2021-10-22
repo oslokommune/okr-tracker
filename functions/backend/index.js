@@ -5,13 +5,13 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
-import validateFirebaseIdToken from '../util/validateFirebaseToken';
-import config from '../config';
+import validateFirebaseIdToken from '../util/validateFirebaseToken.js';
+import config from '../config.js';
 
 // Routes
-import accessRoutes from './routes/access';
-import userRoutes from './routes/user';
-import tokenRoutes from './routes/token';
+import accessRoutes from './routes/access.js';
+import userRoutes from './routes/user.js';
+import tokenRoutes from './routes/token.js';
 
 const app = express();
 
@@ -26,4 +26,6 @@ app.use('/access', accessRoutes);
 
 app.use('/user', validateFirebaseIdToken, userRoutes);
 
-exports.app = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
+const internal = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
+
+export default internal;

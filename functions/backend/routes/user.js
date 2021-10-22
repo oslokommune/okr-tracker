@@ -2,7 +2,7 @@ import express from 'express';
 import admin from 'firebase-admin';
 import { body, matchedData } from 'express-validator';
 
-import preferences from '../../util/defaultPreferences';
+import preferences from '../../util/defaultPreferences.js';
 
 const db = admin.firestore();
 
@@ -42,4 +42,4 @@ router.post('/create', ...validateUser, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
