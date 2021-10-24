@@ -48,7 +48,7 @@ async function updateAutomaticKeyResult(id) {
     const { sheetId, sheetName, sheetCell } = await docRef.get().then((d) => d.data());
     if (!sheetId || !sheetName || !sheetCell) throw new Error('Missing Sheets details');
 
-    const value = getSheetsData({ sheetId, sheetName, sheetCell });
+    const value = await getSheetsData({ sheetId, sheetName, sheetCell });
 
     if (value === null || value === undefined) throw new Error('Data not found');
     if (isNaN(value)) throw new Error('Invalid data format'); // eslint-disable-line no-restricted-globals

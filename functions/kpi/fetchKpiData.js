@@ -16,7 +16,7 @@ const fetchKpiDataOnUpdate = async (doc) => {
       return true;
     }
 
-    const value = getSheetsData(doc.data());
+    const value = await getSheetsData(doc.data());
 
     // eslint-disable-next-line no-restricted-globals
     if (!value || isNaN(value)) {
