@@ -1,12 +1,8 @@
 import express from 'express';
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import { body, param, matchedData } from 'express-validator';
 
 const router = express.Router();
-
-const db = admin.firestore();
-
-const collection = db.collection('kpis');
 
 const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
 
@@ -19,6 +15,9 @@ router.post('/:id', ...validate, async (req, res) => {
     res.status(400).send('Missing okr-team-secret in header');
     return;
   }
+
+  const db = getFirestore();
+  const collection = await db.collection('kpis');
 
   try {
     if (!progress || Number.isNaN(progress)) {
@@ -62,6 +61,9 @@ router.post('/:id', ...validate, async (req, res) => {
 router.get('/:id', param('id').trim().escape(), async (req, res) => {
   const sanitized = matchedData(req);
   const { id } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('kpis');
 
   try {
     const kpi = await collection.doc(id).get();

@@ -9,48 +9,46 @@
 
 // TODO: Audit for key result progress
 
-import { getFirestore } from 'firebase-admin/firestore';
-
 import auditOnDeleteGenerator from './auditOnDeleteGenerator.js';
 import auditOnUpdateGenerator from './auditOnUpdateGenerator.js';
 import auditOnCreateGenerator from './auditOnCreateGenerator.js';
 
-const organizationsConfig = (db) => ({
+const organizationsConfig = {
   docPath: 'organizations/{documentId}',
   fields: ['name', 'archived', 'missionStatement', 'team'],
-  collectionRef: db.collection('organizations'),
+  collectionRef: 'organizations',
   documentType: 'Organization',
-});
+};
 
-const departmentsConfig = (db) => ({
+const departmentsConfig = {
   docPath: 'departments/{documentId}',
   fields: ['name', 'archived', 'missionStatement', 'team'],
-  collectionRef: db.collection('departments'),
+  collectionRef: 'departments',
   documentType: 'Department',
-});
+};
 
-const productsConfig = (db) => ({
+const productsConfig = {
   docPath: 'products/{documentId}',
   fields: ['name', 'archived', 'missionStatement', 'team'],
-  collectionRef: db.collection('products'),
+  collectionRef: 'products',
   documentType: 'Product',
-});
+};
 
-const periodsConfig = (db) => ({
+const periodsConfig = {
   docPath: 'periods/{documentId}',
   fields: ['name', 'startDate', 'endDate', 'archived'],
-  collectionRef: db.collection('periods'),
+  collectionRef: 'periods',
   documentType: 'Period',
-});
+};
 
-const objectivesConfig = (db) => ({
+const objectivesConfig = {
   docPath: 'objectives/{documentId}',
   fields: ['name', 'archived', 'description', 'icon', 'weight'],
-  collectionRef: db.collection('objectives'),
+  collectionRef: 'objectives',
   documentType: 'Objective',
-});
+};
 
-const keyResultsConfig = (db) => ({
+const keyResultsConfig = {
   docPath: 'keyResults/{documentId}',
   fields: [
     'name',
@@ -64,41 +62,41 @@ const keyResultsConfig = (db) => ({
     'weight',
     'progression',
   ],
-  collectionRef: db.collection('keyResults'),
+  collectionRef: 'keyResults',
   documentType: 'KeyResult',
-});
+};
 
-const kpiConfig = (db) => ({
+const kpiConfig = {
   docPath: 'kpis/{documentId}',
   fields: ['api', 'name', 'description', 'type', 'currentValue'],
-  collectionRef: db.collection('kpis'),
+  collectionRef: 'kpis',
   documentType: 'KPI',
-});
+};
 
-export const organizationCreate = () => auditOnCreateGenerator(organizationsConfig(getFirestore()));
-export const organizationUpdate = () => auditOnUpdateGenerator(organizationsConfig(getFirestore()));
-export const organizationDelete = () => auditOnDeleteGenerator(organizationsConfig(getFirestore()));
+export const organizationCreate = auditOnCreateGenerator(organizationsConfig);
+export const organizationUpdate = auditOnUpdateGenerator(organizationsConfig);
+export const organizationDelete = auditOnDeleteGenerator(organizationsConfig);
 
-export const departmentCreate = () => auditOnCreateGenerator(departmentsConfig(getFirestore()));
-export const departmentUpdate = () => auditOnUpdateGenerator(departmentsConfig(getFirestore()));
-export const departmentDelete = () => auditOnDeleteGenerator(departmentsConfig(getFirestore()));
+export const departmentCreate = auditOnCreateGenerator(departmentsConfig);
+export const departmentUpdate = auditOnUpdateGenerator(departmentsConfig);
+export const departmentDelete = auditOnDeleteGenerator(departmentsConfig);
 
-export const productCreate = () => auditOnCreateGenerator(productsConfig(getFirestore()));
-export const productUpdate = () => auditOnUpdateGenerator(productsConfig(getFirestore()));
-export const productDelete = () => auditOnDeleteGenerator(productsConfig(getFirestore()));
+export const productCreate = auditOnCreateGenerator(productsConfig);
+export const productUpdate = auditOnUpdateGenerator(productsConfig);
+export const productDelete = auditOnDeleteGenerator(productsConfig);
 
-export const periodCreate = () => auditOnCreateGenerator(periodsConfig(getFirestore()));
-export const periodUpdate = () => auditOnUpdateGenerator(periodsConfig(getFirestore()));
-export const periodDelete = () => auditOnDeleteGenerator(periodsConfig(getFirestore()));
+export const periodCreate = auditOnCreateGenerator(periodsConfig);
+export const periodUpdate = auditOnUpdateGenerator(periodsConfig);
+export const periodDelete = auditOnDeleteGenerator(periodsConfig);
 
-export const objectiveCreate = () => auditOnCreateGenerator(objectivesConfig(getFirestore()));
-export const objectiveUpdate = () => auditOnUpdateGenerator(objectivesConfig(getFirestore()));
-export const objectiveDelete = () => auditOnDeleteGenerator(objectivesConfig(getFirestore()));
+export const objectiveCreate = auditOnCreateGenerator(objectivesConfig);
+export const objectiveUpdate = auditOnUpdateGenerator(objectivesConfig);
+export const objectiveDelete = auditOnDeleteGenerator(objectivesConfig);
 
-export const keyResultCreate = () => auditOnCreateGenerator(keyResultsConfig(getFirestore()));
-export const keyResultUpdate = () => auditOnUpdateGenerator(keyResultsConfig(getFirestore()));
-export const keyResultDelete = () => auditOnDeleteGenerator(keyResultsConfig(getFirestore()));
+export const keyResultCreate = auditOnCreateGenerator(keyResultsConfig);
+export const keyResultUpdate = auditOnUpdateGenerator(keyResultsConfig);
+export const keyResultDelete = auditOnDeleteGenerator(keyResultsConfig);
 
-export const KPICreate = () => auditOnCreateGenerator(kpiConfig(getFirestore()));
-export const KPIUpdate = () => auditOnUpdateGenerator(kpiConfig(getFirestore()));
-export const KPIDelete = () => auditOnDeleteGenerator(kpiConfig(getFirestore()));
+export const KPICreate = auditOnCreateGenerator(kpiConfig);
+export const KPIUpdate = auditOnUpdateGenerator(kpiConfig);
+export const KPIDelete = auditOnDeleteGenerator(kpiConfig);

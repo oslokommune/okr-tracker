@@ -12,6 +12,8 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
     .onUpdate(async ({ before, after }, context) => {
       const db = getFirestore();
 
+      const collection = await db.collection(collectionRef);
+
       let event;
       const diff = getDiff({ before, after }, fields);
 
@@ -32,7 +34,7 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
       const user = await (async () => {
         try {
           if ('progression' in diff) {
-            return getProgressionCreator(collectionRef.doc(documentId));
+            return getProgressionCreator(collection.doc(documentId));
           }
           return after.data().editedBy;
         } catch {
@@ -43,7 +45,7 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
       const auditData = {
         event,
         timestamp: new Date(),
-        documentRef: collectionRef.doc(documentId),
+        documentRef: collection.doc(documentId),
         user: user || 'system',
         diff,
       };

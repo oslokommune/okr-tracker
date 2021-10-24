@@ -46,7 +46,7 @@ const handleSlugs = async ({ before, after }) => {
       .get()
       .then((snapshot) => snapshot.docs.forEach((doc) => doc.ref.delete()));
 
-    if (await slugExists(slug)) {
+    if (await slugExists(slug, db)) {
       slug += `-${after.id}`;
     }
 

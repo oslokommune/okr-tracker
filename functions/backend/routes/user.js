@@ -1,12 +1,8 @@
 import express from 'express';
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import { body, matchedData } from 'express-validator';
 
 import preferences from '../../util/defaultPreferences.js';
-
-const db = admin.firestore();
-
-const collection = db.collection('users');
 
 const validateUser = [body('email').isEmail().trim().escape().normalizeEmail(), body('id').trim().escape()];
 
@@ -15,6 +11,9 @@ const router = express.Router();
 router.post('/create', ...validateUser, async (req, res) => {
   const sanitized = matchedData(req);
   const { email, id } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('users');
 
   try {
     if (!email) {

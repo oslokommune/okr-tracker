@@ -1,18 +1,20 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-mutable-exports */
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
+import okrTrackerSlackBot from './slackbot/index.js';
+
+import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
+import api from './api/index.js';
+import internal from './backend/index.js';
 
 // Initialize the app to get everything started
 initializeApp({
   credential: cert(functions.config().service_account),
 });
-
-import okrTrackerSlackBot from './slackbot/index.js';
-// import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
 //
-// import api from './api/index.js';
-// import internal from './backend/index.js';
 
-// const isSlackActive = functions.config().slack.active || false;
+const isSlackActive = functions.config().slack.active || false;
 
 // /**
 //  * Functions for backup and restoring the Firestore database
@@ -74,11 +76,14 @@ export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
 export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 
 // // Express servers run via Cloud Functions
-// export { api, internal };
+export { api, internal };
 
-// // OKR-Tracker slackbot
-// if (isSlackActive) {
-//   exports.okrTrackerSlackBot = okrTrackerSlackBot;
-//   exports.slackNotificationOnUserRequest = slackNotificationOnUserRequest;
-//   exports.slackNotificationInteractiveOnRequest = slackNotificationInteractiveOnRequest;
-// }
+// OKR-Tracker slackbot - Need to export empty functions before adding real functions because some users of the okr tracker may not want these functions to begin with
+export let okrSlackBot = {}
+export let slackNotificationUserRequest = {}
+export let slackNotificationInteractiveRequest = {}
+if (isSlackActive) {
+  okrSlackBot = okrTrackerSlackBot;
+  slackNotificationUserRequest = slackNotificationOnUserRequest;
+  slackNotificationInteractiveRequest = slackNotificationInteractiveOnRequest;
+}

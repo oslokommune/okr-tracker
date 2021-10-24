@@ -10,12 +10,14 @@ const auditOnDeleteGenerator = ({ docPath, collectionRef, documentType }) =>
     .onDelete(async (snapshot, context) => {
       const db = getFirestore();
 
+      const collection = await db.collection(collectionRef);
+
       const { documentId } = context.params;
 
       const auditData = {
         event: `${documentType}Deleted`,
         timestamp: new Date(),
-        documentRef: collectionRef.doc(documentId),
+        documentRef: collection.doc(documentId),
       };
 
       const documentData = snapshot.data();

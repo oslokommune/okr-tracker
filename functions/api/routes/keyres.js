@@ -1,12 +1,8 @@
 import express from 'express';
-import admin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 import { param, matchedData, body } from 'express-validator';
 
 const router = express.Router();
-
-const db = admin.firestore();
-
-const collection = db.collection('keyResults');
 
 const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
 
@@ -20,6 +16,8 @@ router.post('/:id', ...validate, async (req, res) => {
     return;
   }
 
+  const db = getFirestore();
+  const collection = await db.collection('keyResults');
   let keyRes;
 
   try {
@@ -73,6 +71,9 @@ router.post('/:id', ...validate, async (req, res) => {
 router.get('/:id', param('id').trim().escape(), async (req, res) => {
   const sanitized = matchedData(req);
   const { id } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('keyResults');
 
   try {
     const keyRes = await collection.doc(id).get();

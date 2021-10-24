@@ -1,16 +1,12 @@
 /* eslint-disable camelcase */
 import functions from 'firebase-functions';
 import { IncomingWebhook } from '@slack/webhook';
-import firebaseAdmin from 'firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
 
 import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage.js';
 import preferences from '../util/defaultPreferences.js';
 
 const environment = functions.config();
-
-const db = firebaseAdmin.firestore();
-const requestAccessCollection = db.collection('requestAccess');
-const usersCollection = db.collection('users');
 
 export const handleSlackRequest = async (document) => {
   // Make a webhook connection for channel
@@ -32,6 +28,8 @@ export const handleSlackRequest = async (document) => {
 };
 
 export const handleSlackInteractive = async (req) => {
+  const db = getFirestore();
+
   // Parse the payload
   const payload = JSON.parse(req.body.payload);
 
@@ -46,9 +44,9 @@ export const handleSlackInteractive = async (req) => {
 
   // Check which type of action the user sends from slack
   if (action_id === 'accept') {
-    await handleAcceptRequest(webhookReturn, value, user.username);
+    await handleAcceptRequest(webhookReturn, value, user.username, db);
   } else if (action_id === 'reject') {
-    await handleRejectRequest(webhookReturn, value, user.username);
+    await handleRejectRequest(webhookReturn, value, user.username, db);
   } else if (action_id === 'ignore') {
     // Delete a message from slack channel
     await webhookReturn.send({
@@ -62,8 +60,11 @@ export const handleSlackInteractive = async (req) => {
   return true;
 };
 
-const handleAcceptRequest = async (webhook, value, user) => {
+const handleAcceptRequest = async (webhook, value, user, db) => {
   try {
+    const usersCollection = await db.collection('users');
+    const requestAccessCollection = await db.collection('requestAccess');
+
     // Get the email from the id
     const { email } = await requestAccessCollection
       .doc(value)
@@ -93,8 +94,10 @@ const handleAcceptRequest = async (webhook, value, user) => {
   return true;
 };
 
-const handleRejectRequest = async (webhook, value, user) => {
+const handleRejectRequest = async (webhook, value, user, db) => {
   try {
+    const requestAccessCollection = await db.collection('requestAccess');
+
     // Find email from the user id
     const { email } = await requestAccessCollection
       .doc(value)

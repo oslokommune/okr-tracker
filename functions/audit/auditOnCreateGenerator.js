@@ -16,12 +16,14 @@ const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
     .onCreate(async (snapshot, context) => {
       const db = getFirestore();
 
+      const collection = await db.collection(collectionRef);
+
       const { documentId } = context.params;
 
       const auditData = {
         event: `${documentType}Created`,
         timestamp: new Date(),
-        documentRef: collectionRef.doc(documentId),
+        documentRef: collection.doc(documentId),
       };
 
       const documentData = snapshot.data();
