@@ -3,6 +3,7 @@ const functions = require('firebase-functions');
 const config = require('../config');
 
 const environment = functions.config();
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 const { host_url: HOST_URL } = environment.slack;
 
 const { pushToSlack, colors, slackMessageCreated } = require('./helpers');
@@ -34,7 +35,9 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
         auditData.department = documentData.department;
       }
 
-      await checkIfRelevantToPushToSlack(auditData, documentType);
+      if (isSlackActive) {
+        await checkIfRelevantToPushToSlack(auditData, documentType);
+      }
 
       return db.collection('audit').add(auditData);
     });
