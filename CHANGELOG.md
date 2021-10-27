@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.5.3] 2021-10-27
+
+### Fixed
+
+- KPI graph did not show if one progress object had a value equal to 0
+
 ## [2.5.2] 2021-10-19
 
 ### Fixed
