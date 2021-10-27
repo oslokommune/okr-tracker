@@ -215,8 +215,7 @@ export default {
       const [startValue, targetValue] = extent(this.filteredProgress.map(({ value }) => value));
       const [startDate, endDate] = extent(this.filteredProgress.map(({ timestamp }) => timestamp));
 
-      if (!this.graph || !startValue || !targetValue) return;
-
+      if (!this.graph || !startValue === undefined || !targetValue === undefined) return;
       this.graph.render(
         {
           startValue,
