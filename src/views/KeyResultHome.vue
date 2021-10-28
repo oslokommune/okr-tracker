@@ -56,13 +56,14 @@
 
       <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
       <div class="main__table">
+        <spinner v-if="isLoading" />
         <empty-state
-          v-if="!progress.length"
+          v-else-if="!progress.length || progress.length === 0"
           :icon="'history'"
           :heading="$t('empty.keyResultProgress.heading')"
           :body="$t('empty.keyResultProgress.body')"
         />
-        <table v-if="progress.length" class="table">
+        <table v-else class="table">
           <thead>
             <tr>
               <th>{{ $t('keyResultPage.value') }}</th>
@@ -154,6 +155,7 @@ export default {
     Modal: () => import('@/components/Modal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     VPopover,
+    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -174,6 +176,7 @@ export default {
     graph: null,
     isOpen: false,
     showComments: false,
+    isLoading: false,
   }),
 
   computed: {
@@ -189,10 +192,11 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      async handler(keyresult) {
-        if (!keyresult) return;
-        await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`).orderBy('timestamp', 'desc'));
-
+      async handler(keyResult) {
+        if (!keyResult) return;
+        this.isLoading = true;
+        await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
+        this.isLoading = false;
         this.graph = new LineChart(this.$refs.graph);
         this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
       },

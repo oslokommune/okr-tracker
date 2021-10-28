@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changes
+
+- Showing loading spinner when fetching KPI/KeyResult progress
+- Moved widgets around for a better UX experience for mobile users
+
+### Fixed
+
+- functions: config to active slackbot or not actually works
+
 ## [2.5.3] 2021-10-27
 
 ### Fixed

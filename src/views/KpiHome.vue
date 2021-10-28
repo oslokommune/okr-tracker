@@ -30,16 +30,21 @@
         </div>
       </div>
 
+      <widgets-k-p-i-home class="aside--middle" :range="range" :progress="progress" @listen="handleChange" />
+
       <div class="history">
         <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
+
+        <spinner v-if="isLoading"></spinner>
+
         <empty-state
-          v-if="!filteredProgress.length"
+          v-else-if="!filteredProgress.length || filteredProgress.length === 0"
           :icon="'history'"
           :heading="$t('empty.kpiProgress.heading')"
           :body="$t('empty.kpiProgress.body')"
         />
 
-        <table v-if="filteredProgress.length" class="table">
+        <table v-else class="table">
           <thead>
             <tr>
               <th>{{ $t('keyres.dateAndTime') }}</th>
@@ -70,42 +75,13 @@
       </div>
     </div>
 
-    <div class="aside">
-      <div class="widgets__links">
-        <router-link
-          v-if="hasEditRights"
-          v-tooltip="$t('tooltip.editKpi')"
-          class="btn btn--ter btn--icon btn--icon-pri"
-          :to="{ name: 'ItemAdminKPIs' }"
-        >
-          <i class="icon fa fa-cog" />
-          {{ $t('kpi.edit') }}
-        </router-link>
-      </div>
-
-      <h2 class="title-2">{{ $t('keyResultPage.filter') }}</h2>
-      <label v-if="progress.length" class="form-field">
-        <span class="form-label">{{ $t('period.dateRange') }}</span>
-        <flat-pickr
-          v-model="range"
-          :config="flatPickerConfig"
-          class="form-control cy-datepicker"
-          name="date"
-          placeholder="Velg start- og sluttdato"
-        ></flat-pickr>
-      </label>
-
-      <button v-if="range" class="btn btn--icon btn--ghost" @click="range = null">
-        <i class="icon fa fa-trash-restore-alt" /> {{ $t('btn.reset') }}
-      </button>
-    </div>
+    <widgets-k-p-i-home class="aside--right" :range="range" :progress="progress" @listen="handleChange" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3-array';
-import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
@@ -116,25 +92,20 @@ export default {
   name: 'KpiHome',
 
   components: {
+    WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   data: () => ({
     progress: [],
     graph: null,
-    flatPickerConfig: {
-      altFormat: 'j M Y',
-      altInput: true,
-      minDate: null,
-      mode: 'range',
-      maxDate: null,
-      locale: locale.no,
-    },
-    range: null,
+    range: '',
     startDate: null,
     endDate: null,
     filteredProgress: [],
     isFiltered: false,
+    isLoading: false,
   }),
 
   computed: {
@@ -145,44 +116,13 @@ export default {
   watch: {
     activeKpi: {
       immediate: true,
-      handler({ id }) {
-        this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+      async handler({ id }) {
+        this.isLoading = true;
+        await this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+        this.isLoading = false;
       },
     },
     progress() {
-      this.filterProgress();
-    },
-
-    range(range) {
-      if (!range) {
-        this.$router
-          .push({
-            name: 'KpiHome',
-            params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
-          })
-          .catch((err) => console.log(err));
-        this.startDate = null;
-        this.endDate = null;
-        this.filteredProgress = this.progress;
-        this.filterProgress();
-        return;
-      }
-      const parts = this.range.split(' til ').map((d) => new Date(d));
-      if (parts.length === 1) return;
-      this.dirty = true;
-      const [startDate, endDate] = parts;
-      this.startDate = startDate;
-      this.endDate = endOfDay(endDate);
-      this.isFiltered = true;
-
-      this.$router
-        .push({
-          name: 'KpiHome',
-          params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
-          query: { startDate: formatISOShort(this.startDate), endDate: formatISOShort(this.endDate) },
-        })
-        .catch((err) => console.log(err));
-
       this.filterProgress();
     },
   },
@@ -246,6 +186,39 @@ export default {
         return numberLocale.format(',')(value);
       }
       return kpiTypes[this.activeKpi.type].formatValue(value);
+    },
+
+    handleChange(range) {
+      if (!range) {
+        this.$router
+          .push({
+            name: 'KpiHome',
+            params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
+          })
+          .catch((err) => console.log(err));
+        this.startDate = null;
+        this.endDate = null;
+        this.filteredProgress = this.progress;
+        this.filterProgress();
+        return;
+      }
+      const parts = range.split(' til ').map((d) => new Date(d));
+      if (parts.length === 1) return;
+      this.dirty = true;
+      const [startDate, endDate] = parts;
+      this.startDate = startDate;
+      this.endDate = endOfDay(endDate);
+      this.isFiltered = true;
+
+      this.$router
+        .push({
+          name: 'KpiHome',
+          params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
+          query: { startDate: formatISOShort(this.startDate), endDate: formatISOShort(this.endDate) },
+        })
+        .catch((err) => console.log(err));
+
+      this.filterProgress();
     },
   },
 };

@@ -4,6 +4,8 @@ const config = require('../config');
 
 const { checkIfRelevantToPushToSlack } = require('./helpers');
 
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
+
 const db = admin.firestore();
 
 exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
@@ -49,7 +51,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         diff,
       };
 
-      if (auditData.event.includes('Updated')) {
+      if (auditData.event.includes('Updated') && isSlackActive) {
         await checkIfRelevantToPushToSlack(documentType, auditData);
       }
 

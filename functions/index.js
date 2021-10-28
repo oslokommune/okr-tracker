@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 
-const isSlackActive = functions.config().slack.active || false;
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 
 // Initialize the app to get everything started
 admin.initializeApp({
