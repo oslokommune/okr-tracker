@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { vuexfireMutations } from 'vuexfire';
-import i18n from '@/locale/i18n';
-import { sortByLocale } from '@/store/actions/actionUtils';
+import Vue from "vue";
+import Vuex from "vuex";
+import { vuexfireMutations } from "vuexfire";
+import i18n from "@/locale/i18n";
+import { sortByLocale } from "@/store/actions/actionUtils";
 
-import moduleActions from './actions';
+import moduleActions from "./actions";
 
 Vue.use(Vuex);
 
@@ -51,6 +51,36 @@ export const getters = {
     if (!user || !activeItem || !activeItem.team) return false;
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
+
+  sidebarGroups: (state) => {
+    const { organizations, departments, products, activeItem } = state;
+
+    const filterDepartments = ({ organization }) => {
+      // No active item is set, show no departments
+      if (!activeItem) return false;
+      if (!organization) return false;
+
+      // Active item is organization, show all its departments
+      if (activeItem.id === organization.id) return true;
+      // Active item is a child of organization, show its all departments
+      return !!(activeItem.organization && activeItem.organization.id === organization.id);
+    };
+
+    const filterProducts = ({ department }) => {
+      // No active item is set, show no products
+      if (!activeItem) return false;
+      // Active item is a department, show all its products
+      if (activeItem.id === department.id) return true;
+      // Active item is a product, show all its siblings
+      return !!(activeItem.department && activeItem.department.id === department.id);
+    };
+
+    return [
+      { name: i18n.t('general.organizations'), items: organizations, icon: 'industry' },
+      { name: i18n.t('general.departments'), items: departments.filter(filterDepartments), icon: 'cubes' },
+      { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
+    ];
+  }
 };
 
 export const actions = {
@@ -84,10 +114,6 @@ export const actions = {
 export const mutations = {
   ...vuexfireMutations,
 
-  SET_SIDEBAR_GROUPS(state, payload) {
-    state.sidebarGroups = payload;
-  },
-
   SET_ACTIVE_ITEM_REF(state, payload) {
     state.activeItemRef = payload;
   },
@@ -107,13 +133,20 @@ export const mutations = {
   SET_THEME(state, payload) {
     state.theme = payload;
   },
+
+  SET_COLLECTION(state, payload) {
+    Vue.set(state, payload.type, [...payload.data]);
+  },
+
+  SET_UNSUBSCRIBE_ORGANIZATIONS(state, payload) {
+    state.unsubscribeOrganizations = payload;
+  }
 };
 
 export default new Vuex.Store({
   state: {
     user: null,
     users: [],
-    sidebarGroups: [],
     departments: [],
     organizations: [],
     products: [],

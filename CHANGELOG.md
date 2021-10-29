@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- When updating Org/Dep/Prod, the state store would get corrupt and only refresh fixed it. Double documents would show because vuexfire does not handle hundreds of documents that well.
 - functions: config to active slackbot or not actually works
 
 ## [2.5.3] 2021-10-27

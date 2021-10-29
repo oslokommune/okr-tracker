@@ -1,18 +1,12 @@
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
 
-export default firestoreAction(async ({ bindFirestoreRef }) => {
-  const isNotArchived = ['archived', '==', false];
-  const options = {
-    maxRefDepth: 1,
-    serialize,
-  };
-
+export default firestoreAction(async ({ bindFirestoreRef, commit }) => {
   return Promise.all([
-    bindFirestoreRef('organizations', db.collection('organizations').where(...isNotArchived), options),
-    bindFirestoreRef('departments', db.collection('departments').where(...isNotArchived), options),
-    bindFirestoreRef('products', db.collection('products').where(...isNotArchived), options),
-    bindFirestoreRef('users', db.collection('users'), options),
+    bindDocumentsToStore('organizations', commit),
+    bindDocumentsToStore('departments', commit),
+    bindDocumentsToStore('products', commit),
+    bindFirestoreRef('users', db.collection('users'), { serialize, maxRefDepth: 1 }),
   ]);
 });
 
@@ -20,7 +14,7 @@ export default firestoreAction(async ({ bindFirestoreRef }) => {
  * Custom serializer for the firestore action. Includes the document's Firestore path
  * and the its progression in the current period
  */
-function serialize(snapshot) {
+const serialize = (snapshot) => {
   const onProgressionSnapshot = (callback) =>
     db
       .collection('periods')
@@ -38,4 +32,23 @@ function serialize(snapshot) {
   Object.defineProperty(document, 'onProgressionSnapshot', { value: onProgressionSnapshot });
 
   return document;
-}
+};
+
+// Not sure how long this will be responsive. There may be some problems when Organizations/Departments/Products are over 100 documents
+const bindDocumentsToStore = async (type, commit) => {
+  const isNotArchived = ['archived', '==', false];
+
+  await db
+    .collection(type)
+    .where(...isNotArchived)
+    .onSnapshot((querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        const document = serialize(doc);
+
+        data.push(document);
+      });
+      commit('SET_COLLECTION', { data, type });
+    });
+  return true;
+};

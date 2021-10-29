@@ -133,15 +133,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state']),
+    ...mapActions(['reset_state', 'setLoading']),
 
     hideUserMenu() {
       this.showUserMenu = false;
     },
 
     async signOut() {
-      await auth.signOut();
+      await this.setLoading(true);
       await this.reset_state();
+      await auth.signOut();
+      await this.setLoading(false);
     },
   },
 };
