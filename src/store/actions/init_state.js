@@ -35,20 +35,22 @@ const serialize = (snapshot) => {
 };
 
 // Not sure how long this will be responsive. There may be some problems when Organizations/Departments/Products are over 100 documents
-const bindDocumentsToStore = async (type, commit) => {
+const bindDocumentsToStore = (type, commit) => {
   const isNotArchived = ['archived', '==', false];
 
-  await db
+  const unsubscribe = db
     .collection(type)
     .where(...isNotArchived)
     .onSnapshot((querySnapshot) => {
       const data = [];
       querySnapshot.forEach((doc) => {
-        const document = serialize(doc);
+        const document = serialize(doc, commit);
 
         data.push(document);
       });
       commit('SET_COLLECTION', { data, type });
     });
+
+  commit('SET_UNSUBSCRIBE_COLLECTION', { type, unsubscribe });
   return true;
 };

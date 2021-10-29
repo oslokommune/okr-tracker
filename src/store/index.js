@@ -1,10 +1,10 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import { vuexfireMutations } from "vuexfire";
-import i18n from "@/locale/i18n";
-import { sortByLocale } from "@/store/actions/actionUtils";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { vuexfireMutations } from 'vuexfire';
+import i18n from '@/locale/i18n';
+import { sortByLocale } from '@/store/actions/actionUtils';
 
-import moduleActions from "./actions";
+import moduleActions from './actions';
 
 Vue.use(Vuex);
 
@@ -80,7 +80,7 @@ export const getters = {
       { name: i18n.t('general.departments'), items: departments.filter(filterDepartments), icon: 'cubes' },
       { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
     ];
-  }
+  },
 };
 
 export const actions = {
@@ -138,9 +138,10 @@ export const mutations = {
     Vue.set(state, payload.type, [...payload.data]);
   },
 
-  SET_UNSUBSCRIBE_ORGANIZATIONS(state, payload) {
-    state.unsubscribeOrganizations = payload;
-  }
+  SET_UNSUBSCRIBE_COLLECTION(state, payload) {
+    state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
+    console.log(`${payload.type}Unsubscribe`);
+  },
 };
 
 export default new Vuex.Store({
@@ -168,6 +169,9 @@ export default new Vuex.Store({
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     theme: 'yellow',
+    organizationsUnsubscribe: () => {},
+    departmentsUnsubscribe: () => {},
+    productsUnsubscribe: () => {},
   },
   getters,
   mutations,
