@@ -244,7 +244,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/typography.scss';
+@import '@/styles/typography';
 
 .main__table {
   width: 100%;

@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. The format 
 - Showing loading spinner when fetching KPI/KeyResult progress
 - Moved widgets around for a better UX experience for mobile users
 - Updated dependencies
+- Updated stylelint to v14 and fixed all the breaking changes
 
 ### Fixed
 

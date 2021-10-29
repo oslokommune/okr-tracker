@@ -321,10 +321,6 @@ export default {
   }
 }
 
-.user {
-  display: relative;
-}
-
 .menu__list {
   display: flex;
   flex-direction: column;
