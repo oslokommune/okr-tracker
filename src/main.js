@@ -37,7 +37,7 @@ Vue.use(VueFlatPickr);
 
 // Global components
 Vue.component('VSelect', VueSelect);
-Vue.component('Griddle', VueGriddle);
+Vue.component('VueGriddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));

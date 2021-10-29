@@ -11,12 +11,12 @@
         <router-view v-else class="router-view"></router-view>
       </div>
     </main>
-    <Griddle v-if="isDev" />
+    <vue-griddle v-if="isDev" />
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import i18n from '@/locale/i18n';
 
 export default {

@@ -14,7 +14,7 @@ module.exports = {
     'func-names': 'off',
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
   },
   settings: {
     'import/resolver': {

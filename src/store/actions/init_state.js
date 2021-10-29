@@ -1,14 +1,14 @@
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
 
-export default firestoreAction(async ({ bindFirestoreRef, commit }) => {
-  return Promise.all([
+export default firestoreAction(async ({ bindFirestoreRef, commit }) =>
+  Promise.all([
     bindDocumentsToStore('organizations', commit),
     bindDocumentsToStore('departments', commit),
     bindDocumentsToStore('products', commit),
     bindFirestoreRef('users', db.collection('users'), { serialize, maxRefDepth: 1 }),
-  ]);
-});
+  ])
+);
 
 /**
  * Custom serializer for the firestore action. Includes the document's Firestore path
