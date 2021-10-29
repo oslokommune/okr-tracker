@@ -140,7 +140,6 @@ export const mutations = {
 
   SET_UNSUBSCRIBE_COLLECTION(state, payload) {
     state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
-    console.log(`${payload.type}Unsubscribe`);
   },
 };
 
