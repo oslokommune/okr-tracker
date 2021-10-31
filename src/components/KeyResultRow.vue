@@ -5,7 +5,7 @@
       <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
     </router-link>
 
-    <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
+    <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
     <div class="keyResult__progress">
       <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
@@ -20,7 +20,7 @@
         <label class="keyResult__label">
           <input
             v-model.number="keyRow.currentValue"
-            v-tooltip="$t('tooltip.keyresValue')"
+            v-tooltip="$t('tooltip.keyResultValue')"
             class="keyResult__input"
             type="number"
             step="any"
@@ -28,11 +28,11 @@
           />
         </label>
 
-        <button class="btn">{{ $t('keyres.updateValue') }}</button>
+        <button class="btn">{{ $t('keyResult.updateValue') }}</button>
       </form>
     </div>
 
-    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
+    <modal v-if="isOpen" :key-result="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
   </div>
 </template>
 

@@ -34,7 +34,7 @@
         </div>
       </section>
     </div>
-    <widgets-objective-home class="aside--right" />
+    <widgets-objective-home />
   </div>
 </template>
 

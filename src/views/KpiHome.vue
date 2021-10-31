@@ -47,7 +47,7 @@
         <table v-else class="table">
           <thead>
             <tr>
-              <th>{{ $t('keyres.dateAndTime') }}</th>
+              <th>{{ $t('keyResult.dateAndTime') }}</th>
               <th>{{ $t('keyResultPage.table.value') }}</th>
               <th v-if="hasEditRights"></th>
             </tr>

@@ -1,6 +1,6 @@
 <template>
   <widget :widget-id="widgetId" :title="$t('weight.heading')">
-    {{ $t('weight.keyresFor', { name: activeObjective.period.name }) }}
+    {{ $t('weight.keyResultFor', { name: activeObjective.period.name }) }}
     <div class="scales">
       <router-link
         v-for="{ id, weight, active, name } in weights"

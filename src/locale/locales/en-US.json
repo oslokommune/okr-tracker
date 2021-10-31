@@ -221,7 +221,7 @@
       "rejected": "Removed {user}"
     }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Related objective",
     "description": "Description",
     "startValue": "Start value",
@@ -280,7 +280,7 @@
   "tooltip": {
     "openMenu": "Open menu",
     "dashboard": "Go to dashboard",
-    "keyresValue": "Insert new value",
+    "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
@@ -363,7 +363,7 @@
   },
   "weight": {
     "heading": "Weights",
-    "keyresFor": "Key results for “{name}”",
+    "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
   },
   "accessRequests": {

@@ -115,15 +115,6 @@ hr {
   }
 }
 
-.aside--right {
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    width: span(3);
-  }
-}
-
 .container {
   @include container();
   display: flex;

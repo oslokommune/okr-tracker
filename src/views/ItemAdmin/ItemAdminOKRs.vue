@@ -154,7 +154,7 @@ export default {
             !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
           nonexistent: this.$t('empty.itemAdmin.keyResult'),
-          cyCreate: 'okr-create-keyresult',
+          cyCreate: 'okr-create-keyResult',
         },
       ];
     },

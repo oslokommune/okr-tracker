@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <widgets-right class="aside--right"></widgets-right>
+    <widgets-right class="aside"></widgets-right>
     <widgets-left class="aside--bottom"></widgets-left>
   </div>
 </template>
@@ -104,7 +104,6 @@ export default {
   margin-bottom: 1.5rem;
 }
 
-.itemHome__tree--item,
 .group {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
@@ -118,24 +117,6 @@ export default {
   margin-top: 0.5rem;
   @media screen and (min-width: bp(m)) {
     display: block;
-    width: span(3);
-  }
-}
-
-.keyResultRow {
-  border-top: 1px solid var(--color-grey-100);
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(3);
-  }
-}
-
-.aside--right {
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(m)) {
     width: span(3);
   }
 }

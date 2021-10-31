@@ -62,9 +62,9 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      handler(keyres) {
-        this.thisKey = { ...keyres, id: keyres.id };
-        this.md = dompurify.sanitize(marked(keyres.notes || ''));
+      handler(keyResult) {
+        this.thisKey = { ...keyResult, id: keyResult.id };
+        this.md = dompurify.sanitize(marked(keyResult.notes || ''));
       },
     },
   },

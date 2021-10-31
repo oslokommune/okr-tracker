@@ -219,7 +219,7 @@
       "rejected": "Fjernet: {user}"
     }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Tilknyttet mål",
     "description": "Beskrivelse",
     "startValue": "Startverdi",
@@ -278,7 +278,7 @@
   "tooltip": {
     "openMenu": "Åpne meny",
     "dashboard": "Gå til dashboard-visning",
-    "keyresValue": "Skriv inn ny måleverdi",
+    "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "editKpi": "Endre detaljer eller slett KPI",
@@ -361,7 +361,7 @@
   },
   "weight": {
     "heading": "Vekting",
-    "keyresFor": "Nøkkelresultater for «{name}»",
+    "keyResultFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
   },
   "accessRequests": {

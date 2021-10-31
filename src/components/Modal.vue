@@ -2,30 +2,30 @@
   <div class="overlay">
     <div class="modal">
       <div class="modal__header">
-        <h2 class="title-2">{{ $t('keyres.updateKeyres') }}</h2>
+        <h2 class="title-2">{{ $t('keyResult.updateKeyres') }}</h2>
         <button class="btn btn--ter" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>
       <validation-observer v-slot="{ handleSubmit }">
         <form id="modal" class="modal__main" @submit.prevent="handleSubmit(saveProgress)">
-          <h3 class="title-3">{{ keyres.name }}</h3>
+          <h3 class="title-3">{{ keyResult.name }}</h3>
 
           <hr />
 
-          <progress-bar-expanded :key-result="keyres" />
+          <progress-bar-expanded :key-result="keyResult" />
 
           <hr />
 
           <label>
-            <span class="title-3">{{ $t('keyres.addComment') }}</span>
+            <span class="title-3">{{ $t('keyResult.addComment') }}</span>
             <textarea v-model="note" class="modal__textarea" rows="3" @input="edit"/>
           </label>
 
           <div class="modal__main--flex">
             <validation-provider v-slot="{ errors }" name="value" rules="required">
               <label class="form-group modal__main--input-label">
-                <span class="form-label">{{ $t('keyres.newValue') }}</span>
+                <span class="form-label">{{ $t('keyResult.newValue') }}</span>
                 <input v-model="value" class="form__field modal__main--input-value" type="number" step="any" @input="edit"/>
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
@@ -33,13 +33,13 @@
 
             <validation-provider v-slot="{ errors }" name="range" rules="required">
               <label class="form-group modal__main--input-label">
-                <span class="form-label">{{ $t('keyres.dateAndTime') }}</span>
+                <span class="form-label">{{ $t('keyResult.dateAndTime') }}</span>
                 <flat-pickr
                   v-model="date"
                   :config="flatPickerConfig"
                   class="form-control"
                   name="date"
-                  :placeholder="$t('keyres.chooseDate')"
+                  :placeholder="$t('keyResult.chooseDate')"
                   @input="edit"
                 />
                 <span class="form-field--error">{{ errors[0] }}</span>
