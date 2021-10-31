@@ -9,6 +9,90 @@ All notable changes to this project will be documented in this file. The format 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
 
+### Changes
+
+- Showing loading spinner when fetching KPI/KeyResult progress
+- Moved widgets around for a better UX experience for mobile users
+
+### Fixed
+
+- functions: config to active slackbot or not actually works
+
+## [2.5.3] 2021-10-27
+
+### Fixed
+
+- KPI graph did not show if one progress object had a value equal to 0
+
+## [2.5.2] 2021-10-19
+
+### Fixed
+
+- Actually fixed the bug showing `Update value`-button even if you did not have access
+
+### Changes
+
+- Small style changes for a better UX experience - in a series of different changes coming
+
+## [2.5.1] 2021-10-19
+
+### Fixed
+
+- `Update value`-button in KeyResultHome was shown even though you did not have access to update
+
+### Changes
+
+- Removed sass-variables for colors, using CSS Variables instead
+- Updated README with more information when deploying to prod for the first time
+- Updated dependencies
+
+## [2.5.0] 2021-10-14
+
+We have added another slackbot integration. The new slackbot integration pushes changes to organizations/departments/products.
+
+You can call the slack bot with the command `/okr`. The different commands to the slack bot are:
+- `subscribe organization/department/product slug` - subscribe to a specific org/dep/prod
+- `unsubscribe organization/department/product slug` - unsubscribe
+- `subscribe/all organization/department slug` - subscribe to a specific org/dep/prod and all its children (departments/products)
+- `unsubscribe/all organization/department slug` - unsubscribe to everything
+
+What types of updates does the bot push?
+Changes to the:
+- name
+- mission statement
+
+Creation of:
+- Objectives
+- Key Results
+
+Caveats:
+- If you run subscribe/all once on an organization/department and create a new product after that
+  - run subscribe/all again, because we don't add new children to the parent subscription
+
+## Added
+
+- Slack bot integration with channels in your slack organization. Push updates to a slack channel. (Read the readme about the changes and how to implement it)
+
+Example:
+`/okr subscribe product dataspeilet`
+
+Now we would get updates to our slack channel with changes to our product, dataspeilet. (Mountain Peach is the name of our test user)
+
+![img.png](documentation/images/img.png)
+
+![img_1.png](documentation/images/img_1.png)
+
+![img_2.png](documentation/images/img_2.png)
+
+![img_3.png](documentation/images/img_3.png)
+
+## Changes
+
+- Save-buttons are disabled until changes have been made.
+- Updated instructions on how to initialize a new okr-tracker instance
+- KeyResultHome: moved widgets around for easier access to the edit button
+- Updated dependencies
+
 ## [2.4.1] 2021-10-05
 
 ### Changes

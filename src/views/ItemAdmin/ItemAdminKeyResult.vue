@@ -12,11 +12,12 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
+          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('keyres.description') }}</span>
-          <input v-model="keyResult.description" class="form__field" type="text" />
+          <input v-model="keyResult.description" class="form__field" type="text" @input="edit" />
         </label>
 
         <validation-provider v-slot="{ errors }" rules="required" name="objective">
@@ -28,6 +29,7 @@
               :options="objectives"
               :clearable="false"
               @input="changedObjective = true"
+              @edited-data="edit"
             >
               <template #option="option">
                 {{ option.name }}
@@ -45,6 +47,7 @@
           :label="$t('keyres.unit')"
           rules="required|max:25"
           type="text"
+          @edited-data="edit"
         />
 
         <div class="form-row">
@@ -55,6 +58,7 @@
             :label="$t('keyres.startValue')"
             rules="required"
             type="number"
+            @edited-data="edit"
           />
 
           <form-component
@@ -64,6 +68,7 @@
             :label="$t('keyres.targetValue')"
             rules="required"
             type="number"
+            @edited-data="edit"
           />
 
           <form-component
@@ -73,6 +78,7 @@
             :label="$t('keyres.weight')"
             rules="required|decimal|positiveNotZero"
             type="text"
+            @edited-data="edit"
           />
         </div>
 
@@ -82,7 +88,7 @@
             <i v-tooltip="$t('keyres.api.tooltip')" class="icon fa fa-info-circle" />
           </span>
           <label class="toggle">
-            <input v-model="keyResult.api" class="toggle__input" type="checkbox" />
+            <input v-model="keyResult.api" class="toggle__input" type="checkbox" @edited-data="edit" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -90,7 +96,7 @@
         <div class="toggle__container">
           <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
           <label class="toggle">
-            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" />
+            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" @edited-data="edit" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -111,6 +117,7 @@
             input-type="input"
             name="sheetId"
             type="text"
+            @edited-data="edit"
           >
             <template #help>
               <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
@@ -124,6 +131,7 @@
             input-type="input"
             name="sheetTab"
             type="text"
+            @edited-data="edit"
           >
             <template #help>
               <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
@@ -137,6 +145,7 @@
             input-type="input"
             name="sheetCell"
             type="text"
+            @edited-data="edit"
           >
             <template #help>
               <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
@@ -171,7 +180,7 @@
     </label>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
@@ -194,7 +203,7 @@ import KeyResult from '@/db/KeyResult';
 import { toastArchiveAndRevert } from '@/util';
 
 export default {
-  name: 'ItemAdminKeResult',
+  name: 'ItemAdminKeyResult',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
@@ -214,6 +223,7 @@ export default {
     loading: false,
     loadingConnection: false,
     isLoadingDetails: false,
+    changes: false,
   }),
 
   watch: {
@@ -234,6 +244,9 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     async update() {
       this.loading = true;
 
@@ -283,6 +296,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
     async archive() {
       this.loading = true;
@@ -299,6 +313,7 @@ export default {
         throw new Error(error.message);
       }
       this.loading = false;
+      this.changes = false;
     },
 
     async restore() {
@@ -313,6 +328,7 @@ export default {
         throw new Error(error.message);
       }
       this.loading = false;
+      this.changes = false;
     },
 
     async deleteDeep() {
@@ -328,6 +344,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
 
     async testConnection() {
@@ -356,27 +373,24 @@ export default {
       return msg;
     },
 
-    apiCurl: (keyResult) => {
-      return `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }'  ${
+    apiCurl: (keyResult) =>
+      `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }'  ${
         import.meta.env.VITE_API_GATEWAY_URL
-      }/kpi/${keyResult.id}`;
-    },
+      }/kpi/${keyResult.id}`,
   },
 };
 </script>
 
 <style lang="scss">
-@import '@/styles/_colors.scss';
-
 .validation {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
 }
 
 .validation__valid {
   padding: 0.5rem;
-  background: $color-green;
+  background: var(--color-green);
   border-radius: 2px;
 }
 
@@ -387,7 +401,7 @@ export default {
 
 .validation__error {
   padding: 0.5rem;
-  background: $color-red;
+  background: var(--color-red);
   border-radius: 2px;
 }
 

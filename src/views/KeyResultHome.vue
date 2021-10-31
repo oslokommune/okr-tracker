@@ -22,7 +22,7 @@
             {{ activeKeyResult.unit }}
           </div>
 
-          <button v-if="!activeKeyResult.auto" class="btn btn--ter" @click="isOpen = true">
+          <button v-if="!activeKeyResult.auto || hasEditRights" class="btn btn--ter" @click="isOpen = true">
             {{ $t('keyres.updateValue') }}
           </button>
         </div>
@@ -52,15 +52,18 @@
         </div>
       </div>
 
+      <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
+
       <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
       <div class="main__table">
+        <spinner v-if="isLoading" />
         <empty-state
-          v-if="!progress.length"
+          v-else-if="!progress.length || progress.length === 0"
           :icon="'history'"
           :heading="$t('empty.keyResultProgress.heading')"
           :body="$t('empty.keyResultProgress.body')"
         />
-        <table v-if="progress.length" class="table">
+        <table v-else class="table">
           <thead>
             <tr>
               <th>{{ $t('keyResultPage.value') }}</th>
@@ -129,14 +132,14 @@
       </div>
     </div>
 
-    <widgets-key-result-home class="aside"></widgets-key-result-home>
+    <widgets-key-result-home class="aside--right"></widgets-key-result-home>
 
     <modal v-if="isOpen" :keyres="activeKeyResult" @close="closeModal"></modal>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { VPopover } from 'v-tooltip';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
@@ -152,6 +155,7 @@ export default {
     Modal: () => import('@/components/Modal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     VPopover,
+    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -172,10 +176,12 @@ export default {
     graph: null,
     isOpen: false,
     showComments: false,
+    isLoading: false,
   }),
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+    ...mapGetters(['hasEditRights']),
 
     hasComments() {
       const firstProgressWithComment = this.progress.find(({ comment }) => comment);
@@ -186,10 +192,11 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      async handler(keyresult) {
-        if (!keyresult) return;
-        await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`).orderBy('timestamp', 'desc'));
-
+      async handler(keyResult) {
+        if (!keyResult) return;
+        this.isLoading = true;
+        await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
+        this.isLoading = false;
         this.graph = new LineChart(this.$refs.graph);
         this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
       },
@@ -237,9 +244,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-@import '@/styles/typography.scss';
-
 .keyres {
   width: span(12);
   padding: 1.5rem 0;
@@ -263,7 +267,7 @@ export default {
   border-radius: 3px;
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 }
 
@@ -286,14 +290,14 @@ export default {
   margin: 1.5rem 0;
   padding: 1rem;
   font-weight: 500;
-  background: rgba($color-yellow, 0.25);
+  background: rgba(var(--color-yellow-rgb), 0.25);
   border: 1px solid var(--color-primary);
   border-radius: 3px;
 }
 
 .auto--invalid {
-  background: rgba($color-red, 0.25);
-  border: 1px solid $color-red;
+  background: rgba(var(--color-red-rgb), 0.25);
+  border: 1px solid var(--color-red);
 }
 
 .auto__text {

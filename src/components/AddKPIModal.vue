@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import Kpi from '@/db/Kpi';
 import { mapState } from 'vuex';
+import Kpi from '@/db/Kpi';
 
 export default {
   name: 'AddKPIModal',
@@ -170,8 +170,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .modal__textarea {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -207,7 +205,7 @@ export default {
   display: flex;
   padding: 1rem;
   font-size: 0.9rem;
-  background: rgba($color-yellow, 0.2);
+  background: rgba(var(--color-yellow-rgb), 0.2);
   border-radius: 3px;
 }
 

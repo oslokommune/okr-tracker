@@ -8,8 +8,8 @@
     - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
   - [Environment variables](#environment-variables)
   - [Link project](#link-project)
+  - [Make Firestore ready for production](#make-firestore-ready-for-production)
   - [Create mock data](#create-mock-data)
-    - [Whitelist yourself](#whitelist-yourself)
     - [Generate mock data](#generate-mock-data)
     - [Exporting mock data](#exporting-mock-data)
     - [Update mock data](#update-mock-data)
@@ -26,9 +26,11 @@
   - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
 - [Slack Integration](#slack-integration)
   - [Set up](#set-up)
+  - [Push audit log to slack channels](#push-audit-log-to-slack-channels)
 - [Supported Providers](#supported-providers)
   - [Microsoft integration](#microsoft-integration)
   - [Google integration](#google-integration)
+- [Common problems](#common-problems)
 
 ## Demo
 
@@ -40,8 +42,9 @@ If you would like to check out how the application works, you can go to the demo
 ## Project requirements
 
 - Node 14.x
-- Firebase >8.x
+- Firebase >=8.x (v9 is not supported)
 - Firebase tools >9.x
+- Firebase Blaze plan - Pay as you go
 
 ## Clone and install
 
@@ -59,7 +62,7 @@ npm install -g firebase-tools
 
 ## Set up new instance
 
-Follow this guide to set up a new clean instance of the OKR-tracker.
+Follow this guide to set up a new clean instance of the OKR-tracker. Please read the whole readme and not sequentially. There are some steps throughout the readme that are important to set up a new instance.
 
 ### Create Firebase project
 
@@ -73,8 +76,13 @@ This key is used for fetching data from Google Sheets (for automatically updatin
 
 ```bash
 firebase functions:config:set
-  sheets.impersonator="email-address" (optional)
   service_account="<service account private key json-file>"
+  storage.bucket="<your-storage-bucket-name>"
+  slack.active=false
+  slack.webhook="YOUR SLACK WEBHOOK HERE" (required if slack.active === true)
+  slack.token="YOUR SLACK OAUTH TOKEN HERE" (required if slack.active === true)
+  slack.host_url="HOST URL" (required if slack.active === true)
+  sheets.impersonator="email-address" (optional)
 ```
 
 Cat the whole service account private key json file into the environment key `service_account`.
@@ -88,11 +96,22 @@ sh
 firebase functions:config:set service_account="${cat origo-okr-tracker-private-key.json}"
 
 ```
+
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
+
+We have Slack integrations. You can read about how to use the slack integration in the [slack section](#slack-integration).
+
+If you want to activate them, then you would need to add it to the Firebase functions config. If you do not want to use the slack integrations, then you don't need to do anything.
+
+```
+firebase functions:config:set slack.active=true
+```
 
 #### Enable Google Auth in Firebase
 
 We use Google Auth to authenticate users and this needs to be enabled in the Firebase Console.
+
+**NOTE: This does not apply if you are only running this locally. We support Google and Microsoft as authentications**
 
 - Navigate to your project in the [Firebase console](https://console.firebase.google.com/)
 - Press the **Authentication**-button in the side menu
@@ -108,22 +127,22 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 - Copy the following secrets to a `.env.production` file in the root directory.
 - Use also need `.env.local` to run this locally
 
-| Secret                           | Description                                                                                                              |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `VITE_API_KEY`                | _from SDK snippet_                                                                                                       |
-| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
-| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
-| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
-| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
-| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
-| `VITE_APP_ID`                 | _from SDK snippet_                                                                                                       |
-| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
-| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
-| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
-| `VITE_REGION`                 | `europe-west2`                                                                                                           |
-| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email` |
-| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                                |
-| `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in               |
+| Secret                        | Description                                                                                                |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `VITE_API_KEY`                | _from SDK snippet_                                                                                         |
+| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                         |
+| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                         |
+| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                         |
+| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                         |
+| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                         |
+| `VITE_APP_ID`                 | _from SDK snippet_                                                                                         |
+| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                         |
+| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                  |
+| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                           |
+| `VITE_REGION`                 | `europe-west2`                                                                                             |
+| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email`         |
+| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                  |
+| `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in |
 
 ### Link project
 
@@ -135,10 +154,60 @@ firebase use --add
 
 The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. There is no need to do anything, only run the development script and everything is set up with a local user through Google auth.
 
-Start the Firebase Emulator:
+Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
+
+```bash
+firebase functions:config:get > ./functions/.runtimeconfig.json
+```
+
+Start Firebase emulators, import mock data and run the development server:
 
 ```bash
 npm run dev
+```
+
+## Make Firestore ready for production
+
+If you want to deploy to production or staging, you need to create multiple collections manually. Go to the Firestore Database in the [Firebase Cloud Console](https://console.firebase.google.com/)
+
+- audit
+- departments
+- keyResults
+- kpis
+- objectives
+- organizations
+- periods
+- products
+- requestAccess
+- slugs
+- users
+
+The collection `users` needs one document with the first user. Create a document and add the following fields:
+
+```json
+{
+  "id": "<email the user is signing in with",
+  "email": "<email the user is signing in with",
+  "superAdmin": true,
+  "widgets": {
+    "itemHome": {
+      "children": true,
+      "missionStatement": true,
+      "progression": true,
+      "team": true
+    },
+    "keyResultHome": {
+      "details": true,
+      "notes": true,
+      "weights": true
+    },
+    "objectiveHome": {
+      "details": false,
+      "progression": true,
+      "weights": true
+    }
+  }
+}
 ```
 
 ### Create mock data
@@ -182,20 +251,6 @@ The TL;DR is:
 After an API Gateway has been set up, we have closed the gateway with an API Key, which means that you would need to create an API Key through the Google Cloud Console
 
 If there are any questions regarding this, do not hesitate to get in contact with us and we will gladly help (i.e. create an issue)
-
-## Run locally
-
-Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
-
-```bash
-firebase functions:config:get > ./functions/.runtimeconfig.json
-```
-
-Start Firebase emulators, import mock data and run the development server:
-
-```bash
-npm run dev
-```
 
 ## Build and deploy
 
@@ -322,8 +377,6 @@ We use cloud functions to backup our database every night and only keep backup o
 - Manually create a storage bucket
 - Cloud function
 
-You can follow [this tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-automated-backups/) on how to create automated backups.
-
 TLDR:
 
 - Navigate to **Google Cloud Console** and choose your project
@@ -334,8 +387,6 @@ TLDR:
 ### Automated Restore with Cloud Functions
 
 This is called automated restore but we still need to manually trigger a cloud function that does the restore from the Google Cloud Console
-
-Follow this [tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
 TLDR:
 
@@ -381,13 +432,54 @@ firebase functions:config:set slack.webhook="YOUR SLACK WEBHOOK HERE"
 Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
 ```
 
+### Push audit log to slack channels
+
+We have added an integration with Slack, where a Slack user can subscribe to updates for an Organization, Department or Product.
+
+If you have already set up a Slack integration from the previous point with Slack request and Slack interactive, you can go to the Slack commands site and add a new Slack command. We use `/okr` as a Slack command. Find you app [here](https://api.slack.com/apps)
+
+The slash command requires a couple of variables:
+
+```
+Command: /okr
+Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/okrSlackBot
+Short Description: Subscribe to Org/Dep/Product
+Usage Hint: subscribe [org/dep/prod] slug
+```
+
+Firebase needs a couple of new configs as well. These are `slack.token` and `host_url`. The `host_url` is the URL of you okr-tracker site, for us, it is `https://okr.oslo.systems`, and the token is an OAuth token from you Slack App settings page, under the sub-page `OAuth & Permissions`, it is a Bot User OAuth Token.
+
+```
+firebase functions:config:set slack.token="YOUR SLACK OAUTH TOKEN HERE"
+firebase functions:config:set slack.host_url="HOST URL"
+```
+
 ## Supported providers
 
 OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
 
 ### Microsoft integration
+
 For the Microsoft-integration a TENANT must be specified as the environment-variable VITE_MICROSOFT_TENANT_ID.
 
 ### Google integration
+
 Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('oslo.kommune.no')) rejectAccess();`
 
+## Common problems
+
+If there are some problems running the project locally, or you get an infinite spinner: inspect the console in the browser, your terminal or `firebase-debug.log` file for error messages. Some common messages when firing up the project for the first time:
+
+1. "No such file or directory, scandir storage_export/metadata"
+   1. You need to create two directories under `mock_data/storage_export` - `blobs` and `metadata`
+2. It looks like you're trying to access functions.config().service_account but there is no value there
+   1. Check if you have set the config key for service_account correctly. Read the readme again and se how you need to cat the private-key file correctly
+3. Missing permissions required for functions deploy. You must have permission iam.serviceAccounts.ActAs on service account
+   1. Open the [Google Cloud Console](https://console.cloud.google.com/) (check that you are in the correct project).
+   2. Go to IAM & Admin -> Service Accounts
+   3. Find the service account and click on it
+   4. Click on the "Permissions" panel, then click `Grant Access`
+   5. Add your IAM member email address. For the role, select Service Accounts -> Service Account User
+   6. Click Save
+4. Cannot read property `bucket` of underfined
+   1. Set the config key `storage.bucket`. Please read the readme again

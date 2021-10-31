@@ -17,7 +17,10 @@
 </template>
 
 <script>
-import { scaleLinear, format, select } from 'd3';
+import { scaleLinear } from 'd3-scale';
+import { format } from 'd3-format';
+import { select } from 'd3-selection';
+import "d3-transition";
 
 export default {
   name: 'DashboardProgressBar',
@@ -96,8 +99,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
 .progress {
   display: grid;
   grid-gap: 0.15em;
@@ -117,7 +118,7 @@ export default {
   height: 1.7em;
   padding: 2px;
   background: rgba(white, 0.1);
-  border: 1px solid $color-bg;
+  border: 1px solid var(--color-bg);
   border-radius: 4px;
 }
 

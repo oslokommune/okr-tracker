@@ -24,6 +24,7 @@
             class="keyResult__input"
             type="number"
             step="any"
+            @input="changed = true"
           />
         </label>
 
@@ -31,7 +32,7 @@
       </form>
     </div>
 
-    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false"></modal>
+    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
   </div>
 </template>
 
@@ -62,6 +63,7 @@ export default {
   data: () => ({
     keyRow: null,
     isOpen: false,
+    changed: false,
   }),
 
   computed: {

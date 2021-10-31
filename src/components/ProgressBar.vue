@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { format } from 'd3';
+import { format } from 'd3-format';
 
 export default {
   name: 'ProgressBar',
@@ -26,14 +26,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .progression__container {
   position: relative;
   width: 100%;
   height: 4px;
   margin-right: 1rem;
-  background: $color-grey-100;
+  background: var(--color-grey-100);
 }
 
 .progression__bar {

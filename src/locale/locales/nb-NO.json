@@ -98,6 +98,7 @@
     "notFound": "Not found",
     "help": "Hjelp",
     "admin": "Admin",
+    "superAdmin": "Super admin",
     "dashboard": "Vis dashboard",
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",

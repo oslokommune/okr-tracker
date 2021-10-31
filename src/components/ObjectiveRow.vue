@@ -11,7 +11,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { format } from 'd3';
+import { format } from 'd3-format';
 
 export default {
   name: 'ObjectiveRow',

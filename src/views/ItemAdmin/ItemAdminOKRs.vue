@@ -356,8 +356,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .wrapper {
   width: 100%;
 
@@ -373,7 +371,7 @@ export default {
   align-self: flex-start;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(s)) {
     grid-template-columns: repeat(3, 1fr);
@@ -396,7 +394,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-left: 2px solid $color-grey-100;
+  border-left: 2px solid var(--color-grey-100);
 
   &:first-child {
     border-left: none;
@@ -413,8 +411,8 @@ export default {
 
 .miller__col-heading {
   padding: 0.5rem 0.75rem;
-  color: $color-grey-600;
-  border-bottom: 1px solid $color-grey-100;
+  color: var(--color-grey-600);
+  border-bottom: 1px solid var(--color-grey-100);
 }
 
 .miller__link {
@@ -423,12 +421,12 @@ export default {
   padding: 0.5rem 0.75rem;
   color: var(--color-text);
   text-decoration: none;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
 
   &.selected {
     color: var(--color-text);
     font-weight: 500;
-    background: $color-grey-50;
+    background: var(--color-grey-50);
   }
 
   &.active {
@@ -457,7 +455,7 @@ export default {
 
 .miller__add {
   margin-top: auto;
-  border-top: 1px solid $color-grey-100;
+  border-top: 1px solid var(--color-grey-100);
 }
 
 .miller__icon {
@@ -472,5 +470,25 @@ export default {
   margin-left: auto;
   padding-top: 0.2rem;
   padding-left: 0.5rem;
+}
+
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(l)) {
+    align-self: flex-start;
+    width: span(3, 0, span(10));
+    margin-top: 0;
+    margin-left: span(0, 1, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3, 0, span(10));
+    margin-left: span(1, 2, span(10));
+  }
 }
 </style>

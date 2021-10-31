@@ -72,8 +72,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../styles/_colors.scss';
-
 .access-requests__list {
   display: flex;
   flex-direction: column;
@@ -85,9 +83,9 @@ export default {
   flex-direction: column;
   margin-bottom: 0.5rem;
   padding: 1rem;
-  background: $color-green;
+  background: var(--color-green);
   border-radius: 3px;
-  box-shadow: 0 2px 3px rgba($color-grey-500, 0.5);
+  box-shadow: 0 2px 3px rgba(var(--color-grey-500-rgb), 0.5);
 }
 
 .access-requests__actions {

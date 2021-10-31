@@ -73,8 +73,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .breadcrumbs {
   position: sticky;
   top: 4rem;
@@ -127,7 +125,7 @@ export default {
   text-overflow: ellipsis;
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 
   &::after {

@@ -61,14 +61,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .widget {
   align-self: start;
   width: 100%;
   margin-bottom: 0.5rem;
   background: white;
-  border: 1px solid $color-grey-100;
+  border: 1px solid var(--color-grey-100);
 }
 
 .widget__header {

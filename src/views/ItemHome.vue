@@ -72,9 +72,7 @@ export default {
 
     tree() {
       return this.objectives.map((objective) => {
-        objective.keyResults = this.keyResults.filter((keyRes) => {
-          return keyRes.objective === `objectives/${objective.id}`;
-        });
+        objective.keyResults = this.keyResults.filter((keyRes) => keyRes.objective === `objectives/${objective.id}`);
         return objective;
       });
     },
@@ -106,7 +104,8 @@ export default {
   margin-bottom: 1.5rem;
 }
 
-.itemHome__tree--item {
+.itemHome__tree--item,
+.group {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
@@ -117,6 +116,14 @@ export default {
 .aside--left {
   display: none;
   margin-top: 0.5rem;
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(3);
+  }
+}
+
+.keyResultRow {
+  border-top: 1px solid var(--color-grey-100);
 
   @media screen and (min-width: bp(m)) {
     display: block;

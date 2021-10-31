@@ -1,4 +1,5 @@
-import { scaleTime, scaleLinear, mean } from 'd3';
+import { scaleTime, scaleLinear } from 'd3-scale';
+import { mean } from 'd3-array';
 
 export function getTimeProgression(period) {
   if (!period) return -1;

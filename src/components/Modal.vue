@@ -19,14 +19,14 @@
 
           <label>
             <span class="title-3">{{ $t('keyres.addComment') }}</span>
-            <textarea v-model="note" class="modal__textarea" rows="3" />
+            <textarea v-model="note" class="modal__textarea" rows="3" @input="edit"/>
           </label>
 
           <div class="modal__main--flex">
             <validation-provider v-slot="{ errors }" name="value" rules="required">
               <label class="form-group modal__main--input-label">
                 <span class="form-label">{{ $t('keyres.newValue') }}</span>
-                <input v-model="value" class="form__field modal__main--input-value" type="number" step="any" />
+                <input v-model="value" class="form__field modal__main--input-value" type="number" step="any" @input="edit"/>
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>
@@ -40,6 +40,7 @@
                   class="form-control"
                   name="date"
                   :placeholder="$t('keyres.chooseDate')"
+                  @input="edit"
                 />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
@@ -52,7 +53,7 @@
         </form>
       </validation-observer>
       <div class="modal__footer">
-        <button form="modal" :disabled="loading" class="btn btn--pri">{{ $t('btn.save') }}</button>
+        <button form="modal" :disabled="loading || (!changes && !unsavedValues)" class="btn btn--pri">{{ $t('btn.save') }}</button>
         <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>
@@ -75,6 +76,10 @@ export default {
       type: Object,
       required: true,
     },
+    unsavedValues: {
+      type: Boolean,
+      required: false
+    }
   },
 
   data: () => ({
@@ -92,6 +97,7 @@ export default {
     note: '',
     value: 0,
     loading: false,
+    changes: false
   }),
 
   watch: {
@@ -104,6 +110,10 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
+
     close() {
       this.$emit('close');
     },
@@ -121,6 +131,7 @@ export default {
         this.$toasted.error(this.$t('toaster.error.progression'));
       }
       this.loading = false;
+      this.changes = false;
       this.$emit('close');
     },
   },
@@ -128,8 +139,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .modal__textarea {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
