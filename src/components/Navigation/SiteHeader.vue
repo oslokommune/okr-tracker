@@ -2,20 +2,23 @@
   <header class="header">
     <div class="container">
       <a
-        href=""
+        href="#"
         role="menuitem"
         class="header__navbutton"
         :class="{ 'is-open': sidebarOpen }"
         aria-expanded="false"
         data-th-aria-label="${portal.localize({'_key=aria.openMenu'})}"
-        @click.prevent="sidebarOpen = !sidebarOpen"
+        @click.stop="sidebarOpen = !sidebarOpen"
       >
-        <div class="header__navicon" role="presentation"><span></span> <span></span> <span></span> <span></span></div>
+        <div class="header__navicon" role="presentation">
+          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+        </div>
       </a>
-      <div :class="{ overlay: sidebarOpen }"></div>
-      <div class="section drawer" :class="{ 'is-open': sidebarOpen }">
+      <div class="drawer" v-click-outside="hideSidebar" :class="{ 'is-open': sidebarOpen }">
         <sidebar-navigation></sidebar-navigation>
       </div>
+      <div v-if="sidebarOpen" class="overlay"></div>
       <router-link :to="{ name: 'Home' }" class="logo">
         <oslo-logo class="logo__img" />
       </router-link>
@@ -105,10 +108,16 @@ export default {
     ClickOutside,
   },
 
-  data: () => ({
-    showUserMenu: false,
-    sidebarOpen: false,
-  }),
+  data() {
+    return {
+      showUserMenu: false,
+      sidebarOpen: false,
+      vcoConfig: {
+        handler: this.hideSidebar,
+        middleware: this.sidebarMiddleware,
+      },
+    };
+  },
 
   metaInfo() {
     return {
@@ -153,6 +162,19 @@ export default {
 
   methods: {
     ...mapActions(['reset_state']),
+
+    hideSidebar(e) {
+      this.sidebarOpen = false;
+    },
+
+    sidebarMiddleware(e) {
+      console.log(e);
+      return true;
+    },
+
+    showSidebar() {
+      this.sidebarOpen = true;
+    },
 
     hideUserMenu() {
       this.showUserMenu = false;
@@ -377,10 +399,10 @@ $header-height: 4em;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 150;
+  z-index: 200;
   width: 90%;
   max-width: 400px;
-  height: 100vh;
+  height: 100%;
   padding: 3em;
   overflow-x: hidden;
   overflow-y: auto;

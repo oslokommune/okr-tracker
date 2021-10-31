@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
-import { auth } from "@/config/firebaseConfig";
+import { mapActions, mapGetters, mapState } from 'vuex';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'WidgetAdmin',
@@ -88,12 +88,11 @@ export default {
       await auth.signOut();
       await this.reset_state();
     },
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
 @import '@/styles/typography.scss';
 
 .admin__list {
@@ -125,14 +124,14 @@ export default {
   padding: 0.2rem;
 
   &:hover {
-    background: rgba($color-grey-500, 0.1);
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 }
 
 .admin__title {
   margin-top: 1rem;
   padding: 0.2rem;
-  color: $color-grey-300;
+  color: var(--color-grey-300);
   font-weight: 500;
   font-size: $font-size-2;
   letter-spacing: -0.03rem;
