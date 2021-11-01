@@ -11,8 +11,7 @@
 @use 'alerts';
 
 @use 'griddle-overrides' as *;
-@use '~@braid/griddle/scss/griddle' as *;
-@use '~@braid/griddle/scss/griddle-overlay' as *;
+@use 'griddle/griddle-overlay' as *;
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);

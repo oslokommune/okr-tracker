@@ -4,12 +4,12 @@
     <Breadcrumbs></Breadcrumbs>
     <spinner v-if="loading"></spinner>
     <router-view v-else></router-view>
-    <Griddle />
+    <vue-griddle />
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
 import { auth } from '@/config/firebaseConfig';
 
