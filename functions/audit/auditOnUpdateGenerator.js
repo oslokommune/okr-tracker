@@ -1,19 +1,21 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const config = require('../config');
+import { getFirestore } from 'firebase-admin/firestore';
+import functions from 'firebase-functions';
+import config from '../config.js';
 
-const { checkIfRelevantToPushToSlack } = require('./helpers');
+import { checkIfRelevantToPushToSlack } from './helpers.js';
 
 const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 
-const db = admin.firestore();
-
-exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, documentType }) {
-  return functions
+const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }) =>
+  functions
     .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
     .onUpdate(async ({ before, after }, context) => {
+      const db = getFirestore();
+
+      const collection = await db.collection(collectionRef);
+
       let event;
       const diff = getDiff({ before, after }, fields);
 
@@ -34,7 +36,7 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
       const user = await (async () => {
         try {
           if ('progression' in diff) {
-            return getProgressionCreator(collectionRef.doc(documentId));
+            return getProgressionCreator(collection.doc(documentId));
           }
           return after.data().editedBy;
         } catch {
@@ -42,11 +44,10 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
         }
       })();
 
-
       const auditData = {
         event,
         timestamp: new Date(),
-        documentRef: collectionRef.doc(documentId),
+        documentRef: collection.doc(documentId),
         user: user || 'system',
         diff,
       };
@@ -57,7 +58,6 @@ exports.auditOnUpdateGenerator = function ({ docPath, fields, collectionRef, doc
 
       return db.collection('audit').add(auditData);
     });
-};
 
 function getProgressionCreator(document) {
   try {
@@ -96,3 +96,5 @@ function getDiff({ before, after }, keys) {
 
   return diff;
 }
+
+export default auditOnUpdateGenerator;

@@ -1,4 +1,4 @@
-const createFirstMessage = (email, id) => ({
+export const createFirstMessage = (email, id) => ({
   blocks: [
     {
       type: 'section',
@@ -45,7 +45,7 @@ const createFirstMessage = (email, id) => ({
   ],
 });
 
-const acceptMessage = (email, user) => ({
+export const acceptMessage = (email, user) => ({
   blocks: [
     {
       type: 'section',
@@ -64,7 +64,7 @@ const acceptMessage = (email, user) => ({
   ],
 });
 
-const rejectMessage = (email, user) => ({
+export const rejectMessage = (email, user) => ({
   blocks: [
     {
       type: 'section',
@@ -82,7 +82,3 @@ const rejectMessage = (email, user) => ({
     },
   ],
 });
-
-exports.createFirstMessage = createFirstMessage;
-exports.acceptMessage = acceptMessage;
-exports.rejectMessage = rejectMessage;

@@ -1,27 +1,28 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const config = require('../config');
+import { getFirestore } from 'firebase-admin/firestore';
+import functions from 'firebase-functions';
+import config from '../config.js';
+import { pushToSlack, colors, slackMessageCreated } from './helpers.js';
 
 const environment = functions.config();
 const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 const { host_url: HOST_URL } = environment.slack;
 
-const { pushToSlack, colors, slackMessageCreated } = require('./helpers');
-
-const db = admin.firestore();
-
-exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentType }) {
-  return functions
+const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
+  functions
     .runWith(config.runtimeOpts)
     .region(config.region)
     .firestore.document(docPath)
     .onCreate(async (snapshot, context) => {
+      const db = getFirestore();
+
+      const collection = await db.collection(collectionRef);
+
       const { documentId } = context.params;
 
       const auditData = {
         event: `${documentType}Created`,
         timestamp: new Date(),
-        documentRef: collectionRef.doc(documentId),
+        documentRef: collection.doc(documentId),
       };
 
       const documentData = snapshot.data();
@@ -41,8 +42,6 @@ exports.auditOnCreateGenerator = function ({ docPath, collectionRef, documentTyp
 
       return db.collection('audit').add(auditData);
     });
-};
-
 
 /**
  * Check if the audit log is relevant to push to slack channels
@@ -84,3 +83,5 @@ const checkIfRelevantToPushToSlack = async (auditData, documentType) => {
 
   return true;
 };
+
+export default auditOnCreateGenerator;

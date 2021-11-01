@@ -15,7 +15,7 @@
     </div>
     <div v-if="kpis.length" class="kpis">
       <div v-for="kpi in kpis" :key="kpi.id" :class="{ 'kpi--error': !!kpi.error }">
-        <ItemAdminKPI :kpi="kpi"/>
+        <ItemAdminKPI :kpi="kpi" />
       </div>
     </div>
 
@@ -84,5 +84,4 @@ export default {
     box-shadow: 0 0 2px 3px rgba(var(--color-red-rgb), 0.4);
   }
 }
-
 </style>

@@ -1,5 +1,5 @@
-const functions = require('firebase-functions');
-const { google } = require('googleapis');
+import functions from 'firebase-functions';
+import { google } from 'googleapis';
 
 const scopes = ['https://www.googleapis.com/auth/spreadsheets'];
 const sheetsEmail = process.env.SHEETS_EMAIL || functions.config().service_account.client_email;
@@ -21,7 +21,7 @@ jwtClient.authorize((err) => {
  * @param {String} cell - Cell name of value
  * @returns {Number} - Value of the cell
  */
-module.exports = async function getSheetsData({ sheetId, sheetName, sheetCell }) {
+const getSheetsData = async ({ sheetId, sheetName, sheetCell }) => {
   const sheets = google.sheets('v4');
   if (!sheetId || !sheetName || !sheetCell) return false;
 
@@ -47,3 +47,5 @@ module.exports = async function getSheetsData({ sheetId, sheetName, sheetCell })
       throw err;
     });
 };
+
+export default getSheetsData;

@@ -16,7 +16,7 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('keyres.description') }}</span>
-          <input v-model="keyResult.description" class="form__field" type="text" @input="edit"/>
+          <input v-model="keyResult.description" class="form__field" type="text" @input="edit" />
         </label>
 
         <validation-provider v-slot="{ errors }" rules="required" name="objective">
@@ -87,7 +87,7 @@
             <i v-tooltip="$t('keyres.api.tooltip')" class="icon fa fa-info-circle" />
           </span>
           <label class="toggle">
-            <input v-model="keyResult.api" class="toggle__input" type="checkbox" @edited-data="edit"/>
+            <input v-model="keyResult.api" class="toggle__input" type="checkbox" @edited-data="edit" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -95,7 +95,7 @@
         <div class="toggle__container">
           <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
           <label class="toggle">
-            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" @edited-data="edit"/>
+            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" @edited-data="edit" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -220,7 +220,7 @@ export default {
     changedObjective: false,
     loading: false,
     loadingConnection: false,
-    changes: false
+    changes: false,
   }),
 
   watch: {
@@ -339,7 +339,7 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false
+      this.changes = false;
     },
 
     async testConnection() {

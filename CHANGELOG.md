@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- Rewritten all the Cloud Functions to es modules - we can now write more future-proof code.
+- Updated all dependencies of Cloud Functions
+
+### Fixed
+
+- Not allowed to update Period if you only changed the name.
 - Showing loading spinner when fetching KPI/KeyResult progress
 - Moved widgets around for a better UX experience for mobile users
 

@@ -12,6 +12,7 @@
           rules="required"
           type="text"
           data-cy="period_name"
+          @edited-data="edit"
         />
 
         <validation-provider v-slot="{ errors }" name="range">
@@ -83,7 +84,7 @@ export default {
     },
     range: null,
     loading: false,
-    changes: false
+    changes: false,
   }),
 
   watch: {
@@ -103,11 +104,14 @@ export default {
       const [startDate, endDate] = parts;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
-      this.changes = true
+      this.changes = true;
     },
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     generateRange() {
       if (!this.activePeriod.startDate || !this.activePeriod.endDate) return '';
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
@@ -131,7 +135,7 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false
+      this.changes = false;
     },
 
     async restore() {
@@ -169,7 +173,7 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false
+      this.changes = false;
     },
   },
 };
