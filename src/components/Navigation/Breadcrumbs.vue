@@ -99,6 +99,24 @@ export default {
   @media screen and (min-width: bp(xl)) {
     margin-left: span(3, 1);
   }
+
+  @for $c from 1 through 6 {
+    &[data-count='#{$c}'] .breadcrumbs__link {
+      max-width: #{24 - ($c * 3)}rem;
+
+      @media screen and (min-width: bp(s)) {
+        max-width: #{26 - ($c * 3)}rem;
+      }
+
+      @media screen and (min-width: bp(m)) {
+        max-width: #{28 - ($c * 3)}rem;
+      }
+
+      @media screen and (min-width: bp(l)) {
+        max-width: #{32 - ($c * 2.5)}rem;
+      }
+    }
+  }
 }
 
 .breadcrumbs__item {
@@ -141,25 +159,5 @@ export default {
 
 .breadcrumbs__icon {
   margin-right: 0.25rem;
-}
-
-.breadcrumbs__list {
-  @for $c from 1 through 6 {
-    &[data-count='#{$c}'] .breadcrumbs__link {
-      max-width: #{24 - ($c * 3)}rem;
-
-      @media screen and (min-width: bp(s)) {
-        max-width: #{26 - ($c * 3)}rem;
-      }
-
-      @media screen and (min-width: bp(m)) {
-        max-width: #{28 - ($c * 3)}rem;
-      }
-
-      @media screen and (min-width: bp(l)) {
-        max-width: #{32 - ($c * 2.5)}rem;
-      }
-    }
-  }
 }
 </style>

@@ -13,7 +13,7 @@
           v-tooltip.right="$t('tooltip.navigateToItem', { item: activeItem.name })"
           class="tab--right"
         >
-          <router-link class="tab" :to="{ name: 'ItemHome' }" exact>
+          <router-link class="tab" :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }" exact>
             <i class="tab__icon fa fa-arrow-right" />
             <span class="tab__name">{{ activeItem.name }}</span>
           </router-link>
