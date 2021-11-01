@@ -17,7 +17,7 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <input v-model="objective.description" class="form__field" type="text" @input="edit"/>
+          <input v-model="objective.description" class="form__field" type="text" @input="edit" />
         </label>
 
         <form-component
@@ -199,8 +199,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/styles/_colors.scss';
-
 .selected-icon {
   display: inline-block;
   margin-right: 0.5rem;
@@ -211,7 +209,7 @@ export default {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

@@ -32,7 +32,7 @@
         <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
           <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
             <objective-row :objective="objective" :index="++index"></objective-row>
-            <ul v-if="objective.keyResults" class="group">
+            <ul v-if="objective.keyResults">
               <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
                 <key-result-row :key-result="keyResult"></key-result-row>
               </li>
@@ -104,7 +104,7 @@ export default {
   margin-bottom: 1.5rem;
 }
 
-.group {
+.itemHome__tree--item {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
