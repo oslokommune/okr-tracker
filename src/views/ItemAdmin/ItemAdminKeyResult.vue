@@ -4,7 +4,7 @@
     <archived-restore v-if="keyResult.archived" :delete-deep="deleteDeep" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
-      <form id="update-keyresult" @submit.prevent="handleSubmit(update)">
+      <form id="update-keyResult" @submit.prevent="handleSubmit(update)">
         <form-component
           v-model="keyResult.name"
           input-type="input"
@@ -16,13 +16,13 @@
         />
 
         <label class="form-group">
-          <span class="form-label">{{ $t('keyres.description') }}</span>
+          <span class="form-label">{{ $t('keyResult.description') }}</span>
           <input v-model="keyResult.description" class="form__field" type="text" @input="edit" />
         </label>
 
         <validation-provider v-slot="{ errors }" rules="required" name="objective">
           <label class="form-group">
-            <span class="form-label">{{ $t('keyres.objective') }}</span>
+            <span class="form-label">{{ $t('keyResult.objective') }}</span>
             <v-select
               v-model="keyResult.objective"
               label="name"
@@ -44,7 +44,7 @@
           v-model="keyResult.unit"
           input-type="input"
           name="unit"
-          :label="$t('keyres.unit')"
+          :label="$t('keyResult.unit')"
           rules="required|max:25"
           type="text"
           @edited-data="edit"
@@ -55,7 +55,7 @@
             v-model.number="keyResult.startValue"
             input-type="input"
             name="startValue"
-            :label="$t('keyres.startValue')"
+            :label="$t('keyResult.startValue')"
             rules="required"
             type="number"
             @edited-data="edit"
@@ -65,7 +65,7 @@
             v-model.number="keyResult.targetValue"
             input-type="input"
             name="targetValue"
-            :label="$t('keyres.targetValue')"
+            :label="$t('keyResult.targetValue')"
             rules="required"
             type="number"
             @edited-data="edit"
@@ -75,7 +75,7 @@
             v-model.number="keyResult.weight"
             input-type="input"
             name="weight"
-            :label="$t('keyres.weight')"
+            :label="$t('keyResult.weight')"
             rules="required|decimal|positiveNotZero"
             type="text"
             @edited-data="edit"
@@ -84,8 +84,8 @@
 
         <div class="toggle__container">
           <span class="toggle__label">
-            {{ $t('keyres.api.radio') }}
-            <i v-tooltip="$t('keyres.api.tooltip')" class="icon fa fa-info-circle" />
+            {{ $t('keyResult.api.radio') }}
+            <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
           </span>
           <label class="toggle">
             <input v-model="keyResult.api" class="toggle__input" type="checkbox" @edited-data="edit" />
@@ -94,7 +94,7 @@
         </div>
 
         <div class="toggle__container">
-          <span class="toggle__label">{{ $t('keyres.automation.header') }}</span>
+          <span class="toggle__label">{{ $t('keyResult.automation.header') }}</span>
           <label class="toggle">
             <input v-model="keyResult.auto" class="toggle__input" type="checkbox" @edited-data="edit" />
             <span class="toggle__switch"></span>
@@ -102,17 +102,17 @@
         </div>
 
         <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
-          {{ $t('keyres.apiAndKeyRes') }}
+          {{ $t('keyResult.apiAndKeyRes') }}
         </div>
 
         <div v-if="keyResult.auto">
           <p>
-            <router-link :to="{ name: 'Help' }">{{ $t('keyres.automation.readMore') }}</router-link>
+            <router-link :to="{ name: 'Help' }">{{ $t('keyResult.automation.readMore') }}</router-link>
           </p>
 
           <form-component
             v-model="keyResult.sheetId"
-            :label="$t('keyres.automation.googleSheetId')"
+            :label="$t('keyResult.automation.googleSheetId')"
             :rules="`${keyResult.auto ? 'required' : ''}`"
             input-type="input"
             name="sheetId"
@@ -120,13 +120,13 @@
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
             </template>
           </form-component>
 
           <form-component
             v-model="keyResult.sheetName"
-            :label="$t('keyres.automation.sheetsTab')"
+            :label="$t('keyResult.automation.sheetsTab')"
             :rules="`${keyResult.auto ? 'required' : ''}`"
             input-type="input"
             name="sheetTab"
@@ -134,13 +134,13 @@
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help">{{ $t('keyres.automation.sheetsTabHelp') }}</span>
+              <span class="form-help">{{ $t('keyResult.automation.sheetsTabHelp') }}</span>
             </template>
           </form-component>
 
           <form-component
             v-model="keyResult.sheetCell"
-            :label="$t('keyres.automation.sheetsCell')"
+            :label="$t('keyResult.automation.sheetsCell')"
             :rules="`${keyResult.auto ? 'required' : ''}`"
             input-type="input"
             name="sheetCell"
@@ -148,7 +148,7 @@
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help">{{ $t('keyres.automation.sheetsCellHelp') }}</span>
+              <span class="form-help">{{ $t('keyResult.automation.sheetsCellHelp') }}</span>
             </template>
           </form-component>
 
@@ -166,7 +166,7 @@
               OK
             </div>
             <button class="btn validation-check" type="button" @click="testConnection">
-              {{ $t('keyres.automation.testConnection') }}
+              {{ $t('keyResult.automation.testConnection') }}
             </button>
           </div>
         </div>
@@ -180,7 +180,7 @@
     </label>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-keyresult" :disabled="loading || !changes">
+      <button class="btn btn--icon btn--pri" form="update-keyResult" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>

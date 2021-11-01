@@ -61,7 +61,7 @@
                 type="text"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+                  <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
                 </template>
               </form-component>
 
@@ -74,7 +74,7 @@
                 type="text"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+                  <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
                 </template>
               </form-component>
 
@@ -87,7 +87,7 @@
                 type="text"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+                  <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
                 </template>
               </form-component>
             </template>

@@ -72,7 +72,7 @@ export default {
   },
 
   props: {
-    keyres: {
+    keyResult: {
       type: Object,
       required: true,
     },
@@ -101,10 +101,10 @@ export default {
   }),
 
   watch: {
-    keyres: {
+    keyResult: {
       immediate: true,
       async handler() {
-        this.value = this.keyres.currentValue || this.keyres.startValue || 0;
+        this.value = this.keyResult.currentValue || this.keyResult.startValue || 0;
       },
     },
   },
@@ -121,7 +121,7 @@ export default {
     async saveProgress() {
       this.loading = true;
       try {
-        await Progress.create(this.keyres.id, {
+        await Progress.create(this.keyResult.id, {
           value: +this.value,
           comment: this.note,
           timestamp: new Date(this.date),
