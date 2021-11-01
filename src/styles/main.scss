@@ -1,5 +1,4 @@
 @use 'reset';
-@use 'colors';
 @use 'fonts';
 @use 'typography';
 @use 'buttons';
@@ -13,7 +12,11 @@
 
 @use 'griddle-overrides' as *;
 @use '~@braid/griddle/scss/griddle' as *;
-@use '~@braid/griddle/scss/griddle-overlay.scss' as *;
+@use '~@braid/griddle/scss/griddle-overlay' as *;
+
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
 
 html,
 body {
@@ -51,7 +54,7 @@ body.using-mouse :focus {
 }
 
 *:focus {
-  outline: 2px solid colors.$color-link;
+  outline: 2px solid var(--color-link);
 }
 
 .toast {
@@ -63,7 +66,7 @@ body.using-mouse :focus {
 .md table {
   width: 100%;
   margin: 2rem 0 1rem;
-  border-bottom: 1px solid colors.$color-border;
+  border-bottom: 1px solid var(--color-border);
 
   th {
     font-weight: 500;
@@ -81,14 +84,14 @@ body.using-mouse :focus {
     padding: 0 0.5rem;
     text-align: left;
     vertical-align: middle;
-    border-top: 1px solid colors.$color-border;
+    border-top: 1px solid var(--color-border);
   }
 }
 
 hr {
   height: 1px;
   margin: 1rem 0;
-  background: colors.$color-grey-100;
+  background: var(--color-grey-100);
   border: none;
 }
 
@@ -98,32 +101,26 @@ hr {
   padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
-    width: span(9, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, span(10));
+    width: span(6);
+    margin-right: span(0, 1);
+    margin-left: span(0, 1);
   }
 }
 
 .aside {
-  position: relative;
   width: span(12);
   margin-top: 0.5rem;
 
   @media screen and (min-width: bp(m)) {
-    width: span(9, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, span(10));
-    margin-left: span(0, span(10));
+    width: span(3);
   }
 }
 
-.flex-container {
+.container {
+  @include container();
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 :root {
@@ -159,7 +156,7 @@ hr {
   --color-green-dark-2: #023834;
   --color-green-light: #c7f6c9;
 
-  --color-bg: #f9f9fa;
+  --color-bg: #f5f5f5;
   --color-border: #dae3e5;
 
   --color-grey-50: #f7f7f7;
@@ -174,6 +171,23 @@ hr {
   --color-grey-900: #0e0e1a;
 
   --color-link: #0075eb;
+
+  // Colors in RGB value - add more if needed. SCSS rgba() function can read hex numbers with CSS Variables
+  --color-red-rgb: #{hexToRGB(#ff8174)};
+  --color-red-dark-rgb: #{hexToRGB(#5b0800)};
+  --color-green-rgb: #{hexToRGB(#43f8b6)};
+  --color-green-dark-rgb: #{hexToRGB(#034b45)};
+  --color-yellow-rgb: #{hexToRGB(#f8c66b)};
+  --color-yellow-dark-rgb: #{hexToRGB(#ba944fff)};
+  --color-brue-rgb:  #{hexToRGB(#6ee9ff)};
+  --color-purple-rgb: #{hexToRGB(#292858)};
+  --color-purple-dark-rgb: #{hexToRGB(#1f1e43)};
+
+  --color-border-rgb: #{hexToRGB(#dae3e5)};
+  --color-grey-100-rgb: #{hexToRGB(#e1e1e6)};
+  --color-grey-400-rgb: #{hexToRGB(#939399)};
+  --color-grey-500-rgb: #{hexToRGB(#797980)};
+  --color-grey-800-rgb: #{hexToRGB(#242433)};
 }
 
 [data-theme='green'] {

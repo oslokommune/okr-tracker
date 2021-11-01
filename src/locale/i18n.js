@@ -6,8 +6,8 @@ import en from './locales/en-US.json';
 Vue.use(VueI18n);
 
 const i18n = new VueI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en-US',
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en-US',
+  locale: import.meta.env.VITE_I18N_LOCALE || 'en-US',
+  fallbackLocale: import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en-US',
   messages: {
     'nb-NO': nb,
     'en-US': en,

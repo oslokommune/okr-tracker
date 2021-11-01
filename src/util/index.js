@@ -1,8 +1,13 @@
-export const capitalizeFirstLetterOfNames = (names) =>
-  names
-    .toLowerCase()
-    .split(' ')
-    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
-
 export { default as api } from './axios';
+export { dateLong } from './format';
+export { dateShort } from './format';
+export { dateTimeShort } from './format';
+export { dateTimeLong } from './format';
+export { periodDates } from './format';
+export { parseDate } from './format';
+export { formatISOShort } from './format';
+export { numberLocale } from './format';
+export { default as findSlugAndRedirect } from './findSlugAndRedirect';
+export { default as tableOfContent } from './tableOfContent';
+export { default as toastArchiveAndRevert } from './toastUtils';
+export { default as validateEmail } from './validateEmail';

@@ -11,8 +11,8 @@
     right: 0;
     bottom: 4px;
     left: 0;
-    height: 1px;
-    background: var(--color-grey-700);
+    height: 2px;
+    background: var(--color-black);
     content: '';
   }
 
@@ -48,9 +48,18 @@
   border-bottom: 2px solid transparent;
   cursor: pointer;
 
+  &::after {
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    left: 0;
+    height: 1px;
+    content: '';
+  }
+
   &.active {
-    color: var(--color-grey-900);
-    background-color: var(--color-secondary)
+    color: var(--color-text-secondary);
+    background-color: var(--color-primary);
   }
 }
 
@@ -61,7 +70,7 @@
 .tab__icon {
   display: none !important;
   margin-right: 0.35rem;
-  color: var(--color-grey-700);
+  color: var(--color-text-secondary);
 
   @media screen and (min-width: bp(s)) {
     display: inline !important;

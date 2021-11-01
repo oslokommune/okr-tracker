@@ -12,11 +12,12 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
+          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <input v-model="objective.description" class="form__field" type="text" />
+          <input v-model="objective.description" class="form__field" type="text" @input="edit" />
         </label>
 
         <form-component
@@ -26,11 +27,12 @@
           :label="$t('fields.weight')"
           rules="required|decimal|positiveNotZero"
           type="text"
+          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select v-model="objective.icon" class="form-field" :options="icons" @input="dirty = true">
+          <v-select v-model="objective.icon" class="form-field" :options="icons" @input="edit">
             <template #selected-option="{ label }">
               <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
               {{ label }}
@@ -52,6 +54,7 @@
               :options="periods"
               :clearable="false"
               @input="changedPeriod = true"
+              @edited-data="edit"
             >
               <template #option="option"> {{ option.name }} </template>
             </v-select>
@@ -62,10 +65,15 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading || !changes">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button v-if="!objective.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
+      <button
+        v-if="!objective.archived"
+        class="btn btn--icon btn--danger btn--icon-pri"
+        :disabled="loading"
+        @click="archive"
+      >
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -76,7 +84,7 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminObjective',
@@ -97,6 +105,7 @@ export default {
     periods: [],
     changedPeriod: false,
     loading: false,
+    changes: false,
     icons,
     isLoadingDetails: false,
   }),
@@ -119,6 +128,9 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     async update() {
       this.loading = true;
       try {
@@ -144,6 +156,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
     async archive() {
       this.loading = true;
@@ -159,6 +172,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
 
     async restore() {
@@ -185,8 +199,6 @@ export default {
 </script>
 
 <style lang="scss">
-@use '@/styles/colors';
-
 .selected-icon {
   display: inline-block;
   margin-right: 0.5rem;
@@ -197,7 +209,7 @@ export default {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

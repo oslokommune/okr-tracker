@@ -1,20 +1,16 @@
 /* eslint-disable camelcase */
-const functions = require('firebase-functions');
-const { IncomingWebhook } = require('@slack/webhook');
-const firebaseAdmin = require('firebase-admin');
+import functions from 'firebase-functions';
+import { IncomingWebhook } from '@slack/webhook';
+import { getFirestore } from 'firebase-admin/firestore';
 
-const { createFirstMessage, acceptMessage, rejectMessage } = require('./createSlackMessage');
-const { preferences } = require('../util/defaultPreferences');
+import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage.js';
+import preferences from '../util/defaultPreferences.js';
 
 const environment = functions.config();
 
-const db = firebaseAdmin.firestore();
-const requestAccessCollection = db.collection('requestAccess');
-const usersCollection = db.collection('users');
-
-async function handleSlackRequest(document) {
+export const handleSlackRequest = async (document) => {
   // Make a webhook connection for channel
-  const webhook = new IncomingWebhook(environment.slack.deploymentwebhook);
+  const webhook = new IncomingWebhook(environment.slack.webhook);
 
   const { id } = document;
   const { email } = document.data();
@@ -29,9 +25,11 @@ async function handleSlackRequest(document) {
   } catch (e) {
     throw new Error(e.message);
   }
-}
+};
 
-async function handleSlackInteractive(req) {
+export const handleSlackInteractive = async (req) => {
+  const db = getFirestore();
+
   // Parse the payload
   const payload = JSON.parse(req.body.payload);
 
@@ -46,9 +44,9 @@ async function handleSlackInteractive(req) {
 
   // Check which type of action the user sends from slack
   if (action_id === 'accept') {
-    await handleAcceptRequest(webhookReturn, value, user.username);
+    await handleAcceptRequest(webhookReturn, value, user.username, db);
   } else if (action_id === 'reject') {
-    await handleRejectRequest(webhookReturn, value, user.username);
+    await handleRejectRequest(webhookReturn, value, user.username, db);
   } else if (action_id === 'ignore') {
     // Delete a message from slack channel
     await webhookReturn.send({
@@ -60,10 +58,13 @@ async function handleSlackInteractive(req) {
   }
 
   return true;
-}
+};
 
-const handleAcceptRequest = async (webhook, value, user) => {
+const handleAcceptRequest = async (webhook, value, user, db) => {
   try {
+    const usersCollection = await db.collection('users');
+    const requestAccessCollection = await db.collection('requestAccess');
+
     // Get the email from the id
     const { email } = await requestAccessCollection
       .doc(value)
@@ -93,8 +94,10 @@ const handleAcceptRequest = async (webhook, value, user) => {
   return true;
 };
 
-const handleRejectRequest = async (webhook, value, user) => {
+const handleRejectRequest = async (webhook, value, user, db) => {
   try {
+    const requestAccessCollection = await db.collection('requestAccess');
+
     // Find email from the user id
     const { email } = await requestAccessCollection
       .doc(value)
@@ -110,6 +113,3 @@ const handleRejectRequest = async (webhook, value, user) => {
     throw new Error(e.message);
   }
 };
-
-exports.handleSlackRequest = handleSlackRequest;
-exports.handleSlackInteractive = handleSlackInteractive;

@@ -8,7 +8,8 @@
       "blue": "Blå",
       "green": "Grønn"
     },
-    "toggle": "Skift fargetema: {mode}"
+    "toggle": "Skift fargetema: {mode}",
+    "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {
     "add": "Legg til KPI",
@@ -54,7 +55,7 @@
     "organization": "Organisasjon",
     "date": "Dato",
     "password": "Passord",
-    "secret": "API nøkkel"
+    "secret": "API Hemmelighet"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -88,7 +89,7 @@
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
-    "OKRsLong": "Mål og nøkkelresulater",
+    "OKRsLong": "Mål og nøkkelresultater",
     "KPIs": "KPI-er",
     "team": "Team",
     "project": "OKR",
@@ -97,6 +98,7 @@
     "notFound": "Not found",
     "help": "Hjelp",
     "admin": "Admin",
+    "superAdmin": "Super admin",
     "dashboard": "Vis dashboard",
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
@@ -108,8 +110,11 @@
     "teamMembers": "Team-medlemmer",
     "users": "Brukere",
     "home": "Hjem",
-    "keyresults": "Nøkkelresultater",
-    "success": "Suksess"
+    "keyResults": "Nøkkelresultater",
+    "success": "Suksess",
+    "objective": "Mål",
+    "keyResult": "Nøkkelresultat",
+    "period": "Periode"
   },
   "btn": {
     "close": "Lukk",
@@ -142,14 +147,14 @@
     "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "with": "Logg inn med {provider} bruker",
+    "microsoft": "Logg inn med Microsoft",
     "google": "Logg inn med Google",
-    "keycloak": "Logg inn med Keycloak",
     "email": "E-post",
     "password": "Passord",
     "loading": "Logger deg inn, vennligst vent",
     "error": {
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
-      "googleError": "Klarte ikke å logge inn med google. Kontakt systemadministrator hvis feilen vedvarer.",
+      "providerError": "Klarte ikke å logge inn. Kontakt systemadministrator hvis feilen vedvarer.",
       "wrongPassword": "Passordet er feil.",
       "userNotFound": "Kunne ikke finne bruker"
     },
@@ -160,21 +165,22 @@
     "reasons": {
       "internal": "Det oppstod en intern feil når du prøvde å logge deg på. Vennligst prøv å logg inn på nytt. Kontakt administratoren hvis problemet vedvarer.",
       "permission-denied": "Kontoen du prøvde å logge på med oppfyller ikke de nødvendige tillatelsene for å få tilgang til nettstedet. Kontakt administratoren for å få de riktige tillatelsene.",
-      "email-in-use": "E-posten du prøve å logge på med er allerede i bruk. Kontakt administratoren for ytterligere hjelp.",
-      "default": "Noe gikk galt med innloggingen din. Vennligst ta kontakt med administratoren og henvis til url-en din."
+      "email-in-use": "E-posten du prøvde å logge på med er allerede i bruk. Kontakt administratoren for ytterligere hjelp.",
+      "default": "Noe gikk galt med innloggingen din. Vennligst ta kontakt med administratoren og henvis til url-en din.",
+      "email-not-whitelisted": "E-posten du prøvde å logge på med er ikke hvitelistet for tilgang til hjemmesiden. Kontakt administratoren for ytterligere hjelp."
     }
   },
   "toaster": {
     "welcome": "Velkommen {user}",
     "add": {
       "users": "Lagt til en bruker | {count} brukere",
-      "product": "Opprettet nytt produkt",
+      "product": "Opprettet nytt produkt. Vennligst vent, du blir sendt videre om 5 sekunder",
       "objective": "Lagt til nytt mål for {period}",
       "progression": "Lagt til ny verdi",
-      "department": "Opprettet nytt produktområde",
+      "department": "Opprettet nytt produktområde. Vennligst vent, du blir sendt videre om 5 sekunder",
       "keyResult": "Lagt til nytt nøkkelresultat",
       "period": "Opprettet ny periode",
-      "organization": "Opprettet ny organisasjon",
+      "organization": "Opprettet ny organisasjon. Vennligst vent, du blir sendt videre om 5 sekunder",
       "kpi": "Opprettet ny KPI"
     },
     "delete": {
@@ -213,7 +219,7 @@
       "rejected": "Fjernet: {user}"
     }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Tilknyttet mål",
     "description": "Beskrivelse",
     "startValue": "Startverdi",
@@ -272,7 +278,7 @@
   "tooltip": {
     "openMenu": "Åpne meny",
     "dashboard": "Gå til dashboard-visning",
-    "keyresValue": "Skriv inn ny måleverdi",
+    "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "editKpi": "Endre detaljer eller slett KPI",
@@ -344,11 +350,6 @@
     "title": "Hjelp",
     "toc": "Innhold"
   },
-  "profile": {
-    "myProfile": "Min profil",
-    "hasAdmin": "Har administratortilgang",
-    "products": "Mine produkter"
-  },
   "view": {
     "compact": "Kompakt",
     "details": "Detaljer"
@@ -360,7 +361,7 @@
   },
   "weight": {
     "heading": "Vekting",
-    "keyresFor": "Nøkkelresultater for «{name}»",
+    "keyResultFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
   },
   "accessRequests": {
@@ -422,7 +423,57 @@
     "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
-    "selectLanguage": "Velg språk"
+    "myProfile": "Min profil",
+    "superAdmin": "OKR-tracker administrator",
+    "admin": "Organisasjonsadministrator",
+    "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
+    "hasAdmin": "Er administrator for en rekke organisasjoner",
+    "products": "Mine produkter",
+    "selectLanguage": "Velg språk",
+    "position": {
+      "groups": {
+        "developers": "Utvikling",
+        "designers": "Design",
+        "teamLead": "Teamleder",
+        "techLead": "Tech lead",
+        "administration": "Administrasjon",
+        "productOwner": "Produktområdeleder",
+        "director": "Direktør",
+        "others": "Medlemmer",
+        "departmentDirector": "Avdelingsdirektør"
+      },
+      "title": "Stilling",
+      "frontendDeveloper": "Frontend-utvikler",
+      "backendDeveloper": "Backend-utvikler",
+      "fullStackDeveloper": "Fullstack-utvikler",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaksjonsdesigner",
+      "serviceDesigner": "Tjenestedesigner",
+      "contentDesigner": "Innholdsdesigner",
+      "graphicDesigner": "Grafisk designer",
+      "informationArchitect": "Informasjonsarkitekt",
+      "dataScientist": "Data scientist",
+      "teamLead": "Teamleder",
+      "productOwner": "Produktområdeleder",
+      "businessAnalyst": "Forretningsanalytiker",
+      "businessDeveloper": "Forretningsutvikler",
+      "departmentDirector": "Avdelingsdirektør",
+      "director": "Direktør",
+      "organizationDeveloper": "Organisasjonsutvikler",
+      "principalEngineer": "Virksomhetsarkitekt",
+      "legalAdvisor": "Gladjurist",
+      "itCustodian": "IT-vaktmester",
+      "hr": "HR og personalansvarlig",
+      "hardwareDeveloper": "Hardware-utvikler",
+      "humanResourcesManager": "Personalleder",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobilutvikler",
+      "securityExpert": "Sikkerhetsekspert",
+      "administration": "Administrasjon",
+      "contentProducer": "Innholdsprodusent",
+      "other": "Annet",
+      "storyteller": "Historieforteller"
+    }
   },
   "languages": {
     "en-US": "Engelsk",

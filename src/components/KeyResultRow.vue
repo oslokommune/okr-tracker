@@ -1,11 +1,11 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
     <router-link class="keyResult__info" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-      <div>{{ keyRow.name }}</div>
-      <div v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</div>
+      <h3 class="title-2">{{ keyRow.name }}</h3>
+      <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
     </router-link>
 
-    <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
+    <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
     <div class="keyResult__progress">
       <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
@@ -17,15 +17,22 @@
         class="keyResult__form"
         @submit.prevent="isOpen = true"
       >
-        <label class="keyResult__input">
-          <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" step="any" />
+        <label class="keyResult__label">
+          <input
+            v-model.number="keyRow.currentValue"
+            v-tooltip="$t('tooltip.keyResultValue')"
+            class="keyResult__input"
+            type="number"
+            step="any"
+            @input="changed = true"
+          />
         </label>
 
-        <button class="btn">{{ $t('keyres.updateValue') }}</button>
+        <button class="btn">{{ $t('keyResult.updateValue') }}</button>
       </form>
     </div>
 
-    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false"></modal>
+    <modal v-if="isOpen" :key-result="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
   </div>
 </template>
 
@@ -56,6 +63,7 @@ export default {
   data: () => ({
     keyRow: null,
     isOpen: false,
+    changed: false,
   }),
 
   computed: {
@@ -85,7 +93,7 @@ export default {
   grid-template-columns: 1fr span(2, span(6));
 
   &.expanded {
-    grid-template-columns: 1fr span(3, span(6));
+    grid-template-columns: 1fr span(3, span(7));
   }
 }
 
@@ -119,10 +127,14 @@ export default {
 .keyResult__form {
   display: flex;
   margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.keyResult__label {
+  margin-right: 0.5rem;
 }
 
 .keyResult__input {
-  margin-right: 0.5rem;
+  background-color: var(--color-white);
 }
 </style>

@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import Kpi from '@/db/Kpi';
 import { mapState } from 'vuex';
+import Kpi from '@/db/Kpi';
 
 export default {
   name: 'AddKPIModal',
@@ -128,7 +128,7 @@ export default {
     ...mapState(['kpis', 'activeItem', 'activeItemRef']),
 
     serviceAccountAddress() {
-      return process.env.VUE_APP_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
+      return import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
     },
 
     types() {
@@ -170,8 +170,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .modal__textarea {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -207,7 +205,7 @@ export default {
   display: flex;
   padding: 1rem;
   font-size: 0.9rem;
-  background: rgba(colors.$color-yellow, 0.2);
+  background: rgba(var(--color-yellow-rgb), 0.2);
   border-radius: 3px;
 }
 

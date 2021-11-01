@@ -1,15 +1,16 @@
-const router = require('express').Router();
-const admin = require('firebase-admin');
-const { param, matchedData } = require('express-validator');
-const validateFirebaseIdToken = require('../../util/validateFirebaseToken');
+import express from 'express';
+import { getFirestore } from 'firebase-admin/firestore';
+import { param, matchedData } from 'express-validator';
+import validateFirebaseIdToken from '../../util/validateFirebaseToken.js';
 
-const db = admin.firestore();
-
-const collection = db.collection('requestAccess');
+const router = express.Router();
 
 router.post('/:email/create', param('email').isEmail().trim().escape().normalizeEmail(), async (req, res) => {
   const sanitized = matchedData(req);
   const { email } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('requestAccess');
 
   try {
     await collection.add({ email, created: new Date() });
@@ -24,6 +25,10 @@ router.delete('/:id', validateFirebaseIdToken, param('id').trim().escape(), asyn
   const sanitized = matchedData(req);
   const { id } = sanitized;
 
+  const db = getFirestore();
+  const collection = await db.collection('requestAccess');
+
+
   try {
     await collection.doc(id).delete();
 
@@ -33,4 +38,4 @@ router.delete('/:id', validateFirebaseIdToken, param('id').trim().escape(), asyn
   }
 });
 
-module.exports = router;
+export default router;

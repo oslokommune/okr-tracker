@@ -1,11 +1,11 @@
 <template>
-  <widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
+  <widget v-if="children.length" :widget-id="widgetId" :title="title">
     <div class="list">
       <router-link
         v-for="child in children"
         :key="child.id"
         :to="{ name: 'ItemHome', params: { slug: child.slug } }"
-        class="list__link btn btn--ter btn--fw btn--icon"
+        class="list__link btn btn--ter btn--fw btn--icon btn--icon-pri"
       >
         <i class="icon fa fa-fw fa-chevron-right" />
         {{ child.name }}

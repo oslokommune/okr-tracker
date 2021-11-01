@@ -2,12 +2,252 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0-rc.12] UNRELEASED
+## [UNRELEASED]
 
 ### Added
 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
+
+### Changes
+
+- Rewritten all the Cloud Functions to es modules - we can now write more future-proof code.
+- Updated all dependencies of Cloud Functions
+
+### Fixed
+
+- Not allowed to update Period if you only changed the name.
+- Showing loading spinner when fetching KPI/KeyResult progress
+- Moved widgets around for a better UX experience for mobile users
+
+### Fixed
+
+- functions: config to active slackbot or not actually works
+
+## [2.5.3] 2021-10-27
+
+### Fixed
+
+- KPI graph did not show if one progress object had a value equal to 0
+
+## [2.5.2] 2021-10-19
+
+### Fixed
+
+- Actually fixed the bug showing `Update value`-button even if you did not have access
+
+### Changes
+
+- Small style changes for a better UX experience - in a series of different changes coming
+
+## [2.5.1] 2021-10-19
+
+### Fixed
+
+- `Update value`-button in KeyResultHome was shown even though you did not have access to update
+
+### Changes
+
+- Removed sass-variables for colors, using CSS Variables instead
+- Updated README with more information when deploying to prod for the first time
+- Updated dependencies
+
+## [2.5.0] 2021-10-14
+
+We have added another slackbot integration. The new slackbot integration pushes changes to organizations/departments/products.
+
+You can call the slack bot with the command `/okr`. The different commands to the slack bot are:
+- `subscribe organization/department/product slug` - subscribe to a specific org/dep/prod
+- `unsubscribe organization/department/product slug` - unsubscribe
+- `subscribe/all organization/department slug` - subscribe to a specific org/dep/prod and all its children (departments/products)
+- `unsubscribe/all organization/department slug` - unsubscribe to everything
+
+What types of updates does the bot push?
+Changes to the:
+- name
+- mission statement
+
+Creation of:
+- Objectives
+- Key Results
+
+Caveats:
+- If you run subscribe/all once on an organization/department and create a new product after that
+  - run subscribe/all again, because we don't add new children to the parent subscription
+
+## Added
+
+- Slack bot integration with channels in your slack organization. Push updates to a slack channel. (Read the readme about the changes and how to implement it)
+
+Example:
+`/okr subscribe product dataspeilet`
+
+Now we would get updates to our slack channel with changes to our product, dataspeilet. (Mountain Peach is the name of our test user)
+
+![img.png](documentation/images/img.png)
+
+![img_1.png](documentation/images/img_1.png)
+
+![img_2.png](documentation/images/img_2.png)
+
+![img_3.png](documentation/images/img_3.png)
+
+## Changes
+
+- Save-buttons are disabled until changes have been made.
+- Updated instructions on how to initialize a new okr-tracker instance
+- KeyResultHome: moved widgets around for easier access to the edit button
+- Updated dependencies
+
+## [2.4.1] 2021-10-05
+
+### Changes
+
+- Format numbers to norwegian locale - thousands are separated with a space (atm we do not support other formatting locales for numbers)
+- Moved some util-functions around
+- Updated dependencies
+
+### Fixed
+
+- Team members could not create/update Periods/Objectives/KeyResults because of firestore rules
+- Toaster for errors from creating Periods/Objectives/KeyResults did not show correctly
+
+## [2.4.0] 2021-10-04
+
+### Added
+
+- Log in with Microsoft (Thank you, @knowit, for the changes)
+
+### Removed
+
+- Removed keycloak integration
+
+## [2.3.1] 2021-09-28
+
+### Fixed
+
+- Normal team members were not actually allowed to update their own organization/department/product
+
+## [2.3.0] 2021-09-28
+
+We have added another lever of admin, called super admin. We are sorry, but you need to update some database documents to make this work.
+
+Super Admin can:
+- do the same things as an admin and normal member
+- restore backups
+- promote or demote admins
+- migrate data
+- create/restore/change organizations
+
+Admins can:
+- do the same things as a member
+- add new users to the OKR-tracker
+- administrate an organization they are apart of
+- administrate multiple products within the same organization
+- administrate multiple departments within the same organization
+
+Member of a product or department or organization
+- has rights to administrate its own product/org/departments
+- ... such as add/remove members from a product/org/department
+  - or update/delete/archive
+
+### BREAKING CHANGES
+
+- Added another lever of admin - super admin.
+  - Add superAdmin-property to one user, and then that person can give others superAdmin-access
+  - Super admin needs to go and update every single product/department/organization to support the new RBAC system (sorry for the inconvenience)
+
+### Fixed
+
+- Users were not allowed to archive its own product or department
+
+## [2.2.1] 2021-09-23
+
+### Added
+
+- Job positions: added Storyteller
+
+### Fixed
+
+- i18n corrections
+- Dashboard: PieChart not rendering correctly
+
+## [2.2.0] 2021-09-14
+
+### Added
+
+- Users can choose what type of user they are from a predefined list of job positions. This is done in the `My Profile`-page
+- PieChart follows color scheme
+
+### Changes
+
+- Styles
+- TeamWidget: Multiple job positions are grouped into a parent position, i.e.: backend-, frontend-, mobile-, hardware-developers are grouped into `Developers`
+- Updated dependencies
+- Removed redundant firebase config environment keys
+- Updated readme for a better understanding of firebase private keys
+
+### Removed
+
+- Removed sass-loader because we don't use webpack anymore
+
+## [2.1.2] 2021-09-02
+
+### Fixed
+
+- Nothing happened when trying to archive Periods/Objectives/Key Results
+
+## [2.1.1] 2021-08-31
+
+### Changes
+
+- Tab title changes together with the navbar title
+
+## [2.1.0] 2021-08-30
+
+We have removed vue-cli and moved to vitejs for better develop experience and faster build and deploy times. This also means that from now on that we won't support IE11 at all. The chance that IE11 shows only a white screen is highly possible. We only support evergreen/modern browsers
+
+### Added
+
+- Use Firebase auth emulator to emulate authentication (only for developers)
+
+### Changes
+
+- Moved from vue-cli to vitejs for our frontend build tool 🎉⚡🔥 Better, faster and leaner developer experience 🎉⚡🔥
+- Removed collapse-icon if the item has no children
+
+## [2.0.1] 2021-08-25
+
+### Changes
+
+- Sort KeyResults when in ObjectiveHome-view
+- Removed some unnecessary code duplication
+- Updated dependencies
+
+## [2.0.0] 2021-08-23
+
+We've decided to release v2 out of RC after almost a year of updates. We feel like the code is stable enough to warrant a v2 release. We haven't managed to develop all the features that we wanted, but we have already been working on a redesign for v2.1 for a couple of months now.
+
+Our next steps are continuing to rewrite the way data is written to the database, move more and more out to a better API and hopefully open up our APIs to our users. And to look at a more robust RBAC with different levels.
+
+See [release notes](./documentation/release-notes_v2.0.0.md).
+
+### Added
+
+- Add team members to Organizations and Departments to offload admin access
+
+## [2.0.0-rc.12] 2021-08-19
+
+### Fixed
+
+- Keycloak: User met with infinite spinner if the user was not whitelisted in the database
+- Sort organizations by name
+- Small style fixes
+- Correct modal size
+
+### Changes
+
+- Updated dependencies
 
 ## [2.0.0-rc.11] 2021-04-27
 

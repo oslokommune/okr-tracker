@@ -15,8 +15,7 @@
       <div class="kpi__name">{{ data.name }}</div>
       <div class="kpi__value">
         <span v-if="data.error || !data.valid">–––</span>
-        <span v-else-if="type === 'users'"> {{ data.currentValue }}</span>
-        <span v-else>{{ kpi.formatValue(data.currentValue) }}</span>
+        <span v-else>{{ formatKPIValue(data.currentValue) }}</span>
       </div>
       <i class="kpi__icon far" :class="kpi.icon" />
     </router-link>
@@ -24,6 +23,9 @@
 </template>
 
 <script>
+import kpiTypes from '@/config/kpiTypes';
+import { numberLocale } from '@/util';
+
 export default {
   props: {
     type: {
@@ -40,12 +42,19 @@ export default {
       default: () => ({}),
     },
   },
+
+  methods: {
+    formatKPIValue(value) {
+      if (kpiTypes[this.type].type === 'users') {
+        return numberLocale.format(',')(value);
+      }
+      return kpiTypes[this.type].formatValue(value);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .kpi {
   position: relative;
   display: flex;
@@ -69,11 +78,11 @@ export default {
 }
 
 .kpi--empty {
-  color: rgba(colors.$color-purple, 0.25);
-  background: rgba(colors.$color-grey-100, 0.5);
+  color: rgba( var(--color-purple-rgb), 0.25);
+  background: rgba( var(--color-grey-100-rgb), 0.5);
 
   &:hover {
-    background: rgba(colors.$color-grey-100, 0.4);
+    background: rgba( var(--color-grey-100-rgb), 0.4);
   }
 
   & > .kpi__icon {

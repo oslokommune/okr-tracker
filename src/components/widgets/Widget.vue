@@ -1,17 +1,10 @@
 <template>
   <section class="widget">
     <header class="widget__header">
-      <i class="widget__icon fas fa-fw" :class="`fa-${icon}`" />
+      <i v-if="icon" class="widget__icon fas fa-fw" :class="`fa-${icon}`" />
       <span class="widget__title">{{ title }}</span>
-      <button
-        v-if="collapsible"
-        v-tooltip="isOpen ? $t('btn.minimize') : $t('btn.expand')"
-        class="widget__toggle fas fa-fw"
-        :class="isOpen ? 'fa-minus' : 'fa-plus'"
-        @click="toggle"
-      />
     </header>
-    <div v-show="isOpen" class="widget__body">
+    <div class="widget__body">
       <slot></slot>
     </div>
   </section>
@@ -30,7 +23,8 @@ export default {
     },
     icon: {
       type: String,
-      required: true,
+      required: false,
+      default: '',
     },
     title: {
       type: String,

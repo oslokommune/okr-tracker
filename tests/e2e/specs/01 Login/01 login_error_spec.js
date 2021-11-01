@@ -5,7 +5,7 @@ describe('Login error', () => {
     cy.visit('/').wait(500);
 
     cy.get('body').then(($body) => {
-      if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VUE_APP_TESTUSER_USER'))) {
+      if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VITE_TESTUSER_USER'))) {
         cy.signOut();
       }
     });
@@ -25,7 +25,7 @@ describe('Login error', () => {
 
   it('Try to login with a correct username but wrong pass - get an wrongPass error', () => {
     cy.get('[data-cy="login-username"]').click();
-    cy.get('[data-cy="login-username-input"]').type(Cypress.env('VUE_APP_TESTADMIN_USER'));
+    cy.get('[data-cy="login-username-input"]').type(Cypress.env('VITE_TESTADMIN_USER'));
     cy.get('input[type="password"]').type('wrongpassword');
     cy.get('form').submit();
     cy.get('.error').contains(i18n.t('login.error.wrongPassword'));

@@ -1,5 +1,5 @@
 <template>
-  <div class="access-requests">
+  <div v-if="requestAccess.length" class="access-requests">
     <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
 
     <ul class="access-requests__list">
@@ -72,8 +72,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .access-requests__list {
   display: flex;
   flex-direction: column;
@@ -87,7 +85,7 @@ export default {
   padding: 1rem;
   background: var(--color-green);
   border-radius: 3px;
-  box-shadow: 0 2px 3px rgba(colors.$color-grey-500, 0.5);
+  box-shadow: 0 2px 3px rgba(var(--color-grey-500-rgb), 0.5);
 }
 
 .access-requests__actions {

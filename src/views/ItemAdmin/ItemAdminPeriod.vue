@@ -13,6 +13,7 @@
           rules="required"
           type="text"
           data-cy="period_name"
+          @edited-data="edit"
         />
 
         <validation-provider v-slot="{ errors }" name="range">
@@ -32,11 +33,16 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading">
+      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
+      <button
+        v-if="!activePeriod.archived"
+        class="btn btn--icon btn--danger btn--icon-pri"
+        :disabled="loading"
+        @click="archive"
+      >
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>
@@ -49,7 +55,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminPeriod',
@@ -81,6 +87,7 @@ export default {
     range: null,
     loading: false,
     isLoadingData: false,
+    changes: false,
   }),
 
   watch: {
@@ -102,10 +109,14 @@ export default {
       const [startDate, endDate] = parts;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
+      this.changes = true;
     },
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     generateRange() {
       if (!this.activePeriod.startDate || !this.activePeriod.endDate) return '';
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
@@ -129,6 +140,7 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
 
     async restore() {
@@ -144,10 +156,10 @@ export default {
 
     async deleteDeep() {
       try {
-        await this.$router.push({ query: {} });
         await Period.deleteDeep(this.activePeriod.id);
         this.$toasted.show(this.$t('toaster.delete.permanently'));
       } catch (error) {
+        console.log(error);
         this.$toasted.error(this.$t('toaster.error.delete', { document: this.activePeriod.name }));
         throw new Error(error.message);
       }
@@ -166,20 +178,19 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .details {
   margin-top: 1rem;
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

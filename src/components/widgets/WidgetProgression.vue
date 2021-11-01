@@ -1,10 +1,11 @@
 <template>
-  <widget :widget-id="widgetId" :title="getTitle()" icon="chart-pie">
+  <widget :widget-id="widgetId" :title="getTitle()">
     <svg ref="svg"></svg>
   </widget>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PieChart from '@/util/PieChart';
 
 export default {
@@ -39,13 +40,25 @@ export default {
     chart: null,
   }),
 
+  computed: {
+    ...mapState(['theme']),
+  },
+
   watch: {
     data: {
       immediate: true,
       deep: true,
       handler(data) {
         if (!this.chart) return;
-        this.chart.render(data);
+        this.chart.render(data, this.theme);
+      },
+    },
+
+    theme: {
+      immediate: true,
+      handler() {
+        if (!this.chart) return;
+        this.chart.render(this.data, this.theme);
       },
     },
   },
@@ -53,8 +66,8 @@ export default {
   mounted() {
     setTimeout(() => {
       this.svg = this.$refs.svg;
-      this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
-      this.chart.render(this.data);
+      this.chart = new PieChart(this.svg, { dimmed: this.dimmed, colorMode: this.theme });
+      this.chart.render(this.data, this.theme);
     }, 150);
   },
 

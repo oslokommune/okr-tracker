@@ -1,25 +1,7 @@
-@use "sass:color";
-@use '_colors.scss';
+@use 'sass:color';
 @use 'typography.scss';
 
 $borderRadius: 1.5px;
-
-@mixin boxShadow($color) {
-  box-shadow: 0 1px 3px rgba($color, 0.2), 0 3px 12px rgba($color, 0.05);
-}
-
-@mixin boxColor($color, $shadowColor: colors.$color-purple) {
-  background: rgba($color, 0.1);
-  @include boxShadow($shadowColor);
-
-  &::after {
-    background: linear-gradient($color, color.adjust($color, $lightness: -5%));
-  }
-
-  &::before {
-    background: $color;
-  }
-}
 
 .ok-alert {
   position: relative;
@@ -60,19 +42,55 @@ $borderRadius: 1.5px;
 }
 
 .ok-alert {
-  @include boxColor(colors.$color-grey-100);
+  background: rgba(var(--color-grey-100-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-grey-500-rgb), 0.2), 0 3px 12px rgba(var(--color-grey-500-rgb), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-grey-100), var(--color-grey-500-rgb));
+  }
+
+  &::before {
+    background: var(--color-grey-100);
+  }
 }
 
 .ok-alert--success {
-  @include boxColor(colors.$color-green, color.adjust(colors.$color-green, $lightness: -20%));
+  background: rgba(var(--color-green-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-green-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-green-dark-rgb), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-green-rgb), var(--color-green-dark-rgb));
+  }
+
+  &::before {
+    background: var(--color-green);
+  }
 }
 
 .ok-alert--danger {
-  @include boxColor(colors.$color-red, color.adjust(colors.$color-red, $lightness: -20%));
+  background: rgba(var(--color-red-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-red-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-red-dark-rgb), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-red), var(--color-red-dark-rgb));
+  }
+
+  &::before {
+    background: var(--color-red);
+  }
 }
 
 .ok-alert--warning {
-  @include boxColor(colors.$color-yellow, color.adjust(colors.$color-yellow, $lightness: -20%));
+  background: rgba(var(--color-yellow-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-yellow-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-yellow-dark-rgbdark), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-yellow), var(--color-yellow-dark-rgb));
+  }
+
+  &::before {
+    background: var(--color-yellow);
+  }
 }
 
 .ok-alert--white {
@@ -80,12 +98,12 @@ $borderRadius: 1.5px;
 }
 
 .ok-alert--dark {
-  background: colors.$color-blue;
-  @include boxShadow(colors.$color-purple);
+  background: var(--color-blue);
+  box-shadow: 0 1px 3px rgba(var(--color-purple-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-purple-dark-rgbdark), 0.05);
 
   &::after {
-    color: colors.$color-blue;
-    background: linear-gradient(colors.$color-purple, color.adjust(colors.$color-purple, $lightness: -5%));
+    color: var(--color-blue);
+    background: linear-gradient(var(--color-purple), var(--color-purple-dark-rgb));
   }
 
   &::before {

@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')" icon="file">
+  <widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')">
     <div class="md" v-html="content"></div>
   </widget>
 </template>
@@ -7,7 +7,7 @@
 <script>
 import { mapState } from 'vuex';
 import marked from 'marked';
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 
 export default {
   name: 'WidgetMissionStatement',
@@ -36,7 +36,7 @@ export default {
       deep: true,
       immediate: true,
       async handler(item) {
-        this.content = await sanitize(marked(item.missionStatement));
+        this.content = await dompurify.sanitize(marked(item.missionStatement));
       },
     },
   },

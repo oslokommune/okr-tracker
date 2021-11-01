@@ -1,6 +1,6 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
-    {{ $t('weight.keyresFor', { name: activeKeyResult.objective.name }) }}
+  <widget :widget-id="widgetId" :title="$t('weight.heading')">
+    {{ $t('weight.keyResultFor', { name: activeKeyResult.objective.name }) }}
     <div class="scales">
       <router-link
         v-for="{ id, weight, active, name } in weights"
@@ -19,7 +19,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { scaleLinear, max } from 'd3';
+import { scaleLinear } from 'd3-scale';
+import { max } from 'd3-array';
 
 export default {
   name: 'WidgetKeyResultWeights',
@@ -79,9 +80,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'sass:color';
-@use '@/styles/colors';
-
 .scales {
   position: relative;
   display: grid;
@@ -116,8 +114,8 @@ export default {
     border-color: var(--color-primary);
 
     &:hover {
-      background: color.adjust(colors.$color-yellow, $blackness: 10%);
-      border-color: color.adjust(colors.$color-yellow, $blackness: 10%);
+      background: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
     }
   }
 }

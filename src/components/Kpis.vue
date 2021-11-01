@@ -45,7 +45,7 @@ export default {
   grid-gap: 0.25rem;
 
   @media screen and (min-width: bp(m)) {
-    grid-template-columns: repeat(3, minmax(15rem, 1fr));
+    grid-template-columns: repeat(3, minmax(10rem, 1fr));
   }
 }
 </style>

@@ -12,10 +12,11 @@ export const getters = {
   tree: (state) => {
     const { organizations, departments, products } = state;
 
+    const sortedOrganziations = sortByLocale(organizations);
     const sortedDepartments = sortByLocale(departments);
     const sortedProducts = sortByLocale(products);
 
-    return organizations.map((org) => {
+    return sortedOrganziations.map((org) => {
       org.children = sortedDepartments
         .filter(({ organization }) => organization.id === org.id)
         .map((dept) => {
@@ -26,10 +27,27 @@ export const getters = {
     });
   },
 
+  isAdmin: (state) => {
+    // Returns `true` if user has `admin: true` or if user is member of `activeItem`
+    const { user, activeItem } = state;
+
+    if (user && user.superAdmin) return true;
+    if (user && user.admin && user.admin.length > 0) return true;
+    if (!user || !activeItem || !activeItem.team) return false;
+    return activeItem.team.map(({ id }) => id).includes(user.id);
+  },
+
   hasEditRights: (state) => {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
-    if (user && user.admin) return true;
+    const { organization } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? user.admin && user.admin.includes(organization.id)
+      : user.admin && user.admin.includes(activeItem.id);
+
+    if (user && user.superAdmin) return true;
+    if (isAdminOfOrganization) return true;
     if (!user || !activeItem || !activeItem.team) return false;
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
@@ -38,21 +56,8 @@ export const getters = {
 export const actions = {
   ...moduleActions,
 
-  initKeycloak: async ({ commit }, keycloak) => {
-    commit('SET_KEYCLOAK', keycloak);
-
-    return true;
-  },
-
-  cleanKeycloak: async ({ commit, state }, uri) => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('idToken');
-
-    state.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_LOGOUT_URL}${uri}` });
-
-    commit('SET_AUTHENTICATION', false);
-    commit('DELETE_KEYCLOAK');
+  setTheme: async ({ commit }, payload) => {
+    commit('SET_THEME', payload);
 
     return true;
   },
@@ -71,6 +76,13 @@ export const actions = {
 
   setDataLoading: async ({ commit }, payload) => {
     commit('SET_DATA_LOADING', payload);
+    return true;
+  },
+
+  setLoading: async ({ commit }, payload) => {
+    commit('SET_LOADING', payload);
+
+    return true;
   },
 };
 
@@ -93,30 +105,23 @@ export const mutations = {
     state.loading = payload;
   },
 
-  SET_KEYCLOAK(state, payload) {
-    state.keycloak = payload;
-  },
-
   SET_LOGIN_LOADING(state, payload) {
     state.loginLoading = payload;
   },
 
-  DELETE_KEYCLOAK(state) {
-    state.keycloak = null;
-  },
-
-  SET_AUTHENTICATION(state, payload) {
-    state.authenticated = payload;
-  },
-
   SET_DATA_LOADING(state, payload) {
     state.dataLoading = payload;
+  },
+
+  SET_THEME(state, payload) {
+    state.theme = payload;
   },
 };
 
 export default new Vuex.Store({
   state: {
     user: null,
+    users: [],
     sidebarGroups: [],
     departments: [],
     organizations: [],
@@ -136,11 +141,10 @@ export default new Vuex.Store({
       { label: i18n.t('view.details'), id: 'details', icon: '' },
     ],
     loading: false,
-    providers: process.env.VUE_APP_LOGIN_PROVIDERS.split('-'),
-    keycloak: null,
-    authenticated: false,
+    providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
+    theme: 'yellow',
   },
   getters,
   mutations,

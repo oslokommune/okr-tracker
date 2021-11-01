@@ -57,8 +57,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .login {
   display: flex;
   flex-direction: column;
@@ -67,7 +65,7 @@ export default {
   padding: 2rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(xs)) {
     width: span(8);

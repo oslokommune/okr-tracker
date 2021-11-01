@@ -1,21 +1,21 @@
-const functions = require('firebase-functions');
-const config = require('../config');
+import functions from 'firebase-functions';
+import config from '../config.js';
 
-const handleSlugs = require('./handleSlugs');
+import handleSlugs from './handleSlugs.js';
 
-exports.SlugDepartment = functions
+export const slugDepartment = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`departments/{documentId}`)
   .onWrite(handleSlugs);
 
-exports.SlugOrganization = functions
+export const slugOrganization = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`organizations/{documentId}`)
   .onWrite(handleSlugs);
 
-exports.SlugProducts = functions
+export const slugProduct = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`products/{documentId}`)

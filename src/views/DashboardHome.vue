@@ -77,7 +77,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults']),
+    ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults', 'theme']),
 
     getIcon() {
       const { organization, department } = this.activeItem;
@@ -104,13 +104,20 @@ export default {
         });
       },
     },
+    theme: {
+      immediate: true,
+      handler() {
+        if (!this.piegraph) return;
+        this.piegraph.render(this.activePeriod, this.theme);
+      },
+    },
   },
 
   mounted() {
     if (!this.$refs.piechart) return;
 
-    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true });
-    this.piegraph.render(this.activePeriod);
+    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true, colorMode: this.theme });
+    this.piegraph.render(this.activePeriod, this.theme);
 
     this.enterFullscreen();
   },
@@ -134,8 +141,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 $imageSize: 1.75em;
 
 .dashboard {
@@ -233,7 +238,7 @@ $imageSize: 1.75em;
   background: #f8c66b;
   border: 5px solid white;
   border-radius: 0.25em;
-  box-shadow: 0 0.4em 1.6em 0.5em rgba(colors.$color-yellow, 0.4);
+  box-shadow: 0 0.4em 1.6em 0.5em rgba(var(--color-yellow-rgb), 0.4);
 }
 
 .meta__product--name {

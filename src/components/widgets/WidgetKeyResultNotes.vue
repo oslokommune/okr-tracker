@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
+  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <textarea v-model="thisKey.notes" rows="20" @input="dirty = true" />
@@ -26,7 +26,7 @@
 <script>
 import { mapState } from 'vuex';
 import marked from 'marked';
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 import KeyResult from '@/db/KeyResult';
 
 marked.setOptions({
@@ -62,9 +62,9 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      handler(keyres) {
-        this.thisKey = { ...keyres, id: keyres.id };
-        this.md = sanitize(marked(keyres.notes || ''));
+      handler(keyResult) {
+        this.thisKey = { ...keyResult, id: keyResult.id };
+        this.md = dompurify.sanitize(marked(keyResult.notes || ''));
       },
     },
   },

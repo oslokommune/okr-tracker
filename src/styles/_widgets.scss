@@ -1,5 +1,4 @@
 @use 'typography';
-@use "colors";
 
 .details {
   display: flex;
@@ -37,7 +36,7 @@
 
 .main-widgets__title {
   margin-bottom: 0.5rem;
-  color: colors.$color-grey-400;
+  color: var(--color-grey-400);
   font-weight: 500;
   font-size: typography.$font-size-0;
   text-transform: uppercase;
@@ -53,11 +52,12 @@
   box-shadow: 0 2px 3px rgba(black, 0.1);
 
   @media screen and (max-width: bp(s)) {
-    width: span(9);
+    width: span(12);
   }
 
   @media screen and (min-width: bp(m)) {
     width: span(2, span(9));
+    margin-right: span(0, 2);
   }
 
   @media screen and (min-width: bp(l)) {
@@ -73,6 +73,19 @@
   color: var(--color-primary);
   font-weight: 700;
   font-size: 50px;
+  word-wrap: break-word;
+
+  @media screen and (min-width: bp(s)) {
+    font-size: 30px;
+  }
+
+  @media screen and (min-width: bp(l)) {
+    font-size: 40px;
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    font-size: 50px;
+  }
 }
 
 .main-widgets__current--unit {
@@ -88,7 +101,7 @@
 }
 
 .main-widgets__graph {
-  width: span(9);
+  width: span(12);
 
   margin-left: span(0, 1);
   padding: 1rem;
@@ -115,12 +128,12 @@
   }
 }
 
-
 .widgets {
   display: grid;
-  grid-gap: span(0, span(12));
+  grid-gap: span(0.2, span(12));
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  width: 100%;
+  width: span(12);
+  padding-top: 1rem;
 
   @media screen and (min-width: bp(m)) {
     grid-gap: span(0, span(9));
@@ -140,5 +153,23 @@
 
   & > .btn {
     width: 100%;
+  }
+}
+
+
+.aside--right {
+  display: none;
+  margin-top: 0.5rem;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+  }
+}
+
+.aside--middle {
+  width: span(12);
+  margin-top: 0.5rem;
+  @media screen and (min-width: bp(m)) {
+    display: none;
   }
 }

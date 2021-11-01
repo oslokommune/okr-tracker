@@ -1,6 +1,6 @@
 <template>
-  <div v-if="activeObjective" class="objective">
-    <div class="main">
+  <div v-if="activeObjective" class="container">
+    <div class="objective">
       <div class="objective__heading">
         <div class="objective__heading-text">
           <h1 class="title-1">{{ activeObjective.name }}</h1>
@@ -10,10 +10,10 @@
       </div>
 
       <section class="key-results">
-        <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
+        <h2 class="title-2">{{ $t('general.keyResults') }}</h2>
 
         <empty-state
-          v-if="!keyResults.length"
+          v-if="!keyRes.length"
           :icon="'poop'"
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
@@ -25,7 +25,7 @@
 
         <div class="key-results__list">
           <key-result-row
-            v-for="keyResult in keyResults"
+            v-for="keyResult in keyRes"
             :key="keyResult.id"
             :key-result="keyResult"
             :force-expanded="true"
@@ -34,13 +34,12 @@
         </div>
       </section>
     </div>
-    <widgets-objective-home class="aside" />
+    <widgets-objective-home />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
 import routerGuard from '@/router/router-guards/objectiveHome';
 
 export default {
@@ -65,11 +64,11 @@ export default {
   },
 
   data: () => ({
-    keyResults: [],
+    keyRes: [],
   }),
 
   computed: {
-    ...mapState(['activeObjective']),
+    ...mapState(['activeObjective', 'keyResults']),
     ...mapGetters(['hasEditRights']),
   },
 
@@ -79,11 +78,9 @@ export default {
       handler(objective) {
         if (!objective) return;
 
-        const ref = db.collection('objectives').doc(objective.id);
-        this.$bind(
-          'keyResults',
-          db.collection('keyResults').where('archived', '==', false).where('objective', '==', ref)
-        );
+        this.keyRes = this.keyResults.filter((keyRes) => {
+          return keyRes.objective === `objectives/${objective.id}`;
+        });
       },
     },
   },
@@ -92,8 +89,13 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
-  display: flex;
-  flex-wrap: wrap;
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-right: span(0, 1);
+  }
 }
 
 .key-results {

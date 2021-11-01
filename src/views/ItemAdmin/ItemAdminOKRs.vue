@@ -70,7 +70,7 @@
           </ul>
           <button
             v-if="!notSelected"
-            class="miller__add btn btn--ter btn--icon btn--fw"
+            class="miller__add btn btn--ter btn--icon btn--fw btn--icon-pri"
             :data-cy="cyCreate"
             @click="addEvent"
           >
@@ -154,7 +154,7 @@ export default {
             !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
           nonexistent: this.$t('empty.itemAdmin.keyResult'),
-          cyCreate: 'okr-create-keyresult',
+          cyCreate: 'okr-create-keyResult',
         },
       ];
     },
@@ -312,7 +312,7 @@ export default {
 
         await this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.period') }));
         throw new Error(error);
       }
     },
@@ -325,7 +325,7 @@ export default {
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.objective') }));
         throw new Error(error);
       }
     },
@@ -347,7 +347,7 @@ export default {
 
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.keyResult') }));
         throw new Error(error);
       }
     },
@@ -356,8 +356,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .wrapper {
   width: 100%;
 
@@ -373,7 +371,7 @@ export default {
   align-self: flex-start;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(colors.$color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(s)) {
     grid-template-columns: repeat(3, 1fr);
@@ -472,5 +470,25 @@ export default {
   margin-left: auto;
   padding-top: 0.2rem;
   padding-left: 0.5rem;
+}
+
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(l)) {
+    align-self: flex-start;
+    width: span(3, 0, span(10));
+    margin-top: 0;
+    margin-left: span(0, 1, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3, 0, span(10));
+    margin-left: span(1, 2, span(10));
+  }
 }
 </style>

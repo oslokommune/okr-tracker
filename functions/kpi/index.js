@@ -1,33 +1,33 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const config = require('../config');
+import { getFirestore } from 'firebase-admin/firestore';
+import functions from 'firebase-functions';
+import config from '../config.js';
 
-const db = admin.firestore();
+import fetchKpiData from './fetchKpiData.js';
 
-const FetchKpiData = require('./FetchKpiData');
-
-exports.FetchKpiDataOnCreate = functions
+export const fetchKpiDataOnCreate = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`kpis/{documentId}`)
-  .onCreate(FetchKpiData);
+  .onCreate(fetchKpiData);
 
-exports.FetchKpiDataOnUpdate = functions
+export const fetchKpiDataOnUpdate = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .firestore.document(`kpis/{documentId}`)
-  .onUpdate(({ after }) => FetchKpiData(after));
+  .onUpdate(({ after }) => fetchKpiData(after));
 
-exports.FetchKpiDataOnSchedule = functions
+export const fetchKpiDataOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .pubsub.schedule(config.autoKpiFetchFrequency)
   .timeZone(config.timeZone)
   .onRun(() => {
+    const db = getFirestore();
+
     return db
       .collection('kpis')
       .get()
-      .then((list) => list.docs.map(FetchKpiData))
+      .then((list) => list.docs.map(fetchKpiData))
       .catch((e) => {
         throw new Error(e);
       });

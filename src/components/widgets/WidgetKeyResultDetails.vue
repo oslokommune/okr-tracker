@@ -1,8 +1,8 @@
 <template>
-  <widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
+  <widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')">
     <div class="details">
       <div v-if="activeKeyResult.objective" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('keyres.belongsTo') }}</h3>
+        <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa" :class="`fa-${activeKeyResult.objective.icon}`"></div>
           <div class="details__item-value">
@@ -72,7 +72,7 @@
       </div>
 
       <div v-if="activeKeyResult.startValue !== undefined" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('keyres.startValue') }}</h3>
+        <h3 class="title-3 details__item-heading">{{ $t('keyResult.startValue') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-hashtag"></div>
           <div class="details__item-value">{{ activeKeyResult.startValue }}</div>
@@ -80,7 +80,7 @@
       </div>
 
       <div v-if="activeKeyResult.targetValue !== undefined" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('keyres.targetValue') }}</h3>
+        <h3 class="title-3 details__item-heading">{{ $t('keyResult.targetValue') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-hashtag"></div>
           <div class="details__item-value">{{ activeKeyResult.targetValue }}</div>
@@ -88,7 +88,7 @@
       </div>
 
       <div v-if="activeKeyResult.unit" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('keyres.unit') }}</h3>
+        <h3 class="title-3 details__item-heading">{{ $t('keyResult.unit') }}</h3>
         <div class="details__item-body">
           <div class="details__item-icon fa fa-ruler"></div>
           <div class="details__item-value">{{ activeKeyResult.unit }}</div>
@@ -101,7 +101,7 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { periodDates, dateShort, dateLong } from '@/util/formatDate';
+import { periodDates, dateShort, dateLong } from '@/util';
 
 export default {
   name: 'WidgetKeyResultDetails',
@@ -128,9 +128,9 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      async handler(keyresult) {
-        if (!keyresult) return;
-        await this.$bind('progress', db.collection(`keyResults/${keyresult.id}/progress`));
+      async handler(keyResult) {
+        if (!keyResult) return;
+        await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`));
       },
     },
   },

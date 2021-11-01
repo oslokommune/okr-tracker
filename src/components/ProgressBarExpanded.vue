@@ -1,7 +1,6 @@
 <template>
   <div class="progression">
-    <div class="title-1 progression__done">{{ percent(keyResult.progression) }} fullført</div>
-    <div class="title-2 progression__unit">{{ remaining() }} {{ keyResult.unit }} gjenstår</div>
+    <div class="progression__done">{{ percent(keyResult.progression) }} fullført</div>
     <div class="progression__container">
       <div class="progression__bar" :style="{ width: percent(keyResult.progression) }"></div>
     </div>
@@ -9,7 +8,7 @@
 </template>
 
 <script>
-import { format } from 'd3';
+import { format } from 'd3-format';
 
 export default {
   name: 'ProgressBarExpanded',
@@ -48,7 +47,6 @@ export default {
   grid-template-rows: auto auto auto;
   grid-template-columns: 1fr 1fr;
   color: var(--color-text-secondary);
-  font-size: 0.85rem;
 }
 
 .progression__container {
@@ -56,24 +54,25 @@ export default {
   grid-row: 3;
   grid-column: 1 / span all;
   width: 100%;
-  height: 1.2rem;
+  height: 0.8rem;
   margin-right: 1rem;
   background: var(--color-grey-100);
+  border-radius: 1rem;
 }
 
 .progression__bar {
   height: 100%;
   padding-top: 0.05rem;
-  padding-right: 0.25rem;
   color: var(--color-text);
   font-weight: 500;
   text-align: right;
   background: var(--color-secondary);
+  border-radius: 1rem;
 }
 
 .progression__done {
   grid-area: 1 / 1 / 2 / 4;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 700;
 }
 

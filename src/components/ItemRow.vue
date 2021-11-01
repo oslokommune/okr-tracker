@@ -1,12 +1,13 @@
 <template>
   <div style="display: flex; align-items: center">
     <button
-      v-if="type === 'department' || type === 'organization'"
+      v-if="hasChildren"
       v-tooltip="getCollapse(type, data.slug) ? $t('btn.minimize') : $t('btn.expand')"
       class="widget__toggle fas fa-fw"
       :class="getCollapse(type, data.slug) ? 'fa-minus' : 'fa-plus'"
       @click="toggle(type, data.slug)"
     />
+    <span v-else-if="type === 'department' || type === 'organization'" class="space" />
 
     <router-link
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
@@ -89,6 +90,13 @@ export default {
           return '';
       }
     },
+
+    hasChildren() {
+      if (this.data.children) {
+        return this.data.children.length > 0;
+      }
+      return false;
+    },
   },
 
   watch: {
@@ -155,7 +163,6 @@ export default {
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
-@import '@/styles/typography';
 
 .item {
   display: flex;
@@ -217,7 +224,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  border-right: 1px solid var(--color-grey-100);
+  border-right: 1px solid  var(--color-grey-100);
 
   &.disabled {
     opacity: 0.4;
@@ -261,6 +268,10 @@ export default {
 
 .item__font--organization {
   font-weight: 500;
-  font-size: $font-size-3;
+  font-size: typography.$font-size-3;
+}
+
+.space {
+  margin-left: 1.5rem;
 }
 </style>

@@ -73,8 +73,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
-
 .breadcrumbs {
   position: sticky;
   top: 4rem;
@@ -96,6 +94,10 @@ export default {
 
   @media screen and (min-width: bp(l)) {
     margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    margin-left: span(3, 1);
   }
 }
 
@@ -123,7 +125,7 @@ export default {
   text-overflow: ellipsis;
 
   &:hover {
-    background: rgba(colors.$color-grey-500, 0.1);
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 
   &::after {

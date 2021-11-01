@@ -1,77 +1,156 @@
 <template>
-  <div v-if="thisUser" class="main">
-    <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
+  <div v-if="thisUser" class="container">
+    <div class="main">
+      <h1 class="title-1">{{ thisUser.displayName || thisUser.id }}</h1>
 
-    <div class="user">
-      <div class="user__image">
-        <img
-          class="user__image-size"
-          :src="thisUser.photoURL || '/placeholder-user.svg'"
-          :alt="thisUser.displayName || user.id"
-        />
+      <div class="user">
+        <div class="user__image">
+          <img
+            class="user__image-size"
+            :src="thisUser.photoURL || '/placeholder-user.svg'"
+            :alt="thisUser.displayName || user.id"
+          />
 
-        <template v-if="me">
-          <input type="file" accept="image/png, image/jpeg" @input="setImage" />
-          <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
-            {{ $t('btn.upload') }}
-          </button>
-        </template>
-      </div>
-
-      <div class="user__info">
-        <validation-observer v-if="me" v-slot="{ handleSubmit }">
-          <form id="updateUser" @submit.prevent="handleSubmit(save)">
-            <form-component
-              v-model="thisUser.displayName"
-              input-type="input"
-              name="name"
-              :label="$t('fields.name')"
-              rules="required"
-              type="text"
-            />
-          </form>
-        </validation-observer>
-
-        <label v-if="thisUser.uid" class="form-group">
-          <span class="form-label">{{ $t('fields.uid') }}</span>
-          <input v-model="thisUser.uid" class="form__field" type="email" disabled />
-        </label>
-
-        <label v-if="me" class="form-group">
-          <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-          <select v-model="thisUser.preferences.lang" class="form__field">
-            <option v-for="lang in languages" :key="lang" :value="lang">{{ $t(`languages.${lang}`) }}</option>
-          </select>
-        </label>
-
-        <div v-if="me" class="user__info-btn">
-          <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+          <template v-if="me">
+            <input type="file" accept="image/png, image/jpeg" @input="setImage" />
+            <div class="user__image-buttons">
+              <button class="btn btn--pri" :disabled="!image || loading" @click="uploadImage">
+                {{ $t('btn.upload') }}
+              </button>
+              <button class="btn" :disabled="!thisUser.photoURL" @click="deleteImage">
+                {{ $t('btn.deleteImage') }}
+              </button>
+            </div>
+          </template>
         </div>
 
-        <hr class="divider" />
+        <div class="user__info">
+          <validation-observer v-if="me" v-slot="{ handleSubmit }">
+            <form id="updateUser" @submit.prevent="handleSubmit(save)">
+              <form-component
+                v-model="thisUser.displayName"
+                input-type="input"
+                name="name"
+                :label="$t('fields.name')"
+                rules="required"
+                type="text"
+                @edited-data="edit"
+              />
+            </form>
+          </validation-observer>
 
-        <template v-if="user.admin">
-          <h2 class="title-2">
-            <i class="fas fa-user-shield" />
-            Admin
-          </h2>
-          <div>
-            {{ $t('profile.hasAdmin') }}
+          <label v-if="thisUser.uid" class="form-group">
+            <span class="form-label">{{ $t('fields.uid') }}</span>
+            <input v-model="thisUser.uid" class="form__field" type="email" disabled />
+          </label>
+
+          <label v-if="me" class="form-group">
+            <span class="form-label">{{ $t('user.position.title') }}</span>
+            <v-select
+              v-model="thisUser.position"
+              :options="jobPositions"
+              :get-option-label="(option) => $t(`user.position.${option}`)"
+              @input="edit"
+            >
+            </v-select>
+          </label>
+
+          <label v-if="me" class="form-group">
+            <span class="form-label">{{ $t('user.selectLanguage') }}</span>
+            <v-select
+              v-model="thisUser.preferences.lang"
+              :options="languages"
+              :get-option-label="(option) => $t(`languages.${option}`)"
+              @input="edit"
+            >
+            </v-select>
+          </label>
+
+          <div v-if="me" class="user__info-btn">
+            <button class="btn btn--sec" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
           </div>
-        </template>
 
-        <h2 class="title-2">{{ $t('profile.products') }}</h2>
-        <ul class="grid-system">
-          <li v-for="product in products" :key="product.id">
-            <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-              <div class="product__parent">{{ product.department.name }}</div>
-              <div class="product__name">
-                <i class="product__icon fa fa-cube" />
-                {{ product.name }}
+          <div class="user__info">
+            <validation-observer v-if="me" v-slot="{ handleSubmit }">
+              <form id="updateUser" @submit.prevent="handleSubmit(save)">
+                <form-component
+                  v-model="thisUser.displayName"
+                  input-type="input"
+                  name="name"
+                  :label="$t('fields.name')"
+                  rules="required"
+                  type="text"
+                />
+              </form>
+            </validation-observer>
+
+            <label v-if="thisUser.uid" class="form-group">
+              <span class="form-label">{{ $t('fields.uid') }}</span>
+              <input v-model="thisUser.uid" class="form__field" type="email" disabled />
+            </label>
+
+            <label v-if="me" class="form-group">
+              <span class="form-label">{{ $t('user.position.title') }}</span>
+              <v-select
+                v-model="thisUser.position"
+                :options="jobPositions"
+                :get-option-label="(option) => $t(`user.position.${option}`)"
+              >
+              </v-select>
+            </label>
+
+            <label v-if="me" class="form-group">
+              <span class="form-label">{{ $t('user.selectLanguage') }}</span>
+              <v-select
+                v-model="thisUser.preferences.lang"
+                :options="languages"
+                :get-option-label="(option) => $t(`languages.${option}`)"
+              >
+              </v-select>
+            </label>
+
+            <div v-if="me" class="user__info-btn">
+              <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+            </div>
+
+            <hr class="divider" />
+
+            <template v-if="user.superAdmin">
+              <h2 class="title-2">
+                <i class="fas fa-user-shield" />
+                {{ $t('user.superAdmin') }}
+              </h2>
+              <div>
+                {{ $t('user.hasSuperAdmin') }}
               </div>
-            </router-link>
-          </li>
-        </ul>
+            </template>
+
+            <template v-if="user.admin && user.admin.length > 0">
+              <h2 class="title-2">
+                <i class="fas fa-user-shield" />
+                {{ $t('user.admin') }}
+              </h2>
+              <div>
+                {{ $t('user.hasAdmin') }}
+              </div>
+            </template>
+
+            <div class="product__header">
+              <h2 class="title-2">{{ $t('user.products') }}</h2>
+              <ul class="grid-system">
+                <li v-for="product in products" :key="product.id">
+                  <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
+                    <div class="product__parent">{{ product.department.name }}</div>
+                    <div class="product__name">
+                      <i class="product__icon fa fa-cube" />
+                      {{ product.name }}
+                    </div>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -80,6 +159,7 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import User from '@/db/User';
+import { jobPositions } from '@/config/jobPositions';
 
 export default {
   name: 'User',
@@ -90,8 +170,10 @@ export default {
     audit: [],
     image: null,
     loading: false,
+    changes: false,
     thisUser: null,
     languages: ['nb-NO', 'en-US'],
+    jobPositions,
   }),
 
   computed: {
@@ -135,6 +217,9 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     setImage({ target }) {
       const { files } = target;
       if (files.length !== 1) return;
@@ -153,6 +238,7 @@ export default {
         console.error(error);
       }
       this.loading = false;
+      this.changes = false;
     },
 
     async save() {
@@ -167,13 +253,38 @@ export default {
       }
 
       this.loading = false;
+      this.changes = false;
+    },
+
+    async deleteImage() {
+      this.loading = true;
+      try {
+        this.thisUser.photoURL = null;
+        this.image = null;
+        await this.save(this.thisUser);
+        await User.deleteImage(this.user.id);
+      } catch (error) {
+        console.log('Error ' + error);
+        throw new Error(error.message);
+      }
+
+      this.loading = false;
+      this.changes = false;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
+.main {
+  width: span(12);
+  padding: 1.5rem 0;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(9);
+    margin-left: span(2, 1);
+  }
+}
 
 .user {
   display: flex;
@@ -244,7 +355,7 @@ export default {
   border: 1px solid var(--color-grey-100);
 
   &:hover {
-    background: rgba(colors.$color-grey-500, 0.1);
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 }
 
@@ -270,5 +381,15 @@ export default {
   grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin: 1rem 0 2rem;
+}
+
+.user__image-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.product__header {
+  margin-top: 1rem;
 }
 </style>

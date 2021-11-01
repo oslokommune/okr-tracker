@@ -2,22 +2,16 @@
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
     <Breadcrumbs></Breadcrumbs>
-    <main class="container">
-      <div class="sidebarContainer">
-        <SidebarNavigation v-if="user"></SidebarNavigation>
-      </div>
-      <div class="main-view">
-        <spinner v-if="loading"></spinner>
-        <router-view v-else class="router-view"></router-view>
-      </div>
-    </main>
-    <Griddle v-if="isDev" />
+    <spinner v-if="loading"></spinner>
+    <router-view v-else></router-view>
+    <Griddle />
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'App',
@@ -29,7 +23,6 @@ export default {
   },
 
   components: {
-    SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
     Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
     Spinner: () => import('@/components/Spinner.vue'),
@@ -39,7 +32,7 @@ export default {
     ...mapState(['user', 'loading']),
 
     isDev() {
-      return process.env.NODE_ENV !== 'production';
+      return import.meta.env.NODE_ENV !== 'production';
     },
   },
 
@@ -49,8 +42,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['initKeycloak']),
-    ...mapMutations(['SET_AUTHENTICATION']),
+    ...mapActions(['reset_state']),
+
+    async signOut() {
+      await auth.signOut();
+      await this.reset_state();
+    },
   },
 };
 
@@ -69,38 +66,22 @@ document.body.addEventListener('keydown', () => {
   background: var(--color-bg);
 }
 
-.container {
-  @include container();
+.sidebar {
+  position: sticky;
+  top: 7.5rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
+  padding: 1.5rem 0;
 }
 
-.sidebarContainer {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(3);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(2);
-  }
+.sidebar__group {
+  margin-bottom: 1rem;
 }
 
-.main-view {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9);
-    margin-left: span(0, 1);
-  }
-  @media screen and (min-width: bp(l)) {
-    width: span(10);
-  }
-}
-
-.router-view {
-  min-height: calc(100vh - 20rem);
+.sidebar__bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
 }
 </style>

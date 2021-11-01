@@ -1,4 +1,9 @@
-import { select, scaleTime, scaleLinear, axisLeft, axisBottom, extent, line, area, max, min } from 'd3';
+import { select } from 'd3-selection';
+import { scaleTime, scaleLinear } from 'd3-scale';
+import { extent, max, min } from 'd3-array';
+import { line, area } from 'd3-shape';
+import { axisLeft, axisBottom } from 'd3-axis';
+import "d3-transition";
 import kpiTypes from '@/config/kpiTypes';
 import { initSvg, resize } from './linechart-helpers';
 
@@ -78,13 +83,11 @@ export default class LineChart {
     };
 
     const datapoints = progressionList
-      .map((d) => {
-        return {
-          timestamp: d.timestamp.toDate(),
-          value: +d.value,
-          startValue: +obj.startValue,
-        };
-      })
+      .map((d) => ({
+        timestamp: d.timestamp.toDate(),
+        value: +d.value,
+        startValue: +obj.startValue,
+      }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
     const lastValue = datapoints.length ? +datapoints[datapoints.length - 1].value : startValue.value;

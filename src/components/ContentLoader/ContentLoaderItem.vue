@@ -1,5 +1,5 @@
 <template>
-  <ul class="content-loader-item-container content-loader-item-container--hover">
+  <ul class="content-loader-item-container">
     <li class="content-loader-item__objective-container">
       <div class="content-loader-item__objective">
         <content-loader class="objective__header title-2" height="20" width="790">
@@ -39,20 +39,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content-loader-item-container {
-  display: block;
-}
-
-.content-loader-item-container--hover {
-  position: relative;
-  bottom: 2rem;
-}
-
 .content-loader-item__objective-container {
-  margin: 0 1rem 1rem 1rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
-  box-shadow: -2px 1px 5px 2px rgb(147 147 153 / 30%);
+  box-shadow: 0 3px 21px rgba(0, 0, 0, 0.03), 0 6.7px 34.2px rgba(0, 0, 0, 0.04), 0 11.7px 43.8px rgba(0, 0, 0, 0.046),
+    0 18.5px 55.2px rgba(0, 0, 0, 0.059), 0 26px 80px rgba(0, 0, 0, 0.11);
 }
 
 .content-loader-item__objective {

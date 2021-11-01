@@ -1,7 +1,7 @@
-const firebase = require('firebase-admin');
-const getSheetsData = require('../util/getSheetsData');
+import { FieldValue } from 'firebase-admin/firestore';
+import getSheetsData from '../util/getSheetsData.js';
 
-module.exports = async function FetchKpiDataOnUpdate(doc) {
+const fetchKpiDataOnUpdate = async (doc) => {
   if (!doc || !doc.ref || !doc.ref.update) {
     throw new Error('Invalid document');
   }
@@ -12,7 +12,7 @@ module.exports = async function FetchKpiDataOnUpdate(doc) {
     const { api } = doc.data();
 
     if (api) {
-      await ref.update({ error: firebase.firestore.FieldValue.delete(), valid: true });
+      await ref.update({ error: FieldValue.delete(), valid: true });
       return true;
     }
 
@@ -24,10 +24,12 @@ module.exports = async function FetchKpiDataOnUpdate(doc) {
     }
 
     await ref.collection('progress').add({ value, timestamp: new Date() });
-    await ref.update({ error: firebase.firestore.FieldValue.delete(), currentValue: value, valid: true });
+    await ref.update({ error: FieldValue.delete(), currentValue: value, valid: true });
 
     return true;
   } catch ({ message }) {
     return ref.update({ error: message, valid: false });
   }
 };
+
+export default fetchKpiDataOnUpdate;

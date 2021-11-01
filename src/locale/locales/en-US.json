@@ -100,6 +100,7 @@
     "notFound": "Not found",
     "help": "Help",
     "admin": "Admin",
+    "superAdmin": "Super admin",
     "dashboard": "View dashboard",
     "signOut": "Sign out",
     "createdBy": "Created by",
@@ -111,8 +112,11 @@
     "teamMembers": "Team members",
     "users": "Users",
     "home": "Home",
-    "keyresults": "Key results",
-    "success": "Success"
+    "keyResults": "Key results",
+    "success": "Success",
+    "objective": "Objective",
+    "keyResult": "Key result",
+    "period": "Period"
   },
   "btn": {
     "close": "Close",
@@ -145,14 +149,14 @@
     "requestButton": "Send request",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
+    "microsoft": "Sign in with Microsoft",
     "google": "Sign in with Google",
-    "keycloak": "Sign in with Keycloak",
     "email": "Email",
     "password": "Password",
     "loading": "We are signing you in, please wait",
     "error": {
       "notRegistered": "Your account is not registered",
-      "googleError": "Could not sign in with Google. Please contact system administrator if the error persists.",
+      "providerError": "Could not sign in. Please contact system administrator if the error persists.",
       "wrongPassword": "Wrong password.",
       "userNotFound": "Could not find user."
     },
@@ -164,20 +168,21 @@
       "internal": "There was an internal error when trying to log you in. Please try to log in again. Contact the administrator of the site if the problem persists.",
       "permission-denied": "The account you tried to log in with does not meet the required permissions to access the site. Contact the administrator to get the right permissions.",
       "email-in-use": "The e-mail you tried to log in with is already in use. Contact the administrator for further assistance.",
-      "default": "Something went wrong with your sign in. Please contact the administrator and refer to your url."
+      "default": "Something went wrong with your sign in. Please contact the administrator and refer to your url.",
+      "email-not-whitelisted": "The e-mail is not whitelisted and/or allowed to access the website. Contact the administrator for further assistance."
     }
   },
   "toaster": {
     "welcome": "Welcome {user}",
     "add": {
       "users": "Add user | {count} users",
-      "product": "Created new product",
-      "objective": "Created an objective for  {period}",
+      "product": "Created new product. Please wait, you will be redirected in 5 seconds",
+      "objective": "Created an objective for {period}",
       "progression": "Created new value",
-      "department": "Created new department",
+      "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
       "period": "Created new period",
-      "organization": "Created new organisation",
+      "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
       "kpi": "Created new KPI"
     },
     "delete": {
@@ -216,7 +221,7 @@
       "rejected": "Removed {user}"
     }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Related objective",
     "description": "Description",
     "startValue": "Start value",
@@ -275,7 +280,7 @@
   "tooltip": {
     "openMenu": "Open menu",
     "dashboard": "Go to dashboard",
-    "keyresValue": "Insert new value",
+    "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
@@ -347,11 +352,6 @@
     "title": "Help",
     "toc": "Content"
   },
-  "profile": {
-    "myProfile": "My profile",
-    "hasAdmin": "Has admin rights",
-    "products": "My products"
-  },
   "view": {
     "compact": "Compact",
     "details": "Details"
@@ -363,7 +363,7 @@
   },
   "weight": {
     "heading": "Weights",
-    "keyresFor": "Key results for “{name}”",
+    "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
   },
   "accessRequests": {
@@ -425,7 +425,58 @@
     "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select language",
+    "myProfile": "My profile",
+    "superAdmin": "OKR-tracker Administrator",
+    "admin": "Administrator for Organizations",
+    "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
+    "hasAdmin": "Has admin rights for some organizations",
+    "products": "My products",
+    "position": {
+      "groups": {
+        "developers": "Developers",
+        "designers": "Designers",
+        "teamLead": "Team lead",
+        "techLead": "Tech lead",
+        "administration": "Administration",
+        "members": "Team members",
+        "productOwner": "Product owner",
+        "director": "Director",
+        "others": "Members",
+        "departmentDirector": "Department director"
+      },
+      "title": "Position",
+      "frontendDeveloper": "Front-end developer",
+      "backendDeveloper": "Back-end developer",
+      "fullStackDeveloper": "Full stack developer",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaction designer",
+      "serviceDesigner": "Service designer",
+      "contentDesigner": "Content designer",
+      "graphicDesigner": "Graphic designer",
+      "informationArchitect": "Information Architect",
+      "dataScientist": "Data scientist",
+      "teamLead": "Team lead",
+      "productOwner": "Product owner",
+      "businessAnalyst": "Business Analyst",
+      "businessDeveloper": "Business Developer",
+      "departmentDirector": "Department director",
+      "director": "Director",
+      "organizationDeveloper": "Organization Developer",
+      "principalEngineer": "Principal Engineer",
+      "legalAdvisor": "Legal advisor",
+      "itCustodian": "IT-Custodian",
+      "hr": "HR og personnel management",
+      "hardwareDeveloper": "Hardware developer",
+      "humanResourcesManager": "Human resources manager",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobile developer",
+      "securityExpert": "Security expert",
+      "administration": "Administration",
+      "contentProducer": "Content producer",
+      "other": "Other",
+      "storyteller": "Storyteller"
+    }
   },
   "languages": {
     "en-US": "English",

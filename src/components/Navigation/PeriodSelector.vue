@@ -20,7 +20,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import { isBefore, addDays } from 'date-fns';
-import { periodDates } from '@/util/formatDate';
+import { periodDates } from '@/util';
 
 export default {
   name: 'PeriodSelector',

@@ -1,3 +1,4 @@
+import { formatLocale } from 'd3-format';
 import { format, parseISO, formatISO } from 'date-fns';
 import { nb as locale } from 'date-fns/locale';
 
@@ -15,3 +16,9 @@ export function periodDates({ startDate, endDate }, strategy = dateLong) {
 
 export const parseDate = (d) => parseISO(d);
 export const formatISOShort = (d) => formatISO(d, { representation: 'date' });
+
+export const numberLocale = formatLocale({
+  decimal: ',',
+  thousands: ' ',
+  grouping: [3],
+});

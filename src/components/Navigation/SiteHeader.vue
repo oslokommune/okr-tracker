@@ -1,6 +1,24 @@
 <template>
   <header class="header">
     <div class="container">
+      <a
+        href="#"
+        role="menuitem"
+        class="header__navbutton"
+        :class="{ 'is-open': sidebarOpen }"
+        aria-expanded="false"
+        data-th-aria-label="${portal.localize({'_key=aria.openMenu'})}"
+        @click.stop="sidebarOpen = !sidebarOpen"
+      >
+        <div class="header__navicon" role="presentation">
+          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+        </div>
+      </a>
+      <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
+        <sidebar-navigation></sidebar-navigation>
+      </div>
+      <div v-if="sidebarOpen" class="overlay"></div>
       <router-link :to="{ name: 'Home' }" class="logo">
         <oslo-logo class="logo__img" />
       </router-link>
@@ -14,7 +32,7 @@
         <button
           v-if="user"
           v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
-          class="btn btn--ter user"
+          class="btn btn--ter btn--icon user"
           :class="{ active: showUserMenu }"
           @click="showUserMenu = !showUserMenu"
         >
@@ -27,29 +45,37 @@
           <ul class="menu__list">
             <li class="menu__list-item">
               <router-link
-                class="btn btn--ter btn--icon"
+                class="btn btn--ter btn--icon btn--icon-pri"
                 :to="{ name: 'User', params: { id: user.id } }"
                 data-cy="site-header-profile"
               >
                 <i class="icon fa fa-fw fa-user" />
-                {{ $t('profile.myProfile') }}
+                {{ $t('user.myProfile') }}
               </router-link>
             </li>
-            <li v-if="user.admin" class="menu__list-item">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Admin' }" data-cy="site-header-admin">
+            <li v-if="isAdmin" class="menu__list-item">
+              <router-link
+                class="btn btn--ter btn--icon btn--icon-pri"
+                :to="{ name: 'Admin' }"
+                data-cy="site-header-admin"
+              >
                 <i class="icon fa fa-fw fa-cogs" />
                 {{ $t('general.admin') }}
               </router-link>
             </li>
-            <theme-toggle />
+            <theme-toggle header />
             <li class="menu__list-item show-mobile">
-              <router-link class="btn btn--ter btn--icon" :to="{ name: 'Help' }" data-cy="site-header-help">
+              <router-link
+                class="btn btn--ter btn--icon btn--icon-pri"
+                :to="{ name: 'Help' }"
+                data-cy="site-header-help"
+              >
                 <i class="icon fa fa-fw fa-question-circle" />
                 {{ $t('general.help') }}
               </router-link>
             </li>
             <li>
-              <button class="btn btn--ter btn--icon" data-cy="site-header-signout" @click="signOut">
+              <button class="btn btn--ter btn--icon btn--icon-pri" data-cy="site-header-signout" @click="signOut">
                 <i class="icon fa fa-fw fa-sign-out-alt" />
                 {{ $t('general.signOut') }}
               </button>
@@ -62,11 +88,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 import OsloLogo from '@/components/OsloLogo.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
+import SidebarNavigation from '@/components/Navigation/Sidebar.vue';
 
 export default {
   name: 'SiteHeader',
@@ -74,6 +101,7 @@ export default {
   components: {
     OsloLogo,
     ThemeToggle,
+    SidebarNavigation,
   },
 
   directives: {
@@ -82,10 +110,18 @@ export default {
 
   data: () => ({
     showUserMenu: false,
+    sidebarOpen: false,
   }),
 
+  metaInfo() {
+    return {
+      title: `OKR | ${this.title}`,
+    };
+  },
+
   computed: {
-    ...mapState(['activeItem', 'user', 'providers', 'authenticated']),
+    ...mapState(['activeItem', 'user']),
+    ...mapGetters(['isAdmin']),
 
     /**
      * Dynamically determines the page title based on the route
@@ -101,6 +137,7 @@ export default {
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
           parts.includes('ItemAdminOKRs') ||
+          parts.includes('ItemAdminTeam') ||
           parts.includes('ItemAdminKPIs')) &&
         this.activeItem
       ) {
@@ -118,17 +155,21 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state', 'cleanKeycloak']),
+    ...mapActions(['reset_state']),
+
+    hideSidebar() {
+      this.sidebarOpen = false;
+    },
+
+    showSidebar() {
+      this.sidebarOpen = true;
+    },
 
     hideUserMenu() {
       this.showUserMenu = false;
     },
 
     async signOut() {
-      if (this.providers.includes('keycloak')) {
-        await this.cleanKeycloak(this.$route.path);
-      }
-
       await auth.signOut();
       await this.reset_state();
     },
@@ -137,7 +178,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/colors';
+$header-height: 4em;
 
 .header {
   position: sticky;
@@ -169,14 +210,21 @@ export default {
 
   @media screen and (min-width: bp(s)) {
     display: block;
+    width: span(2);
+    margin-left: span(1, 1);
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(3);
+    width: span(2);
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(2);
+    width: span(1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3);
+    margin-left: span(0);
   }
 }
 
@@ -187,9 +235,10 @@ export default {
 
 .title {
   width: span(9);
+  margin-left: span(4, 1);
 
   @media screen and (min-width: bp(s)) {
-    width: span(7);
+    width: span(6);
     margin-left: span(0, 1);
   }
 
@@ -198,7 +247,11 @@ export default {
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(7);
+    width: span(6);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6);
   }
 }
 
@@ -232,7 +285,7 @@ export default {
   border-radius: 3px;
 
   &.active {
-    background: rgba(colors.$color-purple, 0.1);
+    background: rgba(var(--color-purple-rgb), 0.1);
   }
 
   @media screen and (min-width: bp(s)) {
@@ -286,18 +339,22 @@ export default {
   position: absolute;
   top: 3.5rem;
   right: 0;
-  z-index: 100;
+  z-index: 50;
   width: 100%;
   padding: 0.5rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 3px 4px rgba(colors.$color-grey-500, 0.5);
+  box-shadow: 0 3px 4px rgba(var(--color-grey-500-rgb), 0.5);
 
   @media screen and (min-width: bp(xs)) {
-    width: span(4);
+    width: span(5);
   }
 
   @media screen and (min-width: bp(s)) {
+    width: span(4);
+  }
+
+  @media screen and (min-width: bp(m)) {
     width: span(3);
   }
 
@@ -324,6 +381,102 @@ export default {
 .show-mobile {
   @media screen and (min-width: bp(m)) {
     display: none;
+  }
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 90%;
+  max-width: 400px;
+  height: 100%;
+  padding: 3em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--color-primary) !important;
+  transform: translateX(-100vw);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
+
+  &.is-open {
+    transform: translate(0);
+    opacity: 1;
+    transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
+  }
+}
+
+.header__navbutton {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  width: $header-height;
+  height: $header-height;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1rem;
+  border: 0;
+  cursor: pointer;
+
+  &.is-open {
+    z-index: 200;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    transform: translateX(400px);
+    transition: transform 0.3s ease-in-out, background-color 0.3s;
+    span {
+      &:nth-child(1),
+      &:nth-child(4) {
+        opacity: 0;
+        transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+      }
+      &:nth-child(2) {
+        transform: translateY(1em) rotate(45deg);
+        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+      &:nth-child(3) {
+        transform: translateY(1em) rotate(-45deg);
+        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+    }
+  }
+}
+
+.header__navicon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+
+  $bar-height: 0.15em;
+  $center: 1em - ($bar-height/2);
+  span {
+    position: absolute;
+    top: $center;
+    left: 1.25em;
+    display: block;
+    width: 1.5em;
+    height: $bar-height;
+    background: var(--color-text-secondary);
+    border-radius: 0.075em;
+    transform-origin: 50% 50%;
+
+    &:nth-child(1) {
+      transform: translateY($center - 0.35em) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      transform: translateY(1em) rotate(0deg);
+      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+    }
+    &:nth-child(4) {
+      transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
   }
 }
 </style>
