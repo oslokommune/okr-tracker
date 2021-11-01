@@ -162,21 +162,19 @@ export default {
   box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(s)) {
-    width: span(6);
+    width: span(9);
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(4);
+    width: span(6);
     margin-left: span(3, 1);
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(4);
     margin-left: span(2, 1);
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(4);
     margin-left: span(3, 1);
   }
 }
