@@ -15,7 +15,7 @@
           <span class="sidebar__button"></span> <span class="sidebar__button"></span>
         </div>
       </a>
-      <div class="drawer" v-click-outside="hideSidebar" :class="{ 'is-open': sidebarOpen }">
+      <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
         <sidebar-navigation></sidebar-navigation>
       </div>
       <div v-if="sidebarOpen" class="overlay"></div>
@@ -108,16 +108,10 @@ export default {
     ClickOutside,
   },
 
-  data() {
-    return {
-      showUserMenu: false,
-      sidebarOpen: false,
-      vcoConfig: {
-        handler: this.hideSidebar,
-        middleware: this.sidebarMiddleware,
-      },
-    };
-  },
+  data: () => ({
+    showUserMenu: false,
+    sidebarOpen: false,
+  }),
 
   metaInfo() {
     return {
@@ -163,13 +157,8 @@ export default {
   methods: {
     ...mapActions(['reset_state']),
 
-    hideSidebar(e) {
+    hideSidebar() {
       this.sidebarOpen = false;
-    },
-
-    sidebarMiddleware(e) {
-      console.log(e);
-      return true;
     },
 
     showSidebar() {
