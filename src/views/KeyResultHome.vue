@@ -132,7 +132,7 @@
 
     <widgets-key-result-home class="aside--right"></widgets-key-result-home>
 
-    <modal v-if="isOpen" :keyResult="activeKeyResult" @close="closeModal"></modal>
+    <modal v-if="isOpen" :key-result="activeKeyResult" @close="closeModal"></modal>
   </div>
 </template>
 

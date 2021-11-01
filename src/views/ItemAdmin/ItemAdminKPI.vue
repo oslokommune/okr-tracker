@@ -56,13 +56,13 @@
             v-model="localKpi.sheetId"
             input-type="input"
             name="sheetId"
-            :label="$t('keyres.automation.googleSheetId')"
+            :label="$t('keyResult.automation.googleSheetId')"
             rules="required"
             type="text"
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
             </template>
           </form-component>
 
@@ -70,13 +70,13 @@
             v-model="localKpi.sheetName"
             input-type="input"
             name="sheetTab"
-            :label="$t('keyres.automation.sheetsTab')"
+            :label="$t('keyResult.automation.sheetsTab')"
             rules="required"
             type="text"
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
             </template>
           </form-component>
 

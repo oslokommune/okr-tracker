@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
 import { auth } from '@/config/firebaseConfig';
 
