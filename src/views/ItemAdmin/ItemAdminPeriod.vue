@@ -13,6 +13,7 @@
           rules="required"
           type="text"
           data-cy="period_name"
+          @edited-data="edit"
         />
 
         <validation-provider v-slot="{ errors }" name="range">
@@ -113,6 +114,9 @@ export default {
   },
 
   methods: {
+    edit() {
+      this.changes = true;
+    },
     generateRange() {
       if (!this.activePeriod.startDate || !this.activePeriod.endDate) return '';
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');

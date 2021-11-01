@@ -1,13 +1,12 @@
-const functions = require('firebase-functions');
-const firebaseAdmin = require('firebase-admin');
-const { WebClient } = require('@slack/web-api');
+import functions from 'firebase-functions';
+import { getFirestore } from 'firebase-admin/firestore';
+import { WebClient } from '@slack/web-api';
 
 const environment = functions.config();
-const db = firebaseAdmin.firestore();
 const { token } = environment.slack;
 const web = new WebClient(token);
 
-const slackMessageHelp = {
+export const slackMessageHelp = {
   blocks: [
     {
       type: 'section',
@@ -105,7 +104,7 @@ const slackMessageHelp = {
  * @param deep subscribe/all or not
  * @returns {Promise<boolean>} dont return anything
  */
-const postToSlack = async (document, channelId, channelName, subscribed, deep) => {
+export const postToSlack = async (document, channelId, channelName, subscribed, deep) => {
   const result = await web.chat.postMessage({
     text: `You have successfully ${subscribed ? 'subscribed' : 'unsubscribed'} to ${document}${
       deep ? ', and all its children' : ''
@@ -124,7 +123,7 @@ const postToSlack = async (document, channelId, channelName, subscribed, deep) =
  * @param channelId channelID of the slack channel
  * @returns {Promise<Boolean>} return true/false
  */
-const addChannelToSlackArray = async (collectionRef, collectionData, channelId) => {
+export const addChannelToSlackArray = async (collectionRef, collectionData, channelId) => {
   if (!collectionData.slack) {
     await collectionRef.update({
       slack: [channelId],
@@ -149,7 +148,7 @@ const addChannelToSlackArray = async (collectionRef, collectionData, channelId) 
  * @param channelId channelID of the slack channel
  * @returns {Promise<Boolean>} return true/false
  */
-const removeChannelFromSlackArray = async (collectionRef, collectionData, channelId) => {
+export const removeChannelFromSlackArray = async (collectionRef, collectionData, channelId) => {
   if (!collectionData.slack || !collectionData.slack?.includes(channelId)) {
     return false;
   }
@@ -167,7 +166,7 @@ const removeChannelFromSlackArray = async (collectionRef, collectionData, channe
  * @param channelId channelID of the slack channel
  * @returns {Promise<Object>} Return the batch-object so that the information can be committed to firestore
  */
-const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
+export const removeChannelsFromMultipleSlackArrays = async (documents, channelId, db) => {
   const batch = db.batch();
 
   documents.forEach((item) => {
@@ -192,7 +191,7 @@ const removeChannelsFromMultipleSlackArrays = async (documents, channelId) => {
  * @param channelId channelID of the slack channel
  * @returns {Promise<Object>} Return the batch-object so that the information can be committed to firestore
  */
-const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
+export const addChannelsToMultipleSlackArrays = async (documents, channelId, db) => {
   const batch = db.batch();
 
   documents.forEach((prod) => {
@@ -220,7 +219,7 @@ const addChannelsToMultipleSlackArrays = async (documents, channelId) => {
  * @param documentId channelID of the slack channel
  * @returns {Promise<Object>} return array of departments and products
  */
-const getDepsAndProds = async (type, documentId) => {
+export const getDepsAndProds = async (type, documentId, db) => {
   const deps = await db
     .collection('departments')
     .where('archived', '==', false)
@@ -234,11 +233,3 @@ const getDepsAndProds = async (type, documentId) => {
 
   return { deps, prods };
 };
-
-exports.postToSlack = postToSlack;
-exports.addChannelToSlackArray = addChannelToSlackArray;
-exports.removeChannelFromSlackArray = removeChannelFromSlackArray;
-exports.removeChannelsFromMultipleSlackArrays = removeChannelsFromMultipleSlackArrays;
-exports.addChannelsToMultipleSlackArrays = addChannelsToMultipleSlackArrays;
-exports.getDepsAndProds = getDepsAndProds;
-exports.slackMessageHelp = slackMessageHelp;

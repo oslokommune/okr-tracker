@@ -1,18 +1,17 @@
-const { GoogleAuth } = require('google-auth-library');
-const functions = require('firebase-functions');
-const config = require('./config');
+import { GoogleAuth } from 'google-auth-library';
+import functions from 'firebase-functions';
+import config from './config.js';
 
 const storageBucketName = process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
 
-exports.automatedBackups = function () {
-  return functions
+export const automatedBackups = () =>
+  functions
     .region(config.region)
     .pubsub.schedule(config.backupFrequency)
     .timeZone(config.timeZone)
     .onRun(generateBackup);
-};
 
-exports.automatedRestore = function () {
+export const automatedRestore = () => {
   return functions.region(config.region).pubsub.topic('restore-backup').onPublish(restoreBackup);
 
   async function restoreBackup() {

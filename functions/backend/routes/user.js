@@ -1,18 +1,19 @@
-const router = require('express').Router();
-const admin = require('firebase-admin');
-const { body, matchedData } = require('express-validator');
+import express from 'express';
+import { getFirestore } from 'firebase-admin/firestore';
+import { body, matchedData } from 'express-validator';
 
-const db = admin.firestore();
-
-const preferences = require('../../util/defaultPreferences');
-
-const collection = db.collection('users');
+import preferences from '../../util/defaultPreferences.js';
 
 const validateUser = [body('email').isEmail().trim().escape().normalizeEmail(), body('id').trim().escape()];
+
+const router = express.Router();
 
 router.post('/create', ...validateUser, async (req, res) => {
   const sanitized = matchedData(req);
   const { email, id } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('users');
 
   try {
     if (!email) {
@@ -40,4 +41,4 @@ router.post('/create', ...validateUser, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

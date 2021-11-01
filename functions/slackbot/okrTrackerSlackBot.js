@@ -1,6 +1,6 @@
-const firebaseAdmin = require('firebase-admin');
+import { getFirestore } from 'firebase-admin/firestore';
 
-const {
+import {
   postToSlack,
   addChannelToSlackArray,
   removeChannelFromSlackArray,
@@ -8,18 +8,18 @@ const {
   addChannelsToMultipleSlackArrays,
   getDepsAndProds,
   slackMessageHelp,
-} = require('./helper-methods');
-
-const db = firebaseAdmin.firestore();
+} from './helper-methods.js';
 
 const allowedSub = ['product', 'department', 'organization'];
 const allowedDeepSub = ['organization', 'department'];
 const allowedCmd = ['subscribe', 'unsubscribe', 'subscribe/all', 'unsubscribe/all'];
 
-exports.runSlackBot = async (req, res) => {
+const runSlackBot = async (req, res) => {
   if (!req.body.text) {
     return res.status(200).send(slackMessageHelp);
   }
+
+  const db = getFirestore();
 
   let isSubscribed = false;
   let isDeep = false;
@@ -65,7 +65,7 @@ exports.runSlackBot = async (req, res) => {
     isDeep = true;
 
     const documentId = parentDocument.docs[0].id;
-    const { deps, prods } = await getDepsAndProds(cmd[1], documentId);
+    const { deps, prods } = await getDepsAndProds(cmd[1], documentId, db);
 
     if (cmd[1] === 'organization') {
       documents = [...parentDocument.docs, ...deps.docs, ...prods.docs];
@@ -74,13 +74,13 @@ exports.runSlackBot = async (req, res) => {
     } else {
       return res.status(200).send('You can only run subscribe/all on a department or organization');
     }
-    const batch = await addChannelsToMultipleSlackArrays(documents, req.body.channel_id);
+    const batch = await addChannelsToMultipleSlackArrays(documents, req.body.channel_id, db);
     await batch.commit();
   }
   if (cmd[0] === 'unsubscribe/all' && allowedDeepSub.includes(cmd[1])) {
     isDeep = true;
     const documentId = parentDocument.docs[0].id;
-    const { deps, prods } = await getDepsAndProds(cmd[1], documentId);
+    const { deps, prods } = await getDepsAndProds(cmd[1], documentId, db);
 
     if (cmd[1] === 'organization') {
       documents = [...parentDocument.docs, ...deps.docs, ...prods.docs];
@@ -90,7 +90,7 @@ exports.runSlackBot = async (req, res) => {
       return res.status(200).send('You can only run unsubscribe/all on a department or organization');
     }
 
-    const batch = await removeChannelsFromMultipleSlackArrays(documents, req.body.channel_id);
+    const batch = await removeChannelsFromMultipleSlackArrays(documents, req.body.channel_id, db);
 
     await batch.commit();
   }
@@ -100,7 +100,7 @@ exports.runSlackBot = async (req, res) => {
     await postToSlack(cmd[2], req.body.channel_id, req.body.channel_name, isSubscribed, isDeep);
   } catch (e) {
     // If the bot is not allowed to push to a slack channel, then delete everything that has been updated and tell the user that the bot needs access to a private channel
-    const batch = await removeChannelsFromMultipleSlackArrays(documents, req.body.channel_id);
+    const batch = await removeChannelsFromMultipleSlackArrays(documents, req.body.channel_id, db);
     await batch.commit();
     return res
       .status(200)
@@ -111,3 +111,5 @@ exports.runSlackBot = async (req, res) => {
 
   return res.status(200).send();
 };
+
+export default runSlackBot;
