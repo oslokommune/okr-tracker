@@ -207,7 +207,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/typography.scss';
+@import '@/styles/typography';
 
 .users__list {
   display: flex;
