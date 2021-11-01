@@ -4,9 +4,8 @@ import config from '../config.js';
 import { pushToSlack, colors, slackMessageCreated } from './helpers.js';
 
 const environment = functions.config();
-
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 const { host_url: HOST_URL } = environment.slack;
-
 
 const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
   functions
@@ -37,7 +36,9 @@ const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
         auditData.department = documentData.department;
       }
 
-      await checkIfRelevantToPushToSlack(auditData, documentType);
+      if (isSlackActive) {
+        await checkIfRelevantToPushToSlack(auditData, documentType);
+      }
 
       return db.collection('audit').add(auditData);
     });

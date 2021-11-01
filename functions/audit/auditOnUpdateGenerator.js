@@ -4,6 +4,8 @@ import config from '../config.js';
 
 import { checkIfRelevantToPushToSlack } from './helpers.js';
 
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
+
 const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }) =>
   functions
     .runWith(config.runtimeOpts)
@@ -50,7 +52,7 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
         diff,
       };
 
-      if (auditData.event.includes('Updated')) {
+      if (auditData.event.includes('Updated') && isSlackActive) {
         await checkIfRelevantToPushToSlack(documentType, auditData);
       }
 

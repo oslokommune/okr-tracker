@@ -8,13 +8,12 @@ import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest }
 import api from './api/index.js';
 import internal from './backend/index.js';
 
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
+
 // Initialize the app to get everything started
 initializeApp({
   credential: cert(functions.config().service_account),
 });
-//
-
-const isSlackActive = functions.config().slack.active || false;
 
 // /**
 //  * Functions for backup and restoring the Firestore database
@@ -79,9 +78,9 @@ export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 export { api, internal };
 
 // OKR-Tracker slackbot - Need to export empty functions before adding real functions because some users of the okr tracker may not want these functions to begin with
-export let okrSlackBot = {}
-export let slackNotificationUserRequest = {}
-export let slackNotificationInteractiveRequest = {}
+export let okrSlackBot = {};
+export let slackNotificationUserRequest = {};
+export let slackNotificationInteractiveRequest = {};
 if (isSlackActive) {
   okrSlackBot = okrTrackerSlackBot;
   slackNotificationUserRequest = slackNotificationOnUserRequest;

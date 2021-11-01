@@ -12,6 +12,18 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Not allowed to update Period if you only changed the name.
+- Showing loading spinner when fetching KPI/KeyResult progress
+- Moved widgets around for a better UX experience for mobile users
+
+### Fixed
+
+- functions: config to active slackbot or not actually works
+
+## [2.5.3] 2021-10-27
+
+### Fixed
+
+- KPI graph did not show if one progress object had a value equal to 0
 
 ## [2.5.2] 2021-10-19
 
