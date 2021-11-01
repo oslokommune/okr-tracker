@@ -84,8 +84,8 @@ auth.onAuthStateChanged(async (user) => {
       store.commit('SET_LOGIN_ERROR', 1);
     }
 
-    await auth.signOut();
     await store.dispatch('reset_state');
+    await auth.signOut();
 
     if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
       await router.push(router.history.getCurrentLocation()).catch(() => {

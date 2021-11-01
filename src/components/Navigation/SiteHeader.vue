@@ -155,7 +155,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state']),
+    ...mapActions(['reset_state', 'setLoading']),
 
     hideSidebar() {
       this.sidebarOpen = false;
@@ -170,8 +170,10 @@ export default {
     },
 
     async signOut() {
-      await auth.signOut();
+      await this.setLoading(true);
       await this.reset_state();
+      await auth.signOut();
+      await this.setLoading(false);
     },
   },
 };
@@ -362,10 +364,6 @@ $header-height: 4em;
   .btn {
     width: 100%;
   }
-}
-
-.user {
-  display: relative;
 }
 
 .menu__list {

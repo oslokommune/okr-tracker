@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from "vuex";
 import { auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 
@@ -59,7 +59,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'sidebarGroups', 'user']),
+    ...mapState(['activeItem', 'user']),
+    ...mapGetters(['sidebarGroups']),
   },
 
   methods: {

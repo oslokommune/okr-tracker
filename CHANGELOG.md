@@ -19,9 +19,12 @@ All notable changes to this project will be documented in this file. The format 
 - Not allowed to update Period if you only changed the name.
 - Showing loading spinner when fetching KPI/KeyResult progress
 - Moved widgets around for a better UX experience for mobile users
+- Updated dependencies
+- Updated stylelint to v14 and fixed all the breaking changes
 
 ### Fixed
 
+- When updating Org/Dep/Prod, the state store would get corrupt and only refresh fixed it. Double documents would show because vuexfire does not handle hundreds of documents that well.
 - functions: config to active slackbot or not actually works
 
 ## [2.5.3] 2021-10-27
