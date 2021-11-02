@@ -202,7 +202,7 @@ $duration: 20s;
     }
 
     /deep/ svg path.valueLine {
-      color: var(--color-yellow);
+      stroke: var(--color-yellow);
       stroke-width: 3px;
     }
   }

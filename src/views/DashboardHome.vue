@@ -141,6 +141,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
+
 $imageSize: 1.75em;
 
 .dashboard {
@@ -217,7 +219,7 @@ $imageSize: 1.75em;
 .meta__team--image {
   width: $imageSize;
   height: $imageSize;
-  border-radius: $imageSize / 2;
+  border-radius: math.div($imageSize, 2);
 }
 
 .meta__product {

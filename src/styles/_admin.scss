@@ -1,3 +1,6 @@
+@use 'griddle/mixins' as *;
+@use 'griddle/functions' as *;
+
 .create-container {
   padding: 1rem;
   background: white;

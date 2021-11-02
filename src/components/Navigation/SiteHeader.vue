@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="container">
+    <div class="siteHeader-container">
       <a
         href="#"
         role="menuitem"
@@ -180,6 +180,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
+
 $header-height: 4em;
 
 .header {
@@ -190,11 +192,10 @@ $header-height: 4em;
   background: var(--color-primary);
 }
 
-.container {
+.siteHeader-container {
   @include container();
   position: relative;
   display: flex;
-  // flex-direction: row-reverse;
   align-items: center;
   height: 4rem;
 
@@ -450,7 +451,7 @@ $header-height: 4em;
   padding: 1em;
 
   $bar-height: 0.15em;
-  $center: 1em - ($bar-height/2);
+  $center: 1em - math.div($bar-height, 2);
   span {
     position: absolute;
     top: $center;
