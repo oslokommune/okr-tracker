@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="container">
+    <div class="siteHeader-container">
       <router-link :to="{ name: 'Home' }" class="logo">
         <oslo-logo class="logo__img" />
       </router-link>
@@ -158,11 +158,10 @@ export default {
   background: var(--color-primary);
 }
 
-.container {
+.siteHeader-container {
   @include container();
   position: relative;
   display: flex;
-  // flex-direction: row-reverse;
   align-items: center;
   height: 4rem;
 

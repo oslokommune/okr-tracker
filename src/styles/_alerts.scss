@@ -1,4 +1,5 @@
-@import 'typography';
+@use 'sass:color';
+@use 'griddle/functions' as *;
 
 $borderRadius: 1.5px;
 

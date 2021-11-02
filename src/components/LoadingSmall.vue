@@ -13,9 +13,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
+
 $size: 1.25rem;
 $dura: 1.5s;
-$circ: $size / 3;
+$circ: math.div($size, 3);
 
 .ok-spinner {
   position: relative;
@@ -23,7 +25,7 @@ $circ: $size / 3;
   width: $size;
   height: $size;
   margin: 0 0.5rem;
-  transform: translateY($size / 5);
+  transform: translateY(math.div($size, 5));
 }
 
 .circle {
@@ -33,7 +35,7 @@ $circ: $size / 3;
   width: $circ;
   height: $circ;
   background: var(--color-primary);
-  border-radius: $circ / 2;
+  border-radius: math.div($circ, 2);
   animation: loader $dura;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -41,7 +43,7 @@ $circ: $size / 3;
   @for $i from 1 through 3 {
     &:nth-child(3n + #{$i}) {
       left: $circ * ($i - 1);
-      animation-delay: $dura / $i;
+      animation-delay: math.div($dura, $i);
     }
   }
 }

@@ -207,7 +207,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/typography';
+@use '@/styles/typography';
 
 .users__list {
   display: flex;
@@ -235,7 +235,7 @@ export default {
   padding: 0.2rem;
   color: var(--color-grey-300);
   font-weight: 500;
-  font-size: $font-size-2;
+  font-size: typography.$font-size-2;
   letter-spacing: -0.03rem;
 }
 </style>
