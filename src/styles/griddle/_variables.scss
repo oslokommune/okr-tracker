@@ -1,24 +1,15 @@
-// Griddle variables
-// feel free to override with your own values in an earlier loaded scss file
-// -----------------------------------------------------------------------------
-$max-column-width: 4.5em !default; // 72px
-$max-gutter-width: 2em !default; // 32px
+$max-column-width: 7.5em !default; // 72px
+$max-gutter-width: 1em !default; // 32px
 $column-count: 12 !default;
 $column-color: red !default; // fill color will be used at 10% opacity
 
-$user-breakpoints: 'base' 0em 1em,
-  
-  'xs' 23.5em 1em,
-  
-  's' 36em 1.5em,
-  
-  'm' 48em 2em,
-  
-  'l' 64em 3em,
-  
-  
-  
-  'xl' 86.5em 4em,
-  
-  'xxl' 100em 6em 
-  !default;
+// prettier-ignore
+$user-breakpoints:
+  'base' 0em 0.5em,
+  'xs' 25em 1em,
+  's' 40em 1em,
+  'm' 60em 1em,
+  'l' 80em 1em,
+  'xl' 100em 1.5em,
+  'xxl' 128em 2em
+!default;

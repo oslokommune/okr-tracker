@@ -1,4 +1,6 @@
 @use 'typography';
+@use 'griddle/mixins' as *;
+@use 'griddle/functions' as *;
 
 .details {
   display: flex;

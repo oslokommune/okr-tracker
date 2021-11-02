@@ -73,6 +73,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/griddle/mixins' as *;
+
 .breadcrumbs {
   position: sticky;
   top: 4rem;

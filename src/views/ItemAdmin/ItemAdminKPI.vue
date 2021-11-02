@@ -84,13 +84,13 @@
             v-model="localKpi.sheetCell"
             input-type="input"
             name="sheetCell"
-            :label="$t('keyres.automation.sheetsCell')"
+            :label="$t('keyResult.automation.sheetsCell')"
             rules="required"
             type="text"
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
             </template>
           </form-component>
         </template>

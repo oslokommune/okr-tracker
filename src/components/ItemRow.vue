@@ -163,6 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
+@use '@/styles/griddle/mixins' as *;
 
 .item {
   display: flex;

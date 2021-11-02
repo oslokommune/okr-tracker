@@ -1,3 +1,7 @@
+@use 'griddle/griddle-overlay' as *;
+@use 'griddle/mixins' as *;
+@use 'griddle/functions' as *;
+
 @use 'reset';
 @use 'fonts';
 @use 'typography';
@@ -10,8 +14,6 @@
 @use 'admin';
 @use 'alerts';
 
-@use 'griddle-overrides' as *;
-@use 'griddle/griddle-overlay' as *;
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
