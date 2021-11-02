@@ -1,3 +1,5 @@
+// This is stolen from wearebraid/griddle until they release a version that supports @use/@forward rules
+// https://github.com/wearebraid/griddle/issues/7
 @use 'computed-variables' as comp;
 
 // function to return a breakpoint value from the breakpoint map
