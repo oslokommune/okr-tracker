@@ -157,14 +157,10 @@
       // if the first argument is not a % or a float then assume it's the extra gutters value
       // if it is a % value or a float then it is a context
       @if (
-        $i ==
-          1 and
-          type-of(nth($args, $i)) ==
-          'number' and
-          func.getUnit(nth($args, $i)) !=
-          '%' and
-          round(nth($args, $i)) ==
-          nth($args, $i)
+        $i == 1 and
+        type-of(nth($args, $i)) == 'number' and
+        func.getUnit(nth($args, $i)) != '%' and
+        round(nth($args, $i)) == nth($args, $i)
       ) {
         $extra_gutters: nth($args, $i);
       } @else if ($i == 1 and type-of(nth($args, $i)) == 'number') {
@@ -293,7 +289,7 @@
     // list of grid configuration items: 'start, end (optional), column count, target grid element width, target grid element column spacing, target grid element row spacing
     // EG:
     // 'm' 'l' 2 span(6) span(0, 1) 1em,
-    // 'l' 3 span(3) span(1, 2) 2em,,,
+    // 'l' 3 span(3) span(1, 2) 2em,,
   ),
   $align: start,
   $justify: center,
