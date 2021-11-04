@@ -108,7 +108,7 @@ export default {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .aside--left {
