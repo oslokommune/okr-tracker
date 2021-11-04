@@ -135,7 +135,6 @@
   grid-gap: span(0.2, span(12));
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   width: span(12);
-  padding-top: 1rem;
 
   @media screen and (min-width: bp(m)) {
     grid-gap: span(0, span(9));

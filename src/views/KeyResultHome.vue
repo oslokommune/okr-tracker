@@ -316,7 +316,7 @@ export default {
   width: 100%;
   margin-top: 1.25rem;
   padding: 1rem;
-  color: white;
+  color: var(--color-white);
   font-family: monospace;
   background: rgba(black, 0.75);
   border-radius: 3px;

@@ -103,7 +103,7 @@ $borderRadius: 1.5px;
   }
 
   &::before {
-    color: white;
+    color: var(--color-white);
     background: var(--color-primary);
   }
 }

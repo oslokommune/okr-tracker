@@ -64,7 +64,7 @@
   }
 
   &.btn--negative {
-    color: white;
+    color: var(--color-white);
 
     &:hover {
       background: rgba(white, 0.1);

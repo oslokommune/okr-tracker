@@ -96,7 +96,7 @@ $duration: 20s;
 
 .objective-title {
   margin: 0.5em 0;
-  color: white;
+  color: var(--color-white);
   font-weight: 500;
   font-size: 1.2em;
 }
@@ -217,7 +217,7 @@ $duration: 20s;
   justify-content: center;
   width: 5em;
   height: 5em;
-  color: white;
+  color: var(--color-white);
   opacity: 0.1;
 
   &:hover {

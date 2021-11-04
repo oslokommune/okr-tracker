@@ -139,7 +139,7 @@ export default {
     &::before {
       display: inline-block;
       width: 100%;
-      color: black;
+      color: var(--color-black);
       font-weight: 900;
       font-family: 'Font Awesome 5 Free';
       text-align: center;
@@ -158,7 +158,7 @@ export default {
 
 .progress__current-value {
   display: flex;
-  color: black;
+  color: var(--color-black);
   font-weight: 600;
   font-size: 0.9em;
 }

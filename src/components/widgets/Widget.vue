@@ -65,8 +65,7 @@ export default {
   align-self: start;
   width: 100%;
   margin-bottom: 0.5rem;
-  background: white;
-  border: 1px solid var(--color-grey-100);
+  background: var(--color-white);
 }
 
 .widget__header {

@@ -1,7 +1,6 @@
 <template>
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
-    <Breadcrumbs></Breadcrumbs>
     <spinner v-if="loading"></spinner>
     <router-view v-else></router-view>
     <vue-griddle />
@@ -24,7 +23,6 @@ export default {
 
   components: {
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
-    Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
     Spinner: () => import('@/components/Spinner.vue'),
   },
 

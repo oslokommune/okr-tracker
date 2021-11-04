@@ -160,7 +160,7 @@ $imageSize: 1.75em;
   width: 100vw;
   height: 100vh;
   padding: 1.5em;
-  color: white;
+  color: var(--color-white);
   font-size: calc(12px + (20 - 12) * (100vw - 600px) / (2000 - 600));
   background-color: #020218;
   background-image: url('/dashboard-1.png');
@@ -236,9 +236,9 @@ $imageSize: 1.75em;
   height: 12em;
   margin: 0 auto;
   object-fit: cover;
-  color: black;
-  background: #f8c66b;
-  border: 5px solid white;
+  color: var(--color-black);
+  background: var(--color-yellow);
+  border: 5px solid var(--color-white);
   border-radius: 0.25em;
   box-shadow: 0 0.4em 1.6em 0.5em rgba(var(--color-yellow-rgb), 0.4);
 }
@@ -263,7 +263,7 @@ $imageSize: 1.75em;
   width: 3em;
   height: 3em;
   padding: 0;
-  color: white;
+  color: var(--color-white);
 
   &:hover {
     background: rgba(white, 0.1);
