@@ -108,13 +108,11 @@ export default {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
-  box-shadow: 0 3px 21px rgba(0, 0, 0, 0.03), 0 6.7px 34.2px rgba(0, 0, 0, 0.04), 0 11.7px 43.8px rgba(0, 0, 0, 0.046),
-    0 18.5px 55.2px rgba(0, 0, 0, 0.059), 0 26px 80px rgba(0, 0, 0, 0.11);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .aside--left {
   display: none;
-  margin-top: 0.5rem;
   @media screen and (min-width: bp(m)) {
     display: block;
     width: span(3);
@@ -123,7 +121,6 @@ export default {
 
 .aside--bottom {
   width: span(12);
-  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(m)) {
     display: none;

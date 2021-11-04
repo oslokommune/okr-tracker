@@ -43,8 +43,7 @@ export default {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
-  box-shadow: 0 3px 21px rgba(0, 0, 0, 0.03), 0 6.7px 34.2px rgba(0, 0, 0, 0.04), 0 11.7px 43.8px rgba(0, 0, 0, 0.046),
-    0 18.5px 55.2px rgba(0, 0, 0, 0.059), 0 26px 80px rgba(0, 0, 0, 0.11);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .content-loader-item__objective {

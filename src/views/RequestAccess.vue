@@ -1,12 +1,12 @@
 <template>
-  <div class="wrapper">
-    <div class="back">
-      <router-link class="btn btn--icon btn--ghost" :to="{ name: 'Login' }">
-        <i class="icon fa-xs fa fa-fw fa-chevron-left" />
-        {{ $t('login.backToLogin') }}
-      </router-link>
-    </div>
+  <div class="container">
     <div class="login">
+      <div class="back">
+        <router-link class="btn btn--icon btn--ghost" :to="{ name: 'Login' }">
+          <i class="icon fa-xs fa fa-fw fa-chevron-left" />
+          {{ $t('login.backToLogin') }}
+        </router-link>
+      </div>
       <h2 class="title-1">{{ $t('login.requestAccess') }}</h2>
 
       <form @submit.prevent="send">
@@ -60,48 +60,33 @@ export default {
 .login {
   display: flex;
   flex-direction: column;
-  width: span(10);
-  margin-left: span(1, 1);
+  width: span(12);
   padding: 2rem;
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
-  @media screen and (min-width: bp(xs)) {
-    width: span(8);
-    margin-top: 2rem;
-    margin-left: span(2, 1);
-  }
-
   @media screen and (min-width: bp(s)) {
     width: span(6);
-    margin-top: 3rem;
-    margin-left: 0;
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(5, 0, span(9));
-    margin-top: 5rem;
+    width: span(4);
+    margin-left: span(3, 1);
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(4, 0, span(10));
+    width: span(4);
+    margin-left: span(2, 1);
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(4);
+    margin-left: span(3, 1);
   }
 }
 
 .back {
-  margin-left: span(1, 1);
-
-  @media screen and (min-width: bp(xs)) {
-    position: absolute;
-    margin-left: span(2, 0);
-    transform: translateY(-2.5rem);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    position: absolute;
-    margin-left: 0;
-    transform: translateY(-3rem);
-  }
+  margin-bottom: 1rem;
 }
 </style>

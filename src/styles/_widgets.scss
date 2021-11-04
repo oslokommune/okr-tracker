@@ -160,7 +160,6 @@
 
 .aside--right {
   display: none;
-  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(m)) {
     display: block;
@@ -169,7 +168,6 @@
 
 .aside--middle {
   width: span(12);
-  margin-top: 0.5rem;
   @media screen and (min-width: bp(m)) {
     display: none;
   }
