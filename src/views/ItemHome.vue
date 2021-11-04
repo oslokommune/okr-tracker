@@ -29,7 +29,7 @@
           </router-link>
         </empty-state>
 
-        <ul v-if="tree && !dataLoading" class="itemHome__tree--hover">
+        <ul v-if="tree && !dataLoading">
           <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
             <objective-row :objective="objective" :index="++index"></objective-row>
             <ul v-if="objective.keyResults">
@@ -109,21 +109,5 @@ export default {
   padding-bottom: 1rem;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.aside--left {
-  display: none;
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(3);
-  }
-}
-
-.aside--bottom {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
 }
 </style>

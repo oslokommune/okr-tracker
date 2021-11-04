@@ -4,7 +4,6 @@
       <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-calendar-alt"></div>
           <div class="details__item-value">
             {{ activeObjective.period.name }} ({{ formatPeriodDates(activeObjective.period) }})
           </div>
@@ -14,7 +13,6 @@
       <div v-if="activeObjective.created" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.created') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-calendar"></div>
           <div class="details__item-value">{{ formatDate(activeObjective.created) }}</div>
         </div>
       </div>
@@ -23,7 +21,6 @@
         <h3 class="title-3 details__item-heading">{{ $t('objective.createdBy') }}</h3>
 
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-user"></div>
           <div class="details__item-value">
             <router-link
               v-if="activeObjective.createdBy.id"
@@ -39,7 +36,6 @@
       <div v-if="activeObjective.edited" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.edited') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-calendar"></div>
           <div class="details__item-value">{{ formatDate(activeObjective.edited) }}</div>
         </div>
       </div>
@@ -48,7 +44,6 @@
         <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
 
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-user"></div>
           <div class="details__item-value">
             <router-link
               v-if="activeObjective.editedBy.id"

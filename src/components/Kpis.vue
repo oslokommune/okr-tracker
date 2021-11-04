@@ -37,7 +37,9 @@ export default {
 
 <style lang="scss" scoped>
 .kpis {
+  background: var(--color-white);
   margin-bottom: 1.5rem;
+  padding: 1rem;
 }
 
 .kpis__list {

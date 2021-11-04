@@ -1,9 +1,8 @@
 <template>
   <router-link class="objective" :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }">
     <h3 class="objective__header title-2">
-      <i class="objective__icon fas fa-fw" :class="`fa-${objective.icon || 'trophy'}`" />
       <span>Objective {{ index }}</span>
-      <span class="objective__progression-text">{{ percent(objective.progression) }}</span>
+      <span>{{ percent(objective.progression) }}</span>
     </h3>
     <span>{{ objective.description }}</span>
   </router-link>
@@ -52,14 +51,7 @@ export default {
 }
 
 .objective__header {
-  text-transform: uppercase;
-}
-
-.objective__icon {
-  margin-right: 0.5rem;
-}
-
-.objective__progression-text {
-  margin-left: 2rem;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

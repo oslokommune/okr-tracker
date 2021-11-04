@@ -16,6 +16,15 @@
   display: flex;
 }
 
+.details__item-heading {
+  color: var(--color-grey-300);
+  padding-bottom: 0.2rem;
+}
+
+.details__item-value {
+  padding-bottom: 0.5rem;
+}
+
 .details__item-icon {
   flex-shrink: 0;
   align-self: flex-start;
@@ -168,6 +177,23 @@
 
 .aside--middle {
   width: span(12);
+  @media screen and (min-width: bp(m)) {
+    display: none;
+  }
+}
+
+.aside--left {
+  display: none;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(3);
+  }
+}
+
+.aside--bottom {
+  width: span(12);
+
   @media screen and (min-width: bp(m)) {
     display: none;
   }

@@ -198,7 +198,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .selected-icon {
   display: inline-block;
   margin-right: 0.5rem;

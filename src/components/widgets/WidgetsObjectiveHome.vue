@@ -1,14 +1,12 @@
 <template>
   <aside v-if="activeObjective" class="aside">
-    <div v-if="hasEditRights" class="widgets__links">
-      <router-link
-        class="btn btn--ter btn--icon btn--icon-pri"
-        :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
-      >
-        <i class="icon fa fa-edit" />
-        {{ $t('objective.change') }}
-      </router-link>
-    </div>
+    <router-link
+      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
+    >
+      {{ $t('objective.change') }}
+      <i class="icon fa fa-pen" />
+    </router-link>
 
     <div class="widgets">
       <widget-progression
@@ -18,13 +16,12 @@
         :dimmed="true"
       />
       <widget-objective-details widget-id="objectiveHome.details" />
-      <widget-objective-weights widget-id="objectiveHome.weights" />
     </div>
   </aside>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'WidgetsObjectiveHome',
@@ -32,7 +29,6 @@ export default {
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
-    WidgetObjectiveWeights: () => import('./WidgetObjectiveWeights.vue'),
   },
 
   computed: {
@@ -46,3 +42,27 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.widgets__links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1.5rem 0;
+  background-color: var(--color-primary);
+
+  & > .btn {
+    width: 100%;
+  }
+}
+
+.link__edit-rights {
+  color: var(--color-text);
+  background-color: var(--color-secondary);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 1.5rem;
+  text-transform: uppercase;
+}
+</style>

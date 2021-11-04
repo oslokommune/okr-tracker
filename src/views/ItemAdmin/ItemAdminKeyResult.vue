@@ -381,7 +381,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .validation {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
