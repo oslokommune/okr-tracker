@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file. The format 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
 
+### Removed
+
+- Breadcrumbs: it has been fun, but you are no longer welcomed
+
 ### Changes
 
 - Rewritten sass rules from @import to @use/@forward - hopefully easier to implement the new Oslo Design System
