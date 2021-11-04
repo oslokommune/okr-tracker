@@ -1,36 +1,37 @@
 <template>
   <div v-if="activeKeyResult" class="container">
+    <widgets-left class="aside--left"></widgets-left>
+
     <div class="keyResult">
+      <widget-key-result-weights widget-id="keyResultHome.weights" />
+
       <h1 class="title-1">{{ activeKeyResult.name }}</h1>
       <p>{{ activeKeyResult.description }}</p>
 
-      <div class="main-widgets">
-        <div class="main-widgets__current main-widgets__current--children">
-          <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line" />
-            {{ $t('keyResult.registerProgression.value') }} ({{activeKeyResult.unit}})
-          </h3>
-          <div class="main-widgets__current--value">
-            {{
-              typeof activeKeyResult.currentValue === 'undefined'
-                ? formatValue(activeKeyResult.startValue)
-                : formatValue(activeKeyResult.currentValue)
-            }}
-          </div>
-
-          <button v-if="!activeKeyResult.auto || hasEditRights" class="btn btn--ter" @click="isOpen = true">
-            {{ $t('keyResult.updateValue') }}
-          </button>
+      <div class="main-widgets__current main-widgets__current--children">
+        <h3 class="main-widgets__title">
+          <i class="fas fa-chart-line" />
+          {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
+        </h3>
+        <div class="main-widgets__current--value">
+          {{
+            typeof activeKeyResult.currentValue === 'undefined'
+              ? formatValue(activeKeyResult.startValue)
+              : formatValue(activeKeyResult.currentValue)
+          }}
         </div>
 
-        <div class="main-widgets__graph">
-          <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line" />
-            {{ $t('objective.progression') }}
-          </h3>
+        <button v-if="!activeKeyResult.auto || hasEditRights" class="btn btn--ter" @click="isOpen = true">
+          {{ $t('keyResult.updateValue') }}
+        </button>
+      </div>
 
-          <svg ref="graph" class="graph"></svg>
-        </div>
+      <div class="main-widgets__graph">
+        <h3 class="main-widgets__title">
+          {{ $t('objective.progression') }}
+        </h3>
+
+        <svg ref="graph" class="graph"></svg>
       </div>
 
       <div v-if="activeKeyResult.auto" class="auto">
@@ -154,6 +155,8 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     VPopover,
     Spinner: () => import('@/components/Spinner.vue'),
+    WidgetKeyResultWeights: () => import('@/components/widgets/WidgetKeyResultWeights.vue'),
+    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -247,8 +250,9 @@ export default {
   padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
-    width: span(9);
+    width: span(6);
     margin-right: span(0, 1);
+    margin-left: span(0, 1);
   }
 }
 

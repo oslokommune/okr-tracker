@@ -68,6 +68,7 @@
       <div v-if="activeKeyResult.startValue !== undefined" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.startValue') }}</h3>
         <div class="details__item-body">
+          <div class="details__item-icon fa fa-hashtag"></div>
           <div class="details__item-value">{{ activeKeyResult.startValue }}</div>
         </div>
       </div>
@@ -75,6 +76,7 @@
       <div v-if="activeKeyResult.targetValue !== undefined" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.targetValue') }}</h3>
         <div class="details__item-body">
+          <div class="details__item-icon fa fa-hashtag"></div>
           <div class="details__item-value">{{ activeKeyResult.targetValue }}</div>
         </div>
       </div>

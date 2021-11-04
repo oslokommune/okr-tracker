@@ -1,6 +1,7 @@
 <template>
   <aside v-if="activeObjective" class="aside">
     <router-link
+      v-if="hasEditRights"
       class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
       :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
     >
@@ -62,7 +63,7 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   text-transform: uppercase;
 }
 </style>

@@ -1,19 +1,17 @@
 <template>
   <aside v-if="activeKeyResult" class="aside">
-    <div v-if="hasEditRights" class="widgets__links">
-      <router-link
-        class="btn btn--ter btn--icon btn--icon-pri"
-        :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
-      >
-        <i class="icon fa fa-edit" />
-        {{ $t('keyResultPage.change') }}
-      </router-link>
-    </div>
+    <router-link
+      v-if="hasEditRights"
+      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+    >
+      {{ $t('keyResultPage.change') }}
+      <i class="icon fa fa-pen" />
+    </router-link>
 
     <div v-if="activeKeyResult" class="widgets">
-      <widget-key-result-details widget-id="keyResultHome.details" />
       <widget-key-result-notes widget-id="keyResultHome.notes" />
-      <widget-key-result-weights widget-id="keyResultHome.weights" />
+      <widget-key-result-details widget-id="keyResultHome.details" />
     </div>
   </aside>
 </template>
@@ -27,7 +25,6 @@ export default {
   components: {
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
-    WidgetKeyResultWeights: () => import('./WidgetKeyResultWeights.vue'),
   },
 
   computed: {
@@ -36,3 +33,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.link__edit-rights {
+  color: var(--color-text);
+  background-color: var(--color-secondary);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 2rem 1.5rem;
+  text-transform: uppercase;
+}
+</style>
