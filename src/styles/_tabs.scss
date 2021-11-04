@@ -13,7 +13,7 @@
     right: 0;
     bottom: 4px;
     left: 0;
-    height: 2px;
+    height: 1px;
     background: var(--color-black);
     content: '';
   }
@@ -39,13 +39,13 @@
 .tab {
   position: relative;
   display: block;
-  margin-bottom: 0.5rem;
+  margin: 0 0.5rem 0.5rem 0;
   padding: 0.7rem 1rem;
+  background-color: var(--color-bg);
   color: var(--color-text);
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
-  background: none;
   border: 0;
   border-bottom: 2px solid transparent;
   cursor: pointer;
@@ -72,7 +72,6 @@
 .tab__icon {
   display: none !important;
   margin-right: 0.35rem;
-  color: var(--color-text-secondary);
 
   @media screen and (min-width: bp(s)) {
     display: inline !important;

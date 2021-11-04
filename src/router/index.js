@@ -115,12 +115,6 @@ const routes = [
             component: () => import('@/views/ItemAdmin/ItemAdminGeneral.vue'),
           },
           {
-            path: 'team',
-            name: 'ItemAdminTeam',
-            meta: { breadcrumbs: ['home', 'item', 'itemAdmin', 'itemAdminTeam'] },
-            component: () => import('@/views/ItemAdmin/ItemAdminTeam.vue'),
-          },
-          {
             path: 'okr',
             name: 'ItemAdminOKRs',
             meta: { breadcrumbs: ['home', 'item', 'itemAdmin', 'itemAdminOKR'] },

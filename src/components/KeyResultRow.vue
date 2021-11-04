@@ -67,7 +67,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'theme']),
     ...mapGetters(['hasEditRights']),
     view() {
       if (this.forceExpanded) return 'expanded';
@@ -93,6 +93,7 @@ export default {
   display: grid;
   grid-row-gap: 0.5rem;
   grid-template-columns: 1fr span(2, span(6));
+  background-color: var(--color-primary);
 
   &.expanded {
     grid-template-columns: 1fr span(3, span(7));
@@ -104,13 +105,13 @@ export default {
   padding: 1.5rem 1.75rem;
   color: var(--color-grey-800);
   text-decoration: none;
-  background-color: var(--color-secondary);
+  background-color: var(--color-secondary-light);
 }
 
 .keyResult__progress {
   grid-column: 2;
-  padding: 1.75rem 1.75rem 1.5rem 1.75rem;
-  background-color: var(--color-primary);
+  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  align-self: center;
 }
 
 .keyResult__auto {

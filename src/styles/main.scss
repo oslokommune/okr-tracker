@@ -129,6 +129,7 @@ hr {
   --color-primary: var(--color-yellow);
   --color-primary-dark: var(--color-yellow-dark);
   --color-secondary: var(--color-beige);
+  --color-secondary-light: var(--color-beige);
   --color-tertiary: var(--color-beige-dark);
 
   --color-danger: #ff8174;
@@ -145,16 +146,17 @@ hr {
   --color-purple-dark: #1f1e43;
   --color-yellow: #f8c66b;
   --color-yellow-dark: #ba944fff;
+  --color-yellow-light: #d1bfae;
   --color-red: #ff8174;
   --color-red-dark: #5b0800;
   --color-red-light: #ff988e;
-  --color-beige: #f8f0dd;
+  --color-beige: #f8f0dc;
   --color-beige-dark: #d0bfae;
 
-  --color-green: #43f8b6;
-  --color-green-dark: #034b45;
+  --color-green: #42f8b6;
+  --color-green-dark: #044b45;
   --color-green-dark-2: #023834;
-  --color-green-light: #c7f6c9;
+  --color-green-light: #c7f7c9;
 
   --color-bg: #f5f5f5;
   --color-border: #dae3e5;
@@ -195,7 +197,8 @@ hr {
   --color-text-secondary: var(--color-white);
   --color-primary: var(--color-green-dark);
   --color-primary-dark: var(--color-green-dark-2);
-  --color-secondary: var(--color-green-light);
+  --color-secondary: var(--color-green);
+  --color-secondary-light: var(--color-green-light);
   --color-tertiary: var(--color-green-dark);
 }
 
@@ -205,5 +208,6 @@ hr {
   --color-primary: var(--color-purple);
   --color-primary-dark: var(--color-purple-dark);
   --color-secondary: var(--color-blue);
+  --color-secondary-light: var(--color-blue-light);
   --color-tertiary: var(--color-purple);
 }
