@@ -216,14 +216,6 @@ $header-height: 4em;
     margin-left: span(1, 1);
   }
 
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(1);
-  }
-
   @media screen and (min-width: bp(xl)) {
     width: span(3);
     margin-left: span(0);
@@ -242,18 +234,6 @@ $header-height: 4em;
   @media screen and (min-width: bp(s)) {
     width: span(6);
     margin-left: span(0, 1);
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(6);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(6);
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6);
   }
 }
 

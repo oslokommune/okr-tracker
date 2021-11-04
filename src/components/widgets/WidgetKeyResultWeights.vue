@@ -109,13 +109,13 @@ export default {
   }
 
   &.active {
-    color: var(--color-text-secondary);
-    background: var(--color-primary);
-    border-color: var(--color-primary);
+    color: var(--color-text);
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
 
     &:hover {
-      background: var(--color-primary-dark);
-      border-color: var(--color-primary-dark);
+      background: var(--color-secondary-light);
+      border-color: var(--color-secondary-light);
     }
   }
 }
