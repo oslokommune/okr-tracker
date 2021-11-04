@@ -1,5 +1,5 @@
 <template>
-  <div v-if="markdown" class="main">
+  <div v-if="markdown" class="container">
     <h1 class="title-1">{{ $t('help.title') }}</h1>
     <div class="help">
       <ul v-if="toc" class="toc help__toc">
@@ -58,10 +58,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
-  width: span(12);
-}
-
 .help {
   @media screen and (min-width: bp(l)) {
     display: grid;
