@@ -2,129 +2,128 @@
   <div v-if="activeKeyResult" class="container">
     <widgets-left class="aside--left"></widgets-left>
 
-    <div class="keyResult">
-      <h1 class="title-1">{{ activeKeyResult.name }}</h1>
-      <p>{{ activeKeyResult.description }}</p>
+    <div class="keyResult-home">
+      <div class="keyResult">
+        <h1 class="title-1" style="text-transform: uppercase; font-weight: 500">{{ $t('general.keyResult') }}</h1>
+        <h2 class="title-4">Oppdater verdi for nøkkelresutlatet</h2>
+        <p>{{ activeKeyResult.description }}</p>
 
-      <div class="main-widgets__current main-widgets__current--children">
-        <h3 class="main-widgets__title">
-          <i class="fas fa-chart-line" />
-          {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
-        </h3>
-        <div class="main-widgets__current--value">
-          {{
-            typeof activeKeyResult.currentValue === 'undefined'
-              ? formatValue(activeKeyResult.startValue)
-              : formatValue(activeKeyResult.currentValue)
-          }}
+        <div class="key-result-row">
+          <div class="key-result-row__info">
+            <h3 class="title-3">{{ activeKeyResult.name }}</h3>
+            <span class="key-result-row__info--description">{{ activeKeyResult.description}}</span>
+          </div>
+
+          <div class="key-result-row__progress">
+            <h3 class="key-result-row__progress--header">
+              {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
+            </h3>
+            <progress-bar-expanded class="key-result-row__progression" :key-result="activeKeyResult" />
+          </div>
+
         </div>
 
-        <button v-if="!activeKeyResult.auto || hasEditRights" class="btn btn--ter" @click="isOpen = true">
-          {{ $t('keyResult.updateValue') }}
-        </button>
-      </div>
+        <div class="main-widgets__graph">
+          <h3 class="main-widgets__title">
+            {{ $t('objective.progression') }}
+          </h3>
 
-      <div class="main-widgets__graph">
-        <h3 class="main-widgets__title">
-          {{ $t('objective.progression') }}
-        </h3>
-
-        <svg ref="graph" class="graph"></svg>
-      </div>
-
-      <div v-if="activeKeyResult.auto" class="auto">
-        <div class="auto__icon fa fa-magic"></div>
-        <div class="auto__text">
-          {{ $t('keyResult.autoHelpText') }}
+          <svg ref="graph" class="graph"></svg>
         </div>
-      </div>
 
-      <div v-if="activeKeyResult.auto && activeKeyResult.error" class="auto auto--invalid">
-        <div class="auto__icon fa fa-exclamation-triangle"></div>
-        <div class="auto__text">
-          <p>{{ $t('keyResult.autoError') }}</p>
-          <pre class="auto__errormsg">{{ activeKeyResult.error }}</pre>
+        <div v-if="activeKeyResult.auto" class="auto">
+          <div class="auto__icon fa fa-magic"></div>
+          <div class="auto__text">
+            {{ $t('keyResult.autoHelpText') }}
+          </div>
         </div>
-      </div>
 
-      <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
+        <div v-if="activeKeyResult.auto && activeKeyResult.error" class="auto auto--invalid">
+          <div class="auto__icon fa fa-exclamation-triangle"></div>
+          <div class="auto__text">
+            <p>{{ $t('keyResult.autoError') }}</p>
+            <pre class="auto__errormsg">{{ activeKeyResult.error }}</pre>
+          </div>
+        </div>
 
-      <div class="keyResult__history">
-        <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
-        <div class="main__table">
-          <spinner v-if="isLoading" />
-          <empty-state
-            v-else-if="!progress.length || progress.length === 0"
-            :icon="'history'"
-            :heading="$t('empty.keyResultProgress.heading')"
-            :body="$t('empty.keyResultProgress.body')"
-          />
-          <table v-else class="table">
-            <thead>
-              <tr>
-                <th>{{ $t('keyResultPage.value') }}</th>
-                <th>{{ $t('keyResultPage.date') }}</th>
-                <th>{{ $t('keyResultPage.registeredBy') }}</th>
-                <th>
-                  <button v-if="hasComments" class="btn btn--ter" @click="showComments = !showComments">
-                    <span
-                      v-tooltip="!showComments ? $t('keyResult.showComments') : $t('keyResult.hideComments')"
-                      class="fa"
-                      :class="showComments ? 'fa-eye' : 'fa-eye-slash'"
-                    ></span>
-                  </button>
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="p in progress" :key="p.id">
-                <td>{{ p.value }}</td>
-                <td>{{ dateTimeShort(p.timestamp.toDate()) }}</td>
-                <td>
-                  <router-link
-                    v-if="p.createdBy && p.createdBy.id"
-                    :to="{ name: 'User', params: { id: p.createdBy.id } }"
-                    class="user__link"
-                  >
-                    <img
-                      :src="p.createdBy.photoURL || '/placeholder-user.svg'"
-                      :alt="p.createdBy.photoURL"
-                      aria-hidden="true"
-                      class="user__image"
-                    />
-                    <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
-                  </router-link>
-                  <span v-else>{{ p.createdBy }}</span>
-                </td>
-                <td style="max-width: 200px; padding: 0.25rem">
-                  <span v-if="p.comment && showComments">
-                    {{ p.comment }}
-                  </span>
-                  <v-popover v-if="p.comment && !showComments" placement="top">
-                    <i v-tooltip="$t('keyResult.showComment')" class="fa fa-comment-alt comment-icon" />
-                    <template slot="popover">
-                      {{ p.comment }}
-                    </template>
-                  </v-popover>
-                </td>
-                <td v-if="hasEditPermissions" style="width: 1rem">
-                  <v-popover offset="16" placement="top">
-                    <button class="btn btn--ter btn--icon btn--icon-pri">
-                      <i class="icon far fa-trash-alt" />
-                      {{ $t('btn.delete') }}
+        <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
+
+        <div class="keyResult__history">
+          <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
+          <div class="main__table">
+            <spinner v-if="isLoading" />
+            <empty-state
+              v-else-if="!progress.length || progress.length === 0"
+              :icon="'history'"
+              :heading="$t('empty.keyResultProgress.heading')"
+              :body="$t('empty.keyResultProgress.body')"
+            />
+            <table v-else class="table">
+              <thead>
+                <tr>
+                  <th>{{ $t('keyResultPage.value') }}</th>
+                  <th>{{ $t('keyResultPage.date') }}</th>
+                  <th>{{ $t('keyResultPage.registeredBy') }}</th>
+                  <th>
+                    <button v-if="hasComments" class="btn btn--ter" @click="showComments = !showComments">
+                      <span
+                        v-tooltip="showComments ? $t('keyResult.showComments') : $t('keyResult.hideComments')"
+                        class="fa"
+                        :class="!showComments ? 'fa-eye' : 'fa-eye-slash'"
+                      ></span>
                     </button>
-
-                    <template slot="popover">
-                      <button class="btn btn--ter btn--negative" @click="remove(p.id)">
-                        {{ $t('btn.confirmDeleteProgress') }}
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="p in progress" :key="p.id">
+                  <td>{{ p.value }}</td>
+                  <td>{{ dateTimeShort(p.timestamp.toDate()) }}</td>
+                  <td>
+                    <router-link
+                      v-if="p.createdBy && p.createdBy.id"
+                      :to="{ name: 'User', params: { id: p.createdBy.id } }"
+                      class="user__link"
+                    >
+                      <img
+                        :src="p.createdBy.photoURL || '/placeholder-user.svg'"
+                        :alt="p.createdBy.photoURL"
+                        aria-hidden="true"
+                        class="user__image"
+                      />
+                      <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
+                    </router-link>
+                    <span v-else>{{ p.createdBy }}</span>
+                  </td>
+                  <td style="max-width: 200px; padding: 0.25rem">
+                    <span v-if="p.comment && !showComments">
+                      {{ p.comment }}
+                    </span>
+                    <v-popover v-if="p.comment && showComments" placement="top">
+                      <i v-tooltip="$t('keyResult.showComment')" class="fa fa-comment-alt comment-icon" />
+                      <template slot="popover">
+                        {{ p.comment }}
+                      </template>
+                    </v-popover>
+                  </td>
+                  <td v-if="hasEditPermissions" style="width: 1rem">
+                    <v-popover offset="16" placement="top">
+                      <button class="btn btn--ter">
+                        {{ $t('btn.delete') }}
                       </button>
-                    </template>
-                  </v-popover>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+                      <template slot="popover">
+                        <button class="btn btn--ter btn--negative" @click="remove(p.id)">
+                          {{ $t('btn.confirmDeleteProgress') }}
+                        </button>
+                      </template>
+                    </v-popover>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -153,8 +152,8 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     VPopover,
     Spinner: () => import('@/components/Spinner.vue'),
-    WidgetKeyResultWeights: () => import('@/components/widgets/WidgetKeyResultWeights.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -244,8 +243,13 @@ export default {
 
 <style lang="scss" scoped>
 .keyResult {
+  color: var(--color-text);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 40%);
+  padding: 1.5rem 1.75rem;
+}
+
+.keyResult-home {
   width: span(12);
-  padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
     width: span(6);
@@ -255,7 +259,9 @@ export default {
 }
 
 .keyResult__history {
-  padding-top: 3rem;
+  margin-top: 0.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--color-white);
 }
 
 .main__table {
@@ -322,5 +328,38 @@ export default {
   font-family: monospace;
   background: rgba(black, 0.75);
   border-radius: 3px;
+}
+
+.key-result-row {
+  display: grid;
+  grid-row-gap: 0.5rem;
+  grid-template-columns: 1fr span(3, span(7));
+  background-color: var(--color-primary);
+}
+
+.key-result-row__info {
+  grid-column: 1;
+  padding: 1.5rem 1.75rem;
+  color: var(--color-grey-800);
+  text-decoration: none;
+  background-color: var(--color-secondary-light);
+}
+
+.key-result-row__info--description {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.key-result-row__progress {
+  grid-column: 2;
+  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  align-self: center;
+}
+
+.key-result-row__progress--header {
+  margin-bottom: 0.5rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
 }
 </style>

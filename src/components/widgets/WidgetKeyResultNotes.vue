@@ -17,7 +17,7 @@
         <button class="btn btn--ter" @click="closeNotes">{{ $t('btn.close') }}</button>
       </div>
       <div v-else>
-        <button class="btn btn--ter" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
+        <button class="btn" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
       </div>
     </div>
   </widget>
