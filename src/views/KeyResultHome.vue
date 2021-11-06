@@ -3,8 +3,6 @@
     <widgets-left class="aside--left"></widgets-left>
 
     <div class="keyResult">
-      <widget-key-result-weights widget-id="keyResultHome.weights" />
-
       <h1 class="title-1">{{ activeKeyResult.name }}</h1>
       <p>{{ activeKeyResult.description }}</p>
 

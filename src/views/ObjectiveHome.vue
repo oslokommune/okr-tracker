@@ -2,8 +2,6 @@
   <div v-if="activeObjective" class="container">
     <widgets-left class="aside--left"></widgets-left>
     <div class="objective-home">
-      <widget-objective-weights widget-id="objectiveHome.weights" />
-
       <div class="objective">
         <h1 class="title-1">{{ activeObjective.name }}</h1>
         <p>{{ activeObjective.description }}</p>
@@ -49,7 +47,6 @@ export default {
     WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
-    WidgetObjectiveWeights: () => import('@/components/widgets/WidgetObjectiveWeights.vue'),
   },
 
   beforeRouteUpdate: routerGuard,

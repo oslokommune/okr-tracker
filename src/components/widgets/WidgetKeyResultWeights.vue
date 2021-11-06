@@ -1,15 +1,13 @@
 <template>
   <widget :widget-id="widgetId" :title="$t('weight.heading')">
-    {{ $t('weight.keyResultFor', { name: activeKeyResult.objective.name }) }}
     <div class="scales">
       <router-link
-        v-for="{ id, weight, active, name } in weights"
+        v-for="{ id, weight, name } in weights"
         :key="id"
         v-tooltip.bottom="name"
         :to="{ name: 'KeyResultHome', params: { keyResultId: id } }"
         class="bar"
         :style="{ height: getHeight(weight) }"
-        :class="{ active }"
       >
         {{ weight }}
       </router-link>
@@ -42,15 +40,14 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'keyResults']),
+    ...mapState(['keyResults', 'activeObjective']),
     weights() {
-      const siblings = ({ objective }) => objective.split('/')[1] === this.activeKeyResult.objective.id;
+      const siblings = ({ objective }) => objective.split('/')[1] === this.activeObjective.id;
 
       const processWeights = ({ weight, id, name }) => ({
         weight,
         id,
         name,
-        active: this.activeKeyResult.id === id,
       });
 
       return this.keyResults.filter(siblings).map(processWeights);
@@ -101,22 +98,12 @@ export default {
   font-size: 0.85rem;
   text-align: center;
   text-decoration: none;
-  background: var(--color-grey-100);
-  border: 1px solid var(--color-grey-200);
+  background: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
 
   &:hover {
-    background: var(--color-grey-200);
-  }
-
-  &.active {
-    color: var(--color-text);
-    background: var(--color-secondary);
-    border-color: var(--color-secondary);
-
-    &:hover {
-      background: var(--color-secondary-light);
-      border-color: var(--color-secondary-light);
-    }
+    background: var(--color-secondary-light);
+    border: 1px solid var(--color-secondary-light);
   }
 }
 </style>

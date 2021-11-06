@@ -16,6 +16,7 @@
         :data="progressionData"
         :dimmed="true"
       />
+      <widget-key-result-weights widget-id="widget-key-result-weights" />
       <widget-objective-details widget-id="objectiveHome.details" />
     </div>
   </aside>
@@ -29,6 +30,7 @@ export default {
 
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
+    WidgetKeyResultWeights: () => import('@/components/widgets/WidgetKeyResultWeights.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
   },
 
