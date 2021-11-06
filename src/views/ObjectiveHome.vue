@@ -92,7 +92,8 @@ export default {
   @media screen and (min-width: bp(m)) {
     width: span(6);
     margin-right: span(0, 1);
-    margin-left: span(0, 1);  }
+    margin-left: span(0, 1);
+  }
 }
 
 .objective {
@@ -100,7 +101,7 @@ export default {
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 1) 5%,
+    rgba(255, 255, 255, 0) 60%,
     rgba(255, 255, 255, 0) 100%
   );
   padding: 1.5rem 1.75rem;

@@ -11,7 +11,7 @@
         <div class="key-result-row">
           <div class="key-result-row__info">
             <h3 class="title-3">{{ activeKeyResult.name }}</h3>
-            <span class="key-result-row__info--description">{{ activeKeyResult.description}}</span>
+            <span class="key-result-row__info--description">{{ activeKeyResult.description }}</span>
           </div>
 
           <div class="key-result-row__progress">
@@ -20,7 +20,6 @@
             </h3>
             <progress-bar-expanded class="key-result-row__progression" :key-result="activeKeyResult" />
           </div>
-
         </div>
 
         <div class="main-widgets__graph">
@@ -244,7 +243,12 @@ export default {
 <style lang="scss" scoped>
 .keyResult {
   color: var(--color-text);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 40%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
   padding: 1.5rem 1.75rem;
 }
 
