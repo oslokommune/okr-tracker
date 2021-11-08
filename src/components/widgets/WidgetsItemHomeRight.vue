@@ -1,15 +1,15 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-progression v-if="activePeriod" widget-id="itemHome.progression" type="period" :data="activePeriod" />
+      <widget-progression widget-id="itemHome.progression" type="period" />
       <widget-objective-weights widget-id="widget-objective-weights" />
-      <widget-admin :active-item="activeItem" />
+      <widget-admin />
     </div>
   </aside>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'WidgetsItemHomeRight',
@@ -25,8 +25,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'activePeriod', 'user', 'dataLoading']),
-    ...mapGetters(['hasEditRights']),
+    ...mapState(['activeItem']),
   },
 
   watch: {

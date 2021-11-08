@@ -7,10 +7,6 @@
         :class="{ active: activePeriod && period.id === activePeriod.id }"
         @click="setPeriod(period.id)"
       >
-        <i
-          class="tab__icon"
-          :class="activePeriod && period.id === activePeriod.id ? 'fas fa-calendar-alt' : 'far fa-calendar'"
-        />
         <span class="tab__name">{{ period.name }}</span>
       </button>
     </li>
@@ -33,9 +29,7 @@ export default {
       if (this.hasEditRights) return this.periods;
       const daysInAdvance = 7; // Prior to period start
 
-      return this.periods.filter(({ startDate }) => {
-        return isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance));
-      });
+      return this.periods.filter(({ startDate }) => isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance)));
     },
   },
 

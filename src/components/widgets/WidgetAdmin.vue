@@ -56,19 +56,12 @@ export default {
     Widget: () => import('./Widget.vue'),
   },
 
-  props: {
-    activeItem: {
-      type: Object,
-      required: true,
-    },
-  },
-
   data: () => ({
     disabled: false,
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'user']),
+    ...mapState(['activePeriod', 'user', 'activeItem']),
     ...mapGetters(['hasEditRights']),
   },
 

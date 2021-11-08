@@ -92,7 +92,7 @@ export default {
 .keyResult {
   display: grid;
   grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(2, span(6));
+  grid-template-columns: 1fr span(3, span(7));
   background-color: var(--color-primary);
 
   &.expanded {

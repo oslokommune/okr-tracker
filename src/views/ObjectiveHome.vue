@@ -1,6 +1,18 @@
 <template>
   <div v-if="activeObjective" class="container">
-    <widgets-left class="aside--left"></widgets-left>
+    <div class="widgets--left">
+      <router-link
+        class="btn btn--ter btn--icon btn--icon-pri widget__back-button"
+        :to="{ name: 'ItemHome', params: { slug: activeObjective.parent.slug } }"
+      >
+        Back
+        <i class="fas fa-angle-left"></i>
+      </router-link>
+
+
+      <widgets-left class="aside--left"></widgets-left>
+    </div>
+
     <div class="objective-home">
       <div class="objective">
         <h1 class="title-1">{{ activeObjective.name }}</h1>
@@ -86,11 +98,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.widgets--left {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(2);
+  }
+}
+
+.widget__back-button {
+  width: span(12);
+  color: var(--color-text);
+  background-color: var(--color-white);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 2rem 1.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
 .objective-home {
   width: span(12);
 
   @media screen and (min-width: bp(m)) {
-    width: span(6);
+    width: span(8);
     margin-right: span(0, 1);
     margin-left: span(0, 1);
   }
@@ -136,5 +168,14 @@ export default {
 .itemHome__tree--item {
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.aside--left {
+  display: none;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(12);
+  }
 }
 </style>

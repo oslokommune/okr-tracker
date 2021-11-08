@@ -100,7 +100,7 @@ hr {
   width: span(12);
 
   @media screen and (min-width: bp(m)) {
-    width: span(6);
+    width: span(8);
     margin-right: span(0, 1);
     margin-left: span(0, 1);
   }
@@ -110,7 +110,7 @@ hr {
   width: span(12);
 
   @media screen and (min-width: bp(m)) {
-    width: span(3);
+    width: span(2);
   }
 }
 

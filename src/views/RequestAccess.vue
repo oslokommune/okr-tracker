@@ -60,7 +60,7 @@ export default {
 .login {
   display: flex;
   flex-direction: column;
-  width: span(12);
+  width: span(24);
   padding: 2rem;
   background: white;
   border-radius: 3px;

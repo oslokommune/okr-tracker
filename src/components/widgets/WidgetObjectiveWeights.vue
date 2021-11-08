@@ -42,6 +42,7 @@ export default {
   computed: {
     ...mapState(['objectives', 'activePeriod']),
     weights() {
+      if (!this.activePeriod) return [];
       const siblings = ({ period }) => period.split('/')[1] === this.activePeriod.id;
 
       const processWeights = ({ weight, id, name }) => ({

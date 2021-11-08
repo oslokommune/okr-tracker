@@ -217,7 +217,7 @@ $header-height: 4em;
   }
 
   @media screen and (min-width: bp(xl)) {
-    width: span(3);
+    width: span(2);
     margin-left: span(0);
   }
 }
@@ -232,7 +232,7 @@ $header-height: 4em;
   margin-left: span(4, 1);
 
   @media screen and (min-width: bp(s)) {
-    width: span(6);
+    width: span(8);
     margin-left: span(0, 1);
   }
 }
@@ -254,7 +254,7 @@ $header-height: 4em;
   margin-left: auto;
 
   @media screen and (min-width: bp(s)) {
-    width: span(3, 0, span(12));
+    width: span(2, 0, span(12));
     margin-left: span(0, 1);
   }
 }

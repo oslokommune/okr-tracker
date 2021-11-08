@@ -1,6 +1,16 @@
 <template>
   <div v-if="activeKeyResult" class="container">
-    <widgets-left class="aside--left"></widgets-left>
+    <div class="widgets--left">
+      <router-link
+        class="btn btn--ter btn--icon widget__back-button"
+        :to="previousUrl ? previousUrl : { name: 'ItemHome', params: { slug: activeKeyResult.parent.slug } }"
+      >
+        Back
+        <i class="fas fa-angle-left"></i>
+      </router-link>
+
+      <widgets-left class="aside--left"></widgets-left>
+    </div>
 
     <div class="keyResult-home">
       <div class="keyResult">
@@ -46,6 +56,7 @@
         </div>
 
         <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
+        <widgets-left class="aside--bottom"></widgets-left>
 
         <div class="keyResult__history">
           <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
@@ -177,7 +188,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl']),
     ...mapGetters(['hasEditRights']),
 
     hasComments() {
@@ -256,7 +267,7 @@ export default {
   width: span(12);
 
   @media screen and (min-width: bp(m)) {
-    width: span(6);
+    width: span(8);
     margin-right: span(0, 1);
     margin-left: span(0, 1);
   }
@@ -365,5 +376,38 @@ export default {
   color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
+}
+
+.widget__back-button {
+  width: span(12);
+  color: var(--color-text);
+  background-color: var(--color-white);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 2rem 1.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  @media screen and (min-width: bp(m)) {
+    width: span(12);
+  }
+}
+
+.aside--left {
+  display: none;
+
+  @media screen and (min-width: bp(m)) {
+    display: block;
+    width: span(2, span(2));
+  }
+}
+
+.widgets--left {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(2);
+  }
 }
 </style>

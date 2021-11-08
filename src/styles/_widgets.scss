@@ -126,11 +126,11 @@
 
   @media screen and (min-width: bp(m)) {
     grid-gap: span(0, span(9));
+    grid-template-columns: 1fr;
   }
 
   @media screen and (min-width: bp(l)) {
     grid-gap: span(0, span(10));
-    grid-template-columns: 1fr;
   }
 }
 
@@ -166,12 +166,13 @@
 
   @media screen and (min-width: bp(m)) {
     display: block;
-    width: span(3);
+    width: span(2);
   }
 }
 
 .aside--bottom {
   width: span(12);
+  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(m)) {
     display: none;

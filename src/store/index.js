@@ -114,6 +114,16 @@ export const actions = {
 
     return true;
   },
+
+  setPreviousUrl: async ({ commit }, payload) => {
+    if (payload.fullPath === '/') {
+      return true;
+    }
+
+    commit('SET_PREVIOUS_URL', payload);
+
+    return true;
+  },
 };
 
 export const mutations = {
@@ -150,6 +160,10 @@ export const mutations = {
   SET_UNSUBSCRIBE_COLLECTION(state, payload) {
     state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
   },
+
+  SET_PREVIOUS_URL(state, payload) {
+    state.previousUrl = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -181,6 +195,7 @@ export default new Vuex.Store({
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
+    previousUrl: null,
   },
   getters,
   mutations,
