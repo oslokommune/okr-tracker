@@ -32,10 +32,12 @@ export default {
   height: 5px;
   margin-right: 1rem;
   background: var(--color-grey-100);
+  border-radius: 1rem;
 }
 
 .progression__bar {
   height: 100%;
   background: var(--color-secondary);
+  border-radius: 1rem;
 }
 </style>
