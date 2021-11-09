@@ -16,7 +16,7 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <input v-model="objective.description" class="form__field" type="text" @input="edit"/>
+          <input v-model="objective.description" class="form__field" type="text" @input="edit" />
         </label>
 
         <form-component

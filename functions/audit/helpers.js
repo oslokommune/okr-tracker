@@ -1,7 +1,10 @@
-const functions = require('firebase-functions');
-const { WebClient } = require('@slack/web-api');
-const { format } = require('date-fns');
-const { nb } = require('date-fns/locale');
+import functions from 'firebase-functions';
+import { WebClient } from '@slack/web-api';
+import fns from 'date-fns';
+import locale from 'date-fns/locale/index.js';
+
+const { format } = fns;
+const { nb } = locale;
 
 const environment = functions.config();
 const { token, host_url: HOST_URL } = environment.slack;
@@ -10,7 +13,7 @@ const web = new WebClient(token);
 const options = { locale: nb };
 const dateShort = (d) => format(d, 'do MMM', options);
 
-const colors = {
+export const colors = {
   created: '#43f8b6',
   updated: '#f8c66b',
   archived: '#ff8174',
@@ -53,7 +56,7 @@ const createUpdatedSlackMsg = async (documentType, diffType, name, diff, url) =>
  * @param user who has done the update
  * @returns {Promise<boolean>}
  */
-const pushToSlack = async (data, slackMsg, user) => {
+export const pushToSlack = async (data, slackMsg, user) => {
   const promises = [];
 
   data.slack.forEach((channel) => {
@@ -77,7 +80,7 @@ const pushToSlack = async (data, slackMsg, user) => {
  * @param created
  * @returns {Promise<{attachments: [{color, blocks: [{text: {emoji: boolean, text, type: string}, type: string}, {text: {text, type: string}, type: string}, {type: string}, {elements: [{emoji: boolean, text, type: string}], type: string}, {text: {text, type: string}, type: string}]}]}>}
  */
-const slackMessageCreated = async (color, created) => ({
+export const slackMessageCreated = async (color, created) => ({
   attachments: [
     {
       color,
@@ -176,7 +179,7 @@ const slackMessageUpdated = async (color, updated) => ({
  * @param auditData
  * @returns {Promise<boolean>}
  */
-const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
+export const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
   const possibleDocuments = ['Organization', 'Department', 'Product'];
 
   let hasChanges = false;
@@ -339,8 +342,3 @@ const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
 
   return true;
 };
-
-exports.checkIfRelevantToPushToSlack = checkIfRelevantToPushToSlack;
-exports.colors = colors;
-exports.pushToSlack = pushToSlack;
-exports.slackMessageCreated = slackMessageCreated;

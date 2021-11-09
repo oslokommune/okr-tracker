@@ -31,12 +31,24 @@
 
         <div v-if="type === 'department'" class="form-group">
           <span class="form-label">{{ $t('admin.department.parentOrganisation') }}</span>
-          <v-select v-model="activeItem.organization" label="name" :options="organizations" :clearable="false" @input="edit"/>
+          <v-select
+            v-model="activeItem.organization"
+            label="name"
+            :options="organizations"
+            :clearable="false"
+            @input="edit"
+          />
         </div>
 
         <div v-else-if="type === 'product'" class="form-group">
           <span class="form-label">{{ $t('admin.product.parentDepartment') }}</span>
-          <v-select v-model="activeItem.department" label="name" :options="departments" :clearable="false" @input="edit"></v-select>
+          <v-select
+            v-model="activeItem.department"
+            label="name"
+            :options="departments"
+            :clearable="false"
+            @input="edit"
+          ></v-select>
         </div>
 
         <div class="form-group">
@@ -58,7 +70,7 @@
         <label class="form-group">
           <span class="form-label">{{ $t('fields.secret') }}</span>
           <span class="form-help" v-html="$t('admin.apiSecret')"></span>
-          <input v-model="activeItem.secret" type="text" class="form__field" @input="edit"/>
+          <input v-model="activeItem.secret" type="text" class="form__field" @input="edit" />
         </label>
       </form>
     </validation-observer>
@@ -98,7 +110,7 @@ export default {
 
   data: () => ({
     loading: false,
-    changes: false
+    changes: false,
   }),
 
   computed: {

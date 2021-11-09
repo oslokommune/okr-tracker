@@ -1,10 +1,8 @@
-const router = require('express').Router();
-const admin = require('firebase-admin');
-const { param, matchedData, body } = require('express-validator');
+import express from 'express';
+import { getFirestore } from 'firebase-admin/firestore';
+import { param, matchedData, body } from 'express-validator';
 
-const db = admin.firestore();
-
-const collection = db.collection('keyResults');
+const router = express.Router();
 
 const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
 
@@ -18,7 +16,9 @@ router.post('/:id', ...validate, async (req, res) => {
     return;
   }
 
-  let keyres;
+  const db = getFirestore();
+  const collection = await db.collection('keyResults');
+  let keyRes;
 
   try {
     if (!progress || Number.isNaN(progress)) {
@@ -31,16 +31,16 @@ router.post('/:id', ...validate, async (req, res) => {
       return;
     }
 
-    keyres = await collection.doc(id).get();
+    keyRes = await collection.doc(id).get();
 
-    const { exists, ref } = keyres;
+    const { exists, ref } = keyRes;
 
     if (!exists) {
       res.status(404).send(`Could not find KPI with ID: ${id}`);
       return;
     }
 
-    const { parent } = keyres.data();
+    const { parent } = keyRes.data();
 
     const parentData = await parent.get().then((snapshot) => snapshot.data());
 
@@ -61,8 +61,8 @@ router.post('/:id', ...validate, async (req, res) => {
     res.send(`Updated Key result (${id}) with progress: ${progress}`);
   } catch (e) {
     console.error('ERROR: ', e.message);
-    if (keyres && keyres.ref) {
-      await keyres.ref.update({ valid: false, error: e.message });
+    if (keyRes && keyRes.ref) {
+      await keyRes.ref.update({ valid: false, error: e.message });
     }
     res.status(500).send(e.message);
   }
@@ -71,6 +71,9 @@ router.post('/:id', ...validate, async (req, res) => {
 router.get('/:id', param('id').trim().escape(), async (req, res) => {
   const sanitized = matchedData(req);
   const { id } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('keyResults');
 
   try {
     const keyRes = await collection.doc(id).get();
@@ -141,4 +144,4 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

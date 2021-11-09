@@ -1,4 +1,6 @@
-@import 'typography';
+@use 'typography';
+@use 'griddle/mixins' as *;
+@use 'griddle/functions' as *;
 
 .details {
   display: flex;
@@ -38,7 +40,7 @@
   margin-bottom: 0.5rem;
   color: var(--color-grey-400);
   font-weight: 500;
-  font-size: $font-size-0;
+  font-size: typography.$font-size-0;
   text-transform: uppercase;
 }
 
@@ -159,7 +161,7 @@
 .aside--right {
   display: none;
   margin-top: 0.5rem;
-  @media screen and (min-width: bp(m)) {
+  @media screen and (min-width: bp(l)) {
     display: block;
   }
 }
@@ -167,7 +169,7 @@
 .aside--middle {
   width: span(12);
   margin-top: 0.5rem;
-  @media screen and (min-width: bp(m)) {
+  @media screen and (min-width: bp(l)) {
     display: none;
   }
 }

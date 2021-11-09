@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.6.0] 2021-11-09
+
+Last minor update before releasing our new design. New updates from now on will only be small bug fixes.
+
+### Changes
+
+- Rewritten sass rules from @import to @use/@forward - hopefully easier to implement the new Oslo Design System
+- Rewritten all the Cloud Functions to es modules - we can now write more future-proof code.
+- Updated all dependencies of Cloud Functions
+- Updated dependencies
+- Updated stylelint to v14 and fixed all the breaking changes
+
+### Fixed
+
+- Not allowed to update Period if you only changed the name.
+- Showing loading spinner when fetching KPI/KeyResult progress
+- Moved widgets around for a better UX experience for mobile users
+- When updating Org/Dep/Prod, the state store would get corrupt and only refresh fixed it. Double documents would show because vuexfire does not handle hundreds of documents that well.
+- functions: config to active slackbot or not actually works
+
 ## [2.5.3] 2021-10-27
 
 ### Fixed

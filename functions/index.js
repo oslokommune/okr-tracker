@@ -1,80 +1,88 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-mutable-exports */
+import { initializeApp, cert } from 'firebase-admin/app';
+import functions from 'firebase-functions';
+import okrTrackerSlackBot from './slackbot/index.js';
 
-const isSlackActive = functions.config().slack.active || false;
+import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
+import api from './api/index.js';
+import internal from './backend/index.js';
+
+const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 
 // Initialize the app to get everything started
-admin.initializeApp({
-  credential: admin.credential.cert(functions.config().service_account),
+initializeApp({
+  credential: cert(functions.config().service_account),
 });
 
-/**
- * Functions for backup and restoring the Firestore database
- */
-exports.automatedBackups = require('./backupAndRestore').automatedBackups();
-exports.automatedRestore = require('./backupAndRestore').automatedRestore();
-
+// /**
+//  * Functions for backup and restoring the Firestore database
+//  */
+export { automatedBackups } from './backupAndRestore.js';
+export { automatedRestore } from './backupAndRestore.js';
 /**
  * Scheduled function that automatically updates the progress for all key results
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.fetchAutomatedKeyResOnSchedule = require('./automatedKeyResults').fetchAutomatedKeyResOnSchedule;
-exports.triggerScheduledFunction = require('./automatedKeyResults').triggerScheduledFunction;
+export { fetchAutomatedKeyResOnSchedule } from './automatedKeyResults.js';
+export { triggerScheduledFunction } from './automatedKeyResults.js';
 
-/**
- * KPI functions
- */
-exports.FetchKpiDataOnCreate = require('./kpi').FetchKpiDataOnCreate;
-exports.FetchKpiDataOnUpdate = require('./kpi').FetchKpiDataOnUpdate;
-exports.FetchKpiDataOnSchedule = require('./kpi').FetchKpiDataOnSchedule;
+export { fetchKpiDataOnUpdate } from './kpi/index.js';
+export { fetchKpiDataOnCreate } from './kpi/index.js';
+export { fetchKpiDataOnSchedule } from './kpi/index.js';
 
-exports.SlugDepartment = require('./slug').SlugDepartment;
-exports.SlugOrganization = require('./slug').SlugOrganization;
-exports.SlugProducts = require('./slug').SlugProducts;
+export { slugDepartment } from './slug/index.js';
+export { slugOrganization } from './slug/index.js';
+export { slugProduct } from './slug/index.js';
 
 /**
  * Listens for create, update and delete operations and logs the event with meta data
  */
-exports.AuditOrganizationUpdate = require('./audit').OrganizationUpdate;
-exports.AuditOrganizationCreate = require('./audit').OrganizationCreate;
-exports.AuditOrganizationDelete = require('./audit').OrganizationDelete;
-exports.AuditDepartmentUpdate = require('./audit').DepartmentUpdate;
-exports.AuditDepartmentCreate = require('./audit').DepartmentCreate;
-exports.AuditDepartmentDelete = require('./audit').DepartmentDelete;
-exports.AuditProductUpdate = require('./audit').ProductUpdate;
-exports.AuditProductCreate = require('./audit').ProductCreate;
-exports.AuditProductDelete = require('./audit').ProductDelete;
-exports.AuditPeriodUpdate = require('./audit').PeriodUpdate;
-exports.AuditPeriodCreate = require('./audit').PeriodCreate;
-exports.AuditPeriodDelete = require('./audit').PeriodDelete;
-exports.AuditObjectiveUpdate = require('./audit').ObjectiveUpdate;
-exports.AuditObjectiveCreate = require('./audit').ObjectiveCreate;
-exports.AuditObjectiveDelete = require('./audit').ObjectiveDelete;
-exports.AuditKeyResultUpdate = require('./audit').KeyResultUpdate;
-exports.AuditKeyResultCreate = require('./audit').KeyResultCreate;
-exports.AuditKeyResultDelete = require('./audit').KeyResultDelete;
-exports.AuditKPICreate = require('./audit').KPICreate;
-exports.AuditKPIUpdate = require('./audit').KPIUpdate;
-exports.AuditKPIDelete = require('./audit').KPIDelete;
+export { organizationUpdate as auditOrganizationUpdate } from './audit/index.js';
+export { organizationCreate as auditOrganizationCreate } from './audit/index.js';
+export { organizationDelete as auditOrganizationDelete } from './audit/index.js';
+
+export { departmentUpdate as auditDepartmentUpdate } from './audit/index.js';
+export { departmentCreate as auditDepartmentCreate } from './audit/index.js';
+export { departmentDelete as auditDepartmentDelete } from './audit/index.js';
+
+export { productUpdate as auditProductUpdate } from './audit/index.js';
+export { productCreate as auditProductCreate } from './audit/index.js';
+export { productDelete as auditProductDelete } from './audit/index.js';
+
+export { periodUpdate as auditPeriodUpdate } from './audit/index.js';
+export { periodCreate as auditPeriodCreate } from './audit/index.js';
+export { periodDelete as auditPeriodDelete } from './audit/index.js';
+
+export { objectiveUpdate as auditObjectiveUpdate } from './audit/index.js';
+export { objectiveCreate as auditObjectiveCreate } from './audit/index.js';
+export { objectiveDelete as auditObjectiveDelete } from './audit/index.js';
+
+export { keyResultUpdate as auditKeyResultUpdate } from './audit/index.js';
+export { keyResultCreate as auditKeyResultCreate } from './audit/index.js';
+export { keyResultDelete as auditKeyResultDelete } from './audit/index.js';
+
+export { KPIUpdate as auditKPIUpdate } from './audit/index.js';
+export { KPICreate as auditKPICreate } from './audit/index.js';
+export { KPIDelete as auditKPIDelete } from './audit/index.js';
 
 /**
  * Listen for changes in progress and update key results and items accordingly
  */
-exports.handleKeyResultProgress = require('./progress').handleKeyResultProgress;
-exports.handleKeyResultProgressOnKeyResultUpdate = require('./progress').handleKeyResultProgressOnKeyResultUpdate;
-exports.handleKeyResultProgressOnObjectiveUpdate = require('./progress').handleKeyResultProgressOnObjectiveUpdate;
+export { handleKeyResultProgress } from './progress/index.js';
+export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
+export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 
-// Express servers run via Cloud Functions
-exports.api = require('./api').app;
-exports.internal = require('./backend').app;
+// // Express servers run via Cloud Functions
+export { api, internal };
 
-const { okrTrackerSlackBot } = require('./slackbot');
-const { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } = require('./requestAccess');
-
-// OKR-Tracker slackbot
+// OKR-Tracker slackbot - Need to export empty functions before adding real functions because some users of the okr tracker may not want these functions to begin with
+export let okrSlackBot = {};
+export let slackNotificationUserRequest = {};
+export let slackNotificationInteractiveRequest = {};
 if (isSlackActive) {
-  exports.okrTrackerSlackBot = okrTrackerSlackBot;
-  exports.slackNotificationOnUserRequest = slackNotificationOnUserRequest;
-  exports.slackNotificationInteractiveOnRequest = slackNotificationInteractiveOnRequest;
+  okrSlackBot = okrTrackerSlackBot;
+  slackNotificationUserRequest = slackNotificationOnUserRequest;
+  slackNotificationInteractiveRequest = slackNotificationInteractiveOnRequest;
 }

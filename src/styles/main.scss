@@ -1,17 +1,18 @@
-@import 'reset';
-@import 'fonts';
-@import 'typography';
-@import 'buttons';
-@import 'tabs';
-@import 'forms';
-@import 'widgets';
-@import 'modal';
-@import 'widgets';
-@import 'tooltip';
-@import 'admin';
-@import 'alerts';
+@use 'griddle/griddle-overlay' as *;
+@use 'griddle/mixins' as *;
+@use 'griddle/functions' as *;
 
-@import '@braid/griddle/scss/griddle-overlay.scss';
+@use 'reset';
+@use 'fonts';
+@use 'typography';
+@use 'buttons';
+@use 'tabs';
+@use 'forms';
+@use 'widgets';
+@use 'modal';
+@use 'tooltip';
+@use 'admin';
+@use 'alerts';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);

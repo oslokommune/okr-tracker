@@ -1,9 +1,11 @@
-exports.region = 'europe-west2';
-exports.autoKeyresFetchFrequency = '35 7 * * *';
-exports.backupFrequency = '45 2 * * *';
-exports.runtimeOpts = {
-  timeoutSeconds: 300,
-  memory: '2GB',
+export default {
+  region: 'europe-west2',
+  autoKpiFetchFrequency: '45 6,18 * * *',
+  autoKeyResFetchFrequency: '35 7 * * *',
+  backupFrequency: '45 2 * * *',
+  runtimeOpts: {
+    timeoutSeconds: 300,
+    memory: '2GB',
+  },
+  timeZone: 'Europe/Oslo',
 };
-exports.autoKpiFetchFrequency = '45 6,18 * * *';
-exports.timeZone = 'Europe/Oslo';
