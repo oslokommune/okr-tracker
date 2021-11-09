@@ -162,7 +162,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/typography';
+@use '@/styles/typography';
+@use '@/styles/griddle/mixins' as *;
 
 .item {
   display: flex;
@@ -268,7 +269,7 @@ export default {
 
 .item__font--organization {
   font-weight: 500;
-  font-size: $font-size-3;
+  font-size: typography.$font-size-3;
 }
 
 .space {

@@ -54,8 +54,8 @@
     "vuexfire": "^3.2.5"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.15.8",
-    "@babel/preset-env": "^7.15.8",
+    "@babel/eslint-parser": "7.16.0",
+    "@babel/preset-env": "^7.16.0",
     "@firebase/rules-unit-testing": "^1.3.15",
     "autoprefixer": "^10.4.0",
     "env-cmd": "^10.1.0",
@@ -66,15 +66,16 @@
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.0.2",
+    "eslint-plugin-vue": "^8.0.3",
     "firebase-tools": "^9.21.0",
     "postcss": "^8.3.11",
     "postcss-html": "^1.2.0",
+    "postcss-scss": "^4.0.2",
     "prettier": "^2.4.1",
     "sass": "^1.43.4",
     "stylelint": "^14.0.1",
     "stylelint-config-recommended": "^6.0.0",
-    "stylelint-config-recommended-scss": "^5.0.0",
+    "stylelint-config-recommended-scss": "^5.0.1",
     "stylelint-config-recommended-vue": "^1.0.0",
     "stylelint-config-standard": "^23.0.0",
     "stylelint-order": "^5.0.0",
@@ -82,5 +83,8 @@
     "vite": "^2.6.13",
     "vite-plugin-vue2": "^1.9.0",
     "vue-template-compiler": "^2.6.14"
+  },
+  "resolutions": {
+    "postcss": "8.3.11"
   }
 }

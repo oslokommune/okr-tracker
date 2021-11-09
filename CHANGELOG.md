@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- Rewritten sass rules from @import to @use/@forward - hopefully easier to implement the new Oslo Design System
 - Rewritten all the Cloud Functions to es modules - we can now write more future-proof code.
 - Updated all dependencies of Cloud Functions
 

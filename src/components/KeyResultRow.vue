@@ -78,6 +78,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/griddle/mixins' as *;
+
 .keyResult {
   display: grid;
   grid-gap: 0.25rem;

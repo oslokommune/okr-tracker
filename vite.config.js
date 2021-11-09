@@ -21,8 +21,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-        @import "@/styles/griddle-overrides.scss";
-        @import "@braid/griddle/scss/griddle.scss";
+        @use "@/styles/griddle/griddle.scss" as *;
         `,
       },
     },
