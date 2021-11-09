@@ -1,7 +1,7 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
     <router-link class="keyResult__info" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-      <h3>{{ keyRow.name }}</h3>
+      <h3 class="title-3">{{ keyRow.name }}</h3>
       <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
     </router-link>
 
@@ -102,7 +102,7 @@ export default {
 
 .keyResult__info {
   grid-column: 1;
-  padding: 0.5rem 1.75rem;
+  padding: 0.5rem 1.75rem 0 1.75rem;
   color: var(--color-grey-800);
   text-decoration: none;
   background-color: var(--color-secondary-light);

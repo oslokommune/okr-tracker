@@ -70,85 +70,41 @@
             <button class="btn btn--sec" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
           </div>
 
-          <div class="user__info">
-            <validation-observer v-if="me" v-slot="{ handleSubmit }">
-              <form id="updateUser" @submit.prevent="handleSubmit(save)">
-                <form-component
-                  v-model="thisUser.displayName"
-                  input-type="input"
-                  name="name"
-                  :label="$t('fields.name')"
-                  rules="required"
-                  type="text"
-                />
-              </form>
-            </validation-observer>
+          <hr class="divider" />
 
-            <label v-if="thisUser.uid" class="form-group">
-              <span class="form-label">{{ $t('fields.uid') }}</span>
-              <input v-model="thisUser.uid" class="form__field" type="email" disabled />
-            </label>
-
-            <label v-if="me" class="form-group">
-              <span class="form-label">{{ $t('user.position.title') }}</span>
-              <v-select
-                v-model="thisUser.position"
-                :options="jobPositions"
-                :get-option-label="(option) => $t(`user.position.${option}`)"
-              >
-              </v-select>
-            </label>
-
-            <label v-if="me" class="form-group">
-              <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-              <v-select
-                v-model="thisUser.preferences.lang"
-                :options="languages"
-                :get-option-label="(option) => $t(`languages.${option}`)"
-              >
-              </v-select>
-            </label>
-
-            <div v-if="me" class="user__info-btn">
-              <button class="btn btn--sec" form="updateUser" :disabled="loading">{{ $t('btn.save') }}</button>
+          <template v-if="user.superAdmin">
+            <h2 class="title-2">
+              <i class="fas fa-user-shield" />
+              {{ $t('user.superAdmin') }}
+            </h2>
+            <div>
+              {{ $t('user.hasSuperAdmin') }}
             </div>
+          </template>
 
-            <hr class="divider" />
-
-            <template v-if="user.superAdmin">
-              <h2 class="title-2">
-                <i class="fas fa-user-shield" />
-                {{ $t('user.superAdmin') }}
-              </h2>
-              <div>
-                {{ $t('user.hasSuperAdmin') }}
-              </div>
-            </template>
-
-            <template v-if="user.admin && user.admin.length > 0">
-              <h2 class="title-2">
-                <i class="fas fa-user-shield" />
-                {{ $t('user.admin') }}
-              </h2>
-              <div>
-                {{ $t('user.hasAdmin') }}
-              </div>
-            </template>
-
-            <div class="product__header">
-              <h2 class="title-2">{{ $t('user.products') }}</h2>
-              <ul class="grid-system">
-                <li v-for="product in products" :key="product.id">
-                  <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
-                    <div class="product__parent">{{ product.department.name }}</div>
-                    <div class="product__name">
-                      <i class="product__icon fa fa-cube" />
-                      {{ product.name }}
-                    </div>
-                  </router-link>
-                </li>
-              </ul>
+          <template v-if="user.admin && user.admin.length > 0">
+            <h2 class="title-2">
+              <i class="fas fa-user-shield" />
+              {{ $t('user.admin') }}
+            </h2>
+            <div>
+              {{ $t('user.hasAdmin') }}
             </div>
+          </template>
+
+          <div class="product__header">
+            <h2 class="title-2">{{ $t('user.products') }}</h2>
+            <ul class="grid-system">
+              <li v-for="product in products" :key="product.id">
+                <router-link class="product" :to="{ name: 'ItemHome', params: { slug: product.slug } }">
+                  <div class="product__parent">{{ product.department.name }}</div>
+                  <div class="product__name">
+                    <i class="product__icon fa fa-cube" />
+                    {{ product.name }}
+                  </div>
+                </router-link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -264,7 +220,7 @@ export default {
         await this.save(this.thisUser);
         await User.deleteImage(this.user.id);
       } catch (error) {
-        console.log('Error ' + error);
+        console.log('Error ', error);
         throw new Error(error.message);
       }
 

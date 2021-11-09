@@ -36,6 +36,10 @@
 .btn--pri {
   color: var(--color-text-secondary);
   background: var(--color-primary);
+
+  &:disabled {
+    color: var(--color-text-secondary);
+  }
 }
 
 .btn--sec {
@@ -70,6 +74,10 @@
       background: rgba(white, 0.1);
     }
   }
+
+  &:disabled {
+    color: var(--color-text);
+  }
 }
 
 .btn--ghost {
@@ -80,6 +88,10 @@
     color: var(--color-white);
     border-color: var(--color-white);
   }
+
+  &:disabled {
+    color: var(--color-text);
+  }
 }
 
 .btn--fw {
@@ -88,7 +100,6 @@
 }
 
 .btn:disabled {
-  color: var(--color-text);
   cursor: not-allowed;
   opacity: 0.6;
   filter: saturate(0.5);

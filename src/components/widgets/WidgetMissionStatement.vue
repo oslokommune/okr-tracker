@@ -6,7 +6,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import marked from 'marked';
+import { marked } from 'marked';
 import dompurify from 'dompurify';
 
 export default {
