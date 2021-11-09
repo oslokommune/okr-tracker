@@ -106,6 +106,10 @@ export default {
   color: var(--color-grey-800);
   text-decoration: none;
   background-color: var(--color-secondary-light);
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
 }
 
 .keyResult__progress {
