@@ -80,6 +80,7 @@ export default {
 .list__link {
   justify-content: flex-start;
   white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .icon {
