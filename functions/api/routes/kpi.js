@@ -1,5 +1,5 @@
 import express from 'express';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { body, param, matchedData } from 'express-validator';
 
 const router = express.Router();
@@ -49,7 +49,7 @@ router.post('/:id', ...validate, async (req, res) => {
     }
 
     await ref.collection('progress').add({ value: Number.parseFloat(progress), timestamp: new Date() });
-    await ref.update({ error: admin.firestore.FieldValue.delete(), currentValue: progress, valid: true });
+    await ref.update({ error: FieldValue.delete(), currentValue: progress, valid: true });
 
     res.send(`Updated KPI (${id}) with progress: ${progress}`);
   } catch (e) {
