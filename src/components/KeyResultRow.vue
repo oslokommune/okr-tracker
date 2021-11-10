@@ -3,7 +3,7 @@
     <div class="keyResult__info">
       <router-link class="keyResult__info--header" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
         <h3 class="title-3">{{ keyRow.name }}</h3>
-        <span v-if="view !== 'compact' && keyRow.description.length" class="keyResult__description">{{ keyRow.description }}</span>
+        <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
       </router-link>
     </div>
 
