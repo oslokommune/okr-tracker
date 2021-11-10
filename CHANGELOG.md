@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.6.1] 2021-11-10
+
+### Fixed
+
+- Small bug with the public api after the big rewrite of Cloud Functions to ES Modules
+
 ## [2.6.0] 2021-11-09
 
 Last minor update before releasing our new design. New updates from now on will only be small bug fixes.
