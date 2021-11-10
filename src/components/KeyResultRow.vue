@@ -10,24 +10,34 @@
     <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
     <div class="keyResult__progress">
-      <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
+      <progress-bar v-if="view === 'compact'" :progression="keyRow.progression" />
 
-      <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow" />
+      <div v-else class="progression">
+        <div class="progression__done progression__done--keyResultRow">{{ percentage(keyResult.progression) }} fullført</div>
+        <div class="progression__remaining progression__remaining--keyResultRow">{{ percentage(keyResult.progression) }} gjenstår</div>
+        <button class="btn progression__total progression__total--keyResultRow">
+          <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>
+          <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
+        </button>
+        <div class="progress-bar__container progress-bar__container--keyResultRow">
+          <div class="progress-bar" :style="{ width: percentage(keyResult.progression) }"></div>
+        </div>
+      </div>
     </div>
 
-    <modal v-if="isOpen" :key-result="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
+    <modal v-if="isOpen" :key-result="keyRow" :unsaved-values="changed" @close="isOpen = false"></modal>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { format } from 'd3-format';
 
 export default {
   name: 'KeyResultRow',
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
     Modal: () => import('@/components/Modal.vue'),
   },
 
@@ -66,11 +76,31 @@ export default {
       },
     },
   },
+
+  methods: {
+    percentage(value) {
+      return format('.0%')(value);
+    },
+
+    remaining() {
+      if (this.keyResult.targetValue < this.keyResult.startValue) {
+        if (!this.keyResult.currentValue) {
+          return this.keyResult.startValue;
+        }
+        return this.keyResult.startValue - this.keyResult.currentValue;
+      }
+      if (!this.keyResult.currentValue) {
+        return this.keyResult.targetValue;
+      }
+      return this.keyResult.targetValue - this.keyResult.currentValue;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @use '@/styles/griddle/mixins' as *;
+@use '@/styles/progressbar';
 
 .keyResult {
   display: grid;
@@ -133,5 +163,36 @@ export default {
 
 .keyResult__input {
   background-color: var(--color-white);
+}
+
+.progression {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 1fr auto;
+  color: var(--color-text-secondary);
+  padding: 1.5rem 0;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+}
+
+.progress-bar__container--keyResultRow {
+  grid-area: 3 / 1 / 4 / 3;
+}
+
+.progression__done--keyResultRow {
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.progression__remaining--keyResultRow {
+  grid-area: 2 / 1 / 3 / 3;
+}
+
+.progression__total--keyResultRow {
+  grid-area: 1 / 2 / 3 / 3;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
 }
 </style>

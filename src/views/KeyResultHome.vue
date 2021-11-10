@@ -28,7 +28,15 @@
             <h3 class="key-result-row__progress--header">
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
-            <progress-bar-expanded class="key-result-row__progression" :key-result="activeKeyResult" />
+            <div class="progression__done progression__done--keyResultHome">{{ percentage(activeKeyResult.progression) }} fullført</div>
+            <div class="progression__remaining progression__remaining--keyResultHome">{{ remaining(activeKeyResult) }} gjenstår</div>
+            <div class="progression__total progression__total--keyResultHome">
+              <span class="progression__total--current progression__total--current--keyResultHome">{{ activeKeyResult.currentValue || 0 }}</span>
+              <span class="progression__total--target progression__total--target--keyResultHome">av {{ activeKeyResult.targetValue }}</span>
+            </div>
+            <div class="progress-bar__container progress-bar__container--keyResultHome">
+              <div class="progress-bar" :style="{ width: percentage(activeKeyResult.progression) }"></div>
+            </div>
           </div>
         </div>
 
@@ -96,12 +104,6 @@
                       :to="{ name: 'User', params: { id: p.createdBy.id } }"
                       class="user__link"
                     >
-                      <img
-                        :src="p.createdBy.photoURL || '/placeholder-user.svg'"
-                        :alt="p.createdBy.photoURL"
-                        aria-hidden="true"
-                        class="user__image"
-                      />
                       <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
                     </router-link>
                     <span v-else>{{ p.createdBy }}</span>
@@ -147,6 +149,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { VPopover } from 'v-tooltip';
+import { format } from 'd3-format';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
@@ -163,7 +166,6 @@ export default {
     VPopover,
     Spinner: () => import('@/components/Spinner.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -247,11 +249,31 @@ export default {
     formatValue(value) {
       return numberLocale.format(',')(value);
     },
+
+    percentage(value) {
+      return format('.0%')(value);
+    },
+
+    remaining(keyRes) {
+      if (keyRes.targetValue < keyRes.startValue) {
+        if (!keyRes.currentValue) {
+          return keyRes.startValue;
+        }
+        return keyRes.startValue - keyRes.currentValue;
+      }
+      if (!keyRes.currentValue) {
+        return keyRes.targetValue;
+      }
+      return keyRes.targetValue - keyRes.currentValue;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+@use '@/styles/progressbar';
+
 .keyResult {
   color: var(--color-text);
   background: linear-gradient(
@@ -367,8 +389,12 @@ export default {
 
 .key-result-row__progress {
   grid-column: 2;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: repeat(4, auto);
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
   align-self: center;
+  color: var(--color-text-secondary);
 }
 
 .key-result-row__progress--header {
@@ -376,6 +402,8 @@ export default {
   color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
+  grid-area: 1 / 1 / 2 / 2;
+  padding-bottom: 2rem;
 }
 
 .widget__back-button {
@@ -409,5 +437,43 @@ export default {
   @media screen and (min-width: bp(m)) {
     width: span(2);
   }
+}
+
+.progress-bar__container--keyResultHome {
+  grid-area: 4 / 1 / 5 / 3;
+}
+
+
+.progression__done--keyResultHome {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.progression__remaining--keyResultHome {
+  grid-area: 3 / 1 / 4 / 2;
+  font-weight: 500;
+}
+
+.progression__total--keyResultHome {
+  grid-area: 1 / 2 / 4 / 3;
+
+  color: var(--color-text);
+
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-template-columns: 1fr;
+}
+
+.progression__total--current--keyResultHome {
+  justify-self: center;
+  align-self: center;
+  padding: 0.5rem 2rem;
+  font-size: typography.$font-size-5;
+}
+
+.progression__total--target--keyResultHome {
+  justify-self: end;
+  align-self: end;
+  font-size: typography.$font-size-0;
+  padding: 0.5rem 0.5rem;
 }
 </style>

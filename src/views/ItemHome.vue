@@ -112,6 +112,7 @@ export default {
 
   &:hover {
     box-shadow: none;
+    background: #E0F9FD
   }
 }
 </style>

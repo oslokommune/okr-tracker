@@ -13,8 +13,6 @@
 
           <hr />
 
-          <progress-bar-expanded :key-result="keyResult" />
-
           <hr />
 
           <label>
@@ -66,10 +64,6 @@ import Progress from '@/db/Progress';
 
 export default {
   name: 'Modal',
-
-  components: {
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
-  },
 
   props: {
     keyResult: {
