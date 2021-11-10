@@ -1,33 +1,33 @@
 <template>
   <div class="aside">
-    <div class="widgets__links">
-      <router-link
-        v-if="hasEditRights"
-        v-tooltip="$t('tooltip.editKpi')"
-        class="btn btn--ter btn--icon btn--icon-pri"
-        :to="{ name: 'ItemAdminKPIs' }"
-      >
-        <i class="icon fa fa-cog" />
-        {{ $t('kpi.edit') }}
-      </router-link>
-    </div>
+    <router-link
+      v-if="hasEditRights"
+      v-tooltip="$t('tooltip.editKpi')"
+      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      :to="{ name: 'ItemAdminKPIs' }"
+    >
+      {{ $t('kpi.edit') }}
+      <i class="icon fa fa-pen" />
+    </router-link>
 
-    <div class=widgets__kpi>
-      <h2 class="title-2">{{ $t('keyResultPage.filter') }}</h2>
-      <label v-if="progress.length" class="form-field">
-        <span class="form-label">{{ $t('period.dateRange') }}</span>
-        <flat-pickr
-          v-model="widgetRange"
-          :config="flatPickerConfig"
-          class="form-control cy-datepicker"
-          name="date"
-          placeholder="Velg start- og sluttdato"
-        ></flat-pickr>
-      </label>
+    <div class="widgets">
+      <widget widget-id="widget-kpi-filter" :title="$t('keyResultPage.filter')">
+        <label v-if="progress.length" class="form-field">
+          <span class="form-label">{{ $t('period.dateRange') }}</span>
+          <flat-pickr
+            v-model="widgetRange"
+            :config="flatPickerConfig"
+            class="form-control cy-datepicker"
+            name="date"
+            placeholder="Velg start- og sluttdato"
+          ></flat-pickr>
+        </label>
 
-      <button v-if="widgetRange" class="btn btn--icon btn--ghost" @click="widgetRange = null">
-        <i class="icon fa fa-trash-restore-alt" /> {{ $t('btn.reset') }}
-      </button>
+        <button class="btn btn--icon btn--sec" :disabled="!widgetRange" @click="widgetRange = null">
+          {{ $t('btn.reset') }}
+        </button>
+      </widget>
+      <div class="widgets__kpi"></div>
     </div>
   </div>
 </template>
@@ -38,6 +38,10 @@ import locale from 'flatpickr/dist/l10n/no';
 
 export default {
   name: 'WidgetsKPIHome',
+
+  components: {
+    Widget: () => import('@/components/widgets/Widget.vue'),
+  },
 
   props: {
     range: {
@@ -85,5 +89,15 @@ export default {
 <style lang="scss" scoped>
 .widgets__kpi {
   padding: 0.5rem;
+}
+
+.link__edit-rights {
+  color: var(--color-text);
+  background-color: var(--color-secondary);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 2rem 1.5rem;
+  text-transform: uppercase;
 }
 </style>

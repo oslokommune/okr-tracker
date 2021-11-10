@@ -45,6 +45,10 @@
 .btn--sec {
   color: var(--color-text);
   background: var(--color-secondary);
+
+  &:disabled {
+    color: var(--color-text);
+  }
 }
 
 .btn--icon {

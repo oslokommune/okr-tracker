@@ -14,7 +14,7 @@
   "kpi": {
     "add": "Legg til KPI",
     "edit": "Endre KPI",
-    "currentValue": "Siste verdi",
+    "currentValue": "Nåværende verdi",
     "progresjon": "Progresjon",
     "description": "Beskrivelse",
     "chooseType": "Velg KPI-type",

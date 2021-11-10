@@ -63,10 +63,10 @@ export default {
   height: 8rem;
   padding: 1rem;
   overflow: hidden;
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
-  background: var(--color-primary);
+  background: var(--color-secondary);
 
   &:hover {
     background: var(--color-primary-dark);
