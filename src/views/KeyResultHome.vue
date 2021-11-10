@@ -28,24 +28,76 @@
             <h3 class="key-result-row__progress--header">
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
-            <div class="progression__done progression__done--keyResultHome">{{ percentage(activeKeyResult.progression) }} fullført</div>
-            <div class="progression__remaining progression__remaining--keyResultHome">{{ remaining(activeKeyResult) }} gjenstår</div>
+            <div class="progression__done progression__done--keyResultHome">
+              {{ percentage(activeKeyResult.progression) }} fullført
+            </div>
+            <div class="progression__remaining progression__remaining--keyResultHome">
+              {{ remaining(activeKeyResult) }} gjenstår
+            </div>
             <div class="progression__total progression__total--keyResultHome">
-              <span class="progression__total--current progression__total--current--keyResultHome">{{ activeKeyResult.currentValue || 0 }}</span>
-              <span class="progression__total--target progression__total--target--keyResultHome">av {{ activeKeyResult.targetValue }}</span>
+              <span class="progression__total--current progression__total--current--keyResultHome">{{
+                activeKeyResult.currentValue || 0
+              }}</span>
+              <span class="progression__total--target progression__total--target--keyResultHome"
+                >av {{ activeKeyResult.targetValue }}</span
+              >
             </div>
             <div class="progress-bar__container progress-bar__container--keyResultHome">
               <div class="progress-bar" :style="{ width: percentage(activeKeyResult.progression) }"></div>
             </div>
           </div>
-        </div>
 
-        <div class="main-widgets__graph">
-          <h3 class="main-widgets__title">
-            {{ $t('objective.progression') }}
-          </h3>
+          <div class="key-result__graph">
+            <h3 class="key-result__graph--title">
+              {{ $t('objective.progression') }}
+            </h3>
 
-          <svg ref="graph" class="graph"></svg>
+            <svg ref="graph" class="graph"></svg>
+          </div>
+
+          <div class="key-result__value">
+            <h3 class="title-2">Ny Verdi</h3>
+
+            <validation-observer v-slot="{ handleSubmit }">
+              <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
+                <label>
+                  <span class="title-4">{{ $t('keyResult.addComment') }}</span>
+                  <textarea
+                    v-model="progressNote"
+                    class="modal__textarea"
+                    style="margin-top: 0.5rem"
+                    rows="3"
+                    @input="edit"
+                    placeholder="Dette er en kommentar.."
+                  />
+                </label>
+
+                <div>
+                  <validation-provider v-slot="{ errors }" name="value" rules="required">
+                    <label class="form-group modal__main--input-label">
+                      <span class="form-label">{{ $t('keyResult.newValue') }}</span>
+                      <input
+                        v-model="value"
+                        class="form__field modal__main--input-value"
+                        style="margin-top: 0.25rem"
+                        type="number"
+                        step="any"
+                        @input="edit"
+                      />
+                      <span class="form-field--error">{{ errors[0] }}</span>
+                    </label>
+                  </validation-provider>
+
+                  <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
+                    {{ $t('keyResultPage.add.today') }}
+                  </button>
+                </div>
+              </form>
+            </validation-observer>
+            <button form="modal" :disabled="isSaving || changes" class="btn btn--sec">
+              {{ $t('btn.save') }}
+            </button>
+          </div>
         </div>
 
         <div v-if="activeKeyResult.auto" class="auto">
@@ -187,6 +239,10 @@ export default {
     isOpen: false,
     showComments: false,
     isLoading: false,
+    changes: false,
+    progressNote: '',
+    isSaving: false,
+    value: null,
   }),
 
   computed: {
@@ -207,6 +263,7 @@ export default {
         this.isLoading = true;
         await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
         this.isLoading = false;
+        this.value = keyResult.currentValue || keyResult.startValue || 0;
         this.graph = new LineChart(this.$refs.graph);
         this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
       },
@@ -266,6 +323,28 @@ export default {
       }
       return keyRes.targetValue - keyRes.currentValue;
     },
+
+    async saveProgress() {
+      this.isSaving = true;
+      try {
+        await Progress.create(this.activeKeyResult.id, {
+          value: +this.value,
+          comment: this.progressNote,
+          timestamp: new Date(),
+        });
+        this.$toasted.show(this.$t('toaster.add.progression'));
+      } catch (e) {
+        console.log(e);
+        this.$toasted.error(this.$t('toaster.error.progression'));
+      } finally {
+        this.isSaving = false;
+        this.changes = false;
+      }
+    },
+
+    edit() {
+      this.changes = true;
+    },
   },
 };
 </script>
@@ -282,7 +361,7 @@ export default {
     rgba(255, 255, 255, 0) 60%,
     rgba(255, 255, 255, 0) 100%
   );
-  padding: 1.5rem 1.75rem;
+  padding: 1rem 1rem 3rem 1rem;
 }
 
 .keyResult-home {
@@ -368,14 +447,19 @@ export default {
 }
 
 .key-result-row {
-  display: grid;
-  grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(3, span(7));
-  background-color: var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  @media screen and (min-width: bp(s)) {
+    display: grid;
+    grid-row-gap: 0.5rem;
+    grid-template-columns: 1fr span(3, span(8));
+    grid-template-rows: repeat(2, auto);
+    margin-bottom: 0.5rem;
+  }
 }
 
 .key-result-row__info {
-  grid-column: 1;
+  grid-area: 1 / 1 / 2 / 2;
   padding: 1.5rem 1.75rem;
   color: var(--color-grey-800);
   text-decoration: none;
@@ -388,13 +472,15 @@ export default {
 }
 
 .key-result-row__progress {
-  grid-column: 2;
+  grid-area: 1 / 2 / 2 / 3;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: repeat(4, auto);
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
   align-self: center;
   color: var(--color-text-secondary);
+  background-color: var(--color-primary);
+  width: 100%;
 }
 
 .key-result-row__progress--header {
@@ -443,7 +529,6 @@ export default {
   grid-area: 4 / 1 / 5 / 3;
 }
 
-
 .progression__done--keyResultHome {
   grid-area: 2 / 1 / 3 / 2;
 }
@@ -475,5 +560,18 @@ export default {
   align-self: end;
   font-size: typography.$font-size-0;
   padding: 0.5rem 0.5rem;
+}
+
+.key-result__graph {
+  grid-area: 2 / 1 / 3 / 2;
+  padding: 1.5rem 1.75rem 0 1.75rem;
+  background-color: var(--color-white);
+}
+
+.key-result__value {
+  grid-area: 2 / 2 / 3 / 3;
+  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-secondary);
 }
 </style>

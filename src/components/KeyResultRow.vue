@@ -106,11 +106,11 @@ export default {
   display: grid;
   grid-row: auto;
   grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(3, span(7));
+  grid-template-columns: 1fr span(4, span(8));
   background-color: var(--color-primary);
 
   &.expanded {
-    grid-template-columns: 1fr span(3, span(7));
+    grid-template-columns: 1fr span(4, span(8));
   }
 }
 

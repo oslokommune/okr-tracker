@@ -44,7 +44,8 @@
   }
 }
 
-.main-widgets__title {
+.main-widgets__title,
+.key-result__graph--title {
   margin-bottom: 0.5rem;
   color: var(--color-black);
   font-weight: 500;
