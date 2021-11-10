@@ -66,10 +66,10 @@ export default {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
-  background: var(--color-secondary);
+  background: var(--color-secondary-light);
 
   &:hover {
-    background: var(--color-primary-dark);
+    background: var(--color-secondary);
   }
 
   &.disabled {
