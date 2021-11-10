@@ -128,7 +128,7 @@ export default {
   color: var(--color-grey-800);
   text-decoration: none;
   display: grid;
-  align-self: center;
+  align-items: center;
   height: 100%;
 }
 
