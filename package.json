@@ -10,7 +10,7 @@
     "test:e2e": "firebase emulators:start --import=./tests & vite & env-cmd -f ./.env.local cypress open",
     "test:e2e:headless": "firebase emulators:exec --project origo-okr-tracker --import=./tests & vite & (sleep 10 && env-cmd -f ./.env.local cypress run --headless)",
     "deploy": "npm run build && firebase deploy --project=production",
-    "deploy:test": "npm run build:test && firebase deploy --project=development",
+    "deploy:test": "npm run build:test && firebase deploy --project=development --only hosting",
     "lint": "eslint ./src",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"

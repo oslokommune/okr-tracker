@@ -109,5 +109,9 @@ export default {
   padding-bottom: 1rem;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    box-shadow: none;
+  }
 }
 </style>
