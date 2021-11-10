@@ -1,9 +1,11 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <router-link class="keyResult__info" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-      <h3 class="title-3">{{ keyRow.name }}</h3>
-      <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
-    </router-link>
+    <div class="keyResult__info">
+      <router-link class="keyResult__info--header" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
+        <h3 class="title-3">{{ keyRow.name }}</h3>
+        <span v-if="view !== 'compact' && keyRow.description.length" class="keyResult__description">{{ keyRow.description }}</span>
+      </router-link>
+    </div>
 
     <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
@@ -11,25 +13,6 @@
       <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
 
       <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow" />
-
-      <form
-        v-if="view !== 'compact' && hasEditRights && !keyRow.auto"
-        class="keyResult__form"
-        @submit.prevent="isOpen = true"
-      >
-        <label class="keyResult__label">
-          <input
-            v-model.number="keyRow.currentValue"
-            v-tooltip="$t('tooltip.keyResultValue')"
-            class="keyResult__input"
-            type="number"
-            step="any"
-            @input="changed = true"
-          />
-        </label>
-
-        <button class="btn">{{ $t('keyResult.updateValue') }}</button>
-      </form>
     </div>
 
     <modal v-if="isOpen" :key-result="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
@@ -91,6 +74,7 @@ export default {
 
 .keyResult {
   display: grid;
+  grid-row: auto;
   grid-row-gap: 0.5rem;
   grid-template-columns: 1fr span(3, span(7));
   background-color: var(--color-primary);
@@ -103,13 +87,19 @@ export default {
 .keyResult__info {
   grid-column: 1;
   padding: 0.5rem 1.75rem 0 1.75rem;
-  color: var(--color-grey-800);
-  text-decoration: none;
   background-color: var(--color-secondary-light);
 
   &:hover {
     background-color: var(--color-secondary);
   }
+}
+
+.keyResult__info--header {
+  color: var(--color-grey-800);
+  text-decoration: none;
+  display: grid;
+  align-self: center;
+  height: 100%;
 }
 
 .keyResult__progress {
