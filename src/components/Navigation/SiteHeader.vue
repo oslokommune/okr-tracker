@@ -1,5 +1,9 @@
 <template>
   <header class="header">
+    <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
+      <sidebar-navigation></sidebar-navigation>
+    </div>
+    <div v-if="sidebarOpen" class="overlay"></div>
     <div class="siteHeader-container">
       <a
         href="#"
@@ -15,31 +19,21 @@
           <span class="sidebar__button"></span> <span class="sidebar__button"></span>
         </div>
       </a>
-      <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
-        <sidebar-navigation></sidebar-navigation>
-      </div>
-      <div v-if="sidebarOpen" class="overlay"></div>
-      <router-link :to="{ name: 'Home' }" class="logo">
-        <oslo-logo class="logo__img" />
-      </router-link>
       <div v-if="title" class="title">
         <h1 class="title__name">
           {{ title }}
         </h1>
       </div>
 
-      <div v-click-outside="hideUserMenu" class="userMenu" data-cy="usermenu">
+      <div v-click-outside="hideUserMenu" data-cy="usermenu">
         <button
           v-if="user"
           v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
-          class="btn btn--ter btn--icon user"
+          class="btn btn--ter btn--icon"
           :class="{ active: showUserMenu }"
           @click="showUserMenu = !showUserMenu"
         >
-          <i v-if="!user.photoURL" class="user__icon fa fa-user-circle" />
-          <img v-if="user.photoURL" :src="user.photoURL" class="user__image" :alt="user.photoUrl" />
-          <span class="user__name">{{ user.displayName }}</span>
-          <i class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'" />
+          <i class="user__icon fa fa-user-circle" />
         </button>
         <nav v-if="user && showUserMenu" class="menu">
           <ul class="menu__list">
@@ -91,7 +85,6 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
-import OsloLogo from '@/components/OsloLogo.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import SidebarNavigation from '@/components/Navigation/Sidebar.vue';
 
@@ -99,7 +92,6 @@ export default {
   name: 'SiteHeader',
 
   components: {
-    OsloLogo,
     ThemeToggle,
     SidebarNavigation,
   },
@@ -192,49 +184,11 @@ $header-height: 4em;
 }
 
 .siteHeader-container {
-  @include container();
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 4rem;
-
-  @media screen and (min-width: bp(m)) {
-    flex-direction: row;
-  }
-}
-
-.logo {
-  position: relative;
-  display: none;
-  width: span(2);
-  height: 100%;
-  padding: 0.65rem 0;
-
-  @media screen and (min-width: bp(s)) {
-    display: block;
-    width: span(2);
-    margin-left: span(1, 1);
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(2);
-    margin-left: span(0);
-  }
-}
-
-.logo__img {
-  display: block;
-  height: 100%;
-}
-
-.title {
-  width: span(9);
-  margin-left: span(4, 1);
-
-  @media screen and (min-width: bp(s)) {
-    width: span(8);
-    margin-left: span(0, 1);
-  }
 }
 
 .title__name {
@@ -250,65 +204,11 @@ $header-height: 4em;
   }
 }
 
-.userMenu {
-  margin-left: auto;
-
-  @media screen and (min-width: bp(s)) {
-    width: span(2, 0, span(12));
-    margin-left: span(0, 1);
-  }
-}
-
-.user {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-left: auto;
-  border-radius: 3px;
-
-  &.active {
-    background: rgba(var(--color-purple-rgb), 0.1);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    margin-left: span(0, 1);
-  }
-
-  &:hover {
-    .user__chevron {
-      opacity: 1;
-    }
-  }
-}
-
 .user__icon {
   display: inline-block;
   width: 2rem;
   margin-right: 0.3em;
   font-size: 1.5rem;
-}
-
-.user__image {
-  display: inline-block;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.75em;
-  object-fit: cover;
-  background: white;
-  border-radius: 1rem;
-}
-
-.user__name {
-  display: none;
-  overflow: hidden;
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  @media screen and (min-width: bp(s)) {
-    display: block;
-  }
 }
 
 .user__chevron {
@@ -338,6 +238,10 @@ $header-height: 4em;
 
   @media screen and (min-width: bp(m)) {
     width: span(3);
+  }
+
+  @media screen and (min-width: bp(l)) {
+    width: span(2);
   }
 
   .btn {
@@ -386,17 +290,8 @@ $header-height: 4em;
 }
 
 .header__navbutton {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  display: flex;
   width: $header-height;
   height: $header-height;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-size: 1rem;
-  border: 0;
   cursor: pointer;
 
   &.is-open {
