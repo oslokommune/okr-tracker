@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
-
+  <div class="container">
     <div class="create-container">
+      <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createOrganization" @submit.prevent="handleSubmit(save)">
           <form-component

@@ -125,17 +125,17 @@ export default {
 }
 
 .keyResult__info--header {
-  color: var(--color-grey-800);
-  text-decoration: none;
   display: grid;
   align-items: center;
   height: 100%;
+  color: var(--color-grey-800);
+  text-decoration: none;
 }
 
 .keyResult__progress {
   grid-column: 2;
-  padding: 0.5rem 1.75rem;
   align-self: center;
+  padding: 0.5rem 1.75rem;
 }
 
 .keyResult__auto {
@@ -167,12 +167,12 @@ export default {
 
 .progression {
   display: grid;
+  grid-row-gap: 0;
+  grid-column-gap: 0;
   grid-template-rows: auto auto auto;
   grid-template-columns: 1fr auto;
-  color: var(--color-text-secondary);
   padding: 1.5rem 0;
-  grid-column-gap: 0;
-  grid-row-gap: 0;
+  color: var(--color-text-secondary);
 }
 
 .progress-bar__container--keyResultRow {

@@ -238,14 +238,14 @@ export default {
 
 <style lang="scss" scoped>
 .kpi {
+  padding: 1.5rem 1.75rem;
   color: var(--color-text);
   background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0) 60%,
-      rgba(255, 255, 255, 0) 100%
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0) 100%
   );
-  padding: 1.5rem 1.75rem;
 }
 
 .kpi-home {
@@ -271,15 +271,15 @@ export default {
 }
 
 .widget__back-button {
-  width: span(12);
-  color: var(--color-text);
-  background-color: var(--color-white);
   display: flex;
   justify-content: space-between;
+  width: span(12);
   margin-bottom: 0.5rem;
   padding: 2rem 1.5rem;
+  color: var(--color-text);
   font-weight: 500;
   text-transform: uppercase;
+  background-color: var(--color-white);
 }
 
 .aside--left {

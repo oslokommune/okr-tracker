@@ -14,7 +14,7 @@
 
     <div class="keyResult-home">
       <div class="keyResult">
-        <h1 class="title-1" style="text-transform: uppercase; font-weight: 500">{{ $t('general.keyResult') }}</h1>
+        <h1 class="title-1" style=" font-weight: 500;text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
         <h2 class="title-4">Oppdater verdi for nøkkelresutlatet</h2>
         <p>{{ activeKeyResult.description }}</p>
 
@@ -354,6 +354,7 @@ export default {
 @use '@/styles/progressbar';
 
 .keyResult {
+  padding: 1rem 1rem 3rem 1rem;
   color: var(--color-text);
   background: linear-gradient(
     180deg,
@@ -361,7 +362,6 @@ export default {
     rgba(255, 255, 255, 0) 60%,
     rgba(255, 255, 255, 0) 100%
   );
-  padding: 1rem 1rem 3rem 1rem;
 }
 
 .keyResult-home {
@@ -452,8 +452,8 @@ export default {
   @media screen and (min-width: bp(s)) {
     display: grid;
     grid-row-gap: 0.5rem;
-    grid-template-columns: 1fr span(3, span(8));
     grid-template-rows: repeat(2, auto);
+    grid-template-columns: 1fr span(3, span(8));
     margin-bottom: 0.5rem;
   }
 }
@@ -472,36 +472,36 @@ export default {
 }
 
 .key-result-row__progress {
-  grid-area: 1 / 2 / 2 / 3;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-area: 1 / 2 / 2 / 3;
   grid-template-rows: repeat(4, auto);
-  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  grid-template-columns: 1fr auto;
   align-self: center;
+  width: 100%;
+  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
   color: var(--color-text-secondary);
   background-color: var(--color-primary);
-  width: 100%;
 }
 
 .key-result-row__progress--header {
+  grid-area: 1 / 1 / 2 / 2;
   margin-bottom: 0.5rem;
+  padding-bottom: 2rem;
   color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
-  grid-area: 1 / 1 / 2 / 2;
-  padding-bottom: 2rem;
 }
 
 .widget__back-button {
-  width: span(12);
-  color: var(--color-text);
-  background-color: var(--color-white);
   display: flex;
   justify-content: space-between;
+  width: span(12);
   margin-bottom: 0.5rem;
   padding: 2rem 1.5rem;
+  color: var(--color-text);
   font-weight: 500;
   text-transform: uppercase;
+  background-color: var(--color-white);
 
   @media screen and (min-width: bp(m)) {
     width: span(12);
@@ -539,27 +539,26 @@ export default {
 }
 
 .progression__total--keyResultHome {
-  grid-area: 1 / 2 / 4 / 3;
-
-  color: var(--color-text);
 
   display: grid;
+  grid-area: 1 / 2 / 4 / 3;
   grid-template-rows: repeat(2, auto);
   grid-template-columns: 1fr;
+  color: var(--color-text);
 }
 
 .progression__total--current--keyResultHome {
-  justify-self: center;
   align-self: center;
+  justify-self: center;
   padding: 0.5rem 2rem;
   font-size: typography.$font-size-5;
 }
 
 .progression__total--target--keyResultHome {
-  justify-self: end;
   align-self: end;
-  font-size: typography.$font-size-0;
+  justify-self: end;
   padding: 0.5rem 0.5rem;
+  font-size: typography.$font-size-0;
 }
 
 .key-result__graph {
@@ -571,7 +570,7 @@ export default {
 .key-result__value {
   grid-area: 2 / 2 / 3 / 3;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
-  background-color: var(--color-primary);
   color: var(--color-text-secondary);
+  background-color: var(--color-primary);
 }
 </style>

@@ -111,8 +111,8 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    box-shadow: none;
-    background: #E0F9FD
+    background: #E0F9FD;
+    box-shadow: none
   }
 }
 </style>

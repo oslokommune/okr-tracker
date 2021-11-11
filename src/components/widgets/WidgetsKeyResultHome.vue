@@ -36,12 +36,12 @@ export default {
 
 <style lang="scss" scoped>
 .link__edit-rights {
-  color: var(--color-text);
-  background-color: var(--color-secondary);
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
   padding: 2rem 1.5rem;
+  color: var(--color-text);
   text-transform: uppercase;
+  background-color: var(--color-secondary);
 }
 </style>
