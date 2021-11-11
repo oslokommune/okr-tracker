@@ -82,6 +82,7 @@ export default {
 .widget__title {
   font-weight: 500;
   text-transform: uppercase;
+  word-break: break-all;
 }
 
 .widget__toggle {
