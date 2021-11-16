@@ -220,6 +220,7 @@ export default {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
+  word-break: break-all;
 }
 
 .user {

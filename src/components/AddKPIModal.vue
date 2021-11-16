@@ -170,29 +170,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal__textarea {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.modal__main--flex {
-  display: flex;
-  flex-direction: row;
-}
-
-.modal__main--input-value {
-  width: 75px;
-  border: 1px solid var(--color-primary) !important;
-}
-
-.modal__main--input-label {
-  margin-right: 1rem;
-}
-
-.modal__main--btn {
-  align-self: flex-end;
-  margin-bottom: 1.5rem;
-}
-
 .btn--space {
   margin-left: 1rem;
 }

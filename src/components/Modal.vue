@@ -1,6 +1,6 @@
 <template>
   <div class="overlay">
-    <div class="modal modal--key-result">
+    <div class="modal modal__key-result">
       <div class="modal__header">
         <h2 class="title-2" style="text-transform: uppercase">Ny verdi</h2>
         <button class="btn btn--ter btn--close btn--icon" @click="close">
@@ -121,30 +121,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal__main--flex {
-  display: flex;
-  flex-direction: row;
-}
-
-.modal__main--input-value {
-  width: 75px;
-  border: 1px solid var(--color-primary) !important;
-}
-
-.modal__main--input-label {
-  margin-right: 1rem;
-}
-
-.modal__main--btn {
-  align-self: flex-end;
-  margin-bottom: 1.5rem;
-}
-
 .btn--space {
   margin-left: 1rem;
 }
 
-.modal--key-result {
+.modal__key-result {
   max-width: 350px;
 }
 

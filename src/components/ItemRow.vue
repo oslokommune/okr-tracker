@@ -267,11 +267,6 @@ export default {
   cursor: pointer;
 }
 
-.item__font--organization {
-  font-weight: 500;
-  font-size: typography.$font-size-3;
-}
-
 .space {
   margin-left: 1.5rem;
 }

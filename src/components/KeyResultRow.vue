@@ -162,6 +162,7 @@ export default {
 
 .keyResult__description {
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   font-size: 0.8rem;
 }
 

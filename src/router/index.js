@@ -95,7 +95,7 @@ const routes = [
       },
       {
         path: 'admin',
-        component: () => import('@/views/ItemAdmin/ItemAdmin.vue'),
+        component: () => import('@/views/ItemAdmin/ItemAdminWrapper.vue'),
         beforeEnter: routerGuards.itemAdmin,
         children: [
           {
