@@ -27,7 +27,7 @@ export default {
   },
 
   data: () => ({
-    mode: 'yellow',
+    mode: 'blue',
   }),
 
   computed: {
@@ -47,7 +47,7 @@ export default {
       this.mode = this.getLocalThemeMode();
       this.setThemeMode();
     } else {
-      this.mode = 'yellow';
+      this.mode = 'blue';
       this.setThemeMode();
     }
   },

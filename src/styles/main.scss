@@ -123,13 +123,7 @@ hr {
 }
 
 :root {
-  --color-text: var(--color-purple);
-  --color-text-secondary: var(--color-purple);
-  --color-primary: var(--color-yellow);
-  --color-primary-dark: var(--color-yellow-dark);
-  --color-secondary: var(--color-beige);
-  --color-secondary-light: var(--color-beige);
-  --color-tertiary: var(--color-beige-dark);
+
 
   --color-danger: #ff8174;
   --color-success: #43f8b6;
@@ -209,4 +203,14 @@ hr {
   --color-secondary: var(--color-blue);
   --color-secondary-light: var(--color-blue-light);
   --color-tertiary: var(--color-purple);
+}
+
+[data-theme='yellow'] {
+  --color-text: var(--color-purple);
+  --color-text-secondary: var(--color-purple);
+  --color-primary: var(--color-yellow);
+  --color-primary-dark: var(--color-yellow-dark);
+  --color-secondary: var(--color-beige);
+  --color-secondary-light: var(--color-beige);
+  --color-tertiary: var(--color-beige-dark);
 }
