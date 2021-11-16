@@ -15,7 +15,7 @@
       <div v-else class="progression">
         <div class="progression__done progression__done--keyResultRow">{{ percentage(keyResult.progression) }} fullført</div>
         <div class="progression__remaining progression__remaining--keyResultRow">{{ percentage(keyResult.progression) }} gjenstår</div>
-        <button class="btn progression__total progression__total--keyResultRow">
+        <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
           <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>
           <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
         </button>

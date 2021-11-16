@@ -3,11 +3,11 @@
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">{{ $t('kpi.add') }}</h2>
-        <button class="btn btn--ter btn--close" @click="close">
+        <button class="btn btn--ter btn--close btn--icon" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>
-      <div class="modal__main" style="background: white">
+      <div class="modal__main">
         <validation-observer v-slot="{ handleSubmit }">
           <form id="addKpi" @submit.prevent="handleSubmit(add)">
             <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
@@ -95,8 +95,8 @@
         </validation-observer>
       </div>
 
-      <div class="modal__footer" style="background: white">
-        <button form="addKpi" :disabled="loading" class="btn btn--pri">{{ $t('btn.add') }}</button>
+      <div class="modal__footer">
+        <button form="addKpi" :disabled="loading" class="btn btn--sec">{{ $t('btn.add') }}</button>
         <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>

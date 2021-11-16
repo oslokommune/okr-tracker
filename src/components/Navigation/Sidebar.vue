@@ -1,6 +1,8 @@
 <template>
   <aside class="sidebar">
-    <h1 class="title-1">OKR-tracker</h1>
+    <router-link class="home-link" :to="{ name: 'Home' }">
+      <h1 class="title-1" @click="closeSidebar">OKR-tracker</h1>
+    </router-link>
     <div v-if="!user">Please sign in</div>
     <template v-if="user">
       <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
@@ -16,12 +18,14 @@
                   (activeItem && activeItem.organization && activeItem.organization.id === item.id),
               }"
             >
-              <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
-              {{ item.name }}
-              <i
-                v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
-                class="sidebar__user-icon fas fa-user-circle"
-              />
+              <span @click="closeSidebar">
+                <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
+                {{ item.name }}
+                <i
+                  v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
+                  class="sidebar__user-icon fas fa-user-circle"
+                />
+              </span>
             </router-link>
           </li>
         </ul>
@@ -47,7 +51,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 
@@ -69,6 +73,10 @@ export default {
     async signOut() {
       await auth.signOut();
       await this.reset_state();
+    },
+
+    closeSidebar() {
+      this.$emit('close');
     },
   },
 };
@@ -149,5 +157,11 @@ export default {
 
 .btn--label {
   color: var(--color-text-secondary);
+}
+
+.home-link {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-decoration: none;
 }
 </style>

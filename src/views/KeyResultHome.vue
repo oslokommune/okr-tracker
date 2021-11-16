@@ -94,7 +94,7 @@
                 </div>
               </form>
             </validation-observer>
-            <button form="modal" :disabled="isSaving || changes" class="btn btn--sec">
+            <button form="modal" :disabled="isSaving || !changes" class="btn btn--sec">
               {{ $t('btn.save') }}
             </button>
           </div>

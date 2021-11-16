@@ -62,13 +62,13 @@
 
         <button
           v-if="providers.includes('email')"
-          class="btn btn--ghost"
+          class="btn btn--sec"
           data-cy="login-username"
           @click="showForm = true"
         >
           {{ $t('login.loginWithUsername') }}
         </button>
-        <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
+        <router-link class="btn btn--sec" :to="{ name: 'request-access' }" data-cy="login-request">
           {{ $t('login.requestAccess') }}
         </router-link>
       </div>

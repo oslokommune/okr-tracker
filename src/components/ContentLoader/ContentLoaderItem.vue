@@ -47,7 +47,7 @@ export default {
 }
 
 .content-loader-item__objective {
-  padding: 1.5rem 1.75rem;
+  padding: 1.6rem 1.75rem;
 }
 
 .content-loader-item__keyResult-container {
@@ -61,12 +61,12 @@ export default {
 .content-loader-item__keyResult {
   display: grid;
   grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(2, 0, span(6));
+  grid-template-columns: 1fr span(4, 0, span(8));
 }
 
 .content-loader-item__keyResult--info {
   grid-column: 1;
-  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  padding: 0.5rem 1.75rem 0 1.75rem;
   color: var(--color-grey-800);
   text-decoration: none;
   background-color: var(--color-secondary);
@@ -74,7 +74,7 @@ export default {
 
 .content-loader-item__keyResult--progress {
   grid-column: 2;
-  padding: 1.1rem 1.75rem 0.5rem 1.75rem;
+  padding: 0.5rem 1.75rem 0.5rem 1.75rem;
   background-color: var(--color-primary);
 }
 </style>

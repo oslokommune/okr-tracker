@@ -1,58 +1,46 @@
 <template>
   <div class="overlay">
-    <div class="modal">
+    <div class="modal modal--key-result">
       <div class="modal__header">
-        <h2 class="title-2">{{ $t('keyResult.updateKeyres') }}</h2>
-        <button class="btn btn--ter" @click="close">
+        <h2 class="title-2" style="text-transform: uppercase">Ny verdi</h2>
+        <button class="btn btn--ter btn--close btn--icon" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>
       <validation-observer v-slot="{ handleSubmit }">
-        <form id="modal" class="modal__main" @submit.prevent="handleSubmit(saveProgress)">
-          <h3 class="title-3">{{ keyResult.name }}</h3>
-
-          <hr />
-
-          <hr />
-
+        <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
           <label>
-            <span class="title-3">{{ $t('keyResult.addComment') }}</span>
-            <textarea v-model="note" class="modal__textarea" rows="3" @input="edit"/>
+            <span class="title-4">{{ $t('keyResult.addComment') }}</span>
+            <textarea
+              v-model="note"
+              class="modal__textarea"
+              style="margin-top: 0.5rem"
+              rows="3"
+              @input="edit"
+              placeholder="Dette er en kommentar.."
+            />
           </label>
 
-          <div class="modal__main--flex">
+          <div>
             <validation-provider v-slot="{ errors }" name="value" rules="required">
-              <label class="form-group modal__main--input-label">
+              <label class="form-group">
                 <span class="form-label">{{ $t('keyResult.newValue') }}</span>
-                <input v-model="value" class="form__field modal__main--input-value" type="number" step="any" @input="edit"/>
-                <span class="form-field--error">{{ errors[0] }}</span>
-              </label>
-            </validation-provider>
-
-            <validation-provider v-slot="{ errors }" name="range" rules="required">
-              <label class="form-group modal__main--input-label">
-                <span class="form-label">{{ $t('keyResult.dateAndTime') }}</span>
-                <flat-pickr
-                  v-model="date"
-                  :config="flatPickerConfig"
-                  class="form-control"
-                  name="date"
-                  :placeholder="$t('keyResult.chooseDate')"
+                <input
+                  v-model="value"
+                  class="form__field"
+                  style="margin-top: 0.25rem"
+                  type="number"
+                  step="any"
                   @input="edit"
                 />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>
-
-            <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
-              {{ $t('keyResultPage.add.today') }}
-            </button>
           </div>
         </form>
       </validation-observer>
       <div class="modal__footer">
-        <button form="modal" :disabled="loading || (!changes && !unsavedValues)" class="btn btn--pri">{{ $t('btn.save') }}</button>
-        <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
+        <button form="modal" :disabled="loading || (!changes && !unsavedValues)" class="btn btn--sec">Oppdater</button>
       </div>
     </div>
   </div>
@@ -72,8 +60,8 @@ export default {
     },
     unsavedValues: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
 
   data: () => ({
@@ -91,7 +79,7 @@ export default {
     note: '',
     value: 0,
     loading: false,
-    changes: false
+    changes: false,
   }),
 
   watch: {
@@ -158,5 +146,13 @@ export default {
 
 .btn--space {
   margin-left: 1rem;
+}
+
+.modal--key-result {
+  max-width: 350px;
+}
+
+.btn--close {
+  height: 3rem;
 }
 </style>

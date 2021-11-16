@@ -4,6 +4,10 @@ import Home from '@/views/Home.vue';
 import Api from '@/views/Api.vue';
 import * as routerGuards from './router-guards';
 
+import ItemAdminGeneral from '@/views/ItemAdmin/ItemAdminGeneral.vue';
+import ItemAdminOKRs from '@/views/ItemAdmin/ItemAdminOKRs.vue';
+import ItemAdminKPIs from '@/views/ItemAdmin/ItemAdminKPIs.vue';
+
 Vue.use(Router);
 
 const routes = [
@@ -97,17 +101,17 @@ const routes = [
           {
             path: '',
             name: 'ItemAdmin',
-            component: () => import('@/views/ItemAdmin/ItemAdminGeneral.vue'),
+            component: ItemAdminGeneral,
           },
           {
             path: 'okr',
             name: 'ItemAdminOKRs',
-            component: () => import('@/views/ItemAdmin/ItemAdminOKRs.vue'),
+            component: ItemAdminOKRs,
           },
           {
             path: 'kpi',
             name: 'ItemAdminKPIs',
-            component: () => import('@/views/ItemAdmin/ItemAdminKPIs.vue'),
+            component: ItemAdminKPIs,
           },
         ],
       },

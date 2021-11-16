@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
-      <sidebar-navigation></sidebar-navigation>
+      <sidebar-navigation @close="hideSidebar"></sidebar-navigation>
     </div>
     <div v-if="sidebarOpen" class="overlay"></div>
     <div class="siteHeader-container">

@@ -49,6 +49,8 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
+import ContentLoaderActionBar from "@/components/ContentLoader/ContentLoaderActionBar.vue";
 
 export default {
   name: 'ItemHome',
@@ -62,8 +64,8 @@ export default {
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    ContentLoaderItem: () => import('@/components/ContentLoader/ContentLoaderItem.vue'),
-    ContentLoaderActionBar: () => import('@/components/ContentLoader/ContentLoaderActionBar.vue'),
+    ContentLoaderItem,
+    ContentLoaderActionBar,
   },
 
   computed: {
@@ -100,19 +102,10 @@ export default {
   );
 }
 
-.itemHome__header--content-loader {
-  margin-bottom: 1.5rem;
-}
-
 .itemHome__tree--item {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background: #E0F9FD;
-    box-shadow: none
-  }
 }
 </style>
