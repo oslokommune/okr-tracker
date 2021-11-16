@@ -1,8 +1,24 @@
 <template>
   <header class="header">
     <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
-      <sidebar-navigation></sidebar-navigation>
+      <sidebar-navigation :extra="extraSidebarOpen" @extra-sidebar="extraSidebar"></sidebar-navigation>
     </div>
+
+    <div class="sidebar__extra" :class="{ 'is-open': extraSidebarOpen }">
+      <div class="sidebar__extra--content">
+        <h1 class="title-1">FORSIDE</h1>
+
+        <button
+          v-for="org in organizations"
+          :key="org.id"
+          @click="handleActiveOrganization(org)"
+          class="btn btn--ter btn--icon"
+        >
+          {{ org.name }}
+        </button>
+      </div>
+    </div>
+
     <div v-if="sidebarOpen" class="overlay"></div>
     <div class="siteHeader-container">
       <a
@@ -103,6 +119,7 @@ export default {
   data: () => ({
     showUserMenu: false,
     sidebarOpen: false,
+    extraSidebarOpen: false,
   }),
 
   metaInfo() {
@@ -112,7 +129,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'user']),
+    ...mapState(['activeItem', 'user', 'organizations']),
     ...mapGetters(['isAdmin']),
 
     /**
@@ -146,7 +163,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state', 'setLoading']),
+    ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
 
     hideSidebar() {
       this.sidebarOpen = false;
@@ -165,6 +182,14 @@ export default {
       await this.reset_state();
       await auth.signOut();
       await this.setLoading(false);
+    },
+
+    extraSidebar() {
+      this.extraSidebarOpen = !this.extraSidebarOpen;
+    },
+
+    async handleActiveOrganization(org) {
+      await this.setActiveOrganization(org);
     },
   },
 };
@@ -274,10 +299,10 @@ $header-height: 4em;
   width: 90%;
   max-width: 400px;
   height: 100%;
-  padding: 3em;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: var(--color-primary) !important;
+  box-shadow: 0 2px 4px var(--color-black);
   transform: translateX(-100vw);
   opacity: 0;
   transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
@@ -296,9 +321,7 @@ $header-height: 4em;
 
   &.is-open {
     z-index: 200;
-    background-color: var(--color-primary);
-    border-radius: 50%;
-    transform: translateX(400px);
+    transform: translateX(340px);
     transition: transform 0.3s ease-in-out, background-color 0.3s;
     span {
       &:nth-child(1),
@@ -351,5 +374,35 @@ $header-height: 4em;
       transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
     }
   }
+}
+
+.sidebar__extra {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 190;
+  width: 90%;
+  max-width: 400px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--color-primary) !important;
+  transform: translateX(-100vw);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
+
+  &.is-open {
+    transform: translate(400px);
+    opacity: 1;
+    transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
+  }
+}
+
+.sidebar__extra--content {
+  position: sticky;
+  top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8rem);
 }
 </style>

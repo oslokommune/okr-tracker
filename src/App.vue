@@ -63,23 +63,4 @@ document.body.addEventListener('keydown', () => {
   min-height: 100vh;
   background: var(--color-bg);
 }
-
-.sidebar {
-  position: sticky;
-  top: 7.5rem;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 8rem);
-  padding: 1.5rem 0;
-}
-
-.sidebar__group {
-  margin-bottom: 1rem;
-}
-
-.sidebar__bottom {
-  display: flex;
-  flex-direction: column;
-  margin-top: auto;
-}
 </style>

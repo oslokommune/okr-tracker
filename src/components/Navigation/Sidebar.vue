@@ -1,31 +1,32 @@
 <template>
   <aside class="sidebar">
-    <h1 class="title-1">OKR-tracker</h1>
+    <button
+      class="btn btn--ter btn--icon btn--sidebar"
+      style="display: flex; justify-content: space-between; text-transform: uppercase"
+      @click="activeSideSidebar"
+    >
+      Oslo kommune
+      <i class="icon fa" :class="extra ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
+    </button>
     <div v-if="!user">Please sign in</div>
     <template v-if="user">
-      <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
-        <h4 v-if="group.items.length" class="sidebar__label">{{ group.name }}</h4>
-        <ul class="sidebar__list">
-          <li v-for="item in group.items" :key="item.id">
-            <router-link
-              :to="{ name: 'ItemHome', params: { slug: item.slug } }"
-              class="sidebar__link"
-              :class="{
-                'router-link-active-parent':
-                  (activeItem && activeItem.department && activeItem.department.id === item.id) ||
-                  (activeItem && activeItem.organization && activeItem.organization.id === item.id),
-              }"
-            >
-              <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
-              {{ item.name }}
-              <i
-                v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
-                class="sidebar__user-icon fas fa-user-circle"
-              />
-            </router-link>
-          </li>
-        </ul>
-      </div>
+      <ul v-if="activeOrganization" class="sidebar__group">
+        <li v-for="org in tree" :key="org.id" class="tree">
+          <template v-if="org.id === activeOrganization.id">
+            <h2>{{ org.name }}</h2>
+            <ul>
+              <li v-for="dept in org.children" :key="dept.id" class="card">
+                <h3>{{ dept.name }}</h3>
+                <ul>
+                  <li v-for="prod in dept.children" :key="prod.id">
+                    <h3>{{ prod.name }}</h3>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </template>
+        </li>
+      </ul>
 
       <div class="sidebar__group sidebar__bottom button-col">
         <theme-toggle />
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 
@@ -56,11 +57,27 @@ export default {
 
   components: {
     ThemeToggle,
+    ItemRow: () => import('@/components/ItemRow.vue'),
   },
 
+  props: {
+    extra: {
+      type: Boolean,
+      required: true,
+    },
+  },
+
+  data: () => ({
+    isSideSideBar: false,
+  }),
+
   computed: {
-    ...mapState(['activeItem', 'user']),
-    ...mapGetters(['sidebarGroups']),
+    ...mapState(['activeItem', 'user', 'activeOrganization']),
+    ...mapGetters(['sidebarGroups', 'tree']),
+  },
+
+  mounted() {
+    console.log(this.newSidebarGroups);
   },
 
   methods: {
@@ -70,6 +87,10 @@ export default {
       await auth.signOut();
       await this.reset_state();
     },
+
+    activeSideSidebar() {
+      this.$emit('extra-sidebar');
+    },
   },
 };
 </script>
@@ -77,11 +98,10 @@ export default {
 <style lang="scss" scoped>
 .sidebar {
   position: sticky;
-  top: 7.5rem;
+  top: 5.5rem;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 8rem);
-  padding: 1.5rem 0;
 }
 
 .sidebar__group {
@@ -149,5 +169,22 @@ export default {
 
 .btn--label {
   color: var(--color-text-secondary);
+}
+
+.btn--sidebar {
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-secondary);
+
+    & > .icon {
+      margin-right: 2rem;
+      transition: margin-right 0.1s ease-in-out 0.1s;
+    }
+  }
+
+  & > .icon {
+    margin-right: 0;
+    transition: margin-right 0.1s ease-in-out 0.1s;
+  }
 }
 </style>

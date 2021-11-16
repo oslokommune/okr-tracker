@@ -1,22 +1,12 @@
 <template>
   <div style="display: flex; align-items: center">
-    <button
-      v-if="hasChildren"
-      v-tooltip="getCollapse(type, data.slug) ? $t('btn.minimize') : $t('btn.expand')"
-      class="widget__toggle fas fa-fw"
-      :class="getCollapse(type, data.slug) ? 'fa-minus' : 'fa-plus'"
-      @click="toggle(type, data.slug)"
-    />
-    <span v-else-if="type === 'department' || type === 'organization'" class="space" />
-
     <router-link
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
       style="width: 100%"
       class="item"
-      :class="`item--${type}`"
     >
       <span v-if="type === 'product'" class="indent" />
-      <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+      <i v-if="type" class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
       <span class="item__name" :class="`item__font--${type}`">
         {{ data.name }}
@@ -272,7 +262,4 @@ export default {
   font-size: typography.$font-size-3;
 }
 
-.space {
-  margin-left: 1.5rem;
-}
 </style>
