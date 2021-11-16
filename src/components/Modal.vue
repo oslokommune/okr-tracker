@@ -121,10 +121,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal__textarea {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
 .modal__main--flex {
   display: flex;
   flex-direction: row;

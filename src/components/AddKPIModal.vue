@@ -200,21 +200,4 @@ export default {
 .btn--close {
   height: 3rem;
 }
-
-.sheets-info {
-  display: flex;
-  padding: 1rem;
-  font-size: 0.9rem;
-  background: rgba(var(--color-yellow-rgb), 0.2);
-  border-radius: 3px;
-}
-
-.sheets-info__icon {
-  margin-top: 0.2rem;
-  margin-right: 0.5rem;
-}
-
-strong {
-  font-weight: 500;
-}
 </style>

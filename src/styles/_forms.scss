@@ -11,7 +11,7 @@ textarea {
   font-size: 1rem;
   background: var(--color-grey-50);
   border: 0;
-  border-radius: 3px;
+  border-radius: 0.5rem;
 
   &:disabled {
     color: var(--color-grey-500);
@@ -31,14 +31,14 @@ textarea {
     padding-right: 0.5rem;
     background: var(--color-grey-50);
     border: 0;
-    border-radius: 3px;
+    border-radius: 0.5rem;
   }
 
   .vs__selected {
     margin-right: 0.25rem;
     padding: 0.25rem 0.75rem !important;
     background: white;
-    border-radius: 0 !important;
+    border-radius: 0.5rem
   }
 }
 
