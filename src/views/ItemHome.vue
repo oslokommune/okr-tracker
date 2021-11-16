@@ -42,8 +42,9 @@
       </div>
     </div>
 
-    <widgets-right class="aside"></widgets-right>
-    <widgets-left class="aside--bottom"></widgets-left>
+    <widgets-right class="aside--right" />
+
+    <widgets-mobile class="aside--bottom" />
   </div>
 </template>
 
@@ -51,11 +52,13 @@
 import { mapGetters, mapState } from 'vuex';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from "@/components/ContentLoader/ContentLoaderActionBar.vue";
+import WidgetsMobile from "@/components/widgets/WidgetsMobile.vue";
 
 export default {
   name: 'ItemHome',
 
   components: {
+    WidgetsMobile,
     PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),

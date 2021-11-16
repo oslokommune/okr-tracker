@@ -9,6 +9,15 @@
         <i class="fas fa-angle-left"></i>
       </router-link>
 
+      <router-link
+        v-if="hasEditRights"
+        class="btn btn--icon btn--icon-pri aside__link--edit-rights aside__link--edit-rights--left"
+        :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+      >
+        {{ $t('keyResultPage.change') }}
+        <i class="icon fa fa-pen" />
+      </router-link>
+
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
@@ -115,8 +124,7 @@
           </div>
         </div>
 
-        <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
-        <widgets-left class="aside--bottom"></widgets-left>
+        <widgets-key-result-mobile class="aside--bottom"></widgets-key-result-mobile>
 
         <div class="keyResult__history">
           <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
@@ -192,9 +200,9 @@
       </div>
     </div>
 
-    <widgets-key-result-home class="aside--right"></widgets-key-result-home>
+    <widgets-right class="aside--right" />
 
-    <modal v-if="isOpen" :key-result="activeKeyResult" @close="closeModal"></modal>
+    <modal v-if="isOpen" :key-result="activeKeyResult" @close="closeModal" />
   </div>
 </template>
 
@@ -207,17 +215,19 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, numberLocale } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
+import WidgetsKeyResultMobile from "@/components/widgets/WidgetsKeyResultMobile.vue";
 
 export default {
   name: 'KeyResultHome',
 
   components: {
-    WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
+    WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
     Modal: () => import('@/components/Modal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     VPopover,
     Spinner: () => import('@/components/Spinner.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    WidgetsKeyResultMobile,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -507,6 +517,10 @@ export default {
 
   @media screen and (min-width: bp(m)) {
     width: span(12);
+  }
+
+  @media screen and (max-width: bp(s)) {
+    display: none;
   }
 }
 

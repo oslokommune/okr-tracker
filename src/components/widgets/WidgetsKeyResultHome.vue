@@ -2,7 +2,7 @@
   <aside v-if="activeKeyResult" class="aside">
     <router-link
       v-if="hasEditRights"
-      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      class="btn btn--icon btn--icon-pri aside__link--edit-rights"
       :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
     >
       {{ $t('keyResultPage.change') }}
@@ -33,15 +33,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.link__edit-rights {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  text-transform: uppercase;
-  background-color: var(--color-secondary);
-}
-</style>

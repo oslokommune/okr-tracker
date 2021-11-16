@@ -9,6 +9,14 @@
         <i class="fas fa-angle-left"></i>
       </router-link>
 
+      <router-link
+        v-if="hasEditRights"
+        class="btn btn--icon btn--icon-pri aside__link--edit-rights aside__link--edit-rights--left"
+        :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
+      >
+        {{ $t('objective.change') }}
+        <i class="icon fa fa-pen" />
+      </router-link>
 
       <widgets-left class="aside--left"></widgets-left>
     </div>
@@ -42,23 +50,26 @@
         </section>
       </div>
     </div>
-    <widgets-objective-home />
-    <widgets-left class="aside--bottom"></widgets-left>
+
+    <widgets-right class="aside--right" />
+    <widgets-mobile class="aside--bottom" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
+import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 
 export default {
   name: 'ObjectiveHome',
 
   components: {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
-    WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
+    WidgetsRight: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    WidgetsMobile,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -116,6 +127,10 @@ export default {
   font-weight: 500;
   text-transform: uppercase;
   background-color: var(--color-white);
+
+  @media screen and (max-width: bp(s)) {
+    display: none;
+  }
 }
 
 .objective-home {

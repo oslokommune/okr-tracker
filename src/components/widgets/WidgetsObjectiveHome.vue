@@ -2,7 +2,7 @@
   <aside v-if="activeObjective" class="aside">
     <router-link
       v-if="hasEditRights"
-      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      class="btn btn--icon btn--icon-pri aside__link--edit-rights"
       :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
     >
       {{ $t('objective.change') }}
@@ -16,7 +16,12 @@
         :data="progressionData"
         :dimmed="true"
       />
-      <widget-key-result-weights widget-id="widget-key-result-weights" />
+      <widget-weights
+        widget-id="widget-key-result-weights"
+        type="keyResults"
+        :active-item="activeObjective"
+        :items="keyResults"
+      />
       <widget-objective-details widget-id="objectiveHome.details" />
     </div>
   </aside>
@@ -30,12 +35,12 @@ export default {
 
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
-    WidgetKeyResultWeights: () => import('@/components/widgets/WidgetKeyResultWeights.vue'),
+    WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
   },
 
   computed: {
-    ...mapState(['activeObjective', 'user', 'activePeriod']),
+    ...mapState(['activeObjective', 'user', 'activePeriod', 'objectives', 'keyResults']),
     ...mapGetters(['hasEditRights']),
 
     // Overwrite the period's progression with the objective's
@@ -45,27 +50,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.widgets__links {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 1.5rem 0;
-  background-color: var(--color-primary);
-
-  & > .btn {
-    width: 100%;
-  }
-}
-
-.link__edit-rights {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  text-transform: uppercase;
-  background-color: var(--color-secondary);
-}
-</style>

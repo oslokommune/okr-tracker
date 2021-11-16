@@ -3,7 +3,7 @@
     <router-link
       v-if="hasEditRights"
       v-tooltip="$t('tooltip.editKpi')"
-      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      class="btn btn--ter btn--icon btn--icon-pri aside__link--edit-rights"
       :to="{ name: 'ItemAdminKPIs' }"
     >
       {{ $t('kpi.edit') }}
@@ -89,15 +89,5 @@ export default {
 <style lang="scss" scoped>
 .widgets__kpi {
   padding: 0.5rem;
-}
-
-.link__edit-rights {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  text-transform: uppercase;
-  background-color: var(--color-secondary);
 }
 </style>
