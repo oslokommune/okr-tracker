@@ -9,12 +9,18 @@
 
     <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
-    <div class="keyResult__progress">
-      <progress-bar v-if="view === 'compact'" :progression="keyRow.progression" />
+    <div v-if="view === 'compact'" class="keyResult__progress">
+      <progress-bar :progression="keyRow.progression" />
+    </div>
 
-      <div v-else class="progression">
-        <div class="progression__done progression__done--keyResultRow">{{ percentage(keyResult.progression) }} fullført</div>
-        <div class="progression__remaining progression__remaining--keyResultRow">{{ percentage(keyResult.progression) }} gjenstår</div>
+    <div v-else class="keyResult__progress" :class="{ expanded: view !== 'compact' }">
+      <div class="progression">
+        <div class="progression__done progression__done--keyResultRow">
+          {{ percentage(keyResult.progression) }} fullført
+        </div>
+        <div class="progression__remaining progression__remaining--keyResultRow">
+          {{ percentage(keyResult.progression) }} gjenstår
+        </div>
         <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
           <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>
           <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
@@ -110,7 +116,11 @@ export default {
   background-color: var(--color-primary);
 
   &.expanded {
-    grid-template-columns: 1fr span(4, span(8));
+    @media screen and (max-width: bp(s)) {
+      display: flex;
+      flex-direction: column;
+      grid-row-gap: 0;
+    }
   }
 }
 
@@ -136,6 +146,10 @@ export default {
   grid-column: 2;
   align-self: center;
   padding: 0.5rem 1.75rem;
+
+  @media screen and (max-width: bp(s)) {
+    align-self: auto;
+  }
 }
 
 .keyResult__auto {

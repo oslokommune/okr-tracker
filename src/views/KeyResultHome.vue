@@ -449,6 +449,8 @@ export default {
 .key-result-row {
   display: flex;
   flex-direction: column;
+
+
   @media screen and (min-width: bp(s)) {
     display: grid;
     grid-row-gap: 0.5rem;
