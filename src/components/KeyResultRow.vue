@@ -44,7 +44,7 @@ export default {
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    Modal: () => import('@/components/Modal.vue'),
+    Modal: () => import('@/components/KeyResultModal.vue'),
   },
 
   props: {

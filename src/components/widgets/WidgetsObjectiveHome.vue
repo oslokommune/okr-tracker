@@ -11,18 +11,16 @@
 
     <div class="widgets">
       <widget-progression
-        widget-id="objectiveHome.progression"
         type="objective"
         :data="progressionData"
         :dimmed="true"
       />
       <widget-weights
-        widget-id="widget-key-result-weights"
         type="keyResults"
         :active-item="activeObjective"
         :items="keyResults"
       />
-      <widget-objective-details widget-id="objectiveHome.details" />
+      <widget-objective-details />
     </div>
   </aside>
 </template>
@@ -40,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeObjective', 'user', 'activePeriod', 'objectives', 'keyResults']),
+    ...mapState(['activeObjective', 'keyResults']),
     ...mapGetters(['hasEditRights']),
 
     // Overwrite the period's progression with the objective's

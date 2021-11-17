@@ -27,6 +27,8 @@ import kpiTypes from '@/config/kpiTypes';
 import { numberLocale } from '@/util';
 
 export default {
+  name: 'KpiLink',
+
   props: {
     type: {
       type: String,

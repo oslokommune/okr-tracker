@@ -56,7 +56,7 @@ import { auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
-  name: 'Sidebar',
+  name: 'SiteSidebar',
 
   components: {
     ThemeToggle,

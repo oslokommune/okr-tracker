@@ -10,8 +10,8 @@
     </router-link>
 
     <div v-if="activeKeyResult" class="widgets">
-      <widget-key-result-notes widget-id="keyResultHome.notes" />
-      <widget-key-result-details widget-id="keyResultHome.details" />
+      <widget-key-result-notes />
+      <widget-key-result-details />
     </div>
   </aside>
 </template>
@@ -28,7 +28,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeKeyResult', 'user']),
+    ...mapState(['activeKeyResult']),
     ...mapGetters(['hasEditRights']),
   },
 };

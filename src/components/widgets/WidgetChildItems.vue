@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="children.length" :widget-id="widgetId" :title="title">
+  <widget v-if="children.length" :title="title">
     <div class="list">
       <router-link
         v-for="child in children"
@@ -21,14 +21,7 @@ export default {
   name: 'WidgetChildItems',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({

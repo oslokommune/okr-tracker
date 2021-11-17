@@ -27,14 +27,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
   name: 'ContentLoaderItem',
-
-  computed: {
-    ...mapState(['user']),
-  },
 };
 </script>
 

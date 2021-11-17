@@ -1,7 +1,6 @@
 <template>
   <section class="widget">
     <header class="widget__header">
-      <i v-if="icon" class="widget__icon fas fa-fw" :class="`fa-${icon}`" />
       <span class="widget__title">{{ title }}</span>
     </header>
     <div class="widget__body">
@@ -11,50 +10,13 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-
 export default {
-  name: 'Widget',
+  name: 'WidgetWrapper',
 
   props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      required: false,
-      default: '',
-    },
     title: {
       type: String,
       required: true,
-    },
-    collapsible: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-  },
-
-  computed: {
-    ...mapState(['user']),
-    isOpen() {
-      try {
-        const [namespace, name] = this.widgetId.split('.');
-        return this.user.preferences.widgets[namespace][name];
-      } catch {
-        return true;
-      }
-    },
-  },
-
-  methods: {
-    ...mapActions(['update_preferences']),
-    toggle() {
-      const [namespace, name] = this.widgetId.split('.');
-      this.user.preferences.widgets[namespace][name] = !this.user.preferences.widgets[namespace][name];
-      this.update_preferences();
     },
   },
 };

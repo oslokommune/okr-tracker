@@ -2,21 +2,19 @@
   <aside v-if="activeItem">
     <div class="widgets">
       <widget-progression
-        widget-id="itemHome.progression"
         :type="$route.name === 'ItemHome' ? 'period' : 'objective'"
         :dimmed="$route.name !=='ItemHome'"
       />
-      <widget-mission-statement widget-id="itemHome.missionsStatement" />
-      <widget-team widget-id="itemHome.team" />
-      <widget-child-items widget-id="itemHome.children" />
+      <widget-mission-statement />
+      <widget-team />
+      <widget-child-items />
       <widget-weights
-        widget-id="widget-objective-weights"
         :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
         :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"
       />
       <widget-admin v-if="$route.name === 'ItemHome'" />
-      <widget-objective-details v-if="$route.name === 'ObjectiveHome'" widget-id="details" />
+      <widget-objective-details v-if="$route.name === 'ObjectiveHome'" />
     </div>
   </aside>
 </template>

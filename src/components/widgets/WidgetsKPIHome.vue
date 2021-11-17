@@ -11,7 +11,7 @@
     </router-link>
 
     <div class="widgets">
-      <widget widget-id="widget-kpi-filter" :title="$t('keyResultPage.filter')">
+      <widget :title="$t('keyResultPage.filter')">
         <label v-if="progress.length" class="form-field">
           <span class="form-label">{{ $t('period.dateRange') }}</span>
           <flat-pickr
@@ -27,8 +27,8 @@
           {{ $t('btn.reset') }}
         </button>
       </widget>
-      <widget-mission-statement class="widgets--bottom" widget-id="kpiHome.missionsStatement" />
-      <widget-team class="widgets--bottom" widget-id="kpiHome.team" />
+      <widget-mission-statement class="widgets--bottom" />
+      <widget-team class="widgets--bottom" />
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
-import Widget from '@/components/widgets/Widget.vue';
+import Widget from '@/components/widgets/WidgetWrapper.vue';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
 

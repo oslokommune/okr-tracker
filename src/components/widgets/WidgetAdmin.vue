@@ -1,5 +1,5 @@
 <template>
-  <widget title="Admin" widget-id="admin">
+  <widget title="Admin">
     <h4 class="admin__title">{{ activeItem.name }}</h4>
     <ul class="admin_list">
       <li class="admin">
@@ -53,7 +53,7 @@ export default {
   name: 'WidgetAdmin',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({

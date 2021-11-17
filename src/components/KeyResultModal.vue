@@ -51,7 +51,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import Progress from '@/db/Progress';
 
 export default {
-  name: 'Modal',
+  name: 'KeyResultModal',
 
   props: {
     keyResult: {

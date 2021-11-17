@@ -1,10 +1,10 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-mission-statement widget-id="KeyResultHome.MissionStatement" />
-      <widget-team widget-id="KeyResultHome.team" />
-      <widget-key-result-notes widget-id="KeyResultHome.notes" />
-      <widget-key-result-details widget-id="KeyResultHome.details" />
+      <widget-mission-statement />
+      <widget-team />
+      <widget-key-result-notes />
+      <widget-key-result-details />
     </div>
   </aside>
 </template>
@@ -27,7 +27,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'activePeriod', 'objectives', 'keyResults', 'activeObjective']),
+    ...mapState(['activeItem']),
   },
 };
 </script>

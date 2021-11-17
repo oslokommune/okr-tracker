@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('weight.heading')">
+  <widget :title="$t('weight.heading')">
     <div class="scales">
       <router-link
         v-for="{ id, weight, name } in weights"
@@ -20,17 +20,13 @@ import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 
 export default {
-  name: 'WidgetObjectiveWeights',
+  name: 'WidgetWeights',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
     items: {
       type: Array,
       required: true,

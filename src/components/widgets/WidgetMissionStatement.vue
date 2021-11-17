@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')">
+  <widget v-if="activeItem.missionStatement" :title="$t('document.mission')">
     <div class="md" v-html="content"></div>
   </widget>
 </template>
@@ -13,14 +13,7 @@ export default {
   name: 'WidgetMissionStatement',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({

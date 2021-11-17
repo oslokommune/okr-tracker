@@ -1,9 +1,8 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-progression widget-id="itemHome.progression" type="period" />
+      <widget-progression type="period" />
       <widget-weights
-        widget-id="widget-objective-weights"
         :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
         :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"

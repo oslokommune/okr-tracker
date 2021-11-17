@@ -65,7 +65,7 @@ export default {
     ActionBar: () => import('@/components/ActionBar.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
-    Kpis: () => import('@/components/Kpis.vue'),
+    Kpis: () => import('@/components/KPIs.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),

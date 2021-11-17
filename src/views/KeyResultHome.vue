@@ -222,7 +222,7 @@ export default {
 
   components: {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    Modal: () => import('@/components/Modal.vue'),
+    Modal: () => import('@/components/KeyResultModal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     VPopover,

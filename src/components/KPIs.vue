@@ -18,6 +18,8 @@ import kpiTypes from '@/config/kpiTypes';
 import KpiLink from './KpiLink.vue';
 
 export default {
+  name: 'KPIs',
+
   components: {
     KpiLink,
   },

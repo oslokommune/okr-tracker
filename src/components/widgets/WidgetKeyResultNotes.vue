@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')">
+  <widget :title="$t('keyResultsPage.notes.heading')">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <textarea v-model="thisKey.notes" rows="20" @input="dirty = true" />
@@ -37,14 +37,7 @@ export default {
   name: 'WidgetKeyResultNotes',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({

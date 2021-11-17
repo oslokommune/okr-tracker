@@ -15,7 +15,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
-import Spinner from '@/components/Spinner.vue';
+import Spinner from '@/components/VSpinner.vue';
 
 import { auth } from './config/firebaseConfig';
 

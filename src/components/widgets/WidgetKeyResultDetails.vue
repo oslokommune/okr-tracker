@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeKeyResult" :widget-id="widgetId" :title="$t('general.details')">
+  <widget v-if="activeKeyResult" :title="$t('general.details')">
     <div class="details">
       <div v-if="activeKeyResult.objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
@@ -100,14 +100,7 @@ export default {
   name: 'WidgetKeyResultDetails',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({

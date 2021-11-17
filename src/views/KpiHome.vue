@@ -21,8 +21,8 @@
 
       <div class="aside--left">
         <div class="widgets">
-          <widget-mission-statement widget-id="kpiHome.missionStatement" />
-          <widget-team widget-id="kpiHome.team" />
+          <widget-mission-statement />
+          <widget-team />
         </div>
       </div>
     </div>

@@ -125,7 +125,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'activeItem', 'activeItemRef']),
+    ...mapState(['kpis', 'activeItemRef']),
 
     serviceAccountAddress() {
       return import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');

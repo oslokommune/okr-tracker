@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')">
+  <widget v-if="activeItem.team" :title="$t('general.team')">
     <empty-state
       v-if="!activeItem.team.length"
       :icon="'user-ninja'"
@@ -127,15 +127,8 @@ export default {
   name: 'WidgetTeam',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
   },
 
   data: () => ({
