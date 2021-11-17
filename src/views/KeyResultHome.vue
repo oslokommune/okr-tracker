@@ -5,7 +5,7 @@
         class="btn btn--ter btn--icon widget__back-button"
         :to="previousUrl ? previousUrl : { name: 'ItemHome', params: { slug: activeKeyResult.parent.slug } }"
       >
-        Back
+        {{ $t('general.back') }}
         <i class="fas fa-angle-left"></i>
       </router-link>
 
@@ -23,8 +23,8 @@
 
     <div class="keyResult-home">
       <div class="keyResult">
-        <h1 class="title-1" style=" font-weight: 500;text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
-        <h2 class="title-4">Oppdater verdi for nøkkelresutlatet</h2>
+        <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
+        <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
         <p>{{ activeKeyResult.description }}</p>
 
         <div class="key-result-row">
@@ -38,18 +38,18 @@
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
             <div class="progression__done progression__done--keyResultHome">
-              {{ percentage(activeKeyResult.progression) }} fullført
+              {{ $t('progress.done', { progress: percentage(activeKeyResult.progression) }) }}
             </div>
             <div class="progression__remaining progression__remaining--keyResultHome">
-              {{ remaining(activeKeyResult) }} gjenstår
+              {{ $t('progress.remaining', { progress: remaining(activeKeyResult) }) }}
             </div>
             <div class="progression__total progression__total--keyResultHome">
-              <span class="progression__total--current progression__total--current--keyResultHome">{{
-                activeKeyResult.currentValue || 0
-              }}</span>
-              <span class="progression__total--target progression__total--target--keyResultHome"
-                >av {{ activeKeyResult.targetValue }}</span
-              >
+              <span class="progression__total--current progression__total--current--keyResultHome">
+                {{ activeKeyResult.currentValue || 0 }}
+              </span>
+              <span class="progression__total--target progression__total--target--keyResultHome">
+                {{ $t('progress.remainingOf', { progress: activeKeyResult.targetValue }) }}
+              </span>
             </div>
             <div class="progress-bar__container progress-bar__container--keyResultHome">
               <div class="progress-bar" :style="{ width: percentage(activeKeyResult.progression) }"></div>
@@ -65,7 +65,7 @@
           </div>
 
           <div class="key-result__value">
-            <h3 class="title-2">Ny Verdi</h3>
+            <h3 class="title-2">{{ $t('keyResult.newValue') }}</h3>
 
             <validation-observer v-slot="{ handleSubmit }">
               <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
@@ -76,8 +76,8 @@
                     class="modal__textarea"
                     style="margin-top: 0.5rem"
                     rows="3"
+                    :placeholder="$t('keyResult.commentPlaceholder')"
                     @input="edit"
-                    placeholder="Dette er en kommentar.."
                   />
                 </label>
 
@@ -215,7 +215,7 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, numberLocale } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
-import WidgetsKeyResultMobile from "@/components/widgets/WidgetsKeyResultMobile.vue";
+import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
 export default {
   name: 'KeyResultHome',
@@ -460,7 +460,6 @@ export default {
   display: flex;
   flex-direction: column;
 
-
   @media screen and (min-width: bp(s)) {
     display: grid;
     grid-row-gap: 0.5rem;
@@ -555,7 +554,6 @@ export default {
 }
 
 .progression__total--keyResultHome {
-
   display: grid;
   grid-area: 1 / 2 / 4 / 3;
   grid-template-rows: repeat(2, auto);

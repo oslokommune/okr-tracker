@@ -15,7 +15,7 @@
     "add": "Legg til KPI",
     "edit": "Endre KPI",
     "currentValue": "Nåværende verdi",
-    "progresjon": "Progresjon",
+    "progress": "Progresjon",
     "description": "Beskrivelse",
     "chooseType": "Velg KPI-type",
     "types": {
@@ -114,7 +114,8 @@
     "success": "Suksess",
     "objective": "Mål",
     "keyResult": "Nøkkelresultat",
-    "period": "Periode"
+    "period": "Periode",
+    "back": "Tilbake"
   },
   "btn": {
     "close": "Lukk",
@@ -237,10 +238,11 @@
       "sheetsCellHelp": "For eksempel «A12»",
       "testConnection": "Lagre og test kobling"
     },
-    "updateKeyres": "Oppdater verdi for nøkkelresultat",
+    "updateKeyRes": "Oppdater verdi for nøkkelresultat",
     "registerProgression": {
       "value": "Verdi"
     },
+    "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Oppdater verdi",
     "dateAndTime": "Dato og tid",
     "addComment": "Legg ved kommentarer (valgfritt)",
@@ -474,6 +476,12 @@
       "other": "Annet",
       "storyteller": "Historieforteller"
     }
+  },
+  "progress": {
+    "title": "Progresjon {progress}",
+    "done": "{progress} fullført",
+    "remaining": "{progress} gjenstår",
+    "remainingOf": "av {progress}"
   },
   "languages": {
     "en-US": "Engelsk",

@@ -15,9 +15,9 @@
               v-model="note"
               class="modal__textarea"
               style="margin-top: 0.5rem"
+              :placeholder="$t('keyResult.commentPlaceholder')"
               rows="3"
               @input="edit"
-              placeholder="Dette er en kommentar.."
             />
           </label>
 

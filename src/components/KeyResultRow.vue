@@ -16,10 +16,10 @@
     <div v-else class="keyResult__progress" :class="{ expanded: view !== 'compact' }">
       <div class="progression">
         <div class="progression__done progression__done--keyResultRow">
-          {{ percentage(keyResult.progression) }} fullført
+          {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
         </div>
         <div class="progression__remaining progression__remaining--keyResultRow">
-          {{ percentage(keyResult.progression) }} gjenstår
+          {{ $t('progress.remaining', { progress: percentage(keyResult.progression) }) }}
         </div>
         <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
           <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>

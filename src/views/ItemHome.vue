@@ -30,8 +30,8 @@
         </empty-state>
 
         <ul v-if="tree && !dataLoading">
-          <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
-            <objective-row :objective="objective" :index="++index"></objective-row>
+          <li v-for="objective in tree" :key="objective.id" class="itemHome__tree--item">
+            <objective-row :objective="objective"></objective-row>
             <ul v-if="objective.keyResults">
               <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
                 <key-result-row :key-result="keyResult"></key-result-row>

@@ -5,7 +5,7 @@
         class="btn btn--ter btn--icon widget__back-button"
         :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
       >
-        Back
+        {{ $t('general.back') }}
         <i class="fas fa-angle-left"></i>
       </router-link>
 
@@ -34,7 +34,7 @@
 
           <div class="main-widgets__graph">
             <h3 class="main-widgets__title">
-              {{ $t('kpi.progresjon') }}
+              {{ $t('kpi.progress') }}
             </h3>
 
             <svg ref="graph" class="graph"></svg>
@@ -57,11 +57,11 @@
 
           <table v-else class="table">
             <thead>
-            <tr>
-              <th>{{ $t('keyResult.dateAndTime') }}</th>
-              <th>{{ $t('keyResultPage.table.value') }}</th>
-              <th v-if="hasEditRights"></th>
-            </tr>
+              <tr>
+                <th>{{ $t('keyResult.dateAndTime') }}</th>
+                <th>{{ $t('keyResultPage.table.value') }}</th>
+                <th v-if="hasEditRights"></th>
+              </tr>
             </thead>
             <tbody></tbody>
             <tr v-for="{ timestamp, value, id } in filteredProgress" :key="id">

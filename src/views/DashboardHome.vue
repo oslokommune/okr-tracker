@@ -21,7 +21,7 @@
       <div class="meta__panel">
         <div v-if="activePeriod" class="meta__panel--header">
           <i class="fa fa-fw fa-chart-pie" />
-          Progresjon {{ activePeriod.name }}
+          {{ $t('progress.title', { progress: activePeriod.name }) }}
         </div>
         <svg ref="piechart"></svg>
       </div>

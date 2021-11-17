@@ -5,7 +5,7 @@
         class="btn btn--ter btn--icon btn--icon-pri widget__back-button"
         :to="{ name: 'ItemHome', params: { slug: activeObjective.parent.slug } }"
       >
-        Back
+        {{ $t('general.back') }}
         <i class="fas fa-angle-left"></i>
       </router-link>
 
