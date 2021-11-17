@@ -81,7 +81,7 @@
 
   @media screen and (min-width: bp(m)) {
     display: block;
-    width: span(2);
+    width: span(12);
   }
 }
 
@@ -107,5 +107,35 @@
     @media screen and (min-width: bp(m)) {
       display: none;
     }
+  }
+}
+
+.widget__back-button {
+  display: flex;
+  justify-content: space-between;
+  width: span(12);
+  margin-bottom: 0.5rem;
+  padding: 2rem 1.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+  text-transform: uppercase;
+  background-color: var(--color-white);
+
+  @media screen and (max-width: bp(s)) {
+    display: none;
+  }
+}
+
+.widget__history {
+  margin-top: 0.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--color-white);
+}
+
+.widgets--left {
+  width: span(12);
+
+  @media screen and (min-width: bp(m)) {
+    width: span(2);
   }
 }

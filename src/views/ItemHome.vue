@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <widgets-left class="aside--left"></widgets-left>
+    <div class="widgets--left">
+      <widgets-left class="aside--left"></widgets-left>
+    </div>
 
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
-      <div class="itemHome">
+      <div class="home__item">
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />
@@ -92,17 +94,6 @@ export default {
   &:first-child {
     margin-top: 0;
   }
-}
-
-.itemHome {
-  padding: 1rem 1rem 3rem 1rem;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
 }
 
 .itemHome__tree--item {

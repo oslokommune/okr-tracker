@@ -122,9 +122,18 @@ hr {
   margin-top: 0.5rem;
 }
 
+.main__item {
+  padding: 1.5rem 1.75rem;
+  color: var(--color-text);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
 :root {
-
-
   --color-danger: #ff8174;
   --color-success: #43f8b6;
   --color-warning: #f8c66b;
@@ -174,7 +183,7 @@ hr {
   --color-green-dark-rgb: #{hexToRGB(#034b45)};
   --color-yellow-rgb: #{hexToRGB(#f8c66b)};
   --color-yellow-dark-rgb: #{hexToRGB(#ba944fff)};
-  --color-brue-rgb:  #{hexToRGB(#6ee9ff)};
+  --color-brue-rgb: #{hexToRGB(#6ee9ff)};
   --color-purple-rgb: #{hexToRGB(#292858)};
   --color-purple-dark-rgb: #{hexToRGB(#1f1e43)};
 

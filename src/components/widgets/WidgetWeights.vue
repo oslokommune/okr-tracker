@@ -37,7 +37,8 @@ export default {
     },
     activeItem: {
       type: Object,
-      required: true,
+      required: false,
+      default: () => ({}),
     },
     type: {
       type: String,

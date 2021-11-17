@@ -19,7 +19,7 @@
           {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
         </div>
         <div class="progression__remaining progression__remaining--keyResultRow">
-          {{ $t('progress.remaining', { progress: percentage(keyResult.progression) }) }}
+          {{ $t('progress.remaining', { progress: remaining(keyResult.progression) }) }}
         </div>
         <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
           <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>

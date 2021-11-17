@@ -21,8 +21,8 @@
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
-    <div class="keyResult-home">
-      <div class="keyResult">
+    <div class="main">
+      <div class="main__item">
         <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
         <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
         <p>{{ activeKeyResult.description }}</p>
@@ -126,10 +126,10 @@
 
         <widgets-key-result-mobile class="aside--bottom"></widgets-key-result-mobile>
 
-        <div class="keyResult__history">
+        <div class="widget__history">
           <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
           <div class="main__table">
-            <spinner v-if="isLoading" />
+            <v-spinner v-if="isLoading" />
             <empty-state
               v-else-if="!progress.length || progress.length === 0"
               :icon="'history'"
@@ -224,9 +224,8 @@ export default {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
     Modal: () => import('@/components/Modal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    VPopover,
-    Spinner: () => import('@/components/Spinner.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    VPopover,
     WidgetsKeyResultMobile,
   },
 
@@ -363,33 +362,6 @@ export default {
 @use '@/styles/typography';
 @use '@/styles/progressbar';
 
-.keyResult {
-  padding: 1rem 1rem 3rem 1rem;
-  color: var(--color-text);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
-.keyResult-home {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(8);
-    margin-right: span(0, 1);
-    margin-left: span(0, 1);
-  }
-}
-
-.keyResult__history {
-  margin-top: 0.5rem;
-  padding: 1.5rem 1.75rem;
-  background: var(--color-white);
-}
-
 .main__table {
   width: 100%;
   overflow: auto;
@@ -501,43 +473,6 @@ export default {
   color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
-}
-
-.widget__back-button {
-  display: flex;
-  justify-content: space-between;
-  width: span(12);
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  font-weight: 500;
-  text-transform: uppercase;
-  background-color: var(--color-white);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(12);
-  }
-
-  @media screen and (max-width: bp(s)) {
-    display: none;
-  }
-}
-
-.aside--left {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(2, span(2));
-  }
-}
-
-.widgets--left {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
-  }
 }
 
 .progress-bar__container--keyResultHome {

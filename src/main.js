@@ -15,6 +15,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
+import Spinner from '@/components/Spinner.vue';
 
 import { auth } from './config/firebaseConfig';
 
@@ -43,6 +44,7 @@ Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));
 Vue.component('ContentLoader', ContentLoader);
+Vue.component('VSpinner', Spinner);
 
 /* eslint-disable */
 configure({

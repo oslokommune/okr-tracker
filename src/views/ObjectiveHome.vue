@@ -21,8 +21,8 @@
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
-    <div class="objective-home">
-      <div class="objective">
+    <div class="main">
+      <div class="main__item">
         <h1 class="title-1">{{ activeObjective.name }}</h1>
         <p>{{ activeObjective.description }}</p>
 
@@ -99,9 +99,7 @@ export default {
       handler(objective) {
         if (!objective) return;
 
-        this.keyRes = this.keyResults.filter((keyRes) => {
-          return keyRes.objective === `objectives/${objective.id}`;
-        });
+        this.keyRes = this.keyResults.filter((keyRes) => keyRes.objective === `objectives/${objective.id}`);
       },
     },
   },
@@ -109,51 +107,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.widgets--left {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
-  }
-}
-
-.widget__back-button {
-  display: flex;
-  justify-content: space-between;
-  width: span(12);
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  font-weight: 500;
-  text-transform: uppercase;
-  background-color: var(--color-white);
-
-  @media screen and (max-width: bp(s)) {
-    display: none;
-  }
-}
-
-.objective-home {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(8);
-    margin-right: span(0, 1);
-    margin-left: span(0, 1);
-  }
-}
-
-.objective {
-  padding: 1.5rem 1.75rem;
-  color: var(--color-text);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
 .key-results {
   margin-top: 2.5rem;
 }
@@ -183,14 +136,5 @@ export default {
 .itemHome__tree--item {
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.aside--left {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(12);
-  }
 }
 </style>
