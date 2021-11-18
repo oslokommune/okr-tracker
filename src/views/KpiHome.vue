@@ -27,8 +27,8 @@
       </div>
     </div>
 
-    <div class="home">
-      <div class="home__item">
+    <div class="main">
+      <div class="main__item">
         <h1 class="title-1">{{ activeKpi.name }}</h1>
 
         <p>{{ activeKpi.description }}</p>
