@@ -31,7 +31,7 @@ export default {
   width: 100%;
   height: 5px;
   margin-right: 1rem;
-  background: var(--color-grey-100);
+  background: var(--color-progress-background);
   border-radius: 1rem;
 }
 
