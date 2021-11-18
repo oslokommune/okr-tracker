@@ -32,13 +32,10 @@ export default {
 
   computed: {
     nextThemeMode() {
-      if (this.mode === 'yellow') {
-        return 'blue';
-      }
       if (this.mode === 'blue') {
         return 'green';
       }
-      return 'yellow';
+      return 'blue';
     },
   },
 
@@ -56,12 +53,10 @@ export default {
     ...mapActions(['setTheme']),
 
     handleClick() {
-      if (this.mode === 'yellow') {
-        this.mode = 'blue';
-      } else if (this.mode === 'blue') {
+       if (this.mode === 'blue') {
         this.mode = 'green';
       } else {
-        this.mode = 'yellow';
+        this.mode = 'blue';
       }
 
       this.setThemeMode();

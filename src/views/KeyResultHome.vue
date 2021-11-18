@@ -25,7 +25,6 @@
       <div class="main__item">
         <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
         <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
-        <p>{{ activeKeyResult.description }}</p>
 
         <div class="key-result-row">
           <div class="key-result-row__info">
@@ -45,7 +44,7 @@
             </div>
             <div class="progression__total progression__total--keyResultHome">
               <span class="progression__total--current progression__total--current--keyResultHome">
-                {{ activeKeyResult.currentValue || 0 }}
+                {{ activeKeyResult.currentValue ? format('.1f')(activeKeyResult.currentValue) : 0 }}
               </span>
               <span class="progression__total--target progression__total--target--keyResultHome">
                 {{ $t('progress.remainingOf', { progress: activeKeyResult.targetValue }) }}
@@ -294,6 +293,7 @@ export default {
 
   methods: {
     dateTimeShort,
+    format,
 
     async remove(id) {
       try {
@@ -321,16 +321,23 @@ export default {
     },
 
     remaining(keyRes) {
+      let remaining = 0;
+
       if (keyRes.targetValue < keyRes.startValue) {
         if (!keyRes.currentValue) {
-          return keyRes.startValue;
+          remaining = keyRes.startValue;
         }
-        return keyRes.startValue - keyRes.currentValue;
+        remaining = keyRes.startValue - keyRes.currentValue;
+      } else if (!keyRes.currentValue) {
+        remaining = keyRes.targetValue;
+      } else {
+        remaining = keyRes.targetValue - keyRes.currentValue;
       }
-      if (!keyRes.currentValue) {
-        return keyRes.targetValue;
+
+      if (remaining === 0) {
+        return 0;
       }
-      return keyRes.targetValue - keyRes.currentValue;
+      return format('.1f')(remaining);
     },
 
     async saveProgress() {
@@ -457,10 +464,12 @@ export default {
 .key-result-row__progress {
   display: grid;
   grid-area: 1 / 2 / 2 / 3;
+  grid-column-gap: 2px;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto;
   align-self: center;
   width: 100%;
+  height: 100%;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
   color: var(--color-text-secondary);
   background-color: var(--color-primary);
@@ -493,6 +502,7 @@ export default {
   grid-area: 1 / 2 / 4 / 3;
   grid-template-rows: repeat(2, auto);
   grid-template-columns: 1fr;
+  justify-self: end;
   color: var(--color-text);
 }
 

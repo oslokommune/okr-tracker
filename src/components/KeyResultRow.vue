@@ -1,11 +1,13 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <div class="keyResult__info" :class="{ 'keyResult__info--expanded': view !== 'compact' }">
-      <router-link class="keyResult__info--header" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-        <h3 class="title-3">{{ keyRow.name }}</h3>
-        <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
-      </router-link>
-    </div>
+    <router-link
+      class="keyResult__info keyResult__info--header"
+      :class="{ 'keyResult__info--expanded': view !== 'compact' }"
+      :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
+    >
+      <h3 class="title-3">{{ keyRow.name }}</h3>
+      <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
+    </router-link>
 
     <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
@@ -22,7 +24,7 @@
           {{ $t('progress.remaining', { progress: remaining(keyResult.progression) }) }}
         </div>
         <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
-          <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>
+          <span class="progression__total--current">{{ keyResult.currentValue ? format('.1f')(keyResult.currentValue) : 0 }}</span>
           <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
         </button>
         <div class="progress-bar__container progress-bar__container--keyResultRow">
@@ -78,21 +80,30 @@ export default {
   },
 
   methods: {
+    format,
+
     percentage(value) {
       return format('.0%')(value);
     },
 
     remaining() {
+      let remaining = 0;
+
       if (this.keyResult.targetValue < this.keyResult.startValue) {
         if (!this.keyResult.currentValue) {
-          return this.keyResult.startValue;
+          remaining = this.keyResult.startValue;
         }
-        return this.keyResult.startValue - this.keyResult.currentValue;
+        remaining = this.keyResult.startValue - this.keyResult.currentValue;
+      } else if (!this.keyResult.currentValue) {
+        remaining = this.keyResult.targetValue;
+      } else {
+        remaining = this.keyResult.targetValue - this.keyResult.currentValue;
       }
-      if (!this.keyResult.currentValue) {
-        return this.keyResult.targetValue;
+
+      if (remaining === 0) {
+        return 0;
       }
-      return this.keyResult.targetValue - this.keyResult.currentValue;
+      return format('.1f')(remaining);
     },
   },
 };
@@ -106,7 +117,7 @@ export default {
   display: grid;
   grid-row: auto;
   grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(2.5, span(8));
+  grid-template-columns: 1fr auto;
   background-color: var(--color-primary);
 
   &.expanded {
@@ -142,6 +153,10 @@ export default {
   grid-column: 2;
   align-self: center;
   padding: 0.5rem 1.75rem;
+
+  @media screen and (min-width: bp(s)) {
+    width: 320px;
+  }
 }
 
 .keyResult__progress--expanded {
