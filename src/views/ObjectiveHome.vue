@@ -117,7 +117,7 @@ export default {
 }
 
 .key-results__list--row {
-  margin-top: 0.2rem;
+  margin-top: 4px;
 
   &:first-child {
     margin-top: 0;

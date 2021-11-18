@@ -1,6 +1,6 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <div class="keyResult__info">
+    <div class="keyResult__info" :class="{ 'keyResult__info--expanded': view !== 'compact' }">
       <router-link class="keyResult__info--header" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
         <h3 class="title-3">{{ keyRow.name }}</h3>
         <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
@@ -13,7 +13,7 @@
       <progress-bar :progression="keyRow.progression" />
     </div>
 
-    <div v-else class="keyResult__progress" :class="{ expanded: view !== 'compact' }">
+    <div v-else class="keyResult__progress" :class="{ 'keyResult__progress--expanded': view !== 'compact' }">
       <div class="progression">
         <div class="progression__done progression__done--keyResultRow">
           {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
@@ -52,11 +52,6 @@ export default {
       type: Object,
       required: true,
     },
-    forceExpanded: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
 
   data: () => ({
@@ -69,7 +64,6 @@ export default {
     ...mapState(['user', 'theme']),
     ...mapGetters(['hasEditRights']),
     view() {
-      if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
     },
   },
@@ -112,7 +106,7 @@ export default {
   display: grid;
   grid-row: auto;
   grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(4, span(8));
+  grid-template-columns: 1fr span(2.5, span(8));
   background-color: var(--color-primary);
 
   &.expanded {
@@ -126,7 +120,7 @@ export default {
 
 .keyResult__info {
   grid-column: 1;
-  padding: 0.5rem 1.75rem 0 1.75rem;
+  padding: 0.5rem 2rem 0 1.5rem;
   background-color: var(--color-secondary-light);
 
   &:hover {
@@ -134,9 +128,11 @@ export default {
   }
 }
 
+.keyResult__info--expanded {
+  padding: 1.5rem 2rem 1.5rem 1.5rem;
+}
+
 .keyResult__info--header {
-  display: grid;
-  align-items: center;
   height: 100%;
   color: var(--color-grey-800);
   text-decoration: none;
@@ -146,10 +142,10 @@ export default {
   grid-column: 2;
   align-self: center;
   padding: 0.5rem 1.75rem;
+}
 
-  @media screen and (max-width: bp(s)) {
-    align-self: auto;
-  }
+.keyResult__progress--expanded {
+  align-self: auto;
 }
 
 .keyResult__auto {

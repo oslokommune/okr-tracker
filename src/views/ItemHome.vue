@@ -35,7 +35,12 @@
           <li v-for="objective in tree" :key="objective.id" class="itemHome__tree--item">
             <objective-row :objective="objective"></objective-row>
             <ul v-if="objective.keyResults">
-              <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
+              <li
+                v-for="keyResult in objective.keyResults"
+                :key="keyResult.id"
+                class="keyResultRow"
+                :class="{ 'keyResultRow--expanded': view !== 'compact' }"
+              >
                 <key-result-row :key-result="keyResult"></key-result-row>
               </li>
             </ul>
@@ -53,8 +58,8 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
-import ContentLoaderActionBar from "@/components/ContentLoader/ContentLoaderActionBar.vue";
-import WidgetsMobile from "@/components/widgets/WidgetsMobile.vue";
+import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
+import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 
 export default {
   name: 'ItemHome',
@@ -74,8 +79,12 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading']),
+    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading', 'user']),
     ...mapGetters(['hasEditRights']),
+
+    view() {
+      return this.user.preferences.view;
+    },
 
     tree() {
       return this.objectives.map((objective) => {
@@ -89,7 +98,17 @@ export default {
 
 <style lang="scss" scoped>
 .keyResultRow {
-  margin-top: 0.2rem;
+  margin-top: 1px;
+
+  &:first-child {
+    margin-top: 0;
+    background-color: red;
+  }
+}
+
+
+.keyResultRow--expanded {
+  margin-top: 4px;
 
   &:first-child {
     margin-top: 0;
