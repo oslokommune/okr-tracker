@@ -1,9 +1,9 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-mission-statement widget-id="itemHome.missionStatement" />
-      <widget-team widget-id="itemHome.team" />
-      <widget-child-items widget-id="itemHome.children" />
+      <widget-mission-statement />
+      <widget-team  />
+      <widget-child-items />
     </div>
   </aside>
 </template>

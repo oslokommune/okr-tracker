@@ -2,18 +2,33 @@
   <div v-if="activeKpi" class="container">
     <div class="widgets--left">
       <router-link
-        class="btn btn--ter btn--icon widget__back-button"
+        class="btn btn--icon widget__back-button"
         :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
       >
-        Back
+        {{ $t('general.back') }}
         <i class="fas fa-angle-left"></i>
       </router-link>
 
-      <widgets-left class="aside--left"></widgets-left>
+      <router-link
+        v-if="hasEditRights"
+        v-tooltip="$t('tooltip.editKpi')"
+        class="btn btn--icon btn--icon-pri aside__link--edit-rights aside__link--edit-rights--left"
+        :to="{ name: 'ItemAdminKPIs' }"
+      >
+        {{ $t('kpi.edit') }}
+        <i class="icon fa fa-pen" />
+      </router-link>
+
+      <div class="aside--left">
+        <div class="widgets">
+          <widget-mission-statement />
+          <widget-team />
+        </div>
+      </div>
     </div>
 
-    <div class="kpi-home">
-      <div class="kpi">
+    <div class="main">
+      <div class="main__item">
         <h1 class="title-1">{{ activeKpi.name }}</h1>
 
         <p>{{ activeKpi.description }}</p>
@@ -34,7 +49,7 @@
 
           <div class="main-widgets__graph">
             <h3 class="main-widgets__title">
-              {{ $t('kpi.progresjon') }}
+              {{ $t('kpi.progress') }}
             </h3>
 
             <svg ref="graph" class="graph"></svg>
@@ -43,10 +58,10 @@
 
         <widgets-k-p-i-home class="aside--middle" :range="range" :progress="progress" @listen="handleChange" />
 
-        <div class="kpi__history">
+        <div class="widget__history">
           <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
 
-          <spinner v-if="isLoading"></spinner>
+          <v-spinner v-if="isLoading"></v-spinner>
 
           <empty-state
             v-else-if="!filteredProgress.length || filteredProgress.length === 0"
@@ -57,11 +72,11 @@
 
           <table v-else class="table">
             <thead>
-            <tr>
-              <th>{{ $t('keyResult.dateAndTime') }}</th>
-              <th>{{ $t('keyResultPage.table.value') }}</th>
-              <th v-if="hasEditRights"></th>
-            </tr>
+              <tr>
+                <th>{{ $t('keyResult.dateAndTime') }}</th>
+                <th>{{ $t('keyResultPage.table.value') }}</th>
+                <th v-if="hasEditRights"></th>
+              </tr>
             </thead>
             <tbody></tbody>
             <tr v-for="{ timestamp, value, id } in filteredProgress" :key="id">
@@ -98,6 +113,8 @@ import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
+import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
+import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
 
 export default {
   name: 'KpiHome',
@@ -105,8 +122,8 @@ export default {
   components: {
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    Spinner: () => import('@/components/Spinner.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    WidgetMissionStatement,
+    WidgetTeam,
   },
 
   data: () => ({
@@ -237,58 +254,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.kpi {
-  padding: 1.5rem 1.75rem;
-  color: var(--color-text);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
-.kpi-home {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(8);
-    margin-right: span(0, 1);
-    margin-left: span(0, 1);
-  }
-}
-
 .history {
   margin: 2.5rem 0 1.5rem;
-}
-
-.widgets--left {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
-  }
-}
-
-.widget__back-button {
-  display: flex;
-  justify-content: space-between;
-  width: span(12);
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  font-weight: 500;
-  text-transform: uppercase;
-  background-color: var(--color-white);
-}
-
-.aside--left {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(12);
-  }
 }
 
 .main-widgets {
@@ -326,12 +293,5 @@ export default {
   margin-top: 0.5rem;
   padding: 1rem;
   background: white;
-  box-shadow: 0 2px 3px rgba(black, 0.1);
-}
-
-.kpi__history {
-  margin-top: 0.5rem;
-  padding: 1.5rem 1.75rem;
-  background: var(--color-white);
 }
 </style>

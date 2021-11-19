@@ -261,5 +261,4 @@ export default {
   font-weight: 500;
   font-size: typography.$font-size-3;
 }
-
 </style>

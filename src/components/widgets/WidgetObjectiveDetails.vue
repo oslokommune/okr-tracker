@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')">
+  <widget v-if="activeObjective" :title="$t('general.details')">
     <div class="details">
       <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
@@ -67,19 +67,8 @@ export default {
   name: 'WidgetObjectiveDetails',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    progress: [],
-  }),
 
   computed: {
     ...mapState(['activeObjective']),

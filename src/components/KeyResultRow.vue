@@ -1,22 +1,32 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <div class="keyResult__info">
-      <router-link class="keyResult__info--header" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-        <h3 class="title-3">{{ keyRow.name }}</h3>
-        <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
-      </router-link>
-    </div>
+    <router-link
+      class="keyResult__info keyResult__info--header"
+      :class="{ 'keyResult__info--expanded': view !== 'compact' }"
+      :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
+    >
+      <h3 class="title-3">{{ keyRow.name }}</h3>
+      <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
+    </router-link>
 
     <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
-    <div class="keyResult__progress">
-      <progress-bar v-if="view === 'compact'" :progression="keyRow.progression" />
+    <div v-if="view === 'compact'" class="keyResult__progress">
+      <progress-bar :progression="keyRow.progression" />
+    </div>
 
-      <div v-else class="progression">
-        <div class="progression__done progression__done--keyResultRow">{{ percentage(keyResult.progression) }} fullført</div>
-        <div class="progression__remaining progression__remaining--keyResultRow">{{ percentage(keyResult.progression) }} gjenstår</div>
-        <button class="btn progression__total progression__total--keyResultRow">
-          <span class="progression__total--current">{{ keyResult.currentValue || 0 }}</span>
+    <div v-else class="keyResult__progress" :class="{ 'keyResult__progress--expanded': view !== 'compact' }">
+      <div class="progression">
+        <div class="progression__done progression__done--keyResultRow">
+          {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
+        </div>
+        <div class="progression__remaining progression__remaining--keyResultRow">
+          {{ $t('progress.remaining', { progress: remaining(keyResult.progression) }) }}
+        </div>
+        <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
+          <span class="progression__total--current">{{
+            keyResult.currentValue ? format('.1~f')(keyResult.currentValue) : 0
+          }}</span>
           <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
         </button>
         <div class="progress-bar__container progress-bar__container--keyResultRow">
@@ -38,18 +48,13 @@ export default {
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    Modal: () => import('@/components/Modal.vue'),
+    Modal: () => import('@/components/KeyResultModal.vue'),
   },
 
   props: {
     keyResult: {
       type: Object,
       required: true,
-    },
-    forceExpanded: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
   },
 
@@ -63,7 +68,6 @@ export default {
     ...mapState(['user', 'theme']),
     ...mapGetters(['hasEditRights']),
     view() {
-      if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
     },
   },
@@ -78,6 +82,8 @@ export default {
   },
 
   methods: {
+    format,
+
     percentage(value) {
       return format('.0%')(value);
     },
@@ -85,14 +91,14 @@ export default {
     remaining() {
       if (this.keyResult.targetValue < this.keyResult.startValue) {
         if (!this.keyResult.currentValue) {
-          return this.keyResult.startValue;
+          return format('.1~f')(this.keyResult.startValue);
         }
-        return this.keyResult.startValue - this.keyResult.currentValue;
+        return format('.1~f')(this.keyResult.startValue - this.keyResult.currentValue);
       }
       if (!this.keyResult.currentValue) {
-        return this.keyResult.targetValue;
+        return format('.1~f')(this.keyResult.targetValue);
       }
-      return this.keyResult.targetValue - this.keyResult.currentValue;
+      return format('.1~f')(this.keyResult.targetValue - this.keyResult.currentValue);
     },
   },
 };
@@ -104,19 +110,21 @@ export default {
 
 .keyResult {
   display: grid;
-  grid-row: auto;
-  grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(4, span(8));
+  grid-template-columns: 1fr auto;
   background-color: var(--color-primary);
 
   &.expanded {
-    grid-template-columns: 1fr span(4, span(8));
+    @media screen and (max-width: bp(s)) {
+      display: flex;
+      flex-direction: column;
+      grid-row-gap: 0;
+    }
   }
 }
 
 .keyResult__info {
   grid-column: 1;
-  padding: 0.5rem 1.75rem 0 1.75rem;
+  padding: 0.5rem 2rem 0 1.5rem;
   background-color: var(--color-secondary-light);
 
   &:hover {
@@ -124,9 +132,11 @@ export default {
   }
 }
 
+.keyResult__info--expanded {
+  padding: 1.5rem 2rem 1.5rem 1.5rem;
+}
+
 .keyResult__info--header {
-  display: grid;
-  align-items: center;
   height: 100%;
   color: var(--color-grey-800);
   text-decoration: none;
@@ -135,7 +145,16 @@ export default {
 .keyResult__progress {
   grid-column: 2;
   align-self: center;
+  width: 100px;
   padding: 0.5rem 1.75rem;
+
+  @media screen and (min-width: bp(s)) {
+    width: 320px;
+  }
+}
+
+.keyResult__progress--expanded {
+  align-self: auto;
 }
 
 .keyResult__auto {
@@ -148,6 +167,7 @@ export default {
 
 .keyResult__description {
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   font-size: 0.8rem;
 }
 

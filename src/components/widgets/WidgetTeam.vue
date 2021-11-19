@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeItem.team" :widget-id="widgetId" :title="$t('general.team')">
+  <widget v-if="activeItem.team" :title="$t('general.team')">
     <empty-state
       v-if="!activeItem.team.length"
       :icon="'user-ninja'"
@@ -11,9 +11,7 @@
       <h4 class="user__title">{{ $t('user.position.groups.director') }}</h4>
       <ul class="users__list">
         <li class="user">
-          <router-link v-if="director.id" :to="{ name: 'User', params: { id: director.id } }" class="user__link">
-            <span class="user__name">{{ director.displayName || director.id }}</span>
-          </router-link>
+          <span class="user__name">{{ director.displayName || director.id }}</span>
         </li>
       </ul>
     </template>
@@ -22,13 +20,9 @@
       <h4 class="user__title">{{ $t('user.position.groups.departmentDirector') }}</h4>
       <ul class="users__list">
         <li class="user">
-          <router-link
-            v-if="departmentDirector.id"
-            :to="{ name: 'User', params: { id: departmentDirector.id } }"
-            class="user__link"
-          >
-            <span class="user__name">{{ departmentDirector.displayName || departmentDirector.id }}</span>
-          </router-link>
+          <span v-if="departmentDirector.id" class="user__name">
+            {{ departmentDirector.displayName || departmentDirector.id }}'
+          </span>
         </li>
       </ul>
     </template>
@@ -37,13 +31,7 @@
       <div class="user__title">{{ $t('user.position.groups.productOwner') }}</div>
       <ul class="users__list">
         <li class="user">
-          <router-link
-            v-if="productOwner.id"
-            :to="{ name: 'User', params: { id: productOwner.id } }"
-            class="user__link"
-          >
-            <span class="user__name">{{ productOwner.displayName || productOwner.id }}</span>
-          </router-link>
+          <span v-if="productOwner.id" class="user__name">{{ productOwner.displayName || productOwner.id }}</span>
         </li>
       </ul>
     </template>
@@ -52,9 +40,7 @@
       <div class="user__title">{{ $t('user.position.groups.teamLead') }}</div>
       <ul class="users__list">
         <li class="user">
-          <router-link v-if="teamLead.id" :to="{ name: 'User', params: { id: teamLead.id } }" class="user__link">
-            <span class="user__name">{{ teamLead.displayName || teamLead.id }}</span>
-          </router-link>
+          <span v-if="teamLead.id" class="user__name">{{ teamLead.displayName || teamLead.id }}</span>
         </li>
       </ul>
     </template>
@@ -63,9 +49,7 @@
       <div class="user__title">{{ $t('user.position.groups.techLead') }}</div>
       <ul class="users__list">
         <li class="user">
-          <router-link v-if="techLead.id" :to="{ name: 'User', params: { id: techLead.id } }" class="user__link">
-            <span class="user__name">{{ techLead.displayName || techLead.id }}</span>
-          </router-link>
+          <span v-if="techLead.id" class="user__name">{{ techLead.displayName || techLead.id }}</span>
         </li>
       </ul>
     </template>
@@ -74,9 +58,7 @@
       <div class="user__title">{{ $t('user.position.groups.designers') }}</div>
       <ul class="users__list">
         <li v-for="design in designers" :key="design.id" class="user">
-          <router-link v-if="design.id" :to="{ name: 'User', params: { id: design.id } }" class="user__link">
-            <span class="user__name">{{ design.displayName || design.id }}</span>
-          </router-link>
+          <span class="user__name">{{ design.displayName || design.id }}</span>
         </li>
       </ul>
     </template>
@@ -85,9 +67,7 @@
       <div class="user__title">{{ $t('user.position.groups.developers') }}</div>
       <ul class="users__list">
         <li v-for="dev in developers" :key="dev.id" class="user">
-          <router-link v-if="dev.id" :to="{ name: 'User', params: { id: dev.id } }" class="user__link">
-            <span class="user__name">{{ dev.displayName || dev.id }}</span>
-          </router-link>
+          <span class="user__name">{{ dev.displayName || dev.id }}</span>
         </li>
       </ul>
     </template>
@@ -96,9 +76,7 @@
       <div class="user__title">{{ $t('user.position.groups.administration') }}</div>
       <ul class="users__list">
         <li v-for="adm in administration" :key="adm.id" class="user">
-          <router-link v-if="adm.id" :to="{ name: 'User', params: { id: adm.id } }" class="user__link">
-            <span class="user__name">{{ adm.displayName || adm.id }}</span>
-          </router-link>
+          <span class="user__name">{{ adm.displayName || adm.id }}</span>
         </li>
       </ul>
     </template>
@@ -107,9 +85,7 @@
       <div class="user__title">{{ $t('user.position.groups.others') }}</div>
       <ul class="users__list">
         <li v-for="user in others" :key="user.id" class="user">
-          <router-link v-if="user.id" :to="{ name: 'User', params: { id: user.id } }" class="user__link">
-            <span class="user__name">{{ user.displayName || user.id }}</span>
-          </router-link>
+          <span class="user__name">{{ user.displayName || user.id }}</span>
         </li>
       </ul>
     </template>
@@ -127,15 +103,8 @@ export default {
   name: 'WidgetTeam',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
   },
 
   data: () => ({
@@ -220,6 +189,7 @@ export default {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
+  word-break: break-all;
 }
 
 .user {

@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'Spinner',
+  name: 'VSpinner',
 };
 </script>
 

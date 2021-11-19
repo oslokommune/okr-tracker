@@ -102,7 +102,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
-import SidebarNavigation from '@/components/Navigation/Sidebar.vue';
+import SidebarNavigation from '@/components/Navigation/SiteSidebar.vue';
 
 export default {
   name: 'SiteHeader',
@@ -146,7 +146,10 @@ export default {
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
           parts.includes('ItemAdminOKRs') ||
-          parts.includes('ItemAdminKPIs')) &&
+          parts.includes('ItemAdminKPIs') ||
+          parts.includes('KeyResultHome') ||
+          parts.includes('ObjectiveHome') ||
+          parts.includes('KpiHome')) &&
         this.activeItem
       ) {
         return this.activeItem.name;

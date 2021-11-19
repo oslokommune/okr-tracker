@@ -21,13 +21,13 @@
       <div class="meta__panel">
         <div v-if="activePeriod" class="meta__panel--header">
           <i class="fa fa-fw fa-chart-pie" />
-          Progresjon {{ activePeriod.name }}
+          {{ $t('progress.title', { progress: activePeriod.name }) }}
         </div>
         <svg ref="piechart"></svg>
       </div>
     </aside>
 
-    <template v-for="objective in tree" :objective="objective">
+    <template v-for="objective in tree">
       <div :key="objective.id" class="objective">
         <div class="objective__head">
           <i class="objective__icon fa fa-fw fa-trophy" />
@@ -48,15 +48,13 @@
       </div>
     </template>
 
-    <div class="close">
-      <router-link
-        v-tooltip="$t('btn.close')"
-        class="close--btn"
-        :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
-      >
-        <i class="fa fa-times" />
-      </router-link>
-    </div>
+    <router-link
+      v-tooltip="$t('btn.close')"
+      class="close--btn"
+      :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
+    >
+      <i class="fa fa-times" />
+    </router-link>
   </div>
 </template>
 
@@ -146,16 +144,11 @@ export default {
 $imageSize: 1.75em;
 
 .dashboard {
-  --columns: 3;
-
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  display: grid;
-  grid-gap: 1em;
-  grid-template-rows: repeat(6, 1fr);
-  grid-template-columns: repeat(5, 1fr) auto;
+  display: flex;
   justify-content: start;
   width: 100vw;
   height: 100vh;
@@ -275,9 +268,8 @@ $imageSize: 1.75em;
   grid-gap: 1em;
   grid-row: 1 / span 6;
   grid-template-rows: repeat(6, 1fr);
-  justify-content: center;
   width: 100%;
-  margin: 0;
+  margin-right: 1rem;
   font-size: 0.9em;
 }
 

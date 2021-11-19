@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="getTitle()">
+  <widget :title="getTitle()">
     <svg ref="svg"></svg>
   </widget>
 </template>
@@ -12,14 +12,10 @@ export default {
   name: 'WidgetProgression',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
     dimmed: {
       type: Boolean,
       required: false,

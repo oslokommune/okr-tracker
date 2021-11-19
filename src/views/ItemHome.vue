@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <widgets-left class="aside--left"></widgets-left>
+    <div class="widgets--left">
+      <widgets-left class="aside--left"></widgets-left>
+    </div>
 
     <div class="main">
       <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
-      <div class="itemHome">
+      <div class="main__item">
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />
@@ -30,10 +32,15 @@
         </empty-state>
 
         <ul v-if="tree && !dataLoading">
-          <li v-for="(objective, index) in tree" :key="objective.id" class="itemHome__tree--item">
-            <objective-row :objective="objective" :index="++index"></objective-row>
+          <li v-for="objective in tree" :key="objective.id" class="itemHome__tree--item">
+            <objective-row :objective="objective"></objective-row>
             <ul v-if="objective.keyResults">
-              <li v-for="keyResult in objective.keyResults" :key="keyResult.id" class="keyResultRow">
+              <li
+                v-for="keyResult in objective.keyResults"
+                :key="keyResult.id"
+                class="keyResultRow"
+                :class="{ 'keyResultRow--expanded': view !== 'compact' }"
+              >
                 <key-result-row :key-result="keyResult"></key-result-row>
               </li>
             </ul>
@@ -42,33 +49,42 @@
       </div>
     </div>
 
-    <widgets-right class="aside"></widgets-right>
-    <widgets-left class="aside--bottom"></widgets-left>
+    <widgets-right class="aside--right" />
+
+    <widgets-mobile class="aside--bottom" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
+import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
+import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 
 export default {
   name: 'ItemHome',
 
   components: {
+    WidgetsMobile,
     PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
-    Kpis: () => import('@/components/Kpis.vue'),
+    Kpis: () => import('@/components/KPIs.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    ContentLoaderItem: () => import('@/components/ContentLoader/ContentLoaderItem.vue'),
-    ContentLoaderActionBar: () => import('@/components/ContentLoader/ContentLoaderActionBar.vue'),
+    ContentLoaderItem,
+    ContentLoaderActionBar,
   },
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading']),
+    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading', 'user']),
     ...mapGetters(['hasEditRights']),
+
+    view() {
+      return this.user.preferences.view;
+    },
 
     tree() {
       return this.objectives.map((objective) => {
@@ -82,26 +98,21 @@ export default {
 
 <style lang="scss" scoped>
 .keyResultRow {
-  margin-top: 0.2rem;
+  margin-top: 1px;
+
+  &:first-child {
+    margin-top: 0;
+    background-color: red;
+  }
+}
+
+
+.keyResultRow--expanded {
+  margin-top: 4px;
 
   &:first-child {
     margin-top: 0;
   }
-}
-
-.itemHome {
-  padding: 1rem 1rem 3rem 1rem;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
-.itemHome__header--content-loader {
-  margin-bottom: 1.5rem;
 }
 
 .itemHome__tree--item {
@@ -109,10 +120,5 @@ export default {
   padding-bottom: 1rem;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background: #E0F9FD;
-    box-shadow: none
-  }
 }
 </style>

@@ -4,7 +4,6 @@
   },
   "theme": {
     "colors": {
-      "yellow": "Yellow",
       "blue": "Blue",
       "green": "Green"
     },
@@ -15,7 +14,7 @@
     "add": "Add KPI",
     "edit": "Edit KPI",
     "currentValue": "Current value",
-    "progresjon": "Progress",
+    "progress": "Progress",
     "description": "Description",
     "chooseType": "Select KPI type",
     "types": {
@@ -84,8 +83,8 @@
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
-    "positiveNotZero": "Ugyldig verdi",
-    "decimal": "Må være tall"
+    "positiveNotZero": "The {_field_} field must be a valid value",
+    "decimal": "The {_field_} field must be a decimal"
   },
   "general": {
     "edit": "Edit",
@@ -116,7 +115,8 @@
     "success": "Success",
     "objective": "Objective",
     "keyResult": "Key result",
-    "period": "Period"
+    "period": "Period",
+    "back": "back"
   },
   "btn": {
     "close": "Close",
@@ -239,10 +239,11 @@
       "sheetsCellHelp": "E.g. «A12»",
       "testConnection": "Save and test connection"
     },
-    "updateKeyres": "Update value for key result",
+    "updateKeyRes": "Update value for key result",
     "registerProgression": {
       "value": "Value"
     },
+    "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
     "addComment": "Add comment (optional)",
@@ -477,6 +478,12 @@
       "other": "Other",
       "storyteller": "Storyteller"
     }
+  },
+  "progress": {
+    "title": "Progress {progress}",
+    "done": "{progress} done",
+    "remaining": "{progress} remaining",
+    "remainingOf": "of {progress}"
   },
   "languages": {
     "en-US": "English",

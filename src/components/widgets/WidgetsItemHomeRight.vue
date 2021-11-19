@@ -1,8 +1,12 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-progression widget-id="itemHome.progression" type="period" />
-      <widget-objective-weights widget-id="widget-objective-weights" />
+      <widget-progression type="period" />
+      <widget-weights
+        :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
+        :items="$route.name === 'ItemHome' ? objectives : keyResults"
+        :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"
+      />
       <widget-admin />
     </div>
   </aside>
@@ -17,7 +21,7 @@ export default {
   components: {
     WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetAdmin: () => import('./WidgetAdmin.vue'),
-    WidgetObjectiveWeights: () => import('@/components/widgets/WidgetObjectiveWeights.vue'),
+    WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
   },
 
   data: () => ({
@@ -25,7 +29,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem']),
+    ...mapState(['activeItem', 'activePeriod', 'activeObjective', 'objectives', 'keyResults']),
   },
 
   watch: {

@@ -3,7 +3,7 @@
     <router-link
       v-if="hasEditRights"
       v-tooltip="$t('tooltip.editKpi')"
-      class="btn btn--ter btn--icon btn--icon-pri link__edit-rights"
+      class="btn btn--icon btn--icon-pri aside__link--edit-rights"
       :to="{ name: 'ItemAdminKPIs' }"
     >
       {{ $t('kpi.edit') }}
@@ -11,7 +11,7 @@
     </router-link>
 
     <div class="widgets">
-      <widget widget-id="widget-kpi-filter" :title="$t('keyResultPage.filter')">
+      <widget :title="$t('keyResultPage.filter')">
         <label v-if="progress.length" class="form-field">
           <span class="form-label">{{ $t('period.dateRange') }}</span>
           <flat-pickr
@@ -27,7 +27,8 @@
           {{ $t('btn.reset') }}
         </button>
       </widget>
-      <div class="widgets__kpi"></div>
+      <widget-mission-statement class="widgets--bottom" />
+      <widget-team class="widgets--bottom" />
     </div>
   </div>
 </template>
@@ -35,12 +36,17 @@
 <script>
 import { mapGetters } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
+import Widget from '@/components/widgets/WidgetWrapper.vue';
+import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
+import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
 
 export default {
   name: 'WidgetsKPIHome',
 
   components: {
-    Widget: () => import('@/components/widgets/Widget.vue'),
+    Widget,
+    WidgetMissionStatement,
+    WidgetTeam,
   },
 
   props: {
@@ -91,13 +97,15 @@ export default {
   padding: 0.5rem;
 }
 
-.link__edit-rights {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  text-transform: uppercase;
-  background-color: var(--color-secondary);
+.widgets--bottom {
+  @media screen and (min-width: bp(m)) {
+    display: none;
+  }
+}
+
+.widgets--left {
+  @media screen and (max-width: bp(m)) {
+    display: none;
+  }
 }
 </style>

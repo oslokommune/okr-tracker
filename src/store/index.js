@@ -200,7 +200,7 @@ export default new Vuex.Store({
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
-    theme: 'yellow',
+    theme: 'blue',
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},

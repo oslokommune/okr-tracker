@@ -5,18 +5,26 @@
         class="btn btn--ter btn--icon widget__back-button"
         :to="previousUrl ? previousUrl : { name: 'ItemHome', params: { slug: activeKeyResult.parent.slug } }"
       >
-        Back
+        {{ $t('general.back') }}
         <i class="fas fa-angle-left"></i>
+      </router-link>
+
+      <router-link
+        v-if="hasEditRights"
+        class="btn btn--icon btn--icon-pri aside__link--edit-rights aside__link--edit-rights--left"
+        :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+      >
+        {{ $t('keyResultPage.change') }}
+        <i class="icon fa fa-pen" />
       </router-link>
 
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
-    <div class="keyResult-home">
-      <div class="keyResult">
-        <h1 class="title-1" style=" font-weight: 500;text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
-        <h2 class="title-4">Oppdater verdi for nøkkelresutlatet</h2>
-        <p>{{ activeKeyResult.description }}</p>
+    <div class="main">
+      <div class="main__item">
+        <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
+        <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
 
         <div class="key-result-row">
           <div class="key-result-row__info">
@@ -29,18 +37,18 @@
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
             <div class="progression__done progression__done--keyResultHome">
-              {{ percentage(activeKeyResult.progression) }} fullført
+              {{ $t('progress.done', { progress: percentage(activeKeyResult.progression) }) }}
             </div>
             <div class="progression__remaining progression__remaining--keyResultHome">
-              {{ remaining(activeKeyResult) }} gjenstår
+              {{ $t('progress.remaining', { progress: remaining(activeKeyResult) }) }}
             </div>
             <div class="progression__total progression__total--keyResultHome">
-              <span class="progression__total--current progression__total--current--keyResultHome">{{
-                activeKeyResult.currentValue || 0
-              }}</span>
-              <span class="progression__total--target progression__total--target--keyResultHome"
-                >av {{ activeKeyResult.targetValue }}</span
-              >
+              <span class="progression__total--current progression__total--current--keyResultHome">
+                {{ activeKeyResult.currentValue ? format('.1~f')(activeKeyResult.currentValue) : 0 }}
+              </span>
+              <span class="progression__total--target progression__total--target--keyResultHome">
+                {{ $t('progress.remainingOf', { progress: activeKeyResult.targetValue }) }}
+              </span>
             </div>
             <div class="progress-bar__container progress-bar__container--keyResultHome">
               <div class="progress-bar" :style="{ width: percentage(activeKeyResult.progression) }"></div>
@@ -56,7 +64,7 @@
           </div>
 
           <div class="key-result__value">
-            <h3 class="title-2">Ny Verdi</h3>
+            <h3 class="title-2">{{ $t('keyResult.newValue') }}</h3>
 
             <validation-observer v-slot="{ handleSubmit }">
               <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
@@ -67,8 +75,8 @@
                     class="modal__textarea"
                     style="margin-top: 0.5rem"
                     rows="3"
+                    :placeholder="$t('keyResult.commentPlaceholder')"
                     @input="edit"
-                    placeholder="Dette er en kommentar.."
                   />
                 </label>
 
@@ -94,7 +102,7 @@
                 </div>
               </form>
             </validation-observer>
-            <button form="modal" :disabled="isSaving || changes" class="btn btn--sec">
+            <button form="modal" :disabled="isSaving || !changes" class="btn btn--sec">
               {{ $t('btn.save') }}
             </button>
           </div>
@@ -115,13 +123,12 @@
           </div>
         </div>
 
-        <widgets-key-result-home class="aside--middle"></widgets-key-result-home>
-        <widgets-left class="aside--bottom"></widgets-left>
+        <widgets-key-result-mobile class="aside--bottom"></widgets-key-result-mobile>
 
-        <div class="keyResult__history">
+        <div class="widget__history">
           <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
           <div class="main__table">
-            <spinner v-if="isLoading" />
+            <v-spinner v-if="isLoading" />
             <empty-state
               v-else-if="!progress.length || progress.length === 0"
               :icon="'history'"
@@ -192,9 +199,9 @@
       </div>
     </div>
 
-    <widgets-key-result-home class="aside--right"></widgets-key-result-home>
+    <widgets-right class="aside--right" />
 
-    <modal v-if="isOpen" :key-result="activeKeyResult" @close="closeModal"></modal>
+    <modal v-if="isOpen" :key-result="activeKeyResult" @close="closeModal" />
   </div>
 </template>
 
@@ -207,17 +214,18 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, numberLocale } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
+import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
 export default {
   name: 'KeyResultHome',
 
   components: {
-    WidgetsKeyResultHome: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    Modal: () => import('@/components/Modal.vue'),
+    WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
+    Modal: () => import('@/components/KeyResultModal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    VPopover,
-    Spinner: () => import('@/components/Spinner.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    VPopover,
+    WidgetsKeyResultMobile,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -285,6 +293,7 @@ export default {
 
   methods: {
     dateTimeShort,
+    format,
 
     async remove(id) {
       try {
@@ -314,14 +323,14 @@ export default {
     remaining(keyRes) {
       if (keyRes.targetValue < keyRes.startValue) {
         if (!keyRes.currentValue) {
-          return keyRes.startValue;
+          return format('.1~f')(keyRes.startValue);
         }
-        return keyRes.startValue - keyRes.currentValue;
+        return format('.1~f')(keyRes.startValue - keyRes.currentValue);
       }
       if (!keyRes.currentValue) {
-        return keyRes.targetValue;
+        return format('.1~f')(keyRes.targetValue);
       }
-      return keyRes.targetValue - keyRes.currentValue;
+      return format('.1~f')(keyRes.targetValue - keyRes.currentValue);
     },
 
     async saveProgress() {
@@ -352,33 +361,6 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 @use '@/styles/progressbar';
-
-.keyResult {
-  padding: 1rem 1rem 3rem 1rem;
-  color: var(--color-text);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-
-.keyResult-home {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(8);
-    margin-right: span(0, 1);
-    margin-left: span(0, 1);
-  }
-}
-
-.keyResult__history {
-  margin-top: 0.5rem;
-  padding: 1.5rem 1.75rem;
-  background: var(--color-white);
-}
 
 .main__table {
   width: 100%;
@@ -449,6 +431,7 @@ export default {
 .key-result-row {
   display: flex;
   flex-direction: column;
+
   @media screen and (min-width: bp(s)) {
     display: grid;
     grid-row-gap: 0.5rem;
@@ -474,10 +457,12 @@ export default {
 .key-result-row__progress {
   display: grid;
   grid-area: 1 / 2 / 2 / 3;
+  grid-column-gap: 2px;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto;
   align-self: center;
   width: 100%;
+  height: 100%;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
   color: var(--color-text-secondary);
   background-color: var(--color-primary);
@@ -492,58 +477,27 @@ export default {
   text-transform: uppercase;
 }
 
-.widget__back-button {
-  display: flex;
-  justify-content: space-between;
-  width: span(12);
-  margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
-  font-weight: 500;
-  text-transform: uppercase;
-  background-color: var(--color-white);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(12);
-  }
-}
-
-.aside--left {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(2, span(2));
-  }
-}
-
-.widgets--left {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
-  }
-}
-
 .progress-bar__container--keyResultHome {
   grid-area: 4 / 1 / 5 / 3;
 }
 
 .progression__done--keyResultHome {
   grid-area: 2 / 1 / 3 / 2;
+  align-self: end;
 }
 
 .progression__remaining--keyResultHome {
   grid-area: 3 / 1 / 4 / 2;
+  align-self: end;
   font-weight: 500;
 }
 
 .progression__total--keyResultHome {
-
   display: grid;
   grid-area: 1 / 2 / 4 / 3;
   grid-template-rows: repeat(2, auto);
   grid-template-columns: 1fr;
+  justify-self: end;
   color: var(--color-text);
 }
 

@@ -1,11 +1,11 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('weight.heading')">
+  <widget :title="$t('weight.heading')">
     <div class="scales">
       <router-link
         v-for="{ id, weight, name } in weights"
         :key="id"
         v-tooltip.bottom="name"
-        :to="{ name: 'KeyResultHome', params: { keyResultId: id } }"
+        :to="getToLink(id)"
         class="bar"
         :style="{ height: getHeight(weight) }"
       >
@@ -16,19 +16,27 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 
 export default {
-  name: 'WidgetKeyResultWeights',
+  name: 'WidgetWeights',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   props: {
-    widgetId: {
+    items: {
+      type: Array,
+      required: true,
+    },
+    activeItem: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+    type: {
       type: String,
       required: true,
     },
@@ -40,9 +48,16 @@ export default {
   }),
 
   computed: {
-    ...mapState(['keyResults', 'activeObjective']),
     weights() {
-      const siblings = ({ objective }) => objective.split('/')[1] === this.activeObjective.id;
+      if (!this.activeItem) return [];
+
+      let siblings = null;
+
+      if (this.type === 'objective') {
+        siblings = ({ period }) => period.split('/')[1] === this.activeItem.id;
+      } else {
+        siblings = ({ objective }) => objective.split('/')[1] === this.activeItem.id;
+      }
 
       const processWeights = ({ weight, id, name }) => ({
         weight,
@@ -50,7 +65,7 @@ export default {
         name,
       });
 
-      return this.keyResults.filter(siblings).map(processWeights);
+      return this.items.filter(siblings).map(processWeights);
     },
   },
 
@@ -71,6 +86,14 @@ export default {
   methods: {
     getHeight(weight) {
       return `${this.scale(weight) * 100}%`;
+    },
+
+    getToLink(id) {
+      if (this.type === 'objective') {
+        return { name: 'ObjectiveHome', params: { objectiveId: id } };
+      }
+
+      return { name: 'KeyResultHome', params: { keyResultId: id } };
     },
   },
 };

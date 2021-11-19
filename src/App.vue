@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
-    <spinner v-if="loading"></spinner>
+    <v-spinner v-if="loading"></v-spinner>
     <router-view v-else></router-view>
     <vue-griddle />
   </div>
@@ -23,7 +23,6 @@ export default {
 
   components: {
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
-    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   computed: {

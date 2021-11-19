@@ -21,50 +21,37 @@
 
   width: 100%;
   max-width: 550px;
-  max-height: 90%;
-  background: white;
-  border-radius: 3px;
+  max-height: 100%;
+  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  color: var(--color-text-secondary);
+  background-color: var(--color-primary);
+  border-radius: 0.8rem;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
 
   &__header {
     display: flex;
     align-items: center;
-    padding: 1rem 1rem 0.5rem 2rem;
     font-size: 1rem;
-
-    @media screen and (min-width: 1600px) {
-      padding: 2rem;
-      font-size: 1.5rem;
-    }
 
     .btn {
       margin: 0;
       padding: 0 1.15rem;
     }
 
-    .fa {
-      margin: 0;
-      font-size: inherit;
-    }
-
     .title-2 {
       margin-right: auto;
-      font-size: inherit;
     }
   }
 
   &__main {
     display: flex;
     flex-direction: column;
-    padding: 1rem 2rem 1rem;
-    background-color: var(--color-grey-50);
   }
 
   &__footer {
     display: flex;
-    padding: 1rem 2rem 1rem;
+    justify-content: flex-end;
+    margin-top: 3rem;
     font-size: 12px;
-    background-color: var(--color-grey-50);
-    border-top: 1px solid var(--color-border);
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <router-link class="objective" :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }">
     <h3 class="objective__header title-2">
-      <span>Objective {{ index }}</span>
+      <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>
     </h3>
     <span>{{ objective.description }}</span>
@@ -18,10 +18,6 @@ export default {
   props: {
     objective: {
       type: Object,
-      required: true,
-    },
-    index: {
-      type: Number,
       required: true,
     },
   },
