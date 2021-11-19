@@ -122,7 +122,6 @@ export default {
 }
 
 .admin__title {
-  margin-top: 1rem;
   padding: 0.2rem;
   color: var(--color-grey-300);
   font-weight: 500;

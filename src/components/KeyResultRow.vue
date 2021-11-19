@@ -56,6 +56,11 @@ export default {
       type: Object,
       required: true,
     },
+    forceExpanded: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data: () => ({
@@ -68,6 +73,7 @@ export default {
     ...mapState(['user', 'theme']),
     ...mapGetters(['hasEditRights']),
     view() {
+      if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
     },
   },
