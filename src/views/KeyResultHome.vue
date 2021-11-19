@@ -44,7 +44,7 @@
             </div>
             <div class="progression__total progression__total--keyResultHome">
               <span class="progression__total--current progression__total--current--keyResultHome">
-                {{ activeKeyResult.currentValue ? format('.1f')(activeKeyResult.currentValue) : 0 }}
+                {{ activeKeyResult.currentValue ? format('.1~f')(activeKeyResult.currentValue) : 0 }}
               </span>
               <span class="progression__total--target progression__total--target--keyResultHome">
                 {{ $t('progress.remainingOf', { progress: activeKeyResult.targetValue }) }}
@@ -321,23 +321,16 @@ export default {
     },
 
     remaining(keyRes) {
-      let remaining = 0;
-
       if (keyRes.targetValue < keyRes.startValue) {
         if (!keyRes.currentValue) {
-          remaining = keyRes.startValue;
+          return format('.1~f')(keyRes.startValue);
         }
-        remaining = keyRes.startValue - keyRes.currentValue;
-      } else if (!keyRes.currentValue) {
-        remaining = keyRes.targetValue;
-      } else {
-        remaining = keyRes.targetValue - keyRes.currentValue;
+        return format('.1~f')(keyRes.startValue - keyRes.currentValue);
       }
-
-      if (remaining === 0) {
-        return 0;
+      if (!keyRes.currentValue) {
+        return format('.1~f')(keyRes.targetValue);
       }
-      return format('.1f')(remaining);
+      return format('.1~f')(keyRes.targetValue - keyRes.currentValue);
     },
 
     async saveProgress() {
@@ -490,10 +483,12 @@ export default {
 
 .progression__done--keyResultHome {
   grid-area: 2 / 1 / 3 / 2;
+  align-self: end;
 }
 
 .progression__remaining--keyResultHome {
   grid-area: 3 / 1 / 4 / 2;
+  align-self: end;
   font-weight: 500;
 }
 

@@ -24,7 +24,9 @@
           {{ $t('progress.remaining', { progress: remaining(keyResult.progression) }) }}
         </div>
         <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
-          <span class="progression__total--current">{{ keyResult.currentValue ? format('.1f')(keyResult.currentValue) : 0 }}</span>
+          <span class="progression__total--current">{{
+            keyResult.currentValue ? format('.1~f')(keyResult.currentValue) : 0
+          }}</span>
           <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
         </button>
         <div class="progress-bar__container progress-bar__container--keyResultRow">
@@ -87,23 +89,16 @@ export default {
     },
 
     remaining() {
-      let remaining = 0;
-
       if (this.keyResult.targetValue < this.keyResult.startValue) {
         if (!this.keyResult.currentValue) {
-          remaining = this.keyResult.startValue;
+          return format('.1~f')(this.keyResult.startValue);
         }
-        remaining = this.keyResult.startValue - this.keyResult.currentValue;
-      } else if (!this.keyResult.currentValue) {
-        remaining = this.keyResult.targetValue;
-      } else {
-        remaining = this.keyResult.targetValue - this.keyResult.currentValue;
+        return format('.1~f')(this.keyResult.startValue - this.keyResult.currentValue);
       }
-
-      if (remaining === 0) {
-        return 0;
+      if (!this.keyResult.currentValue) {
+        return format('.1~f')(this.keyResult.targetValue);
       }
-      return format('.1f')(remaining);
+      return format('.1~f')(this.keyResult.targetValue - this.keyResult.currentValue);
     },
   },
 };
@@ -115,8 +110,6 @@ export default {
 
 .keyResult {
   display: grid;
-  grid-row: auto;
-  grid-row-gap: 0.5rem;
   grid-template-columns: 1fr auto;
   background-color: var(--color-primary);
 
@@ -152,6 +145,7 @@ export default {
 .keyResult__progress {
   grid-column: 2;
   align-self: center;
+  width: 100px;
   padding: 0.5rem 1.75rem;
 
   @media screen and (min-width: bp(s)) {
