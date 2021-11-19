@@ -39,7 +39,7 @@ export default {
 
 <style lang="scss" scoped>
 .kpis {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   padding: 1rem;
   background: var(--color-white);
 }
@@ -47,6 +47,7 @@ export default {
 .kpis__list {
   display: grid;
   grid-gap: 0.25rem;
+  margin-top: 1.5rem;
 
   @media screen and (min-width: bp(m)) {
     grid-template-columns: repeat(3, minmax(10rem, 1fr));
