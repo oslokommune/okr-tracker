@@ -1,25 +1,9 @@
 <template>
   <header class="header">
-    <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
-      <sidebar-navigation :extra="extraSidebarOpen" @extra-sidebar="extraSidebar"></sidebar-navigation>
+    <div class="drawer" :class="{ 'is-open': sidebarOpen }">
+      <sidebar-navigation :is-open="sidebarOpen" :extra="extraSidebarOpen"></sidebar-navigation>
     </div>
 
-    <div class="sidebar__extra" :class="{ 'is-open': extraSidebarOpen }">
-      <div class="sidebar__extra--content">
-        <h1 class="title-1">FORSIDE</h1>
-
-        <button
-          v-for="org in organizations"
-          :key="org.id"
-          @click="handleActiveOrganization(org)"
-          class="btn btn--ter btn--icon"
-        >
-          {{ org.name }}
-        </button>
-      </div>
-    </div>
-
-    <div v-if="sidebarOpen" class="overlay"></div>
     <div class="siteHeader-container">
       <a
         href="#"
@@ -28,7 +12,7 @@
         :class="{ 'is-open': sidebarOpen }"
         aria-expanded="false"
         data-th-aria-label="${portal.localize({'_key=aria.openMenu'})}"
-        @click.stop="sidebarOpen = !sidebarOpen"
+        @click.stop="hideSidebar"
       >
         <div class="header__navicon" role="presentation">
           <span class="sidebar__button"></span> <span class="sidebar__button"></span>
@@ -169,7 +153,11 @@ export default {
     ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
 
     hideSidebar() {
-      this.sidebarOpen = false;
+      if (this.sidebarOpen) {
+        this.extraSidebarOpen = false;
+      }
+
+      this.sidebarOpen = !this.sidebarOpen;
     },
 
     showSidebar() {
@@ -185,10 +173,6 @@ export default {
       await this.reset_state();
       await auth.signOut();
       await this.setLoading(false);
-    },
-
-    extraSidebar() {
-      this.extraSidebarOpen = !this.extraSidebarOpen;
     },
 
     async handleActiveOrganization(org) {
@@ -298,22 +282,18 @@ $header-height: 4em;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 200;
-  width: 90%;
-  max-width: 400px;
+  z-index: -99999;
+  width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--color-primary) !important;
-  box-shadow: 0 2px 4px var(--color-black);
-  transform: translateX(-100vw);
   opacity: 0;
-  transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
+  transition: opacity 0s ease-in-out;
 
   &.is-open {
-    transform: translate(0);
+    z-index: 200;
     opacity: 1;
-    transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
+    transition: opacity 0s ease-in-out;
   }
 }
 
@@ -349,6 +329,7 @@ $header-height: 4em;
   width: 100%;
   height: 100%;
   padding: 1em;
+  max-width: 400px;
 
   $bar-height: 0.15em;
   $center: 1em - math.div($bar-height, 2);
@@ -377,35 +358,5 @@ $header-height: 4em;
       transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
     }
   }
-}
-
-.sidebar__extra {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 190;
-  width: 90%;
-  max-width: 400px;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: var(--color-primary) !important;
-  transform: translateX(-100vw);
-  opacity: 0;
-  transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
-
-  &.is-open {
-    transform: translate(400px);
-    opacity: 1;
-    transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
-  }
-}
-
-.sidebar__extra--content {
-  position: sticky;
-  top: 5.5rem;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 8rem);
 }
 </style>
