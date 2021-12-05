@@ -158,7 +158,6 @@ export default {
   width: span(12);
   padding: 2rem;
   background: white;
-  z-index: 300;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 

@@ -41,8 +41,8 @@
         <button
           v-for="org in organizations"
           :key="org.id"
+          class="btn btn--ter btn--icon org"
           @click="handleActiveOrganization(org)"
-          class="btn btn--ter btn--icon"
         >
           {{ org.name }}
         </button>
@@ -63,10 +63,6 @@ export default {
       type: Boolean,
       required: true,
     },
-    extra: {
-      type: Boolean,
-      required: true,
-    },
   },
 
   data: () => ({
@@ -76,6 +72,17 @@ export default {
   computed: {
     ...mapState(['activeItem', 'user', 'activeOrganization', 'organizations']),
     ...mapGetters(['sidebarGroups', 'tree']),
+  },
+
+  watch: {
+    isOpen: {
+      immediate: true,
+      handler() {
+        if (!this.isOpen) {
+          this.isSideSideBar = this.isOpen;
+        }
+      },
+    },
   },
 
   methods: {
@@ -108,6 +115,7 @@ export default {
   color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 1.25rem;
+  border-radius: 0;
 
   &:hover {
     color: var(--color-text);
@@ -122,6 +130,7 @@ export default {
   font-weight: 500;
   font-size: 1.25rem;
   text-decoration: none;
+  border-radius: 0;
 
   &:hover {
     color: var(--color-text);
@@ -134,6 +143,7 @@ export default {
   padding: 0.5rem 1.5rem;
   color: var(--color-text-secondary);
   font-size: 1rem;
+  border-radius: 0;
 
   &:hover {
     color: var(--color-text);
@@ -174,6 +184,8 @@ export default {
   padding: 1.5rem;
   font-weight: 500;
   font-size: 1.5rem;
+  border-radius: 0;
+
   &:hover {
     color: var(--color-text);
     background: var(--color-secondary);
@@ -224,10 +236,10 @@ export default {
 
 .sidebar__extra--content {
   position: fixed;
-  padding-top: 5.5rem;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
   width: 100%;
+  min-height: 100%;
+  padding-top: 5.5rem;
 }
 </style>

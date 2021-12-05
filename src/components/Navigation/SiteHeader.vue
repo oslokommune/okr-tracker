@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="drawer" :class="{ 'is-open': sidebarOpen }">
-      <sidebar-navigation :is-open="sidebarOpen" :extra="extraSidebarOpen"></sidebar-navigation>
+      <sidebar-navigation :is-open="sidebarOpen"></sidebar-navigation>
     </div>
 
     <div class="siteHeader-container">
@@ -153,10 +153,6 @@ export default {
     ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
 
     hideSidebar() {
-      if (this.sidebarOpen) {
-        this.extraSidebarOpen = false;
-      }
-
       this.sidebarOpen = !this.sidebarOpen;
     },
 
@@ -283,8 +279,8 @@ $header-height: 4em;
   top: 0;
   left: 0;
   z-index: -99999;
-  width: 100%;
-  height: 100%;
+  width: 0;
+  height: 0;
   overflow-x: hidden;
   overflow-y: auto;
   opacity: 0;
@@ -292,6 +288,8 @@ $header-height: 4em;
 
   &.is-open {
     z-index: 200;
+    width: 100%;
+    height: 100%;
     opacity: 1;
     transition: opacity 0s ease-in-out;
   }
@@ -327,9 +325,9 @@ $header-height: 4em;
 .header__navicon {
   position: relative;
   width: 100%;
+  max-width: 400px;
   height: 100%;
   padding: 1em;
-  max-width: 400px;
 
   $bar-height: 0.15em;
   $center: 1em - math.div($bar-height, 2);
