@@ -7,23 +7,25 @@
         style="display: flex; justify-content: space-between; text-transform: uppercase"
         @click="activeSideSidebar"
       >
-        Oslo kommune
+        {{ hostOrg }}
         <i class="icon fa" :class="isSideSideBar ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
       </button>
-      <div v-if="!user">Please sign in</div>
+      <div v-if="!user" class="sidebar__sign-in">Please sign in</div>
       <template v-if="user">
         <ul v-if="activeOrganization" class="sidebar__group">
-          <li v-for="org in tree" :key="org.id" class="tree">
+          <li v-for="org in tree" :key="org.id" style="margin-top: 1rem;">
             <template v-if="org.id === activeOrganization.id">
-              <h2 class="btn btn--ter org">{{ org.name }}</h2>
+              <h2 class="btn btn--ter sidebar__item">{{ org.name }}</h2>
               <ul>
-                <li v-for="dept in org.children" :key="dept.id" class="card">
-                  <router-link :to="{name: 'ItemHome', params: { slug: dept.slug } }">
-                    <h3 class="btn btn--ter dep">{{ dept.name }}</h3>
+                <li v-for="dept in org.children" :key="dept.id" style="margin-top: 1rem;">
+                  <router-link class='btn btn--ter sidebar__item' :to="{name: 'ItemHome', params: { slug: dept.slug } }">
+                    <h3>{{ dept.name }}</h3>
                   </router-link>
                   <ul>
                     <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
-                      <h4 class="btn btn--ter prod">{{ prod.name }}</h4>
+                      <router-link class="btn btn--ter sidebar__item" style="font-size: 1rem;" :to="{name: 'ItemHome', params: { slug: prod.slug } }">
+                        <h3>{{ prod.name }}</h3>
+                      </router-link>
                     </li>
                   </ul>
                 </li>
@@ -36,7 +38,7 @@
 
     <div class="sidebar__extra" :class="{ 'is-open': isSideSideBar }">
       <div class="sidebar__extra--content">
-        <h1 class="btn btn--ter btn--icon btn--sidebar">FORSIDE</h1>
+        <h1 class="btn btn--ter btn--icon btn--sidebar">{{ $t('general.homePage') }}</h1>
 
         <button
           v-for="org in organizations"
@@ -72,6 +74,10 @@ export default {
   computed: {
     ...mapState(['activeItem', 'user', 'activeOrganization', 'organizations']),
     ...mapGetters(['sidebarGroups', 'tree']),
+
+    hostOrg() {
+      return import.meta.env.VITE_ORGANIZATION;
+    }
   },
 
   watch: {
@@ -101,48 +107,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tree {
-  margin-top: 1rem;
-}
-
-.card {
-  margin-top: 1rem;
-}
-
-.org {
+.sidebar__item {
   width: 100%;
   padding: 0.5rem 1.5rem;
   color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 1.25rem;
-  border-radius: 0;
-
-  &:hover {
-    color: var(--color-text);
-    background-color: var(--color-secondary);
-  }
-}
-
-.dep {
-  width: 100%;
-  padding: 0.5rem 1.5rem;
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  font-size: 1.25rem;
-  text-decoration: none;
-  border-radius: 0;
-
-  &:hover {
-    color: var(--color-text);
-    background-color: var(--color-secondary);
-  }
-}
-
-.prod {
-  width: 100%;
-  padding: 0.5rem 1.5rem;
-  color: var(--color-text-secondary);
-  font-size: 1rem;
   border-radius: 0;
 
   &:hover {
@@ -163,7 +133,8 @@ export default {
   min-height: 100vh;
   padding-top: 5.5rem;
   background-color: var(--color-primary) !important;
-  box-shadow: 0 2px 4px var(--color-black);
+  border-right: 1px solid #ffffff0f;
+  box-shadow: 6px -1px 10px rgba(0, 0, 0, 0.1);
   transform: translateX(-100vw);
 
   opacity: 0;
@@ -178,6 +149,12 @@ export default {
 
 .sidebar__group {
   margin-bottom: 1rem;
+}
+
+.sidebar__sign-in {
+  padding: 1.5rem;
+  font-weight: 500;
+  font-size: 1.5rem;
 }
 
 .btn--sidebar {

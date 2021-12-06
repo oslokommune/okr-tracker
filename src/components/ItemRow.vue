@@ -246,7 +246,7 @@ export default {
 
 .indent {
   flex-shrink: 0;
-  width: 3.5rem;
+  width: 1.5rem;
 }
 
 .widget__toggle {
