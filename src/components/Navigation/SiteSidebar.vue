@@ -38,12 +38,13 @@
 
     <div class="sidebar__extra" :class="{ 'is-open': isSideSideBar }">
       <div class="sidebar__extra--content">
-        <h1 class="btn btn--ter btn--icon btn--sidebar">{{ $t('general.homePage') }}</h1>
-
+        <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--icon btn--sidebar">
+          <h1>{{ $t('general.homePage') }}</h1>
+        </router-link>
         <button
           v-for="org in organizations"
           :key="org.id"
-          class="btn btn--ter btn--icon org"
+          class="btn btn--ter btn--icon sidebar__item"
           @click="handleActiveOrganization(org)"
         >
           {{ org.name }}
