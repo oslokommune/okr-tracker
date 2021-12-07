@@ -121,12 +121,12 @@ export default {
   font-size: 0.85rem;
   text-align: center;
   text-decoration: none;
-  background: var(--color-secondary);
-  border: 1px solid var(--color-secondary);
+  background: var(--color-secondary-light);
+  border: 1px solid var(--color-secondary-light);
 
   &:hover {
-    background: var(--color-secondary-light);
-    border: 1px solid var(--color-secondary-light);
+    background: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
   }
 }
 </style>

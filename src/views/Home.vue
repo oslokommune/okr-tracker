@@ -55,15 +55,8 @@ export default {
 }
 
 .card {
-  border-radius: 2px;
-  box-shadow: 0 0.15rem 0.15rem rgba(black, 0.07);
-
   @media screen and (min-width: bp(l)) {
     margin-bottom: 1rem;
-  }
-
-  &:last-child {
-    box-shadow: none;
   }
 }
 
