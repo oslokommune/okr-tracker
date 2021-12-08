@@ -64,12 +64,12 @@ export default {
 </script>
 <style lang="scss" scoped>
   .button__link {
+    padding: 0;
+    text-align: left;
     text-decoration: none;
     background: none;
     border: none;
-    padding: 0;
     cursor: pointer;
-    text-align: left;
     &:hover {
       font-weight: bold;
     }
