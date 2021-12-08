@@ -429,12 +429,15 @@
   },
   "user": {
     "selectLanguage": "Select language",
+    "profile": "Profile",
     "myProfile": "My profile",
     "superAdmin": "OKR-tracker Administrator",
     "admin": "Administrator for Organizations",
     "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
     "hasAdmin": "Has admin rights for some organizations",
-    "products": "My products",
+    "myProducts": "My products",
+    "products": "Products",
+    "access": "Access",
     "position": {
       "groups": {
         "developers": "Developers",
@@ -449,6 +452,7 @@
         "departmentDirector": "Department director"
       },
       "title": "Position",
+      "member": "Member",
       "frontendDeveloper": "Front-end developer",
       "backendDeveloper": "Back-end developer",
       "fullStackDeveloper": "Full stack developer",

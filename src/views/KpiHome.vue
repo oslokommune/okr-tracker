@@ -114,7 +114,7 @@ import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
+import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 
 export default {
   name: 'KpiHome',
