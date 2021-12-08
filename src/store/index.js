@@ -67,7 +67,6 @@ export const getters = {
     };
 
     const filterProducts = ({ department }) => {
-      // No active item is set, show no products
       if (!activeItem) return false;
       // Active item is a department, show all its products
       if (activeItem.id === department.id) return true;
@@ -124,6 +123,11 @@ export const actions = {
 
     return true;
   },
+
+  setActiveOrganization: async ({ commit }, payload) => {
+    commit('SET_ACTIVE_ORGANIZATION', payload);
+    return true;
+  },
 };
 
 export const mutations = {
@@ -164,6 +168,10 @@ export const mutations = {
   SET_PREVIOUS_URL(state, payload) {
     state.previousUrl = payload;
   },
+
+  SET_ACTIVE_ORGANIZATION(state, payload) {
+    state.activeOrganization = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -178,6 +186,7 @@ export default new Vuex.Store({
     activeKeyResult: null,
     activePeriod: null,
     activeObjective: null,
+    activeOrganization: null,
     periods: [],
     objectives: [],
     keyResults: [],

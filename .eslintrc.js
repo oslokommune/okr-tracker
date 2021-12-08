@@ -12,6 +12,7 @@ module.exports = {
     'vue/no-v-html': 'off',
     'no-use-before-define': 'off',
     'func-names': 'off',
+    'no-restricted-syntax': 'off',
   },
   parserOptions: {
     parser: '@babel/eslint-parser',

@@ -1,7 +1,7 @@
 <template>
   <widget title="Admin">
     <h4 class="admin__title">{{ activeItem.name }}</h4>
-    <ul class="admin_list">
+    <ul class="admin__list">
       <li class="admin">
         <router-link
           v-if="hasEditRights"
@@ -91,6 +91,7 @@ export default {
 .admin__list {
   display: flex;
   flex-direction: column;
+  margin-bottom: 0.5rem;
 }
 
 .admin__link {

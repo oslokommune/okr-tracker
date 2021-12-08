@@ -1,24 +1,8 @@
 <template>
   <header class="header">
-    <div v-click-outside="hideSidebar" class="drawer" :class="{ 'is-open': sidebarOpen }">
-      <sidebar-navigation @close="hideSidebar"></sidebar-navigation>
-    </div>
-    <div v-if="sidebarOpen" class="overlay"></div>
     <div class="siteHeader-container">
-      <a
-        href="#"
-        role="menuitem"
-        class="header__navbutton"
-        :class="{ 'is-open': sidebarOpen }"
-        aria-expanded="false"
-        data-th-aria-label="${portal.localize({'_key=aria.openMenu'})}"
-        @click.stop="sidebarOpen = !sidebarOpen"
-      >
-        <div class="header__navicon" role="presentation">
-          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-        </div>
-      </a>
+      <sidebar-navigation />
+
       <div v-if="title" class="title">
         <h1 class="title__name">
           {{ title }}
@@ -112,7 +96,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'user']),
+    ...mapState(['activeItem', 'user', 'organizations']),
     ...mapGetters(['isAdmin']),
 
     /**
@@ -149,14 +133,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(['reset_state', 'setLoading']),
+    ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
 
     hideSidebar() {
-      this.sidebarOpen = false;
-    },
-
-    showSidebar() {
-      this.sidebarOpen = true;
+      this.sidebarOpen = !this.sidebarOpen;
     },
 
     hideUserMenu() {
@@ -274,85 +254,18 @@ $header-height: 4em;
   top: 0;
   left: 0;
   z-index: 200;
-  width: 90%;
-  max-width: 400px;
-  height: 100%;
-  padding: 3em;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: var(--color-primary) !important;
-  transform: translateX(-100vw);
-  opacity: 0;
-  transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
-
-  &.is-open {
-    transform: translate(0);
-    opacity: 1;
-    transition: transform 0.3s ease-in-out, opacity 0s ease-in-out;
-  }
-}
-
-.header__navbutton {
-  width: $header-height;
-  height: $header-height;
-  cursor: pointer;
-
-  &.is-open {
-    z-index: 200;
-    background-color: var(--color-primary);
-    border-radius: 50%;
-    transform: translateX(400px);
-    transition: transform 0.3s ease-in-out, background-color 0.3s;
-    span {
-      &:nth-child(1),
-      &:nth-child(4) {
-        opacity: 0;
-        transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
-      }
-      &:nth-child(2) {
-        transform: translateY(1em) rotate(45deg);
-        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
-      }
-      &:nth-child(3) {
-        transform: translateY(1em) rotate(-45deg);
-        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
-      }
-    }
-  }
-}
-
-.header__navicon {
-  position: relative;
   width: 100%;
   height: 100%;
-  padding: 1em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: rgba(black, 0.5);
+}
 
-  $bar-height: 0.15em;
-  $center: 1em - math.div($bar-height, 2);
-  span {
-    position: absolute;
-    top: $center;
-    left: 1.25em;
-    display: block;
-    width: 1.5em;
-    height: $bar-height;
-    background: var(--color-text-secondary);
-    border-radius: 0.075em;
-    transform-origin: 50% 50%;
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
 
-    &:nth-child(1) {
-      transform: translateY($center - 0.35em) rotate(0deg);
-      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
-    }
-    &:nth-child(2),
-    &:nth-child(3) {
-      transform: translateY(1em) rotate(0deg);
-      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
-    }
-    &:nth-child(4) {
-      transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
-      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
-    }
-  }
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

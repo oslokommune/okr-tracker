@@ -1,22 +1,20 @@
 <template>
   <div class="container">
-    <div class="home">
-      <ul v-if="user">
-        <li v-for="org in tree" :key="org.id">
-          <item-row :data="org" type="organization"></item-row>
-          <ul v-if="getCollapse('organization', org.slug)">
-            <li v-for="dept in org.children" :key="dept.id" class="card">
-              <item-row :data="dept" type="department"></item-row>
-              <ul v-if="getCollapse('department', dept.slug)">
-                <li v-for="prod in dept.children" :key="prod.id">
-                  <item-row :data="prod" type="product"></item-row>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <ul v-if="user" class="home">
+      <li v-for="org in tree" :key="org.id" class="tree">
+        <item-row :data="org" class="tree__organization"></item-row>
+        <ul>
+          <li v-for="dept in org.children" :key="dept.id" class="card">
+            <item-row :data="dept" type="department"></item-row>
+            <ul>
+              <li v-for="prod in dept.children" :key="prod.id">
+                <item-row :data="prod" type="product"></item-row>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -46,11 +44,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.card {
-  background: white;
-  border-radius: 2px;
-  box-shadow: 0 0.15rem 0.15rem rgba(black, 0.07);
+.tree {
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  background-color: var(--color-white);
+}
 
+.tree__organization {
+  text-transform: uppercase;
+}
+
+.card {
   @media screen and (min-width: bp(l)) {
     margin-bottom: 1rem;
   }
@@ -58,7 +62,6 @@ export default {
 
 .home {
   width: span(12);
-  padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
     width: span(8);

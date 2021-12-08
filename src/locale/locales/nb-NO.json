@@ -114,7 +114,9 @@
     "objective": "Mål",
     "keyResult": "Nøkkelresultat",
     "period": "Periode",
-    "back": "Tilbake"
+    "back": "Tilbake",
+    "homePage": "Forside",
+    "signIn": "Vennligst logg inn"
   },
   "btn": {
     "close": "Lukk",

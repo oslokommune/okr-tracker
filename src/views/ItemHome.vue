@@ -5,9 +5,10 @@
     </div>
 
     <div class="main">
-      <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
       <div class="main__item">
+        <kpis v-if="kpis.length" :kpis="kpis"></kpis>
+
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <period-selector />

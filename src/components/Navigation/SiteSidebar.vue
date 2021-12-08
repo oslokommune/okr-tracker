@@ -1,167 +1,395 @@
 <template>
-  <aside class="sidebar">
-    <router-link class="home-link" :to="{ name: 'Home' }">
-      <h1 class="title-1" @click="closeSidebar">OKR-tracker</h1>
-    </router-link>
-    <div v-if="!user">Please sign in</div>
-    <template v-if="user">
-      <div v-for="group in sidebarGroups" :key="group.name" class="sidebar__group">
-        <h4 v-if="group.items.length" class="sidebar__label">{{ group.name }}</h4>
-        <ul class="sidebar__list">
-          <li v-for="item in group.items" :key="item.id">
-            <router-link
-              :to="{ name: 'ItemHome', params: { slug: item.slug } }"
-              class="sidebar__link"
-              :class="{
-                'router-link-active-parent':
-                  (activeItem && activeItem.department && activeItem.department.id === item.id) ||
-                  (activeItem && activeItem.organization && activeItem.organization.id === item.id),
-              }"
-            >
-              <span @click="closeSidebar">
-                <em :class="`sidebar__category-icon fas fa-fw fa-${group.icon}`"></em>
-                {{ item.name }}
-                <i
-                  v-if="item.team && item.team.map(({ id }) => id).includes(user.email)"
-                  class="sidebar__user-icon fas fa-user-circle"
-                />
-              </span>
-            </router-link>
-          </li>
-        </ul>
+  <div>
+    <a
+      href="#"
+      role="menuitem"
+      class="header__nav-button"
+      :class="{ 'is-open': isOpen, 'sideSideBar': isSideSideBar }"
+      @click.stop="hideSidebar"
+    >
+      <div class="header__nav-icon" role="presentation">
+        <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+        <span class="sidebar__button"></span> <span class="sidebar__button"></span>
       </div>
+    </a>
 
-      <div class="sidebar__group sidebar__bottom button-col">
-        <theme-toggle />
-        <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon">
-          <i class="icon fa fa-fw fa-cogs" />
-          <span class="btn--label">{{ $t('general.admin') }}</span>
-        </router-link>
-        <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon">
-          <i class="icon fa fa-fw fa-question-circle" />
-          <span class="btn--label">{{ $t('general.help') }}</span>
-        </router-link>
-        <button class="btn btn--ter btn--icon" @click="signOut">
-          <i class="icon fa fa-fw fa-sign-out-alt" />
-          <span class="btn--label">{{ $t('general.signOut') }}</span>
+    <transition name="slide-first">
+      <aside v-if="isOpen" class="sidebar">
+        <button
+          v-if="user"
+          class="btn btn--ter btn--icon btn--sidebar"
+          style="display: flex; justify-content: space-between; text-transform: uppercase"
+          @click="activeSideSidebar"
+        >
+          {{ hostOrg }}
+          <i class="icon fa" :class="isSideSideBar ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
         </button>
+        <div v-if="!user" class="sidebar__sign-in">{{ $t('general.signIn')}}</div>
+        <template v-if="user">
+          <ul v-if="activeOrganization" class="sidebar__group">
+            <li v-for="org in tree" :key="org.id" class="margin-top-1">
+              <template v-if="org.id === activeOrganization.id">
+                <router-link
+                  :class="{ 'active': org.slug === $route.params.slug }"
+                  :to="{name: 'ItemHome', params: { slug: org.slug } }"
+                  class='btn btn--ter sidebar__item'
+                  @click.native="hideSidebar"
+                >
+                  <h2>{{ org.name }}</h2>
+                </router-link>
+                <ul>
+                  <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
+                    <router-link
+                      :class="{ 'active': dept.slug === $route.params.slug }"
+                      :to="{name: 'ItemHome', params: { slug: dept.slug } }"
+                      class='btn btn--ter sidebar__item'
+                      @click.native="hideSidebar"
+                    >
+                      <h3>{{ dept.name }}</h3>
+                    </router-link>
+                    <ul>
+                      <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
+                        <router-link
+                          :class="{ 'active': prod.slug === $route.params.slug }"
+                          :to="{name: 'ItemHome', params: { slug: prod.slug } }"
+                          class="btn btn--ter sidebar__item sidebar__item--product"
+                          @click.native="hideSidebar"
+                        >
+                          <h3>{{ prod.name }}</h3>
+                        </router-link>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </template>
+            </li>
+          </ul>
+        </template>
+      </aside>
+    </transition>
+
+    <transition name="slide-second">
+      <div v-if="isSideSideBar" class="sidebar__extra">
+        <div class="sidebar__extra--content">
+          <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--icon btn--sidebar">
+            <h1>{{ $t('general.homePage') }}</h1>
+          </router-link>
+          <button
+            v-for="org in organizations"
+            :key="org.id"
+            class="btn btn--ter btn--icon sidebar__item sidebar__item--side margin-top-1"
+            :class="{ 'active': activeOrganization.id === org.id }"
+            @click="handleActiveOrganization(org)"
+          >
+            {{ org.name }}
+          </button>
+        </div>
       </div>
-    </template>
-  </aside>
+    </transition>
+
+  </div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { auth } from '@/config/firebaseConfig';
-import ThemeToggle from '@/components/ThemeToggle.vue';
 
 export default {
   name: 'SiteSidebar',
 
-  components: {
-    ThemeToggle,
-  },
+  data: () => ({
+    isOpen: false,
+    isSideSideBar: false,
+  }),
 
   computed: {
-    ...mapState(['activeItem', 'user']),
-    ...mapGetters(['sidebarGroups']),
+    ...mapState(['activeItem', 'user', 'activeOrganization', 'organizations']),
+    ...mapGetters(['sidebarGroups', 'tree']),
+
+    hostOrg() {
+      return import.meta.env.VITE_ORGANIZATION;
+    }
+  },
+
+  watch: {
+    '$route': {
+      handler() {
+        this.isOpen = false;
+        this.isSideSideBar = false;
+      },
+    },
+
+    tree: {
+      immediate: true,
+      handler() {
+        if (!this.activeOrganization) {
+          for (const org of this.tree) {
+            if (!!org.team && org.team.find(({ id }) => id === this.user.id)) {
+              this.setActiveOrganization(org);
+              break;
+            }
+            for (const dep of org.children) {
+              if (!!dep.team && dep.team.find(({ id }) => id === this.user.id)) {
+                this.setActiveOrganization(dep.organization);
+                break;
+              }
+              for (const prod of dep.children) {
+                if (!!prod.team && prod.team.find(({ id }) => id === this.user.id)) {
+                  this.setActiveOrganization(prod.organization);
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
 
   methods: {
-    ...mapActions(['reset_state']),
+    ...mapActions(['setActiveOrganization']),
 
-    async signOut() {
-      await auth.signOut();
-      await this.reset_state();
+    activeSideSidebar() {
+      this.isSideSideBar = !this.isSideSideBar;
     },
 
-    closeSidebar() {
-      this.$emit('close');
+    async handleActiveOrganization(org) {
+      await this.setActiveOrganization(org);
+    },
+
+    hideSidebar() {
+      this.isOpen = !this.isOpen;
+      this.isSideSideBar = false;
+    },
+
+    handleClick() {
+
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
+
+$header-height: 4em;
+
+.margin-top-1 {
+  margin-top: 1rem;
+}
+
+.sidebar__item {
+  width: 100%;
+  padding: 0.5rem 1.5rem;
+  color: var(--color-secondary-light);
+  font-weight: 500;
+  font-size: 1.25rem;
+  border-radius: 0;
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--color-secondary);
+  }
+
+  &.active {
+    color: var(--color-secondary);
+  }
+}
+
+.sidebar__item--side {
+  color: var(--color-text-secondary);
+}
+
+.sidebar__item--product {
+  color: var(--color-text-secondary);
+  font-weight: normal;
+  font-size: 1rem;
+}
+
 .sidebar {
-  position: sticky;
-  top: 7.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 8rem);
-  padding: 1.5rem 0;
+  width: 100%;
+  max-width: 400px;
+  height: 99%;
+  min-height: 100vh;
+  padding-top: 5.5rem;
+  scrollbar-width: none;  /* Hide scrollbar styles Firefox */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: var(--color-primary) !important;
+  border-right: 1px solid #ffffff0f;
+  box-shadow: 6px -1px 10px rgba(0, 0, 0, 0.1);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.slide-first-enter-active,
+.slide-first-leave-active {
+  transition: left 0.25s ease-in-out;
+}
+
+.slide-first-enter,
+.slide-first-leave-to {
+  left: -400px;
 }
 
 .sidebar__group {
   margin-bottom: 1rem;
 }
 
-.sidebar__bottom {
-  display: flex;
-  flex-direction: column;
-  margin-top: auto;
-}
-
-.sidebar__label {
-  padding: 0.25rem 0 0.3rem;
-  color: var(--color-text-secondary);
+.sidebar__sign-in {
+  padding: 1.5rem;
   font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
+  font-size: 1.5rem;
 }
 
-.sidebar__list {
-  margin-bottom: 0.5rem;
-}
-
-.sidebar__link {
-  display: block;
-  display: flex;
-  align-items: center;
-  padding: 0.35rem;
-  color: var(--color-text-secondary);
-  font-weight: 400;
-  text-decoration: none;
-  border-radius: 2px;
-  -webkit-user-drag: none;
+.btn--sidebar {
+  padding: 1.5rem;
+  color: var(--color-secondary-light);
+  font-weight: 500;
+  font-size: 1.5rem;
+  border-radius: 0;
 
   &:hover {
     color: var(--color-text);
     background: var(--color-secondary);
+
+    & > .fa-chevron-right {
+      margin-right: 0;
+      transition: margin-right 0.1s ease-in-out 0.1s;
+    }
+
+    & > .fa-chevron-left {
+      margin-right: 2rem;
+      transition: margin-right 0.1s ease-in-out 0.1s;
+    }
   }
 
-  &.router-link-active {
-    color: var(--color-text);
-    font-weight: 500;
-    background: var(--color-secondary);
+  & > .fa-chevron-right {
+    margin-right: 2rem;
+    transition: margin-right 0.1s ease-in-out 0.1s;
   }
 
-  &.router-link-active-parent {
-    font-weight: 500;
+  & > .fa-chevron-left {
+    margin-right: 0;
+    transition: margin-right 0.1s ease-in-out 0.1s;
   }
 }
 
-.sidebar__user-icon {
-  display: inline-block;
-  margin-left: auto;
-  font-size: 0.85em;
+.sidebar__extra {
+  position: fixed;
+  top: 0;
+  left: 400px;
+  z-index: 190;
+  width: 90%;
+  max-width: 400px;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;  /* Hide scrollbar styles Firefox */
+  background-color: var(--color-primary) !important;
+  box-shadow: 6px -1px 12px 3px rgb(0 0 0 / 30%);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.sidebar__category-icon {
-  flex-shrink: 0;
-  align-self: flex-start;
-  margin-top: 0.15rem;
-  margin-right: 0.35rem;
+.slide-second-enter-active,
+.slide-second-leave-active {
+  transition: left 0.25s ease-in-out;
 }
 
-.btn--label {
-  color: var(--color-text-secondary);
+.slide-second-enter,
+.slide-second-leave-to {
+  left: -400px;
 }
 
-.home-link {
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  text-decoration: none;
+.sidebar__extra--content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  padding-top: 5.5rem;
+}
+
+.header__nav-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $header-height;
+  height: $header-height;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.is-open {
+    z-index: 250;
+    box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 30%);
+    transform: translateX(400px);
+    transition: transform 0.25s ease-in-out, background-color 0.3s, box-shadow 0.3s;
+
+    span {
+      &:nth-child(1),
+      &:nth-child(4) {
+        opacity: 0;
+        transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+      }
+      &:nth-child(2) {
+        transform: translateY(1em) rotate(45deg);
+        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+      &:nth-child(3) {
+        transform: translateY(1em) rotate(-45deg);
+        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+    }
+  }
+
+  &.sideSideBar {
+    transform: translateX(800px);
+    transition: transform 0.25s ease-in-out;
+  }
+}
+
+.header__nav-icon {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  padding: 1em;
+
+  $bar-height: 0.15em;
+  $center: 1em - math.div($bar-height, 2);
+  span {
+    position: absolute;
+    top: $center;
+    left: 1.25em;
+    display: block;
+    width: 1.5em;
+    height: $bar-height;
+    background: var(--color-text-secondary);
+    border-radius: 0.075em;
+    transform-origin: 50% 50%;
+
+    &:nth-child(1) {
+      transform: translateY($center - 0.35em) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      transform: translateY(1em) rotate(0deg);
+      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+    }
+    &:nth-child(4) {
+      transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
+  }
 }
 </style>
