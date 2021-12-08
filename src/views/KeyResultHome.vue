@@ -6,7 +6,7 @@
         :to="previousUrl ? previousUrl : { name: 'ItemHome', params: { slug: activeKeyResult.parent.slug } }"
       >
         {{ $t('general.back') }}
-        <i class="fas fa-angle-left"></i>
+        <i class="fa fa-chevron-left"></i>
       </router-link>
 
       <widgets-left class="aside--left"></widgets-left>

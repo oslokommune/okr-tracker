@@ -23,11 +23,10 @@
         <label class="form-group">
           <span class="profileModal__label">{{ $t('user.position.title') }}</span>
           <v-select
-            v-if="me"
+            v-if="me || $store.state.user.superAdmin"
             v-model="thisUser.position"
             :options="jobPositions"
             :get-option-label="(option) => $t(`user.position.${option}`)"
-            :disabled="!me"
             class=""
             @input="edit"
           >

@@ -6,7 +6,7 @@
         :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
       >
         {{ $t('general.back') }}
-        <i class="fas fa-angle-left"></i>
+        <i class="fa fa-chevron-left"></i>
       </router-link>
 
       <router-link
