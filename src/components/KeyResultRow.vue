@@ -130,7 +130,7 @@ export default {
 
 .keyResult__info {
   grid-column: 1;
-  padding: 0.5rem 2rem 0 1.5rem;
+  padding: 0.5rem 2rem 0 2rem;
   background-color: var(--color-secondary-light);
 
   &:hover {
@@ -139,7 +139,7 @@ export default {
 }
 
 .keyResult__info--expanded {
-  padding: 1.5rem 2rem 1.5rem 1.5rem;
+  padding: 2rem 3rem 2rem 2rem;
 }
 
 .keyResult__info--header {
@@ -161,6 +161,10 @@ export default {
 
 .keyResult__progress--expanded {
   align-self: auto;
+
+  @media screen and (max-width: bp(s)) {
+    width: 100%;
+  }
 }
 
 .keyResult__auto {

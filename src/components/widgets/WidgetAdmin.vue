@@ -1,8 +1,10 @@
 <template>
-  <widget title="Admin">
-    <h4 class="admin__title">{{ activeItem.name }}</h4>
+  <section class="widget">
+    <header class="widget__header">
+      <span class="widget__title">Admin</span>
+    </header>
     <ul class="admin__list">
-      <li class="admin">
+      <li>
         <router-link
           v-if="hasEditRights"
           v-tooltip="$t('tooltip.editItem')"
@@ -13,7 +15,7 @@
           {{ $t('btn.editItem', { item: activeItem.name }) }}
         </router-link>
       </li>
-      <li class="admin">
+      <li>
         <router-link
           v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
           class="admin__link"
@@ -23,26 +25,7 @@
         </router-link>
       </li>
     </ul>
-
-    <h4 class="admin__title">OKR-Tracker</h4>
-    <ul class="admin__list">
-      <li class="admin">
-        <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="admin__link">
-          <span class="btn--label">{{ $t('general.admin') }}</span>
-        </router-link>
-      </li>
-      <li class="admin">
-        <router-link :to="{ name: 'Help' }" class="admin__link">
-          <span class="btn--label">{{ $t('general.help') }}</span>
-        </router-link>
-      </li>
-      <li class="admin">
-        <button class="admin__link admin__link--btn" @click="signOut">
-          <span class="btn--label">{{ $t('general.signOut') }}</span>
-        </button>
-      </li>
-    </ul>
-  </widget>
+  </section>
 </template>
 
 <script>
@@ -51,10 +34,6 @@ import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'WidgetAdmin',
-
-  components: {
-    Widget: () => import('./WidgetWrapper.vue'),
-  },
 
   data: () => ({
     disabled: false,
@@ -97,9 +76,15 @@ export default {
 .admin__link {
   display: flex;
   align-items: center;
+  padding: 0.5rem 1.5rem;
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--color-secondary);
+  }
 }
 
 .admin__link--btn {
@@ -111,14 +96,6 @@ export default {
 
   &:hover {
     cursor: pointer;
-  }
-}
-
-.admin {
-  padding: 0.2rem;
-
-  &:hover {
-    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 }
 

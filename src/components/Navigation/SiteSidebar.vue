@@ -192,6 +192,10 @@ $header-height: 4em;
 
   &.active {
     color: var(--color-secondary);
+
+    &:hover {
+      color: var(--color-text);
+    }
   }
 }
 

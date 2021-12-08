@@ -41,7 +41,7 @@ export default {
   grid-template-rows: auto auto;
   grid-template-columns: 1fr;
   align-items: center;
-  padding: 1.5rem 1.75rem;
+  padding: 2.5rem 2rem 2rem 2rem;
   color: var(--color-text);
   text-decoration: none;
 }
