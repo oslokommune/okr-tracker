@@ -1,16 +1,7 @@
 <template>
   <div class="aside">
-    <router-link
-      v-if="hasEditRights"
-      v-tooltip="$t('tooltip.editKpi')"
-      class="btn btn--icon btn--icon-pri aside__link--edit-rights"
-      :to="{ name: 'ItemAdminKPIs' }"
-    >
-      {{ $t('kpi.edit') }}
-      <i class="icon fa fa-pen" />
-    </router-link>
-
     <div class="widgets">
+      <widget-admin />
       <widget :title="$t('keyResultPage.filter')">
         <label v-if="progress.length" class="form-field">
           <span class="form-label">{{ $t('period.dateRange') }}</span>
@@ -39,11 +30,13 @@ import locale from 'flatpickr/dist/l10n/no';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
+import WidgetAdmin from '@/components/widgets/WidgetAdmin.vue';
 
 export default {
   name: 'WidgetsKPIHome',
 
   components: {
+    WidgetAdmin,
     Widget,
     WidgetMissionStatement,
     WidgetTeam,

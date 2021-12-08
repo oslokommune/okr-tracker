@@ -1,6 +1,7 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
+      <widget-admin />
       <widget-mission-statement />
       <widget-team />
       <widget-key-result-notes />
@@ -15,11 +16,13 @@ import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.
 import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
 import WidgetKeyResultNotes from "@/components/widgets/WidgetKeyResultNotes.vue";
 import WidgetKeyResultDetails from "@/components/widgets/WidgetKeyResultDetails.vue";
+import WidgetAdmin from '@/components/widgets/WidgetAdmin.vue';
 
 export default {
   name: 'WidgetsKeyResultMobile',
 
   components: {
+    WidgetAdmin,
     WidgetMissionStatement,
     WidgetTeam,
     WidgetKeyResultDetails,

@@ -13,6 +13,7 @@
   "kpi": {
     "add": "Add KPI",
     "edit": "Edit KPI",
+    "change": "Change KPI",
     "currentValue": "Current value",
     "progress": "Progress",
     "description": "Description",
@@ -270,6 +271,7 @@
     "progression": "Progress",
     "weight": "Weight",
     "change": "Change objective",
+    "add": "Add objective",
     "createdBy": "Created by",
     "editedBy": "Changed by",
     "created": "Created",
@@ -335,9 +337,7 @@
   },
   "keyResultPage": {
     "change": "Update key result",
-    "add": {
-      "today": "Today"
-    },
+    "add": "Add key result",
     "table": {
       "value": "Value"
     },

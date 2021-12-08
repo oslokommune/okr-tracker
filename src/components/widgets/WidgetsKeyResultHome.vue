@@ -1,15 +1,7 @@
 <template>
   <aside v-if="activeKeyResult" class="aside">
-    <router-link
-      v-if="hasEditRights"
-      class="btn btn--icon btn--icon-pri aside__link--edit-rights"
-      :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
-    >
-      {{ $t('keyResultPage.change') }}
-      <i class="icon fa fa-pen" />
-    </router-link>
-
-    <div v-if="activeKeyResult" class="widgets">
+    <div class="widgets">
+      <widget-admin />
       <widget-key-result-notes />
       <widget-key-result-details />
     </div>
@@ -23,6 +15,7 @@ export default {
   name: 'WidgetsKeyResultHome',
 
   components: {
+    WidgetAdmin: () => import('./WidgetAdmin.vue'),
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
   },

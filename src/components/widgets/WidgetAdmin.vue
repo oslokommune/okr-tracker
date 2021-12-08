@@ -4,15 +4,53 @@
       <span class="widget__title">Admin</span>
     </header>
     <ul class="admin__list">
-      <li>
+      <li v-if="$route.name === 'ItemHome' && hasEditRights">
         <router-link
-          v-if="hasEditRights"
           v-tooltip="$t('tooltip.editItem')"
           class="admin__link"
           :to="{ name: 'ItemAdmin' }"
-          data-cy="edit_object_link"
         >
           {{ $t('btn.editItem', { item: activeItem.name }) }}
+        </router-link>
+      </li>
+      <li v-if="$route.name === 'ObjectiveHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
+        >
+          {{ $t('objective.change') }}
+        </router-link>
+      </li>
+      <li v-if="$route.name === 'KeyResultHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+        >
+          {{ $t('keyResultPage.change') }}
+        </router-link>
+      </li>
+      <li v-if="$route.name === 'KpiHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminKPIs' }"
+        >
+          {{ $t('kpi.change') }}
+        </router-link>
+      </li>
+      <li v-if="hasEditRights && $route.name === 'ItemHome'">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: 'period', id: activePeriod.id } }"
+        >
+          {{ $t('objective.add') }}
+        </router-link>
+      </li>
+      <li v-if="$route.name !== 'KpiHome' && $route.name !== 'KeyResultHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: $route.name === 'ItemHome' ? 'period' : 'objective', id: $route.name === 'ItemHome' ? activePeriod.id : activeObjective.id } }"
+        >
+          {{ $t('keyResultPage.add') }}
         </router-link>
       </li>
       <li>
@@ -40,7 +78,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'user', 'activeItem']),
+    ...mapState(['activePeriod', 'user', 'activeItem', 'activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
   },
 
@@ -80,6 +118,7 @@ export default {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     color: var(--color-text);

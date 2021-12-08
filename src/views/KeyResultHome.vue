@@ -9,15 +9,6 @@
         <i class="fas fa-angle-left"></i>
       </router-link>
 
-      <router-link
-        v-if="hasEditRights"
-        class="btn btn--icon btn--icon-pri aside__link--edit-rights aside__link--edit-rights--left"
-        :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
-      >
-        {{ $t('keyResultPage.change') }}
-        <i class="icon fa fa-pen" />
-      </router-link>
-
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
@@ -96,9 +87,6 @@
                     </label>
                   </validation-provider>
 
-                  <button class="btn btn--ter modal__main--btn" @click.prevent="date = new Date()">
-                    {{ $t('keyResultPage.add.today') }}
-                  </button>
                 </div>
               </form>
             </validation-observer>
