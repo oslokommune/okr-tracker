@@ -29,17 +29,32 @@
           <ul v-if="activeOrganization" class="sidebar__group">
             <li v-for="org in tree" :key="org.id" class="margin-top-1">
               <template v-if="org.id === activeOrganization.id">
-                <router-link class='btn btn--ter sidebar__item' :class="{ 'active': org.slug === $route.params.slug }" :to="{name: 'ItemHome', params: { slug: org.slug } }">
+                <router-link
+                  :class="{ 'active': org.slug === $route.params.slug }"
+                  :to="{name: 'ItemHome', params: { slug: org.slug } }"
+                  class='btn btn--ter sidebar__item'
+                  @click.native="hideSidebar"
+                >
                   <h2>{{ org.name }}</h2>
                 </router-link>
                 <ul>
                   <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
-                    <router-link class='btn btn--ter sidebar__item' :class="{ 'active': dept.slug === $route.params.slug }" :to="{name: 'ItemHome', params: { slug: dept.slug } }">
+                    <router-link
+                      :class="{ 'active': dept.slug === $route.params.slug }"
+                      :to="{name: 'ItemHome', params: { slug: dept.slug } }"
+                      class='btn btn--ter sidebar__item'
+                      @click.native="hideSidebar"
+                    >
                       <h3>{{ dept.name }}</h3>
                     </router-link>
                     <ul>
                       <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
-                        <router-link class="btn btn--ter sidebar__item sidebar__item--product" :class="{ 'active': prod.slug === $route.params.slug }" style="font-size: 1rem;" :to="{name: 'ItemHome', params: { slug: prod.slug } }">
+                        <router-link
+                          :class="{ 'active': prod.slug === $route.params.slug }"
+                          :to="{name: 'ItemHome', params: { slug: prod.slug } }"
+                          class="btn btn--ter sidebar__item sidebar__item--product"
+                          @click.native="hideSidebar"
+                        >
                           <h3>{{ prod.name }}</h3>
                         </router-link>
                       </li>
@@ -62,7 +77,8 @@
           <button
             v-for="org in organizations"
             :key="org.id"
-            class="btn btn--ter btn--icon sidebar__item margin-top-1"
+            class="btn btn--ter btn--icon sidebar__item sidebar__item--side margin-top-1"
+            :class="{ 'active': activeOrganization.id === org.id }"
             @click="handleActiveOrganization(org)"
           >
             {{ org.name }}
@@ -144,6 +160,10 @@ export default {
       this.isOpen = !this.isOpen;
       this.isSideSideBar = false;
     },
+
+    handleClick() {
+
+    },
   },
 };
 </script>
@@ -173,6 +193,10 @@ $header-height: 4em;
   &.active {
     color: var(--color-secondary);
   }
+}
+
+.sidebar__item--side {
+  color: var(--color-text-secondary);
 }
 
 .sidebar__item--product {

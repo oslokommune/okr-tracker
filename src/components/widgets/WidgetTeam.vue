@@ -11,7 +11,7 @@
       <h4 class="user__title">{{ $t('user.position.groups.director') }}</h4>
       <ul class="users__list">
         <li class="user">
-          <span class="user__name">{{ director.displayName || director.id }}</span>
+          <span class="user__name">{{ director.displayName || director.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -21,7 +21,7 @@
       <ul class="users__list">
         <li class="user">
           <span v-if="departmentDirector.id" class="user__name">
-            {{ departmentDirector.displayName || departmentDirector.id }}'
+            {{ departmentDirector.displayName || departmentDirector.id.replace(/@.*/, '') }}'
           </span>
         </li>
       </ul>
@@ -31,7 +31,7 @@
       <div class="user__title">{{ $t('user.position.groups.productOwner') }}</div>
       <ul class="users__list">
         <li class="user">
-          <span v-if="productOwner.id" class="user__name">{{ productOwner.displayName || productOwner.id }}</span>
+          <span v-if="productOwner.id" class="user__name">{{ productOwner.displayName || productOwner.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -40,7 +40,7 @@
       <div class="user__title">{{ $t('user.position.groups.teamLead') }}</div>
       <ul class="users__list">
         <li class="user">
-          <span v-if="teamLead.id" class="user__name">{{ teamLead.displayName || teamLead.id }}</span>
+          <span v-if="teamLead.id" class="user__name">{{ teamLead.displayName || teamLead.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -49,7 +49,7 @@
       <div class="user__title">{{ $t('user.position.groups.techLead') }}</div>
       <ul class="users__list">
         <li class="user">
-          <span v-if="techLead.id" class="user__name">{{ techLead.displayName || techLead.id }}</span>
+          <span v-if="techLead.id" class="user__name">{{ techLead.displayName || techLead.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -58,7 +58,7 @@
       <div class="user__title">{{ $t('user.position.groups.designers') }}</div>
       <ul class="users__list">
         <li v-for="design in designers" :key="design.id" class="user">
-          <span class="user__name">{{ design.displayName || design.id }}</span>
+          <span class="user__name">{{ design.displayName || design.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -67,7 +67,7 @@
       <div class="user__title">{{ $t('user.position.groups.developers') }}</div>
       <ul class="users__list">
         <li v-for="dev in developers" :key="dev.id" class="user">
-          <span class="user__name">{{ dev.displayName || dev.id }}</span>
+          <span class="user__name">{{ dev.displayName || dev.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -76,7 +76,7 @@
       <div class="user__title">{{ $t('user.position.groups.administration') }}</div>
       <ul class="users__list">
         <li v-for="adm in administration" :key="adm.id" class="user">
-          <span class="user__name">{{ adm.displayName || adm.id }}</span>
+          <span class="user__name">{{ adm.displayName || adm.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -85,7 +85,7 @@
       <div class="user__title">{{ $t('user.position.groups.others') }}</div>
       <ul class="users__list">
         <li v-for="user in others" :key="user.id" class="user">
-          <span class="user__name">{{ user.displayName || user.id }}</span>
+          <span class="user__name">{{ user.displayName || user.id.replace(/@.*/, '') }}</span>
         </li>
       </ul>
     </template>
@@ -181,6 +181,7 @@ export default {
 .users__list {
   display: flex;
   flex-direction: column;
+  margin-bottom: 0.5rem;
 }
 
 .user__link {
@@ -194,6 +195,7 @@ export default {
 
 .user {
   padding: 0.2rem;
+  word-break: break-all;
 
   &:hover {
     background: rgba(var(--color-grey-500-rgb), 0.1);
