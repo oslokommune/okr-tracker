@@ -205,6 +205,7 @@ export default new Vuex.Store({
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
     previousUrl: null,
+    LS_MODE: 'okr-tracker-theme',
   },
   getters,
   mutations,

@@ -26,7 +26,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'loading']),
+    ...mapState(['user', 'loading', 'LS_MODE']),
 
     isDev() {
       return import.meta.env.NODE_ENV !== 'production';
@@ -38,12 +38,41 @@ export default {
       document.querySelector('#spinner').remove();
     }
   },
+
+  mounted() {
+    if (this.hasInStorage()) {
+      const mode = this.getLocalThemeMode();
+      this.setThemeMode(mode);
+    } else {
+      this.setThemeMode('blue');
+    }
+  },
+
   methods: {
-    ...mapActions(['reset_state']),
+    ...mapActions(['reset_state', 'setTheme']),
 
     async signOut() {
       await auth.signOut();
       await this.reset_state();
+    },
+
+    hasInStorage() {
+      const mode = localStorage.getItem(this.LS_MODE);
+      return mode !== null;
+    },
+
+    setThemeMode(mode) {
+      this.saveThemeMode(mode);
+      this.setTheme(mode);
+      document.body.setAttribute('data-theme', mode);
+    },
+
+    getLocalThemeMode() {
+      return localStorage.getItem(this.LS_MODE);
+    },
+
+    saveThemeMode(mode) {
+      localStorage.setItem(this.LS_MODE, mode);
     },
   },
 };

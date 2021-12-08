@@ -1,6 +1,30 @@
 @use 'griddle/mixins' as *;
 @use 'griddle/functions' as *;
 
+.widget {
+  align-self: start;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  background: var(--color-white);
+}
+
+.widget__header {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  padding: 1.5rem;
+
+  @media screen and (min-width: bp(m)) {
+    padding: 1.5rem;
+  }
+}
+
+.widget__title {
+  font-weight: 500;
+  text-transform: uppercase;
+  word-break: break-all;
+}
+
 .details {
   display: flex;
   flex-direction: column;

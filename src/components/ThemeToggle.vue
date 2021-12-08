@@ -9,9 +9,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
-const LS_MODE = 'okr-tracker-theme';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'ThemeToggle',
@@ -29,29 +27,21 @@ export default {
   }),
 
   computed: {
+    ...mapState(['theme', 'LS_MODE']),
+
     nextThemeMode() {
-      if (this.mode === 'blue') {
+      if (this.theme === 'blue') {
         return 'green';
       }
       return 'blue';
     },
   },
 
-  mounted() {
-    if (this.hasInStorage()) {
-      this.mode = this.getLocalThemeMode();
-      this.setThemeMode();
-    } else {
-      this.mode = 'blue';
-      this.setThemeMode();
-    }
-  },
-
   methods: {
     ...mapActions(['setTheme']),
 
     handleClick() {
-       if (this.mode === 'blue') {
+       if (this.theme === 'blue') {
         this.mode = 'green';
       } else {
         this.mode = 'blue';
@@ -66,17 +56,8 @@ export default {
       document.body.setAttribute('data-theme', this.mode);
     },
 
-    hasInStorage() {
-      const mode = localStorage.getItem(LS_MODE);
-      return mode !== null;
-    },
-
-    getLocalThemeMode() {
-      return localStorage.getItem(LS_MODE);
-    },
-
     saveThemeMode(mode) {
-      localStorage.setItem(LS_MODE, mode);
+      localStorage.setItem(this.LS_MODE, mode);
     },
   },
 };

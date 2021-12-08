@@ -1,15 +1,7 @@
 <template>
   <aside v-if="activeObjective" class="aside">
-    <router-link
-      v-if="hasEditRights"
-      class="btn btn--icon btn--icon-pri aside__link--edit-rights"
-      :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
-    >
-      {{ $t('objective.change') }}
-      <i class="icon fa fa-pen" />
-    </router-link>
-
     <div class="widgets">
+      <widget-admin />
       <widget-progression
         type="objective"
         :data="progressionData"
@@ -32,6 +24,7 @@ export default {
   name: 'WidgetsObjectiveHome',
 
   components: {
+    WidgetAdmin: () => import('./WidgetAdmin.vue'),
     WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),

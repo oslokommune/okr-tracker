@@ -1,19 +1,59 @@
 <template>
-  <widget title="Admin">
-    <h4 class="admin__title">{{ activeItem.name }}</h4>
+  <section class="widget">
+    <header class="widget__header">
+      <span class="widget__title">Admin</span>
+    </header>
     <ul class="admin__list">
-      <li class="admin">
+      <li v-if="$route.name === 'ItemHome' && hasEditRights">
         <router-link
-          v-if="hasEditRights"
           v-tooltip="$t('tooltip.editItem')"
           class="admin__link"
           :to="{ name: 'ItemAdmin' }"
-          data-cy="edit_object_link"
         >
           {{ $t('btn.editItem', { item: activeItem.name }) }}
         </router-link>
       </li>
-      <li class="admin">
+      <li v-if="$route.name === 'ObjectiveHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
+        >
+          {{ $t('objective.change') }}
+        </router-link>
+      </li>
+      <li v-if="$route.name === 'KeyResultHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+        >
+          {{ $t('keyResultPage.change') }}
+        </router-link>
+      </li>
+      <li v-if="$route.name === 'KpiHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminKPIs' }"
+        >
+          {{ $t('kpi.change') }}
+        </router-link>
+      </li>
+      <li v-if="hasEditRights && $route.name === 'ItemHome'">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: 'period', id: activePeriod.id } }"
+        >
+          {{ $t('objective.add') }}
+        </router-link>
+      </li>
+      <li v-if="$route.name !== 'KpiHome' && $route.name !== 'KeyResultHome' && hasEditRights">
+        <router-link
+          class="admin__link"
+          :to="{ name: 'ItemAdminOKRs', query: { type: $route.name === 'ItemHome' ? 'period' : 'objective', id: $route.name === 'ItemHome' ? activePeriod.id : activeObjective.id } }"
+        >
+          {{ $t('keyResultPage.add') }}
+        </router-link>
+      </li>
+      <li>
         <router-link
           v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
           class="admin__link"
@@ -23,26 +63,7 @@
         </router-link>
       </li>
     </ul>
-
-    <h4 class="admin__title">OKR-Tracker</h4>
-    <ul class="admin__list">
-      <li class="admin">
-        <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="admin__link">
-          <span class="btn--label">{{ $t('general.admin') }}</span>
-        </router-link>
-      </li>
-      <li class="admin">
-        <router-link :to="{ name: 'Help' }" class="admin__link">
-          <span class="btn--label">{{ $t('general.help') }}</span>
-        </router-link>
-      </li>
-      <li class="admin">
-        <button class="admin__link admin__link--btn" @click="signOut">
-          <span class="btn--label">{{ $t('general.signOut') }}</span>
-        </button>
-      </li>
-    </ul>
-  </widget>
+  </section>
 </template>
 
 <script>
@@ -52,16 +73,12 @@ import { auth } from '@/config/firebaseConfig';
 export default {
   name: 'WidgetAdmin',
 
-  components: {
-    Widget: () => import('./WidgetWrapper.vue'),
-  },
-
   data: () => ({
     disabled: false,
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'user', 'activeItem']),
+    ...mapState(['activePeriod', 'user', 'activeItem', 'activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
   },
 
@@ -97,9 +114,16 @@ export default {
 .admin__link {
   display: flex;
   align-items: center;
+  padding: 0.5rem 1.5rem;
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--color-secondary);
+  }
 }
 
 .admin__link--btn {
@@ -111,14 +135,6 @@ export default {
 
   &:hover {
     cursor: pointer;
-  }
-}
-
-.admin {
-  padding: 0.2rem;
-
-  &:hover {
-    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 }
 

@@ -9,15 +9,6 @@
         <i class="fas fa-angle-left"></i>
       </router-link>
 
-      <router-link
-        v-if="hasEditRights"
-        class="btn btn--icon btn--icon-pri aside__link--edit-rights aside__link--edit-rights--left"
-        :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
-      >
-        {{ $t('objective.change') }}
-        <i class="icon fa fa-pen" />
-      </router-link>
-
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
