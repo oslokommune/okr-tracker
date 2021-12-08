@@ -12,55 +12,15 @@
       <div v-click-outside="hideUserMenu" data-cy="usermenu">
         <button
           v-if="user"
-          v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
           class="btn btn--ter btn--icon"
           :class="{ active: showUserMenu }"
-          @click="showUserMenu = !showUserMenu"
+          :hidden="showProfileIcon"
+          @click="openProfileModal"
         >
           <i class="user__icon fa fa-user-circle" />
         </button>
-        <nav v-if="user && showUserMenu" class="menu">
-          <ul class="menu__list">
-            <li class="menu__list-item">
-              <router-link
-                class="btn btn--ter btn--icon btn--icon-pri"
-                :to="{ name: 'User', params: { id: user.id } }"
-                data-cy="site-header-profile"
-              >
-                <i class="icon fa fa-fw fa-user" />
-                {{ $t('user.myProfile') }}
-              </router-link>
-            </li>
-            <li v-if="isAdmin" class="menu__list-item">
-              <router-link
-                class="btn btn--ter btn--icon btn--icon-pri"
-                :to="{ name: 'Admin' }"
-                data-cy="site-header-admin"
-              >
-                <i class="icon fa fa-fw fa-cogs" />
-                {{ $t('general.admin') }}
-              </router-link>
-            </li>
-            <theme-toggle header />
-            <li class="menu__list-item show-mobile">
-              <router-link
-                class="btn btn--ter btn--icon btn--icon-pri"
-                :to="{ name: 'Help' }"
-                data-cy="site-header-help"
-              >
-                <i class="icon fa fa-fw fa-question-circle" />
-                {{ $t('general.help') }}
-              </router-link>
-            </li>
-            <li>
-              <button class="btn btn--ter btn--icon btn--icon-pri" data-cy="site-header-signout" @click="signOut">
-                <i class="icon fa fa-fw fa-sign-out-alt" />
-                {{ $t('general.signOut') }}
-              </button>
-            </li>
-          </ul>
-        </nav>
       </div>
+      <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="user.id"/>
     </div>
   </header>
 </template>
@@ -69,6 +29,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
+import ProfileModal from "@/components/ProfileModal.vue";
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import SidebarNavigation from '@/components/Navigation/SiteSidebar.vue';
 
@@ -78,6 +39,7 @@ export default {
   components: {
     ThemeToggle,
     SidebarNavigation,
+    ProfileModal,
   },
 
   directives: {
@@ -85,8 +47,11 @@ export default {
   },
 
   data: () => ({
+    showProfileIcon: true,
     showUserMenu: false,
     sidebarOpen: false,
+    showProfileModal: false,
+    id: 'mountain.peach.258@example.com'
   }),
 
   metaInfo() {
@@ -141,6 +106,16 @@ export default {
 
     hideUserMenu() {
       this.showUserMenu = false;
+    },
+
+    openProfileModal() {
+      this.showProfileModal = true;
+      this.showProfileIcon = false;
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false;
+      this.showProfileIcon = true;
     },
 
     async signOut() {

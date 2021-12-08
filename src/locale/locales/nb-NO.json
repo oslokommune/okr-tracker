@@ -426,13 +426,16 @@
     "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
+    "profile": "Profil",
     "myProfile": "Min profil",
     "superAdmin": "OKR-tracker administrator",
     "admin": "Organisasjonsadministrator",
     "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
     "hasAdmin": "Er administrator for en rekke organisasjoner",
-    "products": "Mine produkter",
+    "myProducts": "Mine produkter",
+    "products": "Produkter",
     "selectLanguage": "Velg språk",
+    "access": "Tilgang",
     "position": {
       "groups": {
         "developers": "Utvikling",
@@ -446,6 +449,7 @@
         "departmentDirector": "Avdelingsdirektør"
       },
       "title": "Stilling",
+      "member": "Medlem",
       "frontendDeveloper": "Frontend-utvikler",
       "backendDeveloper": "Backend-utvikler",
       "fullStackDeveloper": "Fullstack-utvikler",

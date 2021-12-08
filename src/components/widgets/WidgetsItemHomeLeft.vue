@@ -16,7 +16,7 @@ export default {
 
   components: {
     WidgetMissionStatement: () => import('./WidgetMissionStatement.vue'),
-    WidgetTeam: () => import('./WidgetTeam.vue'),
+    WidgetTeam: () => import('./WidgetTeam/WidgetTeam.vue'),
     WidgetChildItems: () => import('./WidgetChildItems.vue'),
   },
 
