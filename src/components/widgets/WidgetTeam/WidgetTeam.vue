@@ -8,42 +8,46 @@
     />
 
     <template v-if="director">
-      <role-members :role="$t('user.position.groups.director')" :membersWithRole="new Array(director)" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.director')" :members-with-role="new Array(director)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="departmentDirector">
-      <role-members :role="$t('user.position.groups.departmentDirector')" :membersWithRole="new Array(departmentDirector)" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.departmentDirector')" :members-with-role="new Array(departmentDirector)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="productOwner">
-      <role-members :role="$t('user.position.groups.productOwner')" :membersWithRole="new Array(productOwner)" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.productOwner')" :members-with-role="new Array(productOwner)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="teamLead">
-      <role-members :role="$t('user.position.groups.teamLead')" :membersWithRole="new Array(teamLead)" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.teamLead')" :members-with-role="new Array(teamLead)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="techLead">
-      <role-members :role="$t('user.position.groups.techLead')" :membersWithRole="new Array(techLead)" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.techLead')" :members-with-role="new Array(techLead)" @openModal="openProfileModal"/>
+    </template>
+
+    <template v-if="designLead">
+      <role-members :role="$t('user.position.groups.designLead')" :members-with-role="new Array(designLead)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="designers.length > 0">
-      <role-members :role="$t('user.position.groups.designers')" :membersWithRole="designers" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.designers')" :members-with-role="designers" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="developers.length > 0">
-      <role-members :role="$t('user.position.groups.developers')" :membersWithRole="developers" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.developers')" :members-with-role="developers" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="administration.length > 0">
-      <role-members :role="$t('user.position.groups.administration')" :membersWithRole="administration" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.administration')" :members-with-role="administration" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="others.length > 0">
-      <role-members :role="$t('user.position.groups.others')" :membersWithRole="others" @openModal="openProfileModal"/>
+      <role-members :role="$t('user.position.groups.others')" :members-with-role="others" @openModal="openProfileModal"/>
     </template>
 
-    <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="this.chosenProfileId"/>
+    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal"/>
 
     <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
       {{ $t('btn.add') }}
@@ -72,6 +76,7 @@ export default {
     others: [],
     techLead: null,
     teamLead: null,
+    designLead: null,
     director: null,
     productOwner: null,
     departmentDirector: null,
@@ -105,6 +110,7 @@ export default {
         this.director = null;
         this.techLead = null;
         this.teamLead = null;
+        this.designLead = null;
         this.productOwner = null;
         this.departmentDirector = null;
 
@@ -121,6 +127,8 @@ export default {
             this.techLead = employee;
           } else if (employee.position === 'teamLead') {
             this.teamLead = employee;
+          } else if (employee.position === 'designLead') {
+            this.designLead = employee;
           } else if (employee.position === 'productOwner') {
             this.productOwner = employee;
           } else if (employee.position === 'departmentDirector') {
@@ -149,12 +157,6 @@ export default {
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
-
-.users__list {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
-}
 
 .user__link {
   display: flex;

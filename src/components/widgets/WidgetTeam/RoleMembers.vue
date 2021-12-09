@@ -12,60 +12,63 @@
 </template>
 
 <script>
-  export default {
-    name: 'RoleMembers',
+export default {
+  name: 'RoleMembers',
 
-    props: {
-      role: {
-        type: String,
-      },
-      membersWithRole: {
-        type: Array
-      }
+  props: {
+    role: {
+      type: String,
+      required: true,
+    },
+    membersWithRole: {
+      type: Array,
+      required: true,
+    }
+  },
+
+  methods: {
+    firstPartOfEmail(email) {
+      return email.replace(/@.*/, '')
     },
 
-    methods: {
-      firstPartOfEmail(email) {
-        return email.replace(/@.*/, '')
-      },
-
-      openProfileModal(profileId) {
-        this.$emit('openModal', profileId)
-      },
+    openProfileModal(profileId) {
+      this.$emit('openModal', profileId)
     },
-  };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  @use '@/styles/typography';
+@use '@/styles/typography';
 
-  .users__list {
-    display: flex;
-    flex-direction: column;
+.users__list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.user__link {
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+  font-weight: 500;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.user {
+  padding: 0.2rem;
+
+  &:hover {
+    background: rgba(var(--color-grey-500-rgb), 0.1);
   }
+}
 
-  .user__link {
-    display: flex;
-    align-items: center;
-    color: var(--color-text);
-    font-weight: 500;
-    text-decoration: none;
-    word-break: break-all;
-  }
-
-  .user {
-    padding: 0.2rem;
-
-    &:hover {
-      background: rgba(var(--color-grey-500-rgb), 0.1);
-    }
-  }
-
-  .user__title {
-    padding: 0.2rem;
-    color: var(--color-grey-300);
-    font-weight: 400;
-    font-size: typography.$font-size-2;
-    letter-spacing: -0.03rem;
-  }
+.user__title {
+  padding: 0.2rem;
+  color: var(--color-grey-300);
+  font-weight: 400;
+  font-size: typography.$font-size-2;
+  letter-spacing: -0.03rem;
+}
 </style>
