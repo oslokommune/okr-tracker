@@ -277,7 +277,8 @@
   "period": {
     "dateRange": "Start- og sluttdato",
     "range": "{startDate} til {endDate}",
-    "period": "Periode"
+    "period": "Periode",
+    "add": "Legg til periode"
   },
   "tooltip": {
     "openMenu": "Åpne meny",
