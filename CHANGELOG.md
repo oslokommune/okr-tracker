@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.6.2] 2021-12-09
+
+### Fixed
+
+- Cloud Functions: automatic backup and restore of the database has apparently not been working for a month
+
 ## [2.6.1] 2021-11-10
 
 ### Fixed
