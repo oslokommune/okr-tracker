@@ -280,7 +280,8 @@
   "period": {
     "dateRange": "Start and end dates",
     "range": "{startDate} to {endDate}",
-    "period": "Period"
+    "period": "Period",
+    "add": "Add period"
   },
   "tooltip": {
     "openMenu": "Open menu",
