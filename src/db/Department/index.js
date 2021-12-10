@@ -1,3 +1,3 @@
-import * as Department from './Department';
+import Department from './Department';
 
 export default Department;

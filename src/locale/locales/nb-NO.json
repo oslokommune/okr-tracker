@@ -488,7 +488,13 @@
     "title": "Progresjon {progress}",
     "done": "{progress} fullført",
     "remaining": "{progress} gjenstår",
-    "remainingOf": "av {progress}"
+    "remainingOf": "av {progress}",
+    "completedMessages": {
+      "1": "Nå er dere gode!",
+      "2": "Dødsbra jobba, folkens!",
+      "3": "Wohoo! 100%",
+      "4": "Nice, dere klarte det!"
+    }
   },
   "languages": {
     "en-US": "Engelsk",

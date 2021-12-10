@@ -21,7 +21,7 @@
           {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
         </div>
         <div class="progression__remaining progression__remaining--keyResultRow">
-          {{ $t('progress.remaining', { progress: remaining(keyResult.progression) }) }}
+          {{ remainingKeyResultProgress(keyResult) }}
         </div>
         <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
           <span class="progression__total--current">{{
@@ -42,6 +42,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { format } from 'd3-format';
+import { remainingKeyResultProgress } from '@/util';
 
 export default {
   name: 'KeyResultRow',
@@ -94,18 +95,7 @@ export default {
       return format('.0%')(value);
     },
 
-    remaining() {
-      if (this.keyResult.targetValue < this.keyResult.startValue) {
-        if (!this.keyResult.currentValue) {
-          return format('.1~f')(this.keyResult.startValue);
-        }
-        return format('.1~f')(this.keyResult.startValue - this.keyResult.currentValue);
-      }
-      if (!this.keyResult.currentValue) {
-        return format('.1~f')(this.keyResult.targetValue);
-      }
-      return format('.1~f')(this.keyResult.targetValue - this.keyResult.currentValue);
-    },
+    remainingKeyResultProgress,
   },
 };
 </script>

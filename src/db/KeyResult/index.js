@@ -1,3 +1,3 @@
-import * as KeyResult from './KeyResult';
+import KeyResult from './KeyResult';
 
 export default KeyResult;

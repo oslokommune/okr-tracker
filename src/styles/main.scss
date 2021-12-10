@@ -205,6 +205,8 @@ hr {
   --color-secondary-light: var(--color-green-light);
   --color-tertiary: var(--color-green-dark);
   --color-progress-background: var(--color-green-medium-dark);
+
+  --color-primary-rgb: var(--color-green-dark);
 }
 
 [data-theme='blue'] {
@@ -216,4 +218,6 @@ hr {
   --color-secondary-light: var(--color-blue-light);
   --color-tertiary: var(--color-purple);
   --color-progress-background: var(--color-grey-550);
+
+  --color-primary-rgb: var(--color-purple-rgb);
 }

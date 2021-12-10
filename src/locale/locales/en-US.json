@@ -492,7 +492,13 @@
     "title": "Progress {progress}",
     "done": "{progress} done",
     "remaining": "{progress} remaining",
-    "remainingOf": "of {progress}"
+    "remainingOf": "of {progress}",
+    "completedMessages": {
+      "1": "You guys are nailing it!",
+      "2": "Well done, guys!",
+      "3": "Wohoo! 100%",
+      "4": "You did it! Awesome!"
+    }
   },
   "languages": {
     "en-US": "English",

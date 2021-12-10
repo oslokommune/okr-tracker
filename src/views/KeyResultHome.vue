@@ -31,7 +31,7 @@
               {{ $t('progress.done', { progress: percentage(activeKeyResult.progression) }) }}
             </div>
             <div class="progression__remaining progression__remaining--keyResultHome">
-              {{ $t('progress.remaining', { progress: remaining(activeKeyResult) }) }}
+              {{ remainingKeyResultProgress(activeKeyResult) }}
             </div>
             <div class="progression__total progression__total--keyResultHome">
               <span class="progression__total--current progression__total--current--keyResultHome">
@@ -200,7 +200,7 @@ import { format } from 'd3-format';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, numberLocale } from '@/util';
+import { dateTimeShort, numberLocale, remainingKeyResultProgress } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
@@ -282,6 +282,7 @@ export default {
   methods: {
     dateTimeShort,
     format,
+    remainingKeyResultProgress,
 
     async remove(id) {
       try {
@@ -306,19 +307,6 @@ export default {
 
     percentage(value) {
       return format('.0%')(value);
-    },
-
-    remaining(keyRes) {
-      if (keyRes.targetValue < keyRes.startValue) {
-        if (!keyRes.currentValue) {
-          return format('.1~f')(keyRes.startValue);
-        }
-        return format('.1~f')(keyRes.startValue - keyRes.currentValue);
-      }
-      if (!keyRes.currentValue) {
-        return format('.1~f')(keyRes.targetValue);
-      }
-      return format('.1~f')(keyRes.targetValue - keyRes.currentValue);
     },
 
     async saveProgress() {
