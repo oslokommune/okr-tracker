@@ -35,8 +35,8 @@
 .flatpickr-day:focus,
 .flatpickr-day.prevMonthDay:focus,
 .flatpickr-day.nextMonthDay:focus {
-  cursor: pointer;
-  outline: 0;
   background: #e6e6e6;
   border-color: #e6e6e6;
+  outline: 0;
+  cursor: pointer;
 }
