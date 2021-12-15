@@ -16,21 +16,18 @@
     </div>
 
     <div v-else class="keyResult__progress" :class="{ 'keyResult__progress--expanded': view !== 'compact' }">
-      <div class="progression">
+      <div class="progression" @click="isOpen = true">
         <div class="progression__done progression__done--keyResultRow">
           {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
         </div>
         <div class="progression__remaining progression__remaining--keyResultRow">
           {{ remainingKeyResultProgress(keyResult) }}
         </div>
-        <button class="btn progression__total progression__total--keyResultRow" @click="isOpen = true">
-          <span class="progression__total--current">{{
-            keyResult.currentValue ? format('.1~f')(keyResult.currentValue) : 0
-          }}</span>
-          <span class="progression__total--target">/{{ keyResult.targetValue }}</span>
-        </button>
         <div class="progress-bar__container progress-bar__container--keyResultRow">
           <div class="progress-bar" :style="{ width: percentage(keyResult.progression) }"></div>
+        </div>
+        <div class="progression__total--keyResultRow">
+          {{ keyResult.currentValue ? format('.1~f')(keyResult.currentValue) : 0 }} / {{ keyResult.targetValue }}
         </div>
       </div>
     </div>
@@ -155,6 +152,11 @@ export default {
   @media screen and (max-width: bp(s)) {
     width: 100%;
   }
+
+  &:hover {
+    background-color: var(--color-primary-dark);
+    cursor: pointer;
+  }
 }
 
 .keyResult__auto {
@@ -196,23 +198,20 @@ export default {
 }
 
 .progress-bar__container--keyResultRow {
-  grid-area: 3 / 1 / 4 / 3;
+  grid-area: 3 / 1 / 4 / 2;
 }
 
 .progression__done--keyResultRow {
-  grid-area: 1 / 1 / 2 / 3;
+  grid-area: 1 / 1 / 2 / 2;
 }
 
 .progression__remaining--keyResultRow {
-  grid-area: 2 / 1 / 3 / 3;
+  grid-area: 2 / 1 / 3 / 2;
 }
 
 .progression__total--keyResultRow {
-  grid-area: 1 / 2 / 3 / 3;
-  padding: 0.5rem 1rem;
-
-  &:hover {
-    background-color: var(--color-secondary);
-  }
+  grid-area: 4 / 1 / 5 / 2;
+  justify-self: end;
+  padding-top: 0.5rem;
 }
 </style>
