@@ -16,75 +16,83 @@
     <transition name="slide-first">
       <aside v-if="isOpen" class="sidebar">
         <div class="sidebar__content">
-          <h1 style="padding-left: 1.5rem; color: white; font-weight: 500; font-size: 1.3rem; text-transform: uppercase">OKR-tracker</h1>
-          <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--icon btn--sidebar" style=" font-weight: 400;font-size: 1.3rem">
-            <h1>{{ $t('general.homePage') }}</h1>
-          </router-link>
+          <div class="flex__column">
+            <h1 class="sidebar__header">{{ $t('general.appName') }}</h1>
+            <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--sidebar" :class="{ 'active': $route.name === 'Home' }">
+              <h1>{{ $t('general.frontPage') }}</h1>
+            </router-link>
 
-          <hr class="divider"/>
+            <hr class="divider"/>
 
+            <h2 class="btn btn--ter btn--icon sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
+              {{ $t('general.orgs') }}
+              <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </h2>
+            <div v-if="isCollapsed" class="collapse">
+              <button
+                v-for="org in organizations"
+                :key="org.id"
+                class="btn btn--ter btn--icon sidebar__item sidebar__item--org"
+                :class="{ 'active': activeOrganization && activeOrganization.id === org.id }"
+                @click="handleActiveOrganization(org)"
+              >
+                {{ org.name }}
+              </button>
 
-          <h2 class="btn btn--ter sidebar__item" style="display: flex; justify-content: space-between; font-weight: 500; font-size: 1.3rem; text-transform: uppercase;" @click="isCollapsed = !isCollapsed">
-            Virksomheter
-            <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-          </h2>
-          <div v-if="isCollapsed" class="collapse">
-            <button
-              v-for="org in organizations"
-              :key="org.id"
-              class="btn btn--ter btn--icon sidebar__item"
-              :class="{ 'active': activeOrganization.id === org.id }"
-              style=" font-weight: 400;font-size: 1.3rem"
-              @click="handleActiveOrganization(org)"
-            >
-              {{ org.name }}
-            </button>
+            </div>
 
+            <hr class="divider"/>
+
+            <div v-if="!user" class="sidebar__header">{{ $t('general.signIn')}}</div>
+            <template v-if="user">
+              <ul v-if="activeOrganization" class="sidebar__group">
+                <li v-for="org in tree" :key="org.id" class="margin-top-1">
+                  <template v-if="org.id === activeOrganization.id">
+                    <router-link
+                      :class="{ 'active': org.slug === $route.params.slug }"
+                      :to="{name: 'ItemHome', params: { slug: org.slug } }"
+                      class='btn btn--ter sidebar__item'
+                      @click.native="hideSidebar"
+                    >
+                      <h2>{{ org.name }}</h2>
+                    </router-link>
+                    <ul>
+                      <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
+                        <router-link
+                          :class="{ 'active': dept.slug === $route.params.slug }"
+                          :to="{name: 'ItemHome', params: { slug: dept.slug } }"
+                          class='btn btn--ter sidebar__item'
+                          @click.native="hideSidebar"
+                        >
+                          <h3>{{ dept.name }}</h3>
+                        </router-link>
+                        <ul>
+                          <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
+                            <router-link
+                              :class="{ 'active': prod.slug === $route.params.slug }"
+                              :to="{name: 'ItemHome', params: { slug: prod.slug } }"
+                              class="btn btn--ter sidebar__item sidebar__item--product"
+                              @click.native="hideSidebar"
+                            >
+                              <h3>{{ prod.name }}</h3>
+                            </router-link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </template>
+                </li>
+              </ul>
+            </template>
           </div>
-
-          <hr class="divider"/>
-
-          <div v-if="!user" class="sidebar__sign-in">{{ $t('general.signIn')}}</div>
-          <template v-if="user">
-            <ul v-if="activeOrganization" class="sidebar__group">
-              <li v-for="org in tree" :key="org.id" class="margin-top-1">
-                <template v-if="org.id === activeOrganization.id">
-                  <router-link
-                    :class="{ 'active': org.slug === $route.params.slug }"
-                    :to="{name: 'ItemHome', params: { slug: org.slug } }"
-                    class='btn btn--ter sidebar__item'
-                    @click.native="hideSidebar"
-                  >
-                    <h2>{{ org.name }}</h2>
-                  </router-link>
-                  <ul>
-                    <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
-                      <router-link
-                        :class="{ 'active': dept.slug === $route.params.slug }"
-                        :to="{name: 'ItemHome', params: { slug: dept.slug } }"
-                        class='btn btn--ter sidebar__item'
-                        @click.native="hideSidebar"
-                      >
-                        <h3>{{ dept.name }}</h3>
-                      </router-link>
-                      <ul>
-                        <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
-                          <router-link
-                            :class="{ 'active': prod.slug === $route.params.slug }"
-                            :to="{name: 'ItemHome', params: { slug: prod.slug } }"
-                            class="btn btn--ter sidebar__item sidebar__item--product"
-                            @click.native="hideSidebar"
-                          >
-                            <h3>{{ prod.name }}</h3>
-                          </router-link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </template>
-              </li>
-            </ul>
-          </template>
+          <div class="flex__row--space-between">
+            <div class="logo">
+              <oslo-logo class="logo__img" />
+            </div>
+            <div class="align__self--center">
+              v{{ appVersion }}
+            </div>
+          </div>
         </div>
         <a
           href="#"
@@ -117,6 +125,7 @@ export default {
   data: () => ({
     isOpen: false,
     isCollapsed: false,
+    appVersion: __APP_VERSION__,  // eslint-disable-line no-undef
   }),
 
   computed: {
@@ -178,6 +187,7 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:math';
+@use '@/styles/typography';
 
 $header-height: 4em;
 
@@ -190,7 +200,7 @@ $header-height: 4em;
   padding: 0.5rem 1.5rem;
   color: var(--color-text-secondary);
   font-weight: 400;
-  font-size: 1.3rem;
+  font-size: typography.$font-size-4;
   border-radius: 0;
 
   &:hover {
@@ -207,6 +217,19 @@ $header-height: 4em;
   }
 }
 
+.sidebar__item--organizations {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: typography.$font-size-4;
+  text-transform: uppercase;
+}
+
+.sidebar__item--org {
+  font-weight: 400;
+  font-size: typography.$font-size-4;
+}
+
 .sidebar__item--side {
   color: var(--color-text-secondary);
 }
@@ -214,7 +237,7 @@ $header-height: 4em;
 .sidebar__item--product {
   color: var(--color-text-secondary);
   font-weight: normal;
-  font-size: 1rem;
+  font-size: typography.$font-size-2;
 }
 
 .sidebar {
@@ -225,18 +248,18 @@ $header-height: 4em;
   z-index: 200;
   display: flex;
   flex-direction: row;
-  width: calc(100vw - 5rem);
+  width: calc(100vw - 4rem);
   max-width: 29rem;
   height: 100vh;
 }
 
 .sidebar__content {
-  $width: calc(100% - 5rem);
+  $width: calc(100% - 4rem);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: $width;
   padding-top: 5.5rem;
-  padding-right: 1rem;
   overflow-y: auto;
   background-color: var(--color-primary) !important;
   border-right: 1px solid #ffffff0f;
@@ -299,42 +322,23 @@ $header-height: 4em;
   margin-bottom: 1rem;
 }
 
-.sidebar__sign-in {
-  padding: 1.5rem;
-  font-weight: 500;
-  font-size: 1.5rem;
-}
-
 .btn--sidebar {
   padding: 1rem 0 1rem 1.5rem;
-  color: var(--color-secondary-light);
-  font-weight: 500;
-  font-size: 1rem;
-  border-radius: 0;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  font-size: typography.$font-size-4;
 
   &:hover {
     color: var(--color-text);
     background: var(--color-secondary);
-
-    & > .fa-chevron-right {
-      margin-right: 0;
-      transition: margin-right 0.1s ease-in-out 0.1s;
-    }
-
-    & > .fa-chevron-left {
-      margin-right: 2rem;
-      transition: margin-right 0.1s ease-in-out 0.1s;
-    }
   }
 
-  & > .fa-chevron-right {
-    margin-right: 2rem;
-    transition: margin-right 0.1s ease-in-out 0.1s;
-  }
+  &.active {
+    color: var(--color-secondary);
 
-  & > .fa-chevron-left {
-    margin-right: 0;
-    transition: margin-right 0.1s ease-in-out 0.1s;
+    &:hover {
+      color: var(--color-text);
+    }
   }
 }
 
@@ -409,6 +413,38 @@ $header-height: 4em;
 
 .logo__img {
   display: block;
+  width: 100%;
   height: 100%;
+}
+
+.logo {
+  display: block;
+  width: span(4);
+  padding: 2.5rem 1.5rem;
+}
+
+.flex__column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex__row--space-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.align__self--center {
+  align-self: center;
+  justify-self: center;
+  padding-right: 1.5rem;
+}
+
+.sidebar__header {
+  padding-left: 1.5rem;
+  color: white;
+  font-weight: 500;
+  font-size: typography.$font-size-4;
+  text-transform: uppercase
 }
 </style>

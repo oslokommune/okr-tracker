@@ -85,6 +85,7 @@
     "decimal": "Må være tall"
   },
   "general": {
+    "appName": "OKR-tracker",
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
@@ -115,8 +116,9 @@
     "keyResult": "Nøkkelresultat",
     "period": "Periode",
     "back": "Tilbake",
-    "homePage": "Forside",
-    "signIn": "Vennligst logg inn"
+    "frontPage": "Forside",
+    "signIn": "Vennligst logg inn",
+    "orgs": "Virksomheter"
   },
   "btn": {
     "close": "Lukk",

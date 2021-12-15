@@ -54,12 +54,6 @@ export default {
   text-transform: uppercase;
 }
 
-.card {
-  @media screen and (min-width: bp(l)) {
-    margin-bottom: 1rem;
-  }
-}
-
 .home {
   width: span(12);
 

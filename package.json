@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "2.6.1",
+  "version": "2.7.0-beta",
   "private": true,
   "scripts": {
     "dev": "firebase emulators:start --import=./mock_data & vite",
