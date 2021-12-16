@@ -28,8 +28,6 @@ button,
 input,
 textarea,
 body {
-  color: var(--color-text);
-
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
@@ -138,7 +136,7 @@ body.using-mouse :focus {
   --color-blue-light: #b3f5ff;
   --color-blue-light-2: #b2d2d8;
   --color-purple: #292858;
-  --color-purple-dark: #1f1e43;
+  --color-purple-dark: #1F42AA;
   --color-yellow: #f8c66b;
   --color-yellow-dark: #ba944fff;
   --color-yellow-light: #d1bfae;

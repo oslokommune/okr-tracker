@@ -18,11 +18,6 @@
         <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
 
         <div class="key-result-row">
-          <div class="key-result-row__info">
-            <h3 class="title-3">{{ activeKeyResult.name }}</h3>
-            <span class="key-result-row__info--description">{{ activeKeyResult.description }}</span>
-          </div>
-
           <div class="key-result-row__progress">
             <h3 class="key-result-row__progress--header">
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
@@ -46,24 +41,21 @@
             </div>
           </div>
 
-          <div class="key-result__graph">
-            <h3 class="key-result__graph--title">
-              {{ $t('objective.progression') }}
-            </h3>
-
-            <svg ref="graph" class="graph"></svg>
+          <div class="key-result-row__info">
+            <h3 class="title-3">{{ activeKeyResult.name }}</h3>
+            <span class="key-result-row__info--description">{{ activeKeyResult.description }}</span>
           </div>
 
           <div class="key-result__value">
-            <h3 class="title-2">{{ $t('keyResult.newValue') }}</h3>
+            <div>
+              <h3 class="title-2">{{ $t('keyResult.newValue') }}</h3>
 
-            <validation-observer v-slot="{ handleSubmit }">
+              <validation-observer v-slot="{ handleSubmit }">
               <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
                 <label>
                   <span class="title-4">{{ $t('keyResult.addComment') }}</span>
                   <textarea
                     v-model="progressNote"
-                    class="modal__textarea"
                     style="margin-top: 0.5rem"
                     rows="3"
                     :placeholder="$t('keyResult.commentPlaceholder')"
@@ -73,11 +65,10 @@
 
                 <div>
                   <validation-provider v-slot="{ errors }" name="value" rules="required">
-                    <label class="form-group modal__main--input-label">
+                    <label class="form-group">
                       <span class="form-label">{{ $t('keyResult.newValue') }}</span>
                       <input
                         v-model="value"
-                        class="form__field modal__main--input-value"
                         style="margin-top: 0.25rem"
                         type="number"
                         step="any"
@@ -90,9 +81,19 @@
                 </div>
               </form>
             </validation-observer>
-            <button form="modal" :disabled="isSaving || !changes" class="btn btn--sec">
+            </div>
+
+            <button form="modal" :disabled="isSaving || !changes" class="btn btn--ods key-result__value--button">
               {{ $t('btn.save') }}
             </button>
+          </div>
+
+          <div class="key-result__graph">
+            <h3 class="key-result__graph--title">
+              {{ $t('objective.progression') }}
+            </h3>
+
+            <svg ref="graph" class="graph"></svg>
           </div>
         </div>
 
@@ -410,19 +411,21 @@ export default {
 
   @media screen and (min-width: bp(s)) {
     display: grid;
-    grid-row-gap: 0.5rem;
-    grid-template-rows: repeat(2, auto);
+    grid-row-gap: 2px;
+    grid-column-gap: 2px;
+    grid-template-rows: repeat(3, auto);
     grid-template-columns: 1fr span(3, span(8));
     margin-bottom: 0.5rem;
+    background-color: var(--color-black);
   }
 }
 
 .key-result-row__info {
-  grid-area: 1 / 1 / 2 / 2;
+  grid-area: 2 / 1 / 3 / 2;
   padding: 1.5rem 1.75rem;
-  color: var(--color-grey-800);
+  color: var(--color-text-secondary);
   text-decoration: none;
-  background-color: var(--color-secondary-light);
+  background-color: var(--color-primary);
 }
 
 .key-result-row__info--description {
@@ -432,10 +435,10 @@ export default {
 
 .key-result-row__progress {
   display: grid;
-  grid-area: 1 / 2 / 2 / 3;
+  grid-area: 1 / 1 / 2 / 2;
   grid-column-gap: 2px;
-  grid-template-rows: repeat(4, auto);
-  grid-template-columns: 1fr auto;
+  grid-template-rows: repeat(5, auto);
+  grid-template-columns: 1fr;
   align-self: center;
   width: 100%;
   height: 100%;
@@ -446,34 +449,32 @@ export default {
 
 .key-result-row__progress--header {
   grid-area: 1 / 1 / 2 / 2;
-  margin-bottom: 0.5rem;
-  padding-bottom: 2rem;
   color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
 }
 
 .progress-bar__container--keyResultHome {
-  grid-area: 4 / 1 / 5 / 3;
+  grid-area: 5 / 1 / 6 / 2;
 }
 
 .progression__done--keyResultHome {
-  grid-area: 2 / 1 / 3 / 2;
+  grid-area: 3 / 1 / 4 / 2;
   align-self: end;
 }
 
 .progression__remaining--keyResultHome {
-  grid-area: 3 / 1 / 4 / 2;
+  grid-area: 4 / 1 / 5 / 2;
   align-self: end;
   font-weight: 500;
 }
 
 .progression__total--keyResultHome {
   display: grid;
-  grid-area: 1 / 2 / 4 / 3;
+  grid-area: 2 / 1 / 3 / 2;
   grid-template-rows: repeat(2, auto);
   grid-template-columns: 1fr;
-  justify-self: end;
+  justify-self: start;
   color: var(--color-text);
 }
 
@@ -492,15 +493,22 @@ export default {
 }
 
 .key-result__graph {
-  grid-area: 2 / 1 / 3 / 2;
+  grid-area: 3 / 1 / 4 / 3;
   padding: 1.5rem 1.75rem 0 1.75rem;
   background-color: var(--color-white);
 }
 
 .key-result__value {
-  grid-area: 2 / 2 / 3 / 3;
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 2 / 3 / 3;
+  justify-content: space-between;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
   color: var(--color-text-secondary);
   background-color: var(--color-primary);
+}
+
+.key-result__value--button {
+  align-self: end;
 }
 </style>
