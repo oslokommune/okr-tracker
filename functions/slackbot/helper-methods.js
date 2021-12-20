@@ -1,5 +1,4 @@
 import functions from 'firebase-functions';
-import { getFirestore } from 'firebase-admin/firestore';
 import { WebClient } from '@slack/web-api';
 
 const environment = functions.config();

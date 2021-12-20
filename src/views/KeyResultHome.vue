@@ -28,11 +28,11 @@
             <div class="progression__remaining progression__remaining--keyResultHome">
               {{ remainingKeyResultProgress(activeKeyResult) }}
             </div>
-            <div class="progression__total progression__total--keyResultHome">
-              <span class="progression__total--current progression__total--current--keyResultHome">
+            <div class="progression__total">
+              <span class="progression__total--current">
                 {{ activeKeyResult.currentValue ? format('.1~f')(activeKeyResult.currentValue) : 0 }}
               </span>
-              <span class="progression__total--target progression__total--target--keyResultHome">
+              <span class="progression__total--target">
                 {{ $t('progress.remainingOf', { progress: activeKeyResult.targetValue }) }}
               </span>
             </div>
@@ -469,26 +469,31 @@ export default {
   font-weight: 500;
 }
 
-.progression__total--keyResultHome {
+.progression__total {
   display: grid;
   grid-area: 2 / 1 / 3 / 2;
   grid-template-rows: repeat(2, auto);
   grid-template-columns: 1fr;
   justify-self: start;
+  margin-bottom: 1rem;
   color: var(--color-text);
 }
 
-.progression__total--current--keyResultHome {
+.progression__total--current {
   align-self: center;
   justify-self: center;
-  padding: 0.5rem 2rem;
+  padding: 1rem 2rem;
+  color: var(--color-text);
+  font-weight: 700;
   font-size: typography.$font-size-5;
+  background-color: var(--color-grey-50);
 }
 
-.progression__total--target--keyResultHome {
+.progression__total--target {
   align-self: end;
   justify-self: end;
   padding: 0.5rem 0.5rem;
+  color: var(--color-text-secondary);
   font-size: typography.$font-size-0;
 }
 
