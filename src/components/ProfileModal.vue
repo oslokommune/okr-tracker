@@ -296,6 +296,7 @@ import { jobPositions } from '@/config/jobPositions';
     flex-basis: 100%;
     flex-direction: column;
     max-height: calc(100vh - 10px);
+    padding: 3rem 0 3rem 3rem;
     overflow-y: auto;
     color: var(--color-text);
     background: white;
@@ -310,7 +311,7 @@ import { jobPositions } from '@/config/jobPositions';
   .column {
     flex-grow: 2;
     min-width: 50%;
-    padding: 3rem;
+    padding: 0 3rem 0 0;
   }
 
   .profileModal__save-button {
