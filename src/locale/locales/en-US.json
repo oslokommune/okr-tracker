@@ -88,6 +88,7 @@
     "decimal": "The {_field_} field must be a decimal"
   },
   "general": {
+    "appName": "OKR-tracker",
     "edit": "Edit",
     "general": "General",
     "OKRs": "OKRs",
@@ -118,8 +119,9 @@
     "keyResult": "Key result",
     "period": "Period",
     "back": "back",
-    "homePage": "Home page",
-    "signIn": "Please sign in"
+    "frontPage": "Front page",
+    "signIn": "Please sign in",
+    "orgs": "Organizations"
   },
   "btn": {
     "close": "Close",
@@ -491,8 +493,14 @@
   "progress": {
     "title": "Progress {progress}",
     "done": "{progress} done",
-    "remaining": "{progress} remaining",
-    "remainingOf": "of {progress}"
+    "remaining": "{progress} {unit} remaining",
+    "remainingOf": "of {progress}",
+    "completedMessages": {
+      "1": "You guys are nailing it!",
+      "2": "Well done, guys!",
+      "3": "Wohoo! 100%",
+      "4": "You did it! Awesome!"
+    }
   },
   "languages": {
     "en-US": "English",

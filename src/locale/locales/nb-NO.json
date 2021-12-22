@@ -85,6 +85,7 @@
     "decimal": "Må være tall"
   },
   "general": {
+    "appName": "OKR-tracker",
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
@@ -115,12 +116,13 @@
     "keyResult": "Nøkkelresultat",
     "period": "Periode",
     "back": "Tilbake",
-    "homePage": "Forside",
-    "signIn": "Vennligst logg inn"
+    "frontPage": "Forside",
+    "signIn": "Vennligst logg inn",
+    "orgs": "Virksomheter"
   },
   "btn": {
     "close": "Lukk",
-    "save": "Lagre",
+    "save": "Oppdater",
     "saveChanges": "Lagre endringer",
     "add": "Legg til",
     "editNotes": "Endre notater",
@@ -487,8 +489,14 @@
   "progress": {
     "title": "Progresjon {progress}",
     "done": "{progress} fullført",
-    "remaining": "{progress} gjenstår",
-    "remainingOf": "av {progress}"
+    "remaining": "{progress} {unit} gjenstår",
+    "remainingOf": "av {progress}",
+    "completedMessages": {
+      "1": "Nå er dere gode!",
+      "2": "Dødsbra jobba, folkens!",
+      "3": "Wohoo! 100%",
+      "4": "Nice, dere klarte det!"
+    }
   },
   "languages": {
     "en-US": "Engelsk",
