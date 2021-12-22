@@ -1,7 +1,8 @@
-import { GoogleAuth } from 'google-auth-library';
+import auth from 'google-auth-library';
 import functions from 'firebase-functions';
 import config from './config.js';
 
+const { GoogleAuth } = auth;
 const storageBucketName = process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
 
 export const automatedBackups = () =>

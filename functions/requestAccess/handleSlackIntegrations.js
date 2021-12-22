@@ -1,11 +1,12 @@
 /* eslint-disable camelcase */
 import functions from 'firebase-functions';
-import { IncomingWebhook } from '@slack/webhook';
+import slack from '@slack/webhook';
 import { getFirestore } from 'firebase-admin/firestore';
 
 import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage.js';
 import preferences from '../util/defaultPreferences.js';
 
+const { IncomingWebhook } = slack;
 const environment = functions.config();
 
 export const handleSlackRequest = async (document) => {

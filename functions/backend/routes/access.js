@@ -1,9 +1,10 @@
 import express from 'express';
 import { getFirestore } from 'firebase-admin/firestore';
-import { param, matchedData } from 'express-validator';
+import validator from 'express-validator';
 import validateFirebaseIdToken from '../../util/validateFirebaseToken.js';
 
 const router = express.Router();
+const { param, matchedData } = validator;
 
 router.post('/:email/create', param('email').isEmail().trim().escape().normalizeEmail(), async (req, res) => {
   const sanitized = matchedData(req);

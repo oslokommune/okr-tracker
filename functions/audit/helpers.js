@@ -1,8 +1,9 @@
 import functions from 'firebase-functions';
-import { WebClient } from '@slack/web-api';
+import slack from '@slack/web-api';
 import fns from 'date-fns';
 import locale from 'date-fns/locale/index.js';
 
+const { WebClient } = slack;
 const { format } = fns;
 const { nb } = locale;
 
