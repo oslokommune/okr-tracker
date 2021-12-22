@@ -47,7 +47,7 @@
           >
           </v-select>
         </label>
-        <div v-if="me" class="profileModal__save-button">
+        <div v-if="me || $store.state.user.superAdmin" class="profileModal__save-button">
           <button class="btn btn--sec" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
         </div>
       </div>
