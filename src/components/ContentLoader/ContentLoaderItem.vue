@@ -15,8 +15,8 @@
               </content-loader>
             </div>
             <div class="content-loader-item__keyResult--progress">
-              <content-loader height="15" width="350">
-                <rect x="0" y="8" ry="0" rx="0" width="350" height="15" />
+              <content-loader height="15" width="320">
+                <rect x="0" y="8" ry="0" rx="0" width="320" height="15" />
               </content-loader>
             </div>
           </div>
@@ -55,7 +55,7 @@ export default {
 .content-loader-item__keyResult {
   display: grid;
   grid-row-gap: 0.5rem;
-  grid-template-columns: 1fr span(4, 0, span(8));
+  grid-template-columns: 1fr auto;
 }
 
 .content-loader-item__keyResult--info {
@@ -68,6 +68,7 @@ export default {
 
 .content-loader-item__keyResult--progress {
   grid-column: 2;
+  width: 320px;
   padding: 0.5rem 1.75rem 0.5rem 1.75rem;
   background-color: var(--color-primary);
 }

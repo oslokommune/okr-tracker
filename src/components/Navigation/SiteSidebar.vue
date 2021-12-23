@@ -13,7 +13,7 @@
       </div>
     </a>
 
-    <transition name="slide-first">
+    <transition name="slide">
       <aside v-if="isOpen" class="sidebar">
         <div class="sidebar__content">
           <div class="flex__column">
@@ -24,15 +24,15 @@
 
             <hr class="divider"/>
 
-            <h2 class="btn btn--ter btn--icon sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
+            <h2 class="btn btn--ter sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
               {{ $t('general.orgs') }}
               <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
             </h2>
-            <div v-if="isCollapsed" class="collapse">
+            <div v-if="isCollapsed">
               <button
                 v-for="org in organizations"
                 :key="org.id"
-                class="btn btn--ter btn--icon sidebar__item sidebar__item--org"
+                class="btn btn--ter sidebar__item sidebar__item--org"
                 :class="{ 'active': activeOrganization && activeOrganization.id === org.id }"
                 @click="handleActiveOrganization(org)"
               >
@@ -201,6 +201,7 @@ $header-height: 4em;
   color: var(--color-text-secondary);
   font-weight: 400;
   font-size: typography.$font-size-4;
+  white-space: unset;
   border-radius: 0;
 
   &:hover {
@@ -228,6 +229,7 @@ $header-height: 4em;
 .sidebar__item--org {
   font-weight: 400;
   font-size: typography.$font-size-4;
+  text-align: start;
 }
 
 .sidebar__item--side {
@@ -308,13 +310,13 @@ $header-height: 4em;
   }
 }
 
-.slide-first-enter-active,
-.slide-first-leave-active {
+.slide-enter-active,
+.slide-leave-active {
   transition: left 0.25s ease-in-out;
 }
 
-.slide-first-enter,
-.slide-first-leave-to {
+.slide-enter,
+.slide-leave-to {
   left: -400px;
 }
 
