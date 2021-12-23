@@ -1,12 +1,10 @@
 <template>
   <button
-    class="btn btn--ter btn--icon"
-    :class="{ 'btn--icon-pri': header }"
+    class="button__link"
     :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
     @click="handleClick"
   >
-    <span class="icon fas fa-palette" />
-    {{ $t('theme.toggle', { mode: $t(`theme.colors.${mode}`) }) }}
+    <span>{{ $t('theme.toggle', { mode: $t(`theme.colors.${mode}`) }) }}</span>
   </button>
 </template>
 
@@ -64,3 +62,17 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+  .button__link {
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+
+</style>

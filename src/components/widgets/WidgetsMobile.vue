@@ -23,7 +23,7 @@
 import { mapState } from 'vuex';
 import WidgetProgression from '@/components/widgets/WidgetProgression.vue';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
+import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetChildItems from '@/components/widgets/WidgetChildItems.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import WidgetAdmin from '@/components/widgets/WidgetAdmin.vue';

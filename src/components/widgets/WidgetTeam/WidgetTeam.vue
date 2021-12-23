@@ -8,87 +8,47 @@
     />
 
     <template v-if="director">
-      <h4 class="user__title">{{ $t('user.position.groups.director') }}</h4>
-      <ul class="users__list">
-        <li class="user">
-          <span class="user__name">{{ director.displayName || director.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.director')" :members-with-role="new Array(director)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="departmentDirector">
-      <h4 class="user__title">{{ $t('user.position.groups.departmentDirector') }}</h4>
-      <ul class="users__list">
-        <li class="user">
-          <span v-if="departmentDirector.id" class="user__name">
-            {{ departmentDirector.displayName || departmentDirector.id.replace(/@.*/, '') }}'
-          </span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.departmentDirector')" :members-with-role="new Array(departmentDirector)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="productOwner">
-      <div class="user__title">{{ $t('user.position.groups.productOwner') }}</div>
-      <ul class="users__list">
-        <li class="user">
-          <span v-if="productOwner.id" class="user__name">{{ productOwner.displayName || productOwner.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.productOwner')" :members-with-role="new Array(productOwner)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="teamLead">
-      <div class="user__title">{{ $t('user.position.groups.teamLead') }}</div>
-      <ul class="users__list">
-        <li class="user">
-          <span v-if="teamLead.id" class="user__name">{{ teamLead.displayName || teamLead.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.teamLead')" :members-with-role="new Array(teamLead)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="techLead">
-      <div class="user__title">{{ $t('user.position.groups.techLead') }}</div>
-      <ul class="users__list">
-        <li class="user">
-          <span v-if="techLead.id" class="user__name">{{ techLead.displayName || techLead.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.techLead')" :members-with-role="new Array(techLead)" @openModal="openProfileModal"/>
+    </template>
+
+    <template v-if="designLead">
+      <role-members :role="$t('user.position.groups.designLead')" :members-with-role="new Array(designLead)" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="designers.length > 0">
-      <div class="user__title">{{ $t('user.position.groups.designers') }}</div>
-      <ul class="users__list">
-        <li v-for="design in designers" :key="design.id" class="user">
-          <span class="user__name">{{ design.displayName || design.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.designers')" :members-with-role="designers" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="developers.length > 0">
-      <div class="user__title">{{ $t('user.position.groups.developers') }}</div>
-      <ul class="users__list">
-        <li v-for="dev in developers" :key="dev.id" class="user">
-          <span class="user__name">{{ dev.displayName || dev.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.developers')" :members-with-role="developers" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="administration.length > 0">
-      <div class="user__title">{{ $t('user.position.groups.administration') }}</div>
-      <ul class="users__list">
-        <li v-for="adm in administration" :key="adm.id" class="user">
-          <span class="user__name">{{ adm.displayName || adm.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.administration')" :members-with-role="administration" @openModal="openProfileModal"/>
     </template>
 
     <template v-if="others.length > 0">
-      <div class="user__title">{{ $t('user.position.groups.others') }}</div>
-      <ul class="users__list">
-        <li v-for="user in others" :key="user.id" class="user">
-          <span class="user__name">{{ user.displayName || user.id.replace(/@.*/, '') }}</span>
-        </li>
-      </ul>
+      <role-members :role="$t('user.position.groups.others')" :members-with-role="others" @openModal="openProfileModal"/>
     </template>
+
+    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal"/>
+
     <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
       {{ $t('btn.add') }}
     </router-link>
@@ -103,8 +63,10 @@ export default {
   name: 'WidgetTeam',
 
   components: {
-    Widget: () => import('./WidgetWrapper.vue'),
+    Widget: () => import('../WidgetWrapper.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    RoleMembers: () => import('@/components/widgets/WidgetTeam/RoleMembers.vue'),
+    ProfileModal: () => import('@/components/ProfileModal.vue'),
   },
 
   data: () => ({
@@ -114,9 +76,12 @@ export default {
     others: [],
     techLead: null,
     teamLead: null,
+    designLead: null,
     director: null,
     productOwner: null,
     departmentDirector: null,
+    showProfileModal: false,
+    chosenProfileId: null,
   }),
 
   computed: {
@@ -145,6 +110,7 @@ export default {
         this.director = null;
         this.techLead = null;
         this.teamLead = null;
+        this.designLead = null;
         this.productOwner = null;
         this.departmentDirector = null;
 
@@ -161,6 +127,8 @@ export default {
             this.techLead = employee;
           } else if (employee.position === 'teamLead') {
             this.teamLead = employee;
+          } else if (employee.position === 'designLead') {
+            this.designLead = employee;
           } else if (employee.position === 'productOwner') {
             this.productOwner = employee;
           } else if (employee.position === 'departmentDirector') {
@@ -172,17 +140,23 @@ export default {
       },
     },
   },
+
+  methods: {
+    openProfileModal(profileId) {
+      this.showProfileModal = true;
+      this.chosenProfileId = profileId;
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false;
+      this.chosenProfileId = null;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
-
-.users__list {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
-}
 
 .user__link {
   display: flex;
@@ -205,7 +179,7 @@ export default {
 .user__title {
   padding: 0.2rem;
   color: var(--color-grey-300);
-  font-weight: 500;
+  font-weight: 400;
   font-size: typography.$font-size-2;
   letter-spacing: -0.03rem;
 }
