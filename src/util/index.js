@@ -15,8 +15,10 @@ export { default as tableOfContent } from './tableOfContent';
 export { default as toastArchiveAndRevert } from './toastUtils';
 export { default as validateEmail } from './validateEmail';
 
-export const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+export const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
+export const progressText = (progress, unit) =>
+  vueI18n.t('progress.remaining', { progress: format('.1~f')(progress), unit });
 
 export const remainingKeyResultProgress = (keyResult) => {
   if (keyResult.currentValue >= keyResult.targetValue) {
@@ -26,12 +28,12 @@ export const remainingKeyResultProgress = (keyResult) => {
 
   if (keyResult.targetValue < keyResult.startValue) {
     if (!keyResult.currentValue) {
-      return vueI18n.t('progress.remaining', { progress: format('.1~f')(keyResult.startValue) });
+      return progressText(keyResult.startValue, keyResult.unit);
     }
-    return vueI18n.t('progress.remaining', { progress: format('.1~f')(keyResult.startValue - keyResult.currentValue) });
+    return progressText(keyResult.startValue - keyResult.currentValue, keyResult.unit);
   }
   if (!keyResult.currentValue) {
-    return vueI18n.t('progress.remaining', { progress: format('.1~f')(keyResult.targetValue) });
+    return progressText(keyResult.targetValue, keyResult.unit);
   }
-  return vueI18n.t('progress.remaining', { progress: format('.1~f')(keyResult.targetValue - keyResult.currentValue) });
+  return progressText(keyResult.targetValue - keyResult.currentValue, keyResult.unit);
 };

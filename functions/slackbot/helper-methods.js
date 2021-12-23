@@ -1,6 +1,7 @@
 import functions from 'firebase-functions';
-import { WebClient } from '@slack/web-api';
+import slack from '@slack/web-api';
 
+const { WebClient } = slack;
 const environment = functions.config();
 const { token } = environment.slack;
 const web = new WebClient(token);

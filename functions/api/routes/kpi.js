@@ -1,9 +1,9 @@
 import express from 'express';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
-import { body, param, matchedData } from 'express-validator';
+import validator from 'express-validator';
 
+const { body, param, matchedData } = validator;
 const router = express.Router();
-
 const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
 
 router.post('/:id', ...validate, async (req, res) => {

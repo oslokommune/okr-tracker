@@ -489,7 +489,7 @@
   "progress": {
     "title": "Progresjon {progress}",
     "done": "{progress} fullført",
-    "remaining": "{progress} gjenstår",
+    "remaining": "{progress} {unit} gjenstår",
     "remainingOf": "av {progress}",
     "completedMessages": {
       "1": "Nå er dere gode!",

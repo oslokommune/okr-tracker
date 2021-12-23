@@ -1,11 +1,11 @@
 import express from 'express';
 import { getFirestore } from 'firebase-admin/firestore';
-import { body, matchedData } from 'express-validator';
+import validator from 'express-validator';
 
 import preferences from '../../util/defaultPreferences.js';
 
+const { body, matchedData } = validator;
 const validateUser = [body('email').isEmail().trim().escape().normalizeEmail(), body('id').trim().escape()];
-
 const router = express.Router();
 
 router.post('/create', ...validateUser, async (req, res) => {
