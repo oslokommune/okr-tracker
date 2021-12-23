@@ -1,1 +1,3 @@
-export { default } from './Kpi';
+import Kpi from './Kpi';
+
+export default Kpi;

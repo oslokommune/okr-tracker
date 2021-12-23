@@ -29,7 +29,7 @@ import { mapGetters } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam.vue';
+import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetAdmin from '@/components/widgets/WidgetAdmin.vue';
 
 export default {

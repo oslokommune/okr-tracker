@@ -28,8 +28,6 @@ button,
 input,
 textarea,
 body {
-  color: var(--color-text);
-
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
@@ -88,13 +86,6 @@ body.using-mouse :focus {
   }
 }
 
-hr {
-  height: 1px;
-  margin: 1rem 0;
-  background: var(--color-grey-100);
-  border: none;
-}
-
 .main {
   position: relative;
   width: span(12);
@@ -145,7 +136,7 @@ hr {
   --color-blue-light: #b3f5ff;
   --color-blue-light-2: #b2d2d8;
   --color-purple: #292858;
-  --color-purple-dark: #1f1e43;
+  --color-purple-dark: #1F42AA;
   --color-yellow: #f8c66b;
   --color-yellow-dark: #ba944fff;
   --color-yellow-light: #d1bfae;
@@ -205,6 +196,8 @@ hr {
   --color-secondary-light: var(--color-green-light);
   --color-tertiary: var(--color-green-dark);
   --color-progress-background: var(--color-green-medium-dark);
+
+  --color-primary-rgb: var(--color-green-dark);
 }
 
 [data-theme='blue'] {
@@ -216,4 +209,6 @@ hr {
   --color-secondary-light: var(--color-blue-light);
   --color-tertiary: var(--color-purple);
   --color-progress-background: var(--color-grey-550);
+
+  --color-primary-rgb: var(--color-purple-rgb);
 }

@@ -27,7 +27,6 @@
                 <span class="form-label">{{ $t('keyResult.newValue') }}</span>
                 <input
                   v-model="value"
-                  class="form__field"
                   style="margin-top: 0.25rem"
                   type="number"
                   step="any"
@@ -40,7 +39,7 @@
         </form>
       </validation-observer>
       <div class="modal__footer">
-        <button form="modal" :disabled="loading || (!changes && !unsavedValues)" class="btn btn--sec">Oppdater</button>
+        <button form="modal" :disabled="loading || (!changes && !unsavedValues)" class="btn btn--ods">Oppdater</button>
       </div>
     </div>
   </div>
