@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" class="profileModal__overlay " @click.self="close">
+  <div v-if="user" class="overlay" @click.self="close">
 
     <div class="modal__main--flex" :class="me ? 'profileModal__upper-right' : 'profileModal__centered'">
       <div v-if="me" class="closeBtn" >
@@ -16,7 +16,7 @@
               rules="required"
               :disabled="!me"
               @input="edit"
-              class="profileModal__input"
+              class="form__field"
             />
           </form>
         </validation-observer>
@@ -86,13 +86,13 @@
         </div>
         <div v-if="me" class="sidebar__group sidebar__bottom button-col">
           <theme-toggle />
-          <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="modal__link">
+          <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon btn--icon-pri">
             <span>{{ $t('general.admin') }}</span>
           </router-link>
-          <router-link :to="{ name: 'Help' }" class="modal__link">
+          <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon btn--icon-pri">
             <span>{{ $t('general.help') }}</span>
           </router-link>
-          <button class="modal__link" @click="signOut">
+          <button class="btn btn--ter btn--icon btn--icon-pri" @click="signOut">
             <span class="">{{ $t('general.signOut') }}</span>
           </button>
         </div>
@@ -107,236 +107,208 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
 
-  export default {
-    name: 'profileModal',
+export default {
+  name: 'profileModal',
 
-    components: {
-      ThemeToggle,
+  components: {
+    ThemeToggle,
+  },
+
+  props: {
+    myProfile: {
+      type: Boolean,
+      required: false,
+      default: false
     },
 
-    props: {
-      myProfile: {
-        type: Boolean,
-        required: false,
-        default: false
-      },
+    id: {
+      type: String,
+      required: true,
+    }
+  },
 
-      id: {
-        type: String,
-        required: true,
-      }
+  data: () => ({
+    user: null,
+    products: [],
+    audit: [],
+    image: null,
+    loading: false,
+    changes: false,
+    thisUser: null,
+    languages: ['nb-NO', 'en-US'],
+    jobPositions,
+  }),
+
+  computed: {
+    me() {
+      return this.$store.state.user?.id === this.user?.id;
     },
+  },
 
-    data: () => ({
-      user: null,
-      products: [],
-      audit: [],
-      image: null,
-      loading: false,
-      changes: false,
-      thisUser: null,
-      languages: ['nb-NO', 'en-US'],
-      jobPositions,
-    }),
+  watch: {
+    id: {
+      immediate: true,
+      async handler(id) {
+        const userRef = await db.doc(`users/${id}`);
+        const productsRef = await db
+          .collection('products')
+          .where('team', 'array-contains', userRef)
+          .where('archived', '==', false);
+        const auditRef = await db.collection('audit').where('user', '==', userRef).orderBy('timestamp', 'desc').limit(10);
 
-    computed: {
-      me() {
-        return this.$store.state.user?.id === this.user?.id;
-      },
-    },
-
-    watch: {
-      id: {
-        immediate: true,
-        async handler(id) {
-          const userRef = await db.doc(`users/${id}`);
-          const productsRef = await db
-            .collection('products')
-            .where('team', 'array-contains', userRef)
-            .where('archived', '==', false);
-          const auditRef = await db.collection('audit').where('user', '==', userRef).orderBy('timestamp', 'desc').limit(10);
-
-          this.$bind('user', userRef);
-          this.$bind('products', productsRef, { maxRefDepth: 1 });
-          this.$bind('audit', auditRef, { maxRefDepth: 1 });
-        },
-      },
-      user: {
-        immediate: true,
-        handler() {
-          if (this.user) {
-            this.thisUser = { ...this.user, id: this.user.id };
-          }
-        },
+        this.$bind('user', userRef);
+        this.$bind('products', productsRef, { maxRefDepth: 1 });
+        this.$bind('audit', auditRef, { maxRefDepth: 1 });
       },
     },
-
-    methods: {
-      ...mapActions(['reset_state']),
-
-      async save() {
-        this.loading = true;
-        try {
-          await User.update(this.thisUser);
-          await this.$router.go();
-          this.$toasted.show(this.$t('toaster.savedChanges'));
-        } catch (error) {
-          console.error(error);
-          this.$toasted.error(this.$t('toaster.error.save'));
+    user: {
+      immediate: true,
+      handler() {
+        if (this.user) {
+          this.thisUser = { ...this.user, id: this.user.id };
         }
-
-        this.loading = false;
-        this.changes = false;
-      },
-
-      async signOut() {
-        await auth.signOut();
-        await this.reset_state();
-      },
-
-      edit() {
-        this.changes = true;
-      },
-
-      close() {
-        this.$emit('close');
       },
     },
-  };
+  },
+
+  methods: {
+    ...mapActions(['reset_state']),
+
+    async save() {
+      this.loading = true;
+      try {
+        await User.update(this.thisUser);
+        await this.$router.go();
+        this.$toasted.show(this.$t('toaster.savedChanges'));
+      } catch (error) {
+        console.error(error);
+        this.$toasted.error(this.$t('toaster.error.save'));
+      }
+
+      this.loading = false;
+      this.changes = false;
+    },
+
+    async signOut() {
+      await auth.signOut();
+      await this.reset_state();
+    },
+
+    edit() {
+      this.changes = true;
+    },
+
+    close() {
+      this.$emit('close');
+    },
+  },
+};
 </script>
+
 <style lang="scss" scoped>
-  @use '@/styles/typography';
+@use '@/styles/typography';
 
-  .profileModal__upper-right {
-    position: fixed;
-    top: 4.5rem;
-    right: 0.5rem;
-  }
+.profileModal__upper-right {
+  position: fixed;
+  top: 4.5rem;
+  right: 0.5rem;
+}
 
-  .fa-white {color: white;}
+.fa-white {
+  color: white;
+}
 
-  .profileModal__centered {
-    position: fixed;
-    horiz-align: center;
-    vertical-align: center;
-  }
+.profileModal__centered {
+  position: fixed;
+  horiz-align: center;
+  vertical-align: center;
+}
 
-  .closeBtn {
-    position:fixed;
-    top:1rem;
-    right: 1.5rem;
-    z-index: 1002;
-    display: block;
-    float:right;
-    font-size: 1.5rem;
-  }
+.closeBtn {
+  position:fixed;
+  top:1rem;
+  right: 1.5rem;
+  z-index: 1002;
+  display: block;
+  float:right;
+  font-size: 1.5rem;
+}
 
-  .profileModal__overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100%;
-    overflow-y: auto;
-    background: rgba(black, 0.5);
-  }
+.profileModal__heading {
+  padding: 1rem 0;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 
-  .profileModal__heading {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
+.profile__admin {
+  padding: 1rem 0;
+}
 
-  .profile__admin {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
+.profileModal__label {
+  display: inline-block;
+  margin: 0.8rem 0 0.5rem 0;
+  color: var(--color-grey-300);
+  font-weight: 500;
+  font-size: typography.$font-size-2;
+  letter-spacing: -0.03rem;
+}
 
-  .profileModal__label {
-    display: inline-block;
-    margin-top: 0.8rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-grey-300);
-    font-weight: 500;
-    font-size: typography.$font-size-2;
-    letter-spacing: -0.03rem;
-  }
+.profileModal__input {
+  width: 100%;
+  padding: 0.7rem;
+  background: var(--color-grey-50);
+  border-radius: 0;
+}
 
-  .profileModal__input {
-    width: 100%;
-    padding: 0.7rem;
-    background: var(--color-grey-50);
-    border-radius: 0;
-  }
+.modal__main--flex {
+  z-index: 100;
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  width: 100%;
+  max-width: 550px;
+  max-height: calc(100vh - 10px);
+  padding: 3rem 0 3rem 3rem;
+  overflow-y: auto;
+  color: var(--color-text);
+  background: white;
+  border-radius: 1px;
+  box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
 
-  .modal__link {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    padding-left: 0rem;
-    text-align: left;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      font-weight: bold;
-    }
-  }
-
-  .modal__main--flex {
-    z-index: 100;
-    display: flex;
-    flex-basis: 100%;
-    flex-direction: column;
-    max-height: calc(100vh - 10px);
-    padding: 3rem 0 3rem 3rem;
-    overflow-y: auto;
-    color: var(--color-text);
-    background: white;
-    border-radius: 1px;
-    box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
-
-    @media screen and (min-width: bp(s)){
-      flex-direction: row;
-    }
-  }
-
-  .column {
-    flex-grow: 2;
-    min-width: 50%;
-    padding: 0 3rem 0 0;
-  }
-
-  .profileModal__save-button {
-    display: flex;
+  @media screen and (min-width: bp(s)){
     flex-direction: row;
-    justify-content: flex-end;
-    width: 100%;
-    margin-top: 4rem;
-    padding-bottom: 1.5rem;
   }
+}
 
-  .product__parent {
-    margin-bottom: 1rem;
-  }
+.column {
+  flex-grow: 2;
+  min-width: 50%;
+  padding: 0 3rem 0 0;
+}
 
-  .product {
-    margin-bottom: 1rem;
-    padding: 0.75rem 0.75rem 0.6rem 0.75rem;
-    color: var(--color-text);
-    font-weight: 500;
-    border: 1px solid black;
-    border-radius: 0px;
-  }
+.profileModal__save-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 4rem;
+  padding-bottom: 1.5rem;
+}
 
-  .btn--label {
-    color: var(--color-text-secondary);
-  }
+.product__parent {
+  margin-bottom: 1rem;
+}
+
+.product {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.75rem 0.6rem 0.75rem;
+  color: var(--color-text);
+  font-weight: 500;
+  border: 1px solid black;
+  border-radius: 0px;
+}
+
+.btn--label {
+  color: var(--color-text-secondary);
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button__link"
+    class="btn btn--ter btn--icon btn--icon-pri"
     :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
     @click="handleClick"
   >
@@ -62,17 +62,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-  .button__link {
-    padding: 0;
-    text-align: left;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      font-weight: bold;
-    }
-  }
-
-</style>

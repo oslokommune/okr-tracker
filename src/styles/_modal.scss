@@ -23,10 +23,19 @@
   max-width: 550px;
   max-height: 100%;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
+  overflow-y: auto;
   color: var(--color-text-secondary);
   background-color: var(--color-primary);
   border-radius: 0.8rem;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
+
+  scrollbar-width: none;  /* Hide scrollbar styles Firefox */
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
 
   &__header {
     display: flex;

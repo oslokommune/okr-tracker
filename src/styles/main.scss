@@ -13,6 +13,7 @@
 @use 'tooltip';
 @use 'admin';
 @use 'alerts';
+@use 'vSelect';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);

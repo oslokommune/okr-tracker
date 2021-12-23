@@ -13,31 +13,9 @@ textarea {
   border: 1px solid var(--color-text-secondary);
 
   &:disabled {
-    color: var(--color-grey-500);
+    color: var(--color-text);
     background: var(--color-grey-100);
     cursor: not-allowed;
-  }
-}
-
-.v-select {
-  width: 100%;
-  .vs__selected-options {
-    padding: 0.25rem !important;
-  }
-
-  .vs__dropdown-toggle {
-    min-height: 3rem !important;
-    padding-right: 0.5rem;
-    background: var(--color-grey-50);
-    border: 0;
-    border-radius: 0;
-  }
-
-  .vs__selected {
-    margin-right: 0.25rem;
-    padding: 0.25rem 0.75rem !important;
-    background: white;
-    border-radius: 0.5rem
   }
 }
 
@@ -124,7 +102,7 @@ textarea {
     background: none;
 
     &:focus ~ .toggle__switch {
-      background: var(--color-link) !important;
+      background: var(--color-primary) !important;
       outline: 4px solid var(--color-primary);
     }
 

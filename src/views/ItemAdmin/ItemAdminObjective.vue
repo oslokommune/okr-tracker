@@ -32,7 +32,7 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select v-model="objective.icon" class="form-field" :options="icons" @input="edit">
+          <v-select v-model="objective.icon" :options="icons" @input="edit">
             <template #selected-option="{ label }">
               <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
               {{ label }}
