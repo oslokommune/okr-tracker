@@ -7,10 +7,10 @@
       </div>
 
       <div class="column">
-        <div class="profileModal__heading">{{ $t('user.profile')}}</div>
+        <h2 class="title-2">{{ $t('user.profile')}}</h2>
         <validation-observer v-slot="{ handleSubmit }">
           <form id="updateUser" @submit.prevent="handleSubmit(save)">
-            <span class="profileModal__label">{{ $t('fields.name') }}</span>
+            <span class="form-label">{{ $t('fields.name') }}</span>
             <input
               v-model="thisUser.displayName"
               rules="required"
@@ -21,7 +21,7 @@
           </form>
         </validation-observer>
         <label class="form-group">
-          <span class="profileModal__label">{{ $t('user.position.title') }}</span>
+          <span class="form-label">{{ $t('user.position.title') }}</span>
           <v-select
             v-if="me || $store.state.user.superAdmin"
             v-model="thisUser.position"
@@ -38,7 +38,7 @@
           </div>
         </label>
         <label v-if="me" class="form-group">
-          <span class="profileModal__label">{{ $t('user.selectLanguage') }}</span>
+          <span class="form-label">{{ $t('user.selectLanguage') }}</span>
           <v-select
             v-model="thisUser.preferences.lang"
             :options="languages"
@@ -47,64 +47,64 @@
           >
           </v-select>
         </label>
-        <div v-if="me || $store.state.user.superAdmin" class="profileModal__save-button">
-          <button class="btn btn--sec" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
-        </div>
+
+        <button v-if="me || $store.state.user.superAdmin" class="btn btn--sec profileModal__save-button" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
       </div>
+
       <div class="column">
-        <div v-if="me" class="profileModal__heading">
+        <hr class="divider desktop-only"/>
+
+        <h3 v-if="me" class="title-2">
           {{ $t('user.access') }}
-        </div>
+        </h3>
+
         <template v-if="me && user.superAdmin">
-          <div class="profile__admin">
-            <h2 class="title-2">{{ $t('user.superAdmin') }}</h2>
-            <div>{{ $t('user.hasSuperAdmin') }}</div>
-          </div>
+          <h2 class="title-2">{{ $t('user.superAdmin') }}</h2>
+          <div>{{ $t('user.hasSuperAdmin') }}</div>
         </template>
 
         <template v-if="me && user.admin && user.admin.length > 0">
-          <div class="profile__admin">
-            <h2 class="title-2">{{ $t('user.admin') }}</h2>
-            <div>{{ $t('user.hasAdmin') }}</div>
-          </div>
+          <h2 class="title-2">{{ $t('user.admin') }}</h2>
+          <div>{{ $t('user.hasAdmin') }}</div>
         </template>
 
-        <hr />
+        <hr v-if="me" class="divider"/>
 
-        <div class="profileModal__heading">
+        <h3 class="title-2">
           {{ me? $t('user.myProducts') : $t('user.products')}}
-        </div>
+        </h3>
 
-        <div>
-          <ul>
-            <li v-for="product in products" :key="product.id">
-              <div class="profileModal__label">{{ product.department.name }}</div>
-              <div class="product">{{ product.name }}</div>
-            </li>
-          </ul>
-        </div>
+        <ul v-if="products.length > 0">
+          <li v-for="product in products" :key="product.id">
+            <div class="profileModal__label">{{ product.department.name }}</div>
+            <div class="product">{{ product.name }}</div>
+          </li>
+        </ul>
 
-        <hr />
 
-        <theme-toggle />
+        <template v-if="me">
+          <hr class="divider"/>
 
-        <hr />
+          <theme-toggle />
 
-        <div v-if="me" class="profileModal__heading">
-          {{ $t('general.admin') }}
-        </div>
+          <hr class="divider"/>
 
-        <div v-if="me" class="sidebar__group sidebar__bottom button-col">
-          <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon btn--icon-pri">
-            <span>{{ $t('general.admin') }}</span>
-          </router-link>
-          <router-link :to="{ name: 'Help' }" class="btn btn--ter btn--icon btn--icon-pri">
-            <span>{{ $t('general.help') }}</span>
-          </router-link>
-          <button class="btn btn--ter btn--icon btn--icon-pri" @click="signOut">
-            <span class="">{{ $t('general.signOut') }}</span>
-          </button>
-        </div>
+          <h3 class="title-2">
+            {{ $t('general.administration') }}
+          </h3>
+
+          <div class="sidebar__group sidebar__bottom button-col">
+            <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter button-link">
+              <span>{{ $t('general.admin') }}</span>
+            </router-link>
+            <router-link :to="{ name: 'Help' }" class="btn btn--ter button-link">
+              <span>{{ $t('general.help') }}</span>
+            </router-link>
+            <button class="btn btn--ter btn--icon btn--icon-pri button-link" @click="signOut">
+              <span class="">{{ $t('general.signOut') }}</span>
+            </button>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -117,7 +117,7 @@ import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
 
 export default {
-  name: 'profileModal',
+  name: "ProfileModal",
 
   components: {
     ThemeToggle,
@@ -234,23 +234,13 @@ export default {
 }
 
 .closeBtn {
-  position:fixed;
-  top:1rem;
+  position: fixed;
+  top: 1rem;
   right: 1.5rem;
   z-index: 1002;
   display: block;
-  float:right;
+  float: right;
   font-size: 1.5rem;
-}
-
-.profileModal__heading {
-  padding: 1rem 0;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.profile__admin {
-  padding: 1rem 0;
 }
 
 .profileModal__label {
@@ -275,10 +265,10 @@ export default {
   flex-basis: 100%;
   flex-direction: column;
   width: 100%;
-  max-width: 550px;
+  max-width: 600px;
   max-height: calc(100vh - 10px);
   padding: 3rem 0 3rem 3rem;
-  overflow-y: auto;
+  overflow: auto;
   color: var(--color-text);
   background: white;
   border-radius: 1px;
@@ -287,25 +277,26 @@ export default {
   @media screen and (min-width: bp(s)){
     flex-direction: row;
   }
+
+  scrollbar-width: none;  /* Hide scrollbar styles Firefox */
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .column {
+  display: flex;
+  flex-direction: column;
   flex-grow: 2;
   min-width: 50%;
   padding: 0 3rem 0 0;
 }
 
 .profileModal__save-button {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 100%;
-  margin-top: 4rem;
-  padding-bottom: 1.5rem;
-}
-
-.product__parent {
-  margin-bottom: 1rem;
+  align-self: end;
+  margin-top: 1rem;
 }
 
 .product {
@@ -317,7 +308,27 @@ export default {
   border-radius: 0px;
 }
 
-.btn--label {
-  color: var(--color-text-secondary);
+.divider {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-grey-100);
 }
+
+.button-link {
+  padding-left: 0;
+  color: var(--color-text);
+  background: transparent;
+  border-style: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.desktop-only {
+  @media screen and (min-width: bp(m)) {
+    display: none;
+  }
+}
+
 </style>
