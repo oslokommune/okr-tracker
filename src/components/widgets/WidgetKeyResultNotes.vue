@@ -2,7 +2,9 @@
   <widget :title="$t('keyResultsPage.notes.heading')">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
-        <textarea v-model="thisKey.notes" rows="20" @input="dirty = true" />
+        <label>
+          <textarea class="form__field" v-model="thisKey.notes" rows="20" @input="dirty = true" />
+        </label>
       </div>
 
       <div v-else class="notes--margin-bottom">

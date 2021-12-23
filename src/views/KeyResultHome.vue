@@ -2,7 +2,7 @@
   <div v-if="activeKeyResult" class="container">
     <div class="widgets--left">
       <router-link
-        class="btn btn--ter btn--icon widget__back-button"
+        class="btn widget__back-button"
         :to="previousUrl ? previousUrl : { name: 'ItemHome', params: { slug: activeKeyResult.parent.slug } }"
       >
         {{ $t('general.back') }}

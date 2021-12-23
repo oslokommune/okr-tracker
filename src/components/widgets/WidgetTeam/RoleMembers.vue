@@ -47,17 +47,9 @@ export default {
   margin-bottom: 1rem;
 }
 
-.user__link {
-  display: flex;
-  align-items: center;
-  color: var(--color-text);
-  font-weight: 500;
-  text-decoration: none;
-  word-break: break-all;
-}
-
 .user {
   padding: 0.2rem;
+  cursor: pointer;
 
   &:hover {
     background: rgba(var(--color-grey-500-rgb), 0.1);

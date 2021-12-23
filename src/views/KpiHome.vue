@@ -2,7 +2,7 @@
   <div v-if="activeKpi" class="container">
     <div class="widgets--left">
       <router-link
-        class="btn btn--icon widget__back-button"
+        class="btn widget__back-button"
         :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
       >
         {{ $t('general.back') }}

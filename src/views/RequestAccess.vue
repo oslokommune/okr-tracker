@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="login">
+    <div class="main__second">
       <div class="back">
-        <router-link class="btn btn--icon btn--ghost" :to="{ name: 'Login' }">
+        <router-link class="btn btn--sec btn--icon" :to="{ name: 'Login' }">
           <i class="icon fa-xs fa fa-fw fa-chevron-left" />
           {{ $t('login.backToLogin') }}
         </router-link>
@@ -10,9 +10,9 @@
       <h2 class="title-1">{{ $t('login.requestAccess') }}</h2>
 
       <form @submit.prevent="send">
-        <label class="form-field">
+        <label class="form__group">
           <span class="form-label">{{ $t('login.email') }}</span>
-          <input v-model="email" class="field" type="email" required data-cy="request-input" />
+          <input v-model="email" class="form__field" type="email" required data-cy="request-input" />
         </label>
         <button class="btn btn--pri" :disabled="loading" data-cy="request-btn">{{ $t('login.requestButton') }}</button>
       </form>
@@ -57,35 +57,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login {
-  display: flex;
-  flex-direction: column;
-  width: span(24);
-  padding: 2rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
-
-  @media screen and (min-width: bp(s)) {
-    width: span(6);
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(4);
-    margin-left: span(3, 1);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(4);
-    margin-left: span(2, 1);
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(4);
-    margin-left: span(3, 1);
-  }
-}
-
 .back {
   margin-bottom: 1rem;
 }

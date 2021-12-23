@@ -154,33 +154,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@use '@/styles/typography';
-
-.user__link {
-  display: flex;
-  align-items: center;
-  color: var(--color-text);
-  font-weight: 500;
-  text-decoration: none;
-  word-break: break-all;
-}
-
-.user {
-  padding: 0.2rem;
-  word-break: break-all;
-
-  &:hover {
-    background: rgba(var(--color-grey-500-rgb), 0.1);
-  }
-}
-
-.user__title {
-  padding: 0.2rem;
-  color: var(--color-grey-300);
-  font-weight: 400;
-  font-size: typography.$font-size-2;
-  letter-spacing: -0.03rem;
-}
-</style>

@@ -2,7 +2,7 @@
   <div v-if="activeObjective" class="container">
     <div class="widgets--left">
       <router-link
-        class="btn btn--ter btn--icon btn--icon-pri widget__back-button"
+        class="btn widget__back-button"
         :to="{ name: 'ItemHome', params: { slug: activeObjective.parent.slug } }"
       >
         {{ $t('general.back') }}

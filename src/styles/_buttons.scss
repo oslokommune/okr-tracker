@@ -27,7 +27,7 @@
   border-radius: 2px;
   cursor: pointer;
 
-  &:disabled {
+  &:disabled:not([hover]) {
     color: var(--color-grey-500);
     background-color: var(--color-grey-100);
     border: none;
@@ -76,7 +76,7 @@
 .btn--icon {
   justify-content: flex-start;
   padding-right: 1rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text);
 
   & > .icon {
     margin-right: 0.35rem;
@@ -84,12 +84,13 @@
 }
 
 .btn--icon-pri {
-  color: var(--color-text);
+  color: var(--color-text-secondary);
 }
 
 .btn--ter {
   background: none;
-  &:hover {
+
+  &:hover:not([disabled]) {
     background: rgba(var(--color-grey-500-rgb), 0.1);
   }
 
