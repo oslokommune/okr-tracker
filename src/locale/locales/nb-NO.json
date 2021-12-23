@@ -7,7 +7,7 @@
       "blue": "Blå",
       "green": "Grønn"
     },
-    "toggle": "Skift fargetema: {mode}",
+    "header": "Tilpass",
     "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {

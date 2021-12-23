@@ -69,6 +69,8 @@
           </div>
         </template>
 
+        <hr />
+
         <div class="profileModal__heading">
           {{ me? $t('user.myProducts') : $t('user.products')}}
         </div>
@@ -81,11 +83,18 @@
             </li>
           </ul>
         </div>
+
+        <hr />
+
+        <theme-toggle />
+
+        <hr />
+
         <div v-if="me" class="profileModal__heading">
           {{ $t('general.admin') }}
         </div>
+
         <div v-if="me" class="sidebar__group sidebar__bottom button-col">
-          <theme-toggle />
           <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter btn--icon btn--icon-pri">
             <span>{{ $t('general.admin') }}</span>
           </router-link>

@@ -1,11 +1,18 @@
 <template>
-  <button
-    class="btn btn--ter btn--icon btn--icon-pri"
-    :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
-    @click="handleClick"
-  >
-    <span>{{ $t('theme.toggle', { mode: $t(`theme.colors.${mode}`) }) }}</span>
-  </button>
+  <div>
+    <h2 class="title-2">{{ $t('theme.header') }}</h2>
+    <div v-for="mode in modes" :key="mode.id" class="ods-form-group">
+      <input
+        type="radio"
+        :id="mode.id"
+        class="ods-form-radio"
+        name="radio-group"
+        :checked="theme === mode.id"
+        @click="setThemeMode(mode.id)"
+      />
+      <label class="ods-form-label" :for="mode.id">{{ $t(`theme.colors.${mode.id}`) }}</label>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -23,37 +30,24 @@ export default {
   },
 
   data: () => ({
-    mode: 'blue',
+    selectedMode: 'blue',
+    modes: [
+      { id: 'blue' },
+      { id: 'green' },
+    ]
   }),
 
   computed: {
     ...mapState(['theme', 'LS_MODE']),
-
-    nextThemeMode() {
-      if (this.theme === 'blue') {
-        return 'green';
-      }
-      return 'blue';
-    },
   },
 
   methods: {
     ...mapActions(['setTheme']),
 
-    handleClick() {
-       if (this.theme === 'blue') {
-        this.mode = 'green';
-      } else {
-        this.mode = 'blue';
-      }
-
-      this.setThemeMode();
-    },
-
-    setThemeMode() {
-      this.saveThemeMode(this.mode);
-      this.setTheme(this.mode);
-      document.body.setAttribute('data-theme', this.mode);
+    setThemeMode(mode) {
+      this.saveThemeMode(mode);
+      this.setTheme(mode);
+      document.body.setAttribute('data-theme', mode);
     },
 
     saveThemeMode(mode) {

@@ -7,7 +7,7 @@
       "blue": "Blue",
       "green": "Green"
     },
-    "toggle": "Toggle theme: {mode}",
+    "header": "Customize",
     "aria": "Current theme is {current}, next theme is {next}"
   },
   "kpi": {

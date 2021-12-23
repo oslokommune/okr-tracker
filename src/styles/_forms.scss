@@ -178,3 +178,57 @@ textarea {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+
+.ods-form {
+  &-group {
+    margin-bottom: 0.6rem;
+
+    &:focus-within {
+      color: var(--color-primary);
+    }
+  }
+
+  &-label {
+    width: 100%;
+    line-height: 24px;
+  }
+
+  &-radio {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0.125rem 0.25rem 0 0;
+    padding: 0;
+    vertical-align: top;
+    background-color: var(--color-white);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    transition: all 0.3s ease-out;
+    appearance: none;
+
+    &:hover {
+      border-color: var(--color-primary);
+    }
+
+    &:active {
+      border-color: var(--color-primary);
+      outline: 2px solid var(--color-primary);
+    }
+
+    &:focus {
+      border-color: var(--color-primary);
+      outline: 2px solid var(--color-primary-dark);
+    }
+
+    &:checked {
+      &[type='radio'] {
+        background-color: var(--color-white);
+        border: 6px solid var(--color-primary);
+      }
+    }
+  }
+}

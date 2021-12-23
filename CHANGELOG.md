@@ -4,14 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+REDESIGN REJOICE!
+
+We have been working tirelessly for the last couple of months to give you a new design. We have tried to make it more robust, better UX for our users and a better navigation. Some information has been lifted, to give the user better information fo their objectives and key results, and easier to update them respectively.
+
 ### Added
 
 - Redesign: new design in all the right places. Giving the users a better way of showing the Objectives and Key Results
 - Content Loaders! We have added content loaders to some of our components and hopefully this will increase the UX for our users
+- Side menu has been changed to a drawer
 
 ### Removed
 
-- Breadcrumbs: it has been fun, but you are no longer welcomed
+- Breadcrumbs: it has been fun, but you are no longer welcome
 
 ## [2.6.1] 2021-11-10
 
