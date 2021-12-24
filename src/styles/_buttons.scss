@@ -16,7 +16,7 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.8rem 0.5rem;
   color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
@@ -104,9 +104,9 @@
 }
 
 .btn--ghost {
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   background: none;
-  border: 1px solid var(--color-white);
+  border: 1px solid var(--color-primary);
 
   &.btn--negative {
     color: var(--color-white);

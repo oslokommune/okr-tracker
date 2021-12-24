@@ -186,7 +186,7 @@
       </button>
       <button
         v-if="!keyResult.archived"
-        class="btn btn--icon btn--danger btn--icon-pri"
+        class="btn btn--icon btn--danger"
         :disabled="loading"
         @click="archive"
       >

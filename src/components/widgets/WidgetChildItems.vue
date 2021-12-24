@@ -5,7 +5,7 @@
         v-for="child in children"
         :key="child.id"
         :to="{ name: 'ItemHome', params: { slug: child.slug } }"
-        class="list__link btn btn--ter btn--fw btn--icon btn--icon-pri"
+        class="list__link btn btn--ter btn--fw btn--icon"
       >
         <i class="icon fa fa-fw fa-chevron-right" />
         {{ child.name }}

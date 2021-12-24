@@ -12,7 +12,7 @@
       <div v-click-outside="hideUserMenu" data-cy="usermenu">
         <button
           v-if="user"
-          class="btn btn--ter btn--icon"
+          class="btn btn--ter btn--icon btn--icon-pri"
           :class="{ active: showUserMenu }"
           :hidden="showProfileIcon"
           @click="openProfileModal"

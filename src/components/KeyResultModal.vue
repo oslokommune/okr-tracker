@@ -3,7 +3,7 @@
     <div class="modal modal__key-result">
       <div class="modal__header">
         <h2 class="title-2" style="text-transform: uppercase">Ny verdi</h2>
-        <button class="btn btn--ter btn--close btn--icon" @click="close">
+        <button class="btn btn--ter btn--close btn--icon btn--icon-pri" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>

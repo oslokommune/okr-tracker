@@ -106,7 +106,7 @@
             {{ $t('btn.saveChanges') }}
           </button>
           <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
-          <button class="btn btn--icon btn--icon-pri btn--ghost" :form="`kpi_${localKpi.id}`"><i class="fas fa-sync" /></button>
+          <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`"><i class="fas fa-sync" /></button>
         </div>
       </form>
     </validation-observer>

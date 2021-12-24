@@ -22,10 +22,10 @@
             <flat-pickr
               v-model="range"
               :config="flatPickerConfig"
-              class="form-control cy-datepicker"
+              class="form-control flatpickr-input"
               name="date"
               placeholder="Velg start- og sluttdato"
-            ></flat-pickr>
+            />
           </label>
           <span class="form-field--error">{{ errors[0] }}</span>
         </validation-provider>
@@ -33,13 +33,13 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading || !changes">
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-period" data-cy="save_period" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
       <button
         v-if="!activePeriod.archived"
-        class="btn btn--icon btn--danger btn--icon-pri"
+        class="btn btn--icon btn--danger"
         :disabled="loading"
         @click="archive"
       >

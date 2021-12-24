@@ -30,9 +30,12 @@ input,
 textarea,
 body {
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;
-  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  line-height: 1.1;
 }
 
 html {

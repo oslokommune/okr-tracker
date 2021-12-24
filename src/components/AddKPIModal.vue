@@ -3,7 +3,7 @@
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">{{ $t('kpi.add') }}</h2>
-        <button class="btn btn--ter btn--close btn--icon" @click="close">
+        <button class="btn btn--ter btn--close btn--icon btn--icon-pri" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>

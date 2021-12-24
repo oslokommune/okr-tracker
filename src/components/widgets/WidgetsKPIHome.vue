@@ -8,13 +8,13 @@
           <flat-pickr
             v-model="widgetRange"
             :config="flatPickerConfig"
-            class="form-control cy-datepicker"
+            class="form-control flatpickr-input"
             name="date"
             placeholder="Velg start- og sluttdato"
           ></flat-pickr>
         </label>
 
-        <button class="btn btn--icon btn--sec" :disabled="!widgetRange" @click="widgetRange = null">
+        <button class="btn btn--sec" :disabled="!widgetRange" @click="widgetRange = null">
           {{ $t('btn.reset') }}
         </button>
       </widget>
