@@ -180,7 +180,7 @@
     </label>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-keyResult" :disabled="loading || !changes">
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-keyResult" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>

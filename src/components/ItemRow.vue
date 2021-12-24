@@ -1,12 +1,13 @@
 <template>
-  <div style="display: flex; align-items: center">
+  <div style="display: flex; align-items: center; padding: 0 1rem;">
     <router-link
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
       style="width: 100%"
       class="item"
+      :class="{ 'item--organization': type === 'organization', 'item--department': type === 'department' }"
     >
       <span v-if="type === 'product'" class="indent" />
-      <i v-if="type" class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+      <i v-if="type !== 'organization'" class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
       <span class="item__name" :class="`item__font--${type}`">
         {{ data.name }}
@@ -75,8 +76,6 @@ export default {
           return 'cube';
         case 'department':
           return 'cubes';
-        case 'organization':
-          return 'industry';
         default:
           return '';
       }
@@ -259,6 +258,12 @@ export default {
 }
 
 .item__font--organization {
+  font-weight: 500;
+  font-size: typography.$font-size-3;
+  text-transform: uppercase;
+}
+
+.item__font--department {
   font-weight: 500;
   font-size: typography.$font-size-3;
 }

@@ -73,7 +73,7 @@ export default {
     weights: {
       immediate: true,
       handler(weights) {
-        const maxValue = max([1.5, max(weights, ({ weight }) => weight)]);
+        const maxValue = max([0, max(weights, ({ weight }) => weight)]);
         this.scale.domain([0, maxValue]);
       },
     },

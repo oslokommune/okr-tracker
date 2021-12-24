@@ -41,7 +41,7 @@
       </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading" data-cy="btn-createOrg">
+        <button class="btn btn--icon btn--pri btn--icon-pri" form="createOrganization" :disabled="loading" data-cy="btn-createOrg">
           <i class="icon fa fa-fw fa-save" />
           {{ $t('btn.create') }}
         </button>
