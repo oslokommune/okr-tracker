@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.7.0] 2021-12-XX
+
 REDESIGN REJOICE!
 
 We have been working tirelessly for the last couple of months to give you a new design. We have tried to make it more robust, better UX for our users and a better navigation. Some information has been lifted, to give the user better information fo their objectives and key results, and easier to update them respectively.
@@ -17,6 +19,12 @@ We have been working tirelessly for the last couple of months to give you a new 
 ### Removed
 
 - Breadcrumbs: it has been fun, but you are no longer welcome
+
+## [2.6.2] 2021-12-09
+
+### Fixed
+
+- Cloud Functions: automatic backup and restore of the database has apparently not been working for a month
 
 ## [2.6.1] 2021-11-10
 
