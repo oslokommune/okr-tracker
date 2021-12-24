@@ -35,10 +35,6 @@
     opacity: 0.6;
     filter: saturate(0.5);
   }
-
-  &:hover:not([disabled]) {
-    text-decoration: underline;
-  }
 }
 
 .btn--danger {
