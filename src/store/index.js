@@ -94,6 +94,21 @@ export const getters = {
       { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
     ];
   },
+
+  hasCheckedOrganizations: (state) => {
+    const { organizations, user } = state;
+    const orgs = user.preferences.home.collapse.organization;
+
+    const checked = [];
+
+    organizations.forEach(org => {
+      if (orgs[org.slug]) {
+        checked.push(orgs[org.slug]);
+      }
+    })
+
+    return checked.length > 0;
+  }
 };
 
 export const actions = {

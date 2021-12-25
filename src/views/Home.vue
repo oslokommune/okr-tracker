@@ -36,19 +36,24 @@
       </ul>
     </widget>
     <ul v-if="user" class="home">
-      <li v-for="org in tree" :key="org.id" class="tree">
-        <item-row :data="org" class="tree__organization" type="organization"></item-row>
-        <ul v-if="getCollapse('organization', org.slug)">
-          <li v-for="dept in org.children" :key="dept.id" class="card">
-            <item-row :data="dept" type="department"></item-row>
-            <ul v-if="getCollapse('department', dept.slug)">
-              <li v-for="prod in dept.children" :key="prod.id">
-                <item-row :data="prod" type="product"></item-row>
-              </li>
-            </ul>
-          </li>
-        </ul>
+      <li v-if="!hasCheckedOrganizations" class="tree empty-state">
+        {{ $t('general.emptyHome')}}
       </li>
+      <template v-for="org in tree">
+        <li v-if="getCollapse('organization', org.slug)" :key="org.id" class="tree">
+          <item-row :data="org" class="tree__organization" type="organization"></item-row>
+          <ul>
+            <li v-for="dept in org.children" :key="dept.id" class="card">
+              <item-row :data="dept" type="department"></item-row>
+              <ul v-if="getCollapse('department', dept.slug)">
+                <li v-for="prod in dept.children" :key="prod.id">
+                  <item-row :data="prod" type="product"></item-row>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </template>
     </ul>
   </div>
 </template>
@@ -66,7 +71,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['tree']),
+    ...mapGetters(['tree', 'hasCheckedOrganizations']),
     ...mapState(['user']),
   },
 
@@ -148,5 +153,9 @@ export default {
   &:last-child {
     border-bottom: none;
   }
+}
+
+.empty-state {
+  padding: 1.5rem;
 }
 </style>

@@ -119,7 +119,8 @@
     "back": "Tilbake",
     "frontPage": "Forside",
     "signIn": "Vennligst logg inn",
-    "orgs": "Virksomheter"
+    "orgs": "Virksomheter",
+    "emptyHome": "Vennligst velg en etat fra listen."
   },
   "btn": {
     "close": "Lukk",
@@ -293,7 +294,8 @@
     "navigateToItem": "Gå til {item}",
     "deleteProgress": "Slett målepunkt",
     "isMember": "Medlem av team",
-    "emptyPeriod": "Ingen aktiv periode"
+    "emptyPeriod": "Ingen aktiv periode",
+    "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet"
   },
   "document": {
     "mission": "Oppdrag"

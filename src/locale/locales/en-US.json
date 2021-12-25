@@ -122,7 +122,8 @@
     "back": "back",
     "frontPage": "Front page",
     "signIn": "Please sign in",
-    "orgs": "Organizations"
+    "orgs": "Organizations",
+    "emptyHome": "Please pick an organization."
   },
   "btn": {
     "close": "Close",
@@ -296,7 +297,8 @@
     "navigateToItem": "Go to {item}",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
-    "emptyPeriod": "No active period"
+    "emptyPeriod": "No active period",
+    "periodEnd": "You are not allowed to edit after a period has ended"
   },
   "document": {
     "mission": "Mission statement"
