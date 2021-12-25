@@ -59,6 +59,7 @@
                     style="margin-top: 0.5rem"
                     rows="3"
                     :placeholder="$t('keyResult.commentPlaceholder')"
+                    :disabled="!allowedToEditPeriod"
                     @input="edit"
                   />
                 </label>
@@ -72,6 +73,7 @@
                         style="margin-top: 0.25rem"
                         type="number"
                         step="any"
+                        :disabled="!allowedToEditPeriod"
                         @input="edit"
                       />
                       <span class="form-field--error">{{ errors[0] }}</span>
@@ -83,7 +85,7 @@
             </validation-observer>
             </div>
 
-            <button form="modal" :disabled="isSaving || !changes" class="btn btn--ods key-result__value--button">
+            <button v-if="allowedToEditPeriod" form="modal" :disabled="isSaving || !changes" class="btn btn--ods key-result__value--button">
               {{ $t('btn.save') }}
             </button>
           </div>
@@ -167,7 +169,7 @@
                       </template>
                     </v-popover>
                   </td>
-                  <td v-if="hasEditPermissions" style="width: 1rem">
+                  <td v-if="hasEditRights" style="width: 1rem">
                     <v-popover offset="16" placement="top">
                       <button class="btn btn--ter">
                         {{ $t('btn.delete') }}
@@ -189,8 +191,6 @@
     </div>
 
     <widgets-right class="aside--right" />
-
-    <modal v-if="isOpen" :key-result="activeKeyResult" @close="closeModal" />
   </div>
 </template>
 
@@ -210,7 +210,6 @@ export default {
 
   components: {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    Modal: () => import('@/components/KeyResultModal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     VPopover,
@@ -233,7 +232,6 @@ export default {
     progress: [],
     newValue: null,
     graph: null,
-    isOpen: false,
     showComments: false,
     isLoading: false,
     changes: false,
@@ -244,7 +242,7 @@ export default {
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl']),
-    ...mapGetters(['hasEditRights']),
+    ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
 
     hasComments() {
       const firstProgressWithComment = this.progress.find(({ comment }) => comment);
@@ -294,14 +292,6 @@ export default {
       }
     },
 
-    hasEditPermissions() {
-      return this.user.admin || this.activeItem.team.includes(this.user);
-    },
-
-    closeModal() {
-      this.isOpen = false;
-    },
-
     formatValue(value) {
       return numberLocale.format(',')(value);
     },
@@ -311,6 +301,8 @@ export default {
     },
 
     async saveProgress() {
+      if (!this.allowedToEditPeriod) return;
+
       this.isSaving = true;
       try {
         await Progress.create(this.activeKeyResult.id, {

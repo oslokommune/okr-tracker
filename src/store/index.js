@@ -52,6 +52,20 @@ export const getters = {
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 
+  allowedToEditPeriod: (state) => {
+    const { user, activePeriod, activeItem } = state;
+    const { organization } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? user.admin && user.admin.includes(organization.id)
+      : user.admin && user.admin.includes(activeItem.id);
+
+    if (user && user.superAdmin) return true;
+    if (isAdminOfOrganization) return true;
+
+    return activePeriod.endDate.toDate() > new Date();
+  },
+
   sidebarGroups: (state) => {
     const { organizations, departments, products, activeItem } = state;
 
