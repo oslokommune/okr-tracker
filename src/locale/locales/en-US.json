@@ -148,7 +148,8 @@
     "deletePermanently": "Delete permanently",
     "restore": "Restore",
     "confirmDeleteProgress": "Confirm delete",
-    "reset": "Reset"
+    "reset": "Reset",
+    "showMore": "Show more"
   },
   "login": {
     "login": "Sign in",

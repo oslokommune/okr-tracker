@@ -64,17 +64,6 @@ export default {
   },
 
   data: () => ({
-    flatPickerConfig: {
-      altInput: true,
-      altFormat: 'd.m.Y H:i',
-      minDate: null,
-      maxDate: null,
-      dateFormat: 'Z',
-      time_24hr: true,
-      enableTime: true,
-      locale: locale.no,
-    },
-    date: new Date(),
     note: '',
     value: 0,
     loading: false,
@@ -105,7 +94,7 @@ export default {
         await Progress.create(this.keyResult.id, {
           value: +this.value,
           comment: this.note,
-          timestamp: new Date(this.date),
+          timestamp: new Date(),
         });
         this.$toasted.show(this.$t('toaster.add.progression'));
       } catch (e) {

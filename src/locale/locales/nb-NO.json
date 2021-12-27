@@ -145,7 +145,8 @@
     "deletePermanently": "Slett permanent",
     "restore": "Gjenopprett",
     "confirmDeleteProgress": "Bekreft sletting",
-    "reset": "Nullstill"
+    "reset": "Nullstill",
+    "showMore": "Vis mer"
   },
   "login": {
     "login": "Logg inn",

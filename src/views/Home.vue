@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <widget title="Oslo kommune" class="home-widget">
+    <widget :title="appOwner" class="home-widget">
       <ul>
         <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem;">
           <div class="ods-form-group">
@@ -73,6 +73,10 @@ export default {
   computed: {
     ...mapGetters(['tree', 'hasCheckedOrganizations']),
     ...mapState(['user']),
+
+    appOwner() {
+      return import.meta.env.VITE_ORGANIZATION;
+    },
   },
 
   methods: {

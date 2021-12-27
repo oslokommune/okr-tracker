@@ -1,10 +1,7 @@
 <template>
   <div v-if="activeKpi" class="container">
     <div class="widgets--left">
-      <router-link
-        class="btn widget__back-button"
-        :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
-      >
+      <router-link class="btn widget__back-button" :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }">
         {{ $t('general.back') }}
         <i class="fa fa-chevron-left"></i>
       </router-link>
@@ -69,7 +66,7 @@
               </tr>
             </thead>
             <tbody></tbody>
-            <tr v-for="{ timestamp, value, id } in filteredProgress" :key="id">
+            <tr v-for="{ timestamp, value, id } in limitedProgress" :key="id">
               <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
               <td>{{ formatKPIValue(value) }}</td>
               <td v-if="hasEditRights" style="width: 1rem">
@@ -87,6 +84,14 @@
               </td>
             </tr>
           </table>
+          <button
+            v-if="filteredProgress.length > 10 && historyLimit !== null"
+            class="btn btn--sec"
+            style="align-self: center"
+            @click="historyLimit = null"
+          >
+            {{ $t('btn.showMore') }}
+          </button>
         </div>
       </div>
     </div>
@@ -125,11 +130,16 @@ export default {
     filteredProgress: [],
     isFiltered: false,
     isLoading: false,
+    historyLimit: 10,
   }),
 
   computed: {
     ...mapState(['activeKpi', 'activeItem']),
     ...mapGetters(['hasEditRights']),
+
+    limitedProgress() {
+      return this.historyLimit ? this.filteredProgress.slice(0, this.historyLimit) : this.filteredProgress;
+    },
   },
 
   watch: {

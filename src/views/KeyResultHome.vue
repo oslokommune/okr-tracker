@@ -145,7 +145,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="p in progress" :key="p.id">
+                <tr v-for="p in limitedProgress" :key="p.id">
                   <td>{{ p.value }}</td>
                   <td>{{ dateTimeShort(p.timestamp.toDate()) }}</td>
                   <td>
@@ -186,6 +186,14 @@
               </tbody>
             </table>
           </div>
+          <button
+            v-if="progress.length > 10 && historyLimit !== null"
+            class="btn btn--sec"
+            style="align-self: center"
+            @click="historyLimit = null"
+          >
+            {{ $t('btn.showMore') }}
+          </button>
         </div>
       </div>
     </div>
@@ -238,6 +246,7 @@ export default {
     progressNote: '',
     isSaving: false,
     value: null,
+    historyLimit: 10,
   }),
 
   computed: {
@@ -247,6 +256,10 @@ export default {
     hasComments() {
       const firstProgressWithComment = this.progress.find(({ comment }) => comment);
       return firstProgressWithComment !== undefined;
+    },
+
+    limitedProgress() {
+      return this.historyLimit ? this.progress.slice(0, this.historyLimit) : this.progress;
     },
   },
 
