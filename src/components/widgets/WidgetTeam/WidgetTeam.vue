@@ -8,46 +8,86 @@
     />
 
     <template v-if="director">
-      <role-members :role="$t('user.position.groups.director')" :members-with-role="new Array(director)" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.director')"
+        :members-with-role="new Array(director)"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="departmentDirector">
-      <role-members :role="$t('user.position.groups.departmentDirector')" :members-with-role="new Array(departmentDirector)" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.departmentDirector')"
+        :members-with-role="new Array(departmentDirector)"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="productOwner">
-      <role-members :role="$t('user.position.groups.productOwner')" :members-with-role="new Array(productOwner)" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.productOwner')"
+        :members-with-role="new Array(productOwner)"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="teamLead">
-      <role-members :role="$t('user.position.groups.teamLead')" :members-with-role="new Array(teamLead)" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.teamLead')"
+        :members-with-role="new Array(teamLead)"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="techLead">
-      <role-members :role="$t('user.position.groups.techLead')" :members-with-role="new Array(techLead)" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.techLead')"
+        :members-with-role="new Array(techLead)"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="designLead">
-      <role-members :role="$t('user.position.groups.designLead')" :members-with-role="new Array(designLead)" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.designLead')"
+        :members-with-role="new Array(designLead)"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="designers.length > 0">
-      <role-members :role="$t('user.position.groups.designers')" :members-with-role="designers" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.designers')"
+        :members-with-role="designers"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="developers.length > 0">
-      <role-members :role="$t('user.position.groups.developers')" :members-with-role="developers" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.developers')"
+        :members-with-role="developers"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="administration.length > 0">
-      <role-members :role="$t('user.position.groups.administration')" :members-with-role="administration" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.administration')"
+        :members-with-role="administration"
+        @openModal="openProfileModal"
+      />
     </template>
 
     <template v-if="others.length > 0">
-      <role-members :role="$t('user.position.groups.others')" :members-with-role="others" @openModal="openProfileModal"/>
+      <role-members
+        :role="$t('user.position.groups.others')"
+        :members-with-role="others"
+        @openModal="openProfileModal"
+      />
     </template>
 
-    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal"/>
+    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
 
     <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
       {{ $t('btn.add') }}

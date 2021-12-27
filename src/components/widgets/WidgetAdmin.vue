@@ -22,28 +22,18 @@
           </router-link>
         </li>
         <li v-if="$route.name === 'KpiHome'">
-          <router-link
-            class="admin__link"
-            :to="{ name: 'ItemAdminKPIs' }"
-          >
+          <router-link class="admin__link" :to="{ name: 'ItemAdminKPIs' }">
             {{ $t('kpi.change') }}
           </router-link>
         </li>
         <template v-if="$route.name === 'ItemHome'">
           <li>
-            <router-link
-              v-tooltip="$t('tooltip.editItem')"
-              class="admin__link"
-              :to="{ name: 'ItemAdmin' }"
-            >
+            <router-link v-tooltip="$t('tooltip.editItem')" class="admin__link" :to="{ name: 'ItemAdmin' }">
               {{ $t('btn.editItem', { item: activeItem.name }) }}
             </router-link>
           </li>
           <li>
-            <router-link
-              class="admin__link"
-              :to="{ name: 'ItemAdminOKRs' }"
-            >
+            <router-link class="admin__link" :to="{ name: 'ItemAdminOKRs' }">
               {{ $t('period.add') }}
             </router-link>
           </li>
@@ -59,7 +49,13 @@
         <li v-if="$route.name !== 'KpiHome' && $route.name !== 'KeyResultHome'">
           <router-link
             class="admin__link"
-            :to="{ name: 'ItemAdminOKRs', query: { type: $route.name === 'ItemHome' ? 'period' : 'objective', id: $route.name === 'ItemHome' ? activePeriod.id : activeObjective.id } }"
+            :to="{
+              name: 'ItemAdminOKRs',
+              query: {
+                type: $route.name === 'ItemHome' ? 'period' : 'objective',
+                id: $route.name === 'ItemHome' ? activePeriod.id : activeObjective.id,
+              },
+            }"
           >
             {{ $t('keyResultPage.add') }}
           </router-link>

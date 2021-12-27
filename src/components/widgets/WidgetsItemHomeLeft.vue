@@ -2,7 +2,7 @@
   <aside v-if="activeItem">
     <div class="widgets">
       <widget-mission-statement />
-      <widget-team  />
+      <widget-team />
       <widget-child-items />
     </div>
   </aside>

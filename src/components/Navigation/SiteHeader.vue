@@ -9,18 +9,17 @@
         </h1>
       </div>
 
-      <div v-click-outside="hideUserMenu" data-cy="usermenu">
+      <div v-click-outside="closeProfileModal" data-cy="usermenu">
         <button
           v-if="user"
           class="btn btn--ter btn--icon btn--icon-pri"
-          :class="{ active: showUserMenu }"
-          :hidden="showProfileIcon"
+          :class="{ active: showProfileModal }"
           @click="openProfileModal"
         >
           <i class="user__icon fa fa-user-circle" />
         </button>
       </div>
-      <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="user.id"/>
+      <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="user.id" />
     </div>
   </header>
 </template>
@@ -29,15 +28,13 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
-import ProfileModal from "@/components/ProfileModal.vue";
-import ThemeToggle from '@/components/ThemeToggle.vue';
+import ProfileModal from '@/components/ProfileModal.vue';
 import SidebarNavigation from '@/components/Navigation/SiteSidebar.vue';
 
 export default {
   name: 'SiteHeader',
 
   components: {
-    ThemeToggle,
     SidebarNavigation,
     ProfileModal,
   },
@@ -48,10 +45,8 @@ export default {
 
   data: () => ({
     showProfileIcon: true,
-    showUserMenu: false,
     sidebarOpen: false,
     showProfileModal: false,
-    id: 'mountain.peach.258@example.com'
   }),
 
   metaInfo() {
@@ -93,7 +88,7 @@ export default {
 
   watch: {
     $route() {
-      this.hideUserMenu();
+      this.closeProfileModal();
     },
   },
 
@@ -102,10 +97,6 @@ export default {
 
     hideSidebar() {
       this.sidebarOpen = !this.sidebarOpen;
-    },
-
-    hideUserMenu() {
-      this.showUserMenu = false;
     },
 
     openProfileModal() {
@@ -167,80 +158,5 @@ $header-height: 4em;
   width: 2rem;
   margin-right: 0.3em;
   font-size: 1.5rem;
-}
-
-.user__chevron {
-  margin-left: auto;
-  color: var(--color-text-secondary);
-  opacity: 0.5;
-}
-
-.menu {
-  position: absolute;
-  top: 3.5rem;
-  right: 0;
-  z-index: 50;
-  width: 100%;
-  padding: 0.5rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 3px 4px rgba(var(--color-grey-500-rgb), 0.5);
-
-  @media screen and (min-width: bp(xs)) {
-    width: span(5);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    width: span(4);
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(3);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(2);
-  }
-
-  .btn {
-    width: 100%;
-  }
-}
-
-.menu__list {
-  display: flex;
-  flex-direction: column;
-}
-
-.menu__list-item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.show-mobile {
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
-}
-
-.drawer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 200;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: rgba(black, 0.5);
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .2s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
 }
 </style>

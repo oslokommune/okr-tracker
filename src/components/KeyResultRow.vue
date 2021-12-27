@@ -16,7 +16,12 @@
     </div>
 
     <div v-else class="keyResult__progress" :class="{ 'keyResult__progress--expanded': view !== 'compact' }">
-      <div class="progression" v-tooltip="allowedToEditPeriod ? false : 'Not allowed to edit'" :class="{ 'progression--disabled': !allowedToEditPeriod }" @click="openModal">
+      <div
+        class="progression"
+        v-tooltip="allowedToEditPeriod ? false : 'Not allowed to edit'"
+        :class="{ 'progression--disabled': !allowedToEditPeriod }"
+        @click="openModal"
+      >
         <div class="progression__done progression__done--keyResultRow">
           {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
         </div>
@@ -68,7 +73,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['user', 'theme']),
+    ...mapState(['user']),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
     view() {
       if (this.forceExpanded) return 'expanded';
@@ -98,7 +103,7 @@ export default {
       if (this.allowedToEditPeriod) {
         this.isOpen = true;
       }
-    }
+    },
   },
 };
 </script>

@@ -50,12 +50,20 @@
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
-        <button v-if="providers.includes('microsoft')" class="btn btn--pri btn--icon btn--icon-pri" @click="loginWithMicrosoft">
+        <button
+          v-if="providers.includes('microsoft')"
+          class="btn btn--pri btn--icon btn--icon-pri"
+          @click="loginWithMicrosoft"
+        >
           <i class="icon fab fa-fw fa-microsoft" />
           {{ $t('login.microsoft') }}
         </button>
 
-        <button v-if="providers.includes('google')" class="btn btn--icon btn--pri btn--icon-pri" @click="loginWithGoogle">
+        <button
+          v-if="providers.includes('google')"
+          class="btn btn--icon btn--pri btn--icon-pri"
+          @click="loginWithGoogle"
+        >
           <i class="icon fab fa-fw fa-google" />
           {{ $t('login.google') }}
         </button>

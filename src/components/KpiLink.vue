@@ -80,11 +80,11 @@ export default {
 }
 
 .kpi--empty {
-  color: rgba( var(--color-purple-rgb), 0.25);
-  background: rgba( var(--color-grey-100-rgb), 0.5);
+  color: rgba(var(--color-purple-rgb), 0.25);
+  background: rgba(var(--color-grey-100-rgb), 0.5);
 
   &:hover {
-    background: rgba( var(--color-grey-100-rgb), 0.4);
+    background: rgba(var(--color-grey-100-rgb), 0.4);
   }
 
   & > .kpi__icon {

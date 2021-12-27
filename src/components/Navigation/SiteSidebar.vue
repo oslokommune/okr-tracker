@@ -1,12 +1,6 @@
 <template>
   <div>
-    <a
-      href="#"
-      role="menuitem"
-      class="header__nav-button"
-      :class="{ 'is-open': isOpen }"
-      @click.stop="hideSidebar"
-    >
+    <a href="#" role="menuitem" class="header__nav-button" :class="{ 'is-open': isOpen }" @click.stop="hideSidebar">
       <div class="header__nav-icon" role="presentation">
         <span class="sidebar__button"></span> <span class="sidebar__button"></span>
         <span class="sidebar__button"></span> <span class="sidebar__button"></span>
@@ -18,11 +12,15 @@
         <div class="sidebar__content">
           <div class="flex__column">
             <h1 class="sidebar__header title-1">{{ $t('general.appName') }}</h1>
-            <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--sidebar" :class="{ 'active': $route.name === 'Home' }">
+            <router-link
+              :to="{ name: 'Home' }"
+              class="btn btn--ter btn--sidebar"
+              :class="{ active: $route.name === 'Home' }"
+            >
               <h1>{{ $t('general.frontPage') }}</h1>
             </router-link>
 
-            <hr class="divider"/>
+            <hr class="divider" />
 
             <h2 class="btn btn--ter sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
               {{ $t('general.orgs') }}
@@ -33,25 +31,24 @@
                 v-for="org in organizations"
                 :key="org.id"
                 class="btn btn--ter sidebar__item sidebar__item--org"
-                :class="{ 'active': activeOrganization && activeOrganization.id === org.id }"
+                :class="{ active: activeOrganization && activeOrganization.id === org.id }"
                 @click="handleActiveOrganization(org)"
               >
                 {{ org.name }}
               </button>
-
             </div>
 
-            <hr class="divider"/>
+            <hr class="divider" />
 
-            <div v-if="!user" class="sidebar__header">{{ $t('general.signIn')}}</div>
+            <div v-if="!user" class="sidebar__header">{{ $t('general.signIn') }}</div>
             <template v-if="user">
               <ul v-if="activeOrganization" class="sidebar__group">
                 <li v-for="org in tree" :key="org.id" class="margin-top-1">
                   <template v-if="org.id === activeOrganization.id">
                     <router-link
-                      :class="{ 'active': org.slug === $route.params.slug }"
-                      :to="{name: 'ItemHome', params: { slug: org.slug } }"
-                      class='btn btn--ter sidebar__item'
+                      :class="{ active: org.slug === $route.params.slug }"
+                      :to="{ name: 'ItemHome', params: { slug: org.slug } }"
+                      class="btn btn--ter sidebar__item"
                       @click.native="hideSidebar"
                     >
                       <h2>{{ org.name }}</h2>
@@ -59,9 +56,9 @@
                     <ul>
                       <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
                         <router-link
-                          :class="{ 'active': dept.slug === $route.params.slug }"
-                          :to="{name: 'ItemHome', params: { slug: dept.slug } }"
-                          class='btn btn--ter sidebar__item'
+                          :class="{ active: dept.slug === $route.params.slug }"
+                          :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
+                          class="btn btn--ter sidebar__item"
                           @click.native="hideSidebar"
                         >
                           <h3>{{ dept.name }}</h3>
@@ -69,8 +66,8 @@
                         <ul>
                           <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
                             <router-link
-                              :class="{ 'active': prod.slug === $route.params.slug }"
-                              :to="{name: 'ItemHome', params: { slug: prod.slug } }"
+                              :class="{ active: prod.slug === $route.params.slug }"
+                              :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
                               class="btn btn--ter sidebar__item sidebar__item--product"
                               @click.native="hideSidebar"
                             >
@@ -89,18 +86,10 @@
             <div class="logo">
               <oslo-logo class="logo__img" />
             </div>
-            <div class="align__self--center">
-              v{{ appVersion }}
-            </div>
+            <div class="align__self--center">v{{ appVersion }}</div>
           </div>
         </div>
-        <a
-          href="#"
-          role="menuitem"
-          class="sidebar__icon"
-          :class="{ 'is-open': isOpen }"
-          @click.stop="hideSidebar"
-        >
+        <a href="#" role="menuitem" class="sidebar__icon" :class="{ 'is-open': isOpen }" @click.stop="hideSidebar">
           <div class="header__nav-icon" role="presentation">
             <span class="sidebar__button"></span> <span class="sidebar__button"></span>
             <span class="sidebar__button"></span> <span class="sidebar__button"></span>
@@ -125,7 +114,7 @@ export default {
   data: () => ({
     isOpen: false,
     isCollapsed: false,
-    appVersion: __APP_VERSION__,  // eslint-disable-line no-undef
+    appVersion: __APP_VERSION__, // eslint-disable-line no-undef
   }),
 
   computed: {
@@ -134,11 +123,11 @@ export default {
 
     hostOrg() {
       return import.meta.env.VITE_ORGANIZATION;
-    }
+    },
   },
 
   watch: {
-    '$route': {
+    $route: {
       handler() {
         this.isOpen = false;
       },
@@ -167,8 +156,8 @@ export default {
             }
           }
         }
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -243,7 +232,6 @@ $header-height: 4em;
 }
 
 .sidebar {
-
   position: fixed;
   top: 0;
   left: 0;
@@ -267,7 +255,7 @@ $header-height: 4em;
   border-right: 1px solid #ffffff0f;
   box-shadow: 6px -1px 10px rgba(0, 0, 0, 0.1);
 
-  scrollbar-width: none;  /* Hide scrollbar styles Firefox */
+  scrollbar-width: none; /* Hide scrollbar styles Firefox */
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -447,6 +435,6 @@ $header-height: 4em;
   color: white;
   font-weight: 500;
   font-size: typography.$font-size-4;
-  text-transform: uppercase
+  text-transform: uppercase;
 }
 </style>

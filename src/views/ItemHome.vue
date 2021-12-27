@@ -5,7 +5,6 @@
     </div>
 
     <div class="main">
-
       <div class="main__item">
         <kpis v-if="kpis.length" :kpis="kpis"></kpis>
 
@@ -106,7 +105,6 @@ export default {
     background-color: red;
   }
 }
-
 
 .keyResultRow--expanded {
   margin-top: 4px;

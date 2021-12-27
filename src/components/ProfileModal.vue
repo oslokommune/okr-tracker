@@ -1,23 +1,16 @@
 <template>
   <div v-if="user" class="overlay" @click.self="close">
-
     <div class="modal__main--flex" :class="me ? 'profileModal__upper-right' : 'profileModal__centered'">
-      <div v-if="me" class="closeBtn" >
-        <a href="#" @click="close"><i class="icon fa fa-white fa-fw fa-times-circle"/></a>
+      <div v-if="me" class="closeBtn">
+        <a href="#" @click="close"><i class="icon fa fa-white fa-fw fa-times-circle" /></a>
       </div>
 
       <div class="column">
-        <h2 class="title-2">{{ $t('user.profile')}}</h2>
+        <h2 class="title-2">{{ $t('user.profile') }}</h2>
         <validation-observer v-slot="{ handleSubmit }">
           <form id="updateUser" @submit.prevent="handleSubmit(save)">
             <span class="form-label">{{ $t('fields.name') }}</span>
-            <input
-              v-model="thisUser.displayName"
-              rules="required"
-              :disabled="!me"
-              @input="edit"
-              class="form__field"
-            />
+            <input v-model="thisUser.displayName" rules="required" :disabled="!me" @input="edit" class="form__field" />
           </form>
         </validation-observer>
         <label class="form-group">
@@ -33,7 +26,7 @@
           </v-select>
           <div v-else class="profileModal__input">
             <span>
-              {{ thisUser && thisUser.position? thisUser.position : $t('user.position.member') }}
+              {{ thisUser && thisUser.position ? thisUser.position : $t('user.position.member') }}
             </span>
           </div>
         </label>
@@ -48,11 +41,18 @@
           </v-select>
         </label>
 
-        <button v-if="me || $store.state.user.superAdmin" class="btn btn--sec profileModal__save-button" form="updateUser" :disabled="loading || !changes">{{ $t('btn.save') }}</button>
+        <button
+          v-if="me || $store.state.user.superAdmin"
+          class="btn btn--sec profileModal__save-button"
+          form="updateUser"
+          :disabled="loading || !changes"
+        >
+          {{ $t('btn.save') }}
+        </button>
       </div>
 
       <div class="column">
-        <hr class="divider desktop-only"/>
+        <hr class="divider desktop-only" />
 
         <h3 v-if="me" class="title-2">
           {{ $t('user.access') }}
@@ -68,10 +68,10 @@
           <div>{{ $t('user.hasAdmin') }}</div>
         </template>
 
-        <hr v-if="me" class="divider"/>
+        <hr v-if="me" class="divider" />
 
         <h3 class="title-2">
-          {{ me? $t('user.myProducts') : $t('user.products')}}
+          {{ me ? $t('user.myProducts') : $t('user.products') }}
         </h3>
 
         <ul v-if="products.length > 0">
@@ -81,13 +81,12 @@
           </li>
         </ul>
 
-
         <template v-if="me">
-          <hr class="divider"/>
+          <hr class="divider" />
 
           <theme-toggle />
 
-          <hr class="divider"/>
+          <hr class="divider" />
 
           <h3 class="title-2">
             {{ $t('general.administration') }}
@@ -110,14 +109,14 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
 
 export default {
-  name: "ProfileModal",
+  name: 'ProfileModal',
 
   components: {
     ThemeToggle,
@@ -127,13 +126,13 @@ export default {
     myProfile: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
 
     id: {
       type: String,
       required: true,
-    }
+    },
   },
 
   data: () => ({
@@ -163,7 +162,11 @@ export default {
           .collection('products')
           .where('team', 'array-contains', userRef)
           .where('archived', '==', false);
-        const auditRef = await db.collection('audit').where('user', '==', userRef).orderBy('timestamp', 'desc').limit(10);
+        const auditRef = await db
+          .collection('audit')
+          .where('user', '==', userRef)
+          .orderBy('timestamp', 'desc')
+          .limit(10);
 
         this.$bind('user', userRef);
         this.$bind('products', productsRef, { maxRefDepth: 1 });
@@ -274,11 +277,11 @@ export default {
   border-radius: 1px;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
 
-  @media screen and (min-width: bp(s)){
+  @media screen and (min-width: bp(s)) {
     flex-direction: row;
   }
 
-  scrollbar-width: none;  /* Hide scrollbar styles Firefox */
+  scrollbar-width: none; /* Hide scrollbar styles Firefox */
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -330,5 +333,4 @@ export default {
     display: none;
   }
 }
-
 </style>

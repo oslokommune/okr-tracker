@@ -2,7 +2,7 @@
   <div class="container">
     <widget :title="appOwner" class="home-widget">
       <ul>
-        <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem;">
+        <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
           <div class="ods-form-group">
             <input
               :id="org.id"
@@ -13,9 +13,7 @@
             />
             <label class="ods-form-label" :for="org.id">
               {{ org.name }}
-              <span v-if="org.children.length">
-                ({{ org.children.length }})
-              </span>
+              <span v-if="org.children.length"> ({{ org.children.length }}) </span>
             </label>
           </div>
           <ul v-if="getCollapse('organization', org.slug)">
@@ -37,7 +35,7 @@
     </widget>
     <ul v-if="user" class="home">
       <li v-if="!hasCheckedOrganizations" class="tree empty-state">
-        {{ $t('general.emptyHome')}}
+        {{ $t('general.emptyHome') }}
       </li>
       <template v-for="org in tree">
         <li v-if="getCollapse('organization', org.slug)" :key="org.id" class="tree">

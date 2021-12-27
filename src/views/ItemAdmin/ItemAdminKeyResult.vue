@@ -184,12 +184,7 @@
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button
-        v-if="!keyResult.archived"
-        class="btn btn--icon btn--danger"
-        :disabled="loading"
-        @click="archive"
-      >
+      <button v-if="!keyResult.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>
@@ -376,7 +371,7 @@ export default {
     apiCurl: (keyResult) =>
       `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }'  ${
         import.meta.env.VITE_API_GATEWAY_URL
-      }/kpi/${keyResult.id}`,
+      }/keyres/${keyResult.id}`,
   },
 };
 </script>

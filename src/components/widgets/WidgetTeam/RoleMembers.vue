@@ -23,16 +23,16 @@ export default {
     membersWithRole: {
       type: Array,
       required: true,
-    }
+    },
   },
 
   methods: {
     firstPartOfEmail(email) {
-      return email.replace(/@.*/, '')
+      return email.replace(/@.*/, '');
     },
 
     openProfileModal(profileId) {
-      this.$emit('openModal', profileId)
+      this.$emit('openModal', profileId);
     },
   },
 };

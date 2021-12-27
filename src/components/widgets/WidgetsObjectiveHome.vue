@@ -2,16 +2,8 @@
   <aside v-if="activeObjective" class="aside">
     <div class="widgets">
       <widget-admin />
-      <widget-progression
-        type="objective"
-        :data="progressionData"
-        :dimmed="true"
-      />
-      <widget-weights
-        type="keyResults"
-        :active-item="activeObjective"
-        :items="keyResults"
-      />
+      <widget-progression type="objective" :data="progressionData" :dimmed="true" />
+      <widget-weights type="keyResults" :active-item="activeObjective" :items="keyResults" />
       <widget-objective-details />
     </div>
   </aside>

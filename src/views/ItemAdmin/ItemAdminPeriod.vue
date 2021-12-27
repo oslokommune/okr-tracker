@@ -33,16 +33,16 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-period" data-cy="save_period" :disabled="loading || !changes">
+      <button
+        class="btn btn--icon btn--pri btn--icon-pri"
+        form="update-period"
+        data-cy="save_period"
+        :disabled="loading || !changes"
+      >
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button
-        v-if="!activePeriod.archived"
-        class="btn btn--icon btn--danger"
-        :disabled="loading"
-        @click="archive"
-      >
+      <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>

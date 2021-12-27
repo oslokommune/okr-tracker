@@ -1,10 +1,10 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-admin/>
+      <widget-admin />
       <widget-progression
         :type="$route.name === 'ItemHome' ? 'period' : 'objective'"
-        :dimmed="$route.name !=='ItemHome'"
+        :dimmed="$route.name !== 'ItemHome'"
       />
       <widget-mission-statement />
       <widget-team />

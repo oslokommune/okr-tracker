@@ -14,8 +14,8 @@
 import { mapState } from 'vuex';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
-import WidgetKeyResultNotes from "@/components/widgets/WidgetKeyResultNotes.vue";
-import WidgetKeyResultDetails from "@/components/widgets/WidgetKeyResultDetails.vue";
+import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
+import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
 import WidgetAdmin from '@/components/widgets/WidgetAdmin.vue';
 
 export default {

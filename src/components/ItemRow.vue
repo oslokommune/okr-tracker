@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; align-items: center; padding: 0 1rem;">
+  <div style="display: flex; align-items: center; padding: 0 1rem">
     <router-link
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
       style="width: 100%"
@@ -215,7 +215,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  border-right: 1px solid  var(--color-grey-100);
+  border-right: 1px solid var(--color-grey-100);
 
   &.disabled {
     opacity: 0.4;
