@@ -112,8 +112,8 @@ export default {
 }
 
 .tree__organization {
-  text-transform: uppercase;
   padding: 0 1rem;
+  text-transform: uppercase;
 }
 
 .home {
