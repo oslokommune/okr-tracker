@@ -9,7 +9,7 @@
         </h1>
       </div>
 
-      <div v-click-outside="closeProfileModal" data-cy="usermenu">
+      <div data-cy="usermenu">
         <button
           v-if="user"
           class="btn btn--ter btn--icon btn--icon-pri"
