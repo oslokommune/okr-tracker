@@ -123,7 +123,8 @@
     "frontPage": "Front page",
     "signIn": "Please sign in",
     "orgs": "Organizations",
-    "emptyHome": "Please pick an organization."
+    "emptyHome": "Please pick an organization.",
+    "api": "API"
   },
   "btn": {
     "close": "Close",

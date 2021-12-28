@@ -120,7 +120,8 @@
     "frontPage": "Forside",
     "signIn": "Vennligst logg inn",
     "orgs": "Virksomheter",
-    "emptyHome": "Vennligst velg en etat fra listen."
+    "emptyHome": "Vennligst velg en etat fra listen.",
+    "api": "API"
   },
   "btn": {
     "close": "Lukk",

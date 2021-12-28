@@ -1,6 +1,8 @@
 <template>
-  <div class="main">
-    <div id="swagger-ui"></div>
+  <div class="container">
+    <div class="main">
+      <div id="swagger-ui"></div>
+    </div>
   </div>
 </template>
 
@@ -20,7 +22,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 pre > code {
   margin: 0;
   padding: 0;

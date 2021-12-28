@@ -99,6 +99,9 @@
             <router-link :to="{ name: 'Help' }" class="btn btn--ter button-link">
               <span>{{ $t('general.help') }}</span>
             </router-link>
+            <router-link :to="{ name: 'Api' }" class="btn btn--ter button-link">
+              <span>{{ $t('general.api') }}</span>
+            </router-link>
             <button class="btn btn--ter btn--icon btn--icon-pri button-link" @click="signOut">
               <span class="">{{ $t('general.signOut') }}</span>
             </button>
