@@ -8,7 +8,7 @@
         <li v-if="$route.name === 'ObjectiveHome'">
           <router-link
             class="admin__link"
-            :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective.id } }"
+            :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective && activeObjective.id } }"
           >
             {{ $t('objective.change') }}
           </router-link>
@@ -16,7 +16,7 @@
         <li v-if="$route.name === 'KeyResultHome'">
           <router-link
             class="admin__link"
-            :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult.id } }"
+            :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult && activeKeyResult.id } }"
           >
             {{ $t('keyResultPage.change') }}
           </router-link>
@@ -29,7 +29,7 @@
         <template v-if="$route.name === 'ItemHome'">
           <li>
             <router-link v-tooltip="$t('tooltip.editItem')" class="admin__link" :to="{ name: 'ItemAdmin' }">
-              {{ $t('btn.editItem', { item: activeItem.name }) }}
+              {{ $t('btn.editItem', { item: activeItem && activeItem.name }) }}
             </router-link>
           </li>
           <li>
@@ -40,7 +40,7 @@
           <li>
             <router-link
               class="admin__link"
-              :to="{ name: 'ItemAdminOKRs', query: { type: 'period', id: activePeriod.id } }"
+              :to="{ name: 'ItemAdminOKRs', query: { type: 'period', id: activePeriod && activePeriod.id } }"
             >
               {{ $t('objective.add') }}
             </router-link>
@@ -53,7 +53,8 @@
               name: 'ItemAdminOKRs',
               query: {
                 type: $route.name === 'ItemHome' ? 'period' : 'objective',
-                id: $route.name === 'ItemHome' ? activePeriod.id : activeObjective.id,
+                id:
+                  $route.name === 'ItemHome' ? activePeriod && activePeriod.id : activeObjective && activeObjective.id,
               },
             }"
           >
