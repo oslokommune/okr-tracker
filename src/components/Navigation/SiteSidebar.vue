@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ 'overlay': isOpen }"  @click.self="hideSidebar">
     <a href="#" role="menuitem" class="header__nav-button" :class="{ 'is-open': isOpen }" @click.stop="hideSidebar">
       <div class="header__nav-icon" role="presentation">
         <span class="sidebar__button"></span> <span class="sidebar__button"></span>
@@ -410,7 +410,7 @@ $header-height: 4em;
 .logo {
   display: block;
   width: span(4);
-  padding: 2.5rem 1.5rem;
+  padding: 5rem 1.5rem;
 }
 
 .flex__column {
