@@ -58,21 +58,16 @@ export default {
 
     hasInStorage() {
       const mode = localStorage.getItem(this.LS_MODE);
-      return mode !== null;
+      return mode !== null && mode !== 'yellow';
     },
 
     setThemeMode(mode) {
-      this.saveThemeMode(mode);
       this.setTheme(mode);
       document.body.setAttribute('data-theme', mode);
     },
 
     getLocalThemeMode() {
       return localStorage.getItem(this.LS_MODE);
-    },
-
-    saveThemeMode(mode) {
-      localStorage.setItem(this.LS_MODE, mode);
     },
   },
 };
