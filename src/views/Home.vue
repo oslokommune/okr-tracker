@@ -1,38 +1,52 @@
 <template>
   <div class="container">
-    <widget :title="appOwner" class="home-widget">
-      <ul>
-        <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
-          <div class="ods-form-group">
-            <input
-              :id="org.id"
-              type="checkbox"
-              class="ods-form-radio"
-              :checked="getCollapse('organization', org.slug)"
-              @click="toggle('organization', org.slug)"
-            />
-            <label class="ods-form-label" :for="org.id">
-              {{ org.name }}
-              <span v-if="org.children.length"> ({{ org.children.length }}) </span>
-            </label>
-          </div>
-          <ul v-if="getCollapse('organization', org.slug)">
-            <li v-for="dept in org.children" :key="`${dept.id}-check`">
-              <div class="ods-form-group indent">
+    <div class="home-widget">
+      <section class="widget">
+        <header class="widget__header">
+          <span class="widget__title">{{ appOwner }}</span>
+          <button
+            v-tooltip="isOpen ? $t('btn.minimize') : $t('btn.expand')"
+            class="widget__toggle fas fa-fw"
+            :class="isOpen ? 'fa-minus' : 'fa-plus'"
+            @click="toggleCollapse"
+          />
+        </header>
+        <div v-if="isOpen" class="widget__body">
+          <ul>
+            <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
+              <div class="ods-form-group">
                 <input
-                  :id="dept.id"
+                  :id="org.id"
                   type="checkbox"
                   class="ods-form-radio"
-                  :checked="getCollapse('department', dept.slug)"
-                  @click="toggle('department', dept.slug)"
+                  :checked="getCollapse('organization', org.slug)"
+                  @click="toggle('organization', org.slug)"
                 />
-                <label class="ods-form-label" :for="dept.id">{{ dept.name }}</label>
+                <label class="ods-form-label" :for="org.id">
+                  {{ org.name }}
+                  <span v-if="org.children.length"> ({{ org.children.length }}) </span>
+                </label>
               </div>
+              <ul v-if="getCollapse('organization', org.slug)">
+                <li v-for="dept in org.children" :key="`${dept.id}-check`">
+                  <div class="ods-form-group indent">
+                    <input
+                      :id="dept.id"
+                      type="checkbox"
+                      class="ods-form-radio"
+                      :checked="getCollapse('department', dept.slug)"
+                      @click="toggle('department', dept.slug)"
+                    />
+                    <label class="ods-form-label" :for="dept.id">{{ dept.name }}</label>
+                  </div>
+                </li>
+              </ul>
             </li>
           </ul>
-        </li>
-      </ul>
-    </widget>
+        </div>
+      </section>
+    </div>
+
     <ul v-if="user" class="home">
       <li v-if="!hasCheckedOrganizations" class="tree empty-state">
         {{ $t('general.emptyHome') }}
@@ -58,15 +72,17 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
-import Widget from '@/components/widgets/WidgetWrapper.vue';
 
 export default {
   name: 'Home',
 
   components: {
     ItemRow: () => import('@/components/ItemRow.vue'),
-    Widget,
   },
+
+  data: () => ({
+    isOpen: true,
+  }),
 
   computed: {
     ...mapGetters(['tree', 'hasCheckedOrganizations']),
@@ -102,6 +118,10 @@ export default {
         this.user.preferences.home.collapse[type][slug] = !this.user.preferences.home.collapse[type][slug];
       }
       this.update_preferences();
+    },
+
+    toggleCollapse() {
+      this.isOpen = !this.isOpen;
     },
   },
 };
@@ -159,5 +179,18 @@ export default {
 
 .empty-state {
   padding: 1.5rem;
+}
+
+.widget__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  margin-left: auto;
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 </style>

@@ -45,12 +45,6 @@ const routes = [
     component: () => import('@/views/NotFound.vue'),
   },
   {
-    path: '/user/:id?',
-    name: 'User',
-    component: () => import('@/views/User.vue'),
-    beforeEnter: routerGuards.user,
-  },
-  {
     path: '/admin',
     beforeEnter: routerGuards.admin,
     component: () => import('@/views/Admin/AdminWrapper.vue'),

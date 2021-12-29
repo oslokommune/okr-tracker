@@ -153,14 +153,14 @@
                   <td>{{ p.value }}</td>
                   <td>{{ dateTimeShort(p.timestamp.toDate()) }}</td>
                   <td>
-                    <router-link
+                    <a
                       v-if="p.createdBy && p.createdBy.id"
-                      :to="{ name: 'User', params: { id: p.createdBy.id } }"
                       class="user__link"
+                      @click="openProfileModal(p.createdBy.id)"
                     >
                       <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
-                    </router-link>
-                    <span v-else>{{ p.createdBy }}</span>
+                    </a>
+                    <span v-else class="user__name">{{ p.createdBy }}</span>
                   </td>
                   <td style="max-width: 200px; padding: 0.25rem">
                     <span v-if="p.comment && !showComments">
@@ -203,6 +203,8 @@
     </div>
 
     <widgets-right class="aside--right" />
+
+    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
   </div>
 </template>
 
@@ -224,6 +226,7 @@ export default {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    ProfileModal: () => import('@/components/ProfileModal.vue'),
     VPopover,
     WidgetsKeyResultMobile,
   },
@@ -251,6 +254,8 @@ export default {
     isSaving: false,
     value: null,
     historyLimit: 10,
+    showProfileModal: false,
+    chosenProfileId: null,
   }),
 
   computed: {
@@ -340,6 +345,16 @@ export default {
     edit() {
       this.changes = true;
     },
+
+    openProfileModal(profileId) {
+      this.showProfileModal = true;
+      this.chosenProfileId = profileId;
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false;
+      this.chosenProfileId = null;
+    },
   },
 };
 </script>
@@ -370,6 +385,7 @@ export default {
   align-items: center;
   color: var(--color-text);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .user__image {

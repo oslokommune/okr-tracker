@@ -248,15 +248,6 @@ export default {
   width: 1.5rem;
 }
 
-.widget__toggle {
-  width: auto;
-  margin-left: auto;
-  padding: 0.5rem 0.25rem 0.5rem 0.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
 .item__font--organization {
   font-weight: 500;
   font-size: typography.$font-size-3;

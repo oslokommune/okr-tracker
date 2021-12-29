@@ -31,13 +31,12 @@
 
         <div class="details__item-body">
           <div class="details__item-value">
-            <router-link
-              v-if="activeKeyResult.createdBy.id"
-              :to="{ name: 'User', params: { id: activeKeyResult.createdBy.id } }"
-            >
-              {{ activeKeyResult.createdBy.displayName || activeKeyResult.createdBy.id }}
-            </router-link>
-            <span v-else>{{ activeKeyResult.createdBy }}</span>
+            <div class="details__item-value user">
+              <a v-if="activeKeyResult.createdBy.id" @click="openProfileModal(activeKeyResult.createdBy.id)">
+                <span>{{ activeKeyResult.createdBy.displayName || activeKeyResult.createdBy.id }}</span>
+              </a>
+              <span v-else>{{ activeKeyResult.createdBy }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -53,13 +52,10 @@
         <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
 
         <div class="details__item-body">
-          <div class="details__item-value">
-            <router-link
-              v-if="activeKeyResult.editedBy.id"
-              :to="{ name: 'User', params: { id: activeKeyResult.editedBy.id } }"
-            >
-              {{ activeKeyResult.editedBy.displayName || activeKeyResult.editedBy.id }}
-            </router-link>
+          <div class="details__item-value user">
+            <a v-if="activeKeyResult.editedBy.id" @click="openProfileModal(activeKeyResult.editedBy.id)">
+              <span>{{ activeKeyResult.editedBy.displayName || activeKeyResult.editedBy.id }}</span>
+            </a>
             <span v-else>{{ activeKeyResult.editedBy }}</span>
           </div>
         </div>
@@ -88,6 +84,8 @@
         </div>
       </div>
     </div>
+
+    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
   </widget>
 </template>
 
@@ -101,10 +99,13 @@ export default {
 
   components: {
     Widget: () => import('./WidgetWrapper.vue'),
+    ProfileModal: () => import('@/components/ProfileModal.vue'),
   },
 
   data: () => ({
     progress: [],
+    showProfileModal: false,
+    chosenProfileId: null,
   }),
 
   computed: {
@@ -125,9 +126,31 @@ export default {
     formatPeriodDates(period) {
       return periodDates(period, dateShort);
     },
+
     formatDate(date) {
       return dateLong(date.toDate());
+    },
+
+    openProfileModal(profileId) {
+      this.showProfileModal = true;
+      this.chosenProfileId = profileId;
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false;
+      this.chosenProfileId = null;
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.user {
+  padding: 0.2rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(var(--color-grey-500-rgb), 0.1);
+  }
+}
+</style>

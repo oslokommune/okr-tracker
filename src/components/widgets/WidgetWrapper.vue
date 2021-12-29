@@ -21,13 +21,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.widget__body {
-  padding: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    padding: 0 1.5rem 1.5rem;
-  }
-}
-</style>
