@@ -1,70 +1,25 @@
 <template>
   <header class="header">
     <div class="siteHeader-container">
-      <router-link :to="{ name: 'Home' }" class="logo">
-        <oslo-logo class="logo__img" />
-      </router-link>
+      <sidebar-navigation />
+
       <div v-if="title" class="title">
         <h1 class="title__name">
           {{ title }}
         </h1>
       </div>
 
-      <div v-click-outside="hideUserMenu" class="userMenu" data-cy="usermenu">
+      <div data-cy="usermenu">
         <button
           v-if="user"
-          v-tooltip="showUserMenu ? '' : $t('tooltip.openMenu')"
-          class="btn btn--ter btn--icon user"
-          :class="{ active: showUserMenu }"
-          @click="showUserMenu = !showUserMenu"
+          class="btn btn--ter btn--icon btn--icon-pri"
+          :class="{ active: showProfileModal }"
+          @click="openProfileModal"
         >
-          <i v-if="!user.photoURL" class="user__icon fa fa-user-circle" />
-          <img v-if="user.photoURL" :src="user.photoURL" class="user__image" :alt="user.photoUrl" />
-          <span class="user__name">{{ user.displayName }}</span>
-          <i class="user__chevron fa fa-xs" :class="showUserMenu ? 'fa-chevron-up' : 'fa-chevron-down'" />
+          <i class="user__icon fa fa-user-circle" />
         </button>
-        <nav v-if="user && showUserMenu" class="menu">
-          <ul class="menu__list">
-            <li class="menu__list-item">
-              <router-link
-                class="btn btn--ter btn--icon btn--icon-pri"
-                :to="{ name: 'User', params: { id: user.id } }"
-                data-cy="site-header-profile"
-              >
-                <i class="icon fa fa-fw fa-user" />
-                {{ $t('user.myProfile') }}
-              </router-link>
-            </li>
-            <li v-if="isAdmin" class="menu__list-item">
-              <router-link
-                class="btn btn--ter btn--icon btn--icon-pri"
-                :to="{ name: 'Admin' }"
-                data-cy="site-header-admin"
-              >
-                <i class="icon fa fa-fw fa-cogs" />
-                {{ $t('general.admin') }}
-              </router-link>
-            </li>
-            <theme-toggle header />
-            <li class="menu__list-item show-mobile">
-              <router-link
-                class="btn btn--ter btn--icon btn--icon-pri"
-                :to="{ name: 'Help' }"
-                data-cy="site-header-help"
-              >
-                <i class="icon fa fa-fw fa-question-circle" />
-                {{ $t('general.help') }}
-              </router-link>
-            </li>
-            <li>
-              <button class="btn btn--ter btn--icon btn--icon-pri" data-cy="site-header-signout" @click="signOut">
-                <i class="icon fa fa-fw fa-sign-out-alt" />
-                {{ $t('general.signOut') }}
-              </button>
-            </li>
-          </ul>
-        </nav>
       </div>
+      <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="user.id" />
     </div>
   </header>
 </template>
@@ -73,15 +28,15 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { auth } from '@/config/firebaseConfig';
-import OsloLogo from '@/components/OsloLogo.vue';
-import ThemeToggle from '@/components/ThemeToggle.vue';
+import ProfileModal from '@/components/ProfileModal.vue';
+import SidebarNavigation from '@/components/Navigation/SiteSidebar.vue';
 
 export default {
   name: 'SiteHeader',
 
   components: {
-    OsloLogo,
-    ThemeToggle,
+    SidebarNavigation,
+    ProfileModal,
   },
 
   directives: {
@@ -89,7 +44,9 @@ export default {
   },
 
   data: () => ({
-    showUserMenu: false,
+    showProfileIcon: true,
+    sidebarOpen: false,
+    showProfileModal: false,
   }),
 
   metaInfo() {
@@ -99,7 +56,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'user']),
+    ...mapState(['activeItem', 'user', 'organizations']),
     ...mapGetters(['isAdmin']),
 
     /**
@@ -116,7 +73,10 @@ export default {
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
           parts.includes('ItemAdminOKRs') ||
-          parts.includes('ItemAdminKPIs')) &&
+          parts.includes('ItemAdminKPIs') ||
+          parts.includes('KeyResultHome') ||
+          parts.includes('ObjectiveHome') ||
+          parts.includes('KpiHome')) &&
         this.activeItem
       ) {
         return this.activeItem.name;
@@ -128,15 +88,25 @@ export default {
 
   watch: {
     $route() {
-      this.hideUserMenu();
+      this.closeProfileModal();
     },
   },
 
   methods: {
-    ...mapActions(['reset_state', 'setLoading']),
+    ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
 
-    hideUserMenu() {
-      this.showUserMenu = false;
+    hideSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+    },
+
+    openProfileModal() {
+      this.showProfileModal = true;
+      this.showProfileIcon = false;
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false;
+      this.showProfileIcon = true;
     },
 
     async signOut() {
@@ -150,6 +120,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
+
+$header-height: 4em;
+
 .header {
   position: sticky;
   top: 0;
@@ -159,57 +133,11 @@ export default {
 }
 
 .siteHeader-container {
-  @include container();
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 4rem;
-
-  @media screen and (min-width: bp(m)) {
-    flex-direction: row;
-  }
-}
-
-.logo {
-  position: relative;
-  display: none;
-  width: span(2);
-  height: 100%;
-  padding: 0.65rem 0;
-
-  @media screen and (min-width: bp(s)) {
-    display: block;
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(3);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(2);
-  }
-}
-
-.logo__img {
-  display: block;
-  height: 100%;
-}
-
-.title {
-  width: span(9);
-
-  @media screen and (min-width: bp(s)) {
-    width: span(7);
-    margin-left: span(0, 1);
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(6);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7);
-  }
 }
 
 .title__name {
@@ -225,115 +153,10 @@ export default {
   }
 }
 
-.userMenu {
-  margin-left: auto;
-
-  @media screen and (min-width: bp(s)) {
-    width: span(3, 0, span(12));
-    margin-left: span(0, 1);
-  }
-}
-
-.user {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-left: auto;
-  border-radius: 3px;
-
-  &.active {
-    background: rgba(var(--color-purple-rgb), 0.1);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    margin-left: span(0, 1);
-  }
-
-  &:hover {
-    .user__chevron {
-      opacity: 1;
-    }
-  }
-}
-
 .user__icon {
   display: inline-block;
   width: 2rem;
   margin-right: 0.3em;
   font-size: 1.5rem;
-}
-
-.user__image {
-  display: inline-block;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.75em;
-  object-fit: cover;
-  background: white;
-  border-radius: 1rem;
-}
-
-.user__name {
-  display: none;
-  overflow: hidden;
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  @media screen and (min-width: bp(s)) {
-    display: block;
-  }
-}
-
-.user__chevron {
-  margin-left: auto;
-  color: var(--color-text-secondary);
-  opacity: 0.5;
-}
-
-.menu {
-  position: absolute;
-  top: 3.5rem;
-  right: 0;
-  z-index: 100;
-  width: 100%;
-  padding: 0.5rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 3px 4px rgba(var(--color-grey-500-rgb), 0.5);
-
-  @media screen and (min-width: bp(xs)) {
-    width: span(5);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    width: span(4);
-  }
-
-  @media screen and (min-width: bp(m)) {
-    width: span(3);
-  }
-
-  .btn {
-    width: 100%;
-  }
-}
-
-.menu__list {
-  display: flex;
-  flex-direction: column;
-}
-
-.menu__list-item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.show-mobile {
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
 }
 </style>

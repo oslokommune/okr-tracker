@@ -18,6 +18,8 @@ import kpiTypes from '@/config/kpiTypes';
 import KpiLink from './KpiLink.vue';
 
 export default {
+  name: 'KPIs',
+
   components: {
     KpiLink,
   },
@@ -37,15 +39,16 @@ export default {
 
 <style lang="scss" scoped>
 .kpis {
-  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .kpis__list {
   display: grid;
   grid-gap: 0.25rem;
+  margin-top: 1.5rem;
 
   @media screen and (min-width: bp(m)) {
-    grid-template-columns: repeat(3, minmax(15rem, 1fr));
+    grid-template-columns: repeat(3, minmax(10rem, 1fr));
   }
 }
 </style>

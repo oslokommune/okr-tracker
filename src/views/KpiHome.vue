@@ -1,77 +1,98 @@
 <template>
-  <div v-if="activeKpi" class="flex-container">
+  <div v-if="activeKpi" class="container">
+    <div class="widgets--left">
+      <router-link class="btn widget__back-button" :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }">
+        {{ $t('general.back') }}
+        <i class="fa fa-chevron-left"></i>
+      </router-link>
+
+      <div class="aside--left">
+        <div class="widgets">
+          <widget-mission-statement />
+          <widget-team />
+        </div>
+      </div>
+    </div>
+
     <div class="main">
-      <h1 class="title-1">{{ activeKpi.name }}</h1>
+      <div class="main__item">
+        <h1 class="title-1">{{ activeKpi.name }}</h1>
 
-      <p>{{ activeKpi.description }}</p>
+        <p>{{ activeKpi.description }}</p>
 
-      <div class="main-widgets">
-        <div v-if="activeKpi.valid" class="main-widgets__current">
-          <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line" />
-            {{ $t('kpi.currentValue') }}
-          </h3>
-          <div class="main-widgets__current--value">
-            {{
-              filteredProgress.length
-                ? formatKPIValue(filteredProgress[0].value)
-                : formatKPIValue(activeKpi.currentValue)
-            }}
+        <div class="main-widgets">
+          <div v-if="activeKpi.valid" class="main-widgets__current">
+            <h3 class="main-widgets__title">
+              {{ $t('kpi.currentValue') }}
+            </h3>
+            <div class="main-widgets__current--value">
+              {{
+                filteredProgress.length
+                  ? formatKPIValue(filteredProgress[0].value)
+                  : formatKPIValue(activeKpi.currentValue)
+              }}
+            </div>
+          </div>
+
+          <div class="main-widgets__graph">
+            <h3 class="main-widgets__title">
+              {{ $t('kpi.progress') }}
+            </h3>
+
+            <svg ref="graph" class="graph"></svg>
           </div>
         </div>
 
-        <div class="main-widgets__graph">
-          <h3 class="main-widgets__title">
-            <i class="fas fa-chart-line" />
-            {{ $t('kpi.progresjon') }}
-          </h3>
+        <widgets-k-p-i-home class="aside--middle" :range="range" :progress="progress" @listen="handleChange" />
 
-          <svg ref="graph" class="graph"></svg>
-        </div>
-      </div>
+        <div class="widget__history">
+          <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
 
-      <widgets-k-p-i-home class="aside--middle" :range="range" :progress="progress" @listen="handleChange" />
+          <v-spinner v-if="isLoading"></v-spinner>
 
-      <div class="history">
-        <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
+          <empty-state
+            v-else-if="!filteredProgress.length || filteredProgress.length === 0"
+            :icon="'history'"
+            :heading="$t('empty.kpiProgress.heading')"
+            :body="$t('empty.kpiProgress.body')"
+          />
 
-        <spinner v-if="isLoading"></spinner>
-
-        <empty-state
-          v-else-if="!filteredProgress.length || filteredProgress.length === 0"
-          :icon="'history'"
-          :heading="$t('empty.kpiProgress.heading')"
-          :body="$t('empty.kpiProgress.body')"
-        />
-
-        <table v-else class="table">
-          <thead>
-            <tr>
-              <th>{{ $t('keyres.dateAndTime') }}</th>
-              <th>{{ $t('keyResultPage.table.value') }}</th>
-              <th v-if="hasEditRights"></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-          <tr v-for="{ timestamp, value, id } in filteredProgress" :key="id">
-            <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
-            <td>{{ formatKPIValue(value) }}</td>
-            <td v-if="hasEditRights">
-              <v-popover offset="16" placement="top" show="true">
-                <button class="btn btn--ter btn--icon btn--icon-pri">
-                  <i class="icon far fa-trash-alt" />
-                  {{ $t('btn.delete') }}
-                </button>
-
-                <template slot="popover">
-                  <button class="btn btn--ter btn--negative" @click="remove(id)">
-                    {{ $t('btn.confirmDeleteProgress') }}
+          <table v-else class="table">
+            <thead>
+              <tr>
+                <th>{{ $t('keyResult.dateAndTime') }}</th>
+                <th>{{ $t('keyResultPage.table.value') }}</th>
+                <th v-if="hasEditRights"></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tr v-for="{ timestamp, value, id } in limitedProgress" :key="id">
+              <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
+              <td>{{ formatKPIValue(value) }}</td>
+              <td v-if="hasEditRights" style="width: 1rem">
+                <v-popover offset="16" placement="top" show="true">
+                  <button class="btn btn--ter">
+                    {{ $t('btn.delete') }}
                   </button>
-                </template>
-              </v-popover>
-            </td>
-          </tr>
-        </table>
+
+                  <template slot="popover">
+                    <button class="btn btn--ter btn--negative" @click="remove(id)">
+                      {{ $t('btn.confirmDeleteProgress') }}
+                    </button>
+                  </template>
+                </v-popover>
+              </td>
+            </tr>
+          </table>
+          <button
+            v-if="filteredProgress.length > 10 && historyLimit !== null"
+            class="btn btn--sec"
+            style="align-self: center"
+            @click="historyLimit = null"
+          >
+            {{ $t('btn.showMore') }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -87,6 +108,8 @@ import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
+import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
+import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 
 export default {
   name: 'KpiHome',
@@ -94,7 +117,8 @@ export default {
   components: {
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    Spinner: () => import('@/components/Spinner.vue'),
+    WidgetMissionStatement,
+    WidgetTeam,
   },
 
   data: () => ({
@@ -106,11 +130,16 @@ export default {
     filteredProgress: [],
     isFiltered: false,
     isLoading: false,
+    historyLimit: 10,
   }),
 
   computed: {
-    ...mapState(['activeKpi']),
+    ...mapState(['activeKpi', 'activeItem']),
     ...mapGetters(['hasEditRights']),
+
+    limitedProgress() {
+      return this.historyLimit ? this.filteredProgress.slice(0, this.historyLimit) : this.filteredProgress;
+    },
   },
 
   watch: {
@@ -227,5 +256,42 @@ export default {
 <style lang="scss" scoped>
 .history {
   margin: 2.5rem 0 1.5rem;
+}
+
+.main-widgets {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.main-widgets__title {
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.main-widgets__current {
+  align-self: flex-start;
+  width: span(12);
+
+  padding: 1rem;
+  background: var(--color-secondary);
+  box-shadow: 0 2px 3px rgba(black, 0.1);
+}
+
+.main-widgets__current--value {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 50px;
+  word-wrap: break-word;
+}
+
+.main-widgets__graph {
+  width: span(12);
+
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background: white;
 }
 </style>

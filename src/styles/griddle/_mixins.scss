@@ -18,19 +18,19 @@
     }
 
     @if $bp == 'base' {
-      margin-left: $bp-inset;
       margin-right: $bp-inset;
+      margin-left: $bp-inset;
     } @else if $bp == 'max-body' {
       @media (min-width: func.bp(#{$bp})) {
-        margin-left: auto !important;
-        margin-right: auto !important;
         width: calc(100% - #{$latest-inset * 2});
         max-width: comp.$max-body-width;
+        margin-right: auto !important;
+        margin-left: auto !important;
       }
     } @else {
       @media (min-width: func.bp(#{$bp})) {
-        margin-left: $bp-inset;
         margin-right: $bp-inset;
+        margin-left: $bp-inset;
       }
     }
   }
@@ -48,36 +48,36 @@
     }
 
     @if $bp == 'base' {
-      display: grid;
-      grid-template-columns: comp.$column-template;
-      grid-column-gap: comp.$column-gap;
-      pointer-events: none;
-      z-index: 200; // reasonably safe high z-index
       position: fixed;
-      height: 100%;
       top: 0;
-      bottom: 0;
       right: $bp-inset;
+      bottom: 0;
       left: $bp-inset;
+      z-index: 200; // reasonably safe high z-index
+      display: grid;
+      grid-column-gap: comp.$column-gap;
+      grid-template-columns: comp.$column-template;
+      height: 100%;
+      pointer-events: none;
     } @else if $bp == 'max-body' {
       @media (min-width: func.bp(#{$bp})) {
-        left: 50% !important;
         right: auto !important;
-        transform: translateX(-50%);
+        left: 50% !important;
         width: calc(100% - #{$latest-inset * 2});
         max-width: comp.$max-body-width;
+        transform: translateX(-50%);
       }
     } @else {
       @media (min-width: func.bp(#{$bp})) {
         @if $bp-inset == auto {
-          left: 50%;
           right: auto;
-          transform: translateX(-50%);
+          left: 50%;
           width: calc(100% - #{$latest-inset * 2});
           max-width: comp.$max-body-width;
+          transform: translateX(-50%);
         } @else {
-          left: $bp-inset;
           right: $bp-inset;
+          left: $bp-inset;
         }
       }
     }
@@ -241,10 +241,10 @@
           @media #{$mq} {
             body & {
               @if ($calc-direction == 'both') {
-                padding-right: $bp-inset;
-                padding-left: $bp-inset;
                 margin-right: -$bp-inset;
                 margin-left: -$bp-inset;
+                padding-right: $bp-inset;
+                padding-left: $bp-inset;
               } @else {
                 padding-#{$calc-direction}: $bp-inset;
                 margin-#{$calc-direction}: -$bp-inset;
@@ -261,10 +261,10 @@
           @media #{$mq} {
             body & {
               @if ($calc-direction == 'both') {
-                padding-left: calc(math.div(100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2);
-                padding-right: calc(math.div(100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2);
-                margin-left: calc(math.div((100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2) * -1);
                 margin-right: calc(math.div((100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2) * -1);
+                margin-left: calc(math.div((100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2) * -1);
+                padding-right: calc(math.div(100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2);
+                padding-left: calc(math.div(100vw - var(--scrollbar-width) - #{comp.$max-body-width}) / 2);
               } @else {
                 padding-#{$calc-direction}: calc(
                   math.div((100vw - var(--scrollbar-width) - #{comp.$max-body-width}), 2)
@@ -296,10 +296,10 @@
   $debug: false
 ) {
   display: grid;
-  justify-items: #{$justify};
+  align-content: #{$align};
   align-items: #{$align};
   justify-content: #{$justify};
-  align-content: #{$align};
+  justify-items: #{$justify};
   width: 100%;
 
   @each $entry in $layout {
@@ -370,10 +370,10 @@
   $debug: false
 ) {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
-  justify-content: #{$justify};
+  flex-wrap: wrap;
   align-items: #{$align};
+  justify-content: #{$justify};
 
   @if (($layout != false) and (length($layout) > 0)) {
     $list-index: 1;

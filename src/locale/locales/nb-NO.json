@@ -4,18 +4,17 @@
   },
   "theme": {
     "colors": {
-      "yellow": "Gul",
       "blue": "Blå",
       "green": "Grønn"
     },
-    "toggle": "Skift fargetema: {mode}",
+    "header": "Tilpass",
     "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {
     "add": "Legg til KPI",
     "edit": "Endre KPI",
-    "currentValue": "Siste verdi",
-    "progresjon": "Progresjon",
+    "currentValue": "Nåværende verdi",
+    "progress": "Progresjon",
     "description": "Beskrivelse",
     "chooseType": "Velg KPI-type",
     "types": {
@@ -86,6 +85,7 @@
     "decimal": "Må være tall"
   },
   "general": {
+    "appName": "OKR-tracker",
     "edit": "Endre",
     "general": "Generelt",
     "OKRs": "OKR-er",
@@ -98,6 +98,7 @@
     "notFound": "Not found",
     "help": "Hjelp",
     "admin": "Admin",
+    "administration": "Administrasjon",
     "superAdmin": "Super admin",
     "dashboard": "Vis dashboard",
     "signOut": "Logg ut",
@@ -114,11 +115,17 @@
     "success": "Suksess",
     "objective": "Mål",
     "keyResult": "Nøkkelresultat",
-    "period": "Periode"
+    "period": "Periode",
+    "back": "Tilbake",
+    "frontPage": "Forside",
+    "signIn": "Vennligst logg inn",
+    "orgs": "Virksomheter",
+    "emptyHome": "Vennligst velg en etat fra listen.",
+    "api": "API"
   },
   "btn": {
     "close": "Lukk",
-    "save": "Lagre",
+    "save": "Oppdater",
     "saveChanges": "Lagre endringer",
     "add": "Legg til",
     "editNotes": "Endre notater",
@@ -139,7 +146,8 @@
     "deletePermanently": "Slett permanent",
     "restore": "Gjenopprett",
     "confirmDeleteProgress": "Bekreft sletting",
-    "reset": "Nullstill"
+    "reset": "Nullstill",
+    "showMore": "Vis mer"
   },
   "login": {
     "login": "Logg inn",
@@ -219,7 +227,7 @@
       "rejected": "Fjernet: {user}"
     }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Tilknyttet mål",
     "description": "Beskrivelse",
     "startValue": "Startverdi",
@@ -237,10 +245,11 @@
       "sheetsCellHelp": "For eksempel «A12»",
       "testConnection": "Lagre og test kobling"
     },
-    "updateKeyres": "Oppdater verdi for nøkkelresultat",
+    "updateKeyRes": "Oppdater verdi for nøkkelresultat",
     "registerProgression": {
       "value": "Verdi"
     },
+    "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Oppdater verdi",
     "dateAndTime": "Dato og tid",
     "addComment": "Legg ved kommentarer (valgfritt)",
@@ -265,6 +274,7 @@
     "progression": "Progresjon",
     "weight": "Vekt",
     "change": "Endre mål",
+    "add": "Legg til mål",
     "createdBy": "Opprettet av",
     "editedBy": "Endret av",
     "created": "Opprettet",
@@ -273,19 +283,21 @@
   "period": {
     "dateRange": "Start- og sluttdato",
     "range": "{startDate} til {endDate}",
-    "period": "Periode"
+    "period": "Periode",
+    "add": "Legg til periode"
   },
   "tooltip": {
     "openMenu": "Åpne meny",
     "dashboard": "Gå til dashboard-visning",
-    "keyresValue": "Skriv inn ny måleverdi",
+    "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "editKpi": "Endre detaljer eller slett KPI",
     "navigateToItem": "Gå til {item}",
     "deleteProgress": "Slett målepunkt",
     "isMember": "Medlem av team",
-    "emptyPeriod": "Ingen aktiv periode"
+    "emptyPeriod": "Ingen aktiv periode",
+    "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet"
   },
   "document": {
     "mission": "Oppdrag"
@@ -330,9 +342,7 @@
   },
   "keyResultPage": {
     "change": "Endre nøkkelresultat",
-    "add": {
-      "today": "I dag"
-    },
+    "add": "Legg til nøkkelresultat",
     "table": {
       "value": "Verdi"
     },
@@ -361,7 +371,7 @@
   },
   "weight": {
     "heading": "Vekting",
-    "keyresFor": "Nøkkelresultater for «{name}»",
+    "keyResultFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
   },
   "accessRequests": {
@@ -423,19 +433,23 @@
     "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
+    "profile": "Profil",
     "myProfile": "Min profil",
     "superAdmin": "OKR-tracker administrator",
     "admin": "Organisasjonsadministrator",
     "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
     "hasAdmin": "Er administrator for en rekke organisasjoner",
-    "products": "Mine produkter",
+    "myProducts": "Mine produkter",
+    "products": "Produkter",
     "selectLanguage": "Velg språk",
+    "access": "Tilgang",
     "position": {
       "groups": {
         "developers": "Utvikling",
         "designers": "Design",
         "teamLead": "Teamleder",
         "techLead": "Tech lead",
+        "designLead": "Design lead",
         "administration": "Administrasjon",
         "productOwner": "Produktområdeleder",
         "director": "Direktør",
@@ -443,10 +457,12 @@
         "departmentDirector": "Avdelingsdirektør"
       },
       "title": "Stilling",
+      "member": "Medlem",
       "frontendDeveloper": "Frontend-utvikler",
       "backendDeveloper": "Backend-utvikler",
       "fullStackDeveloper": "Fullstack-utvikler",
       "techLead": "Tech lead",
+      "designLead": "Design lead",
       "interactionDesigner": "Interaksjonsdesigner",
       "serviceDesigner": "Tjenestedesigner",
       "contentDesigner": "Innholdsdesigner",
@@ -473,6 +489,18 @@
       "contentProducer": "Innholdsprodusent",
       "other": "Annet",
       "storyteller": "Historieforteller"
+    }
+  },
+  "progress": {
+    "title": "Progresjon {progress}",
+    "done": "{progress} fullført",
+    "remaining": "{progress} {unit} gjenstår",
+    "remainingOf": "av {progress}",
+    "completedMessages": {
+      "1": "Nå er dere gode!",
+      "2": "Dødsbra jobba, folkens!",
+      "3": "Wohoo! 100%",
+      "4": "Nice, dere klarte det!"
     }
   },
   "languages": {

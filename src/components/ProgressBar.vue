@@ -29,13 +29,15 @@ export default {
 .progression__container {
   position: relative;
   width: 100%;
-  height: 4px;
+  height: 5px;
   margin-right: 1rem;
-  background: var(--color-grey-100);
+  background: var(--color-progress-background);
+  border-radius: 1rem;
 }
 
 .progression__bar {
   height: 100%;
-  background: var(--color-primary);
+  background: var(--color-secondary);
+  border-radius: 1rem;
 }
 </style>

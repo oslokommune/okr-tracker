@@ -62,9 +62,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import User from "@/db/User";
-import { db } from "@/config/firebaseConfig";
+import { mapState } from 'vuex';
+import User from '@/db/User';
+import { db } from '@/config/firebaseConfig';
 
 export default {
   name: 'EditUser',
@@ -79,7 +79,7 @@ export default {
   data: () => ({
     thisUser: null,
     loading: false,
-    changes: false
+    changes: false,
   }),
 
   computed: {
@@ -107,8 +107,8 @@ export default {
   },
 
   methods: {
-    edit(){
-      this.changes = true
+    edit() {
+      this.changes = true;
     },
     async remove(user) {
       this.loading = true;

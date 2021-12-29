@@ -1,7 +1,7 @@
 // This is stolen from wearebraid/griddle until they release a version that supports @use/@forward rules
 // https://github.com/wearebraid/griddle/issues/7
-$max-column-width: 7.5em !default; // 72px
-$max-gutter-width: 1em !default; // 32px
+$max-column-width: 9em !default; // 72px
+$max-gutter-width: 0.5em !default; // 16px
 $column-count: 12 !default;
 $column-color: red !default; // fill color will be used at 10% opacity
 

@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
-
+  <div class="container">
     <div class="create-container">
+      <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createOrganization" @submit.prevent="handleSubmit(save)">
           <form-component
@@ -42,7 +41,12 @@
       </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" form="createOrganization" :disabled="loading" data-cy="btn-createOrg">
+        <button
+          class="btn btn--icon btn--pri btn--icon-pri"
+          form="createOrganization"
+          :disabled="loading"
+          data-cy="btn-createOrg"
+        >
           <i class="icon fa fa-fw fa-save" />
           {{ $t('btn.create') }}
         </button>

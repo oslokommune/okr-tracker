@@ -27,6 +27,8 @@ import kpiTypes from '@/config/kpiTypes';
 import { numberLocale } from '@/util';
 
 export default {
+  name: 'KpiLink',
+
   props: {
     type: {
       type: String,
@@ -63,13 +65,13 @@ export default {
   height: 8rem;
   padding: 1rem;
   overflow: hidden;
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
-  background: var(--color-primary);
+  background: var(--color-secondary-light);
 
   &:hover {
-    background: var(--color-primary-dark);
+    background: var(--color-secondary);
   }
 
   &.disabled {
@@ -78,11 +80,11 @@ export default {
 }
 
 .kpi--empty {
-  color: rgba( var(--color-purple-rgb), 0.25);
-  background: rgba( var(--color-grey-100-rgb), 0.5);
+  color: rgba(var(--color-purple-rgb), 0.25);
+  background: rgba(var(--color-grey-100-rgb), 0.5);
 
   &:hover {
-    background: rgba( var(--color-grey-100-rgb), 0.4);
+    background: rgba(var(--color-grey-100-rgb), 0.4);
   }
 
   & > .kpi__icon {

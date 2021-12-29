@@ -21,10 +21,10 @@
       &:after {
         position: absolute;
         left: 50%;
-        transform: translateX(-50%);
         color: var.$column-color;
-        opacity: 0.5;
         font-size: 12px;
+        transform: translateX(-50%);
+        opacity: 0.5;
         content: counter(columnCount);
 
         @media (min-width: 600px) {

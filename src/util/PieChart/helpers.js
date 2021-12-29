@@ -19,11 +19,11 @@ export function getProgression(objectives) {
       objectives
         .map((objective) => objective.children)
         .flat()
-        .map((keyres) => {
+        .map((keyResult) => {
           const scale = scaleLinear()
-            .domain([+keyres.startValue, +keyres.targetValue])
+            .domain([+keyResult.startValue, +keyResult.targetValue])
             .clamp(true);
-          return scale(+keyres.currentValue);
+          return scale(+keyResult.currentValue);
         })
     ) || 0
   );

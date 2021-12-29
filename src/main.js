@@ -6,6 +6,7 @@ import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
+import { ContentLoader } from 'vue-content-loader';
 
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
@@ -14,15 +15,17 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
+import Spinner from '@/components/VSpinner.vue';
 
 import { auth } from './config/firebaseConfig';
 
-import './styles/main.scss';
 
 // import plugin styles
 import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
+
+import './styles/main.scss';
 
 // Use plugins
 Vue.use(Toasted, {
@@ -41,6 +44,8 @@ Vue.component('VueGriddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));
+Vue.component('ContentLoader', ContentLoader);
+Vue.component('VSpinner', Spinner);
 
 /* eslint-disable */
 configure({

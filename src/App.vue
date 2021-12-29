@@ -1,23 +1,16 @@
 <template>
   <div class="app">
     <SiteHeader class="header"></SiteHeader>
-    <Breadcrumbs></Breadcrumbs>
-    <main class="container">
-      <div class="sidebarContainer">
-        <SidebarNavigation v-if="user"></SidebarNavigation>
-      </div>
-      <div class="main-view">
-        <spinner v-if="loading"></spinner>
-        <router-view v-else class="router-view"></router-view>
-      </div>
-    </main>
-    <vue-griddle v-if="isDev" />
+    <v-spinner v-if="loading"></v-spinner>
+    <router-view v-else></router-view>
+    <vue-griddle />
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'App',
@@ -29,14 +22,11 @@ export default {
   },
 
   components: {
-    SidebarNavigation: () => import('@/components/Navigation/Sidebar.vue'),
     SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
-    Breadcrumbs: () => import('@/components/Navigation/Breadcrumbs.vue'),
-    Spinner: () => import('@/components/Spinner.vue'),
   },
 
   computed: {
-    ...mapState(['user', 'loading']),
+    ...mapState(['user', 'loading', 'LS_MODE']),
 
     isDev() {
       return import.meta.env.NODE_ENV !== 'production';
@@ -48,8 +38,42 @@ export default {
       document.querySelector('#spinner').remove();
     }
   },
+
+  mounted() {
+    if (this.hasInStorage()) {
+      const mode = this.getLocalThemeMode();
+      this.setThemeMode(mode);
+    } else {
+      this.setThemeMode('blue');
+    }
+  },
+
   methods: {
-    ...mapMutations(['SET_AUTHENTICATION']),
+    ...mapActions(['reset_state', 'setTheme']),
+
+    async signOut() {
+      await auth.signOut();
+      await this.reset_state();
+    },
+
+    hasInStorage() {
+      const mode = localStorage.getItem(this.LS_MODE);
+      return mode !== null;
+    },
+
+    setThemeMode(mode) {
+      this.saveThemeMode(mode);
+      this.setTheme(mode);
+      document.body.setAttribute('data-theme', mode);
+    },
+
+    getLocalThemeMode() {
+      return localStorage.getItem(this.LS_MODE);
+    },
+
+    saveThemeMode(mode) {
+      localStorage.setItem(this.LS_MODE, mode);
+    },
   },
 };
 
@@ -66,40 +90,5 @@ document.body.addEventListener('keydown', () => {
 .app {
   min-height: 100vh;
   background: var(--color-bg);
-}
-
-.container {
-  @include container();
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.sidebarContainer {
-  display: none;
-
-  @media screen and (min-width: bp(m)) {
-    display: block;
-    width: span(3);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(2);
-  }
-}
-
-.main-view {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9);
-    margin-left: span(0, 1);
-  }
-  @media screen and (min-width: bp(l)) {
-    width: span(10);
-  }
-}
-
-.router-view {
-  min-height: calc(100vh - 20rem);
 }
 </style>

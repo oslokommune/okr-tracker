@@ -76,16 +76,11 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-item" :disabled="loading || !changes">
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading || !changes">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button
-        v-if="!activeItem.archived"
-        class="btn btn--icon btn--danger btn--icon-pri"
-        :disabled="loading"
-        @click="archive"
-      >
+      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>

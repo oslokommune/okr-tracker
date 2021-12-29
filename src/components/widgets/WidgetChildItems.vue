@@ -1,11 +1,11 @@
 <template>
-  <widget v-if="children.length" :widget-id="widgetId" :title="title" :icon="icon">
+  <widget v-if="children.length" :title="title">
     <div class="list">
       <router-link
         v-for="child in children"
         :key="child.id"
         :to="{ name: 'ItemHome', params: { slug: child.slug } }"
-        class="list__link btn btn--ter btn--fw btn--icon btn--icon-pri"
+        class="list__link btn btn--ter btn--fw btn--icon"
       >
         <i class="icon fa fa-fw fa-chevron-right" />
         {{ child.name }}
@@ -21,14 +21,7 @@ export default {
   name: 'WidgetChildItems',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({
@@ -80,6 +73,7 @@ export default {
 .list__link {
   justify-content: flex-start;
   white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .icon {

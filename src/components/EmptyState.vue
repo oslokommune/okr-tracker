@@ -51,8 +51,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 7rem;
-  height: 7rem;
+  width: 5rem;
+  height: 5rem;
   margin-bottom: 2rem;
   color: var(--color-bg);
   font-size: 2.5rem;
@@ -64,10 +64,12 @@ export default {
 .empty__heading {
   margin-bottom: 0.5rem;
   font-weight: 500;
+  word-break: break-all;
 }
 
 .empty__body {
   color: var(--color-grey-300);
+  word-break: break-all;
 }
 
 .empty__actions {

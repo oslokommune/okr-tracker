@@ -3,11 +3,11 @@
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">{{ $t('kpi.add') }}</h2>
-        <button class="btn btn--ter btn--close" @click="close">
+        <button class="btn btn--ter btn--close btn--icon btn--icon-pri" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>
-      <div class="modal__main" style="background: white">
+      <div class="modal__main">
         <validation-observer v-slot="{ handleSubmit }">
           <form id="addKpi" @submit.prevent="handleSubmit(add)">
             <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
@@ -61,7 +61,7 @@
                 type="text"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+                  <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
                 </template>
               </form-component>
 
@@ -74,7 +74,7 @@
                 type="text"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+                  <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
                 </template>
               </form-component>
 
@@ -87,7 +87,7 @@
                 type="text"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+                  <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
                 </template>
               </form-component>
             </template>
@@ -95,8 +95,8 @@
         </validation-observer>
       </div>
 
-      <div class="modal__footer" style="background: white">
-        <button form="addKpi" :disabled="loading" class="btn btn--pri">{{ $t('btn.add') }}</button>
+      <div class="modal__footer">
+        <button form="addKpi" :disabled="loading" class="btn btn--sec">{{ $t('btn.add') }}</button>
         <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
       </div>
     </div>
@@ -125,7 +125,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'activeItem', 'activeItemRef']),
+    ...mapState(['kpis', 'activeItemRef']),
 
     serviceAccountAddress() {
       return import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
@@ -170,51 +170,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal__textarea {
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.modal__main--flex {
-  display: flex;
-  flex-direction: row;
-}
-
-.modal__main--input-value {
-  width: 75px;
-  border: 1px solid var(--color-primary) !important;
-}
-
-.modal__main--input-label {
-  margin-right: 1rem;
-}
-
-.modal__main--btn {
-  align-self: flex-end;
-  margin-bottom: 1.5rem;
-}
-
 .btn--space {
   margin-left: 1rem;
 }
 
 .btn--close {
   height: 3rem;
-}
-
-.sheets-info {
-  display: flex;
-  padding: 1rem;
-  font-size: 0.9rem;
-  background: rgba(var(--color-yellow-rgb), 0.2);
-  border-radius: 3px;
-}
-
-.sheets-info__icon {
-  margin-top: 0.2rem;
-  margin-right: 0.5rem;
-}
-
-strong {
-  font-weight: 500;
 }
 </style>

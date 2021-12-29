@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <div class="login">
+  <div class="container">
+    <div class="main__second">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div v-if="loginLoading && loginError === null">
         <loading-small></loading-small>
@@ -50,25 +50,33 @@
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
-        <button v-if="providers.includes('microsoft')" class="btn btn--icon btn--pri" @click="loginWithMicrosoft">
+        <button
+          v-if="providers.includes('microsoft')"
+          class="btn btn--pri btn--icon btn--icon-pri"
+          @click="loginWithMicrosoft"
+        >
           <i class="icon fab fa-fw fa-microsoft" />
           {{ $t('login.microsoft') }}
         </button>
 
-        <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
+        <button
+          v-if="providers.includes('google')"
+          class="btn btn--icon btn--pri btn--icon-pri"
+          @click="loginWithGoogle"
+        >
           <i class="icon fab fa-fw fa-google" />
           {{ $t('login.google') }}
         </button>
 
         <button
           v-if="providers.includes('email')"
-          class="btn btn--ghost"
+          class="btn btn--sec"
           data-cy="login-username"
           @click="showForm = true"
         >
           {{ $t('login.loginWithUsername') }}
         </button>
-        <router-link class="btn btn--ghost" :to="{ name: 'request-access' }" data-cy="login-request">
+        <router-link class="btn btn--sec" :to="{ name: 'request-access' }" data-cy="login-request">
           {{ $t('login.requestAccess') }}
         </router-link>
       </div>
@@ -152,24 +160,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login {
-  display: flex;
-  flex-direction: column;
-  width: span(12);
-  padding: 2rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(4);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    width: span(6);
-  }
-}
-
 .login__form {
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--color-grey-100);
@@ -195,7 +185,7 @@ export default {
 .error {
   margin: 1.5rem 0;
   padding: 1em 1.5em;
-  color: black;
+  color: var(--color-black);
   background: rgba(var(--color-red-rgb), 0.25);
   border: 1px solid var(--color-red);
   border-radius: 2px;

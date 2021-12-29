@@ -1,42 +1,57 @@
 <template>
   <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <router-link class="keyResult__name" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-      <div>{{ keyRow.name }}</div>
-      <div v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</div>
+    <router-link
+      class="keyResult__info keyResult__info--header"
+      :class="{ 'keyResult__info--expanded': view !== 'compact' }"
+      :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
+    >
+      <h3 class="title-3">{{ keyRow.name }}</h3>
+      <span v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</span>
     </router-link>
 
-    <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
+    <div v-if="keyRow.auto" v-tooltip="$t('keyResult.automatic')" class="keyResult__auto fa fa-magic"></div>
 
-    <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
+    <div v-if="view === 'compact'" class="keyResult__progress">
+      <progress-bar :progression="keyRow.progression" />
+    </div>
 
-    <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow" />
+    <div v-else class="keyResult__progress" :class="{ 'keyResult__progress--expanded': view !== 'compact' }">
+      <div
+        class="progression"
+        v-tooltip="allowedToEditPeriod ? false : 'Not allowed to edit'"
+        :class="{ 'progression--disabled': !allowedToEditPeriod }"
+        @click="openModal"
+      >
+        <div class="progression__done progression__done--keyResultRow">
+          {{ $t('progress.done', { progress: percentage(keyResult.progression) }) }}
+        </div>
+        <div class="progression__remaining progression__remaining--keyResultRow">
+          {{ remainingKeyResultProgress(keyResult) }}
+        </div>
+        <div class="progress-bar__container progress-bar__container--keyResultRow">
+          <div class="progress-bar" :style="{ width: percentage(keyResult.progression) }"></div>
+        </div>
+        <div class="progression__total--keyResultRow">
+          {{ keyResult.currentValue ? format('.1~f')(keyResult.currentValue) : 0 }} / {{ keyResult.targetValue }}
+        </div>
+      </div>
+    </div>
 
-    <form
-      v-if="view !== 'compact' && hasEditRights && !keyRow.auto"
-      class="keyResult__form"
-      @submit.prevent="isOpen = true"
-    >
-      <label class="keyResult__input">
-        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" step="any" @input="changed = true"/>
-      </label>
-
-      <button class="btn">{{ $t('keyres.updateValue') }}</button>
-    </form>
-
-    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false" :unsavedValues="changed"></modal>
+    <modal v-if="isOpen" :key-result="keyRow" :unsaved-values="changed" @close="isOpen = false"></modal>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { format } from 'd3-format';
+import { remainingKeyResultProgress } from '@/util';
 
 export default {
   name: 'KeyResultRow',
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
-    Modal: () => import('@/components/Modal.vue'),
+    Modal: () => import('@/components/KeyResultModal.vue'),
   },
 
   props: {
@@ -59,7 +74,7 @@ export default {
 
   computed: {
     ...mapState(['user']),
-    ...mapGetters(['hasEditRights']),
+    ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
     view() {
       if (this.forceExpanded) return 'expanded';
       return this.user.preferences.view;
@@ -74,46 +89,88 @@ export default {
       },
     },
   },
+
+  methods: {
+    format,
+
+    percentage(value) {
+      return format('.0%')(value);
+    },
+
+    remainingKeyResultProgress,
+
+    openModal() {
+      if (this.allowedToEditPeriod) {
+        this.isOpen = true;
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @use '@/styles/griddle/mixins' as *;
+@use '@/styles/progressbar';
 
 .keyResult {
   display: grid;
-  grid-gap: 0.25rem;
-  grid-template-columns: 2rem 1fr span(1, 0, span(6));
-  align-items: baseline;
-  padding: 0.5rem 0.75rem;
+  grid-template-columns: 1fr auto;
+  background-color: var(--color-primary);
 
   &.expanded {
-    grid-template-columns: 2rem 1fr span(2, 0, span(6));
-    padding: 1rem 0.75rem;
+    @media screen and (max-width: bp(s)) {
+      display: flex;
+      flex-direction: column;
+      grid-row-gap: 0;
+    }
   }
 }
 
-.keyResult__icon {
+.keyResult__info {
   grid-column: 1;
+  padding: 0.5rem 2rem 0 2rem;
+  background-color: var(--color-secondary-light);
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
 }
 
-.keyResult__name {
-  grid-column: 2;
+.keyResult__info--expanded {
+  padding: 2rem 3rem 2rem 2rem;
+}
+
+.keyResult__info--header {
+  height: 100%;
   color: var(--color-grey-800);
   text-decoration: none;
+}
 
-  @media screen and (min-width: bp(m)) {
-    padding-right: 1rem;
+.keyResult__progress {
+  grid-column: 2;
+  align-self: center;
+  width: 100px;
+  padding: 0.5rem 1.75rem;
+
+  @media screen and (min-width: bp(s)) {
+    width: 320px;
   }
 }
 
-.keyResult__progression {
-  grid-column: 3;
+.keyResult__progress--expanded {
+  align-self: auto;
+
+  @media screen and (max-width: bp(s)) {
+    width: 100%;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-dark);
+    cursor: pointer;
+  }
 }
 
 .keyResult__auto {
-  grid-row: 1;
-  grid-column: 1;
   width: auto;
   height: 100%;
   margin-right: 0.5rem;
@@ -122,36 +179,54 @@ export default {
 }
 
 .keyResult__description {
-  grid-row: 2;
-  grid-column: 2;
-  align-self: start;
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   font-size: 0.8rem;
-
-  @media screen and (min-width: bp(m)) {
-    padding-right: 1rem;
-  }
 }
 
 .keyResult__form {
   display: flex;
-  grid-row: 3;
-  grid-column: 2 / 4;
   margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+}
 
-  @media screen and (min-width: bp(m)) {
-    grid-row: 3;
-    grid-column: 2;
-  }
-
-  @media screen and (min-width: bp(m)) {
-    grid-row: 2;
-    grid-column: 3;
-  }
+.keyResult__label {
+  margin-right: 0.5rem;
 }
 
 .keyResult__input {
-  margin-right: 0.5rem;
+  background-color: var(--color-white);
+}
+
+.progression {
+  display: grid;
+  grid-row-gap: 0;
+  grid-column-gap: 0;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 1fr auto;
+  padding: 1.5rem 0;
+  color: var(--color-text-secondary);
+}
+
+.progress-bar__container--keyResultRow {
+  grid-area: 3 / 1 / 4 / 2;
+}
+
+.progression__done--keyResultRow {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.progression__remaining--keyResultRow {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.progression__total--keyResultRow {
+  grid-area: 4 / 1 / 5 / 2;
+  justify-self: end;
+  padding-top: 0.5rem;
+}
+
+.progression--disabled {
+  cursor: not-allowed;
 }
 </style>

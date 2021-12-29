@@ -1,8 +1,10 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('keyResultsPage.notes.heading')" icon="pencil-alt">
+  <widget :title="$t('keyResultsPage.notes.heading')">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
-        <textarea v-model="thisKey.notes" rows="20" @input="dirty = true" />
+        <label>
+          <textarea class="form__field" v-model="thisKey.notes" rows="20" @input="dirty = true" />
+        </label>
       </div>
 
       <div v-else class="notes--margin-bottom">
@@ -17,7 +19,7 @@
         <button class="btn btn--ter" @click="closeNotes">{{ $t('btn.close') }}</button>
       </div>
       <div v-else>
-        <button class="btn btn--ter" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
+        <button class="btn" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
       </div>
     </div>
   </widget>
@@ -25,7 +27,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import marked from 'marked';
+import { marked } from 'marked';
 import dompurify from 'dompurify';
 import KeyResult from '@/db/KeyResult';
 
@@ -37,14 +39,7 @@ export default {
   name: 'WidgetKeyResultNotes',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({
@@ -62,9 +57,9 @@ export default {
   watch: {
     activeKeyResult: {
       immediate: true,
-      handler(keyres) {
-        this.thisKey = { ...keyres, id: keyres.id };
-        this.md = dompurify.sanitize(marked(keyres.notes || ''));
+      handler(keyResult) {
+        this.thisKey = { ...keyResult, id: keyResult.id };
+        this.md = dompurify.sanitize(marked(keyResult.notes || ''));
       },
     },
   },
