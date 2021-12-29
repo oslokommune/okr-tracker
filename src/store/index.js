@@ -114,8 +114,9 @@ export const getters = {
 export const actions = {
   ...moduleActions,
 
-  setTheme: async ({ commit }, payload) => {
+  setTheme: async ({ state, commit }, payload) => {
     commit('SET_THEME', payload);
+    localStorage.setItem(state.LS_MODE, payload);
 
     return true;
   },
