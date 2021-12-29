@@ -52,6 +52,20 @@ export const getters = {
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 
+  allowedToEditPeriod: (state) => {
+    const { user, activePeriod, activeItem } = state;
+    const { organization } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? user.admin && user.admin.includes(organization.id)
+      : user.admin && user.admin.includes(activeItem.id);
+
+    if (user && user.superAdmin) return true;
+    if (isAdminOfOrganization) return true;
+
+    return activePeriod.endDate.toDate() > new Date();
+  },
+
   sidebarGroups: (state) => {
     const { organizations, departments, products, activeItem } = state;
 
@@ -67,7 +81,6 @@ export const getters = {
     };
 
     const filterProducts = ({ department }) => {
-      // No active item is set, show no products
       if (!activeItem) return false;
       // Active item is a department, show all its products
       if (activeItem.id === department.id) return true;
@@ -81,6 +94,21 @@ export const getters = {
       { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
     ];
   },
+
+  hasCheckedOrganizations: (state) => {
+    const { organizations, user } = state;
+    const orgs = user.preferences.home.collapse.organization;
+
+    const checked = [];
+
+    organizations.forEach(org => {
+      if (orgs[org.slug]) {
+        checked.push(orgs[org.slug]);
+      }
+    })
+
+    return checked.length > 0;
+  }
 };
 
 export const actions = {
@@ -104,9 +132,29 @@ export const actions = {
     return true;
   },
 
+  setDataLoading: async ({ commit }, payload) => {
+    commit('SET_DATA_LOADING', payload);
+    return true;
+  },
+
   setLoading: async ({ commit }, payload) => {
     commit('SET_LOADING', payload);
 
+    return true;
+  },
+
+  setPreviousUrl: async ({ commit }, payload) => {
+    if (payload.fullPath === '/') {
+      return true;
+    }
+
+    commit('SET_PREVIOUS_URL', payload);
+
+    return true;
+  },
+
+  setActiveOrganization: async ({ commit }, payload) => {
+    commit('SET_ACTIVE_ORGANIZATION', payload);
     return true;
   },
 };
@@ -130,6 +178,10 @@ export const mutations = {
     state.loginLoading = payload;
   },
 
+  SET_DATA_LOADING(state, payload) {
+    state.dataLoading = payload;
+  },
+
   SET_THEME(state, payload) {
     state.theme = payload;
   },
@@ -140,6 +192,14 @@ export const mutations = {
 
   SET_UNSUBSCRIBE_COLLECTION(state, payload) {
     state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
+  },
+
+  SET_PREVIOUS_URL(state, payload) {
+    state.previousUrl = payload;
+  },
+
+  SET_ACTIVE_ORGANIZATION(state, payload) {
+    state.activeOrganization = payload;
   },
 };
 
@@ -155,6 +215,7 @@ export default new Vuex.Store({
     activeKeyResult: null,
     activePeriod: null,
     activeObjective: null,
+    activeOrganization: null,
     periods: [],
     objectives: [],
     keyResults: [],
@@ -167,10 +228,13 @@ export default new Vuex.Store({
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
-    theme: 'yellow',
+    dataLoading: false,
+    theme: 'blue',
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
+    previousUrl: null,
+    LS_MODE: 'okr-tracker-theme',
   },
   getters,
   mutations,

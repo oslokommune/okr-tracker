@@ -1,6 +1,8 @@
 <template>
-  <div class="main">
-    <div id="swagger-ui"></div>
+  <div class="container">
+    <div class="main">
+      <div id="swagger-ui"></div>
+    </div>
   </div>
 </template>
 

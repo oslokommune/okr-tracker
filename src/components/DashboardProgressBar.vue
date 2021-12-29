@@ -1,18 +1,18 @@
 <template>
   <div class="progress">
-    <div class="progress__unit">{{ keyres.unit }}</div>
+    <div class="progress__unit">{{ keyResult.unit }}</div>
     <div class="progress__bar-container">
       <div ref="bar" class="progress__bar" :class="{ completed }" style="width: 0%">
-        <div class="progress__current-value" :data-progress="keyres.currentValue || keyres.startValue">
-          {{ keyres.currentValue || keyres.startValue }}
+        <div class="progress__current-value" :data-progress="keyResult.currentValue || keyResult.startValue">
+          {{ keyResult.currentValue || keyResult.startValue }}
         </div>
       </div>
       <div class="progress__change-container">
         <div ref="change" class="progress__change"></div>
       </div>
     </div>
-    <div class="progress__startValue">{{ keyres.startValue }}</div>
-    <div class="progress__targetValue">{{ keyres.targetValue }}</div>
+    <div class="progress__startValue">{{ keyResult.startValue }}</div>
+    <div class="progress__targetValue">{{ keyResult.targetValue }}</div>
   </div>
 </template>
 
@@ -20,13 +20,13 @@
 import { scaleLinear } from 'd3-scale';
 import { format } from 'd3-format';
 import { select } from 'd3-selection';
-import "d3-transition";
+import 'd3-transition';
 
 export default {
   name: 'DashboardProgressBar',
 
   props: {
-    keyres: {
+    keyResult: {
       type: Object,
       required: true,
     },
@@ -46,7 +46,7 @@ export default {
   },
 
   watch: {
-    keyres() {
+    keyResult() {
       this.bar.transition().duration(1000).style('width', this.getWidth());
     },
   },
@@ -62,7 +62,7 @@ export default {
     },
 
     getWidth() {
-      const { startValue, targetValue, currentValue } = this.keyres;
+      const { startValue, targetValue, currentValue } = this.keyResult;
 
       const scale = scaleLinear().domain([startValue, targetValue]).clamp(true);
 
@@ -73,7 +73,7 @@ export default {
     },
 
     getChangeStyle(el) {
-      const { fromValue, startValue, targetValue, toValue } = this.keyres;
+      const { fromValue, startValue, targetValue, toValue } = this.keyResult;
       let fromPos = 0;
       let width = 0;
       let direction;
@@ -139,7 +139,7 @@ export default {
     &::before {
       display: inline-block;
       width: 100%;
-      color: black;
+      color: var(--color-black);
       font-weight: 900;
       font-family: 'Font Awesome 5 Free';
       text-align: center;
@@ -158,7 +158,7 @@ export default {
 
 .progress__current-value {
   display: flex;
-  color: black;
+  color: var(--color-black);
   font-weight: 600;
   font-size: 0.9em;
 }

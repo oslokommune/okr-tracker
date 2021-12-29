@@ -49,19 +49,19 @@ describe('Create data for department', () => {
   });
 
   it('Creates a key result for the objective', () => {
-    cy.get('[data-cy="add_keyres_button"]').click().wait(750);
+    cy.get('[data-cy="add_keyResult_button"]').click().wait(750);
 
-    cy.get('[data-cy="keyres_name_field"]').clear().type(testKeyResult.name);
+    cy.get('[data-cy="keyResult_name_field"]').clear().type(testKeyResult.name);
 
-    cy.get('[data-cy="keyres_longdescription_field"]').clear().type(testKeyResult.longDescription);
+    cy.get('[data-cy="keyResult_longdescription_field"]').clear().type(testKeyResult.longDescription);
 
-    cy.get('[data-cy="keyres_startvalue_field"]').clear().type(testKeyResult.startValue);
+    cy.get('[data-cy="keyResult_startvalue_field"]').clear().type(testKeyResult.startValue);
 
-    cy.get('[data-cy="keyres_targetvalue_field"]').clear().type(testKeyResult.targetValue);
+    cy.get('[data-cy="keyResult_targetvalue_field"]').clear().type(testKeyResult.targetValue);
 
-    cy.get('[data-cy="keyres_unit_field"]').clear().type(testKeyResult.unit);
+    cy.get('[data-cy="keyResult_unit_field"]').clear().type(testKeyResult.unit);
 
-    cy.get('[data-cy="save_keyres_button"]').click();
+    cy.get('[data-cy="save_keyResult_button"]').click();
   });
 
   it('Validates department data', () => {
@@ -73,7 +73,7 @@ describe('Create data for department', () => {
 
     cy.get('[data-cy="objectives_list"] .title').should('contain', '(1)');
 
-    cy.get('.keyres').should('contain', testKeyResult.name);
+    cy.get('.keyResult').should('contain', testKeyResult.name);
     cy.get('.progress__startValue').should('contain', testKeyResult.startValue);
     cy.get('.progress__targetValue').should('contain', testKeyResult.targetValue);
     cy.get('.progress__unit').should('contain', testKeyResult.unit);
@@ -84,7 +84,7 @@ describe('Create data for department', () => {
 
 describe('Create progress for key result', () => {
   it('Navigates to and validates key result page', () => {
-    cy.get('.keyres__name').should('contain', testKeyResult.name).click().wait(1000);
+    cy.get('.keyResult__name').should('contain', testKeyResult.name).click().wait(1000);
 
     cy.url().should('include', testDepartment.slug);
 
@@ -125,9 +125,9 @@ describe('Create progress for key result', () => {
   });
 
   it('Updates progress from product page (inline)', () => {
-    cy.get('button.keyres__toggle').click();
+    cy.get('button.keyResult__toggle').click();
 
-    cy.get('.keyres__edit input').clear().type(`${testKeyResult.targetValue} {enter}`).wait(2500);
+    cy.get('.keyResult__edit input').clear().type(`${testKeyResult.targetValue} {enter}`).wait(2500);
 
     cy.get('svg text.percent').should('contain', '100%');
 

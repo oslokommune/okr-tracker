@@ -1,5 +1,5 @@
 <template>
-  <widget :widget-id="widgetId" :title="getTitle()" icon="chart-pie">
+  <widget :title="getTitle()">
     <svg ref="svg"></svg>
   </widget>
 </template>
@@ -12,18 +12,10 @@ export default {
   name: 'WidgetProgression',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
     dimmed: {
       type: Boolean,
       required: false,
@@ -41,16 +33,16 @@ export default {
   }),
 
   computed: {
-    ...mapState(['theme']),
+    ...mapState(['theme', 'activePeriod']),
   },
 
   watch: {
-    data: {
+    activePeriod: {
       immediate: true,
       deep: true,
-      handler(data) {
+      handler(activePeriod) {
         if (!this.chart) return;
-        this.chart.render(data, this.theme);
+        this.chart.render(activePeriod, this.theme);
       },
     },
 
@@ -58,7 +50,7 @@ export default {
       immediate: true,
       handler() {
         if (!this.chart) return;
-        this.chart.render(this.data, this.theme);
+        this.chart.render(this.activePeriod, this.theme);
       },
     },
   },
@@ -67,7 +59,7 @@ export default {
     setTimeout(() => {
       this.svg = this.$refs.svg;
       this.chart = new PieChart(this.svg, { dimmed: this.dimmed, colorMode: this.theme });
-      this.chart.render(this.data, this.theme);
+      this.chart.render(this.activePeriod, this.theme);
     }, 150);
   },
 

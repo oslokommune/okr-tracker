@@ -56,13 +56,13 @@
             v-model="localKpi.sheetId"
             input-type="input"
             name="sheetId"
-            :label="$t('keyres.automation.googleSheetId')"
+            :label="$t('keyResult.automation.googleSheetId')"
             rules="required"
             type="text"
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.googleSheetIdHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
             </template>
           </form-component>
 
@@ -70,13 +70,13 @@
             v-model="localKpi.sheetName"
             input-type="input"
             name="sheetTab"
-            :label="$t('keyres.automation.sheetsTab')"
+            :label="$t('keyResult.automation.sheetsTab')"
             rules="required"
             type="text"
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.sheetsTabHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
             </template>
           </form-component>
 
@@ -84,13 +84,13 @@
             v-model="localKpi.sheetCell"
             input-type="input"
             name="sheetCell"
-            :label="$t('keyres.automation.sheetsCell')"
+            :label="$t('keyResult.automation.sheetsCell')"
             rules="required"
             type="text"
             @edited-data="edit"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyres.automation.sheetsCellHelp')"></span>
+              <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
             </template>
           </form-component>
         </template>
@@ -106,7 +106,7 @@
             {{ $t('btn.saveChanges') }}
           </button>
           <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
-          <button class="btn btn--icon-pri btn--ghost" :form="`kpi_${localKpi.id}`"><i class="fas fa-sync" /></button>
+          <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`"><i class="fas fa-sync" /></button>
         </div>
       </form>
     </validation-observer>

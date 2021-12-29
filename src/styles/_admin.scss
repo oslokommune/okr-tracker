@@ -2,6 +2,7 @@
 @use 'griddle/functions' as *;
 
 .create-container {
+  width: span(12);
   padding: 1rem;
   background: white;
   border-radius: 3px;
@@ -9,16 +10,19 @@
 
   @media screen and (min-width: bp(s)) {
     width: span(8);
+    margin-left: span(2, 1);
     padding: 1.5rem;
   }
 
   @media screen and (min-width: bp(m)) {
-    width: span(5, 0, span(9));
+    width: span(6);
+    margin-left: span(3, 1);
     padding: 1.5rem;
   }
 
   @media screen and (min-width: bp(l)) {
-    width: span(4, 0, span(10));
+    width: span(4);
+    margin-left: span(4, 1);
     padding: 1.5rem;
   }
 }
@@ -30,10 +34,9 @@
 .form__field {
   width: 100%;
   padding: 1rem;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
-  background: var(--color-grey-50);
-  border: none;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  background: var(--color-white);
+  border: 1px solid var(--color-primary);
 }

@@ -1,22 +1,13 @@
 <template>
-  <div style="display: flex; align-items: center">
-    <button
-      v-if="hasChildren"
-      v-tooltip="getCollapse(type, data.slug) ? $t('btn.minimize') : $t('btn.expand')"
-      class="widget__toggle fas fa-fw"
-      :class="getCollapse(type, data.slug) ? 'fa-minus' : 'fa-plus'"
-      @click="toggle(type, data.slug)"
-    />
-    <span v-else-if="type === 'department' || type === 'organization'" class="space" />
-
+  <div style="display: flex; align-items: center; padding: 0 1rem">
     <router-link
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
       style="width: 100%"
       class="item"
-      :class="`item--${type}`"
+      :class="{ 'item--organization': type === 'organization', 'item--department': type === 'department' }"
     >
       <span v-if="type === 'product'" class="indent" />
-      <i class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+      <i v-if="type !== 'organization'" class="item__icon fas fa-fw" :class="`fa-${icon}`" />
 
       <span class="item__name" :class="`item__font--${type}`">
         {{ data.name }}
@@ -62,7 +53,8 @@ export default {
     },
     type: {
       type: String,
-      required: true,
+      required: false,
+      default: '',
     },
   },
 
@@ -84,8 +76,6 @@ export default {
           return 'cube';
         case 'department':
           return 'cubes';
-        case 'organization':
-          return 'industry';
         default:
           return '';
       }
@@ -225,7 +215,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  border-right: 1px solid  var(--color-grey-100);
+  border-right: 1px solid var(--color-grey-100);
 
   &.disabled {
     opacity: 0.4;
@@ -255,24 +245,17 @@ export default {
 
 .indent {
   flex-shrink: 0;
-  width: 3.5rem;
-}
-
-.widget__toggle {
-  width: auto;
-  margin-left: auto;
-  padding: 0.5rem 0.25rem 0.5rem 0.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
+  width: 1.5rem;
 }
 
 .item__font--organization {
   font-weight: 500;
   font-size: typography.$font-size-3;
+  text-transform: uppercase;
 }
 
-.space {
-  margin-left: 1.5rem;
+.item__font--department {
+  font-weight: 500;
+  font-size: typography.$font-size-3;
 }
 </style>

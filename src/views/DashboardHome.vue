@@ -21,13 +21,13 @@
       <div class="meta__panel">
         <div v-if="activePeriod" class="meta__panel--header">
           <i class="fa fa-fw fa-chart-pie" />
-          Progresjon {{ activePeriod.name }}
+          {{ $t('progress.title', { progress: activePeriod.name }) }}
         </div>
         <svg ref="piechart"></svg>
       </div>
     </aside>
 
-    <template v-for="objective in tree" :objective="objective">
+    <template v-for="objective in tree">
       <div :key="objective.id" class="objective">
         <div class="objective__head">
           <i class="objective__icon fa fa-fw fa-trophy" />
@@ -37,26 +37,24 @@
         </div>
 
         <!-- List key results for objective -->
-        <div v-for="keyres in objective.keyResults" :key="keyres.id" class="key-result">
+        <div v-for="keyResult in objective.keyResults" :key="keyResult.id" class="key-result">
           <div class="key-result__description">
-            {{ keyres.name }}
+            {{ keyResult.name }}
           </div>
           <div class="key-result__progress">
-            <dashboard-progress-bar :keyres="keyres" :darkmode="true" />
+            <dashboard-progress-bar :key-result="keyResult" :darkmode="true" />
           </div>
         </div>
       </div>
     </template>
 
-    <div class="close">
-      <router-link
-        v-tooltip="$t('btn.close')"
-        class="close--btn"
-        :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
-      >
-        <i class="fa fa-times" />
-      </router-link>
-    </div>
+    <router-link
+      v-tooltip="$t('btn.close')"
+      class="close--btn"
+      :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
+    >
+      <i class="fa fa-times" />
+    </router-link>
   </div>
 </template>
 
@@ -146,21 +144,16 @@ export default {
 $imageSize: 1.75em;
 
 .dashboard {
-  --columns: 3;
-
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  display: grid;
-  grid-gap: 1em;
-  grid-template-rows: repeat(6, 1fr);
-  grid-template-columns: repeat(5, 1fr) auto;
+  display: flex;
   justify-content: start;
   width: 100vw;
   height: 100vh;
   padding: 1.5em;
-  color: white;
+  color: var(--color-white);
   font-size: calc(12px + (20 - 12) * (100vw - 600px) / (2000 - 600));
   background-color: #020218;
   background-image: url('/dashboard-1.png');
@@ -236,9 +229,9 @@ $imageSize: 1.75em;
   height: 12em;
   margin: 0 auto;
   object-fit: cover;
-  color: black;
-  background: #f8c66b;
-  border: 5px solid white;
+  color: var(--color-black);
+  background: var(--color-yellow);
+  border: 5px solid var(--color-white);
   border-radius: 0.25em;
   box-shadow: 0 0.4em 1.6em 0.5em rgba(var(--color-yellow-rgb), 0.4);
 }
@@ -263,7 +256,7 @@ $imageSize: 1.75em;
   width: 3em;
   height: 3em;
   padding: 0;
-  color: white;
+  color: var(--color-white);
 
   &:hover {
     background: rgba(white, 0.1);
@@ -275,9 +268,8 @@ $imageSize: 1.75em;
   grid-gap: 1em;
   grid-row: 1 / span 6;
   grid-template-rows: repeat(6, 1fr);
-  justify-content: center;
   width: 100%;
-  margin: 0;
+  margin-right: 1rem;
   font-size: 0.9em;
 }
 

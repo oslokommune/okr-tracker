@@ -1,15 +1,13 @@
 <template>
-  <widget :widget-id="widgetId" :title="$t('weight.heading')" icon="balance-scale" :open="false">
-    {{ $t('weight.keyresFor', { name: activeKeyResult.objective.name }) }}
+  <widget :title="$t('weight.heading')">
     <div class="scales">
       <router-link
-        v-for="{ id, weight, active, name } in weights"
+        v-for="{ id, weight, name } in weights"
         :key="id"
         v-tooltip.bottom="name"
-        :to="{ name: 'KeyResultHome', params: { keyResultId: id } }"
+        :to="getToLink(id)"
         class="bar"
         :style="{ height: getHeight(weight) }"
-        :class="{ active }"
       >
         {{ weight }}
       </router-link>
@@ -18,19 +16,27 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 
 export default {
-  name: 'WidgetKeyResultWeights',
+  name: 'WidgetWeights',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   props: {
-    widgetId: {
+    items: {
+      type: Array,
+      required: true,
+    },
+    activeItem: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+    type: {
       type: String,
       required: true,
     },
@@ -42,18 +48,24 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'keyResults']),
     weights() {
-      const siblings = ({ objective }) => objective.split('/')[1] === this.activeKeyResult.objective.id;
+      if (!this.activeItem) return [];
+
+      let siblings = null;
+
+      if (this.type === 'objective') {
+        siblings = ({ period }) => period.split('/')[1] === this.activeItem.id;
+      } else {
+        siblings = ({ objective }) => objective.split('/')[1] === this.activeItem.id;
+      }
 
       const processWeights = ({ weight, id, name }) => ({
         weight,
         id,
         name,
-        active: this.activeKeyResult.id === id,
       });
 
-      return this.keyResults.filter(siblings).map(processWeights);
+      return this.items.filter(siblings).map(processWeights);
     },
   },
 
@@ -61,7 +73,7 @@ export default {
     weights: {
       immediate: true,
       handler(weights) {
-        const maxValue = max([1.5, max(weights, ({ weight }) => weight)]);
+        const maxValue = max([0, max(weights, ({ weight }) => weight)]);
         this.scale.domain([0, maxValue]);
       },
     },
@@ -74,6 +86,14 @@ export default {
   methods: {
     getHeight(weight) {
       return `${this.scale(weight) * 100}%`;
+    },
+
+    getToLink(id) {
+      if (this.type === 'objective') {
+        return { name: 'ObjectiveHome', params: { objectiveId: id } };
+      }
+
+      return { name: 'KeyResultHome', params: { keyResultId: id } };
     },
   },
 };
@@ -101,22 +121,12 @@ export default {
   font-size: 0.85rem;
   text-align: center;
   text-decoration: none;
-  background: var(--color-grey-100);
-  border: 1px solid var(--color-grey-200);
+  background: var(--color-secondary-light);
+  border: 1px solid var(--color-secondary-light);
 
   &:hover {
-    background: var(--color-grey-200);
-  }
-
-  &.active {
-    color: var(--color-text-secondary);
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-
-    &:hover {
-      background: var(--color-primary-dark);
-      border-color: var(--color-primary-dark);
-    }
+    background: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
   }
 }
 </style>

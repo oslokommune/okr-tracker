@@ -1,19 +1,22 @@
 <template>
-  <button
-    class="btn btn--ter btn--icon"
-    :class="{ 'btn--icon-pri': header }"
-    :aria-label="$t('theme.aria', { current: mode, next: nextThemeMode })"
-    @click="handleClick"
-  >
-    <span class="icon fas fa-palette" />
-    {{ $t('theme.toggle', { mode: $t(`theme.colors.${mode}`) }) }}
-  </button>
+  <div>
+    <h2 class="title-2">{{ $t('theme.header') }}</h2>
+    <div v-for="mode in modes" :key="mode.id" class="ods-form-group">
+      <input
+        type="radio"
+        :id="mode.id"
+        class="ods-form-radio"
+        name="radio-group"
+        :checked="theme === mode.id"
+        @click="setThemeMode(mode.id)"
+      />
+      <label class="ods-form-label" :for="mode.id">{{ $t(`theme.colors.${mode.id}`) }}</label>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
-const LS_MODE = 'okr-tracker-theme';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'ThemeToggle',
@@ -27,63 +30,25 @@ export default {
   },
 
   data: () => ({
-    mode: 'yellow',
+    selectedMode: 'blue',
+    modes: [{ id: 'blue' }, { id: 'green' }],
   }),
 
   computed: {
-    nextThemeMode() {
-      if (this.mode === 'yellow') {
-        return 'blue';
-      }
-      if (this.mode === 'blue') {
-        return 'green';
-      }
-      return 'yellow';
-    },
-  },
-
-  mounted() {
-    if (this.hasInStorage()) {
-      this.mode = this.getLocalThemeMode();
-      this.setThemeMode();
-    } else {
-      this.mode = 'yellow';
-      this.setThemeMode();
-    }
+    ...mapState(['theme', 'LS_MODE']),
   },
 
   methods: {
     ...mapActions(['setTheme']),
 
-    handleClick() {
-      if (this.mode === 'yellow') {
-        this.mode = 'blue';
-      } else if (this.mode === 'blue') {
-        this.mode = 'green';
-      } else {
-        this.mode = 'yellow';
-      }
-
-      this.setThemeMode();
-    },
-
-    setThemeMode() {
-      this.saveThemeMode(this.mode);
-      this.setTheme(this.mode);
-      document.body.setAttribute('data-theme', this.mode);
-    },
-
-    hasInStorage() {
-      const mode = localStorage.getItem(LS_MODE);
-      return mode !== null;
-    },
-
-    getLocalThemeMode() {
-      return localStorage.getItem(LS_MODE);
+    setThemeMode(mode) {
+      this.saveThemeMode(mode);
+      this.setTheme(mode);
+      document.body.setAttribute('data-theme', mode);
     },
 
     saveThemeMode(mode) {
-      localStorage.setItem(LS_MODE, mode);
+      localStorage.setItem(this.LS_MODE, mode);
     },
   },
 };

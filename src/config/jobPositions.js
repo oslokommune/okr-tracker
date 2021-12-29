@@ -8,6 +8,7 @@ export const jobPositions = [
   'dataEngineer',
   'dataScientist',
   'departmentDirector',
+  'designLead',
   'director',
   'frontendDeveloper',
   'fullStackDeveloper',

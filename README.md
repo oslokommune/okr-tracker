@@ -143,6 +143,7 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email`         |
 | `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                  |
 | `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in |
+| `VITE_ORGANIZATION`           | Name of the organization                                                                                   |
 
 ### Link project
 

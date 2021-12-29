@@ -1,26 +1,19 @@
 <template>
-  <widget v-if="activeItem.missionStatement" :widget-id="widgetId" :title="$t('document.mission')" icon="file">
+  <widget v-if="activeItem.missionStatement" :title="$t('document.mission')">
     <div class="md" v-html="content"></div>
   </widget>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import marked from 'marked';
+import { marked } from 'marked';
 import dompurify from 'dompurify';
 
 export default {
   name: 'WidgetMissionStatement',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
   },
 
   data: () => ({

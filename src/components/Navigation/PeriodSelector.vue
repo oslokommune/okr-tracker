@@ -5,12 +5,8 @@
         :disabled="activePeriod && period.id === activePeriod.id"
         class="tab"
         :class="{ active: activePeriod && period.id === activePeriod.id }"
-        @click="set_active_period_and_data(period.id)"
+        @click="setPeriod(period.id)"
       >
-        <i
-          class="tab__icon"
-          :class="activePeriod && period.id === activePeriod.id ? 'fas fa-calendar-alt' : 'far fa-calendar'"
-        />
         <span class="tab__name">{{ period.name }}</span>
       </button>
     </li>
@@ -33,19 +29,22 @@ export default {
       if (this.hasEditRights) return this.periods;
       const daysInAdvance = 7; // Prior to period start
 
-      return this.periods.filter(({ startDate }) => {
-        return isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance));
-      });
+      return this.periods.filter(({ startDate }) => isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance)));
     },
   },
 
   methods: {
-    ...mapActions(['set_active_period_and_data']),
+    ...mapActions(['set_active_period_and_data', 'setDataLoading']),
 
     async setPeriod(id) {
-      this.loading = true;
-      await this.set_active_period_and_data(id);
-      this.loading = false;
+      try {
+        await this.setDataLoading(true);
+        await this.set_active_period_and_data(id);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        await this.setDataLoading(false);
+      }
     },
 
     periodDates,

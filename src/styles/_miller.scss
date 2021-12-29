@@ -4,7 +4,7 @@
   min-width: 100%;
   height: 100%;
   overflow-x: scroll;
-  color: black;
+  color: var(--color-black);
   background: rgba(var(--color-border-rgb), 0.075);
 
   &__container {

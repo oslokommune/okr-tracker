@@ -4,18 +4,18 @@
   },
   "theme": {
     "colors": {
-      "yellow": "Yellow",
       "blue": "Blue",
       "green": "Green"
     },
-    "toggle": "Toggle theme: {mode}",
+    "header": "Customize",
     "aria": "Current theme is {current}, next theme is {next}"
   },
   "kpi": {
     "add": "Add KPI",
     "edit": "Edit KPI",
+    "change": "Change KPI",
     "currentValue": "Current value",
-    "progresjon": "Progress",
+    "progress": "Progress",
     "description": "Description",
     "chooseType": "Select KPI type",
     "types": {
@@ -84,10 +84,11 @@
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
-    "positiveNotZero": "Ugyldig verdi",
-    "decimal": "Må være tall"
+    "positiveNotZero": "The {_field_} field must be a valid value",
+    "decimal": "The {_field_} field must be a decimal"
   },
   "general": {
+    "appName": "OKR-tracker",
     "edit": "Edit",
     "general": "General",
     "OKRs": "OKRs",
@@ -100,6 +101,7 @@
     "notFound": "Not found",
     "help": "Help",
     "admin": "Admin",
+    "administration": "Administration",
     "superAdmin": "Super admin",
     "dashboard": "View dashboard",
     "signOut": "Sign out",
@@ -116,7 +118,13 @@
     "success": "Success",
     "objective": "Objective",
     "keyResult": "Key result",
-    "period": "Period"
+    "period": "Period",
+    "back": "back",
+    "frontPage": "Front page",
+    "signIn": "Please sign in",
+    "orgs": "Organizations",
+    "emptyHome": "Please pick an organization.",
+    "api": "API"
   },
   "btn": {
     "close": "Close",
@@ -141,7 +149,8 @@
     "deletePermanently": "Delete permanently",
     "restore": "Restore",
     "confirmDeleteProgress": "Confirm delete",
-    "reset": "Reset"
+    "reset": "Reset",
+    "showMore": "Show more"
   },
   "login": {
     "login": "Sign in",
@@ -221,7 +230,7 @@
       "rejected": "Removed {user}"
     }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Related objective",
     "description": "Description",
     "startValue": "Start value",
@@ -239,10 +248,11 @@
       "sheetsCellHelp": "E.g. «A12»",
       "testConnection": "Save and test connection"
     },
-    "updateKeyres": "Update value for key result",
+    "updateKeyRes": "Update value for key result",
     "registerProgression": {
       "value": "Value"
     },
+    "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
     "addComment": "Add comment (optional)",
@@ -267,6 +277,7 @@
     "progression": "Progress",
     "weight": "Weight",
     "change": "Change objective",
+    "add": "Add objective",
     "createdBy": "Created by",
     "editedBy": "Changed by",
     "created": "Created",
@@ -275,19 +286,21 @@
   "period": {
     "dateRange": "Start and end dates",
     "range": "{startDate} to {endDate}",
-    "period": "Period"
+    "period": "Period",
+    "add": "Add period"
   },
   "tooltip": {
     "openMenu": "Open menu",
     "dashboard": "Go to dashboard",
-    "keyresValue": "Insert new value",
+    "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
     "navigateToItem": "Go to {item}",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
-    "emptyPeriod": "No active period"
+    "emptyPeriod": "No active period",
+    "periodEnd": "You are not allowed to edit after a period has ended"
   },
   "document": {
     "mission": "Mission statement"
@@ -332,9 +345,7 @@
   },
   "keyResultPage": {
     "change": "Update key result",
-    "add": {
-      "today": "Today"
-    },
+    "add": "Add key result",
     "table": {
       "value": "Value"
     },
@@ -363,7 +374,7 @@
   },
   "weight": {
     "heading": "Weights",
-    "keyresFor": "Key results for “{name}”",
+    "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
   },
   "accessRequests": {
@@ -426,18 +437,22 @@
   },
   "user": {
     "selectLanguage": "Select language",
+    "profile": "Profile",
     "myProfile": "My profile",
     "superAdmin": "OKR-tracker Administrator",
     "admin": "Administrator for Organizations",
     "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
     "hasAdmin": "Has admin rights for some organizations",
-    "products": "My products",
+    "myProducts": "My products",
+    "products": "Products",
+    "access": "Access",
     "position": {
       "groups": {
         "developers": "Developers",
         "designers": "Designers",
         "teamLead": "Team lead",
         "techLead": "Tech lead",
+        "designLead": "Design lead",
         "administration": "Administration",
         "members": "Team members",
         "productOwner": "Product owner",
@@ -446,6 +461,7 @@
         "departmentDirector": "Department director"
       },
       "title": "Position",
+      "member": "Member",
       "frontendDeveloper": "Front-end developer",
       "backendDeveloper": "Back-end developer",
       "fullStackDeveloper": "Full stack developer",
@@ -454,6 +470,7 @@
       "serviceDesigner": "Service designer",
       "contentDesigner": "Content designer",
       "graphicDesigner": "Graphic designer",
+      "designLead": "Design lead",
       "informationArchitect": "Information Architect",
       "dataScientist": "Data scientist",
       "teamLead": "Team lead",
@@ -476,6 +493,18 @@
       "contentProducer": "Content producer",
       "other": "Other",
       "storyteller": "Storyteller"
+    }
+  },
+  "progress": {
+    "title": "Progress {progress}",
+    "done": "{progress} done",
+    "remaining": "{progress} {unit} remaining",
+    "remainingOf": "of {progress}",
+    "completedMessages": {
+      "1": "You guys are nailing it!",
+      "2": "Well done, guys!",
+      "3": "Wohoo! 100%",
+      "4": "You did it! Awesome!"
     }
   },
   "languages": {

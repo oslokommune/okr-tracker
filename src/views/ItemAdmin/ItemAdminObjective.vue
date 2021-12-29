@@ -1,5 +1,6 @@
 <template>
-  <div v-if="objective">
+  <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
+  <div v-else-if="objective" class="details">
     <archived-restore v-if="objective.archived" :delete-deep="deleteDeep" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
@@ -31,7 +32,7 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select v-model="objective.icon" class="form-field" :options="icons" @input="edit">
+          <v-select v-model="objective.icon" :options="icons" @input="edit">
             <template #selected-option="{ label }">
               <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
               {{ label }}
@@ -64,15 +65,10 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading || !changes">
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-objective" :disabled="loading || !changes">
         <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
-      <button
-        v-if="!objective.archived"
-        class="btn btn--icon btn--danger btn--icon-pri"
-        :disabled="loading"
-        @click="archive"
-      >
+      <button v-if="!objective.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
       </button>
     </div>
@@ -90,6 +86,7 @@ export default {
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ContentLoaderOkrDetails: () => import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
   },
 
   props: {
@@ -105,12 +102,14 @@ export default {
     loading: false,
     changes: false,
     icons,
+    isLoadingDetails: false,
   }),
 
   watch: {
     data: {
       immediate: true,
       async handler() {
+        this.isLoadingDetails = true;
         const parent = await db
           .collection('slugs')
           .doc(this.data.parent.slug)
@@ -118,6 +117,7 @@ export default {
           .then((snapshot) => snapshot.data().reference);
         this.$bind('periods', db.collection('periods').where('parent', '==', parent));
         this.objective = { ...this.data, id: this.data.id };
+        this.isLoadingDetails = false;
       },
     },
   },
@@ -193,9 +193,29 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .selected-icon {
   display: inline-block;
   margin-right: 0.5rem;
+}
+
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(l)) {
+    align-self: flex-start;
+    width: span(3, 0, span(10));
+    margin-top: 0;
+    margin-left: span(0, 1, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3, 0, span(10));
+    margin-left: span(1, 2, span(10));
+  }
 }
 </style>

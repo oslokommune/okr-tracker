@@ -1,5 +1,6 @@
 <template>
-  <div v-if="activePeriod">
+  <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
+  <div v-else-if="activePeriod" class="details">
     <archived-restore v-if="activePeriod.archived" :delete-deep="deleteDeep" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
@@ -21,10 +22,10 @@
             <flat-pickr
               v-model="range"
               :config="flatPickerConfig"
-              class="form-control cy-datepicker"
+              class="form-control flatpickr-input"
               name="date"
               placeholder="Velg start- og sluttdato"
-            ></flat-pickr>
+            />
           </label>
           <span class="form-field--error">{{ errors[0] }}</span>
         </validation-provider>
@@ -32,16 +33,16 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading || !changes">
+      <button
+        class="btn btn--icon btn--pri btn--icon-pri"
+        form="update-period"
+        data-cy="save_period"
+        :disabled="loading || !changes"
+      >
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
-      <button
-        v-if="!activePeriod.archived"
-        class="btn btn--icon btn--danger btn--icon-pri"
-        :disabled="loading"
-        @click="archive"
-      >
+      <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
         <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.archive') }}
       </button>
@@ -61,6 +62,7 @@ export default {
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ContentLoaderOkrDetails: () => import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
   },
 
   props: {
@@ -84,6 +86,7 @@ export default {
     },
     range: null,
     loading: false,
+    isLoadingData: false,
     changes: false,
   }),
 
@@ -91,8 +94,10 @@ export default {
     data: {
       immediate: true,
       handler() {
+        this.isLoadingDetails = true;
         this.activePeriod = { ...this.data, id: this.data.id };
         this.range = this.generateRange();
+        this.isLoadingDetails = false;
       },
     },
 
@@ -178,3 +183,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(l)) {
+    align-self: flex-start;
+    width: span(3, 0, span(10));
+    margin-top: 0;
+    margin-left: span(0, 1, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3, 0, span(10));
+    margin-left: span(1, 2, span(10));
+  }
+}
+</style>
