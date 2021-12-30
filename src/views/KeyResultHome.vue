@@ -259,7 +259,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl']),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl', 'theme']),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
 
     hasComments() {
@@ -277,18 +277,46 @@ export default {
       immediate: true,
       async handler(keyResult) {
         if (!keyResult) return;
+        console.log(this.theme);
         this.isLoading = true;
         await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
         this.isLoading = false;
         this.value = keyResult.currentValue || keyResult.startValue || 0;
-        this.graph = new LineChart(this.$refs.graph);
-        this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
+        console.log(this.theme);
+        this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+        this.graph.render({
+          obj: this.activeKeyResult,
+          period: this.activePeriod,
+          progressionList: this.progress,
+          colorMode: this.theme,
+        });
       },
     },
+
     progress() {
       if (this.graph) {
-        this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
+        console.log(this.theme);
+        this.graph.render({
+          obj: this.activeKeyResult,
+          period: this.activePeriod,
+          progressionList: this.progress,
+          colorMode: this.theme,
+        });
       }
+    },
+
+    theme: {
+      immediate: true,
+      handler() {
+        if (!this.graph) return;
+        console.log('watch: ', this.theme);
+        this.graph.render({
+          obj: this.activeKeyResult,
+          period: this.activePeriod,
+          progressionList: this.progress,
+          colorMode: this.theme,
+        });
+      },
     },
   },
 
@@ -296,8 +324,13 @@ export default {
     if (!this.$refs.graph) return;
     if (!this.activeKeyResult) return;
 
-    this.graph = new LineChart(this.$refs.graph);
-    this.graph.render(this.activeKeyResult, this.activePeriod, this.progress);
+    this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+    this.graph.render({
+      obj: this.activeKeyResult,
+      period: this.activePeriod,
+      progressionList: this.progress,
+      colorMode: this.theme,
+    });
   },
 
   methods: {

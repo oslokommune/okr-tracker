@@ -3,9 +3,9 @@ import { scaleTime, scaleLinear } from 'd3-scale';
 import { extent, max, min } from 'd3-array';
 import { line, area } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
-import "d3-transition";
+import 'd3-transition';
 import kpiTypes from '@/config/kpiTypes';
-import { initSvg, resize } from './linechart-helpers';
+import { initSvg, resize, styleValueLine, styleGradientStop, styleGradientStart } from './linechart-helpers';
 
 const formatValue = (value, item) => {
   if (item && item.type) {
@@ -15,10 +15,11 @@ const formatValue = (value, item) => {
 };
 
 export default class LineChart {
-  constructor(svgElement) {
+  constructor(svgElement, { colorMode }) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
+    this.colorMode = colorMode || 'blue';
 
     select(svgElement).selectAll('*').remove();
 
@@ -39,7 +40,9 @@ export default class LineChart {
       .y((d) => this.y(d.value));
   }
 
-  render(obj, period, progressionList, item) {
+  render({ obj, period, progressionList, item, colorMode }) {
+    console.log('render: ', colorMode);
+    this.colorMode = colorMode;
     this.period = period;
     this.obj = obj;
 
@@ -103,5 +106,9 @@ export default class LineChart {
     this.valueArea.datum(data).transition().attr('d', this.area);
 
     this.valueLine.datum(data).transition().attr('d', this.line);
+    this.valueLine.call(styleValueLine.bind(this));
+
+    this.gradient.select('#start').call(styleGradientStart.bind(this));
+    this.gradient.select('#stop').call(styleGradientStop.bind(this));
   }
 }

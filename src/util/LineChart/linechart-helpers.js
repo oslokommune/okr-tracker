@@ -6,6 +6,19 @@ const colors = {
   yellow: '#F9C66B',
 };
 
+export const colors2 = {
+  blue: {
+    gradientStart: '#2A2859',
+    gradientStop: '#2A2859',
+    line: '#2A2859',
+  },
+  green: {
+    gradientStart: '#034b45',
+    gradientStop: '#034b45',
+    line: '#034b45',
+  },
+};
+
 export function initSvg(svg) {
   this.svg = svg;
 
@@ -17,12 +30,14 @@ export function initSvg(svg) {
 
   this.valueArea = this.canvas.append('path').call(styleArea);
 
+  console.log('init1: ', this.colorMode);
+
   this.yAxis = this.canvas.append('g').classed('axis y', true);
-  this.valueLine = this.canvas.append('path').call(styleValueLine);
+  this.valueLine = this.canvas.append('path').call(styleValueLine.bind(this));
   this.target = this.canvas.append('line').classed('target', true);
   this.today = this.canvas.append('line').classed('today', true).attr('stroke', 'black').attr('stroke-opacity', 0.2);
 
-  const gradient = this.svg
+  this.gradient = this.svg
     .append('defs')
     .append('linearGradient')
     .attr('id', 'areaGradient')
@@ -31,12 +46,20 @@ export function initSvg(svg) {
     .attr('y1', '0%')
     .attr('y2', '100%');
 
-  gradient.append('stop').attr('offset', '0%').attr('style', `stop-color:${colors.purple};stop-opacity:1;`);
-  gradient.append('stop').attr('offset', '100%').attr('style', `stop-color:${colors.purple};stop-opacity:0;`);
+  this.gradient.append('stop').attr('id', 'start').call(styleGradientStart.bind(this));
+  this.gradient.append('stop').attr('id', 'stop').call(styleGradientStop.bind(this));
 }
 
-function styleValueLine(el) {
-  el.classed('valueLine', true).attr('fill', 'none').attr('stroke', colors.purple).attr('stroke-width', 3);
+export function styleGradientStart(el) {
+  el.attr('offset', '0%').attr('style', `stop-color:${colors2[this.colorMode].gradientStart};stop-opacity:1;`);
+}
+
+export function styleGradientStop(el) {
+  el.attr('offset', '100%').attr('style', `stop-color:${colors2[this.colorMode].gradientStop};stop-opacity:0;`);
+}
+
+export function styleValueLine(el) {
+  el.classed('valueLine', true).attr('fill', 'none').attr('stroke', colors2[this.colorMode].line).attr('stroke-width', 3);
 }
 
 function styleArea(el) {

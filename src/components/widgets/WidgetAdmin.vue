@@ -130,8 +130,8 @@ export default {
   cursor: pointer;
 
   &:hover {
-    color: var(--color-text);
-    background-color: var(--color-secondary);
+    color: var(--color-text-secondary);
+    background-color: var(--color-hover);
   }
 }
 

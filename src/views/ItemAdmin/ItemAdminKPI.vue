@@ -50,7 +50,7 @@
         </template>
 
         <template v-if="!localKpi.api">
-          <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
+          <h3 class="title-2" style="color: var(--color-text)">{{ $t('kpi.sheetsDetails') }}</h3>
 
           <form-component
             v-model="localKpi.sheetId"

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changes
+
+- Use the only blue hover color the Oslo design system has to offer on both green and blue themes
+- Line chart changes colors together with the theme
+
+### Fixed
+
+- Header title disappeared when opening the side drawer
+
 ## [2.7.0] 2021-12-29
 
 OKR-tracker has been redesigned!

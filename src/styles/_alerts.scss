@@ -8,6 +8,7 @@ $borderRadius: 1.5px;
   margin: 0.5rem 0 1rem;
   padding: 1rem;
   overflow: hidden;
+  color: var(--color-text);
   background: rgba(var(--color-grey-100-rgb), 0.1);
   border-radius: $borderRadius;
   box-shadow: 0 1px 3px rgba(var(--color-grey-500-rgb), 0.2), 0 3px 12px rgba(var(--color-grey-500-rgb), 0.05);

@@ -185,7 +185,7 @@ export default {
 .error {
   margin: 1.5rem 0;
   padding: 1em 1.5em;
-  color: var(--color-black);
+  color: var(--color-text);
   background: rgba(var(--color-red-rgb), 0.25);
   border: 1px solid var(--color-red);
   border-radius: 2px;

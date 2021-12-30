@@ -37,7 +37,9 @@
                       :checked="getCollapse('department', dept.slug)"
                       @click="toggle('department', dept.slug)"
                     />
-                    <label class="ods-form-label" :for="dept.id">{{ dept.name }}</label>
+                    <label class="ods-form-label" :for="dept.id">
+                      {{ dept.name }}
+                    </label>
                   </div>
                 </li>
               </ul>
@@ -55,14 +57,16 @@
         <li v-if="getCollapse('organization', org.slug)" :key="org.id" class="tree">
           <item-row :data="org" class="tree__organization" type="organization"></item-row>
           <ul>
-            <li v-for="dept in org.children" :key="dept.id" class="card">
-              <item-row :data="dept" type="department"></item-row>
-              <ul v-if="getCollapse('department', dept.slug)">
-                <li v-for="prod in dept.children" :key="prod.id">
-                  <item-row :data="prod" type="product"></item-row>
-                </li>
-              </ul>
-            </li>
+            <template v-for="dept in org.children">
+              <li v-if="getCollapse('department', dept.slug)" :key="dept.id" class="card">
+                <item-row :data="dept" type="department"></item-row>
+                <ul>
+                  <li v-for="prod in dept.children" :key="prod.id">
+                    <item-row :data="prod" type="product"></item-row>
+                  </li>
+                </ul>
+              </li>
+            </template>
           </ul>
         </li>
       </template>
@@ -170,8 +174,6 @@ export default {
 }
 
 .card {
-  border-bottom: 3px solid var(--color-bg);
-
   &:last-child {
     border-bottom: none;
   }
