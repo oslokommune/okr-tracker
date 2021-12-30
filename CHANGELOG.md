@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changes
 
+- All text colors follow the chosen theme
 - Use the only blue hover color the Oslo design system has to offer on both green and blue themes
 - Line chart changes colors together with the theme
 
