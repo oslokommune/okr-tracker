@@ -1,12 +1,5 @@
 <template>
-  <div :class="{ 'overlay': isOpen }"  @click.self="hideSidebar">
-    <a href="#" role="menuitem" class="header__nav-button" :class="{ 'is-open': isOpen }" @click.stop="hideSidebar">
-      <div class="header__nav-icon" role="presentation">
-        <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-        <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-      </div>
-    </a>
-
+  <div :class="{ overlay: isOpen }" @click.self="hideSidebar">
     <transition name="slide">
       <aside v-if="isOpen" class="sidebar">
         <div class="sidebar__content">
@@ -111,8 +104,14 @@ export default {
     OsloLogo,
   },
 
+  props: {
+    isOpen: {
+      type: Boolean,
+      required: true,
+    },
+  },
+
   data: () => ({
-    isOpen: false,
     isCollapsed: false,
     appVersion: __APP_VERSION__, // eslint-disable-line no-undef
   }),
@@ -129,7 +128,7 @@ export default {
   watch: {
     $route: {
       handler() {
-        this.isOpen = false;
+        this.$emit('hide', false);
       },
     },
 
@@ -168,7 +167,7 @@ export default {
     },
 
     hideSidebar() {
-      this.isOpen = !this.isOpen;
+      this.$emit('hide', false);
     },
   },
 };
@@ -239,7 +238,7 @@ $header-height: 4em;
   display: flex;
   flex-direction: row;
   width: calc(100vw - 4rem);
-  max-width: 29rem;
+  max-width: 36rem;
   height: 100vh;
 }
 
@@ -275,7 +274,7 @@ $header-height: 4em;
 
   &.is-open {
     z-index: 250;
-    box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 30%);
+    box-shadow: 0 0 10px 1px rgb(0 0 0 / 30%);
     transition: transform 0.5s ease-in-out, background-color 0.3s, box-shadow 0.3s;
 
     span {
@@ -305,7 +304,7 @@ $header-height: 4em;
 
 .slide-enter,
 .slide-leave-to {
-  left: -400px;
+  left: -504px;
 }
 
 .sidebar__group {

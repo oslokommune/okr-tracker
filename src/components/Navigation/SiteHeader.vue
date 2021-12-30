@@ -1,8 +1,13 @@
 <template>
   <header class="header">
+    <sidebar-navigation :is-open="sidebarOpen" @hide="hideSidebar" />
     <div class="siteHeader-container">
-      <sidebar-navigation />
-
+      <a href="#" role="menuitem" class="header__nav-button" :class="{ 'is-open': sidebarOpen }" @click="sidebarOpen = true">
+        <div class="header__nav-icon" role="presentation">
+          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+        </div>
+      </a>
       <div v-if="title" class="title">
         <h1 class="title__name">
           {{ title }}
@@ -47,6 +52,7 @@ export default {
     showProfileIcon: true,
     sidebarOpen: false,
     showProfileModal: false,
+    isOpen: false,
   }),
 
   metaInfo() {
@@ -95,8 +101,8 @@ export default {
   methods: {
     ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
 
-    hideSidebar() {
-      this.sidebarOpen = !this.sidebarOpen;
+    hideSidebar(event) {
+      this.sidebarOpen = event;
     },
 
     openProfileModal() {
@@ -159,4 +165,66 @@ $header-height: 4em;
   margin-right: 0.3em;
   font-size: 1.5rem;
 }
+
+
+.header__nav-button {
+  width: $header-height;
+  height: $header-height;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.is-open {
+    span {
+      &:nth-child(1),
+      &:nth-child(4) {
+        opacity: 0;
+        transition: transform 1.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+      }
+      &:nth-child(2) {
+        transform: translateY(1em) rotate(45deg);
+        transition: transform 1.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+      &:nth-child(3) {
+        transform: translateY(1em) rotate(-45deg);
+        transition: transform 1.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+      }
+    }
+  }
+}
+
+.header__nav-icon {
+  position: relative;
+  width: 100%;
+  padding: 1em;
+
+  $bar-height: 0.15em;
+  $center: 1em - math.div($bar-height, 2);
+  span {
+    position: absolute;
+    top: $center;
+    left: 1.25em;
+    display: block;
+    width: 1.5em;
+    height: $bar-height;
+    background: var(--color-text-secondary);
+    border-radius: 0.075em;
+    transform-origin: 50% 50%;
+
+    &:nth-child(1) {
+      transform: translateY($center - 0.35em) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      transform: translateY(1em) rotate(0deg);
+      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
+    }
+    &:nth-child(4) {
+      transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
+      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+    }
+  }
+}
+
 </style>

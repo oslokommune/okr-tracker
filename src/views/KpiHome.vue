@@ -134,7 +134,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKpi', 'activeItem']),
+    ...mapState(['activeKpi', 'activeItem', 'theme']),
     ...mapGetters(['hasEditRights']),
 
     limitedProgress() {
@@ -158,7 +158,7 @@ export default {
 
   mounted() {
     if (this.$refs.graph) {
-      this.graph = new LineChart(this.$refs.graph);
+      this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
     }
 
     if (this.$route.query.startDate && this.$route.query.endDate) {
@@ -185,18 +185,19 @@ export default {
       const [startDate, endDate] = extent(this.filteredProgress.map(({ timestamp }) => timestamp));
 
       if (!this.graph || !startValue === undefined || !targetValue === undefined) return;
-      this.graph.render(
-        {
+      this.graph.render({
+        obj: {
           startValue,
           targetValue,
         },
-        {
+        period: {
           endDate: this.isFiltered ? endDate : new Date(),
           startDate,
         },
-        this.filteredProgress,
-        this.activeKpi
-      );
+        progressionList: this.filteredProgress,
+        item: this.activeKpi,
+        theme: this.theme,
+      });
     },
 
     filterProgress() {

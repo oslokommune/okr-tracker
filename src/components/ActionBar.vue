@@ -58,7 +58,7 @@ export default {
 
 .action-bar__period-dates {
   margin-bottom: 1.5rem;
-  color: var(--color-grey-700);
+  color: var(--color-primary);
   font-size: 0.9em;
 
   @media screen and (min-width: bp(s)) {
@@ -68,6 +68,7 @@ export default {
 }
 
 .action-bar__view {
+  color: var(--color-primary);
   font-weight: 500;
   background: none;
   border: none;
