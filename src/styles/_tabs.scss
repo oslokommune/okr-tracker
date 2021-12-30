@@ -13,8 +13,8 @@
     right: 0;
     bottom: 4px;
     left: 0;
-    height: 1px;
-    background: var(--color-black);
+    height: 2px;
+    background: var(--color-primary);
     content: '';
   }
 
@@ -39,13 +39,13 @@
 .tab {
   position: relative;
   display: block;
-  margin: 0 0.5rem 0.5rem 0;
+  margin: 0 0.5rem 0 0;
   padding: 0.7rem 1rem;
   color: var(--color-text);
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-dark);
   border: 0;
   border-bottom: 2px solid transparent;
   cursor: pointer;

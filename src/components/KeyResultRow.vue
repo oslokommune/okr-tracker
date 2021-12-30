@@ -132,7 +132,8 @@ export default {
   background-color: var(--color-secondary-light);
 
   &:hover {
-    background-color: var(--color-secondary);
+    color: var(--color-text-secondary);
+    background-color: var(--color-hover);
   }
 }
 
@@ -142,7 +143,7 @@ export default {
 
 .keyResult__info--header {
   height: 100%;
-  color: var(--color-grey-800);
+  color: var(--color-text);
   text-decoration: none;
 }
 
@@ -165,7 +166,7 @@ export default {
   }
 
   &:hover {
-    background-color: var(--color-primary-dark);
+    background-color: var(--color-hover);
     cursor: pointer;
   }
 }

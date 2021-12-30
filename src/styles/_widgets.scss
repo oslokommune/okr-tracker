@@ -5,6 +5,7 @@
   align-self: start;
   width: 100%;
   margin-bottom: 0.5rem;
+  color: var(--color-text);
   background: var(--color-white);
 }
 
@@ -146,8 +147,8 @@
   }
 
   &:hover {
-    color: var(--color-text);
-    background: var(--color-secondary);
+    color: var(--color-text-secondary);
+    background: var(--color-hover);
 
     & > .fa-chevron-left {
       margin-right: 2rem;

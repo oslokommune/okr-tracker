@@ -71,7 +71,8 @@ export default {
   background: var(--color-secondary-light);
 
   &:hover {
-    background: var(--color-secondary);
+    color: var(--color-text-secondary);
+    background: var(--color-hover);
   }
 
   &.disabled {

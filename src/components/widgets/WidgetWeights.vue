@@ -125,8 +125,9 @@ export default {
   border: 1px solid var(--color-secondary-light);
 
   &:hover {
-    background: var(--color-secondary);
-    border: 1px solid var(--color-secondary);
+    color: var(--color-text-secondary);
+    background: var(--color-hover);
+    border: 1px solid var(--color-hover);
   }
 }
 </style>
