@@ -41,7 +41,6 @@ export default class LineChart {
   }
 
   render({ obj, period, progressionList, item, colorMode }) {
-    console.log('render: ', colorMode);
     this.colorMode = colorMode;
     this.period = period;
     this.obj = obj;

@@ -24,8 +24,6 @@ export function initSvg(svg) {
 
   this.valueArea = this.canvas.append('path').call(styleArea);
 
-  console.log('init1: ', this.colorMode);
-
   this.yAxis = this.canvas.append('g').classed('axis y', true);
   this.valueLine = this.canvas.append('path').call(styleValueLine.bind(this));
   this.target = this.canvas.append('line').classed('target', true);
