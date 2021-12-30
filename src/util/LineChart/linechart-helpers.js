@@ -1,12 +1,6 @@
 const padding = { left: 60, top: 20, right: 10, bottom: 20 };
 
-const colors = {
-  purple: '#2A2859',
-  grey: '#F2F2F2',
-  yellow: '#F9C66B',
-};
-
-export const colors2 = {
+export const colors = {
   blue: {
     gradientStart: '#2A2859',
     gradientStop: '#2A2859',
@@ -51,15 +45,15 @@ export function initSvg(svg) {
 }
 
 export function styleGradientStart(el) {
-  el.attr('offset', '0%').attr('style', `stop-color:${colors2[this.colorMode].gradientStart};stop-opacity:1;`);
+  el.attr('offset', '0%').attr('style', `stop-color:${colors[this.colorMode].gradientStart};stop-opacity:1;`);
 }
 
 export function styleGradientStop(el) {
-  el.attr('offset', '100%').attr('style', `stop-color:${colors2[this.colorMode].gradientStop};stop-opacity:0;`);
+  el.attr('offset', '100%').attr('style', `stop-color:${colors[this.colorMode].gradientStop};stop-opacity:0;`);
 }
 
 export function styleValueLine(el) {
-  el.classed('valueLine', true).attr('fill', 'none').attr('stroke', colors2[this.colorMode].line).attr('stroke-width', 3);
+  el.classed('valueLine', true).attr('fill', 'none').attr('stroke', colors[this.colorMode].line).attr('stroke-width', 3);
 }
 
 function styleArea(el) {

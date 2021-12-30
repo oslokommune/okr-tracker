@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.7.1] 2021-12-30
+
 ### Changes
 
 - Use the only blue hover color the Oslo design system has to offer on both green and blue themes
