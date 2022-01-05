@@ -1,6 +1,3 @@
-import { format } from 'd3-format';
-import vueI18n from '@/locale/i18n';
-
 export { default as api } from './axios';
 export { dateLong } from './format';
 export { dateShort } from './format';

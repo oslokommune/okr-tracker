@@ -97,8 +97,8 @@ export default {
 @use '@/styles/progressbar';
 
 .keyResult {
-  background: white;
   display: flex;
+  background: white;
 
   &--isDetailedView {
     display: block;
@@ -110,12 +110,12 @@ export default {
   }
 
   &__infoLink {
-    flex: 1;
     display: block;
+    flex: 1;
     padding: 0.5rem 1.5rem;
     color: var(--color-text);
-    background-color: var(--color-secondary-light);
     text-decoration: none;
+    background-color: var(--color-secondary-light);
 
     &--isDetailedView {
       padding: 1.5rem;
@@ -128,8 +128,8 @@ export default {
   }
 
   &__title {
-    font-size: 1rem;
     font-weight: 700;
+    font-size: 1rem;
   }
 
   &__description {
@@ -139,9 +139,9 @@ export default {
 
   &__progress {
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
-    flex: 1;
     padding: 0.5rem 1.5rem;
     color: var(--color-text-secondary);
     background: var(--color-primary);
