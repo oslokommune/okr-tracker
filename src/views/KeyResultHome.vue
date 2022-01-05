@@ -210,7 +210,7 @@ import { format } from 'd3-format';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, numberLocale, remainingKeyResultProgress } from '@/util';
+import { dateTimeShort, numberLocale } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
@@ -328,7 +328,6 @@ export default {
   methods: {
     dateTimeShort,
     format,
-    remainingKeyResultProgress,
 
     async remove(id) {
       try {
