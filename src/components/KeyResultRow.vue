@@ -128,7 +128,7 @@ export default {
   }
 
   &__title {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 700;
   }
 
