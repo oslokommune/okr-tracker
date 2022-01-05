@@ -22,12 +22,7 @@
             <h3 class="key-result-row__progress--header">
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
-            <div class="progression__done progression__done--keyResultHome">
-              {{ $t('progress.done', { progress: percentage(activeKeyResult.progression) }) }}
-            </div>
-            <div class="progression__remaining progression__remaining--keyResultHome">
-              {{ remainingKeyResultProgress(activeKeyResult) }}
-            </div>
+            <widget-key-result-progress-details :key-result="activeKeyResult" />
             <div class="progression__total">
               <span class="progression__total--current">
                 {{ activeKeyResult.currentValue ? format('.1~f')(activeKeyResult.currentValue) : 0 }}
@@ -227,6 +222,7 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     ProfileModal: () => import('@/components/ProfileModal.vue'),
+    WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     VPopover,
     WidgetsKeyResultMobile,
   },
