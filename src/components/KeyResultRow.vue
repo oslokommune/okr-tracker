@@ -97,16 +97,10 @@ export default {
 @use '@/styles/progressbar';
 
 .keyResult {
-  display: flex;
   background: white;
 
-  &--isDetailedView {
-    display: block;
-    padding: 0.5rem 1.5rem;
-
-    @media screen and (min-width: bp(s)) {
-      display: flex;
-    }
+  @media screen and (min-width: bp(s)) {
+    display: flex;
   }
 
   &__infoLink {
@@ -128,7 +122,7 @@ export default {
   }
 
   &__title {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 1rem;
   }
 
@@ -139,7 +133,7 @@ export default {
 
   &__progress {
     display: flex;
-    flex: 1;
+    flex: 0 0 25%;
     flex-direction: column;
     justify-content: center;
     padding: 0.5rem 1.5rem;
@@ -152,7 +146,7 @@ export default {
     }
 
     @media screen and (min-width: bp(s)) {
-      max-width: 20rem;
+      flex: 0 0 20rem;
     }
 
     &--isDetailedView {
