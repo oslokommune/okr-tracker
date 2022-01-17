@@ -12,7 +12,7 @@
       </div>
       <div v-else class="widgetKeyResultProgressDetails__infoMessage">
         <strong>
-          {{ remainingKeyResultProgress }}
+          {{ formatedRemainingKeyResultProgress }}
         </strong>
         {{ $t('progress.remaining', { unit: keyResult.unit }) }}
       </div>
@@ -23,7 +23,7 @@
 <script>
 import { format } from 'd3-format';
 import vueI18n from '@/locale/i18n';
-import { getRandomInt } from '@/util';
+import { getRandomInt, numberLocale } from '@/util';
 
 export default {
   name: 'WidgetKeyResultProgressDetails',
@@ -54,6 +54,9 @@ export default {
       }
 
       return targetValue - currentValue;
+    },
+    formatedRemainingKeyResultProgress() {
+      return numberLocale.format(',')(this.remainingKeyResultProgress);
     },
   },
   methods: {

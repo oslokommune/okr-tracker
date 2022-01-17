@@ -26,7 +26,7 @@
         :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
       />
       <div v-if="isDetailedView" class="keyResult__progressionSummary">
-        {{ keyResult.currentValue ? format('.1~f')(keyResult.currentValue) : 0 }} / {{ keyResult.targetValue }}
+        {{ keyResult.currentValue ? formatedCurrentValue : 0 }} / {{ formatedTargetValue }}
       </div>
     </div>
 
@@ -37,6 +37,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { format } from 'd3-format';
+import { numberLocale } from '@/util';
 
 export default {
   name: 'KeyResultRow',
@@ -71,6 +72,12 @@ export default {
     isDetailedView() {
       return this.forceExpanded || this.user.preferences.view === 'details';
     },
+    formatedCurrentValue() {
+      return this.formatLargeNumber(this.keyResult.currentValue);
+    },
+    formatedTargetValue() {
+      return this.formatLargeNumber(this.keyResult.targetValue);
+    },
   },
 
   watch: {
@@ -88,6 +95,9 @@ export default {
       if (this.allowedToEditPeriod) {
         this.isOpen = true;
       }
+    },
+    formatLargeNumber(value) {
+      return numberLocale.format(',')(value);
     },
   },
 };
