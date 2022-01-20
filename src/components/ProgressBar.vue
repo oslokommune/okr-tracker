@@ -27,6 +27,9 @@ export default {
 
   methods: {
     percent(value) {
+      if (value < 0) return 0;
+      if (value > 1) return 100;
+
       return format('.0%')(value);
     },
   },
