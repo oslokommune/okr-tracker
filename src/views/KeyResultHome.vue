@@ -493,8 +493,8 @@ export default {
 }
 
 .key-result-row__progressBar {
-  margin-top: 1rem;
   grid-area: 5 / 1 / 6 / 2;
+  margin-top: 1rem;
 }
 
 .progression__total {
