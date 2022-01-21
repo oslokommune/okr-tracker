@@ -1,20 +1,18 @@
 <template>
   <div class="widgetKeyResultProgressDetails">
     <div class="widgetKeyResultProgressDetails__infoMessage">
-      <strong>
-        {{ percentage(keyResult.progression) }}
-      </strong>
+      <strong> {{ progressDetails.percentageCompleted }}% </strong>
       {{ $t('progress.done') }}
     </div>
     <div>
-      <div v-if="isCompleted">
+      <div v-if="progressDetails.isCompleted">
         {{ randomCompletedMessage() }}
       </div>
       <div v-else class="widgetKeyResultProgressDetails__infoMessage">
         <strong>
-          {{ formatedRemainingKeyResultProgress }}
+          {{ progressDetails.formattedTotalRemainingTasks }}
         </strong>
-        {{ $t('progress.remaining', { unit: keyResult.unit }) }}
+        {{ $t('progress.remaining', { unit }) }}
       </div>
     </div>
   </div>
@@ -23,47 +21,22 @@
 <script>
 import { format } from 'd3-format';
 import vueI18n from '@/locale/i18n';
-import { getRandomInt, numberLocale } from '@/util';
+import { getRandomInt } from '@/util';
 
 export default {
   name: 'WidgetKeyResultProgressDetails',
   props: {
-    keyResult: {
+    progressDetails: {
       type: Object,
       required: true,
     },
-  },
-  computed: {
-    isCompleted() {
-      const { currentValue, targetValue } = this.keyResult;
-
-      return currentValue >= targetValue;
-    },
-    remainingKeyResultProgress() {
-      const { currentValue, startValue, targetValue } = this.keyResult;
-
-      if (targetValue < startValue) {
-        if (!currentValue) {
-          return startValue;
-        }
-        return startValue - currentValue;
-      }
-
-      if (!currentValue) {
-        return targetValue;
-      }
-
-      return targetValue - currentValue;
-    },
-    formatedRemainingKeyResultProgress() {
-      return numberLocale.format(',')(this.remainingKeyResultProgress);
+    unit: {
+      type: String,
+      required: true,
     },
   },
   methods: {
     format,
-    percentage(value) {
-      return format('.0%')(value);
-    },
     randomCompletedMessage() {
       const messages = Object.values(vueI18n.t('progress.completedMessages'));
       const randomIndex = getRandomInt(messages.length);

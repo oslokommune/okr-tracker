@@ -22,18 +22,20 @@
             <h3 class="key-result-row__progress--header">
               {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
-            <widget-key-result-progress-details :key-result="activeKeyResult" />
+            <widget-key-result-progress-details :progress-details="progressDetails" :unit="activeKeyResult.unit" />
             <div class="progression__total">
               <span class="progression__total--current">
-                {{ activeKeyResult.currentValue ? format('.1~f')(activeKeyResult.currentValue) : 0 }}
+                {{ progressDetails.formattedTotalCompletedTasks }}
               </span>
               <span class="progression__total--target">
-                {{ $t('progress.remainingOf', { progress: activeKeyResult.targetValue }) }}
+                {{ $t('progress.remainingOf', { progress: progressDetails.formattedTotalNumberOfTasks }) }}
               </span>
             </div>
-            <div class="progress-bar__container progress-bar__container--keyResultHome">
-              <div class="progress-bar" :style="{ width: percentage(activeKeyResult.progression) }"></div>
-            </div>
+            <progress-bar
+              :progression="progressDetails.percentageCompleted"
+              :is-compact="false"
+              class="key-result-row__progressBar"
+            />
           </div>
 
           <div class="key-result-row__info">
@@ -210,7 +212,8 @@ import { format } from 'd3-format';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, numberLocale } from '@/util';
+import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
+import { dateTimeShort } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
@@ -223,6 +226,7 @@ export default {
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     ProfileModal: () => import('@/components/ProfileModal.vue'),
     WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
     VPopover,
     WidgetsKeyResultMobile,
   },
@@ -252,6 +256,7 @@ export default {
     historyLimit: 10,
     showProfileModal: false,
     chosenProfileId: null,
+    progressDetails: {},
   }),
 
   computed: {
@@ -273,10 +278,11 @@ export default {
       immediate: true,
       async handler(keyResult) {
         if (!keyResult) return;
+        this.progressDetails = getKeyResultProgressDetails(keyResult);
         this.isLoading = true;
         await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
         this.isLoading = false;
-        this.value = keyResult.currentValue || keyResult.startValue || 0;
+        this.value = this.progressDetails.totalCompletedTasks;
         this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
         this.graph.render({
           obj: this.activeKeyResult,
@@ -338,14 +344,6 @@ export default {
       }
     },
 
-    formatValue(value) {
-      return numberLocale.format(',')(value);
-    },
-
-    percentage(value) {
-      return format('.0%')(value);
-    },
-
     async saveProgress() {
       if (!this.allowedToEditPeriod) return;
 
@@ -385,7 +383,6 @@ export default {
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
-@use '@/styles/progressbar';
 
 .main__table {
   width: 100%;
@@ -460,12 +457,11 @@ export default {
 
   @media screen and (min-width: bp(s)) {
     display: grid;
-    grid-row-gap: 2px;
-    grid-column-gap: 2px;
+    grid-row-gap: 1px;
+    grid-column-gap: 1px;
     grid-template-rows: repeat(3, auto);
     grid-template-columns: 1fr span(3, span(8));
     margin-bottom: 0.5rem;
-    background-color: var(--color-black);
   }
 }
 
@@ -496,26 +492,9 @@ export default {
   background-color: var(--color-primary);
 }
 
-.key-result-row__progress--header {
-  grid-area: 1 / 1 / 2 / 2;
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.progress-bar__container--keyResultHome {
+.key-result-row__progressBar {
+  margin-top: 1rem;
   grid-area: 5 / 1 / 6 / 2;
-}
-
-.progression__done--keyResultHome {
-  grid-area: 3 / 1 / 4 / 2;
-  align-self: end;
-}
-
-.progression__remaining--keyResultHome {
-  grid-area: 4 / 1 / 5 / 2;
-  align-self: end;
-  font-weight: 500;
 }
 
 .progression__total {

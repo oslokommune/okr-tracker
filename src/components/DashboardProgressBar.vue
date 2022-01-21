@@ -62,18 +62,16 @@ export default {
     },
 
     getWidth() {
-      const { startValue, targetValue, currentValue } = this.keyResult;
+      const { progression } = this.keyResult;
 
-      const scale = scaleLinear().domain([startValue, targetValue]).clamp(true);
+      this.completed = progression >= 1;
 
-      const decimal = scale(currentValue || startValue);
-
-      this.completed = decimal === 1;
-      return this.format(decimal);
+      return format('.0%')(progression);
     },
 
     getChangeStyle(el) {
       const { fromValue, startValue, targetValue, toValue } = this.keyResult;
+
       let fromPos = 0;
       let width = 0;
       let direction;

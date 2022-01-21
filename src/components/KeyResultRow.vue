@@ -18,15 +18,19 @@
       }"
       @click="openModal"
     >
-      <widget-key-result-progress-details v-if="isDetailedView" :key-result="keyResult" />
+      <widget-key-result-progress-details
+        v-if="isDetailedView"
+        :progress-details="progressDetails"
+        :unit="keyRow.unit"
+      />
       <progress-bar
-        :progression="keyRow.progression"
+        :progression="progressDetails.percentageCompleted"
         :is-compact="!isDetailedView"
         class="keyResult__progressBar"
         :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
       />
       <div v-if="isDetailedView" class="keyResult__progressionSummary">
-        {{ keyResult.currentValue ? formatedCurrentValue : 0 }} / {{ formatedTargetValue }}
+        {{ progressDetails.formattedTotalCompletedTasks }} / {{ progressDetails.formattedTotalNumberOfTasks }}
       </div>
     </div>
 
@@ -38,6 +42,7 @@
 import { mapState, mapGetters } from 'vuex';
 import { format } from 'd3-format';
 import { numberLocale } from '@/util';
+import { getKeyResultProgressDetails } from '../util/keyResultProgress';
 
 export default {
   name: 'KeyResultRow',
@@ -72,11 +77,8 @@ export default {
     isDetailedView() {
       return this.forceExpanded || this.user.preferences.view === 'details';
     },
-    formatedCurrentValue() {
-      return this.formatLargeNumber(this.keyResult.currentValue);
-    },
-    formatedTargetValue() {
-      return this.formatLargeNumber(this.keyResult.targetValue);
+    progressDetails() {
+      return getKeyResultProgressDetails(this.keyResult);
     },
   },
 
@@ -104,8 +106,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/progressbar';
-
 .keyResult {
   background: white;
 

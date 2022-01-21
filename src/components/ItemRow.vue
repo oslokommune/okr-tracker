@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <progress-bar v-tooltip="`${Math.round(progression * 100)}%`" class="progress-bar" :progression="progression" />
+      <progress-bar v-tooltip="`${progression}%`" class="progress-bar" :progression="progression" />
 
       <i class="item__chevron fas fa-chevron-right" />
     </router-link>
@@ -59,7 +59,7 @@ export default {
   },
 
   data: () => ({
-    progression: null,
+    progression: 0,
     kpis: [],
     kpiTypes,
   }),
@@ -98,7 +98,7 @@ export default {
 
         data.onProgressionSnapshot(({ docs }) => {
           if (docs.length) {
-            this.progression = docs[0].data().progression;
+            this.progression = Math.round(docs[0].data().progression * 100);
           }
         });
       },
