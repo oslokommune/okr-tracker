@@ -1,5 +1,9 @@
 <template>
-  <div v-tooltip="percent(progression)" class="progression__container">
+  <div
+    v-tooltip="percent(progression)"
+    class="progression__container"
+    :class="{ 'progression__container--isCompact': isCompact }"
+  >
     <div class="progression__bar" :style="{ width: percent(progression) }"></div>
   </div>
 </template>
@@ -15,6 +19,10 @@ export default {
       type: Number,
       default: 0,
     },
+    isCompact: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   methods: {
@@ -29,15 +37,17 @@ export default {
 .progression__container {
   position: relative;
   width: 100%;
-  height: 5px;
+  height: 0.625rem;
   margin-right: 1rem;
   background: var(--color-progress-background);
-  border-radius: 1rem;
+
+  &--isCompact {
+    height: 0.3125rem;
+  }
 }
 
 .progression__bar {
   height: 100%;
   background: var(--color-secondary);
-  border-radius: 1rem;
 }
 </style>
