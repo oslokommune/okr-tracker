@@ -1,12 +1,14 @@
 <template>
-  <div v-tooltip="percent(progression)" class="progression__container">
-    <div class="progression__bar" :style="{ width: percent(progression) }"></div>
+  <div
+    v-tooltip="`${progression}%`"
+    class="progression__container"
+    :class="{ 'progression__container--isCompact': isCompact }"
+  >
+    <div class="progression__bar" :style="{ width: progressBarWidth }"></div>
   </div>
 </template>
 
 <script>
-import { format } from 'd3-format';
-
 export default {
   name: 'ProgressBar',
 
@@ -15,11 +17,17 @@ export default {
       type: Number,
       default: 0,
     },
+    isCompact: {
+      type: Boolean,
+      default: true,
+    },
   },
+  computed: {
+    progressBarWidth() {
+      if (!this.progression || this.progression < 0) return 0;
+      if (this.progression > 100) return '100%';
 
-  methods: {
-    percent(value) {
-      return format('.0%')(value);
+      return `${this.progression}%`;
     },
   },
 };
@@ -29,15 +37,17 @@ export default {
 .progression__container {
   position: relative;
   width: 100%;
-  height: 5px;
+  height: 0.625rem;
   margin-right: 1rem;
   background: var(--color-progress-background);
-  border-radius: 1rem;
+
+  &--isCompact {
+    height: 0.3125rem;
+  }
 }
 
 .progression__bar {
   height: 100%;
   background: var(--color-secondary);
-  border-radius: 1rem;
 }
 </style>

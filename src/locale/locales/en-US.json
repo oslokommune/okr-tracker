@@ -497,8 +497,8 @@
   },
   "progress": {
     "title": "Progress {progress}",
-    "done": "{progress} done",
-    "remaining": "{progress} {unit} remaining",
+    "done": "done",
+    "remaining": "{unit} remaining",
     "remainingOf": "of {progress}",
     "completedMessages": {
       "1": "You guys are nailing it!",

@@ -1,8 +1,9 @@
 {
   "name": "okr-tracker",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "private": true,
   "scripts": {
+    "test:unit": "jest",
     "dev": "firebase emulators:start --import=./mock_data & vite",
     "dev:test": "firebase emulators:start --import=./tests & vite",
     "build": "vite build --mode production",
@@ -69,6 +70,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
     "firebase-tools": "^10.0.1",
+    "jest": "^27.4.7",
     "prettier": "^2.5.1",
     "sass": "^1.45.1",
     "stylelint": "^13.0.1",
