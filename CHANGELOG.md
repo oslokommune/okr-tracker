@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.7.2] 2022-01-27
+
+### Changes
+
+- Minor style changes
+
+### Fixed
+
+- Bugs in key result progress info
+
 ## [2.7.1] 2021-12-30
 
 ### Changes
@@ -104,6 +114,7 @@ Last minor update before releasing our new design. New updates from now on will 
 We have added another slackbot integration. The new slackbot integration pushes changes to organizations/departments/products.
 
 You can call the slack bot with the command `/okr`. The different commands to the slack bot are:
+
 - `subscribe organization/department/product slug` - subscribe to a specific org/dep/prod
 - `unsubscribe organization/department/product slug` - unsubscribe
 - `subscribe/all organization/department slug` - subscribe to a specific org/dep/prod and all its children (departments/products)
@@ -111,14 +122,17 @@ You can call the slack bot with the command `/okr`. The different commands to th
 
 What types of updates does the bot push?
 Changes to the:
+
 - name
 - mission statement
 
 Creation of:
+
 - Objectives
 - Key Results
 
 Caveats:
+
 - If you run subscribe/all once on an organization/department and create a new product after that
   - run subscribe/all again, because we don't add new children to the parent subscription
 
@@ -180,6 +194,7 @@ Now we would get updates to our slack channel with changes to our product, datas
 We have added another lever of admin, called super admin. We are sorry, but you need to update some database documents to make this work.
 
 Super Admin can:
+
 - do the same things as an admin and normal member
 - restore backups
 - promote or demote admins
@@ -187,6 +202,7 @@ Super Admin can:
 - create/restore/change organizations
 
 Admins can:
+
 - do the same things as a member
 - add new users to the OKR-tracker
 - administrate an organization they are apart of
@@ -194,6 +210,7 @@ Admins can:
 - administrate multiple departments within the same organization
 
 Member of a product or department or organization
+
 - has rights to administrate its own product/org/departments
 - ... such as add/remove members from a product/org/department
   - or update/delete/archive
