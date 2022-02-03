@@ -123,7 +123,7 @@ export default {
 .admin__link {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
