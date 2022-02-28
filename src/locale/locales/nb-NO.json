@@ -221,10 +221,14 @@
     "deleted": "Slettet object",
     "restored": "Gjenopprettet dokument",
     "request": {
+      "noEmail": "Forespørselen feilet. E-post mangler.",
       "requested": "Forespørsel om tilgang sendt til admin",
       "error": "Noe gikk galt med forespørselen, vennligst prøv igjen senere.",
       "accepted": "Lagt til: {user}",
-      "rejected": "Fjernet: {user}"
+      "rejected": "Avvist brukerforespørsel for {user}",
+      "userCreated": "Brukeren ble opprettet.",
+      "notFound": "Brukerforespørselen finnes ikke",
+      "userExists": "Det finnes en bruker med e-post {user}"
     }
   },
   "keyResult": {

@@ -4,7 +4,9 @@ import i18n from '@/locale/i18n';
 export const showToastMessage = (opts) => {
   const { msg, msgVars, type, ...toastOpts } = opts;
 
-  Vue.toasted.show(i18n.t(msg, msgVars), { type, ...toastOpts });
+  const toastMsg = i18n.t(msg, msgVars) || msg;
+
+  Vue.toasted.show(toastMsg, { type, ...toastOpts });
 };
 
 export default function toastArchiveAndRevert(obj) {

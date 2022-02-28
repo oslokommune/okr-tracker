@@ -23,6 +23,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import { api } from '@/util';
+import { showToastMessage } from '@/util/toastUtils';
 
 export default {
   name: 'RequestAccess',
@@ -41,13 +42,22 @@ export default {
     async send() {
       this.loading = true;
       try {
-        await api.post(`/access/${this.email}/create`);
-        this.$toasted.show(this.$t('toaster.request.requested'));
+        const res = await api.post(`/accessRequests/create`, { email: this.email });
+
+        showToastMessage({
+          msg: res.data,
+          type: 'success',
+        });
+
         await this.$router.push({ name: 'Login', query: { redirectFrom: '/' } });
       } catch (e) {
-        console.log(e.response);
+        console.log('E: ', e);
         this.email = '';
-        this.$toasted.error(this.$t('toaster.request.error'));
+
+        showToastMessage({
+          msg: e.response.data,
+          type: 'error',
+        });
       }
 
       this.loading = false;
