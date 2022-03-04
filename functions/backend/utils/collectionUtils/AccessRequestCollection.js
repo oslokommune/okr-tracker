@@ -12,7 +12,13 @@ class AccessRequestCollection {
   }
 
   async addDocument(document) {
-    return this.collectionRef.add({ created: Date.now(), ...document });
+    const docRef = this.collectionRef.doc(document.email);
+
+    if ((await docRef.get()).exists) {
+      throw new Error('toaster.request.requestExists');
+    }
+
+    return docRef.set({ created: Date.now(), ...document });
   }
 
   deleteDocument(id) {

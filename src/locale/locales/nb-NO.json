@@ -228,6 +228,7 @@
       "rejected": "Avvist brukerforespørsel for {user}",
       "userCreated": "Brukeren ble opprettet.",
       "notFound": "Brukerforespørselen finnes ikke",
+      "requestExists": "Det finnes en forespørsel for e-post {user}",
       "userExists": "Det finnes en bruker med e-post {user}"
     }
   },

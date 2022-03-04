@@ -231,6 +231,7 @@
       "rejected": "Rejected access request for {user}",
       "userCreated": "The use was created.",
       "notFound": "Access request not found",
+      "requestExists": "Access request with email {user} already exists.",
       "userExists": "User with email {user} already exists."
     }
   },

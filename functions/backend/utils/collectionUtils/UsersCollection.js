@@ -11,6 +11,10 @@ class UsersCollection {
     this.collectionRef = firestore.collection('users');
   }
 
+  getDocumentRef(id) {
+    return this.collectionRef.doc(id);
+  }
+
   async addDocument(document) {
     const docRef = this.collectionRef.doc(document.id);
 

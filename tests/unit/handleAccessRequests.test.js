@@ -1,5 +1,10 @@
 import { mockFirebase } from 'firestore-jest-mock';
-import { mockCollection, mockDelete, mockDoc, mockSet, mockAdd } from 'firestore-jest-mock/mocks/firestore';
+import {
+  mockCollection,
+  mockDelete,
+  mockDoc,
+  mockSet,
+} from 'firestore-jest-mock/mocks/firestore';
 
 import {
   createAccessRequest,
@@ -8,43 +13,35 @@ import {
 } from '../../functions/backend/utils/handleAccessRequests.js';
 import { DEFAULT_USER_OPTIONS } from '../../functions/backend/utils/collectionUtils/UsersCollection.js';
 
-const WHITELISTED_EMAIL = 'kim@origo.oslo.kommune.no';
-const EXISTING_USER_EMAIL = 'user@existing.no';
-
-const ACCESS_RESQUEST = {
-  id: '123',
-  email: 'test@testesen.no',
+const createRequest = (email) => ({
+  id: email,
+  email,
   created: Date.now(),
-};
+});
 
-const ACCESS_RESQUEST_WITH_EXISTING_USER_EMAIL = {
-  id: '456',
-  email: EXISTING_USER_EMAIL,
-  created: Date.now(),
-};
+const createUser = (email) => ({
+  ...DEFAULT_USER_OPTIONS,
+  id: email,
+  email: email,
+});
 
 const WHITELISTED_DOMAIN = {
   id: 'origo.oslo.kommune.no',
   name: 'Oslo Origo',
 };
 
-const USER = {
-  id: ACCESS_RESQUEST.email,
-  email: ACCESS_RESQUEST.email,
-  ...DEFAULT_USER_OPTIONS,
-};
+const WHITELISTED_EMAIL = 'kim@origo.oslo.kommune.no';
 
-const EXISTING_USER = {
-  id: EXISTING_USER_EMAIL,
-  email: EXISTING_USER_EMAIL,
-  ...DEFAULT_USER_OPTIONS,
-};
-
-const INVALID_ACCESS_RESQUEST_ID = 'not_valid';
+const EXISTING_ACCESS_RESQUEST = createRequest('kim@non.whitelisted.domain.no');
+const NEW_ACCESS_RESQUEST = createRequest('kim@new.access.req.no');
+const EXISTING_USER = createUser('kim@existing.user.no');
 
 mockFirebase({
   database: {
-    requestAccess: [ACCESS_RESQUEST, ACCESS_RESQUEST_WITH_EXISTING_USER_EMAIL],
+    requestAccess: [
+      EXISTING_ACCESS_RESQUEST,
+      createRequest(EXISTING_USER.email),
+    ],
     domainWhitelist: [WHITELISTED_DOMAIN],
     users: [EXISTING_USER],
   },
@@ -70,13 +67,49 @@ describe('Create new access request or add user', () => {
     `);
   });
 
-  it('returns success message and creates access request if domain is not white listed', async () => {
-    const result = await createAccessRequest(db, ACCESS_RESQUEST);
+  it('returns error if access request exists', async () => {
+    const result = await createAccessRequest(db, EXISTING_ACCESS_RESQUEST);
 
     expect(mockCollection).toHaveBeenCalledWith('domainWhitelist');
     expect(mockCollection).toHaveBeenCalledWith('users');
-    expect(mockDoc).toHaveBeenCalledWith('testesen.no');
-    expect(mockAdd).toHaveBeenCalledWith(ACCESS_RESQUEST);
+    expect(mockDoc).toHaveBeenCalledWith(EXISTING_ACCESS_RESQUEST.email);
+
+    expect(result).toMatchInlineSnapshot(`
+      Object {
+        "code": 500,
+        "message": "toaster.request.requestExists",
+      }
+    `);
+  });
+
+  it('returns error if user with request email exists', async () => {
+    const result = await createAccessRequest(
+      db,
+      createRequest(EXISTING_USER.email)
+    );
+
+    expect(mockCollection).toHaveBeenCalledWith('domainWhitelist');
+    expect(mockCollection).toHaveBeenCalledWith('users');
+    expect(mockDoc).toHaveBeenCalledWith(EXISTING_USER.email);
+
+    expect(result).toMatchInlineSnapshot(`
+      Object {
+        "code": 500,
+        "message": "toaster.request.userExists",
+      }
+    `);
+  });
+
+  it('returns success message and creates access request if domain is not white listed', async () => {
+    const result = await createAccessRequest(db, NEW_ACCESS_RESQUEST);
+
+    expect(mockCollection).toHaveBeenCalledWith('domainWhitelist');
+    expect(mockCollection).toHaveBeenCalledWith('users');
+    expect(mockDoc).toHaveBeenCalledWith(
+      NEW_ACCESS_RESQUEST.email.split('@')[1]
+    );
+    expect(mockDoc).toHaveBeenCalledWith(NEW_ACCESS_RESQUEST.email);
+    expect(mockSet).toHaveBeenCalledWith(NEW_ACCESS_RESQUEST);
 
     expect(result).toMatchInlineSnapshot(`
       Object {
@@ -87,13 +120,15 @@ describe('Create new access request or add user', () => {
   });
 
   it('returns success message and creates user if domain is white listed', async () => {
-    const accessRequest = { ...ACCESS_RESQUEST, email: WHITELISTED_EMAIL };
-    const result = await createAccessRequest(db, accessRequest);
+    const result = await createAccessRequest(
+      db,
+      createRequest(WHITELISTED_EMAIL)
+    );
 
     expect(mockCollection).toHaveBeenCalledWith('domainWhitelist');
     expect(mockCollection).toHaveBeenCalledWith('users');
     expect(mockDoc).toHaveBeenCalledWith(WHITELISTED_DOMAIN.id);
-    expect(mockSet).toHaveBeenCalledWith({ ...USER, id: WHITELISTED_EMAIL, email: WHITELISTED_EMAIL });
+    expect(mockSet).toHaveBeenCalledWith(createUser(WHITELISTED_EMAIL));
 
     expect(result).toMatchInlineSnapshot(`
       Object {
@@ -106,11 +141,11 @@ describe('Create new access request or add user', () => {
 
 describe('Accept access request', () => {
   it("returns error if access request doesn't exist", async () => {
-    const result = await acceptAccessRequest(db, INVALID_ACCESS_RESQUEST_ID);
+    const result = await acceptAccessRequest(db, NEW_ACCESS_RESQUEST.id);
 
     expect(mockCollection).toHaveBeenCalledWith('requestAccess');
     expect(mockCollection).toHaveBeenCalledWith('users');
-    expect(mockDoc).toHaveBeenCalledWith(INVALID_ACCESS_RESQUEST_ID);
+    expect(mockDoc).toHaveBeenCalledWith(NEW_ACCESS_RESQUEST.id);
 
     expect(result).toMatchInlineSnapshot(`
       Object {
@@ -121,12 +156,11 @@ describe('Accept access request', () => {
   });
 
   it('returns error if user already exists', async () => {
-    const result = await acceptAccessRequest(db, ACCESS_RESQUEST_WITH_EXISTING_USER_EMAIL.id);
+    const result = await acceptAccessRequest(db, EXISTING_USER.email);
 
     expect(mockCollection).toHaveBeenCalledWith('requestAccess');
     expect(mockCollection).toHaveBeenCalledWith('users');
-    expect(mockDoc).toHaveBeenCalledWith(ACCESS_RESQUEST_WITH_EXISTING_USER_EMAIL.id);
-    expect(mockDoc).toHaveBeenCalledWith(EXISTING_USER.id);
+    expect(mockDoc).toHaveBeenCalledWith(EXISTING_USER.email);
 
     expect(result).toMatchInlineSnapshot(`
       Object {
@@ -137,12 +171,14 @@ describe('Accept access request', () => {
   });
 
   it('returns success message and creates user if access request exists', async () => {
-    const result = await acceptAccessRequest(db, ACCESS_RESQUEST.id);
+    const result = await acceptAccessRequest(db, EXISTING_ACCESS_RESQUEST.id);
 
     expect(mockCollection).toHaveBeenCalledWith('requestAccess');
     expect(mockCollection).toHaveBeenCalledWith('users');
-    expect(mockDoc).toHaveBeenCalledWith(ACCESS_RESQUEST.id);
-    expect(mockSet).toHaveBeenCalledWith(USER);
+    expect(mockDoc).toHaveBeenCalledWith(EXISTING_ACCESS_RESQUEST.id);
+    expect(mockSet).toHaveBeenCalledWith(
+      createUser(EXISTING_ACCESS_RESQUEST.email)
+    );
     expect(mockDelete).toHaveBeenCalledWith();
 
     expect(result).toMatchInlineSnapshot(`
@@ -156,10 +192,10 @@ describe('Accept access request', () => {
 
 describe('Reject access request', () => {
   it("returns error if access request doesn't exist", async () => {
-    const result = await rejectAccessRequest(db, INVALID_ACCESS_RESQUEST_ID);
+    const result = await rejectAccessRequest(db, NEW_ACCESS_RESQUEST.id);
 
     expect(mockCollection).toHaveBeenCalledWith('requestAccess');
-    expect(mockDoc).toHaveBeenCalledWith(INVALID_ACCESS_RESQUEST_ID);
+    expect(mockDoc).toHaveBeenCalledWith(NEW_ACCESS_RESQUEST.id);
 
     expect(result).toMatchInlineSnapshot(`
       Object {
@@ -170,10 +206,10 @@ describe('Reject access request', () => {
   });
 
   it('returns success message and deletes request if access request exists', async () => {
-    const result = await rejectAccessRequest(db, ACCESS_RESQUEST.id);
+    const result = await rejectAccessRequest(db, EXISTING_ACCESS_RESQUEST.id);
 
     expect(mockCollection).toHaveBeenCalledWith('requestAccess');
-    expect(mockDoc).toHaveBeenCalledWith(ACCESS_RESQUEST.id);
+    expect(mockDoc).toHaveBeenCalledWith(EXISTING_ACCESS_RESQUEST.id);
     expect(mockDelete).toHaveBeenCalledWith();
 
     expect(result).toMatchInlineSnapshot(`
