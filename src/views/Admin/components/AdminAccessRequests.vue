@@ -1,16 +1,26 @@
 <template>
-  <div v-if="requestAccess.length" class="access-requests">
+  <div v-if="accessRequest.length" class="access-requests">
     <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
 
     <ul class="access-requests__list">
-      <li v-for="request in requestAccess" :key="request.id" class="access-requests__item">
+      <li v-for="request in accessRequest" :key="request.id" class="access-requests__item">
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button :disabled="accepting" class="btn btn--ghost" data-cy="request-accept" @click="acceptRequest(request)">
+          <button
+            :disabled="isProcessingAccessRequest"
+            class="btn btn--ghost"
+            data-cy="request-accept"
+            @click="acceptRequest(request)"
+          >
             {{ $t('btn.acceptRequest') }}
           </button>
-          <button :disabled="rejecting" class="btn btn--ghost" data-cy="request-reject" @click="rejectRequest(request)">
+          <button
+            :disabled="isProcessingAccessRequest"
+            class="btn btn--ghost"
+            data-cy="request-reject"
+            @click="rejectRequest(request)"
+          >
             {{ $t('btn.rejectRequest') }}
           </button>
         </div>
@@ -22,50 +32,49 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import { api } from '@/util';
+import { showToastMessage } from '@/util/toastUtils';
+import AccessRequestCollection from '../../../../functions/backend/utils/collectionUtils/AccessRequestCollection.js';
+
+const accessRequestCollection = new AccessRequestCollection(db);
 
 export default {
   name: 'AdminAccessRequests',
 
   data: () => ({
-    requestAccess: [],
-    accepting: false,
-    rejecting: false,
+    accessRequest: [],
+    isProcessingAccessRequest: false,
   }),
 
   firestore: {
-    requestAccess: db.collection('requestAccess'),
+    accessRequest: accessRequestCollection.getCollection(),
   },
 
   methods: {
-    async acceptRequest(obj) {
-      this.accepting = true;
+    showToastMessage(res, accessRequest, toastType) {
+      showToastMessage({
+        msg: res.data,
+        msgVars: { user: accessRequest.email },
+        type: toastType,
+      });
+    },
+    async handleAccessRequest(method, url, accessRequest) {
+      this.isProcessingAccessRequest = true;
 
       try {
-        await api.post('/user/create', {
-          email: obj.email,
-          id: obj.email,
-        });
-
-        await api.delete(`/access/${obj.id}`);
-        this.$toasted.show(this.$t('toaster.request.accepted', { user: obj.email }));
-      } catch (e) {
-        console.log(e.response);
+        const res = await api.request({ method, url });
+        this.showToastMessage(res, accessRequest, 'success');
+      } catch (error) {
+        this.showToastMessage(error.response, accessRequest, 'error');
       }
 
-      this.accepting = false;
+      this.isProcessingAccessRequest = false;
+    },
+    acceptRequest(accessRequest) {
+      this.handleAccessRequest('post', `/accessRequests/${accessRequest.id}/accept`, accessRequest);
     },
 
-    async rejectRequest(obj) {
-      this.rejecting = true;
-
-      try {
-        await api.delete(`/access/${obj.id}`);
-        this.$toasted.show(this.$t('toaster.request.rejected', { user: obj.email }));
-      } catch (e) {
-        this.$toasted.error(e.response.data);
-      }
-
-      this.rejecting = false;
+    rejectRequest(accessRequest) {
+      this.handleAccessRequest('delete', `/accessRequests/${accessRequest.id}`, accessRequest);
     },
   },
 };
