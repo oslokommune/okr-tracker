@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.7.3] 2022-03-21
+
+- Auto accept access requests from whitelisted domains
+
 ## [2.7.2] 2022-01-27
 
 ### Changes
