@@ -12,9 +12,17 @@
       <form @submit.prevent="send">
         <label class="form__group">
           <span class="form-label">{{ $t('login.email') }}</span>
-          <input v-model="email" class="form__field" type="email" required data-cy="request-input" />
+          <input
+            v-model="email"
+            class="form__field"
+            type="email"
+            required
+            data-cy="request-input"
+          />
         </label>
-        <button class="btn btn--pri" :disabled="loading" data-cy="request-btn">{{ $t('login.requestButton') }}</button>
+        <button class="btn btn--pri" :disabled="loading" data-cy="request-btn">
+          {{ $t('login.requestButton') }}
+        </button>
       </form>
     </div>
   </div>
@@ -23,6 +31,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import { api } from '@/util';
+import { showToastMessage } from '@/util/toastUtils';
 
 export default {
   name: 'RequestAccess',
@@ -41,15 +50,29 @@ export default {
     async send() {
       this.loading = true;
       try {
-        await api.post(`/access/${this.email}/create`);
-        this.$toasted.show(this.$t('toaster.request.requested'));
-        await this.$router.push({ name: 'Login', query: { redirectFrom: '/' } });
+        const res = await api.post(`/accessRequests/create`, {
+          email: this.email,
+        });
+
+        showToastMessage({
+          msg: res.data,
+          msgVars: { user: this.email },
+          type: 'success',
+        });
+
+        await this.$router.push({
+          name: 'Login',
+          query: { redirectFrom: '/' },
+        });
       } catch (e) {
-        console.log(e.response);
-        this.email = '';
-        this.$toasted.error(this.$t('toaster.request.error'));
+        showToastMessage({
+          msg: e.response.data,
+          msgVars: { user: this.email },
+          type: 'error',
+        });
       }
 
+      this.email = '';
       this.loading = false;
     },
   },

@@ -224,10 +224,15 @@
     "deleted": "Deleted",
     "restored": "Restored",
     "request": {
+      "noEmail": "Request failed. Missing email.",
       "requested": "Access request sent",
       "error": "Could not send request. Please try again.",
       "accepted": "Added {user}",
-      "rejected": "Removed {user}"
+      "rejected": "Rejected access request for {user}",
+      "userCreated": "The use was created.",
+      "notFound": "Access request not found",
+      "requestExists": "Access request with email {user} already exists.",
+      "userExists": "User with email {user} already exists."
     }
   },
   "keyResult": {

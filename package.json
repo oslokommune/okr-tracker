@@ -1,9 +1,9 @@
 {
   "name": "okr-tracker",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "private": true,
   "scripts": {
-    "test:unit": "jest",
+    "test:unit": "NODE_ENV=test jest",
     "dev": "firebase emulators:start --import=./mock_data & vite",
     "dev:test": "firebase emulators:start --import=./tests & vite",
     "build": "vite build --mode production",
@@ -38,7 +38,7 @@
     "flatpickr": "^4.6.9",
     "fuse.js": "^6.5.3",
     "image-file-resize": "^1.0.4",
-    "marked": "^4.0.8",
+    "marked": "^4.0.10",
     "swagger-ui": "^4.1.3",
     "v-tooltip": "^2.1.3",
     "vee-validate": "^3.4.14",
@@ -70,6 +70,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
     "firebase-tools": "^10.0.1",
+    "firestore-jest-mock": "^0.17.0",
     "jest": "^27.4.7",
     "prettier": "^2.5.1",
     "sass": "^1.45.1",

@@ -8,16 +8,19 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (request) => {
-    if (request.url.includes('create') && request.url.includes('access')) {
+    if (request.url.includes('/accessRequests/create')) {
       return request;
     }
 
     const token = await auth.currentUser.getIdToken();
 
     request.headers.Authorization = `Bearer ${token}`;
+
     return request;
   },
-  (err) => Promise.reject(err)
+  (err) => {
+    Promise.reject(err);
+  }
 );
 
 export default api;
