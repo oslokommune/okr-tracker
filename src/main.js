@@ -19,9 +19,7 @@ import Spinner from '@/components/VSpinner.vue';
 
 import { auth } from './config/firebaseConfig';
 
-
 // import plugin styles
-import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
 
