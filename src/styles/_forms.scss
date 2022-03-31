@@ -28,6 +28,10 @@ textarea {
   display: block;
   margin-bottom: 0.25rem;
   color: var(--color-text);
+
+  &--hasPrimaryBackground {
+    color: var(--color-text-secondary);
+  }
 }
 
 .form-field {
