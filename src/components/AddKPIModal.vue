@@ -44,7 +44,7 @@
               :label="$t('fields.name')"
               rules="required"
               type="text"
-              has-primary-background="true"
+              :has-primary-background="true"
             />
 
             <label class="form-group">
@@ -90,11 +90,11 @@
                 :label="$t('fields.sheetId')"
                 rules="required"
                 type="text"
-                has-primary-background="true"
+                :has-primary-background="true"
               >
                 <template #help>
                   <span
-                    class="form-help"
+                    class="form-help form-help--hasPrimaryBackground"
                     v-html="$t('keyResult.automation.googleSheetIdHelp')"
                   />
                 </template>
@@ -107,11 +107,11 @@
                 :label="$t('fields.sheetTab')"
                 rules="required"
                 type="text"
-                has-primary-background="true"
+                :has-primary-background="true"
               >
                 <template #help>
                   <span
-                    class="form-help"
+                    class="form-help form-help--hasPrimaryBackground"
                     v-html="$t('keyResult.automation.sheetsTabHelp')"
                   />
                 </template>
@@ -124,11 +124,11 @@
                 :label="$t('fields.sheetCell')"
                 rules="required"
                 type="text"
-                has-primary-background="true"
+                :has-primary-background="true"
               >
                 <template #help>
                   <span
-                    class="form-help"
+                    class="form-help form-help--hasPrimaryBackground"
                     v-html="$t('keyResult.automation.sheetsCellHelp')"
                   />
                 </template>
@@ -226,6 +226,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.toggle__label {
+  color: var(--color-text-secondary);
+}
+
 .btn--space {
   margin-left: 1rem;
 }
