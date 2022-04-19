@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="title-2">{{ $t('theme.header') }}</h2>
+    <h2 class="widget__title" style="padding-bottom: 1rem">{{ $t('theme.header') }}</h2>
     <div v-for="mode in modes" :key="mode.id" class="ods-form-group">
       <input
         type="radio"

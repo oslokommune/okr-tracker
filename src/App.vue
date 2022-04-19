@@ -1,8 +1,6 @@
 <template>
   <div class="app">
-    <SiteHeader class="header"></SiteHeader>
-    <v-spinner v-if="loading"></v-spinner>
-    <router-view v-else></router-view>
+    <app-layout />
     <vue-griddle />
   </div>
 </template>
@@ -11,6 +9,8 @@
 import { mapState, mapActions } from 'vuex';
 import i18n from '@/locale/i18n';
 import { auth } from '@/config/firebaseConfig';
+
+import AppLayout from './components/AppLayout.vue';
 
 export default {
   name: 'App',
@@ -22,7 +22,7 @@ export default {
   },
 
   components: {
-    SiteHeader: () => import('@/components/Navigation/SiteHeader.vue'),
+    AppLayout,
   },
 
   computed: {
@@ -31,12 +31,6 @@ export default {
     isDev() {
       return import.meta.env.NODE_ENV !== 'production';
     },
-  },
-
-  created() {
-    if (document.querySelector('#spinner')) {
-      document.querySelector('#spinner').remove();
-    }
   },
 
   mounted() {
