@@ -1,95 +1,79 @@
 <template>
-  <div :class="{ overlay: isOpen }" @click.self="hideSidebar">
-    <transition name="slide">
-      <aside v-if="isOpen" class="sidebar">
-        <div class="sidebar__content">
-          <div class="flex__column">
-            <h1 class="sidebar__header title-1">{{ $t('general.appName') }}</h1>
-            <router-link
-              :to="{ name: 'Home' }"
-              class="btn btn--ter btn--sidebar"
-              :class="{ active: $route.name === 'Home' }"
-            >
-              <h1>{{ $t('general.frontPage') }}</h1>
-            </router-link>
+  <div class="sidebar">
+    <div class="flex__column">
+      <h1 class="sidebar__header title-1">{{ $t('general.appName') }}</h1>
+      <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--sidebar" :class="{ active: $route.name === 'Home' }">
+        <h1>{{ $t('general.frontPage') }}</h1>
+      </router-link>
 
-            <hr class="divider" />
+      <hr class="divider" />
 
-            <h2 class="btn btn--ter sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
-              {{ $t('general.orgs') }}
-              <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-            </h2>
-            <div v-if="isCollapsed">
-              <button
-                v-for="org in organizations"
-                :key="org.id"
-                class="btn btn--ter sidebar__item sidebar__item--org"
-                :class="{ active: activeOrganization && activeOrganization.id === org.id }"
-                @click="handleActiveOrganization(org)"
+      <h2 class="btn btn--ter sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
+        {{ $t('general.orgs') }}
+        <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </h2>
+      <div v-if="isCollapsed">
+        <button
+          v-for="org in organizations"
+          :key="org.id"
+          class="btn btn--ter sidebar__item sidebar__item--org"
+          :class="{ active: activeOrganization && activeOrganization.id === org.id }"
+          @click="handleActiveOrganization(org)"
+        >
+          {{ org.name }}
+        </button>
+      </div>
+
+      <hr class="divider" />
+
+      <div v-if="!user" class="sidebar__header">{{ $t('general.signIn') }}</div>
+      <template v-if="user">
+        <ul v-if="activeOrganization" class="sidebar__group">
+          <li v-for="org in tree" :key="org.id" class="margin-top-1">
+            <template v-if="org.id === activeOrganization.id">
+              <router-link
+                :class="{ active: org.slug === $route.params.slug }"
+                :to="{ name: 'ItemHome', params: { slug: org.slug } }"
+                class="btn btn--ter sidebar__item"
+                @click.native="handleNavigation"
               >
-                {{ org.name }}
-              </button>
-            </div>
-
-            <hr class="divider" />
-
-            <div v-if="!user" class="sidebar__header">{{ $t('general.signIn') }}</div>
-            <template v-if="user">
-              <ul v-if="activeOrganization" class="sidebar__group">
-                <li v-for="org in tree" :key="org.id" class="margin-top-1">
-                  <template v-if="org.id === activeOrganization.id">
-                    <router-link
-                      :class="{ active: org.slug === $route.params.slug }"
-                      :to="{ name: 'ItemHome', params: { slug: org.slug } }"
-                      class="btn btn--ter sidebar__item"
-                      @click.native="hideSidebar"
-                    >
-                      <h2>{{ org.name }}</h2>
-                    </router-link>
-                    <ul>
-                      <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
-                        <router-link
-                          :class="{ active: dept.slug === $route.params.slug }"
-                          :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
-                          class="btn btn--ter sidebar__item"
-                          @click.native="hideSidebar"
-                        >
-                          <h3>{{ dept.name }}</h3>
-                        </router-link>
-                        <ul>
-                          <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
-                            <router-link
-                              :class="{ active: prod.slug === $route.params.slug }"
-                              :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
-                              class="btn btn--ter sidebar__item sidebar__item--product"
-                              @click.native="hideSidebar"
-                            >
-                              <h3>{{ prod.name }}</h3>
-                            </router-link>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </template>
+                <h2>{{ org.name }}</h2>
+              </router-link>
+              <ul>
+                <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
+                  <router-link
+                    :class="{ active: dept.slug === $route.params.slug }"
+                    :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
+                    class="btn btn--ter sidebar__item"
+                    @click.native="handleNavigation"
+                  >
+                    <h3>{{ dept.name }}</h3>
+                  </router-link>
+                  <ul>
+                    <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
+                      <router-link
+                        :class="{ active: prod.slug === $route.params.slug }"
+                        :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
+                        class="btn btn--ter sidebar__item sidebar__item--product"
+                        @click.native="handleNavigation"
+                      >
+                        <h3>{{ prod.name }}</h3>
+                      </router-link>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </template>
-          </div>
-          <div class="flex__row--space-between">
-            <div class="logo">
-              <oslo-logo class="logo__img" />
-            </div>
-            <div class="align__self--center">v{{ appVersion }}</div>
-          </div>
-        </div>
-        <a href="#" role="menuitem" class="sidebar__icon" :class="{ 'is-open': isOpen }" @click.stop="hideSidebar">
-          <div class="header__nav-icon" role="presentation">
-            <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-            <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-          </div>
-        </a>
-      </aside>
-    </transition>
+          </li>
+        </ul>
+      </template>
+    </div>
+    <div class="flex__row--space-between">
+      <div class="logo">
+        <oslo-logo class="logo__img" />
+      </div>
+      <div class="align__self--center">v{{ appVersion }}</div>
+    </div>
   </div>
 </template>
 
@@ -105,8 +89,8 @@ export default {
   },
 
   props: {
-    isOpen: {
-      type: Boolean,
+    handleNavigation: {
+      type: Function,
       required: true,
     },
   },
@@ -164,10 +148,6 @@ export default {
 
     async handleActiveOrganization(org) {
       await this.setActiveOrganization(org);
-    },
-
-    hideSidebar() {
-      this.$emit('hide', false);
     },
   },
 };
@@ -228,83 +208,6 @@ $header-height: 4em;
   color: var(--color-text-secondary);
   font-weight: normal;
   font-size: typography.$font-size-2;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 200;
-  display: flex;
-  flex-direction: row;
-  width: calc(100vw - 4rem);
-  max-width: 36rem;
-  height: 100vh;
-}
-
-.sidebar__content {
-  $width: calc(100% - 4rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: $width;
-  padding-top: 5.5rem;
-  overflow-y: auto;
-  background-color: var(--color-primary) !important;
-  border-right: 1px solid #ffffff0f;
-  box-shadow: 6px -1px 10px rgba(0, 0, 0, 0.1);
-
-  scrollbar-width: none; /* Hide scrollbar styles Firefox */
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.sidebar__icon {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: $header-height;
-  height: $header-height;
-  background-color: var(--color-primary);
-  border-radius: 50%;
-  cursor: pointer;
-
-  &.is-open {
-    z-index: 250;
-    box-shadow: 0 0 10px 1px rgb(0 0 0 / 30%);
-    transition: transform 0.5s ease-in-out, background-color 0.3s, box-shadow 0.3s;
-
-    span {
-      &:nth-child(1),
-      &:nth-child(4) {
-        opacity: 0;
-        transition: transform 0.4s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
-      }
-
-      &:nth-child(2) {
-        transform: translateY(1em) rotate(45deg);
-        transition: transform 0.8s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
-      }
-
-      &:nth-child(3) {
-        transform: translateY(1em) rotate(-45deg);
-        transition: transform 0.8s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
-      }
-    }
-  }
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: left 0.25s ease-in-out;
-}
-
-.slide-enter,
-.slide-leave-to {
-  left: -504px;
 }
 
 .sidebar__group {

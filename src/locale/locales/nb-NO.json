@@ -125,7 +125,7 @@
   },
   "btn": {
     "close": "Lukk",
-    "save": "Oppdater",
+    "save": "Lagre",
     "saveChanges": "Lagre endringer",
     "add": "Legg til",
     "editNotes": "Endre notater",
@@ -439,9 +439,9 @@
     "admin": "Organisasjonsadministrator",
     "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
     "hasAdmin": "Er administrator for en rekke organisasjoner",
-    "myProducts": "Mine produkter",
+    "myProducts": "Min tilhørighet",
     "products": "Produkter",
-    "selectLanguage": "Velg språk",
+    "language": "Språk",
     "access": "Tilgang",
     "position": {
       "groups": {
@@ -456,7 +456,7 @@
         "others": "Medlemmer",
         "departmentDirector": "Avdelingsdirektør"
       },
-      "title": "Stilling",
+      "title": "Rolle",
       "member": "Medlem",
       "frontendDeveloper": "Frontend-utvikler",
       "backendDeveloper": "Backend-utvikler",
@@ -493,8 +493,8 @@
   },
   "progress": {
     "title": "Progresjon {progress}",
-    "done": "{progress} fullført",
-    "remaining": "{progress} {unit} gjenstår",
+    "done": "fullført",
+    "remaining": "{unit} gjenstår",
     "remainingOf": "av {progress}",
     "completedMessages": {
       "1": "Nå er dere gode!",

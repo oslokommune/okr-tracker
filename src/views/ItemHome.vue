@@ -39,7 +39,7 @@
                 v-for="keyResult in objective.keyResults"
                 :key="keyResult.id"
                 class="keyResultRow"
-                :class="{ 'keyResultRow--expanded': view !== 'compact' }"
+                :class="{ 'keyResultRow--isCompact': isCompact }"
               >
                 <key-result-row :key-result="keyResult"></key-result-row>
               </li>
@@ -82,8 +82,8 @@ export default {
     ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading', 'user']),
     ...mapGetters(['hasEditRights']),
 
-    view() {
-      return this.user.preferences.view;
+    isCompact() {
+      return this.user.preferences.view === 'compact';
     },
 
     tree() {
@@ -98,19 +98,16 @@ export default {
 
 <style lang="scss" scoped>
 .keyResultRow {
-  margin-top: 1px;
-
-  &:first-child {
-    margin-top: 0;
-    background-color: red;
+  &:not(:first-child) {
+    margin-top: 4px;
   }
-}
 
-.keyResultRow--expanded {
-  margin-top: 4px;
-
-  &:first-child {
-    margin-top: 0;
+  &--isCompact {
+    @media screen and (min-width: bp(s)) {
+      &:not(:first-child) {
+        margin-top: 1px;
+      }
+    }
   }
 }
 
