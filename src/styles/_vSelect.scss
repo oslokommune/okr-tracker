@@ -1,59 +1,34 @@
-.vs__clear {
-  fill: var(--color-primary)
+$vs-colors: (
+  lightest: var(--color-primary),
+  light: var(--color-primary),
+  dark: var(--color-primary),
+  darkest: var(--color-primary),
+) !default;
+
+//  Active State
+$vs-state-active-bg: var(--color-secondary) !default;
+$vs-state-active-color: var(--color-text) !default;
+
+//  Disabled State
+$vs-state-disabled-color: rgba(60, 60, 60, 0.5) !default;
+$vs-state-disabled-controls-color: rgba(60, 60, 60, 0.5) !default;
+
+//  Borders
+$vs-border-radius: 0 !default;
+
+//  Dropdown
+$vs-dropdown-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15) !default;
+
+.vs__selected {
+  font-weight: 500;
 }
 
-.vs__open-indicator {
-  fill: var(--color-primary);
+.vs__dropdown-toggle {
+  padding: 0.3321rem 0.0625rem !important;
 }
 
-.v-select {
-  background-color: var(--color-white);
-  border: 1px solid var(--color-primary);
+.vs__dropdown-option {
+  color: var(--color-text) !important;
 }
 
-.vs__dropdown-menu {
-  border-top: none;
-  border-right: 1px solid var(--color-primary);
-  border-bottom: 1px solid var(--color-primary);
-  border-left: 1px solid var(--color-primary);
-}
-
-.vs__dropdown-option--highlight {
-  color: var(--color-text);
-  background-color: var(--color-secondary);
-}
-
-
-.v-select {
-  width: 100%;
-  .vs__selected-options {
-    padding: 0.25rem !important;
-  }
-
-  .vs__dropdown-toggle {
-    min-height: 3rem !important;
-    padding-right: 0.5rem;
-    background: var(--color-white);
-    border: 0;
-    border-radius: 0;
-  }
-
-  .vs__selected {
-    margin-right: 0.25rem;
-    padding: 0.25rem 0.75rem !important;
-    color: var(--color-text);
-    background: white;
-    border: 1px solid var(--color-primary);
-    border-radius: 0;
-
-    .vs__deselect {
-      fill: var(--color-primary);
-    }
-  }
-}
-
-.vs--single {
-  .vs__selected {
-    border: none;
-  }
-}
+@import 'vue-select/src/scss/vue-select.scss';

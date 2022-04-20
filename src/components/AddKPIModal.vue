@@ -3,20 +3,37 @@
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">{{ $t('kpi.add') }}</h2>
-        <button class="btn btn--ter btn--close btn--icon btn--icon-pri" @click="close">
+        <button
+          class="btn btn--ter btn--close btn--icon btn--icon-pri"
+          @click="close"
+        >
           <i class="fa fa-times" />
         </button>
       </div>
       <div class="modal__main">
         <validation-observer v-slot="{ handleSubmit }">
           <form id="addKpi" @submit.prevent="handleSubmit(add)">
-            <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              name="kpitype"
+            >
               <label class="form-group">
-                <span class="form-label">{{ $t('kpi.chooseType') }}</span>
+                <span class="form-label form-label--hasPrimaryBackground">
+                  {{ $t('kpi.chooseType') }}
+                </span>
                 <select v-model="type" class="form__field">
-                  <option v-for="{ id, label } in availableTypes" :key="id" :value="id">{{ label }}</option>
+                  <option
+                    v-for="{ id, label } in availableTypes"
+                    :key="id"
+                    :value="id"
+                  >
+                    {{ label }}
+                  </option>
                 </select>
-                <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
+                <span v-if="errors[0]" class="form-field--error">
+                  {{ errors[0] }}
+                </span>
               </label>
             </validation-provider>
 
@@ -27,20 +44,34 @@
               :label="$t('fields.name')"
               rules="required"
               type="text"
+              :has-primary-background="true"
             />
 
             <label class="form-group">
-              <span class="form-label">{{ $t('kpi.description') }}</span>
-              <textarea v-model="kpi.description" class="form__field" rows="4" />
+              <span class="form-label form-label--hasPrimaryBackground">
+                {{ $t('kpi.description') }}
+              </span>
+              <textarea
+                v-model="kpi.description"
+                class="form__field"
+                rows="4"
+              />
             </label>
 
             <div class="toggle__container">
               <span class="toggle__label">
                 {{ $t('kpi.api.radio') }}
-                <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
+                <i
+                  v-tooltip="$t('kpi.api.tooltip')"
+                  class="icon fa fa-info-circle"
+                />
               </span>
               <label class="toggle">
-                <input v-model="kpi.api" class="toggle__input" type="checkbox" />
+                <input
+                  v-model="kpi.api"
+                  class="toggle__input"
+                  type="checkbox"
+                />
                 <span class="toggle__switch"></span>
               </label>
             </div>
@@ -59,9 +90,13 @@
                 :label="$t('fields.sheetId')"
                 rules="required"
                 type="text"
+                :has-primary-background="true"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
+                  <span
+                    class="form-help form-help--hasPrimaryBackground"
+                    v-html="$t('keyResult.automation.googleSheetIdHelp')"
+                  />
                 </template>
               </form-component>
 
@@ -72,9 +107,13 @@
                 :label="$t('fields.sheetTab')"
                 rules="required"
                 type="text"
+                :has-primary-background="true"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
+                  <span
+                    class="form-help form-help--hasPrimaryBackground"
+                    v-html="$t('keyResult.automation.sheetsTabHelp')"
+                  />
                 </template>
               </form-component>
 
@@ -85,9 +124,13 @@
                 :label="$t('fields.sheetCell')"
                 rules="required"
                 type="text"
+                :has-primary-background="true"
               >
                 <template #help>
-                  <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
+                  <span
+                    class="form-help form-help--hasPrimaryBackground"
+                    v-html="$t('keyResult.automation.sheetsCellHelp')"
+                  />
                 </template>
               </form-component>
             </template>
@@ -96,8 +139,16 @@
       </div>
 
       <div class="modal__footer">
-        <button form="addKpi" :disabled="loading" class="btn btn--sec">{{ $t('btn.add') }}</button>
-        <button class="btn btn--ghost btn--space" @click="close">{{ $t('btn.close') }}</button>
+        <button
+          form="addKpi"
+          :disabled="loading"
+          class="btn btn--ghost btn--negative btn--sec"
+        >
+          {{ $t('btn.add') }}
+        </button>
+        <button class="btn btn--ghost btn--negative btn--space" @click="close">
+          {{ $t('btn.close') }}
+        </button>
       </div>
     </div>
   </div>
@@ -128,7 +179,10 @@ export default {
     ...mapState(['kpis', 'activeItemRef']),
 
     serviceAccountAddress() {
-      return import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT || this.$t('sheet.missingServiceAccount');
+      return (
+        import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT ||
+        this.$t('sheet.missingServiceAccount')
+      );
     },
 
     types() {
@@ -140,7 +194,9 @@ export default {
     },
 
     availableTypes() {
-      return this.types.filter((type) => !this.kpis.map((kpi) => kpi.type).includes(type.id));
+      return this.types.filter(
+        (type) => !this.kpis.map((kpi) => kpi.type).includes(type.id)
+      );
     },
   },
 
@@ -170,6 +226,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.toggle__label {
+  color: var(--color-text-secondary);
+}
+
 .btn--space {
   margin-left: 1rem;
 }

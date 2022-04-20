@@ -2,7 +2,13 @@
   <header class="header">
     <sidebar-navigation :is-open="sidebarOpen" @hide="hideSidebar" />
     <div class="siteHeader-container">
-      <a href="#" role="menuitem" class="header__nav-button" :class="{ 'is-open': sidebarOpen }" @click="sidebarOpen = true">
+      <a
+        href="#"
+        role="menuitem"
+        class="header__nav-button"
+        :class="{ 'is-open': sidebarOpen }"
+        @click="sidebarOpen = true"
+      >
         <div class="header__nav-icon" role="presentation">
           <span class="sidebar__button"></span> <span class="sidebar__button"></span>
           <span class="sidebar__button"></span> <span class="sidebar__button"></span>
@@ -127,8 +133,9 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:math';
+@use '@/styles/typography';
 
-$header-height: 4em;
+$header-height: 3.5em;
 
 .header {
   position: sticky;
@@ -143,15 +150,15 @@ $header-height: 4em;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 4rem;
+  height: $header-height;
 }
 
 .title__name {
   font-weight: 500;
-  font-size: 1.25rem;
+  font-size: typography.$font-size-4;
 
   @media screen and (min-width: bp(s)) {
-    font-size: 1.5rem;
+    font-size: typography.$font-size-5;
   }
 
   @media screen and (min-width: bp(m)) {
@@ -165,7 +172,6 @@ $header-height: 4em;
   margin-right: 0.3em;
   font-size: 1.5rem;
 }
-
 
 .header__nav-button {
   width: $header-height;
@@ -226,5 +232,4 @@ $header-height: 4em;
     }
   }
 }
-
 </style>
