@@ -8,10 +8,16 @@
         <div class="meta__product--name">{{ activeItem.name }}</div>
       </div>
       <div v-if="activeItem.team" class="meta__panel meta__team">
-        <div class="meta__panel--header"><i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}</div>
-        <div v-for="user in activeItem.team" :key="user.id" class="meta__team--member">
+        <div class="meta__panel--header">
+          <i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}
+        </div>
+        <div
+          v-for="user in activeItem.team"
+          :key="user.id"
+          class="meta__team--member"
+        >
           <img
-            :src="user.photoURL || '/placeholder-user.svg'"
+            src="/placeholder-user.svg"
             :alt="user.displayName || user.id"
             class="meta__team--image"
           />
@@ -37,7 +43,11 @@
         </div>
 
         <!-- List key results for objective -->
-        <div v-for="keyResult in objective.keyResults" :key="keyResult.id" class="key-result">
+        <div
+          v-for="keyResult in objective.keyResults"
+          :key="keyResult.id"
+          class="key-result"
+        >
           <div class="key-result__description">
             {{ keyResult.name }}
           </div>
@@ -75,7 +85,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults', 'theme']),
+    ...mapState([
+      'activePeriod',
+      'activeItem',
+      'objectives',
+      'keyResults',
+      'theme',
+    ]),
 
     getIcon() {
       const { organization, department } = this.activeItem;
@@ -114,7 +130,10 @@ export default {
   mounted() {
     if (!this.$refs.piechart) return;
 
-    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true, colorMode: this.theme });
+    this.piegraph = new PieChart(this.$refs.piechart, {
+      darkmode: true,
+      colorMode: this.theme,
+    });
     this.piegraph.render(this.activePeriod, this.theme);
 
     this.enterFullscreen();

@@ -1,8 +1,13 @@
 <template>
   <div v-if="user" class="overlay" @click.self="close">
-    <div class="modal__main--flex" :class="me ? 'profileModal__upper-right' : 'profileModal__centered'">
+    <div
+      class="modal__main--flex"
+      :class="me ? 'profileModal__upper-right' : 'profileModal__centered'"
+    >
       <div v-if="me" class="closeBtn">
-        <a href="#" @click="close"><i class="icon fa fa-white fa-fw fa-times-circle" /></a>
+        <a href="#" @click="close"
+          ><i class="icon fa fa-white fa-fw fa-times-circle"
+        /></a>
       </div>
 
       <div class="column">
@@ -10,7 +15,13 @@
         <validation-observer v-slot="{ handleSubmit }">
           <form id="updateUser" @submit.prevent="handleSubmit(save)">
             <span class="form-label">{{ $t('fields.name') }}</span>
-            <input v-model="thisUser.displayName" rules="required" :disabled="!me" @input="edit" class="form__field" />
+            <input
+              v-model="thisUser.displayName"
+              rules="required"
+              :disabled="!me"
+              @input="edit"
+              class="form__field"
+            />
           </form>
         </validation-observer>
         <label class="form-group">
@@ -26,7 +37,11 @@
           </v-select>
           <div v-else class="profileModal__input">
             <span>
-              {{ thisUser && thisUser.position ? thisUser.position : $t('user.position.member') }}
+              {{
+                thisUser && thisUser.position
+                  ? thisUser.position
+                  : $t('user.position.member')
+              }}
             </span>
           </div>
         </label>
@@ -93,16 +108,26 @@
           </h3>
 
           <div class="sidebar__group sidebar__bottom button-col">
-            <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter button-link">
+            <router-link
+              v-if="user.admin"
+              :to="{ name: 'Admin' }"
+              class="btn btn--ter button-link"
+            >
               <span>{{ $t('general.admin') }}</span>
             </router-link>
-            <router-link :to="{ name: 'Help' }" class="btn btn--ter button-link">
+            <router-link
+              :to="{ name: 'Help' }"
+              class="btn btn--ter button-link"
+            >
               <span>{{ $t('general.help') }}</span>
             </router-link>
             <router-link :to="{ name: 'Api' }" class="btn btn--ter button-link">
               <span>{{ $t('general.api') }}</span>
             </router-link>
-            <button class="btn btn--ter btn--icon btn--icon-pri button-link" @click="signOut">
+            <button
+              class="btn btn--ter btn--icon btn--icon-pri button-link"
+              @click="signOut"
+            >
               <span class="">{{ $t('general.signOut') }}</span>
             </button>
           </div>
@@ -142,7 +167,6 @@ export default {
     user: null,
     products: [],
     audit: [],
-    image: null,
     loading: false,
     changes: false,
     thisUser: null,

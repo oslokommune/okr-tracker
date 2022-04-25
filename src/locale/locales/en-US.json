@@ -69,7 +69,6 @@
     "email": "The {_field_} field must be a valid email",
     "excluded": "The {_field_} field is not a valid value",
     "ext": "The {_field_} field is not a valid file",
-    "image": "The {_field_} field must be an image",
     "integer": "The {_field_} field must be an integer",
     "length": "The {_field_} field must be {length} long",
     "max_value": "The {_field_} field must be {max} or less",
@@ -137,7 +136,6 @@
     "addDepartment": "Add department",
     "acceptRequest": "Grant access",
     "rejectRequest": "Delete request",
-    "deleteImage": "Delete image",
     "deleteUser": "Delete user",
     "create": "Create",
     "delete": "Delete",
@@ -313,18 +311,15 @@
   "admin": {
     "apiSecret": "If you are using the API to update Key Results and/or KPI, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "department": {
-      "picture": "Image",
       "create": "Create new department",
       "parentOrganisation": "Related organization",
       "search": "Search {count} organizations"
     },
     "organization": {
-      "picture": "Image",
       "create": "Create new organization",
       "search": "Search {count} departments"
     },
     "product": {
-      "picture": "Image",
       "create": "Create new product",
       "parentDepartment": "Related department",
       "search": "Search {count} products"
@@ -334,7 +329,6 @@
     },
     "users": {
       "edit": "Change user",
-      "image": "Profile image",
       "backToUsers": "Back to users",
       "addUsers": "Add user(s)",
       "users": "Users",

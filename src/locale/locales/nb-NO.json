@@ -68,7 +68,6 @@
     "email": "Må være en gyldig e-postadresse",
     "excluded": "Må være en gyldig verdi",
     "ext": "Må være en gyldig fil",
-    "image": "Må være et bilde",
     "oneOf": "Må være en gyldig verdi",
     "max": "Kan ikke være lengre enn {length} tegn",
     "max_value": "Må være {max} eller mindre",
@@ -134,7 +133,6 @@
     "addDepartment": "Nytt produktområde",
     "acceptRequest": "Gi tilgang",
     "rejectRequest": "Slett forespørsel",
-    "deleteImage": "Slett bilde",
     "deleteUser": "Slett bruker",
     "create": "Opprett",
     "delete": "Slett",
@@ -331,7 +329,6 @@
     },
     "users": {
       "edit": "Endre bruker",
-      "image": "Profilbilde",
       "backToUsers": "Tilbake til brukere",
       "addUsers": "Legg til bruker(e)",
       "users": "Brukere",

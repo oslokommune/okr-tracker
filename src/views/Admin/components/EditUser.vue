@@ -8,7 +8,12 @@
         <form id="user-form" @submit.prevent="handleSubmit(save)">
           <label class="form-group">
             <span class="form-label">{{ $t('fields.email') }}</span>
-            <input v-model="thisUser.id" class="form__field" type="email" disabled />
+            <input
+              v-model="thisUser.id"
+              class="form__field"
+              type="email"
+              disabled
+            />
           </label>
 
           <form-component
@@ -49,7 +54,13 @@
     </div>
 
     <div class="selected-user__footer">
-      <button class="btn btn--pri" form="user-form" :disabled="loading || !changes">{{ $t('btn.saveChanges') }}</button>
+      <button
+        class="btn btn--pri"
+        form="user-form"
+        :disabled="loading || !changes"
+      >
+        {{ $t('btn.saveChanges') }}
+      </button>
       <button
         class="btn btn--danger"
         :disabled="user.email === selectedUser.email || loading"
@@ -90,12 +101,13 @@ export default {
     selectedUser: {
       immediate: true,
       async handler() {
-        this.image = null;
         this.thisUser = { ...this.selectedUser };
 
         if (this.selectedUser.admin?.length > 0) {
           const orgs = [];
-          this.selectedUser.admin.forEach((org) => orgs.push(db.collection('organizations').doc(org).get()));
+          this.selectedUser.admin.forEach((org) =>
+            orgs.push(db.collection('organizations').doc(org).get())
+          );
           const dataArr = await Promise.all(orgs);
           this.thisUser.admin = dataArr.map((org) => ({
             ...org.data(),
@@ -114,10 +126,14 @@ export default {
       this.loading = true;
       try {
         await User.remove(user);
-        this.$toasted.show(this.$t('toaster.delete.user', { user: user.displayName }));
+        this.$toasted.show(
+          this.$t('toaster.delete.user', { user: user.displayName })
+        );
         this.$emit('close');
       } catch {
-        this.$toasted.error(this.$t('toaster.error.user', { user: user.displayName }));
+        this.$toasted.error(
+          this.$t('toaster.error.user', { user: user.displayName })
+        );
       }
       this.loading = false;
       this.changes = false;
@@ -162,17 +178,5 @@ export default {
   > .btn {
     margin: 0.25rem;
   }
-}
-
-.selected-user__image--flex {
-  display: flex;
-}
-
-.selected-user__image--img {
-  width: 3rem;
-  height: 3rem;
-  object-fit: cover;
-  background: white;
-  border-radius: 2rem;
 }
 </style>
