@@ -14,16 +14,16 @@ const addAccessRequest = async (db, accessRequest) => {
 
     await accessRequestCollection.addDocument(accessRequest);
 
-    return { code: 200, message: 'toaster.request.requested' };
+    return { code: 201, message: 'toaster.request.requested' };
   } catch (error) {
-    return { code: 500, message: error.message || 'toaster.request.error' };
+    return { code: 400, message: error.message || 'toaster.request.error' };
   }
 };
 
 export const createAccessRequest = async (db, accessRequest) => {
   const { email } = accessRequest;
 
-  if (!email) return { code: 500, message: 'toaster.request.noEmail' };
+  if (!email) return { code: 400, message: 'toaster.request.noEmail' };
 
   const emailDomain = email.split('@')[1];
   const domainWhitelistCollection = new DomainWhitelistCollection(db);
@@ -36,7 +36,7 @@ export const createAccessRequest = async (db, accessRequest) => {
     try {
       await usersCollection.addDocument({ id: email, email });
 
-      return { code: 200, message: 'toaster.request.userCreated' };
+      return { code: 201, message: 'toaster.request.userCreated' };
     } catch {
       return addAccessRequest(db, accessRequest);
     }
@@ -59,12 +59,12 @@ export const acceptAccessRequest = async (db, id) => {
       await usersCollection.addDocument({ id: email, email });
       await accessRequestCollection.deleteDocument(id);
 
-      return { code: 200, message: 'toaster.request.accepted' };
+      return { code: 201, message: 'toaster.request.accepted' };
     }
 
     return { code: 404, message: 'toaster.request.notFound' };
   } catch (error) {
-    return { code: 500, message: error.message || 'toaster.request.error' };
+    return { code: 400, message: error.message || 'toaster.request.error' };
   }
 };
 
@@ -83,6 +83,6 @@ export const rejectAccessRequest = async (db, id) => {
 
     return { code: 404, message: 'toaster.request.notFound' };
   } catch (e) {
-    return { code: 500, message: 'toaster.request.error' };
+    return { code: 400, message: 'toaster.request.error' };
   }
 };
