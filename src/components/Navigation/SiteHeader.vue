@@ -1,31 +1,14 @@
 <template>
-  <header class="header">
-    <sidebar-navigation :is-open="sidebarOpen" @hide="hideSidebar" />
-    <div class="siteHeader-container">
-      <a href="#" role="menuitem" class="header__nav-button" :class="{ 'is-open': sidebarOpen }" @click="sidebarOpen = true">
-        <div class="header__nav-icon" role="presentation">
-          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-        </div>
-      </a>
-      <div v-if="title" class="title">
-        <h1 class="title__name">
-          {{ title }}
-        </h1>
-      </div>
-
-      <div data-cy="usermenu">
-        <button
-          v-if="user"
-          class="btn btn--ter btn--icon btn--icon-pri"
-          :class="{ active: showProfileModal }"
-          @click="openProfileModal"
-        >
-          <i class="user__icon fa fa-user-circle" />
-        </button>
-      </div>
-      <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="user.id" />
-    </div>
+  <header class="siteHeader">
+    <button class="btn btn--ter btn-pri" @click="toggleShowAsideLeft">
+      <icon-menu />
+    </button>
+    <h1 v-if="title" class="siteHeader__title">
+      {{ title }}
+    </h1>
+    <button v-if="user" class="btn btn--ter btn--pri" @click="toggleShowAsideRight">
+      <icon-user />
+    </button>
   </header>
 </template>
 
@@ -113,11 +96,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'sass:math';
-@use '@/styles/typography';
-
-$header-height: 3.5em;
-
 .siteHeader {
   padding: 0 0.6875rem;
   position: sticky;
@@ -129,8 +107,7 @@ $header-height: 3.5em;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 3.5rem;
-  height: $header-height;
+  height: 4rem;
 
   &__title {
     font-weight: 500;
@@ -138,10 +115,6 @@ $header-height: 3.5em;
 
     @media screen and (min-width: bp(s)) {
       font-size: 1.5rem;
-    }
-
-    @media screen and (min-width: bp(s)) {
-      font-size: typography.$font-size-5;
     }
 
     @media screen and (min-width: bp(m)) {
