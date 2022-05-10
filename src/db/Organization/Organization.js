@@ -1,6 +1,11 @@
 import { db } from '@/config/firebaseConfig';
 import props from './props';
-import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, UploadImage } from '../common';
+import {
+  validateCreateProps,
+  createDocument,
+  validateUpdateProps,
+  updateDocument,
+} from '../common';
 
 const collection = db.collection('organizations');
 
@@ -21,9 +26,9 @@ const archive = (id) => update(id, { archived: true });
 const restore = (id) => update(id, { archived: false });
 
 const deleteDeep = () => {
-  throw new Error('Organizations can only be deleted from the Firestore console');
+  throw new Error(
+    'Organizations can only be deleted from the Firestore console'
+  );
 };
 
-const uploadImage = (id, image) => UploadImage(id, image, 'organizations');
-
-export default { create, update, archive, restore, deleteDeep, uploadImage };
+export default { create, update, archive, restore, deleteDeep };
