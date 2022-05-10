@@ -6,7 +6,6 @@ import {
   validateUpdateProps,
   updateDocument,
   deleteDocument,
-  UploadImage,
 } from '../common';
 import Period from '../Period';
 import Kpi from '../Kpi';
@@ -43,6 +42,4 @@ const deleteDeep = async (id) => {
   return deleteDocument(update, collection.doc(id));
 };
 
-const uploadImage = (id, image) => UploadImage(id, image, 'products');
-
-export default { create, update, archive, restore, deleteDeep, uploadImage };
+export default { create, update, archive, restore, deleteDeep };
