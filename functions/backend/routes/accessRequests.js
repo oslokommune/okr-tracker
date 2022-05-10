@@ -21,12 +21,12 @@ router.post(
     const sanitized = matchedData(req);
     const { email } = sanitized;
 
-    const { code, message } = await createAccessRequest(db, {
+    const result = await createAccessRequest(db, {
       email,
       created: Date.now(),
     });
 
-    return res.status(code).send(message);
+    return res.status(result.code).json(result);
   }
 );
 
@@ -39,9 +39,9 @@ router.post(
     const sanitized = matchedData(req);
     const { id } = sanitized;
 
-    const { code, message } = await acceptAccessRequest(db, id);
+    const result = await acceptAccessRequest(db, id);
 
-    return res.status(code).send(message);
+    return res.status(result.code).json(result);
   }
 );
 
@@ -54,9 +54,9 @@ router.delete(
     const sanitized = matchedData(req);
     const { id } = sanitized;
 
-    const { code, message } = await rejectAccessRequest(db, id);
+    const result = await rejectAccessRequest(db, id);
 
-    return res.status(code).send(message);
+    return res.status(result.code).json(result);
   }
 );
 
