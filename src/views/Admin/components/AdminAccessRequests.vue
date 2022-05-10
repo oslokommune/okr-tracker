@@ -3,7 +3,11 @@
     <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
 
     <ul class="access-requests__list">
-      <li v-for="request in accessRequest" :key="request.id" class="access-requests__item">
+      <li
+        v-for="request in accessRequest"
+        :key="request.id"
+        class="access-requests__item"
+      >
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
@@ -31,7 +35,7 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import { api } from '@/util';
+import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
 import AccessRequestCollection from '../../../../functions/backend/utils/collectionUtils/AccessRequestCollection.js';
 
@@ -50,31 +54,39 @@ export default {
   },
 
   methods: {
-    showToastMessage(res, accessRequest, toastType) {
+    showToastMessage(message, accessRequest, toastType) {
       showToastMessage({
-        msg: res.data,
+        msg: message,
         msgVars: { user: accessRequest.email },
         type: toastType,
       });
     },
-    async handleAccessRequest(method, url, accessRequest) {
+    async handleAccessRequest(method, path, accessRequest) {
       this.isProcessingAccessRequest = true;
 
       try {
-        const res = await api.request({ method, url });
-        this.showToastMessage(res, accessRequest, 'success');
+        const { message } = await api(path, { method });
+        this.showToastMessage(message, accessRequest, 'success');
       } catch (error) {
-        this.showToastMessage(error.response, accessRequest, 'error');
+        this.showToastMessage(error.message, accessRequest, 'error');
       }
 
       this.isProcessingAccessRequest = false;
     },
     acceptRequest(accessRequest) {
-      this.handleAccessRequest('post', `/accessRequests/${accessRequest.id}/accept`, accessRequest);
+      this.handleAccessRequest(
+        'post',
+        `/accessRequests/${accessRequest.id}/accept`,
+        accessRequest
+      );
     },
 
     rejectRequest(accessRequest) {
-      this.handleAccessRequest('delete', `/accessRequests/${accessRequest.id}`, accessRequest);
+      this.handleAccessRequest(
+        'delete',
+        `/accessRequests/${accessRequest.id}`,
+        accessRequest
+      );
     },
   },
 };
