@@ -26,13 +26,21 @@
           :heading="$t('empty.noPeriods.heading')"
           :body="$t('empty.noPeriods.body')"
         >
-          <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
+          <router-link
+            v-if="hasEditRights"
+            class="btn btn--ter"
+            :to="{ name: 'ItemAdminOKRs' }"
+          >
             {{ $t('empty.noPeriods.buttonText') }}
           </router-link>
         </empty-state>
 
         <ul v-if="tree && !dataLoading">
-          <li v-for="objective in tree" :key="objective.id" class="itemHome__tree--item">
+          <li
+            v-for="objective in tree"
+            :key="objective.id"
+            class="itemHome__tree--item"
+          >
             <objective-row :objective="objective"></objective-row>
             <ul v-if="objective.keyResults">
               <li
@@ -79,7 +87,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading', 'user']),
+    ...mapState([
+      'activeItem',
+      'objectives',
+      'keyResults',
+      'kpis',
+      'dataLoading',
+      'user',
+    ]),
     ...mapGetters(['hasEditRights']),
 
     isCompact() {
@@ -88,7 +103,9 @@ export default {
 
     tree() {
       return this.objectives.map((objective) => {
-        objective.keyResults = this.keyResults.filter((keyRes) => keyRes.objective === `objectives/${objective.id}`);
+        objective.keyResults = this.keyResults.filter(
+          (keyRes) => keyRes.objective === `objectives/${objective.id}`
+        );
         return objective;
       });
     },

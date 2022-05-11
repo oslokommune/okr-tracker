@@ -10,8 +10,10 @@
         @click="sidebarOpen = true"
       >
         <div class="header__nav-icon" role="presentation">
-          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
-          <span class="sidebar__button"></span> <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span>
+          <span class="sidebar__button"></span>
         </div>
       </a>
       <div v-if="title" class="title">
@@ -30,7 +32,11 @@
           <i class="user__icon fa fa-user-circle" />
         </button>
       </div>
-      <profile-modal v-if="showProfileModal" @close="closeProfileModal" :id="user.id" />
+      <profile-modal
+        v-if="showProfileModal"
+        @close="closeProfileModal"
+        :id="user.id"
+      />
     </div>
   </header>
 </template>
@@ -68,7 +74,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'user', 'organizations']),
+    ...mapState(['activeItem', 'user', 'organizations', 'activePeriod']),
     ...mapGetters(['isAdmin']),
 
     /**
@@ -80,6 +86,9 @@ export default {
 
       if (parts.includes('Admin')) {
         return 'Admin';
+      }
+      if (parts.includes('Dashboard')) {
+        return [this.activeItem.name, this.activePeriod.name].join(' - ');
       }
       if (
         (parts.includes('ItemHome') ||
@@ -189,11 +198,13 @@ $header-height: 3.5em;
       }
       &:nth-child(2) {
         transform: translateY(1em) rotate(45deg);
-        transition: transform 1.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+        transition: transform 1.4s ease-in-out 0.4s,
+          opacity 0.4s ease-in-out 0.4s;
       }
       &:nth-child(3) {
         transform: translateY(1em) rotate(-45deg);
-        transition: transform 1.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
+        transition: transform 1.4s ease-in-out 0.4s,
+          opacity 0.4s ease-in-out 0.4s;
       }
     }
   }
@@ -219,7 +230,8 @@ $header-height: 3.5em;
 
     &:nth-child(1) {
       transform: translateY($center - 0.35em) rotate(0deg);
-      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+      transition: transform 0.15s ease-in-out 0.3s,
+        opacity 0.15s ease-in-out 0.3s;
     }
     &:nth-child(2),
     &:nth-child(3) {
@@ -228,7 +240,8 @@ $header-height: 3.5em;
     }
     &:nth-child(4) {
       transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
-      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
+      transition: transform 0.15s ease-in-out 0.3s,
+        opacity 0.15s ease-in-out 0.3s;
     }
   }
 }

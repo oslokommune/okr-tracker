@@ -1,123 +1,95 @@
 <template>
   <div ref="dashboard" class="dashboard">
-    <aside v-if="activeItem" class="meta">
-      <div class="meta__panel meta__product">
-        <div class="meta__product--image">
-          <i :class="`fa ${getIcon} fa-5x`" />
-        </div>
-        <div class="meta__product--name">{{ activeItem.name }}</div>
-      </div>
-      <div v-if="activeItem.team" class="meta__panel meta__team">
-        <div class="meta__panel--header"><i class="fa fa-fw fa-users"></i>{{ $t('general.team') }}</div>
-        <div v-for="user in activeItem.team" :key="user.id" class="meta__team--member">
-          <img
-            :src="user.photoURL || '/placeholder-user.svg'"
-            :alt="user.displayName || user.id"
-            class="meta__team--image"
-          />
-          <div class="meta__team--name">{{ user.displayName || user.id }}</div>
-        </div>
-      </div>
-      <div class="meta__panel">
-        <div v-if="activePeriod" class="meta__panel--header">
-          <i class="fa fa-fw fa-chart-pie" />
-          {{ $t('progress.title', { progress: activePeriod.name }) }}
-        </div>
-        <svg ref="piechart"></svg>
-      </div>
-    </aside>
-
-    <template v-for="objective in tree">
-      <div :key="objective.id" class="objective">
-        <div class="objective__head">
-          <i class="objective__icon fa fa-fw fa-trophy" />
-          <div class="objective__name">
-            {{ objective.name }}
-          </div>
-        </div>
-
-        <!-- List key results for objective -->
-        <div v-for="keyResult in objective.keyResults" :key="keyResult.id" class="key-result">
-          <div class="key-result__description">
-            {{ keyResult.name }}
-          </div>
-          <div class="key-result__progress">
-            <dashboard-progress-bar :key-result="keyResult" :darkmode="true" />
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <router-link
-      v-tooltip="$t('btn.close')"
-      class="close--btn"
-      :to="{ name: 'ItemHome', params: { slug: $route.params.slug } }"
-    >
-      <i class="fa fa-times" />
-    </router-link>
+    <div class="dashboard__contentWrapper">
+      <aside class="dashboard__aside">
+        <!-- <widget-wrapper
+          v-if="isPOCDepartment"
+          :title="$t('dashboard.problemDescription')"
+        >
+          Tilgang på lokaler er en av de største utfordringene for
+          frivilligheten i Oslo Stor konkurranse om lokalene og mange aktører
+          som har behov for et sted å være Vanskelig å få oversikt over hvilke
+          kommunale lokaler som er tilgjengelige Vanskelig å vite hvem man skal
+          kontakte for å få tilgang til lokaler
+        </widget-wrapper> -->
+        <!-- <widget-wrapper
+          v-if="isPOCDepartment"
+          :title="$t('dashboard.targetAudience')"
+        >
+          Frivillige lag og organisasjoner som trenger lokaler til sin aktivitet
+          Innbyggere som benytter seg av kommunens meråpne tjenester Ansatte i
+          de meråpne tjenestene, samt ansatte i virksomheter som låner/leier ut
+          lokaler
+        </widget-wrapper> -->
+        <widget-mission-statement />
+        <!-- <widget-wrapper v-if="isPOCDepartment" :title="$t('dashboard.effect')">
+          Forbedre og forenkle frivillighetens tilgang til kommunens lokaler
+          Gjennom våre løsninger bidra til å øke antallet konsumerte kulturtimer
+          i Oslo
+        </widget-wrapper> -->
+      </aside>
+      <main class="dashboard__main">
+        <section class="dashboard__section">
+          <h2 class="title-2">Resultatindikator</h2>
+          <ul class="dashboard__kpiList">
+            <li v-for="kpi in kpis" :key="kpi.type">
+              <KPI :kpi-type="kpi.type" :kpi="kpi" />
+            </li>
+          </ul>
+        </section>
+        <section class="dashboard__section">
+          <h2 class="title-2">Områdets mål</h2>
+          <ul class="dashboard__objectivesList">
+            <li
+              v-for="objective in objectives"
+              :key="objective.id"
+              class="dashboard__objective"
+            >
+              <objective-progression :objective="objective" />
+            </li>
+          </ul>
+        </section>
+      </main>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import PieChart from '@/util/PieChart';
 
 export default {
   name: 'DashboardHome',
 
   components: {
-    DashboardProgressBar: () => import('@/components/DashboardProgressBar.vue'),
+    WidgetMissionStatement: () =>
+      import('@/components/widgets/WidgetMissionStatement.vue'),
+    // WidgetWrapper: () => import('@/components/widgets/WidgetWrapper.vue'),
+    KPI: () => import('@/components/KPI.vue'),
+    ObjectiveProgression: () =>
+      import('@/components/widgets/ObjectiveProgression.vue'),
   },
 
   data: () => ({
-    piegraph: null,
-    tree: [],
+    isPOCDepartment: false,
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'activeItem', 'objectives', 'keyResults', 'theme']),
-
-    getIcon() {
-      const { organization, department } = this.activeItem;
-
-      if (organization && department) {
-        return 'fa-cube';
-      }
-      if (organization && !department) {
-        return 'fa-cubes';
-      }
-      return 'fa-industry';
-    },
+    ...mapState(['activeItem', 'objectives', 'kpis']),
   },
 
   watch: {
-    keyResults: {
+    activeItem: {
       immediate: true,
-      handler() {
-        this.tree = this.objectives.map((objective) => {
-          objective.keyResults = this.keyResults.filter((keyRes) => {
-            return keyRes.objective === `objectives/${objective.id}`;
-          });
-          return objective;
-        });
-      },
-    },
-    theme: {
-      immediate: true,
-      handler() {
-        if (!this.piegraph) return;
-        this.piegraph.render(this.activePeriod, this.theme);
+      handler(val) {
+        if (val.slug === 'apen-by') {
+          this.isPOCDepartment = true;
+        }
       },
     },
   },
 
   mounted() {
-    if (!this.$refs.piechart) return;
-
-    this.piegraph = new PieChart(this.$refs.piechart, { darkmode: true, colorMode: this.theme });
-    this.piegraph.render(this.activePeriod, this.theme);
-
-    this.enterFullscreen();
+    // this.enterFullscreen();
   },
 
   methods: {
@@ -139,190 +111,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'sass:math';
-
-$imageSize: 1.75em;
-
 .dashboard {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: start;
-  width: 100vw;
-  height: 100vh;
-  padding: 1.5em;
-  color: var(--color-white);
-  font-size: calc(12px + (20 - 12) * (100vw - 600px) / (2000 - 600));
-  background-color: #020218;
-  background-image: url('/dashboard-1.png');
-  background-size: cover;
-}
+  padding: 1rem;
 
-.meta {
-  display: grid;
-  grid-gap: 1em;
-  grid-row: 1 / span 6;
-  grid-column: 1;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: auto;
-  margin-right: 1em;
-}
-
-.meta__panel {
-  height: 100%;
-  padding: 1em;
-  background: rgba(black, 0.35);
-  border-radius: 0.15em;
-}
-
-.meta__panel--header {
-  margin-bottom: 0.5em;
-  padding-bottom: 0.5em;
-  color: var(--color-yellow);
-  font-weight: 500;
-  border-bottom: 1px solid rgba(white, 0.1);
-
-  > .fa {
-    margin-right: 0.5em;
+  &__contentWrapper {
+    display: flex;
   }
-}
 
-.meta__team {
-  display: flex;
-  flex-direction: column;
-
-  overflow: hidden;
-}
-
-.meta__team--member {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5em;
-}
-
-.meta__team--name {
-  margin-left: 0.5em;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.meta__team--image {
-  width: $imageSize;
-  height: $imageSize;
-  border-radius: math.div($imageSize, 2);
-}
-
-.meta__product {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-
-.meta__product--image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 12em;
-  height: 12em;
-  margin: 0 auto;
-  object-fit: cover;
-  color: var(--color-black);
-  background: var(--color-yellow);
-  border: 5px solid var(--color-white);
-  border-radius: 0.25em;
-  box-shadow: 0 0.4em 1.6em 0.5em rgba(var(--color-yellow-rgb), 0.4);
-}
-
-.meta__product--name {
-  margin-top: 1em;
-  color: var(--color-yellow);
-  font-weight: 500;
-  font-size: 1.25em;
-}
-
-.close {
-  grid-column: 6;
-  justify-self: end;
-  width: 100%;
-}
-
-.close--btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3em;
-  height: 3em;
-  padding: 0;
-  color: var(--color-white);
-
-  &:hover {
-    background: rgba(white, 0.1);
+  &__aside {
+    margin-right: 2.5rem;
+    flex: 0 0 calc(20% - 1.25rem);
   }
-}
 
-.objective {
-  display: grid;
-  grid-gap: 1em;
-  grid-row: 1 / span 6;
-  grid-template-rows: repeat(6, 1fr);
-  width: 100%;
-  margin-right: 1rem;
-  font-size: 0.9em;
-}
+  &__main {
+    flex: 0 0 calc(80% - 1.25rem);
+  }
 
-.objective__head {
-  display: grid;
-  grid-gap: 0.5em;
-  grid-template-rows: 2.5em auto;
-  align-content: center;
-  text-align: center;
-}
+  &__section {
+    margin-bottom: 2rem;
 
-.objective__icon {
-  display: flex;
-  grid-row: 1;
-  align-items: center;
-  align-self: end;
-  justify-content: center;
-  justify-self: center;
-  width: 2.5em;
-  height: 2.5em;
-  color: var(--color-text);
-  background: var(--color-primary);
-}
+    & .title-2 {
+      margin: 0.5rem 0;
+    }
+  }
 
-.objective__name {
-  grid-row: 2;
-  font-weight: 500;
-  font-size: 1.2em;
-}
+  &__kpiList {
+    display: grid;
+    grid-gap: 0.25rem;
 
-.objective__tag {
-  display: inline-block;
-  padding: 0.25em 0.5em;
-  color: var(--color-purple);
-  font-weight: 500;
-  background: white;
-}
+    @media screen and (min-width: bp(m)) {
+      grid-template-columns: repeat(3, minmax(10rem, 1fr));
+    }
+  }
 
-.key-result {
-  display: grid;
-  grid-gap: 0.5em;
-  grid-row: auto 3rem;
-  grid-column: 1fr;
-  height: 100%;
-  padding: 1em;
-  color: rgba(white, 0.85);
-  font-weight: 300;
-  background: rgba(black, 0.35);
-  border-radius: 0.15em;
-}
+  &__objectivesList {
+    margin: -0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-.key-result__progress {
-  align-self: end;
-  justify-content: end;
+  &__objective {
+    display: flex;
+    margin-bottom: 0.5rem;
+    flex: 0 0 calc(25% - 1rem);
+    margin: 0.5rem;
+
+    & .widget {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
 }
 </style>

@@ -508,6 +508,12 @@
       "4": "Nice, dere klarte det!"
     }
   },
+  "dashboard": {
+    "problemDescription": "Problembeskrivelse",
+    "targetAudience": "Målgruppe",
+    "missionStatement": "Oppdrag",
+    "effect": "Effekt"
+  },
   "languages": {
     "en-US": "Engelsk",
     "nb-NO": "Norsk"
