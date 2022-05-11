@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changes
+
+- Remove unused dependencies.
+- Add rate limit to backend route handler.
+- Use fetch instead of axios.
+- Remove unused code for image upload.
+
 ## [2.7.4] 2022-03-31
 
 ### Fixed
