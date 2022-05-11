@@ -4,7 +4,7 @@
       <h3 class="title-3">{{ objective.name }}</h3>
     </header>
     <div class="widget__body">
-      <progression-chart />
+      <progression-chart :progression="objective.progression" />
     </div>
   </div>
 </template>

@@ -10,6 +10,10 @@ export default {
   name: 'ProgressionChart',
 
   props: {
+    progression: {
+      type: Number,
+      required: true,
+    },
     dimmed: {
       type: Boolean,
       required: false,
@@ -27,20 +31,10 @@ export default {
   },
 
   watch: {
-    activePeriod: {
-      immediate: true,
-      deep: true,
-      handler(activePeriod) {
-        if (!this.chart) return;
-        this.chart.render(activePeriod, this.theme);
-      },
-    },
-
     theme: {
       immediate: true,
       handler() {
-        if (!this.chart) return;
-        this.chart.render(this.activePeriod, this.theme);
+        this.renderProgressionChart();
       },
     },
   },
@@ -52,11 +46,17 @@ export default {
         dimmed: this.dimmed,
         colorMode: this.theme,
       });
-      this.chart.render(this.activePeriod, this.theme);
+
+      this.renderProgressionChart();
     }, 150);
   },
 
   methods: {
+    renderProgressionChart() {
+      if (this.chart) {
+        this.chart.render(this.progression, this.activePeriod, this.theme);
+      }
+    },
     getTitle() {
       return this.title || this.$t(`widget.progression.${this.type}`);
     },
