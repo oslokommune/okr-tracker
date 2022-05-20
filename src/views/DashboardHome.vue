@@ -29,8 +29,15 @@
         </widget-wrapper> -->
       </aside>
       <main class="dashboard__main">
-        <section class="dashboard__section">
+        <section v-if="resultIndicator" class="dashboard__section">
           <h2 class="title-2">Resultatindikator</h2>
+          <div class="dashboard__container">
+            <h3 class="title-3">{{ resultIndicator.name }}</h3>
+            <svg ref="progressGraphSvg" />
+          </div>
+        </section>
+        <section v-if="kpis.length > 0" class="dashboard__section">
+          <h2 class="title-2">KPIer</h2>
           <ul class="dashboard__kpiList">
             <li v-for="kpi in kpis" :key="kpi.type">
               <KPI :kpi-type="kpi.type" :kpi="kpi" />
@@ -56,6 +63,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import { extent } from 'd3-array';
+import { db } from '@/config/firebaseConfig';
+import LineChart from '@/util/LineChart';
 
 export default {
   name: 'DashboardHome',
@@ -70,22 +80,48 @@ export default {
   },
 
   data: () => ({
+    resultIndicator: null,
+    progress: [],
     isPOCDepartment: false,
   }),
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'kpis']),
+    ...mapState(['activeItem', 'objectives', 'kpis', 'theme']),
   },
 
   watch: {
-    activeItem: {
+    kpis: {
       immediate: true,
-      handler(val) {
-        if (val.slug === 'apen-by') {
-          this.isPOCDepartment = true;
+      async handler([resultIndicator]) {
+        if (resultIndicator) {
+          this.resultIndicator = resultIndicator;
         }
       },
     },
+    resultIndicator: {
+      immediate: true,
+      async handler(resultIndicator) {
+        if (resultIndicator) {
+          await this.$bind(
+            'progress',
+            db
+              .collection(`kpis/${resultIndicator.id}/progress`)
+              .orderBy('timestamp', 'desc')
+          );
+        }
+      },
+    },
+    progress() {
+      this.renderGraph();
+    },
+    // activeItem: {
+    //   immediate: true,
+    //   handler(val) {
+    //     if (val.slug === 'apen-by') {
+    //       this.isPOCDepartment = true;
+    //     }
+    //   },
+    // },
   },
 
   mounted() {
@@ -93,6 +129,34 @@ export default {
   },
 
   methods: {
+    renderGraph() {
+      if (!this.graph) {
+        this.graph = new LineChart(this.$refs.progressGraphSvg, {
+          colorMode: this.theme,
+        });
+      }
+
+      const [startValue, targetValue] = extent(
+        this.progress.map(({ value }) => value)
+      );
+      const [startDate] = extent(
+        this.progress.map(({ timestamp }) => timestamp)
+      );
+
+      this.graph.render({
+        obj: {
+          startValue,
+          targetValue,
+        },
+        period: {
+          endDate: new Date(),
+          startDate,
+        },
+        progressionList: this.progress,
+        item: this.kpis[0],
+        theme: this.theme,
+      });
+    },
     enterFullscreen() {
       const elem = this.$refs.dashboard;
 
@@ -133,6 +197,10 @@ export default {
     & .title-2 {
       margin: 0.5rem 0;
     }
+  }
+
+  &__container {
+    margin-top: 1rem;
   }
 
   &__kpiList {
