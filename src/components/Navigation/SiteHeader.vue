@@ -87,9 +87,7 @@ export default {
       if (parts.includes('Admin')) {
         return 'Admin';
       }
-      if (parts.includes('Dashboard')) {
-        return [this.activeItem.name, this.activePeriod.name].join(' - ');
-      }
+
       if (
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
@@ -97,6 +95,7 @@ export default {
           parts.includes('ItemAdminKPIs') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome') ||
+          parts.includes('Dashboard') ||
           parts.includes('KpiHome')) &&
         this.activeItem
       ) {
