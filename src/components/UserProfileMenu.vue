@@ -3,32 +3,36 @@
     <div class="column">
       <h2 class="widget__title title-2">{{ $t('user.profile') }}</h2>
       <validation-observer v-slot="{ handleSubmit }">
-        <form id="updateUser" @submit.prevent="handleSubmit(save)">
-          <span class="form-label">{{ $t('fields.name') }}</span>
+        <form class="form-group" id="updateUser" @submit.prevent="handleSubmit(save)">
+          <span class="profileModal__label">{{ $t('fields.name') }}</span>
           <input v-model="thisUser.displayName" rules="required" @input="edit" class="form__field" />
         </form>
+        <label class="form-group">
+          <span class="profileModal__label">{{ $t('user.position.title') }}</span>
+          <v-select
+            v-model="thisUser.position"
+            :options="jobPositions"
+            :class="{'mandatory' : thisUser.position == null}"
+            :get-option-label="(option) => $t(`user.position.${option}`)"
+            @input="edit"
+          >
+          </v-select>
+          <span v-if="thisUser && thisUser.position == null" class="profileModal__label profileModal__required">
+            {{ $t('validation.required') }}
+          </span>
+        </label>
+        <label class="form-group">
+          <span class="profileModal__label">{{ $t('user.language') }}</span>
+          <v-select
+            v-model="thisUser.preferences.lang"
+            :options="languages"
+            :get-option-label="(option) => $t(`languages.${option}`)"
+            @input="edit"
+          >
+          </v-select>
+        </label>
       </validation-observer>
-      <label class="form-group">
-        <span class="form-label">{{ $t('user.position.title') }}</span>
-        <v-select
-          v-model="thisUser.position"
-          :options="jobPositions"
-          :get-option-label="(option) => $t(`user.position.${option}`)"
-          class=""
-          @input="edit"
-        >
-        </v-select>
-      </label>
-      <label class="form-group">
-        <span class="form-label">{{ $t('user.language') }}</span>
-        <v-select
-          v-model="thisUser.preferences.lang"
-          :options="languages"
-          :get-option-label="(option) => $t(`languages.${option}`)"
-          @input="edit"
-        >
-        </v-select>
-      </label>
+
       <button
         class="btn btn--sec profileModal__save-button"
         form="updateUser"
@@ -39,32 +43,30 @@
 
       <hr class="divider" />
 
-      <h3 class="widget__title title-2">
-        {{ me ? $t('user.myProducts') : $t('user.products') }}
-      </h3>
+      <h3 class="widget__title title-2">{{ $t('user.myProducts') }}</h3>
 
       <ul v-if="products.length > 0">
         <li v-for="product in products" :key="product.id">
-          <div class="profileModal__label">{{ product.department.name }}</div>
-          <div class="product">{{ product.name }}</div>
+          <div class="profileModal__info">
+            <h2 class="title-2">{{ product.department.name }}</h2>
+            <div>{{ product.name }}</div>
+          </div>
         </li>
       </ul>
 
       <hr class="divider" />
 
-      <h3 class="widget__title title-2">
-        {{ $t('user.access') }}
-      </h3>
+      <h3 class="widget__title title-2">{{ $t('user.access') }}</h3>
 
-      <template v-if="user.superAdmin">
+      <div class="profileModal__info" v-if="user.superAdmin">
         <h2 class="title-2">{{ $t('user.superAdmin') }}</h2>
         <div>{{ $t('user.hasSuperAdmin') }}</div>
-      </template>
+      </div>
 
-      <template v-if="user.admin && user.admin.length > 0">
+      <div class="profileModal__info" v-if="user.admin && user.admin.length > 0">
         <h2 class="title-2">{{ $t('user.admin') }}</h2>
         <div>{{ $t('user.hasAdmin') }}</div>
-      </template>
+      </div>
 
       <hr class="divider" />
 
@@ -72,9 +74,7 @@
 
       <hr class="divider" />
 
-      <h3 class="widget__title title-2">
-        {{ $t('general.administration') }}
-      </h3>
+      <h3 class="widget__title title-2">{{ $t('general.administration') }}</h3>
 
       <div class="sidebar__group sidebar__bottom button-col">
         <router-link v-if="user.admin" :to="{ name: 'Admin' }" class="btn btn--ter button-link">
@@ -194,10 +194,6 @@
       edit() {
         this.changes = true;
       },
-
-      close() {
-        this.$emit('close');
-      },
     },
   };
 </script>
@@ -221,6 +217,15 @@
     border-radius: 0;
   }
 
+  .profileModal__required {
+    color: var(--color-danger);
+  }
+
+  .profileModal__info {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+
   .modal__main--flex {
     display: flex;
     flex-basis: 100%;
@@ -228,7 +233,7 @@
     width: 100%;
     /* max-width: 600px; */
     max-height: calc(100vh - 90px);
-    padding: 0 0 0 3rem;
+    padding: 0 0 0 1.5rem;
     overflow: auto;
     color: var(--color-text);
     background: white;
@@ -275,7 +280,7 @@
   }
 
   .button-link {
-    padding-left: 0;
+    padding: 0.75rem 0 0 0;
     color: var(--color-text);
     background: transparent;
     border-style: none;
@@ -291,3 +296,9 @@
     }
   }
 </style>
+<style lang="scss">
+  .mandatory .vs__dropdown-toggle {
+    border: 1px solid var(--color-danger);
+  }
+</style>
+

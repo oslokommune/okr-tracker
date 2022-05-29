@@ -110,12 +110,6 @@ export default {
   },
 
   watch: {
-    $route: {
-      handler() {
-        this.$emit('hide', false);
-      },
-    },
-
     tree: {
       immediate: true,
       handler() {
@@ -200,10 +194,6 @@ $header-height: 4em;
   text-align: start;
 }
 
-.sidebar__item--side {
-  color: var(--color-text-secondary);
-}
-
 .sidebar__item--product {
   color: var(--color-text-secondary);
   font-weight: normal;
@@ -230,69 +220,6 @@ $header-height: 4em;
 
     &:hover {
       color: var(--color-text);
-    }
-  }
-}
-
-.header__nav-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: $header-height;
-  height: $header-height;
-  background-color: var(--color-primary);
-  border-radius: 50%;
-  cursor: pointer;
-
-  &.is-open {
-    span {
-      &:nth-child(1),
-      &:nth-child(4) {
-        opacity: 0;
-        transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
-      }
-      &:nth-child(2) {
-        transform: translateY(1em) rotate(45deg);
-        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
-      }
-      &:nth-child(3) {
-        transform: translateY(1em) rotate(-45deg);
-        transition: transform 0.4s ease-in-out 0.4s, opacity 0.4s ease-in-out 0.4s;
-      }
-    }
-  }
-}
-
-.header__nav-icon {
-  position: relative;
-  width: 100%;
-  padding: 1em;
-
-  $bar-height: 0.15em;
-  $center: 1em - math.div($bar-height, 2);
-  span {
-    position: absolute;
-    top: $center;
-    left: 1.25em;
-    display: block;
-    width: 1.5em;
-    height: $bar-height;
-    background: var(--color-text-secondary);
-    border-radius: 0.075em;
-    transform-origin: 50% 50%;
-
-    &:nth-child(1) {
-      transform: translateY($center - 0.35em) rotate(0deg);
-      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
-    }
-    &:nth-child(2),
-    &:nth-child(3) {
-      transform: translateY(1em) rotate(0deg);
-      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out 0s;
-    }
-    &:nth-child(4) {
-      transform: translateY($center + 0.35em + $bar-height) rotate(0deg);
-      transition: transform 0.15s ease-in-out 0.3s, opacity 0.15s ease-in-out 0.3s;
     }
   }
 }
@@ -330,6 +257,7 @@ $header-height: 4em;
   align-self: center;
   justify-self: center;
   padding-right: 1.5rem;
+  color: var(--color-white);
 }
 
 .sidebar__header {

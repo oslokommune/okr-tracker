@@ -15,18 +15,12 @@ import AppLayout from './components/AppLayout.vue';
 export default {
   name: 'App',
 
-  metaInfo() {
-    return {
-      title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,
-    };
-  },
-
   components: {
     AppLayout,
   },
 
   computed: {
-    ...mapState(['user', 'loading', 'LS_MODE']),
+    ...mapState(['LS_MODE']),
 
     isDev() {
       return import.meta.env.NODE_ENV !== 'production';

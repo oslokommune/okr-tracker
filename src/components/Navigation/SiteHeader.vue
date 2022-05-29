@@ -37,15 +37,8 @@ export default {
     },
   },
 
-  metaInfo() {
-    return {
-      title: `OKR | ${this.title}`,
-    };
-  },
-
   computed: {
-    ...mapState(['activeItem', 'user', 'organizations']),
-    ...mapGetters(['isAdmin']),
+    ...mapState(['activeItem', 'user']),
 
     /**
      * Dynamically determines the page title based on the route
@@ -74,24 +67,11 @@ export default {
     },
   },
 
-  methods: {
-    ...mapActions(['reset_state', 'setLoading', 'setActiveOrganization']),
-
-    toggleShowSiteSidebar() {
-      this.showSiteSidebar = !this.showSiteSidebar;
-    },
-
-    hideUserMenuSidebar(event) {
-      this.userMenuSidebarOpen = event;
-    },
-
-    async signOut() {
-      await this.setLoading(true);
-      await this.reset_state();
-      await auth.signOut();
-      await this.setLoading(false);
-    },
-  },
+  mounted() {
+    if (this.user.position === null) {
+      this.toggleShowAsideRight()
+    }
+  }
 };
 </script>
 

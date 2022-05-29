@@ -15,7 +15,7 @@
       :toggle="toggleShowAsideRight"
       :should-slide-in-from-left="false"
     >
-      <user-profile-menu :id="user.id" /> />
+      <user-profile-menu :id="user.id" />
     </slider-container>
     <v-spinner v-if="loading" />
     <router-view v-else></router-view>

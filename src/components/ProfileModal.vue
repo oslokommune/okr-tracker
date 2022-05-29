@@ -5,12 +5,12 @@
         <h2 class="title-2">{{ $t('user.profile') }}</h2>
         <validation-observer v-slot="{ handleSubmit }">
           <form id="updateUser" @submit.prevent="handleSubmit(save)">
-            <span class="form-label">{{ $t('fields.name') }}</span>
+            <span class="profileModal__label">{{ $t('fields.name') }}</span>
             <input v-model="thisUser.displayName" rules="required" :disabled="!me" @input="edit" class="form__field" />
           </form>
         </validation-observer>
         <label class="form-group">
-          <span class="form-label">{{ $t('user.position.title') }}</span>
+          <span class="profileModal__label">{{ $t('user.position.title') }}</span>
           <v-select
             v-if="me || $store.state.user.superAdmin"
             v-model="thisUser.position"
@@ -38,16 +38,15 @@
       </div>
 
       <div class="column">
-        <hr class="divider desktop-only" />
-
-        <h3 class="title-2">
+        <h2 class="title-2">
           {{ $t('user.products') }}
-        </h3>
-
+        </h2>
         <ul v-if="products.length > 0">
           <li v-for="product in products" :key="product.id">
-            <div class="profileModal__label">{{ product.department.name }}</div>
-            <div class="product">{{ product.name }}</div>
+            <div class="profileModal__info">
+              <h2 class="title-2">{{ product.department.name }}</h2>
+              <div>{{ product.name }}</div>
+            </div>
           </li>
         </ul>
       </div>
@@ -57,16 +56,11 @@
 <script>
 import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
-import ThemeToggle from '@/components/ThemeToggle.vue';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
 
 export default {
   name: 'ProfileModal',
-
-  components: {
-    ThemeToggle,
-  },
 
   props: {
     myProfile: {
@@ -166,16 +160,6 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.profileModal__upper-right {
-  position: fixed;
-  top: 4.5rem;
-  right: 0.5rem;
-}
-
-.fa-white {
-  color: white;
-}
-
 .profileModal__centered {
   position: fixed;
   horiz-align: center;
@@ -196,6 +180,11 @@ export default {
   padding: 0.7rem;
   background: var(--color-grey-50);
   border-radius: 0;
+}
+
+.profileModal__info {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
 }
 
 .modal__main--flex {
@@ -247,26 +236,7 @@ export default {
   border-radius: 0px;
 }
 
-.divider {
-  margin: 1.5rem 0;
-  border: 0;
-  border-top: 1px solid var(--color-grey-100);
-}
-
-.button-link {
-  padding-left: 0;
-  color: var(--color-text);
-  background: transparent;
-  border-style: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.desktop-only {
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
+.form-group {
+  margin: 0;
 }
 </style>
