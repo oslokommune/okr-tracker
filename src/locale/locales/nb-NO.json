@@ -138,7 +138,6 @@
     "deleteUser": "Slett bruker",
     "create": "Opprett",
     "delete": "Slett",
-    "archive": "Arkiver",
     "editItem": "Endre «{item}»",
     "upload": "Last opp",
     "minimize": "Minimer",
@@ -419,7 +418,7 @@
   },
   "archived": {
     "heading": "Arkivert",
-    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet. Ved å permanent slette objektet slettes også tilknyttet data."
+    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet."
   },
   "sheet": {
     "infoText": "Merk: Google Sheets-dokumentet må deles med følgende addresse:",

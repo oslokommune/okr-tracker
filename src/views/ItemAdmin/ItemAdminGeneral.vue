@@ -71,13 +71,13 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading">
-        <i class="icon fa fa-fw fa-save" />
-        {{ $t('btn.saveChanges') }}
-      </button>
-      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
+      <button v-if="!activeItem.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
         <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.archive') }}
+        {{ $t('btn.delete') }}
+      </button>
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading">
+        <i class="icon fa fa-fw fa-check" />
+        {{ $t('btn.saveChanges') }}
       </button>
     </div>
   </div>
@@ -212,6 +212,16 @@ export default {
 
   @media screen and (min-width: bp(xl)) {
     width: span(6, 0, span(10));
+  }
+
+  .btn--pri {
+    color: var(--color-text);
+    background: var(--color-green);
+  }
+
+  .btn--archive {
+    color: var(--color-text);
+    background: transparent;
   }
 }
 </style>
