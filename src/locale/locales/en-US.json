@@ -148,7 +148,8 @@
     "restore": "Restore",
     "confirmDeleteProgress": "Confirm delete",
     "reset": "Reset",
-    "showMore": "Show more"
+    "showMore": "Show more",
+    "syncData": "Synchronize data"
   },
   "login": {
     "login": "Sign in",

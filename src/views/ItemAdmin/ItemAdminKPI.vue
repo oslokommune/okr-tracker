@@ -63,6 +63,12 @@
               <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
             </template>
           </form-component>
+          <div class="button-sync-row">
+            <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`">
+              <i class="icon fas fa-sync" />
+              {{ $t('btn.syncData') }}
+            </button>
+          </div>
 
           <form-component
             v-model="localKpi.sheetName"
@@ -98,11 +104,11 @@
         </label>
 
         <div class="button-row">
+          <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
           <button class="btn btn--primary" :form="`kpi_${localKpi.id}`">
+            <i class="icon fa fa-fw fa-check" />
             {{ $t('btn.saveChanges') }}
           </button>
-          <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
-          <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`"><i class="fas fa-sync" /></button>
         </div>
       </form>
     </validation-observer>
@@ -232,5 +238,29 @@ export default {
   padding: 0.5rem;
   background: var(--color-red);
   border-radius: 2px;
+}
+
+.btn--primary {
+  color: var(--color-text);
+  background: var(--color-green);
+}
+
+.btn--danger {
+  color: var(--color-text);
+  background: transparent;
+}
+
+.icon {
+  padding-right: 0.3rem;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-sync-row {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

@@ -223,5 +223,10 @@ export default {
     color: var(--color-text);
     background: transparent;
   }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>
