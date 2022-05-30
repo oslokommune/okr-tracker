@@ -17,7 +17,6 @@
               style="margin-top: 0.5rem"
               :placeholder="$t('keyResult.commentPlaceholder')"
               rows="3"
-              @input="edit"
             />
           </label>
 
@@ -25,7 +24,7 @@
             <validation-provider v-slot="{ errors }" name="value" rules="required">
               <label class="form-group">
                 <span class="form-label">{{ $t('keyResult.newValue') }}</span>
-                <input v-model="value" style="margin-top: 0.25rem" type="number" step="any" @input="edit" />
+                <input v-model="value" style="margin-top: 0.25rem" type="number" step="any" />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>
@@ -74,10 +73,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
-
     close() {
       this.$emit('close');
     },

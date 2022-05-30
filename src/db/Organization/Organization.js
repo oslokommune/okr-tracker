@@ -25,10 +25,4 @@ const update = (id, data) => {
 const archive = (id) => update(id, { archived: true });
 const restore = (id) => update(id, { archived: false });
 
-const deleteDeep = () => {
-  throw new Error(
-    'Organizations can only be deleted from the Firestore console'
-  );
-};
-
-export default { create, update, archive, restore, deleteDeep };
+export default { create, update, archive, restore };

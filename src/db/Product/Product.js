@@ -27,19 +27,4 @@ const update = (id, data) => {
 const archive = (id) => update(id, { archived: true });
 const restore = (id) => update(id, { archived: false });
 
-const deleteDeep = async (id) => {
-  db.collection('periods')
-    .where('parent', '==', collection.doc(id))
-    .get()
-    .then(({ docs }) => docs.forEach(({ ref }) => Period.deleteDeep(ref.id)));
-
-  // Delete affected KPIs
-  db.collection('kpis')
-    .where('parent', '==', collection.doc(id))
-    .get()
-    .then(({ docs }) => docs.forEach(({ ref }) => Kpi.deleteDeep(ref.id)));
-
-  return deleteDocument(update, collection.doc(id));
-};
-
-export default { create, update, archive, restore, deleteDeep };
+export default { create, update, archive, restore };

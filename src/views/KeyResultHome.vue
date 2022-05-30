@@ -57,7 +57,6 @@
                       rows="3"
                       :placeholder="$t('keyResult.commentPlaceholder')"
                       :disabled="!allowedToEditPeriod"
-                      @input="edit"
                     />
                   </label>
 
@@ -71,7 +70,6 @@
                           type="number"
                           step="any"
                           :disabled="!allowedToEditPeriod"
-                          @input="edit"
                         />
                         <span class="form-field--error">{{ errors[0] }}</span>
                       </label>
@@ -84,7 +82,7 @@
             <button
               v-if="allowedToEditPeriod"
               form="modal"
-              :disabled="isSaving || !changes"
+              :disabled="isSaving"
               class="btn btn--ods key-result__value--button"
             >
               {{ $t('btn.save') }}
@@ -249,7 +247,6 @@ export default {
     graph: null,
     showComments: false,
     isLoading: false,
-    changes: false,
     progressNote: '',
     isSaving: false,
     value: null,
@@ -360,12 +357,7 @@ export default {
         this.$toasted.error(this.$t('toaster.error.progression'));
       } finally {
         this.isSaving = false;
-        this.changes = false;
       }
-    },
-
-    edit() {
-      this.changes = true;
     },
 
     openProfileModal(profileId) {

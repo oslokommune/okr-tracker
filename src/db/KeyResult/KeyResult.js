@@ -20,15 +20,4 @@ const update = async (id, data) => {
 const archive = (id) => update(id, { archived: true });
 const restore = (id) => update(id, { archived: false });
 
-const deleteDeep = async (id) => {
-  // Delete affected progress
-  collection
-    .doc(id)
-    .collection('progress')
-    .get()
-    .then(({ docs }) => docs.forEach(({ ref }) => ref.delete()));
-
-  return deleteDocument(update, collection.doc(id));
-};
-
-export default { create, update, archive, restore, deleteDeep };
+export default { create, update, archive, restore };

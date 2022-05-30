@@ -29,14 +29,4 @@ const archive = (id) => {
 };
 const restore = (id) => update(id, { archived: false });
 
-const deleteDeep = async (id) => {
-  // Delete affected key results
-  db.collection('keyResults')
-    .where('objective', '==', collection.doc(id))
-    .get()
-    .then(({ docs }) => docs.forEach(({ ref }) => KeyResult.deleteDeep(ref.id)));
-
-  return deleteDocument(update, collection.doc(id));
-};
-
-export default { create, update, archive, restore, deleteDeep };
+export default { create, update, archive, restore };
