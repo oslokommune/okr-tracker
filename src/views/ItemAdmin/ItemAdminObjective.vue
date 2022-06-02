@@ -66,7 +66,7 @@
         <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.delete') }}
       </button>
       <button class="btn btn--icon btn--pri btn--icon-pri" form="update-objective" :disabled="loading">
-        <span class="icon fa fa-fw fa-check"></span> {{ $t('btn.saveChanges') }}
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
     </div>
   </div>

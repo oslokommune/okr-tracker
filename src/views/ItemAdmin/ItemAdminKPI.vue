@@ -65,7 +65,7 @@
           </form-component>
           <div class="button-sync-row">
             <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`">
-              <i class="icon fas fa-sync" />
+              <icon-arrow-circle class="icon"/>
               {{ $t('btn.syncData') }}
             </button>
           </div>
@@ -106,7 +106,7 @@
         <div class="button-row">
           <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
           <button class="btn btn--primary" :form="`kpi_${localKpi.id}`">
-            <i class="icon fa fa-fw fa-check" />
+            <i class="icon fa fa-fw fa-save" />
             {{ $t('btn.saveChanges') }}
           </button>
         </div>
@@ -117,10 +117,15 @@
 
 <script>
 import { mapState } from 'vuex';
+import IconArrowCircle from '@/assets/IconArrowCircle.vue';
 import Kpi from '@/db/Kpi';
 
 export default {
   name: 'ItemAdminKPI',
+
+  components: {
+    IconArrowCircle,
+  },
 
   props: {
     kpi: {

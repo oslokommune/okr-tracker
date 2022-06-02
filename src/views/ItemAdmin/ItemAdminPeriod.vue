@@ -42,7 +42,7 @@
         data-cy="save_period"
         :disabled="loading"
       >
-        <i class="icon fa fa-fw fa-check" />
+        <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
     </div>

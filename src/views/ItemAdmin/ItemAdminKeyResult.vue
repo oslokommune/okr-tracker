@@ -176,7 +176,7 @@
         {{ $t('btn.delete') }}
       </button>
       <button class="btn btn--icon btn--pri btn--icon-pri" form="update-keyResult" :disabled="loading">
-        <i class="icon fa fa-fw fa-check" />
+        <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
       </button>
     </div>
