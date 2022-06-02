@@ -1,6 +1,6 @@
 import { db } from '@/config/firebaseConfig';
 import props from './props';
-import { validateCreateProps, validateUpdateProps, createDocument, updateDocument, deleteDocument } from '../common';
+import { validateCreateProps, validateUpdateProps, createDocument, updateDocument } from '../common';
 import Objective from '../Objective';
 
 const collection = db.collection('periods');

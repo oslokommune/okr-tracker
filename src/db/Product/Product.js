@@ -5,10 +5,7 @@ import {
   createDocument,
   validateUpdateProps,
   updateDocument,
-  deleteDocument,
 } from '../common';
-import Period from '../Period';
-import Kpi from '../Kpi';
 
 const collection = db.collection('products');
 

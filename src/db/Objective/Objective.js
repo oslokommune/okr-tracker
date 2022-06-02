@@ -1,6 +1,6 @@
 import { db } from '@/config/firebaseConfig';
 import props from './props';
-import { validateCreateProps, createDocument, validateUpdateProps, updateDocument, deleteDocument } from '../common';
+import { validateCreateProps, createDocument, validateUpdateProps, updateDocument } from '../common';
 import KeyResult from '../KeyResult';
 
 const collection = db.collection('objectives');

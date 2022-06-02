@@ -5,10 +5,7 @@ import {
   createDocument,
   validateUpdateProps,
   updateDocument,
-  deleteDocument,
 } from '../common';
-import Period from '../Period';
-import Product from '../Product';
 
 const collection = db.collection('departments');
 
