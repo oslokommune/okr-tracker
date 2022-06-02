@@ -157,6 +157,12 @@ $header-height: 4em;
   margin-top: 1rem;
 }
 
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 4rem);
+}
+
 .sidebar__item {
   width: 100%;
   padding: 0.5rem 1.5rem;

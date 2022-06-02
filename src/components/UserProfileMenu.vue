@@ -224,7 +224,7 @@
     flex-direction: column;
     width: 100%;
     /* max-width: 600px; */
-    max-height: calc(100vh - 90px);
+    max-height: calc(100vh - 8rem);
     padding: 0 0 0 1.5rem;
     overflow: auto;
     color: var(--color-text);
