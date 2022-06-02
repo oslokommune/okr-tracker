@@ -441,14 +441,14 @@
     "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
-    "selectLanguage": "Select language",
+    "language": "Language",
     "profile": "Profile",
     "myProfile": "My profile",
     "superAdmin": "OKR-tracker Administrator",
     "admin": "Administrator for Organizations",
     "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
     "hasAdmin": "Has admin rights for some organizations",
-    "myProducts": "My products",
+    "myProducts": "My affiliations",
     "products": "Products",
     "access": "Access",
     "position": {
@@ -465,7 +465,7 @@
         "others": "Members",
         "departmentDirector": "Department director"
       },
-      "title": "Position",
+      "title": "Role",
       "member": "Member",
       "frontendDeveloper": "Front-end developer",
       "backendDeveloper": "Back-end developer",
