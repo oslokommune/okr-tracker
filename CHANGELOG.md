@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-### Changes
+## [2.7.5] 2022-06-02
 
+### Changes
+- Made archive options less prominent
+- Made profile view as a right drawer
 - Remove unused dependencies.
 - Add rate limit to backend route handler.
 - Use fetch instead of axios.

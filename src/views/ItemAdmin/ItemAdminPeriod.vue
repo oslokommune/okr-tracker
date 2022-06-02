@@ -1,7 +1,7 @@
 <template>
   <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
   <div v-else-if="activePeriod" class="details">
-    <archived-restore v-if="activePeriod.archived" :delete-deep="deleteDeep" :restore="restore" />
+    <archived-restore v-if="activePeriod.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-period" @submit.prevent="handleSubmit(update)">
@@ -13,7 +13,6 @@
           rules="required"
           type="text"
           data-cy="period_name"
-          @edited-data="edit"
         />
 
         <validation-provider v-slot="{ errors }" name="range">
@@ -33,18 +32,18 @@
     </validation-observer>
 
     <div class="button-row">
+      <button v-if="!activePeriod.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
+        <i class="icon fa fa-fw fa-trash" />
+        {{ $t('btn.delete') }}
+      </button>
       <button
         class="btn btn--icon btn--pri btn--icon-pri"
         form="update-period"
         data-cy="save_period"
-        :disabled="loading || !changes"
+        :disabled="loading"
       >
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
-      </button>
-      <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.archive') }}
       </button>
     </div>
   </div>
@@ -87,7 +86,6 @@ export default {
     range: null,
     loading: false,
     isLoadingData: false,
-    changes: false,
   }),
 
   watch: {
@@ -109,14 +107,10 @@ export default {
       const [startDate, endDate] = parts;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
-      this.changes = true;
     },
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
     generateRange() {
       if (!this.activePeriod.startDate || !this.activePeriod.endDate) return '';
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
@@ -140,7 +134,6 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false;
     },
 
     async restore() {
@@ -150,17 +143,6 @@ export default {
         this.$toasted.show(this.$t('toaster.restored'));
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.restore', { document: this.activePeriod.name }));
-        throw new Error(error.message);
-      }
-    },
-
-    async deleteDeep() {
-      try {
-        await Period.deleteDeep(this.activePeriod.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
-      } catch (error) {
-        console.log(error);
-        this.$toasted.error(this.$t('toaster.error.delete', { document: this.activePeriod.name }));
         throw new Error(error.message);
       }
     },
@@ -178,7 +160,6 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false;
     },
   },
 };
@@ -202,6 +183,21 @@ export default {
   @media screen and (min-width: bp(xl)) {
     width: span(3, 0, span(10));
     margin-left: span(1, 2, span(10));
+  }
+
+  .btn--pri {
+    color: var(--color-text);
+    background: var(--color-green);
+  }
+
+  .btn--archive {
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

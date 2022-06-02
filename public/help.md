@@ -206,14 +206,6 @@ Arkiverte produktområder kan gjenopprettes av systemadministratorer fra [adminp
 - Velg det arkiverte produktet som skal gjenopprettes
 - Trykk «Gjenopprett»
 
-### Permanent slette et produkt
-
-For å permanent slette et produktområde må produktområdet allerede være «arkivert» (se over).
-
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
-- Velg det arkiverte produktet som skal slettes permanent
-- Trykk «Slett permanent»
-
 ---
 
 ## Produkter
@@ -248,14 +240,6 @@ Arkiverte produkter kan gjenopprettes av systemadministratorer fra [adminpanelet
 - Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
 - Velg det arkiverte produktet som skal gjenopprettes
 - Trykk «Gjenopprett»
-
-### Permanent slette et produkt
-
-For å permanent slette et produkt må produktet allerede vært «arkivert» (se over).
-
-- Aktiver «Vis arkiverte objekter»-bryteren under kolonnene
-- Velg det arkiverte produktet som skal slettes permanent
-- Trykk «Slett permanent»
 
 ---
 
@@ -293,16 +277,6 @@ Det er mulig å arkivere en periode, men det er viktig å poengtere at Mål og n
 - Velg perioden som skal arkiveres
 - Trykk `Arkiver`
 
-### Slette en periode
-
-Det er mulig å permanent slette en periode etter at den har blitt arkivert. Da vil også alle mål og nøkkelresultater også bli slettet.
-
-- Gå til `Endre <navn på org/produktområde/produkt>`
-- Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk på `Vis arkiverte objekter`
-- Velg perioden som skal slettes
-- Trykk `Slett permanent`
-
 ### Kan jeg gjenbruke et tidligere mål?
 
 Det er ikke mulig å kopiere et mål over til en ny periode, men det er mulig å flytte et mål over til en periode.
@@ -325,16 +299,6 @@ Nå kan nye nøkkelresultater knyttes til dette målet.
 - Naviger til `Mål og nøkkelresultater`-fanen
 - Velg målet som skal arkiveres under valgt periode
 - Trykk `Arkiver`
-
-### Slette et mål
-
-- Gå til `Endre <navn på org/produktområde/produkt>`
-- Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk på `Vis arkiverte objekter`
-- Velg målet som skal permanent slettes, under valgt periode
-- Trykk `Slett permanent`
-
-MERK: Da blir alle nøkkelresultater knyttet til målet sletter permanent
 
 ---
 
@@ -366,14 +330,6 @@ Nøkkelresultater er det du _måler_ for et spesifikt **mål**.
 - Naviger til `Mål og nøkkelresultater`-fanen
 - Velg nøkkelresultatet som skal arkiveres under valgt mål
 - Trykk `Arkiver`
-
-### Slette et mål
-
-- Gå til `Endre <navn på org/produktområde/produkt>`
-- Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk på `Vis arkiverte objekter`
-- Velg nøkkelresultatet som skal permanent slettes, under valgt mål
-- Trykk `Slett permanent`
 
 ### Registrere progresjon for et nøkkelresultat
 

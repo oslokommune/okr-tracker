@@ -1,7 +1,7 @@
 <template>
   <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
   <div v-else-if="keyResult" class="details">
-    <archived-restore v-if="keyResult.archived" :delete-deep="deleteDeep" :restore="restore" />
+    <archived-restore v-if="keyResult.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-keyResult" @submit.prevent="handleSubmit(update)">
@@ -12,12 +12,11 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
-          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('keyResult.description') }}</span>
-          <input v-model="keyResult.description" class="form__field" type="text" @input="edit" />
+          <input v-model="keyResult.description" class="form__field" type="text" />
         </label>
 
         <validation-provider v-slot="{ errors }" rules="required" name="objective">
@@ -29,7 +28,6 @@
               :options="objectives"
               :clearable="false"
               @input="changedObjective = true"
-              @edited-data="edit"
             >
               <template #option="option">
                 {{ option.name }}
@@ -47,7 +45,6 @@
           :label="$t('keyResult.unit')"
           rules="required|max:25"
           type="text"
-          @edited-data="edit"
         />
 
         <div class="form-row">
@@ -58,7 +55,6 @@
             :label="$t('keyResult.startValue')"
             rules="required"
             type="number"
-            @edited-data="edit"
           />
 
           <form-component
@@ -68,7 +64,6 @@
             :label="$t('keyResult.targetValue')"
             rules="required"
             type="number"
-            @edited-data="edit"
           />
 
           <form-component
@@ -78,7 +73,6 @@
             :label="$t('keyResult.weight')"
             rules="required|decimal|positiveNotZero"
             type="text"
-            @edited-data="edit"
           />
         </div>
 
@@ -88,7 +82,7 @@
             <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
           </span>
           <label class="toggle">
-            <input v-model="keyResult.api" class="toggle__input" type="checkbox" @edited-data="edit" />
+            <input v-model="keyResult.api" class="toggle__input" type="checkbox" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -96,7 +90,7 @@
         <div class="toggle__container">
           <span class="toggle__label">{{ $t('keyResult.automation.header') }}</span>
           <label class="toggle">
-            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" @edited-data="edit" />
+            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -117,7 +111,6 @@
             input-type="input"
             name="sheetId"
             type="text"
-            @edited-data="edit"
           >
             <template #help>
               <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
@@ -131,7 +124,6 @@
             input-type="input"
             name="sheetTab"
             type="text"
-            @edited-data="edit"
           >
             <template #help>
               <span class="form-help">{{ $t('keyResult.automation.sheetsTabHelp') }}</span>
@@ -145,7 +137,6 @@
             input-type="input"
             name="sheetCell"
             type="text"
-            @edited-data="edit"
           >
             <template #help>
               <span class="form-help">{{ $t('keyResult.automation.sheetsCellHelp') }}</span>
@@ -180,13 +171,13 @@
     </label>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-keyResult" :disabled="loading || !changes">
+      <button v-if="!keyResult.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
+        <i class="icon fa fa-fw fa-trash" />
+        {{ $t('btn.delete') }}
+      </button>
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-keyResult" :disabled="loading">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
-      </button>
-      <button v-if="!keyResult.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.archive') }}
       </button>
     </div>
   </div>
@@ -218,7 +209,6 @@ export default {
     loading: false,
     loadingConnection: false,
     isLoadingDetails: false,
-    changes: false,
   }),
 
   watch: {
@@ -239,9 +229,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
     async update() {
       this.loading = true;
 
@@ -291,7 +278,6 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false;
     },
     async archive() {
       this.loading = true;
@@ -308,7 +294,6 @@ export default {
         throw new Error(error.message);
       }
       this.loading = false;
-      this.changes = false;
     },
 
     async restore() {
@@ -323,23 +308,6 @@ export default {
         throw new Error(error.message);
       }
       this.loading = false;
-      this.changes = false;
-    },
-
-    async deleteDeep() {
-      this.loading = true;
-
-      try {
-        await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
-        await KeyResult.deleteDeep(this.keyResult.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
-      } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: this.keyResult.name }));
-        throw new Error(error.message);
-      }
-
-      this.loading = false;
-      this.changes = false;
     },
 
     async testConnection() {
@@ -421,6 +389,21 @@ export default {
   @media screen and (min-width: bp(xl)) {
     width: span(3, 0, span(10));
     margin-left: span(1, 2, span(10));
+  }
+
+  .btn--pri {
+    color: var(--color-text);
+    background: var(--color-green);
+  }
+
+  .btn--archive {
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

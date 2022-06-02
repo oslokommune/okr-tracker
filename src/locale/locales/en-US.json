@@ -137,20 +137,18 @@
     "addDepartment": "Add department",
     "acceptRequest": "Grant access",
     "rejectRequest": "Delete request",
-    "deleteImage": "Delete image",
     "deleteUser": "Delete user",
     "create": "Create",
     "delete": "Delete",
-    "archive": "Archive",
     "editItem": "Change «{item}»",
     "upload": "Upload",
     "minimize": "Minimize",
     "expand": "Expand",
-    "deletePermanently": "Delete permanently",
     "restore": "Restore",
     "confirmDeleteProgress": "Confirm delete",
     "reset": "Reset",
-    "showMore": "Show more"
+    "showMore": "Show more",
+    "syncData": "Synchronize data"
   },
   "login": {
     "login": "Sign in",
@@ -423,7 +421,7 @@
   },
   "archived": {
     "heading": "Archived",
-    "body": "This object is archived and is hidden. You may change details before restoring it. By permanently deleting this object, all related data will also be deleted."
+    "body": "This object is archived and is hidden. You may change details before restoring it."
   },
   "sheet": {
     "infoText": "Note: The Google Sheets document must be shared with the following address:",
