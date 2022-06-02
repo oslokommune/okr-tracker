@@ -5,7 +5,7 @@
       <validation-observer v-slot="{ handleSubmit }">
         <form class="form-group" id="updateUser" @submit.prevent="handleSubmit(save)">
           <span class="profileModal__label">{{ $t('fields.name') }}</span>
-          <input v-model="thisUser.displayName" rules="required" @input="edit" class="form__field" />
+          <input v-model="thisUser.displayName" rules="required" class="form__field" />
         </form>
         <label class="form-group">
           <span class="profileModal__label">{{ $t('user.position.title') }}</span>
@@ -14,7 +14,6 @@
             :options="jobPositions"
             :class="{'mandatory' : thisUser.position == null}"
             :get-option-label="(option) => $t(`user.position.${option}`)"
-            @input="edit"
           >
           </v-select>
           <span v-if="thisUser && thisUser.position == null" class="profileModal__label profileModal__required">
@@ -27,18 +26,17 @@
             v-model="thisUser.preferences.lang"
             :options="languages"
             :get-option-label="(option) => $t(`languages.${option}`)"
-            @input="edit"
           >
           </v-select>
         </label>
       </validation-observer>
 
       <button
-        class="btn btn--sec profileModal__save-button"
+        class="btn btn--icon btn--pri btn--icon-pri profileModal__save-button"
         form="updateUser"
-        :disabled="loading || !changes"
+        :disabled="loading"
       >
-        {{ $t('btn.save') }}
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.save') }}
       </button>
 
       <hr class="divider" />
@@ -126,7 +124,6 @@
       audit: [],
       image: null,
       loading: false,
-      changes: false,
       thisUser: null,
       languages: ['nb-NO', 'en-US'],
       jobPositions,
@@ -183,16 +180,11 @@
         }
 
         this.loading = false;
-        this.changes = false;
       },
 
       async signOut() {
         await auth.signOut();
         await this.reset_state();
-      },
-
-      edit() {
-        this.changes = true;
       },
     },
   };
@@ -294,6 +286,11 @@
     @media screen and (min-width: bp(m)) {
       display: none;
     }
+  }
+
+  .btn--pri {
+    color: var(--color-text);
+    background: var(--color-green);
   }
 </style>
 <style lang="scss">

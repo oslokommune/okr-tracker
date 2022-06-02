@@ -24,18 +24,6 @@
             </span>
           </div>
         </label>
-<<<<<<< HEAD
-=======
-        <label v-if="me" class="form-group">
-          <span class="form-label">{{ $t('user.selectLanguage') }}</span>
-          <v-select
-            v-model="thisUser.preferences.lang"
-            :options="languages"
-            :get-option-label="(option) => $t(`languages.${option}`)"
-          >
-          </v-select>
-        </label>
->>>>>>> Removed disabled
 
         <button
           v-if="me || $store.state.user.superAdmin"
