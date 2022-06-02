@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.7.5] 2022-06-02
+
+### Changes
+- Made archive options less prominent
+- Made profile view as a right drawer
+- Remove unused dependencies.
+- Add rate limit to backend route handler.
+- Use fetch instead of axios.
+- Remove unused code for image upload.
+
+## [2.7.4] 2022-03-31
+
+### Fixed
+
+- Change label and button color in AddKPIModal to make it visable. Ref. issue #345.
+
 ## [2.7.3] 2022-03-21
 
 - Auto accept access requests from whitelisted domains

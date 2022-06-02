@@ -18,7 +18,6 @@
             :label="$t('fields.displayName')"
             rules="required"
             type="text"
-            @edited-data="edit"
           />
 
           <label class="form-group--checkbox">
@@ -28,7 +27,6 @@
               class="form__checkbox"
               type="checkbox"
               :disabled="user.email === selectedUser.email || !user.superAdmin"
-              @input="edit"
             />
           </label>
 
@@ -40,7 +38,6 @@
               :options="organizations"
               :get-option-label="(option) => option.name"
               :disabled="!user.superAdmin"
-              @input="edit"
             >
             </v-select>
           </div>
@@ -48,14 +45,18 @@
       </validation-observer>
     </div>
 
-    <div class="selected-user__footer">
-      <button class="btn btn--pri" form="user-form" :disabled="loading || !changes">{{ $t('btn.saveChanges') }}</button>
+    <div class="selected-user__footer button-row">
       <button
-        class="btn btn--danger"
+        class="btn btn--delete-user"
         :disabled="user.email === selectedUser.email || loading"
         @click="remove(selectedUser)"
       >
+        <i class="icon fa fa-fw fa-trash" />
         {{ $t('btn.deleteUser') }}
+      </button>
+      <button class="btn btn--pri" form="user-form" :disabled="loading">
+        <i class="icon fa fa-fw fa-save" />
+        {{ $t('btn.saveChanges') }}
       </button>
     </div>
   </div>
@@ -79,7 +80,6 @@ export default {
   data: () => ({
     thisUser: null,
     loading: false,
-    changes: false,
   }),
 
   computed: {
@@ -107,9 +107,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
     async remove(user) {
       this.loading = true;
       try {
@@ -120,7 +117,6 @@ export default {
         this.$toasted.error(this.$t('toaster.error.user', { user: user.displayName }));
       }
       this.loading = false;
-      this.changes = false;
     },
 
     async save() {
@@ -138,7 +134,6 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false;
     },
   },
 };
@@ -174,5 +169,20 @@ export default {
   object-fit: cover;
   background: white;
   border-radius: 2rem;
+}
+
+.btn--pri {
+  color: var(--color-text);
+  background: var(--color-green);
+}
+
+.btn--delete-user {
+  color: var(--color-text);
+  background: transparent;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

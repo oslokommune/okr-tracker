@@ -30,7 +30,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import { api } from '@/util';
+import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
 
 export default {
@@ -50,12 +50,15 @@ export default {
     async send() {
       this.loading = true;
       try {
-        const res = await api.post(`/accessRequests/create`, {
-          email: this.email,
+        const { message } = await api(`/accessRequests/create`, {
+          method: 'post',
+          body: {
+            email: this.email,
+          },
         });
 
         showToastMessage({
-          msg: res.data,
+          msg: message,
           msgVars: { user: this.email },
           type: 'success',
         });
@@ -64,9 +67,9 @@ export default {
           name: 'Login',
           query: { redirectFrom: '/' },
         });
-      } catch (e) {
+      } catch (error) {
         showToastMessage({
-          msg: e.response.data,
+          msg: error.message,
           msgVars: { user: this.email },
           type: 'error',
         });

@@ -61,7 +61,7 @@ describe('Create new access request or add user', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 500,
+        "code": 400,
         "message": "toaster.request.noEmail",
       }
     `);
@@ -76,7 +76,7 @@ describe('Create new access request or add user', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 500,
+        "code": 400,
         "message": "toaster.request.requestExists",
       }
     `);
@@ -94,7 +94,7 @@ describe('Create new access request or add user', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 500,
+        "code": 400,
         "message": "toaster.request.userExists",
       }
     `);
@@ -113,7 +113,7 @@ describe('Create new access request or add user', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 200,
+        "code": 201,
         "message": "toaster.request.requested",
       }
     `);
@@ -132,7 +132,7 @@ describe('Create new access request or add user', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 200,
+        "code": 201,
         "message": "toaster.request.userCreated",
       }
     `);
@@ -164,7 +164,7 @@ describe('Accept access request', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 500,
+        "code": 400,
         "message": "toaster.request.userExists",
       }
     `);
@@ -183,7 +183,7 @@ describe('Accept access request', () => {
 
     expect(result).toMatchInlineSnapshot(`
       Object {
-        "code": 200,
+        "code": 201,
         "message": "toaster.request.accepted",
       }
     `);

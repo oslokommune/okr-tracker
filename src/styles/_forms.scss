@@ -28,6 +28,10 @@ textarea {
   display: block;
   margin-bottom: 0.25rem;
   color: var(--color-text);
+
+  &--hasPrimaryBackground {
+    color: var(--color-text-secondary);
+  }
 }
 
 .form-field {
@@ -64,6 +68,10 @@ textarea {
   margin-bottom: 0.25rem;
   color: var(--color-text);
   font-size: 0.85rem;
+
+  &--hasPrimaryBackground {
+    color: var(--color-text-secondary);
+  }
 }
 
 .form__checkbox {

@@ -1,7 +1,14 @@
 <template>
   <validation-provider v-slot="{ errors }" :rules="rules" :name="name || label">
     <label class="form-group">
-      <span class="form-label">{{ label || name }}</span>
+      <span
+        :class="{
+          'form-label': true,
+          'form-label--hasPrimaryBackground': hasPrimaryBackground,
+        }"
+      >
+        {{ label || name }}
+      </span>
       <slot name="help"></slot>
       <input
         v-if="inputType === 'input'"
@@ -13,7 +20,13 @@
         step="any"
       />
 
-      <textarea v-if="inputType === 'textarea'" v-model="innerValue" class="form__field" rows="4" :data-cy="dataCy" />
+      <textarea
+        v-if="inputType === 'textarea'"
+        v-model="innerValue"
+        class="form__field"
+        rows="4"
+        :data-cy="dataCy"
+      />
 
       <v-select
         v-if="inputType === 'select'"
@@ -25,7 +38,9 @@
       >
         <template #option="option">
           {{ option.name }}
-          <span v-if="option.period && option.period.name"> ({{ option.period.name }}) </span>
+          <span v-if="option.period && option.period.name">
+            ({{ option.period.name }})
+          </span>
         </template>
       </v-select>
       <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
@@ -38,6 +53,11 @@ export default {
   name: 'FormComponent',
 
   props: {
+    hasPrimaryBackground: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     name: {
       type: String,
       required: false,
@@ -58,7 +78,15 @@ export default {
       required: false,
       default: 'text',
       validator(value) {
-        return ['url', 'text', 'password', 'tel', 'search', 'number', 'email'].includes(value);
+        return [
+          'url',
+          'text',
+          'password',
+          'tel',
+          'search',
+          'number',
+          'email',
+        ].includes(value);
       },
     },
     value: {
@@ -102,7 +130,6 @@ export default {
     },
 
     value(val) {
-      this.$emit('edited-data', val);
       if (val !== this.innerValue) {
         this.innerValue = val;
       }
