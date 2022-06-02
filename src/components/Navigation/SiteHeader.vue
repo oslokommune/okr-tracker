@@ -77,17 +77,16 @@ export default {
 
 <style lang="scss" scoped>
 .siteHeader {
-  padding: 0 0.6875rem;
   position: sticky;
   top: 0;
   z-index: 20;
-  color: var(--color-text-secondary);
-  background: var(--color-primary);
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 4rem;
+  padding: 0 0.6875rem;
+  color: var(--color-text-secondary);
+  background: var(--color-primary);
 
   &__title {
     font-weight: 500;
