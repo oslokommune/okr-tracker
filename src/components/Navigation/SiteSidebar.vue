@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="flex__column">
       <h1 class="sidebar__header title-1">{{ $t('general.appName') }}</h1>
-      <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--sidebar sidebar__itemgit " :class="{ active: $route.name === 'Home' }">
+      <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--sidebar sidebar__item" :class="{ active: $route.name === 'Home' }">
         <h1>{{ $t('general.frontPage') }}</h1>
       </router-link>
 
