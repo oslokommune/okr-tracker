@@ -2,14 +2,14 @@ const padding = { left: 60, top: 20, right: 10, bottom: 20 };
 
 export const colors = {
   blue: {
-    gradientStart: '#2A2859',
-    gradientStop: '#2A2859',
-    line: '#2A2859',
+    gradientStart: '#6FE9FF',
+    gradientStop: '#D9D9D9',
+    line: '#B3F5FF',
   },
   green: {
-    gradientStart: '#034b45',
-    gradientStop: '#034b45',
-    line: '#034b45',
+    gradientStart: '#6FE9FF',
+    gradientStop: '#D9D9D9',
+    line: '#B3F5FF',
   },
 };
 
@@ -18,7 +18,10 @@ export function initSvg(svg) {
 
   svg.style('width', '100%');
 
-  this.canvas = svg.append('g').classed('canvas', true).attr('transform', `translate(${padding.left}, ${padding.top})`);
+  this.canvas = svg
+    .append('g')
+    .classed('canvas', true)
+    .attr('transform', `translate(${padding.left}, ${padding.top})`);
 
   this.xAxis = this.canvas.append('g').classed('axis x', true);
 
@@ -27,7 +30,11 @@ export function initSvg(svg) {
   this.yAxis = this.canvas.append('g').classed('axis y', true);
   this.valueLine = this.canvas.append('path').call(styleValueLine.bind(this));
   this.target = this.canvas.append('line').classed('target', true);
-  this.today = this.canvas.append('line').classed('today', true).attr('stroke', 'black').attr('stroke-opacity', 0.2);
+  this.today = this.canvas
+    .append('line')
+    .classed('today', true)
+    .attr('stroke', 'black')
+    .attr('stroke-opacity', 0.2);
 
   this.gradient = this.svg
     .append('defs')
@@ -38,24 +45,41 @@ export function initSvg(svg) {
     .attr('y1', '0%')
     .attr('y2', '100%');
 
-  this.gradient.append('stop').attr('id', 'start').call(styleGradientStart.bind(this));
-  this.gradient.append('stop').attr('id', 'stop').call(styleGradientStop.bind(this));
+  this.gradient
+    .append('stop')
+    .attr('id', 'start')
+    .call(styleGradientStart.bind(this));
+  this.gradient
+    .append('stop')
+    .attr('id', 'stop')
+    .call(styleGradientStop.bind(this));
 }
 
 export function styleGradientStart(el) {
-  el.attr('offset', '0%').attr('style', `stop-color:${colors[this.colorMode].gradientStart};stop-opacity:1;`);
+  el.attr('offset', '0%').attr(
+    'style',
+    `stop-color:${colors[this.colorMode].gradientStart};stop-opacity:1;`
+  );
 }
 
 export function styleGradientStop(el) {
-  el.attr('offset', '100%').attr('style', `stop-color:${colors[this.colorMode].gradientStop};stop-opacity:0;`);
+  el.attr('offset', '100%').attr(
+    'style',
+    `stop-color:${colors[this.colorMode].gradientStop};stop-opacity:0;`
+  );
 }
 
 export function styleValueLine(el) {
-  el.classed('valueLine', true).attr('fill', 'none').attr('stroke', colors[this.colorMode].line).attr('stroke-width', 3);
+  el.classed('valueLine', true)
+    .attr('fill', 'none')
+    .attr('stroke', colors[this.colorMode].line)
+    .attr('stroke-width', 3);
 }
 
 function styleArea(el) {
-  el.classed('area', true).attr('fill', 'url(#areaGradient)').attr('fill-opacity', 0.4);
+  el.classed('area', true)
+    .attr('fill', 'url(#areaGradient)')
+    .attr('fill-opacity', 0.4);
 }
 
 export function resize() {

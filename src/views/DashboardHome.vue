@@ -2,17 +2,8 @@
   <div ref="dashboard" class="dashboard">
     <div class="dashboard__contentWrapper">
       <aside class="dashboard__aside">
-        <!-- <widget-wrapper
-          v-if="isPOCDepartment"
-          :title="$t('dashboard.problemDescription')"
-        >
-          Tilgang på lokaler er en av de største utfordringene for
-          frivilligheten i Oslo Stor konkurranse om lokalene og mange aktører
-          som har behov for et sted å være Vanskelig å få oversikt over hvilke
-          kommunale lokaler som er tilgjengelige Vanskelig å vite hvem man skal
-          kontakte for å få tilgang til lokaler
-        </widget-wrapper> -->
-        <!-- <widget-wrapper
+        <widget-mission-statement />
+        <widget-wrapper
           v-if="isPOCDepartment"
           :title="$t('dashboard.targetAudience')"
         >
@@ -20,17 +11,29 @@
           Innbyggere som benytter seg av kommunens meråpne tjenester Ansatte i
           de meråpne tjenestene, samt ansatte i virksomheter som låner/leier ut
           lokaler
-        </widget-wrapper> -->
-        <widget-mission-statement />
-        <!-- <widget-wrapper v-if="isPOCDepartment" :title="$t('dashboard.effect')">
-          Forbedre og forenkle frivillighetens tilgang til kommunens lokaler
-          Gjennom våre løsninger bidra til å øke antallet konsumerte kulturtimer
-          i Oslo
-        </widget-wrapper> -->
+        </widget-wrapper>
+        <div v-if="isPOCDepartment" class="dashboard__productSection">
+          <div class="title-3">{{ $t('general.products') }}</div>
+          <widget-wrapper
+            v-for="product in filteredProducts"
+            :key="product.id"
+            :title="product.name"
+          >
+            {{ product.missionStatement }}
+          </widget-wrapper>
+        </div>
       </aside>
       <main class="dashboard__main">
         <section v-if="resultIndicator" class="dashboard__section">
           <h2 class="title-2">Resultatindikator</h2>
+          <div>
+            Progressjon
+            <dashboard-select
+              :value="currentResultIndicatorPeriod"
+              :options="resultIndicatorPeriods"
+              :on-change="setCurrentResultIndicatorPeriod"
+            />
+          </div>
           <div class="dashboard__container">
             <h3 class="title-3">{{ resultIndicator.name }}</h3>
             <svg ref="progressGraphSvg" />
@@ -67,29 +70,84 @@ import { extent } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 
+const getResultIndicatorPeriods = () => {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+
+  return {
+    quarter: {
+      name: '1. kvartal',
+      value: 'quarter',
+      startDate: new Date(currentYear, 0, 1),
+      endDate: new Date(currentYear, 2, 31),
+    },
+    tertial: {
+      name: 'tertial',
+      value: 'tertial',
+      startDate: new Date(currentYear, 0, 1),
+      endDate: new Date(currentYear, 3, 30),
+    },
+    year: {
+      name: 'hittil i år',
+      value: 'year',
+      startDate: new Date(currentYear, 0, 1),
+      endDate: currentDate,
+    },
+  };
+};
+
+const RESULT_INDICATOR_PERIODS = getResultIndicatorPeriods();
+
 export default {
   name: 'DashboardHome',
 
   components: {
     WidgetMissionStatement: () =>
       import('@/components/widgets/WidgetMissionStatement.vue'),
-    // WidgetWrapper: () => import('@/components/widgets/WidgetWrapper.vue'),
+    WidgetWrapper: () => import('@/components/widgets/WidgetWrapper.vue'),
     KPI: () => import('@/components/KPI.vue'),
+    DashboardSelect: () => import('@/components/DashboardSelect.vue'),
     ObjectiveProgression: () =>
       import('@/components/widgets/ObjectiveProgression.vue'),
   },
 
   data: () => ({
     resultIndicator: null,
-    progress: [],
+    progressCollection: [],
     isPOCDepartment: false,
+    resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
+      (period) => period
+    ),
+    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.quarter,
+    filteredProducts: [],
   }),
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'kpis', 'theme']),
+    ...mapState([
+      'activeItem',
+      'objectives',
+      'kpis',
+      'theme',
+      'departments',
+      'products',
+    ]),
   },
 
   watch: {
+    $route: {
+      immediate: true,
+      async handler(current) {
+        const { resultIndicatorPeriod } = current.query;
+
+        if (resultIndicatorPeriod) {
+          this.currentResultIndicatorPeriod =
+            RESULT_INDICATOR_PERIODS[resultIndicatorPeriod];
+        }
+      },
+    },
+    currentResultIndicatorPeriod() {
+      this.getProgressData(this.resultIndicator.id);
+    },
     kpis: {
       immediate: true,
       async handler([resultIndicator]) {
@@ -100,28 +158,24 @@ export default {
     },
     resultIndicator: {
       immediate: true,
-      async handler(resultIndicator) {
+      handler(resultIndicator) {
         if (resultIndicator) {
-          await this.$bind(
-            'progress',
-            db
-              .collection(`kpis/${resultIndicator.id}/progress`)
-              .orderBy('timestamp', 'desc')
-          );
+          this.getProgressData();
         }
       },
     },
-    progress() {
+    progressCollection() {
       this.renderGraph();
     },
-    // activeItem: {
-    //   immediate: true,
-    //   handler(val) {
-    //     if (val.slug === 'apen-by') {
-    //       this.isPOCDepartment = true;
-    //     }
-    //   },
-    // },
+    activeItem: {
+      immediate: true,
+      handler({ slug }) {
+        if (slug === 'origo') {
+          this.isPOCDepartment = true;
+          this.filterProducts();
+        }
+      },
+    },
   },
 
   mounted() {
@@ -129,6 +183,26 @@ export default {
   },
 
   methods: {
+    filterProducts() {
+      this.filteredProducts = this.products.filter(
+        (product) => product.organization.id === this.activeItem.id
+      );
+    },
+    async getProgressData() {
+      const collection = db
+        .collection(`kpis/${this.resultIndicator.id}/progress`)
+        .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
+        .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
+        .orderBy('timestamp', 'desc');
+
+      await this.$bind('progressCollection', collection);
+    },
+    setCurrentResultIndicatorPeriod(selectedPeriod) {
+      this.currentResultIndicatorPeriod = selectedPeriod;
+      this.$router.push({
+        query: { resultIndicatorPeriod: selectedPeriod.value },
+      });
+    },
     renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
@@ -137,10 +211,10 @@ export default {
       }
 
       const [startValue, targetValue] = extent(
-        this.progress.map(({ value }) => value)
+        this.progressCollection.map(({ value }) => value)
       );
-      const [startDate] = extent(
-        this.progress.map(({ timestamp }) => timestamp)
+      const [startDate, endDate] = extent(
+        this.progressCollection.map(({ timestamp }) => timestamp)
       );
 
       this.graph.render({
@@ -149,10 +223,10 @@ export default {
           targetValue,
         },
         period: {
-          endDate: new Date(),
           startDate,
+          endDate,
         },
-        progressionList: this.progress,
+        progressionList: this.progressCollection,
         item: this.kpis[0],
         theme: this.theme,
       });
