@@ -24,31 +24,31 @@
         </div>
       </aside>
       <main class="dashboard__main">
-        <section v-if="resultIndicator" class="dashboard__section">
-          <h2 class="title-2">Resultatindikator</h2>
-          <div>
-            Progressjon
-            <dashboard-select
-              :value="currentResultIndicatorPeriod"
-              :options="resultIndicatorPeriods"
-              :on-change="setCurrentResultIndicatorPeriod"
-            />
+        <section
+          v-if="resultIndicator"
+          class="dashboard__section dashboard__resultIndicators"
+        >
+          <div class="dashboard__sectionHeader">
+            <h2 class="title-1">Resultatindikator</h2>
+            <div>
+              <h3 class="title-2">Progressjon</h3>
+              <v-select
+                label="name"
+                :options="resultIndicatorPeriods"
+                :value="currentResultIndicatorPeriod"
+                :components="{ Deselect: null }"
+                @input="setCurrentResultIndicatorPeriod"
+              />
+            </div>
           </div>
+          <hr />
           <div class="dashboard__container">
             <h3 class="title-3">{{ resultIndicator.name }}</h3>
             <svg ref="progressGraphSvg" />
           </div>
         </section>
-        <section v-if="kpis.length > 0" class="dashboard__section">
-          <h2 class="title-2">KPIer</h2>
-          <ul class="dashboard__kpiList">
-            <li v-for="kpi in kpis" :key="kpi.type">
-              <KPI :kpi-type="kpi.type" :kpi="kpi" />
-            </li>
-          </ul>
-        </section>
-        <section class="dashboard__section">
-          <h2 class="title-2">Områdets mål</h2>
+        <section class="dashboard__section dashboard__objectives">
+          <h2 class="title-1">Områdets mål</h2>
           <ul class="dashboard__objectivesList">
             <li
               v-for="objective in objectives"
@@ -105,8 +105,6 @@ export default {
     WidgetMissionStatement: () =>
       import('@/components/widgets/WidgetMissionStatement.vue'),
     WidgetWrapper: () => import('@/components/widgets/WidgetWrapper.vue'),
-    KPI: () => import('@/components/KPI.vue'),
-    DashboardSelect: () => import('@/components/DashboardSelect.vue'),
     ObjectiveProgression: () =>
       import('@/components/widgets/ObjectiveProgression.vue'),
   },
@@ -170,7 +168,7 @@ export default {
     activeItem: {
       immediate: true,
       handler({ slug }) {
-        if (slug === 'origo') {
+        if (slug === 'apen-by') {
           this.isPOCDepartment = true;
           this.filterProducts();
         }
@@ -264,7 +262,7 @@ export default {
   &__productSection {
     margin-top: 1rem;
 
-    & .title-3 {
+    & .title-2 {
       color: var(--color-text);
     }
   }
@@ -275,9 +273,35 @@ export default {
 
   &__section {
     margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--color-white);
 
+    & .title-1,
     & .title-2 {
-      margin: 0.5rem 0;
+      color: var(--color-text);
+      font-weight: 500;
+    }
+  }
+
+  &__sectionHeader {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__resultIndicators {
+    & .title-1 {
+      margin: 0 0 1.5rem 0;
+    }
+  }
+
+  hr {
+    margin: 1.75rem 0 2.5rem 0;
+    border-top: 0.125rem solid #f2f2f2;
+  }
+
+  &__objectives {
+    & .title-1 {
+      margin: 0 0 1rem 0;
     }
   }
 
@@ -305,6 +329,7 @@ export default {
     margin-bottom: 0.5rem;
     flex: 0 0 calc(25% - 1rem);
     margin: 0.5rem;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 
     & .widget {
       align-self: stretch;

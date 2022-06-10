@@ -1,10 +1,8 @@
 <template>
-  <div class="widget">
-    <header class="widget__header">
-      <h3 class="title-3">{{ objective.name }}</h3>
-    </header>
-    <div class="widget__body">
-      <progression-chart :progression="objective.progression" />
+  <div class="objectiveProgression">
+    <div class="objectiveProgression__name">{{ objective.name }}</div>
+    <div class="objectiveProgression__progress">
+      {{ objective.progression * 100 }}%
     </div>
   </div>
 </template>
@@ -12,10 +10,6 @@
 <script>
 export default {
   name: 'ObjectiveProgression',
-
-  components: {
-    ProgressionChart: () => import('@/components/ProgressionChart.vue'),
-  },
 
   props: {
     objective: {
@@ -25,3 +19,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.objectiveProgression {
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  color: var(--color-text);
+
+  &__name {
+    margin-right: 1rem;
+    font-weight: 500;
+    font-size: var(--font-size-1);
+    line-height: 1.25rem;
+  }
+
+  &__progress {
+    font-weight: 500;
+    font-size: var(--font-size-3);
+    line-height: 25px;
+  }
+}
+</style>
