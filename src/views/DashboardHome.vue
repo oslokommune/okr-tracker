@@ -261,6 +261,14 @@ export default {
     flex: 0 0 calc(20% - 1.25rem);
   }
 
+  &__productSection {
+    margin-top: 1rem;
+
+    & .title-3 {
+      color: var(--color-text);
+    }
+  }
+
   &__main {
     flex: 0 0 calc(80% - 1.25rem);
   }
