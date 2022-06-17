@@ -124,7 +124,8 @@
     "signIn": "Please sign in",
     "orgs": "Organizations",
     "emptyHome": "Please pick an organization.",
-    "api": "API"
+    "api": "API",
+    "resultIndicator": "Result indicator"
   },
   "btn": {
     "close": "Close",

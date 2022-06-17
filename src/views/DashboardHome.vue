@@ -3,24 +3,24 @@
     <div class="dashboard__contentWrapper">
       <aside class="dashboard__aside">
         <widget-mission-statement />
-        <widget-wrapper
-          v-if="isPOCDepartment"
-          :title="$t('dashboard.targetAudience')"
-        >
-          Frivillige lag og organisasjoner som trenger lokaler til sin aktivitet
-          Innbyggere som benytter seg av kommunens meråpne tjenester Ansatte i
-          de meråpne tjenestene, samt ansatte i virksomheter som låner/leier ut
-          lokaler
-        </widget-wrapper>
-        <div v-if="isPOCDepartment" class="dashboard__productSection">
-          <div class="title-3">{{ $t('general.products') }}</div>
-          <widget-wrapper
-            v-for="product in filteredProducts"
-            :key="product.id"
-            :title="product.name"
-          >
-            {{ product.missionStatement }}
+        <div v-if="isPOCDepartment">
+          <widget-wrapper :title="$t('dashboard.targetAudience')">
+            Frivillige lag og organisasjoner som trenger lokaler til sin
+            aktivitet Innbyggere som benytter seg av kommunens meråpne tjenester
+            Ansatte i de meråpne tjenestene, samt ansatte i virksomheter som
+            låner/leier ut lokaler
           </widget-wrapper>
+
+          <div class="dashboard__productSection">
+            <div class="title-3">{{ $t('general.products') }}</div>
+            <widget-wrapper
+              v-for="product in filteredProducts"
+              :key="product.id"
+              :title="product.name"
+            >
+              {{ product.missionStatement }}
+            </widget-wrapper>
+          </div>
         </div>
       </aside>
       <main class="dashboard__main">
@@ -29,7 +29,7 @@
           class="dashboard__section dashboard__resultIndicators"
         >
           <div class="dashboard__sectionHeader">
-            <h2 class="title-1">Resultatindikator</h2>
+            <h2 class="title-1">{{ $t('general.resultIndicator') }}</h2>
             <div>
               <h3 class="title-2">Progressjon</h3>
               <v-select
@@ -97,6 +97,7 @@ const getResultIndicatorPeriods = () => {
 };
 
 const RESULT_INDICATOR_PERIODS = getResultIndicatorPeriods();
+const POC_DEPARTMENTS = ['apen-by', 'origo'];
 
 export default {
   name: 'DashboardHome',
@@ -168,7 +169,7 @@ export default {
     activeItem: {
       immediate: true,
       handler({ slug }) {
-        if (slug === 'apen-by') {
+        if (POC_DEPARTMENTS.includes(slug)) {
           this.isPOCDepartment = true;
           this.filterProducts();
         }
@@ -181,6 +182,9 @@ export default {
   },
 
   methods: {
+    setActiveTab(tabIndex) {
+      this.activeTab = tabIndex;
+    },
     filterProducts() {
       this.filteredProducts = this.products.filter(
         (product) => product.organization.id === this.activeItem.id
@@ -286,6 +290,10 @@ export default {
   &__sectionHeader {
     display: flex;
     justify-content: space-between;
+
+    & .v-select {
+      min-width: 10rem;
+    }
   }
 
   &__resultIndicators {

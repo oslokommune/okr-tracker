@@ -121,7 +121,8 @@
     "signIn": "Vennligst logg inn",
     "orgs": "Virksomheter",
     "emptyHome": "Vennligst velg en etat fra listen.",
-    "api": "API"
+    "api": "API",
+    "resultIndicator": "Resultatindikator"
   },
   "btn": {
     "close": "Lukk",
