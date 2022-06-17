@@ -6,15 +6,18 @@
     <h1 v-if="title" class="siteHeader__title">
       {{ title }}
     </h1>
-    <button v-if="user" class="btn btn--ter btn--pri" @click="toggleShowAsideRight">
+    <button
+      v-if="user"
+      class="btn btn--ter btn--pri"
+      @click="toggleShowAsideRight"
+    >
       <icon-user />
     </button>
   </header>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { auth } from '@/config/firebaseConfig';
+import { mapState } from 'vuex';
 import IconMenu from '@/components/IconMenu.vue';
 import IconUser from '@/components/IconUser.vue';
 
@@ -68,10 +71,10 @@ export default {
   },
 
   mounted() {
-    if (this.user.position === null) {
-      this.toggleShowAsideRight()
+    if (this.user && this.user.position === null) {
+      this.toggleShowAsideRight();
     }
-  }
+  },
 };
 </script>
 
