@@ -125,7 +125,7 @@
   },
   "btn": {
     "close": "Lukk",
-    "save": "Oppdater",
+    "save": "Lagre",
     "saveChanges": "Lagre endringer",
     "add": "Legg til",
     "editNotes": "Endre notater",
@@ -134,20 +134,18 @@
     "addDepartment": "Nytt produktområde",
     "acceptRequest": "Gi tilgang",
     "rejectRequest": "Slett forespørsel",
-    "deleteImage": "Slett bilde",
     "deleteUser": "Slett bruker",
     "create": "Opprett",
     "delete": "Slett",
-    "archive": "Arkiver",
     "editItem": "Endre «{item}»",
     "upload": "Last opp",
     "minimize": "Minimer",
     "expand": "Ekspander",
-    "deletePermanently": "Slett permanent",
     "restore": "Gjenopprett",
     "confirmDeleteProgress": "Bekreft sletting",
     "reset": "Nullstill",
-    "showMore": "Vis mer"
+    "showMore": "Vis mer",
+    "syncData": "Synkroniser data"
   },
   "login": {
     "login": "Logg inn",
@@ -420,7 +418,7 @@
   },
   "archived": {
     "heading": "Arkivert",
-    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet. Ved å permanent slette objektet slettes også tilknyttet data."
+    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet."
   },
   "sheet": {
     "infoText": "Merk: Google Sheets-dokumentet må deles med følgende addresse:",
@@ -444,9 +442,9 @@
     "admin": "Organisasjonsadministrator",
     "hasSuperAdmin": "Er administrator for hele OKR-trackeren",
     "hasAdmin": "Er administrator for en rekke organisasjoner",
-    "myProducts": "Mine produkter",
-    "products": "Produkter",
-    "selectLanguage": "Velg språk",
+    "myProducts": "Min tilhørighet",
+    "products": "Tilhørighet",
+    "language": "Språk",
     "access": "Tilgang",
     "position": {
       "groups": {
@@ -461,7 +459,7 @@
         "others": "Medlemmer",
         "departmentDirector": "Avdelingsdirektør"
       },
-      "title": "Stilling",
+      "title": "Rolle",
       "member": "Medlem",
       "frontendDeveloper": "Frontend-utvikler",
       "backendDeveloper": "Backend-utvikler",

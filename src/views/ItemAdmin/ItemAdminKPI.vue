@@ -16,7 +16,7 @@
       <form :id="`kpi_${localKpi.id}`" @submit.prevent="handleSubmit(save.bind(null, localKpi))">
         <label class="form-group">
           <span class="form-label">Type</span>
-          <input v-model="localKpi.type" class="form__field" type="text" disabled="disabled" @input="edit" />
+          <input v-model="localKpi.type" class="form__field" type="text" disabled="disabled" />
         </label>
 
         <form-component
@@ -26,12 +26,11 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
-          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <textarea v-model="localKpi.description" class="form__field" rows="4" @input="edit" />
+          <textarea v-model="localKpi.description" class="form__field" rows="4" />
         </label>
 
         <div class="toggle__container">
@@ -40,7 +39,7 @@
             <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
           </span>
           <label class="toggle">
-            <input v-model="localKpi.api" class="toggle__input" type="checkbox" @input="edit" />
+            <input v-model="localKpi.api" class="toggle__input" type="checkbox" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -59,12 +58,17 @@
             :label="$t('keyResult.automation.googleSheetId')"
             rules="required"
             type="text"
-            @edited-data="edit"
           >
             <template #help>
               <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
             </template>
           </form-component>
+          <div class="button-sync-row">
+            <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`">
+              <icon-arrow-circle class="icon"/>
+              {{ $t('btn.syncData') }}
+            </button>
+          </div>
 
           <form-component
             v-model="localKpi.sheetName"
@@ -73,7 +77,6 @@
             :label="$t('keyResult.automation.sheetsTab')"
             rules="required"
             type="text"
-            @edited-data="edit"
           >
             <template #help>
               <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
@@ -87,7 +90,6 @@
             :label="$t('keyResult.automation.sheetsCell')"
             rules="required"
             type="text"
-            @edited-data="edit"
           >
             <template #help>
               <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
@@ -98,15 +100,15 @@
         <label v-if="localKpi.api" class="form-group">
           <span class="form-label">API</span>
           <span class="form-help">Push updates with curl</span>
-          <input :value="apiCurl(localKpi)" type="text" disabled class="form__field" @input="edit" />
+          <input :value="apiCurl(localKpi)" type="text" disabled class="form__field" />
         </label>
 
         <div class="button-row">
-          <button class="btn btn--primary" :form="`kpi_${localKpi.id}`" :disabled="!changes">
+          <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
+          <button class="btn btn--primary" :form="`kpi_${localKpi.id}`">
+            <i class="icon fa fa-fw fa-save" />
             {{ $t('btn.saveChanges') }}
           </button>
-          <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
-          <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`"><i class="fas fa-sync" /></button>
         </div>
       </form>
     </validation-observer>
@@ -115,10 +117,15 @@
 
 <script>
 import { mapState } from 'vuex';
+import IconArrowCircle from '@/assets/IconArrowCircle.vue';
 import Kpi from '@/db/Kpi';
 
 export default {
   name: 'ItemAdminKPI',
+
+  components: {
+    IconArrowCircle,
+  },
 
   props: {
     kpi: {
@@ -129,7 +136,6 @@ export default {
 
   data: () => ({
     showAddKPIModal: false,
-    changes: false,
     localKpi: null,
   }),
 
@@ -147,10 +153,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
-
     async save(kpi) {
       kpi.error = false;
       kpi.valid = false;
@@ -164,7 +166,6 @@ export default {
 
         await Kpi.update(kpi.id, kpi);
         this.$toasted.show(this.$t('toaster.savedChanges'));
-        this.changes = false;
       } catch {
         this.$toasted.error(this.$t('toaster.error.save'));
       }
@@ -242,5 +243,29 @@ export default {
   padding: 0.5rem;
   background: var(--color-red);
   border-radius: 2px;
+}
+
+.btn--primary {
+  color: var(--color-text);
+  background: var(--color-green);
+}
+
+.btn--danger {
+  color: var(--color-text);
+  background: transparent;
+}
+
+.icon {
+  padding-right: 0.3rem;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-sync-row {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

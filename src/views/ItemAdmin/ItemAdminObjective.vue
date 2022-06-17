@@ -1,7 +1,7 @@
 <template>
   <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
   <div v-else-if="objective" class="details">
-    <archived-restore v-if="objective.archived" :delete-deep="deleteDeep" :restore="restore" />
+    <archived-restore v-if="objective.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-objective" @submit.prevent="handleSubmit(update)">
@@ -12,12 +12,11 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
-          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <input v-model="objective.description" class="form__field" type="text" @input="edit" />
+          <input v-model="objective.description" class="form__field" type="text" />
         </label>
 
         <form-component
@@ -27,12 +26,11 @@
           :label="$t('fields.weight')"
           rules="required|decimal|positiveNotZero"
           type="text"
-          @edited-data="edit"
         />
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select v-model="objective.icon" :options="icons" @input="edit">
+          <v-select v-model="objective.icon" :options="icons">
             <template #selected-option="{ label }">
               <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
               {{ label }}
@@ -54,7 +52,6 @@
               :options="periods"
               :clearable="false"
               @input="changedPeriod = true"
-              @edited-data="edit"
             >
               <template #option="option"> {{ option.name }} </template>
             </v-select>
@@ -65,11 +62,11 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-objective" :disabled="loading || !changes">
-        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
+      <button v-if="!objective.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
+        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.delete') }}
       </button>
-      <button v-if="!objective.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-objective" :disabled="loading">
+        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
       </button>
     </div>
   </div>
@@ -100,7 +97,6 @@ export default {
     periods: [],
     changedPeriod: false,
     loading: false,
-    changes: false,
     icons,
     isLoadingDetails: false,
   }),
@@ -123,9 +119,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
     async update() {
       this.loading = true;
       try {
@@ -151,7 +144,6 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false;
     },
     async archive() {
       this.loading = true;
@@ -167,7 +159,6 @@ export default {
       }
 
       this.loading = false;
-      this.changes = false;
     },
 
     async restore() {
@@ -177,16 +168,6 @@ export default {
         this.$toasted.show(this.$t('toaster.restored'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.restore', { document: this.objective.id }));
-      }
-    },
-
-    async deleteDeep() {
-      try {
-        await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
-        await Objective.deleteDeep(this.objective.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: this.objective.name }));
       }
     },
   },
@@ -216,6 +197,21 @@ export default {
   @media screen and (min-width: bp(xl)) {
     width: span(3, 0, span(10));
     margin-left: span(1, 2, span(10));
+  }
+
+  .btn--pri {
+    color: var(--color-text);
+    background: var(--color-green);
+  }
+
+  .btn--archive {
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

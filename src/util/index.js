@@ -1,4 +1,3 @@
-export { default as api } from './axios';
 export { dateLong } from './format';
 export { dateShort } from './format';
 export { dateTimeShort } from './format';

@@ -15,18 +15,22 @@ const { param, body, matchedData } = validator;
 
 router.post(
   '/create',
-  body('email').isEmail().trim().escape().normalizeEmail(),
+  body('email')
+    .isEmail()
+    .trim()
+    .escape()
+    .normalizeEmail({ gmail_remove_dots: false }),
   async (req, res) => {
     const db = getFirestore();
     const sanitized = matchedData(req);
     const { email } = sanitized;
 
-    const { code, message } = await createAccessRequest(db, {
+    const result = await createAccessRequest(db, {
       email,
       created: Date.now(),
     });
 
-    return res.status(code).send(message);
+    return res.status(result.code).json(result);
   }
 );
 
@@ -39,9 +43,9 @@ router.post(
     const sanitized = matchedData(req);
     const { id } = sanitized;
 
-    const { code, message } = await acceptAccessRequest(db, id);
+    const result = await acceptAccessRequest(db, id);
 
-    return res.status(code).send(message);
+    return res.status(result.code).json(result);
   }
 );
 
@@ -54,9 +58,9 @@ router.delete(
     const sanitized = matchedData(req);
     const { id } = sanitized;
 
-    const { code, message } = await rejectAccessRequest(db, id);
+    const result = await rejectAccessRequest(db, id);
 
-    return res.status(code).send(message);
+    return res.status(result.code).json(result);
   }
 );
 

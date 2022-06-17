@@ -1,6 +1,6 @@
 <template>
   <div v-if="activeItem" class="wrapper">
-    <archived-restore v-if="activeItem.archived" :delete-deep="deleteDeep" :restore="restore" />
+    <archived-restore v-if="activeItem.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-item" @submit.prevent="handleSubmit(update)">
@@ -12,7 +12,6 @@
           rules="required"
           type="text"
           data-cy="org-name"
-          @edited-data="edit"
         />
 
         <label class="form-group">
@@ -26,7 +25,6 @@
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
-          @edited-data="edit"
         />
 
         <div v-if="type === 'department'" class="form-group">
@@ -36,7 +34,6 @@
             label="name"
             :options="organizations"
             :clearable="false"
-            @input="edit"
           />
         </div>
 
@@ -47,7 +44,6 @@
             label="name"
             :options="departments"
             :clearable="false"
-            @input="edit"
           ></v-select>
         </div>
 
@@ -58,7 +54,6 @@
             multiple
             :options="users"
             :get-option-label="(option) => option.displayName || option.id"
-            @input="edit"
           >
             <template #option="option">
               {{ option.displayName || option.id }}
@@ -70,19 +65,19 @@
         <label class="form-group">
           <span class="form-label">{{ $t('fields.secret') }}</span>
           <span class="form-help" v-html="$t('admin.apiSecret')"></span>
-          <input v-model="activeItem.secret" type="text" class="form__field" @input="edit" />
+          <input v-model="activeItem.secret" type="text" class="form__field" />
         </label>
       </form>
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading || !changes">
+      <button v-if="!activeItem.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
+        <i class="icon fa fa-fw fa-trash" />
+        {{ $t('btn.delete') }}
+      </button>
+      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading">
         <i class="icon fa fa-fw fa-save" />
         {{ $t('btn.saveChanges') }}
-      </button>
-      <button v-if="!activeItem.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.archive') }}
       </button>
     </div>
   </div>
@@ -105,7 +100,6 @@ export default {
 
   data: () => ({
     loading: false,
-    changes: false,
   }),
 
   computed: {
@@ -120,9 +114,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
     async update() {
       this.loading = true;
       try {
@@ -151,7 +142,6 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
-        this.changes = false;
       }
     },
 
@@ -181,7 +171,6 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
-        this.changes = false;
       }
     },
 
@@ -204,31 +193,6 @@ export default {
         throw new Error(error.message);
       } finally {
         this.loading = false;
-        this.changes = false;
-      }
-    },
-
-    async deleteDeep() {
-      this.loading = true;
-
-      try {
-        if (this.type === 'organization') {
-          await Organization.deleteDeep(this.activeItem.id);
-        } else if (this.type === 'department') {
-          await Department.deleteDeep(this.activeItem.id);
-        } else if (this.type === 'product') {
-          await Product.deleteDeep(this.activeItem.id);
-        }
-
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
-        await this.$router.push('/');
-        // TODO: Refresh store and sidebar navigation tree
-      } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: this.activeItem.name }));
-        throw new Error(error.message);
-      } finally {
-        this.loading = false;
-        this.changes = false;
       }
     },
   },
@@ -248,6 +212,21 @@ export default {
 
   @media screen and (min-width: bp(xl)) {
     width: span(6, 0, span(10));
+  }
+
+  .btn--pri {
+    color: var(--color-text);
+    background: var(--color-green);
+  }
+
+  .btn--archive {
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

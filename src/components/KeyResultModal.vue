@@ -2,7 +2,7 @@
   <div class="overlay">
     <div class="modal modal__key-result">
       <div class="modal__header">
-        <h2 class="title-2" style="text-transform: uppercase">Ny verdi</h2>
+        <h2 class="title-2" style="text-transform: uppercase">{{ $t('keyResult.newValue') }}</h2>
         <button class="btn btn--ter btn--close btn--icon btn--icon-pri" @click="close">
           <i class="fa fa-times" />
         </button>
@@ -17,7 +17,6 @@
               style="margin-top: 0.5rem"
               :placeholder="$t('keyResult.commentPlaceholder')"
               rows="3"
-              @input="edit"
             />
           </label>
 
@@ -25,7 +24,7 @@
             <validation-provider v-slot="{ errors }" name="value" rules="required">
               <label class="form-group">
                 <span class="form-label">{{ $t('keyResult.newValue') }}</span>
-                <input v-model="value" style="margin-top: 0.25rem" type="number" step="any" @input="edit" />
+                <input v-model="value" style="margin-top: 0.25rem" type="number" step="any" />
                 <span class="form-field--error">{{ errors[0] }}</span>
               </label>
             </validation-provider>
@@ -33,14 +32,13 @@
         </form>
       </validation-observer>
       <div class="modal__footer">
-        <button form="modal" :disabled="loading || (!changes && !unsavedValues)" class="btn btn--ods">Oppdater</button>
+        <button form="modal" :disabled="loading" class="btn btn--ods">{{ $t('btn.saveChanges') }}</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import locale from 'flatpickr/dist/l10n/no';
 import Progress from '@/db/Progress';
 
 export default {
@@ -50,18 +48,13 @@ export default {
     keyResult: {
       type: Object,
       required: true,
-    },
-    unsavedValues: {
-      type: Boolean,
-      required: false,
-    },
+    }
   },
 
   data: () => ({
     note: '',
     value: 0,
     loading: false,
-    changes: false,
   }),
 
   watch: {
@@ -74,10 +67,6 @@ export default {
   },
 
   methods: {
-    edit() {
-      this.changes = true;
-    },
-
     close() {
       this.$emit('close');
     },
@@ -95,7 +84,6 @@ export default {
         this.$toasted.error(this.$t('toaster.error.progression'));
       }
       this.loading = false;
-      this.changes = false;
       this.$emit('close');
     },
   },

@@ -10,10 +10,6 @@
           <i class="icon fa fa-trash-restore-alt" />
           {{ $t('btn.restore') }}
         </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep">
-          <i class="icon fa fa-exclamation-triangle" />
-          {{ $t('btn.deletePermanently') }}
-        </button>
       </div>
     </div>
   </div>
@@ -25,10 +21,6 @@ export default {
 
   props: {
     restore: {
-      type: Function,
-      required: true,
-    },
-    deleteDeep: {
       type: Function,
       required: true,
     },

@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [2.7.5] 2022-06-17
+
+### Changes
+
+- Made archive options less prominent
+- Made profile view as a right drawer
+- Remove unused dependencies.
+- Add rate limit to backend route handler.
+- Use fetch instead of axios.
+- Remove unused code for image upload.
+
+### Fixes
+
+- Fix can't read property position of null error for unauthenticated users.
+- Set normalizeEmail gmail_remove_dots option to false
+- Enable wrongly disabled update key result button
+
 ## [2.7.4] 2022-03-31
 
 ### Fixed
