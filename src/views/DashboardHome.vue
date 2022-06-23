@@ -3,15 +3,21 @@
     <div class="dashboard__contentWrapper">
       <aside class="dashboard__aside">
         <widget-mission-statement />
-        <div v-if="isPOCDepartment">
-          <widget-wrapper :title="$t('dashboard.targetAudience')">
+        <div>
+          <widget-wrapper
+            v-if="isPOCDepartment"
+            :title="$t('dashboard.targetAudience')"
+          >
             Frivillige lag og organisasjoner som trenger lokaler til sin
             aktivitet Innbyggere som benytter seg av kommunens meråpne tjenester
             Ansatte i de meråpne tjenestene, samt ansatte i virksomheter som
             låner/leier ut lokaler
           </widget-wrapper>
 
-          <div class="dashboard__productSection">
+          <div
+            v-if="filteredProducts.length > 0"
+            class="dashboard__productSection"
+          >
             <div class="title-3">{{ $t('general.products') }}</div>
             <widget-wrapper
               v-for="product in filteredProducts"
@@ -69,6 +75,7 @@ import { mapState } from 'vuex';
 import { extent } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
+import getActiveItemType from '@/util/getActiveItemType';
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
@@ -112,6 +119,7 @@ export default {
 
   data: () => ({
     resultIndicator: null,
+    activeItemType: null,
     progressCollection: [],
     isPOCDepartment: false,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
@@ -168,10 +176,14 @@ export default {
     },
     activeItem: {
       immediate: true,
-      handler({ slug }) {
+      handler(item) {
+        const { slug } = item;
+
+        this.activeItemType = getActiveItemType(item);
+        this.filterProducts();
+
         if (POC_DEPARTMENTS.includes(slug)) {
           this.isPOCDepartment = true;
-          this.filterProducts();
         }
       },
     },
@@ -186,9 +198,11 @@ export default {
       this.activeTab = tabIndex;
     },
     filterProducts() {
-      this.filteredProducts = this.products.filter(
-        (product) => product.organization.id === this.activeItem.id
-      );
+      if (this.activeItemType === 'department') {
+        this.filteredProducts = this.products.filter(
+          (product) => product.department.id === this.activeItem.id
+        );
+      }
     },
     async getProgressData() {
       const collection = db
