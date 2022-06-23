@@ -15,7 +15,11 @@ const { param, body, matchedData } = validator;
 
 router.post(
   '/create',
-  body('email').isEmail().trim().escape().normalizeEmail(),
+  body('email')
+    .isEmail()
+    .trim()
+    .escape()
+    .normalizeEmail({ gmail_remove_dots: false }),
   async (req, res) => {
     const db = getFirestore();
     const sanitized = matchedData(req);
