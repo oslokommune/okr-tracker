@@ -2,15 +2,31 @@
   <aside v-if="activeItem">
     <div class="widgets">
       <widget-admin />
-      <widget-progression
-        :type="$route.name === 'ItemHome' ? 'period' : 'objective'"
-        :dimmed="$route.name !== 'ItemHome'"
-      />
+      <widget-wrapper
+        :title="
+          $t(
+            `widget.progression.${
+              $route.name === 'ItemHome' ? 'period' : 'objective'
+            }`
+          )
+        "
+      >
+        <progression-chart
+          :progression="
+            $route.name === 'ItemHome'
+              ? activePeriod.progression
+              : activeObjective.progression
+          "
+          :dimmed="dimmed"
+        />
+      </widget-wrapper>
       <widget-mission-statement />
       <widget-team />
       <widget-child-items />
       <widget-weights
-        :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
+        :active-item="
+          $route.name === 'ItemHome' ? activePeriod : activeObjective
+        "
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
         :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"
       />
@@ -21,7 +37,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import WidgetProgression from '@/components/widgets/WidgetProgression.vue';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetChildItems from '@/components/widgets/WidgetChildItems.vue';
@@ -34,7 +49,8 @@ export default {
 
   components: {
     WidgetMissionStatement,
-    WidgetProgression,
+    ProgressionChart: () => import('@/components/ProgressionChart.vue'),
+    WidgetWrapper: () => import('./WidgetWrapper.vue'),
     WidgetTeam,
     WidgetChildItems,
     WidgetWeights,
@@ -43,7 +59,13 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'activePeriod', 'objectives', 'keyResults', 'activeObjective']),
+    ...mapState([
+      'activeItem',
+      'activePeriod',
+      'objectives',
+      'keyResults',
+      'activeObjective',
+    ]),
   },
 };
 </script>

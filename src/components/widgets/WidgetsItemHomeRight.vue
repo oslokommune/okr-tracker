@@ -2,9 +2,28 @@
   <aside v-if="activeItem">
     <div class="widgets">
       <widget-admin />
-      <widget-progression type="period" />
+      <widget-wrapper
+        :title="
+          $t(
+            `widget.progression.${
+              $route.name === 'ItemHome' ? 'period' : 'objective'
+            }`
+          )
+        "
+      >
+        <progression-chart
+          :progression="
+            $route.name === 'ItemHome'
+              ? activePeriod.progression
+              : activeObjective.progression
+          "
+          :dimmed="dimmed"
+        />
+      </widget-wrapper>
       <widget-weights
-        :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
+        :active-item="
+          $route.name === 'ItemHome' ? activePeriod : activeObjective
+        "
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
         :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"
       />
@@ -19,7 +38,8 @@ export default {
   name: 'WidgetsItemHomeRight',
 
   components: {
-    WidgetProgression: () => import('./WidgetProgression.vue'),
+    WidgetWrapper: () => import('./WidgetWrapper.vue'),
+    ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetAdmin: () => import('./WidgetAdmin.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
   },
@@ -29,7 +49,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'activePeriod', 'activeObjective', 'objectives', 'keyResults']),
+    ...mapState([
+      'activeItem',
+      'activePeriod',
+      'activeObjective',
+      'objectives',
+      'keyResults',
+    ]),
   },
 
   watch: {
