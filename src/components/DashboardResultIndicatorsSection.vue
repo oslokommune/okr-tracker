@@ -164,6 +164,10 @@ export default {
     display: flex;
     justify-content: space-between;
 
+    .title-3 {
+      color: var(--color-text);
+    }
+
     .v-select {
       min-width: 160px;
     }

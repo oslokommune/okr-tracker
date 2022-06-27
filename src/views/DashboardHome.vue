@@ -1,66 +1,97 @@
 <template>
-  <div ref="dashboard" class="dashboard">
-    <div class="dashboard__contentWrapper">
-      <aside class="dashboard__aside">
-        <widget-mission-statement />
-        <div>
-          <widget-wrapper
-            v-if="isPOCDepartment"
-            :title="$t('dashboard.targetAudience')"
+  <main class="dashboard">
+    <dashboard-section>
+      <template #title>
+        <h2 class="title-1">
+          {{ $t('general.resultIndicator') }}
+        </h2>
+      </template>
+      <template #content>
+        <dashboard-result-indicators-section />
+      </template>
+    </dashboard-section>
+    <dashboard-section>
+      <template #title>
+        <h2 class="title-1">
+          {{ $t('general.departmentObjectives') }}
+        </h2>
+      </template>
+      <template #content>
+        <ul class="dashboard__objectivesList">
+          <li
+            v-for="objective in objectives"
+            :key="objective.id"
+            class="dashboard__objective"
           >
-            Frivillige lag og organisasjoner som trenger lokaler til sin
-            aktivitet Innbyggere som benytter seg av kommunens meråpne tjenester
-            Ansatte i de meråpne tjenestene, samt ansatte i virksomheter som
-            låner/leier ut lokaler
-          </widget-wrapper>
-
-          <div
-            v-if="filteredProducts.length > 0"
-            class="dashboard__productSection"
-          >
-            <div class="title-3">{{ $t('general.products') }}</div>
-            <widget-wrapper
-              v-for="product in filteredProducts"
-              :key="product.id"
-              :title="product.name"
-            >
-              {{ product.missionStatement }}
-            </widget-wrapper>
-          </div>
-        </div>
-      </aside>
-      <main class="dashboard__main">
-        <dashboard-section>
-          <template #title>
-            <h2 class="title-1">
-              {{ $t('general.resultIndicator') }}
-            </h2>
-          </template>
-          <template #content>
-            <dashboard-result-indicators-section />
-          </template>
-        </dashboard-section>
-        <dashboard-section>
-          <template #title>
-            <h2 class="title-1">
-              {{ $t('general.departmentObjectives') }}
-            </h2>
-          </template>
-          <template #content>
-            <ul class="dashboard__objectivesList">
-              <li
-                v-for="objective in objectives"
-                :key="objective.id"
-                class="dashboard__objective"
+            <objective-progression :objective="objective" />
+          </li>
+        </ul>
+      </template>
+    </dashboard-section>
+    <div class="dashboard__departmentInfo">
+      <dashboard-section>
+        <template #content>
+          <div class="dashboard__departmentInfoWrapper">
+            <div class="dashboard__departmentInfoBoxes">
+              <h4 class="title-4">{{ $t('general.departmentAbout') }}</h4>
+              <dashboard-department-info-box
+                :icon="() => null"
+                :title="$t('document.mission')"
               >
-                <objective-progression :objective="objective" />
-              </li>
-            </ul>
-          </template>
-        </dashboard-section>
-      </main>
+                <HTML-output :html="activeItem.missionStatement" />
+              </dashboard-department-info-box>
+              <dashboard-department-info-box
+                v-if="isPOCDepartment"
+                :title="$t('dashboard.targetAudience')"
+              >
+                <div>
+                  Frivillige lag og organisasjoner som trenger lokaler til sin
+                  aktivitet Innbyggere som benytter seg av kommunens meråpne
+                  tjenester Ansatte i de meråpne tjenestene, samt ansatte i
+                  virksomheter som låner/leier ut lokaler
+                </div>
+              </dashboard-department-info-box>
+            </div>
+            <div class="dashboard__departmentInfoBoxes">
+              <h4 class="title-4">{{ $t('general.products') }}</h4>
+              <dashboard-department-info-box
+                v-for="product in filteredProducts"
+                :key="product.id"
+                :icon="() => null"
+                :title="product.name"
+              >
+                <HTML-output :html="product.missionStatement" />
+              </dashboard-department-info-box>
+            </div>
+          </div>
+        </template>
+      </dashboard-section>
     </div>
-  </div>
+    <dashboard-section class="dashboard__heyThereSection">
+      <template #title>
+        <h2 class="title-2">
+          <icon-heart-hand />{{ $t('dashboard.heyThere') }}
+        </h2>
+      </template>
+      <template #content>
+        <div class="dashboard__contactUs">
+          Dette dashboardet er et produkt under regi av team Dataspeilet, med
+          hensikt å synliggjøre verdien av Origo. Dersom du har spørsmål,
+          innspill eller tilbakemeldinger, er det bare å ta kontakt med vår
+          teamlead
+          <a href="mailto:charlotte.frisk@origo.oslo.kommune.no">
+            Charlotte Frisk
+          </a>
+          eller skrive til oss i
+          <a
+            href="https://join.slack.com/share/enQtMzc0ODU4MzYyODg0OC1iY2MzZGI2YTVhMGJjZDQxN2Q4ZGY0NDMxNDNlZWYzYzg0NDRhZWM0NDgyZDkwZjVjNDEwMzA3NmYzNDAzM2Fm"
+          >
+            #origo-dataspeilet </a
+          >.
+        </div>
+      </template>
+    </dashboard-section>
+  </main>
 </template>
 
 <script>
@@ -68,19 +99,22 @@ import { mapState } from 'vuex';
 import getActiveItemType from '@/util/getActiveItemType';
 import DashboardSection from './DashboardSection.vue';
 import DashboardResultIndicatorsSection from '../components/DashboardResultIndicatorsSection.vue';
+import DashboardDepartmentInfoBox from '../components/DashboardDepartmentInfoBox.vue';
+import HTMLOutput from '../components/HTMLOutput.vue';
+import IconHeartHand from '../components/IconHeartHand.vue';
 
-const POC_DEPARTMENTS = ['apen-by', 'origo'];
+const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
 
 export default {
   name: 'DashboardHome',
   components: {
-    WidgetMissionStatement: () =>
-      import('@/components/widgets/WidgetMissionStatement.vue'),
-    WidgetWrapper: () => import('@/components/widgets/WidgetWrapper.vue'),
     ObjectiveProgression: () =>
       import('@/components/widgets/ObjectiveProgression.vue'),
     DashboardSection,
     DashboardResultIndicatorsSection,
+    DashboardDepartmentInfoBox,
+    HTMLOutput,
+    IconHeartHand,
   },
 
   data: () => ({
@@ -122,80 +156,6 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard {
-  padding: 1rem;
-
-  &__contentWrapper {
-    display: flex;
-  }
-
-  &__aside {
-    margin-right: 2.5rem;
-    flex: 0 0 calc(20% - 1.25rem);
-  }
-
-  &__productSection {
-    margin-top: 1rem;
-
-    & .title-2 {
-      color: var(--color-text);
-    }
-  }
-
-  &__main {
-    flex: 0 0 calc(80% - 1.25rem);
-  }
-
-  &__section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background: var(--color-white);
-
-    & .title-1,
-    & .title-2 {
-      color: var(--color-text);
-      font-weight: 500;
-    }
-  }
-
-  &__sectionHeader {
-    display: flex;
-    justify-content: space-between;
-
-    & .v-select {
-      min-width: 10rem;
-    }
-  }
-
-  &__resultIndicators {
-    & .title-1 {
-      margin: 0 0 1.5rem 0;
-    }
-  }
-
-  hr {
-    margin: 1.75rem 0 2.5rem 0;
-    border-top: 0.125rem solid #f2f2f2;
-  }
-
-  &__objectives {
-    & .title-1 {
-      margin: 0 0 1rem 0;
-    }
-  }
-
-  &__container {
-    margin-top: 1rem;
-  }
-
-  &__kpiList {
-    display: grid;
-    grid-gap: 0.25rem;
-
-    @media screen and (min-width: bp(m)) {
-      grid-template-columns: repeat(3, minmax(10rem, 1fr));
-    }
-  }
-
   &__objectivesList {
     margin: -0.5rem;
     display: flex;
@@ -208,6 +168,49 @@ export default {
     display: flex;
     flex: 0 0 calc(25% - 1rem);
     background: var(--color-white);
+  }
+
+  &__departmentInfo {
+    overflow: auto;
+    background: #f1fdff;
+  }
+
+  &__departmentInfoWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__departmentInfoBoxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex: 0 0 calc(50% - 4.25rem);
+
+    .title-4 {
+      margin-bottom: 1.5rem;
+      flex: 100%;
+      color: var(--color-text);
+    }
+  }
+
+  &__heyThereSection {
+    margin: 2.5rem auto 0;
+    padding-bottom: 4rem;
+
+    .title-2 {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  &__contactUs {
+    width: 50%;
   }
 }
 </style>

@@ -123,7 +123,8 @@
     "emptyHome": "Vennligst velg en etat fra listen.",
     "api": "API",
     "resultIndicator": "Resultatindikator",
-    "departmentObjectives": "Områdets mål"
+    "departmentObjectives": "Områdets mål",
+    "departmentAbout": "Om produktområdet"
   },
   "btn": {
     "close": "Lukk",
@@ -512,7 +513,8 @@
     "problemDescription": "Problembeskrivelse",
     "targetAudience": "Målgruppe",
     "missionStatement": "Oppdrag",
-    "effect": "Effekt"
+    "effect": "Effekt",
+    "heyThere": "Hei der!"
   },
   "languages": {
     "en-US": "Engelsk",

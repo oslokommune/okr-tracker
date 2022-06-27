@@ -120,13 +120,15 @@
     "keyResult": "Key result",
     "period": "Period",
     "back": "back",
+
     "frontPage": "Front page",
     "signIn": "Please sign in",
     "orgs": "Organizations",
     "emptyHome": "Please pick an organization.",
     "api": "API",
     "resultIndicator": "Result indicator",
-    "departmentObjectives": "Department objectives"
+    "departmentObjectives": "Department objectives",
+    "departmentAbout": "About"
   },
   "btn": {
     "close": "Close",
@@ -516,7 +518,8 @@
     "problemDescription": "Problem description",
     "targetAudience": "Target audience",
     "missionStatement": "Mission",
-    "effect": "Effect"
+    "effect": "Effect",
+    "heyThere": "Hey there!"
   },
   "languages": {
     "en-US": "English",
