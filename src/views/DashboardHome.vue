@@ -38,12 +38,18 @@
                 :icon="() => null"
                 :title="$t('document.mission')"
               >
+                <template #icon>
+                  <icon-hands-globe />
+                </template>
                 <HTML-output :html="activeItem.missionStatement" />
               </dashboard-department-info-box>
               <dashboard-department-info-box
                 v-if="isPOCDepartment"
                 :title="$t('dashboard.targetAudience')"
               >
+                <template #icon>
+                  <icon-two-people-dancing />
+                </template>
                 <div>
                   Frivillige lag og organisasjoner som trenger lokaler til sin
                   aktivitet Innbyggere som benytter seg av kommunens meråpne
@@ -102,6 +108,8 @@ import DashboardResultIndicatorsSection from '../components/DashboardResultIndic
 import DashboardDepartmentInfoBox from '../components/DashboardDepartmentInfoBox.vue';
 import HTMLOutput from '../components/HTMLOutput.vue';
 import IconHeartHand from '../components/IconHeartHand.vue';
+import IconHandsGlobe from '../components/IconHandsGlobe.vue';
+import IconTwoPeopleDancing from '../components/IconTwoPeopleDancing.vue';
 
 const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
 
@@ -115,6 +123,8 @@ export default {
     DashboardDepartmentInfoBox,
     HTMLOutput,
     IconHeartHand,
+    IconHandsGlobe,
+    IconTwoPeopleDancing,
   },
 
   data: () => ({

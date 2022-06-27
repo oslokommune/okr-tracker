@@ -1,6 +1,6 @@
 <template>
   <div class="dashboardDepartmentInfoBox">
-    <h3 class="title-2">{{ title }}</h3>
+    <h3 class="title-2"><slot name="icon" />{{ title }}</h3>
     <slot />
   </div>
 </template>
@@ -33,6 +33,12 @@ export default {
 
   .title-2 {
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 0.5rem;
+    }
   }
 }
 </style>
