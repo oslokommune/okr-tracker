@@ -30,29 +30,16 @@
         </div>
       </aside>
       <main class="dashboard__main">
-        <section
-          v-if="resultIndicator"
-          class="dashboard__section dashboard__resultIndicators"
-        >
-          <div class="dashboard__sectionHeader">
-            <h2 class="title-1">{{ $t('general.resultIndicator') }}</h2>
-            <div>
-              <h3 class="title-2">Progressjon</h3>
-              <v-select
-                label="name"
-                :options="resultIndicatorPeriods"
-                :value="currentResultIndicatorPeriod"
-                :components="{ Deselect: null }"
-                @input="setCurrentResultIndicatorPeriod"
-              />
-            </div>
-          </div>
-          <hr />
-          <div class="dashboard__container">
-            <h3 class="title-3">{{ resultIndicator.name }}</h3>
-            <svg ref="progressGraphSvg" />
-          </div>
-        </section>
+        <dashboard-section>
+          <template #title>
+            <h2 class="title-1">
+              {{ $t('general.resultIndicator') }}
+            </h2>
+          </template>
+          <template #content>
+            <dashboard-result-indicators-section />
+          </template>
+        </dashboard-section>
         <section class="dashboard__section dashboard__objectives">
           <h2 class="title-1">Områdets mål</h2>
           <ul class="dashboard__objectivesList">
@@ -72,108 +59,34 @@
 
 <script>
 import { mapState } from 'vuex';
-import { extent } from 'd3-array';
-import { db } from '@/config/firebaseConfig';
-import LineChart from '@/util/LineChart';
 import getActiveItemType from '@/util/getActiveItemType';
+import DashboardSection from './DashboardSection.vue';
+import DashboardResultIndicatorsSection from '../components/DashboardResultIndicatorsSection.vue';
 
-const getResultIndicatorPeriods = () => {
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-
-  return {
-    quarter: {
-      name: '1. kvartal',
-      value: 'quarter',
-      startDate: new Date(currentYear, 0, 1),
-      endDate: new Date(currentYear, 2, 31),
-    },
-    tertial: {
-      name: 'tertial',
-      value: 'tertial',
-      startDate: new Date(currentYear, 0, 1),
-      endDate: new Date(currentYear, 3, 30),
-    },
-    year: {
-      name: 'hittil i år',
-      value: 'year',
-      startDate: new Date(currentYear, 0, 1),
-      endDate: currentDate,
-    },
-  };
-};
-
-const RESULT_INDICATOR_PERIODS = getResultIndicatorPeriods();
 const POC_DEPARTMENTS = ['apen-by', 'origo'];
 
 export default {
   name: 'DashboardHome',
-
   components: {
     WidgetMissionStatement: () =>
       import('@/components/widgets/WidgetMissionStatement.vue'),
     WidgetWrapper: () => import('@/components/widgets/WidgetWrapper.vue'),
     ObjectiveProgression: () =>
       import('@/components/widgets/ObjectiveProgression.vue'),
+    DashboardSection,
+    DashboardResultIndicatorsSection,
   },
 
   data: () => ({
-    resultIndicator: null,
     activeItemType: null,
-    progressCollection: [],
-    isPOCDepartment: false,
-    resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
-      (period) => period
-    ),
-    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.quarter,
     filteredProducts: [],
   }),
 
   computed: {
-    ...mapState([
-      'activeItem',
-      'objectives',
-      'kpis',
-      'theme',
-      'departments',
-      'products',
-    ]),
+    ...mapState(['activeItem', 'objectives', 'departments', 'products']),
   },
 
   watch: {
-    $route: {
-      immediate: true,
-      async handler(current) {
-        const { resultIndicatorPeriod } = current.query;
-
-        if (resultIndicatorPeriod) {
-          this.currentResultIndicatorPeriod =
-            RESULT_INDICATOR_PERIODS[resultIndicatorPeriod];
-        }
-      },
-    },
-    currentResultIndicatorPeriod() {
-      this.getProgressData(this.resultIndicator.id);
-    },
-    kpis: {
-      immediate: true,
-      async handler([resultIndicator]) {
-        if (resultIndicator) {
-          this.resultIndicator = resultIndicator;
-        }
-      },
-    },
-    resultIndicator: {
-      immediate: true,
-      handler(resultIndicator) {
-        if (resultIndicator) {
-          this.getProgressData();
-        }
-      },
-    },
-    progressCollection() {
-      this.renderGraph();
-    },
     activeItem: {
       immediate: true,
       handler(item) {
@@ -189,75 +102,12 @@ export default {
     },
   },
 
-  mounted() {
-    // this.enterFullscreen();
-  },
-
   methods: {
-    setActiveTab(tabIndex) {
-      this.activeTab = tabIndex;
-    },
     filterProducts() {
       if (this.activeItemType === 'department') {
         this.filteredProducts = this.products.filter(
           (product) => product.department.id === this.activeItem.id
         );
-      }
-    },
-    async getProgressData() {
-      const collection = db
-        .collection(`kpis/${this.resultIndicator.id}/progress`)
-        .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
-        .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
-        .orderBy('timestamp', 'desc');
-
-      await this.$bind('progressCollection', collection);
-    },
-    setCurrentResultIndicatorPeriod(selectedPeriod) {
-      this.currentResultIndicatorPeriod = selectedPeriod;
-      this.$router.push({
-        query: { resultIndicatorPeriod: selectedPeriod.value },
-      });
-    },
-    renderGraph() {
-      if (!this.graph) {
-        this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          colorMode: this.theme,
-        });
-      }
-
-      const [startValue, targetValue] = extent(
-        this.progressCollection.map(({ value }) => value)
-      );
-      const [startDate, endDate] = extent(
-        this.progressCollection.map(({ timestamp }) => timestamp)
-      );
-
-      this.graph.render({
-        obj: {
-          startValue,
-          targetValue,
-        },
-        period: {
-          startDate,
-          endDate,
-        },
-        progressionList: this.progressCollection,
-        item: this.kpis[0],
-        theme: this.theme,
-      });
-    },
-    enterFullscreen() {
-      const elem = this.$refs.dashboard;
-
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
       }
     },
   },
