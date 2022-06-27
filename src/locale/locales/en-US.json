@@ -125,7 +125,8 @@
     "orgs": "Organizations",
     "emptyHome": "Please pick an organization.",
     "api": "API",
-    "resultIndicator": "Result indicator"
+    "resultIndicator": "Result indicator",
+    "departmentObjectives": "Department objectives"
   },
   "btn": {
     "close": "Close",

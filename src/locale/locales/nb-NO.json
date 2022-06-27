@@ -122,7 +122,8 @@
     "orgs": "Virksomheter",
     "emptyHome": "Vennligst velg en etat fra listen.",
     "api": "API",
-    "resultIndicator": "Resultatindikator"
+    "resultIndicator": "Resultatindikator",
+    "departmentObjectives": "Områdets mål"
   },
   "btn": {
     "close": "Lukk",

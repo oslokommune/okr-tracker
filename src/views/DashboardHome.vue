@@ -40,18 +40,24 @@
             <dashboard-result-indicators-section />
           </template>
         </dashboard-section>
-        <section class="dashboard__section dashboard__objectives">
-          <h2 class="title-1">Områdets mål</h2>
-          <ul class="dashboard__objectivesList">
-            <li
-              v-for="objective in objectives"
-              :key="objective.id"
-              class="dashboard__objective"
-            >
-              <objective-progression :objective="objective" />
-            </li>
-          </ul>
-        </section>
+        <dashboard-section>
+          <template #title>
+            <h2 class="title-1">
+              {{ $t('general.departmentObjectives') }}
+            </h2>
+          </template>
+          <template #content>
+            <ul class="dashboard__objectivesList">
+              <li
+                v-for="objective in objectives"
+                :key="objective.id"
+                class="dashboard__objective"
+              >
+                <objective-progression :objective="objective" />
+              </li>
+            </ul>
+          </template>
+        </dashboard-section>
       </main>
     </div>
   </div>
@@ -197,18 +203,11 @@ export default {
   }
 
   &__objective {
-    display: flex;
-    margin-bottom: 0.5rem;
-    flex: 0 0 calc(25% - 1rem);
     margin: 0.5rem;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-
-    & .widget {
-      align-self: stretch;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+    padding: 1rem;
+    display: flex;
+    flex: 0 0 calc(25% - 1rem);
+    background: var(--color-white);
   }
 }
 </style>
