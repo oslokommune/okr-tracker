@@ -81,18 +81,18 @@
       </template>
       <template #content>
         <div class="dashboard__contactUs">
-          Dette dashboardet er et produkt under regi av team Dataspeilet, med
-          hensikt å synliggjøre verdien av Origo. Dersom du har spørsmål,
-          innspill eller tilbakemeldinger, er det bare å ta kontakt med vår
-          teamlead
+          Dette dashboardet er et produkt under regi av team
+          <strong>Dataspeilet</strong>, med hensikt å synliggjøre verdien av
+          Origo. Dersom du har spørsmål, innspill eller tilbakemeldinger, er det
+          bare å ta kontakt med vår teamlead
           <a href="mailto:charlotte.frisk@origo.oslo.kommune.no">
-            Charlotte Frisk
+            <strong>Charlotte Frisk</strong>
           </a>
           eller skrive til oss i
           <a
             href="https://join.slack.com/share/enQtMzc0ODU4MzYyODg0OC1iY2MzZGI2YTVhMGJjZDQxN2Q4ZGY0NDMxNDNlZWYzYzg0NDRhZWM0NDgyZDkwZjVjNDEwMzA3NmYzNDAzM2Fm"
           >
-            #origo-dataspeilet </a
+            <strong>#origo-dataspeilet</strong> </a
           >.
         </div>
       </template>
@@ -207,6 +207,9 @@ export default {
   &__heyThereSection {
     margin: 2.5rem auto 0;
     padding-bottom: 4rem;
+    color: var(--color-text);
+    font-weight: 500;
+    line-height: 1.25rem;
 
     .title-2 {
       margin-bottom: 1.5rem;
