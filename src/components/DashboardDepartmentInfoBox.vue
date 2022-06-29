@@ -12,7 +12,8 @@ export default {
   props: {
     icon: {
       type: Function,
-      required: true,
+      required: false,
+      default: null,
     },
     title: {
       type: String,
