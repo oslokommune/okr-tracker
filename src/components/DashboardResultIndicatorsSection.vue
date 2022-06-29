@@ -1,7 +1,12 @@
 <template>
   <div class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
-      <h3 class="title-3">{{ resultIndicator.name }}</h3>
+      <tabs-list
+        :tabs="resultIndicators.map((resultIndicator) => resultIndicator.name)"
+        :active-tab="activeTab"
+        :set-active-tab="setActiveTab"
+        aria-label="Velg resultatindikator"
+      />
       <v-select
         label="name"
         :options="resultIndicatorPeriods"
@@ -11,7 +16,9 @@
         @input="setCurrentResultIndicatorPeriod"
       />
     </div>
-    <svg ref="progressGraphSvg" />
+    <tabs-panel :active-tab="activeTab">
+      <svg ref="progressGraphSvg" />
+    </tabs-panel>
   </div>
 </template>
 
@@ -21,6 +28,8 @@ import { extent } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
 import IconChevronThinDown from './IconChevronThinDown.vue';
+import TabsList from './TabsList.vue';
+import TabsPanel from './TabsPanel.vue';
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
@@ -53,8 +62,14 @@ const RESULT_INDICATOR_PERIODS = getResultIndicatorPeriods();
 export default {
   name: 'DashboardResultIndicatorsSection',
 
+  components: {
+    TabsList,
+    TabsPanel,
+  },
+
   data: () => ({
-    resultIndicator: null,
+    activeTab: 0,
+    resultIndicators: [],
     progressCollection: [],
     isPOCDepartment: false,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
@@ -81,22 +96,19 @@ export default {
       },
     },
     currentResultIndicatorPeriod() {
-      this.getProgressData(this.resultIndicator.id);
+      this.getProgressData(this.resultIndicators[this.activeTab].id);
     },
     kpis: {
       immediate: true,
-      async handler([resultIndicator]) {
-        if (resultIndicator) {
-          this.resultIndicator = resultIndicator;
-        }
+      async handler(kpis) {
+        this.resultIndicators = kpis;
+        this.getProgressData();
       },
     },
-    resultIndicator: {
+    activeTab: {
       immediate: true,
-      handler(resultIndicator) {
-        if (resultIndicator) {
-          this.getProgressData();
-        }
+      async handler() {
+        this.getProgressData();
       },
     },
     progressCollection() {
@@ -110,7 +122,7 @@ export default {
     },
     async getProgressData() {
       const collection = db
-        .collection(`kpis/${this.resultIndicator.id}/progress`)
+        .collection(`kpis/${this.resultIndicators[this.activeTab].id}/progress`)
         .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
         .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
         .orderBy('timestamp', 'desc');
@@ -147,7 +159,7 @@ export default {
           endDate,
         },
         progressionList: this.progressCollection,
-        item: this.kpis[0],
+        item: this.kpis[this.activeTab],
         theme: this.theme,
       });
     },
