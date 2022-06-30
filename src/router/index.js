@@ -113,7 +113,6 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/DashboardHome.vue'),
-        beforeEnter: routerGuards.dashboard,
       },
       {
         path: 'k/:keyResultId',
