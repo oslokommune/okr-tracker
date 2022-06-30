@@ -35,6 +35,7 @@
             <div class="dashboard__departmentInfoBoxes">
               <h4 class="title-4">{{ $t('general.departmentAbout') }}</h4>
               <dashboard-department-info-box
+                class="dashboard__departmentInfoBox"
                 :icon="() => null"
                 :title="$t('document.mission')"
               >
@@ -45,6 +46,7 @@
               </dashboard-department-info-box>
               <dashboard-department-info-box
                 v-if="isPOCDepartment"
+                class="dashboard__departmentInfoBox"
                 :title="$t('dashboard.targetAudience')"
               >
                 <template #icon>
@@ -62,6 +64,7 @@
               <h4 class="title-4">{{ $t('general.products') }}</h4>
               <dashboard-department-info-box
                 v-for="product in filteredProducts"
+                class="dashboard__departmentInfoBox"
                 :key="product.id"
                 :icon="() => null"
                 :title="product.name"
@@ -176,8 +179,16 @@ export default {
     margin: 0.5rem;
     padding: 1rem;
     display: flex;
-    flex: 0 0 calc(25% - 1rem);
+    flex: 0 0 calc(100% - 1rem);
     background: var(--color-white);
+
+    @media screen and (min-width: bp(s)) {
+      flex: 0 0 calc(50% - 1rem);
+    }
+
+    @media screen and (min-width: bp(m)) {
+      flex: 0 0 calc(25% - 1rem);
+    }
   }
 
   &__departmentInfo {
@@ -186,22 +197,38 @@ export default {
   }
 
   &__departmentInfoWrapper {
-    display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    @media screen and (min-width: bp(l)) {
+      display: flex;
+    }
   }
 
   &__departmentInfoBoxes {
-    display: flex;
+    margin: 3.5rem 0;
     flex-wrap: wrap;
     justify-content: space-between;
-    flex: 0 0 calc(50% - 4.25rem);
+    flex: 0 0 calc(50% - 3rem);
+
+    @media screen and (min-width: bp(s)) {
+      margin: 1rem 0;
+      display: flex;
+    }
+
+    @media screen and (min-width: bp(l)) {
+      flex: 0 0 calc(50% - 4.25rem);
+    }
 
     .title-4 {
       margin-bottom: 1.5rem;
       flex: 100%;
       color: var(--color-text);
     }
+  }
+
+  &__departmentInfoBox {
+    margin-bottom: 2rem;
   }
 
   &__heyThereSection {
@@ -223,7 +250,9 @@ export default {
   }
 
   &__contactUs {
-    width: 50%;
+    @media screen and (min-width: bp(m)) {
+      width: 50%;
+    }
   }
 }
 </style>
