@@ -131,7 +131,7 @@ export default {
     },
     setCurrentResultIndicatorPeriod(selectedPeriod) {
       this.currentResultIndicatorPeriod = selectedPeriod;
-      this.$router.push({
+      this.$router.replace({
         query: { resultIndicatorPeriod: selectedPeriod.value },
       });
     },
