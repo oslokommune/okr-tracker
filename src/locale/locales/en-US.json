@@ -103,7 +103,6 @@
     "admin": "Admin",
     "administration": "Administration",
     "superAdmin": "Super admin",
-    "dashboard": "View dashboard",
     "signOut": "Sign out",
     "createdBy": "Created by",
     "lastUpdate": "Updated",
@@ -294,7 +293,6 @@
   },
   "tooltip": {
     "openMenu": "Open menu",
-    "dashboard": "Go to dashboard",
     "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
