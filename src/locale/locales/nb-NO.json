@@ -100,7 +100,7 @@
     "admin": "Admin",
     "administration": "Administrasjon",
     "superAdmin": "Super admin",
-    "dashboard": "Vis dashboard",
+
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
     "lastUpdate": "Sist oppdatert",
@@ -294,7 +294,6 @@
   },
   "tooltip": {
     "openMenu": "Åpne meny",
-    "dashboard": "Gå til dashboard-visning",
     "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",

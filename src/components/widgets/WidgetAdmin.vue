@@ -8,7 +8,13 @@
         <li v-if="$route.name === 'ObjectiveHome'">
           <router-link
             class="admin__link"
-            :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective && activeObjective.id } }"
+            :to="{
+              name: 'ItemAdminOKRs',
+              query: {
+                type: 'objective',
+                id: activeObjective && activeObjective.id,
+              },
+            }"
           >
             {{ $t('objective.change') }}
           </router-link>
@@ -16,7 +22,13 @@
         <li v-if="$route.name === 'KeyResultHome'">
           <router-link
             class="admin__link"
-            :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult && activeKeyResult.id } }"
+            :to="{
+              name: 'ItemAdminOKRs',
+              query: {
+                type: 'keyResult',
+                id: activeKeyResult && activeKeyResult.id,
+              },
+            }"
           >
             {{ $t('keyResultPage.change') }}
           </router-link>
@@ -28,7 +40,11 @@
         </li>
         <template v-if="$route.name === 'ItemHome'">
           <li>
-            <router-link v-tooltip="$t('tooltip.editItem')" class="admin__link" :to="{ name: 'ItemAdmin' }">
+            <router-link
+              v-tooltip="$t('tooltip.editItem')"
+              class="admin__link"
+              :to="{ name: 'ItemAdmin' }"
+            >
               {{ $t('btn.editItem', { item: activeItem && activeItem.name }) }}
             </router-link>
           </li>
@@ -40,7 +56,10 @@
           <li>
             <router-link
               class="admin__link"
-              :to="{ name: 'ItemAdminOKRs', query: { type: 'period', id: activePeriod && activePeriod.id } }"
+              :to="{
+                name: 'ItemAdminOKRs',
+                query: { type: 'period', id: activePeriod && activePeriod.id },
+              }"
             >
               {{ $t('objective.add') }}
             </router-link>
@@ -54,7 +73,9 @@
               query: {
                 type: $route.name === 'ItemHome' ? 'period' : 'objective',
                 id:
-                  $route.name === 'ItemHome' ? activePeriod && activePeriod.id : activeObjective && activeObjective.id,
+                  $route.name === 'ItemHome'
+                    ? activePeriod && activePeriod.id
+                    : activeObjective && activeObjective.id,
               },
             }"
           >
@@ -62,15 +83,6 @@
           </router-link>
         </li>
       </template>
-      <li>
-        <router-link
-          v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
-          class="admin__link"
-          :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
-        >
-          <span class="admin__name">{{ $t('general.dashboard') }}</span>
-        </router-link>
-      </li>
     </ul>
   </section>
 </template>
@@ -87,7 +99,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activePeriod', 'user', 'activeItem', 'activeObjective', 'activeKeyResult']),
+    ...mapState([
+      'activePeriod',
+      'user',
+      'activeItem',
+      'activeObjective',
+      'activeKeyResult',
+    ]),
     ...mapGetters(['hasEditRights']),
   },
 
