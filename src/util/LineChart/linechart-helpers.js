@@ -13,6 +13,8 @@ export const colors = {
   },
 };
 
+export const DEFAULT_COLOR_MODE = 'blue';
+
 export function initSvg(svg) {
   this.svg = svg;
 
