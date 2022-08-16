@@ -80,7 +80,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'theme']),
+    ...mapState(['kpis']),
   },
 
   watch: {
@@ -139,9 +139,7 @@ export default {
     },
     renderGraph() {
       if (!this.graph) {
-        this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          colorMode: this.theme,
-        });
+        this.graph = new LineChart(this.$refs.progressGraphSvg);
       }
 
       const [startValue, targetValue] = extent(
@@ -162,7 +160,6 @@ export default {
         },
         progressionList: this.progressCollection,
         item: this.kpis[this.activeTab],
-        theme: this.theme,
       });
     },
   },

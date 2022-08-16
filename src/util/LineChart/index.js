@@ -11,7 +11,6 @@ import {
   styleValueLine,
   styleGradientStop,
   styleGradientStart,
-  DEFAULT_COLOR_MODE,
 } from './linechart-helpers';
 
 const formatValue = (value, item) => {
@@ -22,11 +21,10 @@ const formatValue = (value, item) => {
 };
 
 export default class LineChart {
-  constructor(svgElement, { colorMode }) {
+  constructor(svgElement) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
-    this.colorMode = colorMode || 'blue';
 
     select(svgElement).selectAll('*').remove();
 
@@ -47,14 +45,7 @@ export default class LineChart {
       .y((d) => this.y(d.value));
   }
 
-  render({
-    obj,
-    period,
-    progressionList,
-    item,
-    colorMode = DEFAULT_COLOR_MODE,
-  }) {
-    this.colorMode = colorMode;
+  render({ obj, period, progressionList, item }) {
     this.period = period;
     this.obj = obj;
 
