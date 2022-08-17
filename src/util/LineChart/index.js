@@ -1,9 +1,16 @@
+import Vue from 'vue';
 import { select } from 'd3-selection';
 import { scaleTime, scaleLinear } from 'd3-scale';
 import { extent, max, min } from 'd3-array';
-import { line, area } from 'd3-shape';
+import { line, area, symbol, symbolCircle } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import 'd3-transition';
+// TODO: Replace v-tooltip with vue-tippy globally? Can
+// seemingly be configured more or less as a drop-in
+// replacement.
+import { delegate } from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
+
 import kpiTypes from '@/config/kpiTypes';
 import {
   initSvg,
@@ -11,7 +18,10 @@ import {
   styleValueLine,
   styleGradientStop,
   styleGradientStart,
+  styleValueIndicators
 } from './linechart-helpers';
+
+import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
 
 const formatValue = (value, item) => {
   if (item && item.type) {
@@ -43,6 +53,30 @@ export default class LineChart {
     this.line = line()
       .x((d) => this.x(d.timestamp))
       .y((d) => this.y(d.value));
+
+    this.indicator = symbol(symbolCircle, 250);
+
+    const Tooltip = Vue.extend(IndicatorTooltip);
+
+    delegate(this.valueIndicators.node(), {
+      target: '.indicator',
+      trigger: 'mouseenter click',
+      theme: 'ok',
+      offset: [0, 10],
+      allowHTML: true,
+      content(ref) {
+        const data = select(ref).datum();
+        if (!data)
+          return;
+        return new Tooltip({
+          propsData: {
+            timestamp: data.timestamp,
+            value: data.value,
+            comment: data?.comment
+          }
+        }).$mount().$el.outerHTML;
+      }
+    });
   }
 
   render({ obj, period, progressionList, item }) {
@@ -130,5 +164,17 @@ export default class LineChart {
 
     this.gradient.select('#start').call(styleGradientStart.bind(this));
     this.gradient.select('#stop').call(styleGradientStop.bind(this));
+
+    this.valueIndicators
+      .selectAll('path')
+      .data(data)
+      .join('path')
+      .attr('transform', (d) => {
+        return (
+          `translate(${this.x(d.timestamp)},${this.y(d.value)})`
+        );
+      })
+      .attr('d', this.indicator)
+      .call(styleValueIndicators)
   }
 }
