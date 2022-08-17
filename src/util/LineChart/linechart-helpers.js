@@ -1,16 +1,9 @@
 const padding = { left: 60, top: 20, right: 10, bottom: 20 };
 
-export const colors = {
-  blue: {
-    gradientStart: '#6FE9FF',
-    gradientStop: '#D9D9D9',
-    line: '#B3F5FF',
-  },
-  green: {
-    gradientStart: '#6FE9FF',
-    gradientStop: '#D9D9D9',
-    line: '#B3F5FF',
-  },
+export const GRAPH_COLORS = {
+  gradientStart: 'var(--color-secondary)',
+  gradientStop: '#D9D9D9',
+  line: 'var(--color-secondary-light)',
 };
 
 export function initSvg(svg) {
@@ -58,21 +51,21 @@ export function initSvg(svg) {
 export function styleGradientStart(el) {
   el.attr('offset', '0%').attr(
     'style',
-    `stop-color:${colors[this.colorMode].gradientStart};stop-opacity:1;`
+    `stop-color:${GRAPH_COLORS.gradientStart};stop-opacity:1;`
   );
 }
 
 export function styleGradientStop(el) {
   el.attr('offset', '100%').attr(
     'style',
-    `stop-color:${colors[this.colorMode].gradientStop};stop-opacity:0;`
+    `stop-color:${GRAPH_COLORS.gradientStop};stop-opacity:0;`
   );
 }
 
 export function styleValueLine(el) {
   el.classed('valueLine', true)
     .attr('fill', 'none')
-    .attr('stroke', colors[this.colorMode].line)
+    .attr('stroke', GRAPH_COLORS.line)
     .attr('stroke-width', 3);
 }
 

@@ -80,7 +80,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'theme']),
+    ...mapState(['kpis']),
   },
 
   watch: {
@@ -111,9 +111,6 @@ export default {
         this.getProgressData();
       },
     },
-    progressCollection() {
-      this.renderGraph();
-    },
   },
 
   methods: {
@@ -121,13 +118,18 @@ export default {
       this.activeTab = tabIndex;
     },
     async getProgressData() {
-      const collection = db
-        .collection(`kpis/${this.resultIndicators[this.activeTab].id}/progress`)
-        .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
-        .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
-        .orderBy('timestamp', 'desc');
+      await this.$bind(
+        'progressCollection',
+        db
+          .collection(
+            `kpis/${this.resultIndicators[this.activeTab].id}/progress`
+          )
+          .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
+          .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
+          .orderBy('timestamp', 'desc')
+      );
 
-      await this.$bind('progressCollection', collection);
+      this.renderGraph();
     },
     setCurrentResultIndicatorPeriod(selectedPeriod) {
       this.currentResultIndicatorPeriod = selectedPeriod;
@@ -137,9 +139,7 @@ export default {
     },
     renderGraph() {
       if (!this.graph) {
-        this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          colorMode: this.theme,
-        });
+        this.graph = new LineChart(this.$refs.progressGraphSvg);
       }
 
       const [startValue, targetValue] = extent(
@@ -160,7 +160,6 @@ export default {
         },
         progressionList: this.progressCollection,
         item: this.kpis[this.activeTab],
-        theme: this.theme,
       });
     },
   },

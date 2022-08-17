@@ -5,7 +5,13 @@ import { line, area } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import 'd3-transition';
 import kpiTypes from '@/config/kpiTypes';
-import { initSvg, resize, styleValueLine, styleGradientStop, styleGradientStart } from './linechart-helpers';
+import {
+  initSvg,
+  resize,
+  styleValueLine,
+  styleGradientStop,
+  styleGradientStart,
+} from './linechart-helpers';
 
 const formatValue = (value, item) => {
   if (item && item.type) {
@@ -15,11 +21,10 @@ const formatValue = (value, item) => {
 };
 
 export default class LineChart {
-  constructor(svgElement, { colorMode }) {
+  constructor(svgElement) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
-    this.colorMode = colorMode || 'blue';
 
     select(svgElement).selectAll('*').remove();
 
@@ -40,8 +45,7 @@ export default class LineChart {
       .y((d) => this.y(d.value));
   }
 
-  render({ obj, period, progressionList, item, colorMode }) {
-    this.colorMode = colorMode;
+  render({ obj, period, progressionList, item }) {
     this.period = period;
     this.obj = obj;
 
@@ -52,8 +56,13 @@ export default class LineChart {
     resize.call(this);
 
     const startDate =
-      period.startDate && period.startDate.toDate ? period.startDate.toDate() : new Date(period.startDate);
-    const endDate = period.endDate && period.endDate.toDate ? period.endDate.toDate() : new Date(period.endDate);
+      period.startDate && period.startDate.toDate
+        ? period.startDate.toDate()
+        : new Date(period.startDate);
+    const endDate =
+      period.endDate && period.endDate.toDate
+        ? period.endDate.toDate()
+        : new Date(period.endDate);
 
     this.x.domain([startDate, endDate]);
 
@@ -61,22 +70,32 @@ export default class LineChart {
       this.y.domain(
         extent([
           obj.startValue < highestValue ? highestValue : obj.startValue,
-          obj.startValue > obj.targetValue && lowestValue < obj.targetValue ? lowestValue : obj.targetValue,
+          obj.startValue > obj.targetValue && lowestValue < obj.targetValue
+            ? lowestValue
+            : obj.targetValue,
         ])
       );
     } else {
       this.y.domain(
         extent([
           obj.startValue,
-          obj.startValue < obj.targetValue && highestValue > obj.targetValue ? highestValue : obj.targetValue,
+          obj.startValue < obj.targetValue && highestValue > obj.targetValue
+            ? highestValue
+            : obj.targetValue,
         ])
       );
     }
 
-    this.yAxis.transition().call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)));
+    this.yAxis
+      .transition()
+      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)));
     this.xAxis.transition().call(axisBottom(this.x).ticks(4));
 
-    this.today.attr('x1', this.x(new Date())).attr('x2', this.x(new Date())).attr('y2', 0).attr('y1', this.innerHeight);
+    this.today
+      .attr('x1', this.x(new Date()))
+      .attr('x2', this.x(new Date()))
+      .attr('y2', 0)
+      .attr('y1', this.innerHeight);
 
     const startValue = {
       timestamp: period.startDate.toDate(),
@@ -92,7 +111,9 @@ export default class LineChart {
       }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
-    const lastValue = datapoints.length ? +datapoints[datapoints.length - 1].value : startValue.value;
+    const lastValue = datapoints.length
+      ? +datapoints[datapoints.length - 1].value
+      : startValue.value;
 
     const todayValue = {
       timestamp: new Date(),
