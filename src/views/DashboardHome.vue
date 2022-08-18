@@ -24,12 +24,7 @@
                 <template #icon>
                   <icon-two-people-dancing />
                 </template>
-                <div>
-                  Frivillige lag og organisasjoner som trenger lokaler til sin
-                  aktivitet Innbyggere som benytter seg av kommunens meråpne
-                  tjenester Ansatte i de meråpne tjenestene, samt ansatte i
-                  virksomheter som låner/leier ut lokaler
-                </div>
+                <div>Frivillighet, innbyggere og ansatte i kommunen.</div>
               </dashboard-department-info-box>
             </div>
             <div class="dashboard__departmentInfoBoxes">
@@ -76,30 +71,32 @@
         </ul>
       </template>
     </dashboard-section>
-    <dashboard-section class="dashboard__heyThereSection">
-      <template #title>
-        <h2 class="title-2">
-          <icon-heart-hand />{{ $t('dashboard.heyThere') }}
-        </h2>
-      </template>
-      <template #content>
-        <div class="dashboard__contactUs">
-          Dette dashboardet er et produkt under regi av team
-          <strong>Dataspeilet</strong>, med hensikt å synliggjøre verdien av
-          Origo. Dersom du har spørsmål, innspill eller tilbakemeldinger, er det
-          bare å ta kontakt med vår teamlead
-          <a href="mailto:charlotte.frisk@origo.oslo.kommune.no">
-            <strong>Charlotte Frisk</strong>
-          </a>
-          eller skrive til oss i
-          <a
-            href="https://join.slack.com/share/enQtMzc0ODU4MzYyODg0OC1iY2MzZGI2YTVhMGJjZDQxN2Q4ZGY0NDMxNDNlZWYzYzg0NDRhZWM0NDgyZDkwZjVjNDEwMzA3NmYzNDAzM2Fm"
-          >
-            <strong>#origo-dataspeilet</strong> </a
-          >.
-        </div>
-      </template>
-    </dashboard-section>
+    <div class="dashboard__heyThereSection">
+      <dashboard-section>
+        <template #title>
+          <h2 class="title-2">
+            <icon-heart-hand />{{ $t('dashboard.heyThere') }}
+          </h2>
+        </template>
+        <template #content>
+          <div class="dashboard__contactUs">
+            Dette dashboardet er et produkt under regi av team
+            <strong>Dataspeilet</strong>, med hensikt å synliggjøre verdien av
+            Origo. Dersom du har spørsmål, innspill eller tilbakemeldinger, er
+            det bare å ta kontakt med vår teamlead
+            <a href="mailto:charlotte.frisk@origo.oslo.kommune.no">
+              <strong>Charlotte Frisk</strong>
+            </a>
+            eller skrive til oss i
+            <a
+              href="https://join.slack.com/share/enQtMzc0ODU4MzYyODg0OC1iY2MzZGI2YTVhMGJjZDQxN2Q4ZGY0NDMxNDNlZWYzYzg0NDRhZWM0NDgyZDkwZjVjNDEwMzA3NmYzNDAzM2Fm"
+            >
+              <strong>#origo-dataspeilet</strong> </a
+            >.
+          </div>
+        </template>
+      </dashboard-section>
+    </div>
   </main>
 </template>
 
@@ -236,19 +233,24 @@ export default {
   }
 
   &__heyThereSection {
-    margin: 2.5rem auto 0;
-    padding-bottom: 4rem;
-    color: var(--color-text);
-    font-weight: 500;
-    line-height: 1.25rem;
+    overflow: auto;
+    background: #f1fdff;
 
-    .title-2 {
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
+    .dashboardSection {
+      margin: 2.5rem auto 0;
+      padding-bottom: 4rem;
+      color: var(--color-text);
+      font-weight: 500;
+      line-height: 1.25rem;
 
-      svg {
-        margin-right: 0.5rem;
+      .title-2 {
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 0.5rem;
+        }
       }
     }
   }
