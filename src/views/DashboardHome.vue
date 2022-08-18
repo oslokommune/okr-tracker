@@ -1,33 +1,5 @@
 <template>
   <main class="dashboard">
-    <dashboard-section>
-      <template #title>
-        <h2 class="title-1">
-          {{ $t('general.resultIndicator') }}
-        </h2>
-      </template>
-      <template #content>
-        <dashboard-result-indicators-section />
-      </template>
-    </dashboard-section>
-    <dashboard-section>
-      <template #title>
-        <h2 class="title-1">
-          {{ $t('general.departmentObjectives') }}
-        </h2>
-      </template>
-      <template #content>
-        <ul class="dashboard__objectivesList">
-          <li
-            v-for="objective in objectives"
-            :key="objective.id"
-            class="dashboard__objective"
-          >
-            <objective-progression :objective="objective" />
-          </li>
-        </ul>
-      </template>
-    </dashboard-section>
     <div class="dashboard__departmentInfo">
       <dashboard-section>
         <template #content>
@@ -76,6 +48,34 @@
         </template>
       </dashboard-section>
     </div>
+    <dashboard-section>
+      <template #title>
+        <h2 class="title-1">
+          {{ $t('general.resultIndicator') }}
+        </h2>
+      </template>
+      <template #content>
+        <dashboard-result-indicators-section />
+      </template>
+    </dashboard-section>
+    <dashboard-section>
+      <template #title>
+        <h2 class="title-1">
+          {{ $t('general.departmentObjectives') }}
+        </h2>
+      </template>
+      <template #content>
+        <ul class="dashboard__objectivesList">
+          <li
+            v-for="objective in objectives"
+            :key="objective.id"
+            class="dashboard__objective"
+          >
+            <objective-progression :objective="objective" />
+          </li>
+        </ul>
+      </template>
+    </dashboard-section>
     <dashboard-section class="dashboard__heyThereSection">
       <template #title>
         <h2 class="title-2">
@@ -194,6 +194,10 @@ export default {
   &__departmentInfo {
     overflow: auto;
     background: #f1fdff;
+
+    .dashboardSection {
+      margin: 40px auto;
+    }
   }
 
   &__departmentInfoWrapper {
