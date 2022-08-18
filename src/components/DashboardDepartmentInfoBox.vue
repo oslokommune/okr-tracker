@@ -26,7 +26,6 @@ export default {
 <style lang="scss" scoped>
 .dashboardDepartmentInfoBox {
   flex: 0 0 calc(50% - 1.25rem);
-  font-family: 'Oslo Sans';
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.25rem;
