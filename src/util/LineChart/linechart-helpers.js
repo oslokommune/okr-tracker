@@ -1,3 +1,5 @@
+import { addCommentSymbol } from './symbols';
+
 const padding = { left: 60, top: 20, right: 10, bottom: 20 };
 
 export const GRAPH_COLORS = {
@@ -29,8 +31,9 @@ export function initSvg(svg) {
     .attr('stroke', 'black')
     .attr('stroke-opacity', 0.2);
 
-  this.gradient = this.svg
-    .append('defs')
+  this.defs = this.svg.append('defs')
+  this.gradient = this.defs
+
     .append('linearGradient')
     .attr('id', 'areaGradient')
     .attr('x1', '0%')
@@ -46,6 +49,13 @@ export function initSvg(svg) {
     .append('stop')
     .attr('id', 'stop')
     .call(styleGradientStop.bind(this));
+
+  this.valueIndicators = this.canvas
+    .append('g')
+    .classed('indicators', true);
+
+  this.defs
+    .call(addCommentSymbol);
 }
 
 export function styleGradientStart(el) {
@@ -67,6 +77,13 @@ export function styleValueLine(el) {
     .attr('fill', 'none')
     .attr('stroke', GRAPH_COLORS.line)
     .attr('stroke-width', 3);
+}
+
+export function styleValueIndicators(el) {
+  el.classed('indicator', true)
+    .style('fill', (d) => {
+      return (d?.comment ? 'url(#comment-symbol)' : 'transparent')
+    })
 }
 
 function styleArea(el) {
