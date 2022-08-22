@@ -1,6 +1,7 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
+      <widget-dashbord-entry :slug="activeItem.slug" />
       <widget-admin />
       <widget-wrapper
         :title="
@@ -17,7 +18,6 @@
               ? activePeriod.progression
               : activeObjective.progression
           "
-          :dimmed="dimmed"
         />
       </widget-wrapper>
       <widget-weights
@@ -42,6 +42,8 @@ export default {
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetAdmin: () => import('./WidgetAdmin.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
+    WidgetDashbordEntry: () =>
+      import('@/components/widgets/WidgetDashbordEntry.vue'),
   },
 
   data: () => ({
