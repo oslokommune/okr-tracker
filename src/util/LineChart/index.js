@@ -31,7 +31,7 @@ const formatValue = (value, item) => {
 };
 
 export default class LineChart {
-  constructor(svgElement) {
+  constructor(svgElement, { height }) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
@@ -40,7 +40,7 @@ export default class LineChart {
 
     select(svgElement).call(initSvg.bind(this));
 
-    this.height = 250;
+    this.height = height || 250;
     this.x = scaleTime().clamp(true);
     this.y = scaleLinear().nice();
 

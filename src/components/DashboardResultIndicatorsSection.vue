@@ -137,7 +137,9 @@ export default {
     },
     renderGraph() {
       if (!this.graph) {
-        this.graph = new LineChart(this.$refs.progressGraphSvg);
+        this.graph = new LineChart(this.$refs.progressGraphSvg, {
+          height: 350
+        });
       }
 
       const [startValue, targetValue] = extent(
