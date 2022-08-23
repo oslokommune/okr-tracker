@@ -28,6 +28,9 @@ import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import TabsList from './TabsList.vue';
 import TabsPanel from './TabsPanel.vue';
+import firebase from 'firebase/app';
+
+const Timestamp = firebase.firestore.Timestamp;
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
@@ -140,9 +143,8 @@ export default {
       const [startValue, targetValue] = extent(
         this.progressCollection.map(({ value }) => value)
       );
-      const [startDate, endDate] = extent(
-        this.progressCollection.map(({ timestamp }) => timestamp)
-      );
+      const startDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.startDate);
+      const endDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.endDate);
 
       this.graph.render({
         obj: {
