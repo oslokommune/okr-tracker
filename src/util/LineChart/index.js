@@ -15,10 +15,11 @@ import kpiTypes from '@/config/kpiTypes';
 import {
   initSvg,
   resize,
-  styleValueLine,
-  styleGradientStop,
+  styleAxis,
   styleGradientStart,
-  styleValueIndicators
+  styleGradientStop,
+  styleValueIndicators,
+  styleValueLine,
 } from './linechart-helpers';
 
 import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
@@ -122,8 +123,12 @@ export default class LineChart {
 
     this.yAxis
       .transition()
-      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)));
-    this.xAxis.transition().call(axisBottom(this.x).ticks(4));
+      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)))
+      .call(styleAxis);
+    this.xAxis
+      .transition()
+      .call(axisBottom(this.x).ticks(4))
+      .call(styleAxis);
 
     this.today
       .attr('x1', this.x(new Date()))

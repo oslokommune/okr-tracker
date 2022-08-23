@@ -1,6 +1,6 @@
 import { addCommentSymbol } from './symbols';
 
-const padding = { left: 60, top: 20, right: 10, bottom: 20 };
+const padding = { left: 60, top: 20, right: 10, bottom: 25 };
 
 export const GRAPH_COLORS = {
   gradientStart: 'var(--color-secondary)',
@@ -18,11 +18,14 @@ export function initSvg(svg) {
     .classed('canvas', true)
     .attr('transform', `translate(${padding.left}, ${padding.top})`);
 
-  this.xAxis = this.canvas.append('g').classed('axis x', true);
+  this.xAxis = this.canvas
+    .append('g')
+    .classed('axis x', true);
+  this.yAxis = this.canvas
+    .append('g')
+    .classed('axis y', true);
 
   this.valueArea = this.canvas.append('path').call(styleArea);
-
-  this.yAxis = this.canvas.append('g').classed('axis y', true);
   this.valueLine = this.canvas.append('path').call(styleValueLine.bind(this));
   this.target = this.canvas.append('line').classed('target', true);
   this.today = this.canvas
@@ -33,7 +36,6 @@ export function initSvg(svg) {
 
   this.defs = this.svg.append('defs')
   this.gradient = this.defs
-
     .append('linearGradient')
     .attr('id', 'areaGradient')
     .attr('x1', '0%')
@@ -56,6 +58,13 @@ export function initSvg(svg) {
 
   this.defs
     .call(addCommentSymbol);
+}
+
+export function styleAxis(el) {
+  el.attr('stroke-opacity', 0.6)
+    .attr('font-size', 14)
+    .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
+    .attr('color', 'var(--color-grey-600)');
 }
 
 export function styleGradientStart(el) {
