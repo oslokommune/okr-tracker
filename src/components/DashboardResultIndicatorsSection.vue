@@ -7,13 +7,9 @@
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
       />
-      <v-select
-        label="name"
+      <dashboard-period-selector
         :options="resultIndicatorPeriods"
-        :value="currentResultIndicatorPeriod"
-        :components="selectComponents"
-        :searchable="false"
-        @input="setCurrentResultIndicatorPeriod"
+        v-model="currentResultIndicatorPeriod"
       />
     </div>
     <tabs-panel :active-tab="activeTab">
@@ -26,33 +22,31 @@
 import { mapState } from 'vuex';
 import { extent } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
+import endOfDay from 'date-fns/endOfDay';
 import LineChart from '@/util/LineChart';
 import IconChevronThinDown from './IconChevronThinDown.vue';
+import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import TabsList from './TabsList.vue';
 import TabsPanel from './TabsPanel.vue';
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
+  const sixMonthsBack = new Date()
+  sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
-    quarter: {
-      name: '1. kvartal',
-      value: 'quarter',
-      startDate: new Date(currentYear, 0, 1),
-      endDate: new Date(currentYear, 2, 31),
-    },
-    tertial: {
-      name: 'tertial',
-      value: 'tertial',
-      startDate: new Date(currentYear, 0, 1),
-      endDate: new Date(currentYear, 3, 30),
+    sixmonths: {
+      label: 'Siste 6 mnd',
+      key: 'sixmonths',
+      startDate: sixMonthsBack,
+      endDate: currentDate,
     },
     year: {
-      name: 'hittil i år',
-      value: 'year',
+      label: 'Hittil i år',
+      key: 'year',
       startDate: new Date(currentYear, 0, 1),
-      endDate: currentDate,
+      endDate: endOfDay(new Date(currentYear, 11, 31)),
     },
   };
 };
@@ -65,6 +59,7 @@ export default {
   components: {
     TabsList,
     TabsPanel,
+    DashboardPeriodSelector,
   },
 
   data: () => ({
@@ -75,7 +70,7 @@ export default {
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
-    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.quarter,
+    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.sixmonths,
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
   }),
 
@@ -97,6 +92,12 @@ export default {
     },
     currentResultIndicatorPeriod() {
       this.getProgressData(this.resultIndicators[this.activeTab].id);
+
+      if (this.$route.query?.resultIndicatorPeriod !== this.currentResultIndicatorPeriod.key) {
+        this.$router.replace({
+          query: { resultIndicatorPeriod: this.currentResultIndicatorPeriod.key },
+        });
+      }
     },
     kpis: {
       immediate: true,
@@ -130,12 +131,6 @@ export default {
       );
 
       this.renderGraph();
-    },
-    setCurrentResultIndicatorPeriod(selectedPeriod) {
-      this.currentResultIndicatorPeriod = selectedPeriod;
-      this.$router.replace({
-        query: { resultIndicatorPeriod: selectedPeriod.value },
-      });
     },
     renderGraph() {
       if (!this.graph) {
@@ -173,7 +168,9 @@ export default {
 
   &__header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    margin-bottom: 1rem;
 
     .title-3 {
       color: var(--color-text);
