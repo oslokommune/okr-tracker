@@ -127,7 +127,8 @@
     "api": "API",
     "resultIndicator": "Result indicator",
     "departmentObjectives": "Department objectives",
-    "departmentAbout": "About"
+    "departmentAbout": "About",
+    "dashboardEntry": "Go to dashboard"
   },
   "btn": {
     "close": "Close",

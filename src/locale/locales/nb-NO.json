@@ -124,7 +124,8 @@
     "api": "API",
     "resultIndicator": "Resultatindikator",
     "departmentObjectives": "Områdets mål",
-    "departmentAbout": "Om produktområdet"
+    "departmentAbout": "Om produktområdet",
+    "dashboardEntry": "Se dashboard"
   },
   "btn": {
     "close": "Lukk",

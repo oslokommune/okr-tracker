@@ -7,19 +7,27 @@
       params: { slug },
     }"
   >
-    Se status
-    <i class="fa fa-chevron-right"></i>
+    <icon-graph />
+    {{ $t('general.dashboardEntry') }}
+    <icon-chevron-right />
   </router-link>
 </template>
 
 <script>
 import DashboardAccessCollection from '../../../common/db/DashboardAccessCollection';
 import { db } from '@/config/firebaseConfig';
+import IconGraph from '@/components/IconGraph.vue';
+import IconChevronRight from '@/components/IconChevronRight.vue';
 
 const dashboardAccessCollection = new DashboardAccessCollection(db);
 
 export default {
   name: 'WidgetDashboardEntry',
+
+  components: {
+    IconGraph,
+    IconChevronRight,
+  },
 
   props: {
     slug: {
@@ -52,16 +60,29 @@ export default {
 <style lang="scss" scoped>
 .widgetDashboardEntry {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.5rem;
-  padding: 2rem 1.5rem;
-  color: var(--color-text);
+  padding: 1.5rem;
+  background: var(--color-secondary-light);
+  color: var(--color-primary);
+  font-size: 1.125rem;
   font-weight: 500;
-  background-color: var(--color-white);
+
+  svg {
+    margin-right: 0.5rem;
+
+    &:last-child {
+      margin-left: auto;
+    }
+  }
 
   &:hover {
     color: var(--color-text-secondary);
     background: var(--color-hover);
+
+    &::v-deep path {
+      fill: white;
+    }
   }
 }
 </style>
