@@ -10,13 +10,29 @@
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
       />
-      <dashboard-period-selector
-        :options="resultIndicatorPeriods"
-        v-model="currentResultIndicatorPeriod"
-      />
+      <div>
+        <dashboard-period-selector
+          :options="resultIndicatorPeriods"
+          v-model="currentResultIndicatorPeriod"
+        />
+        <div class="dropdownButton">
+          <v-select
+            label="label"
+            class="download"
+            :value="downloadOption"
+            :options="downloadOptions"
+            :components="{ OpenIndicator, Deselect: null }"
+            :closeOnSelect="true"
+            @input="download">
+          </v-select>
+        </div>
+      </div>
     </div>
     <tabs-panel :active-tab="activeTab">
-      <svg class="progressGraph" ref="progressGraphSvg" />
+      <!-- xmlns for download purposes -->
+      <svg class="progressGraph"
+           ref="progressGraphSvg"
+           xmlns="http://www.w3.org/2000/svg"/>
       <div class="progressTarget" v-if="latestProgressRecord && resultIndicatorTarget">
         <div>
           <span class="progressTarget__title">{{ $t('kpi.currentValue') }}</span>
@@ -37,14 +53,18 @@ import { extent } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import firebase from 'firebase/app';
 import endOfDay from 'date-fns/endOfDay';
+import { saveSvgAsPng } from 'save-svg-as-png';
+import downloadFile from '@/util/downloadFile';
 import LineChart from '@/util/LineChart';
 import { numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
+import IconDownload from './IconDownload.vue';
 import TabsList from './TabsList.vue';
 import TabsPanel from './TabsPanel.vue';
 import { KPI_TARGETS } from '@/views/Dashboard/data/staticData';
+import i18n from '@/locale/i18n';
 
 const Timestamp = firebase.firestore.Timestamp;
 
@@ -83,6 +103,7 @@ export default {
 
   data: () => ({
     activeTab: 0,
+    downloadOption: '',
     resultIndicators: [],
     progressCollection: [],
     latestProgressRecord: 0,
@@ -92,6 +113,17 @@ export default {
     ),
     currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.sixmonths,
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
+    OpenIndicator: IconDownload,
+    downloadOptions: [
+      {
+        label: `${i18n.t('dashboard.downloadOptions.svg')}`,
+        downloadOption: 'svg',
+      },
+      {
+        label: `${i18n.t('dashboard.downloadOptions.png')}`,
+        downloadOption: 'png',
+      }
+    ]
   }),
 
   computed: {
@@ -204,6 +236,20 @@ export default {
       }
       return null;
     },
+    download(value) {
+      const filename = this.resultIndicators[this.activeTab].name;
+      const svgData = this.$refs.progressGraphSvg;
+
+      if (value.downloadOption === 'png') {
+        saveSvgAsPng(svgData, `${filename}.png`, {});
+      }
+      if (value.downloadOption === 'svg') {
+        const preface = '<?xml version="1.0" standalone="no"?>\r\n';
+        const svgBlob = new Blob([preface, svgData.outerHTML], { type: 'image/svg+xml;charset=utf-8' });
+
+        downloadFile(svgBlob, filename, '.svg');
+      }
+    },
   },
 };
 </script>
@@ -218,6 +264,59 @@ export default {
     justify-content: space-between;
     padding: 1.5rem 1.5rem 0.5rem 1.5rem;
     border-bottom: 1px solid var(--color-grey-100);
+
+    .title-3 {
+      color: var(--color-text);
+    }
+
+    .v-select {
+      display: inline-block;
+      width: min-content;
+      min-width: 10rem;
+    }
+
+    &::v-deep .vs__dropdown-toggle {
+      border-color: #F2F2F2;
+
+      &:hover {
+        background: var(--color-light-gray);
+        border-color: #F2F2F2;
+        cursor: pointer;
+      }
+
+      .vs__open-indicator {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .vs__search {
+        padding: 0;
+      }
+    }
+
+    &::v-deep .vs__dropdown-menu {
+      border: 1px solid var(--color-light-gray);
+    }
+
+    .download {
+      min-width: 1rem;
+
+      &::v-deep .vs__dropdown-menu {
+        position: center;
+        left: -4rem;
+        border: 1px solid #F2F2F2;
+      }
+    }
+
+    .dropdownButton {
+      display: inline;
+      padding-left: 0.2rem;
+      padding-right: 0.5rem;
+
+      &::v-deep .vs--open .vs__open-indicator {
+        transform: rotate(0deg) scale(1);
+      }
+    }
   }
 }
 
