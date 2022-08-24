@@ -116,6 +116,7 @@ export default {
 <style lang="scss" scoped>
 .periodSelector {
   position: relative;
+  display: inline-block;
 }
 
 .periodSelector__input {
