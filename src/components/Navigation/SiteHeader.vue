@@ -11,7 +11,7 @@
       class="btn btn--ter btn--pri"
       @click="toggleShowAsideRight"
     >
-      <icon-user />
+      <icon-user fill="white" />
     </button>
   </header>
 </template>

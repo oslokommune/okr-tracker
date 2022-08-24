@@ -53,6 +53,24 @@
         <dashboard-result-indicators-section />
       </template>
     </dashboard-section>
+    <dashboard-section v-if="isPOCDepartment">
+      <template #title>
+        <h2 class="title-1">
+          {{ $t('general.keyFigures') }}
+        </h2>
+      </template>
+      <template #content>
+        <ul class="dashboard__cardList">
+          <li
+            v-for="keyFigure in keyFigures"
+            :key="keyFigure.id"
+            class="dashboard__cardListItem dashboard__keyFigure"
+          >
+            <key-figure :keyFigure="keyFigure" />
+          </li>
+        </ul>
+      </template>
+    </dashboard-section>
     <dashboard-section>
       <template #title>
         <h2 class="title-1">
@@ -60,11 +78,11 @@
         </h2>
       </template>
       <template #content>
-        <ul class="dashboard__objectivesList">
+        <ul class="dashboard__cardList">
           <li
             v-for="objective in objectives"
             :key="objective.id"
-            class="dashboard__objective"
+            class="dashboard__cardListItem dashboard__departmentObjective"
           >
             <objective-progression :objective="objective" />
           </li>
@@ -102,22 +120,24 @@
 
 <script>
 import { mapState } from 'vuex';
-import getActiveItemType from '@/util/getActiveItemType';
-import DashboardSection from './DashboardSection.vue';
-import DashboardResultIndicatorsSection from '../components/DashboardResultIndicatorsSection.vue';
-import DashboardDepartmentInfoBox from '../components/DashboardDepartmentInfoBox.vue';
-import HTMLOutput from '../components/HTMLOutput.vue';
-import IconHeartHand from '../components/IconHeartHand.vue';
-import IconHandsGlobe from '../components/IconHandsGlobe.vue';
-import IconTwoPeopleDancing from '../components/IconTwoPeopleDancing.vue';
 
-const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
+import getActiveItemType from '@/util/getActiveItemType';
+import ObjectiveProgression from '@/components/widgets/ObjectiveProgression.vue';
+import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
+import DashboardDepartmentInfoBox from '@/components/DashboardDepartmentInfoBox.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import IconHeartHand from '@/components/IconHeartHand.vue';
+import IconHandsGlobe from '@/components/IconHandsGlobe.vue';
+import IconTwoPeopleDancing from '@/components/IconTwoPeopleDancing.vue';
+import KeyFigure from '@/components/KeyFigure.vue';
+
+import DashboardSection from './DashboardSection.vue';
+import { KEY_FIGURES, POC_DEPARTMENTS } from './data/staticData';
 
 export default {
   name: 'DashboardHome',
   components: {
-    ObjectiveProgression: () =>
-      import('@/components/widgets/ObjectiveProgression.vue'),
+    ObjectiveProgression,
     DashboardSection,
     DashboardResultIndicatorsSection,
     DashboardDepartmentInfoBox,
@@ -125,15 +145,20 @@ export default {
     IconHeartHand,
     IconHandsGlobe,
     IconTwoPeopleDancing,
+    KeyFigure,
   },
 
   data: () => ({
+    isPOCDepartment: false,
     activeItemType: null,
     filteredProducts: [],
   }),
 
   computed: {
     ...mapState(['activeItem', 'objectives', 'departments', 'products']),
+    keyFigures() {
+      return KEY_FIGURES;
+    },
   },
 
   watch: {
@@ -166,19 +191,36 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard {
-  &__objectivesList {
+  &__cardList {
     margin: -0.5rem;
     display: flex;
     flex-wrap: wrap;
   }
 
-  &__objective {
+  &__cardListItem {
     margin: 0.5rem;
     padding: 1rem;
     display: flex;
     flex: 0 0 calc(100% - 1rem);
-    background: var(--color-white);
 
+    background: var(--color-white);
+  }
+
+  &__keyFigure {
+    @media screen and (min-width: bp(xs)) {
+      flex: 0 0 calc(50% - 1rem);
+    }
+
+    @media screen and (min-width: bp(s)) {
+      flex: 0 0 calc(25% - 1rem);
+    }
+
+    @media screen and (min-width: bp(m)) {
+      flex: 0 0 calc(20% - 1rem);
+    }
+  }
+
+  &__departmentObjective {
     @media screen and (min-width: bp(s)) {
       flex: 0 0 calc(50% - 1rem);
     }
