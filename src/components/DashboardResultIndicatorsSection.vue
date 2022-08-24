@@ -23,12 +23,13 @@
             :options="downloadOptions"
             :components="{ OpenIndicator, Deselect: null }"
             :closeOnSelect="true"
-            @input="download">
+            @input="download"
+          >
           </v-select>
         </div>
       </div>
     </div>
-    <tabs-panel :active-tab="activeTab">
+    <tabs-panel :active-tab="activeTab" ref="tabPanel">
       <!-- xmlns for download purposes -->
       <svg class="progressGraph"
            ref="progressGraphSvg"
@@ -71,7 +72,7 @@ const Timestamp = firebase.firestore.Timestamp;
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const sixMonthsBack = new Date()
+  const sixMonthsBack = new Date();
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
@@ -122,8 +123,8 @@ export default {
       {
         label: `${i18n.t('dashboard.downloadOptions.png')}`,
         downloadOption: 'png',
-      }
-    ]
+      },
+    ],
   }),
 
   computed: {
@@ -149,9 +150,14 @@ export default {
     currentResultIndicatorPeriod() {
       this.getProgressData(this.resultIndicators[this.activeTab].id);
 
-      if (this.$route.query?.resultIndicatorPeriod !== this.currentResultIndicatorPeriod.key) {
+      if (
+        this.$route.query?.resultIndicatorPeriod !==
+        this.currentResultIndicatorPeriod.key
+      ) {
         this.$router.replace({
-          query: { resultIndicatorPeriod: this.currentResultIndicatorPeriod.key },
+          query: {
+            resultIndicatorPeriod: this.currentResultIndicatorPeriod.key,
+          },
         });
       }
     },
@@ -168,6 +174,9 @@ export default {
         this.getProgressData();
         this.getLatestProgressRecord();
       },
+    },
+    theme() {
+      this.renderGraph();
     },
   },
 
@@ -203,15 +212,19 @@ export default {
     renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          height: 350
+          height: 350,
         });
       }
 
       const [startValue, targetValue] = extent(
         this.progressCollection.map(({ value }) => value)
       );
-      const startDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.startDate);
-      const endDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.endDate);
+      const startDate = Timestamp.fromDate(
+        this.currentResultIndicatorPeriod.startDate
+      );
+      const endDate = Timestamp.fromDate(
+        this.currentResultIndicatorPeriod.endDate
+      );
 
       this.graph.render({
         obj: {
@@ -245,7 +258,9 @@ export default {
       }
       if (value.downloadOption === 'svg') {
         const preface = '<?xml version="1.0" standalone="no"?>\r\n';
-        const svgBlob = new Blob([preface, svgData.outerHTML], { type: 'image/svg+xml;charset=utf-8' });
+        const svgBlob = new Blob([preface, svgData.outerHTML], {
+          type: 'image/svg+xml;charset=utf-8',
+        });
 
         downloadFile(svgBlob, filename, '.svg');
       }
@@ -256,6 +271,7 @@ export default {
 
 <style lang="scss" scoped>
 .dashboardResultIndicatorsSection {
+  padding: 1.5rem;
   background: var(--color-white);
 
   &__header {
@@ -276,11 +292,11 @@ export default {
     }
 
     &::v-deep .vs__dropdown-toggle {
-      border-color: #F2F2F2;
+      border-color: #f2f2f2;
 
       &:hover {
         background: var(--color-light-gray);
-        border-color: #F2F2F2;
+        border-color: #f2f2f2;
         cursor: pointer;
       }
 
@@ -304,7 +320,7 @@ export default {
       &::v-deep .vs__dropdown-menu {
         position: center;
         left: -4rem;
-        border: 1px solid #F2F2F2;
+        border: 1px solid #f2f2f2;
       }
     }
 
