@@ -112,7 +112,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/DashboardHome.vue'),
+        component: () => import('@/views/Dashboard/DashboardHome.vue'),
       },
       {
         path: 'k/:keyResultId',

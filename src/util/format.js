@@ -22,3 +22,5 @@ export const numberLocale = formatLocale({
   thousands: ' ',
   grouping: [3],
 });
+
+export const formatLargeNumber = (value) => numberLocale.format(',')(value);
