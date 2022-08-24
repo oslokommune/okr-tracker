@@ -7,7 +7,7 @@ export const KEY_FIGURES = [
       'nb-NO': 'Reservasjoner',
       'en-US': 'Reservations',
     },
-    value: 8900,
+    value: 23418,
     icon: 'IconCalendar',
   },
   {
@@ -25,7 +25,7 @@ export const KEY_FIGURES = [
       'nb-NO': 'Vielser',
       'en-US': 'Weddings',
     },
-    value: 2400,
+    value: 3338,
     icon: 'IconHoldingHands',
   },
   {
@@ -34,7 +34,7 @@ export const KEY_FIGURES = [
       'nb-NO': 'Brukerprofiler',
       'en-US': 'User profiles',
     },
-    value: 106000,
+    value: 153101,
     icon: 'IconUser',
   },
   {
@@ -43,7 +43,7 @@ export const KEY_FIGURES = [
       'nb-NO': 'Aktive brukerprofiler',
       'en-US': 'Active user profiles',
     },
-    value: 51600,
+    value: 71857,
     icon: 'IconActivePerson',
   },
 ];
