@@ -200,13 +200,14 @@ export default {
   &__cardListItem {
     margin: 0.5rem;
     padding: 1rem;
-    display: flex;
-    flex: 0 0 calc(100% - 1rem);
 
     background: var(--color-white);
   }
 
   &__keyFigure {
+    display: flex;
+    flex: 0 0 calc(100% - 1rem);
+
     @media screen and (min-width: bp(xs)) {
       flex: 0 0 calc(50% - 1rem);
     }
@@ -221,13 +222,7 @@ export default {
   }
 
   &__departmentObjective {
-    @media screen and (min-width: bp(s)) {
-      flex: 0 0 calc(50% - 1rem);
-    }
-
-    @media screen and (min-width: bp(m)) {
-      flex: 0 0 calc(25% - 1rem);
-    }
+    flex: 0 0 100%;
   }
 
   &__departmentInfo {
