@@ -15,10 +15,11 @@ import kpiTypes from '@/config/kpiTypes';
 import {
   initSvg,
   resize,
-  styleValueLine,
-  styleGradientStop,
+  styleAxis,
   styleGradientStart,
-  styleValueIndicators
+  styleGradientStop,
+  styleValueIndicators,
+  styleValueLine,
 } from './linechart-helpers';
 
 import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
@@ -31,7 +32,7 @@ const formatValue = (value, item) => {
 };
 
 export default class LineChart {
-  constructor(svgElement) {
+  constructor(svgElement, { height }) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
@@ -40,7 +41,7 @@ export default class LineChart {
 
     select(svgElement).call(initSvg.bind(this));
 
-    this.height = 250;
+    this.height = height || 250;
     this.x = scaleTime().clamp(true);
     this.y = scaleLinear().nice();
 
@@ -122,8 +123,12 @@ export default class LineChart {
 
     this.yAxis
       .transition()
-      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)));
-    this.xAxis.transition().call(axisBottom(this.x).ticks(4));
+      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)))
+      .call(styleAxis);
+    this.xAxis
+      .transition()
+      .call(axisBottom(this.x).ticks(4))
+      .call(styleAxis);
 
     this.today
       .attr('x1', this.x(new Date()))
