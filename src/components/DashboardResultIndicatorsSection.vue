@@ -10,7 +10,7 @@
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
       />
-      <div>
+      <div class="graphOptions">
         <dashboard-period-selector
           :options="resultIndicatorPeriods"
           v-model="currentResultIndicatorPeriod"
@@ -286,46 +286,51 @@ export default {
     }
 
     .v-select {
-      display: inline-block;
-      width: min-content;
-      min-width: 10rem;
+      display: inline-flex;
     }
 
     &::v-deep .vs__dropdown-toggle {
-      border-color: #f2f2f2;
+      border-color: var(--color-grey-100);
 
       &:hover {
         background: var(--color-light-gray);
-        border-color: #f2f2f2;
+        border-color: var(--color-light-gray);
         cursor: pointer;
       }
 
       .vs__open-indicator {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.4rem;
+        height: 1.4rem;
+        margin: 0.4rem 0.5rem 0.6rem 0.5rem;
+        padding: 0.1rem;
       }
 
       .vs__search {
-        padding: 0;
+        padding: 0rem;
       }
     }
 
     &::v-deep .vs__dropdown-menu {
-      border: 1px solid var(--color-light-gray);
+      border: 1px solid var(--color-grey-100);
+    }
+
+    .graphOptions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .download {
       min-width: 1rem;
 
       &::v-deep .vs__dropdown-menu {
-        position: center;
-        left: -4rem;
-        border: 1px solid #f2f2f2;
+        left: -3.6rem;
+        border: 1px solid var(--color-grey-100);
       }
     }
 
     .dropdownButton {
-      display: inline;
+      display: inline-block;
       padding-left: 0.2rem;
       padding-right: 0.5rem;
 
