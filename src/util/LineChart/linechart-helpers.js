@@ -2,10 +2,17 @@ import { addCommentSymbol } from './symbols';
 
 const padding = { left: 60, top: 20, right: 10, bottom: 25 };
 
-export const GRAPH_COLORS = {
-  gradientStart: 'var(--color-secondary)',
-  gradientStop: '#D9D9D9',
-  line: 'var(--color-secondary-light)',
+export const GRAPH_THEMES = {
+  blue: {
+    gradientStart: '#6EE9FF',
+    gradientStop: '#D9D9D9',
+    line: '#B3F5FF',
+  },
+  green: {
+    gradientStart: '#42F8B6',
+    gradientStop: '#D9D9D9',
+    line: '#C7F7C9',
+  },
 };
 
 export function initSvg(svg) {
@@ -18,12 +25,8 @@ export function initSvg(svg) {
     .classed('canvas', true)
     .attr('transform', `translate(${padding.left}, ${padding.top})`);
 
-  this.xAxis = this.canvas
-    .append('g')
-    .classed('axis x', true);
-  this.yAxis = this.canvas
-    .append('g')
-    .classed('axis y', true);
+  this.xAxis = this.canvas.append('g').classed('axis x', true);
+  this.yAxis = this.canvas.append('g').classed('axis y', true);
 
   this.valueArea = this.canvas.append('path').call(styleArea);
   this.valueLine = this.canvas.append('path').call(styleValueLine.bind(this));
@@ -34,7 +37,7 @@ export function initSvg(svg) {
     .attr('stroke', 'black')
     .attr('stroke-opacity', 0.2);
 
-  this.defs = this.svg.append('defs')
+  this.defs = this.svg.append('defs');
   this.gradient = this.defs
     .append('linearGradient')
     .attr('id', 'areaGradient')
@@ -52,12 +55,9 @@ export function initSvg(svg) {
     .attr('id', 'stop')
     .call(styleGradientStop.bind(this));
 
-  this.valueIndicators = this.canvas
-    .append('g')
-    .classed('indicators', true);
+  this.valueIndicators = this.canvas.append('g').classed('indicators', true);
 
-  this.defs
-    .call(addCommentSymbol);
+  this.defs.call(addCommentSymbol);
 }
 
 export function styleAxis(el) {
@@ -70,29 +70,28 @@ export function styleAxis(el) {
 export function styleGradientStart(el) {
   el.attr('offset', '0%').attr(
     'style',
-    `stop-color:${GRAPH_COLORS.gradientStart};stop-opacity:1;`
+    `stop-color:${GRAPH_THEMES[this.theme].gradientStart};stop-opacity:1;`
   );
 }
 
 export function styleGradientStop(el) {
   el.attr('offset', '100%').attr(
     'style',
-    `stop-color:${GRAPH_COLORS.gradientStop};stop-opacity:0;`
+    `stop-color:${GRAPH_THEMES[this.theme].gradientStop};stop-opacity:0;`
   );
 }
 
 export function styleValueLine(el) {
   el.classed('valueLine', true)
     .attr('fill', 'none')
-    .attr('stroke', GRAPH_COLORS.line)
+    .attr('stroke', GRAPH_THEMES[this.theme].line)
     .attr('stroke-width', 3);
 }
 
 export function styleValueIndicators(el) {
-  el.classed('indicator', true)
-    .style('fill', (d) => {
-      return (d?.comment ? 'url(#comment-symbol)' : 'transparent')
-    })
+  el.classed('indicator', true).style('fill', (d) => {
+    return d?.comment ? 'url(#comment-symbol)' : 'transparent';
+  });
 }
 
 function styleArea(el) {

@@ -10,13 +10,30 @@
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
       />
-      <dashboard-period-selector
-        :options="resultIndicatorPeriods"
-        v-model="currentResultIndicatorPeriod"
-      />
+      <div class="graphOptions">
+        <dashboard-period-selector
+          :options="resultIndicatorPeriods"
+          v-model="currentResultIndicatorPeriod"
+        />
+        <div class="dropdownButton">
+          <v-select
+            label="label"
+            class="download"
+            :value="downloadOption"
+            :options="downloadOptions"
+            :components="{ OpenIndicator, Deselect: null }"
+            :closeOnSelect="true"
+            @input="download"
+          >
+          </v-select>
+        </div>
+      </div>
     </div>
-    <tabs-panel :active-tab="activeTab">
-      <svg class="progressGraph" ref="progressGraphSvg" />
+    <tabs-panel :active-tab="activeTab" ref="tabPanel">
+      <!-- xmlns for download purposes -->
+      <svg class="progressGraph"
+           ref="progressGraphSvg"
+           xmlns="http://www.w3.org/2000/svg"/>
       <div class="progressTarget" v-if="latestProgressRecord && resultIndicatorTarget">
         <div>
           <span class="progressTarget__title">{{ $t('kpi.currentValue') }}</span>
@@ -37,21 +54,25 @@ import { extent } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import firebase from 'firebase/app';
 import endOfDay from 'date-fns/endOfDay';
+import { saveSvgAsPng } from 'save-svg-as-png';
+import downloadFile from '@/util/downloadFile';
 import LineChart from '@/util/LineChart';
 import { numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
+import IconDownload from './IconDownload.vue';
 import TabsList from './TabsList.vue';
 import TabsPanel from './TabsPanel.vue';
 import { KPI_TARGETS } from '@/views/Dashboard/data/staticData';
+import i18n from '@/locale/i18n';
 
 const Timestamp = firebase.firestore.Timestamp;
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const sixMonthsBack = new Date()
+  const sixMonthsBack = new Date();
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
@@ -83,6 +104,7 @@ export default {
 
   data: () => ({
     activeTab: 0,
+    downloadOption: '',
     resultIndicators: [],
     progressCollection: [],
     latestProgressRecord: 0,
@@ -92,6 +114,17 @@ export default {
     ),
     currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.sixmonths,
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
+    OpenIndicator: IconDownload,
+    downloadOptions: [
+      {
+        label: `${i18n.t('dashboard.downloadOptions.svg')}`,
+        downloadOption: 'svg',
+      },
+      {
+        label: `${i18n.t('dashboard.downloadOptions.png')}`,
+        downloadOption: 'png',
+      },
+    ],
   }),
 
   computed: {
@@ -117,9 +150,14 @@ export default {
     currentResultIndicatorPeriod() {
       this.getProgressData(this.resultIndicators[this.activeTab].id);
 
-      if (this.$route.query?.resultIndicatorPeriod !== this.currentResultIndicatorPeriod.key) {
+      if (
+        this.$route.query?.resultIndicatorPeriod !==
+        this.currentResultIndicatorPeriod.key
+      ) {
         this.$router.replace({
-          query: { resultIndicatorPeriod: this.currentResultIndicatorPeriod.key },
+          query: {
+            resultIndicatorPeriod: this.currentResultIndicatorPeriod.key,
+          },
         });
       }
     },
@@ -136,6 +174,9 @@ export default {
         this.getProgressData();
         this.getLatestProgressRecord();
       },
+    },
+    theme() {
+      this.renderGraph();
     },
   },
 
@@ -171,15 +212,19 @@ export default {
     renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          height: 350
+          height: 350,
         });
       }
 
       const [startValue, targetValue] = extent(
         this.progressCollection.map(({ value }) => value)
       );
-      const startDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.startDate);
-      const endDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.endDate);
+      const startDate = Timestamp.fromDate(
+        this.currentResultIndicatorPeriod.startDate
+      );
+      const endDate = Timestamp.fromDate(
+        this.currentResultIndicatorPeriod.endDate
+      );
 
       this.graph.render({
         obj: {
@@ -204,6 +249,22 @@ export default {
       }
       return null;
     },
+    download(value) {
+      const filename = this.resultIndicators[this.activeTab].name;
+      const svgData = this.$refs.progressGraphSvg;
+
+      if (value.downloadOption === 'png') {
+        saveSvgAsPng(svgData, `${filename}.png`, {});
+      }
+      if (value.downloadOption === 'svg') {
+        const preface = '<?xml version="1.0" standalone="no"?>\r\n';
+        const svgBlob = new Blob([preface, svgData.outerHTML], {
+          type: 'image/svg+xml;charset=utf-8',
+        });
+
+        downloadFile(svgBlob, filename, '.svg');
+      }
+    },
   },
 };
 </script>
@@ -218,6 +279,64 @@ export default {
     justify-content: space-between;
     padding: 1.5rem 1.5rem 0.5rem 1.5rem;
     border-bottom: 1px solid var(--color-grey-100);
+
+    .title-3 {
+      color: var(--color-text);
+    }
+
+    .v-select {
+      display: inline-flex;
+    }
+
+    &::v-deep .vs__dropdown-toggle {
+      border-color: var(--color-grey-100);
+
+      &:hover {
+        background: var(--color-light-gray);
+        border-color: var(--color-light-gray);
+        cursor: pointer;
+      }
+
+      .vs__open-indicator {
+        width: 1.4rem;
+        height: 1.4rem;
+        margin: 0.15rem 0.4rem 0.3rem 0.2rem;
+        padding: 0rem;
+      }
+
+      .vs__search {
+        padding: 0rem;
+      }
+    }
+
+    &::v-deep .vs__dropdown-menu {
+      border: 1px solid var(--color-grey-100);
+    }
+
+    .graphOptions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .download {
+      min-width: 1rem;
+
+      &::v-deep .vs__dropdown-menu {
+        left: -3.6rem;
+        border: 1px solid var(--color-grey-100);
+      }
+    }
+
+    .dropdownButton {
+      display: inline-block;
+      padding-left: 0.2rem;
+      padding-right: 0.5rem;
+
+      &::v-deep .vs--open .vs__open-indicator {
+        transform: rotate(0deg) scale(1);
+      }
+    }
   }
 }
 
