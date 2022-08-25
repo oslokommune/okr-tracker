@@ -1,16 +1,18 @@
 <template>
-  <div
-    class="objectiveProgression"
-    @mouseover="displayKeyResults = true"
-    @mouseleave="displayKeyResults = false"
-  >
+  <div class="objectiveProgression">
     <div class="objectiveProgression__name">{{ objective.name }}</div>
-    <div class="objectiveProgression__progress">
-      {{ formatProgression(objective.progression) }}
-    </div>
-    <ul v-if="displayKeyResults" class="objectiveProgression__keyResults">
-      <li v-for="keyResult in objectiveKeyResults" :key="keyResult.id">
-        {{ keyResult.name }}{{ formatProgression(keyResult.progression) }}
+    <ul class="objectiveProgression__keyResults">
+      <li
+        v-for="keyResult in objectiveKeyResults"
+        :key="keyResult.id"
+        class="objectiveProgression__keyResult"
+      >
+        <span>
+          {{ keyResult.name }}
+        </span>
+        <span>
+          {{ formatProgression(keyResult.progression) }}
+        </span>
       </li>
     </ul>
   </div>
@@ -37,7 +39,6 @@ export default {
 
   data: () => ({
     objectiveKeyResults: null,
-    displayKeyResults: false,
   }),
 
   watch: {
@@ -78,14 +79,17 @@ export default {
     line-height: 1.25rem;
   }
 
-  &__progress {
+  &__keyResult {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-text);
     font-weight: 500;
-    font-size: var(--font-size-3);
-    line-height: 25px;
-  }
+    background: var(--color-secondary-light);
 
-  &__keyResults {
-    margin-top: 1.5rem;
+    &:not(:last-child) {
+      margin-bottom: 0.125rem;
+    }
   }
 }
 </style>
