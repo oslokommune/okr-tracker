@@ -2,10 +2,12 @@
   <div class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
       <tabs-list
-        :tabs="this.resultIndicators.map((resultIndicator) => ({
-          label: resultIndicator.name,
-          tooltip: resultIndicator.description,
-        }))"
+        :tabs="
+          this.resultIndicators.map((resultIndicator) => ({
+            label: resultIndicator.name,
+            tooltip: resultIndicator.description,
+          }))
+        "
         :active-tab="activeTab"
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
@@ -32,13 +34,14 @@ import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import TabsList from './TabsList.vue';
 import TabsPanel from './TabsPanel.vue';
 import firebase from 'firebase/app';
+import { APEN_BY_RESULT_INDICATORS } from '../views/Dashboard/data/staticData';
 
 const Timestamp = firebase.firestore.Timestamp;
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const sixMonthsBack = new Date()
+  const sixMonthsBack = new Date();
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
@@ -68,11 +71,17 @@ export default {
     DashboardPeriodSelector,
   },
 
+  props: {
+    isPOCDepartment: {
+      type: Boolean,
+      required: true,
+    },
+  },
+
   data: () => ({
     activeTab: 0,
     resultIndicators: [],
     progressCollection: [],
-    isPOCDepartment: false,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
@@ -97,24 +106,32 @@ export default {
       },
     },
     currentResultIndicatorPeriod() {
-      this.getProgressData(this.resultIndicators[this.activeTab].id);
+      this.getProgressData();
 
-      if (this.$route.query?.resultIndicatorPeriod !== this.currentResultIndicatorPeriod.key) {
+      if (
+        this.$route.query?.resultIndicatorPeriod !==
+        this.currentResultIndicatorPeriod.key
+      ) {
         this.$router.replace({
-          query: { resultIndicatorPeriod: this.currentResultIndicatorPeriod.key },
+          query: {
+            resultIndicatorPeriod: this.currentResultIndicatorPeriod.key,
+          },
         });
       }
     },
     kpis: {
       immediate: true,
       async handler(kpis) {
-        this.resultIndicators = kpis;
+        this.resultIndicators = [
+          ...kpis,
+          ...(this.isPOCDepartment ? APEN_BY_RESULT_INDICATORS : []),
+        ];
         this.getProgressData();
       },
     },
     activeTab: {
       immediate: true,
-      async handler() {
+      async handler(activeTab) {
         this.getProgressData();
       },
     },
@@ -125,31 +142,46 @@ export default {
       this.activeTab = tabIndex;
     },
     async getProgressData() {
-      await this.$bind(
-        'progressCollection',
-        db
-          .collection(
-            `kpis/${this.resultIndicators[this.activeTab].id}/progress`
-          )
-          .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
-          .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
-          .orderBy('timestamp', 'desc')
-      );
+      if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
+        this.progressCollection =
+          this.resultIndicators[this.activeTab].progression;
+      } else {
+        await this.$bind(
+          'progressCollection',
+          db
+            .collection(
+              `kpis/${this.resultIndicators[this.activeTab].id}/progress`
+            )
+            .where(
+              'timestamp',
+              '>',
+              this.currentResultIndicatorPeriod.startDate
+            )
+            .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
+            .orderBy('timestamp', 'desc')
+        );
+      }
 
       this.renderGraph();
     },
     renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          height: 350
+          height: 350,
         });
       }
+
+      if (this.progressCollection.length === 0) return;
 
       const [startValue, targetValue] = extent(
         this.progressCollection.map(({ value }) => value)
       );
-      const startDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.startDate);
-      const endDate = Timestamp.fromDate(this.currentResultIndicatorPeriod.endDate);
+      const startDate = Timestamp.fromDate(
+        this.currentResultIndicatorPeriod.startDate
+      );
+      const endDate = Timestamp.fromDate(
+        this.currentResultIndicatorPeriod.endDate
+      );
 
       this.graph.render({
         obj: {
