@@ -293,12 +293,6 @@ export default {
       });
     },
     formatResultIndicatorValue(value) {
-      console.log(
-        'VALUE: ',
-        value,
-        this.activeTab,
-        this.resultIndicators[this.activeTab].id
-      );
       const resultIndicator = this.resultIndicators[this.activeTab];
       if (resultIndicator && value) {
         if (resultIndicator.type === 'users') {
