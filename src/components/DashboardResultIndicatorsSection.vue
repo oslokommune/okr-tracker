@@ -2,7 +2,10 @@
   <div class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
       <tabs-list
-        :tabs="resultIndicators.map((resultIndicator) => resultIndicator.name)"
+        :tabs="this.resultIndicators.map((resultIndicator) => ({
+          label: resultIndicator.name,
+          tooltip: resultIndicator.description,
+        }))"
         :active-tab="activeTab"
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
@@ -175,21 +178,6 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1rem;
-
-    .title-3 {
-      color: var(--color-text);
-    }
-
-    .v-select {
-      min-width: 160px;
-    }
-
-    &::v-deep .vs__dropdown-toggle {
-      .vs__open-indicator {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-    }
   }
 }
 </style>

@@ -8,7 +8,7 @@
     <button
       :ref="`tabButton-${index}`"
       v-for="(tab, index) in tabs"
-      :id="`tabsButton-${tab}`"
+      :id="`tabsButton-${index}`"
       :key="`tab--${index}`"
       :class="{
         tabsList__button: true,
@@ -19,8 +19,9 @@
       :aria-controls="`tabsPanel-${index}`"
       :tabindex="index === activeTab ? 0 : -1"
       @click="() => setActiveTab(index)"
+      v-tooltip.bottom="tab.tooltip"
     >
-      {{ tab }}
+      {{ tab.label }}
     </button>
   </div>
 </template>
@@ -99,15 +100,21 @@ export default {
 .tabsList {
   &__button {
     margin: 0 0.125rem;
-    padding: 0.5rem;
+    padding: 0.75rem 0.5rem;
+    color: var(--color-grey-500);
+    font-weight: 500;
+    font-size: var(--font-size-1);
     background: transparent;
     border: none;
-    color: var(--color-text);
-    font-size: var(--font-size-1);
-    font-weight: 500;
+
+    &:hover {
+      color: var(--color-text);
+      background: var(--color-grey-50);
+    }
 
     &--isActive {
-      border-bottom: 4px solid #6fe9ff;
+      color: var(--color-text);
+      border-bottom: 4px solid var(--color-secondary-light);
     }
   }
 }
