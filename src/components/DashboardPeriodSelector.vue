@@ -122,9 +122,13 @@ export default {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  padding: 1rem;
+  padding: 0.75rem;
   border: 1px solid var(--color-grey-100);
   cursor: pointer;
+
+  &:hover:not(&--active) {
+    background: var(--color-grey-50);
+  }
 
   &--active {
     background-color: var(--color-secondary-light);

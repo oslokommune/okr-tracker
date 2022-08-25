@@ -3,7 +3,7 @@
     :id="`tabsPanel-${activeTab}`"
     role="tabpanel"
     tabindex="0"
-    aria-labelledby="tabsButton-${activeTab}`"
+    :aria-labelledby="`tabsButton-${activeTab}`"
   >
     <slot />
   </div>
