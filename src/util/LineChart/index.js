@@ -82,7 +82,7 @@ export default class LineChart {
   }
 
   render({ obj, period, progressionList, item, theme }) {
-    this.theme = theme;
+    this.theme = theme || 'blue';
     this.period = period;
     this.obj = obj;
 
