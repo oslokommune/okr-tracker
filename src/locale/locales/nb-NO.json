@@ -515,7 +515,11 @@
     "targetAudience": "Målgruppe",
     "missionStatement": "Oppdrag",
     "effect": "Effekt",
-    "heyThere": "Hei der!"
+    "heyThere": "Hei der!",
+    "downloadOptions": {
+      "svg": "Grafikk (.svg)",
+      "png": "Bilde (.png)"
+    }
   },
   "languages": {
     "en-US": "Engelsk",

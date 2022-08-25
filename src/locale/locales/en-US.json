@@ -519,7 +519,11 @@
     "targetAudience": "Target audience",
     "missionStatement": "Mission",
     "effect": "Effect",
-    "heyThere": "Hey there!"
+    "heyThere": "Hey there!",
+    "downloadOptions": {
+      "svg": "Graphics (.svg)",
+      "png": "Image (.png)"
+    }
   },
   "languages": {
     "en-US": "English",

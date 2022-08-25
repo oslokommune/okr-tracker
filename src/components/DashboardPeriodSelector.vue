@@ -116,6 +116,7 @@ export default {
 <style lang="scss" scoped>
 .periodSelector {
   position: relative;
+  display: inline-block;
 }
 
 .periodSelector__input {
@@ -127,7 +128,8 @@ export default {
   cursor: pointer;
 
   &:hover:not(&--active) {
-    background: var(--color-grey-50);
+    background: var(--color-light-gray);
+    border-color: var(--color-light-gray);
   }
 
   &--active {
