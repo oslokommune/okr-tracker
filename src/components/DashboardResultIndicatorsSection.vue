@@ -163,7 +163,14 @@ export default {
     activeTab: {
       immediate: true,
       async handler(activeTab) {
+        this.latestProgressRecord = null;
+
         this.getProgressData();
+      },
+    },
+    progressCollection: {
+      immediate: true,
+      async handler() {
         this.getLatestProgressRecord();
       },
     },
@@ -174,15 +181,23 @@ export default {
       this.activeTab = tabIndex;
     },
     async getLatestProgressRecord() {
-      this.latestProgressRecord = null;
-      await db
-        .collection(`kpis/${this.resultIndicators[this.activeTab].id}/progress`)
-        .orderBy('timestamp', 'desc')
-        .limit(1)
-        .get()
-        .then((list) => {
-          this.latestProgressRecord = list.docs[0] ? list.docs[0].data() : null;
-        });
+      if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
+        this.latestProgressRecord =
+          this.progressCollection[this.progressCollection.length - 1];
+      } else {
+        await db
+          .collection(
+            `kpis/${this.resultIndicators[this.activeTab].id}/progress`
+          )
+          .orderBy('timestamp', 'desc')
+          .limit(1)
+          .get()
+          .then((list) => {
+            this.latestProgressRecord = list.docs[0]
+              ? list.docs[0].data()
+              : null;
+          });
+      }
     },
     async getProgressData() {
       if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
@@ -240,6 +255,12 @@ export default {
       });
     },
     formatResultIndicatorValue(value) {
+      console.log(
+        'VALUE: ',
+        value,
+        this.activeTab,
+        this.resultIndicators[this.activeTab].id
+      );
       const resultIndicator = this.resultIndicators[this.activeTab];
       if (resultIndicator && value) {
         if (resultIndicator.type === 'users') {

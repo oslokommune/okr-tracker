@@ -5,6 +5,8 @@ export const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
 
 export const APEN_BY_RESULT_INDICATORS = [
   {
+    id: 'open_doors',
+    type: 'users',
     name: 'Meråpne døråpninger',
     description:
       'Antall vellykkede åpninger av bibliotek + minigjenbruk + hjelpemidler + bydelslokaler mellom 1. februar og 30. juni 2022',
@@ -239,8 +241,10 @@ export const APEN_BY_RESULT_INDICATORS = [
     }),
   },
   {
+    id: 'time_liberated',
     name: 'Frigjort tid',
-    description: '',
+    description: 'Akkummulert frigjort tid (timer)',
+    type: 'users',
     progression: [
       { timestamp: '01.02.2021', value: 0.2 },
       { timestamp: '02.02.2021', value: 0.2 },
@@ -840,7 +844,7 @@ export const KEY_FIGURES = [
       'nb-NO': 'Deltakelser',
       'en-US': 'Participations',
     },
-    value: 181000,
+    value: 2130079,
     icon: 'IconOrganization',
   },
   {
@@ -880,18 +884,28 @@ export const KPI_TARGETS = {
       'en-US': 'Target for 2022',
     },
   },
-  'j8go8Qn4kxh5K8hYj28K': { // Åpen by, Kulturtimer
+  j8go8Qn4kxh5K8hYj28K: {
+    // Åpen by, Kulturtimer
     value: 1300000,
     name: {
       'nb-NO': 'Mål for 2022',
       'en-US': 'Target for 2022',
     },
   },
-  // '***': { // TODO: Åpen by, Meråpne dåråpninger
-  //   value: 50000,
-  //   name: {
-  //     'nb-NO': 'Mål for 2022',
-  //     'en-US': 'Target for 2022',
-  //   },
-  // },
+  open_doors: {
+    // Åpen by, Meråpne dåråpninger
+    value: 50000,
+    name: {
+      'nb-NO': 'Mål for 2022',
+      'en-US': 'Target for 2022',
+    },
+  },
+  time_liberated: {
+    // Åpen by, Frigjort tid
+    value: 600,
+    name: {
+      'nb-NO': 'Mål for 2022',
+      'en-US': 'Target for 2022',
+    },
+  },
 };
