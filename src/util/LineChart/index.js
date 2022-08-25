@@ -32,10 +32,12 @@ const formatValue = (value, item) => {
 };
 
 export default class LineChart {
-  constructor(svgElement, { height }) {
+  constructor(svgElement, { height, theme }) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
+
+    this.theme = theme || 'blue';
 
     select(svgElement).selectAll('*').remove();
 
@@ -67,20 +69,20 @@ export default class LineChart {
       allowHTML: true,
       content(ref) {
         const data = select(ref).datum();
-        if (!data)
-          return;
+        if (!data) return;
         return new Tooltip({
           propsData: {
             timestamp: data.timestamp,
             value: data.value,
-            comment: data?.comment
-          }
+            comment: data?.comment,
+          },
         }).$mount().$el.outerHTML;
-      }
+      },
     });
   }
 
-  render({ obj, period, progressionList, item }) {
+  render({ obj, period, progressionList, item, theme }) {
+    this.theme = theme || 'blue';
     this.period = period;
     this.obj = obj;
 
@@ -125,10 +127,7 @@ export default class LineChart {
       .transition()
       .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)))
       .call(styleAxis);
-    this.xAxis
-      .transition()
-      .call(axisBottom(this.x).ticks(4))
-      .call(styleAxis);
+    this.xAxis.transition().call(axisBottom(this.x).ticks(4)).call(styleAxis);
 
     this.today
       .attr('x1', this.x(new Date()))
@@ -175,11 +174,9 @@ export default class LineChart {
       .data(data)
       .join('path')
       .attr('transform', (d) => {
-        return (
-          `translate(${this.x(d.timestamp)},${this.y(d.value)})`
-        );
+        return `translate(${this.x(d.timestamp)},${this.y(d.value)})`;
       })
       .attr('d', this.indicator)
-      .call(styleValueIndicators)
+      .call(styleValueIndicators);
   }
 }
