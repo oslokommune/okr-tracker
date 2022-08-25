@@ -39,7 +39,6 @@ export default class Pie {
    * Update the visualisation using the provided data
    */
   render(progression, period, colorMode) {
-    console.log('PERIOD: ', period);
     this.colorMode = colorMode;
     const time = getTimeProgression(period);
 
