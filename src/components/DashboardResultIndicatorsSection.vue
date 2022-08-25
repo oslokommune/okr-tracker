@@ -271,7 +271,6 @@ export default {
 
 <style lang="scss" scoped>
 .dashboardResultIndicatorsSection {
-  padding: 1.5rem;
   background: var(--color-white);
 
   &__header {
@@ -301,8 +300,8 @@ export default {
       .vs__open-indicator {
         width: 1.4rem;
         height: 1.4rem;
-        margin: 0.4rem 0.5rem 0.6rem 0.5rem;
-        padding: 0.1rem;
+        margin: 0.15rem 0.4rem 0.3rem 0.2rem;
+        padding: 0rem;
       }
 
       .vs__search {

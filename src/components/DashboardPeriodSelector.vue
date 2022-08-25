@@ -127,14 +127,9 @@ export default {
   border: 1px solid var(--color-grey-100);
   cursor: pointer;
 
-<<<<<<< HEAD
   &:hover:not(&--active) {
-    background: var(--color-grey-50);
-=======
-  &:hover {
     background: var(--color-light-gray);
     border-color: var(--color-light-gray);
->>>>>>> Styling of download-button
   }
 
   &--active {
