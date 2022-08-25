@@ -127,6 +127,11 @@ export default {
   border: 1px solid var(--color-grey-100);
   cursor: pointer;
 
+  &:hover {
+    background: var(--color-light-gray);
+    border-color: var(--color-light-gray);
+  }
+
   &--active {
     background-color: var(--color-secondary-light);
     border-color: var(--color-secondary-light);
