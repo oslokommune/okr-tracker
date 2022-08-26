@@ -50,7 +50,9 @@
         </h2>
       </template>
       <template #content>
-        <dashboard-result-indicators-section />
+        <dashboard-result-indicators-section
+          :isPOCDepartment="isPOCDepartment"
+        />
       </template>
     </dashboard-section>
     <dashboard-section v-if="isPOCDepartment">

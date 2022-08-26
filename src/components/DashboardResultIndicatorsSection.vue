@@ -2,10 +2,12 @@
   <div class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
       <tabs-list
-        :tabs="this.resultIndicators.map((resultIndicator) => ({
-          label: resultIndicator.name,
-          tooltip: resultIndicator.description,
-        }))"
+        :tabs="
+          this.resultIndicators.map((resultIndicator) => ({
+            label: resultIndicator.name,
+            tooltip: resultIndicator.description,
+          }))
+        "
         :active-tab="activeTab"
         :set-active-tab="setActiveTab"
         aria-label="Velg resultatindikator"
@@ -29,19 +31,32 @@
         </div>
       </div>
     </div>
-    <tabs-panel :active-tab="activeTab" ref="tabPanel">
+    <tabs-panel :active-tab="activeTab">
       <!-- xmlns for download purposes -->
-      <svg class="progressGraph"
-           ref="progressGraphSvg"
-           xmlns="http://www.w3.org/2000/svg"/>
-      <div class="progressTarget" v-if="latestProgressRecord && resultIndicatorTarget">
+      <svg
+        class="progressGraph"
+        ref="progressGraphSvg"
+        xmlns="http://www.w3.org/2000/svg"
+      />
+      <div
+        class="progressTarget"
+        v-if="latestProgressRecord && resultIndicatorTarget"
+      >
         <div>
-          <span class="progressTarget__title">{{ $t('kpi.currentValue') }}</span>
-          <span class="progressTarget__value">{{ formatResultIndicatorValue(latestProgressRecord.value) }}</span>
+          <span class="progressTarget__title">{{
+            $t('kpi.currentValue')
+          }}</span>
+          <span class="progressTarget__value">{{
+            formatResultIndicatorValue(latestProgressRecord.value)
+          }}</span>
         </div>
         <div>
-          <span class="progressTarget__title">{{ resultIndicatorTarget.name[$i18n.locale] }}</span>
-          <span class="progressTarget__value">{{ formatResultIndicatorValue(resultIndicatorTarget.value) }}</span>
+          <span class="progressTarget__title">{{
+            resultIndicatorTarget.name[$i18n.locale]
+          }}</span>
+          <span class="progressTarget__value">{{
+            formatResultIndicatorValue(resultIndicatorTarget.value)
+          }}</span>
         </div>
       </div>
     </tabs-panel>
@@ -51,8 +66,8 @@
 <script>
 import { mapState } from 'vuex';
 import { extent } from 'd3-array';
-import { db } from '@/config/firebaseConfig';
 import firebase from 'firebase/app';
+import { db } from '@/config/firebaseConfig';
 import endOfDay from 'date-fns/endOfDay';
 import { saveSvgAsPng } from 'save-svg-as-png';
 import downloadFile from '@/util/downloadFile';
@@ -64,7 +79,10 @@ import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import IconDownload from './IconDownload.vue';
 import TabsList from './TabsList.vue';
 import TabsPanel from './TabsPanel.vue';
-import { KPI_TARGETS } from '@/views/Dashboard/data/staticData';
+import {
+  APEN_BY_RESULT_INDICATORS,
+  KPI_TARGETS,
+} from '@/views/Dashboard/data/staticData';
 import i18n from '@/locale/i18n';
 
 const Timestamp = firebase.firestore.Timestamp;
@@ -102,13 +120,19 @@ export default {
     DashboardPeriodSelector,
   },
 
+  props: {
+    isPOCDepartment: {
+      type: Boolean,
+      required: true,
+    },
+  },
+
   data: () => ({
     activeTab: 0,
     downloadOption: '',
     resultIndicators: [],
     progressCollection: [],
     latestProgressRecord: 0,
-    isPOCDepartment: false,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
@@ -148,7 +172,7 @@ export default {
       },
     },
     currentResultIndicatorPeriod() {
-      this.getProgressData(this.resultIndicators[this.activeTab].id);
+      this.getProgressData();
 
       if (
         this.$route.query?.resultIndicatorPeriod !==
@@ -164,14 +188,24 @@ export default {
     kpis: {
       immediate: true,
       async handler(kpis) {
-        this.resultIndicators = kpis;
+        this.resultIndicators = [
+          ...kpis,
+          ...(this.isPOCDepartment ? APEN_BY_RESULT_INDICATORS : []),
+        ];
         this.getProgressData();
       },
     },
     activeTab: {
       immediate: true,
-      async handler() {
+      async handler(activeTab) {
+        this.latestProgressRecord = null;
+
         this.getProgressData();
+      },
+    },
+    progressCollection: {
+      immediate: true,
+      async handler() {
         this.getLatestProgressRecord();
       },
     },
@@ -185,27 +219,44 @@ export default {
       this.activeTab = tabIndex;
     },
     async getLatestProgressRecord() {
-      this.latestProgressRecord = null;
-      await db
-        .collection(`kpis/${this.resultIndicators[this.activeTab].id}/progress`)
-        .orderBy('timestamp', 'desc')
-        .limit(1)
-        .get()
-        .then((list) => {
-          this.latestProgressRecord = (list.docs[0] ? list.docs[0].data() : null)
-        });
-    },
-    async getProgressData() {
-      await this.$bind(
-        'progressCollection',
-        db
+      if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
+        this.latestProgressRecord =
+          this.progressCollection[this.progressCollection.length - 1];
+      } else {
+        await db
           .collection(
             `kpis/${this.resultIndicators[this.activeTab].id}/progress`
           )
-          .where('timestamp', '>', this.currentResultIndicatorPeriod.startDate)
-          .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
           .orderBy('timestamp', 'desc')
-      );
+          .limit(1)
+          .get()
+          .then((list) => {
+            this.latestProgressRecord = list.docs[0]
+              ? list.docs[0].data()
+              : null;
+          });
+      }
+    },
+    async getProgressData() {
+      if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
+        this.progressCollection =
+          this.resultIndicators[this.activeTab].progression;
+      } else {
+        await this.$bind(
+          'progressCollection',
+          db
+            .collection(
+              `kpis/${this.resultIndicators[this.activeTab].id}/progress`
+            )
+            .where(
+              'timestamp',
+              '>',
+              this.currentResultIndicatorPeriod.startDate
+            )
+            .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
+            .orderBy('timestamp', 'desc')
+        );
+      }
 
       this.renderGraph();
     },
@@ -215,6 +266,8 @@ export default {
           height: 350,
         });
       }
+
+      if (this.progressCollection.length === 0) return;
 
       const [startValue, targetValue] = extent(
         this.progressCollection.map(({ value }) => value)
