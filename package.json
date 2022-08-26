@@ -12,9 +12,11 @@
     "test:e2e:headless": "firebase emulators:exec --project origo-okr-tracker --import=./tests & vite & (sleep 10 && env-cmd -f ./.env.local cypress run --headless)",
     "deploy": "npm run build && firebase deploy --project=production",
     "deploy:test": "npm run build:test && firebase deploy --project=development",
+    "deploy:feature_branch": "npm run build && firebase hosting:channel:deploy --project=production $npm_config_name",
     "lint": "eslint ./src",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
-    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix"
+    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
+    "export_mock_data": "firebase emulators:export ./mock_data"
   },
   "dependencies": {
     "@braid/griddle": "^2.3.1",
