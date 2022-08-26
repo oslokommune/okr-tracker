@@ -7,9 +7,9 @@
       params: { slug },
     }"
   >
-    <icon-graph />
+    <icon-graph class="widgetDashboardEntry__graphIcon" />
     {{ $t('general.dashboardEntry') }}
-    <icon-chevron-right />
+    <icon-chevron-right class="widgetDashboardEntry__chevronRightIcon" />
   </router-link>
 </template>
 
@@ -62,18 +62,18 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-  padding: 1.5rem;
+  padding: 1.5rem 1rem;
   background: var(--color-secondary-light);
   color: var(--color-primary);
   font-size: 1.125rem;
   font-weight: 500;
 
-  svg {
+  &__graphIcon {
     margin-right: 0.5rem;
+  }
 
-    &:last-child {
-      margin-left: auto;
-    }
+  &__chevronRightIcon {
+    margin-left: auto;
   }
 
   &:hover {
