@@ -850,7 +850,7 @@ export const KEY_FIGURES = [
       'en-US': 'Participations',
     },
     value: 2130079,
-    icon: 'IconOrganization',
+    icon: IconOrganization,
   },
   {
     id: 'weddings',
