@@ -108,9 +108,7 @@
               <strong>Charlotte Frisk</strong>
             </a>
             eller skrive til oss i
-            <a
-              href="https://join.slack.com/share/enQtMzc0ODU4MzYyODg0OC1iY2MzZGI2YTVhMGJjZDQxN2Q4ZGY0NDMxNDNlZWYzYzg0NDRhZWM0NDgyZDkwZjVjNDEwMzA3NmYzNDAzM2Fm"
-            >
+            <a href="https://oslokommune.slack.com/archives/C01SFNFEXK7">
               <strong>#origo-dataspeilet</strong> </a
             >.
           </div>
