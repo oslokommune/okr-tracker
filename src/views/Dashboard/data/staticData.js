@@ -1,5 +1,10 @@
 import firebase from 'firebase/app';
 const Timestamp = firebase.firestore.Timestamp;
+import IconCalendar from '../../../components/IconCalendar.vue';
+import IconOrganization from '../../../components/IconOrganization.vue';
+import IconHoldingHands from '../../../components/IconHoldingHands.vue';
+import IconUser from '../../../components/IconUser.vue';
+import IconActivePerson from '../../../components/IconActivePerson.vue';
 
 export const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
 
@@ -836,7 +841,7 @@ export const KEY_FIGURES = [
       'en-US': 'Reservations',
     },
     value: 23418,
-    icon: 'IconCalendar',
+    icon: IconCalendar,
   },
   {
     id: 'participations',
@@ -854,7 +859,7 @@ export const KEY_FIGURES = [
       'en-US': 'Weddings',
     },
     value: 3338,
-    icon: 'IconHoldingHands',
+    icon: IconHoldingHands,
   },
   {
     id: 'userProfiles',
@@ -863,7 +868,7 @@ export const KEY_FIGURES = [
       'en-US': 'User profiles',
     },
     value: 153101,
-    icon: 'IconUser',
+    icon: IconUser,
   },
   {
     id: 'activeUserProfiles',
@@ -872,7 +877,7 @@ export const KEY_FIGURES = [
       'en-US': 'Active user profiles',
     },
     value: 71857,
-    icon: 'IconActivePerson',
+    icon: IconActivePerson,
   },
 ];
 

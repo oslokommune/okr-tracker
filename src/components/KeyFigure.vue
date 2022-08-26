@@ -5,7 +5,7 @@
     </div>
 
     <div class="keyFigure__value">
-      <component :is="icon" class="keyFigure__icon" />
+      <component :is="keyFigure.icon" class="keyFigure__icon" />
       {{ formatLargeNumber(keyFigure.value) }}
     </div>
   </div>
@@ -21,12 +21,6 @@ export default {
     keyFigure: {
       type: Object,
       required: true,
-    },
-  },
-
-  computed: {
-    icon() {
-      return () => import(/* @vite-ignore */ `./${this.keyFigure.icon}.vue`);
     },
   },
 
