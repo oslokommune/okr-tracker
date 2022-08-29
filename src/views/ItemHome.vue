@@ -72,7 +72,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { isBefore, addDays } from 'date-fns';
-import { tabIdsHelper } from '@/util/tabUtils';
+import tabIdsHelper from '@/util/tabUtils';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
