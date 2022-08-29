@@ -119,8 +119,8 @@ export default {
 
 <style lang="scss" scoped>
 .tabList {
-  margin-bottom: 1.5rem;
   position: relative;
+  margin-bottom: 1.5rem;
   overflow-x: auto;
 
   &::-webkit-slider-runnable-track {
