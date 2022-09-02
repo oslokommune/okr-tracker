@@ -173,8 +173,6 @@ export default {
       try {
         const activePeriodId = this.filteredPeriods[tabIndex].id;
 
-        console.log('ACTIVE PERIOD ID: ', activePeriodId);
-
         await this.setDataLoading(true);
         await this.set_active_period_and_data(activePeriodId);
       } catch (e) {
