@@ -1,7 +1,6 @@
 <template>
   <div
     class="tabList"
-    :class="{ 'tabList--hasOldTabsStyling': hasOldTabsStyling }"
     role="tablist"
     :aria-label="ariaLabel"
     @keydown="updateFocus"
@@ -50,11 +49,6 @@ export default {
     setActiveTab: {
       type: Function,
       required: true,
-    },
-    hasOldTabsStyling: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
     tabIds: {
       type: Object,
