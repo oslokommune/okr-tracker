@@ -307,7 +307,13 @@ export default {
       const svgData = this.$refs.progressGraphSvg;
 
       if (value.downloadOption === 'png') {
-        saveSvgAsPng(svgData, `${filename}.png`, {});
+        const svgFrame = svgData.getBoundingClientRect();
+
+        const options = {
+          width: svgFrame.width + 50,
+          height: svgFrame.height,
+        };
+        saveSvgAsPng(svgData, `${filename}.png`, options);
       }
       if (value.downloadOption === 'svg') {
         const preface = '<?xml version="1.0" standalone="no"?>\r\n';
