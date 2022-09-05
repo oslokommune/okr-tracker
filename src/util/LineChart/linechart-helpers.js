@@ -1,6 +1,15 @@
+import Vue from 'vue';
+import { select } from 'd3-selection';
+// TODO: Replace v-tooltip with vue-tippy globally? Can
+// seemingly be configured more or less as a drop-in
+// replacement.
+import { delegate } from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
+import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
 import { addCommentSymbol } from './symbols';
 
 const padding = { left: 60, top: 20, right: 10, bottom: 25 };
+const Tooltip = Vue.extend(IndicatorTooltip);
 
 export const GRAPH_THEMES = {
   blue: {
@@ -56,7 +65,7 @@ export function initSvg(svg) {
     .call(styleGradientStop.bind(this));
 
   this.valueIndicators = this.canvas.append('g').classed('indicators', true);
-
+  this.valueTooltips = null;
   this.defs.call(addCommentSymbol);
 }
 
@@ -89,9 +98,9 @@ export function styleValueLine(el) {
 }
 
 export function styleValueIndicators(el) {
-  el.classed('indicator', true).style('fill', (d) => {
-    return d?.comment ? 'url(#comment-symbol)' : 'transparent';
-  });
+  el.classed('indicator', true).style('fill', (d) =>
+    d?.comment ? 'url(#comment-symbol)' : 'transparent'
+  );
 }
 
 function styleArea(el) {
@@ -110,4 +119,28 @@ export function resize() {
 
   this.x.range([0, this.innerWidth]);
   this.y.range([this.innerHeight, 0]);
+}
+
+export function addValueTooltips(el) {
+  if (this.valueTooltips) this.valueTooltips.destroy();
+
+  this.valueTooltips = delegate(el.node(), {
+    target: '.indicator',
+    trigger: 'mouseenter click',
+    theme: 'ok',
+    offset: [0, 10],
+    allowHTML: true,
+    content(ref) {
+      const data = select(ref).datum();
+      if (!data) return '';
+      return new Tooltip({
+        propsData: {
+          timestamp: data.timestamp,
+          value: data.value,
+          type: data?.type,
+          comment: data?.comment,
+        },
+      }).$mount().$el.outerHTML;
+    },
+  });
 }

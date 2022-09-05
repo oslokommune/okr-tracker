@@ -1,7 +1,10 @@
 <template>
   <div v-if="activeKpi" class="container">
     <div class="widgets--left">
-      <router-link class="btn widget__back-button" :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }">
+      <router-link
+        class="btn widget__back-button"
+        :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
+      >
         {{ $t('general.back') }}
         <i class="fa fa-chevron-left"></i>
       </router-link>
@@ -43,7 +46,12 @@
           </div>
         </div>
 
-        <widgets-k-p-i-home class="aside--middle" :range="range" :progress="progress" @listen="handleChange" />
+        <widgets-k-p-i-home
+          class="aside--middle"
+          :range="range"
+          :progress="progress"
+          @listen="handleChange"
+        />
 
         <div class="widget__history">
           <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
@@ -51,7 +59,9 @@
           <v-spinner v-if="isLoading"></v-spinner>
 
           <empty-state
-            v-else-if="!filteredProgress.length || filteredProgress.length === 0"
+            v-else-if="
+              !filteredProgress.length || filteredProgress.length === 0
+            "
             :icon="'history'"
             :heading="$t('empty.kpiProgress.heading')"
             :body="$t('empty.kpiProgress.body')"
@@ -76,7 +86,10 @@
                   </button>
 
                   <template slot="popover">
-                    <button class="btn btn--ter btn--negative" @click="remove(id)">
+                    <button
+                      class="btn btn--ter btn--negative"
+                      @click="remove(id)"
+                    >
                       {{ $t('btn.confirmDeleteProgress') }}
                     </button>
                   </template>
@@ -96,7 +109,12 @@
       </div>
     </div>
 
-    <widgets-k-p-i-home class="aside--right" :range="range" :progress="progress" @listen="handleChange" />
+    <widgets-k-p-i-home
+      class="aside--right"
+      :range="range"
+      :progress="progress"
+      @listen="handleChange"
+    />
   </div>
 </template>
 
@@ -106,7 +124,7 @@ import { extent } from 'd3-array';
 import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
+import { dateTimeShort, formatISOShort } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
@@ -138,7 +156,9 @@ export default {
     ...mapGetters(['hasEditRights']),
 
     limitedProgress() {
-      return this.historyLimit ? this.filteredProgress.slice(0, this.historyLimit) : this.filteredProgress;
+      return this.historyLimit
+        ? this.filteredProgress.slice(0, this.historyLimit)
+        : this.filteredProgress;
     },
   },
 
@@ -147,7 +167,10 @@ export default {
       immediate: true,
       async handler({ id }) {
         this.isLoading = true;
-        await this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+        await this.$bind(
+          'progress',
+          db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc')
+        );
         this.isLoading = false;
       },
     },
@@ -181,10 +204,19 @@ export default {
     },
 
     renderGraph() {
-      const [startValue, targetValue] = extent(this.filteredProgress.map(({ value }) => value));
-      const [startDate, endDate] = extent(this.filteredProgress.map(({ timestamp }) => timestamp));
+      const [startValue, targetValue] = extent(
+        this.filteredProgress.map(({ value }) => value)
+      );
+      const [startDate, endDate] = extent(
+        this.filteredProgress.map(({ timestamp }) => timestamp)
+      );
 
-      if (!this.graph || !startValue === undefined || !targetValue === undefined) return;
+      if (
+        !this.graph ||
+        !startValue === undefined ||
+        !targetValue === undefined
+      )
+        return;
       this.graph.render({
         startValue,
         targetValue,
@@ -200,17 +232,18 @@ export default {
         this.filteredProgress = this.progress;
       } else {
         this.filteredProgress = this.progress.filter(
-          (a) => a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
+          (a) =>
+            a.timestamp.toDate() > this.startDate &&
+            a.timestamp.toDate() < this.endDate
         );
       }
       this.renderGraph();
     },
 
     formatKPIValue(value) {
-      if (kpiTypes[this.activeKpi.type].type === 'users') {
-        return numberLocale.format(',')(value);
-      }
-      return kpiTypes[this.activeKpi.type].formatValue(value);
+      return kpiTypes[this.activeKpi.type].formatValue(value, {
+        compact: true,
+      });
     },
 
     handleChange(range) {
@@ -218,7 +251,10 @@ export default {
         this.$router
           .push({
             name: 'KpiHome',
-            params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
+            params: {
+              slug: this.$route.params.slug,
+              kpiId: this.$route.params.kpiId,
+            },
           })
           .catch((err) => console.log(err));
         this.startDate = null;
@@ -238,8 +274,14 @@ export default {
       this.$router
         .push({
           name: 'KpiHome',
-          params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
-          query: { startDate: formatISOShort(this.startDate), endDate: formatISOShort(this.endDate) },
+          params: {
+            slug: this.$route.params.slug,
+            kpiId: this.$route.params.kpiId,
+          },
+          query: {
+            startDate: formatISOShort(this.startDate),
+            endDate: formatISOShort(this.endDate),
+          },
         })
         .catch((err) => console.log(err));
 

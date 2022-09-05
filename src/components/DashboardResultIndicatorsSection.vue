@@ -335,6 +335,7 @@ export default {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
           height: 350,
+          tooltips: true,
         });
       }
 
@@ -350,13 +351,9 @@ export default {
     },
     formatResultIndicatorValue(value) {
       const resultIndicator = this.resultIndicators[this.activeTab];
-      if (resultIndicator && value) {
-        if (resultIndicator.type === 'users') {
-          return numberLocale.format(',')(value);
-        }
-        return kpiTypes[resultIndicator.type].formatValue(value);
-      }
-      return null;
+      return resultIndicator && value
+        ? kpiTypes[resultIndicator.type].formatValue(value)
+        : null;
     },
     download(value) {
       const filename = this.resultIndicators[this.activeTab].name;

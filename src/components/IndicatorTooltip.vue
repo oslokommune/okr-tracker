@@ -1,15 +1,15 @@
 <template>
   <div class="tooltip">
     <div>
-      <icon-calendar :height="15" :width="15"/>
+      <icon-calendar :height="15" :width="15" />
       {{ formattedTimestamp }}
     </div>
     <div>
-      <icon-graph :height="15" :width="15"/>
-      {{ value }}
+      <icon-graph :height="15" :width="15" />
+      {{ formattedValue }}
     </div>
     <div v-if="comment">
-      <icon-comment :height="15" :width="15"/>
+      <icon-comment :height="15" :width="15" />
       {{ comment }}
     </div>
   </div>
@@ -17,6 +17,7 @@
 
 <script>
 import { dateShort } from '@/util';
+import kpiTypes from '@/config/kpiTypes';
 import IconCalendar from './IconCalendar.vue';
 import IconComment from './IconComment.vue';
 import IconGraph from './IconGraph.vue';
@@ -26,7 +27,7 @@ export default {
   components: {
     IconCalendar,
     IconComment,
-    IconGraph
+    IconGraph,
   },
   props: {
     timestamp: {
@@ -37,16 +38,28 @@ export default {
       type: Number,
       required: true,
     },
+    type: {
+      type: String,
+      required: false,
+      default: null,
+    },
     comment: {
       type: String,
       required: false,
+      default: null,
     },
   },
   computed: {
     formattedTimestamp() {
       return dateShort(this.timestamp);
-    }
-  }
+    },
+    formattedValue() {
+      if (this.type) {
+        return kpiTypes[this.type].formatValue(this.value, { compact: false });
+      }
+      return this.value;
+    },
+  },
 };
 </script>
 
