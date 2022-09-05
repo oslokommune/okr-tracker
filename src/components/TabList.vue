@@ -159,12 +159,13 @@ export default {
   }
 
   &__button {
+    margin: 0.125rem;
+    padding: 0.75rem 0.5rem;
     font-weight: 500;
     white-space: nowrap;
 
     &--isFilled {
-      margin: 0.125rem 0.5rem 0 0;
-      padding: 0.7rem 1rem;
+      margin-right: 0.5rem;
       color: var(--color-text);
       text-decoration: none;
       background-color: var(--color-bg-dark);
@@ -178,8 +179,6 @@ export default {
     }
 
     &--isOutlined {
-      margin: 0 0.125rem;
-      padding: 0.75rem 0.5rem;
       color: var(--color-grey-500);
       font-size: var(--font-size-1);
       background: transparent;
