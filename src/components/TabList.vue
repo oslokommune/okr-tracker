@@ -133,8 +133,8 @@ export default {
   }
 
   &::-webkit-scrollbar {
-    height: 6px;
-    transform: translateY(10px);
+    height: 0.375rem;
+    transform: translateY(0.625rem);
   }
 
   &::-webkit-scrollbar-track {
@@ -163,7 +163,7 @@ export default {
     white-space: nowrap;
 
     &--isFilled {
-      margin: 2px 0.5rem 0 0;
+      margin: 0.125rem 0.5rem 0 0;
       padding: 0.7rem 1rem;
       color: var(--color-text);
       text-decoration: none;
@@ -193,7 +193,7 @@ export default {
 
     &--isOutlined#{&}--isActive {
       color: var(--color-text);
-      border-bottom: 4px solid var(--color-secondary-light);
+      border-bottom: 0.25rem solid var(--color-secondary-light);
     }
   }
 
