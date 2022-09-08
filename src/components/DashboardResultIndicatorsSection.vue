@@ -359,6 +359,14 @@ export default {
       const filename = this.resultIndicators[this.activeTab].name;
       const svgData = this.$refs.progressGraphSvg;
 
+      // Hide certain elements from the graph before exporting
+      const hiddenElements = [svgData.querySelector('.indicators')].filter(
+        (el) => el
+      );
+      hiddenElements.forEach((el) => {
+        el.style.opacity = 0;
+      });
+
       if (value.downloadOption === 'png') {
         const svgFrame = svgData.getBoundingClientRect();
 
@@ -384,6 +392,12 @@ export default {
         ].join('\n');
         downloadFile(content, filename, '.csv');
       }
+
+      setTimeout(() => {
+        hiddenElements.forEach((el) => {
+          el.style.opacity = 1;
+        });
+      }, 10);
     },
 
     setPeriod (period) {
