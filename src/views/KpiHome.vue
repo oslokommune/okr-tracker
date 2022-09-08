@@ -241,9 +241,7 @@ export default {
     },
 
     formatKPIValue(value) {
-      return kpiTypes[this.activeKpi.type].formatValue(value, {
-        compact: true,
-      });
+      return kpiTypes[this.activeKpi.type].formatValue(value);
     },
 
     handleChange(range) {
