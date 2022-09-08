@@ -517,7 +517,6 @@
     "effect": "Effekt",
     "heyThere": "Hei der!",
     "downloadOptions": {
-      "svg": "Grafikk (.svg)",
       "png": "Bilde (.png)"
     }
   },

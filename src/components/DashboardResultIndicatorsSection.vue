@@ -70,7 +70,6 @@ import firebase from 'firebase/app';
 import { db } from '@/config/firebaseConfig';
 import endOfDay from 'date-fns/endOfDay';
 import { saveSvgAsPng } from 'save-svg-as-png';
-import downloadFile from '@/util/downloadFile';
 import LineChart from '@/util/LineChart';
 import { numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
@@ -140,10 +139,6 @@ export default {
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
     OpenIndicator: IconDownload,
     downloadOptions: [
-      {
-        label: `${i18n.t('dashboard.downloadOptions.svg')}`,
-        downloadOption: 'svg',
-      },
       {
         label: `${i18n.t('dashboard.downloadOptions.png')}`,
         downloadOption: 'png',
@@ -314,14 +309,6 @@ export default {
           height: svgFrame.height,
         };
         saveSvgAsPng(svgData, `${filename}.png`, options);
-      }
-      if (value.downloadOption === 'svg') {
-        const preface = '<?xml version="1.0" standalone="no"?>\r\n';
-        const svgBlob = new Blob([preface, svgData.outerHTML], {
-          type: 'image/svg+xml;charset=utf-8',
-        });
-
-        downloadFile(svgBlob, filename, '.svg');
       }
     },
   },
