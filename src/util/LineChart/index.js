@@ -123,6 +123,7 @@ export default class LineChart {
     const firstValue = {
       timestamp: startDate,
       value: +startValue,
+      type: kpi?.type,
       startValue: +startValue,
     };
 
@@ -143,6 +144,7 @@ export default class LineChart {
     const todayValue = {
       timestamp: new Date(),
       value: lastValue,
+      type: kpi?.type,
       startValue: +startValue,
     };
 
