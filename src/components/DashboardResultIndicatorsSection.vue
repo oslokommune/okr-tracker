@@ -457,12 +457,14 @@ export default {
     .graphOptions {
       margin-left: 1rem;
       display: flex;
-      align-items: center;
+      gap: 0.5rem;
       justify-content: space-between;
     }
 
     .download {
+      height: 100%;
       min-width: 1rem;
+      margin-right: 0.5rem;
 
       &::v-deep .vs__dropdown-menu {
         left: -3.6rem;
@@ -472,8 +474,6 @@ export default {
 
     .dropdownButton {
       display: inline-block;
-      padding-left: 0.2rem;
-      padding-right: 0.5rem;
 
       &::v-deep .vs--open .vs__open-indicator {
         transform: rotate(0deg) scale(1);
