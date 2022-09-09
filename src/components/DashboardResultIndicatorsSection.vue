@@ -68,7 +68,6 @@ import { mapState } from 'vuex';
 import { extent } from 'd3-array';
 import firebase from 'firebase/app';
 import { db } from '@/config/firebaseConfig';
-import endOfDay from 'date-fns/endOfDay';
 import { saveSvgAsPng } from 'save-svg-as-png';
 import LineChart from '@/util/LineChart';
 import { numberLocale } from '@/util';
@@ -103,7 +102,7 @@ const getResultIndicatorPeriods = () => {
       label: 'Hittil i år',
       key: 'year',
       startDate: new Date(currentYear, 0, 1),
-      endDate: endOfDay(new Date(currentYear, 11, 31)),
+      endDate: currentDate,
     },
   };
 };
