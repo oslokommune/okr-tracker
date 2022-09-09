@@ -66,9 +66,11 @@
 <script>
 import { mapState } from 'vuex';
 import { extent } from 'd3-array';
+import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 import { db } from '@/config/firebaseConfig';
 import { saveSvgAsPng } from 'save-svg-as-png';
+import downloadFile from '@/util/downloadFile';
 import LineChart from '@/util/LineChart';
 import { numberLocale } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
@@ -139,8 +141,12 @@ export default {
     OpenIndicator: IconDownload,
     downloadOptions: [
       {
-        label: `${i18n.t('dashboard.downloadOptions.png')}`,
+        label: i18n.t('dashboard.downloadOptions.png'),
         downloadOption: 'png',
+      },
+      {
+        label: i18n.t('dashboard.downloadOptions.csv'),
+        downloadOption: 'csv',
       },
     ],
   }),
@@ -308,6 +314,23 @@ export default {
           height: svgFrame.height,
         };
         saveSvgAsPng(svgData, `${filename}.png`, options);
+      }
+      else if (value.downloadOption === 'csv') {
+        const content = [
+          csvFormatRow([
+            i18n.t('fields.value'),
+            i18n.t('fields.date'),
+            i18n.t('fields.comment'),
+          ]),
+          csvFormatBody(this.progressCollection.map(d => {
+            return [
+              d.value,
+              d.timestamp.toDate().toISOString(),
+              d.comment,
+            ]
+          })),
+        ].join('\n');
+        downloadFile(content, filename, '.csv');
       }
     },
   },
