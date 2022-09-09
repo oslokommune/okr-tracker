@@ -35,7 +35,7 @@
             <router-link
               v-if="hasEditRights"
               class="btn btn--ter"
-              :to="{ name: 'ItemAdminOKRs' }"
+              :to="{ name: 'ItemAdmin', tab: 'okr' }"
             >
               {{ $t('empty.noPeriods.buttonText') }}
             </router-link>
@@ -172,8 +172,6 @@ export default {
     async setPeriod(tabIndex) {
       try {
         const activePeriodId = this.filteredPeriods[tabIndex].id;
-
-        console.log('ACTIVE PERIOD ID: ', activePeriodId);
 
         await this.setDataLoading(true);
         await this.set_active_period_and_data(activePeriodId);
