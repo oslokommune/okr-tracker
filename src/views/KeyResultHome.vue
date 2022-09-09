@@ -280,12 +280,13 @@ export default {
         await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
         this.isLoading = false;
         this.value = this.progressDetails.totalCompletedTasks;
-        this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+        this.graph = new LineChart(this.$refs.graph);
         this.graph.render({
-          obj: this.activeKeyResult,
+          startValue: this.activeKeyResult.startValue,
+          targetValue: this.activeKeyResult.targetValue,
           period: this.activePeriod,
-          progressionList: this.progress,
-          colorMode: this.theme,
+          progress: this.progress,
+          theme: this.theme,
         });
       },
     },
@@ -293,10 +294,11 @@ export default {
     progress() {
       if (this.graph) {
         this.graph.render({
-          obj: this.activeKeyResult,
+          startValue: this.activeKeyResult.startValue,
+          targetValue: this.activeKeyResult.targetValue,
           period: this.activePeriod,
-          progressionList: this.progress,
-          colorMode: this.theme,
+          progress: this.progress,
+          theme: this.theme,
         });
       }
     },
@@ -306,10 +308,11 @@ export default {
       handler() {
         if (!this.graph) return;
         this.graph.render({
-          obj: this.activeKeyResult,
+          startValue: this.activeKeyResult.startValue,
+          targetValue: this.activeKeyResult.targetValue,
           period: this.activePeriod,
-          progressionList: this.progress,
-          colorMode: this.theme,
+          progress: this.progress,
+          theme: this.theme,
         });
       },
     },
@@ -319,12 +322,13 @@ export default {
     if (!this.$refs.graph) return;
     if (!this.activeKeyResult) return;
 
-    this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+    this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
     this.graph.render({
-      obj: this.activeKeyResult,
+      startValue: this.activeKeyResult.startValue,
+      targetValue: this.activeKeyResult.targetValue,
       period: this.activePeriod,
-      progressionList: this.progress,
-      colorMode: this.theme,
+      progress: this.progress,
+      theme: this.theme,
     });
   },
 

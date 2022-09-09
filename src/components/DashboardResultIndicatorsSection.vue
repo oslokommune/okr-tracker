@@ -102,15 +102,21 @@ const getResultIndicatorPeriods = () => {
 
   return {
     sixmonths: {
-      label: 'Siste 6 mnd',
+      label: i18n.t('period.sixmonths'),
       key: 'sixmonths',
       startDate: sixMonthsBack,
       endDate: currentDate,
     },
     year: {
-      label: 'Hittil i år',
+      label: i18n.t('period.year'),
       key: 'year',
       startDate: new Date(currentYear, 0, 1),
+      endDate: currentDate,
+    },
+    all: {
+      label: i18n.t('period.all'),
+      key: 'all',
+      startDate: false,
       endDate: currentDate,
     },
   };
@@ -261,19 +267,25 @@ export default {
         this.progressCollection =
           this.resultIndicators[this.activeTab].progression;
       } else {
+        let query = db.collection(
+          `kpis/${this.resultIndicators[this.activeTab].id}/progress`
+        )
+
+        if (this.currentResultIndicatorPeriod.startDate) {
+          query = query.where(
+            'timestamp', '>=', this.currentResultIndicatorPeriod.startDate
+          );
+        }
+
+        if (this.currentResultIndicatorPeriod.endDate) {
+          query = query.where(
+            'timestamp', '<=', this.currentResultIndicatorPeriod.endDate
+          );
+        }
+
         await this.$bind(
           'progressCollection',
-          db
-            .collection(
-              `kpis/${this.resultIndicators[this.activeTab].id}/progress`
-            )
-            .where(
-              'timestamp',
-              '>',
-              this.currentResultIndicatorPeriod.startDate
-            )
-            .where('timestamp', '<', this.currentResultIndicatorPeriod.endDate)
-            .orderBy('timestamp', 'desc')
+          query.orderBy('timestamp', 'desc')
         );
       }
 
@@ -288,27 +300,21 @@ export default {
 
       if (this.progressCollection.length === 0) return;
 
-      const [startValue, targetValue] = extent(
-        this.progressCollection.map(({ value }) => value)
-      );
-      const startDate = Timestamp.fromDate(
-        this.currentResultIndicatorPeriod.startDate
-      );
-      const endDate = Timestamp.fromDate(
-        this.currentResultIndicatorPeriod.endDate
-      );
+      const startDate = this.currentResultIndicatorPeriod.startDate
+            ? Timestamp.fromDate(this.currentResultIndicatorPeriod.startDate)
+            : false;
+      const endDate = this.currentResultIndicatorPeriod.endDate
+            ? Timestamp.fromDate(this.currentResultIndicatorPeriod.endDate)
+            : false;
 
       this.graph.render({
-        obj: {
-          startValue,
-          targetValue,
-        },
         period: {
           startDate,
           endDate,
         },
-        progressionList: this.progressCollection,
+        progress: this.progressCollection,
         item: this.kpis[this.activeTab],
+        theme: this.theme,
       });
     },
     formatResultIndicatorValue(value) {
