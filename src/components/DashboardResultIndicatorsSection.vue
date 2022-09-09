@@ -161,8 +161,17 @@ export default {
         const { resultIndicatorPeriod } = current.query;
 
         if (resultIndicatorPeriod) {
-          this.currentResultIndicatorPeriod =
-            RESULT_INDICATOR_PERIODS[resultIndicatorPeriod];
+          if (
+            Object.hasOwnProperty.call(
+              RESULT_INDICATOR_PERIODS,
+              resultIndicatorPeriod
+            )
+          ) {
+            this.currentResultIndicatorPeriod =
+              RESULT_INDICATOR_PERIODS[resultIndicatorPeriod];
+          } else {
+            this.$router.replace({ query: null });
+          }
         }
       },
     },
