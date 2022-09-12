@@ -6,7 +6,10 @@
         :tabs="
           resultIndicators.map((resultIndicator) => ({
             tabName: resultIndicator.name,
-            tooltip: resultIndicator.description,
+            tooltip: {
+              content: resultIndicator.description,
+              placement: 'bottom',
+            },
           }))
         "
         :active-tab="activeTab"

@@ -149,7 +149,7 @@ export default {
     tabs() {
       return this.filteredPeriods.map((period) => ({
         tabName: period.name,
-        tooltip: periodDates(period),
+        tooltip: { content: periodDates(period) },
       }));
     },
   },
