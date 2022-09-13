@@ -31,16 +31,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .keyFigure {
+  color: var(--color-text);
+  font-weight: 500;
+
   &__name {
     margin-bottom: 1rem;
+    font-size: typography.$font-size-1;
   }
 
   &__value {
     display: flex;
     align-items: center;
-    font-size: 1.25rem;
-    font-weight: 500;
+    font-size: typography.$font-size-4;
   }
 
   &__icon {
