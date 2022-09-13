@@ -126,7 +126,6 @@ export default {
 <style lang="scss" scoped>
 .tabList {
   position: relative;
-  margin-bottom: 1.5rem;
   padding: 0 0.25rem;
   overflow-x: auto;
 
