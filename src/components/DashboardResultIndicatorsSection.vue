@@ -71,9 +71,9 @@
 <script>
 import { mapState } from 'vuex';
 import { extent } from 'd3-array';
+import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 import { saveSvgAsPng } from 'save-svg-as-png';
-import endOfDay from 'date-fns/endOfDay';
 
 import { db } from '@/config/firebaseConfig';
 import kpiTypes from '@/config/kpiTypes';
@@ -111,7 +111,7 @@ const getResultIndicatorPeriods = () => {
       label: 'Hittil i år',
       key: 'year',
       startDate: new Date(currentYear, 0, 1),
-      endDate: endOfDay(new Date(currentYear, 11, 31)),
+      endDate: currentDate,
     },
   };
 };
@@ -148,12 +148,12 @@ export default {
     OpenIndicator: IconDownload,
     downloadOptions: [
       {
-        label: `${i18n.t('dashboard.downloadOptions.svg')}`,
-        downloadOption: 'svg',
+        label: i18n.t('dashboard.downloadOptions.png'),
+        downloadOption: 'png',
       },
       {
-        label: `${i18n.t('dashboard.downloadOptions.png')}`,
-        downloadOption: 'png',
+        label: i18n.t('dashboard.downloadOptions.csv'),
+        downloadOption: 'csv',
       },
     ],
   }),
@@ -317,15 +317,27 @@ export default {
       const svgData = this.$refs.progressGraphSvg;
 
       if (value.downloadOption === 'png') {
-        saveSvgAsPng(svgData, `${filename}.png`, {});
-      }
-      if (value.downloadOption === 'svg') {
-        const preface = '<?xml version="1.0" standalone="no"?>\r\n';
-        const svgBlob = new Blob([preface, svgData.outerHTML], {
-          type: 'image/svg+xml;charset=utf-8',
-        });
+        const svgFrame = svgData.getBoundingClientRect();
 
-        downloadFile(svgBlob, filename, '.svg');
+        const options = {
+          width: svgFrame.width + 50,
+          height: svgFrame.height,
+        };
+        saveSvgAsPng(svgData, `${filename}.png`, options);
+      } else if (value.downloadOption === 'csv') {
+        const content = [
+          csvFormatRow([
+            i18n.t('fields.value'),
+            i18n.t('fields.date'),
+            i18n.t('fields.comment'),
+          ]),
+          csvFormatBody(
+            this.progressCollection.map((d) => {
+              return [d.value, d.timestamp.toDate().toISOString(), d.comment];
+            })
+          ),
+        ].join('\n');
+        downloadFile(content, filename, '.csv');
       }
     },
   },

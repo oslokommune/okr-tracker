@@ -55,7 +55,8 @@
     "organization": "Organization",
     "date": "Date",
     "password": "Password",
-    "secret": "API Secret"
+    "secret": "API Secret",
+    "comment": "Comment"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
@@ -521,8 +522,8 @@
     "effect": "Effect",
     "heyThere": "Hey there!",
     "downloadOptions": {
-      "svg": "Graphics (.svg)",
-      "png": "Image (.png)"
+      "png": "Image (.png)",
+      "csv": "Raw data (.csv)"
     }
   },
   "languages": {

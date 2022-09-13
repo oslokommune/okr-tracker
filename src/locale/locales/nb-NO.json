@@ -54,7 +54,8 @@
     "organization": "Organisasjon",
     "date": "Dato",
     "password": "Passord",
-    "secret": "API Hemmelighet"
+    "secret": "API Hemmelighet",
+    "comment": "Kommentar"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -517,8 +518,8 @@
     "effect": "Effekt",
     "heyThere": "Hei der!",
     "downloadOptions": {
-      "svg": "Grafikk (.svg)",
-      "png": "Bilde (.png)"
+      "png": "Bilde (.png)",
+      "csv": "Rådata (.csv)"
     }
   },
   "languages": {

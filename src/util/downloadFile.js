@@ -1,5 +1,5 @@
 export default function (content, filename, filetype) {
-  const url = URL.createObjectURL(content);
+  const url = URL.createObjectURL(new Blob([content]));
   const downloadLink = document.createElement('a');
   if (window.navigator.msSaveOrOpenBlob) {
     downloadLink.href = '#';
