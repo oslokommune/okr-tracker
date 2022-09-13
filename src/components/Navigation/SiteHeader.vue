@@ -56,8 +56,6 @@ export default {
       if (
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
-          parts.includes('ItemAdminOKRs') ||
-          parts.includes('ItemAdminKPIs') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome') ||
           parts.includes('KpiHome')) &&

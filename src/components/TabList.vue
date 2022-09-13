@@ -115,6 +115,7 @@ export default {
 .tabList {
   position: relative;
   margin-bottom: 1.5rem;
+  padding: 0 0.25rem;
   overflow-x: auto;
 
   &::-webkit-slider-runnable-track {
@@ -141,7 +142,7 @@ export default {
   }
 
   &__button {
-    margin: 2px 0.5rem 0 0;
+    margin: 0.125rem 0.5rem 0 0;
     padding: 0.7rem 1rem;
     color: var(--color-text);
     font-weight: 500;

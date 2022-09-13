@@ -1,6 +1,7 @@
 <template>
   <div
     :id="tabIds.tabPanel(activeTab)"
+    class="tabPanel"
     role="tabpanel"
     tabindex="0"
     :aria-labelledby="tabIds.tabButton(activeTab)"
@@ -25,3 +26,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.tabPanel {
+  padding: 0 0.125rem;
+}
+</style>
