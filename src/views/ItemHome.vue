@@ -163,8 +163,6 @@ export default {
   methods: {
     ...mapActions(['set_active_period_and_data', 'setDataLoading']),
 
-    getInitialActiveTab() {},
-
     setActiveTab(tabIndex) {
       this.activeTab = tabIndex;
     },
