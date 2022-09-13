@@ -12,13 +12,7 @@
           )
         "
       >
-        <progression-chart
-          :progression="
-            $route.name === 'ItemHome'
-              ? activePeriod.progression
-              : activeObjective.progression
-          "
-        />
+        <progression-chart :progression="progression" />
       </widget-wrapper>
       <widget-mission-statement />
       <widget-team />
@@ -68,6 +62,14 @@ export default {
       'keyResults',
       'activeObjective',
     ]),
+
+    progression() {
+      if (this.$route.name === 'ItemHome') {
+        return this.activePeriod?.progression;
+      }
+
+      return this.activeObjective?.progression;
+    },
   },
 };
 </script>
