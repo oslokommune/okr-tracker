@@ -207,7 +207,7 @@ export default {
     },
     activeTab: {
       immediate: true,
-      async handler(activeTab) {
+      async handler() {
         this.latestProgressRecord = null;
 
         this.getProgressData();
@@ -332,9 +332,11 @@ export default {
             i18n.t('fields.comment'),
           ]),
           csvFormatBody(
-            this.progressCollection.map((d) => {
-              return [d.value, d.timestamp.toDate().toISOString(), d.comment];
-            })
+            this.progressCollection.map((d) => [
+              d.value,
+              d.timestamp.toDate().toISOString(),
+              d.comment,
+            ])
           ),
         ].join('\n');
         downloadFile(content, filename, '.csv');
