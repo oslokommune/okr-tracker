@@ -35,7 +35,7 @@
             <router-link
               v-if="hasEditRights"
               class="btn btn--ter"
-              :to="{ name: 'ItemAdmin', tab: 'okr' }"
+              :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
             >
               {{ $t('empty.noPeriods.buttonText') }}
             </router-link>
