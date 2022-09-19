@@ -1,21 +1,26 @@
 <template>
   <div class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
-      <tabs-list
+      <tab-list
+        aria-label="Velg resultatindikator"
         :tabs="
-          this.resultIndicators.map((resultIndicator) => ({
-            label: resultIndicator.name,
-            tooltip: resultIndicator.description,
+          resultIndicators.map((resultIndicator) => ({
+            tabName: resultIndicator.name,
+            tooltip: {
+              content: resultIndicator.description,
+              placement: 'bottom',
+            },
           }))
         "
         :active-tab="activeTab"
         :set-active-tab="setActiveTab"
-        aria-label="Velg resultatindikator"
+        :tab-ids="tabIds"
+        :is-filled="false"
       />
       <div class="graphOptions">
         <dashboard-period-selector
-          :options="resultIndicatorPeriods"
           v-model="currentResultIndicatorPeriod"
+          :options="resultIndicatorPeriods"
         />
         <div class="dropdownButton">
           <v-select
@@ -24,23 +29,23 @@
             :value="downloadOption"
             :options="downloadOptions"
             :components="{ OpenIndicator, Deselect: null }"
-            :closeOnSelect="true"
+            :close-on-select="true"
             @input="download"
           >
           </v-select>
         </div>
       </div>
     </div>
-    <tabs-panel :active-tab="activeTab">
+    <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
       <!-- xmlns for download purposes -->
       <svg
-        class="progressGraph"
         ref="progressGraphSvg"
+        class="progressGraph"
         xmlns="http://www.w3.org/2000/svg"
       />
       <div
-        class="progressTarget"
         v-if="latestProgressRecord && resultIndicatorTarget"
+        class="progressTarget"
       >
         <div>
           <span class="progressTarget__title">{{
@@ -59,7 +64,7 @@
           }}</span>
         </div>
       </div>
-    </tabs-panel>
+    </tab-panel>
   </div>
 </template>
 
@@ -68,24 +73,26 @@ import { mapState } from 'vuex';
 import { extent } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
-import { db } from '@/config/firebaseConfig';
 import { saveSvgAsPng } from 'save-svg-as-png';
+
+import { db } from '@/config/firebaseConfig';
+import kpiTypes from '@/config/kpiTypes';
 import downloadFile from '@/util/downloadFile';
 import LineChart from '@/util/LineChart';
+import tabIdsHelper from '@/util/tabUtils';
 import { numberLocale } from '@/util';
-import kpiTypes from '@/config/kpiTypes';
-import IconChevronThinDown from './IconChevronThinDown.vue';
-import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
-import IconDownload from './IconDownload.vue';
-import TabsList from './TabsList.vue';
-import TabsPanel from './TabsPanel.vue';
+import i18n from '@/locale/i18n';
 import {
   APEN_BY_RESULT_INDICATORS,
   KPI_TARGETS,
 } from '@/views/Dashboard/data/staticData';
-import i18n from '@/locale/i18n';
+import IconChevronThinDown from './IconChevronThinDown.vue';
+import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
+import IconDownload from './IconDownload.vue';
+import TabList from './TabList.vue';
+import TabPanel from './TabPanel.vue';
 
-const Timestamp = firebase.firestore.Timestamp;
+const { Timestamp } = firebase.firestore;
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
@@ -115,8 +122,8 @@ export default {
   name: 'DashboardResultIndicatorsSection',
 
   components: {
-    TabsList,
-    TabsPanel,
+    TabList,
+    TabPanel,
     DashboardPeriodSelector,
   },
 
@@ -156,6 +163,9 @@ export default {
     resultIndicatorTarget() {
       const resultIndicator = this.resultIndicators[this.activeTab];
       return KPI_TARGETS[resultIndicator.id];
+    },
+    tabIds() {
+      return tabIdsHelper('resultIndicator');
     },
   },
 
@@ -206,7 +216,7 @@ export default {
     },
     activeTab: {
       immediate: true,
-      async handler(activeTab) {
+      async handler() {
         this.latestProgressRecord = null;
 
         this.getProgressData();
@@ -323,21 +333,20 @@ export default {
           height: svgFrame.height,
         };
         saveSvgAsPng(svgData, `${filename}.png`, options);
-      }
-      else if (value.downloadOption === 'csv') {
+      } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([
             i18n.t('fields.value'),
             i18n.t('fields.date'),
             i18n.t('fields.comment'),
           ]),
-          csvFormatBody(this.progressCollection.map(d => {
-            return [
+          csvFormatBody(
+            this.progressCollection.map((d) => [
               d.value,
               d.timestamp.toDate().toISOString(),
               d.comment,
-            ]
-          })),
+            ])
+          ),
         ].join('\n');
         downloadFile(content, filename, '.csv');
       }
@@ -391,6 +400,7 @@ export default {
     }
 
     .graphOptions {
+      margin-left: 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
