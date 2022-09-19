@@ -1,6 +1,6 @@
 <template>
   <div class="keyFigure">
-    <div class="keyFigure__name">
+    <div class="keyFigure__name title-4">
       {{ keyFigure.name[$i18n.locale] }}
     </div>
 
@@ -35,16 +35,15 @@ export default {
 
 .keyFigure {
   color: var(--color-text);
-  font-weight: 500;
 
   &__name {
     margin-bottom: 1rem;
-    font-size: typography.$font-size-1;
   }
 
   &__value {
     display: flex;
     align-items: center;
+    font-weight: 500;
     font-size: typography.$font-size-4;
   }
 
