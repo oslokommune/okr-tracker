@@ -16,7 +16,12 @@
         :id="tabIds.tabButton(index)"
         :key="tabIds.tabButton(index)"
         :ref="tabIds.tabButton(index)"
-        v-tooltip="{ trigger: 'hover', placement: 'right', ...tab.tooltip }"
+        v-tooltip="{
+          boundariesElement: 'body',
+          trigger: 'hover',
+          placement: 'right',
+          ...tab.tooltip,
+        }"
         role="tab"
         :class="{
           tabList__button: true,
