@@ -188,10 +188,8 @@ export default {
       this.graph.render({
         startValue,
         targetValue,
-        period: {
-          endDate: this.isFiltered ? endDate : new Date(),
-          startDate,
-        },
+        startDate: startDate.toDate(),
+        endDate: this.isFiltered ? endDate.toDate() : new Date(),
         progress: this.filteredProgress,
         kpi: this.activeKpi,
       });

@@ -284,7 +284,8 @@ export default {
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
-          period: this.activePeriod,
+          startDate: this.activePeriod.startDate.toDate(),
+          endDate: this.activePeriod.endDate.toDate(),
           progress: this.progress,
           theme: this.theme,
         });
@@ -296,7 +297,8 @@ export default {
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
-          period: this.activePeriod,
+          startDate: this.activePeriod.startDate.toDate(),
+          endDate: this.activePeriod.endDate.toDate(),
           progress: this.progress,
           theme: this.theme,
         });
@@ -310,7 +312,8 @@ export default {
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
-          period: this.activePeriod,
+          startDate: this.activePeriod.startDate.toDate(),
+          endDate: this.activePeriod.endDate.toDate(),
           progress: this.progress,
           theme: this.theme,
         });
@@ -326,7 +329,8 @@ export default {
     this.graph.render({
       startValue: this.activeKeyResult.startValue,
       targetValue: this.activeKeyResult.targetValue,
-      period: this.activePeriod,
+      startDate: this.activePeriod.startDate.toDate(),
+      endDate: this.activePeriod.endDate.toDate(),
       progress: this.progress,
       theme: this.theme,
     });

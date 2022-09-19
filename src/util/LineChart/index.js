@@ -31,34 +31,6 @@ function formatValue (value, kpi) {
   return value;
 }
 
-/**
- * Return the start date of `period`. If unset, the earliest date found in
- * `progression` is returned instead.
- */
-function getStartDate (period, progression) {
-  if (period.startDate) {
-    return period.startDate.toDate
-      ? period.startDate.toDate()
-      : new Date(period.startDate);
-  }
-
-  return min(progression, d => d.timestamp).toDate();
-}
-
-/**
- * Return the end date of `period`. If unset, the last date found in
- * `progression` is returned instead.
- */
-function getEndDate (period, progression) {
-  if (period.endDate) {
-    return period.endDate.toDate
-      ? period.endDate.toDate()
-      : new Date(period.endDate);
-  }
-
-  return max(progression, d => d.timestamp).toDate();
-}
-
 export default class LineChart {
   constructor(svgElement, { height, theme } = {}) {
     if (!svgElement) {
@@ -118,7 +90,9 @@ export default class LineChart {
    * `targetValue`: Optional. The end value of the y axis. Will end at the
    *     highest value present in `progress` if unset.
    *
-   * `period`: An object with `startDate` and `endDate`.
+   * `startDate`: The first date on the x axis.
+   *
+   * `endDate`: The last date on the x axis.
    *
    * `progress`: The array of values to plot.
    *
@@ -127,7 +101,7 @@ export default class LineChart {
    * `theme`: Optional. A theme to render the graph in, overriding any theme
    *     set in the constructor.
    */
-  render({ startValue, targetValue, period, progress, kpi, theme }) {
+  render({ startValue, targetValue, startDate, endDate, progress, kpi, theme }) {
     if (theme) {
       this.theme = theme;
     }
@@ -137,9 +111,6 @@ export default class LineChart {
 
     startValue = typeof(startValue) === 'number' ? startValue : lowestValue;
     targetValue = typeof(targetValue) === 'number' ? targetValue : highestValue;
-
-    const startDate = getStartDate(period, progress);
-    const endDate = getEndDate(period, progress);
 
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);

@@ -22,7 +22,7 @@
         @click="selectRangeOption(range)"
         class="periodSelector__option"
         :class="{
-          'periodSelector__option--active': range.key === value.key
+          'periodSelector__option--active': range.key === period.key
         }"
       >
         {{ range.label }}
@@ -51,7 +51,7 @@ export default {
   },
 
   props: {
-    value: {
+    period: {
       type: Object,
       required: false,
       default: null,
@@ -61,6 +61,16 @@ export default {
       required: false,
       default: null,
     },
+    startDate: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    endDate: {
+      type: Date,
+      required: false,
+      default: null,
+    }
   },
 
   data: () => ({
@@ -80,8 +90,24 @@ export default {
   computed: {
     rangeLabel() {
       return this.options.find((range) => {
-        return range.key === this.value.key
+        return range.key === this.period.key
       })?.label || this.range;
+    },
+  },
+
+  watch: {
+    startDate: {
+      immediate: true,
+      async handler() {
+        this.range = [this.startDate, this.endDate];
+      },
+    },
+
+    endDate: {
+      immediate: true,
+      async handler() {
+        this.range = [this.startDate, this.endDate];
+      },
     },
   },
 

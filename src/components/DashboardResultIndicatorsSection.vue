@@ -19,8 +19,11 @@
       />
       <div class="graphOptions">
         <dashboard-period-selector
-          v-model="currentResultIndicatorPeriod"
           :options="resultIndicatorPeriods"
+          :start-date="startDate"
+          :end-date="endDate"
+          :period="currentResultIndicatorPeriod"
+          v-on:input="setPeriod($event)"
         />
         <div class="dropdownButton">
           <v-select
@@ -70,7 +73,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { extent } from 'd3-array';
+import { extent, max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 import { saveSvgAsPng } from 'save-svg-as-png';
@@ -150,6 +153,8 @@ export default {
       (period) => period
     ),
     currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.sixmonths,
+    startDate: null,
+    endDate: null,
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
     OpenIndicator: IconDownload,
     downloadOptions: [
@@ -197,7 +202,7 @@ export default {
       },
     },
     currentResultIndicatorPeriod() {
-      this.getProgressData();
+      this.getProgressData().then(this.renderGraph);
 
       if (
         this.$route.query?.resultIndicatorPeriod !==
@@ -217,7 +222,7 @@ export default {
           ...kpis,
           ...(this.isPOCDepartment ? APEN_BY_RESULT_INDICATORS : []),
         ];
-        this.getProgressData();
+        this.getProgressData().then(this.renderGraph);
       },
     },
     activeTab: {
@@ -225,7 +230,7 @@ export default {
       async handler() {
         this.latestProgressRecord = null;
 
-        this.getProgressData();
+        this.getProgressData().then(this.renderGraph);
       },
     },
     progressCollection: {
@@ -287,10 +292,45 @@ export default {
           'progressCollection',
           query.orderBy('timestamp', 'desc')
         );
+
+        this.startDate = this.getStartDate(
+          this.currentResultIndicatorPeriod,
+          this.progressCollection
+        );
+
+        this.endDate = this.getEndDate(
+          this.currentResultIndicatorPeriod,
+          this.progressCollection
+        );
+      }
+    },
+
+    /**
+     * Return the start date of `period`. If unset, the earliest date
+     * found in `progress` is returned instead.
+     */
+    getStartDate (period, progress) {
+      if (period.startDate) {
+        const ts = Timestamp.fromDate(period.startDate);
+        return ts.toDate ? ts.toDate() : new Date(period.ts);
       }
 
-      this.renderGraph();
+      return min(progress, d => d.timestamp).toDate();
     },
+
+    /**
+     * Return the end date of `period`. If unset, the last date found in
+     * `progress` is returned instead.
+     */
+    getEndDate (period, progress) {
+      if (period.endDate) {
+        const ts = Timestamp.fromDate(period.endDate);
+        return ts.toDate ? ts.toDate() : new Date(ts);
+      }
+
+      return max(progress, d => d.timestamp).toDate();
+    },
+
     renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
@@ -300,18 +340,9 @@ export default {
 
       if (this.progressCollection.length === 0) return;
 
-      const startDate = this.currentResultIndicatorPeriod.startDate
-            ? Timestamp.fromDate(this.currentResultIndicatorPeriod.startDate)
-            : false;
-      const endDate = this.currentResultIndicatorPeriod.endDate
-            ? Timestamp.fromDate(this.currentResultIndicatorPeriod.endDate)
-            : false;
-
       this.graph.render({
-        period: {
-          startDate,
-          endDate,
-        },
+        startDate: this.startDate,
+        endDate: this.endDate,
         progress: this.progressCollection,
         item: this.kpis[this.activeTab],
         theme: this.theme,
@@ -355,6 +386,13 @@ export default {
           ),
         ].join('\n');
         downloadFile(content, filename, '.csv');
+      }
+    },
+
+    setPeriod (period) {
+      if (this.startDate.getTime?.() !== period.startDate.getTime?.()
+          || this.endDate.getTime?.() !== period.endDate.getTime?.()) {
+        this.currentResultIndicatorPeriod = period;
       }
     },
   },
