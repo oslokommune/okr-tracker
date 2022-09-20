@@ -202,7 +202,10 @@
       "user": "Deleted user {user}",
       "permanently": "Deleted permanently",
       "object": "Archived «{name}»",
-      "progression": "Deleted value"
+      "progress": "Deleted value"
+    },
+    "update": {
+      "progress": "Updated value"
     },
     "action": {
       "regret": "Undo"
@@ -222,7 +225,8 @@
       "email": "Invalid email address",
       "kpi": "Could not create KPI",
       "notes": "Could not update notes",
-      "deleteProgress": "Could not delete value"
+      "deleteProgress": "Could not delete value",
+      "updateProgress": "Could not update value"
     },
     "savedChanges": "Saved changes",
     "deleted": "Deleted",
@@ -305,6 +309,7 @@
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
     "navigateToItem": "Go to {item}",
+    "editProgress": "Edit value",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
     "emptyPeriod": "No active period",
@@ -433,6 +438,8 @@
       "value": "Value",
       "date": "Date",
       "comment": "Comment",
+      "comment_optional": "Comment (optional)",
+      "time": "Time",
       "registeredBy": "Registered by",
       "showComment": "View comment",
       "showComments": "Show comments",

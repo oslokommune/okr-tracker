@@ -15,6 +15,7 @@
         v-model="innerValue"
         :type="type"
         :disabled="disabled"
+        :placeholder="placeholder"
         class="form__field"
         :data-cy="dataCy"
         step="any"
@@ -23,6 +24,7 @@
       <textarea
         v-if="inputType === 'textarea'"
         v-model="innerValue"
+        :placeholder="placeholder"
         class="form__field"
         rows="4"
         :data-cy="dataCy"
@@ -112,6 +114,11 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: null,
     },
     dataCy: {
       type: String,

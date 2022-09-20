@@ -43,47 +43,47 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="{
-              id,
-              value,
-              timestamp,
-              comment,
-              createdBy,
-            } in limitedProgress"
-            :key="id"
-          >
-            <td>{{ value }}</td>
-            <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
+          <tr v-for="record in limitedProgress" :key="record.id">
+            <td>{{ record.value }}</td>
+            <td>{{ dateTimeShort(record.timestamp.toDate()) }}</td>
             <td v-if="hasCreatedBy">
               <a
-                v-if="createdBy && createdBy.id"
+                v-if="record.createdBy && record.createdBy.id"
                 class="record__user-link"
-                @click="openProfileModal(createdBy.id)"
+                @click="openProfileModal(record.createdBy.id)"
               >
-                <span>{{ createdBy.displayName || createdBy.id }}</span>
+                <span>{{
+                  record.createdBy.displayName || record.createdBy.id
+                }}</span>
               </a>
-              <span v-else>{{ createdBy }}</span>
+              <span v-else>{{ record.createdBy }}</span>
             </td>
             <td
               v-if="hasComments"
               style="max-width: 200px; padding: 0.25rem 0.5rem"
             >
-              <span v-if="comment && showComments">
-                {{ comment }}
+              <span v-if="record.comment && showComments">
+                {{ record.comment }}
               </span>
-              <v-popover v-if="comment && !showComments" placement="top">
+              <v-popover v-if="record.comment && !showComments" placement="top">
                 <i
                   v-tooltip="$t('widget.history.showComment')"
                   class="fa fa-comment-alt record__comment-icon"
                 />
                 <template slot="popover">
-                  {{ comment }}
+                  {{ record.comment }}
                 </template>
               </v-popover>
             </td>
             <td v-if="hasEditRights">
               <div class="record__actions">
+                <button
+                  v-tooltip="$t('tooltip.editProgress')"
+                  class="btn btn--icon btn--ter"
+                  @click="openValueModal(record)"
+                >
+                  <i class="fa fa-edit" />
+                </button>
                 <v-popover offset="0" placement="top">
                   <button
                     v-tooltip="$t('tooltip.deleteProgress')"
@@ -95,7 +95,7 @@
                   <template slot="popover">
                     <button
                       class="btn btn--ter btn--negative"
-                      @click="$emit('delete-record', id)"
+                      @click="$emit('delete-record', record.id)"
                     >
                       {{ $t('btn.confirmDeleteProgress') }}
                     </button>
@@ -116,6 +116,15 @@
       {{ $t('btn.showMore') }}
     </button>
 
+    <progress-modal
+      v-if="showValueModal"
+      :record="chosenProgressRecord"
+      @close="closeValueModal"
+      @update-record="
+        (id, data, close) => $emit('update-record', id, data, close)
+      "
+    />
+
     <profile-modal
       v-if="showProfileModal"
       :id="chosenProfileId"
@@ -125,6 +134,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { VPopover } from 'v-tooltip';
 import { dateTimeShort } from '@/util';
 
@@ -134,6 +144,7 @@ export default {
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ProfileModal: () => import('@/components/ProfileModal.vue'),
+    ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
     VPopover,
   },
 
@@ -144,10 +155,6 @@ export default {
     },
     progress: {
       type: Array,
-      required: true,
-    },
-    hasEditRights: {
-      type: Boolean,
       required: true,
     },
     noValuesMessage: {
@@ -161,10 +168,14 @@ export default {
     historyLimit: 10,
     showComments: true,
     showProfileModal: false,
+    showValueModal: false,
+    chosenProgressRecord: null,
     chosenProfileId: null,
   }),
 
   computed: {
+    ...mapGetters(['hasEditRights']),
+
     hasComments() {
       return this.progress.find(({ comment }) => comment) !== undefined;
     },
@@ -189,6 +200,16 @@ export default {
     closeProfileModal() {
       this.showProfileModal = false;
       this.chosenProfileId = null;
+    },
+
+    openValueModal(record) {
+      this.chosenProgressRecord = record;
+      this.showValueModal = true;
+    },
+
+    closeValueModal() {
+      this.showValueModal = false;
+      this.chosenProgressRecord = null;
     },
   },
 };
