@@ -44,7 +44,7 @@
         </thead>
         <tbody>
           <tr v-for="record in limitedProgress" :key="record.id">
-            <td>{{ record.value }}</td>
+            <td>{{ valueFormatter(record.value) }}</td>
             <td>{{ dateTimeShort(record.timestamp.toDate()) }}</td>
             <td v-if="hasCreatedBy">
               <a
@@ -156,6 +156,11 @@ export default {
     progress: {
       type: Array,
       required: true,
+    },
+    valueFormatter: {
+      type: Function,
+      required: false,
+      default: (value) => value,
     },
     noValuesMessage: {
       type: String,
