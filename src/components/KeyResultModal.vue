@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 
 export default {
@@ -74,7 +75,7 @@ export default {
     async saveProgress() {
       this.loading = true;
       try {
-        await Progress.create(this.keyResult.id, {
+        await Progress.create(db.collection('keyResults'), this.keyResult.id, {
           value: +this.value,
           comment: this.note,
           timestamp: new Date(),

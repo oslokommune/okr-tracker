@@ -1,22 +1,34 @@
-import { db } from '@/config/firebaseConfig';
+import firebase from 'firebase/app';
 import props from './props';
-import { validateCreateProps, createDocument } from '../common';
+import {
+  createDocument,
+  updateDocument,
+  validateCreateProps,
+  validateUpdateProps,
+} from '../common';
 
-const keyResults = db.collection('keyResults');
+const { CollectionReference } = firebase.firestore;
 
-const create = async (keyResultId, data) => {
-  if (!keyResultId) {
-    throw new Error('Missing ID');
+function checkReferences(collectionRef, parentId) {
+  if (!(collectionRef instanceof CollectionReference)) {
+    throw new Error('Invalid collection reference');
   }
-  if (typeof keyResultId !== 'string') {
-    throw new Error('ID must be a string');
+  if (!parentId) {
+    throw new Error('Missing parent ID');
   }
+  if (typeof parentId !== 'string') {
+    throw new Error('Parent ID must be a string');
+  }
+}
+
+const create = async (collectionRef, parentId, data) => {
+  checkReferences(collectionRef, parentId);
 
   try {
-    const keyResRef = keyResults.doc(keyResultId);
+    const parentRef = collectionRef.doc(parentId);
 
-    if (await keyResRef.get().then(({ exists }) => !exists)) {
-      throw new Error(`Cannot find key result with ID ${keyResultId}`);
+    if (await parentRef.get().then(({ exists }) => !exists)) {
+      throw new Error(`Cannot find parent with ID ${parentId}`);
     }
 
     validateCreateProps(props, data);
@@ -27,18 +39,36 @@ const create = async (keyResultId, data) => {
       throw new Error('Timestamp cannot be set in the future');
     }
 
-    return createDocument(keyResRef.collection('progress'), data);
+    return createDocument(parentRef.collection('progress'), data);
   } catch (error) {
     throw new Error(error);
   }
 };
 
-const remove = async (keyResultId, progressId) => {
+const update = async (collectionRef, parentId, progressId, data) => {
+  checkReferences(collectionRef, parentId);
+  validateUpdateProps(props, data);
+
+  if (data.timestamp.getTime() > new Date().getTime()) {
+    throw new Error('Timestamp cannot be set in the future');
+  }
+
+  return updateDocument(
+    collectionRef.doc(`${parentId}/progress/${progressId}`),
+    data
+  );
+};
+
+const remove = async (collectionRef, parentId, progressId) => {
+  checkReferences(collectionRef, parentId);
+
   try {
-    return keyResults.doc(`${keyResultId}/progress/${progressId}`).delete();
+    return collectionRef.doc(`${parentId}/progress/${progressId}`).delete();
   } catch {
-    throw new Error(`Cannot remove progress (${progressId}) from key result ${keyResultId}`);
+    throw new Error(
+      `Cannot remove progress (${progressId}) from ${collectionRef.id} ${parentId}`
+    );
   }
 };
 
-export default { create, remove };
+export default { create, remove, update };
