@@ -359,11 +359,9 @@ export default {
       const filename = this.resultIndicators[this.activeTab].name;
       const svgData = this.$refs.progressGraphSvg;
 
-      // Hide certain elements from the graph before exporting
-      const hiddenElements = [svgData.querySelector('.indicators')].filter(
-        (el) => el
-      );
-      hiddenElements.forEach((el) => {
+      // Hide comment indicators from the graph before exporting
+      const commentIndicators = svgData.querySelectorAll('.indicators');
+      commentIndicators.forEach((el) => {
         el.style.opacity = 0;
       });
 
@@ -374,7 +372,11 @@ export default {
           width: svgFrame.width + 50,
           height: svgFrame.height,
         };
-        saveSvgAsPng(svgData, `${filename}.png`, options);
+        saveSvgAsPng(svgData, `${filename}.png`, options).finally(() => {
+          commentIndicators.forEach((el) => {
+            el.style.opacity = 1;
+          });
+        });
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([
@@ -392,12 +394,6 @@ export default {
         ].join('\n');
         downloadFile(content, filename, '.csv');
       }
-
-      setTimeout(() => {
-        hiddenElements.forEach((el) => {
-          el.style.opacity = 1;
-        });
-      }, 10);
     },
 
     setPeriod (period) {
