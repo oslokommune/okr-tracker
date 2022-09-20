@@ -437,7 +437,7 @@
       "comment": "Kommentar",
       "comment_optional": "Kommentar (valgfritt)",
       "time": "Tidspunkt",
-      "registeredBy": "Registrert av",
+      "changedBy": "Sist endret av",
       "showComment": "Vis kommentar",
       "showComments": "Vis kommentarer",
       "hideComments": "Skjul kommentarer",

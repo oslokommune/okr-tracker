@@ -168,7 +168,7 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import routerGuard from '@/router/router-guards/keyResultHome';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
 export default {

@@ -440,7 +440,7 @@
       "comment": "Comment",
       "comment_optional": "Comment (optional)",
       "time": "Time",
-      "registeredBy": "Registered by",
+      "changedBy": "Last edited by",
       "showComment": "View comment",
       "showComments": "Show comments",
       "hideComments": "Hide comments",

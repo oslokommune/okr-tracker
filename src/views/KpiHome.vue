@@ -84,7 +84,7 @@ import { dateTimeShort, formatISOShort } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
   name: 'KpiHome',

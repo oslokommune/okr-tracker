@@ -17,10 +17,10 @@
           <tr>
             <th>{{ $t('widget.history.value') }}</th>
             <th>{{ $t('widget.history.date') }}</th>
-            <th v-if="hasCreatedBy">
-              {{ $t('widget.history.registeredBy') }}
+            <th v-if="hasAnyChangedBy">
+              {{ $t('widget.history.changedBy') }}
             </th>
-            <th v-if="hasComments">
+            <th v-if="hasAnyComments">
               <span v-if="showComments">{{
                 $t('widget.history.comment')
               }}</span>
@@ -46,20 +46,15 @@
           <tr v-for="record in limitedProgress" :key="record.id">
             <td>{{ valueFormatter(record.value) }}</td>
             <td>{{ dateTimeShort(record.timestamp.toDate()) }}</td>
-            <td v-if="hasCreatedBy">
-              <a
-                v-if="record.createdBy && record.createdBy.id"
-                class="record__user-link"
-                @click="openProfileModal(record.createdBy.id)"
-              >
-                <span>{{
-                  record.createdBy.displayName || record.createdBy.id
-                }}</span>
-              </a>
-              <span v-else>{{ record.createdBy }}</span>
+            <td v-if="hasAnyChangedBy">
+              <user-link
+                v-if="record.editedBy || record.createdBy"
+                :user="record.editedBy || record.createdBy"
+                @open-user-modal="openProfileModal"
+              />
             </td>
             <td
-              v-if="hasComments"
+              v-if="hasAnyComments"
               style="max-width: 200px; padding: 0.25rem 0.5rem"
             >
               <span v-if="record.comment && showComments">
@@ -137,6 +132,7 @@
 import { mapGetters } from 'vuex';
 import { VPopover } from 'v-tooltip';
 import { dateTimeShort } from '@/util';
+import UserLink from './UserLink.vue';
 
 export default {
   name: 'KeyResultHome',
@@ -145,6 +141,7 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ProfileModal: () => import('@/components/ProfileModal.vue'),
     ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
+    UserLink,
     VPopover,
   },
 
@@ -181,11 +178,14 @@ export default {
   computed: {
     ...mapGetters(['hasEditRights']),
 
-    hasComments() {
+    hasAnyComments() {
       return this.progress.find(({ comment }) => comment) !== undefined;
     },
-    hasCreatedBy() {
-      return this.progress.find(({ createdBy }) => createdBy) !== undefined;
+    hasAnyChangedBy() {
+      return this.progress.find(({
+        createdBy,
+        editedBy,
+      }) => createdBy || editedBy) !== undefined;
     },
     limitedProgress() {
       return this.historyLimit
@@ -237,14 +237,6 @@ export default {
   &:hover {
     background: rgba(var(--color-grey-500-rgb), 0.1);
   }
-}
-
-.record__user-link {
-  display: flex;
-  align-items: center;
-  color: var(--color-text);
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .record__actions {
