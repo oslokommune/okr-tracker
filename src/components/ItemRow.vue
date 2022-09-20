@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import kpiTypes from '@/config/kpiTypes';
 
@@ -123,7 +123,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(['update_preferences']),
     getKpiValue(type) {
       try {
         const value = this.kpis.find((obj) => obj.type === type).currentValue;
@@ -141,36 +140,6 @@ export default {
       } catch {
         return '';
       }
-    },
-
-    toggle(type, slug) {
-      if (this.user.preferences.home === undefined) {
-        this.user.preferences.home = {
-          collapse: {
-            organization: {},
-            department: {},
-          },
-        };
-      }
-
-      if (this.user.preferences.home.collapse[type][slug] === undefined) {
-        this.user.preferences.home.collapse[type][slug] =
-          this.user.preferences.home.collapse[type][slug] === undefined;
-      } else {
-        this.user.preferences.home.collapse[type][slug] =
-          !this.user.preferences.home.collapse[type][slug];
-      }
-      this.update_preferences();
-    },
-
-    getCollapse(type, slug) {
-      if (
-        this.user.preferences.home === undefined ||
-        this.user.preferences.home.collapse[type][slug] === undefined
-      ) {
-        return false;
-      }
-      return this.user.preferences.home.collapse[type][slug];
     },
   },
 };
