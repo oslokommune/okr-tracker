@@ -17,6 +17,9 @@ import {
   styleValueLine,
 } from './linechart-helpers';
 
+const INDICATOR_SIZE_DEFAULT = 50;
+const INDICATOR_SIZE_COMMENT = 450;
+
 function formatValue (value, kpi) {
   if (kpi && kpi.type) {
     return kpiTypes[kpi.type].formatValue(value);
@@ -168,7 +171,11 @@ export default class LineChart {
           'transform',
           (d) => `translate(${this.x(d.timestamp)},${this.y(d.value)})`
         )
-        .attr('d', (d) => this.indicatorSymbol.size(d?.comment ? 450 : 50)())
+        .attr('d', (d) =>
+          this.indicatorSymbol.size(
+            d?.comment ? INDICATOR_SIZE_COMMENT : INDICATOR_SIZE_DEFAULT
+          )()
+        )
         .call(styleValueIndicators);
     }
   }
