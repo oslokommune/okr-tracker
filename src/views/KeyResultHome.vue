@@ -280,7 +280,7 @@ export default {
         await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
         this.isLoading = false;
         this.value = this.progressDetails.totalCompletedTasks;
-        this.graph = new LineChart(this.$refs.graph);
+        this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
