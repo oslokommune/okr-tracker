@@ -23,7 +23,7 @@
           :start-date="startDate"
           :end-date="endDate"
           :period="currentResultIndicatorPeriod"
-          v-on:input="setPeriod($event)"
+          @input="setPeriod($event)"
         />
         <div class="dropdownButton">
           <v-select
