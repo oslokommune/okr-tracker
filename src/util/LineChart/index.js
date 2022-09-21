@@ -24,15 +24,15 @@ import {
 
 import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
 
-const formatValue = (value, item) => {
-  if (item && item.type) {
-    return kpiTypes[item.type].formatValue(value);
+function formatValue (value, kpi) {
+  if (kpi && kpi.type) {
+    return kpiTypes[kpi.type].formatValue(value);
   }
   return value;
-};
+}
 
 export default class LineChart {
-  constructor(svgElement, { height, theme }) {
+  constructor(svgElement, { height, theme } = {}) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
@@ -69,7 +69,7 @@ export default class LineChart {
       allowHTML: true,
       content(ref) {
         const data = select(ref).datum();
-        if (!data) return;
+        if (!data) return null;
         return new Tooltip({
           propsData: {
             timestamp: data.timestamp,
@@ -81,51 +81,63 @@ export default class LineChart {
     });
   }
 
-  render({ obj, period, progressionList, item, theme }) {
-    this.theme = theme || 'blue';
-    this.period = period;
-    this.obj = obj;
+  /**
+   * Render the graph. Takes the following parameters:
+   *
+   * `startValue`: Optional. The start value of the y axis. Will start at the
+   *     lowest value present in `progress` if unset.
+   *
+   * `targetValue`: Optional. The end value of the y axis. Will end at the
+   *     highest value present in `progress` if unset.
+   *
+   * `startDate`: The first date on the x axis.
+   *
+   * `endDate`: The last date on the x axis.
+   *
+   * `progress`: The array of values to plot.
+   *
+   * `kpi`: Optional. A KPI to format the y axis for.
+   *
+   * `theme`: Optional. A theme to render the graph in, overriding any theme
+   *     set in the constructor.
+   */
+  render({ startValue, targetValue, startDate, endDate, progress, kpi, theme }) {
+    if (theme) {
+      this.theme = theme;
+    }
 
-    const highestValue = max(progressionList, (d) => d.value);
-    const lowestValue = min(progressionList, (d) => d.value);
+    const lowestValue = min(progress, d => d.value);
+    const highestValue = max(progress, d => d.value);
+
+    startValue = typeof(startValue) === 'number' ? startValue : lowestValue;
+    targetValue = typeof(targetValue) === 'number' ? targetValue : highestValue;
 
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
 
-    const startDate =
-      period.startDate && period.startDate.toDate
-        ? period.startDate.toDate()
-        : new Date(period.startDate);
-    const endDate =
-      period.endDate && period.endDate.toDate
-        ? period.endDate.toDate()
-        : new Date(period.endDate);
-
     this.x.domain([startDate, endDate]);
 
-    if (obj.startValue > obj.targetValue) {
+    if (startValue > targetValue) {
       this.y.domain(
         extent([
-          obj.startValue < highestValue ? highestValue : obj.startValue,
-          obj.startValue > obj.targetValue && lowestValue < obj.targetValue
-            ? lowestValue
-            : obj.targetValue,
+          startValue < highestValue ? highestValue : startValue,
+          lowestValue < targetValue ? lowestValue : targetValue,
         ])
       );
     } else {
       this.y.domain(
         extent([
-          obj.startValue,
-          obj.startValue < obj.targetValue && highestValue > obj.targetValue
+          startValue,
+          startValue < targetValue && highestValue > targetValue
             ? highestValue
-            : obj.targetValue,
+            : targetValue,
         ])
       );
     }
 
     this.yAxis
       .transition()
-      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, item)))
+      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, kpi)))
       .call(styleAxis);
     this.xAxis.transition().call(axisBottom(this.x).ticks(4)).call(styleAxis);
 
@@ -135,31 +147,31 @@ export default class LineChart {
       .attr('y2', 0)
       .attr('y1', this.innerHeight);
 
-    const startValue = {
-      timestamp: period.startDate.toDate(),
-      value: +obj.startValue,
-      startValue: +obj.startValue,
+    const firstValue = {
+      timestamp: startDate,
+      value: +startValue,
+      startValue: +startValue,
     };
 
-    const datapoints = progressionList
+    const datapoints = progress
       .map((d) => ({
         timestamp: d.timestamp.toDate(),
         value: +d.value,
-        startValue: +obj.startValue,
+        startValue: +startValue,
       }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
     const lastValue = datapoints.length
       ? +datapoints[datapoints.length - 1].value
-      : startValue.value;
+      : firstValue.value;
 
     const todayValue = {
       timestamp: new Date(),
       value: lastValue,
-      startValue: +obj.startValue,
+      startValue: +startValue,
     };
 
-    const data = [startValue, ...datapoints, todayValue];
+    const data = [firstValue, ...datapoints, todayValue];
 
     this.valueArea.datum(data).transition().attr('d', this.area);
 
@@ -173,9 +185,7 @@ export default class LineChart {
       .selectAll('path')
       .data(data)
       .join('path')
-      .attr('transform', (d) => {
-        return `translate(${this.x(d.timestamp)},${this.y(d.value)})`;
-      })
+      .attr('transform', d => `translate(${this.x(d.timestamp)},${this.y(d.value)})`)
       .attr('d', this.indicator)
       .call(styleValueIndicators);
   }

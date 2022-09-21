@@ -293,7 +293,10 @@
     "dateRange": "Start- og sluttdato",
     "range": "{startDate} til {endDate}",
     "period": "Periode",
-    "add": "Legg til periode"
+    "add": "Legg til periode",
+    "sixmonths": "Siste 6 mnd",
+    "year": "Hittil i år",
+    "all": "Fra første måling"
   },
   "tooltip": {
     "openMenu": "Åpne meny",

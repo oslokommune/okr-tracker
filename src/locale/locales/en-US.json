@@ -296,7 +296,10 @@
     "dateRange": "Start and end dates",
     "range": "{startDate} to {endDate}",
     "period": "Period",
-    "add": "Add period"
+    "add": "Add period",
+    "sixmonths": "Past 6 months",
+    "year": "So far this year",
+    "all": "From first measurement"
   },
   "tooltip": {
     "openMenu": "Open menu",

@@ -158,7 +158,7 @@ export default {
 
   mounted() {
     if (this.$refs.graph) {
-      this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+      this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
     }
 
     if (this.$route.query.startDate && this.$route.query.endDate) {
@@ -186,17 +186,12 @@ export default {
 
       if (!this.graph || !startValue === undefined || !targetValue === undefined) return;
       this.graph.render({
-        obj: {
-          startValue,
-          targetValue,
-        },
-        period: {
-          endDate: this.isFiltered ? endDate : new Date(),
-          startDate,
-        },
-        progressionList: this.filteredProgress,
-        item: this.activeKpi,
-        theme: this.theme,
+        startValue,
+        targetValue,
+        startDate: startDate.toDate(),
+        endDate: this.isFiltered ? endDate.toDate() : new Date(),
+        progress: this.filteredProgress,
+        kpi: this.activeKpi,
       });
     },
 
