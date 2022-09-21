@@ -20,9 +20,9 @@ import {
 const INDICATOR_SIZE_DEFAULT = 50;
 const INDICATOR_SIZE_COMMENT = 450;
 
-function formatValue (value, kpi) {
+function formatValue (value, kpi, options) {
   if (kpi && kpi.type) {
-    return kpiTypes[kpi.type].formatValue(value);
+    return kpiTypes[kpi.type].formatValue(value, options);
   }
   return value;
 }
@@ -113,7 +113,11 @@ export default class LineChart {
 
     this.yAxis
       .transition()
-      .call(axisLeft(this.y).tickFormat((d) => formatValue(d, kpi)))
+      .call(
+        axisLeft(this.y).tickFormat((d) =>
+          formatValue(d, kpi, { compact: true })
+        )
+      )
       .call(styleAxis);
     this.xAxis.transition().call(axisBottom(this.x).ticks(4)).call(styleAxis);
 
