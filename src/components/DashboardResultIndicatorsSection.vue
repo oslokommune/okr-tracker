@@ -345,7 +345,7 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.progressCollection,
-        item: this.kpis[this.activeTab],
+        kpi: this.kpis[this.activeTab],
         theme: this.theme,
       });
     },
