@@ -271,9 +271,6 @@
     "weight": "Weight",
     "automatic": "Automatic",
     "autoHelpText": "The value for this key result gets updated automatically from Google Sheets.",
-    "showComment": "View comment",
-    "showComments": "Show comments",
-    "hideComments": "Hide comments",
     "autoError": "Issue fetching data from Google Sheets:",
     "api": {
       "radio": "Update via API?",
@@ -357,17 +354,10 @@
   "keyResultPage": {
     "change": "Update key result",
     "add": "Add key result",
-    "table": {
-      "value": "Value"
-    },
     "notes": {
       "empty": "Notes can only be seen by team members",
       "save": "Save notes"
     },
-    "history": "History",
-    "registeredBy": "Registered by",
-    "value": "Value",
-    "date": "Date",
     "filter": "Filter"
   },
   "help": {
@@ -395,10 +385,8 @@
     "noIcons": "No hits"
   },
   "empty": {
-    "keyResultProgress": {
-      "heading": "No history",
-      "body": "This key result has no registered values."
-    },
+    "noKeyResultProgress": "This key result has no registered values.",
+    "noKPIProgress": "This KPI has no registered values.",
     "noKeyResults": {
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
@@ -439,6 +427,20 @@
     "progression": {
       "period": "Progress for period",
       "objective": "Progress for objective"
+    },
+    "history": {
+      "title": "History",
+      "value": "Value",
+      "date": "Date",
+      "comment": "Comment",
+      "registeredBy": "Registered by",
+      "showComment": "View comment",
+      "showComments": "Show comments",
+      "hideComments": "Hide comments",
+      "empty": {
+        "heading": "No history",
+        "body": "No values registered for this item."
+      }
     }
   },
   "error": {

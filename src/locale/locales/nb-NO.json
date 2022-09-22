@@ -268,9 +268,6 @@
     "weight": "Vekt",
     "automatic": "Oppdateres automatisk",
     "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
-    "showComment": "Vis kommentar",
-    "showComments": "Vis kommentarer",
-    "hideComments": "Skjul kommentarer",
     "autoError": "Feil i henting av data fra Google Sheets:",
     "api": {
       "radio": "Oppdatere via API?",
@@ -354,17 +351,10 @@
   "keyResultPage": {
     "change": "Endre nøkkelresultat",
     "add": "Legg til nøkkelresultat",
-    "table": {
-      "value": "Verdi"
-    },
     "notes": {
       "empty": "Her kan du skrive notater som bare teamet ditt kan se.",
       "save": "Lagre notater"
     },
-    "history": "Historikk",
-    "registeredBy": "Registrert av",
-    "value": "Verdi",
-    "date": "Dato",
     "filter": "Filtrer"
   },
   "help": {
@@ -392,10 +382,8 @@
     "noIcons": "Ingen treff"
   },
   "empty": {
-    "keyResultProgress": {
-      "heading": "Ingen historikk",
-      "body": "Dette nøkkelresultatet har ingen registrerte verdier."
-    },
+    "noKeyResultProgress": "Dette nøkkelresultatet har ingen registrerte verdier.",
+    "noKPIProgress": "Denne KPIen har ingen registrerte verdier.",
     "noKeyResults": {
       "heading": "Ingen nøkkelresultater",
       "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",
@@ -436,6 +424,20 @@
     "progression": {
       "period": "Progresjon for periode",
       "objective": "Progresjon for mål"
+    },
+    "history": {
+      "title": "Historikk",
+      "value": "Verdi",
+      "date": "Dato",
+      "comment": "Kommentar",
+      "registeredBy": "Registrert av",
+      "showComment": "Vis kommentar",
+      "showComments": "Vis kommentarer",
+      "hideComments": "Skjul kommentarer",
+      "empty": {
+        "heading": "Ingen historikk",
+        "body": "Ingen målepunkter registrert for dette elementet."
+      }
     }
   },
   "error": {

@@ -25,7 +25,7 @@
 
         <div class="main-widgets">
           <div v-if="activeKpi.valid" class="main-widgets__current">
-            <h3 class="main-widgets__title">
+            <h3 class="title-3">
               {{ $t('kpi.currentValue') }}
             </h3>
             <div class="main-widgets__current--value">
@@ -38,9 +38,9 @@
           </div>
 
           <div class="main-widgets__graph">
-            <h3 class="main-widgets__title">
+            <h2 class="title-2">
               {{ $t('kpi.progress') }}
-            </h3>
+            </h2>
 
             <svg ref="graph" class="graph"></svg>
           </div>
@@ -53,59 +53,13 @@
           @listen="handleChange"
         />
 
-        <div class="widget__history">
-          <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
-
-          <v-spinner v-if="isLoading"></v-spinner>
-
-          <empty-state
-            v-else-if="
-              !filteredProgress.length || filteredProgress.length === 0
-            "
-            :icon="'history'"
-            :heading="$t('empty.kpiProgress.heading')"
-            :body="$t('empty.kpiProgress.body')"
-          />
-
-          <table v-else class="table">
-            <thead>
-              <tr>
-                <th>{{ $t('keyResult.dateAndTime') }}</th>
-                <th>{{ $t('keyResultPage.table.value') }}</th>
-                <th v-if="hasEditRights"></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-            <tr v-for="{ timestamp, value, id } in limitedProgress" :key="id">
-              <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
-              <td>{{ formatKPIValue(value) }}</td>
-              <td v-if="hasEditRights" style="width: 1rem">
-                <v-popover offset="16" placement="top" show="true">
-                  <button class="btn btn--ter">
-                    {{ $t('btn.delete') }}
-                  </button>
-
-                  <template slot="popover">
-                    <button
-                      class="btn btn--ter btn--negative"
-                      @click="remove(id)"
-                    >
-                      {{ $t('btn.confirmDeleteProgress') }}
-                    </button>
-                  </template>
-                </v-popover>
-              </td>
-            </tr>
-          </table>
-          <button
-            v-if="filteredProgress.length > 10 && historyLimit !== null"
-            class="btn btn--sec"
-            style="align-self: center"
-            @click="historyLimit = null"
-          >
-            {{ $t('btn.showMore') }}
-          </button>
-        </div>
+        <widget-progress-history
+          :progress="progressWithFormattedValues"
+          :is-loading="isLoading"
+          :has-edit-rights="hasEditRights"
+          :no-values-message="$t('empty.noKPIProgress')"
+          @delete-record="deleteHistoryRecord"
+        />
       </div>
     </div>
 
@@ -128,15 +82,16 @@ import { dateTimeShort, formatISOShort } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory.vue';
 
 export default {
   name: 'KpiHome',
 
   components: {
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetMissionStatement,
     WidgetTeam,
+    WidgetProgressHistory,
   },
 
   data: () => ({
@@ -148,17 +103,19 @@ export default {
     filteredProgress: [],
     isFiltered: false,
     isLoading: false,
-    historyLimit: 10,
   }),
 
   computed: {
     ...mapState(['activeKpi', 'activeItem', 'theme']),
     ...mapGetters(['hasEditRights']),
 
-    limitedProgress() {
-      return this.historyLimit
-        ? this.filteredProgress.slice(0, this.historyLimit)
-        : this.filteredProgress;
+    progressWithFormattedValues() {
+      return this.filteredProgress.map((record) => ({
+        id: record.id,
+        timestamp: record.timestamp,
+        comment: record.comment,
+        value: this.formatKPIValue(record.value),
+      }));
     },
   },
 
@@ -194,7 +151,7 @@ export default {
   methods: {
     dateTimeShort,
 
-    async remove(id) {
+    async deleteHistoryRecord(id) {
       try {
         await db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
         this.$toasted.show(this.$t('toaster.delete.progression'));
@@ -290,21 +247,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.history {
-  margin: 2.5rem 0 1.5rem;
-}
-
 .main-widgets {
   display: flex;
   flex-direction: column;
   margin-top: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.main-widgets__title {
-  margin-bottom: 0.5rem;
-  color: var(--color-text);
-  font-weight: 500;
 }
 
 .main-widgets__current {
