@@ -436,6 +436,7 @@
       "date": "Dato",
       "comment": "Kommentar",
       "comment_optional": "Kommentar (valgfritt)",
+      "actions": "Handlinger",
       "time": "Tidspunkt",
       "changedBy": "Sist endret av",
       "showComment": "Vis kommentar",

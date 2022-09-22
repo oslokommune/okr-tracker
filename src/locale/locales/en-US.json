@@ -439,6 +439,7 @@
       "date": "Date",
       "comment": "Comment",
       "comment_optional": "Comment (optional)",
+      "actions": "Actions",
       "time": "Time",
       "changedBy": "Last edited by",
       "showComment": "View comment",

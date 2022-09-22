@@ -39,7 +39,9 @@
                 ></span>
               </button>
             </th>
-            <th v-if="hasEditRights" style="width: 1rem"></th>
+            <th v-if="hasEditRights" style="width: 1rem">
+              {{ $t('widget.history.actions') }}
+            </th>
           </tr>
         </thead>
         <tbody>
