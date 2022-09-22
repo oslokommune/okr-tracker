@@ -4,14 +4,25 @@
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
       style="width: 100%"
       class="item"
-      :class="{ 'item--organization': type === 'organization', 'item--department': type === 'department' }"
+      :class="{
+        'item--organization': type === 'organization',
+        'item--department': type === 'department',
+      }"
     >
       <span v-if="type === 'product'" class="indent" />
-      <i v-if="type !== 'organization'" class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+      <i
+        v-if="type !== 'organization'"
+        class="item__icon fas fa-fw"
+        :class="`fa-${icon}`"
+      />
 
       <span class="item__name" :class="`item__font--${type}`">
         {{ data.name }}
-        <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
+        <i
+          v-if="isMember"
+          v-tooltip="$t('tooltip.isMember')"
+          class="item__user-icon fa fa-user-circle"
+        />
       </span>
 
       <div class="item__kpis">
@@ -27,7 +38,11 @@
         </div>
       </div>
 
-      <progress-bar v-tooltip="`${progression}%`" class="progress-bar" :progression="progression" />
+      <progress-bar
+        v-tooltip="`${progression}%`"
+        class="progress-bar"
+        :progression="progression"
+      />
 
       <i class="item__chevron fas fa-chevron-right" />
     </router-link>
@@ -35,7 +50,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import kpiTypes from '@/config/kpiTypes';
 
@@ -67,7 +82,9 @@ export default {
   computed: {
     ...mapState(['user']),
     isMember() {
-      return !!this.data.team && this.data.team.find(({ id }) => id === this.user.id);
+      return (
+        !!this.data.team && this.data.team.find(({ id }) => id === this.user.id)
+      );
     },
 
     icon() {
@@ -106,10 +123,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(['update_preferences']),
     getKpiValue(type) {
       try {
-        return kpiTypes[type].formatValue(this.kpis.find((obj) => obj.type === type).currentValue);
+        const value = this.kpis.find((obj) => obj.type === type).currentValue;
+        return kpiTypes[type].formatValue(value, {
+          compact: true,
+        });
       } catch {
         return '–––';
       }
@@ -121,31 +140,6 @@ export default {
       } catch {
         return '';
       }
-    },
-
-    toggle(type, slug) {
-      if (this.user.preferences.home === undefined) {
-        this.user.preferences.home = {
-          collapse: {
-            organization: {},
-            department: {},
-          },
-        };
-      }
-
-      if (this.user.preferences.home.collapse[type][slug] === undefined) {
-        this.user.preferences.home.collapse[type][slug] = this.user.preferences.home.collapse[type][slug] === undefined;
-      } else {
-        this.user.preferences.home.collapse[type][slug] = !this.user.preferences.home.collapse[type][slug];
-      }
-      this.update_preferences();
-    },
-
-    getCollapse(type, slug) {
-      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[type][slug] === undefined) {
-        return false;
-      }
-      return this.user.preferences.home.collapse[type][slug];
     },
   },
 };

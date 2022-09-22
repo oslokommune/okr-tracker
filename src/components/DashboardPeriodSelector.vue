@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="periodSelector"
-    v-click-outside="hide"
-  >
+  <div v-click-outside="hide" class="periodSelector">
     <div
       class="periodSelector__input"
-      :class="{'periodSelector__input--active': isOpen}"
+      :class="{ 'periodSelector__input--active': isOpen }"
       tabindex="0"
       @click="toggle"
       @keyup.enter="toggle"
@@ -13,19 +10,19 @@
       <span class="periodSelector__input-value">
         {{ rangeLabel }}
       </span>
-      <icon-calendar :height="21" :width="21" />
+      <icon-calendar :height="22" :width="22" />
     </div>
-    <div class="periodSelector__content" v-if="isOpen">
+    <div v-if="isOpen" class="periodSelector__content">
       <button
-        v-for="range in options"
-        :key="range.value"
-        @click="selectRangeOption(range)"
+        v-for="rangeOption in options"
+        :key="rangeOption.value"
         class="periodSelector__option"
         :class="{
           'periodSelector__option--active': range.key === period.key
         }"
+        @click="selectRangeOption(rangeOption)"
       >
-        {{ range.label }}
+        {{ rangeOption.label }}
       </button>
       <flat-pickr
         v-model="range"
@@ -39,7 +36,7 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside'
+import ClickOutside from 'vue-click-outside';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import IconCalendar from './IconCalendar.vue';
@@ -48,6 +45,9 @@ export default {
   name: 'DashboardPeriodSelector',
   components: {
     IconCalendar,
+  },
+  directives: {
+    ClickOutside,
   },
 
   props: {
@@ -124,18 +124,13 @@ export default {
       this.hide();
     },
     selectCustomRange(range) {
-      if (range.length !== 2)
-        return;
+      if (range.length !== 2) return;
       this.$emit('input', {
         startDate: range[0],
         endDate: endOfDay(range[1]),
       });
-    }
+    },
   },
-
-  directives: {
-    ClickOutside,
-  }
 };
 </script>
 
@@ -147,8 +142,9 @@ export default {
 
 .periodSelector__input {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
   padding: 0.75rem;
   border: 1px solid var(--color-grey-100);
   cursor: pointer;
@@ -162,12 +158,12 @@ export default {
     background-color: var(--color-secondary-light);
     border-color: var(--color-secondary-light);
   }
-}
 
-.periodSelector__input-value {
-  color: var(--color-text);
-  font-weight: 500;
-  font-size: 1rem;
+  &-value {
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 1rem;
+  }
 }
 
 .periodSelector__content {
@@ -202,7 +198,8 @@ export default {
   border: 0;
   cursor: pointer;
 
-  &:hover, &--active {
+  &:hover,
+  &--active {
     color: var(--color-text);
     background: var(--color-grey-50);
   }

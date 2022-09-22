@@ -335,6 +335,7 @@ export default {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
           height: 350,
+          tooltips: true,
         });
       }
 
@@ -344,23 +345,25 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.progressCollection,
-        item: this.kpis[this.activeTab],
+        kpi: this.kpis[this.activeTab],
         theme: this.theme,
       });
     },
     formatResultIndicatorValue(value) {
       const resultIndicator = this.resultIndicators[this.activeTab];
-      if (resultIndicator && value) {
-        if (resultIndicator.type === 'users') {
-          return numberLocale.format(',')(value);
-        }
-        return kpiTypes[resultIndicator.type].formatValue(value);
-      }
-      return null;
+      return resultIndicator && value
+        ? kpiTypes[resultIndicator.type].formatValue(value)
+        : null;
     },
     download(value) {
       const filename = this.resultIndicators[this.activeTab].name;
       const svgData = this.$refs.progressGraphSvg;
+
+      // Hide comment indicators from the graph before exporting
+      const commentIndicators = svgData.querySelectorAll('.indicators');
+      commentIndicators.forEach((el) => {
+        el.style.opacity = 0;
+      });
 
       if (value.downloadOption === 'png') {
         const svgFrame = svgData.getBoundingClientRect();
@@ -369,7 +372,11 @@ export default {
           width: svgFrame.width + 50,
           height: svgFrame.height,
         };
-        saveSvgAsPng(svgData, `${filename}.png`, options);
+        saveSvgAsPng(svgData, `${filename}.png`, options).finally(() => {
+          commentIndicators.forEach((el) => {
+            el.style.opacity = 1;
+          });
+        });
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([
@@ -446,12 +453,14 @@ export default {
     .graphOptions {
       margin-left: 1rem;
       display: flex;
-      align-items: center;
+      gap: 0.5rem;
       justify-content: space-between;
     }
 
     .download {
+      height: 100%;
       min-width: 1rem;
+      margin-right: 0.5rem;
 
       &::v-deep .vs__dropdown-menu {
         left: -3.6rem;
@@ -461,8 +470,6 @@ export default {
 
     .dropdownButton {
       display: inline-block;
-      padding-left: 0.2rem;
-      padding-right: 0.5rem;
 
       &::v-deep .vs--open .vs__open-indicator {
         transform: rotate(0deg) scale(1);
