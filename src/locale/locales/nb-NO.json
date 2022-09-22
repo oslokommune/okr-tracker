@@ -13,6 +13,7 @@
   "kpi": {
     "add": "Legg til KPI",
     "edit": "Endre KPI",
+    "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
     "progress": "Progresjon",
     "description": "Beskrivelse",
