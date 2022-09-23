@@ -54,10 +54,11 @@
         />
 
         <widget-progress-history
-          :progress="progressWithFormattedValues"
+          :progress="filteredProgress"
           :is-loading="isLoading"
-          :has-edit-rights="hasEditRights"
+          :value-formatter="formatKPIValue"
           :no-values-message="$t('empty.noKPIProgress')"
+          @update-record="updateHistoryRecord"
           @delete-record="deleteHistoryRecord"
         />
       </div>
@@ -77,12 +78,13 @@ import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3-array';
 import endOfDay from 'date-fns/endOfDay';
 import { db } from '@/config/firebaseConfig';
+import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort } from '@/util';
 import kpiTypes from '@/config/kpiTypes';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
   name: 'KpiHome',
@@ -108,15 +110,6 @@ export default {
   computed: {
     ...mapState(['activeKpi', 'activeItem', 'theme']),
     ...mapGetters(['hasEditRights']),
-
-    progressWithFormattedValues() {
-      return this.filteredProgress.map((record) => ({
-        id: record.id,
-        timestamp: record.timestamp,
-        comment: record.comment,
-        value: this.formatKPIValue(record.value),
-      }));
-    },
   },
 
   watch: {
@@ -151,10 +144,26 @@ export default {
   methods: {
     dateTimeShort,
 
+    async updateHistoryRecord(id, data, modalCloseHandler) {
+      try {
+        await Progress.update(
+          db.collection('kpis'),
+          this.activeKpi.id,
+          id,
+          data
+        );
+        this.$toasted.show(this.$t('toaster.update.progress'));
+      } catch {
+        this.$toasted.error(this.$t('toaster.error.updateProgress'));
+      } finally {
+        modalCloseHandler();
+      }
+    },
+
     async deleteHistoryRecord(id) {
       try {
-        await db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
-        this.$toasted.show(this.$t('toaster.delete.progression'));
+        await Progress.remove(db.collection('kpis'), this.activeKpi.id, id);
+        this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }

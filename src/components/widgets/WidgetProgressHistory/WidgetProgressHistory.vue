@@ -17,10 +17,10 @@
           <tr>
             <th>{{ $t('widget.history.value') }}</th>
             <th>{{ $t('widget.history.date') }}</th>
-            <th v-if="hasCreatedBy">
-              {{ $t('widget.history.registeredBy') }}
+            <th v-if="hasAnyChangedBy">
+              {{ $t('widget.history.changedBy') }}
             </th>
-            <th v-if="hasComments">
+            <th v-if="hasAnyComments">
               <span v-if="showComments">{{
                 $t('widget.history.comment')
               }}</span>
@@ -39,51 +39,48 @@
                 ></span>
               </button>
             </th>
-            <th v-if="hasEditRights" style="width: 1rem"></th>
+            <th v-if="hasEditRights" style="width: 1rem">
+              {{ $t('widget.history.actions') }}
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="{
-              id,
-              value,
-              timestamp,
-              comment,
-              createdBy,
-            } in limitedProgress"
-            :key="id"
-          >
-            <td>{{ value }}</td>
-            <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
-            <td v-if="hasCreatedBy">
-              <a
-                v-if="createdBy && createdBy.id"
-                class="record__user-link"
-                @click="openProfileModal(createdBy.id)"
-              >
-                <span>{{ createdBy.displayName || createdBy.id }}</span>
-              </a>
-              <span v-else>{{ createdBy }}</span>
+          <tr v-for="record in limitedProgress" :key="record.id">
+            <td>{{ valueFormatter(record.value) }}</td>
+            <td>{{ dateTimeShort(record.timestamp.toDate()) }}</td>
+            <td v-if="hasAnyChangedBy">
+              <user-link
+                v-if="record.editedBy || record.createdBy"
+                :user="record.editedBy || record.createdBy"
+                @open-user-modal="openProfileModal"
+              />
             </td>
             <td
-              v-if="hasComments"
+              v-if="hasAnyComments"
               style="max-width: 200px; padding: 0.25rem 0.5rem"
             >
-              <span v-if="comment && showComments">
-                {{ comment }}
+              <span v-if="record.comment && showComments">
+                {{ record.comment }}
               </span>
-              <v-popover v-if="comment && !showComments" placement="top">
+              <v-popover v-if="record.comment && !showComments" placement="top">
                 <i
                   v-tooltip="$t('widget.history.showComment')"
                   class="fa fa-comment-alt record__comment-icon"
                 />
                 <template slot="popover">
-                  {{ comment }}
+                  {{ record.comment }}
                 </template>
               </v-popover>
             </td>
             <td v-if="hasEditRights">
               <div class="record__actions">
+                <button
+                  v-tooltip="$t('tooltip.editProgress')"
+                  class="btn btn--icon btn--ter"
+                  @click="openValueModal(record)"
+                >
+                  <i class="fa fa-edit" />
+                </button>
                 <v-popover offset="0" placement="top">
                   <button
                     v-tooltip="$t('tooltip.deleteProgress')"
@@ -95,7 +92,7 @@
                   <template slot="popover">
                     <button
                       class="btn btn--ter btn--negative"
-                      @click="$emit('delete-record', id)"
+                      @click="$emit('delete-record', record.id)"
                     >
                       {{ $t('btn.confirmDeleteProgress') }}
                     </button>
@@ -116,6 +113,15 @@
       {{ $t('btn.showMore') }}
     </button>
 
+    <progress-modal
+      v-if="showValueModal"
+      :record="chosenProgressRecord"
+      @close="closeValueModal"
+      @update-record="
+        (id, data, close) => $emit('update-record', id, data, close)
+      "
+    />
+
     <profile-modal
       v-if="showProfileModal"
       :id="chosenProfileId"
@@ -125,8 +131,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { VPopover } from 'v-tooltip';
 import { dateTimeShort } from '@/util';
+import UserLink from './UserLink.vue';
 
 export default {
   name: 'KeyResultHome',
@@ -134,6 +142,8 @@ export default {
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ProfileModal: () => import('@/components/ProfileModal.vue'),
+    ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
+    UserLink,
     VPopover,
   },
 
@@ -146,9 +156,10 @@ export default {
       type: Array,
       required: true,
     },
-    hasEditRights: {
-      type: Boolean,
-      required: true,
+    valueFormatter: {
+      type: Function,
+      required: false,
+      default: (value) => value,
     },
     noValuesMessage: {
       type: String,
@@ -161,15 +172,22 @@ export default {
     historyLimit: 10,
     showComments: true,
     showProfileModal: false,
+    showValueModal: false,
+    chosenProgressRecord: null,
     chosenProfileId: null,
   }),
 
   computed: {
-    hasComments() {
+    ...mapGetters(['hasEditRights']),
+
+    hasAnyComments() {
       return this.progress.find(({ comment }) => comment) !== undefined;
     },
-    hasCreatedBy() {
-      return this.progress.find(({ createdBy }) => createdBy) !== undefined;
+    hasAnyChangedBy() {
+      return this.progress.find(({
+        createdBy,
+        editedBy,
+      }) => createdBy || editedBy) !== undefined;
     },
     limitedProgress() {
       return this.historyLimit
@@ -189,6 +207,16 @@ export default {
     closeProfileModal() {
       this.showProfileModal = false;
       this.chosenProfileId = null;
+    },
+
+    openValueModal(record) {
+      this.chosenProgressRecord = record;
+      this.showValueModal = true;
+    },
+
+    closeValueModal() {
+      this.showValueModal = false;
+      this.chosenProgressRecord = null;
     },
   },
 };
@@ -211,14 +239,6 @@ export default {
   &:hover {
     background: rgba(var(--color-grey-500-rgb), 0.1);
   }
-}
-
-.record__user-link {
-  display: flex;
-  align-items: center;
-  color: var(--color-text);
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .record__actions {

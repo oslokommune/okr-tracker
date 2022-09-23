@@ -200,7 +200,10 @@
       "user": "Slettet bruker {user}",
       "permanently": "Slettet dokumentet permanent",
       "object": "Arkiverte «{name}»",
-      "progression": "Slettet målepunkt"
+      "progress": "Slettet målepunkt"
+    },
+    "update": {
+      "progress": "Oppdaterte målepunkt"
     },
     "action": {
       "regret": "Angre"
@@ -220,7 +223,8 @@
       "email": "Ugyldige e-postadresser",
       "kpi": "Kunne ikke opprette kpi",
       "notes": "Kunne ikke oppdatere notater",
-      "deleteProgress": "Kunne ikke slette målepunkt"
+      "deleteProgress": "Kunne ikke slette målepunkt",
+      "updateProgress": "Kunne oppdatere målepunkt"
     },
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
@@ -303,7 +307,8 @@
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "editKpi": "Endre detaljer eller slett KPI",
     "navigateToItem": "Gå til {item}",
-    "deleteProgress": "Slett målepunkt",
+    "editProgress": "Endre målepunkt",
+    "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",
     "emptyPeriod": "Ingen aktiv periode",
     "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet"
@@ -431,13 +436,16 @@
       "value": "Verdi",
       "date": "Dato",
       "comment": "Kommentar",
-      "registeredBy": "Registrert av",
+      "comment_optional": "Kommentar (valgfritt)",
+      "actions": "Handlinger",
+      "time": "Tidspunkt",
+      "changedBy": "Sist endret av",
       "showComment": "Vis kommentar",
       "showComments": "Vis kommentarer",
       "hideComments": "Skjul kommentarer",
       "empty": {
         "heading": "Ingen historikk",
-        "body": "Ingen målepunkter registrert for dette elementet."
+        "body": "Ingen verdier registrert for dette elementet."
       }
     }
   },

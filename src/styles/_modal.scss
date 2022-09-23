@@ -38,15 +38,20 @@
   &__header {
     display: flex;
     align-items: center;
+    margin-bottom: 0.5rem;
     font-size: 1rem;
+    line-height: 2.5rem;
 
     .btn {
+      align-self: stretch;
       margin: 0;
       padding: 0 1rem;
     }
 
     .title-2 {
-      margin-right: auto;
+      flex: 1;
+      margin: 0;
+      text-transform: uppercase;
     }
   }
 

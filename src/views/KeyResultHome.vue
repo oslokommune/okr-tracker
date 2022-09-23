@@ -149,8 +149,8 @@
         <widget-progress-history
           :progress="progress"
           :is-loading="isLoading"
-          :has-edit-rights="hasEditRights"
           :no-values-message="$t('empty.noKeyResultProgress')"
+          @update-record="updateHistoryRecord"
           @delete-record="deleteHistoryRecord"
         />
       </div>
@@ -168,7 +168,7 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import routerGuard from '@/router/router-guards/keyResultHome';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 
 export default {
@@ -293,10 +293,30 @@ export default {
   methods: {
     format,
 
+    async updateHistoryRecord(id, data, modalCloseHandler) {
+      try {
+        await Progress.update(
+          db.collection('keyResults'),
+          this.activeKeyResult.id,
+          id,
+          data
+        );
+        this.$toasted.show(this.$t('toaster.update.progress'));
+      } catch {
+        this.$toasted.error(this.$t('toaster.error.updateProgress'));
+      } finally {
+        modalCloseHandler();
+      }
+    },
+
     async deleteHistoryRecord(id) {
       try {
-        await Progress.remove(this.activeKeyResult.id, id);
-        this.$toasted.show(this.$t('toaster.delete.progression'));
+        await Progress.remove(
+          db.collection('keyResults'),
+          this.activeKeyResult.id,
+          id
+        );
+        this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }
@@ -307,11 +327,15 @@ export default {
 
       this.isSaving = true;
       try {
-        await Progress.create(this.activeKeyResult.id, {
-          value: +this.value,
-          comment: this.progressNote,
-          timestamp: new Date(),
-        });
+        await Progress.create(
+          db.collection('keyResults'),
+          this.activeKeyResult.id,
+          {
+            value: +this.value,
+            comment: this.progressNote,
+            timestamp: new Date(),
+          }
+        );
         this.$toasted.show(this.$t('toaster.add.progression'));
       } catch (e) {
         console.log(e);

@@ -157,6 +157,7 @@ service cloud.firestore {
     match /kpis/{document}/progress/{progress} {
       allow read: if isSignedIn();
       allow create: if false;
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
       allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
     }
 
