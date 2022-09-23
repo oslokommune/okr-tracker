@@ -1,11 +1,12 @@
 <template>
-  <div class="overlay" @click.self="close">
+  <div class="overlay" @keydown.esc="close" @click.self="close">
     <div class="modal">
       <div class="modal__header">
         <h2 class="title-2">
           <slot name="header" />
         </h2>
         <button
+          ref="closeButton"
           class="btn btn--ter btn--close btn--icon btn--icon-pri"
           @click="close"
         >
@@ -26,10 +27,20 @@
 export default {
   name: 'ModalWrapper',
 
+  mounted() {
+    this.$refs.closeButton.focus();
+  },
+
   methods: {
     close() {
       this.$emit('close');
     },
-  },
+  }
 };
 </script>
+
+<style lang="scss" scoped>
+.btn--close:focus {
+  outline: 2px solid var(--color-link);
+}
+</style>
