@@ -1,158 +1,157 @@
 <template>
-  <div class="overlay">
-    <div class="modal">
-      <div class="modal__header">
-        <h2 class="title-2">{{ $t('kpi.add') }}</h2>
-        <button class="btn btn--ter btn--close btn--icon btn--icon-pri" @click="close">
-          <i class="fa fa-times" />
-        </button>
-      </div>
-      <div class="modal__main">
-        <validation-observer v-slot="{ handleSubmit }">
-          <form id="addKpi" @submit.prevent="handleSubmit(add)">
-            <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
-              <label class="form-group">
-                <span class="form-label form-label--hasPrimaryBackground">
-                  {{ $t('kpi.chooseType') }}
-                </span>
-                <select v-model="type" class="form__field">
-                  <option
-                    v-for="{ id, label } in availableTypes"
-                    :key="id"
-                    :value="id"
-                  >
-                    {{ label }}
-                  </option>
-                </select>
-                <span v-if="errors[0]" class="form-field--error">
-                  {{ errors[0] }}
-                </span>
-              </label>
-            </validation-provider>
+  <modal-wrapper @close="close">
+    <template #header>
+      {{ $t('kpi.add') }}
+    </template>
 
-            <form-component
-              v-model="kpi.name"
-              input-type="input"
-              name="name"
-              :label="$t('fields.name')"
-              rules="required"
-              type="text"
-              :has-primary-background="true"
+    <validation-observer v-slot="{ handleSubmit }">
+      <form id="addKpi" @submit.prevent="handleSubmit(add)">
+        <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
+          <label class="form-group">
+            <span class="form-label form-label--hasPrimaryBackground">
+              {{ $t('kpi.chooseType') }}
+            </span>
+            <select v-model="type" class="form__field">
+              <option
+                v-for="{ id, label } in availableTypes"
+                :key="id"
+                :value="id"
+              >
+                {{ label }}
+              </option>
+            </select>
+            <span v-if="errors[0]" class="form-field--error">
+              {{ errors[0] }}
+            </span>
+          </label>
+        </validation-provider>
+
+        <form-component
+          v-model="kpi.name"
+          input-type="input"
+          name="name"
+          :label="$t('fields.name')"
+          rules="required"
+          type="text"
+          :has-primary-background="true"
+        />
+
+        <label class="form-group">
+          <span class="form-label form-label--hasPrimaryBackground">
+            {{ $t('kpi.description') }}
+          </span>
+          <textarea
+            v-model="kpi.description"
+            class="form__field"
+            rows="4"
+          />
+        </label>
+
+        <div class="toggle__container">
+          <span class="toggle__label">
+            {{ $t('kpi.api.radio') }}
+            <i
+              v-tooltip="$t('kpi.api.tooltip')"
+              class="icon fa fa-info-circle"
             />
+          </span>
+          <label class="toggle">
+            <input
+              v-model="kpi.api"
+              class="toggle__input"
+              type="checkbox"
+            />
+            <span class="toggle__switch"></span>
+          </label>
+        </div>
 
-            <label class="form-group">
-              <span class="form-label form-label--hasPrimaryBackground">
-                {{ $t('kpi.description') }}
-              </span>
-              <textarea
-                v-model="kpi.description"
-                class="form__field"
-                rows="4"
+        <template v-if="kpi.api">
+          {{ $t('kpi.api.help') }}
+        </template>
+
+        <template v-if="!kpi.api">
+          <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
+
+          <form-component
+            v-model="kpi.sheetId"
+            input-type="input"
+            name="sheetId"
+            :label="$t('fields.sheetId')"
+            rules="required"
+            type="text"
+            :has-primary-background="true"
+          >
+            <template #help>
+              <span
+                class="form-help form-help--hasPrimaryBackground"
+                v-html="$t('keyResult.automation.googleSheetIdHelp')"
               />
-            </label>
-
-            <div class="toggle__container">
-              <span class="toggle__label">
-                {{ $t('kpi.api.radio') }}
-                <i
-                  v-tooltip="$t('kpi.api.tooltip')"
-                  class="icon fa fa-info-circle"
-                />
-              </span>
-              <label class="toggle">
-                <input
-                  v-model="kpi.api"
-                  class="toggle__input"
-                  type="checkbox"
-                />
-                <span class="toggle__switch"></span>
-              </label>
-            </div>
-
-            <template v-if="kpi.api">
-              {{ $t('kpi.api.help') }}
             </template>
+          </form-component>
 
-            <template v-if="!kpi.api">
-              <h3 class="title-2">{{ $t('kpi.sheetsDetails') }}</h3>
-
-              <form-component
-                v-model="kpi.sheetId"
-                input-type="input"
-                name="sheetId"
-                :label="$t('fields.sheetId')"
-                rules="required"
-                type="text"
-                :has-primary-background="true"
-              >
-                <template #help>
-                  <span
-                    class="form-help form-help--hasPrimaryBackground"
-                    v-html="$t('keyResult.automation.googleSheetIdHelp')"
-                  />
-                </template>
-              </form-component>
-
-              <form-component
-                v-model="kpi.sheetName"
-                input-type="input"
-                name="sheetTab"
-                :label="$t('fields.sheetTab')"
-                rules="required"
-                type="text"
-                :has-primary-background="true"
-              >
-                <template #help>
-                  <span
-                    class="form-help form-help--hasPrimaryBackground"
-                    v-html="$t('keyResult.automation.sheetsTabHelp')"
-                  />
-                </template>
-              </form-component>
-
-              <form-component
-                v-model="kpi.sheetCell"
-                input-type="input"
-                name="sheetCell"
-                :label="$t('fields.sheetCell')"
-                rules="required"
-                type="text"
-                :has-primary-background="true"
-              >
-                <template #help>
-                  <span
-                    class="form-help form-help--hasPrimaryBackground"
-                    v-html="$t('keyResult.automation.sheetsCellHelp')"
-                  />
-                </template>
-              </form-component>
+          <form-component
+            v-model="kpi.sheetName"
+            input-type="input"
+            name="sheetTab"
+            :label="$t('fields.sheetTab')"
+            rules="required"
+            type="text"
+            :has-primary-background="true"
+          >
+            <template #help>
+              <span
+                class="form-help form-help--hasPrimaryBackground"
+                v-html="$t('keyResult.automation.sheetsTabHelp')"
+              />
             </template>
-          </form>
-        </validation-observer>
-      </div>
+          </form-component>
 
-      <div class="modal__footer">
-        <button
-          form="addKpi"
-          :disabled="loading"
-          class="btn btn--ghost btn--negative btn--sec"
-        >
-          {{ $t('btn.add') }}
-        </button>
-        <button class="btn btn--ghost btn--negative btn--space" @click="close">
-          {{ $t('btn.close') }}
-        </button>
-      </div>
-    </div>
-  </div>
+          <form-component
+            v-model="kpi.sheetCell"
+            input-type="input"
+            name="sheetCell"
+            :label="$t('fields.sheetCell')"
+            rules="required"
+            type="text"
+            :has-primary-background="true"
+          >
+            <template #help>
+              <span
+                class="form-help form-help--hasPrimaryBackground"
+                v-html="$t('keyResult.automation.sheetsCellHelp')"
+              />
+            </template>
+          </form-component>
+        </template>
+      </form>
+    </validation-observer>
+
+    <template #footer>
+      <button
+        form="addKpi"
+        :disabled="loading"
+        class="btn btn--ghost btn--negative btn--sec"
+      >
+        {{ $t('btn.add') }}
+      </button>
+      <button class="btn btn--ghost btn--negative btn--space" @click="close">
+        {{ $t('btn.close') }}
+      </button>
+    </template>
+  </modal-wrapper>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import Kpi from '@/db/Kpi';
+import ModalWrapper from './ModalWrapper.vue';
 
 export default {
   name: 'AddKPIModal',
+
+  components: {
+    ModalWrapper,
+  },
 
   data: () => ({
     value: 0,
@@ -225,9 +224,5 @@ export default {
 
 .btn--space {
   margin-left: 1rem;
-}
-
-.btn--close {
-  height: 3rem;
 }
 </style>
