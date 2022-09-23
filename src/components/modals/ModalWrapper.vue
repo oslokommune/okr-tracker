@@ -2,7 +2,7 @@
   <div class="overlay" @click.self="close">
     <div class="modal">
       <div class="modal__header">
-        <h2 class="title-2" style="text-transform: uppercase">
+        <h2 class="title-2">
           <slot name="header" />
         </h2>
         <button
@@ -33,9 +33,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.btn--close {
-  height: 3rem;
-}
-</style>
