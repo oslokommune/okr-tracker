@@ -14,11 +14,6 @@
 
     <validation-observer v-slot="{ handleSubmit }">
       <form :id="`kpi_${localKpi.id}`" @submit.prevent="handleSubmit(save.bind(null, localKpi))">
-        <label class="form-group">
-          <span class="form-label">Type</span>
-          <input v-model="localKpi.type" class="form__field" type="text" disabled="disabled" />
-        </label>
-
         <form-component
           v-model="localKpi.name"
           input-type="input"
@@ -32,6 +27,23 @@
           <span class="form-label">{{ $t('fields.description') }}</span>
           <textarea v-model="localKpi.description" class="form__field" rows="4" />
         </label>
+
+        <validation-provider v-slot="{ errors }" rules="required" name="format">
+          <label class="form-group">
+            <span class="form-label">
+              {{ $t('kpi.display') }}
+            </span>
+            <select v-model="kpi.format" class="form__field">
+              <option
+                v-for="{ id, label } in formats" :key="id" :value="id">
+                {{ label }}
+              </option>
+            </select>
+            <span v-if="errors[0]" class="form-field--error">
+              {{ errors[0] }}
+            </span>
+          </label>
+        </validation-provider>
 
         <div class="toggle__container">
           <span class="toggle__label">
@@ -118,6 +130,7 @@
 <script>
 import { mapState } from 'vuex';
 import IconArrowCircle from '@/assets/IconArrowCircle.vue';
+import { kpiFormats } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 
 export default {
@@ -137,6 +150,7 @@ export default {
   data: () => ({
     showAddKPIModal: false,
     localKpi: null,
+    formats: kpiFormats(),
   }),
 
   computed: {

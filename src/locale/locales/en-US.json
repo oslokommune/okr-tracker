@@ -17,11 +17,11 @@
     "currentValue": "Current value",
     "progress": "Progress",
     "description": "Description",
+    "display": "Display",
     "chooseType": "Select KPI type",
-    "types": {
-      "users": "Volume",
-      "satisfaction": "Satisfaction rate",
-      "conversion": "Conversion rate"
+    "formats": {
+      "integer": "Integer",
+      "percentage": "Percentage"
     },
     "heading": "KPIs",
     "sheetsDetails": "Sheets details",

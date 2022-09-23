@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div v-if="kpis.length && kpis.length < 3">
+    <div v-if="kpis.length">
       <button class="btn btn--ghost" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
     </div>
-    <div class="empty">
+    <div v-else class="empty">
       <empty-state
-        v-if="!kpis.length"
         :icon="'lightbulb'"
         :heading="$t('empty.noKPIs.heading')"
         :body="$t('empty.noKPIs.body')"

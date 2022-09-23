@@ -1,17 +1,18 @@
 import firebase from 'firebase/app';
-const Timestamp = firebase.firestore.Timestamp;
 import IconCalendar from '../../../components/IconCalendar.vue';
 import IconOrganization from '../../../components/IconOrganization.vue';
 import IconHoldingHands from '../../../components/IconHoldingHands.vue';
 import IconUser from '../../../components/IconUser.vue';
 import IconActivePerson from '../../../components/IconActivePerson.vue';
 
+const { Timestamp } = firebase.firestore;
+
 export const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
 
 export const APEN_BY_RESULT_INDICATORS = [
   {
     id: 'open_doors',
-    type: 'users',
+    format: 'integer',
     name: 'Meråpne døråpninger',
     description:
       'Antall vellykkede åpninger av bibliotek + minigjenbruk + hjelpemidler + bydelslokaler mellom 1. februar og 30. juni 2022',
@@ -249,7 +250,7 @@ export const APEN_BY_RESULT_INDICATORS = [
     id: 'time_liberated',
     name: 'Frigjort tid',
     description: 'Akkummulert frigjort tid (timer)',
-    type: 'users',
+    format: 'integer',
     progression: [
       { timestamp: '01.02.2021', value: 0.2 },
       { timestamp: '02.02.2021', value: 0.2 },

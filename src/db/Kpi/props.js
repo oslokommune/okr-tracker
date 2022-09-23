@@ -1,11 +1,15 @@
 export default {
   type: {
     type: 'string',
-    required: true,
+    required: false,
   },
   name: {
     type: 'string',
     required: true,
+  },
+  format: {
+    type: 'string',
+    required: false,
   },
   parent: {
     type: 'reference',

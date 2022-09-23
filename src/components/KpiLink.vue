@@ -1,19 +1,15 @@
 <template>
   <router-link
-    v-if="kpi"
-    v-tooltip="kpiName(kpiType, kpi)"
+    v-tooltip="kpi.name"
     :to="{ name: 'KpiHome', params: { kpiId: kpi.id } }"
     class="kpiLink"
     :class="{ kpiLink: true, 'kpiLink--isDisabled': kpi.error }"
   >
-    <KPI :kpi-type="kpiType" :kpi="kpi" />
+    <KPI :kpi="kpi" />
   </router-link>
-  <KPI v-else :kpi-type="kpiType" :kpi="kpi" />
 </template>
 
 <script>
-import { kpiName } from '@/util/kpiHelpers';
-
 export default {
   name: 'KpiLink',
 
@@ -22,19 +18,11 @@ export default {
   },
 
   props: {
-    kpiType: {
-      type: String,
-      required: true,
-    },
     kpi: {
       type: Object,
       required: false,
       default: null,
     },
-  },
-
-  methods: {
-    kpiName,
   },
 };
 </script>

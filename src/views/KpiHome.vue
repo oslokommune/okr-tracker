@@ -31,8 +31,8 @@
             <div class="main-widgets__current--value">
               {{
                 filteredProgress.length
-                  ? formatKPIValue(filteredProgress[0].value)
-                  : formatKPIValue(activeKpi.currentValue)
+                  ? formatKPIValue(activeKpi, filteredProgress[0].value)
+                  : formatKPIValue(activeKpi)
               }}
             </div>
           </div>
@@ -56,7 +56,7 @@
         <widget-progress-history
           :progress="filteredProgress"
           :is-loading="isLoading"
-          :value-formatter="formatKPIValue"
+          :value-formatter="_formatKPIValue"
           :no-values-message="$t('empty.noKPIProgress')"
           @update-record="updateHistoryRecord"
           @delete-record="deleteHistoryRecord"
@@ -81,7 +81,7 @@ import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { dateTimeShort, formatISOShort } from '@/util';
-import kpiTypes from '@/config/kpiTypes';
+import { formatKPIValue } from '@/util/kpiHelpers';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
@@ -143,6 +143,7 @@ export default {
 
   methods: {
     dateTimeShort,
+    formatKPIValue,
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
       try {
@@ -167,6 +168,10 @@ export default {
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }
+    },
+
+    _formatKPIValue(value) {
+      return formatKPIValue(this.activeKpi, value);
     },
 
     renderGraph() {
@@ -204,10 +209,6 @@ export default {
         );
       }
       this.renderGraph();
-    },
-
-    formatKPIValue(value) {
-      return kpiTypes[this.activeKpi.type].formatValue(value);
     },
 
     handleChange(range) {

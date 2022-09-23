@@ -79,8 +79,8 @@ import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 
 import { db } from '@/config/firebaseConfig';
-import kpiTypes from '@/config/kpiTypes';
 import { periodDates } from '@/util';
+import { formatKPIValue } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -353,7 +353,7 @@ export default {
     formatResultIndicatorValue(value) {
       const resultIndicator = this.resultIndicators[this.activeTab];
       return resultIndicator && value
-        ? kpiTypes[resultIndicator.type].formatValue(value)
+        ? formatKPIValue(resultIndicator, value)
         : null;
     },
     download(value) {

@@ -2,19 +2,13 @@
   <section class="kpis">
     <h2 class="title-2">{{ $t('kpi.heading') }}</h2>
     <div class="kpis__list">
-      <kpi-link
-        v-for="kpiType in KPI_TYPES"
-        :key="kpiType"
-        :kpi-type="kpiType"
-        :kpi="kpis.find((kpi) => kpi.type === kpiType)"
-      />
+      <kpi-link v-for="kpi in kpis" :key="kpi.id" :kpi="kpi" />
     </div>
   </section>
 </template>
 
 <script>
 import KpiLink from './KpiLink.vue';
-import { KPI_TYPES } from '@/util/kpiHelpers';
 
 export default {
   name: 'KPIs',
@@ -29,10 +23,6 @@ export default {
       required: true,
     },
   },
-
-  data: () => ({
-    KPI_TYPES,
-  }),
 };
 </script>
 
