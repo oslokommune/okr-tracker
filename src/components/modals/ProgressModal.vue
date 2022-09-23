@@ -108,7 +108,7 @@ export default {
         'update-record',
         this.record.id,
         {
-          value: +this.thisRecord.value,
+          value: parseFloat(this.thisRecord.value),
           timestamp: new Date(this.thisRecord.timestamp),
           comment: this.thisRecord.comment || '',
         },
