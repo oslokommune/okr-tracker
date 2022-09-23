@@ -34,7 +34,12 @@
       </div>
     </div>
 
-    <modal v-if="isOpen" :key-result="keyRow" :unsaved-values="changed" @close="isOpen = false"></modal>
+    <key-result-modal
+      v-if="isOpen"
+      :key-result="keyRow"
+      :unsaved-values="changed"
+      @close="isOpen = false"
+    />
   </div>
 </template>
 
@@ -49,7 +54,7 @@ export default {
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    Modal: () => import('@/components/KeyResultModal.vue'),
+    KeyResultModal: () => import('@/components/modals/KeyResultModal.vue'),
     WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
   },
 
