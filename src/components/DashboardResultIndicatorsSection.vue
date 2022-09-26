@@ -20,7 +20,6 @@
       />
       <div class="graphOptions">
         <dashboard-period-selector
-          ref="periodSelector"
           :options="resultIndicatorPeriods"
           :start-date="startDate"
           :end-date="endDate"
