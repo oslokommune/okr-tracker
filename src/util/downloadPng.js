@@ -41,6 +41,7 @@ export default function downloadPng(svgRef, filename, title, period) {
   const options = {
     width: svgFrame.width + 50,
     height: svgFrame.height,
+    backgroundColor: '#FFFFFF',
   };
 
   saveSvgAsPng(svgRef, `${filename}.png`, options).finally(() => {
