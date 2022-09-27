@@ -39,6 +39,7 @@
     "dompurify": "^2.3.4",
     "firebase": "^8.10.0",
     "flatpickr": "^4.6.9",
+    "focus-trap": "^7.0.0",
     "fuse.js": "^6.5.3",
     "marked": "^4.0.14",
     "save-svg-as-png": "^1.4.17",
