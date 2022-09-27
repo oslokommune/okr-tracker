@@ -14,7 +14,9 @@
         </button>
       </div>
 
-      <slot />
+      <div ref="modalContent" class="modal__content">
+        <slot />
+      </div>
 
       <div class="modal__footer">
         <slot name="footer" />
@@ -28,14 +30,23 @@ export default {
   name: 'ModalWrapper',
 
   mounted() {
-    this.$refs.closeButton.focus();
+    this.$nextTick(() => {
+      this.setElementFocus();
+    });
   },
 
   methods: {
     close() {
       this.$emit('close');
     },
-  }
+    setElementFocus() {
+      const focusableElement =
+        this.$refs.modalContent.querySelectorAll(
+          'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )[0] || this.$refs.closeButton;
+      focusableElement.focus();
+    },
+  },
 };
 </script>
 
