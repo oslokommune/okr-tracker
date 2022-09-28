@@ -171,7 +171,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis']),
+    ...mapState(['kpis', 'theme']),
     resultIndicatorTarget() {
       const resultIndicator = this.resultIndicators[this.activeTab];
       return KPI_TARGETS[resultIndicator.id];
@@ -375,7 +375,13 @@ export default {
           ),
         });
 
-        downloadPng(svgRef, filename, activeTabName, formattedPeriod);
+        downloadPng(
+          svgRef,
+          filename,
+          activeTabName,
+          formattedPeriod,
+          this.theme
+        );
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([

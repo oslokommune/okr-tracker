@@ -3,7 +3,7 @@ import { saveSvgAsPng } from 'save-svg-as-png';
 
 const headingOffset = 60;
 
-export default function downloadPng(svgRef, filename, title, period) {
+export default function downloadPng(svgRef, filename, title, period, theme) {
   const svg = select(svgRef);
   const canvas = svg.select('.canvas');
   const [minX, minY, width, height] = getViewBoxDimensions(svg);
@@ -23,6 +23,10 @@ export default function downloadPng(svgRef, filename, title, period) {
       .attr('x', 5)
       .attr('y', 25)
       .call(styleText, 18, 500)
+      .attr(
+        'fill',
+        theme === 'green' ? 'var(--color-green-dark)' : 'var(--color-purple)'
+      )
       .text(title);
 
     if (period)
@@ -31,6 +35,7 @@ export default function downloadPng(svgRef, filename, title, period) {
         .attr('x', 5)
         .attr('y', 50)
         .call(styleText, 12, 300)
+        .attr('fill', 'var(--color-grey-600)')
         .text(period);
   }
 
@@ -41,7 +46,7 @@ export default function downloadPng(svgRef, filename, title, period) {
   const options = {
     width: svgFrame.width + 50,
     height: svgFrame.height,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#ffffff',
   };
 
   saveSvgAsPng(svgRef, `${filename}.png`, options).finally(() => {
@@ -56,8 +61,7 @@ export default function downloadPng(svgRef, filename, title, period) {
 function styleText(el, size, weight) {
   el.attr('font-size', size)
     .attr('font-weight', weight)
-    .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
-    .attr('fill', 'var(--color-grey-600)');
+    .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif');
 }
 
 function getViewBoxDimensions(svg) {
