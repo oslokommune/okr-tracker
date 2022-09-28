@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { focusable } from 'tabbable';
 import * as focusTrap from 'focus-trap';
 
 export default {
@@ -63,9 +64,7 @@ export default {
     },
     setInitialFocus() {
       const focusableElement =
-        this.$refs.modalContent.querySelectorAll(
-          'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        )[0] || this.$refs.closeButton;
+        focusable(this.$refs.modalContent)[0] || this.$refs.closeButton;
       focusableElement.focus();
     },
   },
