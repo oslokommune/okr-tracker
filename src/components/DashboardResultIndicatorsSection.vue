@@ -2,6 +2,7 @@
   <div class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
       <tab-list
+        ref="tabList"
         aria-label="Velg resultatindikator"
         :tabs="
           resultIndicators.map((resultIndicator) => ({
@@ -73,17 +74,17 @@
 
 <script>
 import { mapState } from 'vuex';
-import { extent, max, min } from 'd3-array';
+import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
-import { saveSvgAsPng } from 'save-svg-as-png';
 
 import { db } from '@/config/firebaseConfig';
 import kpiTypes from '@/config/kpiTypes';
+import { periodDates } from '@/util';
 import downloadFile from '@/util/downloadFile';
+import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
-import { numberLocale } from '@/util';
 import i18n from '@/locale/i18n';
 import {
   APEN_BY_RESULT_INDICATORS,
@@ -170,7 +171,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis']),
+    ...mapState(['kpis', 'theme']),
     resultIndicatorTarget() {
       const resultIndicator = this.resultIndicators[this.activeTab];
       return KPI_TARGETS[resultIndicator.id];
@@ -357,26 +358,30 @@ export default {
     },
     download(value) {
       const filename = this.resultIndicators[this.activeTab].name;
-      const svgData = this.$refs.progressGraphSvg;
-
-      // Hide comment indicators from the graph before exporting
-      const commentIndicators = svgData.querySelectorAll('.indicators');
-      commentIndicators.forEach((el) => {
-        el.style.opacity = 0;
-      });
 
       if (value.downloadOption === 'png') {
-        const svgFrame = svgData.getBoundingClientRect();
-
-        const options = {
-          width: svgFrame.width + 50,
-          height: svgFrame.height,
-        };
-        saveSvgAsPng(svgData, `${filename}.png`, options).finally(() => {
-          commentIndicators.forEach((el) => {
-            el.style.opacity = 1;
-          });
+        const svgRef = this.$refs.progressGraphSvg;
+        const activeTabName = this.$refs.tabList.$el.querySelector(
+          `#resultIndicatorTabButton-${this.activeTab}`
+        )?.innerText;
+        const formattedPeriod = periodDates({
+          startDate: this.getStartDate(
+            this.currentResultIndicatorPeriod,
+            this.progressCollection
+          ),
+          endDate: this.getEndDate(
+            this.currentResultIndicatorPeriod,
+            this.progressCollection
+          ),
         });
+
+        downloadPng(
+          svgRef,
+          filename,
+          activeTabName,
+          formattedPeriod,
+          this.theme
+        );
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([

@@ -11,7 +11,12 @@ export const dateTimeLong = (d) => format(d, 'PPPp', o);
 
 export function periodDates({ startDate, endDate }, strategy = dateLong) {
   if (!startDate || !endDate) throw new Error('Invalid period object');
-  return [startDate.toDate(), endDate.toDate()].map(strategy).join(' – ');
+  return [
+    startDate instanceof Date ? startDate : startDate.toDate(),
+    endDate instanceof Date ? endDate : startDate.toDate(),
+  ]
+    .map(strategy)
+    .join(' – ');
 }
 
 export const parseDate = (d) => parseISO(d);
