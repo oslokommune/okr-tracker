@@ -30,7 +30,7 @@ export default {
   name: 'ItemAdminKPIs',
 
   components: {
-    AddKpiModal: () => import('@/components/AddKPIModal.vue'),
+    AddKpiModal: () => import('@/components/modals/AddKPIModal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     ItemAdminKPI: () => import('@/views/ItemAdmin/ItemAdminKPI.vue'),
   },
