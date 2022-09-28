@@ -2,6 +2,7 @@ import { select } from 'd3';
 import { saveSvgAsPng } from 'save-svg-as-png';
 
 const headingOffset = 60;
+const extraPaddingRight = 50;
 
 export default function downloadPng(svgRef, filename, title, period, theme) {
   const svg = select(svgRef);
@@ -44,7 +45,7 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
   const svgFrame = svgRef.getBoundingClientRect();
 
   const options = {
-    width: svgFrame.width + 50,
+    width: svgFrame.width + extraPaddingRight,
     height: svgFrame.height,
     backgroundColor: '#ffffff',
   };
