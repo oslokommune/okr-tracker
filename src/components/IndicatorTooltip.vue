@@ -40,7 +40,7 @@ export default {
     },
     kpi: {
       type: Object,
-      required: false,
+      required: true,
       default: null,
     },
     comment: {
