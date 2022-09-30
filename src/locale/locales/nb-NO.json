@@ -18,7 +18,6 @@
     "progress": "Progresjon",
     "description": "Beskrivelse",
     "display": "Visning",
-    "chooseType": "Velg KPI-type",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"
