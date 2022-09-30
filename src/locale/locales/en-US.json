@@ -55,7 +55,8 @@
     "date": "Date",
     "password": "Password",
     "secret": "API Secret",
-    "comment": "Comment"
+    "comment": "Comment",
+    "format": "Display"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
