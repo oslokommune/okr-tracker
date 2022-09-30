@@ -33,7 +33,7 @@
           class="item__kpi"
           :class="{ disabled: _formatKPIValue(kpi) === '–––' }"
         >
-          <i class="item__kpi-icon far fa-chart-bar" />
+          <i class="item__kpi-icon fa fa-chart-line" />
           <span class="item__kpi-value">{{ _formatKPIValue(kpi) }}</span>
         </div>
       </div>
