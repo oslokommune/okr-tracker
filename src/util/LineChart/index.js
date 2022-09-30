@@ -5,7 +5,7 @@ import { line, area, symbol, symbolCircle } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import 'd3-transition';
 
-import kpiTypes from '@/config/kpiTypes';
+import { formatKPIValue } from '@/util/kpiHelpers';
 import {
   addValueTooltips,
   initSvg,
@@ -19,13 +19,6 @@ import {
 
 const INDICATOR_SIZE_DEFAULT = 50;
 const INDICATOR_SIZE_COMMENT = 450;
-
-function formatValue (value, kpi, options) {
-  if (kpi && kpi.type) {
-    return kpiTypes[kpi.type].formatValue(value, options);
-  }
-  return value;
-}
 
 export default class LineChart {
   constructor(svgElement, { height, theme, tooltips } = {}) {
@@ -115,7 +108,7 @@ export default class LineChart {
       .transition()
       .call(
         axisLeft(this.y).tickFormat((d) =>
-          formatValue(d, kpi, { compact: true })
+          formatKPIValue(kpi, d, { compact: true })
         )
       )
       .call(styleAxis);
@@ -130,7 +123,7 @@ export default class LineChart {
     const firstValue = {
       timestamp: startDate,
       value: +startValue,
-      type: kpi?.type,
+      kpi,
       startValue: +startValue,
     };
 
@@ -139,7 +132,7 @@ export default class LineChart {
         timestamp: d.timestamp.toDate(),
         value: +d.value,
         comment: d?.comment,
-        type: kpi?.type,
+        kpi,
         startValue: +startValue,
       }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
@@ -151,7 +144,7 @@ export default class LineChart {
     const todayValue = {
       timestamp: new Date(),
       value: lastValue,
-      type: kpi?.type,
+      kpi,
       startValue: +startValue,
     };
 

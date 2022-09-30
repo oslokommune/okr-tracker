@@ -137,7 +137,7 @@ export function addValueTooltips(el) {
         propsData: {
           timestamp: data.timestamp,
           value: data.value,
-          type: data?.type,
+          kpi: data.kpi,
           comment: data?.comment,
         },
       }).$mount().$el.outerHTML;

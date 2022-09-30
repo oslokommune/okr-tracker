@@ -17,7 +17,7 @@
 
 <script>
 import { dateShort } from '@/util';
-import kpiTypes from '@/config/kpiTypes';
+import { formatKPIValue } from '@/util/kpiHelpers';
 import IconCalendar from './IconCalendar.vue';
 import IconComment from './IconComment.vue';
 import IconGraph from './IconGraph.vue';
@@ -38,9 +38,9 @@ export default {
       type: Number,
       required: true,
     },
-    type: {
-      type: String,
-      required: false,
+    kpi: {
+      type: Object,
+      required: true,
       default: null,
     },
     comment: {
@@ -54,10 +54,7 @@ export default {
       return dateShort(this.timestamp);
     },
     formattedValue() {
-      if (this.type) {
-        return kpiTypes[this.type].formatValue(this.value, { compact: false });
-      }
-      return this.value;
+      return formatKPIValue(this.kpi, this.value, { compact: false })
     },
   },
 };

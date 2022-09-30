@@ -6,26 +6,6 @@
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="addKpi" @submit.prevent="handleSubmit(add)">
-        <validation-provider v-slot="{ errors }" rules="required" name="kpitype">
-          <label class="form-group">
-            <span class="form-label form-label--hasPrimaryBackground">
-              {{ $t('kpi.chooseType') }}
-            </span>
-            <select v-model="type" class="form__field">
-              <option
-                v-for="{ id, label } in availableTypes"
-                :key="id"
-                :value="id"
-              >
-                {{ label }}
-              </option>
-            </select>
-            <span v-if="errors[0]" class="form-field--error">
-              {{ errors[0] }}
-            </span>
-          </label>
-        </validation-provider>
-
         <form-component
           v-model="kpi.name"
           input-type="input"
@@ -46,6 +26,23 @@
             rows="4"
           />
         </label>
+
+        <validation-provider v-slot="{ errors }" rules="required" name="format">
+          <label class="form-group">
+            <span class="form-label form-label--hasPrimaryBackground">
+              {{ $t('kpi.display') }}
+            </span>
+            <select v-model="kpi.format" class="form__field">
+              <option
+                v-for="{ id, label } in formats" :key="id" :value="id">
+                {{ label }}
+              </option>
+            </select>
+            <span v-if="errors[0]" class="form-field--error">
+              {{ errors[0] }}
+            </span>
+          </label>
+        </validation-provider>
 
         <div class="toggle__container">
           <span class="toggle__label">
@@ -143,6 +140,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { kpiFormats } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import ModalWrapper from './ModalWrapper.vue';
 
@@ -156,10 +154,11 @@ export default {
   data: () => ({
     value: 0,
     loading: false,
-    type: null,
+    formats: kpiFormats(),
     kpi: {
       name: '',
       description: '',
+      format: null,
       sheetId: '',
       sheetName: 'Sheet1',
       sheetCell: 'A1',
@@ -176,20 +175,6 @@ export default {
         this.$t('sheet.missingServiceAccount')
       );
     },
-
-    types() {
-      return [
-        { id: 'users', label: this.$t('kpi.types.users') },
-        { id: 'satisfaction', label: this.$t('kpi.types.satisfaction') },
-        { id: 'conversion', label: this.$t('kpi.types.conversion') },
-      ];
-    },
-
-    availableTypes() {
-      return this.types.filter(
-        (type) => !this.kpis.map((kpi) => kpi.type).includes(type.id)
-      );
-    },
   },
 
   methods: {
@@ -200,7 +185,7 @@ export default {
     async add() {
       this.loading = true;
 
-      const data = { ...this.kpi, type: this.type, parent: this.activeItemRef };
+      const data = { ...this.kpi, parent: this.activeItemRef };
 
       try {
         await Kpi.create(data);

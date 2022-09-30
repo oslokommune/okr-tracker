@@ -17,11 +17,10 @@
     "currentValue": "Current value",
     "progress": "Progress",
     "description": "Description",
-    "chooseType": "Select KPI type",
-    "types": {
-      "users": "Volume",
-      "satisfaction": "Satisfaction rate",
-      "conversion": "Conversion rate"
+    "display": "Display",
+    "formats": {
+      "integer": "Integer",
+      "percentage": "Percentage"
     },
     "heading": "KPIs",
     "sheetsDetails": "Sheets details",
@@ -56,7 +55,8 @@
     "date": "Date",
     "password": "Password",
     "secret": "API Secret",
-    "comment": "Comment"
+    "comment": "Comment",
+    "format": "Display"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",

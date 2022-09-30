@@ -17,11 +17,10 @@
     "currentValue": "Nåværende verdi",
     "progress": "Progresjon",
     "description": "Beskrivelse",
-    "chooseType": "Velg KPI-type",
-    "types": {
-      "users": "Volum",
-      "satisfaction": "Brukertilfredshet",
-      "conversion": "Fullføringsgrad"
+    "display": "Visning",
+    "formats": {
+      "integer": "Heltall",
+      "percentage": "Prosent"
     },
     "heading": "KPI-er",
     "sheetsDetails": "Sheets-detaljer",

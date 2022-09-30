@@ -27,14 +27,14 @@
 
       <div class="item__kpis">
         <div
-          v-for="(kpi, id) in kpiTypes"
-          :key="id"
-          v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
+          v-for="kpi in kpis"
+          :key="kpi.id"
+          v-tooltip="kpi.name"
           class="item__kpi"
-          :class="{ disabled: getKpiValue(id) === '–––' }"
+          :class="{ disabled: _formatKPIValue(kpi) === '–––' }"
         >
-          <i class="item__kpi-icon far" :class="kpi.icon" />
-          <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
+          <i class="item__kpi-icon fa fa-chart-line" />
+          <span class="item__kpi-value">{{ _formatKPIValue(kpi) }}</span>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import kpiTypes from '@/config/kpiTypes';
+import { formatKPIValue } from '@/util/kpiHelpers';
 
 export default {
   name: 'ItemRow',
@@ -76,7 +76,6 @@ export default {
   data: () => ({
     progression: 0,
     kpis: [],
-    kpiTypes,
   }),
 
   computed: {
@@ -123,23 +122,10 @@ export default {
   },
 
   methods: {
-    getKpiValue(type) {
-      try {
-        const value = this.kpis.find((obj) => obj.type === type).currentValue;
-        return kpiTypes[type].formatValue(value, {
-          compact: true,
-        });
-      } catch {
-        return '–––';
-      }
-    },
-
-    getKpiName(type) {
-      try {
-        return this.kpis.find((obj) => obj.type === type).name;
-      } catch {
-        return '';
-      }
+    _formatKPIValue(kpi) {
+      return formatKPIValue(kpi, kpi.currentValue, {
+        compact: true
+      })
     },
   },
 };
