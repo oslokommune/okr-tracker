@@ -22,6 +22,20 @@
       "integer": "Heltall",
       "percentage": "Prosent"
     },
+    "types": {
+      "plain": {
+        "label": "KPI",
+        "description": "KPI-er er måletall som teamet eller produktområdet ønsker å følge med på. KPI-er vises øverst på team- eller produktområdesiden de hører til."
+      },
+      "keyFigure": {
+        "label": "KPI med rapportering",
+        "description": "Er KPI-en er så viktig at den skal vises på dashbordet til produktområdet for rapportering?"
+      },
+      "resultIndicator": {
+        "label": "Resultatindikator",
+        "description": "Er KPI-en så viktig at den er definert som produktområdets resultatindikator og har et måltall? Resultatindikatoren vises også i dashbordet."
+      }
+    },
     "heading": "KPI-er",
     "sheetsDetails": "Sheets-detaljer",
     "itemRowError": "feil",
@@ -46,7 +60,7 @@
     "description": "Beskrivelse",
     "slug": "Slug",
     "department": "Produktområde",
-    "kpitype": "KPI-type",
+    "kpitype": "Type",
     "unit": "Måleenhet",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",

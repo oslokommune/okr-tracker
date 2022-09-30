@@ -14,6 +14,7 @@
 @use 'alerts';
 @use 'vSelect';
 @use 'ods/ods-forms';
+@use 'ods/ods-hr';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);

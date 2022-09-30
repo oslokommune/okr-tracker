@@ -18,6 +18,29 @@ export function kpiFormats () {
 };
 
 /**
+ * Return a list of available KPI types.
+ */
+export function kpiTypes () {
+  return [
+    {
+      id: 'plain',
+      label: i18n.t('kpi.types.plain.label'),
+      description: i18n.t('kpi.types.plain.description'),
+    },
+    {
+      id: 'keyfig',
+      label: i18n.t('kpi.types.keyFigure.label'),
+      description: i18n.t('kpi.types.keyFigure.description'),
+    },
+    {
+      id: 'ri',
+      label: i18n.t('kpi.types.resultIndicator.label'),
+      description: i18n.t('kpi.types.resultIndicator.description'),
+    },
+  ];
+};
+
+/**
  * Return a value formatter function.
  *
  * `defaultSpecifier` is the format specifier to use in normal cases, while

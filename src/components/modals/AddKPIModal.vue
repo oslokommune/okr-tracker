@@ -44,6 +44,32 @@
           </label>
         </validation-provider>
 
+        <hr class="ods-hr" />
+
+        <validation-provider v-slot="{ errors }" rules="required" name="kpiType">
+          <div class="form-group">
+            <span class="form-label form-help--hasPrimaryBackground">
+              {{ $t('fields.kpitype') }}
+            </span>
+            <span v-if="errors[0]" class="form-field--error">
+              {{ errors[0] }}
+            </span>
+            <div v-for="{ id, label, description } in types" :key="id"
+                 class="ods-form-group descriptive-radio">
+              <input type="radio" :id="id + _uid" class="ods-form-radio"
+                     name="radio-group" v-model="kpi.kpiType" :value="id" />
+              <label class="ods-form-label form-help--hasPrimaryBackground" :for="id + _uid">
+                <span class="title">{{ label }}</span>
+              </label>
+              <label class="description form-help--hasPrimaryBackground" :for="id + _uid">
+                {{ description }}
+              </label>
+            </div>
+          </div>
+        </validation-provider>
+
+        <hr class="ods-hr" />
+
         <div class="toggle__container">
           <span class="toggle__label">
             {{ $t('kpi.api.radio') }}
@@ -140,7 +166,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { kpiFormats } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import ModalWrapper from './ModalWrapper.vue';
 
@@ -155,6 +181,7 @@ export default {
     value: 0,
     loading: false,
     formats: kpiFormats(),
+    types: kpiTypes(),
     kpi: {
       name: '',
       description: '',
