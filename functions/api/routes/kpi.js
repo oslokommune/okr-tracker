@@ -5,7 +5,10 @@ import getUserDisplayName from '../helpers.js';
 
 const { body, param, matchedData } = validator;
 const router = express.Router();
-const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
+const validate = [
+  body('progress').isFloat().escape(),
+  param('id').trim().escape(),
+];
 
 router.post('/:id', ...validate, async (req, res) => {
   const sanitized = matchedData(req);
@@ -56,8 +59,14 @@ router.post('/:id', ...validate, async (req, res) => {
       return;
     }
 
-    await ref.collection('progress').add({ value: Number.parseFloat(progress), timestamp: new Date() });
-    await ref.update({ error: FieldValue.delete(), currentValue: progress, valid: true });
+    await ref
+      .collection('progress')
+      .add({ value: Number.parseFloat(progress), timestamp: new Date() });
+    await ref.update({
+      error: FieldValue.delete(),
+      currentValue: progress,
+      valid: true,
+    });
 
     res.send(`Updated KPI (${id}) with progress: ${progress}`);
   } catch (e) {
