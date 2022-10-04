@@ -154,12 +154,6 @@ export default {
     },
   },
 
-  created() {
-    if (this.filteredPeriods.length > 0) {
-      this.set_active_period_and_data(this.filteredPeriods[0].id);
-    }
-  },
-
   methods: {
     ...mapActions(['set_active_period_and_data', 'setDataLoading']),
 
