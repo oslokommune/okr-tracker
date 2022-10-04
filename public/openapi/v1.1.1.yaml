@@ -226,6 +226,8 @@ definitions:
         date:
           type: string
           format: date
+        comment:
+          type: string
         created:
           type: string
           format: date-time

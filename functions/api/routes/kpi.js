@@ -147,14 +147,22 @@ router.get('/:id/progress', param('id').trim().escape(), async (req, res) => {
       const progressValues = {};
 
       for await (const record of progressSnapshot.docs) {
-        const { value, timestamp, created, createdBy, edited, editedBy } =
-          record.data();
+        const {
+          value,
+          timestamp,
+          comment,
+          created,
+          createdBy,
+          edited,
+          editedBy,
+        } = record.data();
         const date = timestamp.toDate().toISOString().slice(0, 10);
 
         if (!(date in progressValues)) {
           progressValues[date] = {
             value,
             date,
+            comment: comment || null,
             created: created ? created.toDate() : null,
             createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
             edited: edited ? edited.toDate() : null,
