@@ -1,6 +1,7 @@
 import express from 'express';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import validator from 'express-validator';
+import getUserDisplayName from '../helpers.js';
 
 const { body, param, matchedData } = validator;
 const router = express.Router();
@@ -82,22 +83,8 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
       return;
     }
 
-    const data = kpi.data();
-    const { created, createdBy, currentValue, edited, editedBy, name, type } = data;
-
-    // Some objects are not correct - createdBy is not a reference but only a normal String - check for both
-    let createdByData;
-    if (typeof createdBy.get === 'function') {
-      createdByData = await createdBy
-        .get()
-        .then((snapshot) => snapshot.data())
-        .then((d) => d.displayName);
-    } else {
-      // eslint-disable-next-line prefer-destructuring
-      createdByData = createdBy.split('users/')[1];
-    }
-
-    const editedByData = await editedBy.get().then((snapshot) => snapshot.data());
+    const { created, createdBy, currentValue, edited, editedBy, name, type } =
+      kpi.data();
 
     const progress = await ref
       .collection('progress')
@@ -108,12 +95,12 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
 
     const returnData = {
       currentValue,
-      edited: edited.toDate(),
       name,
       type,
-      created: created.toDate(),
-      createdBy: createdByData,
-      editedBy: editedByData.displayName,
+      created: created ? created.toDate() : null,
+      createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
+      edited: edited ? edited.toDate() : null,
+      editedBy: (await getUserDisplayName(editedBy)) || null,
     };
 
     if (!progress) {
@@ -129,6 +116,58 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
           timestamp: progress.timestamp.toDate(),
         },
       });
+    }
+  } catch (e) {
+    console.error('ERROR: ', e.message);
+    res.status(500).send(`Cannot get KPI by ID: (${id}}`);
+  }
+});
+
+router.get('/:id/progress', param('id').trim().escape(), async (req, res) => {
+  const { id } = matchedData(req);
+
+  const db = getFirestore();
+
+  try {
+    const kpi = await db.collection('kpis').doc(id).get();
+
+    const { exists, ref } = kpi;
+
+    if (!exists) {
+      res.status(404).send(`Could not find KPI with ID: ${id}`);
+      return;
+    }
+
+    try {
+      const progressSnapshot = await ref
+        .collection('progress')
+        .orderBy('timestamp', 'desc')
+        .get();
+
+      const progressValues = {};
+
+      for await (const record of progressSnapshot.docs) {
+        const { value, timestamp, created, createdBy, edited, editedBy } =
+          record.data();
+        const date = timestamp.toDate().toISOString().slice(0, 10);
+
+        if (!(date in progressValues)) {
+          progressValues[date] = {
+            value,
+            date,
+            created: created ? created.toDate() : null,
+            createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
+            edited: edited ? edited.toDate() : null,
+            editedBy: editedBy ? await getUserDisplayName(editedBy) : null,
+          };
+        }
+      }
+
+      res.json(Object.values(progressValues));
+    } catch (e) {
+      res
+        .status(500)
+        .send(`Could not get progress data for KPI with ID: (${id}}`);
     }
   } catch (e) {
     console.error('ERROR: ', e.message);
