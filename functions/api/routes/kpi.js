@@ -109,7 +109,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
       created: created ? created.toDate() : null,
       createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
       edited: edited ? edited.toDate() : null,
-      editedBy: (await getUserDisplayName(editedBy)) || null,
+      editedBy: editedBy ? await getUserDisplayName(editedBy) : null,
     };
 
     if (!progress) {
@@ -128,7 +128,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     }
   } catch (e) {
     console.error('ERROR: ', e.message);
-    res.status(500).send(`Cannot get KPI by ID: (${id}}`);
+    res.status(500).send(`Cannot get KPI by ID: (${id})`);
   }
 });
 
