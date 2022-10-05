@@ -132,7 +132,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
   }
 });
 
-router.get('/:id/progress', param('id').trim().escape(), async (req, res) => {
+router.get('/:id/values', param('id').trim().escape(), async (req, res) => {
   const { id } = matchedData(req);
 
   const db = getFirestore();
@@ -186,7 +186,7 @@ router.get('/:id/progress', param('id').trim().escape(), async (req, res) => {
     } catch (e) {
       res
         .status(500)
-        .send(`Could not get progress data for KPI with ID: (${id}}`);
+        .send(`Could not get progression data for KPI with ID: (${id}}`);
     }
   } catch (e) {
     console.error('ERROR: ', e.message);

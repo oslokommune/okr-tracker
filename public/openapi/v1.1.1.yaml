@@ -77,10 +77,10 @@ paths:
           $ref: '#/responses/NotFound'
         500:
           $ref: '#/responses/Unavailable'
-  /kpi/{id}/progress:
+  /kpi/{id}/values:
     get:
-      summary: Get KPI progression.
-      operationId: getKPIProgress
+      summary: Get KPI progression history.
+      operationId: getKPIHistory
       parameters:
         - name: id
           in: path
@@ -91,7 +91,9 @@ paths:
         200:
           description: A successful response
           schema:
-            $ref: '#/definitions/KpiProgress'
+            type: array
+            items:
+              $ref: '#/definitions/KpiMeasurement'
         404:
           $ref: '#/responses/NotFound'
         500:
@@ -216,28 +218,26 @@ definitions:
           timestamp:
             type: string
             format: date-time
-  KpiProgress:
-    type: array
-    items:
-      type: object
-      properties:
-        value:
-          type: number
-        date:
-          type: string
-          format: date
-        comment:
-          type: string
-        created:
-          type: string
-          format: date-time
-        createdBy:
-          type: string
-        edited:
-          type: string
-          format: date-time
-        editedBy:
-          type: string
+  KpiMeasurement:
+    type: object
+    properties:
+      value:
+        type: number
+      date:
+        type: string
+        format: date
+      comment:
+        type: string
+      created:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+      edited:
+        type: string
+        format: date-time
+      editedBy:
+        type: string
 
 responses:
   NotFound:
