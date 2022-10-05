@@ -342,11 +342,16 @@ export default {
 
       if (this.progressCollection.length === 0) return;
 
+      const kpis = [
+        ...this.kpis,
+        ...(this.isPOCDepartment ? APEN_BY_RESULT_INDICATORS : []),
+      ];
+
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.progressCollection,
-        kpi: this.kpis[this.activeTab],
+        kpi: kpis[this.activeTab],
         theme: this.theme,
       });
     },
