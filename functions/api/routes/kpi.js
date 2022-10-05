@@ -165,6 +165,8 @@ router.get('/:id/progress', param('id').trim().escape(), async (req, res) => {
           edited,
           editedBy,
         } = record.data();
+
+        // Keep only the last registered record for each day.
         const date = timestamp.toDate().toISOString().slice(0, 10);
 
         if (!(date in progressValues)) {

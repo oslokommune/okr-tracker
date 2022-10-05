@@ -1,11 +1,11 @@
-# openapi-definition.yaml
 swagger: "2.0"
+
 info:
-  title: OKR-tracker API
-  description: Serverless APIs with API Gateway
+  title: OKR Tracker API
+  description: API for updating KPIs and key results.
   version: 1.1.0
   contact:
-    name: Visualiseringsteamet
+    name: Dataspeilet
     url: https://okr.oslo.systems
     email: annemerete.pettersen@origo.oslo.kommune.no
   license:
@@ -79,7 +79,7 @@ paths:
           $ref: '#/responses/Unavailable'
   /kpi/{id}/progress:
     get:
-      summary: Get KPI progress.
+      summary: Get KPI progression.
       operationId: getKPIProgress
       parameters:
         - name: id
@@ -118,7 +118,7 @@ paths:
         500:
           $ref: '#/responses/Unavailable'
     post:
-      summary: Post Key result progression.
+      summary: Post key result progression.
       operationId: postKeyRes
       security:
         - api_key: []

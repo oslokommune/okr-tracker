@@ -1,8 +1,11 @@
+import { getFirestore } from 'firebase-admin/firestore';
+import validator from 'express-validator';
+
 /**
- * Return a users display name. If the referenced Firestore reference
+ * Return a user's display name. If the referenced Firestore reference
  * does not exist, attempt to extract reference suffix (email).
  *
- * `userRef` is the the firestore reference to resolve.
+ * `userRef` is the Firestore reference to resolve.
  */
 async function getUserDisplayName(userRef) {
   if (typeof userRef.get === 'function') {
