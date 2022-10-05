@@ -55,12 +55,12 @@
             </span>
             <div v-for="{ id, label, description } in types" :key="id"
                  class="ods-form-group descriptive-radio">
-              <input type="radio" :id="id + _uid" class="ods-form-radio"
+              <input type="radio" :id="localKpi.id + '-' + id" class="ods-form-radio"
                      name="radio-group" v-model="localKpi.kpiType" :value="id" />
-              <label class="ods-form-label" :for="id + _uid">
+              <label class="ods-form-label" :for="localKpi.id + '-' + id">
                 <span class="title">{{ label }}</span>
               </label>
-              <label class="description" :for="id + _uid">
+              <label class="description" :for="localKpi.id + '-' + id">
                 {{ description }}
               </label>
             </div>

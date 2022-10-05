@@ -56,12 +56,12 @@
             </span>
             <div v-for="{ id, label, description } in types" :key="id"
                  class="ods-form-group descriptive-radio">
-              <input type="radio" :id="id + _uid" class="ods-form-radio"
+              <input type="radio" :id="'kpi-type-' + id" class="ods-form-radio"
                      name="radio-group" v-model="kpi.kpiType" :value="id" />
-              <label class="ods-form-label form-help--hasPrimaryBackground" :for="id + _uid">
+              <label class="ods-form-label form-help--hasPrimaryBackground" :for="'kpi-type-' + id">
                 <span class="title">{{ label }}</span>
               </label>
-              <label class="description form-help--hasPrimaryBackground" :for="id + _uid">
+              <label class="description form-help--hasPrimaryBackground" :for="'kpi-type-' + id">
                 {{ description }}
               </label>
             </div>
