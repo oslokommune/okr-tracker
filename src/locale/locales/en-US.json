@@ -22,6 +22,20 @@
       "integer": "Integer",
       "percentage": "Percentage"
     },
+    "types": {
+      "plain": {
+        "label": "KPI",
+        "description": "KPIs are measurements that the team or department whishes to keep an eye on. KPIs are displayed on the top of the team or department page they belong to."
+      },
+      "keyFigure": {
+        "label": "KPI with reporting",
+        "description": "Is the KPI so important that it should be shown on the department's dashboard for reporting?"
+      },
+      "resultIndicator": {
+        "label": "Result indicator",
+        "description": "Is the KPI so important that it is defined as a result indicator for the department and has a target figure? The result indicator is also shown on the dashboard."
+      }
+    },
     "heading": "KPIs",
     "sheetsDetails": "Sheets details",
     "itemRowError": "error",
@@ -46,7 +60,7 @@
     "description": "Description",
     "slug": "Slug",
     "department": "Department",
-    "kpitype": "KPI type",
+    "kpitype": "Type",
     "unit": "Unit of measurement",
     "startValue": "Start value",
     "targetValue": "Target value",
@@ -120,7 +134,6 @@
     "keyResult": "Key result",
     "period": "Period",
     "back": "back",
-
     "frontPage": "Front page",
     "signIn": "Please sign in",
     "orgs": "Organizations",

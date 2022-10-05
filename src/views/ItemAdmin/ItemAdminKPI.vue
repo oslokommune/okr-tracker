@@ -45,6 +45,30 @@
           </label>
         </validation-provider>
 
+        <hr class="ods-hr" />
+
+        <validation-provider v-slot="{ errors }" rules="required" name="kpiType">
+          <div class="form-group">
+            <span class="form-label">{{ $t('fields.kpitype') }}</span>
+            <span v-if="errors[0]" class="form-field--error">
+              {{ errors[0] }}
+            </span>
+            <div v-for="{ id, label, description } in types" :key="id"
+                 class="ods-form-group descriptive-radio">
+              <input type="radio" :id="localKpi.id + '-' + id" class="ods-form-radio"
+                     name="radio-group" v-model="localKpi.kpiType" :value="id" />
+              <label class="ods-form-label" :for="localKpi.id + '-' + id">
+                <span class="title">{{ label }}</span>
+              </label>
+              <label class="description" :for="localKpi.id + '-' + id">
+                {{ description }}
+              </label>
+            </div>
+          </div>
+        </validation-provider>
+
+        <hr class="ods-hr" />
+
         <div class="toggle__container">
           <span class="toggle__label">
             {{ $t('kpi.api.radio') }}
@@ -130,7 +154,7 @@
 <script>
 import { mapState } from 'vuex';
 import IconArrowCircle from '@/assets/IconArrowCircle.vue';
-import { kpiFormats } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 
 export default {
@@ -151,6 +175,7 @@ export default {
     showAddKPIModal: false,
     localKpi: null,
     formats: kpiFormats(),
+    types: kpiTypes(),
   }),
 
   computed: {

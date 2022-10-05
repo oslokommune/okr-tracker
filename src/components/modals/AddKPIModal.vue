@@ -20,11 +20,7 @@
           <span class="form-label form-label--hasPrimaryBackground">
             {{ $t('kpi.description') }}
           </span>
-          <textarea
-            v-model="kpi.description"
-            class="form__field"
-            rows="4"
-          />
+          <textarea v-model="kpi.description" class="form__field" rows="4" />
         </label>
 
         <validation-provider v-slot="{ errors }" rules="required" name="format">
@@ -33,8 +29,7 @@
               {{ $t('kpi.display') }}
             </span>
             <select v-model="kpi.format" class="form__field">
-              <option
-                v-for="{ id, label } in formats" :key="id" :value="id">
+              <option v-for="{ id, label } in formats" :key="id" :value="id">
                 {{ label }}
               </option>
             </select>
@@ -43,6 +38,51 @@
             </span>
           </label>
         </validation-provider>
+
+        <hr class="ods-hr" />
+
+        <validation-provider
+          v-slot="{ errors }"
+          rules="required"
+          name="kpiType"
+        >
+          <div class="form-group">
+            <span class="form-label form-help--hasPrimaryBackground">
+              {{ $t('fields.kpitype') }}
+            </span>
+            <span v-if="errors[0]" class="form-field--error">
+              {{ errors[0] }}
+            </span>
+            <div
+              v-for="{ id, label, description } in types"
+              :key="id"
+              class="ods-form-group descriptive-radio"
+            >
+              <input
+                :id="'kpi-type-' + id"
+                v-model="kpi.kpiType"
+                :value="id"
+                type="radio"
+                class="ods-form-radio"
+                name="radio-group"
+              />
+              <label
+                class="ods-form-label form-help--hasPrimaryBackground"
+                :for="'kpi-type-' + id"
+              >
+                <span class="title">{{ label }}</span>
+              </label>
+              <label
+                class="description form-help--hasPrimaryBackground"
+                :for="'kpi-type-' + id"
+              >
+                {{ description }}
+              </label>
+            </div>
+          </div>
+        </validation-provider>
+
+        <hr class="ods-hr" />
 
         <div class="toggle__container">
           <span class="toggle__label">
@@ -53,11 +93,7 @@
             />
           </span>
           <label class="toggle">
-            <input
-              v-model="kpi.api"
-              class="toggle__input"
-              type="checkbox"
-            />
+            <input v-model="kpi.api" class="toggle__input" type="checkbox" />
             <span class="toggle__switch"></span>
           </label>
         </div>
@@ -140,7 +176,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { kpiFormats } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import ModalWrapper from './ModalWrapper.vue';
 
@@ -155,10 +191,12 @@ export default {
     value: 0,
     loading: false,
     formats: kpiFormats(),
+    types: kpiTypes(),
     kpi: {
       name: '',
       description: '',
       format: null,
+      kpiType: null,
       sheetId: '',
       sheetName: 'Sheet1',
       sheetCell: 'A1',

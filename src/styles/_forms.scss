@@ -189,3 +189,17 @@ textarea {
   margin-bottom: 1rem;
   color: var(--color-text);
 }
+
+.descriptive-radio {
+  margin: 1.5rem 0;
+
+  .title {
+    margin-left: 0.25rem;
+    font-weight: 500;
+  }
+
+  .description {
+    display: block;
+    margin-top: 0.25rem;
+  }
+}
