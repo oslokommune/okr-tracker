@@ -106,7 +106,7 @@ export default {
     Widget: () => import('../WidgetWrapper.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     RoleMembers: () => import('@/components/widgets/WidgetTeam/RoleMembers.vue'),
-    ProfileModal: () => import('@/components/ProfileModal.vue'),
+    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
   },
 
   data: () => ({

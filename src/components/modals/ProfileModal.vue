@@ -1,16 +1,20 @@
 <template>
-  <div v-if="user" class="overlay" @click.self="close">
-    <div class="modal__main--flex profileModal__centered">
+  <modal-wrapper v-if="user" @close="close">
+    <form id="updateUser" class="modal__main--flex">
       <div class="column">
-        <h2 class="title-2">{{ $t('user.profile') }}</h2>
+        <h2 class="title-2">
+          {{ $t('user.profile') }}
+        </h2>
         <validation-observer v-slot="{ handleSubmit }">
-          <form id="updateUser" @submit.prevent="handleSubmit(save)">
-            <span class="profileModal__label">{{ $t('fields.name') }}</span>
-            <input v-model="thisUser.displayName" rules="required" :disabled="!me" class="form__field" />
-          </form>
+          <span class="form-label">{{ $t('fields.name') }}</span>
+          <input
+            v-model="thisUser.displayName"
+            rules="required"
+            :disabled="!me"
+          />
         </validation-observer>
         <label class="form-group">
-          <span class="profileModal__label">{{ $t('user.position.title') }}</span>
+          <span class="form-label">{{ $t('user.position.title') }}</span>
           <v-select
             v-if="me || $store.state.user.superAdmin"
             v-model="thisUser.position"
@@ -18,16 +22,20 @@
             :get-option-label="(option) => $t(`user.position.${option}`)"
           >
           </v-select>
-          <div v-else class="profileModal__input">
+          <div v-else>
             <span>
-              {{ thisUser && thisUser.position ? thisUser.position : $t('user.position.member') }}
+              {{
+                thisUser && thisUser.position
+                  ? thisUser.position
+                  : $t('user.position.member')
+              }}
             </span>
           </div>
         </label>
 
         <button
           v-if="me || $store.state.user.superAdmin"
-          class="btn btn--sec profileModal__save-button"
+          class="btn btn--pri profileModal__save-button"
           form="updateUser"
           :disabled="loading"
         >
@@ -48,17 +56,22 @@
           </li>
         </ul>
       </div>
-    </div>
-  </div>
+    </form>
+  </modal-wrapper>
 </template>
 <script>
 import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
+import ModalWrapper from './ModalWrapper.vue';
 
 export default {
   name: 'ProfileModal',
+
+  components: {
+    ModalWrapper,
+  },
 
   props: {
     myProfile: {
@@ -156,85 +169,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
-.profileModal__centered {
-  position: fixed;
-  horiz-align: center;
-  vertical-align: center;
-}
-
-.profileModal__label {
-  display: inline-block;
-  margin: 0.8rem 0 0.5rem 0;
-  color: var(--color-grey-300);
-  font-weight: 500;
-  font-size: typography.$font-size-2;
-  letter-spacing: -0.03rem;
-}
-
-.profileModal__input {
-  width: 100%;
-  padding: 0.7rem;
-  background: var(--color-grey-50);
-  border-radius: 0;
-}
-
 .profileModal__info {
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
 }
 
 .modal__main--flex {
-  z-index: 100;
   display: flex;
   flex-basis: 100%;
   flex-direction: column;
-  width: 100%;
-  max-width: 600px;
-  max-height: calc(100vh - 10px);
-  padding: 3rem 0 3rem 3rem;
-  overflow: auto;
-  color: var(--color-text);
-  background: white;
-  border-radius: 1px;
-  box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
 
   @media screen and (min-width: bp(s)) {
     flex-direction: row;
-  }
-
-  scrollbar-width: none; /* Hide scrollbar styles Firefox */
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    display: none;
   }
 }
 
 .column {
   display: flex;
+  flex: 1 1 50%;
   flex-direction: column;
-  flex-grow: 2;
-  min-width: 50%;
-  padding: 0 3rem 0 0;
+
+  @media screen and (min-width: bp(s)) {
+    padding-left: 3rem;
+  }
+
+  &:first-of-type {
+    margin-left: 1rem;
+    padding-left: 0;
+  }
+
+  > .title-2 {
+    margin-bottom: 1rem;
+  }
 }
 
 .profileModal__save-button {
   align-self: end;
   margin-top: 1rem;
-}
-
-.product {
-  margin-bottom: 1rem;
-  padding: 0.75rem 0.75rem 0.6rem 0.75rem;
-  color: var(--color-text);
-  font-weight: 500;
-  border: 1px solid black;
-  border-radius: 0px;
-}
-
-.form-group {
-  margin: 0;
 }
 </style>

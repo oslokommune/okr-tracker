@@ -47,7 +47,7 @@
     </validation-observer>
 
     <template #footer>
-      <button form="progress-value" :disabled="loading" class="btn btn--ods">
+      <button form="progress-value" :disabled="loading" class="btn btn--pri">
         {{ $t('btn.saveChanges') }}
       </button>
     </template>
@@ -122,17 +122,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-::v-deep .form {
-  &-label {
-    color: var(--color-white);
-  }
-  &-field {
-    padding: 0;
-  }
-  &__field {
-    max-width: 100%;
-  }
-}
-</style>

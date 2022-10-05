@@ -141,7 +141,7 @@ export default {
 
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
-    ProfileModal: () => import('@/components/ProfileModal.vue'),
+    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
     ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
     UserLink,
     VPopover,
