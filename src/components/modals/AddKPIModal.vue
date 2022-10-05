@@ -186,6 +186,7 @@ export default {
       name: '',
       description: '',
       format: null,
+      kpiType: null,
       sheetId: '',
       sheetName: 'Sheet1',
       sheetCell: 'A1',
