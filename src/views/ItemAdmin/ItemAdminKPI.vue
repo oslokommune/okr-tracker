@@ -187,9 +187,6 @@ export default {
       immediate: true,
       handler() {
         this.localKpi = this.kpi;
-        if (!this.localKpi.kpiType) {
-          this.localKpi.kpiType = 'plain';
-        }
       },
     },
   },
