@@ -23,7 +23,7 @@
                 <template #icon>
                   <icon-two-people-dancing />
                 </template>
-                <HTML-output :html="activeItem.targetAudience" />
+                <HTML-output v-if="activeItem.targetAudience" :html="activeItem.targetAudience" />
               </dashboard-department-info-box>
             </div>
             <div class="dashboard__departmentInfoBoxes">
