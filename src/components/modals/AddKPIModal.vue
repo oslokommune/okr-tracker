@@ -248,4 +248,10 @@ export default {
 .btn--space {
   margin-left: 1rem;
 }
+
+/* XXX: Workaround to make the radio buttons visible until we get rid
+   of the blue background. */
+.ods-form-radio {
+  appearance: auto;
+}
 </style>
