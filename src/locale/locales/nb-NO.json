@@ -141,7 +141,7 @@
     "departmentObjectives": "Områdets mål",
     "departmentAbout": "Om produktområdet",
     "dashboardEntry": "Se dashboard",
-    "keyFigures": "Nøkkeltall"
+    "keyFigures": "KPI-er"
   },
   "btn": {
     "close": "Lukk",
@@ -543,6 +543,7 @@
     "targetAudience": "Målgruppe",
     "missionStatement": "Oppdrag",
     "effect": "Effekt",
+    "noRIs": "Området har ingen resultatindikatorer.",
     "downloadOptions": {
       "png": "Bilde (.png)",
       "csv": "Rådata (.csv)"

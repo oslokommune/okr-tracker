@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboardResultIndicatorsSection">
+  <div v-if="resultIndicators.length" class="dashboardResultIndicatorsSection">
     <div class="dashboardResultIndicatorsSection__header">
       <tab-list
         ref="tabList"
@@ -70,6 +70,9 @@
       </div>
     </tab-panel>
   </div>
+  <div v-else>
+    {{ $t('dashboard.noRIs') }}
+  </div>
 </template>
 
 <script>
@@ -86,10 +89,7 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
-import {
-  APEN_BY_RESULT_INDICATORS,
-  KPI_TARGETS,
-} from '@/views/Dashboard/data/staticData';
+import { KPI_TARGETS } from '@/views/Dashboard/data/staticData';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import IconDownload from './IconDownload.vue';
@@ -137,13 +137,6 @@ export default {
     DashboardPeriodSelector,
   },
 
-  props: {
-    isPOCDepartment: {
-      type: Boolean,
-      required: true,
-    },
-  },
-
   data: () => ({
     activeTab: 0,
     downloadOption: '',
@@ -172,9 +165,11 @@ export default {
 
   computed: {
     ...mapState(['kpis', 'theme']),
+    /*
+     * TODO: RI targets are still hard coded.
+     */
     resultIndicatorTarget() {
-      const resultIndicator = this.resultIndicators[this.activeTab];
-      return KPI_TARGETS[resultIndicator.id];
+      return KPI_TARGETS[this.getActiveRI().id];
     },
     tabIds() {
       return tabIdsHelper('resultIndicator');
@@ -219,10 +214,7 @@ export default {
     kpis: {
       immediate: true,
       async handler(kpis) {
-        this.resultIndicators = [
-          ...kpis,
-          ...(this.isPOCDepartment ? APEN_BY_RESULT_INDICATORS : []),
-        ];
+        this.resultIndicators = kpis.filter(kpi => kpi.kpiType === 'ri');
         this.getProgressData().then(this.renderGraph);
       },
     },
@@ -250,14 +242,11 @@ export default {
       this.activeTab = tabIndex;
     },
     async getLatestProgressRecord() {
-      if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
-        this.latestProgressRecord =
-          this.progressCollection[this.progressCollection.length - 1];
-      } else {
+      const ri = this.getActiveRI();
+
+      if (ri) {
         await db
-          .collection(
-            `kpis/${this.resultIndicators[this.activeTab].id}/progress`
-          )
+          .collection(`kpis/${ri.id}/progress`)
           .orderBy('timestamp', 'desc')
           .limit(1)
           .get()
@@ -269,13 +258,10 @@ export default {
       }
     },
     async getProgressData() {
-      if (this.isPOCDepartment && this.activeTab > this.kpis.length - 1) {
-        this.progressCollection =
-          this.resultIndicators[this.activeTab].progression;
-      } else {
-        let query = db.collection(
-          `kpis/${this.resultIndicators[this.activeTab].id}/progress`
-        )
+      const ri = this.getActiveRI();
+
+      if (ri) {
+        let query = db.collection(`kpis/${ri.id}/progress`);
 
         if (this.currentResultIndicatorPeriod.startDate) {
           query = query.where(
@@ -333,7 +319,7 @@ export default {
     },
 
     renderGraph() {
-      if (!this.graph) {
+      if (!this.graph && this.resultIndicators.length) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
           height: 350,
           tooltips: true,
@@ -342,27 +328,29 @@ export default {
 
       if (this.progressCollection.length === 0) return;
 
-      const kpis = [
-        ...this.kpis,
-        ...(this.isPOCDepartment ? APEN_BY_RESULT_INDICATORS : []),
-      ];
-
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.progressCollection,
-        kpi: kpis[this.activeTab],
+        kpi: this.kpis[this.activeTab],
         theme: this.theme,
       });
     },
+
+    getActiveRI () {
+      return this.resultIndicators.length
+        ? this.resultIndicators[this.activeTab]
+        : null;
+    },
+
     formatResultIndicatorValue(value) {
-      const resultIndicator = this.resultIndicators[this.activeTab];
+      const resultIndicator = this.getActiveRI();
       return resultIndicator && value
         ? formatKPIValue(resultIndicator, value)
         : null;
     },
     download(value) {
-      const filename = this.resultIndicators[this.activeTab].name;
+      const filename = this.getActiveRI().name;
 
       if (value.downloadOption === 'png') {
         const svgRef = this.$refs.progressGraphSvg;
@@ -461,15 +449,15 @@ export default {
     }
 
     .graphOptions {
-      margin-left: 1rem;
       display: flex;
       gap: 0.5rem;
       justify-content: space-between;
+      margin-left: 1rem;
     }
 
     .download {
-      height: 100%;
       min-width: 1rem;
+      height: 100%;
       margin-right: 0.5rem;
 
       &::v-deep .vs__dropdown-menu {
@@ -495,9 +483,9 @@ export default {
 .progressTarget {
   display: flex;
   gap: 2rem;
-  border-top: 1px solid var(--color-grey-100);
   margin-top: 0.5rem;
   padding: 1.5rem;
+  border-top: 1px solid var(--color-grey-100);
 
   > div {
     display: flex;
@@ -509,8 +497,8 @@ export default {
     font-size: 14px;
   }
   &__value {
-    font-weight: 500;
     color: var(--color-text);
+    font-weight: 500;
   }
 }
 </style>

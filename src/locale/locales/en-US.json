@@ -143,7 +143,7 @@
     "departmentObjectives": "Department objectives",
     "departmentAbout": "About",
     "dashboardEntry": "Go to dashboard",
-    "keyFigures": "Key figures"
+    "keyFigures": "KPIs"
   },
   "btn": {
     "close": "Close",
@@ -546,6 +546,7 @@
     "targetAudience": "Target audience",
     "missionStatement": "Mission",
     "effect": "Effect",
+    "noRIs": "The department doesn't have any result indicators.",
     "downloadOptions": {
       "png": "Image (.png)",
       "csv": "Raw data (.csv)"

@@ -30,8 +30,8 @@
               <h4 class="title-4">{{ $t('general.products') }}</h4>
               <dashboard-department-info-box
                 v-for="product in filteredProducts"
-                class="dashboard__departmentInfoBox"
                 :key="product.id"
+                class="dashboard__departmentInfoBox"
                 :icon="() => null"
                 :title="product.name"
               >
@@ -49,12 +49,10 @@
         </h2>
       </template>
       <template #content>
-        <dashboard-result-indicators-section
-          :isPOCDepartment="isPOCDepartment"
-        />
+        <dashboard-result-indicators-section />
       </template>
     </dashboard-section>
-    <dashboard-section v-if="isPOCDepartment">
+    <dashboard-section>
       <template #title>
         <h2 class="title-1">
           {{ $t('general.keyFigures') }}
@@ -67,7 +65,7 @@
             :key="keyFigure.id"
             class="dashboard__cardListItem dashboard__keyFigure"
           >
-            <key-figure :keyFigure="keyFigure" />
+            <key-figure :key-figure="keyFigure" />
           </li>
         </ul>
       </template>
@@ -107,7 +105,6 @@ import IconTwoPeopleDancing from '@/components/IconTwoPeopleDancing.vue';
 import KeyFigure from '@/components/KeyFigure.vue';
 
 import DashboardSection from './DashboardSection.vue';
-import { KEY_FIGURES, POC_DEPARTMENTS } from './data/staticData';
 
 export default {
   name: 'DashboardHome',
@@ -124,15 +121,17 @@ export default {
   },
 
   data: () => ({
-    isPOCDepartment: false,
     activeItemType: null,
     filteredProducts: [],
   }),
 
   computed: {
-    ...mapState(['activeItem', 'objectives', 'departments', 'products']),
+    ...mapState(['kpis', 'subKpis', 'activeItem', 'objectives', 'departments', 'products']),
     keyFigures() {
-      return KEY_FIGURES;
+      return [
+        ...this.kpis.filter(kpi => kpi.kpiType === 'keyfig'),
+        ...this.subKpis.filter(kpi => kpi.kpiType === 'keyfig'),
+      ];
     },
   },
 
@@ -140,14 +139,8 @@ export default {
     activeItem: {
       immediate: true,
       handler(item) {
-        const { slug } = item;
-
         this.activeItemType = getActiveItemType(item);
         this.filterProducts();
-
-        if (POC_DEPARTMENTS.includes(slug)) {
-          this.isPOCDepartment = true;
-        }
       },
     },
   },
@@ -169,15 +162,14 @@ export default {
   padding-bottom: 5rem;
 
   &__cardList {
-    margin: -0.5rem;
     display: flex;
     flex-wrap: wrap;
+    margin: -0.5rem;
   }
 
   &__cardListItem {
     margin: 0.5rem;
     padding: 1rem;
-
     background: var(--color-white);
   }
 
@@ -212,8 +204,8 @@ export default {
   }
 
   &__departmentInfoWrapper {
-    justify-content: space-between;
     align-items: flex-start;
+    justify-content: space-between;
 
     @media screen and (min-width: bp(l)) {
       display: flex;
@@ -221,14 +213,14 @@ export default {
   }
 
   &__departmentInfoBoxes {
-    margin: 3.5rem 0;
+    flex: 0 0 calc(50% - 3rem);
     flex-wrap: wrap;
     justify-content: space-between;
-    flex: 0 0 calc(50% - 3rem);
+    margin: 3.5rem 0;
 
     @media screen and (min-width: bp(s)) {
-      margin: 1rem 0;
       display: flex;
+      margin: 1rem 0;
     }
 
     @media screen and (min-width: bp(l)) {
@@ -236,8 +228,8 @@ export default {
     }
 
     .title-4 {
-      margin-bottom: 1.5rem;
       flex: 100%;
+      margin-bottom: 1.5rem;
       color: var(--color-text);
     }
   }
