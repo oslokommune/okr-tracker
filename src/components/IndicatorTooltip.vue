@@ -61,15 +61,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .tooltip > div {
   display: flex;
-  font-size: 0.75rem;
-  margin: 0.5rem 0;
   max-width: 200px;
+  margin: 0.5rem 0;
+  font-weight: 500;
+  font-size: typography.$font-size-1;
 
   > svg {
     flex-shrink: 0;
-    margin-right: 0.5rem;
+    margin: 0.15rem 0.5rem 0 0;
   }
 }
 </style>
