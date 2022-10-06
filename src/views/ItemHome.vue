@@ -156,7 +156,7 @@ export default {
 
   created() {
     if (this.filteredPeriods.length > 0) {
-      this.set_active_period_and_data(this.filteredPeriods[0].id);
+      this.setPeriod(this.filteredPeriods[0].id)
     }
   },
 
@@ -167,10 +167,8 @@ export default {
       this.activeTab = tabIndex;
     },
 
-    async setPeriod(tabIndex) {
+    async setPeriod(activePeriodId) {
       try {
-        const activePeriodId = this.filteredPeriods[tabIndex].id;
-
         await this.setDataLoading(true);
         await this.set_active_period_and_data(activePeriodId);
       } catch (e) {
@@ -183,7 +181,8 @@ export default {
     periodDates,
 
     async handleTabChange(tabIndex) {
-      await this.setPeriod(tabIndex);
+      const activePeriodId = this.filteredPeriods[tabIndex].id;
+      await this.setPeriod(activePeriodId);
       this.setActiveTab(tabIndex);
     },
   },
