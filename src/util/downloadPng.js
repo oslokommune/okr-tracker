@@ -1,5 +1,5 @@
 import { select } from 'd3';
-import { saveSvgAsPng } from 'save-svg-as-png';
+import { saveSvgAsPng, svgAsPngUri } from 'save-svg-as-png';
 
 const headingOffset = 60;
 const extraPaddingRight = 50;
@@ -50,12 +50,17 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
     backgroundColor: '#ffffff',
   };
 
-  saveSvgAsPng(svgRef, `${filename}.png`, options).finally(() => {
-    // Revert changes to SVG
-    svg.select('.indicators').attr('opacity', 1);
-    svg.select('.heading').remove();
-    canvas.attr('transform', `translate(${[canvasX, canvasY]})`);
-    svg.attr('viewBox', [minX, minY, width, height].join(' '));
+  // Force the PNG to be rendered twice, but downloaded only once. This is a
+  // workaround for Safari not loading linked assets on first download attempt.
+  // See https://github.com/exupero/saveSvgAsPng/issues/223
+  svgAsPngUri(svgRef).then(() => {
+    saveSvgAsPng(svgRef, `${filename}.png`, options).finally(() => {
+      // Revert changes to SVG
+      svg.select('.indicators').attr('opacity', 1);
+      svg.select('.heading').remove();
+      canvas.attr('transform', `translate(${[canvasX, canvasY]})`);
+      svg.attr('viewBox', [minX, minY, width, height].join(' '));
+    });
   });
 }
 
