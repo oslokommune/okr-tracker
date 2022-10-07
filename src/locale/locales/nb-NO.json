@@ -543,7 +543,6 @@
     "targetAudience": "Målgruppe",
     "missionStatement": "Oppdrag",
     "effect": "Effekt",
-    "heyThere": "Hei der!",
     "downloadOptions": {
       "png": "Bilde (.png)",
       "csv": "Rådata (.csv)"
