@@ -9,8 +9,10 @@ import { formatKPIValue } from '@/util/kpiHelpers';
 import {
   addValueTooltips,
   initSvg,
+  padding,
   resize,
-  styleAxis,
+  styleAxisX,
+  styleAxisY,
   styleGradientStart,
   styleGradientStop,
   styleValueIndicators,
@@ -104,6 +106,8 @@ export default class LineChart {
       );
     }
 
+    const innerWidth = this.width - padding.left - padding.right;
+
     this.yAxis
       .transition()
       .call(
@@ -111,9 +115,11 @@ export default class LineChart {
           formatKPIValue(kpi, d, { compact: true })
         )
         .ticks(8)
+        .tickSizeInner(-innerWidth)
+        .tickSizeOuter(0)
       )
-      .call(styleAxis);
-    this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxis);
+      .call(styleAxisY);
+    this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxisX);
 
     this.today
       .attr('x1', this.x(new Date()))
