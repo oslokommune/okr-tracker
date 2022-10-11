@@ -8,7 +8,7 @@ import 'tippy.js/dist/tippy.css';
 import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
 import { addCommentSymbol } from './symbols';
 
-export const padding = { left: 60, top: 20, right: 10, bottom: 25 };
+export const padding = { left: 80, top: 20, right: 10, bottom: 25 };
 const Tooltip = Vue.extend(IndicatorTooltip);
 
 export const GRAPH_THEMES = {
