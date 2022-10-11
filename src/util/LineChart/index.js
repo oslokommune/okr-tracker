@@ -110,6 +110,7 @@ export default class LineChart {
         axisLeft(this.y).tickFormat((d) =>
           formatKPIValue(kpi, d, { compact: true })
         )
+        .ticks(8)
       )
       .call(styleAxis);
     this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxis);
