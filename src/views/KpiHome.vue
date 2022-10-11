@@ -208,6 +208,19 @@ export default {
             a.timestamp.toDate() < this.endDate
         );
       }
+
+      // Filter out any duplicate measurement values for each date
+      const seenDates = [];
+
+      this.filteredProgress = this.filteredProgress.filter((a) => {
+        const date = a.timestamp.toDate().toISOString().slice(0, 10);
+        if (!seenDates.includes(date)) {
+          seenDates.push(date);
+          return true;
+        }
+        return false;
+      });
+
       this.renderGraph();
     },
 
