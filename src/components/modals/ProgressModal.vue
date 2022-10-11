@@ -78,12 +78,14 @@ export default {
     flatPickerConfig: {
       altFormat: 'j M Y H:i:S',
       altInput: false,
-      enableSeconds: true,
       enableTime: true,
+      enableSeconds: true,
+      minuteIncrement: 1,
       locale: locale.no,
       maxDate: new Date(),
       minDate: null,
       mode: 'single',
+      inline: true,
     },
   }),
 
@@ -122,3 +124,22 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+input[name='date'] {
+  display: none;
+}
+
+// Set specific width in order to match inlined datepicker.
+// TODO: Allow specyfing set sizes for modals in the future,
+// eg. wide, narrow, to keep these somewhat aligned.
+::v-deep .modal {
+  width: 341px;
+}
+
+::v-deep .flatpickr-calendar {
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+</style>
