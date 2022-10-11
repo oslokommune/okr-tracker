@@ -14,70 +14,67 @@ import {
 const { matchedData, validationResult } = validator;
 const router = express.Router();
 
-router.post('/:id', idValidator, progressValidator, async (req, res) => {
-  const sanitized = matchedData(req);
-  const { progress, id } = sanitized;
-  const teamSecret = req.header('okr-team-secret');
+router.post(
+  '/:id',
+  teamSecretValidator,
+  idValidator,
+  progressValidator,
+  async (req, res) => {
+    const result = validationResult(req);
 
-  if (!teamSecret || teamSecret.length === 0) {
-    res.status(400).send('Missing okr-team-secret in header');
-    return;
+    if (!result.isEmpty()) {
+      res.status(400).json({
+        message: 'Invalid request data',
+        errors: result.mapped(),
+      });
+      return;
+    }
+
+    const { 'okr-team-secret': teamSecret, id, progress } = matchedData(req);
+
+    const db = getFirestore();
+
+    try {
+      const kpi = await db.collection('kpis').doc(id).get();
+
+      const { exists, ref } = kpi;
+
+      if (!exists) {
+        res.status(404).send(`Could not find KPI with ID: ${id}`);
+        return;
+      }
+
+      const { parent } = kpi.data();
+
+      const parentData = await parent.get().then((snapshot) => snapshot.data());
+
+      if (!parentData.secret) {
+        res
+          .status(401)
+          .send(
+            `'${parentData.name}' is not set up for API usage. Please set ` +
+              'a secret using the OKR Tracker admin interface.'
+          );
+        return;
+      }
+      if (parentData.secret !== teamSecret) {
+        res.status(401).send('Wrong okr-team-secret');
+        return;
+      }
+
+      await ref
+        .collection('progress')
+        .add({ value: Number.parseFloat(progress), timestamp: new Date() });
+
+      await refreshKPILatestValue(ref);
+
+      res.send(`Updated KPI (${id}) with progress: ${progress}`);
+    } catch (e) {
+      console.error('ERROR: ', e.message);
+      res.status(500).send(e.message);
+    }
   }
-
-  const db = getFirestore();
-  const collection = await db.collection('kpis');
-
-  try {
-    if (!progress || Number.isNaN(progress)) {
-      res.status(400).send('Invalid number');
-      return;
-    }
-
-    if (!id) {
-      res.status(400).send('Invalid ID');
-      return;
-    }
-
-    const kpi = await collection.doc(id).get();
-
-    const { exists, ref } = kpi;
-
-    if (!exists) {
-      res.status(404).send(`Could not find KPI with ID: ${id}`);
-      return;
-    }
-
-    const { parent } = kpi.data();
-
-    const parentData = await parent.get().then((snapshot) => snapshot.data());
-
-    if (!parentData.secret) {
-      res.status(401).send(
-        `'${parentData.name}' is not set up for API usage. Please set ` +
-          'a secret using the OKR Tracker admin interface.'
-      );
-      return;
-    }
-    if (parentData.secret !== teamSecret) {
-      res.status(401).send('Wrong okr-team-secret');
-      return;
-    }
-
-    await ref
-      .collection('progress')
-      .add({ value: Number.parseFloat(progress), timestamp: new Date() });
-    await ref.update({
-      error: FieldValue.delete(),
-      currentValue: progress,
-      valid: true,
-    });
-
-    res.send(`Updated KPI (${id}) with progress: ${progress}`);
-  } catch (e) {
-    console.error('ERROR: ', e.message);
-    res.status(500).send(e.message);
-  }
-});
+);
 
 router.get('/:id', idValidator, async (req, res) => {
   const sanitized = matchedData(req);
