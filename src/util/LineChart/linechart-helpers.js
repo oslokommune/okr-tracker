@@ -73,7 +73,7 @@ export function styleAxis(el) {
   el.attr('stroke-opacity', 0.6)
     .attr('font-size', 14)
     .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
-    .attr('color', 'var(--color-grey-600)');
+    .attr('color', 'var(--color-grey-700)');
 }
 
 export function styleGradientStart(el) {
