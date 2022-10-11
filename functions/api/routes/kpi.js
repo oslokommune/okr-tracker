@@ -1,8 +1,12 @@
 import express from 'express';
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore } from 'firebase-admin/firestore';
 import validator from 'express-validator';
-import { format, endOfDay, setHours } from 'date-fns';
-import { getUserDisplayName, refreshKPILatestValue } from '../helpers.js';
+import { format, endOfDay } from 'date-fns';
+import {
+  getUserDisplayName,
+  refreshKPILatestValue,
+  updateKPIProgressionValue,
+} from '../helpers.js';
 import {
   dateValidator,
   idValidator,
@@ -62,11 +66,8 @@ router.post(
         return;
       }
 
-      await ref
-        .collection('progress')
-        .add({ value: Number.parseFloat(progress), timestamp: new Date() });
-
-      await refreshKPILatestValue(ref);
+      const date = new Date();
+      await updateKPIProgressionValue(ref, date, progress);
 
       res.send(`Updated KPI (${id}) with progress: ${progress}`);
     } catch (e) {
@@ -242,32 +243,7 @@ router.put(
         return;
       }
 
-      const progressCollectionRef = ref.collection('progress');
-
-      // Check for any existing values on specified date, and if so, return
-      // the most recent measurement value for backwards compatibility.
-      const existingValueRef = await progressCollectionRef
-        .orderBy('timestamp', 'desc')
-        .where('timestamp', '>=', date)
-        .where('timestamp', '<=', endOfDay(date))
-        .limit(1)
-        .get()
-        .then((snapshot) => (!snapshot.empty ? snapshot.docs[0].ref : null));
-
-      if (existingValueRef) {
-        await existingValueRef.update({
-          value,
-          edited: new Date(),
-        });
-      } else {
-        await progressCollectionRef.add({
-          value,
-          timestamp: setHours(date, 12),
-          created: new Date(),
-        });
-      }
-
-      await refreshKPILatestValue(ref);
+      await updateKPIProgressionValue(ref, date, value);
 
       res.json({
         message: `KPI progression value for ${format(
