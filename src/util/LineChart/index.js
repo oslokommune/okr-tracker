@@ -112,7 +112,7 @@ export default class LineChart {
         )
       )
       .call(styleAxis);
-    this.xAxis.transition().call(axisBottom(this.x).ticks(4)).call(styleAxis);
+    this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxis);
 
     this.today
       .attr('x1', this.x(new Date()))
