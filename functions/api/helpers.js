@@ -45,6 +45,7 @@ export async function updateKPIProgressionValue(kpiRef, date, value) {
     await existingValueRef.update({
       value,
       edited: new Date(),
+      editedBy: null,
     });
   } else {
     await progressCollectionRef.add({
