@@ -10,11 +10,7 @@
         <h2 class="title-2">
           <slot name="header" />
         </h2>
-        <button
-          ref="closeButton"
-          class="btn btn--ter btn--close btn--icon btn--icon-pri"
-          @click="close"
-        >
+        <button ref="closeButton" class="btn btn--ter btn--icon" @click="close">
           <i class="fa fa-times" />
         </button>
       </div>

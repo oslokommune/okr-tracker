@@ -6,22 +6,25 @@
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
-        <label>
-          <span class="title-4">{{ $t('keyResult.addComment') }}</span>
+        <label class="form-field">
+          <span class="form-label">{{ $t('keyResult.addComment') }}</span>
           <textarea
             v-model="note"
             class="modal__textarea"
-            style="margin-top: 0.5rem"
             :placeholder="$t('keyResult.commentPlaceholder')"
             rows="3"
           />
         </label>
 
         <div>
-          <validation-provider v-slot="{ errors }" name="value" rules="required">
-            <label class="form-group">
+          <validation-provider
+            v-slot="{ errors }"
+            name="value"
+            rules="required"
+          >
+            <label class="form-field">
               <span class="form-label">{{ $t('keyResult.newValue') }}</span>
-              <input v-model="value" style="margin-top: 0.25rem" type="number" step="any" />
+              <input v-model="value" type="number" step="any" />
               <span class="form-field--error">{{ errors[0] }}</span>
             </label>
           </validation-provider>
@@ -53,7 +56,7 @@ export default {
     keyResult: {
       type: Object,
       required: true,
-    }
+    },
   },
 
   data: () => ({
@@ -66,7 +69,8 @@ export default {
     keyResult: {
       immediate: true,
       async handler() {
-        this.value = this.keyResult.currentValue || this.keyResult.startValue || 0;
+        this.value =
+          this.keyResult.currentValue || this.keyResult.startValue || 0;
       },
     },
   },
@@ -94,9 +98,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-::v-deep .modal {
-  max-width: 350px;
-}
-</style>

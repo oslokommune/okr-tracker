@@ -13,11 +13,10 @@
           :label="$t('fields.name')"
           rules="required"
           type="text"
-          :has-primary-background="true"
         />
 
         <label class="form-group">
-          <span class="form-label form-label--hasPrimaryBackground">
+          <span class="form-label">
             {{ $t('kpi.description') }}
           </span>
           <textarea v-model="kpi.description" class="form__field" rows="4" />
@@ -25,7 +24,7 @@
 
         <validation-provider v-slot="{ errors }" rules="required" name="format">
           <label class="form-group">
-            <span class="form-label form-label--hasPrimaryBackground">
+            <span class="form-label">
               {{ $t('kpi.display') }}
             </span>
             <select v-model="kpi.format" class="form__field">
@@ -47,7 +46,7 @@
           name="kpiType"
         >
           <div class="form-group">
-            <span class="form-label form-help--hasPrimaryBackground">
+            <span class="form-label">
               {{ $t('fields.kpitype') }}
             </span>
             <span v-if="errors[0]" class="form-field--error">
@@ -66,16 +65,10 @@
                 class="ods-form-radio"
                 name="radio-group"
               />
-              <label
-                class="ods-form-label form-help--hasPrimaryBackground"
-                :for="'kpi-type-' + id"
-              >
+              <label class="ods-form-label" :for="'kpi-type-' + id">
                 <span class="title">{{ label }}</span>
               </label>
-              <label
-                class="description form-help--hasPrimaryBackground"
-                :for="'kpi-type-' + id"
-              >
+              <label class="description" :for="'kpi-type-' + id">
                 {{ description }}
               </label>
             </div>
@@ -99,7 +92,9 @@
         </div>
 
         <template v-if="kpi.api">
-          {{ $t('kpi.api.help') }}
+          <span class="form-label">
+            {{ $t('kpi.api.help') }}
+          </span>
         </template>
 
         <template v-if="!kpi.api">
@@ -112,11 +107,10 @@
             :label="$t('fields.sheetId')"
             rules="required"
             type="text"
-            :has-primary-background="true"
           >
             <template #help>
               <span
-                class="form-help form-help--hasPrimaryBackground"
+                class="form-help"
                 v-html="$t('keyResult.automation.googleSheetIdHelp')"
               />
             </template>
@@ -129,11 +123,10 @@
             :label="$t('fields.sheetTab')"
             rules="required"
             type="text"
-            :has-primary-background="true"
           >
             <template #help>
               <span
-                class="form-help form-help--hasPrimaryBackground"
+                class="form-help"
                 v-html="$t('keyResult.automation.sheetsTabHelp')"
               />
             </template>
@@ -146,11 +139,10 @@
             :label="$t('fields.sheetCell')"
             rules="required"
             type="text"
-            :has-primary-background="true"
           >
             <template #help>
               <span
-                class="form-help form-help--hasPrimaryBackground"
+                class="form-help"
                 v-html="$t('keyResult.automation.sheetsCellHelp')"
               />
             </template>
@@ -160,15 +152,8 @@
     </validation-observer>
 
     <template #footer>
-      <button
-        form="addKpi"
-        :disabled="loading"
-        class="btn btn--ghost btn--negative btn--sec"
-      >
+      <button form="addKpi" :disabled="loading" class="btn btn--pri">
         {{ $t('btn.add') }}
-      </button>
-      <button class="btn btn--ghost btn--negative btn--space" @click="close">
-        {{ $t('btn.close') }}
       </button>
     </template>
   </modal-wrapper>
@@ -241,17 +226,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.toggle__label {
-  color: var(--color-text-secondary);
-}
-
 .btn--space {
   margin-left: 1rem;
-}
-
-/* XXX: Workaround to make the radio buttons visible until we get rid
-   of the blue background. */
-.ods-form-radio {
-  appearance: auto;
 }
 </style>
