@@ -91,30 +91,6 @@
         </ul>
       </template>
     </dashboard-section>
-    <div class="dashboard__heyThereSection">
-      <dashboard-section>
-        <template #title>
-          <h2 class="title-2">
-            <icon-heart-hand />{{ $t('dashboard.heyThere') }}
-          </h2>
-        </template>
-        <template #content>
-          <div class="dashboard__contactUs">
-            Dette dashboardet er et produkt under regi av team
-            <strong>Dataspeilet</strong>, med hensikt å synliggjøre verdien av
-            Origo. Dersom du har spørsmål, innspill eller tilbakemeldinger, er
-            det bare å ta kontakt med vår teamlead
-            <a href="mailto:charlotte.frisk@origo.oslo.kommune.no">
-              <strong>Charlotte Frisk</strong>
-            </a>
-            eller skrive til oss i
-            <a href="https://oslokommune.slack.com/archives/C01SFNFEXK7">
-              <strong>#origo-dataspeilet</strong> </a
-            >.
-          </div>
-        </template>
-      </dashboard-section>
-    </div>
   </main>
 </template>
 
@@ -191,6 +167,8 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard {
+  padding-bottom: 5rem;
+
   &__cardList {
     margin: -0.5rem;
     display: flex;
@@ -269,33 +247,8 @@ export default {
     margin-bottom: 2rem;
   }
 
-  &__heyThereSection {
-    overflow: auto;
-    background: #f1fdff;
-
-    .dashboardSection {
-      margin: 2.5rem auto 0;
-      padding-bottom: 4rem;
-      color: var(--color-text);
-      font-weight: 500;
-      line-height: 1.25rem;
-
-      .title-2 {
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-
-        svg {
-          margin-right: 0.5rem;
-        }
-      }
-    }
-  }
-
-  &__contactUs {
-    @media screen and (min-width: bp(m)) {
-      width: 50%;
-    }
+  & > .dashboardSection:last-of-type {
+    margin-bottom: 0;
   }
 }
 </style>

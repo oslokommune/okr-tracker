@@ -546,7 +546,6 @@
     "targetAudience": "Target audience",
     "missionStatement": "Mission",
     "effect": "Effect",
-    "heyThere": "Hey there!",
     "downloadOptions": {
       "png": "Image (.png)",
       "csv": "Raw data (.csv)"
