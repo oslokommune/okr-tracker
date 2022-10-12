@@ -1,10 +1,11 @@
 <template>
   <modal-wrapper v-if="user" @close="close">
+    <template #header>
+      {{ $t('user.profile') }}
+    </template>
+
     <form id="updateUser" class="modal__main--flex">
       <div class="column">
-        <h2 class="title-2">
-          {{ $t('user.profile') }}
-        </h2>
         <validation-observer v-slot="{ handleSubmit }">
           <span class="form-label">{{ $t('fields.name') }}</span>
           <input
