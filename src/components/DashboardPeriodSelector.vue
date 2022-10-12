@@ -142,10 +142,10 @@ export default {
 
 .periodSelector__input {
   display: flex;
-  align-items: center;
   gap: 0.5rem;
-  white-space: nowrap;
+  align-items: center;
   padding: 0.75rem;
+  white-space: nowrap;
   border: 1px solid var(--color-grey-100);
   cursor: pointer;
 
@@ -180,6 +180,12 @@ export default {
       border-left: 0;
       border-radius: 0;
       box-shadow: none;
+
+      &::before,
+      &::after {
+        // Hide flatpickr arrow
+        display: none;
+      }
     }
     &-input {
       display: none;
@@ -189,6 +195,7 @@ export default {
 
 .periodSelector__option {
   width: 100%;
+  margin: 0;
   padding: 1rem;
   color: var(--color-grey-400);
   font-weight: 500;
