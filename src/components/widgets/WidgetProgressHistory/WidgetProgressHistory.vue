@@ -47,7 +47,7 @@
         <tbody>
           <tr v-for="record in limitedProgress" :key="record.id">
             <td>{{ valueFormatter(record.value) }}</td>
-            <td>{{ dateTimeShort(record.timestamp.toDate()) }}</td>
+            <td>{{ dateFormatter(record.timestamp.toDate()) }}</td>
             <td v-if="hasAnyChangedBy">
               <user-link
                 v-if="record.editedBy || record.createdBy"
@@ -161,6 +161,11 @@ export default {
       type: Function,
       required: false,
       default: (value) => value,
+    },
+    dateFormatter: {
+      type: Function,
+      required: false,
+      default: dateTimeShort,
     },
     noValuesMessage: {
       type: String,
