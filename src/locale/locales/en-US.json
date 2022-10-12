@@ -461,7 +461,8 @@
       "empty": {
         "heading": "No history",
         "body": "No values registered for this item."
-      }
+      },
+      "overwriteWarning": "Note: This change will overwrite existing value for chosen date ({date}): {value}."
     }
   },
   "error": {

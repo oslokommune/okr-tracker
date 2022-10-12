@@ -459,7 +459,8 @@
       "empty": {
         "heading": "Ingen historikk",
         "body": "Ingen verdier registrert for dette elementet."
-      }
+      },
+      "overwriteWarning": "Merk: Denne endringen overskriver eksisterende måleverdi for valgt dato ({date}): {value}."
     }
   },
   "error": {

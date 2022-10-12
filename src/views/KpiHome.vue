@@ -76,7 +76,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3-array';
-import endOfDay from 'date-fns/endOfDay';
+import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
@@ -146,13 +146,28 @@ export default {
     formatKPIValue,
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
+      // Check for existing value and update the recent-most entry. Delete
+      // original record if changes overwrites value for another date.
       try {
-        await Progress.update(
-          db.collection('kpis'),
-          this.activeKpi.id,
-          id,
-          data
+        const kpiCollection = db.collection('kpis');
+        const kpiId = this.activeKpi.id;
+        const existingValueSnapshot = await Progress.get(
+          kpiCollection,
+          kpiId,
+          data.timestamp
         );
+
+        if (existingValueSnapshot && id !== existingValueSnapshot.id) {
+          await Progress.update(
+            kpiCollection,
+            kpiId,
+            existingValueSnapshot.id,
+            data
+          );
+          await Progress.remove(kpiCollection, kpiId, id);
+        } else {
+          await Progress.update(kpiCollection, kpiId, id, data);
+        }
         this.$toasted.show(this.$t('toaster.update.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.updateProgress'));

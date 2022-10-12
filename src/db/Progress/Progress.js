@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import { endOfDay, startOfDay } from 'date-fns';
 import props from './props';
 import {
   createDocument,
@@ -20,6 +21,29 @@ function checkReferences(collectionRef, parentId) {
     throw new Error('Parent ID must be a string');
   }
 }
+
+const get = async (collectionRef, parentId, date) => {
+  checkReferences(collectionRef, parentId);
+
+  try {
+    const parentRef = collectionRef.doc(parentId);
+
+    if (await parentRef.get().then(({ exists }) => !exists)) {
+      throw new Error(`Cannot find parent with ID ${parentId}`);
+    }
+
+    return parentRef
+      .collection('progress')
+      .orderBy('timestamp', 'desc')
+      .where('timestamp', '>=', startOfDay(date))
+      .where('timestamp', '<=', endOfDay(date))
+      .limit(1)
+      .get()
+      .then((snapshot) => (!snapshot.empty ? snapshot.docs[0] : null));
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 const create = async (collectionRef, parentId, data) => {
   checkReferences(collectionRef, parentId);
@@ -71,4 +95,4 @@ const remove = async (collectionRef, parentId, progressId) => {
   }
 };
 
-export default { create, remove, update };
+export default { get, create, remove, update };
