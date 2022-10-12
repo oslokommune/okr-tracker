@@ -8,7 +8,7 @@ import 'tippy.js/dist/tippy.css';
 import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
 import { addCommentSymbol } from './symbols';
 
-const padding = { left: 60, top: 20, right: 10, bottom: 25 };
+export const padding = { left: 60, top: 20, right: 10, bottom: 25 };
 const Tooltip = Vue.extend(IndicatorTooltip);
 
 export const GRAPH_THEMES = {
@@ -69,11 +69,21 @@ export function initSvg(svg) {
   this.defs.call(addCommentSymbol);
 }
 
-export function styleAxis(el) {
+function styleAxis(el) {
   el.attr('stroke-opacity', 0.6)
     .attr('font-size', 14)
     .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
     .attr('color', 'var(--color-grey-700)');
+}
+
+export function styleAxisX(el) {
+  styleAxis(el);
+}
+
+export function styleAxisY(el) {
+  styleAxis(el);
+  el.selectAll(".tick line").attr('stroke', 'var(--color-bg-dark)');
+  el.select(".domain").attr('display', 'none');
 }
 
 export function styleGradientStart(el) {
