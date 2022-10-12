@@ -195,7 +195,6 @@ export default {
   }
 
   &:first-of-type {
-    margin-left: 1rem;
     padding-left: 0;
   }
 
