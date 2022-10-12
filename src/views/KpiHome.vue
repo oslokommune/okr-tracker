@@ -57,6 +57,7 @@
           :progress="filteredProgress"
           :is-loading="isLoading"
           :value-formatter="_formatKPIValue"
+          :date-formatter="dateShort"
           :no-values-message="$t('empty.noKPIProgress')"
           @update-record="updateHistoryRecord"
           @delete-record="deleteHistoryRecord"
@@ -80,7 +81,7 @@ import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort } from '@/util';
+import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
@@ -142,7 +143,7 @@ export default {
   },
 
   methods: {
-    dateTimeShort,
+    dateShort,
     formatKPIValue,
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
