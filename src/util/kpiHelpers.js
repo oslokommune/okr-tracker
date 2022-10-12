@@ -48,10 +48,14 @@ export function kpiTypes () {
  */
 function valueFormatter (defaultSpecifier, compactSpecifier) {
   return (value, options) => {
-    const specifier =
-      options?.compact && compactSpecifier
-        ? compactSpecifier
-        : defaultSpecifier;
+    let specifier = defaultSpecifier;
+
+    if (compactSpecifier &&
+        (options.compact === true ||
+         options.compact === 'semi' && value >= 10_000_000)) {
+      specifier = compactSpecifier;
+    }
+
     return numberLocale.format(specifier)(value);
   };
 }

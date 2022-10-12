@@ -54,7 +54,7 @@ export default {
       return dateShort(this.timestamp);
     },
     formattedValue() {
-      return formatKPIValue(this.kpi, this.value, { compact: false })
+      return formatKPIValue(this.kpi, this.value);
     },
   },
 };
