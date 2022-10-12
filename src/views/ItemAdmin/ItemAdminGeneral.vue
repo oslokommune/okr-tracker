@@ -27,6 +27,13 @@
           rules="required"
         />
 
+        <form-component
+          v-model="activeItem.targetAudience"
+          input-type="textarea"
+          name="missionStatement"
+          :label="$t('dashboard.targetAudience')"
+        />
+
         <div v-if="type === 'department'" class="form-group">
           <span class="form-label">{{ $t('admin.department.parentOrganisation') }}</span>
           <v-select
@@ -117,7 +124,7 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement, secret } = this.activeItem;
+        const { id, name, missionStatement, targetAudience, secret } = this.activeItem;
 
         const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
 
@@ -127,7 +134,8 @@ export default {
           await Organization.update(id, data);
         } else if (this.type === 'department') {
           const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-          const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team, id };
+          const data = { name, missionStatement, organization, targetAudience,
+            secret: secret === undefined ? '' : secret, team, id };
 
           await Department.update(id, data);
         } else {

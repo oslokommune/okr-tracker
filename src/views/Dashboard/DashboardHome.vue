@@ -17,14 +17,13 @@
                 <HTML-output :html="activeItem.missionStatement" />
               </dashboard-department-info-box>
               <dashboard-department-info-box
-                v-if="isPOCDepartment"
                 class="dashboard__departmentInfoBox"
                 :title="$t('dashboard.targetAudience')"
               >
                 <template #icon>
                   <icon-two-people-dancing />
                 </template>
-                <div>Frivillighet, innbyggere og ansatte i kommunen.</div>
+                <HTML-output v-if="activeItem.targetAudience" :html="activeItem.targetAudience" />
               </dashboard-department-info-box>
             </div>
             <div class="dashboard__departmentInfoBoxes">
