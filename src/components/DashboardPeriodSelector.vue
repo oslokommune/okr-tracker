@@ -18,13 +18,14 @@
         :key="rangeOption.value"
         class="periodSelector__option"
         :class="{
-          'periodSelector__option--active': range.key === period.key
+          'periodSelector__option--active': rangeOption.key === period.key,
         }"
         @click="selectRangeOption(rangeOption)"
       >
         {{ rangeOption.label }}
       </button>
       <flat-pickr
+        ref="datePicker"
         v-model="range"
         :config="flatPickerConfig"
         class="form-control flatpickr-input"
@@ -37,6 +38,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
+import { format } from 'date-fns';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import IconCalendar from './IconCalendar.vue';
@@ -70,28 +72,28 @@ export default {
       type: Date,
       required: false,
       default: null,
-    }
+    },
   },
 
   data: () => ({
     isOpen: false,
     flatPickerConfig: {
       inline: true,
-      altFormat: 'j M Y',
-      altInput: true,
-      minDate: null,
       mode: 'range',
+      minDate: null,
       maxDate: null,
       locale: locale.no,
     },
     range: null,
+    formattedRangeLabel: null,
   }),
 
   computed: {
     rangeLabel() {
-      return this.options.find((range) => {
-        return range.key === this.period.key
-      })?.label || this.range;
+      const selectedPeriodOption = this.options.find(
+        (option) => option.key === this.period.key
+      );
+      return selectedPeriodOption?.label || this.formattedRangeLabel;
     },
   },
 
@@ -108,6 +110,14 @@ export default {
       async handler() {
         this.range = [this.startDate, this.endDate];
       },
+    },
+
+    range(range) {
+      if (Array.isArray(range) && range.filter((d) => d).length === 2) {
+        this.formattedRangeLabel = [
+          ...new Set(range.map((date) => format(date, 'yyyy-MM-dd'))),
+        ].join(this.flatPickerConfig.locale.rangeSeparator);
+      }
     },
   },
 
