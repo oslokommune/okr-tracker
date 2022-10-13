@@ -1,6 +1,4 @@
-export const POC_DEPARTMENTS = ['apen-by', 'mayn-sitt-omrade'];
-
-export const KPI_TARGETS = {
+export default {
   '5CSm8fPvBCm7wbRSgOge': {
     value: 0.8,
     name: {

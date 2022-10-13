@@ -89,7 +89,7 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
-import { KPI_TARGETS } from '@/views/Dashboard/data/staticData';
+import KPI_TARGETS from '@/views/Dashboard/data/staticData';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import IconDownload from './IconDownload.vue';
