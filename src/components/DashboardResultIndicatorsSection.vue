@@ -183,7 +183,8 @@ export default {
      * TODO: RI targets are still hard coded.
      */
     resultIndicatorTarget() {
-      return KPI_TARGETS[this.getActiveRI().id];
+      const ri = this.getActiveRI();
+      return KPI_TARGETS[ri.id] if ri else null;
     },
     tabIds() {
       return tabIdsHelper('resultIndicator');
