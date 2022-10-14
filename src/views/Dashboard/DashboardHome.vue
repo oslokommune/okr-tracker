@@ -59,7 +59,7 @@
         </h2>
       </template>
       <template #content>
-        <ul class="dashboard__cardList">
+        <ul class="dashboard__cardList" v-if="keyFigures.length">
           <li
             v-for="keyFigure in keyFigures"
             :key="keyFigure.id"
@@ -68,6 +68,20 @@
             <key-figure :key-figure="keyFigure" />
           </li>
         </ul>
+        <empty-state
+          v-else
+          :icon="'exclamation'"
+          :heading="$t('empty.noKPIs.heading')"
+          :body="$t('empty.noKPIs.body')"
+        >
+          <router-link
+            v-if="hasEditRights"
+            :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+            class="btn btn--ter"
+          >
+            {{ $t('empty.noKPIs.linkText') }}
+          </router-link>
+        </empty-state>
       </template>
     </dashboard-section>
     <dashboard-section>
@@ -92,7 +106,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import getActiveItemType from '@/util/getActiveItemType';
 import ObjectiveProgression from '@/components/widgets/ObjectiveProgression.vue';
@@ -103,6 +117,7 @@ import IconHeartHand from '@/components/IconHeartHand.vue';
 import IconHandsGlobe from '@/components/IconHandsGlobe.vue';
 import IconTwoPeopleDancing from '@/components/IconTwoPeopleDancing.vue';
 import KeyFigure from '@/components/KeyFigure.vue';
+import EmptyState from '@/components/EmptyState.vue';
 
 import DashboardSection from './DashboardSection.vue';
 
@@ -118,6 +133,7 @@ export default {
     IconHandsGlobe,
     IconTwoPeopleDancing,
     KeyFigure,
+    EmptyState,
   },
 
   data: () => ({
@@ -127,6 +143,7 @@ export default {
 
   computed: {
     ...mapState(['kpis', 'subKpis', 'activeItem', 'objectives', 'departments', 'products']),
+    ...mapGetters(['hasEditRights']),
     keyFigures() {
       return [
         ...this.kpis.filter(kpi => kpi.kpiType === 'keyfig'),

@@ -422,7 +422,9 @@
     },
     "noKPIs": {
       "heading": "No KPIs",
-      "body": "Add KPIs that automatically fetch data from Google Sheets."
+      "body": "Oops! Could not find any KPIs.",
+      "adminBody": "Add KPIs that automatically fetch data from Google Sheets.",
+      "linkText": "Create a KPI"
     },
     "noPeriods": {
       "heading": "Empty?",

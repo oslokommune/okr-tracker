@@ -420,7 +420,9 @@
     },
     "noKPIs": {
       "heading": "Ingen KPI-er",
-      "body": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. "
+      "body": "Oops! Her er finnes det ingen KPI-er ennå.",
+      "adminBody": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. ",
+      "linkText": "Opprett en KPI"
     },
     "noPeriods": {
       "heading": "Tomt?",
