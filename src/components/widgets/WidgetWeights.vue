@@ -95,7 +95,7 @@ export default {
     },
 
     weightInPercentage(weight) {
-      return (weight / this.totalWeights * 100).toFixed(1) + '%'
+      return (weight / this.totalWeights * 100).toFixed(0) + '%'
     },
 
 
