@@ -4,6 +4,7 @@
       <widget-dashbord-entry :slug="activeItem.slug" />
       <widget-admin />
       <widget-wrapper
+        v-if="activePeriod || activeObjective"
         :title="
           $t(
             `widget.progression.${
@@ -20,7 +21,7 @@
           "
         />
       </widget-wrapper>
-      <widget-weights
+      <widget-weights v-if="activePeriod || activeObjective"
         :active-item="
           $route.name === 'ItemHome' ? activePeriod : activeObjective
         "

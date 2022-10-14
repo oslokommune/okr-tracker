@@ -1,5 +1,5 @@
 <template>
-  <widget :title="$t('weight.heading')">
+  <widget v-if="weights.length > 0" :title="$t('weight.heading')" >
     <div class="scales">
       <router-link
         v-for="{ id, weight, name } in weights"
@@ -9,7 +9,8 @@
         class="bar"
         :style="{ height: getHeight(weight) }"
       >
-        {{ weight }}
+        <span>{{ weight }}</span>
+        <span class="weightPercentage">{{ weightInPercentage(weight) }}</span>
       </router-link>
     </div>
   </widget>
@@ -67,6 +68,9 @@ export default {
 
       return this.items.filter(siblings).map(processWeights);
     },
+    totalWeights() {
+      return this.weights.map(w => w.weight).reduce((w1, w2) => w1 + w2, 0);
+    },
   },
 
   watch: {
@@ -85,8 +89,15 @@ export default {
 
   methods: {
     getHeight(weight) {
-      return `${this.scale(weight) * 100}%`;
+      const minHeight = 3.3;
+      const minWeightValue = this.weights.map(w => w.weight).reduce((w1, w2) => Math.min(w1, w2));
+      return weight * minHeight / minWeightValue + `rem`;
     },
+
+    weightInPercentage(weight) {
+      return (weight / this.totalWeights * 100).toFixed(1) + '%'
+    },
+
 
     getToLink(id) {
       if (this.type === 'objective') {
@@ -104,9 +115,8 @@ export default {
   position: relative;
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(1rem, 3rem));
+  grid-template-columns: repeat(auto-fit, minmax(2.5rem, 1fr));
   width: 100%;
-  height: 6rem;
   margin-top: 1rem;
 }
 
@@ -123,6 +133,11 @@ export default {
   text-decoration: none;
   background: var(--color-secondary-light);
   border: 1px solid var(--color-secondary-light);
+
+  .weightPercentage {
+    padding: 0.32rem;
+    font-size: 0.65rem;
+  }
 
   &:hover {
     color: var(--color-text-secondary);
