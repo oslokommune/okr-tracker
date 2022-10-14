@@ -25,7 +25,6 @@ textarea {
 }
 
 .form-label {
-  display: block;
   margin-bottom: 0.25rem;
   color: var(--color-text);
 
@@ -61,6 +60,47 @@ textarea {
     margin-left: 1rem;
   }
 }
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-primary);
+
+  &--readonly {
+    background: var(--color-grey-100);
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+
+    > .btn {
+      margin-left: 0;
+      font-size: 0.75rem;
+      background: var(--color-grey-50);
+      border: 1px solid var(--color-primary);
+      border-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-text-secondary);
+        background-color: var(--color-hover);
+      }
+
+      > i.far, i.fas {
+        margin: 0 0.25rem;
+      }
+    }
+  }
+}
+
 
 .form-help {
   display: block;

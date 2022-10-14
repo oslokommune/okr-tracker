@@ -221,7 +221,8 @@
       "progress": "Updated value"
     },
     "action": {
-      "regret": "Undo"
+      "regret": "Undo",
+      "copiedToClipboard": "Text copied to the clipboard"
     },
     "error": {
       "save": "Could not save changes",
@@ -326,7 +327,8 @@
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
     "emptyPeriod": "No active period",
-    "periodEnd": "You are not allowed to edit after a period has ended"
+    "periodEnd": "You are not allowed to edit after a period has ended",
+    "copyToClipboard": "Copy to the clipboard"
   },
   "document": {
     "mission": "Mission statement"

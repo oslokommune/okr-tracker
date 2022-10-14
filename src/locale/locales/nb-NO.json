@@ -219,7 +219,8 @@
       "progress": "Oppdaterte målepunkt"
     },
     "action": {
-      "regret": "Angre"
+      "regret": "Angre",
+      "copiedToClipboard": "Tekst kopiert til utklippstavlen"
     },
     "error": {
       "save": "Kunne ikke lagre endringene",
@@ -324,7 +325,8 @@
     "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",
     "emptyPeriod": "Ingen aktiv periode",
-    "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet"
+    "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet",
+    "copyToClipboard": "Kopier til utklippstavlen"
   },
   "document": {
     "mission": "Oppdrag"
