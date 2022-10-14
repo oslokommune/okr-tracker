@@ -112,7 +112,7 @@ export default class LineChart {
       .transition()
       .call(
         axisLeft(this.y).tickFormat((d) =>
-          formatKPIValue(kpi, d, { compact: 'semi' })
+          kpi ? formatKPIValue(kpi, d, { compact: 'semi' }) : d
         )
         .ticks(8)
         .tickSizeInner(-innerWidth)
