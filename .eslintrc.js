@@ -16,6 +16,8 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'import/extensions': [0, 'never'],
     'operator-assignment': ['error', 'never'],
+    'prefer-destructuring': 'off',
+    'no-underscore-dangle': 'off',
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
