@@ -25,18 +25,5 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, co
   const kpisRef = db.collection('kpis').where('parent', '==', item);
   await bindFirestoreRef('kpis', kpisRef, { maxRefDepth: 0 });
 
-  const products = await db
-        .collection('products')
-        .where('department', '==', item)
-        .limit(10)
-        .get()
-        .then((snapshot) => snapshot.docs.map((doc) => doc.ref));
-
-  const subKpisRef = db
-        .collection('kpis')
-        .where('parent', 'in', products);
-
-  await bindFirestoreRef('subKpis', subKpisRef, { maxRefDepth: 0 });
-
   return true;
 });
