@@ -70,13 +70,24 @@
       </div>
     </tab-panel>
   </div>
-  <div v-else>
-    {{ $t('dashboard.noRIs') }}
-  </div>
+  <empty-state
+    v-else
+    :icon="'exclamation'"
+    :heading="$t('empty.noResultIndicators.heading')"
+    :body="$t('empty.noResultIndicators.body')"
+  >
+    <router-link
+      v-if="hasEditRights"
+      :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+      class="btn btn--ter"
+    >
+      {{ $t('empty.noResultIndicators.linkText') }}
+    </router-link>
+  </empty-state>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
@@ -95,6 +106,7 @@ import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import IconDownload from './IconDownload.vue';
 import TabList from './TabList.vue';
 import TabPanel from './TabPanel.vue';
+import EmptyState from './EmptyState.vue';
 
 const { Timestamp } = firebase.firestore;
 
@@ -135,6 +147,7 @@ export default {
     TabList,
     TabPanel,
     DashboardPeriodSelector,
+    EmptyState,
   },
 
   data: () => ({
@@ -165,6 +178,7 @@ export default {
 
   computed: {
     ...mapState(['kpis', 'theme']),
+    ...mapGetters(['hasEditRights']),
     /*
      * TODO: RI targets are still hard coded.
      */

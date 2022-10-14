@@ -410,6 +410,11 @@
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
     },
+    "noResultIndicators": {
+      "heading": "Ingen result indicators",
+      "body": "Oops! Could not find any result indicators.",
+      "linkText": "Create a result indicator"
+    },
     "itemAdmin": {
       "keyResult": "No key results for selected objective",
       "objective": "No objectives for selected period",
