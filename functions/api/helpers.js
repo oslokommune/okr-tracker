@@ -1,4 +1,4 @@
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { endOfDay, startOfDay, setHours } from 'date-fns';
 
 /**
@@ -20,9 +20,9 @@ export async function getUserDisplayName(userRef) {
   return userRef.split('users/')[1];
 }
 
-/** Update the KPI progression collection with at most one value each
- * day. Check for any existing values on specified `date` and either
- * add new or update existing measurement value.
+/**
+ * Update the KPI progression collection with at most one value each
+ * day. Delete any pre-existing values for specified `date`.
  *
  * `kpiRef` is the reference to the parent KPI to update.
  * `date` specifies which date the measurement is made.
@@ -33,32 +33,46 @@ export async function updateKPIProgressionValue(kpiRef, date, value) {
 
   const progressCollectionRef = kpiRef.collection('progress');
 
-  const existingValueRef = await progressCollectionRef
+  const valuesSnapshot = await progressCollectionRef
     .orderBy('timestamp', 'desc')
     .where('timestamp', '>=', date)
     .where('timestamp', '<=', endOfDay(date))
-    .limit(1)
-    .get()
-    .then((snapshot) => (!snapshot.empty ? snapshot.docs[0].ref : null));
+    .get();
 
-  if (existingValueRef) {
-    await existingValueRef.update({
-      value,
+  // TODO: Also populate `createdBy`/`editedBy` when using the API. This
+  // might be possible by checking the `X-Apigateway-Api-Userinfo` header.
+  let data = {
+    value,
+    timestamp: setHours(date, 12),
+    created: new Date(),
+    createdBy: null,
+  };
+
+  if (!valuesSnapshot.empty) {
+    const { created, createdBy } = valuesSnapshot.docs[0].data();
+
+    data = {
+      ...data,
+      created: created || null,
+      createdBy: createdBy || null,
       edited: new Date(),
       editedBy: null,
+    };
+
+    // Clean out existing values registered for this date
+    const batch = getFirestore().batch();
+    valuesSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
     });
-  } else {
-    await progressCollectionRef.add({
-      value,
-      timestamp: setHours(date, 12),
-      created: new Date(),
-    });
+    await batch.commit();
   }
 
+  await progressCollectionRef.add(data);
   await refreshKPILatestValue(kpiRef);
 }
 
-/** Fetch latest progression measurement and update the KPI object
+/**
+ * Fetch latest progression measurement and update the KPI object
  * accordingly. If no value is found, delete relevant fields.
  *
  * `kpiRef` is the Firestore reference to update.

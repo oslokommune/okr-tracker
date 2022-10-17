@@ -330,16 +330,15 @@ router.delete(
         batch.delete(doc.ref);
       });
 
-      await batch.commit().then(() => {
-        res.json({
-          message: `KPI progression value for ${format(
-            date,
-            'yyyy-MM-dd'
-          )} deleted`,
-        });
-      });
-
+      await batch.commit();
       await refreshKPILatestValue(ref);
+
+      res.json({
+        message: `KPI progression value for ${format(
+          date,
+          'yyyy-MM-dd'
+        )} deleted`,
+      });
     } catch (e) {
       console.error('ERROR: ', e.message);
       res
