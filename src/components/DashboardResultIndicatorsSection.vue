@@ -183,13 +183,16 @@ export default {
      */
     resultIndicatorTarget() {
       const ri = this.getActiveRI();
-      return ri? KPI_TARGETS[ri.id] : null;
+      return ri ? KPI_TARGETS[ri.id] : null;
     },
     tabIds() {
       return tabIdsHelper('resultIndicator');
     },
     resultIndicators() {
-      return [...this.kpis.filter(kpi => kpi.kpiType === 'ri'), ...this.subKpis.filter(kpi => kpi.kpiType === 'ri')];
+      return [
+        ...this.kpis.filter(kpi => kpi.kpiType === 'ri'),
+        ...this.subKpis.filter(kpi => kpi.kpiType === 'ri'),
+      ];
     },
   },
 
@@ -342,13 +345,11 @@ export default {
         });
       }
 
-      if (this.progressCollection.length === 0) return;
-
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.progressCollection,
-        kpi: this.kpis[this.activeTab],
+        kpi: this.resultIndicators[this.activeTab],
         theme: this.theme,
       });
     },
