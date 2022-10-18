@@ -40,11 +40,6 @@ export function initSvg(svg) {
   this.valueArea = this.canvas.append('path').call(styleArea);
   this.valueLine = this.canvas.append('path').call(styleValueLine.bind(this));
   this.target = this.canvas.append('line').classed('target', true);
-  this.today = this.canvas
-    .append('line')
-    .classed('today', true)
-    .attr('stroke', 'black')
-    .attr('stroke-opacity', 0.2);
 
   this.defs = this.svg.append('defs');
   this.gradient = this.defs
