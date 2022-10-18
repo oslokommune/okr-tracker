@@ -1,12 +1,11 @@
 <template>
   <div class="keyFigure">
     <div class="keyFigure__name title-4">
-      {{ keyFigure.name[$i18n.locale] }}
+      {{ keyFigure.name }}
     </div>
 
     <div class="keyFigure__value">
-      <component :is="keyFigure.icon" class="keyFigure__icon" />
-      {{ formatLargeNumber(keyFigure.value) }}
+      {{ formatLargeNumber(keyFigure.currentValue) }}
     </div>
   </div>
 </template>
@@ -45,10 +44,6 @@ export default {
     align-items: center;
     font-weight: 500;
     font-size: typography.$font-size-4;
-  }
-
-  &__icon {
-    margin-right: 0.5rem;
   }
 }
 </style>

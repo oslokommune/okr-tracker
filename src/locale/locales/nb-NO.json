@@ -141,7 +141,7 @@
     "departmentObjectives": "Områdets mål",
     "departmentAbout": "Om produktområdet",
     "dashboardEntry": "Se dashboard",
-    "keyFigures": "Nøkkeltall"
+    "keyFigures": "KPI-er"
   },
   "btn": {
     "close": "Lukk",
@@ -408,6 +408,11 @@
       "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",
       "linkText": "Opprett et nøkkelresultat"
     },
+    "noResultIndicators": {
+      "heading": "Ingen resultatindikatorer",
+      "body": "Oops! Her er finnes det ingen resultatindikatorer ennå.",
+      "linkText": "Opprett en resultatindikator"
+    },
     "itemAdmin": {
       "keyResult": "Ingen nøkkelresultater for mål",
       "objective": "Ingen mål for periode",
@@ -415,7 +420,9 @@
     },
     "noKPIs": {
       "heading": "Ingen KPI-er",
-      "body": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. "
+      "body": "Oops! Her er finnes det ingen KPI-er ennå.",
+      "adminBody": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. ",
+      "linkText": "Opprett en KPI"
     },
     "noPeriods": {
       "heading": "Tomt?",
@@ -543,6 +550,7 @@
     "targetAudience": "Målgruppe",
     "missionStatement": "Oppdrag",
     "effect": "Effekt",
+    "noRIs": "Området har ingen resultatindikatorer.",
     "downloadOptions": {
       "png": "Bilde (.png)",
       "csv": "Rådata (.csv)"

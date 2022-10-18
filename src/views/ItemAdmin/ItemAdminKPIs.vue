@@ -7,7 +7,7 @@
       <empty-state
         :icon="'lightbulb'"
         :heading="$t('empty.noKPIs.heading')"
-        :body="$t('empty.noKPIs.body')"
+        :body="$t('empty.noKPIs.adminBody')"
       >
         <button class="btn btn--ter" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
       </empty-state>

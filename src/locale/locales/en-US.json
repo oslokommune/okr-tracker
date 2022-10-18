@@ -143,7 +143,7 @@
     "departmentObjectives": "Department objectives",
     "departmentAbout": "About",
     "dashboardEntry": "Go to dashboard",
-    "keyFigures": "Key figures"
+    "keyFigures": "KPIs"
   },
   "btn": {
     "close": "Close",
@@ -410,6 +410,11 @@
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
     },
+    "noResultIndicators": {
+      "heading": "No result indicators",
+      "body": "Oops! Could not find any result indicators.",
+      "linkText": "Create a result indicator"
+    },
     "itemAdmin": {
       "keyResult": "No key results for selected objective",
       "objective": "No objectives for selected period",
@@ -417,7 +422,9 @@
     },
     "noKPIs": {
       "heading": "No KPIs",
-      "body": "Add KPIs that automatically fetch data from Google Sheets."
+      "body": "Oops! Could not find any KPIs.",
+      "adminBody": "Add KPIs that automatically fetch data from Google Sheets.",
+      "linkText": "Create a KPI"
     },
     "noPeriods": {
       "heading": "Empty?",
@@ -546,6 +553,7 @@
     "targetAudience": "Target audience",
     "missionStatement": "Mission",
     "effect": "Effect",
+    "noRIs": "The department doesn't have any result indicators.",
     "downloadOptions": {
       "png": "Image (.png)",
       "csv": "Raw data (.csv)"
