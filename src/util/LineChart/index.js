@@ -121,12 +121,6 @@ export default class LineChart {
       .call(styleAxisY);
     this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxisX);
 
-    this.today
-      .attr('x1', this.x(new Date()))
-      .attr('x2', this.x(new Date()))
-      .attr('y2', 0)
-      .attr('y1', this.innerHeight);
-
     const firstValue = {
       timestamp: startDate,
       value: +startValue,
