@@ -2,19 +2,21 @@
   <router-link
     v-tooltip="kpi.description ? kpi.description : kpi.name"
     :to="{ name: 'KpiHome', params: { kpiId: kpi.id } }"
-    class="kpiLink"
-    :class="{ kpiLink: true, 'kpiLink--isDisabled': kpi.error }"
+    class="kpi-link"
+    :class="{ 'kpi-link--isDisabled': kpi.error }"
   >
-    <KPI :kpi="kpi" />
+    <kpi-card :kpi="kpi" />
   </router-link>
 </template>
 
 <script>
+import KpiCard from './KpiCard.vue';
+
 export default {
   name: 'KpiLink',
 
   components: {
-    KPI: () => import('@/components/KPI.vue'),
+    KpiCard,
   },
 
   props: {
@@ -28,14 +30,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.kpiLink {
+.kpi-link {
   text-decoration: none;
 
-  & .kpi {
-    &:hover {
-      color: var(--color-text-secondary);
-      background: var(--color-hover);
-    }
+  & .kpi-card:hover {
+    color: var(--color-text-secondary);
+    background: var(--color-hover);
   }
 
   &--isDisabled {

@@ -34,10 +34,12 @@ export default {
 .kpis__list {
   display: grid;
   grid-gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-auto-rows: 1fr;
   margin-top: 1.5rem;
 
-  @media screen and (min-width: bp(m)) {
-    grid-template-columns: repeat(3, minmax(10rem, 1fr));
+  ::v-deep .kpi-card {
+    height: 100%;
   }
 }
 </style>
