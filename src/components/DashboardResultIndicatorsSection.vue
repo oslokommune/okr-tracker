@@ -48,7 +48,7 @@
         xmlns="http://www.w3.org/2000/svg"
       />
       <div
-        v-if="latestProgressRecord && resultIndicatorTarget"
+        v-if="latestProgressRecord"
         class="progressTarget"
       >
         <div>
@@ -59,7 +59,7 @@
             formatResultIndicatorValue(latestProgressRecord.value)
           }}</span>
         </div>
-        <div>
+        <div v-if="resultIndicatorTarget">
           <span class="progressTarget__title">{{
             resultIndicatorTarget.name[$i18n.locale]
           }}</span>
