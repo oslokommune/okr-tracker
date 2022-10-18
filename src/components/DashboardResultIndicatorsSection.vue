@@ -184,7 +184,7 @@ export default {
      */
     resultIndicatorTarget() {
       const ri = this.getActiveRI();
-      return KPI_TARGETS[ri.id] if ri else null;
+      return ri? KPI_TARGETS[ri.id] : null;
     },
     tabIds() {
       return tabIdsHelper('resultIndicator');
