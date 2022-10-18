@@ -1,6 +1,6 @@
 <template>
   <router-link
-    v-tooltip="kpi.description? kpi.description : kpi.name"
+    v-tooltip="kpi.description ? kpi.description : kpi.name"
     :to="{ name: 'KpiHome', params: { kpiId: kpi.id } }"
     class="kpiLink"
     :class="{ kpiLink: true, 'kpiLink--isDisabled': kpi.error }"
