@@ -336,7 +336,7 @@ export default {
     renderGraph() {
       if (!this.graph && this.resultIndicators.length) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          height: 350,
+          height: 450,
           tooltips: true,
         });
       }
