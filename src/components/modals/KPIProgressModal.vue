@@ -66,8 +66,7 @@
 <script>
 import { mapState } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
-import { db } from '@/config/firebaseConfig';
-import Progress from '@/db/Progress';
+import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import ProgressModal from './ProgressModal.vue';
@@ -99,11 +98,9 @@ export default {
     formatKPIValue,
 
     async onDateSelected() {
-      if (!this.activeKpi) {
-        return;
-      }
+      if (!this.activeKpi) return;
+
       const existingValueSnapshot = await Progress.get(
-        db.collection('kpis'),
         this.activeKpi.id,
         new Date(this.thisRecord.timestamp)
       );

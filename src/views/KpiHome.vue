@@ -79,7 +79,7 @@ import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3-array';
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
-import Progress from '@/db/Progress';
+import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
 import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
@@ -147,30 +147,10 @@ export default {
     formatKPIValue,
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
-      // Check for existing value and update the recent-most entry. Delete
-      // original record if changes overwrites value for another date.
       try {
-        const kpiCollection = db.collection('kpis');
-        const kpiId = this.activeKpi.id;
-        const existingValueSnapshot = await Progress.get(
-          kpiCollection,
-          kpiId,
-          data.timestamp
-        );
-
-        if (existingValueSnapshot && id !== existingValueSnapshot.id) {
-          await Progress.update(
-            kpiCollection,
-            kpiId,
-            existingValueSnapshot.id,
-            data
-          );
-          await Progress.remove(kpiCollection, kpiId, id);
-        } else {
-          await Progress.update(kpiCollection, kpiId, id, data);
-        }
+        await Progress.update(this.activeKpi.id, id, data);
         this.$toasted.show(this.$t('toaster.update.progress'));
-      } catch {
+      } catch (e) {
         this.$toasted.error(this.$t('toaster.error.updateProgress'));
       } finally {
         modalCloseHandler();
@@ -179,7 +159,7 @@ export default {
 
     async deleteHistoryRecord(id) {
       try {
-        await Progress.remove(db.collection('kpis'), this.activeKpi.id, id);
+        await Progress.remove(this.activeKpi.id, id);
         this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
