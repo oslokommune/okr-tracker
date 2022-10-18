@@ -35,7 +35,7 @@ export default class LineChart {
 
     select(svgElement).call(initSvg.bind(this));
 
-    this.height = height || 250;
+    this.height = height || 350;
     this.x = scaleTime().clamp(true);
     this.y = scaleLinear().nice();
 
