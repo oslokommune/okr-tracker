@@ -153,7 +153,6 @@ export default {
   data: () => ({
     activeTab: 0,
     downloadOption: '',
-    resultIndicators: [],
     progressCollection: [],
     latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
@@ -177,7 +176,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'theme']),
+    ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
     /*
      * TODO: RI targets are still hard coded.
@@ -188,6 +187,9 @@ export default {
     },
     tabIds() {
       return tabIdsHelper('resultIndicator');
+    },
+    resultIndicators() {
+      return [...this.kpis.filter(kpi => kpi.kpiType === 'ri'), ...this.subKpis.filter(kpi => kpi.kpiType === 'ri')];
     },
   },
 
@@ -226,10 +228,9 @@ export default {
         });
       }
     },
-    kpis: {
+    resultIndicators: {
       immediate: true,
-      async handler(kpis) {
-        this.resultIndicators = kpis.filter(kpi => kpi.kpiType === 'ri');
+      async handler() {
         this.getProgressData().then(this.renderGraph);
       },
     },
