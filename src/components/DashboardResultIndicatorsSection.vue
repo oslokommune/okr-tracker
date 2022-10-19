@@ -47,19 +47,16 @@
         class="progressGraph"
         xmlns="http://www.w3.org/2000/svg"
       />
-      <div
-        v-if="latestProgressRecord && resultIndicatorTarget"
-        class="progressTarget"
-      >
+      <div class="progressTarget">
         <div>
           <span class="progressTarget__title">{{
             $t('kpi.currentValue')
           }}</span>
-          <span class="progressTarget__value">{{
-            formatResultIndicatorValue(latestProgressRecord.value)
-          }}</span>
+          <span v-if="latestProgressRecord" class="progressTarget__value">
+            {{ formatResultIndicatorValue(latestProgressRecord.value) }}
+          </span>
         </div>
-        <div>
+        <div v-if="resultIndicatorTarget">
           <span class="progressTarget__title">{{
             resultIndicatorTarget.name[$i18n.locale]
           }}</span>
@@ -153,7 +150,6 @@ export default {
   data: () => ({
     activeTab: 0,
     downloadOption: '',
-    resultIndicators: [],
     progressCollection: [],
     latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
@@ -177,17 +173,23 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'theme']),
+    ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
     /*
      * TODO: RI targets are still hard coded.
      */
     resultIndicatorTarget() {
       const ri = this.getActiveRI();
-      return ri? KPI_TARGETS[ri.id] : null;
+      return ri ? KPI_TARGETS[ri.id] : null;
     },
     tabIds() {
       return tabIdsHelper('resultIndicator');
+    },
+    resultIndicators() {
+      return [
+        ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
+        ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
+      ];
     },
   },
 
@@ -226,10 +228,9 @@ export default {
         });
       }
     },
-    kpis: {
+    resultIndicators: {
       immediate: true,
-      async handler(kpis) {
-        this.resultIndicators = kpis.filter(kpi => kpi.kpiType === 'ri');
+      async handler() {
         this.getProgressData().then(this.renderGraph);
       },
     },
@@ -295,6 +296,17 @@ export default {
           query.orderBy('timestamp', 'desc')
         );
 
+        if (
+          this.currentResultIndicatorPeriod?.key === 'all' &&
+          !this.progressCollection.length
+        ) {
+          // Return dates for all year if it's not possible to identify a start
+          // or end date due to missing progress data in the current collection.
+          this.startDate = RESULT_INDICATOR_PERIODS.year.startDate;
+          this.endDate = RESULT_INDICATOR_PERIODS.year.endDate;
+          return;
+        }
+
         this.startDate = this.getStartDate(
           this.currentResultIndicatorPeriod,
           this.progressCollection
@@ -334,20 +346,20 @@ export default {
     },
 
     renderGraph() {
-      if (!this.graph && this.resultIndicators.length) {
+      if (!this.resultIndicators.length) return;
+
+      if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
           height: 450,
           tooltips: true,
         });
       }
 
-      if (this.progressCollection.length === 0) return;
-
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.progressCollection,
-        kpi: this.kpis[this.activeTab],
+        kpi: this.resultIndicators[this.activeTab],
         theme: this.theme,
       });
     },
@@ -498,6 +510,7 @@ export default {
 .progressTarget {
   display: flex;
   gap: 2rem;
+  min-height: 5.7rem;
   margin-top: 0.5rem;
   padding: 1.5rem;
   border-top: 1px solid var(--color-grey-100);
