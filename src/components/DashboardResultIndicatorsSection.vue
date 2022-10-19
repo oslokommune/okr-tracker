@@ -47,10 +47,7 @@
         class="progressGraph"
         xmlns="http://www.w3.org/2000/svg"
       />
-      <div
-        v-if="latestProgressRecord"
-        class="progressTarget"
-      >
+      <div v-if="latestProgressRecord" class="progressTarget">
         <div>
           <span class="progressTarget__title">{{
             $t('kpi.currentValue')
@@ -190,8 +187,8 @@ export default {
     },
     resultIndicators() {
       return [
-        ...this.kpis.filter(kpi => kpi.kpiType === 'ri'),
-        ...this.subKpis.filter(kpi => kpi.kpiType === 'ri'),
+        ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
+        ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
       ];
     },
   },
@@ -299,6 +296,17 @@ export default {
           query.orderBy('timestamp', 'desc')
         );
 
+        if (
+          this.currentResultIndicatorPeriod?.key === 'all' &&
+          !this.progressCollection.length
+        ) {
+          // Return dates for all year if it's not possible to identify a start
+          // or end date due to missing progress data in the current collection.
+          this.startDate = RESULT_INDICATOR_PERIODS.year.startDate;
+          this.endDate = RESULT_INDICATOR_PERIODS.year.endDate;
+          return;
+        }
+
         this.startDate = this.getStartDate(
           this.currentResultIndicatorPeriod,
           this.progressCollection
@@ -338,7 +346,9 @@ export default {
     },
 
     renderGraph() {
-      if (!this.graph && this.resultIndicators.length) {
+      if (!this.resultIndicators.length) return;
+
+      if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
           height: 450,
           tooltips: true,
