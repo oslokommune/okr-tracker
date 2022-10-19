@@ -47,14 +47,14 @@
         class="progressGraph"
         xmlns="http://www.w3.org/2000/svg"
       />
-      <div v-if="latestProgressRecord" class="progressTarget">
+      <div class="progressTarget">
         <div>
           <span class="progressTarget__title">{{
             $t('kpi.currentValue')
           }}</span>
-          <span class="progressTarget__value">{{
-            formatResultIndicatorValue(latestProgressRecord.value)
-          }}</span>
+          <span v-if="latestProgressRecord" class="progressTarget__value">
+            {{ formatResultIndicatorValue(latestProgressRecord.value) }}
+          </span>
         </div>
         <div v-if="resultIndicatorTarget">
           <span class="progressTarget__title">{{
@@ -510,6 +510,7 @@ export default {
 .progressTarget {
   display: flex;
   gap: 2rem;
+  min-height: 5.7rem;
   margin-top: 0.5rem;
   padding: 1.5rem;
   border-top: 1px solid var(--color-grey-100);
