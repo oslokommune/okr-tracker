@@ -13,7 +13,7 @@ export function periodDates({ startDate, endDate }, strategy = dateLong) {
   if (!startDate || !endDate) throw new Error('Invalid period object');
   return [
     startDate instanceof Date ? startDate : startDate.toDate(),
-    endDate instanceof Date ? endDate : startDate.toDate(),
+    endDate instanceof Date ? endDate : endDate.toDate(),
   ]
     .map(strategy)
     .join(' – ');
