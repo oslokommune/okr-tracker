@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="user__title">{{ role }}</h4>
+    <h4 class="user__title">{{ $t('user.position.groups.' + role) }}</h4>
     <ul class="users__list">
       <li v-for="member in membersWithRole" :key="member.id" class="user">
         <a @click="openProfileModal(member.id)">
