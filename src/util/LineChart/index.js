@@ -5,11 +5,12 @@ import { line, area, symbol, symbolCircle } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import 'd3-transition';
 
+import i18n from '@/locale/i18n';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import {
   addValueTooltips,
   initSvg,
-  padding,
+  populateLegend,
   resize,
   styleAxisX,
   styleAxisY,
@@ -17,18 +18,21 @@ import {
   styleGradientStop,
   styleValueIndicators,
   styleValueLine,
+  CANVAS_PADDING,
+  GRAPH_THEMES,
 } from './linechart-helpers';
 
 const INDICATOR_SIZE_DEFAULT = 50;
 const INDICATOR_SIZE_COMMENT = 450;
 
 export default class LineChart {
-  constructor(svgElement, { height, theme, tooltips } = {}) {
+  constructor(svgElement, { height, theme, legend, tooltips } = {}) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
 
     this.theme = theme || 'blue';
+    this.legend = legend || false;
     this.tooltips = tooltips || false;
 
     select(svgElement).selectAll('*').remove();
@@ -46,6 +50,11 @@ export default class LineChart {
       .y0((d) => this.y(d.startValue));
 
     this.line = line()
+      .x((d) => this.x(d.timestamp))
+      .y((d) => this.y(d.value));
+
+    this.target = line()
+      .defined((d) => !!d.value)
       .x((d) => this.x(d.timestamp))
       .y((d) => this.y(d.value));
 
@@ -72,7 +81,16 @@ export default class LineChart {
    * `theme`: Optional. A theme to render the graph in, overriding any theme
    *     set in the constructor.
    */
-  render({ startValue, targetValue, startDate, endDate, progress, kpi, theme }) {
+  render({
+    startValue,
+    targetValue,
+    startDate,
+    endDate,
+    progress,
+    targets,
+    kpi,
+    theme,
+  }) {
     if (theme) {
       this.theme = theme;
     }
@@ -91,7 +109,7 @@ export default class LineChart {
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
 
-    const innerWidth = this.width - padding.left - padding.right;
+    const innerWidth = this.width - CANVAS_PADDING.left - CANVAS_PADDING.right;
 
     this.yAxis
       .transition()
@@ -138,12 +156,46 @@ export default class LineChart {
     const data = [firstValue, ...datapoints, todayValue];
 
     this.valueArea.datum(data).transition().attr('d', this.area);
-
     this.valueLine.datum(data).transition().attr('d', this.line);
     this.valueLine.call(styleValueLine.bind(this));
 
     this.gradient.select('#start').call(styleGradientStart.bind(this));
     this.gradient.select('#stop').call(styleGradientStop.bind(this));
+
+    if (targets && targets.length) {
+      this.targetLine
+        .datum(
+          targets.flatMap((target) => [
+            { timestamp: target.startDate, value: target.value },
+            { timestamp: target.endDate, value: target.value },
+            { timestamp: target.endDate, value: null },
+          ])
+        )
+        .transition()
+        .attr('d', this.target);
+    }
+
+    if (this.legend) {
+      const legendItems = [
+        {
+          label: kpi ? kpi.name : i18n.t('general.value'),
+          color: GRAPH_THEMES[this.theme].valueLine,
+        },
+        ...(targets
+          ? [
+              {
+                label: i18n.t('general.target'),
+                color: GRAPH_THEMES[this.theme].targetLine,
+              },
+            ]
+          : []),
+      ];
+      this.legendContainer.selectAll('g').remove();
+      this.legendContainer
+        .selectAll('g')
+        .data(legendItems)
+        .call(populateLegend.bind(this));
+    }
 
     if (this.tooltips) {
       this.valueIndicators

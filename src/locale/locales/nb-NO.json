@@ -115,7 +115,6 @@
     "admin": "Admin",
     "administration": "Administrasjon",
     "superAdmin": "Super admin",
-
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
     "lastUpdate": "Sist oppdatert",
@@ -141,7 +140,9 @@
     "departmentObjectives": "Områdets mål",
     "departmentAbout": "Om produktområdet",
     "dashboardEntry": "Se dashboard",
-    "keyFigures": "KPI-er"
+    "keyFigures": "KPI-er",
+    "value": "Verdi",
+    "target": "Målsetting"
   },
   "btn": {
     "close": "Lukk",
