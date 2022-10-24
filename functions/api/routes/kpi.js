@@ -214,6 +214,7 @@ router.put(
     }
 
     const { 'okr-team-secret': teamSecret, id, date, value } = matchedData(req);
+    const formattedDate = format(date, 'yyyy-MM-dd');
 
     const db = getFirestore();
 
@@ -246,10 +247,7 @@ router.put(
       await updateKPIProgressionValue(ref, date, value);
 
       res.json({
-        message: `KPI progression value for ${format(
-          date,
-          'yyyy-MM-dd'
-        )} updated to ${value}`,
+        message: `KPI progression value for ${formattedDate} updated to ${value}`,
       });
     } catch (e) {
       console.error('ERROR: ', e.message);
@@ -277,6 +275,7 @@ router.delete(
     }
 
     const { 'okr-team-secret': teamSecret, id, date } = matchedData(req);
+    const formattedDate = format(date, 'yyyy-MM-dd');
 
     const db = getFirestore();
 
@@ -316,10 +315,7 @@ router.delete(
 
       if (valuesSnapshot.empty) {
         res.status(404).json({
-          message: `No KPI progression value found for ${format(
-            date,
-            'yyyy-MM-dd'
-          )}`,
+          message: `No KPI progression value found for ${formattedDate}`,
         });
         return;
       }
@@ -334,10 +330,7 @@ router.delete(
       await refreshKPILatestValue(ref);
 
       res.json({
-        message: `KPI progression value for ${format(
-          date,
-          'yyyy-MM-dd'
-        )} deleted`,
+        message: `KPI progression value for ${formattedDate} deleted`,
       });
     } catch (e) {
       console.error('ERROR: ', e.message);
