@@ -133,11 +133,20 @@
           </form-component>
         </template>
 
-        <label v-if="localKpi.api" class="form-group">
-          <span class="form-label">API</span>
-          <span class="form-help">Push updates with curl</span>
-          <input :value="apiCurl(localKpi)" type="text" disabled class="form__field" />
-        </label>
+        <form-component
+          v-else
+          input-type="input"
+          type="text"
+          label="API"
+          rules="required"
+          :readonly="true"
+          :copy-button="true"
+          :value="apiCurl(localKpi)"
+        >
+          <template #help>
+            <span class="form-help">Push updates with curl</span>
+          </template>
+        </form-component>
 
         <div class="button-row">
           <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
