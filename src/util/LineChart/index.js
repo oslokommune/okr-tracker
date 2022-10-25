@@ -117,6 +117,7 @@ export default class LineChart {
         .ticks(8)
         .tickSizeInner(-innerWidth)
         .tickSizeOuter(0)
+        .tickPadding(8)
       )
       .call(styleAxisY);
     this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxisX);
