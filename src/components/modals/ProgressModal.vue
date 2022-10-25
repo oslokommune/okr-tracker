@@ -1,48 +1,54 @@
 <template>
-  <modal-wrapper v-if="record" @close="close">
+  <modal-wrapper v-if="record" variant="wide" @close="close">
     <template #header>
       {{ $t('tooltip.editProgress') }}
     </template>
 
     <validation-observer v-slot="{ handleSubmit }">
-      <form id="progress-value" @submit.prevent="handleSubmit(update)">
-        <form-component
-          v-model="thisRecord.value"
-          input-type="input"
-          name="name"
-          :label="$t('widget.history.value')"
-          rules="required"
-          type="number"
-          data-cy="progress_value"
-        />
+      <form id="progress-value" class="progress-form" @submit.prevent="handleSubmit(update)">
+        <div class="progress-form__left">
+          <form-component
+            v-model="thisRecord.value"
+            input-type="input"
+            name="value"
+            :label="$t('widget.history.value')"
+            class="progress-form__value-input"
+            rules="required"
+            type="number"
+            data-cy="progress_value"
+          />
 
-        <validation-provider
-          v-slot="{ errors }"
-          name="timestamp"
-          rules="required"
-        >
-          <label class="form-field">
-            <span class="form-label">{{ $t('widget.history.time') }}</span>
-            <flat-pickr
-              v-model="thisRecord.timestamp"
-              :config="flatPickerConfig"
-              class="form-control flatpickr-input"
-              name="date"
-              :placeholder="$t('widget.history.time')"
-            />
-            <span class="form-field--error">{{ errors[0] }}</span>
-          </label>
-        </validation-provider>
+          <form-component
+            v-model="thisRecord.comment"
+            input-type="textarea"
+            name="comment"
+            :label="$t('widget.history.comment_optional')"
+            :placeholder="$t('keyResult.commentPlaceholder')"
+            type="number"
+            data-cy="progress_comment"
+          />
+        </div>
 
-        <form-component
-          v-model="thisRecord.comment"
-          input-type="textarea"
-          name="comment"
-          :label="$t('widget.history.comment_optional')"
-          :placeholder="$t('keyResult.commentPlaceholder')"
-          type="number"
-          data-cy="progress_comment"
-        />
+        <div class="progress-form__right">
+          <validation-provider
+            v-slot="{ errors }"
+            name="datetime"
+            rules="required"
+          >
+            <label class="form-group">
+              <span class="form-label">{{ $t('widget.history.time') }}</span>
+
+              <flat-pickr
+                v-model="thisRecord.timestamp"
+                :config="flatPickerConfig"
+                class="form-control flatpickr-input"
+                name="datetime"
+                :placeholder="$t('widget.history.time')"
+              />
+              <span class="form-field--error">{{ errors[0] }}</span>
+            </label>
+          </validation-provider>
+        </div>
       </form>
     </validation-observer>
 
@@ -126,20 +132,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input[name='date'] {
-  display: none;
+.progress-form {
+  @media screen and (min-width: bp(s)) {
+    display: flex;
+  }
+
+  &__left {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1rem;
+  }
+
+  ::v-deep input[name="value"] {
+    font-size: 1.5rem;
+  }
+  ::v-deep textarea[name="comment"] {
+    resize: vertical;
+    height: 195px;
+  }
+  input[name="datetime"] {
+    display: none;
+  }
 }
 
-// Set specific width in order to match inlined datepicker.
-// TODO: Allow specyfing set sizes for modals in the future,
-// eg. wide, narrow, to keep these somewhat aligned.
-::v-deep .modal {
-  width: 341px;
-}
 
 ::v-deep .flatpickr-calendar {
+  border: 1px solid var(--color-primary);
   border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
+
+  &.inline {
+    top: 0;
+  }
 }
 </style>

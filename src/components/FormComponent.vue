@@ -17,6 +17,7 @@
           v-if="inputType === 'input'"
           v-model="innerValue"
           :type="type"
+          :name="name"
           :disabled="disabled"
           :readonly="readonly"
           :placeholder="placeholder"
@@ -29,6 +30,7 @@
           v-if="inputType === 'textarea'"
           v-model="innerValue"
           :disabled="disabled"
+          :name="name"
           :readonly="readonly"
           :placeholder="placeholder"
           :class="fieldClass"
@@ -39,6 +41,7 @@
         <v-select
           v-if="inputType === 'select'"
           v-model="innerValue"
+          :name="name"
           :label="selectLabel"
           :options="selectOptions"
           :clearable="false"
