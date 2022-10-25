@@ -30,6 +30,10 @@
   scrollbar-width: none; /* Hide scrollbar styles Firefox */
   -webkit-overflow-scrolling: touch;
 
+  &--wide {
+    max-width: 750px;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }

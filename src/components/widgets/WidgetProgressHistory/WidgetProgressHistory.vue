@@ -47,7 +47,7 @@
         <tbody>
           <tr v-for="record in limitedProgress" :key="record.id">
             <td>{{ valueFormatter(record.value) }}</td>
-            <td>{{ dateTimeShort(record.timestamp.toDate()) }}</td>
+            <td>{{ dateFormatter(record.timestamp.toDate()) }}</td>
             <td v-if="hasAnyChangedBy">
               <user-link
                 v-if="record.editedBy || record.createdBy"
@@ -113,8 +113,9 @@
       {{ $t('btn.showMore') }}
     </button>
 
-    <progress-modal
-      v-if="showValueModal"
+    <component
+      :is="valueModal"
+      v-if="valueModal && showValueModal"
       :record="chosenProgressRecord"
       @close="closeValueModal"
       @update-record="
@@ -161,6 +162,11 @@ export default {
       required: false,
       default: (value) => value,
     },
+    dateFormatter: {
+      type: Function,
+      required: false,
+      default: dateTimeShort,
+    },
     noValuesMessage: {
       type: String,
       required: false,
@@ -172,6 +178,7 @@ export default {
     historyLimit: 10,
     showComments: true,
     showProfileModal: false,
+    valueModal: null,
     showValueModal: false,
     chosenProgressRecord: null,
     chosenProfileId: null,
@@ -184,16 +191,26 @@ export default {
       return this.progress.find(({ comment }) => comment) !== undefined;
     },
     hasAnyChangedBy() {
-      return this.progress.find(({
-        createdBy,
-        editedBy,
-      }) => createdBy || editedBy) !== undefined;
+      return (
+        this.progress.find(
+          ({ createdBy, editedBy }) => createdBy || editedBy
+        ) !== undefined
+      );
     },
     limitedProgress() {
       return this.historyLimit
         ? this.progress.slice(0, this.historyLimit)
         : this.progress;
     },
+  },
+
+  mounted() {
+    if (this.$route.name === 'KpiHome') {
+      this.valueModal = () =>
+        import('@/components/modals/KPIProgressModal.vue');
+    } else {
+      this.valueModal = () => import('@/components/modals/ProgressModal.vue');
+    }
   },
 
   methods: {

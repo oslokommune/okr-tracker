@@ -44,6 +44,7 @@
                 class="form-control flatpickr-input"
                 name="datetime"
                 :placeholder="$t('widget.history.time')"
+                @on-change="onDateSelected"
               />
               <span class="form-field--error">{{ errors[0] }}</span>
             </label>
@@ -51,6 +52,19 @@
         </div>
       </form>
     </validation-observer>
+
+    <div
+      v-if="existingValue"
+      class="ok-alert ok-alert--warning"
+      style="background: var(--color-warning)"
+    >
+      {{
+        $t('widget.history.overwriteWarning', {
+          date: dateShort(existingValue.timestamp.toDate()),
+          value: formatKPIValue(activeKpi, existingValue.value),
+        })
+      }}
+    </div>
 
     <template #footer>
       <button form="progress-value" :disabled="loading" class="btn btn--pri">
@@ -61,32 +75,23 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
-import ModalWrapper from './ModalWrapper.vue';
+import Progress from '@/db/Kpi/Progress';
+import { dateShort } from '@/util';
+import { formatKPIValue } from '@/util/kpiHelpers';
+import ProgressModal from './ProgressModal.vue';
 
 export default {
-  name: 'ProgressModal',
-
-  components: {
-    ModalWrapper,
-  },
-
-  props: {
-    record: {
-      type: Object,
-      required: true,
-    },
-  },
+  name: 'KPIProgressModal',
+  extends: ProgressModal,
 
   data: () => ({
-    thisRecord: null,
-    loading: false,
+    existingValue: null,
     flatPickerConfig: {
       altFormat: 'j M Y H:i:S',
       altInput: false,
-      enableTime: true,
-      enableSeconds: true,
-      minuteIncrement: 1,
+      enableTime: false,
       locale: locale.no,
       maxDate: new Date(),
       minDate: null,
@@ -95,85 +100,27 @@ export default {
     },
   }),
 
-  watch: {
-    record: {
-      immediate: true,
-      handler() {
-        if (this.record) {
-          this.thisRecord = {
-            ...this.record,
-            timestamp: this.record.timestamp.toDate(),
-          };
-        }
-      },
-    },
+  computed: {
+    ...mapState(['activeKpi']),
   },
 
   methods: {
-    async update() {
-      this.loading = true;
-      this.$emit(
-        'update-record',
-        this.record.id,
-        {
-          value: parseFloat(this.thisRecord.value),
-          timestamp: new Date(this.thisRecord.timestamp),
-          comment: this.thisRecord.comment || '',
-        },
-        this.close
+    dateShort,
+    formatKPIValue,
+
+    async onDateSelected() {
+      if (!this.activeKpi) return;
+
+      const existingValueSnapshot = await Progress.get(
+        this.activeKpi.id,
+        new Date(this.thisRecord.timestamp)
       );
-    },
-    close() {
-      this.loading = false;
-      this.$emit('close');
+
+      this.existingValue =
+        existingValueSnapshot && existingValueSnapshot.id !== this.record.id
+          ? existingValueSnapshot.data()
+          : null;
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.progress-form {
-  @media screen and (min-width: bp(s)) {
-    display: flex;
-  }
-
-  &__left {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding-right: 1rem;
-  }
-
-  ::v-deep &__comment-group {
-    flex-grow: 1;
-
-    .form-group {
-      height: calc(100% - 3rem);
-    }
-    .form-input__wrapper {
-      height: 100%;
-    }
-  }
-
-  ::v-deep input[name="value"] {
-    font-size: 1.5rem;
-  }
-  ::v-deep textarea[name="comment"] {
-    resize: vertical;
-  }
-  input[name="datetime"] {
-    display: none;
-  }
-}
-
-::v-deep .flatpickr-calendar {
-  border: 1px solid var(--color-primary);
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-
-  &.inline {
-    top: 0;
-  }
-}
-</style>

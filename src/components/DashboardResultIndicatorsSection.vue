@@ -191,6 +191,19 @@ export default {
         ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
       ];
     },
+    filteredProgress() {
+      // Filter out any duplicate measurement values for each date
+      const seenDates = [];
+
+      return this.progressCollection.filter((a) => {
+        const date = a.timestamp.toDate().toISOString().slice(0, 10);
+        if (!seenDates.includes(date)) {
+          seenDates.push(date);
+          return true;
+        }
+        return false;
+      });
+    },
   },
 
   watch: {
@@ -323,7 +336,7 @@ export default {
      * Return the start date of `period`. If unset, the earliest date
      * found in `progress` is returned instead.
      */
-    getStartDate (period, progress) {
+    getStartDate(period, progress) {
       if (period.startDate) {
         const ts = Timestamp.fromDate(period.startDate);
         return ts.toDate ? ts.toDate() : new Date(period.ts);
@@ -336,7 +349,7 @@ export default {
      * Return the end date of `period`. If unset, the last date found in
      * `progress` is returned instead.
      */
-    getEndDate (period, progress) {
+    getEndDate(period, progress) {
       if (period.endDate) {
         const ts = Timestamp.fromDate(period.endDate);
         return ts.toDate ? ts.toDate() : new Date(ts);
@@ -358,7 +371,7 @@ export default {
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
-        progress: this.progressCollection,
+        progress: this.filteredProgress,
         kpi: this.resultIndicators[this.activeTab],
         theme: this.theme,
       });
@@ -387,11 +400,11 @@ export default {
         const formattedPeriod = periodDates({
           startDate: this.getStartDate(
             this.currentResultIndicatorPeriod,
-            this.progressCollection
+            this.filteredProgress
           ),
           endDate: this.getEndDate(
             this.currentResultIndicatorPeriod,
-            this.progressCollection
+            this.filteredProgress
           ),
         });
 
@@ -410,7 +423,7 @@ export default {
             i18n.t('fields.comment'),
           ]),
           csvFormatBody(
-            this.progressCollection.map((d) => [
+            this.filteredProgress.map((d) => [
               d.value,
               d.timestamp.toDate().toISOString(),
               d.comment,

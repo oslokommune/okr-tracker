@@ -57,6 +57,7 @@
           :progress="filteredProgress"
           :is-loading="isLoading"
           :value-formatter="_formatKPIValue"
+          :date-formatter="dateShort"
           :no-values-message="$t('empty.noKPIProgress')"
           @update-record="updateHistoryRecord"
           @delete-record="deleteHistoryRecord"
@@ -76,11 +77,11 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3-array';
-import endOfDay from 'date-fns/endOfDay';
+import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
-import Progress from '@/db/Progress';
+import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort } from '@/util';
+import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
@@ -142,19 +143,14 @@ export default {
   },
 
   methods: {
-    dateTimeShort,
+    dateShort,
     formatKPIValue,
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
       try {
-        await Progress.update(
-          db.collection('kpis'),
-          this.activeKpi.id,
-          id,
-          data
-        );
+        await Progress.update(this.activeKpi.id, id, data);
         this.$toasted.show(this.$t('toaster.update.progress'));
-      } catch {
+      } catch (e) {
         this.$toasted.error(this.$t('toaster.error.updateProgress'));
       } finally {
         modalCloseHandler();
@@ -163,7 +159,7 @@ export default {
 
     async deleteHistoryRecord(id) {
       try {
-        await Progress.remove(db.collection('kpis'), this.activeKpi.id, id);
+        await Progress.remove(this.activeKpi.id, id);
         this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
@@ -208,6 +204,19 @@ export default {
             a.timestamp.toDate() < this.endDate
         );
       }
+
+      // Filter out any duplicate measurement values for each date
+      const seenDates = [];
+
+      this.filteredProgress = this.filteredProgress.filter((a) => {
+        const date = a.timestamp.toDate().toISOString().slice(0, 10);
+        if (!seenDates.includes(date)) {
+          seenDates.push(date);
+          return true;
+        }
+        return false;
+      });
+
       this.renderGraph();
     },
 
