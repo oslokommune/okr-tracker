@@ -5,7 +5,7 @@
     @keydown.esc="close"
     @click.self="close"
   >
-    <div class="modal">
+    <div :class="['modal', `modal--${variant}`]">
       <div class="modal__header">
         <h2 class="title-2">
           <slot name="header" />
@@ -32,6 +32,15 @@ import * as focusTrap from 'focus-trap';
 
 export default {
   name: 'ModalWrapper',
+
+  props: {
+    variant: {
+      type: String,
+      required: false,
+      default: 'normal',
+      validator: (value) => ['normal', 'wide'].includes(value),
+    },
+  },
 
   data: () => ({
     focusTrap: null,
