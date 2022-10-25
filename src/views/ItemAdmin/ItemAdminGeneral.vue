@@ -30,7 +30,7 @@
         <form-component
           v-model="activeItem.targetAudience"
           input-type="textarea"
-          name="missionStatement"
+          name="targetAudience"
           :label="$t('dashboard.targetAudience')"
         />
 
@@ -124,25 +124,42 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement, targetAudience, secret } = this.activeItem;
+        const { id, name, missionStatement, targetAudience, secret } =
+          this.activeItem;
 
-        const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
+        const team = this.activeItem.team.map((user) =>
+          db.collection('users').doc(user.id)
+        );
+
+        const data = {
+          id,
+          name,
+          team,
+          missionStatement,
+          targetAudience: targetAudience === undefined ? '' : targetAudience,
+          secret: secret === undefined ? '' : secret,
+        };
 
         if (this.type === 'organization') {
-          const data = { name, missionStatement, secret: secret === undefined ? '' : secret, team, id };
-
           await Organization.update(id, data);
         } else if (this.type === 'department') {
-          const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-          const data = { name, missionStatement, organization, targetAudience,
-            secret: secret === undefined ? '' : secret, team, id };
+          const organization = await db
+            .collection('organizations')
+            .doc(this.activeItem.organization.id);
 
-          await Department.update(id, data);
+          await Department.update(id, {
+            ...data,
+            organization,
+          });
         } else {
-          const department = db.collection('departments').doc(this.activeItem.department.id);
-          const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret, id };
+          const department = db
+            .collection('departments')
+            .doc(this.activeItem.department.id);
 
-          await Product.update(id, data);
+          await Product.update(id, {
+            ...data,
+            department,
+          });
         }
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
