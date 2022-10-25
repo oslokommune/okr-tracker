@@ -1,6 +1,6 @@
 import { select } from 'd3-selection';
 import { scaleTime, scaleLinear } from 'd3-scale';
-import { extent, max, min } from 'd3-array';
+import { max, min } from 'd3-array';
 import { line, area, symbol, symbolCircle } from 'd3-shape';
 import { axisLeft, axisBottom } from 'd3-axis';
 import 'd3-transition';
@@ -77,34 +77,19 @@ export default class LineChart {
       this.theme = theme;
     }
 
-    const lowestValue = min(progress, d => d.value);
-    const highestValue = max(progress, d => d.value);
+    if (typeof(startValue) !== 'number') {
+      startValue = min(progress, d => d.value);
+    }
 
-    startValue = typeof(startValue) === 'number' ? startValue : lowestValue;
-    targetValue = typeof(targetValue) === 'number' ? targetValue : highestValue;
+    if (typeof(targetValue) !== 'number') {
+      targetValue = max(progress, d => d.value);
+    }
+
+    this.x.domain([startDate, endDate]);
+    this.y.domain([startValue, targetValue]).nice();
 
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
-
-    this.x.domain([startDate, endDate]);
-
-    if (startValue > targetValue) {
-      this.y.domain(
-        extent([
-          startValue < highestValue ? highestValue : startValue,
-          lowestValue < targetValue ? lowestValue : targetValue,
-        ])
-      );
-    } else {
-      this.y.domain(
-        extent([
-          startValue,
-          startValue < targetValue && highestValue > targetValue
-            ? highestValue
-            : targetValue,
-        ])
-      );
-    }
 
     const innerWidth = this.width - padding.left - padding.right;
 
