@@ -12,7 +12,6 @@
             input-type="input"
             name="value"
             :label="$t('widget.history.value')"
-            class="progress-form__value-input"
             rules="required"
             type="number"
             data-cy="progress_value"
@@ -26,6 +25,7 @@
             :placeholder="$t('keyResult.commentPlaceholder')"
             type="number"
             data-cy="progress_comment"
+            class="progress-form__comment-group"
           />
         </div>
 

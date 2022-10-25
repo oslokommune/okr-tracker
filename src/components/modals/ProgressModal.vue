@@ -12,7 +12,6 @@
             input-type="input"
             name="value"
             :label="$t('widget.history.value')"
-            class="progress-form__value-input"
             rules="required"
             type="number"
             data-cy="progress_value"
@@ -26,6 +25,7 @@
             :placeholder="$t('keyResult.commentPlaceholder')"
             type="number"
             data-cy="progress_comment"
+            class="progress-form__comment-group"
           />
         </div>
 
@@ -139,10 +139,20 @@ export default {
 
   &__left {
     display: flex;
-    flex-grow: 1;
     flex-direction: column;
-    justify-content: space-between;
+    flex-grow: 1;
     padding-right: 1rem;
+  }
+
+  ::v-deep &__comment-group {
+    flex-grow: 1;
+
+    .form-group {
+      height: calc(100% - 3rem);
+    }
+    .form-input__wrapper {
+      height: 100%;
+    }
   }
 
   ::v-deep input[name="value"] {
@@ -150,13 +160,11 @@ export default {
   }
   ::v-deep textarea[name="comment"] {
     resize: vertical;
-    height: 195px;
   }
   input[name="datetime"] {
     display: none;
   }
 }
-
 
 ::v-deep .flatpickr-calendar {
   border: 1px solid var(--color-primary);
