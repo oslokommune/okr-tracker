@@ -238,7 +238,7 @@
       "kpi": "Kunne ikke opprette kpi",
       "notes": "Kunne ikke oppdatere notater",
       "deleteProgress": "Kunne ikke slette målepunkt",
-      "updateProgress": "Kunne oppdatere målepunkt"
+      "updateProgress": "Kunne ikke oppdatere målepunkt"
     },
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
