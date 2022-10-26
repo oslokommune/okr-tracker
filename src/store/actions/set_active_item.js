@@ -22,7 +22,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef, co
   await dispatch('set_active_period_and_data', activePeriodRef ? activePeriodRef.id : null);
 
   // Bind KPIs
-  const kpisRef = db.collection('kpis').where('parent', '==', item);
+  const kpisRef = db.collection('kpis').where('parent', '==', item).where('archived', '==', false);
   await bindFirestoreRef('kpis', kpisRef, { maxRefDepth: 0 });
 
   return true;

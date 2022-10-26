@@ -15,6 +15,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
 
   const products = await db
         .collection('products')
+        .where('archived', '==', false)
         .where('department', '==', department)
         .limit(10)
         .get()
@@ -23,6 +24,7 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   if (products.length) {
     const subKpisRef = db
           .collection('kpis')
+          .where('archived', '==', false)
           .where('parent', 'in', products);
 
     await bindFirestoreRef('subKpis', subKpisRef, { maxRefDepth: 0 });
