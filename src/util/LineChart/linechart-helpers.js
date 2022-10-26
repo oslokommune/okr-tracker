@@ -165,7 +165,7 @@ export function populateLegend(el) {
     .style('text-anchor', 'start')
     .style('font-size', '14px')
     .style('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
-    .style('color', 'var(--color-grey-700)');
+    .style('fill', 'var(--color-grey-700)');
 
   item.attr('transform', (d, i) => {
     const x = sum(item.data(), (e, j) => {
