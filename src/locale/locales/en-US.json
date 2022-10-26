@@ -53,10 +53,13 @@
       "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
     },
     "goals": {
+      "goals": "Goals",
       "new": "New goal",
       "set": "Set goals",
       "edit": "Edit goals",
-      "the": "the goal"
+      "the": "the goal",
+      "help": "KPIs can have goals for specific periods. As of now, only goals for result indicators are shown on the dashboard, but this is subject to change.",
+      "for": "Goal for"
     }
   },
   "fields": {

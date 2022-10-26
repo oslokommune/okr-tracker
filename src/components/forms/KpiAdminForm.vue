@@ -1,5 +1,11 @@
 <template>
   <div>
+    <edit-goals-modal
+      v-if="showEditGoalsModal"
+      :kpi="localKpi"
+      @close="showEditGoalsModal = false"
+    />
+
     <validation-observer v-slot="{ handleSubmit }" tag="form">
       <form-component
         v-model="localKpi.name"
@@ -61,6 +67,21 @@
           </div>
         </div>
       </validation-provider>
+
+      <hr class="ods-hr" />
+
+      <div class="goal-section">
+        <h3>{{ $t('kpi.goals.goals') }}</h3>
+        <div class="content-wrapper">
+          <span>{{ $t('kpi.goals.help') }}</span>
+          <button
+            class="btn btn--sec"
+            @click="$event.preventDefault(); showEditGoalsModal = true"
+          >
+            {{ $t('kpi.goals.set') }}
+          </button>
+        </div>
+      </div>
 
       <hr class="ods-hr" />
 
@@ -181,6 +202,7 @@
 <script>
 import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 
 export default {
   name: 'KpiAdminForm',
@@ -188,6 +210,7 @@ export default {
   components: {
     BtnSave,
     BtnDelete,
+    EditGoalsModal,
   },
 
   props: {
@@ -207,6 +230,7 @@ export default {
     localKpi: null,
     formats: kpiFormats(),
     types: kpiTypes(),
+    showEditGoalsModal: false,
   }),
 
   computed: {
@@ -269,3 +293,32 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.goal-section {
+  h3 {
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+
+    @media screen and (min-width: bp(s)) {
+      flex-direction: row;
+      gap: 2rem;
+    }
+  }
+
+  button {
+    align-self: flex-end;
+
+    @media screen and (min-width: bp(s)) {
+      align-self: inherit;
+    }
+  }
+}
+</style>

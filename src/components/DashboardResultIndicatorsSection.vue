@@ -56,13 +56,9 @@
             {{ formatResultIndicatorValue(latestProgressRecord.value) }}
           </span>
         </div>
-        <div v-if="resultIndicatorTarget">
-          <span class="progressTarget__title">{{
-            resultIndicatorTarget.name[$i18n.locale]
-          }}</span>
-          <span class="progressTarget__value">{{
-            formatResultIndicatorValue(resultIndicatorTarget.value)
-          }}</span>
+        <div v-if="goal">
+          <span class="progressTarget__title">{{ $t('kpi.goals.for') }} {{ goal.name }}</span>
+          <span class="progressTarget__value">{{ goal.value }}</span>
         </div>
       </div>
     </tab-panel>
@@ -97,7 +93,6 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
-import KPI_TARGETS from '@/views/Dashboard/data/staticData';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import IconDownload from './IconDownload.vue';
@@ -151,6 +146,7 @@ export default {
     activeTab: 0,
     downloadOption: '',
     progressCollection: [],
+    goal: null,
     latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
@@ -175,13 +171,6 @@ export default {
   computed: {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
-    /*
-     * TODO: RI targets are still hard coded.
-     */
-    resultIndicatorTarget() {
-      const ri = this.getActiveRI();
-      return ri ? KPI_TARGETS[ri.id] : null;
-    },
     tabIds() {
       return tabIdsHelper('resultIndicator');
     },
@@ -251,8 +240,8 @@ export default {
       immediate: true,
       async handler() {
         this.latestProgressRecord = null;
-
         this.getProgressData().then(this.renderGraph);
+        this.getGoal().then((goal) => this.goal = goal);
       },
     },
     progressCollection: {
@@ -330,6 +319,28 @@ export default {
           this.progressCollection
         );
       }
+    },
+
+    /**
+     * Return a current goal for the active RI if any, else return
+     * null.
+     */
+    async getGoal() {
+      const ri = this.getActiveRI();
+      const now = new Date();
+
+      let goals = await db.collection(`kpis/${ri.id}/goals`)
+          .where('toDate', '>', now)
+          .orderBy('toDate')
+          .get();
+
+      // Firebase doesn't support equality filtering on more than one field at a
+      // time, so do the rest of the filtering client side.
+      goals = goals.docs.filter((goal) => goal.get('fromDate').toDate() < now);
+
+      // We don't enforce non-overlapping goals (yet?), but if anyone has set
+      // overlapping goals, just pick the one with the closest end date.
+      return goals.length ? goals[0].data() : null;
     },
 
     /**

@@ -79,6 +79,7 @@ import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import ModalWrapper from './ModalWrapper.vue';
 import { toastArchiveAndRevert } from '@/util';
+import endOfDay from 'date-fns/endOfDay';
 
 export default {
   name: 'ProgressModal',
@@ -127,7 +128,9 @@ export default {
     },
 
     async dateSelected(period) {
-      [this.fromDate, this.toDate] = period;
+      const [fromDate, toDate] = period;
+      this.fromDate = fromDate;
+      this.toDate = endOfDay(toDate);
     },
 
     async addGoal(kpi) {

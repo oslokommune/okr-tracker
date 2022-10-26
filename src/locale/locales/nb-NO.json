@@ -53,10 +53,13 @@
       "tooltip": "Skru på denne hvis du har planer om å oppdatere KPI-en selv via OKR-tracker sitt API. Du kan fortsatt oppdatere manuelt også."
     },
     "goals": {
+      "goals": "Mål",
       "new": "Nytt mål",
       "set": "Sett mål",
       "edit": "Rediger mål",
-      "the": "målet"
+      "the": "målet",
+      "help": "KPI-er kan ha mål for bestemte perioder. Foreløpig vises kun mål for resultatindikatorer på dashbordet, men dette vil kunne endres på sikt.",
+      "for": "Mål for"
     }
   },
   "fields": {
