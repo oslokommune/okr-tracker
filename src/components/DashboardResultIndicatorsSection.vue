@@ -363,7 +363,8 @@ export default {
 
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
-          height: 450,
+          height: 550,
+          legend: true,
           tooltips: true,
         });
       }
@@ -517,7 +518,7 @@ export default {
 }
 
 .progressGraph {
-  padding: 1rem 1.5rem 1.5rem 0.25rem;
+  padding: 1rem 1.5rem 0 0.25rem;
 }
 
 .progressTarget {

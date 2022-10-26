@@ -143,7 +143,9 @@
     "departmentObjectives": "Department objectives",
     "departmentAbout": "About",
     "dashboardEntry": "Go to dashboard",
-    "keyFigures": "KPIs"
+    "keyFigures": "KPIs",
+    "value": "Value",
+    "target": "Target"
   },
   "btn": {
     "close": "Close",
