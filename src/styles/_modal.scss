@@ -22,7 +22,7 @@
   width: 100%;
   max-width: 550px;
   max-height: 100%;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1.5rem;
   overflow-y: auto;
   background: var(--color-white);
   box-shadow: 0 5px 30px -10px rgba(black, 0.2);
@@ -58,15 +58,9 @@
     }
   }
 
-  &__main {
-    display: flex;
-    flex-direction: column;
-  }
-
   &__footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 3rem;
-    font-size: 12px;
+    margin-top: 1.5rem;
   }
 }

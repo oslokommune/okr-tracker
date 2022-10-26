@@ -19,7 +19,7 @@
         <slot />
       </div>
 
-      <div class="modal__footer">
+      <div v-if="$slots.footer" class="modal__footer">
         <slot name="footer" />
       </div>
     </div>

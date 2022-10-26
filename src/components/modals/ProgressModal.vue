@@ -141,7 +141,10 @@ export default {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding-right: 1rem;
+
+    @media screen and (min-width: bp(s)) {
+      padding-right: 1.5rem;
+    }
   }
 
   ::v-deep &__comment-group {
