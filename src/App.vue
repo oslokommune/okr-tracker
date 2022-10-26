@@ -7,7 +7,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import i18n from '@/locale/i18n';
+
 import { auth } from '@/config/firebaseConfig';
 
 import AppLayout from './components/AppLayout.vue';

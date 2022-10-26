@@ -1,10 +1,12 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-mutable-exports */
+// eslint-disable-next-line import/no-unresolved
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
 import okrTrackerSlackBot from './slackbot/index.js';
 
 import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
+// eslint-disable-next-line import/no-named-as-default
 import api from './api/index.js';
 import internal from './backend/index.js';
 

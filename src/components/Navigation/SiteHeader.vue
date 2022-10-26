@@ -17,18 +17,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import ClickOutside from 'vue-click-outside';
-import { auth } from '@/config/firebaseConfig';
-import KnowitLogo from '@/components/KnowitLogo.vue';
-import ThemeToggle from '@/components/ThemeToggle.vue';
+import { mapState } from 'vuex';
+import IconMenu from '@/components/IconMenu.vue';
+import IconUser from '@/components/IconUser.vue';
 
 export default {
   name: 'SiteHeader',
 
   components: {
-    KnowitLogo,
-    ThemeToggle,
+    IconMenu,
+    IconUser,
   },
 
   props: {
@@ -58,8 +56,6 @@ export default {
       if (
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
-          parts.includes('ItemAdminOKRs') ||
-          parts.includes('ItemAdminKPIs') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome') ||
           parts.includes('KpiHome')) &&
