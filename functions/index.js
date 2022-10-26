@@ -1,5 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-mutable-exports */
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
@@ -80,9 +78,13 @@ export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 export { api, internal };
 
 // OKR-Tracker slackbot - Need to export empty functions before adding real functions because some users of the okr tracker may not want these functions to begin with
+// eslint-disable-next-line import/no-mutable-exports
 export let okrSlackBot = {};
+// eslint-disable-next-line import/no-mutable-exports
 export let slackNotificationUserRequest = {};
+// eslint-disable-next-line import/no-mutable-exports
 export let slackNotificationInteractiveRequest = {};
+
 if (isSlackActive) {
   okrSlackBot = okrTrackerSlackBot;
   slackNotificationUserRequest = slackNotificationOnUserRequest;
