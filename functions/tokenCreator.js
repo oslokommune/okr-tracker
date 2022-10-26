@@ -30,9 +30,7 @@ exports.createCustomToken = functions
     };
     return auth
       .createCustomToken(userId, additionalClaims)
-      .then((customToken) => {
-        return customToken;
-      })
+      .then((customToken) => customToken)
       .catch((error) => {
         console.log(error);
       });
