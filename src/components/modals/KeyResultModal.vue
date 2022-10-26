@@ -88,9 +88,9 @@ export default {
           comment: this.note,
           timestamp: new Date(),
         });
-        this.$toasted.show(this.$t('toaster.add.progression'));
+        this.$toasted.show(this.$t('toaster.add.progress'));
       } catch (e) {
-        this.$toasted.error(this.$t('toaster.error.progression'));
+        this.$toasted.error(this.$t('toaster.error.addProgress'));
       }
       this.loading = false;
       this.$emit('close');

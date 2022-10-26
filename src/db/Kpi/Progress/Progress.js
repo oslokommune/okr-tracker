@@ -1,4 +1,4 @@
-import { endOfDay, isSameDay, startOfDay, setHours } from 'date-fns';
+import { endOfDay, isSameDay, startOfDay, setHours, isFuture } from 'date-fns';
 import { db, auth, serverTimestamp } from '@/config/firebaseConfig';
 import props from './props';
 import { validateCreateProps } from '../../common';
@@ -51,19 +51,25 @@ const get = async (kpiId, date) => {
   }
 };
 
-const update = async (kpiId, progressValueId, data) => {
+const update = async (kpiId, data, progressValueId) => {
   const kpiCollectionRef = db.collection('kpis');
   validateCreateProps(props, data);
 
-  if (data.timestamp.getTime() > new Date().getTime()) {
+  if (isFuture(startOfDay(data.timestamp))) {
     throw new Error('Timestamp cannot be set in the future');
   }
 
   const kpiRef = await getParentRef(kpiCollectionRef, kpiId);
   const progressCollectionRef = kpiRef.collection('progress');
-  const progressValueRef = progressCollectionRef.doc(progressValueId);
+  const progressValueRef =
+    progressValueId !== undefined
+      ? progressCollectionRef.doc(progressValueId)
+      : null;
 
-  if (await progressValueRef.get().then(({ exists }) => !exists)) {
+  if (
+    progressValueRef &&
+    (await progressValueRef.get().then(({ exists }) => !exists))
+  ) {
     throw new Error(`Cannot find progress value with ID ${progressValueId}`);
   }
 
@@ -75,17 +81,20 @@ const update = async (kpiId, progressValueId, data) => {
   };
 
   try {
-    // Clean existing progress values for both original and target date.
-    // If any exists, keep `created`/`createdBy` for the new entry from
-    // latest document found for target date.
-    progressValueRef.get().then((doc) => {
-      const measurementDate = doc.data().timestamp.toDate();
-      if (!isSameDay(data.timestamp, measurementDate)) {
-        queryValuesByDate(kpiRef, measurementDate)
-          .get()
-          .then((snapshot) => batchDeleteSnapshot(snapshot));
-      }
-    });
+    // Clean existing progress values for both original (if provided) and
+    // the chosen target date. If any values exists, keep `created`/`createdBy`
+    // for the new entry from latest document found for target date.
+
+    if (progressValueRef) {
+      progressValueRef.get().then((doc) => {
+        const measurementDate = doc.data().timestamp.toDate();
+        if (!isSameDay(data.timestamp, measurementDate)) {
+          queryValuesByDate(kpiRef, measurementDate)
+            .get()
+            .then((snapshot) => batchDeleteSnapshot(snapshot));
+        }
+      });
+    }
 
     const valuesSnapshot = await queryValuesByDate(
       kpiRef,

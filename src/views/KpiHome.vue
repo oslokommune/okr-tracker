@@ -25,15 +25,26 @@
 
         <div class="main-widgets">
           <div v-if="activeKpi.valid" class="main-widgets__current">
-            <h3 class="title-3">
-              {{ $t('kpi.currentValue') }}
-            </h3>
-            <div class="main-widgets__current--value">
-              {{
-                filteredProgress.length
-                  ? formatKPIValue(activeKpi, filteredProgress[0].value)
-                  : formatKPIValue(activeKpi)
-              }}
+            <div>
+              <h3 class="title-3">
+                {{ $t('kpi.currentValue') }}
+              </h3>
+              <div class="main-widgets__current--value">
+                {{
+                  filteredProgress.length
+                    ? formatKPIValue(activeKpi, filteredProgress[0].value)
+                    : formatKPIValue(activeKpi)
+                }}
+              </div>
+            </div>
+            <div v-if="hasEditRights">
+              <button
+                class="btn btn--ter btn--icon btn--fw"
+                @click="showValueModal = true"
+              >
+                <i class="icon fa fa-plus" />
+                <span>{{ $t('kpi.newValue') }}</span>
+              </button>
             </div>
           </div>
 
@@ -59,10 +70,16 @@
           :value-formatter="_formatKPIValue"
           :date-formatter="dateShort"
           :no-values-message="$t('empty.noKPIProgress')"
-          @update-record="updateHistoryRecord"
-          @delete-record="deleteHistoryRecord"
+          @update-record="updateProgressRecord"
+          @delete-record="deleteProgressRecord"
         />
       </div>
+
+      <progress-modal
+        v-if="showValueModal"
+        @create-record="createProgressRecord"
+        @close="showValueModal = false"
+      />
     </div>
 
     <widgets-k-p-i-home
@@ -91,6 +108,7 @@ export default {
   name: 'KpiHome',
 
   components: {
+    ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
     WidgetMissionStatement,
     WidgetTeam,
@@ -106,6 +124,7 @@ export default {
     filteredProgress: [],
     isFiltered: false,
     isLoading: false,
+    showValueModal: false,
   }),
 
   computed: {
@@ -146,9 +165,20 @@ export default {
     dateShort,
     formatKPIValue,
 
-    async updateHistoryRecord(id, data, modalCloseHandler) {
+    async createProgressRecord(data, modalCloseHandler) {
       try {
-        await Progress.update(this.activeKpi.id, id, data);
+        await Progress.update(this.activeKpi.id, data);
+        this.$toasted.show(this.$t('toaster.add.progress'));
+      } catch (e) {
+        this.$toasted.error(this.$t('toaster.error.addProgress'));
+      } finally {
+        modalCloseHandler();
+      }
+    },
+
+    async updateProgressRecord(id, data, modalCloseHandler) {
+      try {
+        await Progress.update(this.activeKpi.id, data, id);
         this.$toasted.show(this.$t('toaster.update.progress'));
       } catch (e) {
         this.$toasted.error(this.$t('toaster.error.updateProgress'));
@@ -157,7 +187,7 @@ export default {
       }
     },
 
-    async deleteHistoryRecord(id) {
+    async deleteProgressRecord(id) {
       try {
         await Progress.remove(this.activeKpi.id, id);
         this.$toasted.show(this.$t('toaster.delete.progress'));
@@ -273,12 +303,20 @@ export default {
 }
 
 .main-widgets__current {
-  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   width: span(12);
 
   padding: 1rem;
   background: var(--color-secondary);
   box-shadow: 0 2px 3px rgba(black, 0.1);
+
+  @media screen and (min-width: bp(s)) {
+    justify-content: space-between;
+    flex-direction: row;
+  }
 }
 
 .main-widgets__current--value {

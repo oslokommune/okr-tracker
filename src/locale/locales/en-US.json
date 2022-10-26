@@ -16,6 +16,8 @@
     "change": "Change KPI",
     "currentValue": "Current value",
     "progress": "Progress",
+    "newValue": "New value",
+    "editValue": "Edit value",
     "description": "Description",
     "display": "Display",
     "formats": {
@@ -70,7 +72,8 @@
     "password": "Password",
     "secret": "API Secret",
     "comment": "Comment",
-    "format": "Display"
+    "format": "Display",
+    "timestamp": "Timestamp"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
@@ -206,12 +209,12 @@
       "users": "Add user | {count} users",
       "product": "Created new product. Please wait, you will be redirected in 5 seconds",
       "objective": "Created an objective for {period}",
-      "progression": "Created new value",
       "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
       "period": "Created new period",
       "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
-      "kpi": "Created new KPI"
+      "kpi": "Created new KPI",
+      "progress": "Created new value"
     },
     "delete": {
       "user": "Deleted user {user}",
@@ -237,10 +240,10 @@
       "product": "Could not create product",
       "users": "Could not add user | users",
       "user": "Could not delete user {user}",
-      "progression": "Could not add value",
       "email": "Invalid email address",
       "kpi": "Could not create KPI",
       "notes": "Could not update notes",
+      "addProgress": "Could not add value",
       "deleteProgress": "Could not delete value",
       "updateProgress": "Could not update value"
     },
@@ -266,6 +269,7 @@
     "targetValue": "Target value",
     "unit": "Unit of measurement",
     "newValue": "New value",
+    "editValue": "Edit value",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
       "readMore": "Learn more",
