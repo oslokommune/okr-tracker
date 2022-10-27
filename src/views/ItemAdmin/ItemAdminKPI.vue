@@ -149,7 +149,7 @@
         </form-component>
 
         <div class="button-row">
-          <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
+          <button class="btn btn--danger" @click="archive($event, localKpi)">{{ $t('btn.delete') }}</button>
           <button class="btn btn--primary" :form="`kpi_${localKpi.id}`">
             <i class="icon fa fa-fw fa-save" />
             {{ $t('btn.saveChanges') }}
@@ -165,6 +165,7 @@ import { mapState } from 'vuex';
 import IconArrowCircle from '@/assets/IconArrowCircle.vue';
 import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
+import { toastArchiveAndRevert } from '@/util';
 
 export default {
   name: 'ItemAdminKPI',
@@ -219,12 +220,30 @@ export default {
       }
     },
 
-    async deleteDeep(kpi) {
+    async archive(e, kpi) {
+      e.preventDefault();
+
       try {
-        await Kpi.deleteDeep(kpi.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
+        await Kpi.archive(kpi.id);
+
+        const restoreCallback = this.restore.bind(this, kpi);
+
+        toastArchiveAndRevert({ name: kpi.name, callback: restoreCallback });
       } catch {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: kpi.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: kpi.name })
+        );
+      }
+    },
+
+    async restore(kpi) {
+      try {
+        await Kpi.restore(kpi.id);
+        this.$toasted.show(this.$t('toaster.restored'));
+      } catch {
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: kpi.name })
+        );
       }
     },
 
