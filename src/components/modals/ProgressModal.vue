@@ -1,11 +1,15 @@
 <template>
-  <modal-wrapper v-if="record" variant="wide" @close="close">
+  <modal-wrapper variant="wide" @close="close">
     <template #header>
-      {{ $t('tooltip.editProgress') }}
+      {{ $t(record ? 'keyResult.editValue' : 'keyResult.newValue') }}
     </template>
 
     <validation-observer v-slot="{ handleSubmit }">
-      <form id="progress-value" class="progress-form" @submit.prevent="handleSubmit(update)">
+      <form
+        id="progress-value"
+        class="progress-form"
+        @submit.prevent="handleSubmit(save)"
+      >
         <div class="progress-form__left">
           <form-component
             v-model="thisRecord.value"
@@ -54,7 +58,7 @@
 
     <template #footer>
       <button form="progress-value" :disabled="loading" class="btn btn--pri">
-        {{ $t('btn.saveChanges') }}
+        {{ $t(record ? 'btn.saveChanges' : 'btn.save') }}
       </button>
     </template>
   </modal-wrapper>
@@ -74,7 +78,8 @@ export default {
   props: {
     record: {
       type: Object,
-      required: true,
+      required: false,
+      default: null,
     },
   },
 
@@ -95,6 +100,16 @@ export default {
     },
   }),
 
+  computed: {
+    formattedData() {
+      return {
+        value: parseFloat(this.thisRecord.value),
+        timestamp: new Date(this.thisRecord.timestamp),
+        comment: this.thisRecord.comment || '',
+      };
+    },
+  },
+
   watch: {
     record: {
       immediate: true,
@@ -104,22 +119,33 @@ export default {
             ...this.record,
             timestamp: this.record.timestamp.toDate(),
           };
+        } else {
+          this.thisRecord = {
+            timestamp: this.flatPickerConfig.maxDate,
+          };
         }
       },
     },
   },
 
   methods: {
-    async update() {
+    async save() {
+      if (this.record) {
+        this.updateRecord();
+      } else {
+        this.createRecord();
+      }
+    },
+    async createRecord() {
+      this.loading = true;
+      this.$emit('create-record', this.formattedData, this.close);
+    },
+    async updateRecord() {
       this.loading = true;
       this.$emit(
         'update-record',
         this.record.id,
-        {
-          value: parseFloat(this.thisRecord.value),
-          timestamp: new Date(this.thisRecord.timestamp),
-          comment: this.thisRecord.comment || '',
-        },
+        this.formattedData,
         this.close
       );
     },
@@ -158,13 +184,13 @@ export default {
     }
   }
 
-  ::v-deep input[name="value"] {
+  ::v-deep input[name='value'] {
     font-size: 1.5rem;
   }
-  ::v-deep textarea[name="comment"] {
+  ::v-deep textarea[name='comment'] {
     resize: vertical;
   }
-  input[name="datetime"] {
+  input[name='datetime'] {
     display: none;
   }
 }

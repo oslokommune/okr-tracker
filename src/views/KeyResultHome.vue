@@ -336,10 +336,10 @@ export default {
             timestamp: new Date(),
           }
         );
-        this.$toasted.show(this.$t('toaster.add.progression'));
+        this.$toasted.show(this.$t('toaster.add.progress'));
       } catch (e) {
         console.log(e);
-        this.$toasted.error(this.$t('toaster.error.progression'));
+        this.$toasted.error(this.$t('toaster.error.addProgress'));
       } finally {
         this.isSaving = false;
       }

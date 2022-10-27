@@ -1,11 +1,15 @@
 <template>
-  <modal-wrapper v-if="record" variant="wide" @close="close">
+  <modal-wrapper variant="wide" @close="close">
     <template #header>
-      {{ $t('tooltip.editProgress') }}
+      {{ $t(record ? 'kpi.editValue' : 'kpi.newValue') }}
     </template>
 
     <validation-observer v-slot="{ handleSubmit }">
-      <form id="progress-value" class="progress-form" @submit.prevent="handleSubmit(update)">
+      <form
+        id="progress-value"
+        class="progress-form"
+        @submit.prevent="handleSubmit(save)"
+      >
         <div class="progress-form__left">
           <form-component
             v-model="thisRecord.value"
@@ -67,8 +71,8 @@
     </div>
 
     <template #footer>
-      <button form="progress-value" :disabled="loading" class="btn btn--pri">
-        {{ $t('btn.saveChanges') }}
+      <button form="progress-value" :disabled="loading" class="btn btn--ods">
+        {{ $t(record ? 'btn.saveChanges' : 'btn.save') }}
       </button>
     </template>
   </modal-wrapper>
@@ -77,6 +81,7 @@
 <script>
 import { mapState } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
+import { endOfDay } from 'date-fns';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
@@ -93,7 +98,7 @@ export default {
       altInput: false,
       enableTime: false,
       locale: locale.no,
-      maxDate: new Date(),
+      maxDate: endOfDay(new Date()),
       minDate: null,
       mode: 'single',
       inline: true,
@@ -102,6 +107,10 @@ export default {
 
   computed: {
     ...mapState(['activeKpi']),
+  },
+
+  mounted() {
+    this.onDateSelected();
   },
 
   methods: {
@@ -116,10 +125,16 @@ export default {
         new Date(this.thisRecord.timestamp)
       );
 
-      this.existingValue =
-        existingValueSnapshot && existingValueSnapshot.id !== this.record.id
-          ? existingValueSnapshot.data()
-          : null;
+      if (
+        existingValueSnapshot &&
+        (!this.record ||
+          (this.record && existingValueSnapshot.id !== this.record.id))
+      ) {
+        this.existingValue = existingValueSnapshot.data();
+        return;
+      }
+
+      this.existingValue = null;
     },
   },
 };

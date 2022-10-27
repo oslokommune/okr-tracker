@@ -16,6 +16,8 @@
     "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
     "progress": "Progresjon",
+    "newValue": "Legg til målepunkt",
+    "editValue": "Endre målepunkt",
     "description": "Beskrivelse",
     "display": "Visning",
     "formats": {
@@ -203,12 +205,12 @@
       "users": "Lagt til en bruker | {count} brukere",
       "product": "Opprettet nytt produkt. Vennligst vent, du blir sendt videre om 5 sekunder",
       "objective": "Lagt til nytt mål for {period}",
-      "progression": "Lagt til ny verdi",
       "department": "Opprettet nytt produktområde. Vennligst vent, du blir sendt videre om 5 sekunder",
       "keyResult": "Lagt til nytt nøkkelresultat",
       "period": "Opprettet ny periode",
       "organization": "Opprettet ny organisasjon. Vennligst vent, du blir sendt videre om 5 sekunder",
-      "kpi": "Opprettet ny KPI"
+      "kpi": "Opprettet ny KPI",
+      "progress": "Lagt til ny verdi"
     },
     "delete": {
       "user": "Slettet bruker {user}",
@@ -234,10 +236,10 @@
       "product": "Kunne ikke opprette produkt",
       "users": "Kunne ikke legge til bruker | brukere",
       "user": "Kunne ikke slette bruker: {user}",
-      "progression": "Kunne ikke legge til ny verdi",
       "email": "Ugyldige e-postadresser",
       "kpi": "Kunne ikke opprette kpi",
       "notes": "Kunne ikke oppdatere notater",
+      "addProgress": "Kunne ikke legge til ny verdi",
       "deleteProgress": "Kunne ikke slette målepunkt",
       "updateProgress": "Kunne ikke oppdatere målepunkt"
     },
@@ -263,6 +265,7 @@
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
     "newValue": "Ny verdi",
+    "editValue": "Endre verdi",
     "automation": {
       "header": "Automatisk registrering av progresjon (Google Sheets)",
       "readMore": "Les mer",
