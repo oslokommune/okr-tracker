@@ -121,7 +121,7 @@ export default {
           };
         } else {
           this.thisRecord = {
-            timestamp: new Date(),
+            timestamp: this.flatPickerConfig.maxDate,
           };
         }
       },
