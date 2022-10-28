@@ -1,7 +1,7 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-dashbord-entry :slug="activeItem.slug" />
+      <widget-dashboard-entry v-if="isDepartment(activeItem)" :slug="activeItem.slug" />
       <widget-admin />
       <widget-wrapper
         :title="
@@ -33,6 +33,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { isDepartment } from '@/util/getActiveItemType';
 
 export default {
   name: 'WidgetsItemHomeRight',
@@ -42,12 +43,13 @@ export default {
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetAdmin: () => import('./WidgetAdmin.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
-    WidgetDashbordEntry: () =>
-      import('@/components/widgets/WidgetDashbordEntry.vue'),
+    WidgetDashboardEntry: () =>
+      import('@/components/widgets/WidgetDashboardEntry.vue'),
   },
 
   data: () => ({
     disabled: false,
+    isDepartment
   }),
 
   computed: {
