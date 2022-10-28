@@ -49,10 +49,11 @@ export async function updateKPIProgressionValue(kpiRef, date, value) {
   };
 
   if (!valuesSnapshot.empty) {
-    const { created, createdBy } = valuesSnapshot.docs[0].data();
+    const { comment, created, createdBy } = valuesSnapshot.docs[0].data();
 
     data = {
       ...data,
+      comment: comment || null,
       created: created || null,
       createdBy: createdBy || null,
       edited: new Date(),
