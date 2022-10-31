@@ -33,9 +33,7 @@
     </validation-observer>
 
     <template #footer>
-      <button form="modal" :disabled="loading" class="btn btn--ods">
-        {{ $t('btn.saveChanges') }}
-      </button>
+      <btn-save form="modal" :disabled="loading" />
     </template>
   </modal-wrapper>
 </template>
@@ -44,12 +42,14 @@
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import ModalWrapper from './ModalWrapper.vue';
+import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
   name: 'KeyResultModal',
 
   components: {
     ModalWrapper,
+    BtnSave,
   },
 
   props: {

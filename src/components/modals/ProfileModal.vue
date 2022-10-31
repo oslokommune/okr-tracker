@@ -34,14 +34,12 @@
           </div>
         </label>
 
-        <button
+        <btn-save
           v-if="me || $store.state.user.superAdmin"
-          class="btn btn--pri profileModal__save-button"
           form="updateUser"
+          class="profileModal__save-button"
           :disabled="loading"
-        >
-          {{ $t('btn.save') }}
-        </button>
+        />
       </div>
 
       <div class="column">
@@ -66,12 +64,14 @@ import { db, auth } from '@/config/firebaseConfig';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
 import ModalWrapper from './ModalWrapper.vue';
+import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ProfileModal',
 
   components: {
     ModalWrapper,
+    BtnSave,
   },
 
   props: {

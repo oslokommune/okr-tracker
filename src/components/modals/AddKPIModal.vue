@@ -152,9 +152,13 @@
     </validation-observer>
 
     <template #footer>
-      <button form="addKpi" :disabled="loading" class="btn btn--pri">
-        {{ $t('btn.add') }}
-      </button>
+      <btn-save
+        form="addKpi"
+        variant="primary"
+        class="profileModal__save-button"
+        :label="$t('btn.add')"
+        :disabled="loading"
+      />
     </template>
   </modal-wrapper>
 </template>
@@ -164,12 +168,14 @@ import { mapState } from 'vuex';
 import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import ModalWrapper from './ModalWrapper.vue';
+import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
   name: 'AddKPIModal',
 
   components: {
     ModalWrapper,
+    BtnSave,
   },
 
   data: () => ({
@@ -224,9 +230,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.btn--space {
-  margin-left: 1rem;
-}
-</style>

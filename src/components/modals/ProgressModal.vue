@@ -57,9 +57,11 @@
     </validation-observer>
 
     <template #footer>
-      <button form="progress-value" :disabled="loading" class="btn btn--pri">
-        {{ $t(record ? 'btn.saveChanges' : 'btn.save') }}
-      </button>
+      <btn-save
+        form="progress-value"
+        :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
+        :disabled="loading"
+      />
     </template>
   </modal-wrapper>
 </template>
@@ -67,12 +69,14 @@
 <script>
 import locale from 'flatpickr/dist/l10n/no';
 import ModalWrapper from './ModalWrapper.vue';
+import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ProgressModal',
 
   components: {
     ModalWrapper,
+    BtnSave,
   },
 
   props: {
