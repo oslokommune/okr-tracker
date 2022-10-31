@@ -165,7 +165,7 @@
     "minimize": "Minimer",
     "expand": "Ekspander",
     "restore": "Gjenopprett",
-    "confirmDeleteProgress": "Bekreft sletting",
+    "confirmDelete": "Bekreft sletting",
     "reset": "Nullstill",
     "showMore": "Vis mer",
     "syncData": "Synkroniser data"

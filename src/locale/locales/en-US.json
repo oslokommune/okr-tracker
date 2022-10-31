@@ -169,7 +169,7 @@
     "minimize": "Minimize",
     "expand": "Expand",
     "restore": "Restore",
-    "confirmDeleteProgress": "Confirm delete",
+    "confirmDelete": "Confirm delete",
     "reset": "Reset",
     "showMore": "Show more",
     "syncData": "Synchronize data"
