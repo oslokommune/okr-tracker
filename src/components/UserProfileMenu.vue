@@ -31,13 +31,11 @@
         </label>
       </validation-observer>
 
-      <button
-        class="btn btn--icon btn--pri btn--icon-pri profileModal__save-button"
+      <btn-save
         form="updateUser"
+        class="profileModal__save-button"
         :disabled="loading"
-      >
-        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.save') }}
-      </button>
+      />
 
       <hr class="divider" />
 
@@ -97,12 +95,14 @@
   import ThemeToggle from '@/components/ThemeToggle.vue';
   import User from '@/db/User';
   import { jobPositions } from '@/config/jobPositions';
+  import { BtnSave } from '@/components/generic/form/buttons';
 
   export default {
     name: 'UserProfileMenu',
 
     components: {
       ThemeToggle,
+      BtnSave,
     },
 
     props: {
@@ -286,11 +286,6 @@
     @media screen and (min-width: bp(m)) {
       display: none;
     }
-  }
-
-  .btn--pri {
-    color: var(--color-text);
-    background: var(--color-green);
   }
 </style>
 <style lang="scss">
