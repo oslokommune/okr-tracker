@@ -147,16 +147,13 @@
             <span class="form-help">Push updates with curl</span>
           </template>
         </form-component>
-
-        <div class="button-row">
-          <button class="btn btn--danger" @click="archive($event, localKpi)">{{ $t('btn.delete') }}</button>
-          <button class="btn btn--primary" :form="`kpi_${localKpi.id}`">
-            <i class="icon fa fa-fw fa-save" />
-            {{ $t('btn.saveChanges') }}
-          </button>
-        </div>
       </form>
     </validation-observer>
+
+    <div class="button-row">
+      <btn-delete :icon-only="true" @click="archive($event, localKpi)" />
+      <btn-save :form="`kpi_${localKpi.id}`" />
+    </div>
   </div>
 </template>
 
@@ -166,11 +163,14 @@ import IconArrowCircle from '@/assets/IconArrowCircle.vue';
 import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import { toastArchiveAndRevert } from '@/util';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ItemAdminKPI',
 
   components: {
+    BtnSave,
+    BtnDelete,
     IconArrowCircle,
   },
 
@@ -310,25 +310,6 @@ export default {
   padding: 0.5rem;
   background: var(--color-red);
   border-radius: 2px;
-}
-
-.btn--primary {
-  color: var(--color-text);
-  background: var(--color-green);
-}
-
-.btn--danger {
-  color: var(--color-text);
-  background: transparent;
-}
-
-.icon {
-  padding-right: 0.3rem;
-}
-
-.button-row {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .button-sync-row {

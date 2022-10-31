@@ -78,14 +78,12 @@
     </validation-observer>
 
     <div class="button-row">
-      <button v-if="!activeItem.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.delete') }}
-      </button>
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading">
-        <i class="icon fa fa-fw fa-save" />
-        {{ $t('btn.saveChanges') }}
-      </button>
+      <btn-delete
+        v-if="!activeItem.archived"
+        :disabled="loading"
+        @click="archive"
+      />
+      <btn-save form="update-item" :disabled="loading" />
     </div>
   </div>
 </template>
@@ -97,12 +95,15 @@ import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { toastArchiveAndRevert } from '@/util';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ItemAdminGeneral',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    BtnSave,
+    BtnDelete,
   },
 
   data: () => ({
@@ -237,21 +238,6 @@ export default {
 
   @media screen and (min-width: bp(xl)) {
     width: span(6, 0, span(10));
-  }
-
-  .btn--pri {
-    color: var(--color-text);
-    background: var(--color-green);
-  }
-
-  .btn--archive {
-    color: var(--color-text);
-    background: transparent;
-  }
-
-  .button-row {
-    display: flex;
-    justify-content: flex-end;
   }
 }
 </style>

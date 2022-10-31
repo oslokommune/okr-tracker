@@ -73,21 +73,12 @@
     </validation-observer>
 
     <div class="button-row">
-      <button
+      <btn-delete
         v-if="!objective.archived"
-        class="btn btn--icon btn--archive"
         :disabled="loading"
         @click="archive"
-      >
-        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.delete') }}
-      </button>
-      <button
-        class="btn btn--icon btn--pri btn--icon-pri"
-        form="update-objective"
-        :disabled="loading"
-      >
-        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
-      </button>
+      />
+      <btn-save form="update-objective" :disabled="loading" />
     </div>
   </div>
 </template>
@@ -97,6 +88,7 @@ import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
 import { toastArchiveAndRevert } from '@/util';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ItemAdminObjective',
@@ -105,6 +97,8 @@ export default {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    BtnSave,
+    BtnDelete,
   },
 
   props: {
@@ -230,21 +224,6 @@ export default {
   @media screen and (min-width: bp(xl)) {
     width: span(3, 0, span(10));
     margin-left: span(1, 2, span(10));
-  }
-
-  .btn--pri {
-    color: var(--color-text);
-    background: var(--color-green);
-  }
-
-  .btn--archive {
-    color: var(--color-text);
-    background: transparent;
-  }
-
-  .button-row {
-    display: flex;
-    justify-content: flex-end;
   }
 }
 </style>

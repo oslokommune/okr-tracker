@@ -46,18 +46,15 @@
     </div>
 
     <div class="selected-user__footer button-row">
-      <button
-        class="btn btn--delete-user"
+      <btn-delete
         :disabled="user.email === selectedUser.email || loading"
         @click="remove(selectedUser)"
-      >
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.deleteUser') }}
-      </button>
-      <button class="btn btn--pri" form="user-form" :disabled="loading">
-        <i class="icon fa fa-fw fa-save" />
-        {{ $t('btn.saveChanges') }}
-      </button>
+      />
+      <btn-save
+        form="user-form"
+        :label="$t('btn.saveChanges')"
+        :disabled="loading"
+      />
     </div>
   </div>
 </template>
@@ -66,9 +63,15 @@
 import { mapState } from 'vuex';
 import User from '@/db/User';
 import { db } from '@/config/firebaseConfig';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'EditUser',
+
+  components: {
+    BtnSave,
+    BtnDelete,
+  },
 
   props: {
     selectedUser: {
@@ -169,20 +172,5 @@ export default {
   object-fit: cover;
   background: white;
   border-radius: 2rem;
-}
-
-.btn--pri {
-  color: var(--color-text);
-  background: var(--color-green);
-}
-
-.btn--delete-user {
-  color: var(--color-text);
-  background: transparent;
-}
-
-.button-row {
-  display: flex;
-  justify-content: flex-end;
 }
 </style>
