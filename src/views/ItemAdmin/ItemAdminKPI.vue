@@ -1,5 +1,5 @@
 <template>
-  <div class="kpi">
+  <div :class="['form-card', { 'form-card--error': !!kpi.error }]">
     <div class="kpi__validation">
       <div v-if="localKpi.error" class="kpi__error">
         <i class="fa fa-exclamation-triangle" />
@@ -274,18 +274,6 @@ export default {
 
   & > .form-group {
     margin: 0;
-  }
-}
-
-.kpi {
-  max-width: 30rem;
-  padding: 1rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
-
-  &--error {
-    box-shadow: 0 0 2px 3px rgba(var(--color-red-rgb), 0.4);
   }
 }
 
