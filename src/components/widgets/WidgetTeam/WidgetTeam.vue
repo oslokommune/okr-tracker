@@ -1,91 +1,19 @@
 <template>
   <widget v-if="activeItem.team" :title="$t('general.team')">
     <empty-state
-      v-if="!activeItem.team.length"
+      v-if="!teamMembers"
       :icon="'user-ninja'"
       :heading="$t('empty.team.heading')"
       :body="$t('empty.team.body')"
     />
 
-    <template v-if="director">
-      <role-members
-        :role="$t('user.position.groups.director')"
-        :members-with-role="new Array(director)"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="departmentDirector">
-      <role-members
-        :role="$t('user.position.groups.departmentDirector')"
-        :members-with-role="new Array(departmentDirector)"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="productOwner">
-      <role-members
-        :role="$t('user.position.groups.productOwner')"
-        :members-with-role="new Array(productOwner)"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="teamLead">
-      <role-members
-        :role="$t('user.position.groups.teamLead')"
-        :members-with-role="new Array(teamLead)"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="techLead">
-      <role-members
-        :role="$t('user.position.groups.techLead')"
-        :members-with-role="new Array(techLead)"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="designLead">
-      <role-members
-        :role="$t('user.position.groups.designLead')"
-        :members-with-role="new Array(designLead)"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="designers.length > 0">
-      <role-members
-        :role="$t('user.position.groups.designers')"
-        :members-with-role="designers"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="developers.length > 0">
-      <role-members
-        :role="$t('user.position.groups.developers')"
-        :members-with-role="developers"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="administration.length > 0">
-      <role-members
-        :role="$t('user.position.groups.administration')"
-        :members-with-role="administration"
-        @openModal="openProfileModal"
-      />
-    </template>
-
-    <template v-if="others.length > 0">
-      <role-members
-        :role="$t('user.position.groups.others')"
-        :members-with-role="others"
-        @openModal="openProfileModal"
-      />
-    </template>
+    <role-members
+      v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
+      :key="role"
+      :role="role"
+      :members-with-role="teamMembers[role]"
+      @openModal="openProfileModal"
+    />
 
     <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
 
@@ -97,7 +25,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { possibleDevelopers, possibleAdm, possibleDesigners } from '@/config/jobPositions';
+import { possibleDevelopers, possibleAdm, possibleDesigners, displayOrder } from '@/config/jobPositions';
 
 export default {
   name: 'WidgetTeam',
@@ -110,16 +38,7 @@ export default {
   },
 
   data: () => ({
-    developers: [],
-    designers: [],
-    administration: [],
-    others: [],
-    techLead: null,
-    teamLead: null,
-    designLead: null,
-    director: null,
-    productOwner: null,
-    departmentDirector: null,
+    teamMembers: {},
     showProfileModal: false,
     chosenProfileId: null,
   }),
@@ -143,38 +62,19 @@ export default {
       immediate: true,
       deep: true,
       handler() {
-        this.developers = [];
-        this.designers = [];
-        this.administration = [];
-        this.others = [];
-        this.director = null;
-        this.techLead = null;
-        this.teamLead = null;
-        this.designLead = null;
-        this.productOwner = null;
-        this.departmentDirector = null;
+        this.teamMembers = {};
 
         this.activeItem.team.forEach((employee) => {
-          if (possibleDevelopers.includes(employee.position)) {
-            this.developers.push(employee);
+         if (!employee.position) {
+            !this.teamMembers.others ? this.teamMembers.others = [employee] : this.teamMembers.others.push(employee)
+          } else if (possibleDevelopers.includes(employee.position)) {
+           !this.teamMembers.developers ? this.teamMembers.developers = [employee] : this.teamMembers.developers.push(employee)
           } else if (possibleDesigners.includes(employee.position)) {
-            this.designers.push(employee);
+           !this.teamMembers.designers ? this.teamMembers.designers = [employee] : this.teamMembers.designers.push(employee)
           } else if (possibleAdm.includes(employee.position)) {
-            this.administration.push(employee);
-          } else if (employee.position === 'director') {
-            this.director = employee;
-          } else if (employee.position === 'techLead') {
-            this.techLead = employee;
-          } else if (employee.position === 'teamLead') {
-            this.teamLead = employee;
-          } else if (employee.position === 'designLead') {
-            this.designLead = employee;
-          } else if (employee.position === 'productOwner') {
-            this.productOwner = employee;
-          } else if (employee.position === 'departmentDirector') {
-            this.departmentDirector = employee;
+           !this.teamMembers.administration ? this.teamMembers.administration = [employee] : this.teamMembers.administration.push(employee)
           } else {
-            this.others.push(employee);
+           !this.teamMembers[employee.position] ? this.teamMembers[employee.position] = [employee] : this.teamMembers[employee.position].push(employee)
           }
         });
       },
@@ -191,6 +91,10 @@ export default {
       this.showProfileModal = false;
       this.chosenProfileId = null;
     },
+
+    sortByDisplayOrder(roles) {
+      return displayOrder.filter(role => roles.includes(role));
+    }
   },
 };
 </script>
