@@ -7,13 +7,13 @@
       :body="$t('empty.team.body')"
     />
 
-    <template v-for="role in sortByDisplayOrder(Object.keys(this.teamMembers))">
-      <role-members
-        :role="role"
-        :members-with-role="teamMembers[role]"
-        @openModal="openProfileModal"
-      />
-    </template>
+    <role-members
+      v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
+      :key="role"
+      :role="role"
+      :members-with-role="teamMembers[role]"
+      @openModal="openProfileModal"
+    />
 
     <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
 
@@ -68,9 +68,9 @@ export default {
          if (!employee.position) {
             !this.teamMembers.others ? this.teamMembers.others = [employee] : this.teamMembers.others.push(employee)
           } else if (possibleDevelopers.includes(employee.position)) {
-           !this.teamMembers.developer ? this.teamMembers.developer = [employee] : this.teamMembers.developer.push(employee)
+           !this.teamMembers.developers ? this.teamMembers.developers = [employee] : this.teamMembers.developers.push(employee)
           } else if (possibleDesigners.includes(employee.position)) {
-           !this.teamMembers.designer ? this.teamMembers.designer = [employee] : this.teamMembers.designer.push(employee)
+           !this.teamMembers.designers ? this.teamMembers.designers = [employee] : this.teamMembers.designers.push(employee)
           } else if (possibleAdm.includes(employee.position)) {
            !this.teamMembers.administration ? this.teamMembers.administration = [employee] : this.teamMembers.administration.push(employee)
           } else {
