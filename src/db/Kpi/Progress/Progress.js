@@ -1,45 +1,16 @@
-import { endOfDay, isSameDay, startOfDay, setHours, isFuture } from 'date-fns';
+import { isSameDay, startOfDay, setHours, isFuture } from 'date-fns';
 import { db, auth, serverTimestamp } from '@/config/firebaseConfig';
 import props from './props';
 import { validateCreateProps } from '../../common';
-
-async function getParentRef(collectionRef, parentId) {
-  if (!parentId) {
-    throw new Error('Missing parent ID');
-  }
-  if (typeof parentId !== 'string') {
-    throw new Error('Parent ID must be a string');
-  }
-
-  const parentRef = await collectionRef.doc(parentId);
-
-  if (await parentRef.get().then(({ exists }) => !exists)) {
-    throw new Error(`Cannot find parent with ID ${parentId}`);
-  }
-
-  return parentRef;
-}
-
-function queryValuesByDate(parentRef, date) {
-  return parentRef
-    .collection('progress')
-    .orderBy('timestamp', 'desc')
-    .where('timestamp', '>=', startOfDay(date))
-    .where('timestamp', '<=', endOfDay(date));
-}
-
-async function batchDeleteSnapshot(snapshot) {
-  if (snapshot.empty) return;
-  const batch = db.batch();
-  snapshot.forEach((doc) => {
-    batch.delete(doc.ref);
-  });
-  await batch.commit();
-}
+import {
+  batchDeleteSnapshot,
+  getKpiDocumentRef,
+  queryValuesByDate,
+  refreshKPILatestValue,
+} from './helpers.js';
 
 const get = async (kpiId, date) => {
-  const kpiCollectionRef = db.collection('kpis');
-  const kpiRef = await getParentRef(kpiCollectionRef, kpiId);
+  const kpiRef = await getKpiDocumentRef(kpiId);
 
   try {
     return queryValuesByDate(kpiRef, date)
@@ -52,14 +23,13 @@ const get = async (kpiId, date) => {
 };
 
 const update = async (kpiId, data, progressValueId) => {
-  const kpiCollectionRef = db.collection('kpis');
   validateCreateProps(props, data);
 
   if (isFuture(startOfDay(data.timestamp))) {
     throw new Error('Timestamp cannot be set in the future');
   }
 
-  const kpiRef = await getParentRef(kpiCollectionRef, kpiId);
+  const kpiRef = await getKpiDocumentRef(kpiId);
   const progressCollectionRef = kpiRef.collection('progress');
   const progressValueRef =
     progressValueId !== undefined
@@ -115,15 +85,16 @@ const update = async (kpiId, data, progressValueId) => {
       await batchDeleteSnapshot(valuesSnapshot);
     }
 
-    return progressCollectionRef.add(data);
+    const ref = await progressCollectionRef.add(data);
+    await refreshKPILatestValue(kpiRef);
+    return ref;
   } catch (error) {
     throw new Error(error);
   }
 };
 
 const remove = async (kpiId, progressValueId) => {
-  const kpiCollectionRef = db.collection('kpis');
-  const kpiRef = await getParentRef(kpiCollectionRef, kpiId);
+  const kpiRef = await getKpiDocumentRef(kpiId);
   const progressCollectionRef = kpiRef.collection('progress');
   const progressValueRef = progressCollectionRef.doc(progressValueId);
 
@@ -135,9 +106,13 @@ const remove = async (kpiId, progressValueId) => {
           `Cannot find progress value with ID ${progressValueId}`
         );
       }
+
       queryValuesByDate(kpiRef, doc.data().timestamp.toDate())
         .get()
-        .then((snapshot) => batchDeleteSnapshot(snapshot));
+        .then((snapshot) => {
+          batchDeleteSnapshot(snapshot);
+          refreshKPILatestValue(kpiRef);
+        });
     });
   } catch {
     throw new Error(
