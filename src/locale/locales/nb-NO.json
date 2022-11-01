@@ -41,6 +41,7 @@
     "heading": "KPI-er",
     "sheetsDetails": "Sheets-detaljer",
     "itemRowError": "feil",
+    "configurationError": "Feilkonfigurering",
     "api": {
       "radio": "Oppdatere via API?",
       "help": "Det er ikke mulig å oppdatere KPIer manuelt via OKR-trackeren, men det er satt opp et API for å kalle OKR-trackeren direkte for å oppdatere KPIene. Ta kontakt med administrator om å få tilgang til dette APIet.",
