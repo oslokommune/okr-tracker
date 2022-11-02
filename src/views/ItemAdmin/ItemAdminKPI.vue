@@ -124,6 +124,23 @@ export default {
       );
       return labels[this.kpi.kpiType] || this.kpi.kpiType;
     },
+    sheetsEnabled: {
+      get() {
+        // For backwards compatibility, check for any previosly configured sheet
+        // details if the `auto` property doesn't exist on the model.
+        const sheetsEnabled = this.localKpi.auto;
+
+        if (sheetsEnabled === undefined) {
+          return (
+            !!this.kpi.sheetId || !!this.kpi.sheetName || !!this.kpi.sheetCell
+          );
+        }
+        return sheetsEnabled;
+      },
+      set(checked) {
+        this.$set(this.localKpi, 'auto', checked);
+      },
+    },
   },
 
   watch: {
@@ -150,7 +167,8 @@ export default {
       try {
         await Kpi.update(kpi.id, kpi);
         this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch {
+      } catch (e) {
+        console.log(e);
         this.$toasted.error(this.$t('toaster.error.save'));
       }
       this.loading = false;
