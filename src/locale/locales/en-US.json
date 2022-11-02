@@ -5,8 +5,7 @@
   "theme": {
     "colors": {
       "blue": "Blue",
-      "green": "Green",
-      "knowit": "Knowit"
+      "green": "Green"
     },
     "header": "Customize",
     "aria": "Current theme is {current}, next theme is {next}"
@@ -98,13 +97,12 @@
     "team": "Team",
     "project": "OKR",
     "loading": "Loading ...",
-    "owner": "Knowit",
+    "owner": "City of Oslo",
     "notFound": "Not found",
     "help": "Help",
     "admin": "Admin",
     "administration": "Administration",
     "superAdmin": "Super admin",
-    "dashboard": "View dashboard",
     "signOut": "Sign out",
     "createdBy": "Created by",
     "lastUpdate": "Updated",
@@ -138,7 +136,6 @@
     "addDepartment": "Add department",
     "acceptRequest": "Grant access",
     "rejectRequest": "Delete request",
-    "deleteImage": "Delete image",
     "deleteUser": "Delete user",
     "create": "Create",
     "delete": "Delete",
@@ -154,6 +151,8 @@
   },
   "login": {
     "login": "Sign in",
+    "requestAccess": "Request access",
+    "requestButton": "Send request",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
     "microsoft": "Sign in with Microsoft",
@@ -294,7 +293,6 @@
   },
   "tooltip": {
     "openMenu": "Open menu",
-    "dashboard": "Go to dashboard",
     "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
@@ -379,6 +377,9 @@
     "heading": "Weights",
     "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
+  },
+  "accessRequests": {
+    "heading": "Access requests"
   },
   "select": {
     "noIcons": "No hits"

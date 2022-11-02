@@ -9,6 +9,8 @@
       <div v-else class="section">
         <div v-if="loginError === 1" class="error">
           {{ $t('login.error.notRegistered') }}
+
+          <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
         </div>
 
         <div v-if="loginError === 2" class="error">
@@ -84,12 +86,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, loginProviderMS, loginProviderGoogle } from '@/config/firebaseConfig';
+import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Login',
 
   components: { LoadingSmall },

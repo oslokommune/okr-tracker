@@ -4,10 +4,6 @@ import Home from '@/views/Home.vue';
 import Api from '@/views/Api.vue';
 import * as routerGuards from './router-guards';
 
-import ItemAdminGeneral from '@/views/ItemAdmin/ItemAdminGeneral.vue';
-import ItemAdminOKRs from '@/views/ItemAdmin/ItemAdminOKRs.vue';
-import ItemAdminKPIs from '@/views/ItemAdmin/ItemAdminKPIs.vue';
-
 Vue.use(Router);
 
 const routes = [
@@ -89,31 +85,9 @@ const routes = [
       },
       {
         path: 'admin',
+        name: 'ItemAdmin',
         component: () => import('@/views/ItemAdmin/ItemAdminWrapper.vue'),
         beforeEnter: routerGuards.itemAdmin,
-        children: [
-          {
-            path: '',
-            name: 'ItemAdmin',
-            component: ItemAdminGeneral,
-          },
-          {
-            path: 'okr',
-            name: 'ItemAdminOKRs',
-            component: ItemAdminOKRs,
-          },
-          {
-            path: 'kpi',
-            name: 'ItemAdminKPIs',
-            component: ItemAdminKPIs,
-          },
-        ],
-      },
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('@/views/DashboardHome.vue'),
-        beforeEnter: routerGuards.dashboard,
       },
       {
         path: 'k/:keyResultId',

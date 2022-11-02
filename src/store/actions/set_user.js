@@ -10,22 +10,13 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
     throw new Error('Invalid user');
   };
 
-  // Check if user is valid Google account and within the knowit.no-domain
+  // Check if user is valid Google account
   if (!user || !user.email) rejectAccess();
 
   // Check if user is whitelisted
   const userRef = db.collection('users').doc(user.email);
-  let documentSnapshot = await userRef.get();
-
-  if (!documentSnapshot.exists) {
-    // Add user if it does not exist
-    await userRef.set({
-      id: user.email,
-      email: user.email,
-      preferences: defaultPreferences,
-    });
-    documentSnapshot = await userRef.get();
-  }
+  const documentSnapshot = await userRef.get();
+  if (!documentSnapshot.exists) rejectAccess();
 
   const { id, email, displayName, preferences, uid } = await documentSnapshot.data();
 
