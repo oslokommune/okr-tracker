@@ -83,24 +83,6 @@
       ]
     },
     {
-      "collectionGroup": "keyResults",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "archived",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "parent",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "name",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "objectives",
       "queryScope": "COLLECTION",
       "fields": [

@@ -1,130 +1,89 @@
 <template>
   <div class="container">
     <div class="itemAdmin">
-      <div class="itemAdmin__tabList">
-        <router-link
-          v-tooltip.bottom="
-            $t('tooltip.navigateToItem', { item: activeItem.name })
-          "
-          class="itemAdmin__backToItemLink"
-          :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
-          exact
+      <ul class="tabs">
+        <li v-for="link in links" :key="link.label">
+          <router-link :to="link.to" class="tab" active-class="active" :exact="link.exact" :data-cy="link.cy">
+            <i class="tab__icon fa" :class="`fa-${link.icon}`" />
+            <span class="tab__name">{{ link.label }}</span>
+          </router-link>
+        </li>
+        <li
+          v-if="activeItem"
+          v-tooltip.right="$t('tooltip.navigateToItem', { item: activeItem.name })"
+          class="tab--right"
         >
-          <i class="tab__icon fa fa-arrow-right" />
-          {{ activeItem.name }}
-        </router-link>
-        <tab-list
-          aria-label="Velg periode"
-          :tabs="tabs"
-          :active-tab="activeTab"
-          :set-active-tab="setActiveTab"
-          :tab-ids="tabIds"
-        />
-      </div>
-      <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
-        <item-admin-general v-if="activeTab === 0" />
-        <item-admin-OKRs v-if="activeTab === 1" />
-        <item-admin-KPIs v-if="activeTab === 2" />
-      </tab-panel>
+          <router-link class="tab tab--right" :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }" exact>
+            <i class="tab__icon fa fa-arrow-right" />
+            <span class="tab__name">{{ activeItem.name }}</span>
+          </router-link>
+        </li>
+      </ul>
+
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import TabList from '@/components/TabList.vue';
-import TabPanel from '@/components/TabPanel.vue';
-import tabIdsHelper from '@/util/tabUtils';
-import ItemAdminGeneral from './ItemAdminGeneral.vue';
-import ItemAdminOKRs from './ItemAdminOKRs.vue';
-import ItemAdminKPIs from './ItemAdminKPIs.vue';
 
 export default {
   name: 'ItemAdmin',
 
-  components: {
-    TabList,
-    TabPanel,
-    ItemAdminGeneral,
-    ItemAdminOKRs,
-    ItemAdminKPIs,
-  },
-
-  data() {
-    return {
-      activeTab: this.getInitialActiveTab(),
-    };
-  },
-
   computed: {
-    ...mapState(['activeItem']),
-    tabs() {
+    links() {
       return [
         {
           icon: 'cogs',
-          tabName: this.$t('general.general'),
-          tooltip: null,
+          to: { name: 'ItemAdmin' },
+          label: this.$t('general.general'),
+          exact: true,
+          cy: 'admin-general',
         },
         {
           icon: 'chart-pie',
-          tabName: this.$t('general.OKRsLong'),
-          tooltip: null,
+          to: { name: 'ItemAdminOKRs' },
+          label: this.$t('general.OKRsLong'),
+          exact: false,
+          cy: 'admin-okr',
         },
         {
           icon: 'chart-line',
-          tabName: this.$t('general.KPIs'),
-          tooltip: null,
+          to: { name: 'ItemAdminKPIs' },
+          label: this.$t('general.KPIs'),
+          exact: false,
+          cy: 'admin-kpi',
         },
       ];
     },
-    tabIds() {
-      return tabIdsHelper('periods');
-    },
-  },
 
-  methods: {
-    getInitialActiveTab() {
-      switch (this.$route.query.tab) {
-        case 'okr': {
-          return 1;
-        }
-        case 'kpi': {
-          return 2;
-        }
-        default: {
-          return 0;
-        }
-      }
-    },
-    setActiveTab(tabIndex) {
-      switch (tabIndex) {
-        case 1: {
-          this.$router.push({ query: { tab: 'okr' } });
-          break;
-        }
-        case 2: {
-          this.$router.push({ query: { tab: 'kpi' } });
-          break;
-        }
-        default: {
-          this.$router.push({ query: {} });
-        }
-      }
-      this.activeTab = tabIndex;
-    },
+    ...mapState(['activeItem']),
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.router-link-active {
+  font-weight: bold;
+}
+
+.tab--right {
+  background: var(--color-bg);
+}
+
+.tabs {
+  @media screen and (min-width: bp(l)) {
+    width: span(7, span(10));
+  }
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, span(10));
+  }
+}
+
 .itemAdmin {
   width: span(12);
-
-  padding: 0 0 1.5rem 0;
-
-  @media screen and (min-width: bp(s)) {
-    padding: 1.5rem 0;
-  }
+  padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
     margin-right: span(2, 1);
@@ -138,34 +97,6 @@ export default {
 
   @media screen and (min-width: bp(xl)) {
     margin-left: span(3, 1);
-  }
-
-  &__tabList {
-    @media screen and (min-width: bp(s)) {
-      position: relative;
-    }
-
-    @media screen and (min-width: bp(l)) {
-      width: span(7, span(10));
-    }
-    @media screen and (min-width: bp(xl)) {
-      width: span(6, span(10));
-    }
-  }
-
-  &__backToItemLink {
-    display: block;
-    margin-bottom: 0.25rem;
-    padding: 0.7rem 1rem;
-    color: var(--color-text);
-    font-weight: 500;
-    text-decoration: none;
-
-    @media screen and (min-width: bp(s)) {
-      position: absolute;
-      right: 0;
-      z-index: 100;
-    }
   }
 }
 </style>

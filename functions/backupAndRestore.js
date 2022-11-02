@@ -19,16 +19,16 @@ export const automatedRestore =
     .onPublish(restoreBackup);
 
 async function restoreBackup() {
-  const gAuth = new GoogleAuth({
+  const auth = new GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
   });
 
-  const client = await gAuth.getClient();
+  const client = await auth.getClient();
   const oneDayBefore = new Date();
   oneDayBefore.setDate(oneDayBefore.getDate() - 1);
   const path = `${oneDayBefore.toISOString().split('T')[0]}`;
 
-  const projectId = await gAuth.getProjectId();
+  const projectId = await auth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):importDocuments`;
   const backupRoute = `gs://${storageBucketName}/${path}`;
 
@@ -51,14 +51,14 @@ async function restoreBackup() {
 }
 
 async function generateBackup() {
-  const gAuth = new GoogleAuth({
+  const auth = new GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
   });
 
-  const client = await gAuth.getClient();
+  const client = await auth.getClient();
   const path = `${new Date().toISOString().split('T')[0]}`;
 
-  const projectId = await gAuth.getProjectId();
+  const projectId = await auth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):exportDocuments`;
   const backupRoute = `gs://${storageBucketName}/${path}`;
 

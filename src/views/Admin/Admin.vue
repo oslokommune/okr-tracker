@@ -16,10 +16,10 @@
 import { mapState } from 'vuex';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Admin',
 
   components: {
-    AdminAccessRequests: () => import('./components/AdminAccessRequests.vue'),
     AdminUsers: () => import('./components/AdminUsers.vue'),
     AdminItems: () => import('./components/AdminItems.vue'),
   },

@@ -70,7 +70,7 @@
     </div>
     <div class="flex__row--space-between">
       <div class="logo">
-        <oslo-logo class="logo__img" />
+        <knowit-logo class="logo__img" />
       </div>
       <div class="align__self--center">v{{ appVersion }}</div>
     </div>
@@ -79,13 +79,13 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import OsloLogo from '@/components/OsloLogo.vue';
+import KnowitLogo from '@/components/KnowitLogo.vue';
 
 export default {
   name: 'SiteSidebar',
 
   components: {
-    OsloLogo,
+    KnowitLogo,
   },
 
   props: {

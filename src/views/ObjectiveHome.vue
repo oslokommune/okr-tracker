@@ -3,10 +3,7 @@
     <div class="widgets--left">
       <router-link
         class="btn widget__back-button"
-        :to="{
-          name: 'ItemHome',
-          params: { slug: activeObjective.parent.slug },
-        }"
+        :to="{ name: 'ItemHome', params: { slug: activeObjective.parent.slug } }"
       >
         {{ $t('general.back') }}
         <i class="fa fa-chevron-left"></i>
@@ -27,11 +24,7 @@
             :heading="$t('empty.noKeyResults.heading')"
             :body="$t('empty.noKeyResults.body')"
           >
-            <router-link
-              v-if="hasEditRights"
-              :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-              class="btn btn--ter"
-            >
+            <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">
               {{ $t('empty.noKeyResults.linkText') }}
             </router-link>
           </empty-state>
@@ -97,9 +90,7 @@ export default {
       handler(objective) {
         if (!objective) return;
 
-        this.keyRes = this.keyResults.filter(
-          (keyRes) => keyRes.objective === `objectives/${objective.id}`
-        );
+        this.keyRes = this.keyResults.filter((keyRes) => keyRes.objective === `objectives/${objective.id}`);
       },
     },
   },

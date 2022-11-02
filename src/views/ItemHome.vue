@@ -10,56 +10,42 @@
 
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
-          <tab-list
-            aria-label="Velg periode"
-            :tabs="tabs"
-            :active-tab="activeTab"
-            :set-active-tab="handleTabChange"
-            :tab-ids="tabIds"
-          />
-        </div>
-
-        <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
+          <period-selector />
           <content-loader-action-bar
             v-if="dataLoading"
             class="itemHome__header--content-loader"
           ></content-loader-action-bar>
           <action-bar v-else-if="tree.length" />
-          <content-loader-item v-if="dataLoading"></content-loader-item>
-          <empty-state
-            v-else-if="!tree.length && !dataLoading"
-            :icon="'exclamation'"
-            :heading="$t('empty.noPeriods.heading')"
-            :body="$t('empty.noPeriods.body')"
-          >
-            <router-link
-              v-if="hasEditRights"
-              class="btn btn--ter"
-              :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-            >
-              {{ $t('empty.noPeriods.buttonText') }}
-            </router-link>
-          </empty-state>
-          <ul v-if="tree && !dataLoading">
-            <li
-              v-for="objective in tree"
-              :key="objective.id"
-              class="itemHome__tree--item"
-            >
-              <objective-row :objective="objective"></objective-row>
-              <ul v-if="objective.keyResults">
-                <li
-                  v-for="keyResult in objective.keyResults"
-                  :key="keyResult.id"
-                  class="keyResultRow"
-                  :class="{ 'keyResultRow--isCompact': isCompact }"
-                >
-                  <key-result-row :key-result="keyResult"></key-result-row>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </tab-panel>
+        </div>
+
+        <content-loader-item v-if="dataLoading"></content-loader-item>
+
+        <empty-state
+          v-else-if="!tree.length && !dataLoading"
+          :icon="'exclamation'"
+          :heading="$t('empty.noPeriods.heading')"
+          :body="$t('empty.noPeriods.body')"
+        >
+          <router-link v-if="hasEditRights" class="btn btn--ter" :to="{ name: 'ItemAdminOKRs' }">
+            {{ $t('empty.noPeriods.buttonText') }}
+          </router-link>
+        </empty-state>
+
+        <ul v-if="tree && !dataLoading">
+          <li v-for="objective in tree" :key="objective.id" class="itemHome__tree--item">
+            <objective-row :objective="objective"></objective-row>
+            <ul v-if="objective.keyResults">
+              <li
+                v-for="keyResult in objective.keyResults"
+                :key="keyResult.id"
+                class="keyResultRow"
+                :class="{ 'keyResultRow--isCompact': isCompact }"
+              >
+                <key-result-row :key-result="keyResult"></key-result-row>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -70,21 +56,17 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex';
-import { isBefore, addDays } from 'date-fns';
-import tabIdsHelper from '@/util/tabUtils';
-import { periodDates } from '@/util';
+import { mapGetters, mapState } from 'vuex';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
 import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
-import TabList from '@/components/TabList.vue';
-import TabPanel from '@/components/TabPanel.vue';
 
 export default {
   name: 'ItemHome',
 
   components: {
     WidgetsMobile,
+    PeriodSelector: () => import('@/components/Navigation/PeriodSelector.vue'),
     ActionBar: () => import('@/components/ActionBar.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
@@ -94,25 +76,10 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ContentLoaderItem,
     ContentLoaderActionBar,
-    TabPanel,
-    TabList,
   },
 
-  data: () => ({
-    activeTab: 0,
-  }),
-
   computed: {
-    ...mapState([
-      'activeItem',
-      'objectives',
-      'keyResults',
-      'kpis',
-      'dataLoading',
-      'user',
-      'periods',
-      'activePeriod',
-    ]),
+    ...mapState(['activeItem', 'objectives', 'keyResults', 'kpis', 'dataLoading', 'user']),
     ...mapGetters(['hasEditRights']),
 
     isCompact() {
@@ -120,72 +87,10 @@ export default {
     },
 
     tree() {
-      return this.objectives.reduce(
-        (acc, objective) => [
-          ...acc,
-          {
-            ...objective,
-            id: objective.id,
-            keyResults: this.keyResults.filter(
-              (keyRes) => keyRes.objective === `objectives/${objective.id}`
-            ),
-          },
-        ],
-        []
-      );
-    },
-    tabIds() {
-      return tabIdsHelper('periods');
-    },
-    filteredPeriods() {
-      if (this.hasEditRights) return this.periods;
-      const daysInAdvance = 7; // Prior to period start
-
-      return this.periods.filter(({ startDate }) =>
-        isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance))
-      );
-    },
-
-    tabs() {
-      return this.filteredPeriods.map((period) => ({
-        tabName: period.name,
-        tooltip: periodDates(period),
-      }));
-    },
-  },
-
-  created() {
-    if (this.filteredPeriods.length > 0) {
-      this.setPeriod(this.filteredPeriods[0].id)
-    }
-  },
-
-  methods: {
-    ...mapActions(['set_active_period_and_data', 'setDataLoading']),
-
-    getInitialActiveTab() {},
-
-    setActiveTab(tabIndex) {
-      this.activeTab = tabIndex;
-    },
-
-    async setPeriod(activePeriodId) {
-      try {
-        await this.setDataLoading(true);
-        await this.set_active_period_and_data(activePeriodId);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        await this.setDataLoading(false);
-      }
-    },
-
-    periodDates,
-
-    async handleTabChange(tabIndex) {
-      const activePeriodId = this.filteredPeriods[tabIndex].id;
-      await this.setPeriod(activePeriodId);
-      this.setActiveTab(tabIndex);
+      return this.objectives.map((objective) => {
+        objective.keyResults = this.keyResults.filter((keyRes) => keyRes.objective === `objectives/${objective.id}`);
+        return objective;
+      });
     },
   },
 };

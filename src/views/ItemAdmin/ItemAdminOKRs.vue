@@ -26,57 +26,36 @@
           class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <empty-state
-            v-if="notSelected"
-            :icon="'arrow-left'"
-            :heading="notSelected"
-          />
+          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
 
           <ul v-else class="miller__list">
             <template v-if="!items.length && type === 'objective'">
-              <empty-state
-                v-if="!items.length && !isLoadingPeriod"
-                :icon="'exclamation'"
-                :heading="nonexistent"
-              />
+              <empty-state v-if="!items.length && !isLoadingPeriod" :icon="'exclamation'" :heading="nonexistent" />
               <template v-if="isLoadingPeriod">
                 <template v-for="index in 2">
-                  <content-loader-okr-row
-                    :key="`okr-row-objective-${index}`"
-                  ></content-loader-okr-row>
+                  <content-loader-okr-row :key="`okr-row-objective-${index}`"></content-loader-okr-row>
                 </template>
               </template>
             </template>
 
             <template v-else-if="!items.length && type === 'keyResult'">
               <empty-state
-                v-if="
-                  !items.length && !isLoadingObjective && type === 'keyResult'
-                "
+                v-if="!items.length && !isLoadingObjective && type === 'keyResult'"
                 :icon="'exclamation'"
                 :heading="nonexistent"
               />
               <template v-if="isLoadingObjective">
                 <template v-for="index in 3">
-                  <content-loader-okr-row
-                    :key="`okr-row-objective-${index}`"
-                  ></content-loader-okr-row>
+                  <content-loader-okr-row :key="`okr-row-objective-${index}`"></content-loader-okr-row>
                 </template>
               </template>
             </template>
 
             <template v-else>
-              <li
-                v-for="{ id, name, archived } in items"
-                :key="id"
-                class="miller__list-item"
-              >
+              <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
                 <router-link
                   class="miller__link"
-                  :to="{
-                    name: 'ItemAdmin',
-                    query: { tab: 'okr', type, id },
-                  }"
+                  :to="{ name: 'ItemAdminOKRs', query: { type, id } }"
                   :class="{
                     active: activeClass(id),
                     selected: selectedClass(id),
@@ -84,10 +63,7 @@
                 >
                   <i class="miller__icon fa" :class="icon" />
                   <span class="miller__label">{{ name }}</span>
-                  <span
-                    v-if="archived"
-                    class="miller__archived fa fa-file-archive"
-                  ></span>
+                  <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
                 </router-link>
               </li>
             </template>
@@ -121,8 +97,7 @@ export default {
 
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
-    ContentLoaderOkrRow: () =>
-      import('@/components/ContentLoader/ContentLoaderOKRRow.vue'),
+    ContentLoaderOkrRow: () => import('@/components/ContentLoader/ContentLoaderOKRRow.vue'),
   },
 
   data: () => ({
@@ -163,9 +138,7 @@ export default {
           icon: 'fa-trophy',
           activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: (id) => id === this.selectedObjectiveId,
-          notSelected: !this.selectedType
-            ? this.$t('admin.noPeriodSelected')
-            : false,
+          notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
           nonexistent: this.$t('empty.itemAdmin.objective'),
           cyCreate: 'okr-create-objective',
@@ -178,9 +151,7 @@ export default {
           activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: () => false,
           notSelected:
-            !this.selectedType || this.selectedType === 'period'
-              ? this.$t('admin.noObjectiveSelected')
-              : false,
+            !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
           addEvent: this.createKeyResult,
           nonexistent: this.$t('empty.itemAdmin.keyResult'),
           cyCreate: 'okr-create-keyResult',
@@ -335,46 +306,26 @@ export default {
       const startDate = new Date();
       const endDate = new Date();
       try {
-        const { id } = await Period.create({
-          name: 'placeholder',
-          parent: this.activeItemRef,
-          startDate,
-          endDate,
-        });
+        const { id } = await Period.create({ name: 'placeholder', parent: this.activeItemRef, startDate, endDate });
 
         this.$toasted.show(this.$t('toaster.add.period'));
 
         await this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
-        this.$toasted.error(
-          this.$t('toaster.error.create', {
-            document: this.$t('general.period'),
-          })
-        );
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.period') }));
         throw new Error(error);
       }
     },
     async createObjective() {
       try {
         const period = db.collection('periods').doc(this.selectedPeriodId);
-        const { id } = await Objective.create({
-          name: 'placeholder',
-          parent: this.activeItemRef,
-          weight: 1,
-          period,
-        });
+        const { id } = await Objective.create({ name: 'placeholder', parent: this.activeItemRef, weight: 1, period });
 
-        this.$toasted.show(
-          this.$t('toaster.add.objective', { period: period.name })
-        );
+        this.$toasted.show(this.$t('toaster.add.objective', { period: period.name }));
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
-        this.$toasted.error(
-          this.$t('toaster.error.create', {
-            document: this.$t('general.objective'),
-          })
-        );
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.objective') }));
         throw new Error(error);
       }
     },
@@ -396,11 +347,7 @@ export default {
 
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {
-        this.$toasted.error(
-          this.$t('toaster.error.create', {
-            document: this.$t('general.keyResult'),
-          })
-        );
+        this.$toasted.error(this.$t('toaster.error.create', { document: this.$t('general.keyResult') }));
         throw new Error(error);
       }
     },

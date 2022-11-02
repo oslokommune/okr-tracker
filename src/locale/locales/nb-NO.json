@@ -5,7 +5,8 @@
   "theme": {
     "colors": {
       "blue": "Blå",
-      "green": "Grønn"
+      "green": "Grønn",
+      "knowit": "Knowit"
     },
     "header": "Tilpass",
     "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
@@ -13,7 +14,6 @@
   "kpi": {
     "add": "Legg til KPI",
     "edit": "Endre KPI",
-    "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
     "progress": "Progresjon",
     "description": "Beskrivelse",
@@ -95,13 +95,13 @@
     "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
-    "owner": "Oslo kommune",
+    "owner": "Knowit",
     "notFound": "Not found",
     "help": "Hjelp",
     "admin": "Admin",
     "administration": "Administrasjon",
     "superAdmin": "Super admin",
-
+    "dashboard": "Vis dashboard",
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
     "lastUpdate": "Sist oppdatert",
@@ -135,6 +135,7 @@
     "addDepartment": "Nytt produktområde",
     "acceptRequest": "Gi tilgang",
     "rejectRequest": "Slett forespørsel",
+    "deleteImage": "Slett bilde",
     "deleteUser": "Slett bruker",
     "create": "Opprett",
     "delete": "Slett",
@@ -150,8 +151,6 @@
   },
   "login": {
     "login": "Logg inn",
-    "requestAccess": "Be om tilgang",
-    "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "with": "Logg inn med {provider} bruker",
     "microsoft": "Logg inn med Microsoft",
@@ -292,6 +291,7 @@
   },
   "tooltip": {
     "openMenu": "Åpne meny",
+    "dashboard": "Gå til dashboard-visning",
     "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
@@ -376,9 +376,6 @@
     "heading": "Vekting",
     "keyResultFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
-  },
-  "accessRequests": {
-    "heading": "Tilgangsforespørsler"
   },
   "select": {
     "noIcons": "Ingen treff"

@@ -1,16 +1,74 @@
 <template>
-  <section v-if="hasEditRights" class="widget">
+  <section class="widget">
     <header class="widget__header">
       <span class="widget__title">Admin</span>
     </header>
     <ul class="admin__list">
-      <li v-for="(link, index) in adminLinks" :key="index">
+      <template v-if="hasEditRights">
+        <li v-if="$route.name === 'ObjectiveHome'">
+          <router-link
+            class="admin__link"
+            :to="{ name: 'ItemAdminOKRs', query: { type: 'objective', id: activeObjective && activeObjective.id } }"
+          >
+            {{ $t('objective.change') }}
+          </router-link>
+        </li>
+        <li v-if="$route.name === 'KeyResultHome'">
+          <router-link
+            class="admin__link"
+            :to="{ name: 'ItemAdminOKRs', query: { type: 'keyResult', id: activeKeyResult && activeKeyResult.id } }"
+          >
+            {{ $t('keyResultPage.change') }}
+          </router-link>
+        </li>
+        <li v-if="$route.name === 'KpiHome'">
+          <router-link class="admin__link" :to="{ name: 'ItemAdminKPIs' }">
+            {{ $t('kpi.change') }}
+          </router-link>
+        </li>
+        <template v-if="$route.name === 'ItemHome'">
+          <li>
+            <router-link v-tooltip="$t('tooltip.editItem')" class="admin__link" :to="{ name: 'ItemAdmin' }">
+              {{ $t('btn.editItem', { item: activeItem && activeItem.name }) }}
+            </router-link>
+          </li>
+          <li>
+            <router-link class="admin__link" :to="{ name: 'ItemAdminOKRs' }">
+              {{ $t('period.add') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link
+              class="admin__link"
+              :to="{ name: 'ItemAdminOKRs', query: { type: 'period', id: activePeriod && activePeriod.id } }"
+            >
+              {{ $t('objective.add') }}
+            </router-link>
+          </li>
+        </template>
+        <li v-if="$route.name !== 'KpiHome' && $route.name !== 'KeyResultHome'">
+          <router-link
+            class="admin__link"
+            :to="{
+              name: 'ItemAdminOKRs',
+              query: {
+                type: $route.name === 'ItemHome' ? 'period' : 'objective',
+                id:
+                  $route.name === 'ItemHome' ? activePeriod && activePeriod.id : activeObjective && activeObjective.id,
+              },
+            }"
+          >
+            {{ $t('keyResultPage.add') }}
+          </router-link>
+        </li>
+      </template>
+      <li>
         <router-link
-          v-tooltip="link.tooltip"
+          v-tooltip="disabled ? $t('tooltip.emptyPeriod') : $t('tooltip.dashboard')"
           class="admin__link"
-          :to="link.path"
+          :to="!disabled ? { name: 'Dashboard', params: { slug: activeItem.slug } } : ''"
         >
-          {{ link.content }}
+          <span class="admin__name">{{ $t('general.dashboard') }}</span>
         </router-link>
       </li>
     </ul>
@@ -19,6 +77,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import { auth } from '@/config/firebaseConfig';
 
 export default {
   name: 'WidgetAdmin',
@@ -28,81 +87,8 @@ export default {
   }),
 
   computed: {
-    ...mapState([
-      'activePeriod',
-      'user',
-      'activeItem',
-      'activeObjective',
-      'activeKeyResult',
-    ]),
+    ...mapState(['activePeriod', 'user', 'activeItem', 'activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
-    itemHomeAdminLinks() {
-      return [
-        {
-          path: this.getAdminPath(),
-          content: this.$t('btn.editItem', {
-            item: this.activeItem.name,
-          }),
-          tooltip: this.$t('tooltip.editItem'),
-        },
-        {
-          path: this.getAdminPath({ tab: 'okr' }),
-          content: this.$t('period.add'),
-        },
-        ...['objective.add', 'keyResultPage.add'].map((content) => ({
-          path: this.getAdminPath({
-            tab: 'okr',
-            type: 'period',
-            id: this.activePeriod?.id,
-          }),
-          content: this.$t(content),
-        })),
-      ];
-    },
-    objectiveHomeAdminLinks() {
-      return ['objective.change', 'keyResultPage.add'].map((content) => ({
-        path: this.getAdminPath({
-          tab: 'okr',
-          type: 'objective',
-          id: this.activeObjective?.id,
-        }),
-        content: this.$t(content),
-      }));
-    },
-    keyResultHomeAdminLinks() {
-      return [
-        {
-          path: this.getAdminPath({
-            tab: 'okr',
-            type: 'keyResult',
-            id: this.activeKeyResult?.id,
-          }),
-          content: this.$t('keyResultPage.change'),
-        },
-      ];
-    },
-    kpiHomeAdminLinks() {
-      return [
-        {
-          path: this.getAdminPath({ tab: 'kpi' }),
-          content: this.$t('kpi.change'),
-        },
-      ];
-    },
-    adminLinks() {
-      switch (this.$route.name) {
-        case 'ItemHome':
-          return this.itemHomeAdminLinks;
-        case 'ObjectiveHome':
-          return this.objectiveHomeAdminLinks;
-        case 'KeyResultHome':
-          return this.keyResultHomeAdminLinks;
-        case 'KpiHome':
-          return this.kpiHomeAdminLinks;
-        default:
-          return [];
-      }
-    },
   },
 
   watch: {
@@ -117,14 +103,9 @@ export default {
   methods: {
     ...mapActions(['reset_state']),
 
-    getItemId(item, itemType) {
-      return item ? { [`${itemType}Id`]: item.id } : {};
-    },
-    getAdminPath(query) {
-      return {
-        name: 'ItemAdmin',
-        query,
-      };
+    async signOut() {
+      await auth.signOut();
+      await this.reset_state();
     },
   },
 };

@@ -1,1 +1,35 @@
+.DS_Store
 node_modules
+dist/
+docs/
+tests/e2e/videos/*
+tests/e2e/screenshots/*
+
+# local env files
+.env
+.env.*
+cypress.env.json
+
+# Log files
+*.log
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Firebase files
+.firebase/
+.firebaserc
+
+# Mock data
+mock/
+# Dont ignore the mock-folder for tests
+!tests/mock
+
+.npmrc
+setfirebase.json

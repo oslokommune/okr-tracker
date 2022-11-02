@@ -44,15 +44,8 @@ router.post('/:id', ...validate, async (req, res) => {
 
     const parentData = await parent.get().then((snapshot) => snapshot.data());
 
-    if (!parentData.secret) {
-      res.status(401).send(
-        `'${parentData.name}' is not set up for API usage. Please set ` +
-          'a secret using the OKR Tracker admin interface.'
-      );
-      return;
-    }
-    if (parentData.secret !== teamSecret) {
-      res.status(401).send('Wrong okr-team-secret');
+    if (parentData.secret && parentData.secret !== teamSecret) {
+      res.status(401).send('The okr-team-secret and the secret which the keyRes has are not the same');
       return;
     }
 

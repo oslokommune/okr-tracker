@@ -22,11 +22,10 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   const activeObjectivesList = await objectivesRef.get().then((snapshot) => snapshot.docs.map((doc) => doc.ref));
 
   if (activeObjectivesList.length) {
-    const parentRef = await activePeriodRef.get().then((snapshot) => snapshot.data().parent);
     const keyResultsRef = db
       .collection('keyResults')
       .where('archived', '==', false)
-      .where('parent', '==', parentRef)
+      .where('objective', 'in', activeObjectivesList)
       .orderBy('name');
 
     await bindFirestoreRef('objectives', objectivesRef, { maxRefDepth: 0 });
