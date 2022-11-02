@@ -66,7 +66,7 @@
               <span class="form-label">
                 {{ $t('kpi.display') }}
               </span>
-              <select v-model="kpi.format" class="form__field">
+              <select v-model="localKpi.format" class="form__field">
                 <option
                   v-for="{ id, label } in formats" :key="id" :value="id">
                   {{ label }}
@@ -102,24 +102,27 @@
 
           <hr class="ods-hr" />
 
+          <i18n path="kpi.help.updates" tag="p">
+            <template #readMoreLink>
+              <router-link :to="{ name: 'Help', hash: '#kpi-er' }">{{
+                $t('kpi.help.readMoreHere')
+              }}</router-link>
+            </template>
+          </i18n>
+
           <div class="toggle__container">
-            <span class="toggle__label">
-              {{ $t('kpi.api.radio') }}
-              <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
-            </span>
+            <span class="toggle__label">{{ $t('kpi.automation.radio') }}</span>
             <label class="toggle">
-              <input v-model="localKpi.api" class="toggle__input" type="checkbox" />
+              <input
+                v-model="sheetsEnabled"
+                class="toggle__input"
+                type="checkbox"
+              />
               <span class="toggle__switch"></span>
             </label>
           </div>
 
-          <template v-if="localKpi.api">
-            {{ $t('kpi.api.help') }}
-          </template>
-
-          <template v-if="!localKpi.api">
-            <h3 class="title-2" style="color: var(--color-text)">{{ $t('kpi.sheetsDetails') }}</h3>
-
+          <div v-if="sheetsEnabled">
             <form-component
               v-model="localKpi.sheetId"
               input-type="input"
@@ -132,39 +135,74 @@
                 <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
               </template>
             </form-component>
-            <div class="button-sync-row">
-              <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`">
-                <icon-arrow-circle class="icon"/>
-                {{ $t('btn.syncData') }}
-              </button>
+
+            <div class="form-row">
+              <form-component
+                v-model="localKpi.sheetName"
+                input-type="input"
+                name="sheetTab"
+                :label="$t('keyResult.automation.sheetsTab')"
+                placeholder="Sheet1"
+                rules="required"
+                type="text"
+              >
+                <template #help>
+                  <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
+                </template>
+              </form-component>
+
+              <form-component
+                v-model="localKpi.sheetCell"
+                input-type="input"
+                name="sheetCell"
+                :label="$t('keyResult.automation.sheetsCell')"
+                placeholder="A1"
+                rules="required"
+                type="text"
+              >
+                <template #help>
+                  <span
+                    class="form-help"
+                    v-html="$t('keyResult.automation.sheetsCellHelp')"
+                  ></span>
+                </template>
+              </form-component>
             </div>
+          </div>
 
+          <div class="toggle__container">
+            <span class="toggle__label">
+              {{ $t('kpi.api.radio') }}
+              <i
+                v-tooltip="$t('kpi.api.tooltip')"
+                class="icon fa fa-info-circle"
+              />
+            </span>
+            <label class="toggle">
+              <input
+                v-model="localKpi.api"
+                class="toggle__input"
+                type="checkbox"
+              />
+              <span class="toggle__switch"></span>
+            </label>
+          </div>
+
+          <div v-if="localKpi.api">
             <form-component
-              v-model="localKpi.sheetName"
               input-type="input"
-              name="sheetTab"
-              :label="$t('keyResult.automation.sheetsTab')"
-              rules="required"
               type="text"
+              label="API"
+              rules="required"
+              :readonly="true"
+              :copy-button="true"
+              :value="apiCurl(localKpi)"
             >
               <template #help>
-                <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
+                <span class="form-help">{{ $t('kpi.api.help') }}</span>
               </template>
             </form-component>
-
-            <form-component
-              v-model="localKpi.sheetCell"
-              input-type="input"
-              name="sheetCell"
-              :label="$t('keyResult.automation.sheetsCell')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
-              </template>
-            </form-component>
-          </template>
+          </div>
 
           <form-component
             v-else
@@ -193,7 +231,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import IconArrowCircle from '@/assets/IconArrowCircle.vue';
 import { formatKPIValue, kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import { toastArchiveAndRevert } from '@/util';
@@ -263,13 +300,33 @@ export default {
       );
       return labels[this.kpi.kpiType] || this.kpi.kpiType;
     },
+    sheetsEnabled: {
+      get() {
+        // For backwards compatibility, check for any previosly configured sheet
+        // details if the `auto` property doesn't exist on the model.
+        const sheetsEnabled = this.localKpi.auto;
+
+        if (sheetsEnabled === undefined) {
+          return (
+            !!this.kpi.sheetId || !!this.kpi.sheetName || !!this.kpi.sheetCell
+          );
+        }
+        return sheetsEnabled;
+      },
+      set(checked) {
+        this.$set(this.localKpi, 'auto', checked);
+      },
+    },
   },
 
   watch: {
     kpi: {
       immediate: true,
       handler() {
-        this.localKpi = this.kpi;
+        this.localKpi = {
+          id: this.kpi.id,
+          ...this.kpi,
+        };
       },
     },
   },
@@ -281,16 +338,12 @@ export default {
       kpi.error = false;
       kpi.valid = false;
       delete kpi.parent;
-      try {
-        if (kpi.api) {
-          kpi.sheetCell = '';
-          kpi.sheetId = '';
-          kpi.sheetName = '';
-        }
 
+      try {
         await Kpi.update(kpi.id, kpi);
         this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch {
+      } catch (e) {
+        console.log(e);
         this.$toasted.error(this.$t('toaster.error.save'));
       }
     },
@@ -394,16 +447,6 @@ export default {
   &-value {
     display: block;
     font-size: typography.$font-size-2;
-  }
-}
-
-.form-row {
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-
-  & > .form-group {
-    margin: 0;
   }
 }
 

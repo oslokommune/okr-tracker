@@ -39,9 +39,15 @@
       }
     },
     "heading": "KPI-er",
-    "sheetsDetails": "Sheets-detaljer",
     "itemRowError": "feil",
-    "configurationError": "Feilkonfigurasjon",
+    "configurationError": "Feilkonfigurering",
+    "help": {
+      "updates": "KPI-er kan oppdateres manuelt via OKR-trackeren eller automatisk ved bruk av en valgfri Google Sheets- eller API-integrasjon. Merk at det kun er mulig å retigstrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av KPI-er {readMoreLink}.",
+      "readMoreHere": "her"
+    },
+    "automation": {
+      "radio": "Hente KPI-verdier automatisk fra et regneark (Google Sheets)?"
+    },
     "api": {
       "radio": "Oppdatere via API?",
       "help": "Det er ikke mulig å oppdatere KPIer manuelt via OKR-trackeren, men det er satt opp et API for å kalle OKR-trackeren direkte for å oppdatere KPIene. Ta kontakt med administrator om å få tilgang til dette APIet.",

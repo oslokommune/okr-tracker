@@ -39,12 +39,18 @@
       }
     },
     "heading": "KPIs",
-    "sheetsDetails": "Sheets details",
     "itemRowError": "error",
     "configurationError": "Configuration error",
+    "help": {
+      "updates": "KPIs can be updated manually through the OKR Tracker or automatically using an optional Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
+      "readMoreHere": "here"
+    },
+    "automation": {
+      "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"
+    },
     "api": {
-      "radio": "Update via API?",
-      "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access.",
+      "radio": "Update values programmtically using the API?",
+      "help": "Push updates with curl",
       "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
     },
     "goals": {

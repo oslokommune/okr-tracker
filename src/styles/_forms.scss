@@ -49,11 +49,12 @@ textarea {
 
 .form-row {
   display: grid;
-  grid-gap: 0.5rem;
+  grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  margin: 0.5rem 0 1rem;
+  align-items: end;
+  margin: 1rem 0;
 
-  & > .form-group {
+  & .form-group {
     margin: 0;
   }
   .form-field + .form-field {
@@ -101,11 +102,9 @@ textarea {
   }
 }
 
-
 .form-help {
   display: block;
-  margin-top: -0.25rem;
-  margin-bottom: 0.25rem;
+  margin: 0.25rem 0;
   color: var(--color-text);
   font-size: 0.85rem;
 
