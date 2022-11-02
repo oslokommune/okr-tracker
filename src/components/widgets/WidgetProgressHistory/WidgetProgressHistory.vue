@@ -74,30 +74,19 @@
             </td>
             <td v-if="hasEditRights">
               <div class="record__actions">
-                <button
+                <btn
                   v-tooltip="$t('tooltip.editProgress')"
-                  class="btn btn--icon btn--ter"
+                  icon="edit"
+                  :label="$t('tooltip.editProgress')"
+                  :hide-label="true"
+                  variant="tertiary"
                   @click="openValueModal(record)"
-                >
-                  <i class="fa fa-edit" />
-                </button>
-                <v-popover offset="0" placement="top">
-                  <button
-                    v-tooltip="$t('tooltip.deleteProgress')"
-                    class="btn btn--icon btn--ter"
-                  >
-                    <i class="fa fa-trash" />
-                  </button>
-
-                  <template slot="popover">
-                    <button
-                      class="btn btn--ter btn--negative"
-                      @click="$emit('delete-record', record.id)"
-                    >
-                      {{ $t('btn.confirmDeleteProgress') }}
-                    </button>
-                  </template>
-                </v-popover>
+                />
+                <btn-delete
+                  v-tooltip="$t('tooltip.deleteProgress')"
+                  :hide-label="true"
+                  @click="$emit('delete-record', record.id)"
+                />
               </div>
             </td>
           </tr>
@@ -133,9 +122,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { VPopover } from 'v-tooltip';
 import { dateTimeShort } from '@/util';
 import UserLink from './UserLink.vue';
+import { Btn, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'KeyResultHome',
@@ -145,7 +134,8 @@ export default {
     ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
     ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
     UserLink,
-    VPopover,
+    Btn,
+    BtnDelete,
   },
 
   props: {

@@ -107,14 +107,13 @@
               </validation-observer>
             </div>
 
-            <button
+            <btn-save
               v-if="allowedToEditPeriod"
               form="modal"
+              variant="primary"
+              class="key-result__value--button"
               :disabled="isSaving"
-              class="btn btn--ods key-result__value--button"
-            >
-              {{ $t('btn.save') }}
-            </button>
+            />
           </div>
 
           <div class="key-result__graph">
@@ -170,6 +169,7 @@ import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import routerGuard from '@/router/router-guards/keyResultHome';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
+import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
   name: 'KeyResultHome',
@@ -181,6 +181,7 @@ export default {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     WidgetProgressHistory,
     WidgetsKeyResultMobile,
+    BtnSave,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -478,5 +479,6 @@ export default {
 
 .key-result__value--button {
   align-self: end;
+  border: 1px solid var(--color-white);
 }
 </style>

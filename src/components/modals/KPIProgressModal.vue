@@ -71,9 +71,11 @@
     </div>
 
     <template #footer>
-      <button form="progress-value" :disabled="loading" class="btn btn--ods">
-        {{ $t(record ? 'btn.saveChanges' : 'btn.save') }}
-      </button>
+      <btn-save
+        form="progress-value"
+        :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
+        :disabled="loading"
+      />
     </template>
   </modal-wrapper>
 </template>

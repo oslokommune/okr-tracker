@@ -6,9 +6,10 @@
 .button-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   margin: 2.5rem -0.25rem -0.25rem;
 
-  > .btn {
+  .btn {
     margin: 0.25rem;
   }
 }
@@ -16,7 +17,7 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  padding: 0.75rem 0.5rem;
+  padding: 0.75rem;
   color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
@@ -35,11 +36,6 @@
     opacity: 0.6;
     filter: saturate(0.5);
   }
-}
-
-.btn--danger {
-  color: var(--color-red-dark);
-  background: var(--color-red-light);
 }
 
 .btn--pri {
@@ -62,6 +58,16 @@
   }
 }
 
+.btn--confirm {
+  color: var(--color-text);
+  background: var(--color-green);
+
+  &:hover {
+    color: var(--color-text-secondary);
+    background-color: var(--color-hover);
+  }
+}
+
 .btn--ods {
   color: var(--color-text-secondary);
   background: var(--color-primary);
@@ -69,13 +75,8 @@
 }
 
 .btn--icon {
+  gap: 0.5rem;
   justify-content: flex-start;
-  padding-right: 1rem;
-  color: var(--color-text);
-
-  & > .icon {
-    margin-right: 0.25rem;
-  }
 }
 
 .btn--icon-pri {
