@@ -13,7 +13,7 @@ import keyResRoutes from './routes/keyres.js';
 
 const app = express();
 
-app.use(cors());
+app.use(cors()); 
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('combined'));
