@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changes
+
+- Remove dasboard view and all related code.
+
 ## [2.7.5] 2022-06-17
 
 ### Changes

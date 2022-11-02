@@ -177,8 +177,7 @@ export const removeChannelsFromMultipleSlackArrays = async (documents, channelId
       const filteredArr = data.slack.filter((channel) => channel !== channelId);
       batch.update(docRef, { slack: filteredArr });
     } else {
-      const slack = data.slack ? data.slack : [];
-      batch.update(docRef, { slack });
+      batch.update(docRef, { slack: data.slack ? data.slack : [] });
     }
   });
 
