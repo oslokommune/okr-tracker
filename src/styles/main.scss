@@ -210,6 +210,14 @@ body.using-mouse :focus {
   --color-grey-400-rgb: #{hexToRGB(#939399)};
   --color-grey-500-rgb: #{hexToRGB(#797980)};
   --color-grey-800-rgb: #{hexToRGB(#242433)};
+
+  // Knowit colors
+  --color-mint: #DBEEDE;
+  --color-digital-black: #333333;
+  --color-pear: #B7DEBD;
+  --color-pear-dark: #7b957f;
+  --color-flamingo: #aa887a;
+  --color-flamingo-dark: #FAC0B1;
 }
 
 [data-theme='green'] {
@@ -239,3 +247,19 @@ body.using-mouse :focus {
 
   --color-primary-rgb: var(--color-purple-rgb);
 }
+
+[data-theme='knowit'] {
+    --color-text: var(--color-digital-black);
+    --color-text-secondary: var(--color-digital-black);
+    --color-primary: var(--color-pear);
+    --color-primary-dark: var(--color-pear-dark);
+    --color-secondary: var(--color-flamingo);
+    --color-secondary-light: var(--color-flamingo);
+    --color-tertiary: var(--color-flamingo-dark);
+    --color-progress-background: var(--color-green-medium-dark);
+    --color-hover: var(--color-grey-100);
+  
+    --color-primary-rgb: var(--color-pear);
+}
+
+

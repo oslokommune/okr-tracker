@@ -11,6 +11,11 @@ export const colors = {
     gradientStop: '#034b45',
     line: '#034b45',
   },
+  knowit: {
+    gradientStart: '#034b45',
+    gradientStop: '#034b45',
+    line: '#034b45',
+  }
 };
 
 export function initSvg(svg) {
