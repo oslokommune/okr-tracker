@@ -161,6 +161,13 @@ service cloud.firestore {
       allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
     }
 
+    match /kpis/{document}/goals/{goal} {
+      allow read: if isSignedIn();
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+    }
+
     match /slugs/{document} {
       allow read: if true;
       allow write: if false;
