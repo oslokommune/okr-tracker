@@ -4,7 +4,7 @@
     :aria-label="label"
     :class="['btn', { 'btn--icon': icon }, buttonVariantClass]"
     :disabled="disabled"
-    @click="$emit('click', $event)"
+    @click="clickHandler"
   >
     <i v-if="icon" :class="['icon', 'fa', 'fa-fw', `fa-${icon}`]" />
     <span v-if="!hideLabel">{{ label }}</span>
@@ -64,6 +64,15 @@ export default {
         default:
           return 'btn--pri';
       }
+    },
+  },
+
+  methods: {
+    clickHandler(e) {
+      if (!this.form) {
+        e.preventDefault();
+      }
+      this.$emit('click', e);
     },
   },
 };
