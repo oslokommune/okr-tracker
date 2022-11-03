@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeItem" class="wrapper">
+  <div v-if="activeItem" class="form-wrapper form-card">
     <archived-restore v-if="activeItem.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
@@ -224,20 +224,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.wrapper {
-  padding: 2rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
-}
-</style>
