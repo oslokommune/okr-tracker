@@ -11,6 +11,10 @@
     <div v-if="show" class="collapse__body">
       <slot name="collapse-body" />
     </div>
+
+    <div class="collapse__footer">
+      <slot name="collapse-footer" />
+    </div>
   </div>
 </template>
 

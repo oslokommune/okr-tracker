@@ -4,11 +4,21 @@
 @mixin card() {
   padding: 1.5rem;
   background: white;
+  border: none;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
-  &--error {
-    box-shadow: 0 0 2px 3px rgba(var(--color-red-rgb), 0.4);
+  &--state-line {
+    border-left: 4px solid var(--color-grey-400);
+  }
+  &--success {
+    border-color: var(--color-success);
+  }
+  &--warning {
+    border-color: var(--color-warning);
+  }
+  &--danger {
+    border-color: var(--color-danger);
   }
 }
 

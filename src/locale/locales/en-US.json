@@ -40,7 +40,6 @@
     },
     "heading": "KPIs",
     "itemRowError": "error",
-    "configurationError": "Configuration error",
     "help": {
       "updates": "KPIs can be updated manually through the OKR Tracker or automatically using an optional Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
       "readMoreHere": "here"
