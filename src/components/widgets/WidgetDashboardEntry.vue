@@ -1,6 +1,5 @@
 <template>
   <router-link
-    v-if="hasDashboardAccess"
     class="widgetDashboardEntry btn"
     :to="{
       name: 'Dashboard',
@@ -14,12 +13,8 @@
 </template>
 
 <script>
-import DashboardAccessCollection from '../../../common/db/DashboardAccessCollection';
-import { db } from '@/config/firebaseConfig';
 import IconGraph from '@/components/IconGraph.vue';
 import IconChevronRight from '@/components/IconChevronRight.vue';
-
-const dashboardAccessCollection = new DashboardAccessCollection(db);
 
 export default {
   name: 'WidgetDashboardEntry',
@@ -36,24 +31,6 @@ export default {
     },
   },
 
-  data() {
-    return {
-      hasDashboardAccess: false,
-    };
-  },
-
-  watch: {
-    slug: {
-      immediate: true,
-      async handler() {
-        const { exists } = await dashboardAccessCollection
-          .getDocumentRef(this.slug)
-          .get();
-
-        this.hasDashboardAccess = exists;
-      },
-    },
-  },
 };
 </script>
 

@@ -9,3 +9,7 @@ const getActiveItemType = (activeItem) => {
 };
 
 export default getActiveItemType;
+
+export function isDepartment(activeItem) {
+  return getActiveItemType(activeItem) === 'department';
+}
