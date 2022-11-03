@@ -248,7 +248,6 @@ export default {
       }
     },
     typeLabel() {
-      // const labels = this.types.map(({ id, label }) => ({ id: label }));
       const labels = Object.assign(
         {},
         ...this.types.map(({ id, label }) => ({ [id]: label }))
