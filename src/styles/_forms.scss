@@ -1,4 +1,5 @@
 @use 'range-slider' as *;
+@use 'typography';
 
 input,
 select,
@@ -239,6 +240,8 @@ textarea {
 
   .description {
     display: block;
-    margin-top: 0.25rem;
+    margin: 0.25rem 1.75rem 0 1.75rem;
+    font-size: typography.$font-size-1;
+    color: var(--color-grey-600);
   }
 }
