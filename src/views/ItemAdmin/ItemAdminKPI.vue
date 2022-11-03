@@ -3,7 +3,7 @@
     <template #collapse-header>
       <div class="kpi__header">
         <span class="kpi__header-label">{{ typeLabel }}</span>
-        <h1>
+        <h2>
           {{ kpi.name }}
           <span
             v-if="kpi.error"
@@ -13,7 +13,7 @@
             <i :class="['fa', `fa-${stateIcon}`]" />
             {{ $t('kpi.configurationError') }}
           </span>
-        </h1>
+        </h2>
       </div>
       <div class="kpi__header-value-container">
         <span class="kpi__header-label">Verdi</span>
@@ -360,7 +360,7 @@ export default {
 .kpi__header {
   flex-grow: 1;
 
-  > h1 {
+  > h2 {
     display: flex;
     gap: 0.5rem;
     align-items: center;
