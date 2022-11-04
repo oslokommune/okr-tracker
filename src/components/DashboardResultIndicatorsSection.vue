@@ -91,7 +91,7 @@ import firebase from 'firebase/app';
 
 import { db } from '@/config/firebaseConfig';
 import { periodDates } from '@/util';
-import { formatKPIValue } from '@/util/kpiHelpers';
+import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -369,11 +369,16 @@ export default {
         });
       }
 
+      const kpi = this.resultIndicators[this.activeTab];
+      const [startValue, targetValue] = kpiInterval(kpi.format);
+
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.filteredProgress,
-        kpi: this.resultIndicators[this.activeTab],
+        kpi,
+        startValue,
+        targetValue,
         theme: this.theme,
       });
     },

@@ -96,3 +96,13 @@ export function formatKPIValue (kpi, value = null, options = {}) {
 
   return '–––';
 };
+
+/**
+ * Return an appropriate value interval for a given KPI format type.
+ */
+export function kpiInterval(formatId) {
+  if (formatId === 'percentage') {
+    return [0, 1];
+  }
+  return [null, null];
+}
