@@ -46,6 +46,12 @@
       "radio": "Oppdatere via API?",
       "help": "Det er ikke mulig å oppdatere KPIer manuelt via OKR-trackeren, men det er satt opp et API for å kalle OKR-trackeren direkte for å oppdatere KPIene. Ta kontakt med administrator om å få tilgang til dette APIet.",
       "tooltip": "Skru på denne hvis du har planer om å oppdatere KPIen selv via OKR-tracker sitt API"
+    },
+    "goals": {
+      "new": "Nytt mål",
+      "set": "Sett mål",
+      "edit": "Rediger mål",
+      "the": "målet"
     }
   },
   "fields": {
