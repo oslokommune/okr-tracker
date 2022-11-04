@@ -42,4 +42,4 @@ async function restore(kpiId, goalId) {
   return goal.update({ archived: false });
 };
 
-export default { create, get, update, archive, restore };
+export default { create, update, archive, restore };
