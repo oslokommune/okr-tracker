@@ -1,6 +1,11 @@
 import { db } from '@/config/firebaseConfig';
 import props from './props';
-import { validateCreateProps, validateUpdateProps } from '../../common';
+import {
+  createDocument,
+  updateDocument,
+  validateCreateProps,
+  validateUpdateProps,
+} from '../../common';
 
 async function create(kpiId, data) {
   if (!validateCreateProps(props, data)) {
@@ -8,9 +13,8 @@ async function create(kpiId, data) {
   }
 
   const { ref } = await db.collection('kpis').doc(kpiId).get();
-  const goalsRef = ref.collection('goals');
 
-  return goalsRef.add(data);
+  return createDocument(ref.collection('goals'), data);
 };
 
 async function get(kpiId, goalId) {
@@ -23,7 +27,7 @@ async function update(kpiId, goalId, data) {
 
   const goal = await get(kpiId, goalId);
 
-  return goal.update(data);
+  return updateDocument(goal, data);
 };
 
 async function archive(kpiId, goalId) {
