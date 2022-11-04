@@ -1,5 +1,9 @@
 <template>
-  <collapse-container class="form-card">
+  <collapse-container
+    class="form-card"
+    :visible="visible"
+    @toggle="$emit('toggle', $event, kpi)"
+  >
     <template #collapse-header>
       <div class="kpi__header">
         <span class="kpi__header-label">{{ typeLabel }}</span>
@@ -210,6 +214,11 @@ export default {
     kpi: {
       required: true,
       type: Object,
+    },
+    visible: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
 

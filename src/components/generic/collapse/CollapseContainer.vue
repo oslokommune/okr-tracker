@@ -1,14 +1,14 @@
 <template>
-  <div :class="['collapse', `collapse--${isCollapsed ? 'collapsed' : 'open'}`]">
-    <div class="collapse__header" @click="isCollapsed = !isCollapsed">
+  <div :class="['collapse', `collapse--${show ? 'open' : 'collapsed'}`]">
+    <div class="collapse__header" @click="show = !show">
       <div class="collapse__header-content">
         <slot name="collapse-header" />
       </div>
       <button class="btn btn--ter collapse__toggle">
-        <i :class="['fa', `fa-chevron-${isCollapsed ? 'down' : 'up'}`]" />
+        <i :class="['fa', `fa-chevron-${show ? 'down' : 'up'}`]" />
       </button>
     </div>
-    <div v-if="!isCollapsed" class="collapse__body">
+    <div v-if="show" class="collapse__body">
       <slot name="collapse-body" />
     </div>
   </div>
@@ -18,9 +18,33 @@
 export default {
   name: 'CollapseContainer',
 
+  props: {
+    // When `true`, expands the collapse.
+    visible: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
+  },
+
   data: () => ({
-    isCollapsed: true,
+    show: false,
   }),
+
+  watch: {
+    visible(newValue) {
+      this.show = newValue;
+    },
+    show(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$emit('toggle', newValue);
+      }
+    },
+  },
+
+  mounted() {
+    this.show = this.visible;
+  },
 };
 </script>
 
