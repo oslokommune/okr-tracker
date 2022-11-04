@@ -43,7 +43,7 @@
     "fuse.js": "^6.5.3",
     "marked": "^4.0.14",
     "save-svg-as-png": "^1.4.17",
-    "swagger-ui": "^4.14.2",
+    "swagger-ui": "^4.15.2",
     "tabbable": "^6.0.0",
     "tippy.js": "6.3.7",
     "v-tooltip": "^2.1.3",
