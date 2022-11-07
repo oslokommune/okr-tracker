@@ -1,11 +1,18 @@
 <template>
   <div class="form-wrapper">
     <div v-if="kpis.length">
-      <button class="btn btn--ghost" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
+      <button class="btn btn--ghost" @click="showAddKPIModal = true">
+        {{ $t('kpi.add') }}
+      </button>
+
       <div class="kpis">
-        <div v-for="kpi in kpis" :key="kpi.id">
-          <ItemAdminKPI :kpi="kpi" />
-        </div>
+        <ItemAdminKPI
+          v-for="kpi in kpis"
+          :key="kpi.id"
+          :kpi="kpi"
+          :visible="visibleKpiId === kpi.id"
+          @toggle="kpiToggled"
+        />
       </div>
     </div>
 
@@ -35,11 +42,20 @@ export default {
   },
 
   data: () => ({
+    visibleKpiId: null,
     showAddKPIModal: false,
   }),
 
   computed: {
     ...mapState(['kpis']),
+  },
+
+  methods: {
+    kpiToggled(open, kpi) {
+      if (open) {
+        this.visibleKpiId = kpi.id;
+      }
+    },
   },
 };
 </script>

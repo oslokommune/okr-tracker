@@ -41,6 +41,7 @@
     "heading": "KPIs",
     "sheetsDetails": "Sheets details",
     "itemRowError": "error",
+    "configurationError": "Configuration error",
     "api": {
       "radio": "Update via API?",
       "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access.",
