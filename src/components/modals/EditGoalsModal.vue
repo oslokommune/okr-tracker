@@ -234,20 +234,26 @@ export default {
 <style lang="scss" scoped>
 .goal-form {
   display: flex;
-  height: 22rem;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media screen and (min-width: bp(s)) {
+    flex-direction: row;
+  }
 
   &__left {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    border: 1px solid var(--color-grey-100);
     height: 100%;
+    border: 1px solid var(--color-grey-100);
 
     @media screen and (min-width: bp(s)) {
       margin-right: 1.5rem;
     }
 
     ul {
+      height: 19rem;
       overflow-y: scroll;
     }
 
@@ -280,8 +286,8 @@ export default {
 
   &__right {
     display: flex;
-    flex-direction: column;
     flex-basis: 45%;
+    flex-direction: column;
   }
 
   ::v-deep form span:first-child .form-group {
