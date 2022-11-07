@@ -13,7 +13,7 @@
             :class="{ selected: goal.id === activeGoalId }"
             @click="setActiveGoal(goal.id)"
           >
-            <span>{{ goal.name }}</span>
+            <a href="#"><span>{{ goal.name }}</span></a>
           </li>
         </ul>
         <button class="btn btn--ter btn--icon btn--fw" @click="addGoal(kpi)">
@@ -276,6 +276,11 @@ export default {
         font-weight: 500;
         background: var(--color-primary);
       }
+    }
+
+    a {
+      color: var(--color-text);
+      text-decoration: none;
     }
 
     button {
