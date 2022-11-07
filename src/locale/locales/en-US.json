@@ -46,6 +46,12 @@
       "radio": "Update via API?",
       "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access.",
       "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
+    },
+    "goals": {
+      "new": "New goal",
+      "set": "Set goals",
+      "edit": "Edit goals",
+      "the": "the goal"
     }
   },
   "fields": {

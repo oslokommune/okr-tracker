@@ -64,6 +64,7 @@ export default {
     createFocusTrap() {
       this.focusTrap = focusTrap.createFocusTrap(this.$refs.modalOverlay, {
         onActivate: this.setInitialFocus,
+        allowOutsideClick: true,
       });
       this.focusTrap.activate();
     },

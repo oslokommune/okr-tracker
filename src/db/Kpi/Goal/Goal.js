@@ -33,13 +33,13 @@ async function update(kpiId, goalId, data) {
 async function archive(kpiId, goalId) {
   const goal = await get(kpiId, goalId);
 
-  return goal.update({ archived: true });
+  return updateDocument(goal, { archived: true });
 };
 
 async function restore(kpiId, goalId) {
   const goal = await get(kpiId, goalId);
 
-  return goal.update({ archived: false });
+  return updateDocument(goal, { archived: false });
 };
 
 export default { create, update, archive, restore };
