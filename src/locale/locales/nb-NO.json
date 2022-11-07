@@ -40,7 +40,7 @@
     },
     "heading": "KPI-er",
     "itemRowError": "feil",
-    "configurationError": "Feilkonfigurering",
+    "configurationError": "Feilkonfigurasjon",
     "help": {
       "updates": "KPI-er kan oppdateres manuelt via OKR-trackeren eller automatisk ved bruk av en valgfri Google Sheets- eller API-integrasjon. Merk at det kun er mulig å retigstrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av KPI-er {readMoreLink}.",
       "readMoreHere": "her"
