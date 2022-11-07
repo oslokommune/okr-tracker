@@ -95,16 +95,31 @@ export default class LineChart {
       this.theme = theme;
     }
 
+    let fromValue = startValue;
+    let toValue = targetValue;
+    const minValue = fromValue = min(progress, d => d.value);
+
     if (typeof(startValue) !== 'number') {
-      startValue = min(progress, d => d.value);
+      fromValue = minValue;
+    }
+    if (typeof(targetValue) !== 'number') {
+      toValue = max(progress, d => d.value);
     }
 
+    const spread = toValue - fromValue;
+
+    /*
+     * Pad with 10% of the spread.
+     */
+    if (typeof(startValue) !== 'number') {
+      fromValue -= spread * 0.1;
+    }
     if (typeof(targetValue) !== 'number') {
-      targetValue = max(progress, d => d.value);
+      toValue += spread * 0.1;
     }
 
     this.x.domain([startDate, endDate]);
-    this.y.domain([startValue, targetValue]).nice();
+    this.y.domain([fromValue, toValue]).nice();
 
     this.width = this.svg.node().getBoundingClientRect().width;
     resize.call(this);
@@ -131,7 +146,7 @@ export default class LineChart {
         value: +d.value,
         comment: d?.comment,
         kpi,
-        startValue: +startValue,
+        startValue: +minValue,
       }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
@@ -139,7 +154,7 @@ export default class LineChart {
       timestamp: new Date(),
       value: +datapoints[datapoints.length - 1].value,
       kpi,
-      startValue: +startValue,
+      startValue: +minValue,
     } : []];
 
     this.valueArea.datum(data).transition().attr('d', this.area);
