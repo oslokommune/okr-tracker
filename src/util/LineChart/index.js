@@ -125,13 +125,6 @@ export default class LineChart {
       .call(styleAxisY);
     this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxisX);
 
-    const firstValue = {
-      timestamp: startDate,
-      value: +startValue,
-      kpi,
-      startValue: +startValue,
-    };
-
     const datapoints = progress
       .map((d) => ({
         timestamp: d.timestamp.toDate(),
@@ -142,18 +135,12 @@ export default class LineChart {
       }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
-    const lastValue = datapoints.length
-      ? +datapoints[datapoints.length - 1].value
-      : firstValue.value;
-
-    const todayValue = {
+    const data = [...datapoints, datapoints.length ? {
       timestamp: new Date(),
-      value: lastValue,
+      value: +datapoints[datapoints.length - 1].value,
       kpi,
       startValue: +startValue,
-    };
-
-    const data = [firstValue, ...datapoints, todayValue];
+    } : []];
 
     this.valueArea.datum(data).transition().attr('d', this.area);
     this.valueLine.datum(data).transition().attr('d', this.line);
