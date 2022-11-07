@@ -139,8 +139,9 @@ export default {
   display: flex;
   align-items: center;
   margin: 0 auto 0 0;
-  padding: 0.5rem span(0, 1);
+  padding: 0.35rem span(0, 1);
   color: var(--color-text);
+  line-height: normal;
   text-decoration: none;
 
   &:hover &__chevron {
@@ -162,7 +163,7 @@ export default {
 .item__icon {
   flex-shrink: 0;
   align-self: flex-start;
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
   margin-right: 0.5rem;
 }
 
