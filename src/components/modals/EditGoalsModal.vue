@@ -164,6 +164,7 @@ export default {
       const toDate = activeGoal.get('toDate');
       if (fromDate && toDate) {
         this.period = [fromDate.toDate(), toDate.toDate()];
+        [this.fromDate, this.toDate] = this.period;
       }
       this.value = activeGoal.get('value');
     },
@@ -173,6 +174,8 @@ export default {
       this.activeGoal = null;
       this.name = null;
       this.period = null;
+      this.fromDate = null;
+      this.toDate = null;
       this.value = null;
     },
 
