@@ -5,7 +5,7 @@
         <slot name="collapse-header" />
       </div>
       <button class="btn btn--ter collapse__toggle">
-        <i :class="['fa', `fa-chevron-${show ? 'down' : 'up'}`]" />
+        <i :class="['fa', `fa-chevron-${show ? 'up' : 'down'}`]" />
       </button>
     </div>
     <div v-if="show" class="collapse__body">
