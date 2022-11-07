@@ -216,10 +216,12 @@ export default {
         // details if the `auto` property doesn't exist on the model.
         const sheetsEnabled = this.localKpi.auto;
 
-        if (this.kpi && sheetsEnabled === undefined) {
-          return (
-            !!this.kpi.sheetId || !!this.kpi.sheetName || !!this.kpi.sheetCell
-          );
+        if (
+          this.kpi &&
+          sheetsEnabled === undefined &&
+          (this.kpi.sheetId || this.kpi.sheetName || this.kpi.sheetCell)
+        ) {
+          return true;
         }
         return sheetsEnabled;
       },
