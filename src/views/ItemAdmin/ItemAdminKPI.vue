@@ -1,23 +1,17 @@
 <template>
   <collapse-container
-    class="form-card"
     :visible="visible"
+    :class="[
+      'form-card',
+      'form-card--state-line',
+      { [`form-card--${stateClass}`]: stateClass },
+    ]"
     @toggle="$emit('toggle', $event, kpi)"
   >
     <template #collapse-header>
       <div class="kpi__header">
         <span class="kpi__header-label">{{ typeLabel }}</span>
-        <h2>
-          {{ kpi.name }}
-          <span
-            v-if="kpi.error"
-            v-tooltip="stateMessage"
-            class="ods-badge ods-badge--danger"
-          >
-            <i :class="['fa', `fa-${stateIcon}`]" />
-            {{ $t('kpi.configurationError') }}
-          </span>
-        </h2>
+        <h2>{{ kpi.name }}</h2>
       </div>
       <div class="kpi__header-value-container">
         <span class="kpi__header-label">Verdi</span>
@@ -30,12 +24,19 @@
     <template #collapse-body>
       <hr class="ods-hr" />
 
+      <kpi-admin-form
+        :kpi="kpi"
+        :loading="loading || state === 'loading'"
+        @save="save"
+        @delete="archive"
+      />
+    </template>
+
+    <template #collapse-footer>
       <div
-        v-if="state === 'loading' || state === 'error'"
-        :class="['kpi__state', `kpi__state--${state}`]"
+        :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]"
       >
         <i
-          v-tooltip="stateMessage"
           :class="[
             'fa',
             `fa-${stateIcon}`,
@@ -44,13 +45,6 @@
         />
         <span>{{ stateMessage }}</span>
       </div>
-
-      <kpi-admin-form
-        :kpi="kpi"
-        :loading="loading || state === 'loading'"
-        @save="save"
-        @delete="archive"
-      />
     </template>
   </collapse-container>
 </template>
@@ -96,6 +90,16 @@ export default {
       if (this.kpi.error) return 'error';
       if (this.kpi.valid) return 'valid';
       return 'loading';
+    },
+    stateClass() {
+      switch (this.state) {
+        case 'error':
+          return 'danger';
+        case 'valid':
+          return 'success';
+        default:
+          return null;
+      }
     },
     stateIcon() {
       switch (this.state) {
@@ -227,9 +231,6 @@ export default {
   flex-grow: 1;
 
   > h2 {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
     font-weight: 500;
     font-size: typography.$font-size-2;
   }
@@ -255,19 +256,32 @@ export default {
   }
 }
 
-.kpi__state {
+.kpi__footer {
   display: flex;
   gap: 0.5rem;
-  margin-top: 1rem;
-  padding: 1rem;
-  background: var(--color-green);
-  border-radius: 2px;
+  padding: 0.75rem;
+  font-size: typography.$font-size-2;
+  background: var(--color-grey-50);
+  border-bottom-right-radius: 3px;
 
-  &--valid {
-    background: var(--color-green);
+  &--success {
+    background: rgba(var(--color-green-rgb), 0.1);
   }
-  &--error {
-    background: var(--color-red);
+  &--warning {
+    background: rgba(var(--color-yellow-rgb), 0.1);
+  }
+  &--danger {
+    background: rgba(var(--color-red-rgb), 0.1);
+  }
+}
+
+.collapse--collapsed {
+  .kpi__footer {
+    font-size: typography.$font-size-0;
+
+    &--success {
+      display: none;
+    }
   }
 }
 </style>
