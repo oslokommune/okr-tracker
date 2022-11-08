@@ -45,169 +45,30 @@
         <span>{{ stateMessage }}</span>
       </div>
 
-      <validation-observer v-slot="{ handleSubmit }">
-        <form :id="`kpi_${localKpi.id}`" @submit.prevent="handleSubmit(save.bind(null, localKpi))">
-          <form-component
-            v-model="localKpi.name"
-            input-type="input"
-            name="name"
-            :label="$t('fields.name')"
-            rules="required"
-            type="text"
-          />
-
-          <label class="form-group">
-            <span class="form-label">{{ $t('fields.description') }}</span>
-            <textarea v-model="localKpi.description" class="form__field" rows="4" />
-          </label>
-
-          <validation-provider v-slot="{ errors }" rules="required" name="format">
-            <label class="form-group">
-              <span class="form-label">
-                {{ $t('kpi.display') }}
-              </span>
-              <select v-model="kpi.format" class="form__field">
-                <option
-                  v-for="{ id, label } in formats" :key="id" :value="id">
-                  {{ label }}
-                </option>
-              </select>
-              <span v-if="errors[0]" class="form-field--error">
-                {{ errors[0] }}
-              </span>
-            </label>
-          </validation-provider>
-
-          <hr class="ods-hr" />
-
-          <validation-provider v-slot="{ errors }" rules="required" name="kpiType">
-            <div class="form-group">
-              <span class="form-label">{{ $t('fields.kpitype') }}</span>
-              <span v-if="errors[0]" class="form-field--error">
-                {{ errors[0] }}
-              </span>
-              <div v-for="{ id, label, description } in types" :key="id"
-                  class="ods-form-group descriptive-radio">
-                <input type="radio" :id="localKpi.id + '-' + id" class="ods-form-radio"
-                      name="radio-group" v-model="localKpi.kpiType" :value="id" />
-                <label class="ods-form-label" :for="localKpi.id + '-' + id">
-                  <span class="title">{{ label }}</span>
-                </label>
-                <label class="description" :for="localKpi.id + '-' + id">
-                  {{ description }}
-                </label>
-              </div>
-            </div>
-          </validation-provider>
-
-          <hr class="ods-hr" />
-
-          <div class="toggle__container">
-            <span class="toggle__label">
-              {{ $t('kpi.api.radio') }}
-              <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
-            </span>
-            <label class="toggle">
-              <input v-model="localKpi.api" class="toggle__input" type="checkbox" />
-              <span class="toggle__switch"></span>
-            </label>
-          </div>
-
-          <template v-if="localKpi.api">
-            {{ $t('kpi.api.help') }}
-          </template>
-
-          <template v-if="!localKpi.api">
-            <h3 class="title-2" style="color: var(--color-text)">{{ $t('kpi.sheetsDetails') }}</h3>
-
-            <form-component
-              v-model="localKpi.sheetId"
-              input-type="input"
-              name="sheetId"
-              :label="$t('keyResult.automation.googleSheetId')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
-              </template>
-            </form-component>
-            <div class="button-sync-row">
-              <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`">
-                <icon-arrow-circle class="icon"/>
-                {{ $t('btn.syncData') }}
-              </button>
-            </div>
-
-            <form-component
-              v-model="localKpi.sheetName"
-              input-type="input"
-              name="sheetTab"
-              :label="$t('keyResult.automation.sheetsTab')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
-              </template>
-            </form-component>
-
-            <form-component
-              v-model="localKpi.sheetCell"
-              input-type="input"
-              name="sheetCell"
-              :label="$t('keyResult.automation.sheetsCell')"
-              rules="required"
-              type="text"
-            >
-              <template #help>
-                <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
-              </template>
-            </form-component>
-          </template>
-
-          <form-component
-            v-else
-            input-type="input"
-            type="text"
-            label="API"
-            rules="required"
-            :readonly="true"
-            :copy-button="true"
-            :value="apiCurl(localKpi)"
-          >
-            <template #help>
-              <span class="form-help">{{ $t('admin.curlHelp') }}</span>
-            </template>
-          </form-component>
-        </form>
-      </validation-observer>
-
-      <div class="button-row">
-        <btn-delete :icon-only="true" @click="archive($event, localKpi)" />
-        <btn-save :form="`kpi_${localKpi.id}`" />
-      </div>
+      <kpi-admin-form
+        :kpi="kpi"
+        :loading="loading || state === 'loading'"
+        @save="save"
+        @delete="archive"
+      />
     </template>
   </collapse-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import IconArrowCircle from '@/assets/IconArrowCircle.vue';
 import { formatKPIValue, kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import { toastArchiveAndRevert } from '@/util';
 import CollapseContainer from '@/components/generic/collapse/CollapseContainer.vue';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import KpiAdminForm from '@/components/forms/KpiAdminForm.vue';
 
 export default {
   name: 'ItemAdminKPI',
 
   components: {
     CollapseContainer,
-    BtnSave,
-    BtnDelete,
-    IconArrowCircle,
+    KpiAdminForm,
   },
 
   props: {
@@ -224,16 +85,16 @@ export default {
 
   data: () => ({
     showAddKPIModal: false,
-    localKpi: null,
     formats: kpiFormats(),
     types: kpiTypes(),
+    loading: false,
   }),
 
   computed: {
     ...mapState(['kpis']),
     state() {
-      if (this.localKpi.error) return 'error';
-      if (this.localKpi.valid) return 'valid';
+      if (this.kpi.error) return 'error';
+      if (this.kpi.valid) return 'valid';
       return 'loading';
     },
     stateIcon() {
@@ -249,7 +110,7 @@ export default {
     stateMessage() {
       switch (this.state) {
         case 'error':
-          return this.showError(this.localKpi.error);
+          return this.showError(this.kpi.error);
         case 'valid':
           return 'OK';
         default:
@@ -269,7 +130,10 @@ export default {
     kpi: {
       immediate: true,
       handler() {
-        this.localKpi = this.kpi;
+        this.localKpi = {
+          id: this.kpi.id,
+          ...this.kpi,
+        };
       },
     },
   },
@@ -278,26 +142,22 @@ export default {
     formatKPIValue,
 
     async save(kpi) {
+      this.loading = true;
       kpi.error = false;
       kpi.valid = false;
       delete kpi.parent;
-      try {
-        if (kpi.api) {
-          kpi.sheetCell = '';
-          kpi.sheetId = '';
-          kpi.sheetName = '';
-        }
 
+      try {
         await Kpi.update(kpi.id, kpi);
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.save'));
       }
+      this.loading = false;
     },
 
-    async archive(e, kpi) {
-      e.preventDefault();
-
+    async archive(kpi) {
+      this.loading = true;
       try {
         await Kpi.archive(kpi.id);
 
@@ -309,9 +169,11 @@ export default {
           this.$t('toaster.error.archive', { document: kpi.name })
         );
       }
+      this.loading = false;
     },
 
     async restore(kpi) {
+      this.loading = true;
       try {
         await Kpi.restore(kpi.id);
         this.$toasted.show(this.$t('toaster.restored'));
@@ -320,6 +182,7 @@ export default {
           this.$t('toaster.error.restore', { document: kpi.name })
         );
       }
+      this.loading = false;
     },
 
     showError(msg) {
@@ -332,11 +195,6 @@ export default {
       }
       return msg;
     },
-
-    apiCurl: (kpi) =>
-      `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }' ${
-        import.meta.env.VITE_API_GATEWAY_URL
-      }/kpi/${kpi.id}`,
   },
 };
 </script>
@@ -397,16 +255,6 @@ export default {
   }
 }
 
-.form-row {
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-
-  & > .form-group {
-    margin: 0;
-  }
-}
-
 .kpi__state {
   display: flex;
   gap: 0.5rem;
@@ -421,10 +269,5 @@ export default {
   &--error {
     background: var(--color-red);
   }
-}
-
-.button-sync-row {
-  display: flex;
-  justify-content: flex-end;
 }
 </style>

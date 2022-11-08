@@ -9,9 +9,14 @@ const fetchKpiDataOnUpdate = async (doc) => {
   const { ref } = doc;
 
   try {
-    const { api } = doc.data();
+    const { api, auto, sheetId, sheetName, sheetCell } = doc.data();
+    // Some KPI objects might not include the `auto` property. The Google
+    // Sheets integration was previously enabled in cases where the API was not
+    // enabled. For backwards compatibility, check for this condition as well.
+    const sheetsEnabled =
+      auto || (auto === undefined && !api && sheetId && sheetName && sheetCell);
 
-    if (api) {
+    if (!sheetsEnabled) {
       await ref.update({ error: FieldValue.delete(), valid: true });
       return true;
     }
