@@ -189,19 +189,20 @@ export default {
     },
 
     orderedPeriods() {
-      return this.periods
-        .map((x) => x)
-        .sort((a, b) => b.startDate.toDate() - a.startDate.toDate());
+      return this.orderItems(
+        this.periods,
+        (a, b) => b.startDate.toDate() - a.startDate.toDate()
+      );
     },
     orderedObjectives() {
-      return this.objectives
-        .map((x) => x)
-        .sort((a, b) => a.name.localeCompare(b.name));
+      return this.orderItems(this.objectives, (a, b) =>
+        a.name.localeCompare(b.name)
+      );
     },
     orderedKeyResults() {
-      return this.keyResults
-        .map((x) => x)
-        .sort((a, b) => a.name.localeCompare(b.name));
+      return this.orderItems(this.keyResults, (a, b) =>
+        a.name.localeCompare(b.name)
+      );
     },
   },
 
@@ -315,6 +316,23 @@ export default {
       }
 
       this.selectedType = type;
+    },
+
+    orderItems(items, compareFn) {
+      const itemsCopy = items.map((x) => x);
+      return [
+        ...itemsCopy
+          .filter((period) => period.name === 'placeholder')
+          .sort((a, b) => {
+            if (a.created && b.created) {
+              return b.created.toDate() - a.created.toDate();
+            }
+            return a.name.localeCompare(b.name);
+          }),
+        ...itemsCopy
+          .filter((period) => period.name !== 'placeholder')
+          .sort(compareFn),
+      ];
     },
 
     bindPeriods() {
