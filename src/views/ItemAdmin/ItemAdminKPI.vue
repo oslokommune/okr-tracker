@@ -99,7 +99,7 @@
 
         <label v-if="localKpi.api" class="form-group">
           <span class="form-label">API</span>
-          <span class="form-help">Push updates with curl</span>
+          <span class="form-help">{{ $t('admin.curlHelp') }}</span>
           <input :value="apiCurl(localKpi)" type="text" disabled class="form__field" />
         </label>
 

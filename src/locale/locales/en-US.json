@@ -308,6 +308,7 @@
   },
   "admin": {
     "apiSecret": "If you are using the API to update Key Results and/or KPI, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
+    "curlHelp": "Push updates with curl",
     "department": {
       "picture": "Image",
       "create": "Create new department",
