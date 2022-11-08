@@ -3,27 +3,25 @@
     <template #header>
       {{ $t('user.profile') }}
     </template>
-
-    <form id="updateUser" class="modal__main--flex">
-      <div class="column">
-        <validation-observer v-slot="{ handleSubmit }">
+    <validation-observer v-slot="{ handleSubmit }">
+      <form id="updateUser" class="modal__main--flex" @submit.prevent="handleSubmit(save)">
+        <div class="column">
           <span class="form-label">{{ $t('fields.name') }}</span>
           <input
             v-model="thisUser.displayName"
             rules="required"
             :disabled="!me"
           />
-        </validation-observer>
-        <label class="form-group">
-          <span class="form-label">{{ $t('user.position.title') }}</span>
-          <v-select
-            v-if="me || $store.state.user.superAdmin"
-            v-model="thisUser.position"
-            :options="jobPositions"
-            :get-option-label="(option) => $t(`user.position.${option}`)"
-          >
-          </v-select>
-          <div v-else>
+          <label class="form-group">
+            <span class="form-label">{{ $t('user.position.title') }}</span>
+            <v-select
+              v-if="me || $store.state.user.superAdmin"
+              v-model="thisUser.position"
+              :options="jobPositions"
+              :get-option-label="(option) => $t(`user.position.${option}`)"
+            >
+            </v-select>
+            <div v-else>
             <span>
               {{
                 thisUser && thisUser.position
@@ -31,31 +29,32 @@
                   : $t('user.position.member')
               }}
             </span>
-          </div>
-        </label>
-
-        <btn-save
-          v-if="me || $store.state.user.superAdmin"
-          form="updateUser"
-          class="profileModal__save-button"
-          :disabled="loading"
-        />
-      </div>
-
-      <div class="column">
-        <h2 class="title-2">
-          {{ $t('user.products') }}
-        </h2>
-        <ul v-if="products.length > 0">
-          <li v-for="product in products" :key="product.id">
-            <div class="profileModal__info">
-              <h2 class="title-2">{{ product.department.name }}</h2>
-              <div>{{ product.name }}</div>
             </div>
-          </li>
-        </ul>
-      </div>
-    </form>
+          </label>
+
+          <btn-save
+            v-if="me || $store.state.user.superAdmin"
+            form="updateUser"
+            class="profileModal__save-button"
+            :disabled="loading"
+          />
+        </div>
+
+        <div class="column">
+          <h2 class="title-2">
+            {{ $t('user.products') }}
+          </h2>
+          <ul v-if="products.length > 0">
+            <li v-for="product in products" :key="product.id">
+              <div class="profileModal__info">
+                <h2 class="title-2">{{ product.department.name }}</h2>
+                <div>{{ product.name }}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </validation-observer>
   </modal-wrapper>
 </template>
 <script>
