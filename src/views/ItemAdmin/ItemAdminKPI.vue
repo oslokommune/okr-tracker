@@ -177,7 +177,7 @@
             :value="apiCurl(localKpi)"
           >
             <template #help>
-              <span class="form-help">Push updates with curl</span>
+              <span class="form-help">{{ $t('admin.curlHelp') }}</span>
             </template>
           </form-component>
         </form>
