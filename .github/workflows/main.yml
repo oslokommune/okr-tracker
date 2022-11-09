@@ -45,6 +45,7 @@ jobs:
       - name: npm install
         run: |
           npm ci
+          npm --prefix functions ci functions
         env:
           CI: true
       - name: npm lint
