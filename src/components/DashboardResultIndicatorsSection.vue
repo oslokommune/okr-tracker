@@ -52,13 +52,13 @@
           <span class="progressTarget__title">{{
             $t('kpi.currentValue')
           }}</span>
-          <span v-if="latestProgressRecord" class="progressTarget__value">
-            {{ formatResultIndicatorValue(latestProgressRecord.value) }}
+          <span v-if="activeResultIndicator" class="progressTarget__value">
+            {{ formatKPIValue(activeResultIndicator) }}
           </span>
         </div>
         <div v-if="goal">
           <span class="progressTarget__title">{{ $t('kpi.goals.for') }} {{ goal.name }}</span>
-          <span class="progressTarget__value">{{ formatResultIndicatorValue(goal.value) }}</span>
+          <span class="progressTarget__value">{{ formatKPIValue(activeResultIndicator, goal.value) }}</span>
         </div>
       </div>
     </tab-panel>
@@ -144,10 +144,11 @@ export default {
 
   data: () => ({
     activeTab: 0,
+    activeResultIndicator: null,
+    graph: null,
     downloadOption: '',
     progressCollection: [],
     unexpiredGoals: [],
-    latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
@@ -227,68 +228,52 @@ export default {
         }
       },
     },
+
+    activeResultIndicator() {
+      this.getProgressData().then(this.renderGraph);
+      this.fetchGoals();
+    },
+
     currentResultIndicatorPeriod() {
       this.getProgressData().then(this.renderGraph);
+    },
 
-      if (
-        this.$route.query?.resultIndicatorPeriod !==
-        this.currentResultIndicatorPeriod.key
-      ) {
-        this.$router.replace({
-          query: {
-            resultIndicatorPeriod: this.currentResultIndicatorPeriod.key,
-          },
-        });
+    resultIndicators() {
+      if (this.resultIndicators.length && this.activeResultIndicator) {
+        const activeResultIndicatorIndex = this.resultIndicators.findIndex(
+          (ri) => ri.id === this.activeResultIndicator.id
+        );
+        if (activeResultIndicatorIndex) {
+          this.setActiveTab(activeResultIndicatorIndex);
+          return;
+        }
+      } else {
+        this.graph = null;
+        this.activeResultIndicator = null;
       }
+
+      this.setActiveTab(0);
     },
-    resultIndicators: {
-      immediate: true,
-      async handler() {
-        this.getProgressData().then(this.renderGraph);
-        this.fetchGoals();
-      },
-    },
-    activeTab: {
-      immediate: true,
-      async handler() {
-        this.latestProgressRecord = null;
-        this.getProgressData().then(this.renderGraph);
-        this.fetchGoals();
-      },
-    },
-    progressCollection: {
-      immediate: true,
-      async handler() {
-        this.getLatestProgressRecord();
-      },
-    },
+
     theme() {
       this.renderGraph();
     },
   },
 
+  mounted() {
+    this.activeResultIndicator = this.resultIndicators[this.activeTab];
+  },
+
   methods: {
+    formatKPIValue,
+
     setActiveTab(tabIndex) {
       this.activeTab = tabIndex;
+      this.activeResultIndicator = this.resultIndicators[tabIndex];
     },
-    async getLatestProgressRecord() {
-      const ri = this.getActiveRI();
 
-      if (ri) {
-        await db
-          .collection(`kpis/${ri.id}/progress`)
-          .orderBy('timestamp', 'desc')
-          .limit(1)
-          .get()
-          .then((list) => {
-            this.latestProgressRecord = list.docs[0]
-              ? list.docs[0].data()
-              : null;
-          });
-      }
-    },
     async getProgressData() {
-      const ri = this.getActiveRI();
+      const ri = this.activeResultIndicator;
 
       if (ri) {
         let query = db.collection(`kpis/${ri.id}/progress`);
@@ -372,7 +357,7 @@ export default {
     },
 
     renderGraph() {
-      if (!this.resultIndicators.length) return;
+      if (!this.resultIndicators.length || !this.activeResultIndicator) return;
 
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
@@ -382,7 +367,7 @@ export default {
         });
       }
 
-      const kpi = this.resultIndicators[this.activeTab];
+      const kpi = this.activeResultIndicator;
       const [startValue, targetValue] = kpiInterval(kpi.format);
 
       this.graph.render({
@@ -396,20 +381,9 @@ export default {
       });
     },
 
-    getActiveRI () {
-      return this.resultIndicators.length
-        ? this.resultIndicators[this.activeTab]
-        : null;
-    },
-
-    formatResultIndicatorValue(value) {
-      const resultIndicator = this.getActiveRI();
-      return resultIndicator && value
-        ? formatKPIValue(resultIndicator, value)
-        : null;
-    },
     download(value) {
-      const filename = this.getActiveRI().name;
+      if (!this.activeResultIndicator) return;
+      const filename = this.activeResultIndicator.name;
 
       if (value.downloadOption === 'png') {
         const svgRef = this.$refs.progressGraphSvg;
