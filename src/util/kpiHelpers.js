@@ -65,7 +65,7 @@ function valueFormatter (defaultSpecifier, compactSpecifier) {
  */
 function kpiFormatFunction (formatId) {
   return {
-    integer: valueFormatter(',', '.2s'),
+    integer: valueFormatter(',.2~f', '.2s'),
     percentage: valueFormatter('.2p'),
   }[formatId];
 }
