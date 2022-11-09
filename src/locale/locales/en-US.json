@@ -5,7 +5,8 @@
   "theme": {
     "colors": {
       "blue": "Blue",
-      "green": "Green"
+      "green": "Green",
+      "knowit": "Knowit"
     },
     "header": "Customize",
     "aria": "Current theme is {current}, next theme is {next}"
