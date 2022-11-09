@@ -7,7 +7,7 @@
 
       <div class="kpis">
         <ItemAdminKPI
-          v-for="kpi in kpis"
+          v-for="kpi in orderedKpis"
           :key="kpi.id"
           :kpi="kpi"
           :visible="visibleKpiId === kpi.id"
@@ -48,6 +48,15 @@ export default {
 
   computed: {
     ...mapState(['kpis']),
+    orderedKpis() {
+      const kpiOrder = ['ri', 'keyfig', 'plain'];
+      return this.kpis
+        .map((x) => x)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort(
+          (a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType)
+        );
+    },
   },
 
   methods: {
