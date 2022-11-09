@@ -24,6 +24,7 @@
   max-height: 100%;
   padding: 2rem 1.5rem;
   background: var(--color-white);
+  overflow-y: auto;
   box-shadow: 0 5px 30px -10px rgba(black, 0.2);
 
   scrollbar-width: none; /* Hide scrollbar styles Firefox */

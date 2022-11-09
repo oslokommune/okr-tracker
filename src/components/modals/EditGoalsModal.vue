@@ -235,6 +235,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .modal {
+  overflow-y: visible;
+}
+
 .goal-form {
   display: flex;
   flex-direction: column;
