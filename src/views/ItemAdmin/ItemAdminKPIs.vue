@@ -10,8 +10,9 @@
           v-for="kpi in orderedKpis"
           :key="kpi.id"
           :kpi="kpi"
-          :visible="visibleKpiId === kpi.id"
+          :visible="selectedKpiId === kpi.id"
           @toggle="kpiToggled"
+          @hook:mounted="kpiMounted(kpi.id)"
         />
       </div>
     </div>
@@ -42,7 +43,7 @@ export default {
   },
 
   data: () => ({
-    visibleKpiId: null,
+    selectedKpiId: null,
     showAddKPIModal: false,
   }),
 
@@ -57,12 +58,59 @@ export default {
           (a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType)
         );
     },
+    anchoredKpiId() {
+      const { hash } = this.$route;
+      return hash ? hash.substring(1) : null;
+    },
+  },
+
+  watch: {
+    anchoredKpiId: {
+      immediate: true,
+      async handler(kpiId) {
+        if (kpiId) {
+          this.selectKpi(kpiId);
+        }
+      },
+    },
+    selectedKpiId(kpiId) {
+      const { name, query, hash } = this.$route;
+      const kpiHash = kpiId ? `#${kpiId}` : '';
+      if (hash !== kpiHash) {
+        this.$router.replace({ name, query, hash: kpiHash });
+      }
+    },
+    kpis() {
+      if (this.selectedKpiId) {
+        // Update the scroll position if the order of KPIs changes.
+        this.scrollToKpi(this.selectedKpiId);
+      }
+    },
   },
 
   methods: {
+    selectKpi(kpiId) {
+      this.selectedKpiId = kpiId;
+      this.scrollToKpi(kpiId);
+    },
+    scrollToKpi(kpiId) {
+      this.$nextTick(() => {
+        const kpiEl = document.getElementById(kpiId);
+        if (kpiEl) {
+          window.scrollTo({ top: kpiEl.offsetTop, behavior: 'smooth' });
+        }
+      });
+    },
     kpiToggled(open, kpi) {
       if (open) {
-        this.visibleKpiId = kpi.id;
+        this.selectKpi(kpi.id);
+      } else if (this.selectedKpiId === kpi.id) {
+        this.selectedKpiId = null;
+      }
+    },
+    kpiMounted(kpiId) {
+      if (kpiId === this.selectedKpiId) {
+        this.scrollToKpi(kpiId);
       }
     },
   },
