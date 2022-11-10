@@ -40,8 +40,9 @@ export default {
       const data = { ...kpi, parent: this.activeItemRef };
 
       try {
-        await Kpi.create(data);
+        const KpiRef = await Kpi.create(data);
         this.$toasted.show(this.$t('toaster.add.kpi'));
+        this.$emit('add', KpiRef.id);
         this.close();
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.kpi'));

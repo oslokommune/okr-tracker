@@ -26,7 +26,11 @@
       <button class="btn btn--ter" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
     </empty-state>
 
-    <add-kpi-modal v-if="showAddKPIModal" @close="showAddKPIModal = false" />
+    <add-kpi-modal
+      v-if="showAddKPIModal"
+      @add="kpiAdded"
+      @close="showAddKPIModal = false"
+    />
   </div>
 </template>
 
@@ -100,6 +104,9 @@ export default {
           window.scrollTo({ top: kpiEl.offsetTop, behavior: 'smooth' });
         }
       });
+    },
+    kpiAdded(kpiId) {
+      this.selectKpi(kpiId);
     },
     kpiToggled(open, kpi) {
       if (open) {
