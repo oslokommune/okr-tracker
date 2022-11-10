@@ -108,11 +108,15 @@ export default class LineChart {
 
     const spread = toValue - fromValue;
 
-    /*
-     * Pad with 10% of the spread.
-     */
+    // Pad with 10% of the spread ...
     if (typeof(startValue) !== 'number') {
+      const wasPositive = fromValue >= 0;
       fromValue -= spread * 0.1;
+
+      // ... but don't let it turn from positive to negative.
+      if (fromValue < 0 && wasPositive) {
+        fromValue = 0;
+      }
     }
     if (typeof(targetValue) !== 'number') {
       toValue += spread * 0.1;
