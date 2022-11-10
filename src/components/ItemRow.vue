@@ -137,11 +137,8 @@ export default {
 
 .item {
   display: flex;
-  align-items: center;
-  margin: 0 auto 0 0;
-  padding: 0.35rem span(0, 1);
+  padding: 0.5rem span(0, 1);
   color: var(--color-text);
-  line-height: normal;
   text-decoration: none;
 
   &:hover &__chevron {
@@ -152,22 +149,22 @@ export default {
 
 .item__name {
   display: flex;
-  flex: 1 1 100%;
-  align-items: center;
+  margin-top: 0.15rem;
   margin-right: auto;
   padding-right: 0.5rem;
-  overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .item__icon {
   flex-shrink: 0;
   align-self: flex-start;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
   margin-right: 0.5rem;
 }
 
 .item__chevron {
+  margin-top: 0.15rem;
   color: var(--color-grey-500);
   transform: translateX(-0.5rem);
   opacity: 0;
@@ -177,6 +174,7 @@ export default {
 .progress-bar {
   flex-shrink: 0;
   width: span(1, 0, span(6)) !important;
+  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(l)) {
     width: span(2, 0, span(6));
@@ -185,6 +183,8 @@ export default {
 
 .item__kpis {
   display: none;
+  flex-flow: row-reverse wrap;
+  margin-top: 0.15rem;
   margin-right: 1rem;
 
   @media screen and (min-width: bp(s)) {
