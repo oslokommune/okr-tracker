@@ -72,7 +72,7 @@
 
       <div class="goal-section">
         <h3>{{ $t('kpi.goals.goals') }}</h3>
-        <div class="content-wrapper">
+        <div class="goal-section__content-wrapper">
           <span>{{ $t('kpi.goals.help') }}</span>
           <button
             class="btn btn--sec"
@@ -301,7 +301,7 @@ export default {
     color: var(--color-text);
   }
 
-  .content-wrapper {
+  &__content-wrapper {
     display: flex;
     flex-direction: column;
     gap: 1rem;
