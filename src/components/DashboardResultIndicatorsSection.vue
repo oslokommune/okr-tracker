@@ -58,7 +58,7 @@
         </div>
         <div v-if="goal">
           <span class="progressTarget__title">{{ $t('kpi.goals.for') }} {{ goal.name }}</span>
-          <span class="progressTarget__value">{{ goal.value }}</span>
+          <span class="progressTarget__value">{{ formatResultIndicatorValue(goal.value) }}</span>
         </div>
       </div>
     </tab-panel>
@@ -239,6 +239,7 @@ export default {
     activeTab: {
       immediate: true,
       async handler() {
+        this.goal = null;
         this.latestProgressRecord = null;
         this.getProgressData().then(this.renderGraph);
         this.getGoal().then((goal) => this.goal = goal);
