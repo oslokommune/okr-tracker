@@ -1,4 +1,4 @@
-import Btn from './Btn.vue';
+import Btn from './BtnBase.vue';
 import BtnDelete from './BtnDelete.vue';
 import BtnSave from './BtnSave.vue';
 

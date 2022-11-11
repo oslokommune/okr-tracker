@@ -22,10 +22,10 @@
 
 <script>
 import { VPopover } from 'v-tooltip';
-import Btn from './Btn.vue';
+import Btn from './BtnBase.vue';
 
 export default {
-  name: 'ButtonDelete',
+  name: 'BtnDelete',
 
   components: {
     VPopover,

@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'ButtonSave',
+  name: 'BtnBase',
 
   props: {
     form: {
