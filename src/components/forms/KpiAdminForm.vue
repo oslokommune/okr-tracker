@@ -97,57 +97,11 @@
         v-model="localKpi.auto"
         :label="$t('kpi.automation.radio')"
       >
-        <form-component
-          v-model="localKpi.sheetId"
-          input-type="input"
-          name="sheetId"
-          :label="$t('keyResult.automation.googleSheetId')"
-          rules="required"
-          type="text"
-        >
-          <template #help>
-            <span
-              class="form-help"
-              v-html="$t('keyResult.automation.googleSheetIdHelp')"
-            ></span>
-          </template>
-        </form-component>
-
-        <div class="form-row">
-          <form-component
-            v-model="localKpi.sheetName"
-            input-type="input"
-            name="sheetTab"
-            :label="$t('keyResult.automation.sheetsTab')"
-            placeholder="Sheet1"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span
-                class="form-help"
-                v-html="$t('keyResult.automation.sheetsTabHelp')"
-              ></span>
-            </template>
-          </form-component>
-
-          <form-component
-            v-model="localKpi.sheetCell"
-            input-type="input"
-            name="sheetCell"
-            :label="$t('keyResult.automation.sheetsCell')"
-            placeholder="A1"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span
-                class="form-help"
-                v-html="$t('keyResult.automation.sheetsCellHelp')"
-              ></span>
-            </template>
-          </form-component>
-        </div>
+        <google-sheets-form-group
+          :sheet-id.sync="localKpi.sheetId"
+          :sheet-name.sync="localKpi.sheetName"
+          :sheet-cell.sync="localKpi.sheetCell"
+        />
       </toggle-button>
 
       <toggle-button v-model="localKpi.api">
@@ -191,6 +145,7 @@ import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
+import GoogleSheetsFormGroup from './partials/GoogleSheetsFormGroup.vue';
 
 export default {
   name: 'KpiAdminForm',
@@ -200,6 +155,7 @@ export default {
     BtnDelete,
     EditGoalsModal,
     ToggleButton,
+    GoogleSheetsFormGroup,
   },
 
   props: {
