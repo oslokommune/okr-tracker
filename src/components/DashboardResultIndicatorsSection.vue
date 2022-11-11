@@ -147,7 +147,6 @@ export default {
     downloadOption: '',
     progressCollection: [],
     unexpiredGoals: [],
-    goal: null,
     latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
@@ -180,6 +179,17 @@ export default {
         ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
         ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
       ];
+    },
+    goal() {
+      // Firebase doesn't support equality filtering on more than one field at
+      // a time, so do the rest of the filtering client side.
+      const goals = this.unexpiredGoals.filter(
+        (goal) => goal.fromDate < new Date()
+      );
+
+      // We don't enforce non-overlapping goals (yet?), but if anyone has set
+      // overlapping goals, just pick the one with the closest end date.
+      return goals ? goals[0] : null;
     },
     filteredProgress() {
       // Filter out any duplicate measurement values for each date
@@ -254,20 +264,6 @@ export default {
     },
     theme() {
       this.renderGraph();
-    },
-    unexpiredGoals: {
-      immediate: true,
-      async handler() {
-        // Firebase doesn't support equality filtering on more than one field at
-        // a time, so do the rest of the filtering client side.
-        const goals = this.unexpiredGoals.filter((goal) =>
-          goal.fromDate < new Date()
-        );
-
-        // We don't enforce non-overlapping goals (yet?), but if anyone has set
-        // overlapping goals, just pick the one with the closest end date.
-        this.goal = goals ? goals[0] : null;
-      },
     },
   },
 
