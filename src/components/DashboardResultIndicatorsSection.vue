@@ -536,7 +536,7 @@ export default {
 }
 
 .progressGraph {
-  padding: 1rem 1.5rem 0 0.25rem;
+  padding: 1rem 1rem 0 0.25rem;
 }
 
 .progressTarget {
