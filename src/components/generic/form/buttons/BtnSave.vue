@@ -1,5 +1,5 @@
 <script>
-import Btn from './Btn.vue';
+import Btn from './BtnBase.vue';
 
 export default {
   name: 'BtnSave',
