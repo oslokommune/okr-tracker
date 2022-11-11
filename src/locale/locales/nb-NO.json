@@ -12,6 +12,7 @@
   },
   "kpi": {
     "add": "Legg til KPI",
+    "new": "Ny KPI",
     "edit": "Endre KPI",
     "change": "Endre KPI",
     "currentValue": "Nåværende verdi",

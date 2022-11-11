@@ -1,7 +1,7 @@
 <template>
   <div class="form-wrapper">
     <div v-if="kpis.length">
-      <button class="btn btn--ghost" @click="showAddKPIModal = true">
+      <button class="btn btn--ghost" :disabled="loading" @click="createKpi">
         {{ $t('kpi.add') }}
       </button>
 
@@ -23,36 +23,33 @@
       :heading="$t('empty.noKPIs.heading')"
       :body="$t('empty.noKPIs.adminBody')"
     >
-      <button class="btn btn--ter" @click="showAddKPIModal = true">{{ $t('kpi.add') }}</button>
+      <button class="btn btn--ter" :disabled="loading" @click="createKpi">
+        {{ $t('kpi.add') }}
+      </button>
     </empty-state>
-
-    <add-kpi-modal
-      v-if="showAddKPIModal"
-      @add="kpiAdded"
-      @close="showAddKPIModal = false"
-    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Kpi from '@/db/Kpi';
 
 export default {
   name: 'ItemAdminKPIs',
 
   components: {
-    AddKpiModal: () => import('@/components/modals/AddKPIModal.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     ItemAdminKPI: () => import('@/views/ItemAdmin/ItemAdminKPI.vue'),
   },
 
   data: () => ({
     selectedKpiId: null,
-    showAddKPIModal: false,
+    loading: false,
   }),
 
   computed: {
-    ...mapState(['kpis']),
+    ...mapState(['kpis', 'activeItemRef']),
+
     orderedKpis() {
       const kpiOrder = ['ri', 'keyfig', 'plain'];
       return this.kpis
@@ -62,6 +59,7 @@ export default {
           (a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType)
         );
     },
+
     anchoredKpiId() {
       const { hash } = this.$route;
       return hash ? hash.substring(1) : null;
@@ -77,6 +75,7 @@ export default {
         }
       },
     },
+
     selectedKpiId(kpiId) {
       const { name, query, hash } = this.$route;
       const kpiHash = kpiId ? `#${kpiId}` : '';
@@ -84,6 +83,7 @@ export default {
         this.$router.replace({ name, query, hash: kpiHash });
       }
     },
+
     kpis() {
       if (this.selectedKpiId) {
         // Update the scroll position if the order of KPIs changes.
@@ -93,6 +93,35 @@ export default {
   },
 
   methods: {
+    async createKpi() {
+      this.loading = true;
+
+      const data = {
+        parent: this.activeItemRef,
+        name: this.$t('kpi.new'),
+        description: '',
+        format: 'integer',
+        kpiType: 'plain',
+        sheetId: '',
+        sheetName: '',
+        sheetCell: '',
+        api: true,
+        auto: false,
+      };
+
+      try {
+        const KpiRef = await Kpi.create(data);
+        this.$toasted.show(this.$t('toaster.add.kpi'));
+        this.selectedKpiId = KpiRef.id;
+      } catch (error) {
+        console.log(error);
+        this.$toasted.error(this.$t('toaster.error.kpi'));
+        throw new Error(error);
+      }
+
+      this.loading = false;
+    },
+
     scrollToKpi(kpiId) {
       this.$nextTick(() => {
         const kpiEl = document.getElementById(kpiId);
@@ -101,9 +130,11 @@ export default {
         }
       });
     },
-    kpiAdded(kpiId) {
+
+    kpiCreated(kpiId) {
       this.selectedKpiId = kpiId;
     },
+
     kpiToggled(open, kpi) {
       if (open) {
         this.selectedKpiId = kpi.id;
@@ -111,6 +142,7 @@ export default {
         this.selectedKpiId = null;
       }
     },
+
     kpiMounted(kpiId) {
       if (kpiId === this.selectedKpiId) {
         this.scrollToKpi(kpiId);
