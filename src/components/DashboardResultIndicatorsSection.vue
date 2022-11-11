@@ -331,6 +331,7 @@ export default {
       const now = new Date();
 
       let goals = await db.collection(`kpis/${ri.id}/goals`)
+          .where('archived', '==', false)
           .where('toDate', '>', now)
           .orderBy('toDate')
           .get();
