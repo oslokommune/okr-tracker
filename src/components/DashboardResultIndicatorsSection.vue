@@ -235,6 +235,7 @@ export default {
       immediate: true,
       async handler() {
         this.getProgressData().then(this.renderGraph);
+        this.fetchGoals();
       },
     },
     activeTab: {
