@@ -250,7 +250,7 @@ export default {
           const activeResultIndicatorIndex = this.resultIndicators.findIndex(
             (ri) => ri.id === this.activeResultIndicator.id
           );
-          if (activeResultIndicatorIndex !== this.activeTab) {
+          if (activeResultIndicatorIndex >= 0) {
             this.setActiveTab(activeResultIndicatorIndex);
             return;
           }
@@ -322,15 +322,17 @@ export default {
     },
 
     async fetchGoals() {
-      const ri = this.getActiveRI();
+      const ri = this.activeResultIndicator;
 
-      await this.$bind(
-        'unexpiredGoals',
-        db.collection(`kpis/${ri.id}/goals`)
-          .where('archived', '==', false)
-          .where('toDate', '>', new Date())
-          .orderBy('toDate')
-      );
+      if (ri) {
+        await this.$bind(
+          'unexpiredGoals',
+          db.collection(`kpis/${ri.id}/goals`)
+            .where('archived', '==', false)
+            .where('toDate', '>', new Date())
+            .orderBy('toDate')
+        );
+      }
     },
 
     renderGraph() {
