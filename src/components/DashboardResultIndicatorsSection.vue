@@ -56,13 +56,9 @@
             {{ formatResultIndicatorValue(latestProgressRecord.value) }}
           </span>
         </div>
-        <div v-if="resultIndicatorTarget">
-          <span class="progressTarget__title">{{
-            resultIndicatorTarget.name[$i18n.locale]
-          }}</span>
-          <span class="progressTarget__value">{{
-            formatResultIndicatorValue(resultIndicatorTarget.value)
-          }}</span>
+        <div v-if="goal">
+          <span class="progressTarget__title">{{ $t('kpi.goals.for') }} {{ goal.name }}</span>
+          <span class="progressTarget__value">{{ formatResultIndicatorValue(goal.value) }}</span>
         </div>
       </div>
     </tab-panel>
@@ -97,7 +93,6 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
-import KPI_TARGETS from '@/views/Dashboard/data/staticData';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import IconDownload from './IconDownload.vue';
@@ -151,6 +146,7 @@ export default {
     activeTab: 0,
     downloadOption: '',
     progressCollection: [],
+    unexpiredGoals: [],
     latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
@@ -175,13 +171,6 @@ export default {
   computed: {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
-    /*
-     * TODO: RI targets are still hard coded.
-     */
-    resultIndicatorTarget() {
-      const ri = this.getActiveRI();
-      return ri ? KPI_TARGETS[ri.id] : null;
-    },
     tabIds() {
       return tabIdsHelper('resultIndicator');
     },
@@ -190,6 +179,17 @@ export default {
         ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
         ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
       ];
+    },
+    goal() {
+      // Firebase doesn't support equality filtering on more than one field at
+      // a time, so do the rest of the filtering client side.
+      const goals = this.unexpiredGoals.filter(
+        (goal) => goal.fromDate < new Date()
+      );
+
+      // We don't enforce non-overlapping goals (yet?), but if anyone has set
+      // overlapping goals, just pick the one with the closest end date.
+      return goals ? goals[0] : null;
     },
     filteredProgress() {
       // Filter out any duplicate measurement values for each date
@@ -245,14 +245,15 @@ export default {
       immediate: true,
       async handler() {
         this.getProgressData().then(this.renderGraph);
+        this.fetchGoals();
       },
     },
     activeTab: {
       immediate: true,
       async handler() {
         this.latestProgressRecord = null;
-
         this.getProgressData().then(this.renderGraph);
+        this.fetchGoals();
       },
     },
     progressCollection: {
@@ -330,6 +331,18 @@ export default {
           this.progressCollection
         );
       }
+    },
+
+    async fetchGoals() {
+      const ri = this.getActiveRI();
+
+      await this.$bind(
+        'unexpiredGoals',
+        db.collection(`kpis/${ri.id}/goals`)
+          .where('archived', '==', false)
+          .where('toDate', '>', new Date())
+          .orderBy('toDate')
+      );
     },
 
     /**
