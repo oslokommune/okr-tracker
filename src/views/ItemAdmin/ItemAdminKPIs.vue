@@ -72,8 +72,8 @@ export default {
     anchoredKpiId: {
       immediate: true,
       async handler(kpiId) {
-        if (kpiId) {
-          this.selectKpi(kpiId);
+        if (kpiId && this.kpis.map((kpi) => kpi.id).includes(kpiId)) {
+          this.selectedKpiId = kpiId;
         }
       },
     },
@@ -93,10 +93,6 @@ export default {
   },
 
   methods: {
-    selectKpi(kpiId) {
-      this.selectedKpiId = kpiId;
-      this.scrollToKpi(kpiId);
-    },
     scrollToKpi(kpiId) {
       this.$nextTick(() => {
         const kpiEl = document.getElementById(kpiId);
@@ -106,11 +102,11 @@ export default {
       });
     },
     kpiAdded(kpiId) {
-      this.selectKpi(kpiId);
+      this.selectedKpiId = kpiId;
     },
     kpiToggled(open, kpi) {
       if (open) {
-        this.selectKpi(kpi.id);
+        this.selectedKpiId = kpi.id;
       } else if (this.selectedKpiId === kpi.id) {
         this.selectedKpiId = null;
       }
