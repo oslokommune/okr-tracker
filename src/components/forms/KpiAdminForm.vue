@@ -70,7 +70,7 @@
 
       <hr class="ods-hr" />
 
-      <div class="goal-section">
+      <div v-if="kpi" class="goal-section">
         <h3>{{ $t('kpi.goals.goals') }}</h3>
         <div class="goal-section__content-wrapper">
           <span>{{ $t('kpi.goals.help') }}</span>
@@ -81,9 +81,9 @@
             {{ $t('kpi.goals.set') }}
           </button>
         </div>
-      </div>
 
-      <hr class="ods-hr" />
+        <hr class="ods-hr" />
+      </div>
 
       <i18n path="kpi.help.updates" tag="p">
         <template #readMoreLink>
