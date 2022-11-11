@@ -146,6 +146,7 @@ export default {
     activeTab: 0,
     downloadOption: '',
     progressCollection: [],
+    unexpiredGoals: [],
     goal: null,
     latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
@@ -239,10 +240,9 @@ export default {
     activeTab: {
       immediate: true,
       async handler() {
-        this.goal = null;
         this.latestProgressRecord = null;
         this.getProgressData().then(this.renderGraph);
-        this.getGoal().then((goal) => this.goal = goal);
+        this.fetchGoals();
       },
     },
     progressCollection: {
@@ -253,6 +253,20 @@ export default {
     },
     theme() {
       this.renderGraph();
+    },
+    unexpiredGoals: {
+      immediate: true,
+      async handler() {
+        // Firebase doesn't support equality filtering on more than one field at
+        // a time, so do the rest of the filtering client side.
+        const goals = this.unexpiredGoals.filter((goal) =>
+          goal.fromDate < new Date()
+        );
+
+        // We don't enforce non-overlapping goals (yet?), but if anyone has set
+        // overlapping goals, just pick the one with the closest end date.
+        this.goal = goals ? goals[0] : null;
+      },
     },
   },
 
@@ -322,27 +336,16 @@ export default {
       }
     },
 
-    /**
-     * Return a current goal for the active RI if any, else return
-     * null.
-     */
-    async getGoal() {
+    async fetchGoals() {
       const ri = this.getActiveRI();
-      const now = new Date();
 
-      let goals = await db.collection(`kpis/${ri.id}/goals`)
+      await this.$bind(
+        'unexpiredGoals',
+        db.collection(`kpis/${ri.id}/goals`)
           .where('archived', '==', false)
-          .where('toDate', '>', now)
+          .where('toDate', '>', new Date())
           .orderBy('toDate')
-          .get();
-
-      // Firebase doesn't support equality filtering on more than one field at a
-      // time, so do the rest of the filtering client side.
-      goals = goals.docs.filter((goal) => goal.get('fromDate').toDate() < now);
-
-      // We don't enforce non-overlapping goals (yet?), but if anyone has set
-      // overlapping goals, just pick the one with the closest end date.
-      return goals.length ? goals[0].data() : null;
+      );
     },
 
     /**
