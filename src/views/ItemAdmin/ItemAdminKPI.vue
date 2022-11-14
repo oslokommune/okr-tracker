@@ -79,7 +79,6 @@ export default {
   },
 
   data: () => ({
-    showAddKPIModal: false,
     formats: kpiFormats(),
     types: kpiTypes(),
     loading: false,

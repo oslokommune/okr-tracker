@@ -117,9 +117,9 @@ export default {
         console.log(error);
         this.$toasted.error(this.$t('toaster.error.kpi'));
         throw new Error(error);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
 
     scrollToKpi(kpiId) {
@@ -129,10 +129,6 @@ export default {
           window.scrollTo({ top: kpiEl.offsetTop, behavior: 'smooth' });
         }
       });
-    },
-
-    kpiCreated(kpiId) {
-      this.selectedKpiId = kpiId;
     },
 
     kpiToggled(open, kpi) {
