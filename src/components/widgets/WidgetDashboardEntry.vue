@@ -40,10 +40,10 @@ export default {
   align-items: center;
   margin-bottom: 0.5rem;
   padding: 1.5rem 1rem;
-  background: var(--color-secondary-light);
   color: var(--color-primary);
-  font-size: 1.125rem;
   font-weight: 500;
+  font-size: 1.125rem;
+  background: var(--color-secondary-light);
 
   &__graphIcon {
     margin-right: 0.5rem;

@@ -15,8 +15,8 @@ export default {
 
 <style lang="scss" scoped>
 .dashboardSection {
-  margin: 4rem auto;
   max-width: 75.5rem;
+  margin: 4rem auto;
 
   &__wrapper {
     margin: 0 1rem;

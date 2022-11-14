@@ -305,17 +305,16 @@ export default {
 .main-widgets__current {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1rem;
+  align-items: center;
   width: span(12);
-
   padding: 1rem;
   background: var(--color-secondary);
   box-shadow: 0 2px 3px rgba(black, 0.1);
 
   @media screen and (min-width: bp(s)) {
-    justify-content: space-between;
     flex-direction: row;
+    justify-content: space-between;
   }
 }
 

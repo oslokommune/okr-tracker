@@ -26,15 +26,15 @@ export default {
 <style lang="scss" scoped>
 .dashboardDepartmentInfoBox {
   flex: 0 0 calc(50% - 1.25rem);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.25rem;
   color: var(--color-text);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 
   .title-2 {
-    margin-bottom: 1rem;
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 
     svg {
       margin-right: 0.5rem;

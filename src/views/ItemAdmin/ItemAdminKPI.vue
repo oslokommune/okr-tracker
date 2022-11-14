@@ -233,9 +233,9 @@ export default {
   > a.anchor {
     // Position the anchor with an offset to account
     // for the fixed site header.
-    display: block;
     position: relative;
     top: -8rem;
+    display: block;
     visibility: hidden;
   }
 

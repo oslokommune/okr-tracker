@@ -33,9 +33,9 @@ export default {
 
 .kpis__list {
   display: grid;
+  grid-auto-rows: 1fr;
   grid-gap: 0.25rem;
   grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  grid-auto-rows: 1fr;
   margin-top: 1.5rem;
 
   ::v-deep .kpi-card {
