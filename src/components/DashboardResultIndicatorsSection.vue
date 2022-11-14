@@ -49,16 +49,20 @@
       />
       <div class="progressTarget">
         <div>
-          <span class="progressTarget__title">{{
-            $t('kpi.currentValue')
-          }}</span>
-          <span v-if="latestProgressRecord" class="progressTarget__value">
-            {{ formatResultIndicatorValue(latestProgressRecord.value) }}
+          <span class="progressTarget__title">
+            {{ $t('kpi.currentValue') }}
+          </span>
+          <span v-if="activeResultIndicator" class="progressTarget__value">
+            {{ formatKPIValue(activeResultIndicator) }}
           </span>
         </div>
-        <div v-if="goal">
-          <span class="progressTarget__title">{{ $t('kpi.goals.for') }} {{ goal.name }}</span>
-          <span class="progressTarget__value">{{ formatResultIndicatorValue(goal.value) }}</span>
+        <div v-if="activeResultIndicator && goal">
+          <span class="progressTarget__title">
+            {{ $t('kpi.goals.for') }} {{ goal.name }}
+          </span>
+          <span class="progressTarget__value">
+            {{ formatKPIValue(activeResultIndicator, goal.value) }}
+          </span>
         </div>
       </div>
     </tab-panel>
@@ -144,10 +148,11 @@ export default {
 
   data: () => ({
     activeTab: 0,
+    activeResultIndicator: null,
+    graph: null,
     downloadOption: '',
     progressCollection: [],
     unexpiredGoals: [],
-    latestProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
@@ -227,71 +232,58 @@ export default {
         }
       },
     },
-    currentResultIndicatorPeriod() {
+
+    activeResultIndicator() {
+      this.getProgressData().then(this.renderGraph);
+      this.fetchGoals();
+    },
+
+    currentResultIndicatorPeriod(period) {
       this.getProgressData().then(this.renderGraph);
 
-      if (
-        this.$route.query?.resultIndicatorPeriod !==
-        this.currentResultIndicatorPeriod.key
-      ) {
-        this.$router.replace({
-          query: {
-            resultIndicatorPeriod: this.currentResultIndicatorPeriod.key,
-          },
-        });
+      if (this.$route.query?.resultIndicatorPeriod !== period.key) {
+        this.$router.replace({ query: { resultIndicatorPeriod: period.key } });
       }
     },
-    resultIndicators: {
-      immediate: true,
-      async handler() {
-        this.getProgressData().then(this.renderGraph);
-        this.fetchGoals();
-      },
+
+    resultIndicators() {
+      if (this.resultIndicators.length) {
+        if (this.activeResultIndicator) {
+          // Change to new tab if the active result indicator changes position
+          // within the result indicators array.
+          const activeResultIndicatorIndex = this.resultIndicators.findIndex(
+            (ri) => ri.id === this.activeResultIndicator.id
+          );
+          if (activeResultIndicatorIndex !== -1) {
+            this.setActiveTab(activeResultIndicatorIndex);
+            return;
+          }
+        }
+      } else {
+        this.graph = null;
+        this.activeResultIndicator = null;
+      }
+
+      this.setActiveTab(0);
     },
-    activeTab: {
-      immediate: true,
-      async handler() {
-        this.latestProgressRecord = null;
-        this.getProgressData().then(this.renderGraph);
-        this.fetchGoals();
-      },
-    },
-    progressCollection: {
-      immediate: true,
-      async handler() {
-        this.getLatestProgressRecord();
-      },
-    },
+
     theme() {
       this.renderGraph();
     },
   },
 
+  mounted() {
+    this.activeResultIndicator = this.resultIndicators[this.activeTab];
+  },
+
   methods: {
-    setActiveTab(tabIndex) {
-      this.activeTab = tabIndex;
-    },
-    async getLatestProgressRecord() {
-      const ri = this.getActiveRI();
+    formatKPIValue,
 
-      if (ri) {
-        await db
-          .collection(`kpis/${ri.id}/progress`)
-          .orderBy('timestamp', 'desc')
-          .limit(1)
-          .get()
-          .then((list) => {
-            this.latestProgressRecord = list.docs[0]
-              ? list.docs[0].data()
-              : null;
-          });
-      }
-    },
     async getProgressData() {
-      const ri = this.getActiveRI();
-
-      if (ri) {
-        let query = db.collection(`kpis/${ri.id}/progress`);
+      if (this.activeResultIndicator) {
+        let query = db.collection(
+          `kpis/${this.activeResultIndicator.id}/progress`
+        );
 
         if (this.currentResultIndicatorPeriod.startDate) {
           query = query.where(
@@ -334,45 +326,19 @@ export default {
     },
 
     async fetchGoals() {
-      const ri = this.getActiveRI();
-
-      await this.$bind(
-        'unexpiredGoals',
-        db.collection(`kpis/${ri.id}/goals`)
-          .where('archived', '==', false)
-          .where('toDate', '>', new Date())
-          .orderBy('toDate')
-      );
-    },
-
-    /**
-     * Return the start date of `period`. If unset, the earliest date
-     * found in `progress` is returned instead.
-     */
-    getStartDate(period, progress) {
-      if (period.startDate) {
-        const ts = Timestamp.fromDate(period.startDate);
-        return ts.toDate ? ts.toDate() : new Date(period.ts);
+      if (this.activeResultIndicator) {
+        await this.$bind(
+          'unexpiredGoals',
+          db.collection(`kpis/${this.activeResultIndicator.id}/goals`)
+            .where('archived', '==', false)
+            .where('toDate', '>', new Date())
+            .orderBy('toDate')
+        );
       }
-
-      return min(progress, d => d.timestamp).toDate();
-    },
-
-    /**
-     * Return the end date of `period`. If unset, the last date found in
-     * `progress` is returned instead.
-     */
-    getEndDate(period, progress) {
-      if (period.endDate) {
-        const ts = Timestamp.fromDate(period.endDate);
-        return ts.toDate ? ts.toDate() : new Date(ts);
-      }
-
-      return max(progress, d => d.timestamp).toDate();
     },
 
     renderGraph() {
-      if (!this.resultIndicators.length) return;
+      if (!this.resultIndicators.length || !this.activeResultIndicator) return;
 
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
@@ -382,7 +348,7 @@ export default {
         });
       }
 
-      const kpi = this.resultIndicators[this.activeTab];
+      const kpi = this.activeResultIndicator;
       const [startValue, targetValue] = kpiInterval(kpi.format);
 
       this.graph.render({
@@ -396,20 +362,9 @@ export default {
       });
     },
 
-    getActiveRI () {
-      return this.resultIndicators.length
-        ? this.resultIndicators[this.activeTab]
-        : null;
-    },
-
-    formatResultIndicatorValue(value) {
-      const resultIndicator = this.getActiveRI();
-      return resultIndicator && value
-        ? formatKPIValue(resultIndicator, value)
-        : null;
-    },
     download(value) {
-      const filename = this.getActiveRI().name;
+      if (!this.activeResultIndicator) return;
+      const filename = this.activeResultIndicator.name;
 
       if (value.downloadOption === 'png') {
         const svgRef = this.$refs.progressGraphSvg;
@@ -453,11 +408,44 @@ export default {
       }
     },
 
-    setPeriod (period) {
-      if (this.startDate.getTime?.() !== period.startDate.getTime?.()
-          || this.endDate.getTime?.() !== period.endDate.getTime?.()) {
+    setActiveTab(tabIndex) {
+      this.activeTab = tabIndex;
+      this.activeResultIndicator = this.resultIndicators[tabIndex];
+    },
+
+    setPeriod(period) {
+      if (
+        this.startDate.getTime?.() !== period.startDate.getTime?.() ||
+        this.endDate.getTime?.() !== period.endDate.getTime?.()
+      ) {
         this.currentResultIndicatorPeriod = period;
       }
+    },
+
+    /**
+     * Return the start date of `period`. If unset, the earliest date
+     * found in `progress` is returned instead.
+     */
+    getStartDate(period, progress) {
+      if (period.startDate) {
+        const ts = Timestamp.fromDate(period.startDate);
+        return ts.toDate ? ts.toDate() : new Date(period.ts);
+      }
+
+      return min(progress, d => d.timestamp).toDate();
+    },
+
+    /**
+     * Return the end date of `period`. If unset, the last date found in
+     * `progress` is returned instead.
+     */
+    getEndDate(period, progress) {
+      if (period.endDate) {
+        const ts = Timestamp.fromDate(period.endDate);
+        return ts.toDate ? ts.toDate() : new Date(ts);
+      }
+
+      return max(progress, d => d.timestamp).toDate();
     },
   },
 };
