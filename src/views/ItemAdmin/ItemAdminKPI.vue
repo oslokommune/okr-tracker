@@ -10,6 +10,7 @@
   >
     <template #collapse-header>
       <div class="kpi__header">
+        <a :id="`${kpi.id}`" class="anchor" />
         <span class="kpi__header-label">{{ typeLabel }}</span>
         <h2>{{ kpi.name }}</h2>
       </div>
@@ -229,6 +230,15 @@ export default {
 
 .kpi__header {
   flex-grow: 1;
+
+  > a.anchor {
+    // Position the anchor with an offset to account
+    // for the fixed site header.
+    display: block;
+    position: relative;
+    top: -8rem;
+    visibility: hidden;
+  }
 
   > h2 {
     font-weight: 500;
