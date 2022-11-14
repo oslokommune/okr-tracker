@@ -49,16 +49,20 @@
       />
       <div class="progressTarget">
         <div>
-          <span class="progressTarget__title">{{
-            $t('kpi.currentValue')
-          }}</span>
+          <span class="progressTarget__title">
+            {{ $t('kpi.currentValue') }}
+          </span>
           <span v-if="activeResultIndicator" class="progressTarget__value">
             {{ formatKPIValue(activeResultIndicator) }}
           </span>
         </div>
-        <div v-if="goal">
-          <span class="progressTarget__title">{{ $t('kpi.goals.for') }} {{ goal.name }}</span>
-          <span class="progressTarget__value">{{ formatKPIValue(activeResultIndicator, goal.value) }}</span>
+        <div v-if="activeResultIndicator && goal">
+          <span class="progressTarget__title">
+            {{ $t('kpi.goals.for') }} {{ goal.name }}
+          </span>
+          <span class="progressTarget__value">
+            {{ formatKPIValue(activeResultIndicator, goal.value) }}
+          </span>
         </div>
       </div>
     </tab-panel>
@@ -250,7 +254,7 @@ export default {
           const activeResultIndicatorIndex = this.resultIndicators.findIndex(
             (ri) => ri.id === this.activeResultIndicator.id
           );
-          if (activeResultIndicatorIndex >= 0) {
+          if (activeResultIndicatorIndex !== -1) {
             this.setActiveTab(activeResultIndicatorIndex);
             return;
           }
@@ -276,10 +280,10 @@ export default {
     formatKPIValue,
 
     async getProgressData() {
-      const ri = this.activeResultIndicator;
-
-      if (ri) {
-        let query = db.collection(`kpis/${ri.id}/progress`);
+      if (this.activeResultIndicator) {
+        let query = db.collection(
+          `kpis/${this.activeResultIndicator.id}/progress`
+        );
 
         if (this.currentResultIndicatorPeriod.startDate) {
           query = query.where(
@@ -322,12 +326,10 @@ export default {
     },
 
     async fetchGoals() {
-      const ri = this.activeResultIndicator;
-
-      if (ri) {
+      if (this.activeResultIndicator) {
         await this.$bind(
           'unexpiredGoals',
-          db.collection(`kpis/${ri.id}/goals`)
+          db.collection(`kpis/${this.activeResultIndicator.id}/goals`)
             .where('archived', '==', false)
             .where('toDate', '>', new Date())
             .orderBy('toDate')
