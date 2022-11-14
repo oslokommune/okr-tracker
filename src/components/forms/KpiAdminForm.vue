@@ -232,7 +232,7 @@ export default {
           let sheetsEnabled = this.kpi.auto;
 
           if (sheetsEnabled === undefined) {
-            if (this.kpi.sheetId || this.kpi.sheetName || this.kpi.sheetCell) {
+            if (this.kpi.sheetId && this.kpi.sheetName && this.kpi.sheetCell) {
               sheetsEnabled = true;
             } else {
               sheetsEnabled = false;
