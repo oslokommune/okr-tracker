@@ -12,6 +12,7 @@
   },
   "kpi": {
     "add": "Add KPI",
+    "placeholderName": "New KPI",
     "edit": "Edit KPI",
     "change": "Change KPI",
     "currentValue": "Current value",
