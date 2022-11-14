@@ -98,7 +98,7 @@ export default {
 
       const data = {
         parent: this.activeItemRef,
-        name: this.$t('kpi.new'),
+        name: this.$t('kpi.placeholderName'),
         description: '',
         format: 'integer',
         kpiType: 'plain',
