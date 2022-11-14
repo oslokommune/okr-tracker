@@ -94,7 +94,7 @@
       </i18n>
 
       <toggle-button
-        v-model="sheetsEnabled"
+        v-model="localKpi.auto"
         :label="$t('kpi.automation.radio')"
       >
         <form-component
@@ -222,35 +222,26 @@ export default {
     showEditGoalsModal: false,
   }),
 
-  computed: {
-    sheetsEnabled: {
-      get() {
-        // For backwards compatibility, check for any previosly configured sheet
-        // details if the `auto` property doesn't exist on the model.
-        const sheetsEnabled = this.localKpi.auto;
-
-        if (
-          this.kpi &&
-          sheetsEnabled === undefined &&
-          (this.kpi.sheetId || this.kpi.sheetName || this.kpi.sheetCell)
-        ) {
-          return true;
-        }
-        return sheetsEnabled;
-      },
-      set(checked) {
-        this.$set(this.localKpi, 'auto', checked);
-      },
-    },
-  },
-
   watch: {
     kpi: {
       immediate: true,
       handler() {
         if (this.kpi) {
+          // For backwards compatibility, check for any previosly configured sheet
+          // details if the `auto` property doesn't exist on the model.
+          let sheetsEnabled = this.kpi.auto;
+
+          if (sheetsEnabled === undefined) {
+            if (this.kpi.sheetId || this.kpi.sheetName || this.kpi.sheetCell) {
+              sheetsEnabled = true;
+            } else {
+              sheetsEnabled = false;
+            }
+          }
+
           this.localKpi = {
             id: this.kpi.id,
+            auto: sheetsEnabled,
             ...this.kpi,
           };
         } else {
