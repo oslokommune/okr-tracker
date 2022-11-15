@@ -153,9 +153,13 @@ export default class LineChart {
       toValue += spread * 0.1;
     }
 
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(0, 0, 0, 0);
-    this.x.domain([startDate, endDate]);
+    // To avoid destructively modifying the passed parameters.
+    const _startDate = new Date(startDate);
+    const _endDate = new Date(endDate);
+
+    _startDate.setHours(0, 0, 0, 0);
+    _endDate.setHours(0, 0, 0, 0);
+    this.x.domain([_startDate, _endDate]);
     this.y.domain([fromValue, toValue]).nice();
 
     this.width = this.svg.node().getBoundingClientRect().width;
@@ -163,7 +167,7 @@ export default class LineChart {
 
     const innerWidth = this.width - CANVAS_PADDING.left - CANVAS_PADDING.right;
 
-    const mSecsBetween = endDate.getTime() - startDate.getTime();
+    const mSecsBetween = _endDate.getTime() - _startDate.getTime();
     const daysBetween = mSecsBetween / (1000 * 60 * 60 * 24);
 
     this.yAxis

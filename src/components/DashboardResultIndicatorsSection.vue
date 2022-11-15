@@ -191,7 +191,9 @@ export default {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
     periodTrend(){
-      const sortedProgress = this.progressCollection.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+      const sortedProgress = this.filteredProgress.sort((a, b) =>
+        a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1
+      );
       const firstProgressRecord = sortedProgress[0]?.value;
       const latestProgressRecord = sortedProgress.slice(-1)[0]?.value;
 
@@ -243,7 +245,12 @@ export default {
         const date = a.timestamp.toDate().toISOString().slice(0, 10);
         if (!seenDates.includes(date)) {
           seenDates.push(date);
-          return true;
+
+          const startDate = this.currentResultIndicatorPeriod.startDate;
+          const endDate = this.currentResultIndicatorPeriod.endDate;
+
+          return (!startDate || a.timestamp.toDate() > startDate) &&
+            (!endDate || a.timestamp.toDate() < endDate);
         }
         return false;
       });
@@ -274,12 +281,18 @@ export default {
 
     activeResultIndicator() {
       this.fetchGoals();
-      this.getProgressData().then(this.renderGraph);
+      this.setProgress().then(() => {
+        this.setStartAndEndDates();
+        this.renderGraph();
+      });
     },
 
     currentResultIndicatorPeriod(period) {
       this.fetchGoals();
-      this.getProgressData().then(this.renderGraph);
+      this.setProgress().then(() => {
+        this.setStartAndEndDates();
+        this.renderGraph();
+      });
 
       if (this.$route.query?.resultIndicatorPeriod !== period.key) {
         this.$router.replace({ query: { resultIndicatorPeriod: period.key } });
@@ -319,50 +332,65 @@ export default {
   methods: {
     formatKPIValue,
 
-    async getProgressData() {
+    async setProgress() {
       if (this.activeResultIndicator) {
-        let query = db.collection(
-          `kpis/${this.activeResultIndicator.id}/progress`
-        );
+        if (this.activeResultIndicator.progress) {
+          const data = JSON.parse(this.activeResultIndicator.progress);
 
-        if (this.currentResultIndicatorPeriod.startDate) {
-          query = query.where(
-            'timestamp', '>=', this.currentResultIndicatorPeriod.startDate
+          this.progressCollection = data.map(m => {
+            return {
+              timestamp: {
+                toDate: () => new Date(m[0]),
+              },
+              value: m[1],
+              comment: m[2],
+            }
+          });
+        } else {
+          let query = db.collection(
+            `kpis/${this.activeResultIndicator.id}/progress`
           );
+
+          if (this.currentResultIndicatorPeriod.startDate) {
+            query = query.where(
+              'timestamp', '>=', this.currentResultIndicatorPeriod.startDate
+            );
+          }
+
+          if (this.currentResultIndicatorPeriod.endDate) {
+            query = query.where(
+              'timestamp', '<=', this.currentResultIndicatorPeriod.endDate
+            );
+          }
+
+          await this.$bind('progressCollection', query .orderBy('timestamp', 'desc'));
         }
-
-        if (this.currentResultIndicatorPeriod.endDate) {
-          query = query.where(
-            'timestamp', '<=', this.currentResultIndicatorPeriod.endDate
-          );
-        }
-
-        await this.$bind(
-          'progressCollection',
-          query.orderBy('timestamp', 'asc')
-        );
-
-        if (
-          this.currentResultIndicatorPeriod?.key === 'all' &&
-          !this.progressCollection.length
-        ) {
-          // Return dates for all year if it's not possible to identify a start
-          // or end date due to missing progress data in the current collection.
-          this.startDate = RESULT_INDICATOR_PERIODS.year.startDate;
-          this.endDate = RESULT_INDICATOR_PERIODS.year.endDate;
-          return;
-        }
-
-        this.startDate = this.getStartDate(
-          this.currentResultIndicatorPeriod,
-          this.progressCollection
-        );
-
-        this.endDate = this.getEndDate(
-          this.currentResultIndicatorPeriod,
-          this.progressCollection
-        );
+      } else {
+        this.progressCollection = [];
       }
+    },
+
+    setStartAndEndDates() {
+      if (
+        this.currentResultIndicatorPeriod?.key === 'all' &&
+          !this.progressCollection.length
+      ) {
+        // Return dates for all year if it's not possible to identify a start
+        // or end date due to missing progress data in the current collection.
+        this.startDate = RESULT_INDICATOR_PERIODS.year.startDate;
+        this.endDate = RESULT_INDICATOR_PERIODS.year.endDate;
+        return;
+      }
+
+      this.startDate = this.getStartDate(
+        this.currentResultIndicatorPeriod,
+        this.progressCollection
+      );
+
+      this.endDate = this.getEndDate(
+        this.currentResultIndicatorPeriod,
+        this.progressCollection
+      );
     },
 
     async fetchGoals() {
@@ -478,7 +506,7 @@ export default {
         return ts.toDate ? ts.toDate() : new Date(period.ts);
       }
 
-      return min(progress, d => d.timestamp).toDate();
+      return min(progress, d => d.timestamp.toDate());
     },
 
     /**
@@ -491,7 +519,7 @@ export default {
         return ts.toDate ? ts.toDate() : new Date(ts);
       }
 
-      return max(progress, d => d.timestamp).toDate();
+      return max(progress, d => d.timestamp.toDate());
     },
   },
 };

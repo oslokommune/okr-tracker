@@ -134,14 +134,8 @@ export default {
 
   watch: {
     activeKpi: {
-      immediate: true,
-      async handler({ id }) {
-        this.isLoading = true;
-        await this.$bind(
-          'progress',
-          db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc')
-        );
-        this.isLoading = false;
+      async handler() {
+        this.setProgress();
       },
     },
     progress() {
@@ -159,11 +153,39 @@ export default {
       this.endDate = this.$route.query.endDate;
       this.range = `${this.startDate} til ${this.endDate}`;
     }
+
+    this.setProgress();
   },
 
   methods: {
     dateShort,
     formatKPIValue,
+
+    async setProgress() {
+      this.isLoading = true;
+
+      const { id, progress } = this.activeKpi;
+
+      if (progress) {
+        this.progress = JSON.parse(progress).map(m => {
+          return {
+            timestamp: {
+              toDate: () => new Date(m[0]),
+            },
+            value: m[1],
+          }
+        });
+
+        this.filterProgress();
+      } else {
+        await this.$bind(
+          'progress',
+          db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc')
+        );
+      }
+
+      this.isLoading = false;
+    },
 
     async createProgressRecord(data, modalCloseHandler) {
       try {
@@ -205,7 +227,7 @@ export default {
         this.filteredProgress.map(({ value }) => value)
       );
       const [startDate, endDate] = extent(
-        this.filteredProgress.map(({ timestamp }) => timestamp)
+        this.filteredProgress.map(({ timestamp }) => timestamp.toDate())
       );
 
       if (!this.graph || startValue === undefined || targetValue === undefined)
@@ -213,8 +235,8 @@ export default {
       this.graph.render({
         startValue,
         targetValue,
-        startDate: startDate.toDate(),
-        endDate: this.isFiltered ? endDate.toDate() : new Date(),
+        startDate: startDate,
+        endDate: this.isFiltered ? endDate : new Date(),
         progress: this.filteredProgress,
         kpi: this.activeKpi,
       });
