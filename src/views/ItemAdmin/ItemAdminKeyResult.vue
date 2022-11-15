@@ -254,6 +254,14 @@ export default {
         this.isLoadingDetails = false;
       },
     },
+    keyResult() {
+      if (this.keyResult.auto === undefined) {
+        this.$set(this.keyResult, 'auto', false);
+      }
+      if (this.keyResult.api === undefined) {
+        this.$set(this.keyResult, 'api', false);
+      }
+    }
   },
 
   methods: {
