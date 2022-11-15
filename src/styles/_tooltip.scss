@@ -105,8 +105,8 @@
 
 /* Tippy */
 .tippy-box[data-theme~='ok'] {
-  background-color: var(--color-bg);
   color: var(--color-primary);
+  background-color: var(--color-bg);
   border-radius: 0;
 }
 .tippy-box[data-theme~='ok'][data-placement^='top'] > .tippy-arrow::before {

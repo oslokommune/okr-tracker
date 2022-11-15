@@ -80,9 +80,9 @@ export default {
   }
 
   &__keyResult {
-    padding: 0.5rem;
     display: flex;
     justify-content: space-between;
+    padding: 0.5rem;
     color: var(--color-text);
     font-weight: 500;
     background: var(--color-secondary-light);

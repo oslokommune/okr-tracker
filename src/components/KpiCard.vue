@@ -33,8 +33,8 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 0.5rem;
+  justify-content: space-between;
   padding: 1rem;
   overflow: hidden;
   color: var(--color-text);

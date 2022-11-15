@@ -97,7 +97,7 @@ export default class LineChart {
 
     let fromValue = startValue;
     let toValue = targetValue;
-    const minValue = fromValue = min(progress, d => d.value);
+    const minValue = min(progress, d => d.value);
 
     if (typeof(startValue) !== 'number') {
       fromValue = minValue;
