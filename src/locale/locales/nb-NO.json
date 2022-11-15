@@ -31,7 +31,7 @@
         "description": "KPI-er er måletall som teamet eller produktområdet ønsker å følge med på. KPI-er vises øverst på team- eller produktområdesiden de hører til."
       },
       "keyFigure": {
-        "label": "KPI med rapportering",
+        "label": "KPI på dashbordet",
         "description": "Er KPI-en er så viktig at den skal vises på dashbordet til produktområdet for rapportering?"
       },
       "resultIndicator": {
