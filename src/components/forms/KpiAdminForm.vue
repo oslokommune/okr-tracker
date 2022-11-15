@@ -37,6 +37,25 @@
         </label>
       </validation-provider>
 
+      <form-component
+        v-model="localKpi.accrualPeriodicity"
+        input-type="select"
+        name="accrualPeriodicity"
+        :label="$t('kpi.accrualPeriodicity.label')"
+        rules="required"
+        select-label="label"
+        :select-options="frequencies"
+        :select-reduce="(option) => option.id"
+        type="text"
+      >
+        <template #help>
+          <span
+            class="form-help"
+            v-html="$t('kpi.accrualPeriodicity.help')"
+          ></span>
+        </template>
+      </form-component>
+
       <hr class="ods-hr" />
 
       <validation-provider v-slot="{ errors }" rules="required" name="kpiType">
@@ -200,7 +219,7 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes, kpiFrequencies } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 
@@ -230,6 +249,7 @@ export default {
     localKpi: null,
     formats: kpiFormats(),
     types: kpiTypes(),
+    frequencies: kpiFrequencies(),
     showEditGoalsModal: false,
   }),
 
@@ -270,6 +290,7 @@ export default {
             description: '',
             format: null,
             kpiType: null,
+            accrualPeriodicity: null,
             sheetId: '',
             sheetName: '',
             sheetCell: '',
@@ -320,5 +341,9 @@ export default {
       align-self: inherit;
     }
   }
+}
+
+::v-deep .v-select {
+  flex-grow: 1;
 }
 </style>

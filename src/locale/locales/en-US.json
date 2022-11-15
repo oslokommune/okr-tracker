@@ -25,6 +25,18 @@
       "integer": "Integer",
       "percentage": "Percentage"
     },
+    "accrualPeriodicity": {
+      "label": "Accrual periodicity",
+      "help": "The frequency with which the KPI are expected to be updated with progress data.",
+      "frequencies": {
+        "annual": "Annual",
+        "daily": "Daily",
+        "irregular": "Sporadic",
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "weekly": "Weekly"
+      }
+    },
     "types": {
       "plain": {
         "label": "KPI",

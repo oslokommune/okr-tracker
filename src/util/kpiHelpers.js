@@ -41,6 +41,22 @@ export function kpiTypes () {
 };
 
 /**
+ * Return a list of available accrual periodicity frequency options. A subset
+ * of the Dublin Core™ Collection Description Frequency Vocabulary. Used to
+ * provide options for setting the `accrualPeriodicity` on KPI objects.
+ * https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/
+ * https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#http://purl.org/dc/terms/accrualPeriodicity
+ */
+export function kpiFrequencies() {
+  return ['daily', 'weekly', 'monthly', 'quarterly', 'annual', 'irregular'].map(
+    (frequency) => ({
+      id: frequency,
+      label: i18n.t(`kpi.accrualPeriodicity.frequencies.${frequency}`),
+    })
+  );
+}
+
+/**
  * Return a value formatter function.
  *
  * `defaultSpecifier` is the format specifier to use in normal cases, while
