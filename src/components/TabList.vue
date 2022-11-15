@@ -1,21 +1,33 @@
 <template>
   <div
-    class="tabList"
+    :class="{ tabList: true, 'tabList--isFilled': isFilled }"
     role="tablist"
     :aria-label="ariaLabel"
     @keydown="updateFocus"
   >
-    <div class="tabList__container">
+    <div
+      :class="{
+        tabList__container: true,
+        'tabList__container--isFilled': isFilled,
+      }"
+    >
       <button
         v-for="(tab, index) in tabs"
         :id="tabIds.tabButton(index)"
         :key="tabIds.tabButton(index)"
         :ref="tabIds.tabButton(index)"
-        v-tooltip.right="{ content: tab.tooltip, trigger: 'hover' }"
+        v-tooltip="{
+          boundariesElement: 'body',
+          trigger: 'hover',
+          placement: 'right',
+          ...tab.tooltip,
+        }"
         role="tab"
         :class="{
           tabList__button: true,
           'tabList__button--isActive': isActiveTab(index),
+          'tabList__button--isFilled': isFilled,
+          'tabList__button--isOutlined': !isFilled,
         }"
         :aria-selected="isActiveTab(index)"
         :aria-controls="tabIds.tabPanel(index)"
@@ -53,6 +65,11 @@ export default {
     tabIds: {
       type: Object,
       required: true,
+    },
+    isFilled: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
 
@@ -114,7 +131,6 @@ export default {
 <style lang="scss" scoped>
 .tabList {
   position: relative;
-  margin-bottom: 1.5rem;
   padding: 0 0.25rem;
   overflow-x: auto;
 
@@ -123,8 +139,8 @@ export default {
   }
 
   &::-webkit-scrollbar {
-    height: 6px;
-    transform: translateY(10px);
+    height: 0.375rem;
+    transform: translateY(0.625rem);
   }
 
   &::-webkit-scrollbar-track {
@@ -135,10 +151,17 @@ export default {
     background-color: var(--color-grey-700);
   }
 
+  &--isFilled {
+    margin-bottom: 1.5rem;
+  }
+
   &__container {
     display: flex;
     margin-bottom: 0.25rem;
-    border-bottom: 0.125rem solid var(--color-primary);
+
+    &--isFilled {
+      border-bottom: 0.125rem solid var(--color-primary);
+    }
   }
 
   &__button {
@@ -147,14 +170,36 @@ export default {
     color: var(--color-text);
     font-weight: 500;
     white-space: nowrap;
-    text-decoration: none;
-    background-color: var(--color-bg-dark);
-    border: 0;
-    cursor: pointer;
 
-    &--isActive {
+    &--isFilled {
+      margin-right: 0.5rem;
+      color: var(--color-text);
+      text-decoration: none;
+      background-color: var(--color-bg-dark);
+      border: 0;
+      cursor: pointer;
+    }
+
+    &--isFilled#{&}--isActive {
       color: var(--color-text-secondary);
       background-color: var(--color-primary);
+    }
+
+    &--isOutlined {
+      color: var(--color-grey-500);
+      font-size: var(--font-size-1);
+      background: transparent;
+      border: none;
+
+      &:hover {
+        color: var(--color-text);
+        background: var(--color-grey-50);
+      }
+    }
+
+    &--isOutlined#{&}--isActive {
+      color: var(--color-text);
+      border-bottom: 0.25rem solid var(--color-secondary-light);
     }
   }
 

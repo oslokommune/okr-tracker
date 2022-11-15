@@ -4,30 +4,45 @@
       :to="{ name: 'ItemHome', params: { slug: data.slug } }"
       style="width: 100%"
       class="item"
-      :class="{ 'item--organization': type === 'organization', 'item--department': type === 'department' }"
+      :class="{
+        'item--organization': type === 'organization',
+        'item--department': type === 'department',
+      }"
     >
       <span v-if="type === 'product'" class="indent" />
-      <i v-if="type !== 'organization'" class="item__icon fas fa-fw" :class="`fa-${icon}`" />
+      <i
+        v-if="type !== 'organization'"
+        class="item__icon fas fa-fw"
+        :class="`fa-${icon}`"
+      />
 
       <span class="item__name" :class="`item__font--${type}`">
         {{ data.name }}
-        <i v-if="isMember" v-tooltip="$t('tooltip.isMember')" class="item__user-icon fa fa-user-circle" />
+        <i
+          v-if="isMember"
+          v-tooltip="$t('tooltip.isMember')"
+          class="item__user-icon fa fa-user-circle"
+        />
       </span>
 
       <div class="item__kpis">
         <div
-          v-for="(kpi, id) in kpiTypes"
-          :key="id"
-          v-tooltip="`${kpi.label}:<br> ${getKpiName(id)}`"
+          v-for="kpi in kpis"
+          :key="kpi.id"
+          v-tooltip="kpi.name"
           class="item__kpi"
-          :class="{ disabled: getKpiValue(id) === '–––' }"
+          :class="{ disabled: _formatKPIValue(kpi) === '–––' }"
         >
-          <i class="item__kpi-icon far" :class="kpi.icon" />
-          <span class="item__kpi-value">{{ getKpiValue(id) }}</span>
+          <i class="item__kpi-icon fa fa-chart-line" />
+          <span class="item__kpi-value">{{ _formatKPIValue(kpi) }}</span>
         </div>
       </div>
 
-      <progress-bar v-tooltip="`${progression}%`" class="progress-bar" :progression="progression" />
+      <progress-bar
+        v-tooltip="`${progression}%`"
+        class="progress-bar"
+        :progression="progression"
+      />
 
       <i class="item__chevron fas fa-chevron-right" />
     </router-link>
@@ -35,9 +50,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import kpiTypes from '@/config/kpiTypes';
+import { formatKPIValue } from '@/util/kpiHelpers';
 
 export default {
   name: 'ItemRow',
@@ -61,13 +76,14 @@ export default {
   data: () => ({
     progression: 0,
     kpis: [],
-    kpiTypes,
   }),
 
   computed: {
     ...mapState(['user']),
     isMember() {
-      return !!this.data.team && this.data.team.find(({ id }) => id === this.user.id);
+      return (
+        !!this.data.team && this.data.team.find(({ id }) => id === this.user.id)
+      );
     },
 
     icon() {
@@ -106,46 +122,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(['update_preferences']),
-    getKpiValue(type) {
-      try {
-        return kpiTypes[type].formatValue(this.kpis.find((obj) => obj.type === type).currentValue);
-      } catch {
-        return '–––';
-      }
-    },
-
-    getKpiName(type) {
-      try {
-        return this.kpis.find((obj) => obj.type === type).name;
-      } catch {
-        return '';
-      }
-    },
-
-    toggle(type, slug) {
-      if (this.user.preferences.home === undefined) {
-        this.user.preferences.home = {
-          collapse: {
-            organization: {},
-            department: {},
-          },
-        };
-      }
-
-      if (this.user.preferences.home.collapse[type][slug] === undefined) {
-        this.user.preferences.home.collapse[type][slug] = this.user.preferences.home.collapse[type][slug] === undefined;
-      } else {
-        this.user.preferences.home.collapse[type][slug] = !this.user.preferences.home.collapse[type][slug];
-      }
-      this.update_preferences();
-    },
-
-    getCollapse(type, slug) {
-      if (this.user.preferences.home === undefined || this.user.preferences.home.collapse[type][slug] === undefined) {
-        return false;
-      }
-      return this.user.preferences.home.collapse[type][slug];
+    _formatKPIValue(kpi) {
+      return formatKPIValue(kpi, kpi.currentValue, {
+        compact: true
+      })
     },
   },
 };
@@ -157,8 +137,6 @@ export default {
 
 .item {
   display: flex;
-  align-items: center;
-  margin: 0 auto 0 0;
   padding: 0.5rem span(0, 1);
   color: var(--color-text);
   text-decoration: none;
@@ -171,11 +149,10 @@ export default {
 
 .item__name {
   display: flex;
-  flex: 1 1 100%;
-  align-items: center;
+  margin-top: 0.15rem;
   margin-right: auto;
   padding-right: 0.5rem;
-  overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -187,6 +164,7 @@ export default {
 }
 
 .item__chevron {
+  margin-top: 0.15rem;
   color: var(--color-grey-500);
   transform: translateX(-0.5rem);
   opacity: 0;
@@ -196,6 +174,7 @@ export default {
 .progress-bar {
   flex-shrink: 0;
   width: span(1, 0, span(6)) !important;
+  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(l)) {
     width: span(2, 0, span(6));
@@ -204,6 +183,8 @@ export default {
 
 .item__kpis {
   display: none;
+  flex-flow: row-reverse wrap;
+  margin-top: 0.15rem;
   margin-right: 1rem;
 
   @media screen and (min-width: bp(s)) {

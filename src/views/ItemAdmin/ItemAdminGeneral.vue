@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeItem" class="wrapper">
+  <div v-if="activeItem" class="form-wrapper form-card">
     <archived-restore v-if="activeItem.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
@@ -25,6 +25,13 @@
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
+        />
+
+        <form-component
+          v-model="activeItem.targetAudience"
+          input-type="textarea"
+          name="targetAudience"
+          :label="$t('dashboard.targetAudience')"
         />
 
         <div v-if="type === 'department'" class="form-group">
@@ -71,14 +78,12 @@
     </validation-observer>
 
     <div class="button-row">
-      <button v-if="!activeItem.archived" class="btn btn--icon btn--archive" :disabled="loading" @click="archive">
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.delete') }}
-      </button>
-      <button class="btn btn--icon btn--pri btn--icon-pri" form="update-item" :disabled="loading">
-        <i class="icon fa fa-fw fa-save" />
-        {{ $t('btn.saveChanges') }}
-      </button>
+      <btn-delete
+        v-if="!activeItem.archived"
+        :disabled="loading"
+        @click="archive"
+      />
+      <btn-save form="update-item" :disabled="loading" />
     </div>
   </div>
 </template>
@@ -90,12 +95,15 @@ import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { toastArchiveAndRevert } from '@/util';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ItemAdminGeneral',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    BtnSave,
+    BtnDelete,
   },
 
   data: () => ({
@@ -117,24 +125,42 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement, secret } = this.activeItem;
+        const { id, name, missionStatement, targetAudience, secret } =
+          this.activeItem;
 
-        const team = this.activeItem.team.map((user) => db.collection('users').doc(user.id));
+        const team = this.activeItem.team.map((user) =>
+          db.collection('users').doc(user.id)
+        );
+
+        const data = {
+          id,
+          name,
+          team,
+          missionStatement,
+          targetAudience: targetAudience === undefined ? '' : targetAudience,
+          secret: secret === undefined ? '' : secret,
+        };
 
         if (this.type === 'organization') {
-          const data = { name, missionStatement, secret: secret === undefined ? '' : secret, team, id };
-
           await Organization.update(id, data);
         } else if (this.type === 'department') {
-          const organization = await db.collection('organizations').doc(this.activeItem.organization.id);
-          const data = { name, missionStatement, organization, secret: secret === undefined ? '' : secret, team, id };
+          const organization = await db
+            .collection('organizations')
+            .doc(this.activeItem.organization.id);
 
-          await Department.update(id, data);
+          await Department.update(id, {
+            ...data,
+            organization,
+          });
         } else {
-          const department = db.collection('departments').doc(this.activeItem.department.id);
-          const data = { name, team, missionStatement, department, secret: secret === undefined ? '' : secret, id };
+          const department = db
+            .collection('departments')
+            .doc(this.activeItem.department.id);
 
-          await Product.update(id, data);
+          await Product.update(id, {
+            ...data,
+            department,
+          });
         }
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
@@ -198,35 +224,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.wrapper {
-  padding: 2rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
-  }
-
-  .btn--pri {
-    color: var(--color-text);
-    background: var(--color-green);
-  }
-
-  .btn--archive {
-    color: var(--color-text);
-    background: transparent;
-  }
-
-  .button-row {
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-</style>

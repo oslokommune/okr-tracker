@@ -9,40 +9,62 @@
       >
         {{ label || name }}
       </span>
+
       <slot name="help"></slot>
-      <input
-        v-if="inputType === 'input'"
-        v-model="innerValue"
-        :type="type"
-        :disabled="disabled"
-        class="form__field"
-        :data-cy="dataCy"
-        step="any"
-      />
 
-      <textarea
-        v-if="inputType === 'textarea'"
-        v-model="innerValue"
-        class="form__field"
-        rows="4"
-        :data-cy="dataCy"
-      />
+      <div class="form-input__wrapper">
+        <input
+          v-if="inputType === 'input'"
+          v-model="innerValue"
+          :type="type"
+          :name="name"
+          :disabled="disabled"
+          :readonly="readonly"
+          :placeholder="placeholder"
+          :class="fieldClass"
+          :data-cy="dataCy"
+          step="any"
+        />
 
-      <v-select
-        v-if="inputType === 'select'"
-        v-model="innerValue"
-        :label="selectLabel"
-        :options="selectOptions"
-        :clearable="false"
-        :data-cy="dataCy"
-      >
-        <template #option="option">
-          {{ option.name }}
-          <span v-if="option.period && option.period.name">
-            ({{ option.period.name }})
-          </span>
-        </template>
-      </v-select>
+        <textarea
+          v-if="inputType === 'textarea'"
+          v-model="innerValue"
+          :disabled="disabled"
+          :name="name"
+          :readonly="readonly"
+          :placeholder="placeholder"
+          :class="fieldClass"
+          rows="4"
+          :data-cy="dataCy"
+        />
+
+        <v-select
+          v-if="inputType === 'select'"
+          v-model="innerValue"
+          :name="name"
+          :label="selectLabel"
+          :options="selectOptions"
+          :clearable="false"
+          :data-cy="dataCy"
+        >
+          <template #option="option">
+            {{ option.name }}
+            <span v-if="option.period && option.period.name">
+              ({{ option.period.name }})
+            </span>
+          </template>
+        </v-select>
+
+        <button
+          v-if="copyButton"
+          v-tooltip="$t('tooltip.copyToClipboard')"
+          class="btn btn--sec"
+          @click="copyFieldText"
+        >
+          <i class="form-label__copy-button far fa-clone" />
+        </button>
+      </div>
+
       <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
     </label>
   </validation-provider>
@@ -113,6 +135,21 @@ export default {
       required: false,
       default: false,
     },
+    readonly: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    copyButton: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     dataCy: {
       type: String,
       required: false,
@@ -123,6 +160,12 @@ export default {
   data: () => ({
     innerValue: '',
   }),
+
+  computed: {
+    fieldClass() {
+      return ['form-input', { 'form-input--readonly': this.readonly }];
+    },
+  },
 
   watch: {
     innerValue(value) {
@@ -140,6 +183,19 @@ export default {
     if (this.value !== undefined) {
       this.innerValue = this.value;
     }
+  },
+
+  methods: {
+    copyFieldText(e) {
+      e.preventDefault();
+      const inputWrapperElement = e.currentTarget.parentElement;
+      const inputElement = inputWrapperElement.querySelector('input');
+      if (inputElement) {
+        navigator.clipboard.writeText(inputElement.value).then(() => {
+          this.$toasted.show(this.$t('toaster.action.copiedToClipboard'));
+        });
+      }
+    },
   },
 };
 </script>

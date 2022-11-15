@@ -149,7 +149,7 @@ export default {
     tabs() {
       return this.filteredPeriods.map((period) => ({
         tabName: period.name,
-        tooltip: periodDates(period),
+        tooltip: { content: periodDates(period) },
       }));
     },
   },
@@ -162,8 +162,6 @@ export default {
 
   methods: {
     ...mapActions(['set_active_period_and_data', 'setDataLoading']),
-
-    getInitialActiveTab() {},
 
     setActiveTab(tabIndex) {
       this.activeTab = tabIndex;

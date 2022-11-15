@@ -16,6 +16,7 @@ import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
 import Spinner from '@/components/VSpinner.vue';
+import FormCompoent from '@/components/FormComponent.vue';
 
 import { auth } from './config/firebaseConfig';
 
@@ -41,7 +42,7 @@ Vue.component('VSelect', VueSelect);
 Vue.component('VueGriddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
-Vue.component('FormComponent', () => import('@/components/FormComponent.vue'));
+Vue.component('FormComponent', FormCompoent);
 Vue.component('ContentLoader', ContentLoader);
 Vue.component('VSpinner', Spinner);
 

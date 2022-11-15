@@ -90,6 +90,12 @@ const routes = [
         beforeEnter: routerGuards.itemAdmin,
       },
       {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/Dashboard/DashboardHome.vue'),
+        beforeEnter: routerGuards.dashboard,
+      },
+      {
         path: 'k/:keyResultId',
         name: 'KeyResultHome',
         component: () => import('@/views/KeyResultHome.vue'),
