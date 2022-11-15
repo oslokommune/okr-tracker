@@ -21,21 +21,17 @@
         <textarea v-model="localKpi.description" class="form__field" rows="4" />
       </label>
 
-      <validation-provider v-slot="{ errors }" rules="required" name="format">
-        <label class="form-group">
-          <span class="form-label">
-            {{ $t('kpi.display') }}
-          </span>
-          <select v-model="localKpi.format" class="form__field">
-            <option v-for="{ id, label } in formats" :key="id" :value="id">
-              {{ label }}
-            </option>
-          </select>
-          <span v-if="errors[0]" class="form-field--error">
-            {{ errors[0] }}
-          </span>
-        </label>
-      </validation-provider>
+      <form-component
+        v-model="localKpi.format"
+        input-type="select"
+        name="format"
+        :label="$t('kpi.display')"
+        rules="required"
+        select-label="label"
+        :select-options="formats"
+        :select-reduce="(option) => option.id"
+        type="text"
+      />
 
       <form-component
         v-model="localKpi.accrualPeriodicity"
