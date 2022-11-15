@@ -30,7 +30,7 @@
         "description": "KPIs are measurements that the team or department whishes to keep an eye on. KPIs are displayed on the top of the team or department page they belong to."
       },
       "keyFigure": {
-        "label": "KPI with reporting",
+        "label": "KPI on dashboard",
         "description": "Is the KPI so important that it should be shown on the department's dashboard for reporting?"
       },
       "resultIndicator": {
