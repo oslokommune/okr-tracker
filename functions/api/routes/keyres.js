@@ -99,6 +99,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     const createdByData = await createdBy.get().then((snapshot) => snapshot.data());
     const objectiveData = await objective.get().then((snapshot) => snapshot.data());
 
+
     const progress = await ref
       .collection('progress')
       .where('archived', '==', false)
