@@ -17,12 +17,6 @@ export const colors = {
     outer: '#6ee9ff',
     dimmed: '#c7c7c7',
   },
-  green: {
-    innerDone: '#034b45',
-    innerFull: '#a2a2a2',
-    outer: '#43f8b6',
-    dimmed: '#c7c7c7',
-  },
   knowit:{
     innerDone: '#034b45',
     innerFull: '#a2a2a2',

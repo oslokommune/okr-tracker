@@ -225,7 +225,7 @@ body.using-mouse :focus {
   --color-clay: #A5B1AA;
 }
 
-[data-theme='green'] {
+[data-theme='knowit'] {
   --color-text: var(--color-green-dark);
   --color-text-secondary: var(--color-white);
   --color-primary: var(--color-green-dark);
@@ -253,18 +253,5 @@ body.using-mouse :focus {
   --color-primary-rgb: var(--color-purple-rgb);
 }
 
-[data-theme='knowit'] {
-    --color-text: var(--color-digital-black);
-    --color-text-secondary: var(--color-white);
-    --color-primary: var(--color-pear);
-    --color-primary-dark: var(--color-pear-dark);
-    --color-secondary: var(--color-flamingo);
-    --color-secondary-light: var(--color-flamingo);
-    --color-tertiary: var(--color-flamingo-dark);
-    --color-progress-background: var(--color-green-medium-dark);
-    --color-hover: var(--color-leather);
-  
-    --color-primary-rgb: var(--color-pear);
-}
 
 

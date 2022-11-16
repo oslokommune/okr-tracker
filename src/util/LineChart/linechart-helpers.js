@@ -21,12 +21,6 @@ export const GRAPH_THEMES = {
     valueLine: '#B3F5FF',
     targetLine: '#43f8b6',
   },
-  green: {
-    gradientStart: '#42F8B6',
-    gradientStop: '#D9D9D9',
-    valueLine: '#C7F7C9',
-    targetLine: '#B3F5FF',
-  },
   knowit: {
     gradientStart: '#42F8B6',
     gradientStop: '#D9D9D9',

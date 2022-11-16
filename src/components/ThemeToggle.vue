@@ -30,8 +30,8 @@ export default {
   },
 
   data: () => ({
-    selectedMode: 'blue',
-    modes: [{ id: 'knowit' }, { id: 'blue' }, { id: 'green' }],
+    selectedMode: 'knowit',
+    modes: [{ id: 'knowit' }, { id: 'blue' }],
   }),
 
   computed: {
