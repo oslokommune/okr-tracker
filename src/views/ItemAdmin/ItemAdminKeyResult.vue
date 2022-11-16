@@ -76,32 +76,14 @@
           />
         </div>
 
-        <div class="toggle__container">
-          <span class="toggle__label">
-            {{ $t('keyResult.api.radio') }}
-            <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
-          </span>
-          <label class="toggle">
-            <input v-model="keyResult.api" class="toggle__input" type="checkbox" />
-            <span class="toggle__switch"></span>
-          </label>
-        </div>
-
-        <div class="toggle__container">
-          <span class="toggle__label">{{ $t('keyResult.automation.header') }}</span>
-          <label class="toggle">
-            <input v-model="keyResult.auto" class="toggle__input" type="checkbox" />
-            <span class="toggle__switch"></span>
-          </label>
-        </div>
-
-        <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
-          {{ $t('keyResult.apiAndKeyRes') }}
-        </div>
-
-        <div v-if="keyResult.auto">
+        <toggle-button
+          v-model="keyResult.auto"
+          :label="$t('keyResult.automation.header')"
+        >
           <p>
-            <router-link :to="{ name: 'Help' }">{{ $t('keyResult.automation.readMore') }}</router-link>
+            <router-link :to="{ name: 'Help' }">
+              {{ $t('keyResult.automation.readMore') }}
+            </router-link>
           </p>
 
           <form-component
@@ -113,7 +95,10 @@
             type="text"
           >
             <template #help>
-              <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
+              <span
+                class="form-help"
+                v-html="$t('keyResult.automation.googleSheetIdHelp')"
+              ></span>
             </template>
           </form-component>
 
@@ -126,7 +111,9 @@
             type="text"
           >
             <template #help>
-              <span class="form-help">{{ $t('keyResult.automation.sheetsTabHelp') }}</span>
+              <span class="form-help">
+                {{ $t('keyResult.automation.sheetsTabHelp') }}
+              </span>
             </template>
           </form-component>
 
@@ -139,7 +126,9 @@
             type="text"
           >
             <template #help>
-              <span class="form-help">{{ $t('keyResult.automation.sheetsCellHelp') }}</span>
+              <span class="form-help">
+                {{ $t('keyResult.automation.sheetsCellHelp') }}
+              </span>
             </template>
           </form-component>
 
@@ -148,27 +137,62 @@
               <i class="fa fa-spinner fa-pulse" />
               {{ $t('general.loading') }}
             </div>
-            <div v-if="!loadingConnection && keyResult.error" class="validation__error">
+            <div
+              v-if="!loadingConnection && keyResult.error"
+              class="validation__error"
+            >
               <i class="fa fa-exclamation-triangle" />
               {{ showError(keyResult.error) }}
             </div>
-            <div v-if="!loadingConnection && keyResult.valid" class="validation__valid">
+            <div
+              v-if="!loadingConnection && keyResult.valid"
+              class="validation__valid"
+            >
               <i class="fa fa-check-circle" />
               OK
             </div>
-            <button class="btn validation-check" type="button" @click="testConnection">
+            <button
+              class="btn validation-check"
+              type="button"
+              @click="testConnection"
+            >
               {{ $t('keyResult.automation.testConnection') }}
             </button>
           </div>
+        </toggle-button>
+
+        <toggle-button v-model="keyResult.api">
+          <template #label>
+            {{ $t('keyResult.api.radio') }}
+            <i
+              v-tooltip="$t('keyResult.api.tooltip')"
+              class="icon fa fa-info-circle"
+            />
+          </template>
+
+          <form-component
+            input-type="input"
+            type="text"
+            label="API"
+            rules="required"
+            :readonly="true"
+            :copy-button="true"
+            :value="apiCurl(keyResult)"
+          >
+            <template #help>
+              <span class="form-help">{{ $t('admin.curlHelp') }}</span>
+            </template>
+          </form-component>
+        </toggle-button>
+
+        <div
+          v-if="keyResult.auto && keyResult.api"
+          class="ok-alert ok-alert--warning"
+        >
+          {{ $t('keyResult.apiAndKeyRes') }}
         </div>
       </form>
     </validation-observer>
-
-    <label v-if="keyResult.api" class="form-group">
-      <span class="form-label">API</span>
-      <span class="form-help">{{ $t('admin.curlHelp') }}</span>
-      <input :value="apiCurl(keyResult)" type="text" disabled class="form__field" />
-    </label>
 
     <div class="button-row">
       <btn-delete
@@ -186,6 +210,7 @@ import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import { toastArchiveAndRevert } from '@/util';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import ToggleButton from '@/components/generic/form/ToggleButton.vue';
 
 export default {
   name: 'ItemAdminKeyResult',
@@ -196,6 +221,7 @@ export default {
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
     BtnSave,
     BtnDelete,
+    ToggleButton,
   },
   props: {
     data: {
@@ -228,6 +254,14 @@ export default {
         this.isLoadingDetails = false;
       },
     },
+    keyResult() {
+      if (this.keyResult.auto === undefined) {
+        this.$set(this.keyResult, 'auto', false);
+      }
+      if (this.keyResult.api === undefined) {
+        this.$set(this.keyResult, 'api', false);
+      }
+    }
   },
 
   methods: {

@@ -93,19 +93,10 @@
         </template>
       </i18n>
 
-      <div class="toggle__container">
-        <span class="toggle__label">{{ $t('kpi.automation.radio') }}</span>
-        <label class="toggle">
-          <input
-            v-model="sheetsEnabled"
-            class="toggle__input"
-            type="checkbox"
-          />
-          <span class="toggle__switch"></span>
-        </label>
-      </div>
-
-      <div v-if="sheetsEnabled">
+      <toggle-button
+        v-model="localKpi.auto"
+        :label="$t('kpi.automation.radio')"
+      >
         <form-component
           v-model="localKpi.sheetId"
           input-type="input"
@@ -157,34 +148,30 @@
             </template>
           </form-component>
         </div>
-      </div>
+      </toggle-button>
 
-      <div class="toggle__container">
-        <span class="toggle__label">
+      <toggle-button v-model="localKpi.api">
+        <template #label>
           {{ $t('kpi.api.radio') }}
           <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
-        </span>
-        <label class="toggle">
-          <input v-model="localKpi.api" class="toggle__input" type="checkbox" />
-          <span class="toggle__switch"></span>
-        </label>
-      </div>
+        </template>
 
-      <div v-if="kpi && localKpi.api">
-        <form-component
-          input-type="input"
-          type="text"
-          label="API"
-          rules="required"
-          :readonly="true"
-          :copy-button="true"
-          :value="apiCurl(kpi)"
-        >
-          <template #help>
-            <span class="form-help">{{ $t('kpi.api.help') }}</span>
-          </template>
-        </form-component>
-      </div>
+        <div v-if="kpi">
+          <form-component
+            input-type="input"
+            type="text"
+            label="API"
+            rules="required"
+            :readonly="true"
+            :copy-button="true"
+            :value="apiCurl(kpi)"
+          >
+            <template #help>
+              <span class="form-help">{{ $t('kpi.api.help') }}</span>
+            </template>
+          </form-component>
+        </div>
+      </toggle-button>
 
       <div class="button-row">
         <btn-delete
@@ -203,6 +190,7 @@
 import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
+import ToggleButton from '@/components/generic/form/ToggleButton.vue';
 
 export default {
   name: 'KpiAdminForm',
@@ -211,6 +199,7 @@ export default {
     BtnSave,
     BtnDelete,
     EditGoalsModal,
+    ToggleButton,
   },
 
   props: {
@@ -233,35 +222,20 @@ export default {
     showEditGoalsModal: false,
   }),
 
-  computed: {
-    sheetsEnabled: {
-      get() {
-        // For backwards compatibility, check for any previosly configured sheet
-        // details if the `auto` property doesn't exist on the model.
-        const sheetsEnabled = this.localKpi.auto;
-
-        if (
-          this.kpi &&
-          sheetsEnabled === undefined &&
-          (this.kpi.sheetId || this.kpi.sheetName || this.kpi.sheetCell)
-        ) {
-          return true;
-        }
-        return sheetsEnabled;
-      },
-      set(checked) {
-        this.$set(this.localKpi, 'auto', checked);
-      },
-    },
-  },
-
   watch: {
     kpi: {
       immediate: true,
       handler() {
         if (this.kpi) {
+          // For backwards compatibility, check for any previously configured sheet
+          // details if the `auto` property doesn't exist on the model.
+          const sheetsConfigured = Boolean(
+            this.kpi.sheetId && this.kpi.sheetName && this.kpi.sheetCell
+          );
+
           this.localKpi = {
             id: this.kpi.id,
+            auto: this.kpi.auto || sheetsConfigured,
             ...this.kpi,
           };
         } else {
