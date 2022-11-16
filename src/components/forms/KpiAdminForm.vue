@@ -21,21 +21,39 @@
         <textarea v-model="localKpi.description" class="form__field" rows="4" />
       </label>
 
-      <validation-provider v-slot="{ errors }" rules="required" name="format">
-        <label class="form-group">
+      <div class="kpi-format-and-trend">
+        <validation-provider v-slot="{ errors }" rules="required" name="format">
+          <label class="form-group">
           <span class="form-label">
             {{ $t('kpi.display') }}
           </span>
-          <select v-model="localKpi.format" class="form__field">
-            <option v-for="{ id, label } in formats" :key="id" :value="id">
-              {{ label }}
-            </option>
-          </select>
-          <span v-if="errors[0]" class="form-field--error">
+            <select v-model="localKpi.format" class="form__field" id="kpiFormat">
+              <option v-for="{ id, label } in formats" :key="id" :value="id">
+                {{ label }}
+              </option>
+            </select>
+            <span v-if="errors[0]" class="form-field--error">
             {{ errors[0] }}
           </span>
-        </label>
-      </validation-provider>
+          </label>
+        </validation-provider>
+
+        <validation-provider v-slot="{ errors }" rules="required" name="preferredTrend">
+          <label class="form-group">
+          <span class="form-label">
+            {{ $t('kpi.preferredTrend') }}
+          </span>
+            <select v-model="localKpi.preferredTrend" class="form__field" id="preferredTrend">
+              <option v-for="{ id, label } in trendOptions" :key="id" :value="id">
+                {{ label }}
+              </option>
+            </select>
+            <span v-if="errors[0]" class="form-field--error">
+            {{ errors[0] }}
+          </span>
+          </label>
+        </validation-provider>
+      </div>
 
       <hr class="ods-hr" />
 
@@ -187,7 +205,7 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes, kpiTrendOptions } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
@@ -218,6 +236,7 @@ export default {
   data: () => ({
     localKpi: null,
     formats: kpiFormats(),
+    trendOptions: kpiTrendOptions(),
     types: kpiTypes(),
     showEditGoalsModal: false,
   }),
@@ -293,6 +312,21 @@ export default {
     @media screen and (min-width: bp(s)) {
       align-self: inherit;
     }
+  }
+}
+</style>
+<style lang="scss" >
+#kpiFormat, #preferredTrend {
+  flex-direction: column;
+}
+.kpi-format-and-trend {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: stretch;
+
+  > span {
+    flex: 1;
   }
 }
 </style>

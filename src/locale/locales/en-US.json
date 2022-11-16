@@ -21,9 +21,15 @@
     "editValue": "Edit value",
     "description": "Description",
     "display": "Display",
+    "preferredTrend": "Trend",
+    "inPeriod": " % in period",
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"
+    },
+    "trendOptions": {
+      "increase": "Increasing (high numbers preferred)",
+      "decrease": "Decreasing (low numbers preferred)"
     },
     "types": {
       "plain": {

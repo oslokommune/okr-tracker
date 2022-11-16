@@ -21,9 +21,15 @@
     "editValue": "Endre målepunkt",
     "description": "Beskrivelse",
     "display": "Visning",
+    "preferredTrend": "Ønsket trend",
+    "inPeriod": " % i perioden",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"
+    },
+    "trendOptions": {
+      "increase": "Stigende (høyt tall er bra)",
+      "decrease": "Synkende (lavt tall er bra)"
     },
     "types": {
       "plain": {
