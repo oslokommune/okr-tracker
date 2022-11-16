@@ -34,20 +34,20 @@
       />
 
       <form-component
-        v-model="localKpi.accrualPeriodicity"
+        v-model="localKpi.updateFrequency"
         input-type="select"
-        name="accrualPeriodicity"
-        :label="$t('kpi.accrualPeriodicity.label')"
+        name="updateFrequency"
+        :label="$t('kpi.updateFrequency.label')"
         rules="required"
         select-label="label"
-        :select-options="frequencies"
+        :select-options="updateFrequencies"
         :select-reduce="(option) => option.id"
         type="text"
       >
         <template #help>
           <span
             class="form-help"
-            v-html="$t('kpi.accrualPeriodicity.help')"
+            v-html="$t('kpi.updateFrequency.help')"
           ></span>
         </template>
       </form-component>
@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes, kpiFrequencies } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes, kpiUpdateFrequencies } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 
@@ -245,7 +245,7 @@ export default {
     localKpi: null,
     formats: kpiFormats(),
     types: kpiTypes(),
-    frequencies: kpiFrequencies(),
+    updateFrequencies: kpiUpdateFrequencies(),
     showEditGoalsModal: false,
   }),
 
@@ -286,7 +286,7 @@ export default {
             description: '',
             format: null,
             kpiType: null,
-            accrualPeriodicity: null,
+            updateFrequency: null,
             sheetId: '',
             sheetName: '',
             sheetCell: '',

@@ -41,17 +41,16 @@ export function kpiTypes () {
 };
 
 /**
- * Return a list of available accrual periodicity frequency options. A subset
- * of the Dublin Core™ Collection Description Frequency Vocabulary. Used to
- * provide options for setting the `accrualPeriodicity` on KPI objects.
+ * Return a list of available update frequency options. Based on the
+ * Dublin Core™ Collection Description Frequency Vocabulary. Used to
+ * provide options for setting the `updateFrequency` on KPI objects.
  * https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/
- * https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#http://purl.org/dc/terms/accrualPeriodicity
  */
-export function kpiFrequencies() {
+export function kpiUpdateFrequencies() {
   return ['daily', 'weekly', 'monthly', 'quarterly', 'annual', 'irregular'].map(
     (frequency) => ({
       id: frequency,
-      label: i18n.t(`kpi.accrualPeriodicity.frequencies.${frequency}`),
+      label: i18n.t(`kpi.updateFrequency.frequencies.${frequency}`),
     })
   );
 }

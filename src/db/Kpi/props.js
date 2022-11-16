@@ -11,7 +11,7 @@ export default {
     type: 'string',
     required: false,
   },
-  accrualPeriodicity: {
+  updateFrequency: {
     type: 'string',
     required: true,
   },

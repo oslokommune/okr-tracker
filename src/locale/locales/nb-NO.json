@@ -25,9 +25,9 @@
       "integer": "Heltall",
       "percentage": "Prosent"
     },
-    "accrualPeriodicity": {
+    "updateFrequency": {
       "label": "Oppdateringshyppighet",
-      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter for progresjon.",
+      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter.",
       "frequencies": {
         "annual": "Årlig",
         "daily": "Daglig",

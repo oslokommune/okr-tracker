@@ -25,9 +25,9 @@
       "integer": "Integer",
       "percentage": "Percentage"
     },
-    "accrualPeriodicity": {
-      "label": "Accrual periodicity",
-      "help": "The frequency with which the KPI are expected to be updated with progress data.",
+    "updateFrequency": {
+      "label": "Update frequency",
+      "help": "The frequency with which the KPI is expected to be updated with progress data.",
       "frequencies": {
         "annual": "Annual",
         "daily": "Daily",

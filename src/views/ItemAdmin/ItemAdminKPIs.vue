@@ -102,7 +102,7 @@ export default {
         description: '',
         format: 'integer',
         kpiType: 'plain',
-        accrualPeriodicity: 'daily',
+        updateFrequency: 'daily',
         sheetId: '',
         sheetName: '',
         sheetCell: '',
