@@ -227,21 +227,15 @@ export default {
       immediate: true,
       handler() {
         if (this.kpi) {
-          // For backwards compatibility, check for any previosly configured sheet
+          // For backwards compatibility, check for any previously configured sheet
           // details if the `auto` property doesn't exist on the model.
-          let sheetsEnabled = this.kpi.auto;
-
-          if (sheetsEnabled === undefined) {
-            if (this.kpi.sheetId && this.kpi.sheetName && this.kpi.sheetCell) {
-              sheetsEnabled = true;
-            } else {
-              sheetsEnabled = false;
-            }
-          }
+          const sheetsConfigured = Boolean(
+            this.kpi.sheetId && this.kpi.sheetName && this.kpi.sheetCell
+          );
 
           this.localKpi = {
             id: this.kpi.id,
-            auto: sheetsEnabled,
+            auto: this.kpi.auto || sheetsConfigured,
             ...this.kpi,
           };
         } else {
