@@ -5,7 +5,7 @@
       <widget-wrapper :title="$t('widget.progression.objective')">
         <progression-chart
           :progression="activeObjective.progression"
-          :dimmed="dimmed"
+          :dimmed="false"
         />
       </widget-wrapper>
       <widget-weights

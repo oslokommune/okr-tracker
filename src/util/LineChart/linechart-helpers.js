@@ -28,9 +28,10 @@ export const GRAPH_THEMES = {
     targetLine: '#B3F5FF',
   },
   knowit: {
-    gradientStart: '#034b45',
-    gradientStop: '#034b45',
-    line: '#034b45',
+    gradientStart: '#42F8B6',
+    gradientStop: '#D9D9D9',
+    valueLine: '#C7F7C9',
+    targetLine: '#B3F5FF',
   }
 };
 
