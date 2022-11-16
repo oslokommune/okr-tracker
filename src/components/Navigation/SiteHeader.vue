@@ -11,7 +11,7 @@
       class="btn btn--ter btn--pri"
       @click="toggleShowAsideRight"
     >
-      <icon-user />
+      <icon-user fill="white" />
     </button>
   </header>
 </template>
@@ -53,11 +53,13 @@ export default {
       if (parts.includes('Admin')) {
         return 'Admin';
       }
+
       if (
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome') ||
+          parts.includes('Dashboard') ||
           parts.includes('KpiHome')) &&
         this.activeItem
       ) {

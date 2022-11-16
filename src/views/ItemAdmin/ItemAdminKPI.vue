@@ -1,130 +1,69 @@
 <template>
-  <div class="kpi">
-    <div class="kpi__validation">
-      <div v-if="localKpi.error" class="kpi__error">
-        <i class="fa fa-exclamation-triangle" />
-        {{ showError(localKpi.error) }}
+  <collapse-container
+    :visible="visible"
+    :class="[
+      'form-card',
+      'form-card--state-line',
+      { [`form-card--${stateClass}`]: stateClass },
+    ]"
+    @toggle="$emit('toggle', $event, kpi)"
+  >
+    <template #collapse-header>
+      <div class="kpi__header">
+        <a :id="`${kpi.id}`" class="anchor" />
+        <span class="kpi__header-label">{{ typeLabel }}</span>
+        <h2>{{ kpi.name }}</h2>
       </div>
-      <div v-if="localKpi.valid" class="kpi__valid"><span class="fa fa-check-circle"></span> OK</div>
-      <div v-if="!localKpi.valid && !localKpi.error" class="kpi__loading">
-        <i class="fa fa-spinner fa-pulse" />
-        {{ $t('general.loading') }}
+      <div class="kpi__header-value-container">
+        <span class="kpi__header-label">Verdi</span>
+        <span class="kpi__header-value">
+          {{ formatKPIValue(kpi, kpi.currentValue) }}
+        </span>
       </div>
-    </div>
+    </template>
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form :id="`kpi_${localKpi.id}`" @submit.prevent="handleSubmit(save.bind(null, localKpi))">
-        <label class="form-group">
-          <span class="form-label">Type</span>
-          <input v-model="localKpi.type" class="form__field" type="text" disabled="disabled" />
-        </label>
+    <template #collapse-body>
+      <hr class="ods-hr" />
 
-        <form-component
-          v-model="localKpi.name"
-          input-type="input"
-          name="name"
-          :label="$t('fields.name')"
-          rules="required"
-          type="text"
+      <kpi-admin-form
+        :kpi="kpi"
+        :loading="loading || state === 'loading'"
+        @save="save"
+        @delete="archive"
+      />
+    </template>
+
+    <template #collapse-footer>
+      <div
+        :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]"
+      >
+        <i
+          :class="[
+            'fa',
+            `fa-${stateIcon}`,
+            { 'fa-pulse': state === 'loading' },
+          ]"
         />
-
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.description') }}</span>
-          <textarea v-model="localKpi.description" class="form__field" rows="4" />
-        </label>
-
-        <div class="toggle__container">
-          <span class="toggle__label">
-            {{ $t('kpi.api.radio') }}
-            <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
-          </span>
-          <label class="toggle">
-            <input v-model="localKpi.api" class="toggle__input" type="checkbox" />
-            <span class="toggle__switch"></span>
-          </label>
-        </div>
-
-        <template v-if="localKpi.api">
-          {{ $t('kpi.api.help') }}
-        </template>
-
-        <template v-if="!localKpi.api">
-          <h3 class="title-2" style="color: var(--color-text)">{{ $t('kpi.sheetsDetails') }}</h3>
-
-          <form-component
-            v-model="localKpi.sheetId"
-            input-type="input"
-            name="sheetId"
-            :label="$t('keyResult.automation.googleSheetId')"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span class="form-help" v-html="$t('keyResult.automation.googleSheetIdHelp')"></span>
-            </template>
-          </form-component>
-          <div class="button-sync-row">
-            <button class="btn btn--icon btn--ghost" :form="`kpi_${localKpi.id}`">
-              <icon-arrow-circle class="icon"/>
-              {{ $t('btn.syncData') }}
-            </button>
-          </div>
-
-          <form-component
-            v-model="localKpi.sheetName"
-            input-type="input"
-            name="sheetTab"
-            :label="$t('keyResult.automation.sheetsTab')"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span class="form-help" v-html="$t('keyResult.automation.sheetsTabHelp')"></span>
-            </template>
-          </form-component>
-
-          <form-component
-            v-model="localKpi.sheetCell"
-            input-type="input"
-            name="sheetCell"
-            :label="$t('keyResult.automation.sheetsCell')"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span class="form-help" v-html="$t('keyResult.automation.sheetsCellHelp')"></span>
-            </template>
-          </form-component>
-        </template>
-
-        <label v-if="localKpi.api" class="form-group">
-          <span class="form-label">API</span>
-          <span class="form-help">{{ $t('admin.curlHelp') }}</span>
-          <input :value="apiCurl(localKpi)" type="text" disabled class="form__field" />
-        </label>
-
-        <div class="button-row">
-          <button class="btn btn--danger" @click="deleteDeep(localKpi)">{{ $t('btn.delete') }}</button>
-          <button class="btn btn--primary" :form="`kpi_${localKpi.id}`">
-            <i class="icon fa fa-fw fa-save" />
-            {{ $t('btn.saveChanges') }}
-          </button>
-        </div>
-      </form>
-    </validation-observer>
-  </div>
+        <span>{{ stateMessage }}</span>
+      </div>
+    </template>
+  </collapse-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import IconArrowCircle from '@/assets/IconArrowCircle.vue';
+import { formatKPIValue, kpiFormats, kpiTypes } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
+import { toastArchiveAndRevert } from '@/util';
+import CollapseContainer from '@/components/generic/collapse/CollapseContainer.vue';
+import KpiAdminForm from '@/components/forms/KpiAdminForm.vue';
 
 export default {
   name: 'ItemAdminKPI',
 
   components: {
-    IconArrowCircle,
+    CollapseContainer,
+    KpiAdminForm,
   },
 
   props: {
@@ -132,52 +71,122 @@ export default {
       required: true,
       type: Object,
     },
+    visible: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: () => ({
-    showAddKPIModal: false,
-    localKpi: null,
+    formats: kpiFormats(),
+    types: kpiTypes(),
+    loading: false,
   }),
 
   computed: {
     ...mapState(['kpis']),
+    state() {
+      if (this.kpi.error) return 'error';
+      if (this.kpi.valid) return 'valid';
+      return 'loading';
+    },
+    stateClass() {
+      switch (this.state) {
+        case 'error':
+          return 'danger';
+        case 'valid':
+          return 'success';
+        default:
+          return null;
+      }
+    },
+    stateIcon() {
+      switch (this.state) {
+        case 'error':
+          return 'exclamation-triangle';
+        case 'valid':
+          return 'check-circle';
+        default:
+          return 'spinner';
+      }
+    },
+    stateMessage() {
+      switch (this.state) {
+        case 'error':
+          return this.showError(this.kpi.error);
+        case 'valid':
+          return 'OK';
+        default:
+          return this.$t('general.loading');
+      }
+    },
+    typeLabel() {
+      const labels = Object.assign(
+        {},
+        ...this.types.map(({ id, label }) => ({ [id]: label }))
+      );
+      return labels[this.kpi.kpiType] || this.kpi.kpiType;
+    },
   },
 
   watch: {
     kpi: {
       immediate: true,
       handler() {
-        this.localKpi = this.kpi;
+        this.localKpi = {
+          id: this.kpi.id,
+          ...this.kpi,
+        };
       },
     },
   },
 
   methods: {
+    formatKPIValue,
+
     async save(kpi) {
+      this.loading = true;
       kpi.error = false;
       kpi.valid = false;
       delete kpi.parent;
-      try {
-        if (kpi.api) {
-          kpi.sheetCell = '';
-          kpi.sheetId = '';
-          kpi.sheetName = '';
-        }
 
+      try {
         await Kpi.update(kpi.id, kpi);
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.save'));
       }
+      this.loading = false;
     },
 
-    async deleteDeep(kpi) {
+    async archive(kpi) {
+      this.loading = true;
       try {
-        await Kpi.deleteDeep(kpi.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
+        await Kpi.archive(kpi.id);
+
+        const restoreCallback = this.restore.bind(this, kpi);
+
+        toastArchiveAndRevert({ name: kpi.name, callback: restoreCallback });
       } catch {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: kpi.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: kpi.name })
+        );
       }
+      this.loading = false;
+    },
+
+    async restore(kpi) {
+      this.loading = true;
+      try {
+        await Kpi.restore(kpi.id);
+        this.$toasted.show(this.$t('toaster.restored'));
+      } catch {
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: kpi.name })
+        );
+      }
+      this.loading = false;
     },
 
     showError(msg) {
@@ -190,82 +199,98 @@ export default {
       }
       return msg;
     },
-
-    apiCurl: (kpi) =>
-      `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }' ${
-        import.meta.env.VITE_API_GATEWAY_URL
-      }/kpi/${kpi.id}`,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.form-row {
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+@use '@/styles/typography';
 
-  & > .form-group {
-    margin: 0;
+.form-card {
+  padding: 0;
+}
+
+::v-deep .collapse {
+  &__header-content {
+    display: flex;
+    align-items: center;
+  }
+  &__header {
+    padding: 1.5rem;
+  }
+  &__body {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+
+    .ods-hr:first-child {
+      margin-top: 0;
+    }
   }
 }
 
-.kpi {
-  max-width: 30rem;
-  padding: 1rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+.kpi__header {
+  flex-grow: 1;
 
-  &--error {
-    box-shadow: 0 0 2px 3px rgba(var(--color-red-rgb), 0.4);
+  > a.anchor {
+    // Position the anchor with an offset to account
+    // for the fixed site header.
+    position: relative;
+    top: -8rem;
+    display: block;
+    visibility: hidden;
+  }
+
+  > h2 {
+    font-weight: 500;
+    font-size: typography.$font-size-2;
+  }
+
+  &-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-grey-500);
+    font-size: 0.75rem;
+  }
+
+  &-value-container {
+    text-align: right;
+
+    @media screen and (max-width: bp(s)) {
+      display: none;
+    }
+  }
+
+  &-value {
+    display: block;
+    font-size: typography.$font-size-2;
   }
 }
 
-.kpi__validation {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-grey-100);
-}
-
-.kpi__valid {
-  padding: 0.5rem;
-  background: var(--color-green);
-  border-radius: 2px;
-}
-
-.kpi__loading {
-  padding: 0.5rem;
-  border-radius: 2px;
-}
-
-.kpi__error {
-  padding: 0.5rem;
-  background: var(--color-red);
-  border-radius: 2px;
-}
-
-.btn--primary {
-  color: var(--color-text);
-  background: var(--color-green);
-}
-
-.btn--danger {
-  color: var(--color-text);
-  background: transparent;
-}
-
-.icon {
-  padding-right: 0.3rem;
-}
-
-.button-row {
+.kpi__footer {
   display: flex;
-  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  font-size: typography.$font-size-2;
+  background: var(--color-grey-50);
+  border-bottom-right-radius: 3px;
+
+  &--success {
+    background: rgba(var(--color-green-rgb), 0.1);
+  }
+  &--warning {
+    background: rgba(var(--color-yellow-rgb), 0.1);
+  }
+  &--danger {
+    background: rgba(var(--color-red-rgb), 0.1);
+  }
 }
 
-.button-sync-row {
-  display: flex;
-  justify-content: flex-end;
+.collapse--collapsed {
+  .kpi__footer {
+    font-size: typography.$font-size-0;
+
+    &--success {
+      display: none;
+    }
+  }
 }
 </style>

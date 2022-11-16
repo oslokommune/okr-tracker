@@ -221,6 +221,7 @@ export default new Vuex.Store({
     objectives: [],
     keyResults: [],
     kpis: [],
+    subKpis: [],
     loginError: null,
     views: [
       { label: i18n.t('view.compact'), id: 'compact', icon: '' },

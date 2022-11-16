@@ -1,16 +1,16 @@
 {
   "name": "photos/mountain.peach.258@example.com-apple-touch-icon.png",
   "bucket": "default-bucket",
-  "contentType": "image/jpeg",
   "metageneration": 1,
   "generation": 1634132148427,
+  "contentType": "image/jpeg",
   "storageClass": "STANDARD",
-  "etag": "someETag",
   "contentDisposition": "inline",
   "contentEncoding": "identity",
   "downloadTokens": [
     "9ac697e6-b193-42f9-a340-292f9255f51e"
   ],
+  "etag": "someETag",
   "timeCreated": "2021-10-13T13:35:48.426Z",
   "updated": "2021-10-13T13:35:48.430Z",
   "size": 61755,

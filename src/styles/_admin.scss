@@ -1,12 +1,43 @@
 @use 'griddle/mixins' as *;
 @use 'griddle/functions' as *;
 
-.create-container {
-  width: span(12);
-  padding: 1rem;
+@mixin card() {
+  padding: 1.5rem;
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  &--state-line {
+    border-left: 4px solid var(--color-grey-400);
+  }
+  &--success {
+    border-color: var(--color-success);
+  }
+  &--warning {
+    border-color: var(--color-warning);
+  }
+  &--danger {
+    border-color: var(--color-danger);
+  }
+}
+
+.form-wrapper {
+  @media screen and (min-width: bp(l)) {
+    width: span(7, 0, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(6, 0, span(10));
+  }
+}
+
+.form-card {
+  @include card();
+}
+
+.create-container {
+  @include card();
+  width: span(12);
 
   @media screen and (min-width: bp(s)) {
     width: span(8);
@@ -29,14 +60,4 @@
 
 .search {
   padding: 0;
-}
-
-.form__field {
-  width: 100%;
-  padding: 0.5rem;
-  color: var(--color-text);
-  font-weight: 500;
-  font-size: 1rem;
-  background: var(--color-white);
-  border: 1px solid var(--color-primary);
 }

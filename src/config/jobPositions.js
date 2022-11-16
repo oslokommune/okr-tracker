@@ -51,3 +51,15 @@ export const possibleDesigners = [
 ];
 
 export const possibleAdm = ['humanResourcesManager', 'administration', 'hr'];
+
+export const displayOrder = [
+  'director',
+  'departmentDirector',
+  'productOwner',
+  'teamLead',
+  'techLead',
+  'designLead',
+  'designers',
+  'developers',
+  'administration',
+  'others'];

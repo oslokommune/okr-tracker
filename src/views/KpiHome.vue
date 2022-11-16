@@ -1,7 +1,10 @@
 <template>
   <div v-if="activeKpi" class="container">
     <div class="widgets--left">
-      <router-link class="btn widget__back-button" :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }">
+      <router-link
+        class="btn widget__back-button"
+        :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
+      >
         {{ $t('general.back') }}
         <i class="fa fa-chevron-left"></i>
       </router-link>
@@ -22,103 +25,94 @@
 
         <div class="main-widgets">
           <div v-if="activeKpi.valid" class="main-widgets__current">
-            <h3 class="main-widgets__title">
-              {{ $t('kpi.currentValue') }}
-            </h3>
-            <div class="main-widgets__current--value">
-              {{
-                filteredProgress.length
-                  ? formatKPIValue(filteredProgress[0].value)
-                  : formatKPIValue(activeKpi.currentValue)
-              }}
+            <div>
+              <h3 class="title-3">
+                {{ $t('kpi.currentValue') }}
+              </h3>
+              <div class="main-widgets__current--value">
+                {{
+                  filteredProgress.length
+                    ? formatKPIValue(activeKpi, filteredProgress[0].value)
+                    : formatKPIValue(activeKpi)
+                }}
+              </div>
+            </div>
+            <div v-if="hasEditRights">
+              <button
+                class="btn btn--ter btn--icon btn--fw"
+                @click="showValueModal = true"
+              >
+                <i class="icon fa fa-plus" />
+                <span>{{ $t('kpi.newValue') }}</span>
+              </button>
             </div>
           </div>
 
           <div class="main-widgets__graph">
-            <h3 class="main-widgets__title">
+            <h2 class="title-2">
               {{ $t('kpi.progress') }}
-            </h3>
+            </h2>
 
             <svg ref="graph" class="graph"></svg>
           </div>
         </div>
 
-        <widgets-k-p-i-home class="aside--middle" :range="range" :progress="progress" @listen="handleChange" />
+        <widgets-k-p-i-home
+          class="aside--middle"
+          :range="range"
+          :progress="progress"
+          @listen="handleChange"
+        />
 
-        <div class="widget__history">
-          <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
-
-          <v-spinner v-if="isLoading"></v-spinner>
-
-          <empty-state
-            v-else-if="!filteredProgress.length || filteredProgress.length === 0"
-            :icon="'history'"
-            :heading="$t('empty.kpiProgress.heading')"
-            :body="$t('empty.kpiProgress.body')"
-          />
-
-          <table v-else class="table">
-            <thead>
-              <tr>
-                <th>{{ $t('keyResult.dateAndTime') }}</th>
-                <th>{{ $t('keyResultPage.table.value') }}</th>
-                <th v-if="hasEditRights"></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-            <tr v-for="{ timestamp, value, id } in limitedProgress" :key="id">
-              <td>{{ dateTimeShort(timestamp.toDate()) }}</td>
-              <td>{{ formatKPIValue(value) }}</td>
-              <td v-if="hasEditRights" style="width: 1rem">
-                <v-popover offset="16" placement="top" show="true">
-                  <button class="btn btn--ter">
-                    {{ $t('btn.delete') }}
-                  </button>
-
-                  <template slot="popover">
-                    <button class="btn btn--ter btn--negative" @click="remove(id)">
-                      {{ $t('btn.confirmDeleteProgress') }}
-                    </button>
-                  </template>
-                </v-popover>
-              </td>
-            </tr>
-          </table>
-          <button
-            v-if="filteredProgress.length > 10 && historyLimit !== null"
-            class="btn btn--sec"
-            style="align-self: center"
-            @click="historyLimit = null"
-          >
-            {{ $t('btn.showMore') }}
-          </button>
-        </div>
+        <widget-progress-history
+          :progress="filteredProgress"
+          :is-loading="isLoading"
+          :value-formatter="_formatKPIValue"
+          :date-formatter="dateShort"
+          :no-values-message="$t('empty.noKPIProgress')"
+          @update-record="updateProgressRecord"
+          @delete-record="deleteProgressRecord"
+        />
       </div>
+
+      <progress-modal
+        v-if="showValueModal"
+        @create-record="createProgressRecord"
+        @close="showValueModal = false"
+      />
     </div>
 
-    <widgets-k-p-i-home class="aside--right" :range="range" :progress="progress" @listen="handleChange" />
+    <widgets-k-p-i-home
+      class="aside--right"
+      :range="range"
+      :progress="progress"
+      @listen="handleChange"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { extent } from 'd3-array';
-import endOfDay from 'date-fns/endOfDay';
+import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
+import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
-import { dateTimeShort, formatISOShort, numberLocale } from '@/util';
-import kpiTypes from '@/config/kpiTypes';
+import { dateShort, formatISOShort } from '@/util';
+import { formatKPIValue } from '@/util/kpiHelpers';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
   name: 'KpiHome',
 
   components: {
+    ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetMissionStatement,
     WidgetTeam,
+    WidgetProgressHistory,
   },
 
   data: () => ({
@@ -130,16 +124,12 @@ export default {
     filteredProgress: [],
     isFiltered: false,
     isLoading: false,
-    historyLimit: 10,
+    showValueModal: false,
   }),
 
   computed: {
     ...mapState(['activeKpi', 'activeItem', 'theme']),
     ...mapGetters(['hasEditRights']),
-
-    limitedProgress() {
-      return this.historyLimit ? this.filteredProgress.slice(0, this.historyLimit) : this.filteredProgress;
-    },
   },
 
   watch: {
@@ -147,7 +137,10 @@ export default {
       immediate: true,
       async handler({ id }) {
         this.isLoading = true;
-        await this.$bind('progress', db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc'));
+        await this.$bind(
+          'progress',
+          db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc')
+        );
         this.isLoading = false;
       },
     },
@@ -158,7 +151,7 @@ export default {
 
   mounted() {
     if (this.$refs.graph) {
-      this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+      this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
     }
 
     if (this.$route.query.startDate && this.$route.query.endDate) {
@@ -169,34 +162,65 @@ export default {
   },
 
   methods: {
-    dateTimeShort,
+    dateShort,
+    formatKPIValue,
 
-    async remove(id) {
+    async createProgressRecord(data, modalCloseHandler) {
       try {
-        await db.doc(`kpis/${this.activeKpi.id}/progress/${id}`).delete();
-        this.$toasted.show(this.$t('toaster.delete.progression'));
+        await Progress.update(this.activeKpi.id, data);
+        this.$toasted.show(this.$t('toaster.add.progress'));
+      } catch (e) {
+        this.$toasted.error(this.$t('toaster.error.addProgress'));
+      } finally {
+        modalCloseHandler();
+      }
+    },
+
+    async updateProgressRecord(id, data, modalCloseHandler) {
+      try {
+        await Progress.update(this.activeKpi.id, data, id);
+        this.$toasted.show(this.$t('toaster.update.progress'));
+      } catch (e) {
+        this.$toasted.error(this.$t('toaster.error.updateProgress'));
+      } finally {
+        modalCloseHandler();
+      }
+    },
+
+    async deleteProgressRecord(id) {
+      try {
+        await Progress.remove(this.activeKpi.id, id);
+        this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }
     },
 
-    renderGraph() {
-      const [startValue, targetValue] = extent(this.filteredProgress.map(({ value }) => value));
-      const [startDate, endDate] = extent(this.filteredProgress.map(({ timestamp }) => timestamp));
+    _formatKPIValue(value) {
+      return formatKPIValue(this.activeKpi, value);
+    },
 
-      if (!this.graph || !startValue === undefined || !targetValue === undefined) return;
+    renderGraph() {
+      const [startValue, targetValue] = extent(
+        this.filteredProgress.map(({ value }) => value)
+      );
+      const [startDate, endDate] = extent(
+        this.filteredProgress.map(({ timestamp }) => timestamp)
+      );
+
+      if (
+        !this.graph ||
+        !startValue === undefined ||
+        !targetValue === undefined
+      )
+        return;
       this.graph.render({
-        obj: {
-          startValue,
-          targetValue,
-        },
-        period: {
-          endDate: this.isFiltered ? endDate : new Date(),
-          startDate,
-        },
-        progressionList: this.filteredProgress,
-        item: this.activeKpi,
-        theme: this.theme,
+        startValue,
+        targetValue,
+        startDate: startDate.toDate(),
+        endDate: this.isFiltered ? endDate.toDate() : new Date(),
+        progress: this.filteredProgress,
+        kpi: this.activeKpi,
       });
     },
 
@@ -205,17 +229,25 @@ export default {
         this.filteredProgress = this.progress;
       } else {
         this.filteredProgress = this.progress.filter(
-          (a) => a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
+          (a) =>
+            a.timestamp.toDate() > this.startDate &&
+            a.timestamp.toDate() < this.endDate
         );
       }
-      this.renderGraph();
-    },
 
-    formatKPIValue(value) {
-      if (kpiTypes[this.activeKpi.type].type === 'users') {
-        return numberLocale.format(',')(value);
-      }
-      return kpiTypes[this.activeKpi.type].formatValue(value);
+      // Filter out any duplicate measurement values for each date
+      const seenDates = [];
+
+      this.filteredProgress = this.filteredProgress.filter((a) => {
+        const date = a.timestamp.toDate().toISOString().slice(0, 10);
+        if (!seenDates.includes(date)) {
+          seenDates.push(date);
+          return true;
+        }
+        return false;
+      });
+
+      this.renderGraph();
     },
 
     handleChange(range) {
@@ -223,7 +255,10 @@ export default {
         this.$router
           .push({
             name: 'KpiHome',
-            params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
+            params: {
+              slug: this.$route.params.slug,
+              kpiId: this.$route.params.kpiId,
+            },
           })
           .catch((err) => console.log(err));
         this.startDate = null;
@@ -243,8 +278,14 @@ export default {
       this.$router
         .push({
           name: 'KpiHome',
-          params: { slug: this.$route.params.slug, kpiId: this.$route.params.kpiId },
-          query: { startDate: formatISOShort(this.startDate), endDate: formatISOShort(this.endDate) },
+          params: {
+            slug: this.$route.params.slug,
+            kpiId: this.$route.params.kpiId,
+          },
+          query: {
+            startDate: formatISOShort(this.startDate),
+            endDate: formatISOShort(this.endDate),
+          },
         })
         .catch((err) => console.log(err));
 
@@ -255,30 +296,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.history {
-  margin: 2.5rem 0 1.5rem;
-}
-
 .main-widgets {
   display: flex;
   flex-direction: column;
   margin-top: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.main-widgets__title {
-  margin-bottom: 0.5rem;
-  color: var(--color-text);
-  font-weight: 500;
 }
 
 .main-widgets__current {
-  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
   width: span(12);
-
   padding: 1rem;
   background: var(--color-secondary);
   box-shadow: 0 2px 3px rgba(black, 0.1);
+
+  @media screen and (min-width: bp(s)) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
 .main-widgets__current--value {

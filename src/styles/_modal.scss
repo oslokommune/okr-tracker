@@ -22,14 +22,17 @@
   width: 100%;
   max-width: 550px;
   max-height: 100%;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1.5rem;
   overflow-y: auto;
-  color: var(--color-text-secondary);
-  background-color: var(--color-primary);
-  box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
+  background: var(--color-white);
+  box-shadow: 0 5px 30px -10px rgba(black, 0.2);
 
   scrollbar-width: none; /* Hide scrollbar styles Firefox */
   -webkit-overflow-scrolling: touch;
+
+  &--wide {
+    max-width: 750px;
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -38,27 +41,26 @@
   &__header {
     display: flex;
     align-items: center;
+    margin-bottom: 0.5rem;
     font-size: 1rem;
+    line-height: 2.5rem;
 
     .btn {
+      align-self: stretch;
       margin: 0;
       padding: 0 1rem;
     }
 
     .title-2 {
-      margin-right: auto;
+      flex: 1;
+      margin: 0;
+      text-transform: uppercase;
     }
-  }
-
-  &__main {
-    display: flex;
-    flex-direction: column;
   }
 
   &__footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 3rem;
-    font-size: 12px;
+    margin-top: 1.5rem;
   }
 }

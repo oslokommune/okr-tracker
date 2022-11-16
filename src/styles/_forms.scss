@@ -1,4 +1,5 @@
 @use 'range-slider' as *;
+@use 'typography';
 
 input,
 select,
@@ -25,7 +26,6 @@ textarea {
 }
 
 .form-label {
-  display: block;
   margin-bottom: 0.25rem;
   color: var(--color-text);
 
@@ -50,11 +50,12 @@ textarea {
 
 .form-row {
   display: grid;
-  grid-gap: 0.5rem;
+  grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  margin: 0.5rem 0 1rem;
+  align-items: end;
+  margin: 1rem 0;
 
-  & > .form-group {
+  & .form-group {
     margin: 0;
   }
   .form-field + .form-field {
@@ -62,10 +63,49 @@ textarea {
   }
 }
 
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-primary);
+
+  &--readonly {
+    background: var(--color-grey-100);
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+
+    > .btn {
+      margin-left: 0;
+      font-size: 0.75rem;
+      background: var(--color-grey-50);
+      border: 1px solid var(--color-primary);
+      border-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-text-secondary);
+        background-color: var(--color-hover);
+      }
+
+      > i.far, i.fas {
+        margin: 0 0.25rem;
+      }
+    }
+  }
+}
+
 .form-help {
   display: block;
-  margin-top: -0.25rem;
-  margin-bottom: 0.25rem;
+  margin: 0.25rem 0;
   color: var(--color-text);
   font-size: 0.85rem;
 
@@ -188,4 +228,20 @@ textarea {
   margin-top: 1rem;
   margin-bottom: 1rem;
   color: var(--color-text);
+}
+
+.descriptive-radio {
+  margin: 1.5rem 0;
+
+  .title {
+    margin-left: 0.25rem;
+    font-weight: 500;
+  }
+
+  .description {
+    display: block;
+    margin: 0.25rem 1.75rem 0 1.75rem;
+    color: var(--color-grey-600);
+    font-size: typography.$font-size-1;
+  }
 }

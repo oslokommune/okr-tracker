@@ -15,6 +15,10 @@ export default function validateUpdateProps(props, data) {
         if (!Array.isArray(data[prop])) {
           throw new TypeError(`${prop} is not a valid array`);
         }
+      } else if (type === 'number') {
+        if (Number.isNaN(data[prop])) {
+          throw new TypeError(`${prop} is not a valid number`);
+        }
       } else if (type === 'date') {
         // Verify date objects
         if (Object.prototype.toString.call(data[prop]) !== '[object Date]') {

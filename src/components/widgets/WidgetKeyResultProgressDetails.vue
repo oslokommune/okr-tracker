@@ -1,7 +1,7 @@
 <template>
   <div class="widgetKeyResultProgressDetails">
     <div class="widgetKeyResultProgressDetails__infoMessage">
-      <strong> {{ progressDetails.percentageCompleted }}% </strong>
+      <strong>{{ progressDetails.percentageCompleted }}%</strong>
       {{ $t('progress.done') }}
     </div>
     <div>
@@ -52,10 +52,6 @@ export default {
   &__infoMessage {
     &:not(:last-child) {
       margin-bottom: 0.25rem;
-    }
-
-    strong {
-      font-weight: 700;
     }
   }
 }

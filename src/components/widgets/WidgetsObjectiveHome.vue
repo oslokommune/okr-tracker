@@ -2,8 +2,17 @@
   <aside v-if="activeObjective" class="aside">
     <div class="widgets">
       <widget-admin />
-      <widget-progression type="objective" :data="progressionData" :dimmed="true" />
-      <widget-weights type="keyResults" :active-item="activeObjective" :items="keyResults" />
+      <widget-wrapper :title="$t('widget.progression.objective')">
+        <progression-chart
+          :progression="activeObjective.progression"
+          :dimmed="dimmed"
+        />
+      </widget-wrapper>
+      <widget-weights
+        type="keyResults"
+        :active-item="activeObjective"
+        :items="keyResults"
+      />
       <widget-objective-details />
     </div>
   </aside>
@@ -16,8 +25,9 @@ export default {
   name: 'WidgetsObjectiveHome',
 
   components: {
+    ProgressionChart: () => import('@/components/ProgressionChart.vue'),
+    WidgetWrapper: () => import('./WidgetWrapper.vue'),
     WidgetAdmin: () => import('./WidgetAdmin.vue'),
-    WidgetProgression: () => import('./WidgetProgression.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
   },
@@ -28,7 +38,10 @@ export default {
 
     // Overwrite the period's progression with the objective's
     progressionData() {
-      return { ...this.activeObjective.period, progression: this.activeObjective.progression };
+      return {
+        ...this.activeObjective.period,
+        progression: this.activeObjective.progression,
+      };
     },
   },
 };

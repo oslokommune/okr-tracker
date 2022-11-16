@@ -66,7 +66,7 @@ export default {
 
   components: {
     Widget: () => import('./WidgetWrapper.vue'),
-    ProfileModal: () => import('@/components/ProfileModal.vue'),
+    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
   },
 
   data: () => ({

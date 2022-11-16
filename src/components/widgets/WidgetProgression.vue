@@ -1,21 +1,24 @@
 <template>
   <widget :title="getTitle()">
-    <svg ref="svg"></svg>
+    <progression-chart :dimmed="dimmed" />
   </widget>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import PieChart from '@/util/PieChart';
-
 export default {
   name: 'WidgetProgression',
 
   components: {
     Widget: () => import('./WidgetWrapper.vue'),
+    ProgressionChart: () => import('@/components/ProgressionChart.vue'),
   },
 
   props: {
+    title: {
+      type: String,
+      required: false,
+      default: null,
+    },
     dimmed: {
       type: Boolean,
       required: false,
@@ -25,42 +28,6 @@ export default {
       type: String,
       required: true,
     },
-  },
-
-  data: () => ({
-    svg: null,
-    chart: null,
-  }),
-
-  computed: {
-    ...mapState(['theme', 'activePeriod']),
-  },
-
-  watch: {
-    activePeriod: {
-      immediate: true,
-      deep: true,
-      handler(activePeriod) {
-        if (!this.chart) return;
-        this.chart.render(activePeriod, this.theme);
-      },
-    },
-
-    theme: {
-      immediate: true,
-      handler() {
-        if (!this.chart) return;
-        this.chart.render(this.activePeriod, this.theme);
-      },
-    },
-  },
-
-  mounted() {
-    setTimeout(() => {
-      this.svg = this.$refs.svg;
-      this.chart = new PieChart(this.svg, { dimmed: this.dimmed, colorMode: this.theme });
-      this.chart.render(this.activePeriod, this.theme);
-    }, 150);
   },
 
   methods: {

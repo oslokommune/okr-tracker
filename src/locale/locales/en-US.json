@@ -13,24 +13,55 @@
   },
   "kpi": {
     "add": "Add KPI",
+    "placeholderName": "New KPI",
     "edit": "Edit KPI",
     "change": "Change KPI",
     "currentValue": "Current value",
     "progress": "Progress",
+    "newValue": "New value",
+    "editValue": "Edit value",
     "description": "Description",
-    "chooseType": "Select KPI type",
+    "display": "Display",
+    "formats": {
+      "integer": "Integer",
+      "percentage": "Percentage"
+    },
     "types": {
-      "users": "Volume",
-      "satisfaction": "Satisfaction rate",
-      "conversion": "Conversion rate"
+      "plain": {
+        "label": "KPI",
+        "description": "KPIs are measurements that the team or department whishes to keep an eye on. KPIs are displayed on the top of the team or department page they belong to."
+      },
+      "keyFigure": {
+        "label": "KPI on dashboard",
+        "description": "Is the KPI so important that it should be shown on the department's dashboard for reporting?"
+      },
+      "resultIndicator": {
+        "label": "Result indicator",
+        "description": "Is the KPI so important that it is defined as a result indicator for the department and has a target figure? The result indicator is also shown on the dashboard."
+      }
     },
     "heading": "KPIs",
-    "sheetsDetails": "Sheets details",
     "itemRowError": "error",
+    "help": {
+      "updates": "KPIs can be updated manually through the OKR Tracker or automatically using an optional Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
+      "readMoreHere": "here"
+    },
+    "automation": {
+      "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"
+    },
     "api": {
-      "radio": "Update via API?",
-      "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access.",
+      "radio": "Update values programmtically using the API?",
+      "help": "Push updates with curl",
       "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
+    },
+    "goals": {
+      "goals": "Goals",
+      "new": "New goal",
+      "set": "Set goals",
+      "edit": "Edit goals",
+      "the": "the goal",
+      "help": "KPIs can have goals for specific periods. As of now, only goals for result indicators are shown on the dashboard, but this is subject to change.",
+      "for": "Goal for"
     }
   },
   "fields": {
@@ -48,7 +79,7 @@
     "description": "Description",
     "slug": "Slug",
     "department": "Department",
-    "kpitype": "KPI type",
+    "kpitype": "Type",
     "unit": "Unit of measurement",
     "startValue": "Start value",
     "targetValue": "Target value",
@@ -56,7 +87,10 @@
     "organization": "Organization",
     "date": "Date",
     "password": "Password",
-    "secret": "API Secret"
+    "secret": "API Secret",
+    "comment": "Comment",
+    "format": "Display",
+    "timestamp": "Timestamp"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
@@ -124,7 +158,14 @@
     "signIn": "Please sign in",
     "orgs": "Organizations",
     "emptyHome": "Please pick an organization.",
-    "api": "API"
+    "api": "API",
+    "resultIndicator": "Result indicator",
+    "departmentObjectives": "Department objectives",
+    "departmentAbout": "About",
+    "dashboardEntry": "Go to dashboard",
+    "keyFigures": "KPIs",
+    "value": "Value",
+    "target": "Target"
   },
   "btn": {
     "close": "Close",
@@ -145,7 +186,7 @@
     "minimize": "Minimize",
     "expand": "Expand",
     "restore": "Restore",
-    "confirmDeleteProgress": "Confirm delete",
+    "confirmDelete": "Confirm delete",
     "reset": "Reset",
     "showMore": "Show more",
     "syncData": "Synchronize data"
@@ -185,21 +226,25 @@
       "users": "Add user | {count} users",
       "product": "Created new product. Please wait, you will be redirected in 5 seconds",
       "objective": "Created an objective for {period}",
-      "progression": "Created new value",
       "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
       "period": "Created new period",
       "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
-      "kpi": "Created new KPI"
+      "kpi": "Created new KPI",
+      "progress": "Created new value"
     },
     "delete": {
       "user": "Deleted user {user}",
       "permanently": "Deleted permanently",
       "object": "Archived «{name}»",
-      "progression": "Deleted value"
+      "progress": "Deleted value"
+    },
+    "update": {
+      "progress": "Updated value"
     },
     "action": {
-      "regret": "Undo"
+      "regret": "Undo",
+      "copiedToClipboard": "Text copied to the clipboard"
     },
     "error": {
       "save": "Could not save changes",
@@ -212,11 +257,12 @@
       "product": "Could not create product",
       "users": "Could not add user | users",
       "user": "Could not delete user {user}",
-      "progression": "Could not add value",
       "email": "Invalid email address",
       "kpi": "Could not create KPI",
       "notes": "Could not update notes",
-      "deleteProgress": "Could not delete value"
+      "addProgress": "Could not add value",
+      "deleteProgress": "Could not delete value",
+      "updateProgress": "Could not update value"
     },
     "savedChanges": "Saved changes",
     "deleted": "Deleted",
@@ -240,6 +286,7 @@
     "targetValue": "Target value",
     "unit": "Unit of measurement",
     "newValue": "New value",
+    "editValue": "Edit value",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
       "readMore": "Learn more",
@@ -265,9 +312,6 @@
     "weight": "Weight",
     "automatic": "Automatic",
     "autoHelpText": "The value for this key result gets updated automatically from Google Sheets.",
-    "showComment": "View comment",
-    "showComments": "Show comments",
-    "hideComments": "Hide comments",
     "autoError": "Issue fetching data from Google Sheets:",
     "api": {
       "radio": "Update via API?",
@@ -290,7 +334,10 @@
     "dateRange": "Start and end dates",
     "range": "{startDate} to {endDate}",
     "period": "Period",
-    "add": "Add period"
+    "add": "Add period",
+    "sixmonths": "Past 6 months",
+    "year": "So far this year",
+    "all": "From first measurement"
   },
   "tooltip": {
     "openMenu": "Open menu",
@@ -299,10 +346,12 @@
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
     "navigateToItem": "Go to {item}",
+    "editProgress": "Edit value",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
     "emptyPeriod": "No active period",
-    "periodEnd": "You are not allowed to edit after a period has ended"
+    "periodEnd": "You are not allowed to edit after a period has ended",
+    "copyToClipboard": "Copy to the clipboard"
   },
   "document": {
     "mission": "Mission statement"
@@ -349,17 +398,10 @@
   "keyResultPage": {
     "change": "Update key result",
     "add": "Add key result",
-    "table": {
-      "value": "Value"
-    },
     "notes": {
       "empty": "Notes can only be seen by team members",
       "save": "Save notes"
     },
-    "history": "History",
-    "registeredBy": "Registered by",
-    "value": "Value",
-    "date": "Date",
     "filter": "Filter"
   },
   "help": {
@@ -387,14 +429,17 @@
     "noIcons": "No hits"
   },
   "empty": {
-    "keyResultProgress": {
-      "heading": "No history",
-      "body": "This key result has no registered values."
-    },
+    "noKeyResultProgress": "This key result has no registered values.",
+    "noKPIProgress": "This KPI has no registered values.",
     "noKeyResults": {
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
+    },
+    "noResultIndicators": {
+      "heading": "No result indicators",
+      "body": "Oops! Could not find any result indicators.",
+      "linkText": "Create a result indicator"
     },
     "itemAdmin": {
       "keyResult": "No key results for selected objective",
@@ -403,7 +448,9 @@
     },
     "noKPIs": {
       "heading": "No KPIs",
-      "body": "Add KPIs that automatically fetch data from Google Sheets."
+      "body": "Oops! Could not find any KPIs.",
+      "adminBody": "Add KPIs that automatically fetch data from Google Sheets.",
+      "linkText": "Create a KPI"
     },
     "noPeriods": {
       "heading": "Empty?",
@@ -431,6 +478,24 @@
     "progression": {
       "period": "Progress for period",
       "objective": "Progress for objective"
+    },
+    "history": {
+      "title": "History",
+      "value": "Value",
+      "date": "Date",
+      "comment": "Comment",
+      "comment_optional": "Comment (optional)",
+      "actions": "Actions",
+      "time": "Time",
+      "changedBy": "Last edited by",
+      "showComment": "View comment",
+      "showComments": "Show comments",
+      "hideComments": "Hide comments",
+      "empty": {
+        "heading": "No history",
+        "body": "No values registered for this item."
+      },
+      "overwriteWarning": "Note: This change will overwrite existing value for chosen date ({date}): {value}."
     }
   },
   "error": {
@@ -508,6 +573,17 @@
       "2": "Well done, guys!",
       "3": "Wohoo! 100%",
       "4": "You did it! Awesome!"
+    }
+  },
+  "dashboard": {
+    "problemDescription": "Problem description",
+    "targetAudience": "Target audience",
+    "missionStatement": "Mission",
+    "effect": "Effect",
+    "noRIs": "The department doesn't have any result indicators.",
+    "downloadOptions": {
+      "png": "Image (.png)",
+      "csv": "Raw data (.csv)"
     }
   },
   "languages": {

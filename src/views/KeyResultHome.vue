@@ -3,7 +3,14 @@
     <div class="widgets--left">
       <router-link
         class="btn widget__back-button"
-        :to="previousUrl ? previousUrl : { name: 'ItemHome', params: { slug: activeKeyResult.parent.slug } }"
+        :to="
+          previousUrl
+            ? previousUrl
+            : {
+                name: 'ItemHome',
+                params: { slug: activeKeyResult.parent.slug },
+              }
+        "
       >
         {{ $t('general.back') }}
         <i class="fa fa-chevron-left"></i>
@@ -14,21 +21,32 @@
 
     <div class="main">
       <div class="main__item">
-        <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">{{ $t('general.keyResult') }}</h1>
+        <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">
+          {{ $t('general.keyResult') }}
+        </h1>
         <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
 
         <div class="key-result-row">
           <div class="key-result-row__progress">
             <h3 class="key-result-row__progress--header">
-              {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
+              {{ $t('keyResult.registerProgression.value') }} ({{
+                activeKeyResult.unit
+              }})
             </h3>
-            <widget-key-result-progress-details :progress-details="progressDetails" :unit="activeKeyResult.unit" />
+            <widget-key-result-progress-details
+              :progress-details="progressDetails"
+              :unit="activeKeyResult.unit"
+            />
             <div class="progression__total">
               <span class="progression__total--current">
                 {{ progressDetails.formattedTotalCompletedTasks }}
               </span>
               <span class="progression__total--target">
-                {{ $t('progress.remainingOf', { progress: progressDetails.formattedTotalNumberOfTasks }) }}
+                {{
+                  $t('progress.remainingOf', {
+                    progress: progressDetails.formattedTotalNumberOfTasks,
+                  })
+                }}
               </span>
             </div>
             <progress-bar
@@ -40,7 +58,9 @@
 
           <div class="key-result-row__info">
             <h3 class="title-3">{{ activeKeyResult.name }}</h3>
-            <span class="key-result-row__info--description">{{ activeKeyResult.description }}</span>
+            <span class="key-result-row__info--description">
+              {{ activeKeyResult.description }}
+            </span>
           </div>
 
           <div class="key-result__value">
@@ -50,7 +70,9 @@
               <validation-observer v-slot="{ handleSubmit }">
                 <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
                   <label>
-                    <span class="title-4">{{ $t('keyResult.addComment') }}</span>
+                    <span class="title-4">{{
+                      $t('keyResult.addComment')
+                    }}</span>
                     <textarea
                       v-model="progressNote"
                       style="margin-top: 0.5rem"
@@ -61,9 +83,15 @@
                   </label>
 
                   <div>
-                    <validation-provider v-slot="{ errors }" name="value" rules="required">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="value"
+                      rules="required"
+                    >
                       <label class="form-group">
-                        <span class="form-label">{{ $t('keyResult.newValue') }}</span>
+                        <span class="form-label">{{
+                          $t('keyResult.newValue')
+                        }}</span>
                         <input
                           v-model="value"
                           style="margin-top: 0.25rem"
@@ -79,20 +107,19 @@
               </validation-observer>
             </div>
 
-            <button
+            <btn-save
               v-if="allowedToEditPeriod"
               form="modal"
+              variant="primary"
+              class="key-result__value--button"
               :disabled="isSaving"
-              class="btn btn--ods key-result__value--button"
-            >
-              {{ $t('btn.save') }}
-            </button>
+            />
           </div>
 
           <div class="key-result__graph">
-            <h3 class="key-result__graph--title">
+            <h2 class="title-2">
               {{ $t('objective.progression') }}
-            </h3>
+            </h2>
 
             <svg ref="graph" class="graph"></svg>
           </div>
@@ -105,7 +132,10 @@
           </div>
         </div>
 
-        <div v-if="activeKeyResult.auto && activeKeyResult.error" class="auto auto--invalid">
+        <div
+          v-if="activeKeyResult.auto && activeKeyResult.error"
+          class="auto auto--invalid"
+        >
           <div class="auto__icon fa fa-exclamation-triangle"></div>
           <div class="auto__text">
             <p>{{ $t('keyResult.autoError') }}</p>
@@ -113,120 +143,45 @@
           </div>
         </div>
 
-        <widgets-key-result-mobile class="aside--bottom"></widgets-key-result-mobile>
+        <widgets-key-result-mobile class="aside--bottom" />
 
-        <div class="widget__history">
-          <h2 class="title-2">{{ $t('keyResultPage.history') }}</h2>
-          <div class="main__table">
-            <v-spinner v-if="isLoading" />
-            <empty-state
-              v-else-if="!progress.length || progress.length === 0"
-              :icon="'history'"
-              :heading="$t('empty.keyResultProgress.heading')"
-              :body="$t('empty.keyResultProgress.body')"
-            />
-            <table v-else class="table">
-              <thead>
-                <tr>
-                  <th>{{ $t('keyResultPage.value') }}</th>
-                  <th>{{ $t('keyResultPage.date') }}</th>
-                  <th>{{ $t('keyResultPage.registeredBy') }}</th>
-                  <th>
-                    <button v-if="hasComments" class="btn btn--ter" @click="showComments = !showComments">
-                      <span
-                        v-tooltip="showComments ? $t('keyResult.showComments') : $t('keyResult.hideComments')"
-                        class="fa"
-                        :class="!showComments ? 'fa-eye' : 'fa-eye-slash'"
-                      ></span>
-                    </button>
-                  </th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="p in limitedProgress" :key="p.id">
-                  <td>{{ p.value }}</td>
-                  <td>{{ dateTimeShort(p.timestamp.toDate()) }}</td>
-                  <td>
-                    <a
-                      v-if="p.createdBy && p.createdBy.id"
-                      class="user__link"
-                      @click="openProfileModal(p.createdBy.id)"
-                    >
-                      <span class="user__name">{{ p.createdBy.displayName || p.createdBy.id }}</span>
-                    </a>
-                    <span v-else class="user__name">{{ p.createdBy }}</span>
-                  </td>
-                  <td style="max-width: 200px; padding: 0.25rem">
-                    <span v-if="p.comment && !showComments">
-                      {{ p.comment }}
-                    </span>
-                    <v-popover v-if="p.comment && showComments" placement="top">
-                      <i v-tooltip="$t('keyResult.showComment')" class="fa fa-comment-alt comment-icon" />
-                      <template slot="popover">
-                        {{ p.comment }}
-                      </template>
-                    </v-popover>
-                  </td>
-                  <td v-if="hasEditRights" style="width: 1rem">
-                    <v-popover offset="16" placement="top">
-                      <button class="btn btn--ter">
-                        {{ $t('btn.delete') }}
-                      </button>
-
-                      <template slot="popover">
-                        <button class="btn btn--ter btn--negative" @click="remove(p.id)">
-                          {{ $t('btn.confirmDeleteProgress') }}
-                        </button>
-                      </template>
-                    </v-popover>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button
-            v-if="progress.length > 10 && historyLimit !== null"
-            class="btn btn--sec"
-            style="align-self: center"
-            @click="historyLimit = null"
-          >
-            {{ $t('btn.showMore') }}
-          </button>
-        </div>
+        <widget-progress-history
+          :progress="progress"
+          :is-loading="isLoading"
+          :no-values-message="$t('empty.noKeyResultProgress')"
+          @update-record="updateHistoryRecord"
+          @delete-record="deleteHistoryRecord"
+        />
       </div>
     </div>
 
     <widgets-right class="aside--right" />
-
-    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { VPopover } from 'v-tooltip';
 import { format } from 'd3-format';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
-import { dateTimeShort } from '@/util';
 import routerGuard from '@/router/router-guards/keyResultHome';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
+import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
   name: 'KeyResultHome',
 
   components: {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
-    ProfileModal: () => import('@/components/ProfileModal.vue'),
     WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    VPopover,
+    WidgetProgressHistory,
     WidgetsKeyResultMobile,
+    BtnSave,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -245,29 +200,24 @@ export default {
     progress: [],
     newValue: null,
     graph: null,
-    showComments: false,
     isLoading: false,
     progressNote: '',
     isSaving: false,
     value: null,
-    historyLimit: 10,
-    showProfileModal: false,
     chosenProfileId: null,
     progressDetails: {},
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl', 'theme']),
+    ...mapState([
+      'activeKeyResult',
+      'activePeriod',
+      'user',
+      'activeItem',
+      'previousUrl',
+      'theme',
+    ]),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
-
-    hasComments() {
-      const firstProgressWithComment = this.progress.find(({ comment }) => comment);
-      return firstProgressWithComment !== undefined;
-    },
-
-    limitedProgress() {
-      return this.historyLimit ? this.progress.slice(0, this.historyLimit) : this.progress;
-    },
   },
 
   watch: {
@@ -277,15 +227,22 @@ export default {
         if (!keyResult) return;
         this.progressDetails = getKeyResultProgressDetails(keyResult);
         this.isLoading = true;
-        await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`).orderBy('timestamp', 'desc'));
+        await this.$bind(
+          'progress',
+          db
+            .collection(`keyResults/${keyResult.id}/progress`)
+            .orderBy('timestamp', 'desc')
+        );
         this.isLoading = false;
         this.value = this.progressDetails.totalCompletedTasks;
-        this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+        this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
         this.graph.render({
-          obj: this.activeKeyResult,
-          period: this.activePeriod,
-          progressionList: this.progress,
-          colorMode: this.theme,
+          startValue: this.activeKeyResult.startValue,
+          targetValue: this.activeKeyResult.targetValue,
+          startDate: this.activePeriod.startDate.toDate(),
+          endDate: this.activePeriod.endDate.toDate(),
+          progress: this.progress,
+          theme: this.theme,
         });
       },
     },
@@ -293,10 +250,12 @@ export default {
     progress() {
       if (this.graph) {
         this.graph.render({
-          obj: this.activeKeyResult,
-          period: this.activePeriod,
-          progressionList: this.progress,
-          colorMode: this.theme,
+          startValue: this.activeKeyResult.startValue,
+          targetValue: this.activeKeyResult.targetValue,
+          startDate: this.activePeriod.startDate.toDate(),
+          endDate: this.activePeriod.endDate.toDate(),
+          progress: this.progress,
+          theme: this.theme,
         });
       }
     },
@@ -306,10 +265,12 @@ export default {
       handler() {
         if (!this.graph) return;
         this.graph.render({
-          obj: this.activeKeyResult,
-          period: this.activePeriod,
-          progressionList: this.progress,
-          colorMode: this.theme,
+          startValue: this.activeKeyResult.startValue,
+          targetValue: this.activeKeyResult.targetValue,
+          startDate: this.activePeriod.startDate.toDate(),
+          endDate: this.activePeriod.endDate.toDate(),
+          progress: this.progress,
+          theme: this.theme,
         });
       },
     },
@@ -319,23 +280,44 @@ export default {
     if (!this.$refs.graph) return;
     if (!this.activeKeyResult) return;
 
-    this.graph = new LineChart(this.$refs.graph, { colorMode: this.theme });
+    this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
     this.graph.render({
-      obj: this.activeKeyResult,
-      period: this.activePeriod,
-      progressionList: this.progress,
-      colorMode: this.theme,
+      startValue: this.activeKeyResult.startValue,
+      targetValue: this.activeKeyResult.targetValue,
+      startDate: this.activePeriod.startDate.toDate(),
+      endDate: this.activePeriod.endDate.toDate(),
+      progress: this.progress,
+      theme: this.theme,
     });
   },
 
   methods: {
-    dateTimeShort,
     format,
 
-    async remove(id) {
+    async updateHistoryRecord(id, data, modalCloseHandler) {
       try {
-        await Progress.remove(this.activeKeyResult.id, id);
-        this.$toasted.show(this.$t('toaster.delete.progression'));
+        await Progress.update(
+          db.collection('keyResults'),
+          this.activeKeyResult.id,
+          id,
+          data
+        );
+        this.$toasted.show(this.$t('toaster.update.progress'));
+      } catch {
+        this.$toasted.error(this.$t('toaster.error.updateProgress'));
+      } finally {
+        modalCloseHandler();
+      }
+    },
+
+    async deleteHistoryRecord(id) {
+      try {
+        await Progress.remove(
+          db.collection('keyResults'),
+          this.activeKeyResult.id,
+          id
+        );
+        this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }
@@ -346,28 +328,22 @@ export default {
 
       this.isSaving = true;
       try {
-        await Progress.create(this.activeKeyResult.id, {
-          value: +this.value,
-          comment: this.progressNote,
-          timestamp: new Date(),
-        });
-        this.$toasted.show(this.$t('toaster.add.progression'));
+        await Progress.create(
+          db.collection('keyResults'),
+          this.activeKeyResult.id,
+          {
+            value: +this.value,
+            comment: this.progressNote,
+            timestamp: new Date(),
+          }
+        );
+        this.$toasted.show(this.$t('toaster.add.progress'));
       } catch (e) {
         console.log(e);
-        this.$toasted.error(this.$t('toaster.error.progression'));
+        this.$toasted.error(this.$t('toaster.error.addProgress'));
       } finally {
         this.isSaving = false;
       }
-    },
-
-    openProfileModal(profileId) {
-      this.showProfileModal = true;
-      this.chosenProfileId = profileId;
-    },
-
-    closeProfileModal() {
-      this.showProfileModal = false;
-      this.chosenProfileId = null;
     },
   },
 };
@@ -375,38 +351,6 @@ export default {
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
-
-.main__table {
-  width: 100%;
-  overflow: auto;
-}
-
-.comment-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem;
-  border-radius: 3px;
-
-  &:hover {
-    background: rgba(var(--color-grey-500-rgb), 0.1);
-  }
-}
-
-.user__link {
-  display: flex;
-  align-items: center;
-  color: var(--color-text);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.user__image {
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.35rem;
-  border-radius: 1rem;
-}
 
 .auto {
   display: flex;
@@ -535,5 +479,6 @@ export default {
 
 .key-result__value--button {
   align-self: end;
+  border: 1px solid var(--color-white);
 }
 </style>

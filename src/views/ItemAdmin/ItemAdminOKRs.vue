@@ -146,7 +146,7 @@ export default {
       return [
         {
           heading: this.$t('admin.showPeriods'),
-          items: this.periods,
+          items: this.orderedPeriods,
           type: 'period',
           icon: 'fa-calendar-alt',
           activeClass: (id) => this.editObject && id === this.editObject.id,
@@ -158,7 +158,7 @@ export default {
         },
         {
           heading: this.$t('admin.showObjectives'),
-          items: this.objectives,
+          items: this.orderedObjectives,
           type: 'objective',
           icon: 'fa-trophy',
           activeClass: (id) => this.editObject && id === this.editObject.id,
@@ -172,7 +172,7 @@ export default {
         },
         {
           heading: this.$t('admin.showKeyResults'),
-          items: this.keyResults,
+          items: this.orderedKeyResults,
           type: 'keyResult',
           icon: 'fa-chart-pie',
           activeClass: (id) => this.editObject && id === this.editObject.id,
@@ -186,6 +186,23 @@ export default {
           cyCreate: 'okr-create-keyResult',
         },
       ];
+    },
+
+    orderedPeriods() {
+      return this.orderItems(
+        this.periods,
+        (a, b) => b.startDate.toDate() - a.startDate.toDate()
+      );
+    },
+    orderedObjectives() {
+      return this.orderItems(this.objectives, (a, b) =>
+        a.name.localeCompare(b.name)
+      );
+    },
+    orderedKeyResults() {
+      return this.orderItems(this.keyResults, (a, b) =>
+        a.name.localeCompare(b.name)
+      );
     },
   },
 
@@ -299,6 +316,23 @@ export default {
       }
 
       this.selectedType = type;
+    },
+
+    orderItems(items, compareFn) {
+      const itemsCopy = items.map((x) => x);
+      return [
+        ...itemsCopy
+          .filter((period) => period.name === 'placeholder')
+          .sort((a, b) => {
+            if (a.created && b.created) {
+              return b.created.toDate() - a.created.toDate();
+            }
+            return a.name.localeCompare(b.name);
+          }),
+        ...itemsCopy
+          .filter((period) => period.name !== 'placeholder')
+          .sort(compareFn),
+      ];
     },
 
     bindPeriods() {
