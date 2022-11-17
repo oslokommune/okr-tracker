@@ -92,6 +92,7 @@ import firebase from 'firebase/app';
 import { db } from '@/config/firebaseConfig';
 import { periodDates } from '@/util';
 import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
+import { endOfDay } from 'date-fns';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -108,6 +109,7 @@ const { Timestamp } = firebase.firestore;
 
 const getResultIndicatorPeriods = () => {
   const currentDate = new Date();
+  const endDate = endOfDay(currentDate);
   const currentYear = currentDate.getFullYear();
   const sixMonthsBack = new Date();
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
@@ -117,19 +119,19 @@ const getResultIndicatorPeriods = () => {
       label: i18n.t('period.sixmonths'),
       key: 'sixmonths',
       startDate: sixMonthsBack,
-      endDate: currentDate,
+      endDate,
     },
     year: {
       label: i18n.t('period.year'),
       key: 'year',
       startDate: new Date(currentYear, 0, 1),
-      endDate: currentDate,
+      endDate,
     },
     all: {
       label: i18n.t('period.all'),
       key: 'all',
       startDate: false,
-      endDate: currentDate,
+      endDate,
     },
   };
 };
