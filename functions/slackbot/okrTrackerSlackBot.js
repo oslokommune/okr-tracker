@@ -47,7 +47,7 @@ const runSlackBot = async (req, res) => {
   if (cmd[0] === 'subscribe' && allowedSub.includes(cmd[1])) {
     isSubscribed = true;
     // Add the channelId to the document slack-property
-    const result = addChannelToSlackArray(parentDocumentRef, parentDocumentData, req.body.channel_id);
+    const result = await addChannelToSlackArray(parentDocumentRef, parentDocumentData, req.body.channel_id);
 
     if (!result) {
       return res.status(200).send(`You are already subscribed to the ${cmd[1]} ${cmd[2]}`);
