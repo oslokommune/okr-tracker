@@ -9,7 +9,7 @@ import 'tippy.js/dist/tippy.css';
 import IndicatorTooltip from '@/components/IndicatorTooltip.vue';
 import { addCommentSymbol } from './symbols';
 
-export const CANVAS_PADDING = { left: 80, top: 20, right: 10, bottom: 25 };
+export const CANVAS_PADDING = { left: 80, top: 20, right: 45, bottom: 25 };
 const LEGEND_HEIGHT = 75;
 const LEGEND_LABEL_SPACING = 10;
 const Tooltip = Vue.extend(IndicatorTooltip);

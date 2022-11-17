@@ -208,11 +208,7 @@ export default {
         this.filteredProgress.map(({ timestamp }) => timestamp)
       );
 
-      if (
-        !this.graph ||
-        !startValue === undefined ||
-        !targetValue === undefined
-      )
+      if (!this.graph || startValue === undefined || targetValue === undefined)
         return;
       this.graph.render({
         startValue,

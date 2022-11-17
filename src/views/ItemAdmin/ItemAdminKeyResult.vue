@@ -86,51 +86,11 @@
             </router-link>
           </p>
 
-          <form-component
-            v-model="keyResult.sheetId"
-            :label="$t('keyResult.automation.googleSheetId')"
-            :rules="`${keyResult.auto ? 'required' : ''}`"
-            input-type="input"
-            name="sheetId"
-            type="text"
-          >
-            <template #help>
-              <span
-                class="form-help"
-                v-html="$t('keyResult.automation.googleSheetIdHelp')"
-              ></span>
-            </template>
-          </form-component>
-
-          <form-component
-            v-model="keyResult.sheetName"
-            :label="$t('keyResult.automation.sheetsTab')"
-            :rules="`${keyResult.auto ? 'required' : ''}`"
-            input-type="input"
-            name="sheetTab"
-            type="text"
-          >
-            <template #help>
-              <span class="form-help">
-                {{ $t('keyResult.automation.sheetsTabHelp') }}
-              </span>
-            </template>
-          </form-component>
-
-          <form-component
-            v-model="keyResult.sheetCell"
-            :label="$t('keyResult.automation.sheetsCell')"
-            :rules="`${keyResult.auto ? 'required' : ''}`"
-            input-type="input"
-            name="sheetCell"
-            type="text"
-          >
-            <template #help>
-              <span class="form-help">
-                {{ $t('keyResult.automation.sheetsCellHelp') }}
-              </span>
-            </template>
-          </form-component>
+          <google-sheets-form-group
+            :sheet-id.sync="keyResult.sheetId"
+            :sheet-name.sync="keyResult.sheetName"
+            :sheet-cell.sync="keyResult.sheetCell"
+          />
 
           <div class="validation">
             <div v-if="loadingConnection" class="validation__loading">
@@ -211,6 +171,7 @@ import KeyResult from '@/db/KeyResult';
 import { toastArchiveAndRevert } from '@/util';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
+import GoogleSheetsFormGroup from '@/components/forms/partials/GoogleSheetsFormGroup.vue';
 
 export default {
   name: 'ItemAdminKeyResult',
@@ -222,6 +183,7 @@ export default {
     BtnSave,
     BtnDelete,
     ToggleButton,
+    GoogleSheetsFormGroup,
   },
   props: {
     data: {

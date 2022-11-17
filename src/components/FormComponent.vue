@@ -45,10 +45,11 @@
           :label="selectLabel"
           :options="selectOptions"
           :clearable="false"
+          :reduce="selectReduce"
           :data-cy="dataCy"
         >
           <template #option="option">
-            {{ option.name }}
+            {{ option[selectLabel] }}
             <span v-if="option.period && option.period.name">
               ({{ option.period.name }})
             </span>
@@ -128,7 +129,12 @@ export default {
     selectLabel: {
       type: String,
       required: false,
-      default: '',
+      default: 'name',
+    },
+    selectReduce: {
+      type: Function,
+      required: false,
+      default: (option) => option,
     },
     disabled: {
       type: Boolean,

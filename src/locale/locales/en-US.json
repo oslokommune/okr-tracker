@@ -31,6 +31,18 @@
       "increase": "Increasing (high numbers preferred)",
       "decrease": "Decreasing (low numbers preferred)"
     },
+    "updateFrequency": {
+      "label": "Update frequency",
+      "help": "The frequency with which the KPI is expected to be updated with progress data.",
+      "frequencies": {
+        "annual": "Annual",
+        "daily": "Daily",
+        "irregular": "Sporadic",
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "weekly": "Weekly"
+      }
+    },
     "types": {
       "plain": {
         "label": "KPI",

@@ -31,6 +31,18 @@
       "increase": "Stigende (høyt tall er bra)",
       "decrease": "Synkende (lavt tall er bra)"
     },
+    "updateFrequency": {
+      "label": "Oppdateringshyppighet",
+      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter.",
+      "frequencies": {
+        "annual": "Årlig",
+        "daily": "Daglig",
+        "irregular": "Sporadisk",
+        "monthly": "Månedlig",
+        "quarterly": "Kvartalsvis",
+        "weekly": "Ukentlig"
+      }
+    },
     "types": {
       "plain": {
         "label": "KPI",

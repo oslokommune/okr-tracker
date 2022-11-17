@@ -37,6 +37,36 @@
           </span>
           </label>
         </validation-provider>
+      <form-component
+        v-model="localKpi.format"
+        input-type="select"
+        name="format"
+        :label="$t('kpi.display')"
+        rules="required"
+        select-label="label"
+        :select-options="formats"
+        :select-reduce="(option) => option.id"
+        type="text"
+      />
+
+      <form-component
+        v-model="localKpi.updateFrequency"
+        input-type="select"
+        name="updateFrequency"
+        :label="$t('kpi.updateFrequency.label')"
+        rules="required"
+        select-label="label"
+        :select-options="updateFrequencies"
+        :select-reduce="(option) => option.id"
+        type="text"
+      >
+        <template #help>
+          <span
+            class="form-help"
+            v-html="$t('kpi.updateFrequency.help')"
+          ></span>
+        </template>
+      </form-component>
 
         <validation-provider v-slot="{ errors }" rules="required" name="preferredTrend">
           <label class="form-group">
@@ -115,57 +145,11 @@
         v-model="localKpi.auto"
         :label="$t('kpi.automation.radio')"
       >
-        <form-component
-          v-model="localKpi.sheetId"
-          input-type="input"
-          name="sheetId"
-          :label="$t('keyResult.automation.googleSheetId')"
-          rules="required"
-          type="text"
-        >
-          <template #help>
-            <span
-              class="form-help"
-              v-html="$t('keyResult.automation.googleSheetIdHelp')"
-            ></span>
-          </template>
-        </form-component>
-
-        <div class="form-row">
-          <form-component
-            v-model="localKpi.sheetName"
-            input-type="input"
-            name="sheetTab"
-            :label="$t('keyResult.automation.sheetsTab')"
-            placeholder="Sheet1"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span
-                class="form-help"
-                v-html="$t('keyResult.automation.sheetsTabHelp')"
-              ></span>
-            </template>
-          </form-component>
-
-          <form-component
-            v-model="localKpi.sheetCell"
-            input-type="input"
-            name="sheetCell"
-            :label="$t('keyResult.automation.sheetsCell')"
-            placeholder="A1"
-            rules="required"
-            type="text"
-          >
-            <template #help>
-              <span
-                class="form-help"
-                v-html="$t('keyResult.automation.sheetsCellHelp')"
-              ></span>
-            </template>
-          </form-component>
-        </div>
+        <google-sheets-form-group
+          :sheet-id.sync="localKpi.sheetId"
+          :sheet-name.sync="localKpi.sheetName"
+          :sheet-cell.sync="localKpi.sheetCell"
+        />
       </toggle-button>
 
       <toggle-button v-model="localKpi.api">
@@ -205,10 +189,11 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes, kpiTrendOptions } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes, kpiTrendOptions, kpiUpdateFrequencies } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
+import GoogleSheetsFormGroup from './partials/GoogleSheetsFormGroup.vue';
 
 export default {
   name: 'KpiAdminForm',
@@ -218,6 +203,7 @@ export default {
     BtnDelete,
     EditGoalsModal,
     ToggleButton,
+    GoogleSheetsFormGroup,
   },
 
   props: {
@@ -238,6 +224,7 @@ export default {
     formats: kpiFormats(),
     trendOptions: kpiTrendOptions(),
     types: kpiTypes(),
+    updateFrequencies: kpiUpdateFrequencies(),
     showEditGoalsModal: false,
   }),
 
@@ -263,6 +250,7 @@ export default {
             description: '',
             format: null,
             kpiType: null,
+            updateFrequency: null,
             sheetId: '',
             sheetName: '',
             sheetCell: '',
@@ -313,6 +301,10 @@ export default {
       align-self: inherit;
     }
   }
+}
+
+::v-deep .v-select {
+  flex-grow: 1;
 }
 </style>
 <style lang="scss" >

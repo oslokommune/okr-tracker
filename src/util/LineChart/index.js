@@ -25,6 +25,25 @@ import {
 const INDICATOR_SIZE_DEFAULT = 50;
 const INDICATOR_SIZE_COMMENT = 450;
 
+function formatDate (d, daysBetween) {
+  let opts = {year: 'numeric'};
+
+  if (daysBetween <= 6) {
+    opts = {day: 'numeric', month: 'long'};
+  }
+  else if (daysBetween <= 30 * 6) {
+    opts = {day: 'numeric', month: 'short'};
+  }
+  else if (daysBetween <= 366) {
+    opts = {month: 'long'};
+  }
+  else if (daysBetween <= 365 * 5) {
+    opts = {month: 'short', year: 'numeric'};
+  }
+
+  return d.toLocaleDateString(i18n.locale, opts);
+}
+
 export default class LineChart {
   constructor(svgElement, { height, theme, legend, tooltips } = {}) {
     if (!svgElement) {
@@ -76,6 +95,9 @@ export default class LineChart {
    *
    * `progress`: The array of values to plot.
    *
+   * `targets`: A list of target lines to draw. Each element should be an
+   *   object specifying `startDate, `endDate`, and `value`.
+   *
    * `kpi`: Optional. A KPI to format the y axis for.
    *
    * `theme`: Optional. A theme to render the graph in, overriding any theme
@@ -97,13 +119,22 @@ export default class LineChart {
 
     let fromValue = startValue;
     let toValue = targetValue;
-    const minValue = min(progress, d => d.value);
 
     if (typeof(startValue) !== 'number') {
-      fromValue = minValue;
+      fromValue = min(progress, d => d.value);
+
+      if (targets && targets.length) {
+        // Lower the from value if any target is below the min value.
+        fromValue = Math.min(fromValue, min(targets, t => t.value));
+      }
     }
     if (typeof(targetValue) !== 'number') {
       toValue = max(progress, d => d.value);
+
+      if (targets && targets.length) {
+        // Raise the to value if any target is above the max value.
+        toValue = Math.max(toValue, max(targets, t => t.value));
+      }
     }
 
     const spread = toValue - fromValue;
@@ -122,6 +153,8 @@ export default class LineChart {
       toValue += spread * 0.1;
     }
 
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
     this.x.domain([startDate, endDate]);
     this.y.domain([fromValue, toValue]).nice();
 
@@ -129,6 +162,9 @@ export default class LineChart {
     resize.call(this);
 
     const innerWidth = this.width - CANVAS_PADDING.left - CANVAS_PADDING.right;
+
+    const mSecsBetween = endDate.getTime() - startDate.getTime();
+    const daysBetween = mSecsBetween / (1000 * 60 * 60 * 24);
 
     this.yAxis
       .transition()
@@ -142,16 +178,28 @@ export default class LineChart {
         .tickPadding(8)
       )
       .call(styleAxisY);
-    this.xAxis.transition().call(axisBottom(this.x).ticks(6)).call(styleAxisX);
+
+    this.xAxis
+      .transition()
+      .call(
+        axisBottom(this.x).tickFormat((d) => formatDate(d, daysBetween))
+        .ticks(Math.min(Math.ceil(daysBetween), 6))
+      )
+      .call(styleAxisX);
 
     const data = progress
-      .map((d) => ({
-        timestamp: d.timestamp.toDate(),
-        value: +d.value,
-        comment: d?.comment,
-        kpi,
-        startValue: +minValue,
-      }))
+      .map((d) => {
+        const timestamp = d.timestamp.toDate();
+        timestamp.setHours(0, 0, 0, 0);
+
+        return {
+          timestamp,
+          value: +d.value,
+          comment: d?.comment,
+          kpi,
+          startValue: +fromValue,
+        }
+      })
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
     this.valueArea.datum(data).transition().attr('d', this.area);
@@ -172,6 +220,8 @@ export default class LineChart {
         )
         .transition()
         .attr('d', this.target);
+    } else {
+      this.targetLine.attr('d', null);
     }
 
     if (this.legend) {
@@ -180,7 +230,7 @@ export default class LineChart {
           label: kpi ? kpi.name : i18n.t('general.value'),
           color: GRAPH_THEMES[this.theme].valueLine,
         },
-        ...(targets
+        ...(targets && targets.length
           ? [
               {
                 label: i18n.t('general.target'),
