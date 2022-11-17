@@ -76,6 +76,9 @@ export default class LineChart {
    *
    * `progress`: The array of values to plot.
    *
+   * `targets`: A list of target lines to draw. Each element should be an
+   *   object specifying `startDate, `endDate`, and `value`.
+   *
    * `kpi`: Optional. A KPI to format the y axis for.
    *
    * `theme`: Optional. A theme to render the graph in, overriding any theme
@@ -97,13 +100,22 @@ export default class LineChart {
 
     let fromValue = startValue;
     let toValue = targetValue;
-    const minValue = min(progress, d => d.value);
 
     if (typeof(startValue) !== 'number') {
-      fromValue = minValue;
+      fromValue = min(progress, d => d.value);
+
+      if (targets && targets.length) {
+        // Lower the from value if any target is below the min value.
+        fromValue = Math.min(fromValue, min(targets, t => t.value));
+      }
     }
     if (typeof(targetValue) !== 'number') {
       toValue = max(progress, d => d.value);
+
+      if (targets && targets.length) {
+        // Raise the to value if any target is above the max value.
+        toValue = Math.max(toValue, max(targets, t => t.value));
+      }
     }
 
     const spread = toValue - fromValue;
@@ -150,7 +162,7 @@ export default class LineChart {
         value: +d.value,
         comment: d?.comment,
         kpi,
-        startValue: +minValue,
+        startValue: +fromValue,
       }))
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
@@ -172,6 +184,8 @@ export default class LineChart {
         )
         .transition()
         .attr('d', this.target);
+    } else {
+      this.targetLine.attr('d', null);
     }
 
     if (this.legend) {
@@ -180,7 +194,7 @@ export default class LineChart {
           label: kpi ? kpi.name : i18n.t('general.value'),
           color: GRAPH_THEMES[this.theme].valueLine,
         },
-        ...(targets
+        ...(targets && targets.length
           ? [
               {
                 label: i18n.t('general.target'),

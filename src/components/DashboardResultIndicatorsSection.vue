@@ -152,7 +152,7 @@ export default {
     graph: null,
     downloadOption: '',
     progressCollection: [],
-    unexpiredGoals: [],
+    goals: [],
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
@@ -188,8 +188,9 @@ export default {
     goal() {
       // Firebase doesn't support equality filtering on more than one field at
       // a time, so do the rest of the filtering client side.
-      const goals = this.unexpiredGoals.filter(
-        (goal) => goal.fromDate < new Date()
+      const now = new Date();
+      const goals = this.goals.filter((goal) =>
+        goal.toDate.toDate() > now && goal.fromDate.toDate() < now
       );
 
       // We don't enforce non-overlapping goals (yet?), but if anyone has set
@@ -234,11 +235,12 @@ export default {
     },
 
     activeResultIndicator() {
-      this.getProgressData().then(this.renderGraph);
       this.fetchGoals();
+      this.getProgressData().then(this.renderGraph);
     },
 
     currentResultIndicatorPeriod(period) {
+      this.fetchGoals();
       this.getProgressData().then(this.renderGraph);
 
       if (this.$route.query?.resultIndicatorPeriod !== period.key) {
@@ -265,6 +267,10 @@ export default {
       }
 
       this.setActiveTab(0);
+    },
+
+    goals() {
+      this.renderGraph();
     },
 
     theme() {
@@ -328,10 +334,9 @@ export default {
     async fetchGoals() {
       if (this.activeResultIndicator) {
         await this.$bind(
-          'unexpiredGoals',
+          'goals',
           db.collection(`kpis/${this.activeResultIndicator.id}/goals`)
             .where('archived', '==', false)
-            .where('toDate', '>', new Date())
             .orderBy('toDate')
         );
       }
@@ -355,6 +360,13 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.filteredProgress,
+        targets: this.goals.map((g) => ({
+          startDate: g.fromDate.toDate(),
+          endDate: g.toDate.toDate(),
+          value: parseFloat(g.value),
+        })).filter((g) =>
+          g.endDate >= this.startDate && g.startDate <= this.endDate
+        ),
         kpi,
         startValue,
         targetValue,
