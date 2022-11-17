@@ -22,33 +22,29 @@
       </label>
 
       <div class="kpi-format-and-trend">
-        <validation-provider v-slot="{ errors }" rules="required" name="format">
-          <label class="form-group">
-          <span class="form-label">
-            {{ $t('kpi.display') }}
-          </span>
-            <select v-model="localKpi.format" class="form__field" id="kpiFormat">
-              <option v-for="{ id, label } in formats" :key="id" :value="id">
-                {{ label }}
-              </option>
-            </select>
-            <span v-if="errors[0]" class="form-field--error">
-            {{ errors[0] }}
-          </span>
-          </label>
-        </validation-provider>
-      <form-component
-        v-model="localKpi.format"
-        input-type="select"
-        name="format"
-        :label="$t('kpi.display')"
-        rules="required"
-        select-label="label"
-        :select-options="formats"
-        :select-reduce="(option) => option.id"
-        type="text"
-      />
-
+        <form-component
+          v-model="localKpi.format"
+          input-type="select"
+          name="format"
+          :label="$t('kpi.display')"
+          rules="required"
+          select-label="label"
+          :select-options="formats"
+          :select-reduce="(option) => option.id"
+          type="text"
+        />
+        <form-component
+          v-model="localKpi.preferredTrend"
+          input-type="select"
+          name="preferredTrend"
+          :label="$t('kpi.preferredTrend')"
+          rules="required"
+          select-label="label"
+          :select-options="trendOptions"
+          :select-reduce="(option) => option.id"
+          type="text"
+        />
+      </div>
       <form-component
         v-model="localKpi.updateFrequency"
         input-type="select"
@@ -67,23 +63,6 @@
           ></span>
         </template>
       </form-component>
-
-        <validation-provider v-slot="{ errors }" rules="required" name="preferredTrend">
-          <label class="form-group">
-          <span class="form-label">
-            {{ $t('kpi.preferredTrend') }}
-          </span>
-            <select v-model="localKpi.preferredTrend" class="form__field" id="preferredTrend">
-              <option v-for="{ id, label } in trendOptions" :key="id" :value="id">
-                {{ label }}
-              </option>
-            </select>
-            <span v-if="errors[0]" class="form-field--error">
-            {{ errors[0] }}
-          </span>
-          </label>
-        </validation-provider>
-      </div>
 
       <hr class="ods-hr" />
 
