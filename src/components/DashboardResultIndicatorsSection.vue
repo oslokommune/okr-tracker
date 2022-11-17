@@ -52,12 +52,14 @@
           <span class="progressTarget__title">
             {{ $t('kpi.currentValue') }}
           </span>
-          <span v-if="activeResultIndicator" class="progressTarget__value">
-            {{ formatKPIValue(activeResultIndicator) }}
-          </span>
-          <span :class="bgColor" class="progressTarget__progress">
+          <div>
+            <span v-if="activeResultIndicator" class="progressTarget__value">
+              {{ formatKPIValue(activeResultIndicator) }}
+            </span>
+            <span :class="bgColor" class="progressTarget__progress">
               {{ periodTrend + $t('kpi.inPeriod')}}
-          </span>
+            </span>
+          </div>
         </div>
         <div v-if="activeResultIndicator && goal">
           <span class="progressTarget__title">
@@ -156,8 +158,6 @@ export default {
     downloadOption: '',
     progressCollection: [],
     unexpiredGoals: [],
-    latestProgressRecord: 0,
-    firstProgressRecord: 0,
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
@@ -184,9 +184,12 @@ export default {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
     periodTrend(){
-      this.getFirstAndLatestProgressRecord(this.activeResultIndicator);
-      const periodDiff = this.latestProgressRecord?.value - this.firstProgressRecord?.value;
-      const diffInPercentage = periodDiff / this.firstProgressRecord?.value * 100;
+      const sortedProgress = this.progressCollection.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+      const firstProgressRecord = sortedProgress.slice(0, 1)[0]?.value;
+      const latestProgressRecord = sortedProgress.slice(-1)[0]?.value;
+
+      const periodDiff = latestProgressRecord - firstProgressRecord;
+      const diffInPercentage = periodDiff / firstProgressRecord * 100;
       return Math.round(diffInPercentage * 10) / 10;
     },
     bgColor() {
@@ -304,33 +307,6 @@ export default {
   methods: {
     formatKPIValue,
 
-    async getFirstAndLatestProgressRecord(ri) {
-
-      if (ri) {
-        await db
-          .collection(`kpis/${ri.id}/progress`)
-          .orderBy('timestamp', 'desc')
-          .limit(1)
-          .get()
-          .then((list) => {
-            this.latestProgressRecord = list.docs[0]
-              ? list.docs[0].data()
-              : null;
-          });
-
-        await db
-          .collection(`kpis/${ri.id}/progress`)
-          .orderBy('timestamp', 'asc')
-          .limit(1)
-          .get()
-          .then((list) => {
-            this.firstProgressRecord = list.docs[0]
-              ? list.docs[0].data()
-              : null;
-          });
-      }
-    },
-
     async getProgressData() {
       if (this.activeResultIndicator) {
         let query = db.collection(
@@ -351,7 +327,7 @@ export default {
 
         await this.$bind(
           'progressCollection',
-          query.orderBy('timestamp', 'desc')
+          query.orderBy('timestamp', 'asc')
         );
 
         if (
