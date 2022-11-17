@@ -41,6 +41,21 @@ export function kpiTypes () {
 };
 
 /**
+ * Return a list of available update frequency options. Based on the
+ * Dublin Core™ Collection Description Frequency Vocabulary. Used to
+ * provide options for setting the `updateFrequency` on KPI objects.
+ * https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/
+ */
+export function kpiUpdateFrequencies() {
+  return ['daily', 'weekly', 'monthly', 'quarterly', 'annual', 'irregular'].map(
+    (frequency) => ({
+      id: frequency,
+      label: i18n.t(`kpi.updateFrequency.frequencies.${frequency}`),
+    })
+  );
+}
+
+/**
  * Return a value formatter function.
  *
  * `defaultSpecifier` is the format specifier to use in normal cases, while

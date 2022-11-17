@@ -21,21 +21,36 @@
         <textarea v-model="localKpi.description" class="form__field" rows="4" />
       </label>
 
-      <validation-provider v-slot="{ errors }" rules="required" name="format">
-        <label class="form-group">
-          <span class="form-label">
-            {{ $t('kpi.display') }}
-          </span>
-          <select v-model="localKpi.format" class="form__field">
-            <option v-for="{ id, label } in formats" :key="id" :value="id">
-              {{ label }}
-            </option>
-          </select>
-          <span v-if="errors[0]" class="form-field--error">
-            {{ errors[0] }}
-          </span>
-        </label>
-      </validation-provider>
+      <form-component
+        v-model="localKpi.format"
+        input-type="select"
+        name="format"
+        :label="$t('kpi.display')"
+        rules="required"
+        select-label="label"
+        :select-options="formats"
+        :select-reduce="(option) => option.id"
+        type="text"
+      />
+
+      <form-component
+        v-model="localKpi.updateFrequency"
+        input-type="select"
+        name="updateFrequency"
+        :label="$t('kpi.updateFrequency.label')"
+        rules="required"
+        select-label="label"
+        :select-options="updateFrequencies"
+        :select-reduce="(option) => option.id"
+        type="text"
+      >
+        <template #help>
+          <span
+            class="form-help"
+            v-html="$t('kpi.updateFrequency.help')"
+          ></span>
+        </template>
+      </form-component>
 
       <hr class="ods-hr" />
 
@@ -187,7 +202,7 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes, kpiUpdateFrequencies } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
@@ -219,6 +234,7 @@ export default {
     localKpi: null,
     formats: kpiFormats(),
     types: kpiTypes(),
+    updateFrequencies: kpiUpdateFrequencies(),
     showEditGoalsModal: false,
   }),
 
@@ -244,6 +260,7 @@ export default {
             description: '',
             format: null,
             kpiType: null,
+            updateFrequency: null,
             sheetId: '',
             sheetName: '',
             sheetCell: '',
@@ -294,5 +311,9 @@ export default {
       align-self: inherit;
     }
   }
+}
+
+::v-deep .v-select {
+  flex-grow: 1;
 }
 </style>
