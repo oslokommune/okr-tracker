@@ -269,10 +269,6 @@ export default {
       this.setActiveTab(0);
     },
 
-    goals() {
-      this.renderGraph();
-    },
-
     theme() {
       this.renderGraph();
     },
