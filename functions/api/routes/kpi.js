@@ -3,6 +3,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import validator from 'express-validator';
 import { format, endOfDay } from 'date-fns';
 import {
+  buildKpiResponse,
   getUserDisplayName,
   refreshKPILatestValue,
   updateKPIProgressionValue,
@@ -77,57 +78,46 @@ router.post(
   }
 );
 
+router.get('/', async (req, res) => {
+  const db = getFirestore();
+
+  try {
+    const kpiQuerySnapshot = await db
+      .collection('kpis')
+      .where('archived', '==', false)
+      .get();
+
+    const kpis = [];
+
+    for await (const kpiSnapshot of kpiQuerySnapshot.docs) {
+      const kpiData = await buildKpiResponse(kpiSnapshot);
+      kpis.push(kpiData);
+    }
+
+    res.json(kpis);
+  } catch (e) {
+    console.error('ERROR: ', e.message);
+    res.status(500).send('Could not get list of KPIs');
+  }
+});
+
 router.get('/:id', idValidator, async (req, res) => {
   const sanitized = matchedData(req);
   const { id } = sanitized;
 
   const db = getFirestore();
-  const collection = await db.collection('kpis');
+  const collection = db.collection('kpis');
 
   try {
     const kpi = await collection.doc(id).get();
 
-    const { exists, ref } = kpi;
-
-    if (!exists) {
+    if (!kpi.exists) {
       res.status(404).send(`Could not find KPI with ID: ${id}`);
       return;
     }
 
-    const { created, createdBy, currentValue, edited, editedBy, name, type } =
-      kpi.data();
-
-    const progress = await ref
-      .collection('progress')
-      .orderBy('timestamp', 'desc')
-      .limit(1)
-      .get()
-      .then((list) => (list.docs[0] ? list.docs[0].data() : null));
-
-    const returnData = {
-      currentValue,
-      name,
-      type,
-      created: created ? created.toDate() : null,
-      createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
-      edited: edited ? edited.toDate() : null,
-      editedBy: editedBy ? await getUserDisplayName(editedBy) : null,
-    };
-
-    if (!progress) {
-      res.json({
-        ...returnData,
-        lastUpdated: null,
-      });
-    } else {
-      res.json({
-        ...returnData,
-        lastUpdated: {
-          value: progress.value,
-          timestamp: progress.timestamp.toDate(),
-        },
-      });
-    }
+    const kpiData = await buildKpiResponse(kpi);
+    res.json(kpiData);
   } catch (e) {
     console.error('ERROR: ', e.message);
     res.status(500).send(`Cannot get KPI by ID: (${id})`);
