@@ -136,7 +136,7 @@ export async function buildKpiResponse(kpiSnapshot) {
       return { value, timestamp: timestamp.toDate() };
     });
 
-  const isStale = determineKPIStaleState(updateFrequency, latestMeasurement);
+  const isStale = isKPIStale(updateFrequency, latestMeasurement);
 
   return {
     currentValue,
@@ -154,12 +154,13 @@ export async function buildKpiResponse(kpiSnapshot) {
 
 /**
  * Return true if a KPI is considered "stale", i.e. no progress measurement
- * registered within declared update frequency.
+ * registered within declared update frequency. Return `null` in cases where
+ * it is not possible to determine staleness.
  *
  * `updateFrequency` is the expected update interval for the KPI.
  * `progressRecord` is the progress record to check against.
  */
-function determineKPIStaleState(updateFrequency, progressRecord) {
+function isKPIStale(updateFrequency, progressRecord) {
   if (!updateFrequency) return null;
   if (!progressRecord) return true;
   if (updateFrequency === 'irregular') return false;
