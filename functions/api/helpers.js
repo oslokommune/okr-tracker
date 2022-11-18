@@ -1,5 +1,12 @@
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import { endOfDay, startOfDay, setHours } from 'date-fns';
+import {
+  endOfDay,
+  startOfDay,
+  setHours,
+  isWithinInterval,
+  sub,
+  set,
+} from 'date-fns';
 
 /**
  * Return a user's display name. If the referenced Firestore reference
@@ -98,5 +105,98 @@ export async function refreshKPILatestValue(kpiRef) {
       currentValue: FieldValue.delete(),
       valid: true,
     });
+  }
+}
+
+/**
+ * Get list of KPIs including latest progress measurement.
+ */
+export async function getKPIs() {
+  const db = getFirestore();
+
+  const kpisSnapshot = await db
+    .collection('kpis')
+    .where('archived', '==', false)
+    .get();
+
+  const kpis = [];
+
+  for await (const kpiSnapshot of kpisSnapshot.docs) {
+    const { name, parent, valid, updateFrequency } = kpiSnapshot.data();
+
+    const parentName = await parent
+      .get()
+      .then((snapshot) => (snapshot.exists ? snapshot.data().name : null));
+
+    const latestMeasurement = await db
+      .collection(`kpis/${kpiSnapshot.id}/progress`)
+      .orderBy('timestamp', 'desc')
+      .limit(1)
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.docs[0]) return null;
+        const { value, timestamp } = snapshot.docs[0].data();
+        return { value, timestamp: timestamp.toDate() };
+      });
+
+    const isStale = determineKPIStaleState(updateFrequency, latestMeasurement);
+
+    kpis.push({
+      id: kpiSnapshot.id,
+      name,
+      parentName,
+      valid,
+      latestMeasurement,
+      updateFrequency: updateFrequency || null,
+      isStale,
+    });
+  }
+
+  return kpis;
+}
+
+/**
+ * Return true if a KPI is considered "stale", i.e. no progress measurement
+ * registered within declared update frequency.
+ *
+ * `updateFrequency` is the expected update interval for the KPI.
+ * `progressRecord` is the progress record to check against.
+ */
+function determineKPIStaleState(updateFrequency, progressRecord) {
+  if (!updateFrequency) return null;
+  if (!progressRecord) return true;
+  if (updateFrequency === 'irregular') return false;
+
+  const duration = (frequency) => {
+    switch (frequency) {
+      case 'daily':
+        return { days: 1 };
+      case 'weekly':
+        return { weeks: 1 };
+      case 'monthly':
+        return { months: 1 };
+      case 'quarterly':
+        return { months: 3 };
+      case 'annual':
+        return { years: 1 };
+      default:
+        throw new Error('Unsupported frequency option');
+    }
+  };
+
+  try {
+    const now = new Date();
+    const intervalEnd = set(progressRecord.timestamp, {
+      year: now.getFullYear(),
+      month: now.getMonth(),
+      date: now.getDate(),
+    });
+    return !isWithinInterval(progressRecord.timestamp, {
+      start: sub(intervalEnd, duration(updateFrequency)),
+      end: intervalEnd,
+    });
+  } catch (e) {
+    console.error('ERROR: ', e.message);
+    return null;
   }
 }
