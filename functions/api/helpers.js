@@ -136,15 +136,13 @@ export async function buildKpiResponse(kpiSnapshot) {
       return { value, timestamp: timestamp.toDate() };
     });
 
-  const isStale = isKPIStale(updateFrequency, latestMeasurement);
-
   return {
     currentValue,
     name,
     type,
     lastUpdated: latestMeasurement || null,
     updateFrequency: updateFrequency || null,
-    isStale,
+    isStale: isKPIStale(updateFrequency, latestMeasurement),
     created: created ? created.toDate() : null,
     createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
     edited: edited ? edited.toDate() : null,
