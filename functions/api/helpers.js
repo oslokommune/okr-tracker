@@ -5,7 +5,6 @@ import {
   setHours,
   isWithinInterval,
   sub,
-  set,
 } from 'date-fns';
 
 /**
@@ -182,14 +181,9 @@ function isKPIStale(updateFrequency, progressRecord) {
 
   try {
     const now = new Date();
-    const intervalEnd = set(progressRecord.timestamp, {
-      year: now.getFullYear(),
-      month: now.getMonth(),
-      date: now.getDate(),
-    });
     return !isWithinInterval(progressRecord.timestamp, {
-      start: sub(intervalEnd, duration(updateFrequency)),
-      end: intervalEnd,
+      start: sub(startOfDay(now), duration(updateFrequency)),
+      end: endOfDay(now),
     });
   } catch (e) {
     console.error('ERROR: ', e.message);
