@@ -2,7 +2,7 @@
 
 ## Bug reports
 
-Keep bug reports short but descriptive. Include all details that are relevant and what the exepected outcome should be.
+Keep bug reports short but descriptive. Include all details that are relevant and what the expected outcome should be.
 
 Example:
 
@@ -23,11 +23,11 @@ Example:
 Contributions to this repository are welcomed. Please ensure your pull requests adhere to the following guidelines:
 
 - Make individual pull requests for each of your suggested changes.
-- Code (including comments) and documentation should be in English. Check spelling and grammar
-- Make sure you lint your code before commiting.
+- Code (including comments) and documentation should be in English. Check spelling and grammar.
+- Make sure you lint your code before committing.
 - Add an entry in CHANGELOG.md describing your changes.
-- Merge the `develop` branch into your branch before opening a pull request.
-- Include a clear title and description
+- Rebase your branch on `main` or merge the `main` branch into your branch before opening a pull request.
+- Include a clear title and description.
 
 ## Feature requests
 
