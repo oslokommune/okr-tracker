@@ -95,7 +95,14 @@ service cloud.firestore {
 
     match /users/{user} {
       allow read: if isSignedIn();
-      allow write, update, delete: if isSuperAdmin() || isSelf(user) || isAdmin();
+      allow create: if isSuperAdmin() ||
+        ((isSelf(user) || isAdmin()) &&
+         (!request.resource.data.keys().hasAny(['superAdmin'])));
+      allow update: if isSuperAdmin() ||
+        ((isSelf(user) || isAdmin()) &&
+         (!request.resource.data.diff(resource.data).affectedKeys().hasAny(
+           ['superAdmin'])));
+      allow delete: if isSuperAdmin() || isSelf(user) || isAdmin();
     }
 
     match /organizations/{document} {
