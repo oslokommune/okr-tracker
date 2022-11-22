@@ -498,6 +498,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .dashboardResultIndicatorsSection {
   background: var(--color-white);
 
@@ -603,19 +605,21 @@ export default {
   }
   &__title {
     color: var(--color-grey-600);
-    font-size: 14px;
+    font-weight: 500;
+    font-size: typography.$font-size-1;
   }
   &__value {
     color: var(--color-text);
     font-weight: 500;
+    font-size: typography.$font-size-4;
   }
   &__progress {
     padding: 0.3rem;
-    font-size: 12px;
+    font-size: typography.$font-size-0;
   }
   &__target {
     color: var(--color-grey-600);
-    font-size: 12px;
+    font-size: typography.$font-size-0;
   }
 }
 </style>
