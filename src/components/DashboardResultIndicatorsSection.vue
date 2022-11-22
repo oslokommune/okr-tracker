@@ -52,9 +52,14 @@
           <span class="progressTarget__title">
             {{ $t('kpi.currentValue') }}
           </span>
-          <span v-if="activeResultIndicator" class="progressTarget__value">
-            {{ formatKPIValue(activeResultIndicator) }}
-          </span>
+          <div>
+            <span v-if="activeResultIndicator" class="progressTarget__value">
+              {{ formatKPIValue(activeResultIndicator) }}
+            </span>
+            <span :class="bgColor" class="progressTarget__progress">
+              {{ periodTrend + $t('kpi.inPeriod')}}
+            </span>
+          </div>
         </div>
         <div v-if="activeResultIndicator && goal">
           <span class="progressTarget__title">
@@ -161,6 +166,8 @@ export default {
     currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.sixmonths,
     startDate: null,
     endDate: null,
+    trend: 0,
+    preferredTrend: 0,
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
     OpenIndicator: IconDownload,
     downloadOptions: [
@@ -178,6 +185,27 @@ export default {
   computed: {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
+    periodTrend(){
+      const sortedProgress = this.progressCollection.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+      const firstProgressRecord = sortedProgress[0]?.value;
+      const latestProgressRecord = sortedProgress.slice(-1)[0]?.value;
+
+      const periodDiff = latestProgressRecord - firstProgressRecord;
+      const diffInPercentage = periodDiff / firstProgressRecord * 100;
+      return Math.round(diffInPercentage * 10) / 10;
+    },
+    bgColor() {
+      const ri = this.activeResultIndicator;
+      const preferredTrendIsSet = ri?.preferredTrend !== undefined;
+      const preferredTrendFulfilled = (ri?.preferredTrend === 'increase' && this.periodTrend > 0)
+          || (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
+
+      return {
+        'neutral': !preferredTrendIsSet || this.periodTrend === 0,
+        'positive': preferredTrendIsSet && preferredTrendFulfilled,
+        'negative': preferredTrendIsSet && this.periodTrend !== 0 && !preferredTrendFulfilled,
+      };
+    },
     tabIds() {
       return tabIdsHelper('resultIndicator');
     },
@@ -303,7 +331,7 @@ export default {
 
         await this.$bind(
           'progressCollection',
-          query.orderBy('timestamp', 'desc')
+          query.orderBy('timestamp', 'asc')
         );
 
         if (
@@ -537,6 +565,21 @@ export default {
   padding: 1rem 1rem 0 0.25rem;
 }
 
+.neutral {
+  color: var(--color-purple);
+  background: var(--color-blue-light-3);
+}
+
+.positive {
+  color: var(--color-green-dark);
+  background: var(--color-green-light-2);
+}
+
+.negative{
+  color: var(--color-red-dark);
+  background: var(--color-red-light);
+}
+
 .progressTarget {
   display: flex;
   gap: 2rem;
@@ -557,6 +600,10 @@ export default {
   &__value {
     color: var(--color-text);
     font-weight: 500;
+  }
+  &__progress {
+    padding: 0.3rem;
+    font-size: 12px;
   }
 }
 </style>

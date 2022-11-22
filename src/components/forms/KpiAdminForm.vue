@@ -21,18 +21,30 @@
         <textarea v-model="localKpi.description" class="form__field" rows="4" />
       </label>
 
-      <form-component
-        v-model="localKpi.format"
-        input-type="select"
-        name="format"
-        :label="$t('kpi.display')"
-        rules="required"
-        select-label="label"
-        :select-options="formats"
-        :select-reduce="(option) => option.id"
-        type="text"
-      />
-
+      <div class="kpi-format-and-trend">
+        <form-component
+          v-model="localKpi.format"
+          input-type="select"
+          name="format"
+          :label="$t('kpi.display')"
+          rules="required"
+          select-label="label"
+          :select-options="formats"
+          :select-reduce="(option) => option.id"
+          type="text"
+        />
+        <form-component
+          v-model="localKpi.preferredTrend"
+          input-type="select"
+          name="preferredTrend"
+          :label="$t('kpi.preferredTrend')"
+          rules="required"
+          select-label="label"
+          :select-options="trendOptions"
+          :select-reduce="(option) => option.id"
+          type="text"
+        />
+      </div>
       <form-component
         v-model="localKpi.updateFrequency"
         input-type="select"
@@ -156,7 +168,7 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes, kpiUpdateFrequencies } from '@/util/kpiHelpers';
+import { kpiFormats, kpiTypes, kpiTrendOptions, kpiUpdateFrequencies } from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
@@ -189,6 +201,7 @@ export default {
   data: () => ({
     localKpi: null,
     formats: kpiFormats(),
+    trendOptions: kpiTrendOptions(),
     types: kpiTypes(),
     updateFrequencies: kpiUpdateFrequencies(),
     showEditGoalsModal: false,
@@ -216,6 +229,7 @@ export default {
             description: '',
             format: null,
             kpiType: null,
+            preferredTrend: null,
             updateFrequency: null,
             sheetId: '',
             sheetName: '',
@@ -271,5 +285,20 @@ export default {
 
 ::v-deep .v-select {
   flex-grow: 1;
+}
+</style>
+<style lang="scss" >
+#kpiFormat, #preferredTrend {
+  flex-direction: column;
+}
+.kpi-format-and-trend {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: stretch;
+
+  > span {
+    flex: 1;
+  }
 }
 </style>

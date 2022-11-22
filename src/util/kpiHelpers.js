@@ -18,6 +18,22 @@ export function kpiFormats () {
 };
 
 /**
+ * Return a list of available KPI expected trend options.
+ */
+export function kpiTrendOptions () {
+  return [
+    {
+      id: 'increase',
+      label: i18n.t('kpi.trendOptions.increase'),
+    },
+    {
+      id: 'decrease',
+      label: i18n.t('kpi.trendOptions.decrease'),
+    },
+  ];
+};
+
+/**
  * Return a list of available KPI types.
  */
 export function kpiTypes () {
