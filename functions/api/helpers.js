@@ -1,5 +1,11 @@
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import { endOfDay, startOfDay, setHours } from 'date-fns';
+import {
+  endOfDay,
+  startOfDay,
+  setHours,
+  isWithinInterval,
+  sub,
+} from 'date-fns';
 
 /**
  * Return a user's display name. If the referenced Firestore reference
@@ -98,5 +104,89 @@ export async function refreshKPILatestValue(kpiRef) {
       currentValue: FieldValue.delete(),
       valid: true,
     });
+  }
+}
+
+/**
+ * Build and return KPI response object.
+ *
+ * `kpiSnapshot` is the Firestore KPI document snapshot.
+ */
+export async function buildKpiResponse(kpiSnapshot) {
+  const {
+    created,
+    createdBy,
+    currentValue,
+    edited,
+    editedBy,
+    name,
+    type,
+    updateFrequency,
+  } = kpiSnapshot.data();
+
+  const latestMeasurement = await kpiSnapshot.ref
+    .collection('progress')
+    .orderBy('timestamp', 'desc')
+    .limit(1)
+    .get()
+    .then((snapshot) => {
+      if (!snapshot.docs[0]) return null;
+      const { value, timestamp } = snapshot.docs[0].data();
+      return { value, timestamp: timestamp.toDate() };
+    });
+
+  return {
+    currentValue,
+    name,
+    type,
+    lastUpdated: latestMeasurement || null,
+    updateFrequency: updateFrequency || null,
+    isStale: isKPIStale(updateFrequency, latestMeasurement),
+    created: created ? created.toDate() : null,
+    createdBy: createdBy ? await getUserDisplayName(createdBy) : null,
+    edited: edited ? edited.toDate() : null,
+    editedBy: editedBy ? await getUserDisplayName(editedBy) : null,
+  };
+}
+
+/**
+ * Return true if a KPI is considered "stale", i.e. no progress measurement
+ * registered within declared update frequency. Return `null` in cases where
+ * it is not possible to determine staleness.
+ *
+ * `updateFrequency` is the expected update interval for the KPI.
+ * `progressRecord` is the progress record to check against.
+ */
+function isKPIStale(updateFrequency, progressRecord) {
+  if (!updateFrequency) return null;
+  if (!progressRecord) return true;
+  if (updateFrequency === 'irregular') return false;
+
+  const duration = (frequency) => {
+    switch (frequency) {
+      case 'daily':
+        return { days: 1 };
+      case 'weekly':
+        return { weeks: 1 };
+      case 'monthly':
+        return { months: 1 };
+      case 'quarterly':
+        return { months: 3 };
+      case 'annual':
+        return { years: 1 };
+      default:
+        throw new Error('Unsupported frequency option');
+    }
+  };
+
+  try {
+    const now = new Date();
+    return !isWithinInterval(progressRecord.timestamp, {
+      start: sub(startOfDay(now), duration(updateFrequency)),
+      end: endOfDay(now),
+    });
+  } catch (e) {
+    console.error('ERROR: ', e.message);
+    return null;
   }
 }
