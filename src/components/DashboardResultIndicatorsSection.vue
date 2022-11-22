@@ -56,7 +56,7 @@
             <span v-if="activeResultIndicator" class="progressTarget__value">
               {{ formatKPIValue(activeResultIndicator) }}
             </span>
-            <span :class="bgColor" class="progressTarget__progress">
+            <span v-if="periodTrend" :class="bgColor" class="progressTarget__progress">
               {{ periodTrend + $t('kpi.inPeriod')}}
             </span>
           </div>
