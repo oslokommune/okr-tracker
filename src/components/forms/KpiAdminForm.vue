@@ -229,6 +229,7 @@ export default {
             description: '',
             format: null,
             kpiType: null,
+            preferredTrend: null,
             updateFrequency: null,
             sheetId: '',
             sheetName: '',
