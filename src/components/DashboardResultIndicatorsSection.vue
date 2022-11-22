@@ -65,9 +65,14 @@
           <span class="progressTarget__title">
             {{ $t('kpi.goals.for') }} {{ goal.name }}
           </span>
-          <span class="progressTarget__value">
-            {{ formatKPIValue(activeResultIndicator, goal.value) }}
-          </span>
+          <div>
+            <span class="progressTarget__value">
+              {{ percentOfGoal }}
+            </span>
+            <span class="progressTarget__target">
+              {{ $t('kpi.ofTarget') }} {{ formatKPIValue(activeResultIndicator, goal.value)}}
+            </span>
+          </div>
         </div>
       </div>
     </tab-panel>
@@ -95,7 +100,7 @@ import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 
 import { db } from '@/config/firebaseConfig';
-import { periodDates } from '@/util';
+import { periodDates, numberLocale } from '@/util';
 import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
 import { endOfDay } from 'date-fns';
 import downloadFile from '@/util/downloadFile';
@@ -226,6 +231,9 @@ export default {
       // We don't enforce non-overlapping goals (yet?), but if anyone has set
       // overlapping goals, just pick the one with the closest end date.
       return goals ? goals[0] : null;
+    },
+    percentOfGoal() {
+      return numberLocale.format('.2p')(this.activeResultIndicator.currentValue / this.goal.value);
     },
     filteredProgress() {
       // Filter out any duplicate measurement values for each date
@@ -490,6 +498,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .dashboardResultIndicatorsSection {
   background: var(--color-white);
 
@@ -595,15 +605,21 @@ export default {
   }
   &__title {
     color: var(--color-grey-600);
-    font-size: 14px;
+    font-weight: 500;
+    font-size: typography.$font-size-1;
   }
   &__value {
     color: var(--color-text);
     font-weight: 500;
+    font-size: typography.$font-size-4;
   }
   &__progress {
     padding: 0.3rem;
-    font-size: 12px;
+    font-size: typography.$font-size-0;
+  }
+  &__target {
+    color: var(--color-grey-600);
+    font-size: typography.$font-size-0;
   }
 }
 </style>

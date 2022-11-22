@@ -23,6 +23,7 @@
     "display": "Visning",
     "preferredTrend": "Ønsket trend",
     "inPeriod": " % i perioden",
+    "ofTarget": "av mål om",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"

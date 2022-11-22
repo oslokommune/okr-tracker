@@ -23,6 +23,7 @@
     "display": "Display",
     "preferredTrend": "Trend",
     "inPeriod": " % in period",
+    "ofTarget": "of the goal of",
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"
