@@ -185,7 +185,7 @@ export default {
     ...mapGetters(['hasEditRights']),
     periodTrend(){
       const sortedProgress = this.progressCollection.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
-      const firstProgressRecord = sortedProgress.slice(0, 1)[0]?.value;
+      const firstProgressRecord = sortedProgress[0]?.value;
       const latestProgressRecord = sortedProgress.slice(-1)[0]?.value;
 
       const periodDiff = latestProgressRecord - firstProgressRecord;
