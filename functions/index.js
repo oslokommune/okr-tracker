@@ -74,15 +74,11 @@ export { handleKeyResultProgress } from './progress/index.js';
 export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
 export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 
-// // Express servers run via Cloud Functions
-export { api, internal };
+exports.createCustomToken = require('./tokenCreator').createCustomToken;
 
-// OKR-Tracker slackbot - Need to export empty functions before adding real functions because some users of the okr tracker may not want these functions to begin with
-export let okrSlackBot = {};
-export let slackNotificationUserRequest = {};
-export let slackNotificationInteractiveRequest = {};
-if (isSlackActive) {
-  okrSlackBot = okrTrackerSlackBot;
-  slackNotificationUserRequest = slackNotificationOnUserRequest;
-  slackNotificationInteractiveRequest = slackNotificationInteractiveOnRequest;
-}
+// Express servers run via Cloud Functions
+exports.api = require('./api').app;
+exports.internal = require('./backend').app;
+
+// Verify emails that are created with Microsoft accounts
+exports.verifyMicrosoftAccount = require('./verifyMicrosoftAccounts').verifyMicrosoftAccount;

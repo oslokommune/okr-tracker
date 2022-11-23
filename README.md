@@ -1,6 +1,6 @@
-# OKR Tracker
+# OKR Tracker (knowit)
 
-- [OKR Tracker](#okr-tracker)
+- [OKR Tracker (knowit)](#okr-tracker-knowit)
   - [Demo](#demo)
   - [Project requirements](#project-requirements)
   - [Clone and install](#clone-and-install)
@@ -404,17 +404,6 @@ Gif of the process:
 ![Gif of the process src: thecloudfunction-blog](./documentation/recovery.gif)
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
-
-## Slack Integration
-
-We have a slack integration that is connected with a couple of cloud functions.
-
-There are two cloud functions that integrate with slack
-
-1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
-2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
-
-For these cloud functions to work you need to add a webhook url from a slack app.
 
 ### Set up
 

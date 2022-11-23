@@ -5,9 +5,9 @@ info:
   description: Serverless APIs with API Gateway
   version: 1.1.0
   contact:
-    name: Visualiseringsteamet
-    url: https://okr.oslo.systems
-    email: annemerete.pettersen@origo.oslo.kommune.no
+    name: Dataplattform
+    url: https://okr.knowit.no
+    email: aulon.mujaj@knowit.no
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -16,7 +16,7 @@ schemes:
 produces:
   - application/json
 x-google-backend:
-  address: https://<location>-<project-id>.cloudfunctions.net/<CF-location>
+  address: https://europe-west2-okr-tracker-knowit.cloudfunctions.net/api
   path_translation: APPEND_PATH_TO_ADDRESS
   protocol: h2
 security:

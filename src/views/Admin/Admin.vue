@@ -20,7 +20,6 @@ export default {
   name: 'Admin',
 
   components: {
-    AdminAccessRequests: () => import('./components/AdminAccessRequests.vue'),
     AdminUsers: () => import('./components/AdminUsers.vue'),
     AdminItems: () => import('./components/AdminItems.vue'),
   },
