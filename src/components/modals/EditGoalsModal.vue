@@ -79,7 +79,7 @@ import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import ModalWrapper from './ModalWrapper.vue';
 import { toastArchiveAndRevert } from '@/util';
-import endOfDay from 'date-fns/endOfDay';
+import { endOfDay, endOfYear, startOfYear } from 'date-fns';
 
 export default {
   name: 'ProgressModal',
@@ -135,15 +135,18 @@ export default {
 
     async addGoal(kpi) {
       const now = new Date();
+      const fromDate = startOfYear(now);
+      const toDate = endOfYear(now);
+
       const goal = await Goal.create(kpi.id, {
         name: this.$t('kpi.goals.new'),
-        fromDate: now,
-        toDate: now,
+        fromDate,
+        toDate,
         value: null,
         archived: false,
       });
-      this.fromDate = now;
-      this.toDate = now;
+      this.fromDate = fromDate;
+      this.toDate = toDate;
       await this.setActiveGoal(goal.id);
     },
 
