@@ -2,13 +2,8 @@
 /* eslint-disable import/no-mutable-exports */
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
-import okrTrackerSlackBot from './slackbot/index.js';
-
-import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
 import api from './api/index.js';
 import internal from './backend/index.js';
-
-const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 
 // Initialize the app to get everything started
 initializeApp({
@@ -74,11 +69,5 @@ export { handleKeyResultProgress } from './progress/index.js';
 export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
 export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 
-exports.createCustomToken = require('./tokenCreator').createCustomToken;
-
-// Express servers run via Cloud Functions
-exports.api = require('./api').app;
-exports.internal = require('./backend').app;
-
-// Verify emails that are created with Microsoft accounts
-exports.verifyMicrosoftAccount = require('./verifyMicrosoftAccounts').verifyMicrosoftAccount;
+// // Express servers run via Cloud Functions
+export { api, internal };
