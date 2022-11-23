@@ -2,8 +2,8 @@
   "version": "11.8.0",
   "firestore": {
     "version": "1.14.4",
-    "path": "knowit_prod_export",
-    "metadata_file": "knowit_prod_export/knowit_prod_export.overall_export_metadata"
+    "path": "firestore_export",
+    "metadata_file": "firestore_export/firestore_export.overall_export_metadata"
   },
   "auth": {
     "version": "11.8.0",
