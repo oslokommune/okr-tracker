@@ -44,7 +44,7 @@ const bindDocumentsToStore = (type, commit) => {
     .onSnapshot((querySnapshot) => {
       const data = [];
       querySnapshot.forEach((doc) => {
-        const document = serialize(doc, commit);
+        const document = serialize(doc);
 
         data.push(document);
       });
