@@ -27,6 +27,19 @@ export async function getUserDisplayName(userRef) {
 }
 
 /**
+ * Return an items archival state. If the item does not exist, it is
+ * also considered archived.
+ *
+ * `itemRef` is the Firestore reference to check.
+ */
+export async function isArchived(itemRef) {
+  if (typeof itemRef.get !== 'function') return true;
+  return itemRef
+    .get()
+    .then((snapshot) => !snapshot.exists || snapshot.data()?.archived === true);
+}
+
+/**
  * Update the KPI progression collection with at most one value each
  * day. Delete any pre-existing values for specified `date`.
  *

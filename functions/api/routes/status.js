@@ -1,6 +1,6 @@
 import express from 'express';
 import { getFirestore } from 'firebase-admin/firestore';
-import { buildKpiResponse } from '../helpers.js';
+import { buildKpiResponse, isArchived } from '../helpers.js';
 
 const router = express.Router();
 
@@ -15,8 +15,12 @@ router.get('/', async (req, res) => {
       .get();
 
     for await (const kpiSnapshot of kpiQuerySnapshot.docs) {
-      const kpiData = await buildKpiResponse(kpiSnapshot);
-      kpis.push(kpiData);
+      const parentRef = kpiSnapshot.data().parent;
+
+      if (parentRef && !(await isArchived(parentRef))) {
+        const kpiData = await buildKpiResponse(kpiSnapshot);
+        kpis.push(kpiData);
+      }
     }
   } catch (e) {
     console.error('ERROR: ', e.message);

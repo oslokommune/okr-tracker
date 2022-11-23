@@ -5,6 +5,7 @@ import { format, endOfDay } from 'date-fns';
 import {
   buildKpiResponse,
   getUserDisplayName,
+  isArchived,
   refreshKPILatestValue,
   updateKPIProgressionValue,
 } from '../helpers.js';
@@ -90,8 +91,12 @@ router.get('/', async (req, res) => {
     const kpis = [];
 
     for await (const kpiSnapshot of kpiQuerySnapshot.docs) {
-      const kpiData = await buildKpiResponse(kpiSnapshot);
-      kpis.push(kpiData);
+      const parentRef = kpiSnapshot.data().parent;
+
+      if (parentRef && !(await isArchived(parentRef))) {
+        const kpiData = await buildKpiResponse(kpiSnapshot);
+        kpis.push(kpiData);
+      }
     }
 
     res.json(kpis);
