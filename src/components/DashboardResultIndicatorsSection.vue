@@ -191,7 +191,7 @@ export default {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
     periodTrend(){
-      const sortedProgress = this.filteredProgress.sort((a, b) =>
+      const sortedProgress = this.filteredProgress.slice().sort((a, b) =>
         a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1
       );
       const firstProgressRecord = sortedProgress[0]?.value;
