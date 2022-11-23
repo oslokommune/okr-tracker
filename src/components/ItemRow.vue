@@ -110,7 +110,13 @@ export default {
       immediate: true,
       async handler(data) {
         const ref = db.doc(data.path);
-        this.$bind('kpis', db.collection('kpis').where('parent', '==', ref));
+        this.$bind(
+          'kpis',
+          db
+            .collection('kpis')
+            .where('parent', '==', ref)
+            .where('archived', '==', false)
+        );
 
         data.onProgressionSnapshot(({ docs }) => {
           if (docs.length) {
