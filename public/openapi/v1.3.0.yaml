@@ -26,7 +26,7 @@ paths:
   /kpi:
     get:
       summary: Get KPIs.
-      operationId: getKPI
+      operationId: getKPIs
       responses:
         200:
           description: A successful response
