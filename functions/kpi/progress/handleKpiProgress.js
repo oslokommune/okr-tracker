@@ -28,7 +28,7 @@ export default async function updateKpiProgress (change, { params }) {
    */
   const progress = JSON.stringify(progressCollection.map((p) => [
     p.timestamp.toDate().toISOString().slice(0, 10),
-    parseFloat(p.value.toPrecision(4)),
+    parseFloat(p.value.toFixed(4)),
     p.comment || "",
   ]));
 
