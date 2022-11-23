@@ -27,7 +27,7 @@ export async function getUserDisplayName(userRef) {
 }
 
 /**
- * Return an items archival state. If the item does not exist, it is
+ * Return an item's archival state. If the item does not exist, it is
  * also considered archived.
  *
  * `itemRef` is the Firestore reference to check.
