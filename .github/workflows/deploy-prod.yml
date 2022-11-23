@@ -22,12 +22,9 @@ jobs:
         with:
           node-version: 14
 
-      - name: Create env file
+      - name: Populate env file
         run: |
           echo "${{ secrets.ENV_FILE_PROD }}" > .env
-
-      - name: Check env file
-        run: |
           if ! grep -q VITE_PROJECT_ID .env; then
             echo "::error:: The .env file is likely not populated correctly"
             exit 1
