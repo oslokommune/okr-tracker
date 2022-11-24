@@ -1,7 +1,7 @@
 <template>
   <div class="aside">
     <div class="widgets">
-      <widget-admin />
+      <widget-admin-edit />
       <widget :title="$t('keyResultPage.filter')">
         <label v-if="progress.length" class="form-field">
           <span class="form-label">{{ $t('period.dateRange') }}</span>
@@ -30,13 +30,13 @@ import locale from 'flatpickr/dist/l10n/no';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
-import WidgetAdmin from '@/components/widgets/WidgetAdmin.vue';
+import WidgetAdminEdit from '@/components/widgets/WidgetAdminEdit.vue';
 
 export default {
   name: 'WidgetsKPIHome',
 
   components: {
-    WidgetAdmin,
+    WidgetAdminEdit,
     Widget,
     WidgetMissionStatement,
     WidgetTeam,

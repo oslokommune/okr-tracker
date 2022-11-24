@@ -2,7 +2,7 @@
   <aside v-if="activeItem">
     <div class="widgets">
       <widget-dashboard-entry v-if="isDepartment(activeItem)" :slug="activeItem.slug" />
-      <widget-admin />
+      <widget-admin-edit />
       <widget-wrapper
         :title="
           $t(
@@ -41,7 +41,7 @@ export default {
   components: {
     WidgetWrapper: () => import('./WidgetWrapper.vue'),
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
-    WidgetAdmin: () => import('./WidgetAdmin.vue'),
+    WidgetAdminEdit: () => import('./WidgetAdminEdit.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
     WidgetDashboardEntry: () =>
       import('@/components/widgets/WidgetDashboardEntry.vue'),
