@@ -3,6 +3,7 @@
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
 import okrTrackerSlackBot from './slackbot/index.js';
+import handleKpiProgress from './kpi/progress/index.js';
 
 import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
 import api from './api/index.js';
@@ -31,6 +32,7 @@ export { triggerScheduledFunction } from './automatedKeyResults.js';
 export { fetchKpiDataOnUpdate } from './kpi/index.js';
 export { fetchKpiDataOnCreate } from './kpi/index.js';
 export { fetchKpiDataOnSchedule } from './kpi/index.js';
+export { handleKpiProgress };
 
 export { slugDepartment } from './slug/index.js';
 export { slugOrganization } from './slug/index.js';
