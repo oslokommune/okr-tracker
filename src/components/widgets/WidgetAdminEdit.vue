@@ -5,7 +5,7 @@
     v-tooltip="adminLink.tooltip"
     :to="adminLink.path"
   >
-    <icon-edit class="widgetAdminEdit__actionIcon"/>
+    <icon-edit class="widgetAdminEdit__actionIcon" />
     {{ adminLink.content }}
     <icon-chevron-right class="widgetAdminEdit__chevronRightIcon" />
   </router-link>
@@ -19,12 +19,8 @@ export default {
 
   components: {
     IconEdit: () => import('@/components/IconEdit.vue'),
-    IconChevronRight: () => import('@/components/IconChevronRight.vue')
+    IconChevronRight: () => import('@/components/IconChevronRight.vue'),
   },
-
-  data: () => ({
-    disabled: false,
-  }),
 
   computed: {
     ...mapState([
@@ -53,7 +49,7 @@ export default {
     },
     kpiHomeAdminLink() {
       return this.getAdminLink({
-        tab: 'kpi' 
+        tab: 'kpi',
       });
     },
     adminLink() {
@@ -72,22 +68,13 @@ export default {
     },
   },
 
-  watch: {
-    activePeriod: {
-      immediate: true,
-      handler() {
-        this.disabled = !this.activePeriod;
-      },
-    },
-  },
-
   methods: {
     ...mapActions(['reset_state']),
     getAdminLink(query) {
       return {
         path: {
           name: 'ItemAdmin',
-          query
+          query,
         },
         content: this.$t('general.admin'),
         tooltip: this.$t('tooltip.editItem'),
