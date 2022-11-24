@@ -1,8 +1,9 @@
 import { db } from '@/config/firebaseConfig';
+import { firestoreEncode } from '@/util/firebaseUtil';
 import store from '@/store';
 
 const getSlugRef = async (slug) => {
-  const slugSnapshot = await db.doc(`slugs/${slug}`).get();
+  const slugSnapshot = await db.doc(`slugs/${firestoreEncode(slug)}`).get();
 
   if (!slugSnapshot.exists) {
     throw new Error(`cannot find ${slug}`);
