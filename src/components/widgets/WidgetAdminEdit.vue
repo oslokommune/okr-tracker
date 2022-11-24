@@ -108,17 +108,17 @@ export default {
   color: var(--color-primary);
   font-weight: 500;
   font-size: 1.125rem;
-  background: var(--color-secondary-light);
   white-space: initial;
+  background: var(--color-secondary-light);
 
   &__actionIcon {
-    margin-right: 0.5rem;
     flex-shrink: 0;
+    margin-right: 0.5rem;
   }
 
   &__chevronRightIcon {
-    margin-left: auto;
     flex-shrink: 0;
+    margin-left: auto;
   }
 
   &:hover {
