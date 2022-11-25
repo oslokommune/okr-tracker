@@ -1,7 +1,7 @@
 <template>
   <aside v-if="activeObjective" class="aside">
     <div class="widgets">
-      <widget-admin />
+      <widget-admin-edit />
       <widget-wrapper :title="$t('widget.progression.objective')">
         <progression-chart
           :progression="activeObjective.progression"
@@ -27,7 +27,7 @@ export default {
   components: {
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetWrapper: () => import('./WidgetWrapper.vue'),
-    WidgetAdmin: () => import('./WidgetAdmin.vue'),
+    WidgetAdminEdit: () => import('./WidgetAdminEdit.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
     WidgetObjectiveDetails: () => import('./WidgetObjectiveDetails.vue'),
   },
