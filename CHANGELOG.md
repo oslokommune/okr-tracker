@@ -9,15 +9,15 @@ development and releases will be handled onward.
 
 The previous `master`, `develop`, and long lived feature branches are scrapped
 in favor of a trunk based development workflow on the new `main` branch. From
-there we will run continuous deployments toward our own instance of the OKR
-Tracker, and strive to cut releases more regularly than before.
+here we will run continuous deployments toward our own instance of the OKR
+Tracker, and strive to make new releases more frequently than before.
 
 ### Added
 
 - The biggest change in this release is the new dashboard which is available for
   departments, displaying a summaries of their missions, target groups,
-  products, KPI- and OKR statuses. The dashboard is reached from the "Go to
-  dashboard" link in the right column on a department's front page.
+  products, KPI- and OKR statuses. The dashboard is reached from the "Dashboard"
+  link in the right column on a department's front page.
 - The update frequency, preferred trend, and type of a KPI can now be declared.
 - New API endpoints have been added for listing, updating, and deleting KPI
   progression values.
