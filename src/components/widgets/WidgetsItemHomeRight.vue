@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="activeItem">
+  <aside v-if="activeItem && progression">
     <div class="widgets">
       <widget-dashboard-entry v-if="isDepartment(activeItem)" :slug="activeItem.slug" />
       <widget-admin-edit />
@@ -12,13 +12,7 @@
           )
         "
       >
-        <progression-chart
-          :progression="
-            $route.name === 'ItemHome'
-              ? activePeriod.progression
-              : activeObjective.progression
-          "
-        />
+        <progression-chart :progression="progression" />
       </widget-wrapper>
       <widget-weights
         :active-item="
@@ -48,8 +42,7 @@ export default {
   },
 
   data: () => ({
-    disabled: false,
-    isDepartment
+    isDepartment,
   }),
 
   computed: {
@@ -60,14 +53,11 @@ export default {
       'objectives',
       'keyResults',
     ]),
-  },
 
-  watch: {
-    activePeriod: {
-      immediate: true,
-      handler() {
-        this.disabled = !this.activePeriod;
-      },
+    progression() {
+      return this.$route.name === 'ItemHome'
+        ? this.activePeriod?.progression
+        : this.activeObjective?.progression;
     },
   },
 };

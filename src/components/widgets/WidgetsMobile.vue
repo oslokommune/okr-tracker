@@ -4,6 +4,7 @@
       <widget-dashboard-entry v-if="isDepartment(activeItem)" :slug="activeItem.slug" />
       <widget-admin-edit />
       <widget-wrapper
+        v-if="progression"
         :title="
           $t(
             `widget.progression.${
