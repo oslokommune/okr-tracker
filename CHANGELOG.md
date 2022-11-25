@@ -56,6 +56,7 @@ Tracker, and strive to make new releases more frequently than before.
 ### Removed
 
 - Removed the previous dashboard view and all related code.
+- Removed API endpoint returning the current user's authentication token.
 
 ### Fixes
 
