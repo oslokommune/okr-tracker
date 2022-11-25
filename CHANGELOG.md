@@ -38,8 +38,8 @@ Tracker, and strive to make new releases more frequently than before.
 - Made modal dialogues easier to navigate by keyboard.
 - An arbitrary number of KPIs can now be created for
   organizations/departments/products.
-- Changed the resolution of measurements to daily. When it exists multiple
-  measurements on a single day, only the last measurement is taken into account.
+- Changed the resolution of measurements to daily. When multiple measurements
+  exist on a single day, only the last measurement is taken into account.
 - Improved number shortening/formatting.
 - The KPI grid is made more compact and more responsive.
 - The KPI admin page uses collapsible panels.
