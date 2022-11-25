@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.0.0] 2022-11-25
+
 This release comprises nearly half a year of work and marks a change in how
 development and releases will be handled onward.
 
