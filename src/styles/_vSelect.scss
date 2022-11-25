@@ -31,4 +31,5 @@ $vs-dropdown-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15) !default;
   color: var(--color-text) !important;
 }
 
-@import 'vue-select/src/scss/vue-select.scss';
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
+@import 'vue-select/src/scss/vue-select';
