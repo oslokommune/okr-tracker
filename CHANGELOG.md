@@ -4,9 +4,72 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-### Changes
+This release comprises nearly half a year of work and marks a change in how
+development and releases will be handled onward.
 
-- Remove dasboard view and all related code.
+The previous `master`, `develop`, and long lived feature branches are scrapped
+in favor of a trunk based development workflow on the new `main` branch. From
+here we will run continuous deployments toward our own instance of the OKR
+Tracker, and strive to make new releases more frequently than before.
+
+### Added
+
+- The biggest change in this release is the new dashboard which is available for
+  departments, displaying a summaries of their missions, target groups,
+  products, KPI- and OKR statuses. The dashboard is reached from the "Dashboard"
+  link in the right column on a department's front page.
+- The update frequency, preferred trend, and type of a KPI can now be declared.
+- New API endpoints have been added for listing, updating, and deleting KPI
+  progression values.
+- Added the ability to create, update, and delete progression values in the
+  admin interface.
+- Comments can now be added to measurements.
+- Goals can now be set for KPIs.
+- The curl command example can now be copied by using a button.
+- A new `npm run deploy:feature_branch` command for easy deployment to Firebase
+  preview channels.
+- A new `npm run export_mock_data` command for exporting mock data from the
+  Firebase emulator to the local file system.
+
+### Changed
+
+- More functional and accessible tabs on item admin and item home pages.
+- More uniform styling of modal dialogues.
+- Made modal dialogues easier to navigate by keyboard.
+- An arbitrary number of KPIs can now be created for
+  organizations/departments/products.
+- Changed the resolution of measurements to daily. When multiple measurements
+  exist on a single day, only the last measurement is taken into account.
+- Improved number shortening/formatting.
+- The KPI grid is made more compact and more responsive.
+- The KPI admin page uses collapsible panels.
+- The home page styling has been changed to accommodate displaying an arbitrary
+  number of KPIs.
+- More flexible team member listing – all roles can now be owned by more than
+  one team member.
+- KPIs can be updated by a Google Sheet integration and via the API
+  simultaneously.
+- Line chart styling and usability has been improved.
+- The admin link section has been simplified by removing the shortcuts and
+  having a single large link to the admin page instead.
+
+### Removed
+
+- Removed the previous dashboard view and all related code.
+- Removed API endpoint returning the current user's authentication token.
+
+### Fixes
+
+- Various text and translation fixes.
+- Fixed a display bug for radio buttons.
+- Fixed listing of developers and designers.
+
+### Security
+
+- Fixed a vulnerability where users could escalate themselves to superusers.
+- Fixed vulnerabilities in the key result and KPI APIs regarding how the team
+  secret was verified.
+- A bunch of security updates in dependencies.
 
 ## [2.7.5] 2022-06-17
 
