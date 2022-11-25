@@ -50,6 +50,8 @@ Tracker, and strive to make new releases more frequently than before.
 - KPIs can be updated by a Google Sheet integration and via the API
   simultaneously.
 - Line chart styling and usability has been improved.
+- The admin link section has been simplified by removing the shortcuts and
+  having a single large link to the admin page instead.
 
 ### Removed
 
