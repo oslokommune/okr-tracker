@@ -1,12 +1,13 @@
 module.exports = {
   extends: [
     /*
-    Standard shareable SCSS config for Stylelint. Extends both the
-    `stylelint-config-standard` and `stylelint-config-recommended-scss`
-    shared config and configures its rules for SCSS.
+    The recommended shareable SCSS config for stylelint. Extends both
+    the `stylelint-config-recommended` shared config and configures its
+    rules for SCSS. Bundles and configures the `stylelint-scss plugin`
+    pack and the `postcss-scss` custom syntax.
     https://github.com/stylelint-scss/stylelint-config-standard-scss
     */
-    'stylelint-config-standard-scss',
+    'stylelint-config-recommended-scss',
     /*
     Recommended shareable Vue config for Stylelint. Extends the
     `stylelint-config-recommended` shared config and bundles
@@ -21,11 +22,10 @@ module.exports = {
     */
     'stylelint-config-prettier-scss',
     /*
-    Styles ordered based on `idiomatic-css`.
-    https://github.com/ream88/stylelint-config-idiomatic-order
-    https://github.com/necolas/idiomatic-css#declaration-order
+    Stylelint config for "rational" ordering of property declarations.
+    https://github.com/Allohamora/stylelint-config-rational-order
     */
-    'stylelint-config-idiomatic-order',
+    'stylelint-config-rational-order-fix',
   ],
   plugins: [
     /*
@@ -46,15 +46,17 @@ module.exports = {
     'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': true,
     'no-descending-specificity': null,
-    'function-no-unknown': [true, {
-      'ignoreFunctions': ['span'],
-    }],
+    'function-no-unknown': null,
     'scss/no-global-function-names': null,
     'selector-class-pattern': null,
     'scss/at-function-pattern': null,
+    'scss/comment-no-empty': null,
     'shorthand-property-no-redundant-values': null,
     'length-zero-no-unit': null,
     'alpha-value-notation': null,
     'font-family-name-quotes': 'always-unless-keyword',
+    'font-family-no-missing-generic-family-keyword': [true, {
+      'ignoreFontFamilies': ['Font Awesome 5 Free'],
+    }],
   },
 }
