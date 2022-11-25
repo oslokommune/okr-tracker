@@ -42,11 +42,15 @@ module.exports = {
     'no-param-reassign': 'off',
     'vue/no-v-html': 'off',
     'no-use-before-define': 'off',
+    // TODO: Re-enable and lint this rule separately.
+    'vue/multi-word-component-names': 'off',
     'func-names': 'off',
     'no-restricted-syntax': 'off',
     'import/extensions': [0, 'never'],
     'prefer-destructuring': 'off',
     'no-underscore-dangle': 'off',
+    // TODO: Re-enable and lint this rule separately.
+    'no-unused-expressions': 'off',
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
