@@ -1,7 +1,7 @@
 module.exports = {
   extends: [
     /*
-    The recommended shareable SCSS config for stylelint. Extends both
+    The recommended shareable SCSS config for Stylelint. Extends both
     the `stylelint-config-recommended` shared config and configures its
     rules for SCSS. Bundles and configures the `stylelint-scss plugin`
     pack and the `postcss-scss` custom syntax.
