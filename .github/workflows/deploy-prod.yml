@@ -34,7 +34,7 @@ jobs:
         run: |
           npm ci
           npm --prefix functions ci functions
-          vite build --mode production
+          npm run build
 
       - name: Deploy PROD
         uses: FirebaseExtended/action-hosting-deploy@v0
