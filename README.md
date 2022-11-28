@@ -265,6 +265,16 @@ Build and deploy to production:
 npm run deploy
 ```
 
+### Using GitHub Actions
+
+To configure automatic deploy to Firebase Hosting on merge to `main` (triggered as part of the `pipeline.yml` workflow), add the following secrets to your GitHub repository:
+
+* `ENV_FILE_PROD`: Contains a dumped copy of the production dotenv file.
+* `FIREBASE_PROJECT_ID_PROD`: The Firebase Project ID.
+* `FIREBASE_SERVICE_ACCOUNT_PROD`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+
+See the [Firebase documentation](https://firebase.google.com/docs/hosting/github-integration) for steps required to create these secrets, either by using the Firebase CLI or [manually](https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/docs/service-account.md).
+
 ## Lint and fix
 
 [ESlint](https://eslint.org) (including [Prettier](https://prettier.io/) configured to be executed as a linter rule) and [Stylelint](https://stylelint.io) are used for code formatting and linting. See configuration in the following files:
