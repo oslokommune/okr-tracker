@@ -39,7 +39,9 @@ const createUpdatedSlackMsg = async (documentType, diffType, name, diff, url) =>
   } else if (diffType === 'description') {
     owner = `'${name}' has a new description`;
   } else if (diffType === 'keyResOrObjective') {
-    owner = `${name} has updated ${documentType === 'Objective' ? 'an' : 'a'} ${documentType}`;
+    owner = `${name} has updated ${
+      documentType === 'Objective' ? 'an' : 'a'
+    } ${documentType}`;
   }
 
   return {
@@ -210,9 +212,9 @@ export const checkIfRelevantToPushToSlack = async (documentType, auditData) => {
       attachmentObject = {
         header: `:tada: ${documentType}`,
         owner: `${parentData.name} has created a new ${documentType}`,
-        context: `[${periodData.name}] ${dateShort(periodData.startDate.toDate())} - ${dateShort(
-          periodData.endDate.toDate()
-        )}`,
+        context: `[${periodData.name}] ${dateShort(
+          periodData.startDate.toDate()
+        )} - ${dateShort(periodData.endDate.toDate())}`,
         info: `<${HOST_URL}/${parentData.slug}/o/${doc.id} | ${data.name}>`,
       };
 

@@ -5,7 +5,9 @@ import { numberLocale } from './format';
 export const formatValue = (value) => numberLocale.format(',.2~f')(value);
 
 const getPercentageCompleted = (current, target) => {
-  if (target === 0) return 0;
+  if (target === 0) {
+    return 0;
+  }
   // Round with max 2 decimal (as with string formatted percentages)
   const percent = (current / target) * 100;
   const rounded = parseFloat(percent.toFixed(2));
@@ -14,7 +16,8 @@ const getPercentageCompleted = (current, target) => {
 
 export const getKeyResultProgressDetails = (keyResult) => {
   const { startValue, targetValue, currentValue: keyResultCurrentValue } = keyResult;
-  const currentValue = keyResultCurrentValue === undefined ? startValue : keyResultCurrentValue;
+  const currentValue =
+    keyResultCurrentValue === undefined ? startValue : keyResultCurrentValue;
 
   let totalNumberOfTasks;
   let totalCompletedTasks;
@@ -28,7 +31,10 @@ export const getKeyResultProgressDetails = (keyResult) => {
     totalNumberOfTasks = targetValue;
     totalCompletedTasks = currentValue;
     totalRemainingTasks = totalNumberOfTasks - totalCompletedTasks;
-    percentageCompleted = getPercentageCompleted(totalCompletedTasksForPeriod, totalNumberOfTasksForPeriod);
+    percentageCompleted = getPercentageCompleted(
+      totalCompletedTasksForPeriod,
+      totalNumberOfTasksForPeriod
+    );
   } else {
     totalNumberOfTasks = startValue - targetValue;
     totalCompletedTasks = startValue - currentValue;

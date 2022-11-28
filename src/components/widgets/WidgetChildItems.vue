@@ -43,8 +43,12 @@ export default {
 
   methods: {
     setChildren({ id }) {
-      const childProducts = this.products.filter(({ department }) => department.id === id);
-      const childDepartments = this.departments.filter(({ organization }) => organization.id === id);
+      const childProducts = this.products.filter(
+        ({ department }) => department.id === id
+      );
+      const childDepartments = this.departments.filter(
+        ({ organization }) => organization.id === id
+      );
 
       if (childProducts.length) {
         this.children = childProducts;

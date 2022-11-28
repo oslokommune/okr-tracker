@@ -31,7 +31,9 @@
             >
               <template #option="option">
                 {{ option.name }}
-                <span v-if="option.period && option.period.name"> ({{ option.period.name }}) </span>
+                <span v-if="option.period && option.period.name">
+                  ({{ option.period.name }})
+                </span>
               </template>
             </v-select>
             <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
@@ -97,25 +99,15 @@
               <i class="fa fa-spinner fa-pulse" />
               {{ $t('general.loading') }}
             </div>
-            <div
-              v-if="!loadingConnection && keyResult.error"
-              class="validation__error"
-            >
+            <div v-if="!loadingConnection && keyResult.error" class="validation__error">
               <i class="fa fa-exclamation-triangle" />
               {{ showError(keyResult.error) }}
             </div>
-            <div
-              v-if="!loadingConnection && keyResult.valid"
-              class="validation__valid"
-            >
+            <div v-if="!loadingConnection && keyResult.valid" class="validation__valid">
               <i class="fa fa-check-circle" />
               OK
             </div>
-            <button
-              class="btn validation-check"
-              type="button"
-              @click="testConnection"
-            >
+            <button class="btn validation-check" type="button" @click="testConnection">
               {{ $t('keyResult.automation.testConnection') }}
             </button>
           </div>
@@ -124,10 +116,7 @@
         <toggle-button v-model="keyResult.api">
           <template #label>
             {{ $t('keyResult.api.radio') }}
-            <i
-              v-tooltip="$t('keyResult.api.tooltip')"
-              class="icon fa fa-info-circle"
-            />
+            <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
           </template>
 
           <form-component
@@ -145,21 +134,14 @@
           </form-component>
         </toggle-button>
 
-        <div
-          v-if="keyResult.auto && keyResult.api"
-          class="ok-alert ok-alert--warning"
-        >
+        <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
           {{ $t('keyResult.apiAndKeyRes') }}
         </div>
       </form>
     </validation-observer>
 
     <div class="button-row">
-      <btn-delete
-        v-if="!keyResult.archived"
-        :disabled="loading"
-        @click="archive"
-      />
+      <btn-delete v-if="!keyResult.archived" :disabled="loading" @click="archive" />
       <btn-save form="update-keyResult" :disabled="loading" />
     </div>
   </div>
@@ -211,7 +193,10 @@ export default {
           .doc(this.data.parent.slug)
           .get()
           .then((snapshot) => snapshot.data().reference);
-        this.$bind('objectives', db.collection('objectives').where('parent', '==', parent));
+        this.$bind(
+          'objectives',
+          db.collection('objectives').where('parent', '==', parent)
+        );
         this.$bind('keyResult', db.collection('keyResults').doc(this.data.id));
         this.isLoadingDetails = false;
       },
@@ -223,7 +208,7 @@ export default {
       if (this.keyResult.api === undefined) {
         this.$set(this.keyResult, 'api', false);
       }
-    }
+    },
   },
 
   methods: {
@@ -280,7 +265,9 @@ export default {
     async archive() {
       this.loading = true;
       try {
-        await this.$router.push({ query: { type: 'objective', id: this.keyResult.objective.id } });
+        await this.$router.push({
+          query: { type: 'objective', id: this.keyResult.objective.id },
+        });
         await KeyResult.archive(this.keyResult.id);
 
         const restoreCallback = this.restore.bind(this);
@@ -288,7 +275,9 @@ export default {
         toastArchiveAndRevert({ name: this.keyResult.name, callback: restoreCallback });
       } catch (error) {
         this.loading = false;
-        this.$toasted.error(this.$t('toaster.error.archive', { document: this.keyResult.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: this.keyResult.name })
+        );
         throw new Error(error.message);
       }
       this.loading = false;
@@ -302,7 +291,9 @@ export default {
         this.keyResult.archived = false;
         this.$toasted.show(this.$t('toaster.restored'));
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.restore', { document: this.keyResult.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.keyResult.name })
+        );
         throw new Error(error.message);
       }
       this.loading = false;
@@ -324,8 +315,12 @@ export default {
     },
 
     showError(msg) {
-      if (msg === '403') return this.$t('error.403');
-      if (msg === '404') return this.$t('error.404');
+      if (msg === '403') {
+        return this.$t('error.403');
+      }
+      if (msg === '404') {
+        return this.$t('error.404');
+      }
 
       if (msg.includes('Cannot find data in cell')) {
         const cell = msg.split('cell ')[1];

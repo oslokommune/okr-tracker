@@ -14,8 +14,12 @@ export default async function getActivePeriod(slugRef) {
   const filterPeriodsIncludeToday = (doc) => {
     const now = new Date();
     const { startDate, endDate } = doc.data();
-    if (startDate.toDate() > now) return false;
-    if (endDate.toDate() < now) return false;
+    if (startDate.toDate() > now) {
+      return false;
+    }
+    if (endDate.toDate() < now) {
+      return false;
+    }
     return true;
   };
 
@@ -31,4 +35,7 @@ export default async function getActivePeriod(slugRef) {
   return { activePeriodRef, periodsRef };
 }
 
-export const sortByLocale = (arr) => arr.sort((a, b) => a.slug.trim().toUpperCase().localeCompare(b.slug.trim().toUpperCase()));
+export const sortByLocale = (arr) =>
+  arr.sort((a, b) =>
+    a.slug.trim().toUpperCase().localeCompare(b.slug.trim().toUpperCase())
+  );

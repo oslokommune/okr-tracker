@@ -23,14 +23,17 @@ const addAccessRequest = async (db, accessRequest) => {
 export const createAccessRequest = async (db, accessRequest) => {
   const { email } = accessRequest;
 
-  if (!email) return { code: 400, message: 'toaster.request.noEmail' };
+  if (!email) {
+    return { code: 400, message: 'toaster.request.noEmail' };
+  }
 
   const emailDomain = email.split('@')[1];
   const domainWhitelistCollection = new DomainWhitelistCollection(db);
   const usersCollection = new UsersCollection(db);
 
-  const domainWhitelistSnapshot =
-    await domainWhitelistCollection.getDocumentById(emailDomain);
+  const domainWhitelistSnapshot = await domainWhitelistCollection.getDocumentById(
+    emailDomain
+  );
 
   if (domainWhitelistSnapshot.exists) {
     try {
@@ -49,9 +52,7 @@ export const acceptAccessRequest = async (db, id) => {
   try {
     const accessRequestCollection = new AccessRequestCollection(db);
     const usersCollection = new UsersCollection(db);
-    const accessReqestRef = await accessRequestCollection
-      .getDocumentRef(id)
-      .get();
+    const accessReqestRef = await accessRequestCollection.getDocumentRef(id).get();
 
     if (accessReqestRef.exists) {
       const { email } = accessReqestRef.data();
@@ -71,9 +72,7 @@ export const acceptAccessRequest = async (db, id) => {
 export const rejectAccessRequest = async (db, id) => {
   try {
     const accessRequestCollection = new AccessRequestCollection(db);
-    const accessReqestRef = await accessRequestCollection
-      .getDocumentRef(id)
-      .get();
+    const accessReqestRef = await accessRequestCollection.getDocumentRef(id).get();
 
     if (accessReqestRef.exists) {
       await accessRequestCollection.deleteDocument(id);

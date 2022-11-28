@@ -16,7 +16,8 @@ export const fetchAutomatedKeyResOnSchedule = functions
   .timeZone(config.timeZone)
   .onRun(() => {
     const db = getFirestore();
-    return db.collection('keyResults')
+    return db
+      .collection('keyResults')
       .where('archived', '==', false)
       .where('auto', '==', true)
       .get()
@@ -46,14 +47,28 @@ async function updateAutomaticKeyResult(id) {
 
   try {
     const { sheetId, sheetName, sheetCell } = await docRef.get().then((d) => d.data());
-    if (!sheetId || !sheetName || !sheetCell) throw new Error('Missing Sheets details');
+    if (!sheetId || !sheetName || !sheetCell) {
+      throw new Error('Missing Sheets details');
+    }
 
     const value = await getSheetsData({ sheetId, sheetName, sheetCell });
 
-    if (value === null || value === undefined) throw new Error('Data not found');
-    if (isNaN(value)) throw new Error('Invalid data format'); // eslint-disable-line no-restricted-globals
+    if (value === null || value === undefined) {
+      throw new Error('Data not found');
+    }
 
-    await progressRef.add({ created: new Date(), archived: false, createdBy: 'auto', value, timestamp: new Date() });
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(value)) {
+      throw new Error('Invalid data format');
+    }
+
+    await progressRef.add({
+      created: new Date(),
+      archived: false,
+      createdBy: 'auto',
+      value,
+      timestamp: new Date(),
+    });
     await docRef.update({ valid: true, error: false });
 
     return value;

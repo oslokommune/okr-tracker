@@ -55,9 +55,7 @@ export default {
       return this.kpis
         .map((x) => x)
         .sort((a, b) => a.name.localeCompare(b.name))
-        .sort(
-          (a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType)
-        );
+        .sort((a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType));
     },
 
     anchoredKpiId() {

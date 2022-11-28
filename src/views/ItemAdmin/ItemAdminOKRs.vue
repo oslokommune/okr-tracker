@@ -26,11 +26,7 @@
           class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <empty-state
-            v-if="notSelected"
-            :icon="'arrow-left'"
-            :heading="notSelected"
-          />
+          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
 
           <ul v-else class="miller__list">
             <template v-if="!items.length && type === 'objective'">
@@ -50,9 +46,7 @@
 
             <template v-else-if="!items.length && type === 'keyResult'">
               <empty-state
-                v-if="
-                  !items.length && !isLoadingObjective && type === 'keyResult'
-                "
+                v-if="!items.length && !isLoadingObjective && type === 'keyResult'"
                 :icon="'exclamation'"
                 :heading="nonexistent"
               />
@@ -163,9 +157,7 @@ export default {
           icon: 'fa-trophy',
           activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: (id) => id === this.selectedObjectiveId,
-          notSelected: !this.selectedType
-            ? this.$t('admin.noPeriodSelected')
-            : false,
+          notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
           addEvent: this.createObjective,
           nonexistent: this.$t('empty.itemAdmin.objective'),
           cyCreate: 'okr-create-objective',
@@ -195,14 +187,10 @@ export default {
       );
     },
     orderedObjectives() {
-      return this.orderItems(this.objectives, (a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      return this.orderItems(this.objectives, (a, b) => a.name.localeCompare(b.name));
     },
     orderedKeyResults() {
-      return this.orderItems(this.keyResults, (a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      return this.orderItems(this.keyResults, (a, b) => a.name.localeCompare(b.name));
     },
   },
 
@@ -260,8 +248,12 @@ export default {
 
     async setItems({ type, id }, update) {
       if (!type || !id) {
-        if (this.objectives.length) this.$unbind('objectives');
-        if (this.keyResults.length) this.$unbind('keyResults');
+        if (this.objectives.length) {
+          this.$unbind('objectives');
+        }
+        if (this.keyResults.length) {
+          this.$unbind('keyResults');
+        }
         this.selectedType = null;
       }
 
@@ -273,7 +265,9 @@ export default {
         this.isLoadingPeriod = true;
         this.keyResults = [];
         await this.bindObjectives({ parentId: id });
-        if (this.keyResults.length) this.$unbind('keyResults');
+        if (this.keyResults.length) {
+          this.$unbind('keyResults');
+        }
         this.isLoadingPeriod = false;
       } else if (type === 'objective') {
         this.isLoadingObjective = true;
@@ -329,9 +323,7 @@ export default {
             }
             return a.name.localeCompare(b.name);
           }),
-        ...itemsCopy
-          .filter((period) => period.name !== 'placeholder')
-          .sort(compareFn),
+        ...itemsCopy.filter((period) => period.name !== 'placeholder').sort(compareFn),
       ];
     },
 
@@ -398,9 +390,7 @@ export default {
           period,
         });
 
-        this.$toasted.show(
-          this.$t('toaster.add.objective', { period: period.name })
-        );
+        this.$toasted.show(this.$t('toaster.add.objective', { period: period.name }));
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {

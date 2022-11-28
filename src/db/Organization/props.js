@@ -18,5 +18,5 @@ export default {
   team: {
     type: 'array',
     required: false,
-  }
+  },
 };

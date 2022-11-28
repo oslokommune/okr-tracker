@@ -2,13 +2,20 @@
   <div class="sidebar">
     <div class="flex__column">
       <h1 class="sidebar__header title-1">{{ $t('general.appName') }}</h1>
-      <router-link :to="{ name: 'Home' }" class="btn btn--ter btn--sidebar sidebar__item" :class="{ active: $route.name === 'Home' }">
+      <router-link
+        :to="{ name: 'Home' }"
+        class="btn btn--ter btn--sidebar sidebar__item"
+        :class="{ active: $route.name === 'Home' }"
+      >
         <h1>{{ $t('general.frontPage') }}</h1>
       </router-link>
 
       <hr class="divider" />
 
-      <h2 class="btn btn--ter sidebar__item sidebar__item--organizations" @click="isCollapsed = !isCollapsed">
+      <h2
+        class="btn btn--ter sidebar__item sidebar__item--organizations"
+        @click="isCollapsed = !isCollapsed"
+      >
         {{ $t('general.orgs') }}
         <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
       </h2>
@@ -174,7 +181,7 @@ $header-height: 4em;
 
   &:hover {
     color: var(--color-text);
-    background-color: var(--color-secondary)!important;
+    background-color: var(--color-secondary) !important;
   }
 
   &.active {

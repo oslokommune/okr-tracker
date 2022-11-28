@@ -7,7 +7,9 @@
       <textarea v-model="emails" class="add-users__input form-field" />
     </div>
     <div class="add-users__footer">
-      <button class="btn btn--fw" :disabled="loading" @click="save">{{ $t('admin.users.registerUsersButton') }}</button>
+      <button class="btn btn--fw" :disabled="loading" @click="save">
+        {{ $t('admin.users.registerUsersButton') }}
+      </button>
     </div>
   </div>
 </template>
@@ -37,7 +39,9 @@ export default {
       try {
         await User.addUsers(list);
         this.$emit('close');
-        this.$toasted.show(this.$tc('toaster.add.users', list.length, { count: list.length }));
+        this.$toasted.show(
+          this.$tc('toaster.add.users', list.length, { count: list.length })
+        );
       } catch (error) {
         this.$toasted.error(this.$tc('toaster.error.users', list.length));
         throw new Error(error);

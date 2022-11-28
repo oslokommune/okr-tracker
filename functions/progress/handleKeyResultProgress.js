@@ -13,7 +13,9 @@ export const updateKeyResultProgress = async (change, { params }) => {
   const keyResultRef = db.doc(`keyResults/${keyResultId}`);
 
   const keyRes = await keyResultRef.get();
-  if (!keyRes.exists) return false;
+  if (!keyRes.exists) {
+    return false;
+  }
 
   const { startValue, targetValue, objective } = keyRes.data();
 
@@ -97,7 +99,9 @@ export const updatePeriodProgression = async (periodRef) => {
 };
 
 const getWeightedProgression = ({ docs }) => {
-  if (!docs.length) return 0;
+  if (!docs.length) {
+    return 0;
+  }
 
   const totalWeight = sum(docs.map((doc) => doc.data().weight));
 

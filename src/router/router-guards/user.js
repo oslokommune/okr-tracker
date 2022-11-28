@@ -11,7 +11,9 @@ export default async function RouterGuardUser(to, from, next) {
   } else {
     try {
       const { exists } = await db.collection('users').doc(id).get();
-      if (!exists) throw new Error();
+      if (!exists) {
+        throw new Error();
+      }
 
       next();
     } catch (e) {

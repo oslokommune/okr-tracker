@@ -29,9 +29,7 @@
         <div class="key-result-row">
           <div class="key-result-row__progress">
             <h3 class="key-result-row__progress--header">
-              {{ $t('keyResult.registerProgression.value') }} ({{
-                activeKeyResult.unit
-              }})
+              {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
             </h3>
             <widget-key-result-progress-details
               :progress-details="progressDetails"
@@ -70,9 +68,7 @@
               <validation-observer v-slot="{ handleSubmit }">
                 <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
                   <label>
-                    <span class="title-4">{{
-                      $t('keyResult.addComment')
-                    }}</span>
+                    <span class="title-4">{{ $t('keyResult.addComment') }}</span>
                     <textarea
                       v-model="progressNote"
                       style="margin-top: 0.5rem"
@@ -89,9 +85,7 @@
                       rules="required"
                     >
                       <label class="form-group">
-                        <span class="form-label">{{
-                          $t('keyResult.newValue')
-                        }}</span>
+                        <span class="form-label">{{ $t('keyResult.newValue') }}</span>
                         <input
                           v-model="value"
                           style="margin-top: 0.25rem"
@@ -177,7 +171,8 @@ export default {
   components: {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
-    WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
+    WidgetKeyResultProgressDetails: () =>
+      import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     WidgetProgressHistory,
     WidgetsKeyResultMobile,
@@ -224,7 +219,9 @@ export default {
     activeKeyResult: {
       immediate: true,
       async handler(keyResult) {
-        if (!keyResult) return;
+        if (!keyResult) {
+          return;
+        }
         this.progressDetails = getKeyResultProgressDetails(keyResult);
         this.isLoading = true;
         await this.$bind(
@@ -263,7 +260,9 @@ export default {
     theme: {
       immediate: true,
       handler() {
-        if (!this.graph) return;
+        if (!this.graph) {
+          return;
+        }
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
@@ -277,8 +276,12 @@ export default {
   },
 
   mounted() {
-    if (!this.$refs.graph) return;
-    if (!this.activeKeyResult) return;
+    if (!this.$refs.graph) {
+      return;
+    }
+    if (!this.activeKeyResult) {
+      return;
+    }
 
     this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
     this.graph.render({
@@ -312,11 +315,7 @@ export default {
 
     async deleteHistoryRecord(id) {
       try {
-        await Progress.remove(
-          db.collection('keyResults'),
-          this.activeKeyResult.id,
-          id
-        );
+        await Progress.remove(db.collection('keyResults'), this.activeKeyResult.id, id);
         this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
@@ -324,19 +323,17 @@ export default {
     },
 
     async saveProgress() {
-      if (!this.allowedToEditPeriod) return;
+      if (!this.allowedToEditPeriod) {
+        return;
+      }
 
       this.isSaving = true;
       try {
-        await Progress.create(
-          db.collection('keyResults'),
-          this.activeKeyResult.id,
-          {
-            value: +this.value,
-            comment: this.progressNote,
-            timestamp: new Date(),
-          }
-        );
+        await Progress.create(db.collection('keyResults'), this.activeKeyResult.id, {
+          value: +this.value,
+          comment: this.progressNote,
+          timestamp: new Date(),
+        });
         this.$toasted.show(this.$t('toaster.add.progress'));
       } catch (e) {
         console.log(e);

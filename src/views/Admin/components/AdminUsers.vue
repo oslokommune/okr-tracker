@@ -15,10 +15,19 @@
       </div>
 
       <div class="users__list">
-        <button v-for="user in filteredUsers" :key="user.id" class="users__list-item" @click="selectedUser = user">
+        <button
+          v-for="user in filteredUsers"
+          :key="user.id"
+          class="users__list-item"
+          @click="selectedUser = user"
+        >
           <span
             class="users__list-item-icon fa"
-            :class="(user.admin && user.admin.length > 0) || user.superAdmin ? 'fa-user-cog' : 'fa-user'"
+            :class="
+              (user.admin && user.admin.length > 0) || user.superAdmin
+                ? 'fa-user-cog'
+                : 'fa-user'
+            "
           ></span>
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
@@ -27,21 +36,31 @@
         </button>
       </div>
       <div class="users__footer">
-        <button class="btn btn--fw" @click="viewAddUsers = true">{{ $t('admin.users.addUsers') }}</button>
+        <button class="btn btn--fw" @click="viewAddUsers = true">
+          {{ $t('admin.users.addUsers') }}
+        </button>
       </div>
     </div>
 
-    <edit-user v-if="selectedUser && !viewAddUsers" :selected-user="selectedUser" @close="selectedUser = null">
+    <edit-user
+      v-if="selectedUser && !viewAddUsers"
+      :selected-user="selectedUser"
+      @close="selectedUser = null"
+    >
       <template #back>
         <div>
-          <button class="btn" @click="selectedUser = null">{{ $t('admin.users.backToUsers') }}</button>
+          <button class="btn" @click="selectedUser = null">
+            {{ $t('admin.users.backToUsers') }}
+          </button>
         </div>
       </template>
     </edit-user>
     <add-users v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
         <div>
-          <button class="btn" @click="viewAddUsers = false">{{ $t('admin.users.backToUsers') }}</button>
+          <button class="btn" @click="viewAddUsers = false">
+            {{ $t('admin.users.backToUsers') }}
+          </button>
         </div>
       </template>
     </add-users>

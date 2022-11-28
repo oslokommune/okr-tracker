@@ -29,7 +29,9 @@ const serialize = (snapshot) => {
 
   Object.defineProperty(document, 'id', { value: snapshot.id });
   Object.defineProperty(document, 'path', { value: snapshot.ref.path });
-  Object.defineProperty(document, 'onProgressionSnapshot', { value: onProgressionSnapshot });
+  Object.defineProperty(document, 'onProgressionSnapshot', {
+    value: onProgressionSnapshot,
+  });
 
   return document;
 };

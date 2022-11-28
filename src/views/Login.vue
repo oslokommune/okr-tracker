@@ -10,7 +10,9 @@
         <div v-if="loginError === 1" class="error">
           {{ $t('login.error.notRegistered') }}
 
-          <router-link :to="{ name: 'request-access' }">{{ $t('login.requestAccess') }} </router-link>
+          <router-link :to="{ name: 'request-access' }">
+            {{ $t('login.requestAccess') }}
+          </router-link>
         </div>
 
         <div v-if="loginError === 2" class="error">
@@ -18,7 +20,9 @@
         </div>
       </div>
       <div v-if="showForm" class="login__form">
-        <div v-if="loginError === 3" class="error">{{ $t('login.error.wrongPassword') }}</div>
+        <div v-if="loginError === 3" class="error">
+          {{ $t('login.error.wrongPassword') }}
+        </div>
 
         <div v-if="loginError === 4" class="error">
           {{ $t('login.error.userNotFound') }}
@@ -76,7 +80,11 @@
         >
           {{ $t('login.loginWithUsername') }}
         </button>
-        <router-link class="btn btn--sec" :to="{ name: 'request-access' }" data-cy="login-request">
+        <router-link
+          class="btn btn--sec"
+          :to="{ name: 'request-access' }"
+          data-cy="login-request"
+        >
           {{ $t('login.requestAccess') }}
         </router-link>
       </div>
@@ -119,7 +127,9 @@ export default {
       await this.setLoginError(null);
       try {
         const { user } = await auth.signInWithPopup(loginProviderMS);
-        this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
+        this.$toasted.show(
+          this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' })
+        );
       } catch (e) {
         console.log(e);
         await this.setLoginError(2);
@@ -132,7 +142,9 @@ export default {
       await this.setLoginError(null);
       try {
         const { user } = await auth.signInWithPopup(loginProviderGoogle);
-        this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
+        this.$toasted.show(
+          this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' })
+        );
       } catch (e) {
         await this.setLoginError(2);
       }

@@ -19,7 +19,9 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
       let event;
       const diff = getDiff({ before, after }, fields);
 
-      if (!Object.keys(diff).length) return false;
+      if (!Object.keys(diff).length) {
+        return false;
+      }
 
       if (diff.archived && diff.archived.after === true) {
         event = `${documentType}Archived`;

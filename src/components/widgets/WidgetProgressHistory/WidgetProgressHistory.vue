@@ -21,9 +21,7 @@
               {{ $t('widget.history.changedBy') }}
             </th>
             <th v-if="hasAnyComments">
-              <span v-if="showComments">{{
-                $t('widget.history.comment')
-              }}</span>
+              <span v-if="showComments">{{ $t('widget.history.comment') }}</span>
               <button
                 class="btn btn--icon btn--ter"
                 @click="showComments = !showComments"
@@ -55,10 +53,7 @@
                 @open-user-modal="openProfileModal"
               />
             </td>
-            <td
-              v-if="hasAnyComments"
-              style="max-width: 200px; padding: 0.25rem 0.5rem"
-            >
+            <td v-if="hasAnyComments" style="max-width: 200px; padding: 0.25rem 0.5rem">
               <span v-if="record.comment && showComments">
                 {{ record.comment }}
               </span>
@@ -107,9 +102,7 @@
       v-if="valueModal && showValueModal"
       :record="chosenProgressRecord"
       @close="closeValueModal"
-      @update-record="
-        (id, data, close) => $emit('update-record', id, data, close)
-      "
+      @update-record="(id, data, close) => $emit('update-record', id, data, close)"
     />
 
     <profile-modal
@@ -124,8 +117,8 @@
 import { mapGetters } from 'vuex';
 import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
-import UserLink from './UserLink.vue';
 import { Btn, BtnDelete } from '@/components/generic/form/buttons';
+import UserLink from './UserLink.vue';
 
 export default {
   name: 'KeyResultHome',
@@ -183,9 +176,8 @@ export default {
     },
     hasAnyChangedBy() {
       return (
-        this.progress.find(
-          ({ createdBy, editedBy }) => createdBy || editedBy
-        ) !== undefined
+        this.progress.find(({ createdBy, editedBy }) => createdBy || editedBy) !==
+        undefined
       );
     },
     limitedProgress() {
@@ -197,8 +189,7 @@ export default {
 
   mounted() {
     if (this.$route.name === 'KpiHome') {
-      this.valueModal = () =>
-        import('@/components/modals/KPIProgressModal.vue');
+      this.valueModal = () => import('@/components/modals/KPIProgressModal.vue');
     } else {
       this.valueModal = () => import('@/components/modals/ProgressModal.vue');
     }

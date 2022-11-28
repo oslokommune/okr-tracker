@@ -12,10 +12,7 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
 
   if (title) {
     svg.attr('viewBox', [minX, minY, width, height + headingOffset].join(' '));
-    canvas.attr(
-      'transform',
-      `translate(${[canvasX, canvasY + headingOffset]})`
-    );
+    canvas.attr('transform', `translate(${[canvasX, canvasY + headingOffset]})`);
 
     const heading = svg.append('g').classed('heading', true);
 
@@ -24,13 +21,10 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
       .attr('x', 5)
       .attr('y', 25)
       .call(styleText, 18, 500)
-      .attr(
-        'fill',
-        theme === 'green' ? 'var(--color-green-dark)' : 'var(--color-purple)'
-      )
+      .attr('fill', theme === 'green' ? 'var(--color-green-dark)' : 'var(--color-purple)')
       .text(title);
 
-    if (period)
+    if (period) {
       heading
         .append('text')
         .attr('x', 5)
@@ -38,6 +32,7 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
         .call(styleText, 12, 300)
         .attr('fill', 'var(--color-grey-600)')
         .text(period);
+    }
   }
 
   svg.select('.indicators').attr('opacity', 0);

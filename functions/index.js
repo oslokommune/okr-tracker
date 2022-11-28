@@ -5,7 +5,10 @@ import functions from 'firebase-functions';
 import okrTrackerSlackBot from './slackbot/index.js';
 import handleKpiProgress from './kpi/progress/index.js';
 
-import { slackNotificationOnUserRequest, slackNotificationInteractiveOnRequest } from './requestAccess/index.js';
+import {
+  slackNotificationOnUserRequest,
+  slackNotificationInteractiveOnRequest,
+} from './requestAccess/index.js';
 import api from './api/index.js';
 import internal from './backend/index.js';
 

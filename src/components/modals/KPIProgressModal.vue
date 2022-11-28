@@ -34,11 +34,7 @@
         </div>
 
         <div class="progress-form__right">
-          <validation-provider
-            v-slot="{ errors }"
-            name="datetime"
-            rules="required"
-          >
+          <validation-provider v-slot="{ errors }" name="datetime" rules="required">
             <label class="form-group">
               <span class="form-label">{{ $t('widget.history.time') }}</span>
 
@@ -120,7 +116,9 @@ export default {
     formatKPIValue,
 
     async onDateSelected() {
-      if (!this.activeKpi) return;
+      if (!this.activeKpi) {
+        return;
+      }
 
       const existingValueSnapshot = await Progress.get(
         this.activeKpi.id,
@@ -129,8 +127,7 @@ export default {
 
       if (
         existingValueSnapshot &&
-        (!this.record ||
-          (this.record && existingValueSnapshot.id !== this.record.id))
+        (!this.record || (this.record && existingValueSnapshot.id !== this.record.id))
       ) {
         this.existingValue = existingValueSnapshot.data();
         return;

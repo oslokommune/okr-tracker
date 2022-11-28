@@ -32,14 +32,9 @@ const update = async (kpiId, data, progressValueId) => {
   const kpiRef = await getKpiDocumentRef(kpiId);
   const progressCollectionRef = kpiRef.collection('progress');
   const progressValueRef =
-    progressValueId !== undefined
-      ? progressCollectionRef.doc(progressValueId)
-      : null;
+    progressValueId !== undefined ? progressCollectionRef.doc(progressValueId) : null;
 
-  if (
-    progressValueRef &&
-    (await progressValueRef.get().then(({ exists }) => !exists))
-  ) {
+  if (progressValueRef && (await progressValueRef.get().then(({ exists }) => !exists))) {
     throw new Error(`Cannot find progress value with ID ${progressValueId}`);
   }
 
@@ -66,10 +61,7 @@ const update = async (kpiId, data, progressValueId) => {
       });
     }
 
-    const valuesSnapshot = await queryValuesByDate(
-      kpiRef,
-      data.timestamp
-    ).get();
+    const valuesSnapshot = await queryValuesByDate(kpiRef, data.timestamp).get();
 
     if (!valuesSnapshot.empty) {
       const { created, createdBy } = valuesSnapshot.docs[0].data();
@@ -102,9 +94,7 @@ const remove = async (kpiId, progressValueId) => {
     // Delete all progression values registered for date
     await progressValueRef.get().then((doc) => {
       if (!doc.exists) {
-        throw new Error(
-          `Cannot find progress value with ID ${progressValueId}`
-        );
+        throw new Error(`Cannot find progress value with ID ${progressValueId}`);
       }
 
       queryValuesByDate(kpiRef, doc.data().timestamp.toDate())

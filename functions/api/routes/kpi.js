@@ -153,15 +153,8 @@ router.get('/:id/values', idValidator, async (req, res) => {
       const progressValues = {};
 
       for await (const record of progressSnapshot.docs) {
-        const {
-          value,
-          timestamp,
-          comment,
-          created,
-          createdBy,
-          edited,
-          editedBy,
-        } = record.data();
+        const { value, timestamp, comment, created, createdBy, edited, editedBy } =
+          record.data();
 
         // Keep only the last registered record for each day.
         const date = timestamp.toDate().toISOString().slice(0, 10);
@@ -181,9 +174,7 @@ router.get('/:id/values', idValidator, async (req, res) => {
 
       res.json(Object.values(progressValues));
     } catch (e) {
-      res
-        .status(500)
-        .send(`Could not get progression data for KPI with ID: (${id}}`);
+      res.status(500).send(`Could not get progression data for KPI with ID: (${id}}`);
     }
   } catch (e) {
     console.error('ERROR: ', e.message);
@@ -246,9 +237,7 @@ router.put(
       });
     } catch (e) {
       console.error('ERROR: ', e.message);
-      res
-        .status(500)
-        .json({ message: 'Could not update KPI progression value' });
+      res.status(500).json({ message: 'Could not update KPI progression value' });
     }
   }
 );
@@ -329,9 +318,7 @@ router.delete(
       });
     } catch (e) {
       console.error('ERROR: ', e.message);
-      res
-        .status(500)
-        .json({ message: 'Could not delete KPI progression value' });
+      res.status(500).json({ message: 'Could not delete KPI progression value' });
     }
   }
 );

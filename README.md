@@ -267,22 +267,19 @@ npm run deploy
 
 ## Lint and fix
 
-Run linter
+[ESlint](https://eslint.org) (including [Prettier](https://prettier.io/) configured to be executed as a linter rule) and [Stylelint](https://stylelint.io) are used for code formatting and linting. See configuration in the following files:
 
-```bash
-npm run lint
+```
+./.eslintrc.js
+./.prettierrc.js
+./.stylelintrc.js
 ```
 
-Lint styles
-
 ```bash
-npm run lint:style
-```
-
-Automatically fix lint issues
-
-```bash
-npm run lint:style:fix
+npm run lint            # Run linter
+npm run lint:fix        # Fix lint issues
+npm run lint:style      # Run style linter
+npm run lint:style:fix  # Fix lint issues found in styles
 ```
 
 ## Google Sheets integration

@@ -28,9 +28,7 @@ export default class Pie {
     this.canvas = this.svg.append('g').classed('canvas', true);
     this.inner = this.canvas.append('g').call(initGroup, 'inner');
     this.outer = this.canvas.append('g').call(initGroup, 'outer');
-    this.percentText = this.canvas
-      .append('text')
-      .call(initPercentText.bind(this));
+    this.percentText = this.canvas.append('text').call(initPercentText.bind(this));
     this.outer.call(initOuterGroup.bind(this));
     this.pie = pie().sort(null);
   }

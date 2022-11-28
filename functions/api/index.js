@@ -23,6 +23,9 @@ app.use('/kpi', kpiRoutes);
 app.use('/keyres', keyResRoutes);
 app.use('/status', statusRoutes);
 
-const api = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
+const api = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .https.onRequest(app);
 
 export default api;

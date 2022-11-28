@@ -1,11 +1,5 @@
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import {
-  endOfDay,
-  startOfDay,
-  setHours,
-  isWithinInterval,
-  sub,
-} from 'date-fns';
+import { endOfDay, startOfDay, setHours, isWithinInterval, sub } from 'date-fns';
 
 /**
  * Return a user's display name. If the referenced Firestore reference
@@ -33,7 +27,9 @@ export async function getUserDisplayName(userRef) {
  * `itemRef` is the Firestore reference to check.
  */
 export async function isArchived(itemRef) {
-  if (typeof itemRef.get !== 'function') return true;
+  if (typeof itemRef.get !== 'function') {
+    return true;
+  }
   return itemRef
     .get()
     .then((snapshot) => !snapshot.exists || snapshot.data()?.archived === true);
@@ -143,7 +139,9 @@ export async function buildKpiResponse(kpiSnapshot) {
     .limit(1)
     .get()
     .then((snapshot) => {
-      if (!snapshot.docs[0]) return null;
+      if (!snapshot.docs[0]) {
+        return null;
+      }
       const { value, timestamp } = snapshot.docs[0].data();
       return { value, timestamp: timestamp.toDate() };
     });
@@ -171,9 +169,15 @@ export async function buildKpiResponse(kpiSnapshot) {
  * `progressRecord` is the progress record to check against.
  */
 function isKPIStale(updateFrequency, progressRecord) {
-  if (!updateFrequency) return null;
-  if (!progressRecord) return true;
-  if (updateFrequency === 'irregular') return false;
+  if (!updateFrequency) {
+    return null;
+  }
+  if (!progressRecord) {
+    return true;
+  }
+  if (updateFrequency === 'irregular') {
+    return false;
+  }
 
   const duration = (frequency) => {
     switch (frequency) {

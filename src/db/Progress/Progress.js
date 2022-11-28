@@ -53,10 +53,7 @@ const update = async (collectionRef, parentId, progressId, data) => {
     throw new Error('Timestamp cannot be set in the future');
   }
 
-  return updateDocument(
-    collectionRef.doc(`${parentId}/progress/${progressId}`),
-    data
-  );
+  return updateDocument(collectionRef.doc(`${parentId}/progress/${progressId}`), data);
 };
 
 const remove = async (collectionRef, parentId, progressId) => {

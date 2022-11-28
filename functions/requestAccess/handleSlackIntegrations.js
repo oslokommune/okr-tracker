@@ -3,7 +3,11 @@ import functions from 'firebase-functions';
 import slack from '@slack/webhook';
 import { getFirestore } from 'firebase-admin/firestore';
 
-import { createFirstMessage, acceptMessage, rejectMessage } from './createSlackMessage.js';
+import {
+  createFirstMessage,
+  acceptMessage,
+  rejectMessage,
+} from './createSlackMessage.js';
 import preferences from '../util/defaultPreferences.js';
 
 const { IncomingWebhook } = slack;
@@ -75,7 +79,9 @@ const handleAcceptRequest = async (webhook, value, user, db) => {
     // Check if user already exists
     const { exists } = await usersCollection.doc(email).get();
 
-    if (exists) throw new Error(`User ${email} already exists!`);
+    if (exists) {
+      throw new Error(`User ${email} already exists!`);
+    }
 
     // Add user if it does not exist
     await usersCollection.doc(email).set({

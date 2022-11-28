@@ -20,7 +20,9 @@ export const getters = {
       org.children = sortedDepartments
         .filter(({ organization }) => organization.id === org.id)
         .map((dept) => {
-          dept.children = sortedProducts.filter(({ department }) => department && department.id === dept.id);
+          dept.children = sortedProducts.filter(
+            ({ department }) => department && department.id === dept.id
+          );
           return dept;
         });
       return org;
@@ -31,9 +33,15 @@ export const getters = {
     // Returns `true` if user has `admin: true` or if user is member of `activeItem`
     const { user, activeItem } = state;
 
-    if (user && user.superAdmin) return true;
-    if (user && user.admin && user.admin.length > 0) return true;
-    if (!user || !activeItem || !activeItem.team) return false;
+    if (user && user.superAdmin) {
+      return true;
+    }
+    if (user && user.admin && user.admin.length > 0) {
+      return true;
+    }
+    if (!user || !activeItem || !activeItem.team) {
+      return false;
+    }
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 
@@ -46,9 +54,15 @@ export const getters = {
       ? user.admin && user.admin.includes(organization.id)
       : user.admin && user.admin.includes(activeItem.id);
 
-    if (user && user.superAdmin) return true;
-    if (isAdminOfOrganization) return true;
-    if (!user || !activeItem || !activeItem.team) return false;
+    if (user && user.superAdmin) {
+      return true;
+    }
+    if (isAdminOfOrganization) {
+      return true;
+    }
+    if (!user || !activeItem || !activeItem.team) {
+      return false;
+    }
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 
@@ -60,8 +74,12 @@ export const getters = {
       ? user.admin && user.admin.includes(organization.id)
       : user.admin && user.admin.includes(activeItem.id);
 
-    if (user && user.superAdmin) return true;
-    if (isAdminOfOrganization) return true;
+    if (user && user.superAdmin) {
+      return true;
+    }
+    if (isAdminOfOrganization) {
+      return true;
+    }
 
     return activePeriod.endDate.toDate() > new Date();
   },
@@ -71,27 +89,47 @@ export const getters = {
 
     const filterDepartments = ({ organization }) => {
       // No active item is set, show no departments
-      if (!activeItem) return false;
-      if (!organization) return false;
+      if (!activeItem) {
+        return false;
+      }
+      if (!organization) {
+        return false;
+      }
 
       // Active item is organization, show all its departments
-      if (activeItem.id === organization.id) return true;
+      if (activeItem.id === organization.id) {
+        return true;
+      }
       // Active item is a child of organization, show its all departments
-      return !!(activeItem.organization && activeItem.organization.id === organization.id);
+      return !!(
+        activeItem.organization && activeItem.organization.id === organization.id
+      );
     };
 
     const filterProducts = ({ department }) => {
-      if (!activeItem) return false;
+      if (!activeItem) {
+        return false;
+      }
       // Active item is a department, show all its products
-      if (activeItem.id === department.id) return true;
+      if (activeItem.id === department.id) {
+        return true;
+      }
       // Active item is a product, show all its siblings
       return !!(activeItem.department && activeItem.department.id === department.id);
     };
 
     return [
       { name: i18n.t('general.organizations'), items: organizations, icon: 'industry' },
-      { name: i18n.t('general.departments'), items: departments.filter(filterDepartments), icon: 'cubes' },
-      { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
+      {
+        name: i18n.t('general.departments'),
+        items: departments.filter(filterDepartments),
+        icon: 'cubes',
+      },
+      {
+        name: i18n.t('general.products'),
+        items: products.filter(filterProducts),
+        icon: 'cube',
+      },
     ];
   },
 
@@ -101,14 +139,14 @@ export const getters = {
 
     const checked = [];
 
-    organizations.forEach(org => {
+    organizations.forEach((org) => {
       if (orgs[org.slug]) {
         checked.push(orgs[org.slug]);
       }
-    })
+    });
 
     return checked.length > 0;
-  }
+  },
 };
 
 export const actions = {

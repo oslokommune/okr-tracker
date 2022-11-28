@@ -4,7 +4,7 @@ import { numberLocale } from '@/util';
 /**
  * Return a list of available KPI data display formats.
  */
-export function kpiFormats () {
+export function kpiFormats() {
   return [
     {
       id: 'integer',
@@ -15,12 +15,12 @@ export function kpiFormats () {
       label: i18n.t('kpi.formats.percentage'),
     },
   ];
-};
+}
 
 /**
  * Return a list of available KPI expected trend options.
  */
-export function kpiTrendOptions () {
+export function kpiTrendOptions() {
   return [
     {
       id: 'increase',
@@ -31,12 +31,12 @@ export function kpiTrendOptions () {
       label: i18n.t('kpi.trendOptions.decrease'),
     },
   ];
-};
+}
 
 /**
  * Return a list of available KPI types.
  */
-export function kpiTypes () {
+export function kpiTypes() {
   return [
     {
       id: 'plain',
@@ -54,7 +54,7 @@ export function kpiTypes () {
       description: i18n.t('kpi.types.resultIndicator.description'),
     },
   ];
-};
+}
 
 /**
  * Return a list of available update frequency options. Based on the
@@ -77,13 +77,14 @@ export function kpiUpdateFrequencies() {
  * `defaultSpecifier` is the format specifier to use in normal cases, while
  * `compactSpecifier` is used when a `compact` option is passed.
  */
-function valueFormatter (defaultSpecifier, compactSpecifier) {
+function valueFormatter(defaultSpecifier, compactSpecifier) {
   return (value, options) => {
     let specifier = defaultSpecifier;
 
-    if (compactSpecifier &&
-        (options.compact === true ||
-         options.compact === 'semi' && value >= 10_000_000)) {
+    if (
+      compactSpecifier &&
+      (options.compact === true || (options.compact === 'semi' && value >= 10_000_000))
+    ) {
       specifier = compactSpecifier;
     }
 
@@ -94,7 +95,7 @@ function valueFormatter (defaultSpecifier, compactSpecifier) {
 /**
  * Return the appropriate formatting function for `formatId`.
  */
-function kpiFormatFunction (formatId) {
+function kpiFormatFunction(formatId) {
   return {
     integer: valueFormatter(',.2~f', '.2s'),
     percentage: valueFormatter('.2p'),
@@ -107,16 +108,14 @@ function kpiFormatFunction (formatId) {
  * The optional `value` parameter overrides the current value of `kpi` when
  * passed. The `options` object currently only supports a `compact` specifier.
  */
-export function formatKPIValue (kpi, value = null, options = {}) {
-  let formatFun = v => v;
+export function formatKPIValue(kpi, value = null, options = {}) {
+  let formatFun = (v) => v;
 
   if (kpi.format) {
     formatFun = kpiFormatFunction(kpi.format);
-  }
-  else if (kpi.type === 'users') {
+  } else if (kpi.type === 'users') {
     formatFun = kpiFormatFunction('integer');
-  }
-  else if (['satisfaction', 'conversion'].includes(kpi.type)) {
+  } else if (['satisfaction', 'conversion'].includes(kpi.type)) {
     formatFun = kpiFormatFunction('percentage');
   }
 
@@ -126,7 +125,7 @@ export function formatKPIValue (kpi, value = null, options = {}) {
   }
 
   return '–––';
-};
+}
 
 /**
  * Return an appropriate value interval for a given KPI format type.

@@ -11,12 +11,16 @@ export default firestoreAction(async ({ bindFirestoreRef, unbindFirestoreRef }, 
   };
 
   // Check if user is valid Google account
-  if (!user || !user.email) rejectAccess();
+  if (!user || !user.email) {
+    rejectAccess();
+  }
 
   // Check if user is whitelisted
   const userRef = db.collection('users').doc(user.email);
   const documentSnapshot = await userRef.get();
-  if (!documentSnapshot.exists) rejectAccess();
+  if (!documentSnapshot.exists) {
+    rejectAccess();
+  }
 
   const { id, email, displayName, preferences, uid } = await documentSnapshot.data();
 

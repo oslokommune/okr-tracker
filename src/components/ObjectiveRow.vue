@@ -1,5 +1,8 @@
 <template>
-  <router-link class="objective" :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }">
+  <router-link
+    class="objective"
+    :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
+  >
     <h3 class="objective__header title-2">
       <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>

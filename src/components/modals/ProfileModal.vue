@@ -4,14 +4,14 @@
       {{ $t('user.profile') }}
     </template>
     <validation-observer v-slot="{ handleSubmit }">
-      <form id="updateUser" class="modal__main--flex" @submit.prevent="handleSubmit(save)">
+      <form
+        id="updateUser"
+        class="modal__main--flex"
+        @submit.prevent="handleSubmit(save)"
+      >
         <div class="column">
           <span class="form-label">{{ $t('fields.name') }}</span>
-          <input
-            v-model="thisUser.displayName"
-            rules="required"
-            :disabled="!me"
-          />
+          <input v-model="thisUser.displayName" rules="required" :disabled="!me" />
           <label class="form-group">
             <span class="form-label">{{ $t('user.position.title') }}</span>
             <v-select
@@ -22,13 +22,13 @@
             >
             </v-select>
             <div v-else>
-            <span>
-              {{
-                thisUser && thisUser.position
-                  ? thisUser.position
-                  : $t('user.position.member')
-              }}
-            </span>
+              <span>
+                {{
+                  thisUser && thisUser.position
+                    ? thisUser.position
+                    : $t('user.position.member')
+                }}
+              </span>
             </div>
           </label>
 
@@ -62,8 +62,8 @@ import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
-import ModalWrapper from './ModalWrapper.vue';
 import { BtnSave } from '@/components/generic/form/buttons';
+import ModalWrapper from './ModalWrapper.vue';
 
 export default {
   name: 'ProfileModal',

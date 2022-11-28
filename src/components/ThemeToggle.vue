@@ -3,14 +3,16 @@
     <h2 class="widget__title">{{ $t('theme.header') }}</h2>
     <div v-for="mode in modes" :key="mode.id" class="ods-form-group">
       <input
-        type="radio"
         :id="mode.id"
+        type="radio"
         class="ods-form-radio"
         name="radio-group"
         :checked="theme === mode.id"
         @click="setThemeMode(mode.id)"
       />
-      <label class="ods-form-label" :for="mode.id">{{ $t(`theme.colors.${mode.id}`) }}</label>
+      <label class="ods-form-label" :for="mode.id">
+        {{ $t(`theme.colors.${mode.id}`) }}
+      </label>
     </div>
   </div>
 </template>
@@ -54,7 +56,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-  .widget__title {
-    padding-bottom: 1rem;
-  }
+.widget__title {
+  padding-bottom: 1rem;
+}
 </style>

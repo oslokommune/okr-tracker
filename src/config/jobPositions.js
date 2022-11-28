@@ -62,4 +62,5 @@ export const displayOrder = [
   'designers',
   'developers',
   'administration',
-  'others'];
+  'others',
+];

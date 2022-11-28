@@ -208,8 +208,10 @@ export default {
         this.filteredProgress.map(({ timestamp }) => timestamp)
       );
 
-      if (!this.graph || startValue === undefined || targetValue === undefined)
+      if (!this.graph || startValue === undefined || targetValue === undefined) {
         return;
+      }
+
       this.graph.render({
         startValue,
         targetValue,
@@ -226,8 +228,7 @@ export default {
       } else {
         this.filteredProgress = this.progress.filter(
           (a) =>
-            a.timestamp.toDate() > this.startDate &&
-            a.timestamp.toDate() < this.endDate
+            a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
         );
       }
 
@@ -264,7 +265,9 @@ export default {
         return;
       }
       const parts = range.split(' til ').map((d) => new Date(d));
-      if (parts.length === 1) return;
+      if (parts.length === 1) {
+        return;
+      }
       this.dirty = true;
       const [startDate, endDate] = parts;
       this.startDate = startDate;

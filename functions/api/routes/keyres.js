@@ -45,10 +45,12 @@ router.post('/:id', ...validate, async (req, res) => {
     const parentData = await parent.get().then((snapshot) => snapshot.data());
 
     if (!parentData.secret) {
-      res.status(401).send(
-        `'${parentData.name}' is not set up for API usage. Please set ` +
-          'a secret using the OKR Tracker admin interface.'
-      );
+      res
+        .status(401)
+        .send(
+          `'${parentData.name}' is not set up for API usage. Please set ` +
+            'a secret using the OKR Tracker admin interface.'
+        );
       return;
     }
     if (parentData.secret !== teamSecret) {
@@ -93,7 +95,17 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     }
 
     const data = keyRes.data();
-    const { currentValue, description, editedBy, createdBy, objective, edited, created, notes, progression } = data;
+    const {
+      currentValue,
+      description,
+      editedBy,
+      createdBy,
+      objective,
+      edited,
+      created,
+      notes,
+      progression,
+    } = data;
 
     const editedByData = await editedBy.get().then((snapshot) => snapshot.data());
     const createdByData = await createdBy.get().then((snapshot) => snapshot.data());

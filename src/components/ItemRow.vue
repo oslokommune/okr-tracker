@@ -81,9 +81,7 @@ export default {
   computed: {
     ...mapState(['user']),
     isMember() {
-      return (
-        !!this.data.team && this.data.team.find(({ id }) => id === this.user.id)
-      );
+      return !!this.data.team && this.data.team.find(({ id }) => id === this.user.id);
     },
 
     icon() {
@@ -112,10 +110,7 @@ export default {
         const ref = db.doc(data.path);
         this.$bind(
           'kpis',
-          db
-            .collection('kpis')
-            .where('parent', '==', ref)
-            .where('archived', '==', false)
+          db.collection('kpis').where('parent', '==', ref).where('archived', '==', false)
         );
 
         data.onProgressionSnapshot(({ docs }) => {
@@ -130,8 +125,8 @@ export default {
   methods: {
     _formatKPIValue(kpi) {
       return formatKPIValue(kpi, kpi.currentValue, {
-        compact: true
-      })
+        compact: true,
+      });
     },
   },
 };

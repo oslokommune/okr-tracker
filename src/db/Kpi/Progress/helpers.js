@@ -41,7 +41,9 @@ export function queryValuesByDate(kpiRef, date) {
 }
 
 export async function batchDeleteSnapshot(snapshot) {
-  if (snapshot.empty) return;
+  if (snapshot.empty) {
+    return;
+  }
   const batch = db.batch();
   snapshot.forEach((doc) => {
     batch.delete(doc.ref);

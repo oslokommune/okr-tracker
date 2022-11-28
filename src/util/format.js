@@ -10,7 +10,9 @@ export const dateTimeShort = (d) => format(d, 'Pp', o);
 export const dateTimeLong = (d) => format(d, 'PPPp', o);
 
 export function periodDates({ startDate, endDate }, strategy = dateLong) {
-  if (!startDate || !endDate) throw new Error('Invalid period object');
+  if (!startDate || !endDate) {
+    throw new Error('Invalid period object');
+  }
   return [
     startDate instanceof Date ? startDate : startDate.toDate(),
     endDate instanceof Date ? endDate : endDate.toDate(),

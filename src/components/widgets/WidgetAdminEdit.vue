@@ -1,8 +1,8 @@
 <template>
   <router-link
     v-if="hasEditRights"
-    class="widgetAdminEdit btn"
     v-tooltip="adminLink.tooltip"
+    class="widgetAdminEdit btn"
     :to="adminLink.path"
   >
     <icon-edit class="widgetAdminEdit__actionIcon" />
@@ -23,12 +23,7 @@ export default {
   },
 
   computed: {
-    ...mapState([
-      'activePeriod',
-      'activeItem',
-      'activeObjective',
-      'activeKeyResult',
-    ]),
+    ...mapState(['activePeriod', 'activeItem', 'activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
     itemHomeAdminLink() {
       return this.getAdminLink();

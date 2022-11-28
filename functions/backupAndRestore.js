@@ -3,24 +3,26 @@ import functions from 'firebase-functions';
 import config from './config.js';
 
 const { GoogleAuth } = auth;
-const storageBucketName = process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
+const storageBucketName =
+  process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
 
-export const automatedBackups =
-  functions
-    .region(config.region)
-    .pubsub.schedule(config.backupFrequency)
-    .timeZone(config.timeZone)
-    .onRun(generateBackup);
+export const automatedBackups = functions
+  .region(config.region)
+  .pubsub.schedule(config.backupFrequency)
+  .timeZone(config.timeZone)
+  .onRun(generateBackup);
 
-export const automatedRestore =
-  functions
-    .region(config.region)
-    .pubsub.topic('restore-backup')
-    .onPublish(restoreBackup);
+export const automatedRestore = functions
+  .region(config.region)
+  .pubsub.topic('restore-backup')
+  .onPublish(restoreBackup);
 
 async function restoreBackup() {
   const gAuth = new GoogleAuth({
-    scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
+    scopes: [
+      'https://www.googleapis.com/auth/datastore',
+      'https://www.googleapis.com/auth/cloud-platform',
+    ],
   });
 
   const client = await gAuth.getClient();
@@ -52,7 +54,10 @@ async function restoreBackup() {
 
 async function generateBackup() {
   const gAuth = new GoogleAuth({
-    scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform'],
+    scopes: [
+      'https://www.googleapis.com/auth/datastore',
+      'https://www.googleapis.com/auth/cloud-platform',
+    ],
   });
 
   const client = await gAuth.getClient();

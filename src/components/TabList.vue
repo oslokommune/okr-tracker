@@ -108,8 +108,7 @@ export default {
         case 'ArrowLeft': {
           const nextIndex = this.focusedTabIndex - 1;
 
-          this.focusedTabIndex =
-            nextIndex >= 0 ? nextIndex : this.tabs.length - 1;
+          this.focusedTabIndex = nextIndex >= 0 ? nextIndex : this.tabs.length - 1;
 
           break;
         }

@@ -50,11 +50,7 @@
         :disabled="user.email === selectedUser.email || loading"
         @click="remove(selectedUser)"
       />
-      <btn-save
-        form="user-form"
-        :label="$t('btn.saveChanges')"
-        :disabled="loading"
-      />
+      <btn-save form="user-form" :label="$t('btn.saveChanges')" :disabled="loading" />
     </div>
   </div>
 </template>
@@ -98,7 +94,9 @@ export default {
 
         if (this.selectedUser.admin?.length > 0) {
           const orgs = [];
-          this.selectedUser.admin.forEach((org) => orgs.push(db.collection('organizations').doc(org).get()));
+          this.selectedUser.admin.forEach((org) =>
+            orgs.push(db.collection('organizations').doc(org).get())
+          );
           const dataArr = await Promise.all(orgs);
           this.thisUser.admin = dataArr.map((org) => ({
             ...org.data(),

@@ -78,11 +78,7 @@
     </validation-observer>
 
     <div class="button-row">
-      <btn-delete
-        v-if="!activeItem.archived"
-        :disabled="loading"
-        @click="archive"
-      />
+      <btn-delete v-if="!activeItem.archived" :disabled="loading" @click="archive" />
       <btn-save form="update-item" :disabled="loading" />
     </div>
   </div>
@@ -115,8 +111,12 @@ export default {
 
     type() {
       const { department, organization } = this.activeItem;
-      if (organization && department) return 'product';
-      if (organization) return 'department';
+      if (organization && department) {
+        return 'product';
+      }
+      if (organization) {
+        return 'department';
+      }
       return 'organization';
     },
   },
@@ -125,8 +125,7 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, missionStatement, targetAudience, secret } =
-          this.activeItem;
+        const { id, name, missionStatement, targetAudience, secret } = this.activeItem;
 
         const team = this.activeItem.team.map((user) =>
           db.collection('users').doc(user.id)
@@ -192,7 +191,9 @@ export default {
 
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.archive', { document: this.activeItem.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: this.activeItem.name })
+        );
         this.activeItem.archived = false;
         throw new Error(error.message);
       } finally {
@@ -215,7 +216,9 @@ export default {
         this.$toasted.show(this.$t('toaster.restored'));
         // TODO: Refresh store and sidebar navigation tree
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.restore', { document: this.activeItem.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.activeItem.name })
+        );
         throw new Error(error.message);
       } finally {
         this.loading = false;

@@ -1,6 +1,8 @@
 <template>
   <div class="action-bar">
-    <div v-if="activePeriod" class="action-bar__period-dates">{{ periodDates(activePeriod) }}</div>
+    <div v-if="activePeriod" class="action-bar__period-dates">
+      {{ periodDates(activePeriod) }}
+    </div>
 
     <div class="views">
       <button
