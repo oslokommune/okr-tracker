@@ -29,8 +29,9 @@ export const createAccessRequest = async (db, accessRequest) => {
   const domainWhitelistCollection = new DomainWhitelistCollection(db);
   const usersCollection = new UsersCollection(db);
 
-  const domainWhitelistSnapshot =
-    await domainWhitelistCollection.getDocumentById(emailDomain);
+  const domainWhitelistSnapshot = await domainWhitelistCollection.getDocumentById(
+    emailDomain
+  );
 
   if (domainWhitelistSnapshot.exists) {
     try {
@@ -49,9 +50,7 @@ export const acceptAccessRequest = async (db, id) => {
   try {
     const accessRequestCollection = new AccessRequestCollection(db);
     const usersCollection = new UsersCollection(db);
-    const accessReqestRef = await accessRequestCollection
-      .getDocumentRef(id)
-      .get();
+    const accessReqestRef = await accessRequestCollection.getDocumentRef(id).get();
 
     if (accessReqestRef.exists) {
       const { email } = accessReqestRef.data();
@@ -71,9 +70,7 @@ export const acceptAccessRequest = async (db, id) => {
 export const rejectAccessRequest = async (db, id) => {
   try {
     const accessRequestCollection = new AccessRequestCollection(db);
-    const accessReqestRef = await accessRequestCollection
-      .getDocumentRef(id)
-      .get();
+    const accessReqestRef = await accessRequestCollection.getDocumentRef(id).get();
 
     if (accessReqestRef.exists) {
       await accessRequestCollection.deleteDocument(id);

@@ -1,6 +1,9 @@
 import functions from 'firebase-functions';
 import config from '../config.js';
-import { updateKeyResultProgress, updatePeriodProgression } from './handleKeyResultProgress.js';
+import {
+  updateKeyResultProgress,
+  updatePeriodProgression,
+} from './handleKeyResultProgress.js';
 
 export const handleKeyResultProgress = functions
   .runWith(config.runtimeOpts)
@@ -15,7 +18,9 @@ export const handleKeyResultProgressOnKeyResultUpdate = functions
   .onUpdate(({ before, after }, context) => {
     const fields = ['startValue', 'targetValue', 'currentValue', 'weight', 'archived'];
 
-    const fieldsHaveChanged = fields.some((field) => before.data()[field] !== after.data()[field]);
+    const fieldsHaveChanged = fields.some(
+      (field) => before.data()[field] !== after.data()[field]
+    );
 
     if (fieldsHaveChanged) return handleKeyResultProgress(null, context);
 

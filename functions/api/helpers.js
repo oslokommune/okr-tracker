@@ -1,11 +1,5 @@
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import {
-  endOfDay,
-  startOfDay,
-  setHours,
-  isWithinInterval,
-  sub,
-} from 'date-fns';
+import { endOfDay, startOfDay, setHours, isWithinInterval, sub } from 'date-fns';
 
 /**
  * Return a user's display name. If the referenced Firestore reference

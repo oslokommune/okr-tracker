@@ -31,11 +31,17 @@ const runSlackBot = async (req, res) => {
   }
 
   // Get the document and check if it exists
-  const parentDocument = await db.collection(`${cmd[1]}s`).where('slug', '==', cmd[2]).get();
+  const parentDocument = await db
+    .collection(`${cmd[1]}s`)
+    .where('slug', '==', cmd[2])
+    .get();
+
   if (parentDocument.docs.length === 0 || !parentDocument.docs[0].exists) {
     return res
       .status(200)
-      .send(`Could not find the ${cmd[1]} ${cmd[2]}, are you sure you've typed in the correct name?`);
+      .send(
+        `Could not find the ${cmd[1]} ${cmd[2]}, are you sure you've typed in the correct name?`
+      );
   }
 
   // Get the document data and reference
@@ -47,15 +53,25 @@ const runSlackBot = async (req, res) => {
   if (cmd[0] === 'subscribe' && allowedSub.includes(cmd[1])) {
     isSubscribed = true;
     // Add the channelId to the document slack-property
-    const result = await addChannelToSlackArray(parentDocumentRef, parentDocumentData, req.body.channel_id);
+    const result = await addChannelToSlackArray(
+      parentDocumentRef,
+      parentDocumentData,
+      req.body.channel_id
+    );
 
     if (!result) {
-      return res.status(200).send(`You are already subscribed to the ${cmd[1]} ${cmd[2]}`);
+      return res
+        .status(200)
+        .send(`You are already subscribed to the ${cmd[1]} ${cmd[2]}`);
     }
     // If user sends unsubscribe
   } else if (cmd[0] === 'unsubscribe' && allowedSub.includes(cmd[1])) {
     // remove channelId from the document slack-property
-    const result = await removeChannelFromSlackArray(parentDocumentRef, parentDocumentData, req.body.channel_id);
+    const result = await removeChannelFromSlackArray(
+      parentDocumentRef,
+      parentDocumentData,
+      req.body.channel_id
+    );
     if (!result) {
       return res.status(200).send(`You are not subscribed to the ${cmd[1]}: ${cmd[2]}`);
     }
@@ -72,9 +88,15 @@ const runSlackBot = async (req, res) => {
     } else if (cmd[1] === 'department') {
       documents = [...parentDocument.docs, ...prods.docs];
     } else {
-      return res.status(200).send('You can only run subscribe/all on a department or organization');
+      return res
+        .status(200)
+        .send('You can only run subscribe/all on a department or organization');
     }
-    const batch = await addChannelsToMultipleSlackArrays(documents, req.body.channel_id, db);
+    const batch = await addChannelsToMultipleSlackArrays(
+      documents,
+      req.body.channel_id,
+      db
+    );
     await batch.commit();
   }
   if (cmd[0] === 'unsubscribe/all' && allowedDeepSub.includes(cmd[1])) {
@@ -87,20 +109,36 @@ const runSlackBot = async (req, res) => {
     } else if (cmd[1] === 'department') {
       documents = [...parentDocument.docs, ...prods.docs];
     } else {
-      return res.status(200).send('You can only run unsubscribe/all on a department or organization');
+      return res
+        .status(200)
+        .send('You can only run unsubscribe/all on a department or organization');
     }
 
-    const batch = await removeChannelsFromMultipleSlackArrays(documents, req.body.channel_id, db);
+    const batch = await removeChannelsFromMultipleSlackArrays(
+      documents,
+      req.body.channel_id,
+      db
+    );
 
     await batch.commit();
   }
 
   // Push to slack
   try {
-    await postToSlack(cmd[2], req.body.channel_id, req.body.channel_name, isSubscribed, isDeep);
+    await postToSlack(
+      cmd[2],
+      req.body.channel_id,
+      req.body.channel_name,
+      isSubscribed,
+      isDeep
+    );
   } catch (e) {
     // If the bot is not allowed to push to a slack channel, then delete everything that has been updated and tell the user that the bot needs access to a private channel
-    const batch = await removeChannelsFromMultipleSlackArrays(documents, req.body.channel_id, db);
+    const batch = await removeChannelsFromMultipleSlackArrays(
+      documents,
+      req.body.channel_id,
+      db
+    );
     await batch.commit();
     return res
       .status(200)

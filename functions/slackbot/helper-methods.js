@@ -106,9 +106,9 @@ export const slackMessageHelp = {
  */
 export const postToSlack = async (document, channelId, channelName, subscribed, deep) => {
   const result = await web.chat.postMessage({
-    text: `You have successfully ${subscribed ? 'subscribed' : 'unsubscribed'} to ${document}${
-      deep ? ', and all its children' : ''
-    }`,
+    text: `You have successfully ${
+      subscribed ? 'subscribed' : 'unsubscribed'
+    } to ${document}${deep ? ', and all its children' : ''}`,
     channel: channelId,
   });
   console.log(`Successfully send message ${result.ts} in conversation ${channelName}`);
@@ -123,7 +123,11 @@ export const postToSlack = async (document, channelId, channelName, subscribed, 
  * @param channelId channelID of the slack channel
  * @returns {Promise<Boolean>} return true/false
  */
-export const addChannelToSlackArray = async (collectionRef, collectionData, channelId) => {
+export const addChannelToSlackArray = async (
+  collectionRef,
+  collectionData,
+  channelId
+) => {
   if (!collectionData.slack) {
     await collectionRef.update({
       slack: [channelId],
@@ -148,7 +152,11 @@ export const addChannelToSlackArray = async (collectionRef, collectionData, chan
  * @param channelId channelID of the slack channel
  * @returns {Promise<Boolean>} return true/false
  */
-export const removeChannelFromSlackArray = async (collectionRef, collectionData, channelId) => {
+export const removeChannelFromSlackArray = async (
+  collectionRef,
+  collectionData,
+  channelId
+) => {
   if (!collectionData.slack || !collectionData.slack?.includes(channelId)) {
     return false;
   }

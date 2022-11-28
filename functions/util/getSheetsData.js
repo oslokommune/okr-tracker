@@ -3,11 +3,20 @@ import googleApis from 'googleapis';
 
 const { google } = googleApis;
 const scopes = ['https://www.googleapis.com/auth/spreadsheets'];
-const sheetsEmail = process.env.SHEETS_EMAIL || functions.config().service_account.client_email;
-const sheetsKey = process.env.SHEETS_KEY || functions.config().service_account.private_key;
-const sheetsImpersonator = process.env.SHEETS_IMPERSONATOR || functions.config().sheets?.impersonator || null;
+const sheetsEmail =
+  process.env.SHEETS_EMAIL || functions.config().service_account.client_email;
+const sheetsKey =
+  process.env.SHEETS_KEY || functions.config().service_account.private_key;
+const sheetsImpersonator =
+  process.env.SHEETS_IMPERSONATOR || functions.config().sheets?.impersonator || null;
 
-const jwtClient = new google.auth.JWT(sheetsEmail, null, sheetsKey, scopes, sheetsImpersonator);
+const jwtClient = new google.auth.JWT(
+  sheetsEmail,
+  null,
+  sheetsKey,
+  scopes,
+  sheetsImpersonator
+);
 
 jwtClient.authorize((err) => {
   if (err) {

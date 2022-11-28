@@ -16,7 +16,8 @@ export const fetchAutomatedKeyResOnSchedule = functions
   .timeZone(config.timeZone)
   .onRun(() => {
     const db = getFirestore();
-    return db.collection('keyResults')
+    return db
+      .collection('keyResults')
       .where('archived', '==', false)
       .where('auto', '==', true)
       .get()
@@ -53,7 +54,13 @@ async function updateAutomaticKeyResult(id) {
     if (value === null || value === undefined) throw new Error('Data not found');
     if (isNaN(value)) throw new Error('Invalid data format'); // eslint-disable-line no-restricted-globals
 
-    await progressRef.add({ created: new Date(), archived: false, createdBy: 'auto', value, timestamp: new Date() });
+    await progressRef.add({
+      created: new Date(),
+      archived: false,
+      createdBy: 'auto',
+      value,
+      timestamp: new Date(),
+    });
     await docRef.update({ valid: true, error: false });
 
     return value;
