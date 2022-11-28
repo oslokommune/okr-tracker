@@ -13,7 +13,9 @@
             :class="{ selected: goal.id === activeGoalId }"
             @click="setActiveGoal(goal.id)"
           >
-            <a href="#"><span>{{ goal.name }}</span></a>
+            <a href="#">
+              <span>{{ goal.name }}</span>
+            </a>
           </li>
         </ul>
         <button class="btn btn--ter btn--icon btn--fw" @click="addGoal(kpi)">
@@ -49,17 +51,11 @@
               rules="required"
             />
             <div class="button-row">
-              <button
-                class="btn btn--icon btn--archive"
-                @click="archive($event)"
-              >
+              <button class="btn btn--icon btn--archive" @click="archive($event)">
                 <i class="icon fa fa-fw fa-trash" />
                 {{ $t('btn.delete') }}
               </button>
-              <button
-                class="btn btn--icon btn--pri btn--icon-pri"
-                form="update-goal"
-              >
+              <button class="btn btn--icon btn--pri btn--icon-pri" form="update-goal">
                 <i class="icon fa fa-fw fa-save" />
                 {{ $t('btn.saveChanges') }}
               </button>
@@ -77,9 +73,9 @@
 import locale from 'flatpickr/dist/l10n/no';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
-import ModalWrapper from './ModalWrapper.vue';
 import { toastArchiveAndRevert } from '@/util';
 import { endOfDay, endOfYear, startOfYear } from 'date-fns';
+import ModalWrapper from './ModalWrapper.vue';
 
 export default {
   name: 'ProgressModal',
@@ -154,10 +150,7 @@ export default {
       const { ref } = await db.collection('kpis').doc(this.kpi.id).get();
       return this.$bind(
         'goals',
-        ref
-          .collection('goals')
-          .where('archived', '==', false)
-          .orderBy('fromDate')
+        ref.collection('goals').where('archived', '==', false).orderBy('fromDate')
       );
     },
 
@@ -206,11 +199,7 @@ export default {
 
       try {
         await Goal.archive(this.kpi.id, this.activeGoalId);
-        const restoreCallback = this.restore.bind(
-          this,
-          this.kpi.id,
-          this.activeGoalId
-        );
+        const restoreCallback = this.restore.bind(this, this.kpi.id, this.activeGoalId);
         toastArchiveAndRevert({
           name: this.name || this.$t('kpi.goals.the'),
           callback: restoreCallback,

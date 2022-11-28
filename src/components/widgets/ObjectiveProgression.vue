@@ -45,9 +45,7 @@ export default {
     objective: {
       immediate: true,
       async handler() {
-        const objectiveRef = objectiveCollection.getDocumentRef(
-          this.objective.id
-        );
+        const objectiveRef = objectiveCollection.getDocumentRef(this.objective.id);
 
         this.$bind(
           'objectiveKeyResults',

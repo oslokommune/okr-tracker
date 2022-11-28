@@ -17,11 +17,7 @@
         </label>
 
         <div>
-          <validation-provider
-            v-slot="{ errors }"
-            name="value"
-            rules="required"
-          >
+          <validation-provider v-slot="{ errors }" name="value" rules="required">
             <label class="form-field">
               <span class="form-label">{{ $t('keyResult.newValue') }}</span>
               <input v-model="value" type="number" step="any" />
@@ -41,8 +37,8 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
-import ModalWrapper from './ModalWrapper.vue';
 import { BtnSave } from '@/components/generic/form/buttons';
+import ModalWrapper from './ModalWrapper.vue';
 
 export default {
   name: 'KeyResultModal',
@@ -69,8 +65,7 @@ export default {
     keyResult: {
       immediate: true,
       async handler() {
-        this.value =
-          this.keyResult.currentValue || this.keyResult.startValue || 0;
+        this.value = this.keyResult.currentValue || this.keyResult.startValue || 0;
       },
     },
   },

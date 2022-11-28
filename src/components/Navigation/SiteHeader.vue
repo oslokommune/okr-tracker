@@ -6,11 +6,7 @@
     <h1 v-if="title" class="siteHeader__title">
       {{ title }}
     </h1>
-    <button
-      v-if="user"
-      class="btn btn--ter btn--pri"
-      @click="toggleShowAsideRight"
-    >
+    <button v-if="user" class="btn btn--ter btn--pri" @click="toggleShowAsideRight">
       <icon-user fill="white" />
     </button>
   </header>

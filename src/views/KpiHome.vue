@@ -208,8 +208,7 @@ export default {
         this.filteredProgress.map(({ timestamp }) => timestamp)
       );
 
-      if (!this.graph || startValue === undefined || targetValue === undefined)
-        return;
+      if (!this.graph || startValue === undefined || targetValue === undefined) return;
       this.graph.render({
         startValue,
         targetValue,
@@ -226,8 +225,7 @@ export default {
       } else {
         this.filteredProgress = this.progress.filter(
           (a) =>
-            a.timestamp.toDate() > this.startDate &&
-            a.timestamp.toDate() < this.endDate
+            a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
         );
       }
 

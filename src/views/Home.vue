@@ -13,11 +13,7 @@
         </header>
         <div v-if="isOpen" class="widget__body">
           <ul>
-            <li
-              v-for="org in tree"
-              :key="`${org.id}-check`"
-              style="margin-bottom: 1rem"
-            >
+            <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
               <div class="ods-form-group">
                 <input
                   :id="org.id"
@@ -28,9 +24,7 @@
                 />
                 <label class="ods-form-label" :for="org.id">
                   {{ org.name }}
-                  <span v-if="org.children.length">
-                    ({{ org.children.length }})
-                  </span>
+                  <span v-if="org.children.length"> ({{ org.children.length }}) </span>
                 </label>
               </div>
               <ul v-if="getCollapse('organization', org.slug)">
@@ -60,23 +54,11 @@
         {{ $t('general.emptyHome') }}
       </li>
       <template v-for="org in tree">
-        <li
-          v-if="getCollapse('organization', org.slug)"
-          :key="org.id"
-          class="tree"
-        >
-          <item-row
-            :data="org"
-            class="tree__organization"
-            type="organization"
-          ></item-row>
+        <li v-if="getCollapse('organization', org.slug)" :key="org.id" class="tree">
+          <item-row :data="org" class="tree__organization" type="organization"></item-row>
           <ul>
             <template v-for="dept in org.children">
-              <li
-                v-if="getCollapse('department', dept.slug)"
-                :key="dept.id"
-                class="card"
-              >
+              <li v-if="getCollapse('department', dept.slug)" :key="dept.id" class="card">
                 <item-row :data="dept" type="department"></item-row>
                 <ul>
                   <li v-for="prod in dept.children" :key="prod.id">

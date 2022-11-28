@@ -3,7 +3,7 @@ import { arc } from 'd3-shape';
 import { format } from 'd3-format';
 import { interpolate } from 'd3-interpolate';
 import { easeCircleOut } from 'd3-ease';
-import "d3-transition";
+import 'd3-transition';
 
 const size = 250;
 const padding = 50;
@@ -44,7 +44,10 @@ const outerArc = arc()
 
 // Helper for naming and centering a group element
 function initGroup(g, name = 'group') {
-  g.classed(name, true).attr('transform', `translate(${size / 2}, ${size / 2 - size * 0.1})`);
+  g.classed(name, true).attr(
+    'transform',
+    `translate(${size / 2}, ${size / 2 - size * 0.1})`
+  );
 }
 
 // Initializes the outer group element by appending the neccessary elements within
@@ -120,7 +123,9 @@ function updateInnerArcs(el, data) {
       if (this.dimmed) {
         return i === 0 ? colors[this.colorMode].dimmed : colors[this.colorMode].innerFull;
       }
-      return i === 0 ? colors[this.colorMode].innerDone : colors[this.colorMode].innerFull;
+      return i === 0
+        ? colors[this.colorMode].innerDone
+        : colors[this.colorMode].innerFull;
     })
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0.15))
     .transition()

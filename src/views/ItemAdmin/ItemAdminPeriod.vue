@@ -32,16 +32,8 @@
     </validation-observer>
 
     <div class="button-row">
-      <btn-delete
-        v-if="!activePeriod.archived"
-        :disabled="loading"
-        @click="archive"
-      />
-      <btn-save
-        form="update-period"
-        data-cy="save_period"
-        :disabled="loading"
-      />
+      <btn-delete v-if="!activePeriod.archived" :disabled="loading" @click="archive" />
+      <btn-save form="update-period" data-cy="save_period" :disabled="loading" />
     </div>
   </div>
 </template>
@@ -128,10 +120,15 @@ export default {
 
         const restoreCallback = this.restore.bind(this);
 
-        toastArchiveAndRevert({ name: this.activePeriod.name, callback: restoreCallback });
+        toastArchiveAndRevert({
+          name: this.activePeriod.name,
+          callback: restoreCallback,
+        });
       } catch (error) {
         console.log(error);
-        this.$toasted.error(this.$t('toaster.error.archive', { document: this.activePeriod.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: this.activePeriod.name })
+        );
       }
 
       this.loading = false;
@@ -143,7 +140,9 @@ export default {
         this.activePeriod.archived = false;
         this.$toasted.show(this.$t('toaster.restored'));
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.restore', { document: this.activePeriod.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.activePeriod.name })
+        );
         throw new Error(error.message);
       }
     },
@@ -153,7 +152,11 @@ export default {
       try {
         const { id, name } = this.activePeriod;
 
-        await Period.update(id, { name, startDate: new Date(this.startDate), endDate: new Date(this.endDate) });
+        await Period.update(id, {
+          name,
+          startDate: new Date(this.startDate),
+          endDate: new Date(this.endDate),
+        });
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
         console.log(error);

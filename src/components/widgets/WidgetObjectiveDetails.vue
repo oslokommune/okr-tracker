@@ -1,11 +1,16 @@
 <template>
   <widget v-if="activeObjective" :title="$t('general.details')">
     <div class="details">
-      <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
+      <div
+        v-if="activeObjective.period && activeObjective.period.startDate"
+        class="details__item"
+      >
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
-            {{ activeObjective.period.name }} ({{ formatPeriodDates(activeObjective.period) }})
+            {{ activeObjective.period.name }} ({{
+              formatPeriodDates(activeObjective.period)
+            }})
           </div>
         </div>
       </div>
@@ -23,8 +28,11 @@
         <div class="details__item-body">
           <div class="details__item-value">
             <div class="details__item-value user">
-              <a v-if="activeObjective.createdBy.id" @click="openProfileModal(activeObjective.createdBy.id)">
-                <span>{{ activeObjective.createdBy.displayName || activeObjective.createdBy.id }}</span>
+              <a
+                v-if="activeObjective.createdBy.id"
+                @click="openProfileModal(activeObjective.createdBy.id)"
+              >
+                <span>{{ createdBy }}</span>
               </a>
               <span v-else>{{ activeObjective.createdBy }}</span>
             </div>
@@ -44,8 +52,11 @@
 
         <div class="details__item-body">
           <div class="details__item-value user">
-            <a v-if="activeObjective.editedBy.id" @click="openProfileModal(activeObjective.editedBy.id)">
-              <span>{{ activeObjective.editedBy.displayName || activeObjective.editedBy.id }}</span>
+            <a
+              v-if="activeObjective.editedBy.id"
+              @click="openProfileModal(activeObjective.editedBy.id)"
+            >
+              <span>{{ editedBy }}</span>
             </a>
             <span v-else>{{ activeObjective.editedBy }}</span>
           </div>
@@ -53,7 +64,11 @@
       </div>
     </div>
 
-    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
+    <profile-modal
+      v-if="showProfileModal"
+      :id="chosenProfileId"
+      @close="closeProfileModal"
+    />
   </widget>
 </template>
 
@@ -76,6 +91,16 @@ export default {
 
   computed: {
     ...mapState(['activeObjective']),
+    createdBy() {
+      return (
+        this.activeObjective.createdBy.displayName || this.activeObjective.createdBy.id
+      );
+    },
+    editedBy() {
+      return (
+        this.activeObjective.editedBy.displayName || this.activeObjective.editedBy.id
+      );
+    },
   },
 
   methods: {

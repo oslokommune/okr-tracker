@@ -11,16 +11,28 @@
                 v-model="queryOrgs"
                 class="form__field"
                 type="text"
-                :placeholder="$t('admin.organization.search', { count: organizations.length })"
+                :placeholder="
+                  $t('admin.organization.search', { count: organizations.length })
+                "
               />
             </label>
           </div>
           <div class="col__body">
-            <div v-for="organization in filteredOrgs" :key="organization.id" class="col__row">
-              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }">
+            <div
+              v-for="organization in filteredOrgs"
+              :key="organization.id"
+              class="col__row"
+            >
+              <router-link
+                class="col__link"
+                :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }"
+              >
                 <i class="col__icon fa fa-industry" />
                 {{ organization.name }}
-                <span v-if="organization.archived" class="col__archived fa fa-file-archive"></span>
+                <span
+                  v-if="organization.archived"
+                  class="col__archived fa fa-file-archive"
+                ></span>
               </router-link>
             </div>
           </div>
@@ -46,21 +58,33 @@
                 v-model="queryDeps"
                 class="form__field"
                 type="text"
-                :placeholder="$t('admin.department.search', { count: departments.length })"
+                :placeholder="
+                  $t('admin.department.search', { count: departments.length })
+                "
               />
             </label>
           </div>
           <div class="col__body">
             <div v-for="department in filteredDeps" :key="department.id" class="col__row">
-              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: department.slug } }">
+              <router-link
+                class="col__link"
+                :to="{ name: 'ItemAdmin', params: { slug: department.slug } }"
+              >
                 <i class="col__icon fa fa-cubes" />
                 {{ department.name }}
-                <span v-if="department.archived" class="col__archived fa fa-file-archive"></span>
+                <span
+                  v-if="department.archived"
+                  class="col__archived fa fa-file-archive"
+                ></span>
               </router-link>
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateDepartment' }" data-cy="create-department">
+            <router-link
+              class="btn btn--fw"
+              :to="{ name: 'CreateDepartment' }"
+              data-cy="create-department"
+            >
               {{ $t('btn.addDepartment') }}
             </router-link>
           </div>
@@ -82,7 +106,10 @@
           </div>
           <div class="col__body">
             <div v-for="product in filteredProds" :key="product.id" class="col__row">
-              <router-link class="col__link" :to="{ name: 'ItemAdmin', params: { slug: product.slug } }">
+              <router-link
+                class="col__link"
+                :to="{ name: 'ItemAdmin', params: { slug: product.slug } }"
+              >
                 <i class="col__icon fa fa-cube" />
                 {{ product.name }}
                 <i v-if="product.archived" class="col__archived fa fa-file-archive" />
@@ -90,7 +117,11 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateProduct' }" data-cy="create-product">
+            <router-link
+              class="btn btn--fw"
+              :to="{ name: 'CreateProduct' }"
+              data-cy="create-product"
+            >
               {{ $t('btn.addProduct') }}
             </router-link>
           </div>
@@ -155,15 +186,24 @@ export default {
       handler() {
         this.$bind(
           'organizations',
-          db.collection('organizations').where('archived', 'in', [false, this.showArchived]).orderBy('slug')
+          db
+            .collection('organizations')
+            .where('archived', 'in', [false, this.showArchived])
+            .orderBy('slug')
         );
         this.$bind(
           'departments',
-          db.collection('departments').where('archived', 'in', [false, this.showArchived]).orderBy('slug')
+          db
+            .collection('departments')
+            .where('archived', 'in', [false, this.showArchived])
+            .orderBy('slug')
         );
         this.$bind(
           'products',
-          db.collection('products').where('archived', 'in', [false, this.showArchived]).orderBy('slug')
+          db
+            .collection('products')
+            .where('archived', 'in', [false, this.showArchived])
+            .orderBy('slug')
         );
       },
     },

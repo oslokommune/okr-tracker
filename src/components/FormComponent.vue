@@ -101,15 +101,9 @@ export default {
       required: false,
       default: 'text',
       validator(value) {
-        return [
-          'url',
-          'text',
-          'password',
-          'tel',
-          'search',
-          'number',
-          'email',
-        ].includes(value);
+        return ['url', 'text', 'password', 'tel', 'search', 'number', 'email'].includes(
+          value
+        );
       },
     },
     value: {

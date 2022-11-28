@@ -5,7 +5,12 @@
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
-            <router-link :to="{ name: 'ObjectiveHome', params: { objectiveId: activeKeyResult.objective.id } }">
+            <router-link
+              :to="{
+                name: 'ObjectiveHome',
+                params: { objectiveId: activeKeyResult.objective.id },
+              }"
+            >
               {{ activeKeyResult.objective.name }}
             </router-link>
           </div>
@@ -15,7 +20,9 @@
       <div v-if="activePeriod && activePeriod.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-value">{{ activePeriod.name }} ({{ formatPeriodDates(activePeriod) }})</div>
+          <div class="details__item-value">
+            {{ activePeriod.name }} ({{ formatPeriodDates(activePeriod) }})
+          </div>
         </div>
       </div>
 
@@ -32,8 +39,11 @@
         <div class="details__item-body">
           <div class="details__item-value">
             <div class="details__item-value user">
-              <a v-if="activeKeyResult.createdBy.id" @click="openProfileModal(activeKeyResult.createdBy.id)">
-                <span>{{ activeKeyResult.createdBy.displayName || activeKeyResult.createdBy.id }}</span>
+              <a
+                v-if="activeKeyResult.createdBy.id"
+                @click="openProfileModal(activeKeyResult.createdBy.id)"
+              >
+                <span>{{ createdBy }}</span>
               </a>
               <span v-else>{{ activeKeyResult.createdBy }}</span>
             </div>
@@ -53,8 +63,11 @@
 
         <div class="details__item-body">
           <div class="details__item-value user">
-            <a v-if="activeKeyResult.editedBy.id" @click="openProfileModal(activeKeyResult.editedBy.id)">
-              <span>{{ activeKeyResult.editedBy.displayName || activeKeyResult.editedBy.id }}</span>
+            <a
+              v-if="activeKeyResult.editedBy.id"
+              @click="openProfileModal(activeKeyResult.editedBy.id)"
+            >
+              <span>{{ editedBy }}</span>
             </a>
             <span v-else>{{ activeKeyResult.editedBy }}</span>
           </div>
@@ -85,7 +98,11 @@
       </div>
     </div>
 
-    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
+    <profile-modal
+      v-if="showProfileModal"
+      :id="chosenProfileId"
+      @close="closeProfileModal"
+    />
   </widget>
 </template>
 
@@ -110,6 +127,16 @@ export default {
 
   computed: {
     ...mapState(['activeKeyResult', 'activePeriod']),
+    createdBy() {
+      return (
+        this.activeKeyResult.createdBy.displayName || this.activeKeyResult.createdBy.id
+      );
+    },
+    editedBy() {
+      return (
+        this.activeKeyResult.editedBy.displayName || this.activeKeyResult.editedBy.id
+      );
+    },
   },
 
   watch: {
@@ -117,7 +144,10 @@ export default {
       immediate: true,
       async handler(keyResult) {
         if (!keyResult) return;
-        await this.$bind('progress', db.collection(`keyResults/${keyResult.id}/progress`));
+        await this.$bind(
+          'progress',
+          db.collection(`keyResults/${keyResult.id}/progress`)
+        );
       },
     },
   },

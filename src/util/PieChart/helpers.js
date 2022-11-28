@@ -6,7 +6,9 @@ export function getTimeProgression(period) {
 
   const { startDate, endDate } = period;
 
-  const timeScale = scaleTime().domain([startDate.toDate(), endDate.toDate()]).clamp(true);
+  const timeScale = scaleTime()
+    .domain([startDate.toDate(), endDate.toDate()])
+    .clamp(true);
 
   return timeScale(new Date());
 }

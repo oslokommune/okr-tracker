@@ -3,9 +3,7 @@
     <div class="itemAdmin">
       <div class="itemAdmin__tabList">
         <router-link
-          v-tooltip.bottom="
-            $t('tooltip.navigateToItem', { item: activeItem.name })
-          "
+          v-tooltip.bottom="$t('tooltip.navigateToItem', { item: activeItem.name })"
           class="itemAdmin__backToItemLink"
           :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
           exact

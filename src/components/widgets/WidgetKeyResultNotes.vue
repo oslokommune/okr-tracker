@@ -3,7 +3,12 @@
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <label>
-          <textarea class="form__field" v-model="thisKey.notes" rows="20" @input="dirty = true" />
+          <textarea
+            v-model="thisKey.notes"
+            class="form__field"
+            rows="20"
+            @input="dirty = true"
+          />
         </label>
       </div>
 
@@ -19,7 +24,9 @@
         <button class="btn btn--ter" @click="closeNotes">{{ $t('btn.close') }}</button>
       </div>
       <div v-else>
-        <button class="btn" @click="editNotes = !editNotes">{{ $t('btn.editNotes') }}</button>
+        <button class="btn" @click="editNotes = !editNotes">
+          {{ $t('btn.editNotes') }}
+        </button>
       </div>
     </div>
   </widget>

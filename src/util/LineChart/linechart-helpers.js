@@ -37,10 +37,7 @@ export function initSvg(svg) {
   this.canvas = svg
     .append('g')
     .classed('canvas', true)
-    .attr(
-      'transform',
-      `translate(${CANVAS_PADDING.left}, ${CANVAS_PADDING.top})`
-    );
+    .attr('transform', `translate(${CANVAS_PADDING.left}, ${CANVAS_PADDING.top})`);
 
   this.xAxis = this.canvas.append('g').classed('axis x', true);
   this.yAxis = this.canvas.append('g').classed('axis y', true);
@@ -58,14 +55,8 @@ export function initSvg(svg) {
     .attr('y1', '0%')
     .attr('y2', '100%');
 
-  this.gradient
-    .append('stop')
-    .attr('id', 'start')
-    .call(styleGradientStart.bind(this));
-  this.gradient
-    .append('stop')
-    .attr('id', 'stop')
-    .call(styleGradientStop.bind(this));
+  this.gradient.append('stop').attr('id', 'start').call(styleGradientStart.bind(this));
+  this.gradient.append('stop').attr('id', 'stop').call(styleGradientStop.bind(this));
 
   this.legendContainer = this.canvas.append('g').classed('legend', true);
   this.valueIndicators = this.canvas.append('g').classed('indicators', true);
@@ -125,9 +116,7 @@ export function styleValueIndicators(el) {
 }
 
 function styleArea(el) {
-  el.classed('area', true)
-    .attr('fill', 'url(#areaGradient)')
-    .attr('fill-opacity', 0.4);
+  el.classed('area', true).attr('fill', 'url(#areaGradient)').attr('fill-opacity', 0.4);
 }
 
 export function resize() {
@@ -136,9 +125,7 @@ export function resize() {
   this.innerHeight =
     this.height -
     CANVAS_PADDING.top -
-    (this.legend
-      ? CANVAS_PADDING.bottom + LEGEND_HEIGHT
-      : CANVAS_PADDING.bottom);
+    (this.legend ? CANVAS_PADDING.bottom + LEGEND_HEIGHT : CANVAS_PADDING.bottom);
   this.innerWidth = this.width - CANVAS_PADDING.left - CANVAS_PADDING.right;
 
   this.xAxis.attr('transform', `translate(0, ${this.innerHeight})`);

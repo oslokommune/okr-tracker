@@ -30,7 +30,8 @@
         :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
       />
       <div v-if="isDetailedView" class="keyResult__progressionSummary">
-        {{ progressDetails.formattedTotalCompletedTasks }} / {{ progressDetails.formattedTotalNumberOfTasks }}
+        {{ progressDetails.formattedTotalCompletedTasks }} /
+        {{ progressDetails.formattedTotalNumberOfTasks }}
       </div>
     </div>
 
@@ -55,7 +56,8 @@ export default {
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     KeyResultModal: () => import('@/components/modals/KeyResultModal.vue'),
-    WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
+    WidgetKeyResultProgressDetails: () =>
+      import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
   },
 
   props: {

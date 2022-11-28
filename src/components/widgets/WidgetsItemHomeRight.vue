@@ -6,19 +6,13 @@
       <widget-wrapper
         v-if="progression"
         :title="
-          $t(
-            `widget.progression.${
-              $route.name === 'ItemHome' ? 'period' : 'objective'
-            }`
-          )
+          $t(`widget.progression.${$route.name === 'ItemHome' ? 'period' : 'objective'}`)
         "
       >
         <progression-chart :progression="progression" />
       </widget-wrapper>
       <widget-weights
-        :active-item="
-          $route.name === 'ItemHome' ? activePeriod : activeObjective
-        "
+        :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
         :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"
       />
@@ -38,8 +32,7 @@ export default {
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetAdminEdit: () => import('./WidgetAdminEdit.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
-    WidgetDashboardEntry: () =>
-      import('@/components/widgets/WidgetDashboardEntry.vue'),
+    WidgetDashboardEntry: () => import('@/components/widgets/WidgetDashboardEntry.vue'),
   },
 
   data: () => ({

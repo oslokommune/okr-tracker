@@ -3,10 +3,7 @@
     <div class="widgets">
       <widget-admin-edit />
       <widget-wrapper :title="$t('widget.progression.objective')">
-        <progression-chart
-          :progression="activeObjective.progression"
-          :dimmed="dimmed"
-        />
+        <progression-chart :progression="activeObjective.progression" :dimmed="dimmed" />
       </widget-wrapper>
       <widget-weights
         type="keyResults"

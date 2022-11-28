@@ -34,11 +34,7 @@
         </div>
 
         <div class="progress-form__right">
-          <validation-provider
-            v-slot="{ errors }"
-            name="datetime"
-            rules="required"
-          >
+          <validation-provider v-slot="{ errors }" name="datetime" rules="required">
             <label class="form-group">
               <span class="form-label">{{ $t('widget.history.time') }}</span>
 
@@ -68,8 +64,8 @@
 
 <script>
 import locale from 'flatpickr/dist/l10n/no';
-import ModalWrapper from './ModalWrapper.vue';
 import { BtnSave } from '@/components/generic/form/buttons';
+import ModalWrapper from './ModalWrapper.vue';
 
 export default {
   name: 'ProgressModal',
@@ -146,12 +142,7 @@ export default {
     },
     async updateRecord() {
       this.loading = true;
-      this.$emit(
-        'update-record',
-        this.record.id,
-        this.formattedData,
-        this.close
-      );
+      this.$emit('update-record', this.record.id, this.formattedData, this.close);
     },
     close() {
       this.loading = false;

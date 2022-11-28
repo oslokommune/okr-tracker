@@ -12,7 +12,10 @@
         <div class="sliderContainer__closeButtonContainer">
           <button
             class="btn"
-            :class="{ 'btn--pri': hasPrimaryBackground, 'btn--ter': !hasPrimaryBackground }"
+            :class="{
+              'btn--pri': hasPrimaryBackground,
+              'btn--ter': !hasPrimaryBackground,
+            }"
             @click.stop="toggle"
           >
             <icon-close :width="22" :height="22" :fill="iconFillColor" />
@@ -58,10 +61,14 @@ export default {
 
   computed: {
     transitionName() {
-      return this.shouldSlideInFromLeft ? 'shouldSlideInFromLeft' : 'shouldSlideInFromRight';
+      return this.shouldSlideInFromLeft
+        ? 'shouldSlideInFromLeft'
+        : 'shouldSlideInFromRight';
     },
     iconFillColor() {
-      return this.hasPrimaryBackground ? 'var(--color-white)' : 'var(--primary-color, #2A2859)';
+      return this.hasPrimaryBackground
+        ? 'var(--color-white)'
+        : 'var(--primary-color, #2A2859)';
     },
   },
 };

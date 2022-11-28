@@ -57,10 +57,7 @@
         type="text"
       >
         <template #help>
-          <span
-            class="form-help"
-            v-html="$t('kpi.updateFrequency.help')"
-          ></span>
+          <span class="form-help" v-html="$t('kpi.updateFrequency.help')"></span>
         </template>
       </form-component>
 
@@ -103,7 +100,10 @@
           <span>{{ $t('kpi.goals.help') }}</span>
           <button
             class="btn btn--sec"
-            @click="$event.preventDefault(); showEditGoalsModal = true"
+            @click="
+              $event.preventDefault();
+              showEditGoalsModal = true;
+            "
           >
             {{ $t('kpi.goals.set') }}
           </button>
@@ -114,16 +114,13 @@
 
       <i18n path="kpi.help.updates" tag="p">
         <template #readMoreLink>
-          <router-link :to="{ name: 'Help', hash: '#kpi-er' }">{{
-            $t('kpi.help.readMoreHere')
-          }}</router-link>
+          <router-link :to="{ name: 'Help', hash: '#kpi-er' }">
+            {{ $t('kpi.help.readMoreHere') }}
+          </router-link>
         </template>
       </i18n>
 
-      <toggle-button
-        v-model="localKpi.auto"
-        :label="$t('kpi.automation.radio')"
-      >
+      <toggle-button v-model="localKpi.auto" :label="$t('kpi.automation.radio')">
         <google-sheets-form-group
           :sheet-id.sync="localKpi.sheetId"
           :sheet-name.sync="localKpi.sheetName"
@@ -168,7 +165,12 @@
 </template>
 
 <script>
-import { kpiFormats, kpiTypes, kpiTrendOptions, kpiUpdateFrequencies } from '@/util/kpiHelpers';
+import {
+  kpiFormats,
+  kpiTypes,
+  kpiTrendOptions,
+  kpiUpdateFrequencies,
+} from '@/util/kpiHelpers';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
@@ -287,8 +289,9 @@ export default {
   flex-grow: 1;
 }
 </style>
-<style lang="scss" >
-#kpiFormat, #preferredTrend {
+<style lang="scss">
+#kpiFormat,
+#preferredTrend {
   flex-direction: column;
 }
 .kpi-format-and-trend {

@@ -156,7 +156,7 @@ export default {
 
   created() {
     if (this.filteredPeriods.length > 0) {
-      this.setPeriod(this.filteredPeriods[0].id)
+      this.setPeriod(this.filteredPeriods[0].id);
     }
   },
 

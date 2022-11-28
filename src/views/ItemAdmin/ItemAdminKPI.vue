@@ -34,16 +34,8 @@
     </template>
 
     <template #collapse-footer>
-      <div
-        :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]"
-      >
-        <i
-          :class="[
-            'fa',
-            `fa-${stateIcon}`,
-            { 'fa-pulse': state === 'loading' },
-          ]"
-        />
+      <div :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]">
+        <i :class="['fa', `fa-${stateIcon}`, { 'fa-pulse': state === 'loading' }]" />
         <span>{{ stateMessage }}</span>
       </div>
     </template>
@@ -169,9 +161,7 @@ export default {
 
         toastArchiveAndRevert({ name: kpi.name, callback: restoreCallback });
       } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.archive', { document: kpi.name })
-        );
+        this.$toasted.error(this.$t('toaster.error.archive', { document: kpi.name }));
       }
       this.loading = false;
     },
@@ -182,9 +172,7 @@ export default {
         await Kpi.restore(kpi.id);
         this.$toasted.show(this.$t('toaster.restored'));
       } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.restore', { document: kpi.name })
-        );
+        this.$toasted.error(this.$t('toaster.error.restore', { document: kpi.name }));
       }
       this.loading = false;
     },

@@ -57,7 +57,7 @@
               {{ formatKPIValue(activeResultIndicator) }}
             </span>
             <span v-if="periodTrend" :class="bgColor" class="progressTarget__progress">
-              {{ periodTrend + $t('kpi.inPeriod')}}
+              {{ periodTrend + $t('kpi.inPeriod') }}
             </span>
           </div>
         </div>
@@ -70,7 +70,8 @@
               {{ percentOfGoal }}
             </span>
             <span class="progressTarget__target">
-              {{ $t('kpi.ofTarget') }} {{ formatKPIValue(activeResultIndicator, goal.value)}}
+              {{ $t('kpi.ofTarget') }}
+              {{ formatKPIValue(activeResultIndicator, goal.value) }}
             </span>
           </div>
         </div>
@@ -190,27 +191,29 @@ export default {
   computed: {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
-    periodTrend(){
-      const sortedProgress = this.filteredProgress.slice().sort((a, b) =>
-        a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1
-      );
+    periodTrend() {
+      const sortedProgress = this.filteredProgress
+        .slice()
+        .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
       const firstProgressRecord = sortedProgress[0]?.value;
       const latestProgressRecord = sortedProgress.slice(-1)[0]?.value;
 
       const periodDiff = latestProgressRecord - firstProgressRecord;
-      const diffInPercentage = periodDiff / firstProgressRecord * 100;
+      const diffInPercentage = (periodDiff / firstProgressRecord) * 100;
       return Math.round(diffInPercentage * 10) / 10;
     },
     bgColor() {
       const ri = this.activeResultIndicator;
       const preferredTrendIsSet = ri?.preferredTrend !== undefined;
-      const preferredTrendFulfilled = (ri?.preferredTrend === 'increase' && this.periodTrend > 0)
-          || (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
+      const preferredTrendFulfilled =
+        (ri?.preferredTrend === 'increase' && this.periodTrend > 0) ||
+        (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
 
       return {
-        'neutral': !preferredTrendIsSet || this.periodTrend === 0,
-        'positive': preferredTrendIsSet && preferredTrendFulfilled,
-        'negative': preferredTrendIsSet && this.periodTrend !== 0 && !preferredTrendFulfilled,
+        neutral: !preferredTrendIsSet || this.periodTrend === 0,
+        positive: preferredTrendIsSet && preferredTrendFulfilled,
+        negative:
+          preferredTrendIsSet && this.periodTrend !== 0 && !preferredTrendFulfilled,
       };
     },
     tabIds() {
@@ -226,8 +229,8 @@ export default {
       // Firebase doesn't support equality filtering on more than one field at
       // a time, so do the rest of the filtering client side.
       const now = new Date();
-      const goals = this.goals.filter((goal) =>
-        goal.toDate.toDate() > now && goal.fromDate.toDate() < now
+      const goals = this.goals.filter(
+        (goal) => goal.toDate.toDate() > now && goal.fromDate.toDate() < now
       );
 
       // We don't enforce non-overlapping goals (yet?), but if anyone has set
@@ -235,7 +238,9 @@ export default {
       return goals ? goals[0] : null;
     },
     percentOfGoal() {
-      return numberLocale.format('.2p')(this.activeResultIndicator.currentValue / this.goal.value);
+      return numberLocale.format('.2p')(
+        this.activeResultIndicator.currentValue / this.goal.value
+      );
     },
     filteredProgress() {
       // Filter out any duplicate measurement values for each date
@@ -249,8 +254,10 @@ export default {
           const startDate = this.currentResultIndicatorPeriod.startDate;
           const endDate = this.currentResultIndicatorPeriod.endDate;
 
-          return (!startDate || a.timestamp.toDate() > startDate) &&
-            (!endDate || a.timestamp.toDate() < endDate);
+          return (
+            (!startDate || a.timestamp.toDate() > startDate) &&
+            (!endDate || a.timestamp.toDate() < endDate)
+          );
         }
         return false;
       });
@@ -265,10 +272,7 @@ export default {
 
         if (resultIndicatorPeriod) {
           if (
-            Object.hasOwnProperty.call(
-              RESULT_INDICATOR_PERIODS,
-              resultIndicatorPeriod
-            )
+            Object.hasOwnProperty.call(RESULT_INDICATOR_PERIODS, resultIndicatorPeriod)
           ) {
             this.currentResultIndicatorPeriod =
               RESULT_INDICATOR_PERIODS[resultIndicatorPeriod];
@@ -337,33 +341,35 @@ export default {
         if (this.activeResultIndicator.progress) {
           const data = JSON.parse(this.activeResultIndicator.progress);
 
-          this.progressCollection = data.map(m => {
+          this.progressCollection = data.map((m) => {
             return {
               timestamp: {
                 toDate: () => new Date(m[0]),
               },
               value: m[1],
               comment: m[2],
-            }
+            };
           });
         } else {
-          let query = db.collection(
-            `kpis/${this.activeResultIndicator.id}/progress`
-          );
+          let query = db.collection(`kpis/${this.activeResultIndicator.id}/progress`);
 
           if (this.currentResultIndicatorPeriod.startDate) {
             query = query.where(
-              'timestamp', '>=', this.currentResultIndicatorPeriod.startDate
+              'timestamp',
+              '>=',
+              this.currentResultIndicatorPeriod.startDate
             );
           }
 
           if (this.currentResultIndicatorPeriod.endDate) {
             query = query.where(
-              'timestamp', '<=', this.currentResultIndicatorPeriod.endDate
+              'timestamp',
+              '<=',
+              this.currentResultIndicatorPeriod.endDate
             );
           }
 
-          await this.$bind('progressCollection', query .orderBy('timestamp', 'desc'));
+          await this.$bind('progressCollection', query.orderBy('timestamp', 'desc'));
         }
       } else {
         this.progressCollection = [];
@@ -373,7 +379,7 @@ export default {
     setStartAndEndDates() {
       if (
         this.currentResultIndicatorPeriod?.key === 'all' &&
-          !this.progressCollection.length
+        !this.progressCollection.length
       ) {
         // Return dates for all year if it's not possible to identify a start
         // or end date due to missing progress data in the current collection.
@@ -397,7 +403,8 @@ export default {
       if (this.activeResultIndicator) {
         await this.$bind(
           'goals',
-          db.collection(`kpis/${this.activeResultIndicator.id}/goals`)
+          db
+            .collection(`kpis/${this.activeResultIndicator.id}/goals`)
             .where('archived', '==', false)
             .orderBy('toDate')
         );
@@ -422,13 +429,13 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         progress: this.filteredProgress,
-        targets: this.goals.map((g) => ({
-          startDate: g.fromDate.toDate(),
-          endDate: g.toDate.toDate(),
-          value: parseFloat(g.value),
-        })).filter((g) =>
-          g.endDate >= this.startDate && g.startDate <= this.endDate
-        ),
+        targets: this.goals
+          .map((g) => ({
+            startDate: g.fromDate.toDate(),
+            endDate: g.toDate.toDate(),
+            value: parseFloat(g.value),
+          }))
+          .filter((g) => g.endDate >= this.startDate && g.startDate <= this.endDate),
         kpi,
         startValue,
         targetValue,
@@ -456,13 +463,7 @@ export default {
           ),
         });
 
-        downloadPng(
-          svgRef,
-          filename,
-          activeTabName,
-          formattedPeriod,
-          this.theme
-        );
+        downloadPng(svgRef, filename, activeTabName, formattedPeriod, this.theme);
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([
@@ -506,7 +507,7 @@ export default {
         return ts.toDate ? ts.toDate() : new Date(period.ts);
       }
 
-      return min(progress, d => d.timestamp.toDate());
+      return min(progress, (d) => d.timestamp.toDate());
     },
 
     /**
@@ -519,7 +520,7 @@ export default {
         return ts.toDate ? ts.toDate() : new Date(ts);
       }
 
-      return max(progress, d => d.timestamp.toDate());
+      return max(progress, (d) => d.timestamp.toDate());
     },
   },
 };
@@ -613,7 +614,7 @@ export default {
   background: var(--color-green-light-2);
 }
 
-.negative{
+.negative {
   color: var(--color-red-dark);
   background: var(--color-red-light);
 }

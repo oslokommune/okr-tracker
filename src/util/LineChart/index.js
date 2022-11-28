@@ -25,20 +25,17 @@ import {
 const INDICATOR_SIZE_DEFAULT = 50;
 const INDICATOR_SIZE_COMMENT = 450;
 
-function formatDate (d, daysBetween) {
-  let opts = {year: 'numeric'};
+function formatDate(d, daysBetween) {
+  let opts = { year: 'numeric' };
 
   if (daysBetween <= 6) {
-    opts = {day: 'numeric', month: 'long'};
-  }
-  else if (daysBetween <= 30 * 6) {
-    opts = {day: 'numeric', month: 'short'};
-  }
-  else if (daysBetween <= 366) {
-    opts = {month: 'long'};
-  }
-  else if (daysBetween <= 365 * 5) {
-    opts = {month: 'short', year: 'numeric'};
+    opts = { day: 'numeric', month: 'long' };
+  } else if (daysBetween <= 30 * 6) {
+    opts = { day: 'numeric', month: 'short' };
+  } else if (daysBetween <= 366) {
+    opts = { month: 'long' };
+  } else if (daysBetween <= 365 * 5) {
+    opts = { month: 'short', year: 'numeric' };
   }
 
   return d.toLocaleDateString(i18n.locale, opts);
@@ -103,16 +100,7 @@ export default class LineChart {
    * `theme`: Optional. A theme to render the graph in, overriding any theme
    *     set in the constructor.
    */
-  render({
-    startValue,
-    targetValue,
-    startDate,
-    endDate,
-    progress,
-    targets,
-    kpi,
-    theme,
-  }) {
+  render({ startValue, targetValue, startDate, endDate, progress, targets, kpi, theme }) {
     if (theme) {
       this.theme = theme;
     }
@@ -120,27 +108,33 @@ export default class LineChart {
     let fromValue = startValue;
     let toValue = targetValue;
 
-    if (typeof(startValue) !== 'number') {
-      fromValue = min(progress, d => d.value);
+    if (typeof startValue !== 'number') {
+      fromValue = min(progress, (d) => d.value);
 
       if (targets && targets.length) {
         // Lower the from value if any target is below the min value.
-        fromValue = Math.min(fromValue, min(targets, t => t.value));
+        fromValue = Math.min(
+          fromValue,
+          min(targets, (t) => t.value)
+        );
       }
     }
-    if (typeof(targetValue) !== 'number') {
-      toValue = max(progress, d => d.value);
+    if (typeof targetValue !== 'number') {
+      toValue = max(progress, (d) => d.value);
 
       if (targets && targets.length) {
         // Raise the to value if any target is above the max value.
-        toValue = Math.max(toValue, max(targets, t => t.value));
+        toValue = Math.max(
+          toValue,
+          max(targets, (t) => t.value)
+        );
       }
     }
 
     const spread = toValue - fromValue;
 
     // Pad with 10% of the spread ...
-    if (typeof(startValue) !== 'number') {
+    if (typeof startValue !== 'number') {
       const wasPositive = fromValue >= 0;
       fromValue -= spread * 0.1;
 
@@ -149,7 +143,7 @@ export default class LineChart {
         fromValue = 0;
       }
     }
-    if (typeof(targetValue) !== 'number') {
+    if (typeof targetValue !== 'number') {
       toValue += spread * 0.1;
     }
 
@@ -173,21 +167,21 @@ export default class LineChart {
     this.yAxis
       .transition()
       .call(
-        axisLeft(this.y).tickFormat((d) =>
-          kpi ? formatKPIValue(kpi, d, { compact: 'semi' }) : d
-        )
-        .ticks(8)
-        .tickSizeInner(-innerWidth)
-        .tickSizeOuter(0)
-        .tickPadding(8)
+        axisLeft(this.y)
+          .tickFormat((d) => (kpi ? formatKPIValue(kpi, d, { compact: 'semi' }) : d))
+          .ticks(8)
+          .tickSizeInner(-innerWidth)
+          .tickSizeOuter(0)
+          .tickPadding(8)
       )
       .call(styleAxisY);
 
     this.xAxis
       .transition()
       .call(
-        axisBottom(this.x).tickFormat((d) => formatDate(d, daysBetween))
-        .ticks(Math.min(Math.ceil(daysBetween), 6))
+        axisBottom(this.x)
+          .tickFormat((d) => formatDate(d, daysBetween))
+          .ticks(Math.min(Math.ceil(daysBetween), 6))
       )
       .call(styleAxisX);
 
@@ -202,7 +196,7 @@ export default class LineChart {
           comment: d?.comment,
           kpi,
           startValue: +fromValue,
-        }
+        };
       })
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
@@ -256,10 +250,7 @@ export default class LineChart {
         .selectAll('path')
         .data(data)
         .join('path')
-        .attr(
-          'transform',
-          (d) => `translate(${this.x(d.timestamp)},${this.y(d.value)})`
-        )
+        .attr('transform', (d) => `translate(${this.x(d.timestamp)},${this.y(d.value)})`)
         .attr('d', (d) =>
           this.indicatorSymbol.size(
             d?.comment ? INDICATOR_SIZE_COMMENT : INDICATOR_SIZE_DEFAULT

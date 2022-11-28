@@ -20,7 +20,9 @@ export const getters = {
       org.children = sortedDepartments
         .filter(({ organization }) => organization.id === org.id)
         .map((dept) => {
-          dept.children = sortedProducts.filter(({ department }) => department && department.id === dept.id);
+          dept.children = sortedProducts.filter(
+            ({ department }) => department && department.id === dept.id
+          );
           return dept;
         });
       return org;
@@ -77,7 +79,9 @@ export const getters = {
       // Active item is organization, show all its departments
       if (activeItem.id === organization.id) return true;
       // Active item is a child of organization, show its all departments
-      return !!(activeItem.organization && activeItem.organization.id === organization.id);
+      return !!(
+        activeItem.organization && activeItem.organization.id === organization.id
+      );
     };
 
     const filterProducts = ({ department }) => {
@@ -90,8 +94,16 @@ export const getters = {
 
     return [
       { name: i18n.t('general.organizations'), items: organizations, icon: 'industry' },
-      { name: i18n.t('general.departments'), items: departments.filter(filterDepartments), icon: 'cubes' },
-      { name: i18n.t('general.products'), items: products.filter(filterProducts), icon: 'cube' },
+      {
+        name: i18n.t('general.departments'),
+        items: departments.filter(filterDepartments),
+        icon: 'cubes',
+      },
+      {
+        name: i18n.t('general.products'),
+        items: products.filter(filterProducts),
+        icon: 'cube',
+      },
     ];
   },
 
@@ -101,14 +113,14 @@ export const getters = {
 
     const checked = [];
 
-    organizations.forEach(org => {
+    organizations.forEach((org) => {
       if (orgs[org.slug]) {
         checked.push(orgs[org.slug]);
       }
-    })
+    });
 
     return checked.length > 0;
-  }
+  },
 };
 
 export const actions = {

@@ -6,11 +6,7 @@
       <widget-wrapper
         v-if="progression"
         :title="
-          $t(
-            `widget.progression.${
-              $route.name === 'ItemHome' ? 'period' : 'objective'
-            }`
-          )
+          $t(`widget.progression.${$route.name === 'ItemHome' ? 'period' : 'objective'}`)
         "
       >
         <progression-chart :progression="progression" />
@@ -19,9 +15,7 @@
       <widget-team />
       <widget-child-items />
       <widget-weights
-        :active-item="
-          $route.name === 'ItemHome' ? activePeriod : activeObjective
-        "
+        :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
         :type="$route.name === 'ItemHome' ? 'objective' : 'keyResult'"
       />
@@ -43,10 +37,6 @@ import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.
 export default {
   name: 'WidgetsMobile',
 
-  data: () => ({
-    isDepartment
-  }),
-
   components: {
     WidgetMissionStatement,
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
@@ -56,9 +46,12 @@ export default {
     WidgetWeights,
     WidgetAdminEdit,
     WidgetObjectiveDetails,
-    WidgetDashboardEntry: () =>
-      import('@/components/widgets/WidgetDashboardEntry.vue'),
+    WidgetDashboardEntry: () => import('@/components/widgets/WidgetDashboardEntry.vue'),
   },
+
+  data: () => ({
+    isDepartment,
+  }),
 
   computed: {
     ...mapState([

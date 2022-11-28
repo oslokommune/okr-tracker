@@ -4,7 +4,9 @@
     <ul class="users__list">
       <li v-for="member in membersWithRole" :key="member.id" class="user">
         <a @click="openProfileModal(member.id)">
-          <span class="user__name">{{ member.displayName || firstPartOfEmail(member.id) }}</span>
+          <span class="user__name">
+            {{ member.displayName || firstPartOfEmail(member.id) }}
+          </span>
         </a>
       </li>
     </ul>

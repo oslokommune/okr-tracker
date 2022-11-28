@@ -1,6 +1,9 @@
 <template>
   <div>
-    <site-header :toggle-show-aside-left="toggleShowAsideLeft" :toggle-show-aside-right="toggleShowAsideRight" />
+    <site-header
+      :toggle-show-aside-left="toggleShowAsideLeft"
+      :toggle-show-aside-right="toggleShowAsideRight"
+    />
     <slider-container
       :is-open="showAsideLeft"
       :toggle="toggleShowAsideLeft"
@@ -25,9 +28,9 @@
 <script>
 import { mapState } from 'vuex';
 
+import SliderContainer from '@/components/SliderContainer.vue';
 import SiteHeader from './Navigation/SiteHeader.vue';
 import SiteSidebar from './Navigation/SiteSidebar.vue';
-import SliderContainer from '@/components/SliderContainer.vue';
 import UserProfileMenu from './UserProfileMenu.vue';
 
 export default {

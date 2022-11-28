@@ -37,7 +37,7 @@
 import { db } from '@/config/firebaseConfig';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
-import AccessRequestCollection from '../../../../functions/backend/utils/collectionUtils/AccessRequestCollection.js';
+import AccessRequestCollection from 'functions/backend/utils/collectionUtils/AccessRequestCollection.js';
 
 const accessRequestCollection = new AccessRequestCollection(db);
 

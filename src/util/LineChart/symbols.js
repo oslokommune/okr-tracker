@@ -13,11 +13,7 @@ export function addCommentSymbol(el) {
     .attr('y', '15')
     .attr('viewBox', '0 0 25 25');
 
-  pattern
-    .append('rect')
-    .attr('width', '100%')
-    .attr('height', '100%')
-    .attr('fill', fill);
+  pattern.append('rect').attr('width', '100%').attr('height', '100%').attr('fill', fill);
 
   pattern
     .append('path')

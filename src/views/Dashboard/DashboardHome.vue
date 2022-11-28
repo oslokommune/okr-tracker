@@ -23,7 +23,10 @@
                 <template #icon>
                   <icon-two-people-dancing />
                 </template>
-                <HTML-output v-if="activeItem.targetAudience" :html="activeItem.targetAudience" />
+                <HTML-output
+                  v-if="activeItem.targetAudience"
+                  :html="activeItem.targetAudience"
+                />
               </dashboard-department-info-box>
             </div>
             <div class="dashboard__departmentInfoBoxes">
@@ -59,7 +62,7 @@
         </h2>
       </template>
       <template #content>
-        <ul class="dashboard__cardList" v-if="keyFigures.length">
+        <ul v-if="keyFigures.length" class="dashboard__cardList">
           <li
             v-for="keyFigure in keyFigures"
             :key="keyFigure.id"
@@ -113,12 +116,10 @@ import ObjectiveProgression from '@/components/widgets/ObjectiveProgression.vue'
 import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
 import DashboardDepartmentInfoBox from '@/components/DashboardDepartmentInfoBox.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
-import IconHeartHand from '@/components/IconHeartHand.vue';
 import IconHandsGlobe from '@/components/IconHandsGlobe.vue';
 import IconTwoPeopleDancing from '@/components/IconTwoPeopleDancing.vue';
 import KeyFigure from '@/components/KeyFigure.vue';
 import EmptyState from '@/components/EmptyState.vue';
-
 import DashboardSection from './DashboardSection.vue';
 
 export default {
@@ -129,7 +130,6 @@ export default {
     DashboardResultIndicatorsSection,
     DashboardDepartmentInfoBox,
     HTMLOutput,
-    IconHeartHand,
     IconHandsGlobe,
     IconTwoPeopleDancing,
     KeyFigure,
@@ -142,12 +142,19 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'subKpis', 'activeItem', 'objectives', 'departments', 'products']),
+    ...mapState([
+      'kpis',
+      'subKpis',
+      'activeItem',
+      'objectives',
+      'departments',
+      'products',
+    ]),
     ...mapGetters(['hasEditRights']),
     keyFigures() {
       return [
-        ...this.kpis.filter(kpi => kpi.kpiType === 'keyfig'),
-        ...this.subKpis.filter(kpi => kpi.kpiType === 'keyfig'),
+        ...this.kpis.filter((kpi) => kpi.kpiType === 'keyfig'),
+        ...this.subKpis.filter((kpi) => kpi.kpiType === 'keyfig'),
       ];
     },
   },

@@ -14,7 +14,8 @@ const getPercentageCompleted = (current, target) => {
 
 export const getKeyResultProgressDetails = (keyResult) => {
   const { startValue, targetValue, currentValue: keyResultCurrentValue } = keyResult;
-  const currentValue = keyResultCurrentValue === undefined ? startValue : keyResultCurrentValue;
+  const currentValue =
+    keyResultCurrentValue === undefined ? startValue : keyResultCurrentValue;
 
   let totalNumberOfTasks;
   let totalCompletedTasks;
@@ -28,7 +29,10 @@ export const getKeyResultProgressDetails = (keyResult) => {
     totalNumberOfTasks = targetValue;
     totalCompletedTasks = currentValue;
     totalRemainingTasks = totalNumberOfTasks - totalCompletedTasks;
-    percentageCompleted = getPercentageCompleted(totalCompletedTasksForPeriod, totalNumberOfTasksForPeriod);
+    percentageCompleted = getPercentageCompleted(
+      totalCompletedTasksForPeriod,
+      totalNumberOfTasksForPeriod
+    );
   } else {
     totalNumberOfTasks = startValue - targetValue;
     totalCompletedTasks = startValue - currentValue;

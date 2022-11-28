@@ -15,9 +15,17 @@
       @openModal="openProfileModal"
     />
 
-    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
+    <profile-modal
+      v-if="showProfileModal"
+      :id="chosenProfileId"
+      @close="closeProfileModal"
+    />
 
-    <router-link v-if="memberOrAdmin" :to="{ name: 'ItemAdmin' }" class="btn btn--fw btn--ter">
+    <router-link
+      v-if="memberOrAdmin"
+      :to="{ name: 'ItemAdmin' }"
+      class="btn btn--fw btn--ter"
+    >
       {{ $t('btn.add') }}
     </router-link>
   </widget>
@@ -25,7 +33,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import { possibleDevelopers, possibleAdm, possibleDesigners, displayOrder } from '@/config/jobPositions';
+import {
+  possibleDevelopers,
+  possibleAdm,
+  possibleDesigners,
+  displayOrder,
+} from '@/config/jobPositions';
 
 export default {
   name: 'WidgetTeam',
@@ -65,16 +78,26 @@ export default {
         this.teamMembers = {};
 
         this.activeItem.team.forEach((employee) => {
-         if (!employee.position) {
-            !this.teamMembers.others ? this.teamMembers.others = [employee] : this.teamMembers.others.push(employee)
+          if (!employee.position) {
+            !this.teamMembers.others
+              ? (this.teamMembers.others = [employee])
+              : this.teamMembers.others.push(employee);
           } else if (possibleDevelopers.includes(employee.position)) {
-           !this.teamMembers.developers ? this.teamMembers.developers = [employee] : this.teamMembers.developers.push(employee)
+            !this.teamMembers.developers
+              ? (this.teamMembers.developers = [employee])
+              : this.teamMembers.developers.push(employee);
           } else if (possibleDesigners.includes(employee.position)) {
-           !this.teamMembers.designers ? this.teamMembers.designers = [employee] : this.teamMembers.designers.push(employee)
+            !this.teamMembers.designers
+              ? (this.teamMembers.designers = [employee])
+              : this.teamMembers.designers.push(employee);
           } else if (possibleAdm.includes(employee.position)) {
-           !this.teamMembers.administration ? this.teamMembers.administration = [employee] : this.teamMembers.administration.push(employee)
+            !this.teamMembers.administration
+              ? (this.teamMembers.administration = [employee])
+              : this.teamMembers.administration.push(employee);
           } else {
-           !this.teamMembers[employee.position] ? this.teamMembers[employee.position] = [employee] : this.teamMembers[employee.position].push(employee)
+            !this.teamMembers[employee.position]
+              ? (this.teamMembers[employee.position] = [employee])
+              : this.teamMembers[employee.position].push(employee);
           }
         });
       },
@@ -93,8 +116,8 @@ export default {
     },
 
     sortByDisplayOrder(roles) {
-      return displayOrder.filter(role => roles.includes(role));
-    }
+      return displayOrder.filter((role) => roles.includes(role));
+    },
   },
 };
 </script>

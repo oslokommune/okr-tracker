@@ -4,7 +4,9 @@ export default function (content, filename, filetype) {
   if (window.navigator.msSaveOrOpenBlob) {
     downloadLink.href = '#';
     downloadLink.download = '';
-    downloadLink.addEventListener('click', () => window.navigator.msSaveOrOpenBlob(content, `${filename}${filetype}`));
+    downloadLink.addEventListener('click', () =>
+      window.navigator.msSaveOrOpenBlob(content, `${filename}${filetype}`)
+    );
     downloadLink.click();
   } else {
     downloadLink.href = url;

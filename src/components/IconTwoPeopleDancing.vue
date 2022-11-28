@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "IconTwoPeopleDancing",
+  name: 'IconTwoPeopleDancing',
 
   props: {
     width: {
@@ -45,7 +45,7 @@ export default {
     fill: {
       type: String,
       required: false,
-      default: "var(--color-primary)",
+      default: 'var(--color-primary)',
     },
   },
 };

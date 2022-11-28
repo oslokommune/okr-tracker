@@ -76,7 +76,10 @@ auth.onAuthStateChanged(async (user) => {
 
     if (router.currentRoute.query.redirectFrom) {
       await router.push({ path: router.currentRoute.query.redirectFrom });
-    } else if (router.currentRoute.name === 'Login' && !router.currentRoute.query.redirectFrom) {
+    } else if (
+      router.currentRoute.name === 'Login' &&
+      !router.currentRoute.query.redirectFrom
+    ) {
       await router.push({
         name: 'Home',
       });
