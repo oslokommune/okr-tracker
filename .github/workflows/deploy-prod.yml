@@ -1,0 +1,45 @@
+name: Deploy to PROD
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      FIREBASE_PROJECT_ID_PROD:
+        required: true
+      FIREBASE_SERVICE_ACCOUNT_PROD:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Populate env file
+        run: |
+          echo "${{ secrets.ENV_FILE_PROD }}" > .env
+          if ! grep -q VITE_PROJECT_ID .env; then
+            echo "::error:: The .env file is likely not populated correctly"
+            exit 1
+          fi
+
+      - name: Build
+        run: |
+          npm ci
+          npm --prefix functions ci functions
+          vite build --mode production
+
+      - name: Deploy PROD
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}"
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID_PROD }}"
+          channelId: live
