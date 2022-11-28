@@ -170,7 +170,9 @@ export function populateLegend(el) {
 }
 
 export function addValueTooltips(el) {
-  if (this.valueTooltips) this.valueTooltips.destroy();
+  if (this.valueTooltips) {
+    this.valueTooltips.destroy();
+  }
 
   this.valueTooltips = delegate(el.node(), {
     target: '.indicator',
@@ -180,7 +182,9 @@ export function addValueTooltips(el) {
     allowHTML: true,
     content(ref) {
       const data = select(ref).datum();
-      if (!data) return '';
+      if (!data) {
+        return '';
+      }
       return new Tooltip({
         propsData: {
           timestamp: data.timestamp,

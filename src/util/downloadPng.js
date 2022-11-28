@@ -24,7 +24,7 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
       .attr('fill', theme === 'green' ? 'var(--color-green-dark)' : 'var(--color-purple)')
       .text(title);
 
-    if (period)
+    if (period) {
       heading
         .append('text')
         .attr('x', 5)
@@ -32,6 +32,7 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
         .call(styleText, 12, 300)
         .attr('fill', 'var(--color-grey-600)')
         .text(period);
+    }
   }
 
   svg.select('.indicators').attr('opacity', 0);

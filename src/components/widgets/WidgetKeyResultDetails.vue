@@ -143,7 +143,9 @@ export default {
     activeKeyResult: {
       immediate: true,
       async handler(keyResult) {
-        if (!keyResult) return;
+        if (!keyResult) {
+          return;
+        }
         await this.$bind(
           'progress',
           db.collection(`keyResults/${keyResult.id}/progress`)

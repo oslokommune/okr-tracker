@@ -24,8 +24,12 @@ export default {
   },
   computed: {
     progressBarWidth() {
-      if (!this.progression || this.progression < 0) return 0;
-      if (this.progression > 100) return '100%';
+      if (!this.progression || this.progression < 0) {
+        return 0;
+      }
+      if (this.progression > 100) {
+        return '100%';
+      }
 
       return `${this.progression}%`;
     },

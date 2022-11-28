@@ -23,7 +23,9 @@ const addAccessRequest = async (db, accessRequest) => {
 export const createAccessRequest = async (db, accessRequest) => {
   const { email } = accessRequest;
 
-  if (!email) return { code: 400, message: 'toaster.request.noEmail' };
+  if (!email) {
+    return { code: 400, message: 'toaster.request.noEmail' };
+  }
 
   const emailDomain = email.split('@')[1];
   const domainWhitelistCollection = new DomainWhitelistCollection(db);

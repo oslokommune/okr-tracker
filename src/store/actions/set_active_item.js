@@ -8,7 +8,9 @@ import getActivePeriod from './actionUtils';
  */
 export default firestoreAction(
   async ({ bindFirestoreRef, unbindFirestoreRef, commit, dispatch }, item) => {
-    if (!item) return unbindFirestoreRef('activeItem');
+    if (!item) {
+      return unbindFirestoreRef('activeItem');
+    }
 
     // Bind the active item
     commit('SET_ACTIVE_ITEM_REF', item);

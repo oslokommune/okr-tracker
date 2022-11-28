@@ -22,7 +22,9 @@ export const handleKeyResultProgressOnKeyResultUpdate = functions
       (field) => before.data()[field] !== after.data()[field]
     );
 
-    if (fieldsHaveChanged) return handleKeyResultProgress(null, context);
+    if (fieldsHaveChanged) {
+      return handleKeyResultProgress(null, context);
+    }
 
     return true;
   });
@@ -32,7 +34,9 @@ export const handleKeyResultProgressOnObjectiveUpdate = functions
   .region(config.region)
   .firestore.document(`objectives/{objectiveId}`)
   .onUpdate(({ before, after }) => {
-    if (before.data().weight === after.data().weight) return false;
+    if (before.data().weight === after.data().weight) {
+      return false;
+    }
 
     const { period } = after.data();
     return updatePeriodProgression(period);

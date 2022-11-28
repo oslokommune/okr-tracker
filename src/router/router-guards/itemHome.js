@@ -10,8 +10,12 @@ export default async function itemHome(to, from, next) {
   const { activeItem } = state;
   const { slug } = to.params;
 
-  if (from.params && from.params.slug === slug) next();
-  if (activeItem && activeItem.slug === slug) next();
+  if (from.params && from.params.slug === slug) {
+    next();
+  }
+  if (activeItem && activeItem.slug === slug) {
+    next();
+  }
 
   try {
     const slugRef = await getSlugRef(slug);

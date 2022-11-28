@@ -5,7 +5,9 @@ import { numberLocale } from './format';
 export const formatValue = (value) => numberLocale.format(',.2~f')(value);
 
 const getPercentageCompleted = (current, target) => {
-  if (target === 0) return 0;
+  if (target === 0) {
+    return 0;
+  }
   // Round with max 2 decimal (as with string formatted percentages)
   const percent = (current / target) * 100;
   const rounded = parseFloat(percent.toFixed(2));

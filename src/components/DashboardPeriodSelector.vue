@@ -134,7 +134,9 @@ export default {
       this.hide();
     },
     selectCustomRange(range) {
-      if (range.length !== 2) return;
+      if (range.length !== 2) {
+        return;
+      }
       this.$emit('input', {
         startDate: range[0],
         endDate: endOfDay(range[1]),

@@ -51,6 +51,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     // TODO: Re-enable and lint this rule separately.
     'no-unused-expressions': 'off',
+    'curly': ['error', 'all'],
   },
   parserOptions: {
     parser: '@babel/eslint-parser',

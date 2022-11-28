@@ -111,8 +111,12 @@ export default {
 
     type() {
       const { department, organization } = this.activeItem;
-      if (organization && department) return 'product';
-      if (organization) return 'department';
+      if (organization && department) {
+        return 'product';
+      }
+      if (organization) {
+        return 'department';
+      }
       return 'organization';
     },
   },

@@ -93,9 +93,13 @@ export default {
     },
 
     range(range) {
-      if (!range) return;
+      if (!range) {
+        return;
+      }
       const parts = this.range.split(' til ').map((d) => new Date(d));
-      if (parts.length === 1) return;
+      if (parts.length === 1) {
+        return;
+      }
       this.dirty = true;
       const [startDate, endDate] = parts;
       this.startDate = startDate;
@@ -105,7 +109,9 @@ export default {
 
   methods: {
     generateRange() {
-      if (!this.activePeriod.startDate || !this.activePeriod.endDate) return '';
+      if (!this.activePeriod.startDate || !this.activePeriod.endDate) {
+        return '';
+      }
       const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
       const endDate = format(this.activePeriod.endDate.toDate(), 'yyyy-MM-dd');
       return this.$t('period.range', { startDate, endDate });

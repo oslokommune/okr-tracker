@@ -95,7 +95,9 @@ export default {
     activeObjective: {
       immediate: true,
       handler(objective) {
-        if (!objective) return;
+        if (!objective) {
+          return;
+        }
 
         this.keyRes = this.keyResults.filter(
           (keyRes) => keyRes.objective === `objectives/${objective.id}`

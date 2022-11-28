@@ -219,7 +219,9 @@ export default {
     activeKeyResult: {
       immediate: true,
       async handler(keyResult) {
-        if (!keyResult) return;
+        if (!keyResult) {
+          return;
+        }
         this.progressDetails = getKeyResultProgressDetails(keyResult);
         this.isLoading = true;
         await this.$bind(
@@ -258,7 +260,9 @@ export default {
     theme: {
       immediate: true,
       handler() {
-        if (!this.graph) return;
+        if (!this.graph) {
+          return;
+        }
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
@@ -272,8 +276,12 @@ export default {
   },
 
   mounted() {
-    if (!this.$refs.graph) return;
-    if (!this.activeKeyResult) return;
+    if (!this.$refs.graph) {
+      return;
+    }
+    if (!this.activeKeyResult) {
+      return;
+    }
 
     this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
     this.graph.render({
@@ -315,7 +323,9 @@ export default {
     },
 
     async saveProgress() {
-      if (!this.allowedToEditPeriod) return;
+      if (!this.allowedToEditPeriod) {
+        return;
+      }
 
       this.isSaving = true;
       try {

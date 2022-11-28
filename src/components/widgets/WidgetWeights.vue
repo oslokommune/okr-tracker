@@ -49,7 +49,9 @@ export default {
 
   computed: {
     weights() {
-      if (!this.activeItem) return [];
+      if (!this.activeItem) {
+        return [];
+      }
 
       let siblings = null;
 
@@ -80,7 +82,9 @@ export default {
   },
 
   mounted() {
-    if (this.$refs.svg) this.init();
+    if (this.$refs.svg) {
+      this.init();
+    }
   },
 
   methods: {

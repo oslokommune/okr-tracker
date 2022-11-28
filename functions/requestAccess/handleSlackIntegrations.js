@@ -79,7 +79,9 @@ const handleAcceptRequest = async (webhook, value, user, db) => {
     // Check if user already exists
     const { exists } = await usersCollection.doc(email).get();
 
-    if (exists) throw new Error(`User ${email} already exists!`);
+    if (exists) {
+      throw new Error(`User ${email} already exists!`);
+    }
 
     // Add user if it does not exist
     await usersCollection.doc(email).set({

@@ -79,8 +79,12 @@ export default {
   computed: {
     ...mapState(['kpis']),
     state() {
-      if (this.kpi.error) return 'error';
-      if (this.kpi.valid) return 'valid';
+      if (this.kpi.error) {
+        return 'error';
+      }
+      if (this.kpi.valid) {
+        return 'valid';
+      }
       return 'loading';
     },
     stateClass() {
@@ -178,8 +182,12 @@ export default {
     },
 
     showError(msg) {
-      if (msg === '403') return this.$t('error.403');
-      if (msg === '404') return this.$t('error.404');
+      if (msg === '403') {
+        return this.$t('error.403');
+      }
+      if (msg === '404') {
+        return this.$t('error.404');
+      }
 
       if (msg.includes('Cannot find data in cell')) {
         const cell = msg.split('cell ')[1];

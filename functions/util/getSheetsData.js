@@ -33,7 +33,9 @@ jwtClient.authorize((err) => {
  */
 const getSheetsData = async ({ sheetId, sheetName, sheetCell }) => {
   const sheets = google.sheets('v4');
-  if (!sheetId || !sheetName || !sheetCell) return false;
+  if (!sheetId || !sheetName || !sheetCell) {
+    return false;
+  }
 
   const sheetRequest = {
     auth: jwtClient,

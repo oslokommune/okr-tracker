@@ -248,8 +248,12 @@ export default {
 
     async setItems({ type, id }, update) {
       if (!type || !id) {
-        if (this.objectives.length) this.$unbind('objectives');
-        if (this.keyResults.length) this.$unbind('keyResults');
+        if (this.objectives.length) {
+          this.$unbind('objectives');
+        }
+        if (this.keyResults.length) {
+          this.$unbind('keyResults');
+        }
         this.selectedType = null;
       }
 
@@ -261,7 +265,9 @@ export default {
         this.isLoadingPeriod = true;
         this.keyResults = [];
         await this.bindObjectives({ parentId: id });
-        if (this.keyResults.length) this.$unbind('keyResults');
+        if (this.keyResults.length) {
+          this.$unbind('keyResults');
+        }
         this.isLoadingPeriod = false;
       } else if (type === 'objective') {
         this.isLoadingObjective = true;

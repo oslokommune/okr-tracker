@@ -138,7 +138,9 @@ export default {
       return tabIdsHelper('periods');
     },
     filteredPeriods() {
-      if (this.hasEditRights) return this.periods;
+      if (this.hasEditRights) {
+        return this.periods;
+      }
       const daysInAdvance = 7; // Prior to period start
 
       return this.periods.filter(({ startDate }) =>

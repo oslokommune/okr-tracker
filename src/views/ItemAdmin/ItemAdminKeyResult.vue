@@ -315,8 +315,12 @@ export default {
     },
 
     showError(msg) {
-      if (msg === '403') return this.$t('error.403');
-      if (msg === '404') return this.$t('error.404');
+      if (msg === '403') {
+        return this.$t('error.403');
+      }
+      if (msg === '404') {
+        return this.$t('error.404');
+      }
 
       if (msg.includes('Cannot find data in cell')) {
         const cell = msg.split('cell ')[1];

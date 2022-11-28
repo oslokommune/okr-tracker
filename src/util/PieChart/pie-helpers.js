@@ -76,8 +76,12 @@ function initPercentText(el) {
 // Updates the position and anchor-direction of the today text label
 function updateTodayTextPosition(el, targetAngle) {
   el.text(() => {
-    if (targetAngle <= 0) return 'Ikke startet';
-    if (targetAngle >= Math.PI * 2) return 'Fullført';
+    if (targetAngle <= 0) {
+      return 'Ikke startet';
+    }
+    if (targetAngle >= Math.PI * 2) {
+      return 'Fullført';
+    }
     return 'I dag';
   })
     .transition()

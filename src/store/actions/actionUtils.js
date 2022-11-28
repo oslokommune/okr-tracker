@@ -14,8 +14,12 @@ export default async function getActivePeriod(slugRef) {
   const filterPeriodsIncludeToday = (doc) => {
     const now = new Date();
     const { startDate, endDate } = doc.data();
-    if (startDate.toDate() > now) return false;
-    if (endDate.toDate() < now) return false;
+    if (startDate.toDate() > now) {
+      return false;
+    }
+    if (endDate.toDate() < now) {
+      return false;
+    }
     return true;
   };
 

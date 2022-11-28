@@ -412,7 +412,9 @@ export default {
     },
 
     renderGraph() {
-      if (!this.resultIndicators.length || !this.activeResultIndicator) return;
+      if (!this.resultIndicators.length || !this.activeResultIndicator) {
+        return;
+      }
 
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
@@ -444,7 +446,9 @@ export default {
     },
 
     download(value) {
-      if (!this.activeResultIndicator) return;
+      if (!this.activeResultIndicator) {
+        return;
+      }
       const filename = this.activeResultIndicator.name;
 
       if (value.downloadOption === 'png') {
