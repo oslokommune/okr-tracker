@@ -123,6 +123,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { dateTimeShort } from '@/util';
+import { formatValue } from '@/util/keyResultProgress';
 import UserLink from './UserLink.vue';
 import { Btn, BtnDelete } from '@/components/generic/form/buttons';
 
@@ -150,7 +151,7 @@ export default {
     valueFormatter: {
       type: Function,
       required: false,
-      default: (value) => value,
+      default: formatValue,
     },
     dateFormatter: {
       type: Function,

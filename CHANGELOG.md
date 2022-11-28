@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed a bug where the right column on department pages would be hidden
   unintentionally.
+### Changed
+
+- Values for key result progress are now rounded to maximum two decimal places
+  when displayed.
 
 ## [3.0.0] 2022-11-25
 

@@ -2,9 +2,15 @@ import { scaleLinear } from 'd3-scale';
 
 import { numberLocale } from './format';
 
-const formatValue = (value) => numberLocale.format(',')(value);
+export const formatValue = (value) => numberLocale.format(',.2~f')(value);
 
-const getPercentageCompleted = (current, target) => (target === 0 ? 0 : Math.round((current / target) * 100));
+const getPercentageCompleted = (current, target) => {
+  if (target === 0) return 0;
+  // Round with max 2 decimal (as with string formatted percentages)
+  const percent = (current / target) * 100;
+  const rounded = parseFloat(percent.toFixed(2));
+  return rounded;
+};
 
 export const getKeyResultProgressDetails = (keyResult) => {
   const { startValue, targetValue, currentValue: keyResultCurrentValue } = keyResult;
