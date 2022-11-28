@@ -169,7 +169,7 @@ export default {
     resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
       (period) => period
     ),
-    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.sixmonths,
+    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.all,
     startDate: null,
     endDate: null,
     trend: 0,
