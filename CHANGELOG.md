@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file. The format 
   unintentionally.
 ### Changed
 
+- The result indicator graph now defaults to showing all registered measurements
+  in the dashboard.
 - Values for key result progress are now rounded to maximum two decimal places
   when displayed.
 
