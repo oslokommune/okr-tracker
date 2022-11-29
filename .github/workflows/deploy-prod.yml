@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
+      ENV_FILE_PROD:
+        required: true
       FIREBASE_PROJECT_ID_PROD:
         required: true
       FIREBASE_SERVICE_ACCOUNT_PROD:
