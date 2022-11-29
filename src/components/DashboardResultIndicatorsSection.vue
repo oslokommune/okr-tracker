@@ -126,10 +126,10 @@ const getResultIndicatorPeriods = () => {
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
-    sixmonths: {
-      label: i18n.t('period.sixmonths'),
-      key: 'sixmonths',
-      startDate: sixMonthsBack,
+    all: {
+      label: i18n.t('period.all'),
+      key: 'all',
+      startDate: false,
       endDate,
     },
     year: {
@@ -138,10 +138,10 @@ const getResultIndicatorPeriods = () => {
       startDate: new Date(currentYear, 0, 1),
       endDate,
     },
-    all: {
-      label: i18n.t('period.all'),
-      key: 'all',
-      startDate: false,
+    sixmonths: {
+      label: i18n.t('period.sixmonths'),
+      key: 'sixmonths',
+      startDate: sixMonthsBack,
       endDate,
     },
   };
