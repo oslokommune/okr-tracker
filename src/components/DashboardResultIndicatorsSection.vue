@@ -57,7 +57,7 @@
               {{ formatKPIValue(activeResultIndicator) }}
             </span>
             <span v-if="periodTrend" :class="bgColor" class="progressTarget__progress">
-              {{ periodTrend + $t('kpi.inPeriod') }}
+              {{ periodTrendFormatted + $t('kpi.inPeriod') }}
             </span>
           </div>
         </div>
@@ -102,6 +102,7 @@ import firebase from 'firebase/app';
 
 import { db } from '@/config/firebaseConfig';
 import { periodDates, numberLocale } from '@/util';
+import { formatLargeNumber } from '@/util/format';
 import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
 import { endOfDay } from 'date-fns';
 import downloadFile from '@/util/downloadFile';
@@ -201,6 +202,10 @@ export default {
       const periodDiff = latestProgressRecord - firstProgressRecord;
       const diffInPercentage = (periodDiff / firstProgressRecord) * 100;
       return Math.round(diffInPercentage * 10) / 10;
+    },
+    periodTrendFormatted() {
+      const periodTrendFormatted = formatLargeNumber(this.periodTrend);
+      return this.periodTrend > 0 ? '+' + periodTrendFormatted : periodTrendFormatted;
     },
     bgColor() {
       const ri = this.activeResultIndicator;
@@ -617,8 +622,8 @@ export default {
 }
 
 .negative {
-  color: var(--color-red-dark);
-  background: var(--color-red-light);
+  color: var(--color-red-2);
+  background: var(--color-red-light-2);
 }
 
 .progressTarget {
@@ -635,7 +640,7 @@ export default {
     gap: 0.75rem;
   }
   &__title {
-    color: var(--color-grey-600);
+    color: var(--color-grey-400);
     font-weight: 500;
     font-size: typography.$font-size-1;
   }
@@ -646,10 +651,12 @@ export default {
   }
   &__progress {
     padding: 0.3rem;
+    font-weight: 500;
     font-size: typography.$font-size-0;
   }
   &__target {
-    color: var(--color-grey-600);
+    color: var(--color-grey-400);
+    font-weight: 500;
     font-size: typography.$font-size-0;
   }
 }
