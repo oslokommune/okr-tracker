@@ -1,5 +1,6 @@
 import functions from 'firebase-functions';
 import googleApis from 'googleapis';
+import sheetIdFromUrl from './util.js';
 
 const { google } = googleApis;
 const scopes = ['https://www.googleapis.com/auth/spreadsheets'];
@@ -25,16 +26,21 @@ jwtClient.authorize((err) => {
 });
 
 /**
- * Gets a value from a Google Sheet cell
+ * Return a value from a Google Sheets cell.
  * @param {String} sheetId - ID of Sheets Document
+ * @param {String} sheetId - URL of Sheets Document
  * @param {String} sheetName - Name of Sheet (tab)
  * @param {String} cell - Cell name of value
  * @returns {Number} - Value of the cell
  */
-const getSheetsData = async ({ sheetId, sheetName, sheetCell }) => {
+const getSheetsData = async ({ sheetId, sheetUrl, sheetName, sheetCell }) => {
   const sheets = google.sheets('v4');
-  if (!sheetId || !sheetName || !sheetCell) {
+  if (!(sheetId || sheetUrl) || !sheetName || !sheetCell) {
     return false;
+  }
+
+  if (sheetUrl) {
+    sheetId = sheetIdFromUrl(sheetUrl);
   }
 
   const sheetRequest = {

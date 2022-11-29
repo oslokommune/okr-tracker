@@ -58,36 +58,35 @@ Ta kontakt med en systemadministrator for å få brukernavn og passord til bruke
 
 ## KPI-er
 
-KPI-verdiene kan ikke oppdateres direkte i OKR-trackeren.
-
-KPI-en må knyttes til et Google Sheet-dokument med verdien som lastes automatisk inn i OKR-trackeren med gitt tidsintervall (to ganger daglig).
-
-Viktig: Google Sheets-dokumentet må **deles** med OKR-trackerens _service account_. Adressen til denne finner du under «Sheets-detaljer» når du oppretter ny KPI.
-
-### KPI-typer
-
-Det finnes tre ulike KPI-er:
-
-- _Volum_ (absolutt verdi)
-- _Brukertilfredshet_ (prosent)
-- _Fullføringsgrad_ (prosent)
-
-Disse KPI-ene kan legges til organisasjoner, produktområder og produkter.
-
 ### Legge til ny KPI
 
-#### Steg 1: Sette opp Google Sheets
-
-- Se [Google analytics-integrasjon](#google-analytics-integrasjon).
-
-#### Steg 2: Fyll inn detaljer
+#### Steg 1: Fyll inn detaljer
 
 - Naviger til ditt produkt (eventuelt produktområde eller organisasjon for systemadministratorer).
 - Klikk «Endre \<navn\>».
 - Velg «KPI-er».
 - Klikk «Legg til KPI».
-- I skjemaet må du velge KPI-type (se over), navn og beskrivelse (valgfritt). Her ser du også e-post-adressen (service account) som Google Sheets-dokumentet må deles med. Google Sheet ID-en finner du i URL-en til dokumentet: `.../spreadsheets/d/<dokument-id>/edit`
-- Trykk «Legg til» og vent til du får grønn «OK» for bekreftelse på gyldig kobling.
+- I skjemaet må du velge KPI-type (se over), navn og beskrivelse
+  (valgfritt). Her ser du også e-post-adressen (service account) som Google
+  Sheets-dokumentet må deles med.
+
+#### Steg 2 (valgfritt): Sette opp Google Sheets
+
+- Se [Google Sheets-integrasjon](#google-sheets-integrasjon).
+
+### Oppdatere KPI-verdier
+
+KPI-verdiene kan oppdateres på tre ulike måter:
+
+1. Direkte i OKR-trackeren ved å benytte knappen «Legg til målepunkt».
+
+2. Via API-et. Instruksjoner for dette finner du når du redigerer eller
+   oppretter en ny KPI.
+
+3. Ved å knytte KPI-en til et Google Sheets-dokument vil verdier fra dokumentet
+    lastes inn automatisk i OKR-trackeren to ganger daglig. Google
+    Sheets-dokumentet må deles med OKR-trackerens _service account_. Adressen
+    til denne finner du når du redigerer eller oppretter en ny KPI.
 
 ---
 
@@ -323,6 +322,7 @@ Nøkkelresultater er det du _måler_ for et spesifikt **mål**.
 - Trykk `+ Oprett` i kolonnen «Vis nøkkelresultater» for valgt mål
 - Fyll inn feltene
 - Trykk `Lagre endringer`
+- (Valgfritt) Sett opp [Google Sheets-integrasjon](#google-sheets-integrasjon)
 
 ### Arkivere et mål
 
@@ -350,36 +350,23 @@ Det er ingen måte å endre et eksisterende målepunkt, så det må i så fall s
 
 ---
 
-## Google Sheets-integrasjon for nøkkelresultater
+## Google Sheets-integrasjon
 
-Med hjelp av Google Sheets kan du konfigurere automatisk oppdatering av progresjon for et nøkkelresultat.
+Med hjelp av Google Sheets kan du konfigurere automatisk oppdatering av
+progresjon for nøkkelresultater og KPI-er.
 
-Progresjonen for det «automatiske» nøkkelresultatet vil bli oppdatert to ganger om dagen med verdien i den _cellen_ som er definert.
+Progresjonen for det «automatiske» nøkkelresultatet eller KPI-en vil bli oppdatert to ganger om dagen med verdien i den _cellen_ som er definert.
 
-| Felt            | Beskrivelse                                                                               |
-| --------------- | ----------------------------------------------------------------------------------------- |
-| Google Sheet ID | Dette er Google Sheet-dokumentets ID, og kan finnes i URL-en når du har dokumentet åpent. |
-| Fane            | Navnet på fanen hvor cellen ligger                                                        |
-| Celle           | Navnet på cellen (f.eks.: «A1»)                                                           |
+| Felt              | Beskrivelse                                                |
+|-------------------|------------------------------------------------------------|
+| Google Sheets URL | Den fullstendige nettadressen til Google Sheets-dokumentet |
+| Fane              | Navnet på fanen hvor cellen ligger                         |
+| Celle             | Navnet på cellen (f.eks.: «A1»)                            |
 
 Dokumentet må deles med OKR-trackeren via applikasjonens _service account_.
 
-### Opprette et «automatisk» nøkkelresultat
-
-**Steg 1: Sett opp Google Sheets**
-
-- Se [Google analytics-integrasjon](#google-analytics-integrasjon).
-
-**Steg 2: Opprette nøkkelresultat**
-
-_Ønsker du datauthenting fra Google Analytics bør du følge guiden for dette før du går videre._
-
-- I OKR-trackeren, naviger til produktet som nøkkelresultatet skal ligge under
-- Trykk på «+ Nytt nøkkelresultat» i sidemenyen
-- Fyll inn detaljene i skjemaet
-- Aktiver «Automatisk (Google Sheets)»
-- Fyll inn «Google Sheet ID», «Fane» og «Celle»
-- Klikk «Lagre nytt nøkkelresultat»
+Trykk til slutt på «Lagre» og vent til du får grønn «OK» for bekreftelse på
+gyldig kobling.
 
 ## Google Analytics-integrasjon
 

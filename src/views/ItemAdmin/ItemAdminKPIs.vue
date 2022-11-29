@@ -102,7 +102,7 @@ export default {
         preferredTrend: 'increase',
         kpiType: 'plain',
         updateFrequency: 'daily',
-        sheetId: '',
+        sheetUrl: '',
         sheetName: '',
         sheetCell: '',
         api: true,

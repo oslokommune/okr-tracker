@@ -46,12 +46,15 @@ async function updateAutomaticKeyResult(id) {
   const progressRef = docRef.collection(`progress`);
 
   try {
-    const { sheetId, sheetName, sheetCell } = await docRef.get().then((d) => d.data());
-    if (!sheetId || !sheetName || !sheetCell) {
+    const { sheetId, sheetUrl, sheetName, sheetCell } = await docRef
+      .get()
+      .then((d) => d.data());
+
+    if (!(sheetId || sheetUrl) || !sheetName || !sheetCell) {
       throw new Error('Missing Sheets details');
     }
 
-    const value = await getSheetsData({ sheetId, sheetName, sheetCell });
+    const value = await getSheetsData({ sheetId, sheetUrl, sheetName, sheetCell });
 
     if (value === null || value === undefined) {
       throw new Error('Data not found');

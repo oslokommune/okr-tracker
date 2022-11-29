@@ -89,7 +89,8 @@
           </p>
 
           <google-sheets-form-group
-            :sheet-id.sync="keyResult.sheetId"
+            :sheet-id="keyResult.sheetId"
+            :sheet-url.sync="keyResult.sheetUrl"
             :sheet-name.sync="keyResult.sheetName"
             :sheet-cell.sync="keyResult.sheetCell"
           />
@@ -226,7 +227,7 @@ export default {
           unit,
           startValue,
           targetValue,
-          sheetId,
+          sheetUrl,
           sheetName,
           sheetCell,
           api,
@@ -242,7 +243,7 @@ export default {
           startValue: startValue || 0,
           targetValue: targetValue === undefined ? 100 : targetValue,
           sheetCell: sheetCell || '',
-          sheetId: sheetId || '',
+          sheetUrl: sheetUrl || '',
           sheetName: sheetName || '',
           api: api || false,
         };

@@ -113,7 +113,8 @@
         :label="$t('kpi.automation.radio')"
       >
         <google-sheets-form-group
-          :sheet-id.sync="localKpi.sheetId"
+          :sheet-id="localKpi.sheetId"
+          :sheet-url.sync="localKpi.sheetUrl"
           :sheet-name.sync="localKpi.sheetName"
           :sheet-cell.sync="localKpi.sheetCell"
         />
@@ -235,7 +236,9 @@ export default {
           // For backwards compatibility, check for any previously configured sheet
           // details if the `auto` property doesn't exist on the model.
           const sheetsConfigured = Boolean(
-            this.kpi.sheetId && this.kpi.sheetName && this.kpi.sheetCell
+            (this.kpi.sheetId || this.kpi.sheetUrl) &&
+              this.kpi.sheetName &&
+              this.kpi.sheetCell
           );
 
           this.localKpi = {
@@ -251,7 +254,7 @@ export default {
             kpiType: null,
             preferredTrend: null,
             updateFrequency: null,
-            sheetId: '',
+            sheetUrl: '',
             sheetName: '',
             sheetCell: '',
             api: false,
