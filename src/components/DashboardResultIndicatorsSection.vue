@@ -284,16 +284,14 @@ export default {
     },
 
     activeResultIndicator() {
-      this.fetchGoals();
-      this.setProgress().then(() => {
+      Promise.all([this.fetchGoals(), this.setProgress()]).then(() => {
         this.setStartAndEndDates();
         this.renderGraph();
       });
     },
 
     currentResultIndicatorPeriod(period) {
-      this.fetchGoals();
-      this.setProgress().then(() => {
+      Promise.all([this.fetchGoals(), this.setProgress()]).then(() => {
         this.setStartAndEndDates();
         this.renderGraph();
       });
