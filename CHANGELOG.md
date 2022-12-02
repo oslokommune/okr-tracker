@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed a bug where the right column on department pages would be hidden
   unintentionally.
 - Fixed a bug where line charts would sometimes be rendered without goal lines.
+- Added a missing Firestore index to make the admin feasibly fast again.
 
 ## [3.0.0] 2022-11-25
 
