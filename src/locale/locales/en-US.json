@@ -34,7 +34,7 @@
     },
     "updateFrequency": {
       "label": "Update frequency",
-      "help": "The frequency with which the KPI is expected to be updated with progress data.",
+      "help": "The frequency with which the KPI is expected to be updated with progress data. Used to determine whether a KPI's previous update was within the given interval, or if it should be considered outdated.",
       "frequencies": {
         "annual": "Annual",
         "daily": "Daily",
