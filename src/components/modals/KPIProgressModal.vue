@@ -36,14 +36,14 @@
         <div class="progress-form__right">
           <validation-provider v-slot="{ errors }" name="datetime" rules="required">
             <label class="form-group">
-              <span class="form-label">{{ $t('widget.history.time') }}</span>
+              <span class="form-label">{{ $t('widget.history.date') }}</span>
 
               <flat-pickr
                 v-model="thisRecord.timestamp"
                 :config="flatPickerConfig"
                 class="form-control flatpickr-input"
                 name="datetime"
-                :placeholder="$t('widget.history.time')"
+                :placeholder="$t('widget.history.date')"
                 @on-change="onDateSelected"
               />
               <span class="form-field--error">{{ errors[0] }}</span>
