@@ -114,7 +114,7 @@
 
       <i18n path="kpi.help.updates" tag="p">
         <template #readMoreLink>
-          <router-link :to="{ name: 'Help', hash: '#kpi-er' }">
+          <router-link :to="{ name: 'Help', hash: '#kpi-er' }" target="_blank">
             {{ $t('kpi.help.readMoreHere') }}
           </router-link>
         </template>
