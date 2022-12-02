@@ -24,14 +24,14 @@
       "port": 8888
     },
     "hosting": {
-      "port": 5000
+      "port": 5002
     },
     "pubsub": {
       "port": 8085
     },
     "ui": {
       "enabled": true,
-      "port": "7777"
+      "port": "7778"
     },
     "auth": {
       "port": 9099
