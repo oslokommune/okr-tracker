@@ -92,7 +92,7 @@
               showEditGoalsModal = true;
             "
           >
-            {{ $t('kpi.goals.set') }}
+            {{ $t(hasGoal ? 'kpi.goals.edit' : 'kpi.goals.set') }}
           </button>
         </div>
 
@@ -207,6 +207,11 @@ export default {
     },
     loading: {
       required: false,
+      type: Boolean,
+      default: false,
+    },
+    hasGoal: {
+      required: true,
       type: Boolean,
       default: false,
     },
