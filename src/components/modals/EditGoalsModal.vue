@@ -113,7 +113,11 @@ export default {
     kpi: {
       immediate: true,
       handler() {
-        this.bindGoals();
+        this.bindGoals().then(() => {
+          if (this.goals.length) {
+            this.setActiveGoal(this.goals[0].id);
+          }
+        });
       },
     },
   },
@@ -150,7 +154,7 @@ export default {
       const { ref } = await db.collection('kpis').doc(this.kpi.id).get();
       return this.$bind(
         'goals',
-        ref.collection('goals').where('archived', '==', false).orderBy('fromDate')
+        ref.collection('goals').where('archived', '==', false).orderBy('fromDate', 'desc')
       );
     },
 
