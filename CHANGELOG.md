@@ -4,16 +4,18 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-### Fixes
-
-- Fixed a bug where the right column on department pages would be hidden
-  unintentionally.
 ### Changed
 
 - The result indicator graph now defaults to showing all registered measurements
   in the dashboard.
 - Values for key result progress are now rounded to maximum two decimal places
   when displayed.
+
+### Fixed
+
+- Fixed a bug where the right column on department pages would be hidden
+  unintentionally.
+- Fixed a bug where line charts would sometimes be rendered without goal lines.
 
 ## [3.0.0] 2022-11-25
 
