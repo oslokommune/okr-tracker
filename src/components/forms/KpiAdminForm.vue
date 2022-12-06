@@ -45,21 +45,6 @@
           type="text"
         />
       </div>
-      <form-component
-        v-model="localKpi.updateFrequency"
-        input-type="select"
-        name="updateFrequency"
-        :label="$t('kpi.updateFrequency.label')"
-        rules="required"
-        select-label="label"
-        :select-options="updateFrequencies"
-        :select-reduce="(option) => option.id"
-        type="text"
-      >
-        <template #help>
-          <span class="form-help" v-html="$t('kpi.updateFrequency.help')"></span>
-        </template>
-      </form-component>
 
       <hr class="ods-hr" />
 
@@ -150,6 +135,24 @@
           </form-component>
         </div>
       </toggle-button>
+
+      <hr class="ods-hr" />
+
+      <form-component
+        v-model="localKpi.updateFrequency"
+        input-type="select"
+        name="updateFrequency"
+        :label="$t('kpi.updateFrequency.label')"
+        rules="required"
+        select-label="label"
+        :select-options="updateFrequencies"
+        :select-reduce="(option) => option.id"
+        type="text"
+      >
+        <template #help>
+          <span class="form-help" v-html="$t('kpi.updateFrequency.help')"></span>
+        </template>
+      </form-component>
 
       <div class="button-row">
         <btn-delete

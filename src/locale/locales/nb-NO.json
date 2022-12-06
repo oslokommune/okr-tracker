@@ -34,7 +34,7 @@
     },
     "updateFrequency": {
       "label": "Oppdateringshyppighet",
-      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter.",
+      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter. Brukes for å bestemme om en KPI sist ble oppdatert innenfor det gitte intervallet, eller om den bør anses som utdatert.",
       "frequencies": {
         "annual": "Årlig",
         "daily": "Daglig",
