@@ -51,11 +51,19 @@
               rules="required"
             />
             <div class="button-row">
-              <button class="btn btn--icon btn--archive" @click="archive($event)">
+              <button
+                class="btn btn--icon btn--archive"
+                type="button"
+                @click="archive($event)"
+              >
                 <i class="icon fa fa-fw fa-trash" />
                 {{ $t('btn.delete') }}
               </button>
-              <button class="btn btn--icon btn--pri btn--icon-pri" form="update-goal">
+              <button
+                class="btn btn--icon btn--pri btn--icon-pri"
+                form="update-goal"
+                type="submit"
+              >
                 <i class="icon fa fa-fw fa-save" />
                 {{ $t('btn.saveChanges') }}
               </button>
