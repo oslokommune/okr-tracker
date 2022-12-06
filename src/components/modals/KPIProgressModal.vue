@@ -74,10 +74,16 @@ import { endOfDay } from 'date-fns';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
+import ProgressUpdateAPIExample from '@/components/ProgressUpdateAPIExample.vue';
 import ProgressModal from './ProgressModal.vue';
 
 export default {
   name: 'KPIProgressModal',
+
+  components: {
+    ProgressUpdateAPIExample,
+  },
+
   extends: ProgressModal,
 
   data: () => ({

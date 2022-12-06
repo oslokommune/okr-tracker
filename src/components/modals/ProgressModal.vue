@@ -196,4 +196,8 @@ export default {
     top: 0;
   }
 }
+
+.help-text {
+  margin-top: 0.5rem;
+}
 </style>

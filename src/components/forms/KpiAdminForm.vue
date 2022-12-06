@@ -125,29 +125,6 @@
         />
       </toggle-button>
 
-      <toggle-button v-model="localKpi.api" name="api">
-        <template #label>
-          {{ $t('kpi.api.radio') }}
-          <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
-        </template>
-
-        <div v-if="kpi">
-          <form-component
-            input-type="input"
-            type="text"
-            label="API"
-            rules="required"
-            :readonly="true"
-            :copy-button="true"
-            :value="apiCurl(kpi)"
-          >
-            <template #help>
-              <span class="form-help">{{ $t('kpi.api.help') }}</span>
-            </template>
-          </form-component>
-        </div>
-      </toggle-button>
-
       <hr class="ods-hr" />
 
       <form-component

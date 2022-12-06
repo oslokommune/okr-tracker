@@ -119,19 +119,11 @@
             <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
           </template>
 
-          <form-component
-            input-type="input"
-            type="text"
+          <ProgressUpdateAPIExample
             label="API"
-            rules="required"
-            :readonly="true"
-            :copy-button="true"
-            :value="apiCurl(keyResult)"
-          >
-            <template #help>
-              <span class="form-help">{{ $t('admin.curlHelp') }}</span>
-            </template>
-          </form-component>
+            :help="$t('admin.curlHelp')"
+            :path="`keyres/${keyResult.id}`"
+          />
         </toggle-button>
 
         <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
@@ -154,6 +146,7 @@ import { toastArchiveAndRevert } from '@/util';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
 import GoogleSheetsFormGroup from '@/components/forms/partials/GoogleSheetsFormGroup.vue';
+import ProgressUpdateAPIExample from '@/components/ProgressUpdateAPIExample.vue';
 
 export default {
   name: 'ItemAdminKeyResult',
@@ -166,6 +159,7 @@ export default {
     BtnDelete,
     ToggleButton,
     GoogleSheetsFormGroup,
+    ProgressUpdateAPIExample,
   },
   props: {
     data: {
@@ -329,11 +323,6 @@ export default {
       }
       return msg;
     },
-
-    apiCurl: (keyResult) =>
-      `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }'  ${
-        import.meta.env.VITE_API_GATEWAY_URL
-      }/keyres/${keyResult.id}`,
   },
 };
 </script>
