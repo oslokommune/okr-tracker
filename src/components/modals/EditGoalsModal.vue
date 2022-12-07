@@ -84,10 +84,10 @@
 
 <script>
 import locale from 'flatpickr/dist/l10n/no';
+import { endOfDay, endOfYear, startOfYear } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import { toastArchiveAndRevert } from '@/util';
-import { endOfDay, endOfYear, startOfYear } from 'date-fns';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {

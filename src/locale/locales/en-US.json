@@ -22,7 +22,8 @@
     "description": "Description",
     "display": "Display",
     "preferredTrend": "Trend",
-    "inPeriod": "% in period",
+    "inPeriod": "in period",
+    "noChange": "no change",
     "ofTarget": "of the goal of",
     "formats": {
       "integer": "Integer",
