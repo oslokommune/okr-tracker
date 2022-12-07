@@ -183,7 +183,8 @@
     "dashboardEntry": "Dashboard",
     "keyFigures": "KPIs",
     "value": "Value",
-    "target": "Target"
+    "target": "Target",
+    "selectRange": "Select a start and end date"
   },
   "btn": {
     "close": "Close",

@@ -181,7 +181,8 @@
     "dashboardEntry": "Dashbord",
     "keyFigures": "KPI-er",
     "value": "Verdi",
-    "target": "Målsetting"
+    "target": "Målsetting",
+    "selectRange": "Velg start- og sluttdato"
   },
   "btn": {
     "close": "Lukk",

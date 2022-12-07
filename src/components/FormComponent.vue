@@ -1,5 +1,10 @@
 <template>
-  <validation-provider v-slot="{ errors }" :rules="rules" :name="name || label">
+  <validation-provider
+    v-slot="{ errors }"
+    ref="validationProvider"
+    :rules="rules"
+    :name="name || label"
+  >
     <label class="form-group">
       <span
         :class="{
@@ -55,6 +60,17 @@
             </span>
           </template>
         </v-select>
+
+        <flat-pickr
+          v-if="inputType === 'date'"
+          ref="datePicker"
+          :value="value"
+          :config="datePickerConfig"
+          class="flatpickr-input"
+          :placeholder="placeholder"
+          :name="name"
+          @on-close="updateDatePickerValue"
+        />
 
         <button
           v-if="copyButton"
@@ -130,6 +146,11 @@ export default {
       required: false,
       default: (option) => option,
     },
+    datePickerConfig: {
+      type: Object,
+      required: false,
+      default: null,
+    },
     disabled: {
       type: Boolean,
       required: false,
@@ -173,6 +194,10 @@ export default {
     },
 
     value(val) {
+      if (this.inputType === 'date') {
+        this.updateDatePickerValue(val);
+        return;
+      }
       if (val !== this.innerValue) {
         this.innerValue = val;
       }
@@ -186,6 +211,19 @@ export default {
   },
 
   methods: {
+    updateDatePickerValue(dates) {
+      if (!dates) {
+        this.innerValue = null;
+      } else {
+        const datePickerInstance = this.$refs.datePicker.fp;
+        if (datePickerInstance.config.mode === 'range') {
+          this.innerValue = dates.length === 2 ? dates : null;
+        } else {
+          this.innerValue = dates[0];
+        }
+      }
+    },
+
     copyFieldText(e) {
       e.preventDefault();
       const inputWrapperElement = e.currentTarget.parentElement;
