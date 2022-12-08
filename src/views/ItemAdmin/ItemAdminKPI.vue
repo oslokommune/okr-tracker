@@ -34,9 +34,12 @@
     </template>
 
     <template #collapse-footer>
-      <div :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]">
+      <div
+        v-if="errorMessage"
+        :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]"
+      >
         <i :class="['fa', `fa-${stateIcon}`, { 'fa-pulse': state === 'loading' }]" />
-        <span>{{ stateMessage }}</span>
+        <span>{{ errorMessage }}</span>
       </div>
     </template>
   </collapse-container>
@@ -107,15 +110,8 @@ export default {
           return 'spinner';
       }
     },
-    stateMessage() {
-      switch (this.state) {
-        case 'error':
-          return this.showError(this.kpi.error);
-        case 'valid':
-          return 'OK';
-        default:
-          return this.$t('general.loading');
-      }
+    errorMessage() {
+      return this.state === 'error' ? this.showError(this.kpi.error) : null;
     },
     typeLabel() {
       const labels = Object.assign(
@@ -269,12 +265,6 @@ export default {
   background: var(--color-grey-50);
   border-bottom-right-radius: 3px;
 
-  &--success {
-    background: rgba(var(--color-green-rgb), 0.1);
-  }
-  &--warning {
-    background: rgba(var(--color-yellow-rgb), 0.1);
-  }
   &--danger {
     background: rgba(var(--color-red-rgb), 0.1);
   }
