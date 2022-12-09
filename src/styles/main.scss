@@ -151,25 +151,29 @@ body.using-mouse :focus {
 
 :root {
   --color-danger: #ff8174;
+  --color-error: #96281c;
   --color-success: #43f8b6;
-  --color-warning: #f8c66b;
+  --color-warning: #774c01;
   --color-black: #2e2e2e;
   --color-white: #ffffff;
   --color-gray: #989898;
   --color-light-gray: #f6f6f6;
   --color-blue: #6ee9ff;
+  --color-blue-dark: #2a2859;
   --color-blue-light: #b3f5ff;
   --color-blue-light-2: #b2d2d8;
-  --color-blue-light-3: #f2f9ff;
+  --color-blue-light-3: #f2f9ff; // "color-blue-dark-5" in ODS
   --color-purple: #292858;
   --color-purple-medium: #4a72a1;
   --color-purple-dark: #1f42aa;
-  --color-yellow: #f8c66b;
+  --color-yellow: #f9c66b;
   --color-yellow-dark: #ba944fff;
   --color-yellow-light: #d1bfae;
+  --color-yellow-5: #fef9f0;
   --color-red: #ff8174;
   --color-red-dark: #5b0800;
   --color-red-light: #ff988e;
+  --color-red-5: #fff3f2;
   --color-beige: #f8f0dc;
   --color-beige-dark: #d0bfae;
 
@@ -177,6 +181,7 @@ body.using-mouse :focus {
   --color-green-medium-dark: #207354;
   --color-green-dark: #034b45;
   --color-green-dark-2: #023834;
+  --color-green-dark-5: #023834;
   --color-green-light: #c7f7c9;
   --color-green-light-2: #f2fff3;
 
