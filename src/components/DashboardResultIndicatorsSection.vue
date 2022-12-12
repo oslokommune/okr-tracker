@@ -194,23 +194,14 @@ export default {
       const diff = latestProgressRecord - firstProgressRecord;
       return Math.round(diff * 100) / 100;
     },
-    periodTrendInPercentage() {
-      const firstProgressRecord = this.filteredProgressSorted[0]?.value;
-      const diffInPercentage = (this.periodTrend / firstProgressRecord) * 100;
-      return Math.round(diffInPercentage * 10) / 10;
-    },
     periodTrendFormatted() {
       if (this.periodTrend === 0) {
         return i18n.t('kpi.noChange');
       }
       const prefix = this.periodTrend > 0 ? '+' : '';
-      const formatPercentage = this.activeResultIndicator?.format === 'percentage';
-      const formattedTrend = formatPercentage
-        ? this.periodTrendInPercentage
-        : formatLargeNumber(this.periodTrend);
-      const text = (formatPercentage ? '% ' : ' ') + i18n.t('kpi.inPeriod');
+      const formattedTrend = formatKPIValue(this.activeResultIndicator, this.periodTrend);
 
-      return prefix + formattedTrend + text;
+      return prefix + formattedTrend + ' ' + i18n.t('kpi.inPeriod');
     },
     bgColor() {
       const ri = this.activeResultIndicator;
