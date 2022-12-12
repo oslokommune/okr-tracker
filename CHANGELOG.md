@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. The format 
   in the dashboard.
 - Values for key result progress are now rounded to maximum two decimal places
   when displayed.
+- Renamed the heading and admin tab for "KPIs" to "measurements".
 
 ### Fixed
 

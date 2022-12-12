@@ -11,8 +11,8 @@
     "aria": "Current theme is {current}, next theme is {next}"
   },
   "kpi": {
-    "add": "Add KPI",
-    "placeholderName": "New KPI",
+    "add": "Add measurement",
+    "placeholderName": "New measurement",
     "edit": "Edit KPI",
     "change": "Change KPI",
     "currentValue": "Current value",
@@ -58,7 +58,7 @@
         "description": "Is the KPI so important that it is defined as a result indicator for the department and has a target figure? The result indicator is also shown on the dashboard."
       }
     },
-    "heading": "KPIs",
+    "heading": "Measurements",
     "itemRowError": "error",
     "help": {
       "updates": "KPIs can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
@@ -146,7 +146,7 @@
     "general": "General",
     "OKRs": "OKRs",
     "OKRsLong": "Objectives and Key results",
-    "KPIs": "KPIs",
+    "KPIs": "Measurements",
     "team": "Team",
     "project": "OKR",
     "loading": "Loading ...",
