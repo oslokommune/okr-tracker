@@ -53,11 +53,7 @@
       </form>
     </validation-observer>
 
-    <div
-      v-if="existingValue"
-      class="ok-alert ok-alert--warning"
-      style="background: var(--color-warning)"
-    >
+    <div v-if="existingValue" class="ok-alert ok-alert--warning">
       {{
         $t('widget.history.overwriteWarning', {
           date: dateShort(existingValue.timestamp.toDate()),

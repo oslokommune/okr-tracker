@@ -1,109 +1,36 @@
 @use 'sass:color';
 @use 'griddle/functions' as *;
 
-$borderRadius: 1.5px;
-
-.ok-alert {
+.ok-alert { // default is "info" as in ODS
   position: relative;
   margin: 0.5rem 0 1rem;
   padding: 1rem;
   overflow: hidden;
-  color: var(--color-text);
-  background: rgba(var(--color-grey-100-rgb), 0.1);
-  border-radius: $borderRadius;
-  box-shadow: 0 1px 3px rgba(var(--color-grey-500-rgb), 0.2), 0 3px 12px rgba(var(--color-grey-500-rgb), 0.05);
-
-  &::before {
-    background: var(--color-grey-100);
-  }
+  color: var(--color-blue-dark);
+  background: var(--color-blue-light-3);
+  border-left: 3px solid var(--color-blue-dark);
 
   @media screen and (min-width: bp(m)) {
     padding-top: 1rem;
     padding-right: 2.5rem;
     padding-left: 1.5rem;
   }
-
-  &::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    display: inline-flex;
-    align-items: center;
-    height: 0.25rem;
-    padding-left: 1rem;
-    font-size: 1.75rem;
-    background: linear-gradient(var(--color-grey-100), var(--color-grey-500-rgb));
-    content: '';
-
-
-    @media screen and (min-width: bp(m)) {
-      bottom: 0;
-      align-items: inherit;
-      justify-content: center;
-      width: 0.25rem;
-      height: 100%;
-      padding-top: 1rem;
-      padding-left: 0;
-      text-align: center;
-    }
-  }
 }
 
 .ok-alert--success {
-  background: rgba(var(--color-green-rgb), 0.1);
-  box-shadow: 0 1px 3px rgba(var(--color-green-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-green-dark-rgb), 0.05);
-
-  &::after {
-    background: linear-gradient(var(--color-green-rgb), var(--color-green-dark-rgb));
-  }
-
-  &::before {
-    background: var(--color-green);
-  }
+  color: var(--color-green-dark);
+  background: var(--color-green-light-2); // "green-dark-5" in ODS
+  border-left-color: var(--color-green-dark);
 }
 
 .ok-alert--danger {
-  background: rgba(var(--color-red-rgb), 0.1);
-  box-shadow: 0 1px 3px rgba(var(--color-red-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-red-dark-rgb), 0.05);
-
-  &::after {
-    background: linear-gradient(var(--color-red), var(--color-red-dark-rgb));
-  }
-
-  &::before {
-    background: var(--color-red);
-  }
+  color: var(--color-error);
+  background: var(--color-red-5);
+  border-left-color: var(--color-error);
 }
 
 .ok-alert--warning {
-  background: rgba(var(--color-yellow-rgb), 0.1);
-  box-shadow: 0 1px 3px rgba(var(--color-yellow-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-yellow-dark-rgbdark), 0.05);
-
-  &::after {
-    background: linear-gradient(var(--color-yellow), var(--color-yellow-dark-rgb));
-  }
-
-  &::before {
-    background: var(--color-yellow);
-  }
-}
-
-.ok-alert--white {
-  background: white;
-}
-
-.ok-alert--dark {
-  background: var(--color-blue);
-  box-shadow: 0 1px 3px rgba(var(--color-purple-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-purple-dark-rgbdark), 0.05);
-
-  &::after {
-    color: var(--color-blue);
-    background: linear-gradient(var(--color-purple), var(--color-purple-dark-rgb));
-  }
-
-  &::before {
-    color: var(--color-white);
-    background: var(--color-primary);
-  }
+  color: var(--color-warning);
+  background: var(--color-yellow-5);
+  border-left-color: var(--color-yellow);
 }
