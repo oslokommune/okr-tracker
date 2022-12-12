@@ -65,6 +65,20 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "fromDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "goals",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "toDate",
           "order": "ASCENDING"
         }
