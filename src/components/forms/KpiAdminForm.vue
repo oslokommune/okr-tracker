@@ -6,7 +6,7 @@
       @close="showEditGoalsModal = false"
     />
 
-    <validation-observer v-slot="{ handleSubmit }" tag="form">
+    <form-section>
       <form-component
         v-model="localKpi.name"
         input-type="input"
@@ -16,10 +16,12 @@
         type="text"
       />
 
-      <label class="form-group">
-        <span class="form-label">{{ $t('fields.description') }}</span>
-        <textarea v-model="localKpi.description" class="form__field" rows="4" />
-      </label>
+      <form-component
+        v-model="localKpi.description"
+        input-type="textarea"
+        name="description"
+        :label="$t('fields.description')"
+      />
 
       <div class="kpi-format-and-trend">
         <form-component
@@ -105,7 +107,11 @@
         </template>
       </i18n>
 
-      <toggle-button v-model="localKpi.auto" :label="$t('kpi.automation.radio')">
+      <toggle-button
+        v-model="localKpi.auto"
+        name="auto"
+        :label="$t('kpi.automation.radio')"
+      >
         <google-sheets-form-group
           :sheet-id.sync="localKpi.sheetId"
           :sheet-name.sync="localKpi.sheetName"
@@ -113,7 +119,7 @@
         />
       </toggle-button>
 
-      <toggle-button v-model="localKpi.api">
+      <toggle-button v-model="localKpi.api" name="api">
         <template #label>
           {{ $t('kpi.api.radio') }}
           <i v-tooltip="$t('kpi.api.tooltip')" class="icon fa fa-info-circle" />
@@ -154,16 +160,19 @@
         </template>
       </form-component>
 
-      <div class="button-row">
+      <template #actions="{ handleSubmit, submitDisabled }">
         <btn-delete
           v-if="kpi"
           :disabled="loading"
           :icon-only="true"
           @click="$emit('delete', kpi)"
         />
-        <btn-save :disabled="loading" @click="handleSubmit(submitForm)" />
-      </div>
-    </validation-observer>
+        <btn-save
+          :disabled="submitDisabled || loading"
+          @click="handleSubmit(submitForm)"
+        />
+      </template>
+    </form-section>
   </div>
 </template>
 
@@ -174,19 +183,19 @@ import {
   kpiTrendOptions,
   kpiUpdateFrequencies,
 } from '@/util/kpiHelpers';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import { FormSection, ToggleButton, BtnDelete, BtnSave } from '@/components/generic/form';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
-import ToggleButton from '@/components/generic/form/ToggleButton.vue';
 import GoogleSheetsFormGroup from './partials/GoogleSheetsFormGroup.vue';
 
 export default {
   name: 'KpiAdminForm',
 
   components: {
+    FormSection,
+    ToggleButton,
     BtnSave,
     BtnDelete,
     EditGoalsModal,
-    ToggleButton,
     GoogleSheetsFormGroup,
   },
 
