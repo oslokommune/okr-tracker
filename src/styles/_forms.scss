@@ -81,6 +81,11 @@ textarea {
     align-items: stretch;
     justify-content: space-between;
 
+    > .flatpickr-wrapper {
+      display: block;
+      width: 100%;
+    }
+
     > .btn {
       margin-left: 0;
       font-size: 0.75rem;

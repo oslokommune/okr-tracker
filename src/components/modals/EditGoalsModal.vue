@@ -33,15 +33,19 @@
               name="name"
               :label="$t('fields.name')"
               type="text"
+              rules="required"
             />
-            <span class="form-label">{{ $t('fields.period') }}</span>
-            <flat-pickr
+
+            <form-component
               v-model="period"
-              :config="flatPickrConfig"
-              class="form-control flatpickr-input"
-              placeholder="Velg start- og sluttdato"
-              @on-change="dateSelected"
+              input-type="date"
+              name="period"
+              :label="$t('fields.period')"
+              :placeholder="$t('general.selectRange')"
+              rules="required"
+              :date-picker-config="flatPickrConfig"
             />
+
             <form-component
               v-model="value"
               input-type="input"
@@ -50,6 +54,7 @@
               type="number"
               rules="required"
             />
+
             <div class="button-row">
               <button
                 class="btn btn--icon btn--archive"
@@ -127,6 +132,16 @@ export default {
           }
         });
       },
+    },
+    period() {
+      if (this.period && this.period.length === 2) {
+        const [fromDate, toDate] = this.period;
+        this.fromDate = fromDate;
+        this.toDate = endOfDay(toDate);
+      } else {
+        this.fromDate = null;
+        this.toDate = null;
+      }
     },
   },
 
@@ -317,9 +332,5 @@ export default {
     justify-content: flex-end;
     margin-top: 2rem;
   }
-}
-
-::v-deep .flatpickr-wrapper {
-  display: block;
 }
 </style>
