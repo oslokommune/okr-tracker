@@ -28,21 +28,6 @@
           type="text"
         />
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select v-model="objective.icon" :options="icons">
-            <template #selected-option="{ label }">
-              <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
-              {{ label }}
-            </template>
-            <template #option="option">
-              <i :class="`fas fa-fw fa-${option.label}`" />&nbsp;
-              <span>{{ option.label }}</span>
-            </template>
-            <template #no-options="{}">{{ $t('select.noIcons') }}</template>
-          </v-select>
-        </label>
-
         <validation-provider v-slot="{ errors }" rules="required" name="period">
           <label class="form-group">
             <span class="form-label">{{ $t('fields.period') }}</span>
@@ -71,7 +56,6 @@
 <script>
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
-import icons from '@/config/icons';
 import { toastArchiveAndRevert } from '@/util';
 import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
@@ -97,7 +81,6 @@ export default {
     periods: [],
     changedPeriod: false,
     loading: false,
-    icons,
     isLoadingDetails: false,
   }),
 
@@ -122,10 +105,9 @@ export default {
     async update() {
       this.loading = true;
       try {
-        const { id, name, description, weight, icon, period } = this.objective;
+        const { id, name, description, weight, period } = this.objective;
         const data = {
           name,
-          icon: icon || '',
           description: description || '',
           weight: weight || 1,
           period: db.collection('periods').doc(period.id),
@@ -184,11 +166,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.selected-icon {
-  display: inline-block;
-  margin-right: 0.5rem;
-}
-
 .details {
   margin-top: 1rem;
   padding: 1rem;

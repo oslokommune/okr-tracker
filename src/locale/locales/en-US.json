@@ -92,7 +92,6 @@
     "sheetTab": "Tab",
     "sheetCell": "Cell",
     "displayName": "Display name",
-    "icon": "Icon",
     "period": "Period",
     "description": "Description",
     "slug": "Slug",
@@ -443,9 +442,6 @@
   },
   "accessRequests": {
     "heading": "Access requests"
-  },
-  "select": {
-    "noIcons": "No hits"
   },
   "empty": {
     "noKeyResultProgress": "This key result has no registered values.",
