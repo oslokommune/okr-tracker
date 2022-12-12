@@ -23,10 +23,20 @@ textarea {
 .form-group {
   display: block;
   margin: 1rem 0;
+
+  &--error {
+    .form-input, .vs__dropdown-toggle, .vs__dropdown-menu {
+      border-color: var(--color-error);
+    }
+    .form-label {
+      color: var(--color-error);
+    }
+  }
 }
 
 .form-label {
-  margin-bottom: 0.25rem;
+  display: block;
+  margin-bottom: 0.5rem;
   color: var(--color-text);
 
   &--hasPrimaryBackground {
@@ -36,7 +46,7 @@ textarea {
 
 .form-field {
   display: block;
-  padding: 1rem 0;
+  margin-top: 1rem;
 
   &--error {
     margin-bottom: 0;
@@ -110,7 +120,8 @@ textarea {
 
 .form-help {
   display: block;
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
+  line-height: 1.25;
   color: var(--color-text);
   font-size: 0.85rem;
 
@@ -135,6 +146,30 @@ textarea {
   .form-label {
     display: block;
     flex-grow: 1;
+  }
+}
+
+.form-errors {
+  margin-top: 1.5rem !important;
+
+  &__title {
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: typography.$font-size-2;
+  }
+
+  &__list {
+    list-style: square;
+    font-size: typography.$font-size-1;
+
+    > li {
+      margin: 0 1.5rem 0.5rem 1.5rem;
+
+      > span:first-child {
+        font-weight: 500;
+        margin-right: 0.5rem;
+      }
+    }
   }
 }
 
