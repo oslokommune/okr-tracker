@@ -99,7 +99,6 @@ import firebase from 'firebase/app';
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { periodDates } from '@/util';
-import { formatLargeNumber } from '@/util/format';
 import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
@@ -201,7 +200,7 @@ export default {
       const prefix = this.periodTrend > 0 ? '+' : '';
       const formattedTrend = formatKPIValue(this.activeResultIndicator, this.periodTrend);
 
-      return prefix + formattedTrend + ' ' + i18n.t('kpi.inPeriod');
+      return `${prefix + formattedTrend} ${i18n.t('kpi.inPeriod')}`;
     },
     bgColor() {
       const ri = this.activeResultIndicator;
