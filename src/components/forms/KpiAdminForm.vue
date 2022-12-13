@@ -240,7 +240,6 @@ export default {
             sheetUrl: '',
             sheetName: '',
             sheetCell: '',
-            api: false,
             auto: false,
           };
         }
@@ -264,11 +263,6 @@ export default {
         throw new Error(error.message);
       }
     },
-
-    apiCurl: (kpi) =>
-      `curl -X POST -H "okr-team-secret: <YOUR SECRET>" -H "x-api-key: <YOUR API-KEY>" -H "Content-Type: application/json" -d '{ "progress": <VALUE> }' ${
-        import.meta.env.VITE_API_GATEWAY_URL
-      }/kpi/${kpi.id}`,
   },
 };
 </script>
