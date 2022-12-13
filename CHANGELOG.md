@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file. The format 
 - Values for key result progress are now rounded to maximum two decimal places
   when displayed.
 
+### Removed
+
+- Removed the (unused) icon option field from the OKR objective edit menu.
+
 ### Fixed
 
 - Fixed a bug where the right column on department pages would be hidden

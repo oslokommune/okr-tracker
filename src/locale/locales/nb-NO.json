@@ -92,7 +92,6 @@
     "sheetTab": "Fane",
     "sheetCell": "Celle",
     "displayName": "Visningsnavn",
-    "icon": "Ikon",
     "period": "Periode",
     "description": "Beskrivelse",
     "slug": "Slug",
@@ -441,9 +440,6 @@
   },
   "accessRequests": {
     "heading": "Tilgangsforespørsler"
-  },
-  "select": {
-    "noIcons": "Ingen treff"
   },
   "empty": {
     "noKeyResultProgress": "Dette nøkkelresultatet har ingen registrerte verdier.",
