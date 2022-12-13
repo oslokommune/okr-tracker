@@ -14,6 +14,12 @@
         <span class="kpi__header-label">{{ typeLabel }}</span>
         <h2>{{ kpi.name }}</h2>
       </div>
+      <div v-if="goal" class="kpi__header-value-container">
+        <span class="kpi__header-label">Mål {{ goal.name }}</span>
+        <span class="kpi__header-value">
+          {{ formatKPIValue(kpi, goal.value) }}
+        </span>
+      </div>
       <div class="kpi__header-value-container">
         <span class="kpi__header-label">Verdi</span>
         <span class="kpi__header-value">
@@ -28,6 +34,7 @@
       <kpi-admin-form
         :kpi="kpi"
         :loading="loading || state === 'loading'"
+        :has-goal="Boolean(goal)"
         @save="save"
         @delete="archive"
       />
@@ -119,6 +126,21 @@ export default {
         ...this.types.map(({ id, label }) => ({ [id]: label }))
       );
       return labels[this.kpi.kpiType] || this.kpi.kpiType;
+    },
+    goal() {
+      if (!this.kpi.goals) {
+        return null;
+      }
+
+      const now = new Date();
+
+      for (const goal of JSON.parse(this.kpi.goals)) {
+        if (new Date(goal.from) <= now && new Date(goal.to) >= now) {
+          return goal;
+        }
+      }
+
+      return null;
     },
   },
 
@@ -244,6 +266,7 @@ export default {
   }
 
   &-value-container {
+    flex-basis: 6.5rem;
     text-align: right;
 
     @media screen and (max-width: bp(s)) {
