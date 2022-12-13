@@ -186,7 +186,7 @@
     "value": "Value",
     "target": "Target",
     "selectRange": "Select a start and end date",
-    "formErrors": "The form contains error that must be corrected."
+    "formErrors": "The form contains errors that must be corrected."
   },
   "btn": {
     "close": "Close",
