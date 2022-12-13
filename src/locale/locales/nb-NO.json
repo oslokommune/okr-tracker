@@ -105,7 +105,9 @@
     "date": "Dato",
     "password": "Passord",
     "secret": "API Hemmelighet",
-    "comment": "Kommentar"
+    "comment": "Kommentar",
+    "preferredTrend": "Ønsket trend",
+    "updateFrequency": "Oppdateringshyppighet"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -130,8 +132,8 @@
     "min_value": "Må være {min} eller mer",
     "numeric": "Kan bare inneholde nummer",
     "regex": "Formatering er ugyldig",
-    "required": "Obligatorisk",
-    "required_if": "Obligatorisk",
+    "required": "Må fylles ut",
+    "required_if": "Må fylles ut",
     "size": "Må være mindre enn {size}KB",
     "double": "Må være en gyldig desimal",
     "positiveNotZero": "Ugyldig verdi",
@@ -181,7 +183,8 @@
     "keyFigures": "KPI-er",
     "value": "Verdi",
     "target": "Målsetting",
-    "selectRange": "Velg start- og sluttdato"
+    "selectRange": "Velg start- og sluttdato",
+    "formErrors": "Skjemaet inneholder feil som må rettes."
   },
   "btn": {
     "close": "Lukk",

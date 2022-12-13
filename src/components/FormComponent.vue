@@ -1,11 +1,11 @@
 <template>
-  <validation-provider
-    v-slot="{ errors }"
-    ref="validationProvider"
-    :rules="rules"
-    :name="name || label"
-  >
-    <label class="form-group">
+  <validation-provider v-slot="{ errors }" :rules="rules" :name="name || label">
+    <label
+      :class="{
+        'form-group': true,
+        'form-group--error': errors.length,
+      }"
+    >
       <span
         :class="{
           'form-label': true,
@@ -13,6 +13,7 @@
         }"
       >
         {{ label || name }}
+        <span v-if="errors[0]" class="ods-badge ods-badge--danger">{{ errors[0] }}</span>
       </span>
 
       <slot name="help"></slot>
@@ -81,8 +82,6 @@
           <i class="form-label__copy-button far fa-clone" />
         </button>
       </div>
-
-      <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
     </label>
   </validation-provider>
 </template>

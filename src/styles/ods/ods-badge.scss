@@ -3,7 +3,6 @@
   https://designsystem.oslo.kommune.no/latest/komponenter/badge/index/
 */
 .ods-badge {
-  display: inline-flex;
   height: 1.5em;
   padding: 0.25em 0.4em;
   color: black;
@@ -29,5 +28,6 @@
 }
 
 .ods-badge--danger {
-  background: var(--color-red-light);
+  color: var(--color-error);
+  background: rgba(var(--color-red-rgb), 0.1);
 }
