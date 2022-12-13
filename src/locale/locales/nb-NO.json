@@ -310,7 +310,6 @@
     "editValue": "Endre verdi",
     "automation": {
       "header": "Automatisk registrering av progresjon (Google Sheets)",
-      "readMore": "Les mer",
       "googleSheetUrl": "Google Sheets URL",
       "googleSheetUrlHelp": "Den fulle nettadressen til Google Sheets-regnearket",
       "sheetsTab": "Fane",
@@ -488,9 +487,11 @@
     "heading": "Arkivert",
     "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet."
   },
-  "sheet": {
-    "infoText": "Merk: Google Sheets-dokumentet må deles med følgende addresse:",
-    "missingServiceAccount": "Feil: Ingen adresse funnet – ta kontakt med systemadministrator."
+  "sheets": {
+    "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",
+    "403": "Systemet har ikke tilgang til å lese Google Sheets-dokumentet.",
+    "404": "Fant ikke Google Sheets-dokumentet. Feil URL?",
+    "noDataInCell": "Celle {cell} er tom."
   },
   "widget": {
     "progression": {
@@ -515,11 +516,6 @@
       },
       "overwriteWarning": "Merk: Denne endringen overskriver eksisterende måleverdi for valgt dato ({date}): {value}."
     }
-  },
-  "error": {
-    "403": "Systemet har ikke tilgang til å lese dokumentet",
-    "404": "Fant ikke dokumentet. Feil ID?",
-    "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
     "profile": "Profil",

@@ -83,9 +83,8 @@
           :label="$t('keyResult.automation.header')"
         >
           <p>
-            <router-link :to="{ name: 'Help' }">
-              {{ $t('keyResult.automation.readMore') }}
-            </router-link>
+            {{ $t('sheets.infoText') }}<br />
+            <strong>{{ serviceAccountAddress }}</strong>
           </p>
 
           <google-sheets-form-group
@@ -182,6 +181,7 @@ export default {
     loading: false,
     loadingConnection: false,
     isLoadingDetails: false,
+    serviceAccountAddress: import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT,
   }),
 
   watch: {
@@ -317,15 +317,15 @@ export default {
 
     showError(msg) {
       if (msg === '403') {
-        return this.$t('error.403');
+        return this.$t('sheets.403');
       }
       if (msg === '404') {
-        return this.$t('error.404');
+        return this.$t('sheets.404');
       }
 
       if (msg.includes('Cannot find data in cell')) {
         const cell = msg.split('cell ')[1];
-        return this.$t('error.noDataInCell', { cell });
+        return this.$t('sheets.noDataInCell', { cell });
       }
       return msg;
     },

@@ -112,6 +112,11 @@
         name="auto"
         :label="$t('kpi.automation.radio')"
       >
+        <p class="google-sheets-info">
+          {{ $t('sheets.infoText') }}<br />
+          <strong>{{ serviceAccountAddress }}</strong>
+        </p>
+
         <google-sheets-form-group
           :sheet-id="localKpi.sheetId"
           :sheet-url.sync="localKpi.sheetUrl"
@@ -226,6 +231,7 @@ export default {
     types: kpiTypes(),
     updateFrequencies: kpiUpdateFrequencies(),
     showEditGoalsModal: false,
+    serviceAccountAddress: import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT,
   }),
 
   watch: {
@@ -324,6 +330,7 @@ export default {
 #preferredTrend {
   flex-direction: column;
 }
+
 .kpi-format-and-trend {
   display: flex;
   flex-direction: row;
@@ -333,5 +340,9 @@ export default {
   > span {
     flex: 1;
   }
+}
+
+.google-sheets-info {
+  margin: 1.25rem 0 2rem;
 }
 </style>
