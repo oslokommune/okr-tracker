@@ -26,3 +26,17 @@ export const fetchKpiDataOnSchedule = functions
         throw new Error(e);
       });
   });
+
+export const fetchKpiDataTrigger = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .https.onCall((id) => {
+    return getFirestore()
+      .collection('kpis')
+      .doc(id)
+      .get()
+      .then(fetchKpiData)
+      .catch((e) => {
+        throw new Error(e);
+      });
+  });

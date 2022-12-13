@@ -35,6 +35,7 @@ export { triggerScheduledFunction } from './automatedKeyResults.js';
 
 export { fetchKpiDataOnCreate } from './kpi/index.js';
 export { fetchKpiDataOnSchedule } from './kpi/index.js';
+export { fetchKpiDataTrigger } from './kpi/index.js';
 export { handleKpiProgress };
 export { handleKpiGoals };
 
