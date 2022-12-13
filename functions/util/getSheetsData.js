@@ -27,10 +27,10 @@ jwtClient.authorize((err) => {
 
 /**
  * Return a value from a Google Sheets cell.
- * @param {String} sheetId - ID of Sheets Document
- * @param {String} sheetId - URL of Sheets Document
- * @param {String} sheetName - Name of Sheet (tab)
- * @param {String} cell - Cell name of value
+ * @param {String} sheetId - ID of the Google Sheets document
+ * @param {String} sheetUrl - URL of the Google Sheets document
+ * @param {String} sheetName - Name of sheet (tab)
+ * @param {String} sheetCell - Cell name to look up
  * @returns {Number} - Value of the cell
  */
 const getSheetsData = async ({ sheetId, sheetUrl, sheetName, sheetCell }) => {
