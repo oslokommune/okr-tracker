@@ -11,8 +11,8 @@
     "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {
-    "add": "Legg til KPI",
-    "placeholderName": "Ny KPI",
+    "add": "Legg til måling",
+    "placeholderName": "Ny måling",
     "edit": "Endre KPI",
     "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
@@ -58,7 +58,7 @@
         "description": "Er KPI-en så viktig at den er definert som produktområdets resultatindikator og har et måltall? Resultatindikatoren vises også i dashbordet."
       }
     },
-    "heading": "KPI-er",
+    "heading": "Målinger",
     "itemRowError": "feil",
     "help": {
       "updates": "KPI-er kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av KPI-er {readMoreLink}.",
@@ -143,7 +143,7 @@
     "general": "Generelt",
     "OKRs": "OKR-er",
     "OKRsLong": "Mål og nøkkelresultater",
-    "KPIs": "KPI-er",
+    "KPIs": "Målinger",
     "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
