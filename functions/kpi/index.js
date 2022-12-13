@@ -10,12 +10,6 @@ export const fetchKpiDataOnCreate = functions
   .firestore.document(`kpis/{documentId}`)
   .onCreate(fetchKpiData);
 
-export const fetchKpiDataOnUpdate = functions
-  .runWith(config.runtimeOpts)
-  .region(config.region)
-  .firestore.document(`kpis/{documentId}`)
-  .onUpdate(({ after }) => fetchKpiData(after));
-
 export const fetchKpiDataOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
