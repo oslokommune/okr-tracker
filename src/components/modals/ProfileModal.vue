@@ -1,68 +1,78 @@
 <template>
-  <modal-wrapper v-if="user" @close="close">
+  <modal-wrapper v-if="user" @close="$emit('close')">
     <template #header>
       {{ $t('user.profile') }}
     </template>
-    <validation-observer v-slot="{ handleSubmit }">
-      <form
-        id="updateUser"
-        class="modal__main--flex"
-        @submit.prevent="handleSubmit(save)"
-      >
-        <div class="column">
-          <span class="form-label">{{ $t('fields.name') }}</span>
-          <input v-model="thisUser.displayName" rules="required" :disabled="!me" />
-          <label class="form-group">
-            <span class="form-label">{{ $t('user.position.title') }}</span>
-            <v-select
-              v-if="me || $store.state.user.superAdmin"
-              v-model="thisUser.position"
-              :options="jobPositions"
-              :get-option-label="(option) => $t(`user.position.${option}`)"
-            >
-            </v-select>
-            <div v-else>
-              <span>
-                {{
-                  thisUser && thisUser.position
-                    ? thisUser.position
-                    : $t('user.position.member')
-                }}
-              </span>
-            </div>
-          </label>
 
-          <btn-save
-            v-if="me || $store.state.user.superAdmin"
-            form="updateUser"
-            class="profileModal__save-button"
-            :disabled="loading"
+    <div class="modal__main--flex">
+      <div class="column">
+        <form-section v-if="me || $store.state.user.superAdmin">
+          <form-component
+            v-model="thisUser.displayName"
+            input-type="input"
+            name="name"
+            :label="$t('fields.name')"
+            rules="required"
           />
-        </div>
 
-        <div class="column">
-          <h2 class="title-2">
-            {{ $t('user.products') }}
-          </h2>
-          <ul v-if="products.length > 0">
-            <li v-for="product in products" :key="product.id">
-              <div class="profileModal__info">
-                <h2 class="title-2">{{ product.department.name }}</h2>
-                <div>{{ product.name }}</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </form>
-    </validation-observer>
+          <form-component
+            v-model="thisUser.position"
+            input-type="select"
+            name="position"
+            :label="$t('user.position.title')"
+            rules="required"
+            select-label="label"
+            :select-options="userPositionOptions"
+            :select-reduce="(option) => option.position"
+            type="text"
+          />
+
+          <template #actions="{ handleSubmit, submitDisabled }">
+            <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(save)" />
+          </template>
+        </form-section>
+
+        <template v-else>
+          <div class="form-group">
+            <span class="form-label">{{ $t('fields.name') }}</span>
+            <span>{{ user.displayName }}</span>
+          </div>
+          <div class="form-group">
+            <span class="form-label">{{ $t('user.position.title') }}</span>
+            <span>
+              {{
+                user.position
+                  ? $t(`user.position.${user.position}`)
+                  : $t('user.position.member')
+              }}
+            </span>
+          </div>
+        </template>
+      </div>
+
+      <div class="column">
+        <h2 class="title-2">
+          {{ $t('user.products') }}
+        </h2>
+        <ul v-if="products.length > 0">
+          <li v-for="product in products" :key="product.id">
+            <div class="profileModal__info">
+              <h2 class="title-2">{{ product.department.name }}</h2>
+              <div>{{ product.name }}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </modal-wrapper>
 </template>
+
 <script>
 import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import User from '@/db/User';
 import { jobPositions } from '@/config/jobPositions';
-import { BtnSave } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave } from '@/components/generic/form';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -70,6 +80,7 @@ export default {
 
   components: {
     ModalWrapper,
+    FormSection,
     BtnSave,
   },
 
@@ -101,6 +112,12 @@ export default {
   computed: {
     me() {
       return this.$store.state.user?.id === this.user?.id;
+    },
+    userPositionOptions() {
+      return this.jobPositions.map((position) => ({
+        position,
+        label: this.$t(`user.position.${position}`),
+      }));
     },
   },
 
@@ -160,10 +177,6 @@ export default {
     edit() {
       this.changes = true;
     },
-
-    close() {
-      this.$emit('close');
-    },
   },
 };
 </script>
@@ -202,8 +215,7 @@ export default {
   }
 }
 
-.profileModal__save-button {
-  align-self: end;
-  margin-top: 1rem;
+::v-deep .v-select {
+  flex-grow: 1;
 }
 </style>

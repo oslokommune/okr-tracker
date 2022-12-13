@@ -4,40 +4,38 @@
       {{ $t('keyResult.newValue') }}
     </template>
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
-        <label class="form-field">
-          <span class="form-label">{{ $t('keyResult.addComment') }}</span>
-          <textarea
-            v-model="note"
-            class="modal__textarea"
-            :placeholder="$t('keyResult.commentPlaceholder')"
-            rows="3"
-          />
-        </label>
+    <form-section>
+      <form-component
+        v-model="value"
+        input-type="input"
+        name="value"
+        :label="$t('keyResult.newValue')"
+        rules="required"
+        type="number"
+      />
 
-        <div>
-          <validation-provider v-slot="{ errors }" name="value" rules="required">
-            <label class="form-field">
-              <span class="form-label">{{ $t('keyResult.newValue') }}</span>
-              <input v-model="value" type="number" step="any" />
-              <span class="form-field--error">{{ errors[0] }}</span>
-            </label>
-          </validation-provider>
-        </div>
-      </form>
-    </validation-observer>
+      <form-component
+        v-model="note"
+        input-type="textarea"
+        name="comment"
+        :label="$t('keyResult.addComment')"
+        :placeholder="$t('keyResult.commentPlaceholder')"
+      />
 
-    <template #footer>
-      <btn-save form="modal" :disabled="loading" />
-    </template>
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-save
+          :disabled="submitDisabled || loading"
+          @click="handleSubmit(saveProgress)"
+        />
+      </template>
+    </form-section>
   </modal-wrapper>
 </template>
 
 <script>
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
-import { BtnSave } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave } from '@/components/generic/form';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -45,6 +43,7 @@ export default {
 
   components: {
     ModalWrapper,
+    FormSection,
     BtnSave,
   },
 
@@ -93,3 +92,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep input[name='value'] {
+  font-size: 1.5rem;
+}
+</style>

@@ -4,12 +4,8 @@
       {{ $t(record ? 'kpi.editValue' : 'kpi.newValue') }}
     </template>
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form
-        id="progress-value"
-        class="progress-form"
-        @submit.prevent="handleSubmit(save)"
-      >
+    <form-section>
+      <div class="progress-form">
         <div class="progress-form__left">
           <form-component
             v-model="thisRecord.value"
@@ -27,7 +23,6 @@
             name="comment"
             :label="$t('widget.history.comment_optional')"
             :placeholder="$t('keyResult.commentPlaceholder')"
-            type="number"
             data-cy="progress_comment"
             class="progress-form__comment-group"
           />
@@ -50,25 +45,25 @@
             </label>
           </validation-provider>
         </div>
-      </form>
-    </validation-observer>
+      </div>
 
-    <div v-if="existingValue" class="ok-alert ok-alert--warning">
-      {{
-        $t('widget.history.overwriteWarning', {
-          date: dateShort(existingValue.timestamp.toDate()),
-          value: formatKPIValue(activeKpi, existingValue.value),
-        })
-      }}
-    </div>
+      <div v-if="existingValue" class="ok-alert ok-alert--warning">
+        {{
+          $t('widget.history.overwriteWarning', {
+            date: dateShort(existingValue.timestamp.toDate()),
+            value: formatKPIValue(activeKpi, existingValue.value),
+          })
+        }}
+      </div>
 
-    <template #footer>
-      <btn-save
-        form="progress-value"
-        :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
-        :disabled="loading"
-      />
-    </template>
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-save
+          :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
+          :disabled="submitDisabled || loading"
+          @click="handleSubmit(save)"
+        />
+      </template>
+    </form-section>
   </modal-wrapper>
 </template>
 

@@ -6,6 +6,11 @@ export default {
   extends: Btn,
 
   props: {
+    type: {
+      type: String,
+      required: false,
+      default: 'submit',
+    },
     label: {
       type: String,
       required: false,
