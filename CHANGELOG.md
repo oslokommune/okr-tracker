@@ -10,16 +10,13 @@ All notable changes to this project will be documented in this file. The format 
   in the dashboard.
 - Values for key result progress are now rounded to maximum two decimal places
   when displayed.
-<<<<<<< HEAD
 - Renamed the heading and admin tab for "KPIs" to "measurements".
+- The graphs trend tag does now differ on display type 'integer' and 'percentage'
+  when displaying the increase/decrease for period.
 
 ### Removed
 
 - Removed the (unused) icon option field from the OKR objective edit menu.
-=======
-- The graphs trend tag does now differ on display type 'integer' and 'percentage'
-  when displaying the increase/decrease for period.
->>>>>>> Updated changelog
 
 ### Fixed
 
