@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file. The format 
 - Values for key result progress are now rounded to maximum two decimal places
   when displayed.
 - Renamed the heading and admin tab for "KPIs" to "measurements".
+- The graphs trend tag does now differ on display type 'integer' and 'percentage'
+  when displaying the increase/decrease for period.
 
 ### Removed
 

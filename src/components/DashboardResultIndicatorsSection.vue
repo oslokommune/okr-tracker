@@ -57,7 +57,7 @@
               {{ formatKPIValue(activeResultIndicator) }}
             </span>
             <span v-if="periodTrend" :class="bgColor" class="progressTarget__progress">
-              {{ periodTrend + $t('kpi.inPeriod') }}
+              {{ periodTrendFormatted }}
             </span>
           </div>
         </div>
@@ -67,10 +67,6 @@
           </span>
           <div>
             <span class="progressTarget__value">
-              {{ percentOfGoal }}
-            </span>
-            <span class="progressTarget__target">
-              {{ $t('kpi.ofTarget') }}
               {{ formatKPIValue(activeResultIndicator, goal.value) }}
             </span>
           </div>
@@ -100,10 +96,10 @@ import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 
-import { db } from '@/config/firebaseConfig';
-import { periodDates, numberLocale } from '@/util';
-import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
 import { endOfDay } from 'date-fns';
+import { db } from '@/config/firebaseConfig';
+import { periodDates } from '@/util';
+import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -192,15 +188,19 @@ export default {
     ...mapState(['kpis', 'subKpis', 'theme']),
     ...mapGetters(['hasEditRights']),
     periodTrend() {
-      const sortedProgress = this.filteredProgress
-        .slice()
-        .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
-      const firstProgressRecord = sortedProgress[0]?.value;
-      const latestProgressRecord = sortedProgress.slice(-1)[0]?.value;
+      const firstProgressRecord = this.filteredProgressSorted[0]?.value;
+      const latestProgressRecord = this.filteredProgressSorted.slice(-1)[0]?.value;
+      const diff = latestProgressRecord - firstProgressRecord;
+      return Math.round(diff * 100) / 100;
+    },
+    periodTrendFormatted() {
+      if (this.periodTrend === 0) {
+        return i18n.t('kpi.noChange');
+      }
+      const prefix = this.periodTrend > 0 ? '+' : '';
+      const formattedTrend = formatKPIValue(this.activeResultIndicator, this.periodTrend);
 
-      const periodDiff = latestProgressRecord - firstProgressRecord;
-      const diffInPercentage = (periodDiff / firstProgressRecord) * 100;
-      return Math.round(diffInPercentage * 10) / 10;
+      return `${prefix + formattedTrend} ${i18n.t('kpi.inPeriod')}`;
     },
     bgColor() {
       const ri = this.activeResultIndicator;
@@ -237,11 +237,6 @@ export default {
       // overlapping goals, just pick the one with the closest end date.
       return goals ? goals[0] : null;
     },
-    percentOfGoal() {
-      return numberLocale.format('.2p')(
-        this.activeResultIndicator.currentValue / this.goal.value
-      );
-    },
     filteredProgress() {
       // Filter out any duplicate measurement values for each date
       const seenDates = [];
@@ -261,6 +256,11 @@ export default {
         }
         return false;
       });
+    },
+    filteredProgressSorted() {
+      return this.filteredProgress
+        .slice()
+        .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
     },
   },
 
@@ -617,8 +617,8 @@ export default {
 }
 
 .negative {
-  color: var(--color-red-dark);
-  background: var(--color-red-light);
+  color: var(--color-red-2);
+  background: var(--color-red-light-2);
 }
 
 .progressTarget {
@@ -635,7 +635,7 @@ export default {
     gap: 0.75rem;
   }
   &__title {
-    color: var(--color-grey-600);
+    color: var(--color-grey-400);
     font-weight: 500;
     font-size: typography.$font-size-1;
   }
@@ -646,10 +646,12 @@ export default {
   }
   &__progress {
     padding: 0.3rem;
+    font-weight: 500;
     font-size: typography.$font-size-0;
   }
   &__target {
-    color: var(--color-grey-600);
+    color: var(--color-grey-400);
+    font-weight: 500;
     font-size: typography.$font-size-0;
   }
 }
