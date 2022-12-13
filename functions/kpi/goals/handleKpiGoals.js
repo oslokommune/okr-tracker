@@ -17,7 +17,7 @@ export default async function updateKpiGoals(change, { params }) {
   const goals = await kpiRef
     .collection('goals')
     .where('archived', '==', false)
-    .orderBy('toDate')
+    .orderBy('toDate', 'desc')
     .get()
     .then((snapshot) => snapshot.docs)
     .then((docs) => docs.map((d) => d.data()));

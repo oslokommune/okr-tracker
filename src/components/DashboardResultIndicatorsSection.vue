@@ -404,7 +404,7 @@ export default {
           db
             .collection(`kpis/${this.activeResultIndicator.id}/goals`)
             .where('archived', '==', false)
-            .orderBy('toDate')
+            .orderBy('toDate', 'desc')
         );
       }
     },
