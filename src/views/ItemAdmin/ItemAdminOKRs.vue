@@ -105,6 +105,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { endOfYear, startOfYear } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Period from '@/db/Period';
 import Objective from '@/db/Objective';
@@ -358,8 +359,10 @@ export default {
     },
 
     async createPeriod() {
-      const startDate = new Date();
-      const endDate = new Date();
+      const now = new Date();
+      const startDate = startOfYear(now);
+      const endDate = endOfYear(now);
+
       try {
         const { id } = await Period.create({
           name: 'placeholder',
