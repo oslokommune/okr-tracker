@@ -127,7 +127,7 @@ export default {
       immediate: true,
       handler() {
         this.bindGoals().then(() => {
-          if (this.goals.length) {
+          if (!this.activeGoalId && this.goals.length) {
             this.setActiveGoal(this.goals[0].id);
           }
         });
@@ -238,7 +238,11 @@ export default {
           })
         );
       }
-      await this.clearActiveGoal();
+      if (this.goals.length) {
+        await this.setActiveGoal(this.goals[0].id);
+      } else {
+        await this.clearActiveGoal();
+      }
     },
 
     async restore(kpiId, goalId) {
