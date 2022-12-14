@@ -161,8 +161,6 @@ export default {
 
     async save(kpi) {
       this.loading = true;
-      kpi.error = false;
-      kpi.valid = false;
       delete kpi.parent;
 
       try {

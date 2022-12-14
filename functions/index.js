@@ -33,7 +33,6 @@ export { automatedRestore } from './backupAndRestore.js';
 export { fetchAutomatedKeyResOnSchedule } from './automatedKeyResults.js';
 export { triggerScheduledFunction } from './automatedKeyResults.js';
 
-export { fetchKpiDataOnUpdate } from './kpi/index.js';
 export { fetchKpiDataOnCreate } from './kpi/index.js';
 export { fetchKpiDataOnSchedule } from './kpi/index.js';
 export { handleKpiProgress };
