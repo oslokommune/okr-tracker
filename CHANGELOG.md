@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. The format 
 - The graphs trend tag does now differ on display type 'integer' and 'percentage'
   when displaying the increase/decrease for period.
 - Current goals are now listed on the KPI admin page.
+- Line chart tooltips have been redesigned.
 
 ### Removed
 

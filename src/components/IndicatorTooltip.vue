@@ -1,34 +1,17 @@
 <template>
   <div class="tooltip">
-    <div>
-      <icon-calendar :height="15" :width="15" />
-      {{ formattedTimestamp }}
-    </div>
-    <div>
-      <icon-graph :height="15" :width="15" />
-      {{ formattedValue }}
-    </div>
-    <div v-if="comment">
-      <icon-comment :height="15" :width="15" />
-      {{ comment }}
-    </div>
+    <div class="date">{{ formattedDate }}</div>
+    <div class="value">{{ formattedValue }}</div>
+    <div v-if="comment">{{ comment }}</div>
   </div>
 </template>
 
 <script>
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
-import IconCalendar from './IconCalendar.vue';
-import IconComment from './IconComment.vue';
-import IconGraph from './IconGraph.vue';
 
 export default {
   name: 'IndicatorTooltip',
-  components: {
-    IconCalendar,
-    IconComment,
-    IconGraph,
-  },
   props: {
     timestamp: {
       type: Date,
@@ -50,7 +33,7 @@ export default {
     },
   },
   computed: {
-    formattedTimestamp() {
+    formattedDate() {
       return dateShort(this.timestamp);
     },
     formattedValue() {
@@ -63,16 +46,20 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.tooltip > div {
-  display: flex;
-  max-width: 200px;
-  margin: 0.5rem 0;
-  font-weight: 500;
-  font-size: typography.$font-size-1;
+.tooltip {
+  > div {
+    max-width: 200px;
+    margin: 0.5rem 0;
+    font-weight: 500;
+    font-size: typography.$font-size-1;
+  }
 
-  > svg {
-    flex-shrink: 0;
-    margin: 0.15rem 0.5rem 0 0;
+  .date {
+    font-weight: 400;
+  }
+
+  .value {
+    font-size: typography.$font-size-4;
   }
 }
 </style>
