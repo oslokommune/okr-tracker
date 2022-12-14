@@ -2,39 +2,8 @@
   <div v-if="user" class="modal__main--flex">
     <div class="column">
       <h2 class="widget__title title-2">{{ $t('user.profile') }}</h2>
-      <validation-observer v-slot="{ handleSubmit }">
-        <form id="updateUser" class="form-group" @submit.prevent="handleSubmit(save)">
-          <span class="profileModal__label">{{ $t('fields.name') }}</span>
-          <input v-model="thisUser.displayName" rules="required" class="form__field" />
-        </form>
-        <label class="form-group">
-          <span class="profileModal__label">{{ $t('user.position.title') }}</span>
-          <v-select
-            v-model="thisUser.position"
-            :options="jobPositions"
-            :class="{ mandatory: thisUser.position == null }"
-            :get-option-label="(option) => $t(`user.position.${option}`)"
-          >
-          </v-select>
-          <span
-            v-if="thisUser && thisUser.position == null"
-            class="profileModal__label profileModal__required"
-          >
-            {{ $t('validation.required') }}
-          </span>
-        </label>
-        <label class="form-group">
-          <span class="profileModal__label">{{ $t('user.language') }}</span>
-          <v-select
-            v-model="thisUser.preferences.lang"
-            :options="languages"
-            :get-option-label="(option) => $t(`languages.${option}`)"
-          >
-          </v-select>
-        </label>
-      </validation-observer>
 
-      <btn-save form="updateUser" class="profileModal__save-button" :disabled="loading" />
+      <user-profile-form :user="user" :loading="loading" @save="save" />
 
       <hr class="divider" />
 
@@ -97,15 +66,14 @@ import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import User from '@/db/User';
-import { jobPositions } from '@/config/jobPositions';
-import { BtnSave } from '@/components/generic/form/buttons';
+import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 
 export default {
   name: 'UserProfileMenu',
 
   components: {
     ThemeToggle,
-    BtnSave,
+    UserProfileForm,
   },
 
   props: {
@@ -127,9 +95,6 @@ export default {
     audit: [],
     image: null,
     loading: false,
-    thisUser: null,
-    languages: ['nb-NO', 'en-US'],
-    jobPositions,
   }),
 
   computed: {
@@ -158,23 +123,15 @@ export default {
         this.$bind('audit', auditRef, { maxRefDepth: 1 });
       },
     },
-    user: {
-      immediate: true,
-      handler() {
-        if (this.user) {
-          this.thisUser = { ...this.user, id: this.user.id };
-        }
-      },
-    },
   },
 
   methods: {
     ...mapActions(['reset_state']),
 
-    async save() {
+    async save(user) {
       this.loading = true;
       try {
-        await User.update(this.thisUser);
+        await User.update(user);
         await this.$router.go();
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
@@ -289,10 +246,5 @@ export default {
   @media screen and (min-width: bp(m)) {
     display: none;
   }
-}
-</style>
-<style lang="scss">
-.mandatory .vs__dropdown-toggle {
-  border: 1px solid var(--color-danger);
 }
 </style>

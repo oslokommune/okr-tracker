@@ -110,7 +110,8 @@
     "format": "Display",
     "timestamp": "Timestamp",
     "preferredTrend": "Trend",
-    "updateFrequency": "Update frequency"
+    "updateFrequency": "Update frequency",
+    "language": "Language"
   },
   "validation": {
     "alpha": "May only contain alphabetic characters",

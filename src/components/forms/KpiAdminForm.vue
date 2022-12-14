@@ -301,11 +301,8 @@ export default {
     }
   }
 }
-
-::v-deep .v-select {
-  flex-grow: 1;
-}
 </style>
+
 <style lang="scss">
 #kpiFormat,
 #preferredTrend {

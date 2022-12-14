@@ -6,40 +6,21 @@
 
     <div class="modal__main--flex">
       <div class="column">
-        <form-section v-if="me || $store.state.user.superAdmin">
-          <form-component
-            v-model="thisUser.displayName"
-            input-type="input"
-            name="name"
-            :label="$t('fields.name')"
-            rules="required"
-          />
-
-          <form-component
-            v-model="thisUser.position"
-            input-type="select"
-            name="position"
-            :label="$t('user.position.title')"
-            rules="required"
-            select-label="label"
-            :select-options="userPositionOptions"
-            :select-reduce="(option) => option.position"
-            type="text"
-          />
-
-          <template #actions="{ handleSubmit, submitDisabled }">
-            <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(save)" />
-          </template>
-        </form-section>
+        <user-profile-form
+          v-if="me || $store.state.user.superAdmin"
+          :user="user"
+          :loading="loading"
+          @save="save"
+        />
 
         <template v-else>
           <div class="form-group">
             <span class="form-label">{{ $t('fields.name') }}</span>
-            <span>{{ user.displayName }}</span>
+            <span class="form-value">{{ user.displayName }}</span>
           </div>
           <div class="form-group">
             <span class="form-label">{{ $t('user.position.title') }}</span>
-            <span>
+            <span class="form-value">
               {{
                 user.position
                   ? $t(`user.position.${user.position}`)
@@ -68,11 +49,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { db, auth } from '@/config/firebaseConfig';
+import { db } from '@/config/firebaseConfig';
 import User from '@/db/User';
-import { jobPositions } from '@/config/jobPositions';
-import { FormSection, BtnSave } from '@/components/generic/form';
+import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -80,8 +59,7 @@ export default {
 
   components: {
     ModalWrapper,
-    FormSection,
-    BtnSave,
+    UserProfileForm,
   },
 
   props: {
@@ -103,21 +81,11 @@ export default {
     audit: [],
     image: null,
     loading: false,
-    changes: false,
-    thisUser: null,
-    languages: ['nb-NO', 'en-US'],
-    jobPositions,
   }),
 
   computed: {
     me() {
       return this.$store.state.user?.id === this.user?.id;
-    },
-    userPositionOptions() {
-      return this.jobPositions.map((position) => ({
-        position,
-        label: this.$t(`user.position.${position}`),
-      }));
     },
   },
 
@@ -141,41 +109,20 @@ export default {
         this.$bind('audit', auditRef, { maxRefDepth: 1 });
       },
     },
-    user: {
-      immediate: true,
-      handler() {
-        if (this.user) {
-          this.thisUser = { ...this.user, id: this.user.id };
-        }
-      },
-    },
   },
 
   methods: {
-    ...mapActions(['reset_state']),
-
-    async save() {
+    async save(user) {
       this.loading = true;
       try {
-        await User.update(this.thisUser);
+        await User.update(user);
         await this.$router.go();
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
         console.error(error);
         this.$toasted.error(this.$t('toaster.error.save'));
       }
-
       this.loading = false;
-      this.changes = false;
-    },
-
-    async signOut() {
-      await auth.signOut();
-      await this.reset_state();
-    },
-
-    edit() {
-      this.changes = true;
     },
   },
 };
@@ -215,7 +162,7 @@ export default {
   }
 }
 
-::v-deep .v-select {
-  flex-grow: 1;
+.form-value {
+  font-weight: 500;
 }
 </style>
