@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.1.0] 2022-12-15
+
 ### Changed
 
 - The result indicator graph now defaults to showing all registered measurements
@@ -15,6 +17,9 @@ All notable changes to this project will be documented in this file. The format 
   when displaying the increase/decrease for period.
 - Current goals are now listed on the KPI admin page.
 - Line chart tooltips have been redesigned.
+- Usability improvements in the goal editing modal dialogue.
+- Form validation improvements by displaying more detailed user feedback and
+  preventing submit on form errors.
 
 ### Removed
 
@@ -26,6 +31,10 @@ All notable changes to this project will be documented in this file. The format 
   unintentionally.
 - Fixed a bug where line charts would sometimes be rendered without goal lines.
 - Added a missing Firestore index to make the admin feasibly fast again.
+
+### Security
+
+- Fixed a vulnerability regarding encoding of query strings to Firestore.
 
 ## [3.0.0] 2022-11-25
 
