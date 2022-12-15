@@ -64,6 +64,18 @@
         />
       </template>
     </form-section>
+
+    <template #subfooter>
+      <hr class="ods-hr" />
+      <i18n path="kpi.help.apiProgress" tag="p">
+        <template #apiLink>
+          <router-link :to="{ name: 'Api' }" target="_blank">
+            <span>{{ $t('general.api') }}</span>
+          </router-link>
+        </template>
+      </i18n>
+      <ProgressUpdateAPIExample :path="`kpi/${activeKpi.id}`" />
+    </template>
   </modal-wrapper>
 </template>
 

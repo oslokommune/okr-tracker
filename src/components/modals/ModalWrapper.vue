@@ -17,6 +17,10 @@
       <div v-if="$slots.footer" class="modal__footer">
         <slot name="footer" />
       </div>
+
+      <div v-if="$slots.subfooter" class="modal__subfooter">
+        <slot name="subfooter" />
+      </div>
     </div>
   </div>
 </template>
