@@ -3,48 +3,40 @@
   <div v-else-if="activePeriod" class="details">
     <archived-restore v-if="activePeriod.archived" :restore="restore" />
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form id="update-period" @submit.prevent="handleSubmit(update)">
-        <form-component
-          v-model="activePeriod.name"
-          input-type="input"
-          name="name"
-          :label="$t('fields.name')"
-          rules="required"
-          type="text"
-          data-cy="period_name"
-        />
+    <form-section>
+      <form-component
+        v-model="activePeriod.name"
+        input-type="input"
+        name="name"
+        :label="$t('fields.name')"
+        rules="required"
+        type="text"
+        data-cy="period_name"
+      />
 
-        <validation-provider v-slot="{ errors }" name="range">
-          <label class="form-field">
-            <span class="form-label">{{ $t('period.dateRange') }}</span>
-            <flat-pickr
-              v-model="range"
-              :config="flatPickerConfig"
-              class="form-control flatpickr-input"
-              name="date"
-              placeholder="Velg start- og sluttdato"
-            />
-          </label>
-          <span class="form-field--error">{{ errors[0] }}</span>
-        </validation-provider>
-      </form>
-    </validation-observer>
+      <form-component
+        v-model="range"
+        input-type="date"
+        name="period"
+        :label="$t('period.dateRange')"
+        :placeholder="$t('general.selectRange')"
+        rules="required"
+        :date-picker-config="flatPickerConfig"
+      />
 
-    <div class="button-row">
-      <btn-delete v-if="!activePeriod.archived" :disabled="loading" @click="archive" />
-      <btn-save form="update-period" data-cy="save_period" :disabled="loading" />
-    </div>
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-delete v-if="!activePeriod.archived" :disabled="loading" @click="archive" />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(update)" />
+      </template>
+    </form-section>
   </div>
 </template>
 
 <script>
 import locale from 'flatpickr/dist/l10n/no';
-import endOfDay from 'date-fns/endOfDay';
-import format from 'date-fns/format';
 import Period from '@/db/Period';
 import { toastArchiveAndRevert } from '@/util';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
 
 export default {
   name: 'ItemAdminPeriod',
@@ -53,6 +45,7 @@ export default {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    FormSection,
     BtnSave,
     BtnDelete,
   },
@@ -87,34 +80,18 @@ export default {
       handler() {
         this.isLoadingDetails = true;
         this.activePeriod = { ...this.data, id: this.data.id };
-        this.range = this.generateRange();
+        this.range = this.getCurrentRange();
         this.isLoadingDetails = false;
       },
-    },
-
-    range(range) {
-      if (!range) {
-        return;
-      }
-      const parts = this.range.split(' til ').map((d) => new Date(d));
-      if (parts.length === 1) {
-        return;
-      }
-      this.dirty = true;
-      const [startDate, endDate] = parts;
-      this.startDate = startDate;
-      this.endDate = endOfDay(endDate);
     },
   },
 
   methods: {
-    generateRange() {
+    getCurrentRange() {
       if (!this.activePeriod.startDate || !this.activePeriod.endDate) {
-        return '';
+        return null;
       }
-      const startDate = format(this.activePeriod.startDate.toDate(), 'yyyy-MM-dd');
-      const endDate = format(this.activePeriod.endDate.toDate(), 'yyyy-MM-dd');
-      return this.$t('period.range', { startDate, endDate });
+      return [this.activePeriod.startDate.toDate(), this.activePeriod.endDate.toDate()];
     },
 
     async archive() {
@@ -157,11 +134,12 @@ export default {
       this.loading = true;
       try {
         const { id, name } = this.activePeriod;
+        const [startDate, endDate] = this.range;
 
         await Period.update(id, {
           name,
-          startDate: new Date(this.startDate),
-          endDate: new Date(this.endDate),
+          startDate,
+          endDate,
         });
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch (error) {
