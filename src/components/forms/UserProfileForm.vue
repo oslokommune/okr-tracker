@@ -64,7 +64,6 @@ export default {
 
   data: () => ({
     localUser: null,
-    languages: ['nb-NO', 'en-US'],
     jobPositions,
   }),
 
@@ -74,6 +73,9 @@ export default {
         position,
         label: this.$t(`user.position.${position}`),
       }));
+    },
+    languages() {
+      return Object.keys(this.$i18n.messages);
     },
     languageOptions() {
       return this.languages.map((language) => ({
