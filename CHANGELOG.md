@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fixed a bug where saving a placeholder OKR period without changes would result
+  in it being set to unix epoch.
+
 ## [3.1.0] 2022-12-15
 
 ### Changed
@@ -31,8 +36,6 @@ All notable changes to this project will be documented in this file. The format 
   unintentionally.
 - Fixed a bug where line charts would sometimes be rendered without goal lines.
 - Added a missing Firestore index to make the admin feasibly fast again.
-- Fixed a bug where saving a placeholder OKR period without changes would result
-  in it being set to unix epoch.
 
 ### Security
 
