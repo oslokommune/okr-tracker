@@ -2,14 +2,6 @@
   "404": {
     "title": "404"
   },
-  "theme": {
-    "colors": {
-      "blue": "Blå",
-      "green": "Grønn"
-    },
-    "header": "Tilpass",
-    "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
-  },
   "kpi": {
     "add": "Legg til måling",
     "placeholderName": "Ny måling",

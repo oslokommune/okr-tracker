@@ -185,7 +185,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'subKpis', 'theme']),
+    ...mapState(['kpis', 'subKpis']),
     ...mapGetters(['hasEditRights']),
     periodTrend() {
       const firstProgressRecord = this.filteredProgressSorted[0]?.value;
@@ -321,10 +321,6 @@ export default {
 
       this.setActiveTab(0);
     },
-
-    theme() {
-      this.renderGraph();
-    },
   },
 
   mounted() {
@@ -439,7 +435,6 @@ export default {
         kpi,
         startValue,
         targetValue,
-        theme: this.theme,
       });
     },
 
@@ -465,7 +460,7 @@ export default {
           ),
         });
 
-        downloadPng(svgRef, filename, activeTabName, formattedPeriod, this.theme);
+        downloadPng(svgRef, filename, activeTabName, formattedPeriod);
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([
@@ -613,7 +608,7 @@ export default {
 
 .positive {
   color: var(--color-green-dark);
-  background: var(--color-green-light-2);
+  background: var(--color-green-light);
 }
 
 .negative {

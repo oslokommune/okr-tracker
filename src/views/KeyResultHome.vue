@@ -204,14 +204,7 @@ export default {
   }),
 
   computed: {
-    ...mapState([
-      'activeKeyResult',
-      'activePeriod',
-      'user',
-      'activeItem',
-      'previousUrl',
-      'theme',
-    ]),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl']),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
   },
 
@@ -232,14 +225,13 @@ export default {
         );
         this.isLoading = false;
         this.value = this.progressDetails.totalCompletedTasks;
-        this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
+        this.graph = new LineChart(this.$refs.graph);
         this.graph.render({
           startValue: this.activeKeyResult.startValue,
           targetValue: this.activeKeyResult.targetValue,
           startDate: this.activePeriod.startDate.toDate(),
           endDate: this.activePeriod.endDate.toDate(),
           progress: this.progress,
-          theme: this.theme,
         });
       },
     },
@@ -252,26 +244,8 @@ export default {
           startDate: this.activePeriod.startDate.toDate(),
           endDate: this.activePeriod.endDate.toDate(),
           progress: this.progress,
-          theme: this.theme,
         });
       }
-    },
-
-    theme: {
-      immediate: true,
-      handler() {
-        if (!this.graph) {
-          return;
-        }
-        this.graph.render({
-          startValue: this.activeKeyResult.startValue,
-          targetValue: this.activeKeyResult.targetValue,
-          startDate: this.activePeriod.startDate.toDate(),
-          endDate: this.activePeriod.endDate.toDate(),
-          progress: this.progress,
-          theme: this.theme,
-        });
-      },
     },
   },
 
@@ -283,14 +257,13 @@ export default {
       return;
     }
 
-    this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
+    this.graph = new LineChart(this.$refs.graph);
     this.graph.render({
       startValue: this.activeKeyResult.startValue,
       targetValue: this.activeKeyResult.targetValue,
       startDate: this.activePeriod.startDate.toDate(),
       endDate: this.activePeriod.endDate.toDate(),
       progress: this.progress,
-      theme: this.theme,
     });
   },
 

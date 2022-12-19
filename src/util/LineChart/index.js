@@ -19,7 +19,7 @@ import {
   styleValueIndicators,
   styleValueLine,
   CANVAS_PADDING,
-  GRAPH_THEMES,
+  GRAPH_COLORS,
 } from './linechart-helpers';
 
 const INDICATOR_SIZE_DEFAULT = 50;
@@ -42,12 +42,11 @@ function formatDate(d, daysBetween) {
 }
 
 export default class LineChart {
-  constructor(svgElement, { height, theme, legend, tooltips } = {}) {
+  constructor(svgElement, { height, legend, tooltips } = {}) {
     if (!svgElement) {
       throw new Error('svg not defined');
     }
 
-    this.theme = theme || 'blue';
     this.legend = legend || false;
     this.tooltips = tooltips || false;
 
@@ -96,15 +95,8 @@ export default class LineChart {
    *   object specifying `startDate, `endDate`, and `value`.
    *
    * `kpi`: Optional. A KPI to format the y axis for.
-   *
-   * `theme`: Optional. A theme to render the graph in, overriding any theme
-   *     set in the constructor.
    */
-  render({ startValue, targetValue, startDate, endDate, progress, targets, kpi, theme }) {
-    if (theme) {
-      this.theme = theme;
-    }
-
+  render({ startValue, targetValue, startDate, endDate, progress, targets, kpi }) {
     let fromValue = startValue;
     let toValue = targetValue;
 
@@ -226,13 +218,13 @@ export default class LineChart {
       const legendItems = [
         {
           label: kpi ? kpi.name : i18n.t('general.value'),
-          color: GRAPH_THEMES[this.theme].valueLine,
+          color: GRAPH_COLORS.valueLine,
         },
         ...(targets && targets.length
           ? [
               {
                 label: i18n.t('general.target'),
-                color: GRAPH_THEMES[this.theme].targetLine,
+                color: GRAPH_COLORS.targetLine,
               },
             ]
           : []),

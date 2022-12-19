@@ -4,7 +4,7 @@ import { saveSvgAsPng, svgAsPngUri } from 'save-svg-as-png';
 const headingOffset = 60;
 const extraPaddingRight = 50;
 
-export default function downloadPng(svgRef, filename, title, period, theme) {
+export default function downloadPng(svgRef, filename, title, period) {
   const svg = select(svgRef);
   const canvas = svg.select('.canvas');
   const [minX, minY, width, height] = getViewBoxDimensions(svg);
@@ -21,7 +21,7 @@ export default function downloadPng(svgRef, filename, title, period, theme) {
       .attr('x', 5)
       .attr('y', 25)
       .call(styleText, 18, 500)
-      .attr('fill', theme === 'green' ? 'var(--color-green-dark)' : 'var(--color-purple)')
+      .attr('fill', 'var(--color-purple)')
       .text(title);
 
     if (period) {

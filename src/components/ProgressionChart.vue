@@ -27,16 +27,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['theme', 'activePeriod']),
-  },
-
-  watch: {
-    theme: {
-      immediate: true,
-      handler() {
-        this.renderProgressionChart();
-      },
-    },
+    ...mapState(['activePeriod']),
   },
 
   mounted() {
@@ -44,7 +35,6 @@ export default {
       this.svg = this.$refs.progressionChartSvg;
       this.chart = new PieChart(this.svg, {
         dimmed: this.dimmed,
-        colorMode: this.theme,
       });
 
       this.renderProgressionChart();
@@ -54,7 +44,7 @@ export default {
   methods: {
     renderProgressionChart() {
       if (this.chart) {
-        this.chart.render(this.progression, this.activePeriod, this.theme);
+        this.chart.render(this.progression, this.activePeriod);
       }
     },
     getTitle() {

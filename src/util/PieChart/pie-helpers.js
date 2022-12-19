@@ -11,18 +11,10 @@ const radius = (size - padding * 2) / 2;
 const duration = 600;
 const ease = easeCircleOut;
 export const colors = {
-  blue: {
-    innerDone: '#2A2859',
-    innerFull: '#a2a2a2',
-    outer: '#6ee9ff',
-    dimmed: '#c7c7c7',
-  },
-  green: {
-    innerDone: '#034b45',
-    innerFull: '#a2a2a2',
-    outer: '#43f8b6',
-    dimmed: '#c7c7c7',
-  },
+  innerDone: '#2a2859',
+  innerFull: '#a2a2a2',
+  outer: '#6ee9ff',
+  dimmed: '#c7c7c7',
 };
 
 export const formatPercent = format('.0%');
@@ -59,7 +51,7 @@ function initOuterGroup(el) {
     .attr('font-size', 14)
     .attr('y', 5)
     .text('I dag')
-    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
+    .attr('fill', this.darkmode ? 'white' : colors.innerDone);
 }
 
 // Positions and styles the percentage text element
@@ -69,7 +61,7 @@ function initPercentText(el) {
     .attr('text-anchor', 'middle')
     .attr('font-size', 24)
     .attr('font-weight', 'bold')
-    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone)
+    .attr('fill', this.darkmode ? 'white' : colors.innerDone)
     .attr('y', 8);
 }
 
@@ -112,7 +104,7 @@ function updatePercentText(el, tweenTo) {
         select(j[i]).text(formatPercent(counter(t) || 0));
       };
     })
-    .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
+    .attr('fill', this.darkmode ? 'white' : colors.innerDone);
 }
 
 // Draws/redraws the shape of the inner arc
@@ -122,14 +114,12 @@ function updateInnerArcs(el, data) {
     .join('path')
     .attr('fill', (d, i) => {
       if (this.darkmode) {
-        return colors[this.colorMode].outer;
+        return colors.outer;
       }
       if (this.dimmed) {
-        return i === 0 ? colors[this.colorMode].dimmed : colors[this.colorMode].innerFull;
+        return i === 0 ? colors.dimmed : colors.innerFull;
       }
-      return i === 0
-        ? colors[this.colorMode].innerDone
-        : colors[this.colorMode].innerFull;
+      return i === 0 ? colors.innerDone : colors.innerFull;
     })
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0.15))
     .transition()
@@ -144,7 +134,7 @@ function updateOuterArcs(el, data) {
     .selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', () => (this.darkmode ? 'white' : colors[this.colorMode].outer))
+    .attr('fill', () => (this.darkmode ? 'white' : colors.outer))
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0))
     .transition()
     .duration(duration)

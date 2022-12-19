@@ -20,9 +20,8 @@ export default class Pie {
   /**
    * Initialize the SVG and create the necessary DOM elements
    */
-  constructor(svg, { darkmode, dimmed, colorMode }) {
+  constructor(svg, { darkmode, dimmed }) {
     this.dimmed = dimmed || false;
-    this.colorMode = colorMode || 'blue';
     this.darkmode = darkmode || false;
     this.svg = select(svg).call(initSvg.bind(this));
     this.canvas = this.svg.append('g').classed('canvas', true);
@@ -36,8 +35,7 @@ export default class Pie {
   /**
    * Update the visualisation using the provided data
    */
-  render(progression, period, colorMode) {
-    this.colorMode = colorMode;
+  render(progression, period) {
     const time = getTimeProgression(period);
 
     // Set up the data for the inner and outer arcs
@@ -52,9 +50,7 @@ export default class Pie {
     const todayAngle = outerArcs[0].endAngle;
     this.outer.select('line').call(updateTodayLine, todayAngle);
     this.outer.select('text').call(updateTodayTextPosition, todayAngle);
-    this.outer
-      .select('text')
-      .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
+    this.outer.select('text').attr('fill', this.darkmode ? 'white' : colors.innerDone);
     // Update the percentage text by tweening to the provided value
     this.percentText.call(updatePercentText.bind(this), progression);
   }

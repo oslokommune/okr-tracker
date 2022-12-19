@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 
 import AppLayout from './components/AppLayout.vue';
@@ -19,42 +19,17 @@ export default {
   },
 
   computed: {
-    ...mapState(['LS_MODE']),
-
     isDev() {
       return import.meta.env.NODE_ENV !== 'production';
     },
   },
 
-  mounted() {
-    if (this.hasInStorage()) {
-      const mode = this.getLocalThemeMode();
-      this.setThemeMode(mode);
-    } else {
-      this.setThemeMode('blue');
-    }
-  },
-
   methods: {
-    ...mapActions(['reset_state', 'setTheme']),
+    ...mapActions(['reset_state']),
 
     async signOut() {
       await auth.signOut();
       await this.reset_state();
-    },
-
-    hasInStorage() {
-      const mode = localStorage.getItem(this.LS_MODE);
-      return mode !== null && mode !== 'yellow';
-    },
-
-    setThemeMode(mode) {
-      this.setTheme(mode);
-      document.body.setAttribute('data-theme', mode);
-    },
-
-    getLocalThemeMode() {
-      return localStorage.getItem(this.LS_MODE);
     },
   },
 };

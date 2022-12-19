@@ -9,6 +9,12 @@ All notable changes to this project will be documented in this file. The format 
 - Google Sheets integrations now expect full Google Sheets URLs instead of the
   sheet IDs.
 
+### Removed
+
+- The green color theme has been removed. It hasn't received much love lately,
+  and our focus will rather be to better align the default blue theme with the
+  Punkt design system going forward.
+
 ### Fixed
 
 - Fixed a bug where saving a placeholder OKR period without changes would result
