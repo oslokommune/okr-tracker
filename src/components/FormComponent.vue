@@ -53,6 +53,7 @@
           :clearable="false"
           :reduce="selectReduce"
           :data-cy="dataCy"
+          :append-to-body="true"
         >
           <template #option="option">
             {{ option[selectLabel] }}

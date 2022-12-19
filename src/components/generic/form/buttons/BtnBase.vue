@@ -1,6 +1,7 @@
 <template>
   <button
     :form="form"
+    :type="type"
     :aria-label="label"
     :class="['btn', { 'btn--icon': icon }, buttonVariantClass]"
     :disabled="disabled"
@@ -20,6 +21,11 @@ export default {
       type: String,
       required: false,
       default: null,
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'button',
     },
     label: {
       type: String,

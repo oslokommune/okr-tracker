@@ -4,12 +4,8 @@
       {{ $t(record ? 'keyResult.editValue' : 'keyResult.newValue') }}
     </template>
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form
-        id="progress-value"
-        class="progress-form"
-        @submit.prevent="handleSubmit(save)"
-      >
+    <form-section>
+      <div class="progress-form">
         <div class="progress-form__left">
           <form-component
             v-model="thisRecord.value"
@@ -27,7 +23,6 @@
             name="comment"
             :label="$t('widget.history.comment_optional')"
             :placeholder="$t('keyResult.commentPlaceholder')"
-            type="number"
             data-cy="progress_comment"
             class="progress-form__comment-group"
           />
@@ -49,22 +44,22 @@
             </label>
           </validation-provider>
         </div>
-      </form>
-    </validation-observer>
+      </div>
 
-    <template #footer>
-      <btn-save
-        form="progress-value"
-        :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
-        :disabled="loading"
-      />
-    </template>
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-save
+          :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
+          :disabled="submitDisabled || loading"
+          @click="handleSubmit(save)"
+        />
+      </template>
+    </form-section>
   </modal-wrapper>
 </template>
 
 <script>
 import locale from 'flatpickr/dist/l10n/no';
-import { BtnSave } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave } from '@/components/generic/form';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -72,6 +67,7 @@ export default {
 
   components: {
     ModalWrapper,
+    FormSection,
     BtnSave,
   },
 
@@ -172,7 +168,7 @@ export default {
     flex-grow: 1;
 
     .form-group {
-      height: calc(100% - 3rem);
+      height: calc(100% - 3.5rem);
     }
     .form-input__wrapper {
       height: 100%;

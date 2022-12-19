@@ -25,56 +25,44 @@
       </div>
 
       <div class="goal-form__right">
-        <validation-observer v-if="activeGoalId" v-slot="{ handleSubmit }">
-          <form id="update-goal" @submit.prevent="handleSubmit(update)">
-            <form-component
-              v-model="name"
-              input-type="input"
-              name="name"
-              :label="$t('fields.name')"
-              type="text"
-              rules="required"
-            />
+        <form-section v-if="activeGoalId">
+          <form-component
+            v-model="name"
+            input-type="input"
+            name="name"
+            :label="$t('fields.name')"
+            type="text"
+            rules="required"
+          />
 
-            <form-component
-              v-model="period"
-              input-type="date"
-              name="period"
-              :label="$t('fields.period')"
-              :placeholder="$t('general.selectRange')"
-              rules="required"
-              :date-picker-config="flatPickrConfig"
-            />
+          <form-component
+            v-model="period"
+            input-type="date"
+            name="period"
+            :label="$t('fields.period')"
+            :placeholder="$t('general.selectRange')"
+            rules="required"
+            :date-picker-config="flatPickrConfig"
+          />
 
-            <form-component
-              v-model="value"
-              input-type="input"
-              name="value"
-              :label="$t('fields.value')"
-              type="number"
-              rules="required"
-            />
+          <form-component
+            v-model="value"
+            input-type="input"
+            name="value"
+            :label="$t('fields.value')"
+            type="number"
+            rules="required"
+          />
 
-            <div class="button-row">
-              <button
-                class="btn btn--icon btn--archive"
-                type="button"
-                @click="archive($event)"
-              >
-                <i class="icon fa fa-fw fa-trash" />
-                {{ $t('btn.delete') }}
-              </button>
-              <button
-                class="btn btn--icon btn--pri btn--icon-pri"
-                form="update-goal"
-                type="submit"
-              >
-                <i class="icon fa fa-fw fa-save" />
-                {{ $t('btn.saveChanges') }}
-              </button>
-            </div>
-          </form>
-        </validation-observer>
+          <template #actions="{ handleSubmit, submitDisabled }">
+            <btn-delete @click="archive($event)" />
+            <btn-save
+              :label="$t('btn.saveChanges')"
+              :disabled="submitDisabled"
+              @click="handleSubmit(update)"
+            />
+          </template>
+        </form-section>
       </div>
     </div>
 
@@ -87,6 +75,7 @@ import locale from 'flatpickr/dist/l10n/no';
 import { endOfDay, endOfYear, startOfYear } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
+import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
 import { toastArchiveAndRevert } from '@/util';
 import ModalWrapper from './ModalWrapper.vue';
 
@@ -95,6 +84,9 @@ export default {
 
   components: {
     ModalWrapper,
+    FormSection,
+    BtnDelete,
+    BtnSave,
   },
 
   props: {
