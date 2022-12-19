@@ -108,7 +108,8 @@
     "secret": "API Hemmelighet",
     "comment": "Kommentar",
     "preferredTrend": "Ønsket trend",
-    "updateFrequency": "Oppdateringshyppighet"
+    "updateFrequency": "Oppdateringshyppighet",
+    "language": "Språk"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",

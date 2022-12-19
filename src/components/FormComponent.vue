@@ -237,3 +237,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep .v-select {
+  flex-grow: 1;
+}
+</style>
