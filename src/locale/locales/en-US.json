@@ -69,6 +69,7 @@
       "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"
     },
     "goals": {
+      "goal": "Goal",
       "goals": "Goals",
       "new": "New goal",
       "set": "Set goals",

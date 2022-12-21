@@ -45,6 +45,8 @@ All notable changes to this project will be documented in this file. The format 
 - Usability improvements in the goal editing modal dialogue.
 - Form validation improvements by displaying more detailed user feedback and
   preventing submit on form errors.
+- Statistics shown beneath the dashboard result indicator graph (latest value
+  and goal) now reflects the selected period.
 
 ### Removed
 
@@ -89,6 +91,8 @@ Tracker, and strive to make new releases more frequently than before.
   preview channels.
 - A new `npm run export_mock_data` command for exporting mock data from the
   Firebase emulator to the local file system.
+- A green checkmark icon is shown beneath the dashboard result indicator graph
+  when the current goal is considered reached within the period.
 
 ### Changed
 

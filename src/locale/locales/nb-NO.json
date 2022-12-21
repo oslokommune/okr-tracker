@@ -69,6 +69,7 @@
       "radio": "Hente KPI-verdier automatisk fra et regneark (Google Sheets)?"
     },
     "goals": {
+      "goal": "Mål",
       "goals": "Mål",
       "new": "Nytt mål",
       "set": "Sett mål",
