@@ -152,13 +152,6 @@ export const getters = {
 export const actions = {
   ...moduleActions,
 
-  setTheme: async ({ state, commit }, payload) => {
-    commit('SET_THEME', payload);
-    localStorage.setItem(state.LS_MODE, payload);
-
-    return true;
-  },
-
   setLoginLoading: async ({ commit }, payload) => {
     commit('SET_LOGIN_LOADING', payload);
 
@@ -221,10 +214,6 @@ export const mutations = {
     state.dataLoading = payload;
   },
 
-  SET_THEME(state, payload) {
-    state.theme = payload;
-  },
-
   SET_COLLECTION(state, payload) {
     Vue.set(state, payload.type, [...payload.data]);
   },
@@ -269,12 +258,10 @@ export default new Vuex.Store({
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
-    theme: 'blue',
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
     previousUrl: null,
-    LS_MODE: 'okr-tracker-theme',
   },
   getters,
   mutations,

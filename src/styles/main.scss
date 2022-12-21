@@ -180,12 +180,10 @@ body.using-mouse :focus {
   --color-beige-dark: #d0bfae;
 
   --color-green: #42f8b6;
-  --color-green-medium-dark: #207354;
   --color-green-dark: #034b45;
   --color-green-dark-2: #023834;
   --color-green-dark-5: #023834;
-  --color-green-light: #c7f7c9;
-  --color-green-light-2: #f2fff3;
+  --color-green-light: #f2fff3; // "green-dark-5" in ODS
 
   --color-bg: #f3f3f3;
   --color-border: #dae3e5;
@@ -221,32 +219,15 @@ body.using-mouse :focus {
   --color-grey-400-rgb: #{hexToRGB(#939399)};
   --color-grey-500-rgb: #{hexToRGB(#797980)};
   --color-grey-800-rgb: #{hexToRGB(#242433)};
-}
 
-[data-theme='green'] {
-  --color-text: var(--color-green-dark);
-  --color-text-secondary: var(--color-white);
-  --color-primary: var(--color-green-dark);
-  --color-secondary: var(--color-green);
-  --color-primary-dark: var(--color-purple-dark);
-  --color-secondary-light: var(--color-green-light);
-  --color-tertiary: var(--color-green-dark);
-  --color-progress-background: var(--color-green-medium-dark);
-  --color-hover: var(--color-purple-dark);
-
-  --color-primary-rgb: var(--color-green-dark);
-}
-
-[data-theme='blue'] {
   --color-text: var(--color-purple);
   --color-text-secondary: var(--color-white);
   --color-primary: var(--color-purple);
+  --color-primary-rgb: var(--color-purple-rgb);
   --color-primary-dark: var(--color-purple-dark);
   --color-secondary: var(--color-blue);
   --color-secondary-light: var(--color-blue-light);
   --color-tertiary: var(--color-purple);
   --color-progress-background: var(--color-purple-medium);
   --color-hover: var(--color-purple-dark);
-
-  --color-primary-rgb: var(--color-purple-rgb);
 }

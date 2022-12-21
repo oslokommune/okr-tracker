@@ -2,14 +2,6 @@
   "404": {
     "title": "404"
   },
-  "theme": {
-    "colors": {
-      "blue": "Blue",
-      "green": "Green"
-    },
-    "header": "Customize",
-    "aria": "Current theme is {current}, next theme is {next}"
-  },
   "kpi": {
     "add": "Add measurement",
     "placeholderName": "New measurement",

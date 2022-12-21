@@ -34,10 +34,6 @@
 
       <hr class="divider" />
 
-      <theme-toggle />
-
-      <hr class="divider" />
-
       <h3 class="widget__title title-2">{{ $t('general.administration') }}</h3>
 
       <div class="sidebar__group sidebar__bottom button-col">
@@ -64,7 +60,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
-import ThemeToggle from '@/components/ThemeToggle.vue';
 import User from '@/db/User';
 import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 
@@ -72,7 +67,6 @@ export default {
   name: 'UserProfileMenu',
 
   components: {
-    ThemeToggle,
     UserProfileForm,
   },
 

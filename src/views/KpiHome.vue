@@ -128,7 +128,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKpi', 'activeItem', 'theme']),
+    ...mapState(['activeKpi', 'activeItem']),
     ...mapGetters(['hasEditRights']),
   },
 
@@ -151,7 +151,7 @@ export default {
 
   mounted() {
     if (this.$refs.graph) {
-      this.graph = new LineChart(this.$refs.graph, { theme: this.theme });
+      this.graph = new LineChart(this.$refs.graph);
     }
 
     if (this.$route.query.startDate && this.$route.query.endDate) {

@@ -14,19 +14,11 @@ const LEGEND_HEIGHT = 75;
 const LEGEND_LABEL_SPACING = 10;
 const Tooltip = Vue.extend(IndicatorTooltip);
 
-export const GRAPH_THEMES = {
-  blue: {
-    gradientStart: '#6EE9FF',
-    gradientStop: '#D9D9D9',
-    valueLine: '#B3F5FF',
-    targetLine: '#43f8b6',
-  },
-  green: {
-    gradientStart: '#42F8B6',
-    gradientStop: '#D9D9D9',
-    valueLine: '#C7F7C9',
-    targetLine: '#B3F5FF',
-  },
+export const GRAPH_COLORS = {
+  gradientStart: '#6ee9ff',
+  gradientStop: '#d9d9d9',
+  valueLine: '#b3f5ff',
+  targetLine: '#43f8b6',
 };
 
 export function initSvg(svg) {
@@ -84,28 +76,28 @@ export function styleAxisY(el) {
 export function styleGradientStart(el) {
   el.attr('offset', '0%').attr(
     'style',
-    `stop-color:${GRAPH_THEMES[this.theme].gradientStart};stop-opacity:1;`
+    `stop-color:${GRAPH_COLORS.gradientStart};stop-opacity:1;`
   );
 }
 
 export function styleGradientStop(el) {
   el.attr('offset', '100%').attr(
     'style',
-    `stop-color:${GRAPH_THEMES[this.theme].gradientStop};stop-opacity:0;`
+    `stop-color:${GRAPH_COLORS.gradientStop};stop-opacity:0;`
   );
 }
 
 export function styleValueLine(el) {
   el.classed('valueLine', true)
     .attr('fill', 'none')
-    .attr('stroke', GRAPH_THEMES[this.theme].valueLine)
+    .attr('stroke', GRAPH_COLORS.valueLine)
     .attr('stroke-width', 3);
 }
 
 export function styleTargetLine(el) {
   el.classed('targetLine', true)
     .attr('fill', 'none')
-    .attr('stroke', GRAPH_THEMES[this.theme].targetLine)
+    .attr('stroke', GRAPH_COLORS.targetLine)
     .attr('stroke-width', 3);
 }
 
