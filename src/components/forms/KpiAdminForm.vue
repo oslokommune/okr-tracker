@@ -177,6 +177,7 @@
 </template>
 
 <script>
+import { functions } from '@/config/firebaseConfig';
 import {
   kpiFormats,
   kpiTypes,
@@ -263,7 +264,19 @@ export default {
 
   methods: {
     submitForm() {
-      this.$emit('save', this.localKpi);
+      this.$emit('save', this.localKpi, () => {
+        if (this.localKpi.auto) {
+          this.testConnection();
+        }
+      });
+    },
+
+    async testConnection() {
+      try {
+        await functions.httpsCallable('fetchKpiDataTrigger')(this.localKpi.id);
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
 
     apiCurl: (kpi) =>

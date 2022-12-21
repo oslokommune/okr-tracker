@@ -89,13 +89,13 @@ export default {
   computed: {
     ...mapState(['kpis']),
     state() {
-      if (this.kpi.error) {
+      if (this.kpi.error && this.kpi.auto) {
         return 'error';
       }
-      if (this.kpi.valid) {
-        return 'valid';
+      if (this.loading) {
+        return 'loading';
       }
-      return 'loading';
+      return 'valid';
     },
     stateClass() {
       switch (this.state) {
@@ -159,12 +159,15 @@ export default {
   methods: {
     formatKPIValue,
 
-    async save(kpi) {
+    async save(kpi, afterSave) {
       this.loading = true;
       delete kpi.parent;
 
       try {
         await Kpi.update(kpi.id, kpi);
+        if (afterSave) {
+          afterSave();
+        }
         this.$toasted.show(this.$t('toaster.savedChanges'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.save'));
