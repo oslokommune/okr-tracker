@@ -1,4 +1,5 @@
 export { dateLong } from './format';
+export { dateLongCompact } from './format';
 export { dateShort } from './format';
 export { dateTimeShort } from './format';
 export { dateTimeLong } from './format';
