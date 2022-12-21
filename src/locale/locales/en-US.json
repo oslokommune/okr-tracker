@@ -89,7 +89,7 @@
     "name": "Name",
     "missionStatement": "Mission statement",
     "weight": "Weight",
-    "sheetId": "Google Sheet ID",
+    "sheetUrl": "Google Sheets URL",
     "sheetTab": "Tab",
     "sheetCell": "Cell",
     "displayName": "Display name",
@@ -312,9 +312,8 @@
     "editValue": "Edit value",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
-      "readMore": "Learn more",
-      "googleSheetId": "Google Sheet ID",
-      "googleSheetIdHelp": "ID between /d/ and /edit/ from the Google Sheets URL",
+      "googleSheetUrl": "Google Sheets URL",
+      "googleSheetUrlHelp": "The complete Google Sheets URL",
       "sheetsTab": "Tab",
       "sheetsTabHelp": "Same as the tab name in Google Sheets",
       "sheetsCell": "Cell",
@@ -490,9 +489,11 @@
     "heading": "Archived",
     "body": "This object is archived and is hidden. You may change details before restoring it."
   },
-  "sheet": {
-    "infoText": "Note: The Google Sheets document must be shared with the following address:",
-    "missingServiceAccount": "Error: No address found. Please contact system administrator."
+  "sheets": {
+    "infoText": "Note! The following address must be given read access to the Google Sheets document:",
+    "403": "The system doesn't have read access to the Google Sheets document.",
+    "404": "Could not find the Google Sheets document. Wrong URL?",
+    "noDataInCell": "Cell {cell} is empty."
   },
   "widget": {
     "progression": {
@@ -517,11 +518,6 @@
       },
       "overwriteWarning": "Note: This change will overwrite existing value for chosen date ({date}): {value}."
     }
-  },
-  "error": {
-    "403": "Restricted access",
-    "404": "Could not find document. Wrong ID?",
-    "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
     "language": "Language",

@@ -21,7 +21,11 @@ export default {
   },
   sheetId: {
     type: 'string',
-    required: true,
+    required: false,
+  },
+  sheetUrl: {
+    type: 'string',
+    required: false,
   },
   sheetCell: {
     type: 'string',

@@ -1,17 +1,17 @@
 <template>
   <div>
     <form-component
-      v-model="sheetIdModel"
+      v-model="sheetUrlModel"
       input-type="input"
-      name="sheetId"
-      :label="$t('keyResult.automation.googleSheetId')"
+      name="sheetUrl"
+      :label="$t('keyResult.automation.googleSheetUrl')"
       rules="required"
-      type="text"
+      type="url"
     >
       <template #help>
         <span
           class="form-help"
-          v-html="$t('keyResult.automation.googleSheetIdHelp')"
+          v-html="$t('keyResult.automation.googleSheetUrlHelp')"
         ></span>
       </template>
     </form-component>
@@ -55,11 +55,18 @@
 </template>
 
 <script>
+const GOOGLE_SHEETS_URL_BASE = 'https://docs.google.com/spreadsheets/d/';
+
 export default {
   name: 'GoogleSheetsFormGroup',
 
   props: {
     sheetId: {
+      required: false,
+      type: String,
+      default: '',
+    },
+    sheetUrl: {
       required: false,
       type: String,
       default: '',
@@ -77,12 +84,16 @@ export default {
   },
 
   computed: {
-    sheetIdModel: {
+    sheetUrlModel: {
       get() {
-        return this.sheetId;
+        // For backward compatibility with the old `sheetId`.
+        if (!this.sheetUrl && this.sheetId) {
+          return GOOGLE_SHEETS_URL_BASE + this.sheetId;
+        }
+        return this.sheetUrl;
       },
       set(value) {
-        this.$emit('update:sheetId', value);
+        this.$emit('update:sheetUrl', value);
       },
     },
     sheetNameModel: {

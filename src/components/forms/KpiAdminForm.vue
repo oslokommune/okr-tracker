@@ -112,8 +112,14 @@
         name="auto"
         :label="$t('kpi.automation.radio')"
       >
+        <p class="google-sheets-info">
+          {{ $t('sheets.infoText') }}<br />
+          <strong>{{ serviceAccountAddress }}</strong>
+        </p>
+
         <google-sheets-form-group
-          :sheet-id.sync="localKpi.sheetId"
+          :sheet-id="localKpi.sheetId"
+          :sheet-url.sync="localKpi.sheetUrl"
           :sheet-name.sync="localKpi.sheetName"
           :sheet-cell.sync="localKpi.sheetCell"
         />
@@ -225,6 +231,7 @@ export default {
     types: kpiTypes(),
     updateFrequencies: kpiUpdateFrequencies(),
     showEditGoalsModal: false,
+    serviceAccountAddress: import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT,
   }),
 
   watch: {
@@ -235,7 +242,9 @@ export default {
           // For backwards compatibility, check for any previously configured sheet
           // details if the `auto` property doesn't exist on the model.
           const sheetsConfigured = Boolean(
-            this.kpi.sheetId && this.kpi.sheetName && this.kpi.sheetCell
+            (this.kpi.sheetId || this.kpi.sheetUrl) &&
+              this.kpi.sheetName &&
+              this.kpi.sheetCell
           );
 
           this.localKpi = {
@@ -251,7 +260,7 @@ export default {
             kpiType: null,
             preferredTrend: null,
             updateFrequency: null,
-            sheetId: '',
+            sheetUrl: '',
             sheetName: '',
             sheetCell: '',
             api: false,
@@ -321,6 +330,7 @@ export default {
 #preferredTrend {
   flex-direction: column;
 }
+
 .kpi-format-and-trend {
   display: flex;
   flex-direction: row;
@@ -330,5 +340,9 @@ export default {
   > span {
     flex: 1;
   }
+}
+
+.google-sheets-info {
+  margin: 1.25rem 0 2rem;
 }
 </style>

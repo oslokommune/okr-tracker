@@ -43,6 +43,10 @@ export default {
     type: 'string',
     required: false,
   },
+  sheetUrl: {
+    type: 'string',
+    required: false,
+  },
   sheetName: {
     type: 'string',
     required: false,

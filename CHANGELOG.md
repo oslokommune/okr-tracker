@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- Google Sheets integrations now expect full Google Sheets URLs instead of the
+  sheet IDs.
+
 ### Fixed
 
 - Fixed a bug where saving a placeholder OKR period without changes would result
