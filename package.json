@@ -19,6 +19,9 @@
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
     "export_mock_data": "firebase emulators:export ./mock_data"
   },
+  "engines": {
+    "node": "16"
+  },
   "dependencies": {
     "@braid/griddle": "^2.3.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
