@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - Google Sheets integrations now expect full Google Sheets URLs instead of the
   sheet IDs.
+- Node 16 is now the default runtime for all Cloud Functions and when running
+  the app locally.
 
 ### Removed
 

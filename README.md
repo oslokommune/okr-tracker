@@ -44,7 +44,7 @@ If you would like to check out how the application works, you can go to the demo
 
 ## Project requirements
 
-- Node 14.x
+- Node 16.x
 - Firebase >=8.x (v9 is not supported)
 - Firebase tools >9.x
 - Firebase Blaze plan - Pay as you go
