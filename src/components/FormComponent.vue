@@ -54,6 +54,7 @@
           :reduce="selectReduce"
           :data-cy="dataCy"
           :append-to-body="true"
+          @input="$emit('select', $event)"
         >
           <template #option="option">
             {{ option[selectLabel] }}
