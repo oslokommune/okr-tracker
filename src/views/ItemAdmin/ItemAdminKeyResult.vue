@@ -119,7 +119,7 @@
             <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
           </template>
 
-          <ProgressUpdateAPIExample
+          <progress-update-API-example
             label="API"
             :help="$t('admin.curlHelp')"
             :path="`keyres/${keyResult.id}`"

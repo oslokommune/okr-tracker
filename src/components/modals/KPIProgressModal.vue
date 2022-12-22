@@ -74,7 +74,7 @@
           </router-link>
         </template>
       </i18n>
-      <ProgressUpdateAPIExample :path="`kpi/${activeKpi.id}`" />
+      <progress-update-API-example :path="`kpi/${activeKpi.id}`" />
     </template>
   </modal-wrapper>
 </template>
