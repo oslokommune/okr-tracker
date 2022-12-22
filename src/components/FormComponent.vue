@@ -50,7 +50,7 @@
           :name="name"
           :label="selectLabel"
           :options="selectOptions"
-          :clearable="false"
+          :clearable="selectClearable"
           :reduce="selectReduce"
           :data-cy="dataCy"
           :append-to-body="true"
@@ -145,6 +145,11 @@ export default {
       type: Function,
       required: false,
       default: (option) => option,
+    },
+    selectClearable: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     datePickerConfig: {
       type: Object,

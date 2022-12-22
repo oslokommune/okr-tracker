@@ -2,85 +2,88 @@
   <div v-if="activeItem" class="form-wrapper form-card">
     <archived-restore v-if="activeItem.archived" :restore="restore" />
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form id="update-item" @submit.prevent="handleSubmit(update)">
-        <form-component
-          v-model="activeItem.name"
-          input-type="input"
-          name="name"
-          :label="$t('fields.name')"
-          rules="required"
-          type="text"
-          data-cy="org-name"
-        />
+    <form-section>
+      <form-component
+        v-model="activeItem.name"
+        input-type="input"
+        name="name"
+        :label="$t('fields.name')"
+        rules="required"
+        type="text"
+        data-cy="org-name"
+      />
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.slug') }}</span>
-          <input v-model="activeItem.slug" class="form__field" type="text" disabled />
-        </label>
+      <form-component
+        v-model="activeItem.slug"
+        input-type="input"
+        :label="$t('fields.slug')"
+        disabled
+      />
 
-        <form-component
-          v-model="activeItem.missionStatement"
-          input-type="textarea"
-          name="missionStatement"
-          :label="$t('fields.missionStatement')"
-          rules="required"
-        />
+      <form-component
+        v-model="activeItem.missionStatement"
+        input-type="textarea"
+        name="missionStatement"
+        :label="$t('fields.missionStatement')"
+        rules="required"
+      />
 
-        <form-component
-          v-model="activeItem.targetAudience"
-          input-type="textarea"
-          name="targetAudience"
-          :label="$t('dashboard.targetAudience')"
-        />
+      <form-component
+        v-model="activeItem.targetAudience"
+        input-type="textarea"
+        name="targetAudience"
+        :label="$t('dashboard.targetAudience')"
+      />
 
-        <div v-if="type === 'department'" class="form-group">
-          <span class="form-label">{{ $t('admin.department.parentOrganisation') }}</span>
-          <v-select
-            v-model="activeItem.organization"
-            label="name"
-            :options="organizations"
-            :clearable="false"
-          />
-        </div>
+      <form-component
+        v-if="type === 'department'"
+        v-model="activeItem.organization"
+        input-type="select"
+        :label="$t('admin.department.parentOrganisation')"
+        rules="required"
+        :select-options="organizations"
+      />
 
-        <div v-else-if="type === 'product'" class="form-group">
-          <span class="form-label">{{ $t('admin.product.parentDepartment') }}</span>
-          <v-select
-            v-model="activeItem.department"
-            label="name"
-            :options="departments"
-            :clearable="false"
-          ></v-select>
-        </div>
+      <form-component
+        v-else-if="type === 'product'"
+        v-model="activeItem.department"
+        input-type="select"
+        :label="$t('admin.product.parentDepartment')"
+        rules="required"
+        :select-options="departments"
+      />
 
-        <div class="form-group">
-          <span class="form-label">{{ $t('general.teamMembers') }}</span>
-          <v-select
-            v-model="activeItem.team"
-            multiple
-            :options="users"
-            :get-option-label="(option) => option.displayName || option.id"
-          >
-            <template #option="option">
-              {{ option.displayName || option.id }}
-              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-            </template>
-          </v-select>
-        </div>
+      <div class="form-group">
+        <span class="form-label">{{ $t('general.teamMembers') }}</span>
+        <v-select
+          v-model="activeItem.team"
+          multiple
+          :options="users"
+          :get-option-label="(option) => option.displayName || option.id"
+        >
+          <template #option="option">
+            {{ option.displayName || option.id }}
+            <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+          </template>
+        </v-select>
+      </div>
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.secret') }}</span>
-          <span class="form-help" v-html="$t('admin.apiSecret')"></span>
-          <input v-model="activeItem.secret" type="text" class="form__field" />
-        </label>
-      </form>
-    </validation-observer>
+      <form-component
+        v-model="activeItem.secret"
+        input-type="input"
+        name="secret"
+        :label="$t('fields.secret')"
+      >
+        <template #help>
+          <span class="form-help">{{ $t('admin.apiSecret') }}</span>
+        </template>
+      </form-component>
 
-    <div class="button-row">
-      <btn-delete v-if="!activeItem.archived" :disabled="loading" @click="archive" />
-      <btn-save form="update-item" :disabled="loading" />
-    </div>
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-delete v-if="!activeItem.archived" :disabled="loading" @click="archive" />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(update)" />
+      </template>
+    </form-section>
   </div>
 </template>
 
@@ -91,13 +94,14 @@ import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { toastArchiveAndRevert } from '@/util';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 
 export default {
   name: 'ItemAdminGeneral',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    FormSection,
     BtnSave,
     BtnDelete,
   },
