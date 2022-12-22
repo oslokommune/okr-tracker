@@ -64,6 +64,18 @@
         />
       </template>
     </form-section>
+
+    <template #subfooter>
+      <hr class="ods-hr" />
+      <i18n path="kpi.help.apiProgress" tag="p">
+        <template #apiLink>
+          <router-link :to="{ name: 'Api' }" target="_blank">
+            <span>{{ $t('general.api') }}</span>
+          </router-link>
+        </template>
+      </i18n>
+      <progress-update-API-example :path="`kpi/${activeKpi.id}`" />
+    </template>
   </modal-wrapper>
 </template>
 
@@ -74,10 +86,16 @@ import { endOfDay } from 'date-fns';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
+import ProgressUpdateAPIExample from '@/components/ProgressUpdateAPIExample.vue';
 import ProgressModal from './ProgressModal.vue';
 
 export default {
   name: 'KPIProgressModal',
+
+  components: {
+    ProgressUpdateAPIExample,
+  },
+
   extends: ProgressModal,
 
   data: () => ({

@@ -40,7 +40,7 @@
           :readonly="readonly"
           :placeholder="placeholder"
           :class="fieldClass"
-          rows="4"
+          :rows="rows"
           :data-cy="dataCy"
         />
 
@@ -176,6 +176,11 @@ export default {
       required: false,
       default: '',
     },
+    rows: {
+      type: Number,
+      required: false,
+      default: 4,
+    },
   },
 
   data: () => ({
@@ -227,7 +232,7 @@ export default {
     copyFieldText(e) {
       e.preventDefault();
       const inputWrapperElement = e.currentTarget.parentElement;
-      const inputElement = inputWrapperElement.querySelector('input');
+      const inputElement = inputWrapperElement.querySelector(this.inputType);
       if (inputElement) {
         navigator.clipboard.writeText(inputElement.value).then(() => {
           this.$toasted.show(this.$t('toaster.action.copiedToClipboard'));
