@@ -20,6 +20,7 @@ export const fetchKpiDataOnSchedule = functions
 
     return db
       .collection('kpis')
+      .where('archived', '==', false)
       .get()
       .then((list) => list.docs.map(fetchKpiData))
       .catch((e) => {
