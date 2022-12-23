@@ -548,8 +548,8 @@ export default {
       border-color: var(--color-grey-100);
 
       &:hover {
-        background: var(--color-light-gray);
-        border-color: var(--color-light-gray);
+        background: var(--color-gray-light);
+        border-color: var(--color-gray-light);
         cursor: pointer;
       }
 
@@ -602,18 +602,18 @@ export default {
 }
 
 .neutral {
-  color: var(--color-purple);
-  background: var(--color-blue-light-3);
+  color: var(--color-info);
+  background: var(--color-blue-dark-5);
 }
 
 .positive {
-  color: var(--color-green-dark);
-  background: var(--color-green-light);
+  color: var(--color-success);
+  background: var(--color-green-dark-5);
 }
 
 .negative {
-  color: var(--color-red-2);
-  background: var(--color-red-light-2);
+  color: var(--color-error);
+  background: var(--color-red-5);
 }
 
 .progressTarget {
@@ -630,7 +630,7 @@ export default {
     gap: 0.75rem;
   }
   &__title {
-    color: var(--color-grey-400);
+    color: var(--color-grayscale-40);
     font-weight: 500;
     font-size: typography.$font-size-1;
   }
@@ -645,7 +645,7 @@ export default {
     font-size: typography.$font-size-0;
   }
   &__target {
-    color: var(--color-grey-400);
+    color: var(--color-grayscale-40);
     font-weight: 500;
     font-size: typography.$font-size-0;
   }

@@ -42,7 +42,7 @@ export default {
   max-width: 30rem;
   margin: 1.5rem auto 1rem;
   padding: 1rem 1.5rem;
-  color: var(--color-grey-400);
+  color: var(--color-grayscale-40);
   text-align: center;
   border-radius: 3px;
 }

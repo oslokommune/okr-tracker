@@ -162,8 +162,8 @@ export default {
   cursor: pointer;
 
   &:hover:not(&--active) {
-    background: var(--color-light-gray);
-    border-color: var(--color-light-gray);
+    background: var(--color-gray-light);
+    border-color: var(--color-gray-light);
   }
 
   &--active {
@@ -209,7 +209,7 @@ export default {
   width: 100%;
   margin: 0;
   padding: 1rem;
-  color: var(--color-grey-400);
+  color: var(--color-grayscale-40);
   font-weight: 500;
   font-size: 1rem;
   text-align: left;

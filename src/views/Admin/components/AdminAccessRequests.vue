@@ -107,7 +107,7 @@ export default {
   padding: 1rem;
   background: var(--color-green);
   border-radius: 3px;
-  box-shadow: 0 2px 3px rgba(var(--color-grey-500-rgb), 0.5);
+  box-shadow: 0 2px 3px rgba(var(--color-grayscale-50-rgb), 0.5);
 }
 
 .access-requests__actions {

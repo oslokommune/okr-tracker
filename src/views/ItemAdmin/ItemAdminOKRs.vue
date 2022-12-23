@@ -491,7 +491,7 @@ export default {
 
 .miller__col-heading {
   padding: 0.5rem 0.75rem;
-  color: var(--color-grey-600);
+  color: var(--color-grayscale-60);
   border-bottom: 1px solid var(--color-grey-100);
 }
 

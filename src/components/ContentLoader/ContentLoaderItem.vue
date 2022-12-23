@@ -61,7 +61,7 @@ export default {
 .content-loader-item__keyResult--info {
   grid-column: 1;
   padding: 0.5rem 1.75rem 0 1.75rem;
-  color: var(--color-grey-800);
+  color: var(--color-grayscale-80);
   text-decoration: none;
   background-color: var(--color-secondary);
 }

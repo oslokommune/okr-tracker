@@ -54,7 +54,7 @@ export default {
   cursor: pointer;
 
   &:hover {
-    background: rgba(var(--color-grey-500-rgb), 0.1);
+    background: rgba(var(--color-grayscale-50-rgb), 0.1);
   }
 }
 

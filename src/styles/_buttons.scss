@@ -29,7 +29,7 @@
   cursor: pointer;
 
   &:disabled:not([hover]) {
-    color: var(--color-grey-500);
+    color: var(--color-grayscale-50);
     background-color: var(--color-grey-100);
     border: none;
     cursor: not-allowed;
@@ -87,7 +87,7 @@
   background: none;
 
   &:hover:not([disabled]) {
-    background: rgba(var(--color-grey-500-rgb), 0.1);
+    background: rgba(var(--color-grayscale-50-rgb), 0.1);
   }
 
   &.btn--negative {

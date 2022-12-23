@@ -68,6 +68,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "7.16.5",
     "@babel/preset-env": "^7.16.5",
+    "@oslokommune/punkt-css": "^0.20.20",
     "env-cmd": "^10.1.0",
     "esbuild": "^0.15.14",
     "eslint": "^8.28.0",
