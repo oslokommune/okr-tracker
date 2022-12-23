@@ -1,5 +1,10 @@
 <template>
-  <validation-provider :rules="rules" :name="name" tag="div" class="toggle-button">
+  <validation-provider
+    :rules="rules"
+    :name="name"
+    tag="div"
+    :class="['toggle-button', { 'toggle-button--disabled': disabled }]"
+  >
     <div class="toggle-button__container">
       <span v-if="$slots.label" class="toggle__label">
         <slot name="label" />
@@ -8,7 +13,13 @@
         {{ label }}
       </span>
       <label class="toggle">
-        <input v-model="toggleState" class="toggle__input" type="checkbox" :name="name" />
+        <input
+          v-model="toggleState"
+          class="toggle__input"
+          type="checkbox"
+          :name="name"
+          :disabled="disabled"
+        />
         <span class="toggle__switch"></span>
       </label>
     </div>
@@ -42,6 +53,11 @@ export default {
       required: false,
       type: String,
       default: null,
+    },
+    disabled: {
+      required: false,
+      type: Boolean,
+      default: false,
     },
   },
 
