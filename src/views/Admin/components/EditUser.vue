@@ -24,15 +24,12 @@
         type="text"
       />
 
-      <label class="form-group--checkbox">
-        <span class="form-label">{{ $t('general.superAdmin') }}</span>
-        <input
-          v-model="thisUser.superAdmin"
-          class="form__checkbox"
-          type="checkbox"
-          :disabled="user.email === selectedUser.email || !user.superAdmin"
-        />
-      </label>
+      <toggle-button
+        v-model="thisUser.superAdmin"
+        name="superadmin"
+        :label="$t('general.superAdmin')"
+        :disabled="user.email === selectedUser.email || !user.superAdmin"
+      />
 
       <div class="form-group">
         <span class="form-label">Admin</span>
@@ -66,11 +63,11 @@
 import { mapState } from 'vuex';
 import User from '@/db/User';
 import { db } from '@/config/firebaseConfig';
-import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
+import { FormSection, BtnSave, BtnDelete, ToggleButton } from '@/components/generic/form';
 
 export default {
   name: 'EditUser',
-  components: { FormSection, BtnSave, BtnDelete },
+  components: { FormSection, BtnSave, BtnDelete, ToggleButton },
 
   props: {
     selectedUser: {
@@ -93,7 +90,10 @@ export default {
       immediate: true,
       async handler() {
         this.image = null;
-        this.thisUser = { ...this.selectedUser };
+        this.thisUser = {
+          ...this.selectedUser,
+          superAdmin: this.selectedUser.superAdmin || false,
+        };
 
         if (this.selectedUser.admin?.length > 0) {
           const orgs = [];
