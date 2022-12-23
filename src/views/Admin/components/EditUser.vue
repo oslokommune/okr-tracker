@@ -2,56 +2,63 @@
   <div v-if="thisUser" class="selected-user">
     <slot name="back"></slot>
 
-    <div class="selected-user__main">
-      <h2 class="title-2">{{ $t('admin.users.edit') }}</h2>
-      <validation-observer v-slot="{ handleSubmit }">
-        <form id="user-form" @submit.prevent="handleSubmit(save)">
-          <label class="form-group">
-            <span class="form-label">{{ $t('fields.email') }}</span>
-            <input v-model="thisUser.id" class="form__field" type="email" disabled />
-          </label>
+    <h2 class="title-2">{{ $t('admin.users.edit') }}</h2>
 
-          <form-component
-            v-model="thisUser.displayName"
-            input-type="input"
-            name="name"
-            :label="$t('fields.displayName')"
-            rules="required"
-            type="text"
-          />
-
-          <label class="form-group--checkbox">
-            <span class="form-label">{{ $t('general.superAdmin') }}</span>
-            <input
-              v-model="thisUser.superAdmin"
-              class="form__checkbox"
-              type="checkbox"
-              :disabled="user.email === selectedUser.email || !user.superAdmin"
-            />
-          </label>
-
-          <div class="form-group">
-            <span class="form-label">Admin</span>
-            <v-select
-              v-model="thisUser.admin"
-              multiple
-              :options="organizations"
-              :get-option-label="(option) => option.name"
-              :disabled="!user.superAdmin"
-            >
-            </v-select>
-          </div>
-        </form>
-      </validation-observer>
-    </div>
-
-    <div class="selected-user__footer button-row">
-      <btn-delete
-        :disabled="user.email === selectedUser.email || loading"
-        @click="remove(selectedUser)"
+    <form-section>
+      <form-component
+        v-model="thisUser.id"
+        input-type="input"
+        name="id"
+        :label="$t('fields.email')"
+        rules="required"
+        type="email"
+        :disabled="true"
       />
-      <btn-save form="user-form" :label="$t('btn.saveChanges')" :disabled="loading" />
-    </div>
+
+      <form-component
+        v-model="thisUser.displayName"
+        input-type="input"
+        name="name"
+        :label="$t('fields.displayName')"
+        rules="required"
+        type="text"
+      />
+
+      <label class="form-group--checkbox">
+        <span class="form-label">{{ $t('general.superAdmin') }}</span>
+        <input
+          v-model="thisUser.superAdmin"
+          class="form__checkbox"
+          type="checkbox"
+          :disabled="user.email === selectedUser.email || !user.superAdmin"
+        />
+      </label>
+
+      <div class="form-group">
+        <span class="form-label">Admin</span>
+        <v-select
+          v-model="thisUser.admin"
+          multiple
+          :options="organizations"
+          :get-option-label="(option) => option.name"
+          :disabled="!user.superAdmin"
+        >
+        </v-select>
+      </div>
+
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-delete
+          :disabled="user.email === selectedUser.email || loading"
+          @click="remove(selectedUser)"
+        />
+        <btn-save
+          :label="$t('btn.saveChanges')"
+          :disabled="submitDisabled || loading"
+          data-cy="btn-createOrg"
+          @click="handleSubmit(save)"
+        />
+      </template>
+    </form-section>
   </div>
 </template>
 
@@ -59,15 +66,11 @@
 import { mapState } from 'vuex';
 import User from '@/db/User';
 import { db } from '@/config/firebaseConfig';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 
 export default {
   name: 'EditUser',
-
-  components: {
-    BtnSave,
-    BtnDelete,
-  },
+  components: { FormSection, BtnSave, BtnDelete },
 
   props: {
     selectedUser: {
@@ -143,32 +146,9 @@ export default {
 <style lang="scss" scoped>
 .selected-user {
   padding: 1rem;
-}
 
-.selected-user__main {
-  margin-top: 1rem;
-}
-
-.selected-user__footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: auto -0.25rem -0.25rem;
-
-  > .btn {
-    margin: 0.25rem;
+  > h2.title-2 {
+    margin-top: 1.5rem;
   }
-}
-
-.selected-user__image--flex {
-  display: flex;
-}
-
-.selected-user__image--img {
-  width: 3rem;
-  height: 3rem;
-  object-fit: cover;
-  background: white;
-  border-radius: 2rem;
 }
 </style>

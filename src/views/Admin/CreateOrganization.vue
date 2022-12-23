@@ -2,55 +2,51 @@
   <div class="container">
     <div class="create-container">
       <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
-      <validation-observer v-slot="{ handleSubmit }">
-        <form id="createOrganization" @submit.prevent="handleSubmit(save)">
-          <form-component
-            v-model="name"
-            input-type="input"
-            name="name"
-            rules="required"
-            :label="$t('fields.name')"
-            type="text"
-            data-cy="org-name"
+
+      <form-section>
+        <form-component
+          v-model="name"
+          input-type="input"
+          name="name"
+          rules="required"
+          :label="$t('fields.name')"
+          type="text"
+          data-cy="org-name"
+        />
+
+        <form-component
+          v-model="missionStatement"
+          input-type="textarea"
+          name="missionStatement"
+          :label="$t('fields.missionStatement')"
+          rules="required"
+          data-cy="org-missionStatement"
+        />
+
+        <div class="form-group">
+          <span class="form-label">{{ $t('general.teamMembers') }}</span>
+          <v-select
+            v-model="team"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <template #actions="{ handleSubmit, submitDisabled }">
+          <btn-save
+            :label="$t('btn.create')"
+            :disabled="submitDisabled || loading"
+            data-cy="btn-createOrg"
+            @click="handleSubmit(save)"
           />
-
-          <form-component
-            v-model="missionStatement"
-            input-type="textarea"
-            name="missionStatement"
-            :label="$t('fields.missionStatement')"
-            rules="required"
-            data-cy="org-missionStatement"
-          />
-
-          <div class="form-group">
-            <span class="form-label">{{ $t('general.teamMembers') }}</span>
-            <v-select
-              v-model="team"
-              multiple
-              :options="users"
-              :get-option-label="(option) => option.displayName || option.id"
-            >
-              <template #option="option">
-                {{ option.displayName || option.id }}
-                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-              </template>
-            </v-select>
-          </div>
-        </form>
-      </validation-observer>
-
-      <div class="button-row">
-        <button
-          class="btn btn--icon btn--pri btn--icon-pri"
-          form="createOrganization"
-          :disabled="loading"
-          data-cy="btn-createOrg"
-        >
-          <i class="icon fa fa-fw fa-save" />
-          {{ $t('btn.create') }}
-        </button>
-      </div>
+        </template>
+      </form-section>
     </div>
   </div>
 </template>
@@ -60,9 +56,11 @@ import { mapState } from 'vuex';
 import Organization from '@/db/Organization';
 import { db } from '@/config/firebaseConfig';
 import { findSlugAndRedirect } from '@/util';
+import { FormSection, BtnSave } from '@/components/generic/form';
 
 export default {
   name: 'CreateOrganization',
+  components: { FormSection, BtnSave },
 
   data: () => ({
     name: '',
