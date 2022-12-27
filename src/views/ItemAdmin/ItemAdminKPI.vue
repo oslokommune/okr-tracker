@@ -262,7 +262,7 @@ export default {
   &-label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--color-grey-500);
+    color: var(--color-grayscale-50);
     font-size: 0.75rem;
   }
 

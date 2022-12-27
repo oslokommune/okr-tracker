@@ -60,7 +60,7 @@ function styleAxis(el) {
   el.attr('stroke-opacity', 0.6)
     .attr('font-size', 14)
     .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
-    .attr('color', 'var(--color-grey-700)');
+    .attr('color', 'var(--color-grayscale-70)');
 }
 
 export function styleAxisX(el) {
@@ -69,7 +69,7 @@ export function styleAxisX(el) {
 
 export function styleAxisY(el) {
   styleAxis(el);
-  el.selectAll('.tick line').attr('stroke', 'var(--color-bg-dark)');
+  el.selectAll('.tick line').attr('stroke', 'var(--color-grayscale-10)');
   el.select('.domain').attr('display', 'none');
 }
 
@@ -144,7 +144,7 @@ export function populateLegend(el) {
     .style('text-anchor', 'start')
     .style('font-size', '14px')
     .style('font-family', '"OsloSans", Helvetica, Arial, sans-serif')
-    .style('fill', 'var(--color-grey-700)');
+    .style('fill', 'var(--color-grayscale-70)');
 
   item.attr('transform', (d, i) => {
     const x = sum(item.data(), (e, j) => {

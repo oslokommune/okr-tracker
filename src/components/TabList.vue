@@ -147,7 +147,7 @@ export default {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: var(--color-grey-700);
+    background-color: var(--color-grayscale-70);
   }
 
   &--isFilled {
@@ -174,7 +174,7 @@ export default {
       margin-right: 0.5rem;
       color: var(--color-text);
       text-decoration: none;
-      background-color: var(--color-bg-dark);
+      background-color: var(--color-grayscale-10);
       border: 0;
       cursor: pointer;
     }
@@ -185,7 +185,7 @@ export default {
     }
 
     &--isOutlined {
-      color: var(--color-grey-500);
+      color: var(--color-grayscale-50);
       font-size: var(--font-size-1);
       background: transparent;
       border: none;

@@ -17,6 +17,16 @@
 @use 'ods/ods-hr';
 @use 'ods/ods-badge';
 
+/*
+ * Ultimately we'd like to import Punkt as a whole by doing:
+ *
+ *   @use '@oslokommune/punkt-css/dist/scss/pkt';
+ *
+ * Doing so now wreaks havoc with our existing styles, so it'll have
+ * to be phased in piece by piece.
+ */
+@use '@oslokommune/punkt-css/dist/scss/base/_colors';
+
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
 }
@@ -150,84 +160,31 @@ body.using-mouse :focus {
 }
 
 :root {
-  --color-danger: #ff8174;
-  --color-error: #96281c;
-  --color-success: #43f8b6;
-  --color-warning: #774c01;
-  --color-black: #2e2e2e;
-  --color-white: #ffffff;
-  --color-gray: #989898;
-  --color-light-gray: #f6f6f6;
-  --color-blue: #6ee9ff;
-  --color-blue-dark: #2a2859;
-  --color-blue-light: #b3f5ff;
-  --color-blue-light-2: #b2d2d8;
-  --color-blue-light-3: #f2f9ff; // "color-blue-dark-5" in ODS
-  --color-purple: #292858;
+  // Custom colors with no similars in Punkt.
   --color-purple-medium: #4a72a1;
-  --color-purple-dark: #1f42aa;
-  --color-yellow: #f9c66b;
-  --color-yellow-dark: #ba944fff;
-  --color-yellow-light: #d1bfae;
-  --color-yellow-5: #fef9f0;
-  --color-red: #ff8174;
-  --color-red-2: #96281c;
-  --color-red-dark: #5b0800;
-  --color-red-light: #ff988e;
-  --color-red-light-2: #fff3f2;
-  --color-red-5: #fff3f2;
-  --color-beige: #f8f0dc;
-  --color-beige-dark: #d0bfae;
-
-  --color-green: #42f8b6;
-  --color-green-dark: #034b45;
-  --color-green-dark-2: #023834;
-  --color-green-dark-5: #023834;
-  --color-green-light: #f2fff3; // "green-dark-5" in ODS
-
   --color-bg: #f3f3f3;
   --color-border: #dae3e5;
-  --color-bg-dark: #e6e6e6e6;
-
   --color-grey-50: #f7f7f7;
   --color-grey-100: #e1e1e6;
-  --color-grey-200: #c6c6cc;
   --color-grey-300: #adadb3;
-  --color-grey-400: #9a9a9a;
-  --color-grey-500: #797980;
-  --color-grey-550: #6b6b8b;
-  --color-grey-600: #5e5e66;
-  --color-grey-700: #43434d;
-  --color-grey-800: #242433;
-  --color-grey-900: #0e0e1a;
-
   --color-link: #0075eb;
 
-  // Colors in RGB value - add more if needed. SCSS rgba() function can read hex numbers with CSS Variables
-  --color-red-rgb: #{hexToRGB(#ff8174)};
-  --color-red-dark-rgb: #{hexToRGB(#5b0800)};
-  --color-green-rgb: #{hexToRGB(#43f8b6)};
-  --color-green-dark-rgb: #{hexToRGB(#034b45)};
-  --color-yellow-rgb: #{hexToRGB(#f8c66b)};
-  --color-yellow-dark-rgb: #{hexToRGB(#ba944fff)};
-  --color-brue-rgb: #{hexToRGB(#6ee9ff)};
-  --color-purple-rgb: #{hexToRGB(#292858)};
-  --color-purple-dark-rgb: #{hexToRGB(#1f1e43)};
-
+  // Colors in RGB value - add more if needed. SCSS rgba() function
+  // can read hex numbers with CSS Variables.
+  --color-red-rgb: #{hexToRGB(#ff8274)};
+  --color-yellow-rgb: #{hexToRGB(#f9c66b)};
   --color-border-rgb: #{hexToRGB(#dae3e5)};
-  --color-grey-100-rgb: #{hexToRGB(#e1e1e6)};
+  // This one is weird, it doesn't match Punkt's `color-grayscale-40`
+  // at all.
   --color-grey-400-rgb: #{hexToRGB(#939399)};
-  --color-grey-500-rgb: #{hexToRGB(#797980)};
-  --color-grey-800-rgb: #{hexToRGB(#242433)};
+  --color-grayscale-50-rgb: #{hexToRGB(#808080)};
+  --color-grayscale-80-rgb: #{hexToRGB(#333333)};
 
-  --color-text: var(--color-purple);
+  --color-text: var(--color-blue-dark);
   --color-text-secondary: var(--color-white);
-  --color-primary: var(--color-purple);
-  --color-primary-rgb: var(--color-purple-rgb);
-  --color-primary-dark: var(--color-purple-dark);
+  --color-primary: var(--color-blue-dark);
+  --color-primary-dark: var(--color-active);
   --color-secondary: var(--color-blue);
   --color-secondary-light: var(--color-blue-light);
-  --color-tertiary: var(--color-purple);
   --color-progress-background: var(--color-purple-medium);
-  --color-hover: var(--color-purple-dark);
 }

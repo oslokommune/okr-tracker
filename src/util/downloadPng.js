@@ -21,7 +21,7 @@ export default function downloadPng(svgRef, filename, title, period) {
       .attr('x', 5)
       .attr('y', 25)
       .call(styleText, 18, 500)
-      .attr('fill', 'var(--color-purple)')
+      .attr('fill', 'var(--color-primary)')
       .text(title);
 
     if (period) {
@@ -30,7 +30,7 @@ export default function downloadPng(svgRef, filename, title, period) {
         .attr('x', 5)
         .attr('y', 50)
         .call(styleText, 12, 300)
-        .attr('fill', 'var(--color-grey-600)')
+        .attr('fill', 'var(--color-grayscale-60)')
         .text(period);
     }
   }

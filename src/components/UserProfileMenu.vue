@@ -164,7 +164,7 @@ export default {
 }
 
 .profileModal__required {
-  color: var(--color-danger);
+  color: var(--color-red);
 }
 
 .profileModal__info {

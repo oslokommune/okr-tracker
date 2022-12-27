@@ -166,7 +166,7 @@ export default {
 
 .item__chevron {
   margin-top: 0.15rem;
-  color: var(--color-grey-500);
+  color: var(--color-grayscale-50);
   transform: translateX(-0.5rem);
   opacity: 0;
   transition: all 0.1s ease-in;

@@ -6,9 +6,9 @@
   margin: 0.5rem 0 1rem;
   padding: 1rem;
   overflow: hidden;
-  color: var(--color-blue-dark);
-  background: var(--color-blue-light-3);
-  border-left: 3px solid var(--color-blue-dark);
+  color: var(--color-info);
+  background: var(--color-blue-dark-5);
+  border-left: 3px solid var(--color-info);
 
   @media screen and (min-width: bp(m)) {
     padding-top: 1rem;
@@ -18,9 +18,9 @@
 }
 
 .ok-alert--success {
-  color: var(--color-green-dark);
-  background: var(--color-green-light);
-  border-left-color: var(--color-green-dark);
+  color: var(--color-success);
+  background: var(--color-green-dark-5);
+  border-left-color: var(--color-success);
 }
 
 .ok-alert--danger {

@@ -220,7 +220,7 @@ export default {
 
   &__departmentInfo {
     overflow: auto;
-    background: #f1fdff;
+    background: var(--color-blue-5);
 
     .dashboardSection {
       margin: 40px auto;
