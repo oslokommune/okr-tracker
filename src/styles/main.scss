@@ -14,7 +14,6 @@
 @use 'alerts';
 @use 'vSelect';
 @use 'ods/ods-forms';
-@use 'ods/ods-hr';
 @use 'ods/ods-badge';
 
 /*
@@ -26,6 +25,7 @@
  * to be phased in piece by piece.
  */
 @use '@oslokommune/punkt-css/dist/scss/base/_colors';
+@use '@oslokommune/punkt-css/dist/scss/elements/_hr';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
