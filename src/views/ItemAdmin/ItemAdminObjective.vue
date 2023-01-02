@@ -3,53 +3,46 @@
   <div v-else-if="objective" class="details">
     <archived-restore v-if="objective.archived" :restore="restore" />
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form id="update-objective" @submit.prevent="handleSubmit(update)">
-        <form-component
-          v-model="objective.name"
-          input-type="input"
-          name="name"
-          :label="$t('fields.name')"
-          rules="required"
-          type="text"
-        />
+    <form-section>
+      <form-component
+        v-model="objective.name"
+        input-type="input"
+        name="name"
+        :label="$t('fields.name')"
+        rules="required"
+      />
 
-        <label class="form-group">
-          <span class="form-label">{{ $t('fields.description') }}</span>
-          <input v-model="objective.description" class="form__field" type="text" />
-        </label>
+      <form-component
+        v-model="objective.description"
+        input-type="input"
+        name="description"
+        :label="$t('fields.description')"
+      />
 
-        <form-component
-          v-model.number="objective.weight"
-          input-type="input"
-          name="weight"
-          :label="$t('fields.weight')"
-          rules="required|decimal|positiveNotZero"
-          type="text"
-        />
+      <form-component
+        v-model.number="objective.weight"
+        input-type="input"
+        name="weight"
+        :label="$t('fields.weight')"
+        rules="required|decimal|positiveNotZero"
+        type="text"
+      />
 
-        <validation-provider v-slot="{ errors }" rules="required" name="period">
-          <label class="form-group">
-            <span class="form-label">{{ $t('fields.period') }}</span>
-            <v-select
-              v-model="objective.period"
-              label="name"
-              :options="periods"
-              :clearable="false"
-              @input="changedPeriod = true"
-            >
-              <template #option="option"> {{ option.name }} </template>
-            </v-select>
-            <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
-          </label>
-        </validation-provider>
-      </form>
-    </validation-observer>
+      <form-component
+        v-model="objective.period"
+        input-type="select"
+        :label="$t('fields.period')"
+        name="period"
+        rules="required"
+        :select-options="periods"
+        @select="changedPeriod = true"
+      />
 
-    <div class="button-row">
-      <btn-delete v-if="!objective.archived" :disabled="loading" @click="archive" />
-      <btn-save form="update-objective" :disabled="loading" />
-    </div>
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-delete v-if="!objective.archived" :disabled="loading" @click="archive" />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(update)" />
+      </template>
+    </form-section>
   </div>
 </template>
 
@@ -57,7 +50,7 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import { toastArchiveAndRevert } from '@/util';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 
 export default {
   name: 'ItemAdminObjective',
@@ -66,6 +59,7 @@ export default {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    FormSection,
     BtnSave,
     BtnDelete,
   },

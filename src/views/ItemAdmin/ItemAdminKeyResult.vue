@@ -3,139 +3,123 @@
   <div v-else-if="keyResult" class="details">
     <archived-restore v-if="keyResult.archived" :restore="restore" />
 
-    <validation-observer v-slot="{ handleSubmit }">
-      <form id="update-keyResult" @submit.prevent="handleSubmit(update)">
+    <form-section>
+      <form-component
+        v-model="keyResult.name"
+        input-type="input"
+        name="name"
+        :label="$t('fields.name')"
+        rules="required"
+        type="text"
+      />
+
+      <label class="form-group">
+        <span class="form-label">{{ $t('keyResult.description') }}</span>
+        <input v-model="keyResult.description" class="form__field" type="text" />
+      </label>
+
+      <form-component
+        v-model="keyResult.objective"
+        input-type="select"
+        :label="$t('keyResult.objective')"
+        name="objective"
+        rules="required"
+        :select-options="objectives"
+        @select="changedObjective = true"
+      />
+
+      <form-component
+        v-model="keyResult.unit"
+        input-type="input"
+        name="unit"
+        :label="$t('keyResult.unit')"
+        rules="required|max:25"
+        type="text"
+      />
+
+      <div class="form-row">
         <form-component
-          v-model="keyResult.name"
+          v-model.number="keyResult.startValue"
           input-type="input"
-          name="name"
-          :label="$t('fields.name')"
+          name="startValue"
+          :label="$t('keyResult.startValue')"
           rules="required"
-          type="text"
+          type="number"
         />
-
-        <label class="form-group">
-          <span class="form-label">{{ $t('keyResult.description') }}</span>
-          <input v-model="keyResult.description" class="form__field" type="text" />
-        </label>
-
-        <validation-provider v-slot="{ errors }" rules="required" name="objective">
-          <label class="form-group">
-            <span class="form-label">{{ $t('keyResult.objective') }}</span>
-            <v-select
-              v-model="keyResult.objective"
-              label="name"
-              :options="objectives"
-              :clearable="false"
-              @input="changedObjective = true"
-            >
-              <template #option="option">
-                {{ option.name }}
-                <span v-if="option.period && option.period.name">
-                  ({{ option.period.name }})
-                </span>
-              </template>
-            </v-select>
-            <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
-          </label>
-        </validation-provider>
 
         <form-component
-          v-model="keyResult.unit"
+          v-model.number="keyResult.targetValue"
           input-type="input"
-          name="unit"
-          :label="$t('keyResult.unit')"
-          rules="required|max:25"
-          type="text"
+          name="targetValue"
+          :label="$t('keyResult.targetValue')"
+          rules="required"
+          type="number"
         />
 
-        <div class="form-row">
-          <form-component
-            v-model.number="keyResult.startValue"
-            input-type="input"
-            name="startValue"
-            :label="$t('keyResult.startValue')"
-            rules="required"
-            type="number"
-          />
+        <form-component
+          v-model.number="keyResult.weight"
+          input-type="input"
+          name="weight"
+          :label="$t('keyResult.weight')"
+          rules="required|decimal|positiveNotZero"
+          type="text"
+        />
+      </div>
 
-          <form-component
-            v-model.number="keyResult.targetValue"
-            input-type="input"
-            name="targetValue"
-            :label="$t('keyResult.targetValue')"
-            rules="required"
-            type="number"
-          />
+      <toggle-button v-model="keyResult.auto" :label="$t('keyResult.automation.header')">
+        <p>
+          {{ $t('sheets.infoText') }}<br />
+          <strong>{{ serviceAccountAddress }}</strong>
+        </p>
 
-          <form-component
-            v-model.number="keyResult.weight"
-            input-type="input"
-            name="weight"
-            :label="$t('keyResult.weight')"
-            rules="required|decimal|positiveNotZero"
-            type="text"
-          />
-        </div>
+        <google-sheets-form-group
+          :sheet-id="keyResult.sheetId"
+          :sheet-url.sync="keyResult.sheetUrl"
+          :sheet-name.sync="keyResult.sheetName"
+          :sheet-cell.sync="keyResult.sheetCell"
+        />
 
-        <toggle-button
-          v-model="keyResult.auto"
-          :label="$t('keyResult.automation.header')"
-        >
-          <p>
-            {{ $t('sheets.infoText') }}<br />
-            <strong>{{ serviceAccountAddress }}</strong>
-          </p>
-
-          <google-sheets-form-group
-            :sheet-id="keyResult.sheetId"
-            :sheet-url.sync="keyResult.sheetUrl"
-            :sheet-name.sync="keyResult.sheetName"
-            :sheet-cell.sync="keyResult.sheetCell"
-          />
-
-          <div class="validation">
-            <div v-if="loadingConnection" class="validation__loading">
-              <i class="fa fa-spinner fa-pulse" />
-              {{ $t('general.loading') }}
-            </div>
-            <div v-if="!loadingConnection && keyResult.error" class="validation__error">
-              <i class="fa fa-exclamation-triangle" />
-              {{ showError(keyResult.error) }}
-            </div>
-            <div v-if="!loadingConnection && keyResult.valid" class="validation__valid">
-              <i class="fa fa-check-circle" />
-              OK
-            </div>
-            <button class="btn validation-check" type="button" @click="testConnection">
-              {{ $t('keyResult.automation.testConnection') }}
-            </button>
+        <div class="validation">
+          <div v-if="loadingConnection" class="validation__loading">
+            <i class="fa fa-spinner fa-pulse" />
+            {{ $t('general.loading') }}
           </div>
-        </toggle-button>
-
-        <toggle-button v-model="keyResult.api">
-          <template #label>
-            {{ $t('keyResult.api.radio') }}
-            <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
-          </template>
-
-          <progress-update-API-example
-            label="API"
-            :help="$t('admin.curlHelp')"
-            :path="`keyres/${keyResult.id}`"
-          />
-        </toggle-button>
-
-        <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
-          {{ $t('keyResult.apiAndKeyRes') }}
+          <div v-if="!loadingConnection && keyResult.error" class="validation__error">
+            <i class="fa fa-exclamation-triangle" />
+            {{ showError(keyResult.error) }}
+          </div>
+          <div v-if="!loadingConnection && keyResult.valid" class="validation__valid">
+            <i class="fa fa-check-circle" />
+            OK
+          </div>
+          <button class="btn validation-check" type="button" @click="testConnection">
+            {{ $t('keyResult.automation.testConnection') }}
+          </button>
         </div>
-      </form>
-    </validation-observer>
+      </toggle-button>
 
-    <div class="button-row">
-      <btn-delete v-if="!keyResult.archived" :disabled="loading" @click="archive" />
-      <btn-save form="update-keyResult" :disabled="loading" />
-    </div>
+      <toggle-button v-model="keyResult.api">
+        <template #label>
+          {{ $t('keyResult.api.radio') }}
+          <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
+        </template>
+
+        <progress-update-API-example
+          label="API"
+          :help="$t('admin.curlHelp')"
+          :path="`keyres/${keyResult.id}`"
+        />
+      </toggle-button>
+
+      <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
+        {{ $t('keyResult.apiAndKeyRes') }}
+      </div>
+
+      <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-delete v-if="!keyResult.archived" :disabled="loading" @click="archive" />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(update)" />
+      </template>
+    </form-section>
   </div>
 </template>
 
@@ -143,7 +127,7 @@
 import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import { toastArchiveAndRevert } from '@/util';
-import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
+import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import ToggleButton from '@/components/generic/form/ToggleButton.vue';
 import GoogleSheetsFormGroup from '@/components/forms/partials/GoogleSheetsFormGroup.vue';
 import ProgressUpdateAPIExample from '@/components/ProgressUpdateAPIExample.vue';
@@ -155,6 +139,7 @@ export default {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    FormSection,
     BtnSave,
     BtnDelete,
     ToggleButton,
