@@ -2,62 +2,58 @@
   <div class="container">
     <div class="create-container">
       <h1 class="title-1">{{ $t('admin.product.create') }}</h1>
-      <validation-observer v-slot="{ handleSubmit }">
-        <form id="createProduct" @submit.prevent="handleSubmit(save)">
-          <form-component
-            v-model="name"
-            input-type="input"
-            name="name"
-            :label="$t('fields.name')"
-            rules="required"
-            type="text"
+
+      <form-section>
+        <form-component
+          v-model="name"
+          input-type="input"
+          name="name"
+          :label="$t('fields.name')"
+          rules="required"
+          type="text"
+        />
+
+        <form-component
+          v-model="missionStatement"
+          input-type="textarea"
+          name="missionStatement"
+          :label="$t('fields.missionStatement')"
+          rules="required"
+        />
+
+        <form-component
+          v-model="department"
+          input-type="select"
+          name="department"
+          :label="$t('admin.product.parentDepartment')"
+          select-label="name"
+          rules="required"
+          :select-options="departments"
+        />
+
+        <div class="form-group">
+          <span class="form-label">{{ $t('general.teamMembers') }}</span>
+          <v-select
+            v-model="team"
+            multiple
+            :options="users"
+            :get-option-label="(option) => option.displayName || option.id"
+          >
+            <template #option="option">
+              {{ option.displayName || option.id }}
+              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+            </template>
+          </v-select>
+        </div>
+
+        <template #actions="{ handleSubmit, submitDisabled }">
+          <btn-save
+            :label="$t('btn.create')"
+            :disabled="submitDisabled || loading"
+            @click="handleSubmit(save)"
           />
-
-          <form-component
-            v-model="missionStatement"
-            input-type="textarea"
-            name="missionStatement"
-            :label="$t('fields.missionStatement')"
-            rules="required"
-          />
-
-          <form-component
-            v-model="department"
-            input-type="select"
-            name="department"
-            :label="$t('admin.product.parentDepartment')"
-            select-label="name"
-            rules="required"
-            :select-options="departments"
-          />
-
-          <div class="form-group">
-            <span class="form-label">{{ $t('general.teamMembers') }}</span>
-            <v-select
-              v-model="team"
-              multiple
-              :options="users"
-              :get-option-label="(option) => option.displayName || option.id"
-            >
-              <template #option="option">
-                {{ option.displayName || option.id }}
-                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-              </template>
-            </v-select>
-          </div>
-        </form>
-      </validation-observer>
-
-      <div class="button-row">
-        <button
-          class="btn btn--icon btn--pri btn--icon-pri"
-          form="createProduct"
-          :disabled="loading"
-        >
-          <i class="icon fa fa-fw fa-save" />
-          {{ $t('btn.create') }}
-        </button>
-      </div>
+        </template>
+      </form-section>
     </div>
   </div>
 </template>
@@ -67,9 +63,11 @@ import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
 import { findSlugAndRedirect } from '@/util';
+import { FormSection, BtnSave } from '@/components/generic/form';
 
 export default {
   name: 'CreateProduct',
+  components: { FormSection, BtnSave },
 
   data: () => ({
     name: '',

@@ -270,6 +270,21 @@ textarea {
     margin-bottom: 1rem;
     color: var(--color-text);
   }
+
+  &--disabled {
+    .toggle__input:checked ~ .toggle__switch {
+      background: var(--color-grey-100);
+    }
+
+    .toggle__switch {
+      background: var(--color-grey-100);
+      cursor: not-allowed;
+
+      &::before, &::after {
+        color: var(--color-grey-300);
+      }
+    }
+  }
 }
 
 .descriptive-radio {
