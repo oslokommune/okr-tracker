@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file. The format 
 - The green color theme has been removed. It hasn't received much love lately,
   and our focus will rather be to better align the default blue theme with the
   Punkt design system going forward.
+- Removed built-in Google Analytics integration. It was just default settings.
+  Will probably be replaced by some other analytics tool once we select one
+  that is compliant.
 
 ### Fixed
 

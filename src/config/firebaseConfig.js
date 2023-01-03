@@ -2,7 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import 'firebase/firestore';
 import 'firebase/auth';
-import 'firebase/analytics';
 import 'firebase/functions';
 
 import { emulators } from '../../firebase.json';
@@ -24,7 +23,6 @@ const config = {
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_APP_ID,
-  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
 firebase.initializeApp(config);
@@ -40,7 +38,6 @@ loginProviderMS.setCustomParameters({
 });
 const storage = firebase.storage();
 const auth = firebase.auth();
-const analytics = firebase.analytics();
 const functions = firebase.app().functions(import.meta.env.VITE_REGION);
 const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
 
@@ -59,7 +56,6 @@ export {
   auth,
   loginProviderGoogle,
   storage,
-  analytics,
   functions,
   serverTimestamp,
   arrayRemove,
