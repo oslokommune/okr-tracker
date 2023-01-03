@@ -139,7 +139,6 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                         |
 | `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                         |
 | `VITE_APP_ID`                 | _from SDK snippet_                                                                                         |
-| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                         |
 | `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                  |
 | `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                           |
 | `VITE_REGION`                 | `europe-west2`                                                                                             |
@@ -269,9 +268,9 @@ npm run deploy
 
 To configure automatic deploy to Firebase Hosting on merge to `main` (triggered as part of the `pipeline.yml` workflow), add the following secrets to your GitHub repository:
 
-* `ENV_FILE_PROD`: Contains a dumped copy of the production dotenv file.
-* `FIREBASE_PROJECT_ID_PROD`: The Firebase Project ID.
-* `FIREBASE_SERVICE_ACCOUNT_PROD`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+- `ENV_FILE_PROD`: Contains a dumped copy of the production dotenv file.
+- `FIREBASE_PROJECT_ID_PROD`: The Firebase Project ID.
+- `FIREBASE_SERVICE_ACCOUNT_PROD`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
 
 See the [Firebase documentation](https://firebase.google.com/docs/hosting/github-integration) for steps required to create these secrets, either by using the Firebase CLI or [manually](https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/docs/service-account.md).
 
