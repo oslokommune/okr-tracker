@@ -149,9 +149,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .progress-form {
   @media screen and (min-width: bp(s)) {
     display: flex;
+  }
+
+  .display-as {
+    padding-bottom: 0.5rem;
+    color: var(--color-grey-500);
+    font-weight: 500;
+    font-size: typography.$font-size-1;
   }
 
   &__left {

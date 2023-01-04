@@ -8,14 +8,19 @@
       <div class="progress-form">
         <div class="progress-form__left">
           <form-component
-            v-model="thisRecord.value"
+            v-model="recordValue"
             input-type="input"
             name="value"
+            class="progress-form__value-group"
             :label="$t('widget.history.value')"
             rules="required"
             type="number"
             data-cy="progress_value"
           />
+          <span v-if="updatedValue" class="display-as">
+            {{ $t('general.displayedAs') }}
+            {{ formatKPIValue(activeKpi, thisRecord.value) }}
+          </span>
 
           <form-component
             v-model="thisRecord.comment"
@@ -110,10 +115,23 @@ export default {
       mode: 'single',
       inline: true,
     },
+    updatedValue: null,
   }),
 
   computed: {
     ...mapState(['activeKpi']),
+    typePercentage() {
+      return this.activeKpi.format === 'percentage';
+    },
+    recordValue: {
+      get() {
+        return this.typePercentage ? this.thisRecord.value * 100 : this.thisRecord.value;
+      },
+      set(val) {
+        this.thisRecord.value = this.typePercentage ? val / 100 : val;
+        this.updatedValue = this.thisRecord.value;
+      },
+    },
   },
 
   mounted() {

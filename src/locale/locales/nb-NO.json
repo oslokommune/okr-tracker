@@ -182,7 +182,8 @@
     "value": "Verdi",
     "target": "Målsetting",
     "selectRange": "Velg start- og sluttdato",
-    "formErrors": "Skjemaet inneholder feil som må rettes."
+    "formErrors": "Skjemaet inneholder feil som må rettes.",
+    "displayedAs": "Vises som: "
   },
   "btn": {
     "close": "Lukk",
