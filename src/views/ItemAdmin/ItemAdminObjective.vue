@@ -110,8 +110,8 @@ export default {
         await Objective.update(id, data);
 
         if (this.changedPeriod) {
-          await this.$router.push({ query: {} });
-          await this.$router.push({ query: { type: 'objective', id } });
+          await this.$router.push({ query: { tab: 'okr' } });
+          await this.$router.push({ query: { tab: 'okr', type: 'objective', id } });
         }
 
         this.$toasted.show(this.$t('toaster.savedChanges'));
@@ -125,7 +125,7 @@ export default {
       this.loading = true;
       try {
         await this.$router.push({
-          query: { type: 'period', id: this.objective.period.id },
+          query: { tab: 'okr', type: 'period', id: this.objective.period.id },
         });
         await Objective.archive(this.objective.id);
 

@@ -199,7 +199,7 @@ export default {
     '$route.query': {
       immediate: true,
       async handler(newQuery, oldQuery) {
-        if (newQuery && !oldQuery) {
+        if (newQuery && (!oldQuery || !oldQuery.type || oldQuery.id)) {
           await this.setItems(newQuery, true);
         } else {
           await this.setItems(newQuery, false);

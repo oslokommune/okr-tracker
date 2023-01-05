@@ -230,8 +230,8 @@ export default {
         await KeyResult.update(id, data);
 
         if (this.changedObjective) {
-          await this.$router.push({ query: {} });
-          await this.$router.push({ query: { type: 'keyResult', id } });
+          await this.$router.push({ query: { tab: 'okr' } });
+          await this.$router.push({ query: { tab: 'okr', type: 'keyResult', id } });
         }
 
         this.$toasted.show(this.$t('toaster.savedChanges'));
@@ -246,7 +246,7 @@ export default {
       this.loading = true;
       try {
         await this.$router.push({
-          query: { type: 'objective', id: this.keyResult.objective.id },
+          query: { tab: 'okr', type: 'objective', id: this.keyResult.objective.id },
         });
         await KeyResult.archive(this.keyResult.id);
 
