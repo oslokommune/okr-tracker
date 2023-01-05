@@ -109,6 +109,10 @@
           :help="$t('admin.curlHelp')"
           :path="`keyres/${keyResult.id}`"
         />
+
+        <router-link :to="{ name: 'Api' }" target="_blank">
+          <span>{{ $t('admin.apiDocs') }}</span>
+        </router-link>
       </toggle-button>
 
       <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">

@@ -373,6 +373,7 @@
   "admin": {
     "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere Nøkkelresultater og/eller KPIer, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "curlHelp": "Oppdatering med curl",
+    "apiDocs": "API-dokumentasjon",
     "department": {
       "picture": "Bilde",
       "create": "Opprett nytt produktområde",
