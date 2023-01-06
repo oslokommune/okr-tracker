@@ -1,4 +1,9 @@
 {
+  "403": {
+    "title": "Forbidden",
+    "body": "You do not have access to this resource.",
+    "linkText": "Go back to the front page"
+  },
   "404": {
     "title": "404"
   },

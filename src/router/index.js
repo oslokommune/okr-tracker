@@ -36,6 +36,11 @@ const routes = [
     component: () => import('@/views/Logout.vue'),
   },
   {
+    path: '/403',
+    name: 'Forbidden',
+    component: () => import('@/views/Forbidden.vue'),
+  },
+  {
     path: '/404',
     name: 'Not found',
     component: () => import('@/views/NotFound.vue'),

@@ -1,4 +1,9 @@
 {
+  "403": {
+    "title": "Ingen tilgang",
+    "body": "Du har ikke tilgang til denne ressursen.",
+    "linkText": "Gå tilbake til forsiden"
+  },
   "404": {
     "title": "404"
   },
