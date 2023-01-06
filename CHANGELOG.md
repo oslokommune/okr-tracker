@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. The format 
   sheet IDs.
 - Node 16 is now the default runtime for all Cloud Functions and when running
   the app locally.
+- More informative error page views.
 
 ### Removed
 
@@ -24,6 +25,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed a bug where saving a placeholder OKR period without changes would result
   in it being set to unix epoch.
+- Fixed an incorrect admin rights check in the team widget.
 
 ## [3.1.0] 2022-12-15
 
