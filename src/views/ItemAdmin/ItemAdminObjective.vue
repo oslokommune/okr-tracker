@@ -121,9 +121,11 @@ export default {
 
       this.loading = false;
     },
+
     async archive() {
       this.loading = true;
       try {
+        this.objective.archived = true;
         await this.$router.push({
           query: { tab: 'okr', type: 'period', id: this.objective.period.id },
         });

@@ -177,7 +177,7 @@ export default {
           'objectives',
           db.collection('objectives').where('parent', '==', parent)
         );
-        this.$bind('keyResult', db.collection('keyResults').doc(this.data.id));
+        this.keyResult = { ...this.data, id: this.data.id };
         this.isLoadingDetails = false;
       },
     },
@@ -242,9 +242,11 @@ export default {
 
       this.loading = false;
     },
+
     async archive() {
       this.loading = true;
       try {
+        this.keyResult.archived = true;
         await this.$router.push({
           query: { tab: 'okr', type: 'objective', id: this.keyResult.objective.id },
         });
