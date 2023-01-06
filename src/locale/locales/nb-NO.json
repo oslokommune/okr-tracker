@@ -5,7 +5,9 @@
     "linkText": "Gå tilbake til forsiden"
   },
   "404": {
-    "title": "404"
+    "title": "Siden finnes ikke",
+    "body": "Denne ressursen ser ikke ut til å eksistere.",
+    "linkText": "Gå tilbake til forsiden"
   },
   "kpi": {
     "add": "Legg til måling",
@@ -145,7 +147,6 @@
     "project": "OKR",
     "loading": "Laster ...",
     "owner": "Oslo kommune",
-    "notFound": "Not found",
     "help": "Hjelp",
     "admin": "Admin",
     "administration": "Administrasjon",

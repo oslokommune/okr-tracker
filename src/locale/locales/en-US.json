@@ -5,7 +5,9 @@
     "linkText": "Go back to the front page"
   },
   "404": {
-    "title": "404"
+    "title": "Page not found",
+    "body": "This resource does not seem to exist.",
+    "linkText": "Go back to the front page"
   },
   "kpi": {
     "add": "Add measurement",
@@ -147,7 +149,6 @@
     "project": "OKR",
     "loading": "Loading ...",
     "owner": "City of Oslo",
-    "notFound": "Not found",
     "help": "Help",
     "admin": "Admin",
     "administration": "Administration",
