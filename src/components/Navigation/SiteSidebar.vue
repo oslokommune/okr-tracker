@@ -10,7 +10,7 @@
         <h1>{{ $t('general.frontPage') }}</h1>
       </router-link>
 
-      <hr class="divider" />
+      <hr class="pkt-hr" />
 
       <h2
         class="btn btn--ter sidebar__item sidebar__item--organizations"
@@ -31,7 +31,7 @@
         </button>
       </div>
 
-      <hr class="divider" />
+      <hr class="pkt-hr" />
 
       <div v-if="!user" class="sidebar__header">{{ $t('general.signIn') }}</div>
       <template v-if="user">
@@ -237,10 +237,8 @@ $header-height: 4em;
   }
 }
 
-.divider {
+hr {
   margin: 1.5rem;
-  border: 0;
-  border-top: 1px solid #f7f7f74f;
 }
 
 .logo__img {
