@@ -98,7 +98,7 @@ export default {
       this.loading = true;
       try {
         this.activePeriod.archived = true;
-        await this.$router.push({ query: {} });
+        await this.$router.push({ query: { tab: 'okr' } });
         await Period.archive(this.activePeriod.id);
 
         const restoreCallback = this.restore.bind(this);
