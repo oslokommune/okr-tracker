@@ -192,6 +192,8 @@ export default class LineChart {
       })
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
+    this.canvas.selectAll('.single-point').remove();
+
     if (data.length === 1) {
       this.canvas
         .datum(data)
@@ -202,8 +204,6 @@ export default class LineChart {
         .attr('cy', (d) => this.y(d[0].value))
         .attr('r', 4)
         .attr('style', 'pointer-events:none;');
-    } else {
-      this.canvas.selectAll('.single-point').remove();
     }
 
     this.valueArea.datum(data).transition().attr('d', this.area);
