@@ -9,7 +9,9 @@
     :value="example"
   >
     <template #help>
-      <span v-if="help" class="form-help">{{ help }}</span>
+      <span v-if="$slots.default" class="form-help">
+        <slot />
+      </span>
     </template>
   </form-component>
 </template>
