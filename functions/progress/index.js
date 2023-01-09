@@ -34,10 +34,22 @@ export const handleKeyResultProgressOnObjectiveUpdate = functions
   .region(config.region)
   .firestore.document(`objectives/{objectiveId}`)
   .onUpdate(({ before, after }) => {
-    if (before.data().weight === after.data().weight) {
+    const beforeData = before.data();
+    const afterData = after.data();
+
+    const weightChanged = beforeData.weight !== afterData.weight;
+    const periodChanged = beforeData.period !== afterData.period;
+
+    if (!weightChanged && !periodChanged) {
       return false;
     }
 
-    const { period } = after.data();
-    return updatePeriodProgression(period);
+    return updatePeriodProgression(afterData.period).then(() => {
+      // Update progression for both periods when an objective's period is altered.
+      if (!periodChanged) {
+        return false;
+      }
+
+      return updatePeriodProgression(beforeData.period);
+    });
   });

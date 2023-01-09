@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file. The format 
 - All custom icon components are now replaced by counterparts from the [Punkt
   design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
 
+### Fixed
+- Period progression is now updated when an objective is moved between periods.
+
 ## [3.2.0] 2023-01-16
 
 ### Added
