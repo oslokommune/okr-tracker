@@ -29,7 +29,7 @@
     </template>
 
     <template #collapse-body>
-      <hr class="ods-hr" />
+      <hr class="pkt-hr" />
 
       <kpi-admin-form
         :kpi="kpi"
@@ -236,7 +236,7 @@ export default {
   &__body {
     padding: 0 1.5rem 1.5rem 1.5rem;
 
-    .ods-hr:first-child {
+    .pkt-hr:first-child {
       margin-top: 0;
     }
   }

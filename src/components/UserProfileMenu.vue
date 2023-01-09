@@ -5,7 +5,7 @@
 
       <user-profile-form :user="user" :loading="loading" @save="save" />
 
-      <hr class="divider" />
+      <hr class="pkt-hr" />
 
       <h3 class="widget__title title-2">{{ $t('user.myProducts') }}</h3>
 
@@ -18,7 +18,7 @@
         </li>
       </ul>
 
-      <hr class="divider" />
+      <hr class="pkt-hr" />
 
       <h3 class="widget__title title-2">{{ $t('user.access') }}</h3>
 
@@ -32,7 +32,7 @@
         <div>{{ $t('user.hasAdmin') }}</div>
       </div>
 
-      <hr class="divider" />
+      <hr class="pkt-hr" />
 
       <h3 class="widget__title title-2">{{ $t('general.administration') }}</h3>
 
@@ -217,12 +217,6 @@ export default {
   font-weight: 500;
   border: 1px solid black;
   border-radius: 0px;
-}
-
-.divider {
-  margin: 1.5rem 0;
-  border: 0;
-  border-top: 1px solid var(--color-grey-100);
 }
 
 .button-link {

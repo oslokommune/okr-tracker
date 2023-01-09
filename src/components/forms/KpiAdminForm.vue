@@ -48,7 +48,7 @@
         />
       </div>
 
-      <hr class="ods-hr" />
+      <hr class="pkt-hr" />
 
       <validation-provider v-slot="{ errors }" rules="required" name="kpiType">
         <div class="form-group">
@@ -79,7 +79,7 @@
         </div>
       </validation-provider>
 
-      <hr class="ods-hr" />
+      <hr class="pkt-hr" />
 
       <div v-if="kpi" class="goal-section">
         <h3>{{ $t('kpi.goals.goals') }}</h3>
@@ -96,7 +96,7 @@
           </button>
         </div>
 
-        <hr class="ods-hr" />
+        <hr class="pkt-hr" />
       </div>
 
       <i18n path="kpi.help.updates" tag="p">
@@ -125,7 +125,7 @@
         />
       </toggle-button>
 
-      <hr class="ods-hr" />
+      <hr class="pkt-hr" />
 
       <form-component
         v-model="localKpi.updateFrequency"

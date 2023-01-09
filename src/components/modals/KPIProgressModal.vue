@@ -66,7 +66,7 @@
     </form-section>
 
     <template #subfooter>
-      <hr class="ods-hr" />
+      <hr class="pkt-hr" />
       <i18n path="kpi.help.apiProgress" tag="p">
         <template #apiLink>
           <router-link :to="{ name: 'Api' }" target="_blank">
