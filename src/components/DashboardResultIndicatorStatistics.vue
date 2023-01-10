@@ -1,38 +1,34 @@
 <template>
-  <div class="progressStatistics">
-    <div>
+  <div v-if="resultIndicator" class="progressStatistics">
+    <div v-if="latestProgressRecord">
       <span class="progressStatistics__title">
-        Siste verdi
-        <template v-if="latestProgressRecord">
-          per {{ formatDate(latestProgressRecord.timestamp) }}
-        </template>
+        {{
+          $t('kpi.latestValueTitle', {
+            formattedDate: formatDate(latestProgressRecord.timestamp),
+          })
+        }}
       </span>
       <div>
         <span class="progressStatistics__value">
-          <template v-if="resultIndicator && latestProgressRecord">
-            {{ formatKPIValue(resultIndicator, latestProgressRecord.value) }}
-            <span v-if="periodTrend" :class="bgColor" class="progressStatistics__trend">
-              {{ periodTrendFormatted }}
-            </span>
-          </template>
-          <template v-else>–––</template>
+          {{ formatKPIValue(resultIndicator, latestProgressRecord.value) }}
+          <span v-if="periodTrend" :class="bgColor" class="progressStatistics__trend">
+            {{ periodTrendFormatted }}
+          </span>
         </span>
       </div>
     </div>
-    <div>
+    <div v-if="goal">
       <span class="progressStatistics__title">
-        {{ $t('kpi.goals.goal') }}
-        <template v-if="resultIndicator && goal">
-          for {{ formatDateRange(goal.fromDate, goal.toDate) }}
-        </template>
+        {{
+          $t('kpi.goals.goalTitle', {
+            formattedDateRange: formatDateRange(goal.fromDate, goal.toDate),
+          })
+        }}
       </span>
       <div>
         <span class="progressStatistics__value">
-          <template v-if="resultIndicator && goal">
-            {{ formatKPIValue(resultIndicator, goal.value) }}
-            <icon-alert-success v-if="isGoalReached" :width="20" :height="20" />
-          </template>
-          <template v-else>–––</template>
+          {{ formatKPIValue(resultIndicator, goal.value) }}
+          <icon-alert-success v-if="isGoalReached" :width="20" :height="20" />
         </span>
       </div>
     </div>
@@ -147,7 +143,7 @@ export default {
 .progressStatistics {
   display: grid;
   gap: 2rem;
-  min-height: 5.7rem;
+  min-height: 6rem;
   margin-top: 0.5rem;
   padding: 1.5rem;
   border-top: 1px solid var(--color-grey-100);

@@ -15,6 +15,7 @@
     "edit": "Edit KPI",
     "change": "Change KPI",
     "currentValue": "Current value",
+    "latestValueTitle": "Latest value per {formattedDate}",
     "progress": "Progress",
     "newValue": "New value",
     "editValue": "Edit value",
@@ -76,7 +77,7 @@
       "edit": "Edit goals",
       "the": "the goal",
       "help": "KPIs can have goals for specific periods. As of now, only goals for result indicators are shown on the dashboard, but this is subject to change.",
-      "for": "Goal for"
+      "goalTitle": "Goal for {formattedDateRange}"
     }
   },
   "fields": {

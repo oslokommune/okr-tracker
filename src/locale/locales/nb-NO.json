@@ -15,6 +15,7 @@
     "edit": "Endre KPI",
     "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
+    "latestValueTitle": "Siste verdi per {formattedDate}",
     "progress": "Progresjon",
     "newValue": "Legg til målepunkt",
     "editValue": "Endre målepunkt",
@@ -76,7 +77,7 @@
       "edit": "Endre mål",
       "the": "målet",
       "help": "KPI-er kan ha mål for bestemte perioder. Foreløpig vises kun mål for resultatindikatorer på dashbordet, men dette vil kunne endres på sikt.",
-      "for": "Mål for"
+      "goalTitle": "Mål for {formattedDateRange}"
     }
   },
   "fields": {
