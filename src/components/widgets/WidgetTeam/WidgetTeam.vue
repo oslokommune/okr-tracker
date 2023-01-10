@@ -22,7 +22,7 @@
     />
 
     <router-link
-      v-if="memberOrAdmin"
+      v-if="hasEditRights"
       :to="{ name: 'ItemAdmin' }"
       class="btn btn--fw btn--ter"
     >
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import {
   possibleDevelopers,
   possibleAdm,
@@ -57,17 +57,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'user']),
-
-    memberOrAdmin() {
-      try {
-        const isAdmin = this.user.admin;
-        const isMember = this.activeItem.team.map(({ id }) => id).includes(this.user.id);
-        return isAdmin || isMember;
-      } catch {
-        return false;
-      }
-    },
+    ...mapState(['activeItem']),
+    ...mapGetters(['hasEditRights']),
   },
 
   watch: {

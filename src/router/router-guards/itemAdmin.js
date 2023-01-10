@@ -22,6 +22,6 @@ export default async function itemAdmin(to, from, next) {
     next();
   } else {
     console.error('Access denied');
-    next(false);
+    next({ name: 'Forbidden' });
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <empty-state :icon="'meh'" :heading="$t('404.title')" :body="$t('404.body')">
+    <empty-state :icon="'ban'" :heading="$t('403.title')" :body="$t('403.body')">
       <router-link class="btn btn--ter" :to="{ name: 'Home' }">
-        {{ $t('404.linkText') }}
+        {{ $t('403.linkText') }}
       </router-link>
     </empty-state>
   </div>
@@ -13,14 +13,14 @@ import i18n from '@/locale/i18n';
 import EmptyState from '@/components/EmptyState.vue';
 
 export default {
-  name: 'NotFound',
+  name: 'Forbidden',
   components: {
     EmptyState,
   },
 
   metaInfo() {
     return {
-      title: `${i18n.t('404.title')} | ${i18n.t('general.project')}`,
+      title: `${i18n.t('403.title')} | ${i18n.t('general.project')}`,
     };
   },
 };
