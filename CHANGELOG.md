@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 - Node 16 is now the default runtime for all Cloud Functions and when running
   the app locally.
 - More informative error page views.
+- Added contextual link to API documentation below curl example.
 
 ### Removed
 

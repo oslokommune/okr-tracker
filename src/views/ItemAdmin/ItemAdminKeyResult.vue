@@ -104,11 +104,15 @@
           <i v-tooltip="$t('keyResult.api.tooltip')" class="icon fa fa-info-circle" />
         </template>
 
-        <progress-update-API-example
-          label="API"
-          :help="$t('admin.curlHelp')"
-          :path="`keyres/${keyResult.id}`"
-        />
+        <progress-update-API-example label="API" :path="`keyres/${keyResult.id}`">
+          <i18n path="admin.curlHelp">
+            <template #apiLink>
+              <router-link :to="{ name: 'Api' }" target="_blank">
+                <span>{{ $t('general.api') }}</span>
+              </router-link>
+            </template>
+          </i18n>
+        </progress-update-API-example>
       </toggle-button>
 
       <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
