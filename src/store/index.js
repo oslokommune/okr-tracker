@@ -135,7 +135,11 @@ export const getters = {
 
   hasCheckedOrganizations: (state) => {
     const { organizations, user } = state;
-    const orgs = user.preferences.home.collapse.organization;
+    const orgs = user.preferences?.home?.collapse?.organization;
+
+    if (!orgs) {
+      return false;
+    }
 
     const checked = [];
 
