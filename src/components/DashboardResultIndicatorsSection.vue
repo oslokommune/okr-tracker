@@ -80,8 +80,8 @@ import firebase from 'firebase/app';
 
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
-import { periodDates, dateLongCompact } from '@/util';
-import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
+import { periodDates } from '@/util';
+import { kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -281,16 +281,6 @@ export default {
   },
 
   methods: {
-    formatKPIValue,
-
-    formatDate(date) {
-      return dateLongCompact(date instanceof Date ? date : date.toDate());
-    },
-
-    formatDateRange(startDate, endDate) {
-      return periodDates({ startDate, endDate }, dateLongCompact);
-    },
-
     async setProgress() {
       if (this.activeResultIndicator) {
         if (this.activeResultIndicator.progress) {
