@@ -181,16 +181,10 @@ export default {
     goal() {
       // Firebase doesn't support equality filtering on more than one field at
       // a time, so do the rest of the filtering client side.
-      const goals = this.goals.filter((goal) => {
-        const goalFromDate = goal.fromDate.toDate();
-        const goalToDate = goal.toDate.toDate();
-
-        return (
-          (goalFromDate >= this.startDate && goalFromDate <= this.endDate) ||
-          (goalToDate >= this.startDate && goalToDate <= this.endDate) ||
-          (goalFromDate < this.startDate && goalToDate > this.endDate)
-        );
-      });
+      const goals = this.goals.filter(
+        (goal) =>
+          goal.toDate.toDate() > this.startDate && goal.fromDate.toDate() < this.endDate
+      );
 
       // We don't enforce non-overlapping goals (yet?), but if anyone has set
       // overlapping goals, just pick the one with the closest end date.
