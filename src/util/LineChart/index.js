@@ -173,7 +173,7 @@ export default class LineChart {
       .call(
         axisBottom(this.x)
           .tickFormat((d) => formatDate(d, daysBetween))
-          .ticks(Math.min(Math.ceil(daysBetween), 6))
+          .ticks(Math.min(Math.ceil(daysBetween) || 1, 6))
       )
       .call(styleAxisX);
 
@@ -191,6 +191,20 @@ export default class LineChart {
         };
       })
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+
+    this.canvas.selectAll('.single-point').remove();
+
+    if (data.length === 1) {
+      this.canvas
+        .datum(data)
+        .append('circle')
+        .attr('class', 'single-point')
+        .attr('fill', GRAPH_COLORS.valueLine)
+        .attr('cx', (d) => this.x(d[0].timestamp))
+        .attr('cy', (d) => this.y(d[0].value))
+        .attr('r', 4)
+        .attr('style', 'pointer-events:none;');
+    }
 
     this.valueArea.datum(data).transition().attr('d', this.area);
     this.valueLine.datum(data).transition().attr('d', this.line);

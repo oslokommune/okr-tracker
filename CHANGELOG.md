@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed a bug where saving a placeholder OKR period without changes would result
   in it being set to unix epoch.
 - Fixed an incorrect admin rights check in the team widget.
+- Charts now support displaying a single measurement.
 
 ## [3.1.0] 2022-12-15
 
