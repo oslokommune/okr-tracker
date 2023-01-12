@@ -116,7 +116,7 @@ import DashboardDepartmentInfoBox from '@/components/DashboardDepartmentInfoBox.
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import KeyFigure from '@/components/KeyFigure.vue';
 import EmptyState from '@/components/EmptyState.vue';
-import DashboardSection from './DashboardSection.vue';
+import DashboardSection from '@/components/DashboardSection.vue';
 
 export default {
   name: 'DashboardHome',
