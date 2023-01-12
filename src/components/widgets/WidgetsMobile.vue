@@ -1,7 +1,6 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-dashboard-entry v-if="isDepartment(activeItem)" :slug="activeItem.slug" />
       <widget-admin-edit />
       <widget-wrapper
         v-if="progression"
@@ -26,7 +25,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import { isDepartment } from '@/util/getActiveItemType';
 import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetChildItems from '@/components/widgets/WidgetChildItems.vue';
@@ -46,12 +44,7 @@ export default {
     WidgetWeights,
     WidgetAdminEdit,
     WidgetObjectiveDetails,
-    WidgetDashboardEntry: () => import('@/components/widgets/WidgetDashboardEntry.vue'),
   },
-
-  data: () => ({
-    isDepartment,
-  }),
 
   computed: {
     ...mapState([
