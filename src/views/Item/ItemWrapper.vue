@@ -66,7 +66,9 @@ export default {
 
 <style lang="scss" scoped>
 .tabs {
-  position: relative;
+  position: sticky;
+  top: 4rem;
+  z-index: 20;
   display: flex;
   flex-grow: 1;
   box-sizing: border-box;
