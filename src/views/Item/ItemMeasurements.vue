@@ -11,11 +11,7 @@
       <h2 class="title-1">
         {{ $t('general.keyFigures') }}
       </h2>
-      <ul v-if="keyFigures.length" class="kpi-list">
-        <li v-for="keyFigure in keyFigures" :key="keyFigure.id" class="kpi-list__card">
-          <key-figure :key-figure="keyFigure" />
-        </li>
-      </ul>
+      <kpi-grid v-if="keyFigures.length" :kpis="keyFigures" />
       <empty-state
         v-else
         :icon="'exclamation'"
@@ -31,6 +27,13 @@
         </router-link>
       </empty-state>
     </section>
+
+    <section v-if="otherKpis.length">
+      <h2 class="title-1">
+        {{ $t('general.otherMeasurements') }}
+      </h2>
+      <kpi-grid v-if="otherKpis.length" :kpis="otherKpis" />
+    </section>
   </main>
 </template>
 
@@ -38,15 +41,15 @@
 import { mapState, mapGetters } from 'vuex';
 
 import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
-import KeyFigure from '@/components/KeyFigure.vue';
+import KpiGrid from '@/components/KpiGrid.vue';
 import EmptyState from '@/components/EmptyState.vue';
 
 export default {
   name: 'DashboardHome',
   components: {
     DashboardResultIndicatorsSection,
-    KeyFigure,
     EmptyState,
+    KpiGrid,
   },
 
   computed: {
@@ -59,34 +62,10 @@ export default {
         ...this.subKpis.filter((kpi) => kpi.kpiType === 'keyfig'),
       ];
     },
+
+    otherKpis() {
+      return this.kpis.filter((kpi) => kpi.kpiType === 'plain');
+    },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.kpi-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin: -0.5rem;
-
-  &__card {
-    display: flex;
-    flex: 0 0 calc(100% - 1rem);
-    margin: 0.5rem;
-    padding: 1rem;
-    background: var(--color-white);
-
-    @media screen and (min-width: bp(xs)) {
-      flex: 0 0 calc(50% - 1rem);
-    }
-
-    @media screen and (min-width: bp(s)) {
-      flex: 0 0 calc(25% - 1rem);
-    }
-
-    @media screen and (min-width: bp(m)) {
-      flex: 0 0 calc(20% - 1rem);
-    }
-  }
-}
-</style>

@@ -32,7 +32,7 @@ export default firestoreAction(
       .collection('kpis')
       .where('parent', '==', item)
       .where('archived', '==', false);
-    await bindFirestoreRef('kpis', kpisRef, { maxRefDepth: 0 });
+    await bindFirestoreRef('kpis', kpisRef, { maxRefDepth: 1 });
 
     return true;
   }
