@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- A green checkmark icon is shown beneath the dashboard result indicator graph
+  when the current goal has been reached within the period.
+
 ### Changed
 
 - Google Sheets integrations now expect full Google Sheets URLs instead of the
@@ -12,6 +17,8 @@ All notable changes to this project will be documented in this file. The format 
   the app locally.
 - More informative error page views.
 - Added contextual link to API documentation below curl example.
+- Statistics shown beneath the dashboard result indicator graph (latest value
+  and goal) now reflects the selected period.
 
 ### Removed
 

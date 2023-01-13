@@ -47,31 +47,13 @@
         class="progressGraph"
         xmlns="http://www.w3.org/2000/svg"
       />
-      <div class="progressTarget">
-        <div>
-          <span class="progressTarget__title">
-            {{ $t('kpi.currentValue') }}
-          </span>
-          <div>
-            <span v-if="activeResultIndicator" class="progressTarget__value">
-              {{ formatKPIValue(activeResultIndicator) }}
-            </span>
-            <span v-if="periodTrend" :class="bgColor" class="progressTarget__progress">
-              {{ periodTrendFormatted }}
-            </span>
-          </div>
-        </div>
-        <div v-if="activeResultIndicator && goal">
-          <span class="progressTarget__title">
-            {{ $t('kpi.goals.for') }} {{ goal.name }}
-          </span>
-          <div>
-            <span class="progressTarget__value">
-              {{ formatKPIValue(activeResultIndicator, goal.value) }}
-            </span>
-          </div>
-        </div>
-      </div>
+
+      <dashboard-result-indicator-statistics
+        v-if="activeResultIndicator"
+        :result-indicator="activeResultIndicator"
+        :progress="filteredProgressSorted"
+        :goal="goal"
+      />
     </tab-panel>
   </div>
   <empty-state
@@ -99,7 +81,7 @@ import firebase from 'firebase/app';
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { periodDates } from '@/util';
-import { formatKPIValue, kpiInterval } from '@/util/kpiHelpers';
+import { kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -107,6 +89,7 @@ import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
 import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
+import DashboardResultIndicatorStatistics from './DashboardResultIndicatorStatistics.vue';
 import IconDownload from './IconDownload.vue';
 import TabList from './TabList.vue';
 import TabPanel from './TabPanel.vue';
@@ -153,6 +136,7 @@ export default {
     TabPanel,
     DashboardPeriodSelector,
     EmptyState,
+    DashboardResultIndicatorStatistics,
   },
 
   data: () => ({
@@ -168,8 +152,6 @@ export default {
     currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.all,
     startDate: null,
     endDate: null,
-    trend: 0,
-    preferredTrend: 0,
     selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
     OpenIndicator: IconDownload,
     downloadOptions: [
@@ -187,35 +169,6 @@ export default {
   computed: {
     ...mapState(['kpis', 'subKpis']),
     ...mapGetters(['hasEditRights']),
-    periodTrend() {
-      const firstProgressRecord = this.filteredProgressSorted[0]?.value;
-      const latestProgressRecord = this.filteredProgressSorted.slice(-1)[0]?.value;
-      const diff = latestProgressRecord - firstProgressRecord;
-      return Math.round(diff * 100) / 100;
-    },
-    periodTrendFormatted() {
-      if (this.periodTrend === 0) {
-        return i18n.t('kpi.noChange');
-      }
-      const prefix = this.periodTrend > 0 ? '+' : '';
-      const formattedTrend = formatKPIValue(this.activeResultIndicator, this.periodTrend);
-
-      return `${prefix + formattedTrend} ${i18n.t('kpi.inPeriod')}`;
-    },
-    bgColor() {
-      const ri = this.activeResultIndicator;
-      const preferredTrendIsSet = ri?.preferredTrend !== undefined;
-      const preferredTrendFulfilled =
-        (ri?.preferredTrend === 'increase' && this.periodTrend > 0) ||
-        (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
-
-      return {
-        neutral: !preferredTrendIsSet || this.periodTrend === 0,
-        positive: preferredTrendIsSet && preferredTrendFulfilled,
-        negative:
-          preferredTrendIsSet && this.periodTrend !== 0 && !preferredTrendFulfilled,
-      };
-    },
     tabIds() {
       return tabIdsHelper('resultIndicator');
     },
@@ -228,9 +181,9 @@ export default {
     goal() {
       // Firebase doesn't support equality filtering on more than one field at
       // a time, so do the rest of the filtering client side.
-      const now = new Date();
       const goals = this.goals.filter(
-        (goal) => goal.toDate.toDate() > now && goal.fromDate.toDate() < now
+        (goal) =>
+          goal.toDate.toDate() > this.startDate && goal.fromDate.toDate() < this.endDate
       );
 
       // We don't enforce non-overlapping goals (yet?), but if anyone has set
@@ -328,8 +281,6 @@ export default {
   },
 
   methods: {
-    formatKPIValue,
-
     async setProgress() {
       if (this.activeResultIndicator) {
         if (this.activeResultIndicator.progress) {
@@ -599,55 +550,5 @@ export default {
 
 .progressGraph {
   padding: 1rem 1rem 0 0.25rem;
-}
-
-.neutral {
-  color: var(--color-info);
-  background: var(--color-blue-dark-5);
-}
-
-.positive {
-  color: var(--color-success);
-  background: var(--color-green-dark-5);
-}
-
-.negative {
-  color: var(--color-error);
-  background: var(--color-red-5);
-}
-
-.progressTarget {
-  display: flex;
-  gap: 2rem;
-  min-height: 5.7rem;
-  margin-top: 0.5rem;
-  padding: 1.5rem;
-  border-top: 1px solid var(--color-grey-100);
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  &__title {
-    color: var(--color-grayscale-40);
-    font-weight: 500;
-    font-size: typography.$font-size-1;
-  }
-  &__value {
-    color: var(--color-text);
-    font-weight: 500;
-    font-size: typography.$font-size-4;
-  }
-  &__progress {
-    padding: 0.3rem;
-    font-weight: 500;
-    font-size: typography.$font-size-0;
-  }
-  &__target {
-    color: var(--color-grayscale-40);
-    font-weight: 500;
-    font-size: typography.$font-size-0;
-  }
 }
 </style>
