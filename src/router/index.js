@@ -99,6 +99,12 @@ const routes = [
         beforeEnter: routerGuards.dashboard,
       },
       {
+        path: 'about',
+        name: 'ItemAbout',
+        component: () => import('@/views/Item/ItemAbout.vue'),
+        beforeEnter: routerGuards.itemHome,
+      },
+      {
         path: 'admin',
         name: 'ItemAdmin',
         component: () => import('@/views/ItemAdmin/ItemAdminWrapper.vue'),

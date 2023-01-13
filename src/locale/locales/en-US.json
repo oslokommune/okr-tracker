@@ -177,8 +177,6 @@
     "emptyHome": "Please pick an organization.",
     "api": "API",
     "resultIndicator": "Result indicator",
-    "departmentObjectives": "Department objectives",
-    "departmentAbout": "About",
     "dashboardEntry": "Dashboard",
     "keyFigures": "KPIs",
     "value": "Value",
@@ -186,6 +184,12 @@
     "selectRange": "Select a start and end date",
     "formErrors": "The form contains errors that must be corrected.",
     "displayedAs": "Displayed as: "
+  },
+  "about": {
+    "about": "About",
+    "aboutOrganization": "About the organization",
+    "aboutDepartment": "About the department",
+    "aboutProduct": "About the product"
   },
   "btn": {
     "close": "Close",

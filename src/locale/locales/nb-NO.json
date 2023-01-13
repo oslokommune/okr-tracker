@@ -175,8 +175,6 @@
     "emptyHome": "Vennligst velg en etat fra listen.",
     "api": "API",
     "resultIndicator": "Resultatindikator",
-    "departmentObjectives": "Områdets mål",
-    "departmentAbout": "Om produktområdet",
     "dashboardEntry": "Dashbord",
     "keyFigures": "KPI-er",
     "value": "Verdi",
@@ -184,6 +182,12 @@
     "selectRange": "Velg start- og sluttdato",
     "formErrors": "Skjemaet inneholder feil som må rettes.",
     "displayedAs": "Vises som: "
+  },
+  "about": {
+    "about": "Om",
+    "aboutOrganization": "Om organisasjonen",
+    "aboutDepartment": "Om området",
+    "aboutProduct": "Om produktet"
   },
   "btn": {
     "close": "Lukk",

@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { itemHome as routerGuard } from '@/router/router-guards';
 
 export default {
@@ -38,6 +39,7 @@ export default {
   }),
 
   computed: {
+    ...mapState(['activeItem']),
     tabs() {
       return [
         {
@@ -47,6 +49,10 @@ export default {
         {
           route: 'ItemMeasurements',
           label: 'Målinger',
+        },
+        {
+          route: 'ItemAbout',
+          label: `Om ${this.activeItem.name}`,
         },
       ];
     },

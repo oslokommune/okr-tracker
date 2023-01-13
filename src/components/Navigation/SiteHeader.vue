@@ -47,6 +47,7 @@ export default {
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
           parts.includes('ItemMeasurements') ||
+          parts.includes('ItemAbout') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome') ||
           parts.includes('KpiHome')) &&
