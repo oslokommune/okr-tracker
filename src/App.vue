@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <pkt-icons-sprite />
     <app-layout />
     <vue-griddle />
   </div>
@@ -10,12 +11,14 @@ import { mapActions } from 'vuex';
 import { auth } from '@/config/firebaseConfig';
 
 import AppLayout from './components/AppLayout.vue';
+import PktIconsSprite from './components/PktIconsSprite.vue';
 
 export default {
   name: 'App',
 
   components: {
     AppLayout,
+    PktIconsSprite,
   },
 
   computed: {

@@ -11,6 +11,8 @@ import { ContentLoader } from 'vue-content-loader';
 import { firestorePlugin } from 'vuefire';
 import { VueGriddle } from '@braid/griddle';
 
+import { PktIcon } from '@oslokommune/punkt-vue2';
+
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
@@ -45,6 +47,7 @@ Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', FormComponent);
 Vue.component('ContentLoader', ContentLoader);
 Vue.component('VSpinner', Spinner);
+Vue.component('PktIcon', PktIcon);
 
 /* eslint-disable */
 configure({
