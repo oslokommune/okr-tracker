@@ -44,15 +44,15 @@ export default {
       return [
         {
           route: 'ItemHome',
-          label: 'Mål og nøkkelresultater',
+          label: this.$t('general.OKRsLong'),
         },
         {
           route: 'ItemMeasurements',
-          label: 'Målinger',
+          label: this.$t('general.KPIs'),
         },
         {
           route: 'ItemAbout',
-          label: `Om ${this.activeItem.name}`,
+          label: `${this.$t('about.about')} ${this.activeItem.name}`,
         },
       ];
     },
