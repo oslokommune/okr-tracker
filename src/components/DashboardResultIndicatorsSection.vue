@@ -32,7 +32,7 @@
             class="download"
             :value="downloadOption"
             :options="downloadOptions"
-            :components="{ OpenIndicator, Deselect: null }"
+            :components="{ OpenIndicator: downloadIcon, Deselect: null }"
             :close-on-select="true"
             @input="download"
           >
@@ -77,9 +77,9 @@ import { mapState, mapGetters } from 'vuex';
 import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
-
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
+import { PktIcon } from '@oslokommune/punkt-vue2';
 import { periodDates } from '@/util';
 import { kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
@@ -87,10 +87,8 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
-import IconChevronThinDown from './IconChevronThinDown.vue';
 import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
 import DashboardResultIndicatorStatistics from './DashboardResultIndicatorStatistics.vue';
-import IconDownload from './IconDownload.vue';
 import TabList from './TabList.vue';
 import TabPanel from './TabPanel.vue';
 import EmptyState from './EmptyState.vue';
@@ -152,8 +150,9 @@ export default {
     currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.all,
     startDate: null,
     endDate: null,
-    selectComponents: { Deselect: null, OpenIndicator: IconChevronThinDown },
-    OpenIndicator: IconDownload,
+    downloadIcon: {
+      render: (createElement) => createElement(PktIcon, { props: { name: 'download' } }),
+    },
     downloadOptions: [
       {
         label: i18n.t('dashboard.downloadOptions.png'),
@@ -505,8 +504,7 @@ export default {
       }
 
       .vs__open-indicator {
-        width: 1.4rem;
-        height: 1.4rem;
+        height: 1.25rem;
         margin: 0.15rem 0.4rem 0.3rem 0.2rem;
         padding: 0rem;
       }

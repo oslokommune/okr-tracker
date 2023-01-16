@@ -10,7 +10,7 @@
       <span class="periodSelector__input-value">
         {{ rangeLabel }}
       </span>
-      <icon-calendar :height="22" :width="22" />
+      <pkt-icon name="calendar" />
     </div>
     <div v-if="isOpen" class="periodSelector__content">
       <button
@@ -41,13 +41,10 @@ import ClickOutside from 'vue-click-outside';
 import { format } from 'date-fns';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
-import IconCalendar from './IconCalendar.vue';
 
 export default {
   name: 'DashboardPeriodSelector',
-  components: {
-    IconCalendar,
-  },
+
   directives: {
     ClickOutside,
   },
@@ -160,6 +157,10 @@ export default {
   white-space: nowrap;
   border: 1px solid var(--color-grey-100);
   cursor: pointer;
+
+  > svg {
+    height: 1.25rem;
+  }
 
   &:hover:not(&--active) {
     background: var(--color-gray-light);
