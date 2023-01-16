@@ -364,7 +364,6 @@
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "editKpi": "Endre detaljer eller slett KPI",
-    "navigateToItem": "Gå til {item}",
     "editProgress": "Endre målepunkt",
     "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",

@@ -366,7 +366,6 @@
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
-    "navigateToItem": "Go to {item}",
     "editProgress": "Edit value",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
