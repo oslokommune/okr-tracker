@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.2.0] 2023-01-16
+
 ### Added
 
 - A green checkmark icon is shown beneath the dashboard result indicator graph
