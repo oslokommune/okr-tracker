@@ -215,7 +215,6 @@
     "requestAccess": "Request access",
     "requestButton": "Send request",
     "backToLogin": "Back to login",
-    "with": "Sign in with {provider} user",
     "microsoft": "Sign in with Microsoft",
     "google": "Sign in with Google",
     "email": "Email",
