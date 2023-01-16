@@ -1,6 +1,13 @@
 {
+  "403": {
+    "title": "Ingen tilgang",
+    "body": "Du har ikke tilgang til denne ressursen.",
+    "linkText": "Gå tilbake til forsiden"
+  },
   "404": {
-    "title": "404"
+    "title": "Siden finnes ikke",
+    "body": "Denne ressursen ser ikke ut til å eksistere.",
+    "linkText": "Gå tilbake til forsiden"
   },
   "theme": {
     "colors": {
@@ -12,19 +19,40 @@
     "aria": "Fargeprofilen er nå {current}, neste fargeprofil er {next}"
   },
   "kpi": {
-    "add": "Legg til KPI",
-    "placeholderName": "Ny KPI",
+    "add": "Legg til måling",
+    "placeholderName": "Ny måling",
     "edit": "Endre KPI",
     "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
+    "latestValueTitle": "Siste verdi per {formattedDate}",
     "progress": "Progresjon",
     "newValue": "Legg til målepunkt",
     "editValue": "Endre målepunkt",
     "description": "Beskrivelse",
     "display": "Visning",
+    "preferredTrend": "Ønsket trend",
+    "inPeriod": "i perioden",
+    "noChange": "ingen endring",
+    "ofTarget": "av mål om",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"
+    },
+    "trendOptions": {
+      "increase": "Stigende (høyt tall er bra)",
+      "decrease": "Synkende (lavt tall er bra)"
+    },
+    "updateFrequency": {
+      "label": "Oppdateringshyppighet",
+      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter. Brukes for å bestemme om en KPI sist ble oppdatert innenfor det gitte intervallet, eller om den bør anses som utdatert.",
+      "frequencies": {
+        "annual": "Årlig",
+        "daily": "Daglig",
+        "irregular": "Sporadisk",
+        "monthly": "Månedlig",
+        "quarterly": "Kvartalsvis",
+        "weekly": "Ukentlig"
+      }
     },
     "types": {
       "plain": {
@@ -40,28 +68,25 @@
         "description": "Er KPI-en så viktig at den er definert som produktområdets resultatindikator og har et måltall? Resultatindikatoren vises også i dashbordet."
       }
     },
-    "heading": "KPI-er",
+    "heading": "Målinger",
     "itemRowError": "feil",
     "help": {
-      "updates": "KPI-er kan oppdateres manuelt via OKR-trackeren eller automatisk ved bruk av en valgfri Google Sheets- eller API-integrasjon. Merk at det kun er mulig å retigstrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av KPI-er {readMoreLink}.",
-      "readMoreHere": "her"
+      "updates": "KPI-er kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av KPI-er {readMoreLink}.",
+      "readMoreHere": "her",
+      "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor."
     },
     "automation": {
       "radio": "Hente KPI-verdier automatisk fra et regneark (Google Sheets)?"
     },
-    "api": {
-      "radio": "Oppdatere verdier programmatisk via API?",
-      "help": "Eksempel for hvordan KPI-en kan oppdateres ved bruk av curl",
-      "tooltip": "Skru på denne hvis du har planer om å oppdatere KPI-en selv via OKR-tracker sitt API. Du kan fortsatt oppdatere manuelt også."
-    },
     "goals": {
+      "goal": "Mål",
       "goals": "Mål",
       "new": "Nytt mål",
       "set": "Sett mål",
-      "edit": "Rediger mål",
+      "edit": "Endre mål",
       "the": "målet",
       "help": "KPI-er kan ha mål for bestemte perioder. Foreløpig vises kun mål for resultatindikatorer på dashbordet, men dette vil kunne endres på sikt.",
-      "for": "Mål for"
+      "goalTitle": "Mål for {formattedDateRange}"
     }
   },
   "fields": {
@@ -70,11 +95,10 @@
     "name": "Navn",
     "missionStatement": "Oppdragsbeskrivelse",
     "weight": "Vekt",
-    "sheetId": "Google Sheet ID",
+    "sheetUrl": "Google Sheets URL",
     "sheetTab": "Fane",
     "sheetCell": "Celle",
     "displayName": "Visningsnavn",
-    "icon": "Ikon",
     "period": "Periode",
     "description": "Beskrivelse",
     "slug": "Slug",
@@ -88,7 +112,10 @@
     "date": "Dato",
     "password": "Passord",
     "secret": "API Hemmelighet",
-    "comment": "Kommentar"
+    "comment": "Kommentar",
+    "preferredTrend": "Ønsket trend",
+    "updateFrequency": "Oppdateringshyppighet",
+    "language": "Språk"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -113,8 +140,8 @@
     "min_value": "Må være {min} eller mer",
     "numeric": "Kan bare inneholde nummer",
     "regex": "Formatering er ugyldig",
-    "required": "Obligatorisk",
-    "required_if": "Obligatorisk",
+    "required": "Må fylles ut",
+    "required_if": "Må fylles ut",
     "size": "Må være mindre enn {size}KB",
     "double": "Må være en gyldig desimal",
     "positiveNotZero": "Ugyldig verdi",
@@ -126,12 +153,11 @@
     "general": "Generelt",
     "OKRs": "OKR-er",
     "OKRsLong": "Mål og nøkkelresultater",
-    "KPIs": "KPI-er",
+    "KPIs": "Målinger",
     "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
     "owner": "Knowit",
-    "notFound": "Not found",
     "help": "Hjelp",
     "admin": "Admin",
     "administration": "Administrasjon",
@@ -160,10 +186,12 @@
     "resultIndicator": "Resultatindikator",
     "departmentObjectives": "Områdets mål",
     "departmentAbout": "Om produktområdet",
-    "dashboardEntry": "Se dashbord",
+    "dashboardEntry": "Dashbord",
     "keyFigures": "KPI-er",
     "value": "Verdi",
-    "target": "Målsetting"
+    "target": "Målsetting",
+    "selectRange": "Velg start- og sluttdato",
+    "formErrors": "Skjemaet inneholder feil som må rettes."
   },
   "btn": {
     "close": "Lukk",
@@ -191,6 +219,8 @@
   },
   "login": {
     "login": "Logg inn",
+    "requestAccess": "Be om tilgang",
+    "requestButton": "Send forespørsel",
     "backToLogin": "Tilbake til innlogging",
     "with": "Logg inn med {provider} bruker",
     "microsoft": "Logg inn med Microsoft",
@@ -285,9 +315,8 @@
     "editValue": "Endre verdi",
     "automation": {
       "header": "Automatisk registrering av progresjon (Google Sheets)",
-      "readMore": "Les mer",
-      "googleSheetId": "Google Sheet ID",
-      "googleSheetIdHelp": "Koden mellom /d/ og /edit/ fra URLen til Google Sheets arket",
+      "googleSheetUrl": "Google Sheets URL",
+      "googleSheetUrlHelp": "Den fulle nettadressen til Google Sheets-regnearket",
       "sheetsTab": "Fane",
       "sheetsTabHelp": "Samme som navnet på fanen i Google Sheets",
       "sheetsCell": "Celle",
@@ -354,7 +383,8 @@
   },
   "admin": {
     "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere Nøkkelresultater og/eller KPIer, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
-    "curlHelp": "Oppdatering med curl",
+    "curlHelp": "Oppdatering via {apiLink}-kall, f.eks. ved bruk av curl.",
+    "apiDocs": "API-dokumentasjon",
     "department": {
       "picture": "Bilde",
       "create": "Opprett nytt produktområde",
@@ -418,8 +448,8 @@
     "keyResultFor": "Nøkkelresultater for «{name}»",
     "objectivesFor": "Mål for"
   },
-  "select": {
-    "noIcons": "Ingen treff"
+  "accessRequests": {
+    "heading": "Tilgangsforespørsler"
   },
   "empty": {
     "noKeyResultProgress": "Dette nøkkelresultatet har ingen registrerte verdier.",
@@ -463,9 +493,11 @@
     "heading": "Arkivert",
     "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet."
   },
-  "sheet": {
-    "infoText": "Merk: Google Sheets-dokumentet må deles med følgende addresse:",
-    "missingServiceAccount": "Feil: Ingen adresse funnet – ta kontakt med systemadministrator."
+  "sheets": {
+    "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",
+    "403": "Systemet har ikke tilgang til å lese Google Sheets-dokumentet.",
+    "404": "Fant ikke Google Sheets-dokumentet. Feil URL?",
+    "noDataInCell": "Celle {cell} er tom."
   },
   "widget": {
     "progression": {
@@ -490,11 +522,6 @@
       },
       "overwriteWarning": "Merk: Denne endringen overskriver eksisterende måleverdi for valgt dato ({date}): {value}."
     }
-  },
-  "error": {
-    "403": "Systemet har ikke tilgang til å lese dokumentet",
-    "404": "Fant ikke dokumentet. Feil ID?",
-    "noDataInCell": "Celle {cell} er tom"
   },
   "user": {
     "profile": "Profil",

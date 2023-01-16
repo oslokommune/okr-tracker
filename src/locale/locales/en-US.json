@@ -1,6 +1,13 @@
 {
+  "403": {
+    "title": "Forbidden",
+    "body": "You do not have access to this resource.",
+    "linkText": "Go back to the front page"
+  },
   "404": {
-    "title": "404"
+    "title": "Page not found",
+    "body": "This resource does not seem to exist.",
+    "linkText": "Go back to the front page"
   },
   "theme": {
     "colors": {
@@ -12,19 +19,40 @@
     "aria": "Current theme is {current}, next theme is {next}"
   },
   "kpi": {
-    "add": "Add KPI",
-    "placeholderName": "New KPI",
+    "add": "Add measurement",
+    "placeholderName": "New measurement",
     "edit": "Edit KPI",
     "change": "Change KPI",
     "currentValue": "Current value",
+    "latestValueTitle": "Latest value per {formattedDate}",
     "progress": "Progress",
     "newValue": "New value",
     "editValue": "Edit value",
     "description": "Description",
     "display": "Display",
+    "preferredTrend": "Trend",
+    "inPeriod": "in period",
+    "noChange": "no change",
+    "ofTarget": "of the goal of",
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"
+    },
+    "trendOptions": {
+      "increase": "Increasing (high numbers preferred)",
+      "decrease": "Decreasing (low numbers preferred)"
+    },
+    "updateFrequency": {
+      "label": "Update frequency",
+      "help": "The frequency with which the KPI is expected to be updated with progress data. Used to determine whether a KPI's previous update was within the given interval, or if it should be considered outdated.",
+      "frequencies": {
+        "annual": "Annual",
+        "daily": "Daily",
+        "irregular": "Sporadic",
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "weekly": "Weekly"
+      }
     },
     "types": {
       "plain": {
@@ -40,28 +68,25 @@
         "description": "Is the KPI so important that it is defined as a result indicator for the department and has a target figure? The result indicator is also shown on the dashboard."
       }
     },
-    "heading": "KPIs",
+    "heading": "Measurements",
     "itemRowError": "error",
     "help": {
-      "updates": "KPIs can be updated manually through the OKR Tracker or automatically using an optional Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
-      "readMoreHere": "here"
+      "updates": "KPIs can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
+      "readMoreHere": "here",
+      "apiProgress": "New measurements can be registered with {apiLink} calls, for instance by using curl as shown below."
     },
     "automation": {
       "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"
     },
-    "api": {
-      "radio": "Update values programmtically using the API?",
-      "help": "Push updates with curl",
-      "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
-    },
     "goals": {
+      "goal": "Goal",
       "goals": "Goals",
       "new": "New goal",
       "set": "Set goals",
       "edit": "Edit goals",
       "the": "the goal",
       "help": "KPIs can have goals for specific periods. As of now, only goals for result indicators are shown on the dashboard, but this is subject to change.",
-      "for": "Goal for"
+      "goalTitle": "Goal for {formattedDateRange}"
     }
   },
   "fields": {
@@ -70,11 +95,10 @@
     "name": "Name",
     "missionStatement": "Mission statement",
     "weight": "Weight",
-    "sheetId": "Google Sheet ID",
+    "sheetUrl": "Google Sheets URL",
     "sheetTab": "Tab",
     "sheetCell": "Cell",
     "displayName": "Display name",
-    "icon": "Icon",
     "period": "Period",
     "description": "Description",
     "slug": "Slug",
@@ -90,37 +114,40 @@
     "secret": "API Secret",
     "comment": "Comment",
     "format": "Display",
-    "timestamp": "Timestamp"
+    "timestamp": "Timestamp",
+    "preferredTrend": "Trend",
+    "updateFrequency": "Update frequency",
+    "language": "Language"
   },
   "validation": {
-    "alpha": "The {_field_} field may only contain alphabetic characters",
-    "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
-    "alpha_dash": "The {_field_} field may contain alpha-numeric characters as well as dashes and underscores",
-    "alpha_spaces": "The {_field_} field may only contain alphabetic characters as well as spaces",
-    "between": "The {_field_} field must be between {min} and {max}",
-    "confirmed": "The {_field_} field confirmation does not match",
-    "digits": "The {_field_} field must be numeric and exactly contain {length} digits",
-    "dimensions": "The {_field_} field must be {width} pixels by {height} pixels",
-    "email": "The {_field_} field must be a valid email",
-    "excluded": "The {_field_} field is not a valid value",
-    "ext": "The {_field_} field is not a valid file",
-    "image": "The {_field_} field must be an image",
-    "integer": "The {_field_} field must be an integer",
-    "length": "The {_field_} field must be {length} long",
-    "max_value": "The {_field_} field must be {max} or less",
-    "max": "The {_field_} field may not be greater than {length} characters",
-    "mimes": "The {_field_} field must have a valid file type",
-    "min_value": "The {_field_} field must be {min} or more",
-    "min": "The {_field_} field must be at least {length} characters",
-    "numeric": "The {_field_} field may only contain numeric characters",
-    "oneOf": "The {_field_} field is not a valid value",
-    "regex": "The {_field_} field format is invalid",
-    "required_if": "The {_field_} field is required",
-    "required": "The {_field_} field is required",
-    "size": "The {_field_} field size must be less than {size}KB",
-    "double": "The {_field_} field must be a valid decimal",
-    "positiveNotZero": "The {_field_} field must be a valid value",
-    "decimal": "The {_field_} field must be a decimal"
+    "alpha": "May only contain alphabetic characters",
+    "alpha_num": "May only contain alpha-numeric characters",
+    "alpha_dash": "My contain alpha-numeric characters as well as dashes and underscores",
+    "alpha_spaces": "May only contain alphabetic characters as well as spaces",
+    "between": "Must be between {min} and {max}",
+    "confirmed": "Field confirmation does not match",
+    "digits": "Must be numeric and exactly contain {length} digits",
+    "dimensions": "Must be {width} pixels by {height} pixels",
+    "email": "Must be a valid email",
+    "excluded": "Not a valid value",
+    "ext": "Not a valid file",
+    "image": "Must be an image",
+    "integer": "Must be an integer",
+    "length": "Must be {length} long",
+    "max_value": "Must be {max} or less",
+    "max": "May not be greater than {length} characters",
+    "mimes": "Must have a valid file type",
+    "min_value": "Must be {min} or more",
+    "min": "Must be at least {length} characters",
+    "numeric": "May only contain numeric characters",
+    "oneOf": "Not a valid value",
+    "regex": "Format is invalid",
+    "required_if": "Field is required",
+    "required": "Field is required",
+    "size": "Must be less than {size}KB",
+    "double": "Must be a valid decimal",
+    "positiveNotZero": "Must be a valid value",
+    "decimal": "Must be a decimal"
   },
   "general": {
     "appName": "OKR-tracker",
@@ -128,12 +155,11 @@
     "general": "General",
     "OKRs": "OKRs",
     "OKRsLong": "Objectives and Key results",
-    "KPIs": "KPIs",
+    "KPIs": "Measurements",
     "team": "Team",
     "project": "OKR",
     "loading": "Loading ...",
     "owner": "Knowit",
-    "notFound": "Not found",
     "help": "Help",
     "admin": "Admin",
     "administration": "Administration",
@@ -162,10 +188,12 @@
     "resultIndicator": "Result indicator",
     "departmentObjectives": "Department objectives",
     "departmentAbout": "About",
-    "dashboardEntry": "Go to dashboard",
+    "dashboardEntry": "Dashboard",
     "keyFigures": "KPIs",
     "value": "Value",
-    "target": "Target"
+    "target": "Target",
+    "selectRange": "Select a start and end date",
+    "formErrors": "The form contains errors that must be corrected."
   },
   "btn": {
     "close": "Close",
@@ -193,6 +221,8 @@
   },
   "login": {
     "login": "Sign in",
+    "requestAccess": "Request access",
+    "requestButton": "Send request",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
     "microsoft": "Sign in with Microsoft",
@@ -271,7 +301,7 @@
       "error": "Could not send request. Please try again.",
       "accepted": "Added {user}",
       "rejected": "Rejected access request for {user}",
-      "userCreated": "The use was created.",
+      "userCreated": "The user was created.",
       "notFound": "Access request not found",
       "requestExists": "Access request with email {user} already exists.",
       "userExists": "User with email {user} already exists."
@@ -287,9 +317,8 @@
     "editValue": "Edit value",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
-      "readMore": "Learn more",
-      "googleSheetId": "Google Sheet ID",
-      "googleSheetIdHelp": "ID between /d/ and /edit/ from the Google Sheets URL",
+      "googleSheetUrl": "Google Sheets URL",
+      "googleSheetUrlHelp": "The complete Google Sheets URL",
       "sheetsTab": "Tab",
       "sheetsTabHelp": "Same as the tab name in Google Sheets",
       "sheetsCell": "Cell",
@@ -356,7 +385,8 @@
   },
   "admin": {
     "apiSecret": "If you are using the API to update Key Results and/or KPI, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
-    "curlHelp": "Push updates with curl",
+    "curlHelp": "Push updates via {apiLink}, i.e. using curl.",
+    "apiDocs": "API documentation",
     "department": {
       "picture": "Image",
       "create": "Create new department",
@@ -420,8 +450,8 @@
     "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
   },
-  "select": {
-    "noIcons": "No hits"
+  "accessRequests": {
+    "heading": "Access requests"
   },
   "empty": {
     "noKeyResultProgress": "This key result has no registered values.",
@@ -465,9 +495,11 @@
     "heading": "Archived",
     "body": "This object is archived and is hidden. You may change details before restoring it."
   },
-  "sheet": {
-    "infoText": "Note: The Google Sheets document must be shared with the following address:",
-    "missingServiceAccount": "Error: No address found. Please contact system administrator."
+  "sheets": {
+    "infoText": "Note! The following address must be given read access to the Google Sheets document:",
+    "403": "The system doesn't have read access to the Google Sheets document.",
+    "404": "Could not find the Google Sheets document. Wrong URL?",
+    "noDataInCell": "Cell {cell} is empty."
   },
   "widget": {
     "progression": {
@@ -492,11 +524,6 @@
       },
       "overwriteWarning": "Note: This change will overwrite existing value for chosen date ({date}): {value}."
     }
-  },
-  "error": {
-    "403": "Restricted access",
-    "404": "Could not find document. Wrong ID?",
-    "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
     "language": "Language",
