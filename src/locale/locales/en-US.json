@@ -4,33 +4,64 @@
   },
   "theme": {
     "colors": {
-      "yellow": "Yellow",
       "blue": "Blue",
       "green": "Green",
       "knowit": "Knowit"
     },
-    "toggle": "Toggle theme: {mode}",
+    "header": "Customize",
     "aria": "Current theme is {current}, next theme is {next}"
   },
   "kpi": {
     "add": "Add KPI",
+    "placeholderName": "New KPI",
     "edit": "Edit KPI",
+    "change": "Change KPI",
     "currentValue": "Current value",
-    "progresjon": "Progress",
+    "progress": "Progress",
+    "newValue": "New value",
+    "editValue": "Edit value",
     "description": "Description",
-    "chooseType": "Select KPI type",
+    "display": "Display",
+    "formats": {
+      "integer": "Integer",
+      "percentage": "Percentage"
+    },
     "types": {
-      "users": "Volume",
-      "satisfaction": "Satisfaction rate",
-      "conversion": "Conversion rate"
+      "plain": {
+        "label": "KPI",
+        "description": "KPIs are measurements that the team or department whishes to keep an eye on. KPIs are displayed on the top of the team or department page they belong to."
+      },
+      "keyFigure": {
+        "label": "KPI on dashboard",
+        "description": "Is the KPI so important that it should be shown on the department's dashboard for reporting?"
+      },
+      "resultIndicator": {
+        "label": "Result indicator",
+        "description": "Is the KPI so important that it is defined as a result indicator for the department and has a target figure? The result indicator is also shown on the dashboard."
+      }
     },
     "heading": "KPIs",
-    "sheetsDetails": "Sheets details",
     "itemRowError": "error",
+    "help": {
+      "updates": "KPIs can be updated manually through the OKR Tracker or automatically using an optional Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
+      "readMoreHere": "here"
+    },
+    "automation": {
+      "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"
+    },
     "api": {
-      "radio": "Update via API?",
-      "help": "It is not possible to update KPI's manually through the OKR-tracker, but we do have API end points to call the OKR-tracker directly. Get in contact with the administrator to gain access.",
+      "radio": "Update values programmtically using the API?",
+      "help": "Push updates with curl",
       "tooltip": "Toggle this if you have plans to update your KPI yourself via the OKR-tracker API"
+    },
+    "goals": {
+      "goals": "Goals",
+      "new": "New goal",
+      "set": "Set goals",
+      "edit": "Edit goals",
+      "the": "the goal",
+      "help": "KPIs can have goals for specific periods. As of now, only goals for result indicators are shown on the dashboard, but this is subject to change.",
+      "for": "Goal for"
     }
   },
   "fields": {
@@ -48,7 +79,7 @@
     "description": "Description",
     "slug": "Slug",
     "department": "Department",
-    "kpitype": "KPI type",
+    "kpitype": "Type",
     "unit": "Unit of measurement",
     "startValue": "Start value",
     "targetValue": "Target value",
@@ -56,7 +87,10 @@
     "organization": "Organization",
     "date": "Date",
     "password": "Password",
-    "secret": "API Secret"
+    "secret": "API Secret",
+    "comment": "Comment",
+    "format": "Display",
+    "timestamp": "Timestamp"
   },
   "validation": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
@@ -85,10 +119,11 @@
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "double": "The {_field_} field must be a valid decimal",
-    "positiveNotZero": "Ugyldig verdi",
-    "decimal": "Må være tall"
+    "positiveNotZero": "The {_field_} field must be a valid value",
+    "decimal": "The {_field_} field must be a decimal"
   },
   "general": {
+    "appName": "OKR-tracker",
     "edit": "Edit",
     "general": "General",
     "OKRs": "OKRs",
@@ -101,7 +136,8 @@
     "notFound": "Not found",
     "help": "Help",
     "admin": "Admin",
-    "dashboard": "View dashboard",
+    "administration": "Administration",
+    "superAdmin": "Super admin",
     "signOut": "Sign out",
     "createdBy": "Created by",
     "lastUpdate": "Updated",
@@ -112,8 +148,24 @@
     "teamMembers": "Team members",
     "users": "Users",
     "home": "Home",
-    "keyresults": "Key results",
-    "success": "Success"
+    "keyResults": "Key results",
+    "success": "Success",
+    "objective": "Objective",
+    "keyResult": "Key result",
+    "period": "Period",
+    "back": "back",
+    "frontPage": "Front page",
+    "signIn": "Please sign in",
+    "orgs": "Organizations",
+    "emptyHome": "Please pick an organization.",
+    "api": "API",
+    "resultIndicator": "Result indicator",
+    "departmentObjectives": "Department objectives",
+    "departmentAbout": "About",
+    "dashboardEntry": "Go to dashboard",
+    "keyFigures": "KPIs",
+    "value": "Value",
+    "target": "Target"
   },
   "btn": {
     "close": "Close",
@@ -124,27 +176,27 @@
     "addOrganization": "Add organization",
     "addProduct": "Add product",
     "addDepartment": "Add department",
-    "deleteImage": "Delete image",
+    "acceptRequest": "Grant access",
+    "rejectRequest": "Delete request",
     "deleteUser": "Delete user",
     "create": "Create",
     "delete": "Delete",
-    "archive": "Archive",
     "editItem": "Change «{item}»",
     "upload": "Upload",
     "minimize": "Minimize",
     "expand": "Expand",
-    "deletePermanently": "Delete permanently",
     "restore": "Restore",
-    "confirmDeleteProgress": "Confirm delete",
-    "reset": "Reset"
+    "confirmDelete": "Confirm delete",
+    "reset": "Reset",
+    "showMore": "Show more",
+    "syncData": "Synchronize data"
   },
   "login": {
     "login": "Sign in",
     "backToLogin": "Back to login",
     "with": "Sign in with {provider} user",
-    "google": "Sign in with Google",
     "microsoft": "Sign in with Microsoft",
-    "keycloak": "Sign in with Keycloak",
+    "google": "Sign in with Google",
     "email": "Email",
     "password": "Password",
     "loading": "We are signing you in, please wait",
@@ -162,30 +214,35 @@
       "internal": "There was an internal error when trying to log you in. Please try to log in again. Contact the administrator of the site if the problem persists.",
       "permission-denied": "The account you tried to log in with does not meet the required permissions to access the site. Contact the administrator to get the right permissions.",
       "email-in-use": "The e-mail you tried to log in with is already in use. Contact the administrator for further assistance.",
-      "default": "Something went wrong with your sign in. Please contact the administrator and refer to your url."
+      "default": "Something went wrong with your sign in. Please contact the administrator and refer to your url.",
+      "email-not-whitelisted": "The e-mail is not whitelisted and/or allowed to access the website. Contact the administrator for further assistance."
     }
   },
   "toaster": {
     "welcome": "Welcome {user}",
     "add": {
       "users": "Add user | {count} users",
-      "product": "Created new product",
-      "objective": "Created an objective for  {period}",
-      "progression": "Created new value",
-      "department": "Created new department",
+      "product": "Created new product. Please wait, you will be redirected in 5 seconds",
+      "objective": "Created an objective for {period}",
+      "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
       "period": "Created new period",
-      "organization": "Created new organisation",
-      "kpi": "Created new KPI"
+      "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
+      "kpi": "Created new KPI",
+      "progress": "Created new value"
     },
     "delete": {
       "user": "Deleted user {user}",
       "permanently": "Deleted permanently",
       "object": "Archived «{name}»",
-      "progression": "Deleted value"
+      "progress": "Deleted value"
+    },
+    "update": {
+      "progress": "Updated value"
     },
     "action": {
-      "regret": "Undo"
+      "regret": "Undo",
+      "copiedToClipboard": "Text copied to the clipboard"
     },
     "error": {
       "save": "Could not save changes",
@@ -198,23 +255,36 @@
       "product": "Could not create product",
       "users": "Could not add user | users",
       "user": "Could not delete user {user}",
-      "progression": "Could not add value",
       "email": "Invalid email address",
       "kpi": "Could not create KPI",
       "notes": "Could not update notes",
-      "deleteProgress": "Could not delete value"
+      "addProgress": "Could not add value",
+      "deleteProgress": "Could not delete value",
+      "updateProgress": "Could not update value"
     },
     "savedChanges": "Saved changes",
     "deleted": "Deleted",
-    "restored": "Restored"
+    "restored": "Restored",
+    "request": {
+      "noEmail": "Request failed. Missing email.",
+      "requested": "Access request sent",
+      "error": "Could not send request. Please try again.",
+      "accepted": "Added {user}",
+      "rejected": "Rejected access request for {user}",
+      "userCreated": "The use was created.",
+      "notFound": "Access request not found",
+      "requestExists": "Access request with email {user} already exists.",
+      "userExists": "User with email {user} already exists."
+    }
   },
-  "keyres": {
+  "keyResult": {
     "objective": "Related objective",
     "description": "Description",
     "startValue": "Start value",
     "targetValue": "Target value",
     "unit": "Unit of measurement",
     "newValue": "New value",
+    "editValue": "Edit value",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
       "readMore": "Learn more",
@@ -226,10 +296,11 @@
       "sheetsCellHelp": "E.g. «A12»",
       "testConnection": "Save and test connection"
     },
-    "updateKeyres": "Update value for key result",
+    "updateKeyRes": "Update value for key result",
     "registerProgression": {
       "value": "Value"
     },
+    "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
     "addComment": "Add comment (optional)",
@@ -239,9 +310,6 @@
     "weight": "Weight",
     "automatic": "Automatic",
     "autoHelpText": "The value for this key result gets updated automatically from Google Sheets.",
-    "showComment": "View comment",
-    "showComments": "Show comments",
-    "hideComments": "Hide comments",
     "autoError": "Issue fetching data from Google Sheets:",
     "api": {
       "radio": "Update via API?",
@@ -254,6 +322,7 @@
     "progression": "Progress",
     "weight": "Weight",
     "change": "Change objective",
+    "add": "Add objective",
     "createdBy": "Created by",
     "editedBy": "Changed by",
     "created": "Created",
@@ -262,25 +331,32 @@
   "period": {
     "dateRange": "Start and end dates",
     "range": "{startDate} to {endDate}",
-    "period": "Period"
+    "period": "Period",
+    "add": "Add period",
+    "sixmonths": "Past 6 months",
+    "year": "So far this year",
+    "all": "From first measurement"
   },
   "tooltip": {
     "openMenu": "Open menu",
-    "dashboard": "Go to dashboard",
-    "keyresValue": "Insert new value",
+    "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
     "editItem": "Create, update or delete periods, objectives, key results and KPIs",
     "editKpi": "Update details or delete KPI",
     "navigateToItem": "Go to {item}",
+    "editProgress": "Edit value",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
-    "emptyPeriod": "No active period"
+    "emptyPeriod": "No active period",
+    "periodEnd": "You are not allowed to edit after a period has ended",
+    "copyToClipboard": "Copy to the clipboard"
   },
   "document": {
     "mission": "Mission statement"
   },
   "admin": {
     "apiSecret": "If you are using the API to update Key Results and/or KPI, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
+    "curlHelp": "Push updates with curl",
     "department": {
       "picture": "Image",
       "create": "Create new department",
@@ -319,30 +395,16 @@
   },
   "keyResultPage": {
     "change": "Update key result",
-    "add": {
-      "today": "Today"
-    },
-    "table": {
-      "value": "Value"
-    },
+    "add": "Add key result",
     "notes": {
       "empty": "Notes can only be seen by team members",
       "save": "Save notes"
     },
-    "history": "History",
-    "registeredBy": "Registered by",
-    "value": "Value",
-    "date": "Date",
     "filter": "Filter"
   },
   "help": {
     "title": "Help",
     "toc": "Content"
-  },
-  "profile": {
-    "myProfile": "My profile",
-    "hasAdmin": "Has admin rights",
-    "products": "My products"
   },
   "view": {
     "compact": "Compact",
@@ -355,21 +417,24 @@
   },
   "weight": {
     "heading": "Weights",
-    "keyresFor": "Key results for “{name}”",
+    "keyResultFor": "Key results for “{name}”",
     "objectivesFor": "Objectives for"
   },
   "select": {
     "noIcons": "No hits"
   },
   "empty": {
-    "keyResultProgress": {
-      "heading": "No history",
-      "body": "This key result has no registered values."
-    },
+    "noKeyResultProgress": "This key result has no registered values.",
+    "noKPIProgress": "This KPI has no registered values.",
     "noKeyResults": {
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
+    },
+    "noResultIndicators": {
+      "heading": "No result indicators",
+      "body": "Oops! Could not find any result indicators.",
+      "linkText": "Create a result indicator"
     },
     "itemAdmin": {
       "keyResult": "No key results for selected objective",
@@ -378,7 +443,9 @@
     },
     "noKPIs": {
       "heading": "No KPIs",
-      "body": "Add KPIs that automatically fetch data from Google Sheets."
+      "body": "Oops! Could not find any KPIs.",
+      "adminBody": "Add KPIs that automatically fetch data from Google Sheets.",
+      "linkText": "Create a KPI"
     },
     "noPeriods": {
       "heading": "Empty?",
@@ -396,7 +463,7 @@
   },
   "archived": {
     "heading": "Archived",
-    "body": "This object is archived and is hidden. You may change details before restoring it. By permanently deleting this object, all related data will also be deleted."
+    "body": "This object is archived and is hidden. You may change details before restoring it."
   },
   "sheet": {
     "infoText": "Note: The Google Sheets document must be shared with the following address:",
@@ -406,6 +473,24 @@
     "progression": {
       "period": "Progress for period",
       "objective": "Progress for objective"
+    },
+    "history": {
+      "title": "History",
+      "value": "Value",
+      "date": "Date",
+      "comment": "Comment",
+      "comment_optional": "Comment (optional)",
+      "actions": "Actions",
+      "time": "Time",
+      "changedBy": "Last edited by",
+      "showComment": "View comment",
+      "showComments": "Show comments",
+      "hideComments": "Hide comments",
+      "empty": {
+        "heading": "No history",
+        "body": "No values registered for this item."
+      },
+      "overwriteWarning": "Note: This change will overwrite existing value for chosen date ({date}): {value}."
     }
   },
   "error": {
@@ -414,7 +499,87 @@
     "noDataInCell": "Cell {cell} is empty"
   },
   "user": {
-    "selectLanguage": "Select language"
+    "language": "Language",
+    "profile": "Profile",
+    "myProfile": "My profile",
+    "superAdmin": "OKR-tracker Administrator",
+    "admin": "Administrator for Organizations",
+    "hasSuperAdmin": "Is sitewide administrator for the OKR-tracker",
+    "hasAdmin": "Has admin rights for some organizations",
+    "myProducts": "My affiliations",
+    "products": "Products",
+    "access": "Access",
+    "position": {
+      "groups": {
+        "developers": "Developers",
+        "designers": "Designers",
+        "teamLead": "Team lead",
+        "techLead": "Tech lead",
+        "designLead": "Design lead",
+        "administration": "Administration",
+        "members": "Team members",
+        "productOwner": "Product owner",
+        "director": "Director",
+        "others": "Members",
+        "departmentDirector": "Department director"
+      },
+      "title": "Role",
+      "member": "Member",
+      "frontendDeveloper": "Front-end developer",
+      "backendDeveloper": "Back-end developer",
+      "fullStackDeveloper": "Full stack developer",
+      "techLead": "Tech lead",
+      "interactionDesigner": "Interaction designer",
+      "serviceDesigner": "Service designer",
+      "contentDesigner": "Content designer",
+      "graphicDesigner": "Graphic designer",
+      "designLead": "Design lead",
+      "informationArchitect": "Information Architect",
+      "dataScientist": "Data scientist",
+      "teamLead": "Team lead",
+      "productOwner": "Product owner",
+      "businessAnalyst": "Business Analyst",
+      "businessDeveloper": "Business Developer",
+      "departmentDirector": "Department director",
+      "director": "Director",
+      "organizationDeveloper": "Organization Developer",
+      "principalEngineer": "Principal Engineer",
+      "legalAdvisor": "Legal advisor",
+      "itCustodian": "IT-Custodian",
+      "hr": "HR og personnel management",
+      "hardwareDeveloper": "Hardware developer",
+      "humanResourcesManager": "Human resources manager",
+      "dataEngineer": "Data engineer",
+      "mobileDeveloper": "Mobile developer",
+      "securityExpert": "Security expert",
+      "administration": "Administration",
+      "contentProducer": "Content producer",
+      "other": "Other",
+      "storyteller": "Storyteller"
+    }
+  },
+  "progress": {
+    "title": "Progress {progress}",
+    "done": "done",
+    "remaining": "{unit} remaining",
+    "remainingOf": "of {progress}",
+    "completedMessages": {
+      "1": "You guys are nailing it!",
+      "2": "Well done, guys!",
+      "3": "Wohoo! 100%",
+      "4": "You did it! Awesome!"
+    }
+  },
+  "dashboard": {
+    "problemDescription": "Problem description",
+    "targetAudience": "Target audience",
+    "missionStatement": "Mission",
+    "effect": "Effect",
+    "noRIs": "The department doesn't have any result indicators.",
+    "downloadOptions": {
+      "png": "Image (.png)",
+      "csv": "Raw data (.csv)"
+    }
   },
   "languages": {
     "en-US": "English",

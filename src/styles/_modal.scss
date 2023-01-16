@@ -1,12 +1,10 @@
-@import 'colors';
-
 .overlay {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,50 +21,46 @@
 
   width: 100%;
   max-width: 550px;
-  max-height: 90%;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
+  max-height: 100%;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
+  background: var(--color-white);
+  box-shadow: 0 5px 30px -10px rgba(black, 0.2);
+
+  scrollbar-width: none; /* Hide scrollbar styles Firefox */
+  -webkit-overflow-scrolling: touch;
+
+  &--wide {
+    max-width: 750px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &__header {
     display: flex;
     align-items: center;
-    padding: 1rem 1rem 0.5rem 2rem;
+    margin-bottom: 0.5rem;
     font-size: 1rem;
-
-    @media screen and (min-width: 1600px) {
-      padding: 2rem;
-      font-size: 1.5rem;
-    }
+    line-height: 2.5rem;
 
     .btn {
+      align-self: stretch;
       margin: 0;
-      padding: 0 1.15rem;
-    }
-
-    .fa {
-      margin: 0;
-      font-size: inherit;
+      padding: 0 1rem;
     }
 
     .title-2 {
-      margin-right: auto;
-      font-size: inherit;
+      flex: 1;
+      margin: 0;
+      text-transform: uppercase;
     }
-  }
-
-  &__main {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 2rem 1rem;
-    background-color: $color-grey-50;
   }
 
   &__footer {
     display: flex;
-    padding: 1rem 2rem 1rem;
-    font-size: 12px;
-    background-color: $color-grey-50;
-    border-top: 1px solid var(--color-border);
+    justify-content: flex-end;
+    margin-top: 1.5rem;
   }
 }

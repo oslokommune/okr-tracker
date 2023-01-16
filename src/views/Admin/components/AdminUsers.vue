@@ -16,7 +16,10 @@
 
       <div class="users__list">
         <button v-for="user in filteredUsers" :key="user.id" class="users__list-item" @click="selectedUser = user">
-          <span class="users__list-item-icon fa" :class="user.admin ? 'fa-user-cog' : 'fa-user'"></span>
+          <span
+            class="users__list-item-icon fa"
+            :class="(user.admin && user.admin.length > 0) || user.superAdmin ? 'fa-user-cog' : 'fa-user'"
+          ></span>
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
           </span>
@@ -46,8 +49,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Fuse from 'fuse.js';
-import { db } from '@/config/firebaseConfig';
 
 const fuseSettings = {
   threshold: 0.5,
@@ -76,13 +79,16 @@ export default {
   },
 
   data: () => ({
-    users: [],
     query: '',
     selectedUser: null,
     viewAddUsers: false,
     filteredUsers: [],
     fuse: null,
   }),
+
+  computed: {
+    ...mapState(['users']),
+  },
 
   watch: {
     users: {
@@ -100,25 +106,23 @@ export default {
       }
     },
   },
-
-  firestore: {
-    users: db.collection('users').orderBy('id', 'asc'),
-  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .users,
 .selected-user,
 .add-users {
   display: flex;
   flex-direction: column;
-  height: 32rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+}
+
+.add-users,
+.users {
+  height: 32rem;
 }
 
 .users__list {
@@ -135,11 +139,11 @@ export default {
   font-weight: 500;
   background: none;
   border: 0;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
   cursor: pointer;
 
   &:hover {
-    background: $color-grey-50;
+    background: var(--color-grey-50);
 
     & > .users__list-item-chevron {
       opacity: 1;

@@ -1,4 +1,5 @@
-import { select, pie } from 'd3';
+import { select } from 'd3-selection';
+import { pie } from 'd3-shape';
 
 import {
   initSvg,
@@ -10,6 +11,7 @@ import {
   updateTodayLine,
   updateTodayTextPosition,
   updatePercentText,
+  colors,
 } from './pie-helpers';
 
 import { getTimeProgression } from './helpers';
@@ -18,14 +20,17 @@ export default class Pie {
   /**
    * Initialize the SVG and create the necessary DOM elements
    */
-  constructor(svg, { darkmode, dimmed }) {
+  constructor(svg, { darkmode, dimmed, colorMode }) {
     this.dimmed = dimmed || false;
+    this.colorMode = colorMode || 'blue';
     this.darkmode = darkmode || false;
     this.svg = select(svg).call(initSvg.bind(this));
     this.canvas = this.svg.append('g').classed('canvas', true);
     this.inner = this.canvas.append('g').call(initGroup, 'inner');
     this.outer = this.canvas.append('g').call(initGroup, 'outer');
-    this.percentText = this.canvas.append('text').call(initPercentText.bind(this));
+    this.percentText = this.canvas
+      .append('text')
+      .call(initPercentText.bind(this));
     this.outer.call(initOuterGroup.bind(this));
     this.pie = pie().sort(null);
   }
@@ -33,9 +38,9 @@ export default class Pie {
   /**
    * Update the visualisation using the provided data
    */
-  render(period) {
+  render(progression, period, colorMode) {
+    this.colorMode = colorMode;
     const time = getTimeProgression(period);
-    const { progression } = period || 0;
 
     // Set up the data for the inner and outer arcs
     const innerArcs = this.pie([progression, 1 - progression]);
@@ -49,8 +54,10 @@ export default class Pie {
     const todayAngle = outerArcs[0].endAngle;
     this.outer.select('line').call(updateTodayLine, todayAngle);
     this.outer.select('text').call(updateTodayTextPosition, todayAngle);
-
+    this.outer
+      .select('text')
+      .attr('fill', this.darkmode ? 'white' : colors[this.colorMode].innerDone);
     // Update the percentage text by tweening to the provided value
-    this.percentText.call(updatePercentText, progression);
+    this.percentText.call(updatePercentText.bind(this), progression);
   }
 }

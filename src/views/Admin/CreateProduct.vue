@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1 class="title-1">{{ $t('admin.product.create') }}</h1>
-
+  <div class="container">
     <div class="create-container">
+      <h1 class="title-1">{{ $t('admin.product.create') }}</h1>
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createProduct" @submit.prevent="handleSubmit(save)">
           <form-component
@@ -50,7 +49,7 @@
       </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" form="createProduct" :disabled="loading">
+        <button class="btn btn--icon btn--pri btn--icon-pri" form="createProduct" :disabled="loading">
           <i class="icon fa fa-fw fa-save" />
           {{ $t('btn.create') }}
         </button>
@@ -60,10 +59,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Product from '@/db/Product';
-import { mapState } from 'vuex';
-import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import { findSlugAndRedirect } from '@/util';
 
 export default {
   name: 'CreateProduct',
@@ -73,16 +72,11 @@ export default {
     missionStatement: '',
     department: null,
     team: [],
-    users: [],
     loading: false,
   }),
 
   computed: {
-    ...mapState(['departments']),
-  },
-
-  firestore: {
-    users: db.collection('users'),
+    ...mapState(['departments', 'users']),
   },
 
   methods: {
@@ -96,6 +90,7 @@ export default {
         organization: db.collection('organizations').doc(department.organization.id),
         team: team.map(({ id }) => db.collection('users').doc(id)),
         archived: false,
+        slack: [],
       };
 
       try {
@@ -106,8 +101,9 @@ export default {
         this.$toasted.show(this.$t('toaster.add.product'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.product'));
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     },
   },
 };

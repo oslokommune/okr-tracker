@@ -25,7 +25,7 @@ security:
 paths:
   /kpi/{id}:
     get:
-      summary: Get KPI
+      summary: Get KPI.
       operationId: getKPI
       parameters:
         - name: id
@@ -70,7 +70,88 @@ paths:
           description: A successful response
           schema:
             type: string
-            example: 'Updated KPI (${id}) with progress: ${progress}'
+            example: "Updated KPI (${id}) with progress: ${progress}"
+        400:
+          $ref: '#/responses/BadRequest'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+  /kpi/{id}/values:
+    get:
+      summary: Get KPI progression history.
+      operationId: getKPIProgressionValues
+      parameters:
+        - name: id
+          in: path
+          description: KPI Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/KpiMeasurement'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+  /kpi/{id}/values/{date}:
+    parameters:
+      - name: id
+        in: path
+        description: KPI Id
+        required: true
+        type: string
+      - name: date
+        in: path
+        description: Date
+        required: true
+        type: string
+        format: date
+      - name: okr-team-secret
+        in: header
+        description: Identify yourself with the secret you chose in your Team's settings
+        type: string
+    put:
+      summary: Create or update KPI progression value.
+      operationId: updateKPIProgressionValue
+      parameters:
+        - name: value
+          in: body
+          required: true
+          description: Progression value
+          schema:
+            type: number
+            example:
+              value: 123
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        400:
+          $ref: '#/responses/BadRequest'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+    delete:
+      summary: Delete KPI progression value.
+      operationId: deleteKPIProgressionValue
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
         400:
           $ref: '#/responses/BadRequest'
         404:
@@ -79,7 +160,7 @@ paths:
           $ref: '#/responses/Unavailable'
   /keyres/{id}:
     get:
-      summary: Get key result
+      summary: Get key result.
       operationId: getKeyRes
       security:
         - api_key: []
@@ -99,7 +180,7 @@ paths:
         500:
           $ref: '#/responses/Unavailable'
     post:
-      summary: Post Key result progression.
+      summary: Post key result progression.
       operationId: postKeyRes
       security:
         - api_key: []
@@ -126,50 +207,9 @@ paths:
           description: A successful response
           schema:
             type: string
-            example: 'Updated Key result (${id}) with progress: ${progress}'
+            example: "Updated Key result (${id}) with progress: ${progress}"
         400:
           $ref: '#/responses/BadRequest'
-        404:
-          $ref: '#/responses/NotFound'
-        500:
-          $ref: '#/responses/Unavailable'
-  /audit:
-    get:
-      summary: Get audit log
-      operationId: getAudit
-      security:
-        - api_key: []
-      parameters:
-        - name: fromDate
-          in: query
-          description: from date (inclusive) - example 2021-01-01
-          required: false
-          type: string
-        - name: toDate
-          in: query
-          description: to date (inclusive)  - example 2021-04-01
-          required: false
-          type: string
-        - name: documentTyoe
-          in: query
-          description: Type of document (products/organizations/departments/objectives/keyResults) - Required documentId
-          required: false
-          type: string
-        - name: documentId
-          in: query
-          description: document id (Requires documentType)
-          required: false
-          type: string
-        - name: eventType
-          in: query
-          description: Type of event (Prefix Organization/KeyResult/Department/Product/Objective, Postfix Updated/Created/Restored/Deleted)
-          required: false
-          type: string
-      responses:
-        '200':
-          description: A successful response
-          schema:
-            $ref: '#/definitions/Audit'
         404:
           $ref: '#/responses/NotFound'
         500:
@@ -177,9 +217,9 @@ paths:
 
 securityDefinitions:
   api_key:
-    type: 'apiKey'
-    name: 'x-api-key'
-    in: 'header'
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
 
 definitions:
   Keyres:
@@ -238,24 +278,26 @@ definitions:
           timestamp:
             type: string
             format: date-time
-  Audit:
+  KpiMeasurement:
+    type: object
     properties:
-      data:
-        type: array
-        items:
-          type: object
-          properties:
-            diff:
-              type: object
-            documentRef:
-              type: object
-            event:
-              type: string
-            user:
-              type: string
-            timestamp:
-              type: string
-              format: date-time
+      value:
+        type: number
+      date:
+        type: string
+        format: date
+      comment:
+        type: string
+      created:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+      edited:
+        type: string
+        format: date-time
+      editedBy:
+        type: string
 
 responses:
   NotFound:
@@ -263,9 +305,6 @@ responses:
     schema:
       type: object
       properties:
-        status:
-          type: number
-          example: 404
         message:
           type: string
   Unavailable:
@@ -273,9 +312,6 @@ responses:
     schema:
       type: object
       properties:
-        status:
-          type: number
-          example: 500
         message:
           type: string
   BadRequest:
@@ -283,8 +319,7 @@ responses:
     schema:
       type: object
       properties:
-        status:
-          type: number
-          example: 400
+        errors:
+          type: object
         message:
           type: string

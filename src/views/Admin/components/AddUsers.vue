@@ -14,7 +14,7 @@
 
 <script>
 import User from '@/db/User';
-import validateEmail from '@/util/validateEmail';
+import { validateEmail } from '@/util';
 
 export default {
   name: 'AddUsers',

@@ -1,27 +1,23 @@
 <template>
-  <widget :widget-id="widgetId" :title="getTitle()" icon="chart-pie">
-    <svg ref="svg"></svg>
+  <widget :title="getTitle()">
+    <progression-chart :dimmed="dimmed" />
   </widget>
 </template>
 
 <script>
-import PieChart from '@/util/PieChart';
-
 export default {
   name: 'WidgetProgression',
 
   components: {
-    Widget: () => import('./Widget.vue'),
+    Widget: () => import('./WidgetWrapper.vue'),
+    ProgressionChart: () => import('@/components/ProgressionChart.vue'),
   },
 
   props: {
-    widgetId: {
+    title: {
       type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
+      required: false,
+      default: null,
     },
     dimmed: {
       type: Boolean,
@@ -32,29 +28,6 @@ export default {
       type: String,
       required: true,
     },
-  },
-  data: () => ({
-    svg: null,
-    chart: null,
-  }),
-
-  watch: {
-    data: {
-      immediate: true,
-      deep: true,
-      handler(data) {
-        if (!this.chart) return;
-        this.chart.render(data);
-      },
-    },
-  },
-
-  mounted() {
-    setTimeout(() => {
-      this.svg = this.$refs.svg;
-      this.chart = new PieChart(this.svg, { dimmed: this.dimmed });
-      this.chart.render(this.data);
-    }, 150);
   },
 
   methods: {

@@ -10,7 +10,6 @@ export default async function routerGuardHome(to, from, next) {
 
   try {
     await store.dispatch('set_active_item', null);
-    await store.dispatch('set_sidebar_items');
     next();
   } catch (error) {
     next(false);

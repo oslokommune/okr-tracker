@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <div class="login">
+  <div class="container">
+    <div class="main__second">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div v-if="loginLoading && loginError === null">
         <loading-small></loading-small>
@@ -48,33 +48,35 @@
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
-        <button v-if="providers.includes('microsoft')" class="btn btn--icon btn--pri" @click="loginWithMicrosoft">
+        <button
+          v-if="providers.includes('microsoft')"
+          class="btn btn--pri btn--icon btn--icon-pri"
+          @click="loginWithMicrosoft"
+        >
           <i class="icon fab fa-fw fa-microsoft" />
           {{ $t('login.microsoft') }}
         </button>
 
-        <button v-if="providers.includes('google')" class="btn btn--icon btn--pri" @click="loginWithGoogle">
+        <button
+          v-if="providers.includes('google')"
+          class="btn btn--icon btn--pri btn--icon-pri"
+          @click="loginWithGoogle"
+        >
           <i class="icon fab fa-fw fa-google" />
           {{ $t('login.google') }}
         </button>
 
         <button
-          v-if="providers.includes('keycloak')"
-          class="btn btn--pri"
-          data-cy="login-username"
-          @click="loginWithKeycloak"
-        >
-          {{ getKeycloakText }}
-        </button>
-
-        <button
           v-if="providers.includes('email')"
-          class="btn btn--ghost"
+          class="btn btn--sec"
           data-cy="login-username"
           @click="showForm = true"
         >
           {{ $t('login.loginWithUsername') }}
         </button>
+        <router-link class="btn btn--sec" :to="{ name: 'request-access' }" data-cy="login-request">
+          {{ $t('login.requestAccess') }}
+        </router-link>
       </div>
     </div>
   </div>
@@ -82,11 +84,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { auth, functions, loginProviderMS, loginProviderGoogle } from '@/config/firebaseConfig';
+import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Login',
 
   components: { LoadingSmall },
@@ -104,47 +107,21 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'loginError', 'providers', 'keycloak', 'authenticated', 'loginLoading']),
-
-    getKeycloakText() {
-      if (process.env.VUE_APP_KEYCLOAK_SIGN_IN_TEXT) {
-        return this.$t('login.with', { provider: process.env.VUE_APP_KEYCLOAK_SIGN_IN_TEXT });
-      }
-      return this.$t('login.keycloak');
-    },
-  },
-
-  watch: {
-    authenticated: {
-      immediate: true,
-      async handler() {
-        if (this.providers.includes('keycloak') && this.authenticated) {
-          await this.setLoginLoading(true);
-          await this.setLoginError(null);
-          try {
-            const myCall = functions.httpsCallable('createCustomToken');
-            const customToken = await myCall(this.keycloak.token);
-            await auth.signInWithCustomToken(customToken.data);
-            await this.setLoginLoading(false);
-            this.$toasted.show(this.$t('toaster.welcome', { user: this.keycloak.idTokenParsed.name }));
-          } catch (e) {
-            this.keycloak.logout({ redirectUri: `${process.env.VUE_APP_KEYCLOAK_ERROR_URL}${e.code}` });
-          }
-        }
-      },
-    },
+    ...mapState(['user', 'loginError', 'providers', 'loginLoading']),
   },
 
   methods: {
-    ...mapActions(['initKeycloak', 'cleanKeycloak', 'setLoading', 'setLoginLoading', 'setLoginError']),
+    ...mapActions(['setLoginLoading', 'setLoginError']),
 
-    async loginWithKeycloak() {
+    async loginWithMicrosoft() {
       await this.setLoginLoading(true);
       await this.setLoginError(null);
       try {
-        await this.keycloak.login();
+        const { user } = await auth.signInWithPopup(loginProviderMS);
+        this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
       } catch (e) {
-        throw new Error(e);
+        console.log(e);
+        await this.setLoginError(2);
       }
       await this.setLoginLoading(false);
     },
@@ -154,18 +131,6 @@ export default {
       await this.setLoginError(null);
       try {
         const { user } = await auth.signInWithPopup(loginProviderGoogle);
-        this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
-      } catch (e) {
-        await this.setLoginError(2);
-      }
-      await this.setLoginLoading(false);
-    },
-
-    async loginWithMicrosoft() {
-      await this.setLoginLoading(true);
-      await this.setLoginError(null);
-      try {
-        const { user } = await auth.signInWithPopup(loginProviderMS);
         this.$toasted.show(this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' }));
       } catch (e) {
         await this.setLoginError(2);
@@ -194,29 +159,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/_colors.scss';
-
-.login {
-  display: flex;
-  flex-direction: column;
-  width: span(12);
-  padding: 2rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(4);
-  }
-
-  @media screen and (min-width: bp(s)) {
-    width: span(6);
-  }
-}
-
 .login__form {
   padding-bottom: 2rem;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
 }
 
 .login__footer {
@@ -239,9 +184,9 @@ export default {
 .error {
   margin: 1.5rem 0;
   padding: 1em 1.5em;
-  color: black;
-  background: rgba($color-red, 0.25);
-  border: 1px solid $color-red;
+  color: var(--color-text);
+  background: rgba(var(--color-red-rgb), 0.25);
+  border: 1px solid var(--color-red);
   border-radius: 2px;
 }
 </style>

@@ -1,21 +1,21 @@
-const admin = require('firebase-admin');
-const { scaleLinear } = require('d3-scale');
-const { sum } = require('d3-array');
-
-const db = admin.firestore();
+import { getFirestore } from 'firebase-admin/firestore';
+import { scaleLinear } from 'd3-scale';
+import { sum } from 'd3-array';
 
 /**
  * Listens for changes in progress for a key result. Updates the 'progression' Field for
  * the key result accordingly
  */
-async function handleKeyResultProgress(change, { params }) {
+export const updateKeyResultProgress = async (change, { params }) => {
+  const db = getFirestore();
+
   const { keyResultId } = params;
   const keyResultRef = db.doc(`keyResults/${keyResultId}`);
 
-  const keyres = await keyResultRef.get();
-  if (!keyres.exists) return false;
+  const keyRes = await keyResultRef.get();
+  if (!keyRes.exists) return false;
 
-  const { startValue, targetValue, objective } = keyres.data();
+  const { startValue, targetValue, objective } = keyRes.data();
 
   const currentValue = await keyResultRef
     .collection('progress')
@@ -34,16 +34,16 @@ async function handleKeyResultProgress(change, { params }) {
     console.log('Could not update key result', keyResultId);
   }
 
-  await updateObjectiveProgression(objective);
+  await updateObjectiveProgression(objective, db);
 
   return true;
-}
+};
 
 /**
  * Updates the progression for the related Objective once
  * the key result progression has been updated
  */
-async function updateObjectiveProgression(objectiveRef) {
+export const updateObjectiveProgression = async (objectiveRef, db) => {
   // Finds all progression for related key results and updates the objective's progression
   const progression = await db
     .collection('keyResults')
@@ -67,10 +67,12 @@ async function updateObjectiveProgression(objectiveRef) {
   } catch {
     console.log('could not update period');
   }
-}
+};
 
-async function updatePeriodProgression(periodRef) {
+export const updatePeriodProgression = async (periodRef) => {
   // Finds all progressions for related objectives and updates the period's progression
+
+  const db = getFirestore();
 
   let progression = 0;
 
@@ -92,9 +94,9 @@ async function updatePeriodProgression(periodRef) {
   } catch (error) {
     console.log('Could not update period', periodRef.id);
   }
-}
+};
 
-function getWeightedProgression({ docs }) {
+const getWeightedProgression = ({ docs }) => {
   if (!docs.length) return 0;
 
   const totalWeight = sum(docs.map((doc) => doc.data().weight));
@@ -106,7 +108,4 @@ function getWeightedProgression({ docs }) {
   });
 
   return sum(weightedProgressions);
-}
-
-exports.handleKeyResultProgress = handleKeyResultProgress;
-exports.updatePeriodProgression = updatePeriodProgression;
+};

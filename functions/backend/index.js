@@ -1,29 +1,39 @@
-const functions = require('firebase-functions');
+import functions from 'firebase-functions';
 
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import csrf from 'csurf';
+import morgan from 'morgan';
 
-const validateFirebaseIdToken = require('../util/validateFirebaseToken');
-const config = require('../config');
+import config from '../config.js';
 
 // Routes
-const accessRoutes = require('./routes/access');
-const userRoutes = require('./routes/user');
-const tokenRoutes = require('./routes/token');
+import accessRequestsRoutes from './routes/accessRequests.js';
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  message: 'Too many requests, please try again later.',
+  keyGenerator: (request) => request.ip,
+});
 
 const app = express();
 
 app.use(cors());
+app.use(apiLimiter);
 app.use(cookieParser());
+app.use(csrf({cookie: true}));
 app.use(express.json());
 app.use(morgan('combined'));
 
-app.use('/token', validateFirebaseIdToken, tokenRoutes);
+app.use('/accessRequests', accessRequestsRoutes);
 
-app.use('/access', accessRoutes);
+const internal = functions
+  .runWith(config.runtimeOpts)
+  .region(config.region)
+  .https.onRequest(app);
 
-app.use('/user', validateFirebaseIdToken, userRoutes);
-
-exports.app = functions.runWith(config.runtimeOpts).region(config.region).https.onRequest(app);
+export default internal;

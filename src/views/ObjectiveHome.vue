@@ -1,55 +1,73 @@
 <template>
-  <div v-if="activeObjective" class="objective">
-    <div class="main">
-      <div class="objective__heading">
-        <div class="objective__heading-text">
-          <h1 class="title-1">{{ activeObjective.name }}</h1>
-          <p>{{ activeObjective.description }}</p>
-        </div>
-        <div class="objective__icon fa fa-fw" :class="`fa-${activeObjective.icon}`"></div>
-      </div>
+  <div v-if="activeObjective" class="container">
+    <div class="widgets--left">
+      <router-link
+        class="btn widget__back-button"
+        :to="{
+          name: 'ItemHome',
+          params: { slug: activeObjective.parent.slug },
+        }"
+      >
+        {{ $t('general.back') }}
+        <i class="fa fa-chevron-left"></i>
+      </router-link>
 
-      <section class="key-results">
-        <h2 class="title-2">{{ $t('general.keyresults') }}</h2>
-
-        <empty-state
-          v-if="!keyResults.length"
-          :icon="'poop'"
-          :heading="$t('empty.noKeyResults.heading')"
-          :body="$t('empty.noKeyResults.body')"
-        >
-          <router-link v-if="hasEditRights" :to="{ name: 'ItemAdminOKRs' }" class="btn btn--ter">
-            {{ $t('empty.noKeyResults.linkText') }}
-          </router-link>
-        </empty-state>
-
-        <div class="key-results__list">
-          <key-result-row
-            v-for="keyResult in keyResults"
-            :key="keyResult.id"
-            :key-result="keyResult"
-            :force-expanded="true"
-            class="key-results__list--row"
-          />
-        </div>
-      </section>
+      <widgets-left class="aside--left"></widgets-left>
     </div>
-    <widgets-objective-home class="aside" />
+
+    <div class="main">
+      <div class="main__item">
+        <h1 class="title-1">{{ activeObjective.name }}</h1>
+        <p>{{ activeObjective.description }}</p>
+
+        <section class="itemHome__tree--item">
+          <empty-state
+            v-if="!keyRes.length"
+            :icon="'poop'"
+            :heading="$t('empty.noKeyResults.heading')"
+            :body="$t('empty.noKeyResults.body')"
+          >
+            <router-link
+              v-if="hasEditRights"
+              :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
+              class="btn btn--ter"
+            >
+              {{ $t('empty.noKeyResults.linkText') }}
+            </router-link>
+          </empty-state>
+
+          <div class="key-results__list">
+            <key-result-row
+              v-for="keyResult in keyRes"
+              :key="keyResult.id"
+              :key-result="keyResult"
+              :force-expanded="true"
+              class="key-results__list--row"
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <widgets-right class="aside--right" />
+    <widgets-mobile class="aside--bottom" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
 import routerGuard from '@/router/router-guards/objectiveHome';
+import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 
 export default {
   name: 'ObjectiveHome',
 
   components: {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
-    WidgetsObjectiveHome: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
+    WidgetsRight: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
+    WidgetsMobile,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -65,11 +83,11 @@ export default {
   },
 
   data: () => ({
-    keyResults: [],
+    keyRes: [],
   }),
 
   computed: {
-    ...mapState(['activeObjective']),
+    ...mapState(['activeObjective', 'keyResults']),
     ...mapGetters(['hasEditRights']),
   },
 
@@ -79,10 +97,8 @@ export default {
       handler(objective) {
         if (!objective) return;
 
-        const ref = db.collection('objectives').doc(objective.id);
-        this.$bind(
-          'keyResults',
-          db.collection('keyResults').where('archived', '==', false).where('objective', '==', ref)
+        this.keyRes = this.keyResults.filter(
+          (keyRes) => keyRes.objective === `objectives/${objective.id}`
         );
       },
     },
@@ -91,29 +107,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
-.objective {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .key-results {
   margin-top: 2.5rem;
 }
 
 .key-results__list {
   margin: 1.5rem 0;
-  background: white;
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(black, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .key-results__list--row {
-  border-top: 1px solid $color-grey-100;
+  margin-top: 4px;
 
   &:first-child {
-    border-top: 0;
+    margin-top: 0;
   }
 }
 
@@ -126,20 +133,8 @@ export default {
   margin-right: 2.5rem;
 }
 
-.objective__icon {
-  display: flex;
-  align-items: center;
-  align-self: flex-start;
-  justify-content: center;
-  width: 4rem;
-  height: 4rem;
-  margin-right: 0.5rem;
-  margin-left: auto;
-  padding: 0.5rem 1.5rem;
-  color: var(--color-text-secondary);
-  font-size: 1.15rem;
-  text-align: center;
-  background: var(--color-primary);
-  border-radius: 2rem;
+.itemHome__tree--item {
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>

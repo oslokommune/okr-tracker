@@ -1,42 +1,61 @@
 <template>
-  <div class="keyResult" :class="{ expanded: view !== 'compact' }">
-    <router-link class="keyResult__name" :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }">
-      <div>{{ keyRow.name }}</div>
-      <div v-if="view !== 'compact'" class="keyResult__description">{{ keyRow.description }}</div>
+  <div class="keyResult" :class="{ 'keyResult--isDetailedView': isDetailedView }">
+    <router-link
+      :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
+      class="keyResult__infoLink"
+      :class="{ 'keyResult__infoLink--isDetailedView': isDetailedView }"
+    >
+      <h3 class="keyResult__title">{{ keyRow.name }}</h3>
+      <p v-if="isDetailedView" class="keyResult__description">{{ keyRow.description }}</p>
     </router-link>
 
-    <div v-if="keyRow.auto" v-tooltip="$t('keyres.automatic')" class="keyResult__auto fa fa-magic"></div>
-
-    <progress-bar v-if="view === 'compact'" class="keyResult__progression" :progression="keyRow.progression" />
-
-    <progress-bar-expanded v-else class="keyResult__progression" :key-result="keyRow" />
-
-    <form
-      v-if="view !== 'compact' && hasEditRights && !keyRow.auto"
-      class="keyResult__form"
-      @submit.prevent="isOpen = true"
+    <div
+      v-tooltip="allowedToEditPeriod ? false : 'Not allowed to edit'"
+      class="keyResult__progress"
+      :class="{
+        'keyResult__progress--isDetailedView': isDetailedView,
+        'keyResult__progress--isDisabled': !allowedToEditPeriod,
+      }"
+      @click="openModal"
     >
-      <label class="keyResult__input">
-        <input v-model.number="keyRow.currentValue" v-tooltip="$t('tooltip.keyresValue')" type="number" step="any" />
-      </label>
+      <widget-key-result-progress-details
+        v-if="isDetailedView"
+        :progress-details="progressDetails"
+        :unit="keyRow.unit"
+      />
+      <progress-bar
+        :progression="progressDetails.percentageCompleted"
+        :is-compact="!isDetailedView"
+        class="keyResult__progressBar"
+        :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
+      />
+      <div v-if="isDetailedView" class="keyResult__progressionSummary">
+        {{ progressDetails.formattedTotalCompletedTasks }} / {{ progressDetails.formattedTotalNumberOfTasks }}
+      </div>
+    </div>
 
-      <button class="btn">{{ $t('keyres.updateValue') }}</button>
-    </form>
-
-    <modal v-if="isOpen" :keyres="keyRow" @close="isOpen = false"></modal>
+    <key-result-modal
+      v-if="isOpen"
+      :key-result="keyRow"
+      :unsaved-values="changed"
+      @close="isOpen = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { format } from 'd3-format';
+import { numberLocale } from '@/util';
+import { getKeyResultProgressDetails } from '../util/keyResultProgress';
 
 export default {
   name: 'KeyResultRow',
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    ProgressBarExpanded: () => import('@/components/ProgressBarExpanded.vue'),
-    Modal: () => import('@/components/Modal.vue'),
+    KeyResultModal: () => import('@/components/modals/KeyResultModal.vue'),
+    WidgetKeyResultProgressDetails: () => import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
   },
 
   props: {
@@ -54,14 +73,17 @@ export default {
   data: () => ({
     keyRow: null,
     isOpen: false,
+    changed: false,
   }),
 
   computed: {
     ...mapState(['user']),
-    ...mapGetters(['hasEditRights']),
-    view() {
-      if (this.forceExpanded) return 'expanded';
-      return this.user.preferences.view;
+    ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
+    isDetailedView() {
+      return this.forceExpanded || this.user.preferences.view === 'details';
+    },
+    progressDetails() {
+      return getKeyResultProgressDetails(this.keyResult);
     },
   },
 
@@ -73,84 +95,96 @@ export default {
       },
     },
   },
+
+  methods: {
+    format,
+    openModal() {
+      if (this.allowedToEditPeriod) {
+        this.isOpen = true;
+      }
+    },
+    formatLargeNumber(value) {
+      return numberLocale.format(',')(value);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .keyResult {
-  display: grid;
-  grid-gap: 0.25rem;
-  grid-template-columns: 2rem 1fr span(1, 0, span(6));
-  align-items: baseline;
-  padding: 0.5rem 0.75rem;
+  background: white;
 
-  &.expanded {
-    grid-template-columns: 2rem 1fr span(2, 0, span(6));
-    padding: 1rem 0.75rem;
-  }
-}
-
-.keyResult__icon {
-  grid-column: 1;
-}
-
-.keyResult__name {
-  grid-column: 2;
-  color: $color-grey-800;
-  text-decoration: none;
-
-  @media screen and (min-width: bp(m)) {
-    padding-right: 1rem;
-  }
-}
-
-.keyResult__progression {
-  grid-column: 3;
-}
-
-.keyResult__auto {
-  grid-row: 1;
-  grid-column: 1;
-  width: auto;
-  height: 100%;
-  margin-right: 0.5rem;
-  text-align: center;
-  opacity: 0.5;
-}
-
-.keyResult__description {
-  grid-row: 2;
-  grid-column: 2;
-  align-self: start;
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-
-  @media screen and (min-width: bp(m)) {
-    padding-right: 1rem;
-  }
-}
-
-.keyResult__form {
-  display: flex;
-  grid-row: 3;
-  grid-column: 2 / 4;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    grid-row: 3;
-    grid-column: 2;
+  @media screen and (min-width: bp(s)) {
+    display: flex;
   }
 
-  @media screen and (min-width: bp(m)) {
-    grid-row: 2;
-    grid-column: 3;
-  }
-}
+  &__infoLink {
+    display: block;
+    flex: 1;
+    padding: 0.5rem 1.5rem;
+    color: var(--color-text);
+    text-decoration: none;
+    background-color: var(--color-secondary-light);
 
-.keyResult__input {
-  margin-right: 0.5rem;
+    &--isDetailedView {
+      padding: 1.5rem;
+    }
+
+    &:hover {
+      color: var(--color-text-secondary);
+      background-color: var(--color-hover);
+    }
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  &__description {
+    margin: 1rem 0;
+    font-size: 1rem;
+  }
+
+  &__progress {
+    display: flex;
+    flex: 0 0 25%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.5rem 1.5rem;
+    color: var(--color-text-secondary);
+    background: var(--color-primary);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-hover);
+    }
+
+    @media screen and (min-width: bp(s)) {
+      flex: 0 0 20rem;
+    }
+
+    &--isDetailedView {
+      padding: 1.5rem;
+    }
+
+    &--isDisabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &__progressInfoText {
+    margin-bottom: 0.25rem;
+  }
+
+  &__progressBar--isDetailedView {
+    margin: 1rem 0 0.5rem;
+  }
+
+  &__progressionSummary {
+    color: #f9f9f9;
+    font-weight: 300;
+    text-align: right;
+  }
 }
 </style>

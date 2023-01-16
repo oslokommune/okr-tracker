@@ -19,7 +19,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { periodDates } from '@/util/formatDate';
+import { periodDates } from '@/util';
 
 export default {
   name: 'ActionBar',
@@ -40,8 +40,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .action-bar {
   display: flex;
   flex-direction: column;
@@ -60,7 +58,7 @@ export default {
 
 .action-bar__period-dates {
   margin-bottom: 1.5rem;
-  color: $color-grey-700;
+  color: var(--color-primary);
   font-size: 0.9em;
 
   @media screen and (min-width: bp(s)) {
@@ -70,6 +68,7 @@ export default {
 }
 
 .action-bar__view {
+  color: var(--color-primary);
   font-weight: 500;
   background: none;
   border: none;

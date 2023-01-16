@@ -1,1 +1,3 @@
-export { default } from './Organization';
+import Organization from './Organization';
+
+export default Organization;

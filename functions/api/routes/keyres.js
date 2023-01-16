@@ -1,11 +1,9 @@
-const router = require('express').Router();
-const admin = require('firebase-admin');
-const { param, matchedData, body } = require('express-validator');
+import express from 'express';
+import { getFirestore } from 'firebase-admin/firestore';
+import validator from 'express-validator';
 
-const db = admin.firestore();
-
-const collection = db.collection('keyResults');
-
+const { param, matchedData, body } = validator;
+const router = express.Router();
 const validate = [body('progress').isFloat().escape(), param('id').trim().escape()];
 
 router.post('/:id', ...validate, async (req, res) => {
@@ -18,7 +16,9 @@ router.post('/:id', ...validate, async (req, res) => {
     return;
   }
 
-  let keyres;
+  const db = getFirestore();
+  const collection = await db.collection('keyResults');
+  let keyRes;
 
   try {
     if (!progress || Number.isNaN(progress)) {
@@ -31,21 +31,28 @@ router.post('/:id', ...validate, async (req, res) => {
       return;
     }
 
-    keyres = await collection.doc(id).get();
+    keyRes = await collection.doc(id).get();
 
-    const { exists, ref } = keyres;
+    const { exists, ref } = keyRes;
 
     if (!exists) {
       res.status(404).send(`Could not find KPI with ID: ${id}`);
       return;
     }
 
-    const { parent } = keyres.data();
+    const { parent } = keyRes.data();
 
     const parentData = await parent.get().then((snapshot) => snapshot.data());
 
-    if (parentData.secret && parentData.secret !== teamSecret) {
-      res.status(401).send('The okr-team-secret and the secret which the keyRes has are not the same');
+    if (!parentData.secret) {
+      res.status(401).send(
+        `'${parentData.name}' is not set up for API usage. Please set ` +
+          'a secret using the OKR Tracker admin interface.'
+      );
+      return;
+    }
+    if (parentData.secret !== teamSecret) {
+      res.status(401).send('Wrong okr-team-secret');
       return;
     }
 
@@ -61,8 +68,8 @@ router.post('/:id', ...validate, async (req, res) => {
     res.send(`Updated Key result (${id}) with progress: ${progress}`);
   } catch (e) {
     console.error('ERROR: ', e.message);
-    if (keyres && keyres.ref) {
-      await keyres.ref.update({ valid: false, error: e.message });
+    if (keyRes && keyRes.ref) {
+      await keyRes.ref.update({ valid: false, error: e.message });
     }
     res.status(500).send(e.message);
   }
@@ -71,6 +78,9 @@ router.post('/:id', ...validate, async (req, res) => {
 router.get('/:id', param('id').trim().escape(), async (req, res) => {
   const sanitized = matchedData(req);
   const { id } = sanitized;
+
+  const db = getFirestore();
+  const collection = await db.collection('keyResults');
 
   try {
     const keyRes = await collection.doc(id).get();
@@ -88,6 +98,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     const editedByData = await editedBy.get().then((snapshot) => snapshot.data());
     const createdByData = await createdBy.get().then((snapshot) => snapshot.data());
     const objectiveData = await objective.get().then((snapshot) => snapshot.data());
+
 
     const progress = await ref
       .collection('progress')
@@ -141,4 +152,4 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

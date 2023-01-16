@@ -1,0 +1,272 @@
+swagger: "2.0"
+
+info:
+  title: OKR Tracker API
+  description: API for updating KPIs and key results.
+  version: 1.1.0
+  contact:
+    name: Dataspeilet
+    url: https://okr.oslo.systems
+    email: annemerete.pettersen@origo.oslo.kommune.no
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  address: https://<location>-<project-id>.cloudfunctions.net/<CF-location>
+  path_translation: APPEND_PATH_TO_ADDRESS
+  protocol: h2
+security:
+  - api_key: []
+
+paths:
+  /kpi/{id}:
+    get:
+      summary: Get KPI.
+      operationId: getKPI
+      parameters:
+        - name: id
+          in: path
+          description: KPI Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: A successful response
+          schema:
+            $ref: '#/definitions/Kpi'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+    post:
+      summary: Post KPI progression.
+      operationId: postKPI
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: KPI Id
+          required: true
+          type: string
+        - name: progress
+          in: body
+          required: true
+          description: updated progress
+          schema:
+            type: number
+            example:
+              progress: 123
+        - name: okr-team-secret
+          in: header
+          description: Identify yourself with the secret you chose in your Team's settings
+          type: string
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+            example: "Updated KPI (${id}) with progress: ${progress}"
+        400:
+          $ref: '#/responses/BadRequest'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+  /kpi/{id}/values:
+    get:
+      summary: Get KPI progression history.
+      operationId: getKPIHistory
+      parameters:
+        - name: id
+          in: path
+          description: KPI Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/KpiMeasurement'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+  /keyres/{id}:
+    get:
+      summary: Get key result.
+      operationId: getKeyRes
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: Key result Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: '#/definitions/Keyres'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+    post:
+      summary: Post key result progression.
+      operationId: postKeyRes
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: Key res Id
+          required: true
+          type: string
+        - name: progress
+          in: body
+          required: true
+          description: updated progress
+          schema:
+            type: number
+            example:
+              progress: 123
+        - name: okr-team-secret
+          in: header
+          description: Identify yourself with the secret you chose in your Team's settings
+          type: string
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+            example: "Updated Key result (${id}) with progress: ${progress}"
+        400:
+          $ref: '#/responses/BadRequest'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+
+definitions:
+  Keyres:
+    properties:
+      currentValue:
+        type: number
+      progression:
+        type: number
+      description:
+        type: string
+      created:
+        type: string
+        format: date-time
+      edited:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+      editedBy:
+        type: string
+      lastUpdated:
+        type: object
+        properties:
+          value:
+            type: number
+          timestamp:
+            type: string
+            format: date-time
+          comment:
+            type: string
+          createdBy:
+            type: string
+  Kpi:
+    properties:
+      currentValue:
+        type: number
+      name:
+        type: string
+      type:
+        type: string
+      created:
+        type: string
+        format: date-time
+      edited:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+      editedBy:
+        type: string
+      lastUpdated:
+        type: object
+        properties:
+          value:
+            type: number
+          timestamp:
+            type: string
+            format: date-time
+  KpiMeasurement:
+    type: object
+    properties:
+      value:
+        type: number
+      date:
+        type: string
+        format: date
+      comment:
+        type: string
+      created:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+      edited:
+        type: string
+        format: date-time
+      editedBy:
+        type: string
+
+responses:
+  NotFound:
+    description: Resource not found
+    schema:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 404
+        message:
+          type: string
+  Unavailable:
+    description: Something went wrong
+    schema:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 500
+        message:
+          type: string
+  BadRequest:
+    description: A bad request
+    schema:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 400
+        message:
+          type: string

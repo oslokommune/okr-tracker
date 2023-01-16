@@ -1,6 +1,7 @@
 <template>
-  <div v-if="activePeriod">
-    <archived-restore v-if="activePeriod.archived" :delete-deep="deleteDeep" :restore="restore" />
+  <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
+  <div v-else-if="activePeriod" class="details">
+    <archived-restore v-if="activePeriod.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-period" @submit.prevent="handleSubmit(update)">
@@ -20,10 +21,10 @@
             <flat-pickr
               v-model="range"
               :config="flatPickerConfig"
-              class="form-control cy-datepicker"
+              class="form-control flatpickr-input"
               name="date"
               placeholder="Velg start- og sluttdato"
-            ></flat-pickr>
+            />
           </label>
           <span class="form-field--error">{{ errors[0] }}</span>
         </validation-provider>
@@ -31,14 +32,16 @@
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-period" data-cy="save_period" :disabled="loading">
-        <i class="icon fa fa-fw fa-save" />
-        {{ $t('btn.saveChanges') }}
-      </button>
-      <button v-if="!activePeriod.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <i class="icon fa fa-fw fa-trash" />
-        {{ $t('btn.archive') }}
-      </button>
+      <btn-delete
+        v-if="!activePeriod.archived"
+        :disabled="loading"
+        @click="archive"
+      />
+      <btn-save
+        form="update-period"
+        data-cy="save_period"
+        :disabled="loading"
+      />
     </div>
   </div>
 </template>
@@ -48,13 +51,18 @@ import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import format from 'date-fns/format';
 import Period from '@/db/Period';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ItemAdminPeriod',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ContentLoaderOkrDetails: () =>
+      import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    BtnSave,
+    BtnDelete,
   },
 
   props: {
@@ -78,14 +86,17 @@ export default {
     },
     range: null,
     loading: false,
+    isLoadingData: false,
   }),
 
   watch: {
     data: {
       immediate: true,
       handler() {
+        this.isLoadingDetails = true;
         this.activePeriod = { ...this.data, id: this.data.id };
         this.range = this.generateRange();
+        this.isLoadingDetails = false;
       },
     },
 
@@ -137,17 +148,6 @@ export default {
       }
     },
 
-    async deleteDeep() {
-      try {
-        await this.$router.push({ query: {} });
-        await Period.deleteDeep(this.activePeriod.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
-      } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: this.activePeriod.name }));
-        throw new Error(error.message);
-      }
-    },
-
     async update() {
       this.loading = true;
       try {
@@ -165,3 +165,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(l)) {
+    align-self: flex-start;
+    width: span(3, 0, span(10));
+    margin-top: 0;
+    margin-left: span(0, 1, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3, 0, span(10));
+    margin-left: span(1, 2, span(10));
+  }
+}
+</style>

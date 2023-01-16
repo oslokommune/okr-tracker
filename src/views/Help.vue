@@ -1,5 +1,5 @@
 <template>
-  <div v-if="markdown" class="main">
+  <div v-if="markdown" class="container">
     <h1 class="title-1">{{ $t('help.title') }}</h1>
     <div class="help">
       <ul v-if="toc" class="toc help__toc">
@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import marked from 'marked';
-import { sanitize } from 'dompurify';
-import toc from '@/util/tableOfContent';
+import { marked } from 'marked';
+import dompurify from 'dompurify';
+import { tableOfContent as toc } from '@/util';
 import i18n from '@/locale/i18n';
 
 marked.setOptions({
@@ -50,7 +50,7 @@ export default {
 
   async created() {
     fetch('./help.md').then(async (response) => {
-      this.markdown = sanitize(marked(await response.text()));
+      this.markdown = dompurify.sanitize(marked(await response.text()));
       this.toc = toc(this.markdown);
     });
   },
@@ -58,12 +58,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors';
-
-.main {
-  width: span(12);
-}
-
 .help {
   @media screen and (min-width: bp(l)) {
     display: grid;
@@ -105,7 +99,7 @@ export default {
   margin: 2rem 0 5rem;
   padding: 1.5rem;
   font-size: 1rem;
-  border: 1px solid $color-grey-100;
+  border: 1px solid var(--color-grey-100);
 
   li {
     padding: 0.25rem 0;

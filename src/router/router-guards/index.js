@@ -6,5 +6,6 @@ export { default as objectiveHome } from './objectiveHome';
 export { default as admin } from './admin';
 export { default as login } from './login';
 export { default as user } from './user';
-export { default as dashboard } from './dashboard';
+export { default as requestAccess } from './requestAccess'; /* eslint-disable-line */
 export { default as kpiHome } from './kpiHome';
+export { default as dashboard } from './dashboard';

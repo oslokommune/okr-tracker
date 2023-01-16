@@ -37,7 +37,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-
       # Runs a single command using the runners shell
       - name: Use Node.js ${{matrix.node-version}}
         uses: actions/setup-node@v2
@@ -46,11 +45,15 @@ jobs:
       - name: npm install
         run: |
           npm ci
+          npm --prefix functions ci functions
         env:
           CI: true
       - name: npm lint
         run: |
           npm run lint
           npm run lint:style
+      - name: npm test:unit
+        run: |
+          npm run test:unit
         env:
           CI: true

@@ -5,7 +5,7 @@
 
   .tooltip-inner {
     max-width: 14rem;
-    padding: 0.5em 1em;
+    padding: 1em;
     color: var(--color-text-secondary);
     font-weight: 500;
     font-size: 0.8rem;
@@ -101,4 +101,23 @@
   .tooltip-inner {
     font-size: 1rem !important;
   }
+}
+
+/* Tippy */
+.tippy-box[data-theme~='ok'] {
+  color: var(--color-primary);
+  background-color: var(--color-bg);
+  border-radius: 0;
+}
+.tippy-box[data-theme~='ok'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: var(--color-bg);
+}
+.tippy-box[data-theme~='ok'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: var(--color-bg);
+}
+.tippy-box[data-theme~='ok'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: var(--color-bg);
+}
+.tippy-box[data-theme~='ok'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: var(--color-bg);
 }

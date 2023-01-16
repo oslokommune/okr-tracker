@@ -1,31 +1,21 @@
-@import '_colors.scss';
-@import 'typography.scss';
+@use 'sass:color';
+@use 'griddle/functions' as *;
 
 $borderRadius: 1.5px;
-
-@mixin boxShadow($color) {
-  box-shadow: 0 1px 3px rgba($color, 0.2), 0 3px 12px rgba($color, 0.05);
-}
-
-@mixin boxColor($color, $shadowColor: $color-purple) {
-  background: rgba($color, 0.1);
-  @include boxShadow($shadowColor);
-
-  &::after {
-    background: linear-gradient($color, darken($color, 5%));
-  }
-
-  &::before {
-    background: $color;
-  }
-}
 
 .ok-alert {
   position: relative;
   margin: 0.5rem 0 1rem;
   padding: 1rem;
   overflow: hidden;
+  color: var(--color-text);
+  background: rgba(var(--color-grey-100-rgb), 0.1);
   border-radius: $borderRadius;
+  box-shadow: 0 1px 3px rgba(var(--color-grey-500-rgb), 0.2), 0 3px 12px rgba(var(--color-grey-500-rgb), 0.05);
+
+  &::before {
+    background: var(--color-grey-100);
+  }
 
   @media screen and (min-width: bp(m)) {
     padding-top: 1rem;
@@ -43,7 +33,9 @@ $borderRadius: 1.5px;
     height: 0.25rem;
     padding-left: 1rem;
     font-size: 1.75rem;
+    background: linear-gradient(var(--color-grey-100), var(--color-grey-500-rgb));
     content: '';
+
 
     @media screen and (min-width: bp(m)) {
       bottom: 0;
@@ -58,20 +50,43 @@ $borderRadius: 1.5px;
   }
 }
 
-.ok-alert {
-  @include boxColor($color-grey-100);
-}
-
 .ok-alert--success {
-  @include boxColor($color-green, darken($color-green, 20%));
+  background: rgba(var(--color-green-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-green-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-green-dark-rgb), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-green-rgb), var(--color-green-dark-rgb));
+  }
+
+  &::before {
+    background: var(--color-green);
+  }
 }
 
 .ok-alert--danger {
-  @include boxColor($color-red, darken($color-red, 20%));
+  background: rgba(var(--color-red-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-red-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-red-dark-rgb), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-red), var(--color-red-dark-rgb));
+  }
+
+  &::before {
+    background: var(--color-red);
+  }
 }
 
 .ok-alert--warning {
-  @include boxColor($color-yellow, darken($color-yellow, 20%));
+  background: rgba(var(--color-yellow-rgb), 0.1);
+  box-shadow: 0 1px 3px rgba(var(--color-yellow-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-yellow-dark-rgbdark), 0.05);
+
+  &::after {
+    background: linear-gradient(var(--color-yellow), var(--color-yellow-dark-rgb));
+  }
+
+  &::before {
+    background: var(--color-yellow);
+  }
 }
 
 .ok-alert--white {
@@ -79,16 +94,16 @@ $borderRadius: 1.5px;
 }
 
 .ok-alert--dark {
-  background: $color-blue;
-  @include boxShadow($color-purple);
+  background: var(--color-blue);
+  box-shadow: 0 1px 3px rgba(var(--color-purple-dark-rgb), 0.2), 0 3px 12px rgba(var(--color-purple-dark-rgbdark), 0.05);
 
   &::after {
-    color: $color-blue;
-    background: linear-gradient($color-purple, darken($color-purple, 5%));
+    color: var(--color-blue);
+    background: linear-gradient(var(--color-purple), var(--color-purple-dark-rgb));
   }
 
   &::before {
-    color: white;
+    color: var(--color-white);
     background: var(--color-primary);
   }
 }

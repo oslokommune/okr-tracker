@@ -18,7 +18,6 @@ export default async function itemHome(to, from, next) {
 
     if (!activeItem || !slugRef || activeItem.id !== slugRef.id) {
       await store.dispatch('set_active_item', slugRef);
-      await store.dispatch('set_sidebar_items');
     }
 
     next();

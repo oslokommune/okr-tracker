@@ -1,0 +1,19 @@
+{
+  "name": "photos/testuser@internet.com-apple-touch-icon.png",
+  "bucket": "default-bucket",
+  "metageneration": 1,
+  "generation": 1634198997606,
+  "contentType": "image/jpeg",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "1d4dfd0b-4e83-41a1-8c69-e8a70e93a60d"
+  ],
+  "etag": "someETag",
+  "timeCreated": "2021-10-14T08:09:57.605Z",
+  "updated": "2021-10-14T08:09:57.609Z",
+  "size": 61755,
+  "md5Hash": "tuF3PE/cmPpVcLTigAevpg==",
+  "crc32c": "1576026129"
+}

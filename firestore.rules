@@ -4,53 +4,90 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isAdmin() {
-      let oldUser = get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.admin == true;
-      let newUser = get(/databases/$(database)/documents/users/$(request.auth.token.uid)).data.admin == true;
-      return isSignedIn() && (oldUser || newUser);
+    // Get user document
+    function getUserDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.token.email));
     }
 
+    // Check if user is a super admin
+    function isSuperAdmin() {
+      let userDoc = getUserDoc();
+      let hasProperty = 'superAdmin' in userDoc.data;
+      let userIsSuperAdmin = hasProperty && userDoc.data.superAdmin == true;
+      return isSignedIn() && userIsSuperAdmin;
+    }
+
+    // CHeck if user is admin of at least one organization
+    function isAdmin() {
+      let userDoc = getUserDoc();
+      let userIsAdmin =  'admin' in userDoc.data && userDoc.data.admin.size() > 0;
+      return isSignedIn() && userIsAdmin;
+    }
+
+    // Check if user is admin of an organization or organization of a product/department
+    function isAdminOfOrganization() {
+      let userDoc = getUserDoc();
+      let userIsAdmin = isAdmin();
+
+      // Check if the document the user tries to access has an organization - this means that is is a product or department
+      let hasOrgProperty = 'organization' in request.resource.data;
+      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgProperty && getAfter(request.resource.data.organization).data.id in userDoc.data.admin;
+
+      // Check if the user has access to the document which is an organization (given that the first check is false)
+      let isAdminOfOrg = userIsAdmin && request.resource.data.id in userDoc.data.admin;
+
+      return isSignedIn() && (isAdminOfOrg || isAdminFromOrgOfProdOrDep);
+    }
+
+    // Same as isMemberOfParent but to check if you are an admin instead of the organization the parent is a part of
+    function isAdminOfParent(document, type) {
+      let userDoc = getUserDoc();
+      let userIsAdmin = isAdmin();
+
+      let parentDoc = getAfter(get(/databases/$(database)/documents/$(type)/$(document)).data.parent);
+
+      // Check if the parentDoc the user tries to access has an organization - this means that is is a product or department
+      let hasOrgDocumentInParent = 'organization' in parentDoc.data;
+      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgDocumentInParent && getAfter(parentDoc.data.organization).data.id in userDoc.data.admin;
+
+      // Check if the user has access to the parentDoc which is an organization (given that the first check is false)
+      let isAdminOfParent = userIsAdmin && !isAdminFromOrgOfProdOrDep && parentDoc.data.id in userDoc.data.admin;
+
+      return isSignedIn() && (isAdminFromOrgOfProdOrDep || isAdminOfParent);
+    }
+
+    // Is user signed in
     function isSignedIn() {
       // TODO: Must be a verified (whitelisted) user
       return request.auth.uid != null;
     }
 
+    // Is user part of the team in the organization/department/product
     function isTeamMember() {
-      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in resource.data.team;
-      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in resource.data.team;
-      return oldUser || newUser;
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let userIsTeamMember = userRef in request.resource.data.team;
+      return userIsTeamMember;
     }
 
-    function isMemberOfParent() {
-      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(request.resource.data.parent).data.team;
-      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(request.resource.data.parent).data.team;
-      return oldUser || newUser;
-    }
-
-    function isMemberOfParentDelete() {
-      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in get(resource.data.parent).data.team;
-      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in get(resource.data.parent).data.team;
-      return oldUser || newUser;
-    }
-
-    function isMemberOfKeyResParent(document) {
-      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
-      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in getAfter(get(/databases/$(database)/documents/keyResults/$(document)).data.parent).data.team;
-      return oldUser || newUser;
-    }
-
-    function isMemberOfKpiParent(document) {
-      let oldUser = /databases/$(database)/documents/users/$(request.auth.token.email) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team;
-      let newUser = /databases/$(database)/documents/users/$(request.auth.token.uid) in get(get(/databases/$(database)/documents/kpis/$(document)).data.parent).data.team;
-      return oldUser || newUser;
+    // Is a member from the parent of the Objective/KeyResult/Period/KPI
+    function isMemberOfParent(document, type) {
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let doc = getAfter(/databases/$(database)/documents/$(type)/$(document));
+      let parentDoc = getAfter(doc.data.parent);
+      let userIsMemberOfParent = userRef in parentDoc.data.team;
+      return userIsMemberOfParent;
     }
 
     function isSelf(document) {
-      let oldUser = document == request.auth.token.email;
-      let newUser = document == request.auth.token.uid;
-      return oldUser || newUser;
+      let user = document == request.auth.token.email;
+      return user;
     }
 
+
+    match /requestAccess/{document} {
+      allow read: if isSuperAdmin();
+      allow write: if true;
+    }
 
     match /audit/{document} {
       allow read: if isSignedIn();
@@ -58,69 +95,77 @@ service cloud.firestore {
 
     match /users/{user} {
       allow read: if isSignedIn();
-      allow write: if isAdmin() || isSelf(user);
+      allow write, update, delete: if isSuperAdmin() || isSelf(user) || isAdmin();
     }
 
     match /organizations/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isTeamMember();
-      allow update: if isAdmin() || isTeamMember();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin();
+      allow update: if isSuperAdmin() || isTeamMember() || isAdminOfOrganization();
+      allow delete: if isSuperAdmin();
     }
 
     match /departments/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isTeamMember();
-      allow update: if isAdmin() || isTeamMember();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isTeamMember() || isAdminOfOrganization();
+      allow update: if isSuperAdmin() || isTeamMember() || isAdminOfOrganization();
+      allow delete: if isSuperAdmin();
     }
 
     match /products/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isTeamMember();
-      allow update: if isAdmin() || isTeamMember();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isTeamMember() || isAdminOfOrganization();
+      allow update: if isSuperAdmin() || isTeamMember() || isAdminOfOrganization();
+      allow delete: if isSuperAdmin();
     }
 
     match /keyResults/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'keyResults') || isAdminOfParent(document, 'keyResults');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'keyResults') || isAdminOfParent(document, 'keyResults');
+      allow delete: if isSuperAdmin();
     }
 
     match /keyResults/{document}/progress/{progress} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfKeyResParent(document);
-      allow update: if isAdmin() || isMemberOfKeyResParent(document);
-      allow delete: if isAdmin() || isMemberOfKeyResParent(document);
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'keyResults') || isAdminOfParent(document, 'keyResults');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'keyResults') || isAdminOfParent(document, 'keyResults');
+      allow delete: if isSuperAdmin() || isMemberOfParent(document, 'keyResults') || isAdminOfParent(document, 'keyResults');
     }
 
     match /objectives/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'objectives') || isAdminOfParent(document, 'objectives');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'objectives') || isAdminOfParent(document, 'objectives');
+      allow delete: if isSuperAdmin();
     }
 
     match /periods/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin();
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'periods') || isAdminOfParent(document, 'periods');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'periods') || isAdminOfParent(document, 'periods');
+      allow delete: if isSuperAdmin();
     }
 
     match /kpis/{document} {
       allow read: if isSignedIn();
-      allow create: if isAdmin() || isMemberOfParent();
-      allow update: if isAdmin() || isMemberOfParent();
-      allow delete: if isAdmin() || isMemberOfParentDelete();
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
     }
 
     match /kpis/{document}/progress/{progress} {
       allow read: if isSignedIn();
-      allow create: if false;
-      allow delete: if isAdmin() || isMemberOfKpiParent(document);
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+    }
+
+    match /kpis/{document}/goals/{goal} {
+      allow read: if isSignedIn();
+      allow create: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
     }
 
     match /slugs/{document} {
@@ -132,7 +177,5 @@ service cloud.firestore {
       allow read: if false;
       allow write: if false;
     }
-
-
   }
 }
