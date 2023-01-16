@@ -4,8 +4,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import csrf from 'csurf';
+
 import morgan from 'morgan';
 
 import config from '../config.js';
@@ -25,7 +24,6 @@ const app = express();
 app.use(cors());
 app.use(apiLimiter);
 app.use(cookieParser());
-app.use(csrf({cookie: true}));
 app.use(express.json());
 app.use(morgan('combined'));
 
