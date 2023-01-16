@@ -567,8 +567,8 @@ export default {
 
   &__footer {
     display: flex;
-    align-items: center;
     gap: 1rem;
+    align-items: center;
     min-height: 6rem;
     border-top: 1px solid var(--color-grey-100);
 

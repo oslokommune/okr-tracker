@@ -99,9 +99,9 @@ export default {
 @use '@/styles/typography';
 
 .item-info {
+  padding: 2rem 1rem;
   overflow: auto;
   background-color: var(--color-white);
-  padding: 2rem 1rem;
 
   &__group {
     &:not(:first-of-type) {
@@ -109,16 +109,16 @@ export default {
     }
 
     .title-4 {
-      padding: 0 0.5rem;
       margin-bottom: 1rem;
+      padding: 0 0.5rem;
       color: var(--color-grayscale-40);
     }
   }
 
   &__content {
     display: flex;
-    gap: 2rem;
     flex-direction: column;
+    gap: 2rem;
 
     @media screen and (min-width: bp(m)) {
       flex-direction: row;
@@ -132,9 +132,9 @@ export default {
 
   &__box {
     flex: 1 1 0px;
+    padding: 0.5rem;
     font-size: typography.$font-size-2;
     line-height: 1.5rem;
-    padding: 0.5rem;
 
     .title-2 {
       display: flex;
