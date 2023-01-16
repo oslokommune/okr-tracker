@@ -214,7 +214,8 @@
     "confirmDelete": "Confirm delete",
     "reset": "Reset",
     "showMore": "Show more",
-    "syncData": "Synchronize data"
+    "syncData": "Synchronize data",
+    "moreDetails": "More details"
   },
   "login": {
     "login": "Sign in",
