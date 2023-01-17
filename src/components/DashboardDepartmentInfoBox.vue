@@ -32,8 +32,8 @@ export default {
     margin-bottom: 1rem;
 
     svg {
-      margin-right: 0.5rem;
       height: 1.5rem;
+      margin-right: 0.5rem;
     }
   }
 }
