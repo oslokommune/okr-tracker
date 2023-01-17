@@ -17,7 +17,7 @@
         @click="isCollapsed = !isCollapsed"
       >
         {{ $t('general.orgs') }}
-        <i class="fa" :class="isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        <pkt-icon :name="isCollapsed ? 'chevron-thin-up' : 'chevron-thin-down'" />
       </h2>
       <div v-if="isCollapsed">
         <button
@@ -179,9 +179,18 @@ $header-height: 4em;
   white-space: unset;
   border-radius: 0;
 
+  svg {
+    --fg-color: var(--color-white);
+    height: 1.5rem;
+  }
+
   &:hover {
     color: var(--color-text);
     background-color: var(--color-secondary) !important;
+
+    svg {
+      --fg-color: var(--color-text);
+    }
   }
 
   &.active {
