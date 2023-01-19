@@ -46,13 +46,16 @@
           />
 
           <form-component
-            v-model="value"
+            v-model="goalValue"
             input-type="input"
             name="value"
             :label="$t('fields.value')"
             type="number"
             rules="required"
           />
+          <span v-if="goalValue" class="display-as">
+            {{ $t('general.displayedAs') }} {{ formatKPIValue(kpi, value) }}
+          </span>
 
           <template #actions="{ handleSubmit, submitDisabled }">
             <btn-delete @click="archive($event)" />
@@ -77,6 +80,7 @@ import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
 import { toastArchiveAndRevert } from '@/util';
+import { formatKPIValue } from '@/util/kpiHelpers';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -114,6 +118,20 @@ export default {
     value: null,
   }),
 
+  computed: {
+    typePercentage() {
+      return this.kpi.format === 'percentage';
+    },
+    goalValue: {
+      get() {
+        return this.typePercentage ? this.value * 100 : this.value;
+      },
+      set(val) {
+        this.value = this.typePercentage ? val / 100 : val;
+      },
+    },
+  },
+
   watch: {
     kpi: {
       immediate: true,
@@ -138,6 +156,8 @@ export default {
   },
 
   methods: {
+    formatKPIValue,
+
     close() {
       this.$emit('close');
     },
@@ -253,6 +273,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 ::v-deep .modal {
   overflow-y: visible;
 }
@@ -264,6 +286,13 @@ export default {
 
   @media screen and (min-width: bp(s)) {
     flex-direction: row;
+  }
+
+  .display-as {
+    padding-bottom: 0.5rem;
+    color: var(--color-grey-500);
+    font-weight: 500;
+    font-size: typography.$font-size-1;
   }
 
   &__left {
