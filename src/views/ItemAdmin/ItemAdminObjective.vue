@@ -38,6 +38,15 @@
         @select="changedPeriod = true"
       />
 
+      <form-component
+        v-model="range"
+        input-type="date"
+        name="period"
+        :label="$t('period.dateRange')"
+        :placeholder="$t('general.selectRange')"
+        :date-picker-config="flatPickerConfig"
+      />
+
       <template #actions="{ handleSubmit, submitDisabled }">
         <btn-delete v-if="!objective.archived" :disabled="loading" @click="archive" />
         <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(update)" />
@@ -48,6 +57,7 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
+import locale from 'flatpickr/dist/l10n/no';
 import Objective from '@/db/Objective';
 import { toastArchiveAndRevert } from '@/util';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
@@ -74,6 +84,15 @@ export default {
     objective: null,
     periods: [],
     changedPeriod: false,
+    flatPickerConfig: {
+      altFormat: 'j M Y',
+      altInput: true,
+      minDate: null,
+      mode: 'range',
+      maxDate: null,
+      locale: locale.no,
+    },
+    range: null,
     loading: false,
     isLoadingDetails: false,
   }),
@@ -90,12 +109,19 @@ export default {
           .then((snapshot) => snapshot.data().reference);
         this.$bind('periods', db.collection('periods').where('parent', '==', parent));
         this.objective = { ...this.data, id: this.data.id };
+        this.range = this.getCurrentDateRange();
         this.isLoadingDetails = false;
       },
     },
   },
 
   methods: {
+    getCurrentDateRange() {
+      if (!this.objective.startDate || !this.objective.endDate) {
+        return null;
+      }
+      return [this.objective.startDate.toDate(), this.objective.endDate.toDate()];
+    },
     async update() {
       this.loading = true;
       try {
@@ -106,6 +132,12 @@ export default {
           weight: weight || 1,
           period: db.collection('periods').doc(period.id),
         };
+
+        if (this.range) {
+          const [start, end] = this.range;
+          data.startDate = start
+          data.endDate = end
+        }
 
         await Objective.update(id, data);
 

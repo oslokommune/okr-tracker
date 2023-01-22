@@ -10,8 +10,8 @@
             :config="flatPickerConfig"
             class="form-control flatpickr-input"
             name="date"
-            placeholder="Velg start- og sluttdato"
-          ></flat-pickr>
+            :placeholder="$t('general.selectRange')"
+          />
         </label>
 
         <button class="btn btn--sec" :disabled="!widgetRange" @click="widgetRange = null">
