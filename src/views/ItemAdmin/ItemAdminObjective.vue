@@ -135,8 +135,8 @@ export default {
 
         if (this.range) {
           const [start, end] = this.range;
-          data.startDate = start
-          data.endDate = end
+          data.startDate = start;
+          data.endDate = end;
         }
 
         await Objective.update(id, data);
