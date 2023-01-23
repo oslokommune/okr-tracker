@@ -86,10 +86,4 @@ export default {
     display: none;
   }
 }
-
-.widgets--left {
-  @media screen and (max-width: bp(m)) {
-    display: none;
-  }
-}
 </style>

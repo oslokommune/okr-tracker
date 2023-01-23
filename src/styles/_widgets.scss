@@ -163,14 +163,6 @@
   background: var(--color-white);
 }
 
-.widgets--left {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
-  }
-}
-
 .widget__body {
   padding: 0 1rem 1rem;
 }

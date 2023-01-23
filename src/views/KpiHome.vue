@@ -1,13 +1,5 @@
 <template>
   <div v-if="activeKpi" class="container">
-    <div class="widgets--left">
-      <div class="aside--left">
-        <div class="widgets">
-          <widget-team />
-        </div>
-      </div>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <h1 class="title-1">{{ activeKpi.name }}</h1>

@@ -1,22 +1,5 @@
 <template>
   <div v-if="activeKeyResult" class="container">
-    <div class="widgets--left">
-      <router-link
-        class="btn widget__back-button"
-        :to="
-          previousUrl
-            ? previousUrl
-            : {
-                name: 'ItemHome',
-                params: { slug: activeKeyResult.parent.slug },
-              }
-        "
-      >
-        {{ $t('general.back') }}
-        <i class="fa fa-chevron-left"></i>
-      </router-link>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">

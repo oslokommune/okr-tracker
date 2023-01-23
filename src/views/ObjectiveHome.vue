@@ -1,18 +1,5 @@
 <template>
   <div v-if="activeObjective" class="container">
-    <div class="widgets--left">
-      <router-link
-        class="btn widget__back-button"
-        :to="{
-          name: 'ItemHome',
-          params: { slug: activeObjective.parent.slug },
-        }"
-      >
-        {{ $t('general.back') }}
-        <i class="fa fa-chevron-left"></i>
-      </router-link>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <h1 class="title-1">{{ activeObjective.name }}</h1>
