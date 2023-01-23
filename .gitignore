@@ -21,6 +21,7 @@ cypress.env.json
 *.njsproj
 *.sln
 *.sw?
+*.cache
 
 # Firebase files
 .firebase/
