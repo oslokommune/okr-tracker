@@ -9,13 +9,15 @@
 
         <div class="item-info__content">
           <div v-if="activeItem.missionStatement" class="item-info__box">
-            <h3 class="title-2"><icon-hands-globe />{{ $t('document.mission') }}</h3>
+            <h3 class="title-2">
+              <pkt-icon name="hands-globe" />{{ $t('document.mission') }}
+            </h3>
             <HTML-output :html="activeItem.missionStatement" />
           </div>
 
           <div v-if="activeItem.targetAudience" class="item-info__box">
             <h3 class="title-2">
-              <icon-two-people-dancing />{{ $t('dashboard.targetAudience') }}
+              <pkt-icon name="two-people-dancing" />{{ $t('dashboard.targetAudience') }}
             </h3>
             <HTML-output :html="activeItem.targetAudience" />
           </div>
@@ -42,8 +44,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import IconTwoPeopleDancing from '@/components/IconTwoPeopleDancing.vue';
-import IconHandsGlobe from '@/components/IconHandsGlobe.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import getActiveItemType from '@/util/getActiveItemType';
 
@@ -51,8 +51,6 @@ export default {
   name: 'ItemAbout',
 
   components: {
-    IconHandsGlobe,
-    IconTwoPeopleDancing,
     HTMLOutput,
   },
 
@@ -143,6 +141,7 @@ export default {
       color: var(--color-blue-dark);
 
       svg {
+        height: 1.5rem;
         margin-right: 0.75rem;
       }
     }
