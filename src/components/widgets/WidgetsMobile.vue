@@ -9,7 +9,6 @@
       >
         <progression-chart :progression="progression" />
       </widget-wrapper>
-      <widget-mission-statement />
       <widget-team />
       <widget-child-items />
       <widget-weights
@@ -24,7 +23,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetChildItems from '@/components/widgets/WidgetChildItems.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
@@ -34,7 +32,6 @@ export default {
   name: 'WidgetsMobile',
 
   components: {
-    WidgetMissionStatement,
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetWrapper: () => import('./WidgetWrapper.vue'),
     WidgetTeam,

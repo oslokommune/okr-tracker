@@ -3,7 +3,6 @@
     <div class="widgets--left">
       <div class="aside--left">
         <div class="widgets">
-          <widget-mission-statement />
           <widget-team />
         </div>
       </div>
@@ -92,7 +91,6 @@ import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
 import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
-import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
@@ -102,7 +100,6 @@ export default {
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
-    WidgetMissionStatement,
     WidgetTeam,
     WidgetProgressHistory,
   },
