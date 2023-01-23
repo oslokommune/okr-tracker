@@ -180,7 +180,8 @@
     "target": "Target",
     "selectRange": "Select a start and end date",
     "formErrors": "The form contains errors that must be corrected.",
-    "displayedAs": "Displayed as: "
+    "displayedAs": "Displayed as: ",
+    "today": "Today"
   },
   "about": {
     "about": "About",

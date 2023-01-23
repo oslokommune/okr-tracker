@@ -7,6 +7,7 @@ const o = { locale };
 export const dateLong = (d) => format(d, 'PPP', o);
 export const dateLongCompact = (d) => format(d, 'PP', o);
 export const dateShort = (d) => format(d, 'P', o);
+export const dateMonthYear = (d) => format(d, 'MMMM y', o);
 export const dateTimeShort = (d) => format(d, 'Pp', o);
 export const dateTimeLong = (d) => format(d, 'PPPp', o);
 
