@@ -6,23 +6,15 @@
       params: { slug },
     }"
   >
-    <icon-graph class="widgetDashboardEntry__graphIcon" />
-    {{ $t('general.dashboardEntry') }}
-    <icon-chevron-right class="widgetDashboardEntry__chevronRightIcon" />
+    <pkt-icon name="graph" />
+    <span>{{ $t('general.dashboardEntry') }}</span>
+    <pkt-icon name="chevron-right" />
   </router-link>
 </template>
 
 <script>
-import IconGraph from '@/components/IconGraph.vue';
-import IconChevronRight from '@/components/IconChevronRight.vue';
-
 export default {
   name: 'WidgetDashboardEntry',
-
-  components: {
-    IconGraph,
-    IconChevronRight,
-  },
 
   props: {
     slug: {
@@ -36,6 +28,7 @@ export default {
 <style lang="scss" scoped>
 .widgetDashboardEntry {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   margin-bottom: 0.5rem;
   padding: 1.5rem 1rem;
@@ -44,20 +37,21 @@ export default {
   font-size: 1.125rem;
   background: var(--color-secondary-light);
 
-  &__graphIcon {
-    margin-right: 0.5rem;
+  > span {
+    flex-grow: 1;
   }
 
-  &__chevronRightIcon {
-    margin-left: auto;
+  > svg {
+    height: 1.5rem;
+    margin-right: 0.5rem;
   }
 
   &:hover {
     color: var(--color-text-secondary);
     background: var(--color-hover);
 
-    &::v-deep path {
-      fill: white;
+    > svg {
+      --fg-color: var(--color-white);
     }
   }
 }

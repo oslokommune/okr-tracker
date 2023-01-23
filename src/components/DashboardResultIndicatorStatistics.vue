@@ -28,7 +28,7 @@
       <div>
         <span class="progressStatistics__value">
           {{ formatKPIValue(resultIndicator, goal.value) }}
-          <icon-alert-success v-if="isGoalReached" :width="20" :height="20" />
+          <pkt-icon v-if="isGoalReached" name="alert-success" />
         </span>
       </div>
     </div>
@@ -39,14 +39,9 @@
 import { periodDates, dateLongCompact } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import i18n from '@/locale/i18n';
-import IconAlertSuccess from './IconAlertSuccess.vue';
 
 export default {
   name: 'ProgressStatistics',
-
-  components: {
-    IconAlertSuccess,
-  },
 
   props: {
     resultIndicator: {
@@ -171,6 +166,10 @@ export default {
     color: var(--color-text);
     font-weight: 500;
     font-size: typography.$font-size-4;
+
+    svg {
+      height: 1.25rem;
+    }
   }
   &__trend {
     padding: 0.25rem;

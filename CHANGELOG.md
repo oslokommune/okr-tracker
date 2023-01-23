@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+- All custom icon components are now replaced by counterparts from the [Punkt
+  design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
+
 ## [3.2.0] 2023-01-16
 
 ### Added

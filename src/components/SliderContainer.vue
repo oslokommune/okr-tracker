@@ -18,7 +18,7 @@
             }"
             @click.stop="toggle"
           >
-            <icon-close :width="22" :height="22" :fill="iconFillColor" />
+            <pkt-icon name="close" />
           </button>
         </div>
         <div class="sliderContainer__content">
@@ -30,14 +30,8 @@
 </template>
 
 <script>
-import IconClose from '@/components/IconClose.vue';
-
 export default {
   name: 'SliderContainer',
-
-  components: {
-    IconClose,
-  },
 
   props: {
     isOpen: {
@@ -65,11 +59,6 @@ export default {
         ? 'shouldSlideInFromLeft'
         : 'shouldSlideInFromRight';
     },
-    iconFillColor() {
-      return this.hasPrimaryBackground
-        ? 'var(--color-white)'
-        : 'var(--primary-color, #2A2859)';
-    },
   },
 };
 </script>
@@ -96,6 +85,15 @@ export default {
   &__closeButtonContainer {
     padding: 1rem;
     text-align: right;
+
+    svg {
+      --fg-color: var(--color-primary);
+      height: 1.5rem;
+    }
+  }
+
+  &--hasPrimaryBackground &__closeButtonContainer svg {
+    --fg-color: var(--color-white);
   }
 
   &__content {

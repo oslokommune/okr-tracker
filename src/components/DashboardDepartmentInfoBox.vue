@@ -10,11 +10,6 @@ export default {
   name: 'DashboardDepartmentInfoBox',
 
   props: {
-    icon: {
-      type: Function,
-      required: false,
-      default: null,
-    },
     title: {
       type: String,
       required: true,
@@ -37,6 +32,7 @@ export default {
     margin-bottom: 1rem;
 
     svg {
+      height: 1.5rem;
       margin-right: 0.5rem;
     }
   }

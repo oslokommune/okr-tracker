@@ -1,29 +1,22 @@
 <template>
   <header class="siteHeader">
     <button class="btn btn--ter btn-pri" @click="toggleShowAsideLeft">
-      <icon-menu />
+      <pkt-icon name="menu" />
     </button>
     <h1 v-if="title" class="siteHeader__title">
       {{ title }}
     </h1>
     <button v-if="user" class="btn btn--ter btn--pri" @click="toggleShowAsideRight">
-      <icon-user fill="white" />
+      <pkt-icon name="user" />
     </button>
   </header>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import IconMenu from '@/components/IconMenu.vue';
-import IconUser from '@/components/IconUser.vue';
 
 export default {
   name: 'SiteHeader',
-
-  components: {
-    IconMenu,
-    IconUser,
-  },
 
   props: {
     toggleShowAsideLeft: {
@@ -98,6 +91,11 @@ export default {
     @media screen and (min-width: bp(m)) {
       font-size: 1.65rem;
     }
+  }
+
+  svg {
+    --fg-color: var(--color-white);
+    height: 1.75rem;
   }
 }
 </style>

@@ -5,9 +5,11 @@
     class="widgetAdminEdit btn"
     :to="adminLink.path"
   >
-    <icon-edit class="widgetAdminEdit__actionIcon" />
-    {{ adminLink.content }}
-    <icon-chevron-right class="widgetAdminEdit__chevronRightIcon" />
+    <pkt-icon name="edit" />
+    <span>
+      {{ adminLink.content }}
+    </span>
+    <pkt-icon name="chevron-right" />
   </router-link>
 </template>
 
@@ -16,11 +18,6 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'WidgetAdminEdit',
-
-  components: {
-    IconEdit: () => import('@/components/IconEdit.vue'),
-    IconChevronRight: () => import('@/components/IconChevronRight.vue'),
-  },
 
   computed: {
     ...mapState(['activePeriod', 'activeItem', 'activeObjective', 'activeKeyResult']),
@@ -84,6 +81,7 @@ export default {
 
 .widgetAdminEdit {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   margin-bottom: 0.5rem;
   padding: 1.5rem 1rem;
@@ -93,22 +91,21 @@ export default {
   white-space: initial;
   background: var(--color-secondary-light);
 
-  &__actionIcon {
-    flex-shrink: 0;
-    margin-right: 0.5rem;
+  > span {
+    flex-grow: 1;
   }
 
-  &__chevronRightIcon {
-    flex-shrink: 0;
-    margin-left: auto;
+  > svg {
+    height: 1.5rem;
+    margin-right: 0.5rem;
   }
 
   &:hover {
     color: var(--color-text-secondary);
     background: var(--color-hover);
 
-    &::v-deep path {
-      fill: white;
+    > svg {
+      --fg-color: var(--color-white);
     }
   }
 }

@@ -8,11 +8,10 @@
               <h4 class="title-4">{{ $t('general.departmentAbout') }}</h4>
               <dashboard-department-info-box
                 class="dashboard__departmentInfoBox"
-                :icon="() => null"
                 :title="$t('document.mission')"
               >
                 <template #icon>
-                  <icon-hands-globe />
+                  <pkt-icon name="hands-globe" />
                 </template>
                 <HTML-output :html="activeItem.missionStatement" />
               </dashboard-department-info-box>
@@ -21,7 +20,7 @@
                 :title="$t('dashboard.targetAudience')"
               >
                 <template #icon>
-                  <icon-two-people-dancing />
+                  <pkt-icon name="two-people-dancing" />
                 </template>
                 <HTML-output
                   v-if="activeItem.targetAudience"
@@ -35,7 +34,6 @@
                 v-for="product in filteredProducts"
                 :key="product.id"
                 class="dashboard__departmentInfoBox"
-                :icon="() => null"
                 :title="product.name"
               >
                 <HTML-output :html="product.missionStatement" />
@@ -116,8 +114,6 @@ import ObjectiveProgression from '@/components/widgets/ObjectiveProgression.vue'
 import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
 import DashboardDepartmentInfoBox from '@/components/DashboardDepartmentInfoBox.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
-import IconHandsGlobe from '@/components/IconHandsGlobe.vue';
-import IconTwoPeopleDancing from '@/components/IconTwoPeopleDancing.vue';
 import KeyFigure from '@/components/KeyFigure.vue';
 import EmptyState from '@/components/EmptyState.vue';
 import DashboardSection from './DashboardSection.vue';
@@ -130,8 +126,6 @@ export default {
     DashboardResultIndicatorsSection,
     DashboardDepartmentInfoBox,
     HTMLOutput,
-    IconHandsGlobe,
-    IconTwoPeopleDancing,
     KeyFigure,
     EmptyState,
   },
