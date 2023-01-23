@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+- A tab bar has been added to the main item view (organization, department,
+  product) to facilitate easier navigation between relevant sections: OKRs,
+  measurements (previously called "Dashboard") and general about information.
+
 ### Changed
 - All custom icon components are now replaced by counterparts from the [Punkt
   design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
@@ -17,9 +22,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - A green checkmark icon is shown beneath the dashboard result indicator graph
   when the current goal has been reached within the period.
-- A tab bar has been added to the main item view (organization, department,
-  product) to facilitate easier navigation between relevant sections: OKRs,
-  measurements (previously called "Dashboard") and general about information.
 
 ### Changed
 
