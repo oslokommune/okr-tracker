@@ -5,13 +5,13 @@
         v-if="activeItem.missionStatement || activeItem.targetAudience"
         class="item-info__group"
       >
-        <h4 class="title-4">{{ aboutItemTitle }}</h4>
+        <h3 class="title-4">{{ aboutItemTitle }}</h3>
 
         <div class="item-info__content">
           <div v-if="activeItem.missionStatement" class="item-info__box">
-            <h3 class="title-2">
+            <h4 class="title-2">
               <pkt-icon name="hands-globe" />{{ $t('document.mission') }}
-            </h3>
+            </h4>
             <HTML-output :html="activeItem.missionStatement" />
           </div>
 
@@ -25,7 +25,7 @@
       </div>
 
       <div class="item-info__group">
-        <h4 class="title-4">{{ childrenTitle }}</h4>
+        <h3 class="title-4">{{ childrenTitle }}</h3>
 
         <div class="item-info__content item-info__content--grid">
           <div
@@ -33,7 +33,7 @@
             :key="child.id"
             class="item-info__box item-info__box--link"
           >
-            <h3 class="title-2">{{ child.name }}</h3>
+            <h4 class="title-2">{{ child.name }}</h4>
             <HTML-output :html="child.missionStatement" />
           </div>
         </div>
