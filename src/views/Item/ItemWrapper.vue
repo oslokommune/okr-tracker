@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tabs" role="tablist">
+    <nav class="tabs" role="tablist">
       <router-link
         v-for="(tab, index) in tabs"
         :key="index"
@@ -11,7 +11,7 @@
       >
         {{ tab.label }}
       </router-link>
-    </div>
+    </nav>
     <router-view v-show="!loading"></router-view>
   </div>
 </template>
