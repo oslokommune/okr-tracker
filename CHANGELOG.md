@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+- All custom icon components are now replaced by counterparts from the [Punkt
+  design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
+
 ## [3.2.0] 2023-01-16
 
 ### Added
@@ -21,8 +25,6 @@ All notable changes to this project will be documented in this file. The format 
 - Added contextual link to API documentation below curl example.
 - Statistics shown beneath the dashboard result indicator graph (latest value
   and goal) now reflects the selected period.
-- All custom icon components are now replaced by counterparts from the [Punkt
-  design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
 
 ### Removed
 
