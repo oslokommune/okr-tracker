@@ -1,7 +1,16 @@
 <template>
   <div v-if="activeObjective" class="container">
     <div class="widgets--left">
-      <widgets-left class="aside--left"></widgets-left>
+      <router-link
+        class="btn widget__back-button"
+        :to="{
+          name: 'ItemHome',
+          params: { slug: activeObjective.parent.slug },
+        }"
+      >
+        {{ $t('general.back') }}
+        <i class="fa fa-chevron-left"></i>
+      </router-link>
     </div>
 
     <div class="main">
@@ -55,7 +64,6 @@ export default {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsMobile,
   },
 

@@ -1,9 +1,5 @@
 <template>
   <div class="container">
-    <div class="widgets--left">
-      <widgets-left class="aside--left"></widgets-left>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <div class="itemHome__header">
@@ -84,7 +80,6 @@ export default {
   components: {
     WidgetsMobile,
     ActionBar: () => import('@/components/ActionBar.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),

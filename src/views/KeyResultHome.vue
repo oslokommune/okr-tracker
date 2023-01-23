@@ -1,7 +1,20 @@
 <template>
   <div v-if="activeKeyResult" class="container">
     <div class="widgets--left">
-      <widgets-left class="aside--left"></widgets-left>
+      <router-link
+        class="btn widget__back-button"
+        :to="
+          previousUrl
+            ? previousUrl
+            : {
+                name: 'ItemHome',
+                params: { slug: activeKeyResult.parent.slug },
+              }
+        "
+      >
+        {{ $t('general.back') }}
+        <i class="fa fa-chevron-left"></i>
+      </router-link>
     </div>
 
     <div class="main">
@@ -157,7 +170,6 @@ export default {
 
   components: {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetKeyResultProgressDetails: () =>
       import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
