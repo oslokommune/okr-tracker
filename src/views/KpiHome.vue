@@ -91,7 +91,6 @@ import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
 import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
-import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
@@ -100,7 +99,6 @@ export default {
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
-    WidgetTeam,
     WidgetProgressHistory,
   },
 

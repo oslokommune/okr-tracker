@@ -1,7 +1,6 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-team />
       <widget-key-result-notes />
       <widget-key-result-details />
     </div>
@@ -10,7 +9,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
 
@@ -18,7 +16,6 @@ export default {
   name: 'WidgetsKeyResultMobile',
 
   components: {
-    WidgetTeam,
     WidgetKeyResultDetails,
     WidgetKeyResultNotes,
   },

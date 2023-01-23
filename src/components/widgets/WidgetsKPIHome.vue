@@ -17,7 +17,6 @@
           {{ $t('btn.reset') }}
         </button>
       </widget>
-      <widget-team class="widgets--bottom" />
     </div>
   </div>
 </template>
@@ -26,14 +25,12 @@
 import { mapGetters } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 
 export default {
   name: 'WidgetsKPIHome',
 
   components: {
     Widget,
-    WidgetTeam,
   },
 
   props: {
