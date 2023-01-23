@@ -1,8 +1,6 @@
 <template>
   <aside v-if="activeItem">
-    <div class="widgets">
-      <widget-child-items />
-    </div>
+    <div class="widgets"></div>
   </aside>
 </template>
 
@@ -11,10 +9,6 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'WidgetsItemHomeLeft',
-
-  components: {
-    WidgetChildItems: () => import('./WidgetChildItems.vue'),
-  },
 
   computed: {
     ...mapState(['activeItem']),
