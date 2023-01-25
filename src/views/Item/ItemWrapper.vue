@@ -85,7 +85,6 @@ export default {
     background-color: transparent;
     border: unset;
     cursor: pointer;
-    transition: background-color 0.2s;
 
     &.router-link-active {
       position: relative;
