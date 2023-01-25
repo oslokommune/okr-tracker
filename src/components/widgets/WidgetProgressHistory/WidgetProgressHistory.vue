@@ -243,4 +243,8 @@ export default {
 .record__actions {
   display: flex;
 }
+
+td {
+  overflow-wrap: break-word;
+}
 </style>
