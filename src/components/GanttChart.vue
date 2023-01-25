@@ -1,12 +1,6 @@
 <template>
   <div class="gantt">
-    <div
-      class="month-wrapper"
-      @mousedown="startDrag"
-      @mousemove="drag"
-      @mouseup="stopDrag"
-      @mouseleave="stopDrag"
-    >
+    <div class="month-wrapper" @mousedown="startDrag">
       <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
       <div class="months">
         <div
@@ -85,7 +79,6 @@ export default {
       dragSense: 8,
       dragSpeed: 0.25,
       mouseX: null,
-      dragging: false,
     };
   },
 
@@ -141,23 +134,23 @@ export default {
 
     startDrag(e) {
       this.mouseX = e.clientX;
-      this.dragging = true;
+      window.addEventListener('mousemove', this.drag);
+      window.addEventListener('mouseup', this.stopDrag);
     },
 
     drag(e) {
-      if (this.dragging) {
-        if (e.clientX - this.mouseX > this.dragSense) {
-          this.mouseX = e.clientX;
-          this.PPD += this.dragSpeed;
-        } else if (e.clientX - this.mouseX < -this.dragSense) {
-          this.mouseX = e.clientX;
-          this.PPD = Math.max(this.minPPD, this.PPD - this.dragSpeed);
-        }
+      if (e.clientX - this.mouseX > this.dragSense) {
+        this.mouseX = e.clientX;
+        this.PPD += this.dragSpeed;
+      } else if (e.clientX - this.mouseX < -this.dragSense) {
+        this.mouseX = e.clientX;
+        this.PPD = Math.max(this.minPPD, this.PPD - this.dragSpeed);
       }
     },
 
     stopDrag() {
-      this.dragging = false;
+      window.removeEventListener('mousemove', this.drag);
+      window.removeEventListener('mouseup', this.stopDrag);
     },
 
     addMonths,
