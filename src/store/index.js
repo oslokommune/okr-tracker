@@ -179,16 +179,6 @@ export const actions = {
     return true;
   },
 
-  setPreviousUrl: async ({ commit }, payload) => {
-    if (payload.fullPath === '/') {
-      return true;
-    }
-
-    commit('SET_PREVIOUS_URL', payload);
-
-    return true;
-  },
-
   setActiveOrganization: async ({ commit }, payload) => {
     commit('SET_ACTIVE_ORGANIZATION', payload);
     return true;
@@ -226,10 +216,6 @@ export const mutations = {
     state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
   },
 
-  SET_PREVIOUS_URL(state, payload) {
-    state.previousUrl = payload;
-  },
-
   SET_ACTIVE_ORGANIZATION(state, payload) {
     state.activeOrganization = payload;
   },
@@ -265,7 +251,6 @@ export default new Vuex.Store({
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
-    previousUrl: null,
   },
   getters,
   mutations,

@@ -1,21 +1,6 @@
 <template>
   <div v-if="activeKeyResult" class="container">
     <div class="widgets--left">
-      <router-link
-        class="btn widget__back-button"
-        :to="
-          previousUrl
-            ? previousUrl
-            : {
-                name: 'ItemHome',
-                params: { slug: activeKeyResult.parent.slug },
-              }
-        "
-      >
-        {{ $t('general.back') }}
-        <i class="fa fa-chevron-left"></i>
-      </router-link>
-
       <widgets-left class="aside--left"></widgets-left>
     </div>
 
@@ -204,7 +189,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem', 'previousUrl']),
+    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
   },
 
