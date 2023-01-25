@@ -28,7 +28,7 @@ export default firestoreAction(
         .where('archived', '==', false)
         .where('parent', 'in', products);
 
-      await bindFirestoreRef('subKpis', subKpisRef, { maxRefDepth: 0 });
+      await bindFirestoreRef('subKpis', subKpisRef, { maxRefDepth: 1 });
     }
 
     return true;

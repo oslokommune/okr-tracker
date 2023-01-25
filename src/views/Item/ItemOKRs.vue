@@ -6,8 +6,6 @@
 
     <div class="main">
       <div class="main__item">
-        <kpis v-if="kpis.length" :kpis="kpis"></kpis>
-
         <div class="itemHome__header">
           <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
           <tab-list
@@ -88,7 +86,6 @@ export default {
     ActionBar: () => import('@/components/ActionBar.vue'),
     WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
-    Kpis: () => import('@/components/KPIs.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
@@ -107,7 +104,6 @@ export default {
       'activeItem',
       'objectives',
       'keyResults',
-      'kpis',
       'dataLoading',
       'user',
       'periods',

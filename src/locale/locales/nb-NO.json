@@ -168,22 +168,25 @@
     "objective": "Mål",
     "keyResult": "Nøkkelresultat",
     "period": "Periode",
-    "back": "Tilbake",
     "frontPage": "Forside",
     "signIn": "Vennligst logg inn",
     "orgs": "Virksomheter",
     "emptyHome": "Vennligst velg en etat fra listen.",
     "api": "API",
     "resultIndicator": "Resultatindikator",
-    "departmentObjectives": "Områdets mål",
-    "departmentAbout": "Om produktområdet",
-    "dashboardEntry": "Dashbord",
-    "keyFigures": "KPI-er",
+    "keyFigures": "Nøkkeltall",
+    "otherMeasurements": "Andre målinger",
     "value": "Verdi",
     "target": "Målsetting",
     "selectRange": "Velg start- og sluttdato",
     "formErrors": "Skjemaet inneholder feil som må rettes.",
     "displayedAs": "Vises som: "
+  },
+  "about": {
+    "about": "Om",
+    "aboutOrganization": "Om organisasjonen",
+    "aboutDepartment": "Om området",
+    "aboutProduct": "Om produktet"
   },
   "btn": {
     "close": "Lukk",
@@ -207,7 +210,8 @@
     "confirmDelete": "Bekreft sletting",
     "reset": "Nullstill",
     "showMore": "Vis mer",
-    "syncData": "Synkroniser data"
+    "syncData": "Synkroniser data",
+    "moreDetails": "Flere detaljer"
   },
   "login": {
     "login": "Logg inn",
@@ -358,7 +362,6 @@
     "changeView": "Endre visning til {view}",
     "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
     "editKpi": "Endre detaljer eller slett KPI",
-    "navigateToItem": "Gå til {item}",
     "editProgress": "Endre målepunkt",
     "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",

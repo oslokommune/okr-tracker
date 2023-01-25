@@ -1,14 +1,6 @@
 <template>
   <div v-if="activeKpi" class="container">
     <div class="widgets--left">
-      <router-link
-        class="btn widget__back-button"
-        :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
-      >
-        {{ $t('general.back') }}
-        <i class="fa fa-chevron-left"></i>
-      </router-link>
-
       <div class="aside--left">
         <div class="widgets">
           <widget-mission-statement />
@@ -128,7 +120,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKpi', 'activeItem']),
+    ...mapState(['activeKpi']),
     ...mapGetters(['hasEditRights']),
   },
 

@@ -46,9 +46,10 @@ export default {
       if (
         (parts.includes('ItemHome') ||
           parts.includes('ItemAdmin') ||
+          parts.includes('ItemMeasurements') ||
+          parts.includes('ItemAbout') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome') ||
-          parts.includes('Dashboard') ||
           parts.includes('KpiHome')) &&
         this.activeItem
       ) {

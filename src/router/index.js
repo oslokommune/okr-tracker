@@ -79,13 +79,29 @@ const routes = [
   },
   {
     path: '/:slug',
-    component: () => import('@/views/ItemWrapper.vue'),
+    component: () => import('@/views/Item/ItemWrapper.vue'),
     beforeEnter: routerGuards.itemHome,
     children: [
       {
         path: '',
+        redirect: { name: 'ItemHome' },
+      },
+      {
+        path: 'okr',
         name: 'ItemHome',
-        component: () => import('@/views/ItemHome.vue'),
+        component: () => import('@/views/Item/ItemOKRs.vue'),
+        beforeEnter: routerGuards.itemHome,
+      },
+      {
+        path: 'measurements',
+        name: 'ItemMeasurements',
+        component: () => import('@/views/Item/ItemMeasurements.vue'),
+        beforeEnter: routerGuards.dashboard,
+      },
+      {
+        path: 'about',
+        name: 'ItemAbout',
+        component: () => import('@/views/Item/ItemAbout.vue'),
         beforeEnter: routerGuards.itemHome,
       },
       {
@@ -97,8 +113,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/Dashboard/DashboardHome.vue'),
-        beforeEnter: routerGuards.dashboard,
+        redirect: { name: 'ItemMeasurements' },
       },
       {
         path: 'k/:keyResultId',

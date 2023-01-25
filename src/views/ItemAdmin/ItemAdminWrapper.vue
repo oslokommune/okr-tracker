@@ -2,15 +2,6 @@
   <div class="container">
     <div class="itemAdmin">
       <div class="itemAdmin__tabList">
-        <router-link
-          v-tooltip.bottom="$t('tooltip.navigateToItem', { item: activeItem.name })"
-          class="itemAdmin__backToItemLink"
-          :to="{ name: 'ItemHome', params: { slug: activeItem.slug } }"
-          exact
-        >
-          <i class="tab__icon fa fa-arrow-right" />
-          {{ activeItem.name }}
-        </router-link>
         <tab-list
           aria-label="Velg periode"
           :tabs="tabs"
@@ -29,7 +20,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import TabList from '@/components/TabList.vue';
 import TabPanel from '@/components/TabPanel.vue';
 import tabIdsHelper from '@/util/tabUtils';
@@ -55,7 +45,6 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem']),
     tabs() {
       return [
         {

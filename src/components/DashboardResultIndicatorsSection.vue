@@ -48,12 +48,28 @@
         xmlns="http://www.w3.org/2000/svg"
       />
 
-      <dashboard-result-indicator-statistics
-        v-if="activeResultIndicator"
-        :result-indicator="activeResultIndicator"
-        :progress="filteredProgressSorted"
-        :goal="goal"
-      />
+      <div class="progressGraph__footer">
+        <dashboard-result-indicator-statistics
+          v-if="activeResultIndicator"
+          :result-indicator="activeResultIndicator"
+          :progress="filteredProgressSorted"
+          :goal="goal"
+        />
+
+        <router-link
+          v-if="activeResultIndicator"
+          :to="{
+            name: 'KpiHome',
+            params: {
+              slug: activeResultIndicator.parent.slug,
+              kpiId: activeResultIndicator.id,
+            },
+          }"
+          class="btn btn--ter btn--icon"
+        >
+          {{ $t('btn.moreDetails') }} <i class="icon fa fa-fw fa-chevron-right" />
+        </router-link>
+      </div>
     </tab-panel>
   </div>
   <empty-state
@@ -548,5 +564,22 @@ export default {
 
 .progressGraph {
   padding: 1rem 1rem 0 0.25rem;
+
+  &__footer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    min-height: 6rem;
+    border-top: 1px solid var(--color-grey-100);
+
+    > .progressStatistics {
+      flex: 1 1 auto;
+    }
+
+    > .btn {
+      flex: 0 1 auto;
+      margin-right: 1.5rem;
+    }
+  }
 }
 </style>

@@ -138,12 +138,9 @@ export default {
 .progressStatistics {
   display: grid;
   gap: 2rem;
-  min-height: 6rem;
-  margin-top: 0.5rem;
   padding: 1.5rem;
-  border-top: 1px solid var(--color-grey-100);
 
-  @each $bp, $cols in (s: 2, m: 3, l: 4) {
+  @each $bp, $cols in (s: 2, m: 3) {
     @media screen and (min-width: bp(#{$bp})) {
       grid-template-columns: repeat(#{$cols}, 1fr);
     }

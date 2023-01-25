@@ -128,6 +128,21 @@ body.using-mouse :focus {
   margin-top: 0.5rem;
 }
 
+.centered-container {
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: 3rem 4rem 4rem 4rem;
+
+  > section {
+    margin-bottom: 4rem;
+
+    .title-1 {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+  }
+}
+
 .main__item {
   padding: 1.5rem 1.75rem;
   color: var(--color-text);
