@@ -35,14 +35,12 @@
     </div>
 
     <widgets-right class="aside--right" />
-    <widgets-mobile class="aside--bottom" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
-import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 
 export default {
   name: 'ObjectiveHome',
@@ -51,7 +49,6 @@ export default {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    WidgetsMobile,
   },
 
   beforeRouteUpdate: routerGuard,

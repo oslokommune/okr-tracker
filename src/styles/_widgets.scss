@@ -104,15 +104,6 @@
   }
 }
 
-.aside--bottom {
-  width: span(12);
-  margin-top: 0.5rem;
-
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
-}
-
 .aside__link--edit-rights {
   display: flex;
   justify-content: space-between;

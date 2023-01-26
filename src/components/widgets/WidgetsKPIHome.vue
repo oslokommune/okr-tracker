@@ -80,10 +80,4 @@ export default {
 .widgets__kpi {
   padding: 0.5rem;
 }
-
-.widgets--bottom {
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
-}
 </style>
