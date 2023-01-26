@@ -12,8 +12,6 @@
   "kpi": {
     "add": "Add measurement",
     "placeholderName": "New measurement",
-    "edit": "Edit KPI",
-    "change": "Change KPI",
     "currentValue": "Current value",
     "latestValueTitle": "Latest value per {formattedDate}",
     "progress": "Progress",
@@ -35,7 +33,7 @@
     },
     "updateFrequency": {
       "label": "Update frequency",
-      "help": "The frequency with which the KPI is expected to be updated with progress data. Used to determine whether a KPI's previous update was within the given interval, or if it should be considered outdated.",
+      "help": "The frequency with which the measurement is expected to be updated with progress data. Used to determine whether a measurement's previous update was within the given interval, or if it should be considered outdated.",
       "frequencies": {
         "annual": "Annual",
         "daily": "Daily",
@@ -47,22 +45,22 @@
     },
     "types": {
       "plain": {
-        "label": "KPI",
-        "description": "KPIs are measurements that the team or department whishes to keep an eye on. KPIs are displayed on the top of the team or department page they belong to."
+        "label": "Measurement",
+        "description": "A measurement that the team or department whishes to keep an eye on. These are only displayed under the same item's measurement tab."
       },
       "keyFigure": {
-        "label": "KPI on dashboard",
-        "description": "Is the KPI so important that it should be shown on the department's dashboard for reporting?"
+        "label": "Key figure",
+        "description": "The measurement is considered important to the team and/or department. If the measurement is registered for a product, it is also displayed as a key figure for the parent department."
       },
       "resultIndicator": {
         "label": "Result indicator",
-        "description": "Is the KPI so important that it is defined as a result indicator for the department and has a target figure? The result indicator is also shown on the dashboard."
+        "description": "The measurement is considered especially important as an indicator of achievement. If the measurement is registered for a product, it is also displayed as a result indicator for the parent department."
       }
     },
     "heading": "Measurements",
     "itemRowError": "error",
     "help": {
-      "updates": "KPIs can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating KPIs {readMoreLink} (in Norwegian).",
+      "updates": "Measurements can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating measurements {readMoreLink} (in Norwegian).",
       "readMoreHere": "here",
       "apiProgress": "New measurements can be registered with {apiLink} calls, for instance by using curl as shown below."
     },
@@ -76,7 +74,7 @@
       "set": "Set goals",
       "edit": "Edit goals",
       "the": "the goal",
-      "help": "KPIs can have goals for specific periods. As of now, only goals for result indicators are shown on the dashboard, but this is subject to change.",
+      "help": "Measurements can have goals for specific periods. As of now, only goals for result indicators are shown, but this is subject to change.",
       "goalTitle": "Goal for {formattedDateRange}"
     }
   },
@@ -253,7 +251,7 @@
       "keyResult": "Created new key result",
       "period": "Created new period",
       "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
-      "kpi": "Created new KPI",
+      "kpi": "Created new measurement",
       "progress": "Created new value"
     },
     "delete": {
@@ -281,7 +279,7 @@
       "users": "Could not add user | users",
       "user": "Could not delete user {user}",
       "email": "Invalid email address",
-      "kpi": "Could not create KPI",
+      "kpi": "Could not create measurement",
       "notes": "Could not update notes",
       "addProgress": "Could not add value",
       "deleteProgress": "Could not delete value",
@@ -362,8 +360,7 @@
     "openMenu": "Open menu",
     "keyResultValue": "Insert new value",
     "changeView": "Change view to {view}",
-    "editItem": "Create, update or delete periods, objectives, key results and KPIs",
-    "editKpi": "Update details or delete KPI",
+    "editItem": "Create, update or delete periods, objectives, key results and measurements",
     "editProgress": "Edit value",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
@@ -375,7 +372,7 @@
     "mission": "Mission statement"
   },
   "admin": {
-    "apiSecret": "If you are using the API to update Key Results and/or KPI, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
+    "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "curlHelp": "Push updates via {apiLink}, i.e. using curl.",
     "apiDocs": "API documentation",
     "department": {
@@ -446,7 +443,7 @@
   },
   "empty": {
     "noKeyResultProgress": "This key result has no registered values.",
-    "noKPIProgress": "This KPI has no registered values.",
+    "noKPIProgress": "This measurement has no registered values.",
     "noKeyResults": {
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
@@ -457,25 +454,26 @@
       "body": "Oops! Could not find any result indicators.",
       "linkText": "Create a result indicator"
     },
+    "noKeyFigures": {
+      "heading": "No key figures",
+      "body": "Oops! Could not find any key figures.",
+      "linkText": "Create a key figure"
+    },
     "itemAdmin": {
       "keyResult": "No key results for selected objective",
       "objective": "No objectives for selected period",
       "period": "No periods"
     },
     "noKPIs": {
-      "heading": "No KPIs",
-      "body": "Oops! Could not find any KPIs.",
-      "adminBody": "Add KPIs that automatically fetch data from Google Sheets.",
-      "linkText": "Create a KPI"
+      "heading": "No measurements",
+      "body": "Oops! Could not find any measurements.",
+      "adminBody": "Add measurement that automatically fetch data from Google Sheets.",
+      "linkText": "Create a measurement"
     },
     "noPeriods": {
       "heading": "Empty?",
       "body": "It looks like there are no objectives and key results here ...",
       "buttonText": "Create objectives and key results"
-    },
-    "kpiProgress": {
-      "body": "Could not find historical data for this KPI",
-      "heading": "No history found"
     },
     "team": {
       "body": "Team Ninja much?",

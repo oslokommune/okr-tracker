@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 - All custom icon components are now replaced by counterparts from the [Punkt
   design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
+- KPIs are now generally called "measurements" in the frontend. The different
+  types of KPIs are kept as respectively "result indicators", "key figures" and
+  (plain) "measurements".
 
 ### Fixed
 - Period progression is now updated when an objective is moved between periods.
