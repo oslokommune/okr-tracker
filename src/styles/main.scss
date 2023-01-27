@@ -105,18 +105,10 @@ body.using-mouse :focus {
   position: relative;
   width: span(12);
 
-  @media screen and (min-width: bp(m)) {
+  @media screen and (min-width: bp(l)) {
     width: span(8);
     margin-right: span(0, 1);
-    margin-left: span(0, 1);
-  }
-}
-
-.aside {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2);
+    margin-left: span(2, 1);
   }
 }
 
@@ -125,20 +117,17 @@ body.using-mouse :focus {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  margin-top: 0.5rem;
+  padding: span(0, 4) 0 span(0, 8) 0;
 }
 
-.centered-container {
-  max-width: 74rem;
-  margin: 0 auto;
-  padding: 3rem 4rem 4rem 4rem;
+.aside {
+  width: span(12);
 
-  > section {
-    margin-bottom: 4rem;
+  @media screen and (min-width: bp(l)) {
+    width: span(2);
 
-    .title-1 {
-      color: var(--color-text);
-      font-weight: 500;
+    + .main {
+      margin-left: span(0, 1);
     }
   }
 }

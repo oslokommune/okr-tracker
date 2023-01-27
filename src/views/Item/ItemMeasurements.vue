@@ -1,40 +1,42 @@
 <template>
-  <main class="centered-container">
-    <section>
-      <h2 class="title-1">
-        {{ $t('general.resultIndicator') }}
-      </h2>
-      <dashboard-result-indicators-section />
-    </section>
+  <div class="container">
+    <main class="main">
+      <section>
+        <h2 class="title-1">
+          {{ $t('general.resultIndicator') }}
+        </h2>
+        <dashboard-result-indicators-section />
+      </section>
 
-    <section>
-      <h2 class="title-1">
-        {{ $t('general.keyFigures') }}
-      </h2>
-      <kpi-grid v-if="keyFigures.length" :kpis="keyFigures" />
-      <empty-state
-        v-else
-        :icon="'exclamation'"
-        :heading="$t('empty.noKeyFigures.heading')"
-        :body="$t('empty.noKeyFigures.body')"
-      >
-        <router-link
-          v-if="hasEditRights"
-          :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
-          class="btn btn--ter"
+      <section>
+        <h2 class="title-1">
+          {{ $t('general.keyFigures') }}
+        </h2>
+        <kpi-grid v-if="keyFigures.length" :kpis="keyFigures" />
+        <empty-state
+          v-else
+          :icon="'exclamation'"
+          :heading="$t('empty.noKeyFigures.heading')"
+          :body="$t('empty.noKeyFigures.body')"
         >
-          {{ $t('empty.noKeyFigures.linkText') }}
-        </router-link>
-      </empty-state>
-    </section>
+          <router-link
+            v-if="hasEditRights"
+            :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+            class="btn btn--ter"
+          >
+            {{ $t('empty.noKPIs.linkText') }}
+          </router-link>
+        </empty-state>
+      </section>
 
-    <section v-if="otherKpis.length">
-      <h2 class="title-1">
-        {{ $t('general.otherMeasurements') }}
-      </h2>
-      <kpi-grid v-if="otherKpis.length" :kpis="otherKpis" />
-    </section>
-  </main>
+      <section v-if="otherKpis.length">
+        <h2 class="title-1">
+          {{ $t('general.otherMeasurements') }}
+        </h2>
+        <kpi-grid v-if="otherKpis.length" :kpis="otherKpis" />
+      </section>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -69,3 +71,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.main {
+  > section {
+    margin-bottom: 4rem;
+
+    .title-1 {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+  }
+}
+</style>

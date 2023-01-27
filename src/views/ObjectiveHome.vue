@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <widgets-right class="aside--right" />
+    <widgets-right />
   </div>
 </template>
 

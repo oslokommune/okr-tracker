@@ -40,13 +40,6 @@
           </div>
         </div>
 
-        <widgets-k-p-i-home
-          class="aside--middle"
-          :range="range"
-          :progress="progress"
-          @listen="handleChange"
-        />
-
         <widget-progress-history
           :progress="filteredProgress"
           :is-loading="isLoading"
@@ -66,7 +59,7 @@
     </div>
 
     <widgets-k-p-i-home
-      class="aside--right"
+      v-if="filteredProgress.length"
       :range="range"
       :progress="progress"
       @listen="handleChange"

@@ -1,65 +1,67 @@
 <template>
-  <main class="centered-container">
-    <section class="item-info">
-      <div
-        v-if="activeItem.missionStatement || activeItem.targetAudience"
-        class="item-info__group"
-      >
-        <h3 class="title-3">{{ aboutItemTitle }}</h3>
+  <div class="container">
+    <main class="main">
+      <section class="item-info">
+        <div
+          v-if="activeItem.missionStatement || activeItem.targetAudience"
+          class="item-info__group"
+        >
+          <h3 class="title-3">{{ aboutItemTitle }}</h3>
 
-        <div class="item-info__content">
-          <div v-if="activeItem.missionStatement" class="item-info__box">
-            <h4 class="title-2">
-              <pkt-icon name="hands-globe" />{{ $t('document.mission') }}
-            </h4>
-            <HTML-output :html="activeItem.missionStatement" />
-          </div>
+          <div class="item-info__content">
+            <div v-if="activeItem.missionStatement" class="item-info__box">
+              <h4 class="title-2">
+                <pkt-icon name="hands-globe" />{{ $t('document.mission') }}
+              </h4>
+              <HTML-output :html="activeItem.missionStatement" />
+            </div>
 
-          <div v-if="activeItem.targetAudience" class="item-info__box">
-            <h3 class="title-2">
-              <pkt-icon name="two-people-dancing" />{{ $t('dashboard.targetAudience') }}
-            </h3>
-            <HTML-output :html="activeItem.targetAudience" />
-          </div>
-        </div>
-      </div>
-
-      <div v-if="children" class="item-info__group">
-        <h3 class="title-3">{{ childrenTitle }}</h3>
-
-        <div class="item-info__content item-info__content--grid">
-          <div
-            v-for="child in children"
-            :key="child.id"
-            class="item-info__box item-info__box--link"
-          >
-            <h4 class="title-2">{{ child.name }}</h4>
-            <HTML-output :html="child.missionStatement" />
+            <div v-if="activeItem.targetAudience" class="item-info__box">
+              <h3 class="title-2">
+                <pkt-icon name="two-people-dancing" />{{ $t('dashboard.targetAudience') }}
+              </h3>
+              <HTML-output :html="activeItem.targetAudience" />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section v-if="teamMembers" class="item-info">
-      <div class="item-info__group">
-        <h3 class="title-3">{{ $t('general.team') }}</h3>
+        <div v-if="children" class="item-info__group">
+          <h3 class="title-3">{{ childrenTitle }}</h3>
 
-        <role-members
-          v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
-          :key="role"
-          :role="role"
-          :members-with-role="teamMembers[role]"
-          @openModal="openProfileModal"
+          <div class="item-info__content item-info__content--grid">
+            <div
+              v-for="child in children"
+              :key="child.id"
+              class="item-info__box item-info__box--link"
+            >
+              <h4 class="title-2">{{ child.name }}</h4>
+              <HTML-output :html="child.missionStatement" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section v-if="teamMembers" class="item-info">
+        <div class="item-info__group">
+          <h3 class="title-3">{{ $t('general.team') }}</h3>
+
+          <role-members
+            v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
+            :key="role"
+            :role="role"
+            :members-with-role="teamMembers[role]"
+            @openModal="openProfileModal"
+          />
+        </div>
+
+        <profile-modal
+          v-if="showProfileModal"
+          :id="chosenProfileId"
+          @close="closeProfileModal"
         />
-      </div>
-
-      <profile-modal
-        v-if="showProfileModal"
-        :id="chosenProfileId"
-        @close="closeProfileModal"
-      />
-    </section>
-  </main>
+      </section>
+    </main>
+  </div>
 </template>
 
 <script>

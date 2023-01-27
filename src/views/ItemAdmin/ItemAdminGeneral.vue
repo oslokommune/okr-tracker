@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeItem" class="form-wrapper form-card">
+  <div v-if="activeItem" class="form-card">
     <archived-restore v-if="activeItem.archived" :restore="restore" />
 
     <form-section>

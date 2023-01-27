@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="home-widget">
+    <aside class="aside">
       <section class="widget">
         <header class="widget__header">
           <span class="widget__title">{{ appOwner }}</span>
@@ -47,9 +47,9 @@
           </ul>
         </div>
       </section>
-    </div>
+    </aside>
 
-    <ul v-if="user" class="home">
+    <ul v-if="user" class="main">
       <li v-if="!hasCheckedOrganizations" class="tree empty-state">
         {{ $t('general.emptyHome') }}
       </li>
@@ -145,33 +145,6 @@ export default {
 .tree__organization {
   padding: 0 1rem;
   text-transform: uppercase;
-}
-
-.home {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(9.5);
-    margin-left: span(0, 1);
-  }
-}
-
-.home-widget {
-  width: span(12);
-
-  @media screen and (min-width: bp(m)) {
-    width: span(2.5);
-  }
-}
-
-.main-view {
-  position: relative;
-  width: span(12);
-  padding: 1.5rem 0;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(8, span(10));
-  }
 }
 
 .indent {

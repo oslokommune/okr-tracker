@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <widgets-right class="aside--right" />
+    <widgets-right class="aside" />
   </div>
 </template>
 
