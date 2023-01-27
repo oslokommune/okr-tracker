@@ -1,14 +1,17 @@
 <template>
-  <div
-    v-tooltip="`${progression}%`"
-    class="progression__container"
-    :class="{ 'progression__container--isCompact': isCompact }"
-  >
-    <div class="progression__bar" :style="{ width: progressBarWidth }"></div>
+  <div v-tooltip="label" class="progress">
+    <progress
+      :class="{ 'progress--isCompact': isCompact, 'progress--dark': dark }"
+      max="100"
+      :value="Math.min(progression, 100)"
+      :aria-label="label"
+    />
   </div>
 </template>
 
 <script>
+import i18n from '@/locale/i18n';
+
 export default {
   name: 'ProgressBar',
 
@@ -21,37 +24,50 @@ export default {
       type: Boolean,
       default: true,
     },
+    dark: {
+      type: Boolean,
+      default: false,
+    },
   },
-  computed: {
-    progressBarWidth() {
-      if (!this.progression || this.progression < 0) {
-        return 0;
-      }
-      if (this.progression > 100) {
-        return '100%';
-      }
 
-      return `${this.progression}%`;
+  computed: {
+    label() {
+      return i18n.t('progress.complete', {
+        progress: Math.round(this.progression),
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.progression__container {
-  position: relative;
+progress {
+  display: block;
   width: 100%;
   height: 0.625rem;
-  margin-right: 1rem;
-  background: var(--color-blue-dark-40);
+  border: 0;
+  border-radius: 0;
 
-  &--isCompact {
+  &[value],
+  &[value]::-webkit-progress-bar {
+    background: var(--color-gray);
+  }
+
+  &[value]::-webkit-progress-value {
+    background: var(--color-secondary);
+  }
+
+  &[value]::-moz-progress-bar {
+    background: var(--color-secondary);
+  }
+
+  &.progress--isCompact {
     height: 0.3125rem;
   }
-}
 
-.progression__bar {
-  height: 100%;
-  background: var(--color-secondary);
+  &.progress--dark[value],
+  &.progress--dark[value]::-webkit-progress-bar {
+    background: var(--color-blue-dark-40);
+  }
 }
 </style>

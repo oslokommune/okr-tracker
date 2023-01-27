@@ -38,13 +38,10 @@
         </div>
       </div>
 
-      <progress-bar
-        v-tooltip="`${progression}%`"
-        class="progress-bar"
-        :progression="progression"
-      />
-
-      <i class="item__chevron fas fa-chevron-right" />
+      <div class="item__progress">
+        <progress-bar :progression="progression" />
+        <i class="item__chevron fas fa-chevron-right" />
+      </div>
     </router-link>
   </div>
 </template>
@@ -172,18 +169,25 @@ export default {
   transition: all 0.1s ease-in;
 }
 
-.progress-bar {
-  flex-shrink: 0;
-  width: span(1, 0, span(6)) !important;
-  margin-top: 0.5rem;
+.item__progress {
+  display: flex;
+  flex: 0 1 10rem;
+  gap: 1rem;
+  align-items: flex-start;
 
   @media screen and (min-width: bp(l)) {
-    width: span(2, 0, span(6));
+    flex-basis: 13rem;
+  }
+
+  .progress {
+    flex: 1 1 auto;
+    margin-top: 0.5rem;
   }
 }
 
 .item__kpis {
   display: none;
+  flex: 1 1 min-content;
   flex-flow: row-reverse wrap;
   margin-top: 0.15rem;
   margin-right: 1rem;

@@ -579,6 +579,7 @@
     "done": "done",
     "remaining": "{unit} remaining",
     "remainingOf": "of {progress}",
+    "complete": "{progress}% complete",
     "completedMessages": {
       "1": "You guys are nailing it!",
       "2": "Well done, guys!",

@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file. The format 
   (plain) "measurements".
 - Any currently active period is now focused by default, instead of most
   recent, when visiting the OKR view.
+- Progress bar styling has been improved for better differentiation between the
+  empty and filled state.
 
 ### Fixed
 - Period progression is now updated when an objective is moved between periods.

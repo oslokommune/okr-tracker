@@ -577,6 +577,7 @@
     "done": "fullført",
     "remaining": "{unit} gjenstår",
     "remainingOf": "av {progress}",
+    "complete": "{progress} % fullført",
     "completedMessages": {
       "1": "Nå er dere gode!",
       "2": "Dødsbra jobba, folkens!",
