@@ -9,7 +9,8 @@ name: Deploy to Firebase Hosting on merge
   
 env:
   VITE_API_KEY: ${{secrets.FIREBASE_API_KEY_OKR_TRACKER_KNOWIT_TEST}}
-  
+  VITE_PROJECT_ID: okr-tracker-test
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
