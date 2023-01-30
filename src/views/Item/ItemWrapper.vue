@@ -7,7 +7,6 @@
         :to="{ name: tab.route }"
         class="btn btn--sec tabs__tab"
         role="tab"
-        tabindex="0"
       >
         {{ tab.label }}
       </router-link>
