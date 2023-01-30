@@ -3,7 +3,9 @@
     <h4 class="role-group__title">{{ $t('user.position.groups.' + role) }}</h4>
     <div class="role-group__members-list">
       <span v-for="member in membersWithRole" :key="member.id" class="role-group__member">
-        <a @click="openProfileModal(member.id)">{{ member.displayName || firstPartOfEmail(member.id) }}</a>
+        <a @click="openProfileModal(member.id)">{{
+          member.displayName || firstPartOfEmail(member.id)
+        }}</a>
       </span>
     </div>
   </div>
