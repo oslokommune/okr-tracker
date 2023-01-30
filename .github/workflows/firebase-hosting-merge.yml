@@ -6,6 +6,10 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - develop
+  
+env:
+  VITE_API_KEY: ${{secrets.FIREBASE_API_KEY_OKR_TRACKER_KNOWIT_TEST}}
+  
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
