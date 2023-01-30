@@ -8,14 +8,14 @@ name: Deploy to Firebase Hosting on merge
       - develop
   
 env:
-  VITE_API_KEY: ${{secrets.VITE_API_KEY}}
-  VITE_DATABASE_URL: ${{secrets.VITE_DATABASE_URL}}
+  VITE_API_KEY: ${{secrets.VITE_API_KEY_DEVELOP}}
+  VITE_DATABASE_URL: ${{secrets.VITE_DATABASE_URL_DEVELOP}}
   VITE_PROJECT_ID: okr-tracker-test
   VITE_AUTH_DOMAIN: okr-tracker-test.firebaseapp.com
   VITE_STORAGE_BUCKET: okr-tracker-test.appspot.com
-  VITE_MESSAGING_SENDER_ID: ${{secrets.VITE_MESSAGING_SENDER_ID}}
-  VITE_APP_ID: ${{secrets.VITE_APP_ID}}
-  VITE_SHEETS_SERVICE_ACCOUNT: ${{secrets.VITE_SHEETS_SERVICE_ACCOUNT}}
+  VITE_MESSAGING_SENDER_ID: ${{secrets.VITE_MESSAGING_SENDER_ID_DEVELOP}}
+  VITE_APP_ID: ${{secrets.VITE_APP_ID_DEVELOP}}
+  VITE_SHEETS_SERVICE_ACCOUNT: ${{secrets.VITE_SHEETS_SERVICE_ACCOUNT_DEVELOP}}
   VITE_I18N_LOCALE: nb-NO
   VITE_REGION: europe-west2
   VITE_LOGIN_PROVIDERS: google-email
