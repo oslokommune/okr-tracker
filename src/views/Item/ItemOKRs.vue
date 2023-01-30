@@ -69,7 +69,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
-import { isBefore, addDays } from 'date-fns';
+import { isBefore, addDays, isWithinInterval } from 'date-fns';
 import tabIdsHelper from '@/util/tabUtils';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
@@ -154,7 +154,9 @@ export default {
 
   created() {
     if (this.filteredPeriods.length > 0) {
-      this.setPeriod(this.filteredPeriods[0].id);
+      const defaultPeriodIndex = this.getCurrentPeriodIndex() || 0;
+      this.setPeriod(this.filteredPeriods[defaultPeriodIndex].id);
+      this.setActiveTab(defaultPeriodIndex);
     }
   },
 
@@ -182,6 +184,24 @@ export default {
       const activePeriodId = this.filteredPeriods[tabIndex].id;
       await this.setPeriod(activePeriodId);
       this.setActiveTab(tabIndex);
+    },
+
+    getCurrentPeriodIndex() {
+      const now = new Date();
+
+      for (const [index, period] of this.filteredPeriods.entries()) {
+        if (
+          period.startDate &&
+          period.endDate &&
+          isWithinInterval(now, {
+            start: period.startDate.toDate(),
+            end: period.endDate.toDate(),
+          })
+        ) {
+          return index;
+        }
+      }
+      return null;
     },
   },
 };
