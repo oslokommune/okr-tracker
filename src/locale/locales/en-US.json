@@ -467,7 +467,7 @@
     "noKPIs": {
       "heading": "No measurements",
       "body": "Oops! Could not find any measurements.",
-      "adminBody": "Add measurement that automatically fetch data from Google Sheets.",
+      "adminBody": "Add measurement that automatically fetches data from Google Sheets.",
       "linkText": "Create a measurement"
     },
     "noPeriods": {
