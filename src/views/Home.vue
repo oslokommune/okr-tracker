@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <aside class="aside">
+    <aside class="aside aside--left">
       <section class="widget">
         <header class="widget__header">
           <span class="widget__title">{{ appOwner }}</span>

@@ -117,7 +117,7 @@ body.using-mouse :focus {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  padding: span(0, 4) 0 span(0, 8) 0;
+  padding: span(0, 3) 0 span(0, 6) 0;
 }
 
 .aside {
@@ -126,14 +126,14 @@ body.using-mouse :focus {
   @media screen and (min-width: bp(l)) {
     width: span(2);
 
-    + .main {
+    &--left + .main {
       margin-left: span(0, 1);
     }
   }
 }
 
 .main__item {
-  padding: 1.5rem 1.75rem;
+  padding: 2rem 1.75rem;
   color: var(--color-text);
   background: linear-gradient(
     180deg,

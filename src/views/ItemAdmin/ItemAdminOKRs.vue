@@ -453,20 +453,13 @@ export default {
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
 
-  @media screen and (min-width: bp(s)) {
+  @media screen and (min-width: bp(m)) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
   @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(6, 0, span(10));
+    width: span(5, 0, span(8));
+    margin-right: span(0, 1, span(8));
   }
 }
 
@@ -474,11 +467,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-left: 2px solid var(--color-grayscale-10);
-
-  &:first-child {
-    border-left: none;
-  }
+  border-top: 2px solid var(--color-grayscale-10);
 
   @media screen and (min-width: bp(s)) {
     min-height: 15rem;
@@ -486,6 +475,8 @@ export default {
 
   @media screen and (min-width: bp(m)) {
     min-height: 25rem;
+    border-top: none;
+    border-left: 2px solid var(--color-grayscale-10);
   }
 }
 
@@ -561,14 +552,8 @@ export default {
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;
-    width: span(3, 0, span(10));
+    width: span(3, 0, span(8));
     margin-top: 0;
-    margin-left: span(0, 1, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(3, 0, span(10));
-    margin-left: span(1, 2, span(10));
   }
 }
 </style>
