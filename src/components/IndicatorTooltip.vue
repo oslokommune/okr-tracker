@@ -52,6 +52,7 @@ export default {
     margin: 0.5rem 0;
     font-weight: 500;
     font-size: typography.$font-size-1;
+    overflow-wrap: break-word;
   }
 
   .date {

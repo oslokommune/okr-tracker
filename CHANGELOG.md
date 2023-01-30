@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 - Period progression is now updated when an objective is moved between periods.
+- Fixed a bug causing text to sometimes overflow in tooltips and progress
+  history tables.
 
 ## [3.2.0] 2023-01-16
 
