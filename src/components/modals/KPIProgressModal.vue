@@ -125,7 +125,10 @@ export default {
     },
     recordValue: {
       get() {
-        return this.typePercentage ? this.thisRecord.value * 100 : this.thisRecord.value;
+        const n = this.typePercentage
+          ? this.thisRecord.value * 100
+          : this.thisRecord.value;
+        return parseFloat(n.toFixed(4));
       },
       set(val) {
         this.thisRecord.value = this.typePercentage ? val / 100 : val;
