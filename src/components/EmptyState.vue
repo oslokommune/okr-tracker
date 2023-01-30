@@ -70,7 +70,7 @@ export default {
 .empty__body {
   color: var(--color-grey-300);
   line-height: 1.2;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .empty__actions {
