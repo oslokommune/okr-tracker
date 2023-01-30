@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file. The format 
 - Period progression is now updated when an objective is moved between periods.
 - Fixed a bug causing text to sometimes overflow in tooltips and progress
   history tables.
+- Fixed a bug where the key result details view in some cases would display
+  the incorrect (parent) period if visited directly.
 
 ## [3.2.0] 2023-01-16
 
