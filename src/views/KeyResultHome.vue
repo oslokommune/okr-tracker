@@ -236,7 +236,10 @@ export default {
 
     renderGraph() {
       if (!this.graph) {
-        this.graph = new LineChart(this.$refs.graph, { height: 450 });
+        this.graph = new LineChart(this.$refs.graph, {
+          height: 450,
+          tooltips: true,
+        });
       }
 
       const startDate = this.activePeriod.startDate.toDate();
