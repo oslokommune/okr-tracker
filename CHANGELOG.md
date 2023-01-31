@@ -24,6 +24,8 @@ All notable changes to this project will be documented in this file. The format 
   history tables.
 - Fixed a bug where the key result details view in some cases would display
   the incorrect (parent) period if visited directly.
+- The y axis of the key result progress graph now adapts to values outside its
+  defined range instead of drawing outside the visible graph area.
 
 ## [3.2.0] 2023-01-16
 
