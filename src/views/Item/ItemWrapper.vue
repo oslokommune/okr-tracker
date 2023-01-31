@@ -5,8 +5,7 @@
         v-for="(tab, index) in tabs"
         :key="index"
         :to="{ name: tab.route }"
-        tag="button"
-        class="tabs__tab"
+        class="btn btn--sec tabs__tab"
         role="tab"
       >
         {{ tab.label }}
@@ -79,12 +78,7 @@ export default {
   &__tab {
     padding: 1rem;
     color: var(--color-grayscale-40);
-    font-weight: 500;
-    font-size: 1rem;
-    white-space: nowrap;
-    background-color: transparent;
     border: unset;
-    cursor: pointer;
 
     &.router-link-active {
       position: relative;
