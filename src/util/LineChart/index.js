@@ -14,8 +14,6 @@ import {
   resize,
   styleAxisX,
   styleAxisY,
-  styleGradientStart,
-  styleGradientStop,
   styleValueIndicators,
   styleValueLine,
   CANVAS_PADDING,
@@ -209,9 +207,6 @@ export default class LineChart {
     this.valueArea.datum(data).transition().attr('d', this.area);
     this.valueLine.datum(data).transition().attr('d', this.line);
     this.valueLine.call(styleValueLine.bind(this));
-
-    this.gradient.select('#start').call(styleGradientStart.bind(this));
-    this.gradient.select('#stop').call(styleGradientStop.bind(this));
 
     if (targets && targets.length) {
       this.targetLine

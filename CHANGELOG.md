@@ -23,6 +23,9 @@ All notable changes to this project will be documented in this file. The format 
   empty and filled state.
 - Dates in the period selector for measurements are now formatted to a more
   natural language in order to increase readability.
+- In order to be more Punkt-compliant, the line chart area filler is no longer
+  a gradient. It is instead replaced by a an opaque version of the current
+  value line color.
 
 ### Fixed
 - Period progression is now updated when an objective is moved between periods.
