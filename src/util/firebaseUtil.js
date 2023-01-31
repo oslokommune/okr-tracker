@@ -13,3 +13,13 @@ export function firestoreEncode(str) {
 export function firestoreDecode(str) {
   return decodeURIComponent(str.replace(/\./g, '%2E'));
 }
+
+/**
+ * Return id from unresolved Firestore reference.
+ */
+export function documentIdFromRef(ref) {
+  if (typeof ref.get === 'function') {
+    return ref.id;
+  }
+  return ref.split('/')[1];
+}
