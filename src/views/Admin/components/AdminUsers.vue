@@ -136,7 +136,7 @@ export default {
   flex-direction: column;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
 }
 
 .add-users,
@@ -158,11 +158,11 @@ export default {
   font-weight: 500;
   background: none;
   border: 0;
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grayscale-10);
   cursor: pointer;
 
   &:hover {
-    background: var(--color-grey-50);
+    background: var(--color-gray-light);
 
     & > .users__list-item-chevron {
       opacity: 1;

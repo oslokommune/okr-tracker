@@ -288,7 +288,7 @@ export default {
   height: 32rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
 }
 
 .col__body {
@@ -299,7 +299,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: var(--color-grey-100);
+  background: var(--color-grayscale-10);
 }
 
 .col__footer {
@@ -325,6 +325,6 @@ export default {
   font-weight: 500;
   font-size: 1rem;
   text-decoration: none;
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grayscale-10);
 }
 </style>

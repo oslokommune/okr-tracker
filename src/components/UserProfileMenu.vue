@@ -150,7 +150,7 @@ export default {
 .profileModal__label {
   display: inline-block;
   margin: 0.8rem 0 0.5rem 0;
-  color: var(--color-grey-300);
+  color: var(--color-grayscale-30);
   font-weight: 500;
   font-size: typography.$font-size-2;
   letter-spacing: -0.03rem;
@@ -159,7 +159,7 @@ export default {
 .profileModal__input {
   width: 100%;
   padding: 0.7rem;
-  background: var(--color-grey-50);
+  background: var(--color-gray-light);
   border-radius: 0;
 }
 

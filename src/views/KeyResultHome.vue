@@ -405,7 +405,7 @@ export default {
   color: var(--color-text);
   font-weight: 700;
   font-size: typography.$font-size-5;
-  background-color: var(--color-grey-50);
+  background-color: var(--color-gray-light);
 }
 
 .progression__total--target {

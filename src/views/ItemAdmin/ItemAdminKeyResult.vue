@@ -322,7 +322,7 @@ export default {
 .validation {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grayscale-10);
 }
 
 .validation__valid {
@@ -351,7 +351,7 @@ export default {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

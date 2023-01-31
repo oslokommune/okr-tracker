@@ -49,6 +49,6 @@ document.body.addEventListener('keydown', () => {
 <style lang="scss" scoped>
 .app {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--color-gray);
 }
 </style>

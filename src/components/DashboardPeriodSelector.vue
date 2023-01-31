@@ -155,7 +155,7 @@ export default {
   align-items: center;
   padding: 0.75rem;
   white-space: nowrap;
-  border: 1px solid var(--color-grey-100);
+  border: 1px solid var(--color-grayscale-10);
   cursor: pointer;
 
   > svg {
@@ -183,12 +183,12 @@ export default {
   position: absolute;
   right: 0;
   z-index: 1;
-  border: 1px solid var(--color-grey-100);
+  border: 1px solid var(--color-grayscale-10);
 
   ::v-deep .flatpickr {
     &-calendar {
       margin-top: -3px;
-      border: 1px solid var(--color-grey-100);
+      border: 1px solid var(--color-grayscale-10);
       border-right: 0;
       border-left: 0;
       border-radius: 0;
@@ -221,7 +221,7 @@ export default {
   &:hover,
   &--active {
     color: var(--color-text);
-    background: var(--color-grey-50);
+    background: var(--color-gray-light);
   }
 }
 </style>

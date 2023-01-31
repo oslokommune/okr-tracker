@@ -54,10 +54,10 @@ export default {
   width: 5rem;
   height: 5rem;
   margin-bottom: 2rem;
-  color: var(--color-bg);
+  color: var(--color-gray);
   font-size: 2.5rem;
   text-align: center;
-  background: var(--color-grey-100);
+  background: var(--color-grayscale-10);
   border-radius: 3.5rem;
 }
 
@@ -68,7 +68,7 @@ export default {
 }
 
 .empty__body {
-  color: var(--color-grey-300);
+  color: var(--color-grayscale-30);
   line-height: 1.2;
   overflow-wrap: break-word;
 }

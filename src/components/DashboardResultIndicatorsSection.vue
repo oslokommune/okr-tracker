@@ -500,7 +500,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-    border-bottom: 1px solid var(--color-grey-100);
+    border-bottom: 1px solid var(--color-grayscale-10);
 
     .title-3 {
       color: var(--color-text);
@@ -511,7 +511,7 @@ export default {
     }
 
     &::v-deep .vs__dropdown-toggle {
-      border-color: var(--color-grey-100);
+      border-color: var(--color-grayscale-10);
 
       &:hover {
         background: var(--color-gray-light);
@@ -531,7 +531,7 @@ export default {
     }
 
     &::v-deep .vs__dropdown-menu {
-      border: 1px solid var(--color-grey-100);
+      border: 1px solid var(--color-grayscale-10);
     }
 
     .graphOptions {
@@ -548,7 +548,7 @@ export default {
 
       &::v-deep .vs__dropdown-menu {
         left: -3.6rem;
-        border: 1px solid var(--color-grey-100);
+        border: 1px solid var(--color-grayscale-10);
       }
     }
 
@@ -570,7 +570,7 @@ export default {
     gap: 1rem;
     align-items: center;
     min-height: 6rem;
-    border-top: 1px solid var(--color-grey-100);
+    border-top: 1px solid var(--color-grayscale-10);
 
     > .progressStatistics {
       flex: 1 1 auto;
