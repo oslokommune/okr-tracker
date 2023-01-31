@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file. The format 
 - KPIs are now generally called "measurements" in the app. The different types
   of KPIs are kept as respectively "result indicators", "key figures" and
   (plain) "measurements".
+- Any currently active period is now focused by default, instead of most
+  recent, when visiting the OKR view.
 
 ### Fixed
 - Period progression is now updated when an objective is moved between periods.
