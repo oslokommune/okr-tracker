@@ -24,7 +24,7 @@
       :body="$t('empty.noKPIs.adminBody')"
     >
       <button class="btn btn--ter" :disabled="loading" @click="createKpi">
-        {{ $t('kpi.add') }}
+        {{ $t('empty.noKPIs.linkText') }}
       </button>
     </empty-state>
   </div>

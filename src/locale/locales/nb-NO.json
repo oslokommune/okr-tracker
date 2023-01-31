@@ -12,8 +12,6 @@
   "kpi": {
     "add": "Legg til måling",
     "placeholderName": "Ny måling",
-    "edit": "Endre KPI",
-    "change": "Endre KPI",
     "currentValue": "Nåværende verdi",
     "latestValueTitle": "Siste verdi per {formattedDate}",
     "progress": "Progresjon",
@@ -35,7 +33,7 @@
     },
     "updateFrequency": {
       "label": "Oppdateringshyppighet",
-      "help": "Hvor ofte KPI-en forventes å bli oppdatert med nye målepunkter. Brukes for å bestemme om en KPI sist ble oppdatert innenfor det gitte intervallet, eller om den bør anses som utdatert.",
+      "help": "Hvor ofte målingen forventes å bli oppdatert med nye målepunkter. Brukes for å bestemme hvorvidt målingen sist ble oppdatert innenfor det gitte intervallet, eller om den bør anses som utdatert.",
       "frequencies": {
         "annual": "Årlig",
         "daily": "Daglig",
@@ -47,27 +45,27 @@
     },
     "types": {
       "plain": {
-        "label": "KPI",
-        "description": "KPI-er er måletall som teamet eller produktområdet ønsker å følge med på. KPI-er vises øverst på team- eller produktområdesiden de hører til."
+        "label": "Måling",
+        "description": "En måling som teamet/produktområdet ønsker å følge med på. Vises kun som måling for nivået den registreres på."
       },
       "keyFigure": {
-        "label": "KPI på dashbordet",
-        "description": "Er KPI-en er så viktig at den skal vises på dashbordet til produktområdet for rapportering?"
+        "label": "Nøkkeltall",
+        "description": "Målingen anses som viktig for teamet og/eller produktområdet. Dersom målingen registreres for et produkt, vises den også som del av produktområdets nøkkeltall."
       },
       "resultIndicator": {
         "label": "Resultatindikator",
-        "description": "Er KPI-en så viktig at den er definert som produktområdets resultatindikator og har et måltall? Resultatindikatoren vises også i dashbordet."
+        "description": "Målingen anses som en vesentlig indikator for måloppnåelse og fremheves særskilt. Dersom målingen registreres for et produkt, vises den også som del av produktområdets resultatindikatorer. Kan for eksempel være tillknyttet et tildelingsbrev eller andre styringsinstrumenter."
       }
     },
     "heading": "Målinger",
     "itemRowError": "feil",
     "help": {
-      "updates": "KPI-er kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av KPI-er {readMoreLink}.",
+      "updates": "Målinger kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av målinger {readMoreLink}.",
       "readMoreHere": "her",
       "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor."
     },
     "automation": {
-      "radio": "Hente KPI-verdier automatisk fra et regneark (Google Sheets)?"
+      "radio": "Hente måleverdier automatisk fra et regneark (Google Sheets)?"
     },
     "goals": {
       "goal": "Mål",
@@ -76,7 +74,7 @@
       "set": "Sett mål",
       "edit": "Endre mål",
       "the": "målet",
-      "help": "KPI-er kan ha mål for bestemte perioder. Foreløpig vises kun mål for resultatindikatorer på dashbordet, men dette vil kunne endres på sikt.",
+      "help": "Målinger kan ha mål for bestemte perioder. Foreløpig vises kun mål for resultatindikatorer, men dette vil kunne endres på sikt.",
       "goalTitle": "Mål for {formattedDateRange}"
     }
   },
@@ -251,7 +249,7 @@
       "keyResult": "Lagt til nytt nøkkelresultat",
       "period": "Opprettet ny periode",
       "organization": "Opprettet ny organisasjon. Vennligst vent, du blir sendt videre om 5 sekunder",
-      "kpi": "Opprettet ny KPI",
+      "kpi": "Opprettet ny måling",
       "progress": "Lagt til ny verdi"
     },
     "delete": {
@@ -279,7 +277,7 @@
       "users": "Kunne ikke legge til bruker | brukere",
       "user": "Kunne ikke slette bruker: {user}",
       "email": "Ugyldige e-postadresser",
-      "kpi": "Kunne ikke opprette kpi",
+      "kpi": "Kunne ikke opprette måling",
       "notes": "Kunne ikke oppdatere notater",
       "addProgress": "Kunne ikke legge til ny verdi",
       "deleteProgress": "Kunne ikke slette målepunkt",
@@ -360,8 +358,7 @@
     "openMenu": "Åpne meny",
     "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
-    "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og KPI-er",
-    "editKpi": "Endre detaljer eller slett KPI",
+    "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og målinger",
     "editProgress": "Endre målepunkt",
     "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",
@@ -373,7 +370,7 @@
     "mission": "Oppdrag"
   },
   "admin": {
-    "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere Nøkkelresultater og/eller KPIer, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
+    "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "curlHelp": "Oppdatering via {apiLink}-kall, f.eks. ved bruk av curl.",
     "apiDocs": "API-dokumentasjon",
     "department": {
@@ -444,7 +441,7 @@
   },
   "empty": {
     "noKeyResultProgress": "Dette nøkkelresultatet har ingen registrerte verdier.",
-    "noKPIProgress": "Denne KPIen har ingen registrerte verdier.",
+    "noKPIProgress": "Denne målingen har ingen registrerte verdier.",
     "noKeyResults": {
       "heading": "Ingen nøkkelresultater",
       "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",
@@ -455,25 +452,26 @@
       "body": "Oops! Her er finnes det ingen resultatindikatorer ennå.",
       "linkText": "Opprett en resultatindikator"
     },
+    "noKeyFigures": {
+      "heading": "Ingen nøkkeltall",
+      "body": "Oops! Her er finnes det ingen nøkkeltall ennå.",
+      "linkText": "Opprett et nøkkeltall"
+    },
     "itemAdmin": {
       "keyResult": "Ingen nøkkelresultater for mål",
       "objective": "Ingen mål for periode",
       "period": "Ingen perioder"
     },
     "noKPIs": {
-      "heading": "Ingen KPI-er",
-      "body": "Oops! Her er finnes det ingen KPI-er ennå.",
-      "adminBody": "Her kan du opprette KPI-er som automatisk henter data fra Google Sheets. ",
-      "linkText": "Opprett en KPI"
+      "heading": "Ingen målinger",
+      "body": "Oops! Her er finnes det ingen målinger ennå.",
+      "adminBody": "Her kan du opprette målinger som automatisk henter data fra Google Sheets. ",
+      "linkText": "Opprett en måling"
     },
     "noPeriods": {
       "heading": "Tomt?",
       "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
       "buttonText": "Opprett mål og nøkkelresultater her"
-    },
-    "kpiProgress": {
-      "body": "Finner ingen historikk over målepunkter for dette KPI-et",
-      "heading": "Ingen historikk"
     },
     "team": {
       "body": "«Team Ninja» much?",

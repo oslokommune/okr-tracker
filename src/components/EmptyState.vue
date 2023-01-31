@@ -69,7 +69,8 @@ export default {
 
 .empty__body {
   color: var(--color-grey-300);
-  word-break: break-all;
+  line-height: 1.2;
+  overflow-wrap: break-word;
 }
 
 .empty__actions {
