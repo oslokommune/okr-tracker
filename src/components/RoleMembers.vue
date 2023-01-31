@@ -2,10 +2,15 @@
   <div class="role-group">
     <h4 class="role-group__title">{{ $t('user.position.groups.' + role) }}</h4>
     <div class="role-group__members-list">
-      <span v-for="member in membersWithRole" :key="member.id" class="role-group__member">
+      <span
+        v-for="(member, index) in membersWithRole"
+        :key="member.id"
+        class="role-group__member"
+      >
         <a @click="openProfileModal(member.id)">{{
           member.displayName || firstPartOfEmail(member.id)
         }}</a>
+        <template v-if="index < membersWithRole.length - 1">, </template>
       </span>
     </div>
   </div>
@@ -59,10 +64,6 @@ export default {
   }
 
   &__member {
-    &:not(:last-child)::after {
-      content: ', ';
-    }
-
     > a {
       color: var(--color-text);
       cursor: pointer;
