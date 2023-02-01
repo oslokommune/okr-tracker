@@ -35,6 +35,7 @@
             <progress-bar
               :progression="progressDetails.percentageCompleted"
               :is-compact="false"
+              :dark="true"
               class="key-result-row__progressBar"
             />
           </div>

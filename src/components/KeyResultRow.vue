@@ -26,6 +26,7 @@
       <progress-bar
         :progression="progressDetails.percentageCompleted"
         :is-compact="!isDetailedView"
+        :dark="true"
         class="keyResult__progressBar"
         :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
       />
