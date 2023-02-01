@@ -60,7 +60,7 @@ export default class LineChart {
       .x0((d) => this.x(d.timestamp))
       .x1((d) => this.x(d.timestamp))
       .y1((d) => this.y(d.value))
-      .y0((d) => this.y(d.startValue));
+      .y0(() => this.y(this.y.domain()[0]));
 
     this.line = line()
       .x((d) => this.x(d.timestamp))
