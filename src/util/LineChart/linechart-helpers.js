@@ -15,8 +15,6 @@ const LEGEND_LABEL_SPACING = 10;
 const Tooltip = Vue.extend(IndicatorTooltip);
 
 export const GRAPH_COLORS = {
-  gradientStart: '#6ee9ff',
-  gradientStop: '#d9d9d9',
   valueLine: '#b3f5ff',
   targetLine: '#43f8b6',
 };
@@ -39,17 +37,6 @@ export function initSvg(svg) {
   this.targetLine = this.canvas.append('path').call(styleTargetLine.bind(this));
 
   this.defs = this.svg.append('defs');
-  this.gradient = this.defs
-    .append('linearGradient')
-    .attr('id', 'areaGradient')
-    .attr('x1', '0%')
-    .attr('x2', '0%')
-    .attr('y1', '0%')
-    .attr('y2', '100%');
-
-  this.gradient.append('stop').attr('id', 'start').call(styleGradientStart.bind(this));
-  this.gradient.append('stop').attr('id', 'stop').call(styleGradientStop.bind(this));
-
   this.legendContainer = this.canvas.append('g').classed('legend', true);
   this.valueIndicators = this.canvas.append('g').classed('indicators', true);
   this.valueTooltips = null;
@@ -73,20 +60,6 @@ export function styleAxisY(el) {
   el.select('.domain').attr('display', 'none');
 }
 
-export function styleGradientStart(el) {
-  el.attr('offset', '0%').attr(
-    'style',
-    `stop-color:${GRAPH_COLORS.gradientStart};stop-opacity:1;`
-  );
-}
-
-export function styleGradientStop(el) {
-  el.attr('offset', '100%').attr(
-    'style',
-    `stop-color:${GRAPH_COLORS.gradientStop};stop-opacity:0;`
-  );
-}
-
 export function styleValueLine(el) {
   el.classed('valueLine', true)
     .attr('fill', 'none')
@@ -108,7 +81,9 @@ export function styleValueIndicators(el) {
 }
 
 function styleArea(el) {
-  el.classed('area', true).attr('fill', 'url(#areaGradient)').attr('fill-opacity', 0.4);
+  el.classed('area', true)
+    .attr('fill', GRAPH_COLORS.valueLine)
+    .attr('fill-opacity', 0.25);
 }
 
 export function resize() {
