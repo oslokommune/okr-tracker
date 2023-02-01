@@ -38,9 +38,9 @@
 
 <script>
 import ClickOutside from 'vue-click-outside';
-import { format } from 'date-fns';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
+import { dateLongCompact } from '@/util';
 
 export default {
   name: 'DashboardPeriodSelector',
@@ -111,9 +111,9 @@ export default {
 
     range(range) {
       if (Array.isArray(range) && range.filter((d) => d).length === 2) {
-        this.formattedRangeLabel = [
-          ...new Set(range.map((date) => format(date, 'yyyy-MM-dd'))),
-        ].join(this.flatPickerConfig.locale.rangeSeparator);
+        this.formattedRangeLabel = [...new Set(range.map(dateLongCompact))].join(
+          this.flatPickerConfig.locale.rangeSeparator
+        );
       }
     },
   },
