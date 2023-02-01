@@ -23,14 +23,14 @@
   font-size: 1rem;
   white-space: nowrap;
   text-decoration: none;
-  background: var(--color-grey-100);
+  background: var(--color-grayscale-10);
   border: none;
   border-radius: 2px;
   cursor: pointer;
 
   &:disabled:not([hover]) {
     color: var(--color-grayscale-50);
-    background-color: var(--color-grey-100);
+    background-color: var(--color-grayscale-10);
     border: none;
     cursor: not-allowed;
     opacity: 0.6;

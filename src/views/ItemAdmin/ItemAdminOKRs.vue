@@ -451,7 +451,7 @@ export default {
   align-self: flex-start;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
 
   @media screen and (min-width: bp(s)) {
     grid-template-columns: repeat(3, 1fr);
@@ -474,7 +474,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-left: 2px solid var(--color-grey-100);
+  border-left: 2px solid var(--color-grayscale-10);
 
   &:first-child {
     border-left: none;
@@ -492,7 +492,7 @@ export default {
 .miller__col-heading {
   padding: 0.5rem 0.75rem;
   color: var(--color-grayscale-60);
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grayscale-10);
 }
 
 .miller__link {
@@ -501,12 +501,12 @@ export default {
   padding: 0.5rem 0.75rem;
   color: var(--color-text);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grayscale-10);
 
   &.selected {
     color: var(--color-text);
     font-weight: 500;
-    background: var(--color-grey-50);
+    background: var(--color-gray-light);
   }
 
   &.active {
@@ -535,7 +535,7 @@ export default {
 
 .miller__add {
   margin-top: auto;
-  border-top: 1px solid var(--color-grey-100);
+  border-top: 1px solid var(--color-grayscale-10);
 }
 
 .miller__icon {
@@ -557,7 +557,7 @@ export default {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

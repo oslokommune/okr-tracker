@@ -300,7 +300,7 @@ export default {
     flex-direction: column;
     flex-grow: 1;
     height: 100%;
-    border: 1px solid var(--color-grey-100);
+    border: 1px solid var(--color-grayscale-10);
 
     @media screen and (min-width: bp(s)) {
       margin-right: 1.5rem;
@@ -316,13 +316,13 @@ export default {
       padding: 0.5rem 0.75rem;
       color: var(--color-text);
       text-decoration: none;
-      border-bottom: 1px solid var(--color-grey-100);
+      border-bottom: 1px solid var(--color-grayscale-10);
       cursor: pointer;
 
       &.selected {
         color: var(--color-text);
         font-weight: 500;
-        background: var(--color-grey-50);
+        background: var(--color-gray-light);
       }
 
       &.active {
@@ -339,7 +339,7 @@ export default {
 
     button {
       margin-top: auto;
-      border-top: 1px solid var(--color-grey-100);
+      border-top: 1px solid var(--color-grayscale-10);
     }
   }
 

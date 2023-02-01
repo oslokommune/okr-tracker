@@ -286,7 +286,7 @@ export default {
   gap: 0.5rem;
   padding: 0.75rem;
   font-size: typography.$font-size-2;
-  background: var(--color-grey-50);
+  background: var(--color-gray-light);
   border-bottom-right-radius: 3px;
 
   &--danger {

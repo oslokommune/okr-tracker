@@ -174,7 +174,7 @@ export default {
 <style lang="scss" scoped>
 .login__form {
   padding-bottom: 2rem;
-  border-bottom: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grayscale-10);
 }
 
 .login__footer {

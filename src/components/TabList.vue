@@ -143,7 +143,7 @@ export default {
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--color-grey-100);
+    background: var(--color-grayscale-10);
   }
 
   &::-webkit-scrollbar-thumb {
@@ -192,7 +192,7 @@ export default {
 
       &:hover {
         color: var(--color-text);
-        background: var(--color-grey-50);
+        background: var(--color-gray-light);
       }
     }
 

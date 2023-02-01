@@ -60,7 +60,7 @@ export default {
 
 .user__title {
   padding: 0.2rem;
-  color: var(--color-grey-300);
+  color: var(--color-grayscale-30);
   font-weight: 400;
   font-size: typography.$font-size-2;
   letter-spacing: -0.03rem;

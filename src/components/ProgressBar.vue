@@ -43,7 +43,7 @@ export default {
   width: 100%;
   height: 0.625rem;
   margin-right: 1rem;
-  background: var(--color-progress-background);
+  background: var(--color-blue-dark-40);
 
   &--isCompact {
     height: 0.3125rem;

@@ -197,7 +197,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  border-right: 1px solid var(--color-grey-100);
+  border-right: 1px solid var(--color-grayscale-10);
 
   &.disabled {
     opacity: 0.4;
