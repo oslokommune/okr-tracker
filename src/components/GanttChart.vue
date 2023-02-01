@@ -13,14 +13,14 @@
         </div>
       </div>
       <div class="ticks">
-        <span class="tick-padding"></span>
+        <span class="ticks__padding"></span>
         <div
           v-for="m in months"
           :key="m.valueOf()"
-          class="tick"
+          class="ticks__tick"
           :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
         ></div>
-        <span class="tick-padding"></span>
+        <span class="ticks__padding"></span>
       </div>
     </div>
     <div
@@ -29,8 +29,8 @@
       class="objective"
       :style="objectiveStyle(o)"
     >
-      <div class="tag">{{ item.name }}</div>
-      <div class="title">{{ o.name }}</div>
+      <div class="objective__tag">{{ item.name }}</div>
+      <div class="objective__title">{{ o.name }}</div>
       <progress-bar :progression="o.progression * 100" />
     </div>
     <div class="today-tick" :style="todayStyle()"></div>
@@ -198,7 +198,7 @@ export default {
 .ticks {
   display: flex;
 
-  .tick {
+  .ticks__tick {
     position: relative;
     z-index: 1;
     height: 0.75rem;
@@ -211,7 +211,7 @@ export default {
     }
   }
 
-  .tick-padding {
+  .ticks__padding {
     flex: 0 0 var(--end-padding);
     border-bottom: var(--line-width) solid var(--color-primary);
 
@@ -245,13 +245,13 @@ export default {
   box-shadow: 0 0 10px rgba(black, 0.1);
   cursor: pointer;
 
-  .tag {
+  .objective__tag {
     display: inline-block;
     padding: 0.5rem;
     background: var(--color-blue-5);
   }
 
-  .title {
+  .objective__title {
     max-width: 35rem;
     margin: 1.25rem 0;
     font-weight: 500;
