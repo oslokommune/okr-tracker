@@ -31,13 +31,7 @@
     >
       <div class="tag">{{ item.name }}</div>
       <div class="title">{{ o.name }}</div>
-      <progress
-        max="1"
-        :value="o.progression"
-        :aria-label="
-          $t('progress.complete', { progress: Math.round(o.progression * 100) })
-        "
-      />
+      <progress-bar :progression="o.progression * 100" />
     </div>
     <div class="today-tick" :style="todayStyle()"></div>
   </div>
@@ -57,6 +51,10 @@ import { capitalize, dateMonthYear } from '@/util';
 
 export default {
   name: 'GanttChart',
+
+  components: {
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
+  },
 
   props: {
     objectives: {
@@ -262,28 +260,6 @@ export default {
   label {
     display: block;
     cursor: pointer;
-  }
-
-  progress {
-    display: block;
-    width: 100%;
-    height: 0.5rem;
-    margin-top: 0.25rem;
-    border: 0;
-    border-radius: 0;
-
-    &[value],
-    &[value]::-webkit-progress-bar {
-      background: var(--color-bg);
-    }
-
-    &[value]::-webkit-progress-value {
-      background: var(--color-blue-light);
-    }
-
-    &[value]::-moz-progress-bar {
-      background: var(--color-blue-light);
-    }
   }
 }
 </style>
