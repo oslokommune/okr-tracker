@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. The format 
 - A tab bar has been added to the main item view (organization, department,
   product) to facilitate easier navigation between relevant sections: OKRs,
   measurements (previously called "Dashboard") and general about information.
+- Tooltips are now also enabled for values and comments in the key result
+  line chart.
 
 ### Changed
 - All custom icon components are now replaced by counterparts from the [Punkt
@@ -26,6 +28,8 @@ All notable changes to this project will be documented in this file. The format 
   history tables.
 - Fixed a bug where the key result details view in some cases would display
   the incorrect (parent) period if visited directly.
+- The y axis of the key result progress graph now adapts to values outside its
+  defined range instead of drawing outside the visible graph area.
 
 ## [3.2.0] 2023-01-16
 

@@ -8,6 +8,7 @@
 
 <script>
 import { dateShort } from '@/util';
+import { formatValue } from '@/util/keyResultProgress';
 import { formatKPIValue } from '@/util/kpiHelpers';
 
 export default {
@@ -23,7 +24,7 @@ export default {
     },
     kpi: {
       type: Object,
-      required: true,
+      required: false,
       default: null,
     },
     comment: {
@@ -37,7 +38,10 @@ export default {
       return dateShort(this.timestamp);
     },
     formattedValue() {
-      return formatKPIValue(this.kpi, this.value);
+      if (this.kpi) {
+        return formatKPIValue(this.kpi, this.value);
+      }
+      return formatValue(this.value);
     },
   },
 };

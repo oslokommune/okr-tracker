@@ -142,6 +142,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
+import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
@@ -211,27 +212,12 @@ export default {
         );
         this.isLoading = false;
         this.value = this.progressDetails.totalCompletedTasks;
-        this.graph = new LineChart(this.$refs.graph);
-        this.graph.render({
-          startValue: this.activeKeyResult.startValue,
-          targetValue: this.activeKeyResult.targetValue,
-          startDate: this.activePeriod.startDate.toDate(),
-          endDate: this.activePeriod.endDate.toDate(),
-          progress: this.progress,
-        });
+        this.renderGraph();
       },
     },
 
     progress() {
-      if (this.graph) {
-        this.graph.render({
-          startValue: this.activeKeyResult.startValue,
-          targetValue: this.activeKeyResult.targetValue,
-          startDate: this.activePeriod.startDate.toDate(),
-          endDate: this.activePeriod.endDate.toDate(),
-          progress: this.progress,
-        });
-      }
+      this.renderGraph();
     },
   },
 
@@ -243,18 +229,33 @@ export default {
       return;
     }
 
-    this.graph = new LineChart(this.$refs.graph);
-    this.graph.render({
-      startValue: this.activeKeyResult.startValue,
-      targetValue: this.activeKeyResult.targetValue,
-      startDate: this.activePeriod.startDate.toDate(),
-      endDate: this.activePeriod.endDate.toDate(),
-      progress: this.progress,
-    });
+    this.renderGraph();
   },
 
   methods: {
     format,
+
+    renderGraph() {
+      if (!this.graph) {
+        this.graph = new LineChart(this.$refs.graph, {
+          height: 450,
+          tooltips: true,
+        });
+      }
+
+      const startDate = this.activePeriod.startDate.toDate();
+      const endDate = this.activePeriod.endDate.toDate();
+      const { startValue, targetValue } = this.activeKeyResult;
+      const progressValues = this.progress.map((record) => record.value);
+
+      this.graph.render({
+        startValue: min(progressValues) > startValue ? startValue : null,
+        targetValue: max(progressValues) < targetValue ? targetValue : null,
+        startDate,
+        endDate,
+        progress: this.progress,
+      });
+    },
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
       try {
@@ -419,7 +420,7 @@ export default {
 
 .key-result__graph {
   grid-area: 3 / 1 / 4 / 3;
-  padding: 1.5rem 1.75rem 0 1.75rem;
+  padding: 1.5rem 1.75rem;
   background-color: var(--color-white);
 }
 
