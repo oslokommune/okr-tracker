@@ -125,6 +125,10 @@ export default {
     },
     recordValue: {
       get() {
+        if (!this.thisRecord.value) {
+          return null;
+        }
+
         const n = this.typePercentage
           ? this.thisRecord.value * 100
           : this.thisRecord.value;
