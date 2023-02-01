@@ -45,7 +45,7 @@ export default {
   position: absolute;
   width: 6px;
   height: 6px;
-  background: #292858;
+  background: var(--color-blue-dark);
   border-radius: 50%;
   animation: lds-default 1.2s linear infinite;
 }

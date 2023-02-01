@@ -210,7 +210,7 @@ export default {
 
 .item__kpi-value {
   width: 2rem;
-  color: #686876;
+  color: var(--color-grayscale-50);
   font-weight: 500;
   font-size: 0.7rem;
   text-align: right;

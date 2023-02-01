@@ -11,10 +11,10 @@ const radius = (size - padding * 2) / 2;
 const duration = 600;
 const ease = easeCircleOut;
 export const colors = {
-  innerDone: '#2a2859',
-  innerFull: '#a2a2a2',
-  outer: '#6ee9ff',
-  dimmed: '#c7c7c7',
+  innerDone: 'var(--color-blue-dark)',
+  innerFull: 'var(--color-grayscale-30)',
+  outer: 'var(--color-blue)',
+  dimmed: 'var(--color-grayscale-20)',
 };
 
 export const formatPercent = format('.0%');
