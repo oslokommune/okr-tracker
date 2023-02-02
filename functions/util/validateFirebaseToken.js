@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { getAuth } from 'firebase-admin/auth';
 
 const validateFirebaseIdToken = async (req, res, next) => {
@@ -10,24 +9,18 @@ const validateFirebaseIdToken = async (req, res, next) => {
       'Make sure you authorize your request by providing the following HTTP header:',
       'Authorization: Bearer <Firebase ID Token>.'
     );
-    res.status(403).send('Unauthorized');
+    return res.status(403).send(JSON.stringify({ message: 'Unauthorized' }));
   }
 
-  let idToken;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-    console.log('Found "Authorization" header');
-    // Read the ID Token from the Authorization header.
-    idToken = req.headers.authorization.split('Bearer ')[1];
-  } else {
-    res.status(403).send('Unauthorized');
-  }
+  console.log('Found "Authorization" header');
 
   try {
+    const idToken = req.headers.authorization.split('Bearer ')[1];
     req.user = await getAuth().verifyIdToken(idToken);
-    next();
+    return next();
   } catch (error) {
     console.error('Error while verifying Firebase ID token:', error);
-    res.status(403).send('Unauthorized');
+    return res.status(403).send(JSON.stringify({ message: 'Unauthorized' }));
   }
 };
 
