@@ -13,7 +13,7 @@
     "add": "Legg til måling",
     "placeholderName": "Ny måling",
     "currentValue": "Nåværende verdi",
-    "latestValueTitle": "Siste verdi per {formattedDate}",
+    "latestValueTitle": "Status {formattedDate}",
     "progress": "Progresjon",
     "newValue": "Legg til målepunkt",
     "editValue": "Endre målepunkt",
@@ -23,6 +23,7 @@
     "inPeriod": "i perioden",
     "noChange": "ingen endring",
     "ofTarget": "av mål om",
+    "noData": "Ingen data i valgt periode",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"

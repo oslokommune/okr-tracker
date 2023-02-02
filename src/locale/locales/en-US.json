@@ -23,6 +23,7 @@
     "inPeriod": "in period",
     "noChange": "no change",
     "ofTarget": "of the goal of",
+    "noData": "No data in chosen period",
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"

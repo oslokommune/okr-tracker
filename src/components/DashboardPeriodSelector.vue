@@ -41,6 +41,7 @@ import ClickOutside from 'vue-click-outside';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { dateLongCompact } from '@/util';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'DashboardPeriodSelector',
@@ -99,6 +100,7 @@ export default {
       immediate: true,
       async handler() {
         this.range = [this.startDate, this.endDate];
+        this.setSelectedPeriod(this.range);
       },
     },
 
@@ -106,6 +108,7 @@ export default {
       immediate: true,
       async handler() {
         this.range = [this.startDate, this.endDate];
+        this.setSelectedPeriod(this.range);
       },
     },
 
@@ -119,6 +122,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setSelectedPeriod']),
     toggle() {
       this.isOpen = !this.isOpen;
     },
