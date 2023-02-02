@@ -33,7 +33,7 @@
           class="item__kpi"
           :class="{ disabled: _formatKPIValue(kpi) === '–––' }"
         >
-          <i class="item__kpi-icon fa fa-chart-line" />
+          <pkt-icon class="item__kpi-icon" name="graph" />
           <span class="item__kpi-value">{{ _formatKPIValue(kpi) }}</span>
         </div>
       </div>
@@ -188,12 +188,13 @@ export default {
 .item__kpis {
   display: none;
   flex: 1 1 min-content;
-  flex-flow: row-reverse wrap;
   margin-top: 0.15rem;
   margin-right: 1rem;
 
   @media screen and (min-width: bp(s)) {
     display: flex;
+    flex-flow: row-reverse wrap;
+    row-gap: 0.25rem;
   }
 }
 
@@ -217,8 +218,8 @@ export default {
 }
 
 .item__kpi-icon {
+  height: 1rem;
   margin-right: 0.25rem;
-  color: var(--color-text);
 }
 
 .item__user-icon {
