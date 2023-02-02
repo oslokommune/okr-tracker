@@ -16,7 +16,6 @@
   "dependencies": {
     "@slack/web-api": "6.5.1",
     "@slack/webhook": "^6.0.0",
-    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "d3-array": "^3.1.1",
     "d3-scale": "^4.0.2",

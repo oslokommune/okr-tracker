@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. The format 
 ## [UNRELEASED]
 
 ### Added
+
 - A tab bar has been added to the main item view (organization, department,
   product) to facilitate easier navigation between relevant sections: OKRs,
   measurements (previously called "Dashboard") and general about information.
@@ -12,6 +13,7 @@ All notable changes to this project will be documented in this file. The format 
   line chart.
 
 ### Changed
+
 - All custom icon components are now replaced by counterparts from the [Punkt
   design system](https://punkt.oslo.kommune.no/latest/profil/ikoner/index).
 - KPIs are now generally called "measurements" in the app. The different types
@@ -27,7 +29,12 @@ All notable changes to this project will be documented in this file. The format 
   a gradient. It is instead replaced by a an opaque version of the current
   value line color.
 
+### Removed
+
+- Support for cookie based authentication has been removed from our APIs.
+
 ### Fixed
+
 - Period progression is now updated when an objective is moved between periods.
 - Fixed a bug causing text to sometimes overflow in tooltips and progress
   history tables.
