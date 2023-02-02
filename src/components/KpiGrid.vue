@@ -19,7 +19,7 @@
         <div class="kpi-card__name">{{ kpi.name }}</div>
         <div>
           <span v-if="kpi.error || !kpi.valid">–––</span>
-          <period-trend-tag :kpi="kpi"/>
+          <period-trend-tag :kpi="kpi" />
         </div>
       </div>
     </router-link>

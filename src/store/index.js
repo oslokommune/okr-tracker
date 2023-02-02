@@ -227,7 +227,7 @@ export const mutations = {
 
   SET_SELECTED_PERIOD(state, payload) {
     state.selectedPeriod = payload;
-  }
+  },
 };
 
 export default new Vuex.Store({
