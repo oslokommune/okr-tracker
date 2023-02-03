@@ -117,7 +117,13 @@ body.using-mouse :focus {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  padding: span(0, 3) 0 span(0, 6) 0;
+  padding: 1.5rem 0;
+
+  @each $bp, $padding in (m: 2, l: 3.5) {
+    @media screen and (min-width: bp(#{$bp})) {
+      padding: #{$padding}rem 0;
+    }
+  }
 }
 
 .aside {
