@@ -10,13 +10,22 @@
       >
         {{ tab.label }}
       </router-link>
+
+      <router-link
+        v-if="hasEditRights"
+        :to="{ name: 'ItemAdmin', query: adminLinkQuery }"
+        class="btn btn--sec tabs__tab tabs__tab--right"
+        role="tab"
+      >
+        <pkt-icon name="cogwheel" /> {{ $t('general.admin') }}
+      </router-link>
     </nav>
     <router-view v-show="!loading"></router-view>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { itemHome as routerGuard } from '@/router/router-guards';
 
 export default {
@@ -38,7 +47,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem']),
+    ...mapState(['activePeriod', 'activeItem', 'activeObjective', 'activeKeyResult']),
+    ...mapGetters(['hasEditRights']),
     tabs() {
       return [
         {
@@ -54,6 +64,21 @@ export default {
           label: `${this.$t('about.about')} ${this.activeItem.name}`,
         },
       ];
+    },
+    adminLinkQuery() {
+      switch (this.$route.name) {
+        case 'ItemHome':
+          return { tab: 'okr' };
+        case 'ObjectiveHome':
+          return { tab: 'okr', type: 'objective', id: this.activeObjective?.id };
+        case 'KeyResultHome':
+          return { tab: 'okr', type: 'keyResult', id: this.activeKeyResult?.id };
+        case 'KpiHome':
+        case 'ItemMeasurements':
+          return { tab: 'kpi' };
+        default:
+          return {};
+      }
     },
   },
 
@@ -80,10 +105,24 @@ export default {
     color: var(--color-grayscale-40);
     border: unset;
 
+    > svg {
+      --fg-color: var(--color-grayscale-40);
+      height: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    &--right {
+      margin-left: auto;
+    }
+
     &.router-link-active {
       position: relative;
       color: var(--color-blue-dark);
       cursor: default;
+
+      > svg {
+        --fg-color: var(--color-blue-dark);
+      }
 
       &::after {
         position: absolute;

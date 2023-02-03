@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file. The format 
   by resolved document data. This also includes a fix to the API which would
   fail while attempting to resolve these invalid document references.
 
+### Changed
+
+- The admin link on the OKR page has been removed and is replaced by a separate tab
+  in the item tab bar.
+
 ## [3.3.0] 2023-02-03
 
 ### Added
