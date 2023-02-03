@@ -1,7 +1,6 @@
 <template>
   <aside v-if="activeKeyResult" class="aside">
     <div class="widgets">
-      <widget-admin-edit />
       <widget-key-result-notes />
       <widget-key-result-details />
     </div>
@@ -15,7 +14,6 @@ export default {
   name: 'WidgetsKeyResultHome',
 
   components: {
-    WidgetAdminEdit: () => import('./WidgetAdminEdit.vue'),
     WidgetKeyResultDetails: () => import('./WidgetKeyResultDetails.vue'),
     WidgetKeyResultNotes: () => import('./WidgetKeyResultNotes.vue'),
   },

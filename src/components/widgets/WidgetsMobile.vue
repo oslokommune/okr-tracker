@@ -1,7 +1,6 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-admin-edit />
       <widget-wrapper
         v-if="progression"
         :title="
@@ -29,7 +28,6 @@ import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.
 import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetChildItems from '@/components/widgets/WidgetChildItems.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
-import WidgetAdminEdit from '@/components/widgets/WidgetAdminEdit.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 
 export default {
@@ -42,7 +40,6 @@ export default {
     WidgetTeam,
     WidgetChildItems,
     WidgetWeights,
-    WidgetAdminEdit,
     WidgetObjectiveDetails,
   },
 
