@@ -2,6 +2,7 @@ import express from 'express';
 import validator from 'express-validator';
 import { getFirestore } from 'firebase-admin/firestore';
 
+import ensureSuperAdmin from '../../util/ensureSuperAdmin.js';
 import validateFirebaseIdToken from '../../util/validateFirebaseToken.js';
 
 import {
@@ -33,6 +34,7 @@ router.post(
 router.post(
   '/:id/accept',
   validateFirebaseIdToken,
+  ensureSuperAdmin,
   param('id').trim().escape(),
   async (req, res) => {
     const db = getFirestore();
@@ -48,6 +50,7 @@ router.post(
 router.delete(
   '/:id',
   validateFirebaseIdToken,
+  ensureSuperAdmin,
   param('id').trim().escape(),
   async (req, res) => {
     const db = getFirestore();

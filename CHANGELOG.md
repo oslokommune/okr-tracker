@@ -43,6 +43,11 @@ All notable changes to this project will be documented in this file. The format 
 - The y axis of the key result progress graph now adapts to values outside its
   defined range instead of drawing outside the visible graph area.
 
+### Security
+
+- Restricted the accept and delete endpoints in the request access API to ensure
+  super admin status.
+
 ## [3.2.0] 2023-01-16
 
 ### Added
