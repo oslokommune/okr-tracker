@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file. The format 
   the incorrect (parent) period if visited directly.
 - The y axis of the key result progress graph now adapts to values outside its
   defined range instead of drawing outside the visible graph area.
+- Fixed a bug in how error responses were returned from the access request API.
 
 ### Security
 
