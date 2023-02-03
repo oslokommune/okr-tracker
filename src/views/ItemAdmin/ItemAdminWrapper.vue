@@ -58,7 +58,7 @@ export default {
           tooltip: null,
         },
         {
-          icon: 'chart-line',
+          pktIcon: 'graph',
           tabName: this.$t('general.KPIs'),
           tooltip: null,
         },

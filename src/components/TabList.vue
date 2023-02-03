@@ -34,7 +34,9 @@
         :tabindex="isActiveTab(index) ? 0 : -1"
         @click="() => setActiveTab(index)"
       >
+        <!-- TODO: Remove once all users have been updated to use Punkt icons only. -->
         <i v-if="tab.icon" class="tabList__icon fa" :class="`fa-${tab.icon}`" />
+        <pkt-icon v-if="tab.pktIcon" class="tabList__icon" :name="tab.pktIcon" />
         {{ tab.tabName }}
       </button>
     </div>
@@ -164,6 +166,8 @@ export default {
   }
 
   &__button {
+    display: flex;
+    align-items: center;
     margin: 0.125rem 0.5rem 0 0;
     padding: 0.7rem 1rem;
     color: var(--color-text);
@@ -182,6 +186,10 @@ export default {
     &--isFilled#{&}--isActive {
       color: var(--color-text-secondary);
       background-color: var(--color-primary);
+
+      .tabList__icon {
+        --fg-color: var(--color-white);
+      }
     }
 
     &--isOutlined {
@@ -203,6 +211,7 @@ export default {
   }
 
   &__icon {
+    height: 1rem;
     margin-right: 0.25rem;
   }
 }
