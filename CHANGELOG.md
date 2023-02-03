@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.3.0] 2023-02-03
+
 ### Added
 
 - A tab bar has been added to the main item view (organization, department,
