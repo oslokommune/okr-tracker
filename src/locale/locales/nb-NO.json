@@ -178,7 +178,8 @@
     "target": "Målsetting",
     "selectRange": "Velg start- og sluttdato",
     "formErrors": "Skjemaet inneholder feil som må rettes.",
-    "displayedAs": "Vises som: "
+    "displayedAs": "Vises som: ",
+    "today": "I dag"
   },
   "about": {
     "about": "Om",
