@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fixed a bug where document references in a KPI document would be overwritten
+  by resolved document data. This also includes a fix to the API which would
+  fail while attempting to resolve these invalid document references.
+
 ## [3.3.0] 2023-02-03
 
 ### Added

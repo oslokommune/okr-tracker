@@ -161,7 +161,10 @@ export default {
 
     async save(kpi, afterSave) {
       this.loading = true;
+
+      // Do not update existing document references
       delete kpi.parent;
+      delete kpi.createdBy;
 
       try {
         await Kpi.update(kpi.id, kpi);

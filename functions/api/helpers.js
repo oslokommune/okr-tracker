@@ -17,7 +17,10 @@ export async function getUserDisplayName(userRef) {
       return userData.displayName;
     });
   }
-  return userRef.split('users/')[1];
+  if (typeof userRef === 'string') {
+    return userRef.split('users/')[1];
+  }
+  return null;
 }
 
 /**
