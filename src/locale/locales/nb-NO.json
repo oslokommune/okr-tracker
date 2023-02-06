@@ -358,7 +358,6 @@
     "openMenu": "Åpne meny",
     "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Endre visning til {view}",
-    "editItem": "Opprett, endre eller fjern perioder, mål, nøkkelresultater og målinger",
     "editProgress": "Endre målepunkt",
     "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",

@@ -1,7 +1,6 @@
 <template>
   <aside v-if="activeItem">
     <div class="widgets">
-      <widget-admin-edit />
       <widget-wrapper
         v-if="progression"
         :title="
@@ -28,7 +27,6 @@ export default {
   components: {
     WidgetWrapper: () => import('./WidgetWrapper.vue'),
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
-    WidgetAdminEdit: () => import('./WidgetAdminEdit.vue'),
     WidgetWeights: () => import('@/components/widgets/WidgetWeights.vue'),
   },
 
