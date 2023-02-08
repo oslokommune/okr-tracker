@@ -2,7 +2,7 @@
   <div>
     <span v-if="progressCollection.length > 0" class="progressStatistics__value">
       {{ formatKPIValue(kpi, latestProgressRecord.value) }}
-      <span v-if="kpi && periodTrend" :class="bgColor" class="progressStatistics__trend">
+      <span v-if="kpi" :class="bgColor" class="progressStatistics__trend">
         {{ periodTrendFormatted }}
       </span>
     </span>
@@ -13,7 +13,6 @@
 <script>
 import { mapState } from 'vuex';
 import { formatKPIValue } from '@/util/kpiHelpers';
-import i18n from '@/locale/i18n';
 import { db } from '@/config/firebaseConfig';
 
 export default {
@@ -45,9 +44,6 @@ export default {
       return Math.round(diff * 100) / 100;
     },
     periodTrendFormatted() {
-      if (this.periodTrend === 0) {
-        return i18n.t('kpi.noChange');
-      }
       const prefix = this.periodTrend > 0 ? '+' : '';
       const formattedTrend = formatKPIValue(this.kpi, this.periodTrend);
 
@@ -154,6 +150,7 @@ export default {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    color: var(--color-blue-dark);
     font-weight: 500;
     font-size: typography.$font-size-4;
 
