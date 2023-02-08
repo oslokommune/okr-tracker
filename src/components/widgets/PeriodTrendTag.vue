@@ -79,8 +79,8 @@ export default {
   methods: {
     formatKPIValue,
     async setProgress() {
-      const startDate = this.selectedPeriod[0];
-      const endDate = this.selectedPeriod[1];
+      const startDate = this.selectedPeriod ? this.selectedPeriod[0] : null;
+      const endDate = this.selectedPeriod ? this.selectedPeriod[1] : null;
 
       if (this.kpi) {
         if (this.kpi.progress) {
@@ -89,7 +89,7 @@ export default {
           this.progressCollection = data
             .filter((d) => {
               const date = new Date(d[0]);
-              return (!startDate || date > startDate) && (!endDate || date < endDate);
+              return (!startDate || date >= startDate) && (!endDate || date <= endDate);
             })
             .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1))
             .map((m) => {
