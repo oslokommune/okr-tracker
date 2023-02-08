@@ -7,7 +7,7 @@
         :key="member.id"
         class="role-group__member"
       >
-        <a @click="openProfileModal(member.id)">{{
+        <a href="#" @click="openProfileModal(member.id)">{{
           member.displayName || firstPartOfEmail(member.id)
         }}</a>
         <template v-if="index < membersWithRole.length - 1">, </template>
@@ -50,28 +50,12 @@ export default {
   margin-bottom: 1.5rem;
 
   &__title {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     color: var(--color-grayscale-30);
-    font-weight: 400;
-    font-size: typography.$font-size-2;
-    letter-spacing: -0.03rem;
   }
 
   &__members-list {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  &__member {
-    > a {
-      color: var(--color-text);
-      cursor: pointer;
-
-      &:hover {
-        background: rgba(var(--color-grayscale-50-rgb), 0.1);
-      }
-    }
+    line-height: 1.5rem;
   }
 }
 </style>
