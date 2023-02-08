@@ -1,12 +1,12 @@
 <template>
   <div>
-    <span v-if="progressCollection.length > 0" class="progressStatistics__value">
+    <span v-if="progressCollection.length > 0" class="trendTag__value">
       {{ formatKPIValue(kpi, latestProgressRecord.value) }}
-      <span v-if="kpi" :class="bgColor" class="progressStatistics__trend">
+      <span v-if="kpi" :class="bgColor" class="trendTag__trend">
         {{ periodTrendFormatted }}
       </span>
     </span>
-    <span v-else class="progressStatistics__noData">{{ $t('kpi.noData') }}</span>
+    <span v-else class="trendTag__noData">{{ $t('kpi.noData') }}</span>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ import { formatKPIValue } from '@/util/kpiHelpers';
 import { db } from '@/config/firebaseConfig';
 
 export default {
-  name: 'ProgressStatistics',
+  name: 'PeriodTrendTag',
 
   props: {
     kpi: {
@@ -120,7 +120,7 @@ export default {
 
 <style lang="scss" scoped>
 @use '@/styles/typography';
-.progressStatistics {
+.trendTag {
   display: grid;
   gap: 2rem;
   padding: 1.5rem;

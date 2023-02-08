@@ -13,7 +13,7 @@
     "add": "Legg til måling",
     "placeholderName": "Ny måling",
     "currentValue": "Nåværende verdi",
-    "latestValueTitle": "Status {formattedDate}",
+    "latestValueTitle": "Siste verdi per {formattedDate}",
     "progress": "Progresjon",
     "newValue": "Legg til målepunkt",
     "editValue": "Endre målepunkt",

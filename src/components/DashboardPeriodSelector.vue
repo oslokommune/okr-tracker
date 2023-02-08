@@ -100,7 +100,6 @@ export default {
       immediate: true,
       async handler() {
         this.range = [this.startDate, this.endDate];
-        this.setSelectedPeriod(this.range);
       },
     },
 
@@ -108,7 +107,6 @@ export default {
       immediate: true,
       async handler() {
         this.range = [this.startDate, this.endDate];
-        this.setSelectedPeriod(this.range);
       },
     },
 
@@ -117,6 +115,7 @@ export default {
         this.formattedRangeLabel = [...new Set(range.map(dateLongCompact))].join(
           this.flatPickerConfig.locale.rangeSeparator
         );
+        this.setSelectedPeriod(this.range);
       }
     },
   },
