@@ -124,6 +124,7 @@ export default {
   display: grid;
   gap: 2rem;
   padding: 1.5rem;
+  color: var(--color-blue-dark);
 
   @each $bp, $cols in (s: 2, m: 3) {
     @media screen and (min-width: bp(#{$bp})) {
@@ -135,11 +136,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-  }
-  &__title {
-    color: var(--color-grayscale-40);
-    font-weight: 500;
-    font-size: typography.$font-size-1;
   }
   &__noData {
     color: var(--color-grayscale-40);
