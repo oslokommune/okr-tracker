@@ -121,22 +121,6 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 .trendTag {
-  display: grid;
-  gap: 2rem;
-  padding: 1.5rem;
-  color: var(--color-blue-dark);
-
-  @each $bp, $cols in (s: 2, m: 3) {
-    @media screen and (min-width: bp(#{$bp})) {
-      grid-template-columns: repeat(#{$cols}, 1fr);
-    }
-  }
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
   &__noData {
     color: var(--color-grayscale-40);
     font-weight: 400;
@@ -149,10 +133,6 @@ export default {
     color: var(--color-blue-dark);
     font-weight: 500;
     font-size: typography.$font-size-4;
-
-    svg {
-      height: 1.25rem;
-    }
   }
   &__trend {
     padding: 0.25rem;

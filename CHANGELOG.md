@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - The admin link on the OKR page has been removed and is replaced by a separate tab
   in the item tab bar.
+- Tag to indicate trend has been added to all KPI cards. 
 
 ## [3.3.0] 2023-02-03
 
