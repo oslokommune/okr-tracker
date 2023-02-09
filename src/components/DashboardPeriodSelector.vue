@@ -41,7 +41,6 @@ import ClickOutside from 'vue-click-outside';
 import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { dateLongCompact } from '@/util';
-import { mapActions } from 'vuex';
 
 export default {
   name: 'DashboardPeriodSelector',
@@ -115,13 +114,11 @@ export default {
         this.formattedRangeLabel = [...new Set(range.map(dateLongCompact))].join(
           this.flatPickerConfig.locale.rangeSeparator
         );
-        this.setSelectedPeriod(this.range);
       }
     },
   },
 
   methods: {
-    ...mapActions(['setSelectedPeriod']),
     toggle() {
       this.isOpen = !this.isOpen;
     },

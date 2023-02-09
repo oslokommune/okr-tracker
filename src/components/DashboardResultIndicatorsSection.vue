@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
@@ -296,6 +296,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setSelectedPeriod']),
     async setProgress() {
       if (this.activeResultIndicator) {
         if (this.activeResultIndicator.progress) {
@@ -452,6 +453,7 @@ export default {
     },
 
     setPeriod(period) {
+      this.setSelectedPeriod([period.startDate, period.endDate]);
       if (
         this.startDate.getTime?.() !== period.startDate.getTime?.() ||
         this.endDate.getTime?.() !== period.endDate.getTime?.()
