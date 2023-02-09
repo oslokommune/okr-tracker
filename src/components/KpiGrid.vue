@@ -17,9 +17,8 @@
       <div class="kpi-card">
         <div class="kpi-card__parent">{{ kpi.parent.name }}</div>
         <div class="kpi-card__name">{{ kpi.name }}</div>
-        <div class="kpi-card__value">
-          <span v-if="kpi.error || !kpi.valid">–––</span>
-          <span v-else>{{ formatKPIValue(kpi) }}</span>
+        <div>
+          <period-trend-tag :kpi="kpi" />
         </div>
       </div>
     </router-link>
@@ -32,6 +31,10 @@ import { formatKPIValue } from '@/util/kpiHelpers';
 
 export default {
   name: 'KPIs',
+
+  components: {
+    PeriodTrendTag: () => import('@/components/widgets/PeriodTrendTag.vue'),
+  },
 
   props: {
     kpis: {
@@ -57,7 +60,7 @@ export default {
   display: grid;
   grid-auto-rows: 1fr;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
 }
 
 .kpi-link {
@@ -72,16 +75,14 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
   padding: 1rem;
   overflow: hidden;
-  color: var(--color-text);
-  background: var(--color-secondary-light);
+  color: var(--color-blue-dark);
+  background: var(--color-white);
 
   &__parent {
-    margin-bottom: 0.5rem;
-    color: var(--color-gray-dark);
+    margin-bottom: 0.25rem;
     font-weight: 400;
     font-size: typography.$font-size-0;
   }
@@ -89,20 +90,18 @@ export default {
   &__name {
     margin-bottom: 0.75rem;
     font-weight: 500;
-    font-size: typography.$font-size-3;
-  }
-
-  &__value {
-    font-weight: 900;
-    font-size: typography.$font-size-5;
+    font-size: typography.$font-size-2;
   }
 
   &:hover {
-    color: var(--color-text-secondary);
-    background: var(--color-hover);
+    color: var(--color-active);
+    background: var(--color-gray-light);
+    ::v-deep .progressStatistics__noData {
+      color: var(--color-active);
+    }
   }
   &:hover &__parent {
-    color: var(--color-blue-light);
+    color: var(--color-active);
   }
 
   @media screen and (min-width: bp(m)) {

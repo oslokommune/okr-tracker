@@ -23,6 +23,7 @@
     "inPeriod": "i perioden",
     "noChange": "ingen endring",
     "ofTarget": "av mål om",
+    "noData": "Ingen data i valgt periode",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"

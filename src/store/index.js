@@ -183,6 +183,11 @@ export const actions = {
     commit('SET_ACTIVE_ORGANIZATION', payload);
     return true;
   },
+
+  setSelectedPeriod: async ({ commit }, payload) => {
+    commit('SET_SELECTED_PERIOD', payload);
+    return true;
+  },
 };
 
 export const mutations = {
@@ -219,6 +224,10 @@ export const mutations = {
   SET_ACTIVE_ORGANIZATION(state, payload) {
     state.activeOrganization = payload;
   },
+
+  SET_SELECTED_PERIOD(state, payload) {
+    state.selectedPeriod = payload;
+  },
 };
 
 export default new Vuex.Store({
@@ -248,6 +257,7 @@ export default new Vuex.Store({
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
+    selectedPeriod: null,
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
