@@ -1,17 +1,14 @@
 <template>
   <div v-click-outside="hide" class="periodSelector">
-    <div
-      class="periodSelector__input"
-      :class="{ 'periodSelector__input--active': isOpen }"
-      tabindex="0"
+    <button
+      v-tooltip.left="$t('period.choosePeriod')"
+      class="pkt-btn pkt-btn--flat pkt-btn--small pkt-btn--icon-right"
+      :class="{ 'pkt-btn--focus': isOpen }"
       @click="toggle"
-      @keyup.enter="toggle"
     >
-      <span class="periodSelector__input-value">
-        {{ label }}
-      </span>
-      <pkt-icon name="calendar" />
-    </div>
+      <pkt-icon name="calendar" class="pkt-btn__icon" />
+      <span class="pkt-btn__text">{{ label }}</span>
+    </button>
     <div v-if="isOpen" class="periodSelector__content">
       <button
         v-for="rangeOption in options"
@@ -129,35 +126,12 @@ export default {
 .periodSelector {
   position: relative;
   display: inline-block;
-}
 
-.periodSelector__input {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.75rem;
-  white-space: nowrap;
-  border: 1px solid var(--color-grayscale-10);
-  cursor: pointer;
-
-  > svg {
-    height: 1.25rem;
-  }
-
-  &:hover:not(&--active) {
-    background: var(--color-gray-light);
-    border-color: var(--color-gray-light);
-  }
-
-  &--active {
-    background-color: var(--color-secondary-light);
-    border-color: var(--color-secondary-light);
-  }
-
-  &-value {
-    color: var(--color-text);
-    font-weight: 500;
-    font-size: 1rem;
+  .pkt-btn--focus {
+    // Somewhat alter the focus state to more clearly indicate
+    // that the butotn is in focused state while dropdown is open.
+    border-color: var(--btn-focus-txt) !important;
+    text-decoration: none !important;
   }
 }
 
