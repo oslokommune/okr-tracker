@@ -110,6 +110,15 @@ body.using-mouse :focus {
     margin-right: span(0, 1);
     margin-left: span(2, 1);
   }
+
+  > section {
+    margin-bottom: 4rem;
+
+    .title-1 {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+  }
 }
 
 .container {
@@ -136,17 +145,6 @@ body.using-mouse :focus {
       margin-left: span(0, 1);
     }
   }
-}
-
-.main__item {
-  padding: 2rem 1.75rem;
-  color: var(--color-text);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
 }
 
 .main__second {

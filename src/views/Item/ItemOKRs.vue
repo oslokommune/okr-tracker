@@ -1,17 +1,15 @@
 <template>
   <div class="container">
-    <div class="main">
-      <div class="main__item">
-        <div class="itemHome__header">
-          <h2 class="title-2">{{ $t('general.OKRsLong') }}</h2>
-          <tab-list
-            aria-label="Velg periode"
-            :tabs="tabs"
-            :active-tab="activeTab"
-            :set-active-tab="handleTabChange"
-            :tab-ids="tabIds"
-          />
-        </div>
+    <main class="main">
+      <section>
+        <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
+        <tab-list
+          aria-label="Velg periode"
+          :tabs="tabs"
+          :active-tab="activeTab"
+          :set-active-tab="handleTabChange"
+          :tab-ids="tabIds"
+        />
 
         <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
           <content-loader-action-bar
@@ -54,8 +52,8 @@
             </li>
           </ul>
         </tab-panel>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <widgets-right class="aside" />
   </div>

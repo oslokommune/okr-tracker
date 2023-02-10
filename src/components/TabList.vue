@@ -132,7 +132,6 @@ export default {
 <style lang="scss" scoped>
 .tabList {
   position: relative;
-  padding: 0 0.25rem;
   overflow-x: auto;
 
   &::-webkit-slider-runnable-track {

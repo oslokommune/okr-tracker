@@ -1,11 +1,8 @@
 <template>
   <div v-if="activeKeyResult" class="container">
-    <div class="main">
-      <div class="main__item">
-        <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">
-          {{ $t('general.keyResult') }}
-        </h1>
-        <h2 class="title-4">{{ $t('keyResult.updateKeyRes') }}</h2>
+    <main class="main">
+      <section>
+        <h2 class="title-1">{{ $t('general.keyResult') }}</h2>
 
         <div class="key-result-row">
           <div class="key-result-row__progress">
@@ -126,8 +123,8 @@
           @update-record="updateHistoryRecord"
           @delete-record="deleteHistoryRecord"
         />
-      </div>
-    </div>
+      </section>
+    </main>
 
     <widgets-right />
   </div>
