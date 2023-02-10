@@ -350,6 +350,7 @@
     "edited": "Sist endret"
   },
   "period": {
+    "choosePeriod": "Velg periode",
     "dateRange": "Start- og sluttdato",
     "sixmonths": "Siste 6 mnd",
     "year": "Hittil i år",

@@ -1,10 +1,13 @@
 <template>
   <div class="container">
     <main class="main">
-      <section>
-        <h2 class="title-1">
-          {{ $t('general.resultIndicator') }}
-        </h2>
+      <section class="result-indicators">
+        <header>
+          <h2 class="title-1">
+            {{ $t('general.resultIndicator') }}
+          </h2>
+          <dashboard-period-selector />
+        </header>
         <dashboard-result-indicators-section />
       </section>
 
@@ -43,6 +46,7 @@
 import { mapState, mapGetters } from 'vuex';
 
 import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
+import DashboardPeriodSelector from '@/components/DashboardPeriodSelector.vue';
 import KpiGrid from '@/components/KpiGrid.vue';
 import EmptyState from '@/components/EmptyState.vue';
 
@@ -50,12 +54,13 @@ export default {
   name: 'DashboardHome',
   components: {
     DashboardResultIndicatorsSection,
+    DashboardPeriodSelector,
     EmptyState,
     KpiGrid,
   },
 
   computed: {
-    ...mapState(['kpis', 'subKpis']),
+    ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
     ...mapGetters(['hasEditRights']),
 
     keyFigures() {
@@ -69,5 +74,28 @@ export default {
       return this.kpis.filter((kpi) => kpi.kpiType === 'plain');
     },
   },
+
+  watch: {
+    selectedPeriod(period) {
+      if (this.$route.query?.resultIndicatorPeriod !== period.key) {
+        this.$router.replace({ query: { resultIndicatorPeriod: period.key } });
+      }
+    },
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.result-indicators {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    .title-1 {
+      margin-bottom: 0;
+    }
+  }
+}
+</style>
