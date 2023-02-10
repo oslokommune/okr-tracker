@@ -96,7 +96,6 @@ export default {
   display: flex;
   flex-grow: 1;
   box-sizing: border-box;
-  margin-bottom: 1rem;
   padding: 0 1.5rem;
   background-color: var(--color-white);
 

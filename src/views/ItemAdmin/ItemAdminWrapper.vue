@@ -1,15 +1,13 @@
 <template>
   <div class="container">
-    <div class="itemAdmin">
-      <div class="itemAdmin__tabList">
-        <tab-list
-          aria-label="Velg periode"
-          :tabs="tabs"
-          :active-tab="activeTab"
-          :set-active-tab="setActiveTab"
-          :tab-ids="tabIds"
-        />
-      </div>
+    <div class="main">
+      <tab-list
+        aria-label="Velg periode"
+        :tabs="tabs"
+        :active-tab="activeTab"
+        :set-active-tab="setActiveTab"
+        :tab-ids="tabIds"
+      />
       <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
         <item-admin-general v-if="activeTab === 0" />
         <item-admin-OKRs v-if="activeTab === 1" />
@@ -102,57 +100,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.itemAdmin {
-  width: span(12);
-
-  padding: 0 0 1.5rem 0;
-
-  @media screen and (min-width: bp(s)) {
-    padding: 1.5rem 0;
-  }
-
-  @media screen and (min-width: bp(m)) {
-    margin-right: span(2, 1);
-    margin-left: span(2, 1);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    margin-right: span(0);
-    margin-left: span(2, 1);
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    margin-left: span(3, 1);
-  }
-
-  &__tabList {
-    @media screen and (min-width: bp(s)) {
-      position: relative;
-    }
-
-    @media screen and (min-width: bp(l)) {
-      width: span(7, span(10));
-    }
-    @media screen and (min-width: bp(xl)) {
-      width: span(6, span(10));
-    }
-  }
-
-  &__backToItemLink {
-    display: block;
-    margin-bottom: 0.25rem;
-    padding: 0.7rem 1rem;
-    color: var(--color-text);
-    font-weight: 500;
-    text-decoration: none;
-
-    @media screen and (min-width: bp(s)) {
-      position: absolute;
-      right: 0;
-      z-index: 100;
-    }
-  }
-}
-</style>

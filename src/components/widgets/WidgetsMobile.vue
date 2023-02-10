@@ -9,9 +9,6 @@
       >
         <progression-chart :progression="progression" />
       </widget-wrapper>
-      <widget-mission-statement />
-      <widget-team />
-      <widget-child-items />
       <widget-weights
         :active-item="$route.name === 'ItemHome' ? activePeriod : activeObjective"
         :items="$route.name === 'ItemHome' ? objectives : keyResults"
@@ -24,9 +21,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
-import WidgetChildItems from '@/components/widgets/WidgetChildItems.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 
@@ -34,11 +28,8 @@ export default {
   name: 'WidgetsMobile',
 
   components: {
-    WidgetMissionStatement,
     ProgressionChart: () => import('@/components/ProgressionChart.vue'),
     WidgetWrapper: () => import('./WidgetWrapper.vue'),
-    WidgetTeam,
-    WidgetChildItems,
     WidgetWeights,
     WidgetObjectiveDetails,
   },

@@ -1,14 +1,5 @@
 <template>
   <div v-if="activeKpi" class="container">
-    <div class="widgets--left">
-      <div class="aside--left">
-        <div class="widgets">
-          <widget-mission-statement />
-          <widget-team />
-        </div>
-      </div>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <h1 class="title-1">{{ activeKpi.name }}</h1>
@@ -49,13 +40,6 @@
           </div>
         </div>
 
-        <widgets-k-p-i-home
-          class="aside--middle"
-          :range="range"
-          :progress="progress"
-          @listen="handleChange"
-        />
-
         <widget-progress-history
           :progress="filteredProgress"
           :is-loading="isLoading"
@@ -75,7 +59,7 @@
     </div>
 
     <widgets-k-p-i-home
-      class="aside--right"
+      v-if="filteredProgress.length"
       :range="range"
       :progress="progress"
       @listen="handleChange"
@@ -92,8 +76,6 @@ import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
 import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
-import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
@@ -102,8 +84,6 @@ export default {
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
-    WidgetMissionStatement,
-    WidgetTeam,
     WidgetProgressHistory,
   },
 

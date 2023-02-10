@@ -1,9 +1,5 @@
 <template>
   <div v-if="activeKeyResult" class="container">
-    <div class="widgets--left">
-      <widgets-left class="aside--left"></widgets-left>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <h1 class="title-1" style="font-weight: 500; text-transform: uppercase">
@@ -123,8 +119,6 @@
           </div>
         </div>
 
-        <widgets-key-result-mobile class="aside--bottom" />
-
         <widget-progress-history
           :progress="progress"
           :is-loading="isLoading"
@@ -135,7 +129,7 @@
       </div>
     </div>
 
-    <widgets-right class="aside--right" />
+    <widgets-right />
   </div>
 </template>
 
@@ -149,7 +143,6 @@ import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import routerGuard from '@/router/router-guards/keyResultHome';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
-import WidgetsKeyResultMobile from '@/components/widgets/WidgetsKeyResultMobile.vue';
 import { BtnSave } from '@/components/generic/form/buttons';
 
 export default {
@@ -157,12 +150,10 @@ export default {
 
   components: {
     WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetKeyResultProgressDetails: () =>
       import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     WidgetProgressHistory,
-    WidgetsKeyResultMobile,
     BtnSave,
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeItem" class="form-wrapper form-card">
+  <div v-if="activeItem" class="item-form form-card">
     <archived-restore v-if="activeItem.archived" :restore="restore" />
 
     <form-section>
@@ -231,3 +231,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.item-form {
+  @media screen and (min-width: bp(l)) {
+    width: span(6, 0, span(8));
+  }
+}
+</style>

@@ -1,33 +1,31 @@
 <template>
-  <div class="form-wrapper">
-    <div v-if="kpis.length">
-      <button class="btn btn--ghost" :disabled="loading" @click="createKpi">
-        {{ $t('kpi.add') }}
-      </button>
+  <div v-if="kpis.length">
+    <button class="btn btn--ghost" :disabled="loading" @click="createKpi">
+      {{ $t('kpi.add') }}
+    </button>
 
-      <div class="kpis">
-        <ItemAdminKPI
-          v-for="kpi in orderedKpis"
-          :key="kpi.id"
-          :kpi="kpi"
-          :visible="selectedKpiId === kpi.id"
-          @toggle="kpiToggled"
-          @hook:mounted="kpiMounted(kpi.id)"
-        />
-      </div>
+    <div class="kpis">
+      <ItemAdminKPI
+        v-for="kpi in orderedKpis"
+        :key="kpi.id"
+        :kpi="kpi"
+        :visible="selectedKpiId === kpi.id"
+        @toggle="kpiToggled"
+        @hook:mounted="kpiMounted(kpi.id)"
+      />
     </div>
-
-    <empty-state
-      v-else
-      :icon="'lightbulb'"
-      :heading="$t('empty.noKPIs.heading')"
-      :body="$t('empty.noKPIs.adminBody')"
-    >
-      <button class="btn btn--ter" :disabled="loading" @click="createKpi">
-        {{ $t('empty.noKPIs.linkText') }}
-      </button>
-    </empty-state>
   </div>
+
+  <empty-state
+    v-else
+    :icon="'lightbulb'"
+    :heading="$t('empty.noKPIs.heading')"
+    :body="$t('empty.noKPIs.adminBody')"
+  >
+    <button class="btn btn--ter" :disabled="loading" @click="createKpi">
+      {{ $t('kpi.add') }}
+    </button>
+  </empty-state>
 </template>
 
 <script>
@@ -154,5 +152,9 @@ export default {
   flex-direction: column;
   gap: 1.5rem;
   margin: 1.5rem 0;
+
+  @media screen and (min-width: bp(l)) {
+    width: span(6, 0, span(8));
+  }
 }
 </style>

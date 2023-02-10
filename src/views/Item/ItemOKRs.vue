@@ -1,9 +1,5 @@
 <template>
   <div class="container">
-    <div class="widgets--left">
-      <widgets-left class="aside--left"></widgets-left>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <div class="itemHome__header">
@@ -61,9 +57,7 @@
       </div>
     </div>
 
-    <widgets-right class="aside--right" />
-
-    <widgets-mobile class="aside--bottom" />
+    <widgets-right class="aside" />
   </div>
 </template>
 
@@ -74,7 +68,6 @@ import tabIdsHelper from '@/util/tabUtils';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
-import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 import TabList from '@/components/TabList.vue';
 import TabPanel from '@/components/TabPanel.vue';
 
@@ -82,9 +75,7 @@ export default {
   name: 'ItemHome',
 
   components: {
-    WidgetsMobile,
     ActionBar: () => import('@/components/ActionBar.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),

@@ -17,8 +17,6 @@
           {{ $t('btn.reset') }}
         </button>
       </widget>
-      <widget-mission-statement class="widgets--bottom" />
-      <widget-team class="widgets--bottom" />
     </div>
   </div>
 </template>
@@ -27,16 +25,12 @@
 import { mapGetters } from 'vuex';
 import locale from 'flatpickr/dist/l10n/no';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
-import WidgetMissionStatement from '@/components/widgets/WidgetMissionStatement.vue';
-import WidgetTeam from '@/components/widgets/WidgetTeam/WidgetTeam.vue';
 
 export default {
   name: 'WidgetsKPIHome',
 
   components: {
     Widget,
-    WidgetMissionStatement,
-    WidgetTeam,
   },
 
   props: {
@@ -85,17 +79,5 @@ export default {
 <style lang="scss" scoped>
 .widgets__kpi {
   padding: 0.5rem;
-}
-
-.widgets--bottom {
-  @media screen and (min-width: bp(m)) {
-    display: none;
-  }
-}
-
-.widgets--left {
-  @media screen and (max-width: bp(m)) {
-    display: none;
-  }
 }
 </style>

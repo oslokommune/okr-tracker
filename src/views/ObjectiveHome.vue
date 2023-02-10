@@ -1,9 +1,5 @@
 <template>
   <div v-if="activeObjective" class="container">
-    <div class="widgets--left">
-      <widgets-left class="aside--left"></widgets-left>
-    </div>
-
     <div class="main">
       <div class="main__item">
         <h1 class="title-1">{{ activeObjective.name }}</h1>
@@ -38,15 +34,13 @@
       </div>
     </div>
 
-    <widgets-right class="aside--right" />
-    <widgets-mobile class="aside--bottom" />
+    <widgets-right />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
-import WidgetsMobile from '@/components/widgets/WidgetsMobile.vue';
 
 export default {
   name: 'ObjectiveHome',
@@ -55,8 +49,6 @@ export default {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     WidgetsRight: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    WidgetsLeft: () => import('@/components/widgets/WidgetsItemHomeLeft.vue'),
-    WidgetsMobile,
   },
 
   beforeRouteUpdate: routerGuard,
