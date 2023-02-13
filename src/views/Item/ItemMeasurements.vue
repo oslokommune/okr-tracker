@@ -89,8 +89,8 @@ export default {
 .result-indicators {
   header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 0.5rem;
 
     .title-1 {
