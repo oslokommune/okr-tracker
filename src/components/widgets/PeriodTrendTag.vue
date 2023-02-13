@@ -75,8 +75,7 @@ export default {
   methods: {
     formatKPIValue,
     async setProgress() {
-      const startDate = this.selectedPeriod ? this.selectedPeriod[0] : null;
-      const endDate = this.selectedPeriod ? this.selectedPeriod[1] : null;
+      const { startDate, endDate } = this.selectedPeriod;
 
       if (this.kpi) {
         if (this.kpi.progress) {

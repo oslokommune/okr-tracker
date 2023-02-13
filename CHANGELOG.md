@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file. The format 
 - The layout of most pages are now more unified. Some widgets previously found
   in the sidebars of each page has been removed and their contents moved
   elsewhere.
+- The period selector now affects all measurements under the "Measurements" tab.
+  It is also moved outside the result indicator box.
 
 ## [3.3.0] 2023-02-03
 

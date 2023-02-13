@@ -19,13 +19,6 @@
         :is-filled="false"
       />
       <div class="graphOptions">
-        <dashboard-period-selector
-          :options="resultIndicatorPeriods"
-          :start-date="startDate"
-          :end-date="endDate"
-          :period="currentResultIndicatorPeriod"
-          @input="setPeriod($event)"
-        />
         <div class="dropdownButton">
           <v-select
             label="label"
@@ -89,11 +82,10 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
-import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { PktIcon } from '@oslokommune/punkt-vue2';
 import { periodDates } from '@/util';
@@ -103,7 +95,7 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
-import DashboardPeriodSelector from './DashboardPeriodSelector.vue';
+import getPeriods from '@/config/periods';
 import DashboardResultIndicatorStatistics from './DashboardResultIndicatorStatistics.vue';
 import TabList from './TabList.vue';
 import TabPanel from './TabPanel.vue';
@@ -111,44 +103,12 @@ import EmptyState from './EmptyState.vue';
 
 const { Timestamp } = firebase.firestore;
 
-const getResultIndicatorPeriods = () => {
-  const currentDate = new Date();
-  const endDate = endOfDay(currentDate);
-  const currentYear = currentDate.getFullYear();
-  const sixMonthsBack = new Date();
-  sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
-
-  return {
-    all: {
-      label: i18n.t('period.all'),
-      key: 'all',
-      startDate: false,
-      endDate,
-    },
-    year: {
-      label: i18n.t('period.year'),
-      key: 'year',
-      startDate: new Date(currentYear, 0, 1),
-      endDate,
-    },
-    sixmonths: {
-      label: i18n.t('period.sixmonths'),
-      key: 'sixmonths',
-      startDate: sixMonthsBack,
-      endDate,
-    },
-  };
-};
-
-const RESULT_INDICATOR_PERIODS = getResultIndicatorPeriods();
-
 export default {
   name: 'DashboardResultIndicatorsSection',
 
   components: {
     TabList,
     TabPanel,
-    DashboardPeriodSelector,
     EmptyState,
     DashboardResultIndicatorStatistics,
   },
@@ -160,10 +120,6 @@ export default {
     downloadOption: '',
     progressCollection: [],
     goals: [],
-    resultIndicatorPeriods: Object.values(RESULT_INDICATOR_PERIODS).map(
-      (period) => period
-    ),
-    currentResultIndicatorPeriod: RESULT_INDICATOR_PERIODS.all,
     startDate: null,
     endDate: null,
     downloadIcon: {
@@ -182,7 +138,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'subKpis']),
+    ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
     ...mapGetters(['hasEditRights']),
     tabIds() {
       return tabIdsHelper('resultIndicator');
@@ -214,8 +170,7 @@ export default {
         if (!seenDates.includes(date)) {
           seenDates.push(date);
 
-          const startDate = this.currentResultIndicatorPeriod.startDate;
-          const endDate = this.currentResultIndicatorPeriod.endDate;
+          const { startDate, endDate } = this.selectedPeriod;
 
           return (
             (!startDate || a.timestamp.toDate() > startDate) &&
@@ -233,24 +188,6 @@ export default {
   },
 
   watch: {
-    $route: {
-      immediate: true,
-      async handler(current) {
-        const { resultIndicatorPeriod } = current.query;
-
-        if (resultIndicatorPeriod) {
-          if (
-            Object.hasOwnProperty.call(RESULT_INDICATOR_PERIODS, resultIndicatorPeriod)
-          ) {
-            this.currentResultIndicatorPeriod =
-              RESULT_INDICATOR_PERIODS[resultIndicatorPeriod];
-          } else {
-            this.$router.replace({ query: null });
-          }
-        }
-      },
-    },
-
     activeResultIndicator() {
       Promise.all([this.fetchGoals(), this.setProgress()]).then(() => {
         this.setStartAndEndDates();
@@ -258,15 +195,11 @@ export default {
       });
     },
 
-    currentResultIndicatorPeriod(period) {
+    selectedPeriod() {
       Promise.all([this.fetchGoals(), this.setProgress()]).then(() => {
         this.setStartAndEndDates();
         this.renderGraph();
       });
-
-      if (this.$route.query?.resultIndicatorPeriod !== period.key) {
-        this.$router.replace({ query: { resultIndicatorPeriod: period.key } });
-      }
     },
 
     resultIndicators() {
@@ -296,7 +229,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setSelectedPeriod']),
     async setProgress() {
       if (this.activeResultIndicator) {
         if (this.activeResultIndicator.progress) {
@@ -314,20 +246,12 @@ export default {
         } else {
           let query = db.collection(`kpis/${this.activeResultIndicator.id}/progress`);
 
-          if (this.currentResultIndicatorPeriod.startDate) {
-            query = query.where(
-              'timestamp',
-              '>=',
-              this.currentResultIndicatorPeriod.startDate
-            );
+          if (this.selectedPeriod.startDate) {
+            query = query.where('timestamp', '>=', this.selectedPeriod.startDate);
           }
 
-          if (this.currentResultIndicatorPeriod.endDate) {
-            query = query.where(
-              'timestamp',
-              '<=',
-              this.currentResultIndicatorPeriod.endDate
-            );
+          if (this.selectedPeriod.endDate) {
+            query = query.where('timestamp', '<=', this.selectedPeriod.endDate);
           }
 
           await this.$bind('progressCollection', query.orderBy('timestamp', 'desc'));
@@ -338,26 +262,17 @@ export default {
     },
 
     setStartAndEndDates() {
-      if (
-        this.currentResultIndicatorPeriod?.key === 'all' &&
-        !this.progressCollection.length
-      ) {
+      if (this.selectedPeriod?.key === 'all' && !this.progressCollection.length) {
         // Return dates for all year if it's not possible to identify a start
         // or end date due to missing progress data in the current collection.
-        this.startDate = RESULT_INDICATOR_PERIODS.year.startDate;
-        this.endDate = RESULT_INDICATOR_PERIODS.year.endDate;
+        const { startDate, endDate } = getPeriods().year;
+        this.startDate = startDate;
+        this.endDate = endDate;
         return;
       }
 
-      this.startDate = this.getStartDate(
-        this.currentResultIndicatorPeriod,
-        this.progressCollection
-      );
-
-      this.endDate = this.getEndDate(
-        this.currentResultIndicatorPeriod,
-        this.progressCollection
-      );
+      this.startDate = this.getStartDate(this.selectedPeriod, this.progressCollection);
+      this.endDate = this.getEndDate(this.selectedPeriod, this.progressCollection);
     },
 
     async fetchGoals() {
@@ -417,14 +332,8 @@ export default {
           `#resultIndicatorTabButton-${this.activeTab}`
         )?.innerText;
         const formattedPeriod = periodDates({
-          startDate: this.getStartDate(
-            this.currentResultIndicatorPeriod,
-            this.filteredProgress
-          ),
-          endDate: this.getEndDate(
-            this.currentResultIndicatorPeriod,
-            this.filteredProgress
-          ),
+          startDate: this.getStartDate(this.selectedPeriod, this.filteredProgress),
+          endDate: this.getEndDate(this.selectedPeriod, this.filteredProgress),
         });
 
         downloadPng(svgRef, filename, activeTabName, formattedPeriod);
@@ -450,16 +359,6 @@ export default {
     setActiveTab(tabIndex) {
       this.activeTab = tabIndex;
       this.activeResultIndicator = this.resultIndicators[tabIndex];
-    },
-
-    setPeriod(period) {
-      this.setSelectedPeriod([period.startDate, period.endDate]);
-      if (
-        this.startDate.getTime?.() !== period.startDate.getTime?.() ||
-        this.endDate.getTime?.() !== period.endDate.getTime?.()
-      ) {
-        this.currentResultIndicatorPeriod = period;
-      }
     },
 
     /**

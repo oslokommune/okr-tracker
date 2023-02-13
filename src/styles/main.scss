@@ -26,6 +26,7 @@
  */
 @use '@oslokommune/punkt-css/dist/scss/base/_colors';
 @use '@oslokommune/punkt-css/dist/scss/elements/_hr';
+@use '@oslokommune/punkt-css/dist/scss/elements/_button';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
