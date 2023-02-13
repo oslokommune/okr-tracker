@@ -1,7 +1,6 @@
 <template>
   <div v-click-outside="hide" class="periodSelector">
     <button
-      v-tooltip.left="$t('period.choosePeriod')"
       class="pkt-btn pkt-btn--flat pkt-btn--small pkt-btn--icon-right"
       :class="{ 'pkt-btn--focus': isOpen }"
       @click="toggle"
