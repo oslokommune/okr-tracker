@@ -7,7 +7,9 @@
       <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>
     </h3>
-    <span>{{ objective.description }}</span>
+    <p v-if="objective.description" class="objective__description">
+      {{ objective.description }}
+    </p>
   </router-link>
 </template>
 
@@ -47,10 +49,20 @@ export default {
   padding: 2.5rem 2rem 2rem 2rem;
   color: var(--color-text);
   text-decoration: none;
+
+  &:hover {
+    color: var(--color-hover);
+  }
 }
 
 .objective__header {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.objective__description {
+  margin-top: 0.25rem;
+  line-height: 1.5rem;
 }
 </style>

@@ -5,7 +5,7 @@
       class="keyResult__infoLink"
       :class="{ 'keyResult__infoLink--isDetailedView': isDetailedView }"
     >
-      <h3 class="keyResult__title">{{ keyRow.name }}</h3>
+      <h4 class="keyResult__title title-3">{{ keyRow.name }}</h4>
       <p v-if="isDetailedView" class="keyResult__description">{{ keyRow.description }}</p>
     </router-link>
 
@@ -26,7 +26,6 @@
       <progress-bar
         :progression="progressDetails.percentageCompleted"
         :is-compact="!isDetailedView"
-        :dark="true"
         class="keyResult__progressBar"
         :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
       />
@@ -114,6 +113,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .keyResult {
   background: white;
 
@@ -127,26 +128,26 @@ export default {
     padding: 0.5rem 1.5rem;
     color: var(--color-text);
     text-decoration: none;
-    background-color: var(--color-secondary-light);
+    background-color: var(--color-gray-light);
 
     &--isDetailedView {
       padding: 1.5rem;
     }
 
     &:hover {
-      color: var(--color-text-secondary);
+      color: var(--color-white);
       background-color: var(--color-hover);
     }
   }
 
   &__title {
-    font-weight: 500;
-    font-size: 1rem;
+    margin-bottom: 0;
   }
 
   &__description {
-    margin: 1rem 0;
-    font-size: 1rem;
+    margin: 0.5rem 0;
+    font-size: typography.$font-size-1;
+    line-height: 1.25rem;
   }
 
   &__progress {
@@ -155,11 +156,11 @@ export default {
     flex-direction: column;
     justify-content: center;
     padding: 0.5rem 1.5rem;
-    color: var(--color-text-secondary);
-    background: var(--color-primary);
+    background-color: var(--color-gray-light);
     cursor: pointer;
 
     &:hover {
+      color: var(--color-white);
       background-color: var(--color-hover);
     }
 
@@ -185,7 +186,6 @@ export default {
   }
 
   &__progressionSummary {
-    color: var(--color-gray-light);
     font-weight: 300;
     text-align: right;
   }

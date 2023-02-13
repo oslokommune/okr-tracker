@@ -39,7 +39,7 @@
               class="itemHome__tree--item"
             >
               <objective-row :objective="objective"></objective-row>
-              <ul v-if="objective.keyResults">
+              <ul v-if="objective.keyResults.length">
                 <li
                   v-for="keyResult in objective.keyResults"
                   :key="keyResult.id"
@@ -213,8 +213,10 @@ export default {
 
 .itemHome__tree--item {
   margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: var(--color-white);
+
+  > ul {
+    padding-bottom: 0.5rem;
+  }
 }
 </style>
