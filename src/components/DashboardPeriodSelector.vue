@@ -128,9 +128,9 @@ export default {
 
   .pkt-btn--focus {
     // Somewhat alter the focus state to more clearly indicate
-    // that the butotn is in focused state while dropdown is open.
-    text-decoration: none !important;
-    border-color: var(--btn-focus-txt) !important;
+    // that the button is in focused state while dropdown is open.
+    text-decoration: none;
+    border-color: var(--btn-focus-txt);
   }
 }
 
