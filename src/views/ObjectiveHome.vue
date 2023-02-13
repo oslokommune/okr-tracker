@@ -1,8 +1,8 @@
 <template>
   <div v-if="activeObjective" class="container">
-    <div class="main">
-      <div class="main__item">
-        <h1 class="title-1">{{ activeObjective.name }}</h1>
+    <main class="main">
+      <section>
+        <h2 class="title-1">{{ activeObjective.name }}</h2>
         <p>{{ activeObjective.description }}</p>
 
         <section class="itemHome__tree--item">
@@ -31,8 +31,8 @@
             />
           </div>
         </section>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <widgets-right />
   </div>
@@ -90,10 +90,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.key-results {
-  margin-top: 2.5rem;
-}
-
 .key-results__list {
   margin: 1.5rem 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

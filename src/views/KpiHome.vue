@@ -1,8 +1,8 @@
 <template>
   <div v-if="activeKpi" class="container">
-    <div class="main">
-      <div class="main__item">
-        <h1 class="title-1">{{ activeKpi.name }}</h1>
+    <main class="main">
+      <section>
+        <h2 class="title-1">{{ activeKpi.name }}</h2>
 
         <p>{{ activeKpi.description }}</p>
 
@@ -49,14 +49,14 @@
           @update-record="updateProgressRecord"
           @delete-record="deleteProgressRecord"
         />
-      </div>
+      </section>
 
       <progress-modal
         v-if="showValueModal"
         @create-record="createProgressRecord"
         @close="showValueModal = false"
       />
-    </div>
+    </main>
 
     <widgets-k-p-i-home
       v-if="filteredProgress.length"

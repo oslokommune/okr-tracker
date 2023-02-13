@@ -71,16 +71,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.main {
-  > section {
-    margin-bottom: 4rem;
-
-    .title-1 {
-      color: var(--color-text);
-      font-weight: 500;
-    }
-  }
-}
-</style>
