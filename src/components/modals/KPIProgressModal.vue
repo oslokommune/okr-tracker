@@ -52,14 +52,16 @@
         </div>
       </div>
 
-      <div v-if="existingValue" class="ok-alert ok-alert--warning">
-        {{
-          $t('widget.history.overwriteWarning', {
-            date: dateShort(existingValue.timestamp.toDate()),
-            value: formatKPIValue(activeKpi, existingValue.value),
-          })
-        }}
-      </div>
+      <pkt-alert v-if="existingValue" skin="warning">
+        <template #content>
+          {{
+            $t('widget.history.overwriteWarning', {
+              date: dateShort(existingValue.timestamp.toDate()),
+              value: formatKPIValue(activeKpi, existingValue.value),
+            })
+          }}
+        </template>
+      </pkt-alert>
 
       <template #actions="{ handleSubmit, submitDisabled }">
         <btn-save
@@ -98,6 +100,7 @@ export default {
   name: 'KPIProgressModal',
 
   components: {
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     ProgressUpdateAPIExample,
   },
 

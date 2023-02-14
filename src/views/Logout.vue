@@ -3,27 +3,11 @@
     <div class="main">
       <h1 class="title-1">{{ $t('logout.header') }}</h1>
       <div class="logout">
-        <div v-if="$route.query.reason === 'internal'" class="ok-alert ok-alert--warning">
-          {{ $t('logout.reasons.internal') }}
-        </div>
-        <div
-          v-if="$route.query.reason === 'permission-denied'"
-          class="ok-alert ok-alert--warning"
-        >
-          {{ $t('logout.reasons.permission-denied') }}
-        </div>
-        <div
-          v-if="$route.query.reason === 'auth/email-already-in-use'"
-          class="ok-alert ok-alert--warning"
-        >
-          {{ $t('logout.reasons.email-in-use') }}
-        </div>
-      </div>
-      <div
-        v-if="$route.query.reason === 'email-not-whitelisted'"
-        class="ok-alert ok-alert--warning"
-      >
-        {{ $t('logout.reasons.email-not-whitelisted') }}
+        <pkt-alert v-if="reason" skin="warning">
+          <template #content>
+            {{ reason }}
+          </template>
+        </pkt-alert>
       </div>
     </div>
   </div>
@@ -32,6 +16,25 @@
 <script>
 export default {
   name: 'Logout',
+  components: {
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+  },
+  computed: {
+    reason() {
+      switch (this.$route.query.reason) {
+        case 'internal':
+          return this.$t('logout.reasons.internal');
+        case 'permission-denied':
+          return this.$t('logout.reasons.permission-denied');
+        case 'auth/email-already-in-use':
+          return this.$t('logout.reasons.email-in-use');
+        case 'email-not-whitelisted':
+          return this.$t('logout.reasons.email-not-whitelisted');
+        default:
+          return null;
+      }
+    },
+  },
 };
 </script>
 
