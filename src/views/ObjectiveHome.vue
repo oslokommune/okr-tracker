@@ -92,7 +92,6 @@ export default {
 <style lang="scss" scoped>
 .key-results__list {
   margin: 1.5rem 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .key-results__list--row {
@@ -113,7 +112,6 @@ export default {
 }
 
 .itemHome__tree--item {
-  background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: var(--color-white);
 }
 </style>

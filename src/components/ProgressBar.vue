@@ -50,7 +50,7 @@ progress {
 
   &[value],
   &[value]::-webkit-progress-bar {
-    background: var(--color-gray);
+    background: var(--color-grayscale-10);
   }
 
   &[value]::-webkit-progress-value {
