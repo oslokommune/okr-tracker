@@ -152,18 +152,12 @@ textarea {
 .form-errors {
   margin-top: 1.5rem !important;
 
-  &__title {
-    margin-bottom: 1rem;
-    font-weight: 500;
-    font-size: typography.$font-size-2;
-  }
-
   &__list {
     font-size: typography.$font-size-1;
     list-style: square;
 
     > li {
-      margin: 0 1.5rem 0.5rem 1.5rem;
+      margin: 0 1.5rem;
 
       > span:first-child {
         margin-right: 0.5rem;
