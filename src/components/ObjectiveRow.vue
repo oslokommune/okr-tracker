@@ -52,6 +52,10 @@ export default {
 
   &:hover {
     color: var(--color-hover);
+
+    .title-2 {
+      color: inherit;
+    }
   }
 }
 

@@ -1,9 +1,15 @@
 <template>
   <div v-if="activeKeyResult" class="container">
     <main class="main">
-      <section>
-        <h2 class="title-1">{{ $t('general.keyResult') }}</h2>
+      <header>
+        <span class="title-label">{{ $t('general.keyResult') }}</span>
+        <h2 class="title-1">{{ activeKeyResult.name }}</h2>
+        <p v-if="activeKeyResult.description" class="description">
+          {{ activeKeyResult.description }}
+        </p>
+      </header>
 
+      <section>
         <div class="key-result-row">
           <div class="key-result-row__progress">
             <h3 class="key-result-row__progress--header">

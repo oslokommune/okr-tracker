@@ -8,16 +8,18 @@ $font-size-7: 2rem;
 
 .md h1,
 .title-1 {
-  margin-bottom: 0.5em;
-  font-size: $font-size-4;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: $font-size-5;
 }
 
 .md h2,
 .title-2 {
   margin-bottom: 0.5rem;
+  color: var(--color-text);
   font-weight: 500;
   font-size: $font-size-3;
-  letter-spacing: -0.03rem;
 }
 
 .md h3,

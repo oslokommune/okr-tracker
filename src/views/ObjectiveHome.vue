@@ -1,36 +1,39 @@
 <template>
   <div v-if="activeObjective" class="container">
     <main class="main">
-      <section>
+      <header>
+        <span class="title-label">{{ $t('general.objective') }}</span>
         <h2 class="title-1">{{ activeObjective.name }}</h2>
-        <p>{{ activeObjective.description }}</p>
+        <p v-if="activeObjective.description" class="description">
+          {{ activeObjective.description }}
+        </p>
+      </header>
 
-        <section class="itemHome__tree--item">
-          <empty-state
-            v-if="!keyRes.length"
-            :icon="'poop'"
-            :heading="$t('empty.noKeyResults.heading')"
-            :body="$t('empty.noKeyResults.body')"
+      <section class="itemHome__tree--item">
+        <empty-state
+          v-if="!keyRes.length"
+          :icon="'poop'"
+          :heading="$t('empty.noKeyResults.heading')"
+          :body="$t('empty.noKeyResults.body')"
+        >
+          <router-link
+            v-if="hasEditRights"
+            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
+            class="btn btn--ter"
           >
-            <router-link
-              v-if="hasEditRights"
-              :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-              class="btn btn--ter"
-            >
-              {{ $t('empty.noKeyResults.linkText') }}
-            </router-link>
-          </empty-state>
+            {{ $t('empty.noKeyResults.linkText') }}
+          </router-link>
+        </empty-state>
 
-          <div class="key-results__list">
-            <key-result-row
-              v-for="keyResult in keyRes"
-              :key="keyResult.id"
-              :key-result="keyResult"
-              :force-expanded="true"
-              class="key-results__list--row"
-            />
-          </div>
-        </section>
+        <div class="key-results__list">
+          <key-result-row
+            v-for="keyResult in keyRes"
+            :key="keyResult.id"
+            :key-result="keyResult"
+            :force-expanded="true"
+            class="key-results__list--row"
+          />
+        </div>
       </section>
     </main>
 
