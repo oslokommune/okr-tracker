@@ -9,20 +9,17 @@
         </p>
       </header>
 
-      <section class="key-result-row">
-        <div class="key-result-row__progress">
+      <section class="key-result-summary">
+        <div class="key-result-summary__progress">
           <h3 class="title-2">
             {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
           </h3>
-          <widget-key-result-progress-details
-            :progress-details="progressDetails"
-            :unit="activeKeyResult.unit"
-          />
-          <div class="progression__total">
-            <span class="progression__total--current">
+
+          <div class="key-result-progression">
+            <span class="key-result-progression__current">
               {{ progressDetails.formattedTotalCompletedTasks }}
             </span>
-            <span class="progression__total--target">
+            <span class="key-result-progression__target">
               {{
                 $t('progress.remainingOf', {
                   progress: progressDetails.formattedTotalNumberOfTasks,
@@ -30,21 +27,20 @@
               }}
             </span>
           </div>
-          <progress-bar
-            :progression="progressDetails.percentageCompleted"
-            :is-compact="false"
-            class="key-result-row__progressBar"
-          />
+
+          <div class="key-result-progress-bar">
+            <widget-key-result-progress-details
+              :progress-details="progressDetails"
+              :unit="activeKeyResult.unit"
+            />
+            <progress-bar
+              :progression="progressDetails.percentageCompleted"
+              :is-compact="false"
+            />
+          </div>
         </div>
 
-        <div class="key-result-row__info">
-          <h3 class="title-3">{{ activeKeyResult.name }}</h3>
-          <span class="key-result-row__info--description">
-            {{ activeKeyResult.description }}
-          </span>
-        </div>
-
-        <div class="key-result__value">
+        <div class="key-result-summary__value">
           <div>
             <h3 class="title-2">{{ $t('keyResult.newValue') }}</h3>
 
@@ -55,7 +51,7 @@
                   <textarea
                     v-model="progressNote"
                     style="margin-top: 0.5rem"
-                    rows="3"
+                    rows="2"
                     :placeholder="$t('keyResult.commentPlaceholder')"
                     :disabled="!allowedToEditPeriod"
                   />
@@ -290,96 +286,57 @@ export default {
   margin-bottom: 1rem;
 }
 
-.key-result-row {
+.key-result-summary {
   display: flex;
-  flex-direction: column;
+  gap: 2.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--color-white);
 
-  @media screen and (min-width: bp(s)) {
-    display: grid;
-    grid-row-gap: 1px;
-    grid-column-gap: 1px;
-    grid-template-rows: repeat(3, auto);
-    grid-template-columns: 1fr span(3, span(8));
+  &__progress {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  &__value {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    button {
+      align-self: end;
+    }
   }
 }
 
-.key-result-row__info {
-  grid-area: 2 / 1 / 3 / 2;
-  padding: 1.5rem 1.75rem;
-  color: var(--color-text);
-  text-decoration: none;
-  background-color: var(--color-white);
+.key-result-progression {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &__current {
+    padding: 1rem 2rem;
+    font-weight: 700;
+    font-size: typography.$font-size-5;
+    background-color: var(--color-gray);
+  }
+
+  &__target {
+    margin-left: 2.5rem;
+    padding: 0.5rem 0.5rem;
+    font-size: typography.$font-size-0;
+  }
 }
 
-.key-result-row__info--description {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-}
-
-.key-result-row__progress {
-  display: grid;
-  grid-area: 1 / 1 / 2 / 2;
-  grid-column-gap: 2px;
-  grid-template-rows: repeat(5, auto);
-  grid-template-columns: 1fr;
-  align-self: center;
-  width: 100%;
-  height: 100%;
-  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
-  color: var(--color-text);
-  background-color: var(--color-white);
-}
-
-.key-result-row__progressBar {
-  grid-area: 5 / 1 / 6 / 2;
-  margin-top: 1rem;
-}
-
-.progression__total {
-  display: grid;
-  grid-area: 2 / 1 / 3 / 2;
-  grid-template-rows: repeat(2, auto);
-  grid-template-columns: 1fr;
-  justify-self: start;
-  margin-bottom: 1rem;
-  color: var(--color-text);
-}
-
-.progression__total--current {
-  align-self: center;
-  justify-self: center;
-  padding: 1rem 2rem;
-  color: var(--color-text);
-  font-weight: 700;
-  font-size: typography.$font-size-5;
-  background-color: var(--color-gray);
-}
-
-.progression__total--target {
-  align-self: end;
-  justify-self: end;
-  padding: 0.5rem 0.5rem;
-  color: var(--color-text-secondary);
-  font-size: typography.$font-size-0;
+.key-result-progress-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .key-result-graph {
   padding: 1.5rem 1.75rem;
   background-color: var(--color-white);
-}
-
-.key-result__value {
-  display: flex;
-  flex-direction: column;
-  grid-area: 1 / 2 / 3 / 3;
-  justify-content: space-between;
-  padding: 1.5rem 1.75rem 1.5rem 1.75rem;
-  color: var(--color-text);
-  background-color: var(--color-white);
-}
-
-.key-result__value--button {
-  align-self: end;
-  border: 1px solid var(--color-white);
 }
 </style>
