@@ -11,7 +11,7 @@
 
       <section class="key-result-row">
         <div class="key-result-row__progress">
-          <h3 class="key-result-row__progress--header">
+          <h3 class="title-2">
             {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
           </h3>
           <widget-key-result-progress-details
@@ -33,7 +33,6 @@
           <progress-bar
             :progression="progressDetails.percentageCompleted"
             :is-compact="false"
-            :dark="true"
             class="key-result-row__progressBar"
           />
         </div>
@@ -307,9 +306,9 @@ export default {
 .key-result-row__info {
   grid-area: 2 / 1 / 3 / 2;
   padding: 1.5rem 1.75rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   text-decoration: none;
-  background-color: var(--color-primary);
+  background-color: var(--color-white);
 }
 
 .key-result-row__info--description {
@@ -327,8 +326,8 @@ export default {
   width: 100%;
   height: 100%;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
-  color: var(--color-text-secondary);
-  background-color: var(--color-primary);
+  color: var(--color-text);
+  background-color: var(--color-white);
 }
 
 .key-result-row__progressBar {
@@ -353,7 +352,7 @@ export default {
   color: var(--color-text);
   font-weight: 700;
   font-size: typography.$font-size-5;
-  background-color: var(--color-gray-light);
+  background-color: var(--color-gray);
 }
 
 .progression__total--target {
@@ -375,8 +374,8 @@ export default {
   grid-area: 1 / 2 / 3 / 3;
   justify-content: space-between;
   padding: 1.5rem 1.75rem 1.5rem 1.75rem;
-  color: var(--color-text-secondary);
-  background-color: var(--color-primary);
+  color: var(--color-text);
+  background-color: var(--color-white);
 }
 
 .key-result__value--button {
