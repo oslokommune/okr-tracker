@@ -162,6 +162,11 @@ export default {
     &:hover {
       color: var(--color-white);
       background-color: var(--color-hover);
+
+      .keyResult__progressionSummary,
+      .widgetKeyResultProgressDetails {
+        color: inherit;
+      }
     }
 
     @media screen and (min-width: bp(s)) {
@@ -186,6 +191,7 @@ export default {
   }
 
   &__progressionSummary {
+    color: var(--color-blue-dark);
     font-weight: 300;
     text-align: right;
   }
