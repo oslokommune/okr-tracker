@@ -288,9 +288,14 @@ export default {
 
 .key-result-summary {
   display: flex;
+  flex-direction: column;
   gap: 2.5rem;
   padding: 1.5rem 1.75rem;
   background: var(--color-white);
+
+  @media screen and (min-width: bp(s)) {
+    flex-direction: row;
+  }
 
   &__progress {
     display: flex;
