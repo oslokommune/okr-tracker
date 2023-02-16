@@ -98,23 +98,15 @@
           </div>
         </div>
 
-        <div v-if="activeKeyResult.auto" class="auto">
-          <div class="auto__icon fa fa-magic"></div>
-          <div class="auto__text">
-            {{ $t('keyResult.autoHelpText') }}
-          </div>
-        </div>
+        <pkt-alert v-if="activeKeyResult.auto" skin="info">
+          <template #content>{{ $t('keyResult.autoHelpText') }}</template>
+        </pkt-alert>
 
-        <div
-          v-if="activeKeyResult.auto && activeKeyResult.error"
-          class="auto auto--invalid"
-        >
-          <div class="auto__icon fa fa-exclamation-triangle"></div>
-          <div class="auto__text">
-            <p>{{ $t('keyResult.autoError') }}</p>
-            <pre class="auto__errormsg">{{ activeKeyResult.error }}</pre>
-          </div>
-        </div>
+        <pkt-alert v-if="activeKeyResult.auto && activeKeyResult.error" skin="error">
+          <template #content>
+            {{ $t('keyResult.autoError') }} {{ activeKeyResult.error }}
+          </template>
+        </pkt-alert>
 
         <widget-progress-history
           :progress="progress"
@@ -150,6 +142,7 @@ export default {
     WidgetKeyResultProgressDetails: () =>
       import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     WidgetProgressHistory,
     BtnSave,
   },
@@ -297,39 +290,8 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.auto {
-  display: flex;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  font-weight: 500;
-  background: rgba(var(--color-yellow-rgb), 0.25);
-  border: 1px solid var(--color-primary);
-  border-radius: 3px;
-}
-
-.auto--invalid {
-  background: rgba(var(--color-red-rgb), 0.25);
-  border: 1px solid var(--color-red);
-}
-
-.auto__text {
-  width: 100%;
-}
-
-.auto__icon {
-  flex-shrink: 0;
-  margin-top: 0.2rem;
-  margin-right: 0.75rem;
-}
-
-.auto__errormsg {
-  width: 100%;
-  margin-top: 1.25rem;
-  padding: 1rem;
-  color: var(--color-white);
-  font-family: monospace;
-  background: rgba(black, 0.75);
-  border-radius: 3px;
+.pkt-alert {
+  margin-bottom: 0.5rem;
 }
 
 .key-result-row {

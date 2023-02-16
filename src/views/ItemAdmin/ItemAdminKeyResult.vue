@@ -115,9 +115,11 @@
         </progress-update-API-example>
       </toggle-button>
 
-      <div v-if="keyResult.auto && keyResult.api" class="ok-alert ok-alert--warning">
-        {{ $t('keyResult.apiAndKeyRes') }}
-      </div>
+      <pkt-alert v-if="keyResult.auto && keyResult.api" skin="warning">
+        <template #content>
+          {{ $t('keyResult.apiAndKeyRes') }}
+        </template>
+      </pkt-alert>
 
       <template #actions="{ handleSubmit, submitDisabled }">
         <btn-delete v-if="!keyResult.archived" :disabled="loading" @click="archive" />
@@ -140,6 +142,7 @@ export default {
   name: 'ItemAdminKeyResult',
 
   components: {
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),

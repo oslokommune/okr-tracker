@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file. The format 
   elsewhere.
 - The period selector now affects all measurements under the "Measurements" tab.
   It is also moved outside the result indicator box.
+- Custom alerts have been replaced by the equivalent component from the [Punkt
+  design system](https://punkt.oslo.kommune.no/latest/komponenter/alert/index).
 
 ## [3.3.0] 2023-02-03
 

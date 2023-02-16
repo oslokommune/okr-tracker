@@ -2,17 +2,19 @@
   <validation-observer v-slot="{ errors, valid, validated }" ref="form" tag="form">
     <slot />
 
-    <div v-if="validated && !valid" class="ok-alert ok-alert--danger form-errors">
-      <div class="form-errors__title">{{ $t('general.formErrors') }}</div>
-      <ul v-if="errors" class="form-errors__list">
-        <template v-for="(fieldErrors, fieldName) in errors">
-          <li v-if="fieldErrors.length" :key="fieldName">
-            <span>{{ $t('fields.' + fieldName) }}</span>
-            <span>{{ fieldErrors[0] }}</span>
-          </li>
-        </template>
-      </ul>
-    </div>
+    <pkt-alert v-if="validated && !valid" skin="error" class="form-errors">
+      <template #title>{{ $t('general.formErrors') }}</template>
+      <template #content>
+        <ul v-if="errors" class="form-errors__list">
+          <template v-for="(fieldErrors, fieldName) in errors">
+            <li v-if="fieldErrors.length" :key="fieldName">
+              <span>{{ $t('fields.' + fieldName) }}</span>
+              <span>{{ fieldErrors[0] }}</span>
+            </li>
+          </template>
+        </ul>
+      </template>
+    </pkt-alert>
 
     <div class="button-row">
       <slot
@@ -28,6 +30,10 @@
 <script>
 export default {
   name: 'FormSection',
+
+  components: {
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+  },
 
   methods: {
     async submitAndReset(handler) {

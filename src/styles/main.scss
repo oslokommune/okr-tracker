@@ -11,7 +11,6 @@
 @use 'modal';
 @use 'tooltip';
 @use 'admin';
-@use 'alerts';
 @use 'vSelect';
 @use 'ods/ods-forms';
 @use 'ods/ods-badge';
@@ -27,6 +26,7 @@
 @use '@oslokommune/punkt-css/dist/scss/base/_colors';
 @use '@oslokommune/punkt-css/dist/scss/elements/_hr';
 @use '@oslokommune/punkt-css/dist/scss/elements/_button';
+@use '@oslokommune/punkt-css/dist/scss/components/_alert';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
