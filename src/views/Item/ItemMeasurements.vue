@@ -86,16 +86,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main {
+  > section {
+    margin-bottom: 5rem;
+  }
+}
+
 .result-indicators {
   header {
-    display: flex;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
-
-    .title-1 {
-      margin-bottom: 0;
-    }
   }
 }
 </style>

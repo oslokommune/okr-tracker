@@ -49,6 +49,8 @@ export default {
 
 <style lang="scss" scoped>
 .widgetKeyResultProgressDetails {
+  color: var(--color-text);
+
   &__infoMessage {
     &:not(:last-child) {
       margin-bottom: 0.25rem;

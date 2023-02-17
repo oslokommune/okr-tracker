@@ -1,5 +1,5 @@
 <template>
-  <div class="widget__history">
+  <section class="widget__history">
     <h2 class="title-2">{{ $t('widget.history.title') }}</h2>
 
     <div class="main__table">
@@ -110,7 +110,7 @@
       :id="chosenProfileId"
       @close="closeProfileModal"
     />
-  </div>
+  </section>
 </template>
 
 <script>

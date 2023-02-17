@@ -1,8 +1,11 @@
 <template>
   <div class="container">
     <main class="main">
-      <section>
+      <header>
         <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
+      </header>
+
+      <section>
         <tab-list
           aria-label="Velg periode"
           :tabs="tabs"
