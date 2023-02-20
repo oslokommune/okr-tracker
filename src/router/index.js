@@ -79,7 +79,10 @@ const routes = [
   },
   {
     path: '/:slug',
-    component: () => import('@/views/Item/ItemWrapper.vue'),
+    components: {
+      default: () => import('@/views/Item/ItemWrapper.vue'),
+      SubNav: () => import('@/components/Navigation/ItemTabBar.vue'),
+    },
     beforeEnter: routerGuards.itemHome,
     children: [
       {

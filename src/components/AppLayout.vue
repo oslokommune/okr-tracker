@@ -4,6 +4,7 @@
       :toggle-show-aside-left="toggleShowAsideLeft"
       :toggle-show-aside-right="toggleShowAsideRight"
     />
+    <router-view name="SubNav" />
     <slider-container
       :is-open="showAsideLeft"
       :toggle="toggleShowAsideLeft"
