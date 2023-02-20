@@ -252,7 +252,7 @@ export default {
     // Position the anchor with an offset to account
     // for the fixed site header.
     position: relative;
-    top: -8rem;
+    top: -12rem;
     display: block;
     visibility: hidden;
   }
