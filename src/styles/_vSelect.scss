@@ -1,0 +1,34 @@
+$vs-colors: (
+  lightest: var(--color-primary),
+  light: var(--color-primary),
+  dark: var(--color-primary),
+  darkest: var(--color-primary),
+) !default;
+
+//  Active State
+$vs-state-active-bg: var(--color-secondary) !default;
+$vs-state-active-color: var(--color-text) !default;
+
+//  Disabled State
+$vs-state-disabled-color: rgba(60, 60, 60, 0.5) !default;
+$vs-state-disabled-controls-color: rgba(60, 60, 60, 0.5) !default;
+
+//  Borders
+$vs-border-radius: 0 !default;
+
+//  Dropdown
+$vs-dropdown-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15) !default;
+
+.vs__selected {
+  font-weight: 500;
+}
+
+.vs__dropdown-toggle {
+  padding: 0.3321rem 0.0625rem !important;
+}
+
+.vs__dropdown-option {
+  color: var(--color-text) !important;
+}
+
+@import 'vue-select/src/scss/vue-select.scss';

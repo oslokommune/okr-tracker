@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h1 class="title-1">{{ $t('admin.department.create') }}</h1>
-
+  <div class="container">
     <div class="create-container">
+      <h1 class="title-1">{{ $t('admin.department.create') }}</h1>
+
       <validation-observer v-slot="{ handleSubmit }">
         <form id="createDepartment" @submit.prevent="handleSubmit(save)">
           <form-component
@@ -34,11 +34,31 @@
             :select-options="organizations"
             data-cy="dep-parentOrg"
           />
+
+          <div class="form-group">
+            <span class="form-label">{{ $t('general.teamMembers') }}</span>
+            <v-select
+              v-model="team"
+              multiple
+              :options="users"
+              :get-option-label="(option) => option.displayName || option.id"
+            >
+              <template #option="option">
+                {{ option.displayName || option.id }}
+                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
+              </template>
+            </v-select>
+          </div>
         </form>
       </validation-observer>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--pri" form="createDepartment" :disabled="loading" data-cy="btn-createDep">
+        <button
+          class="btn btn--icon btn--pri btn--icon-pri"
+          form="createDepartment"
+          :disabled="loading"
+          data-cy="btn-createDep"
+        >
           <i class="icon fa fa-fw fa-save" />
           {{ $t('btn.create') }}
         </button>
@@ -48,10 +68,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Department from '@/db/Department';
-import { mapState } from 'vuex';
-import findSlugAndRedirect from '@/util/findSlugAndRedirect';
+import { findSlugAndRedirect } from '@/util';
 
 export default {
   name: 'CreateDepartment',
@@ -61,20 +81,23 @@ export default {
     missionStatement: '',
     organization: null,
     loading: false,
+    team: [],
   }),
 
   computed: {
-    ...mapState(['organizations']),
+    ...mapState(['organizations', 'users']),
   },
 
   methods: {
     async save() {
-      const { name, missionStatement, organization } = this;
+      const { name, missionStatement, organization, team } = this;
       const data = {
         name: name.trim(),
         missionStatement: missionStatement.trim(),
         organization: db.collection('organizations').doc(organization.id),
         archived: false,
+        team: team.map(({ id }) => db.collection('users').doc(id)),
+        slack: [],
       };
 
       this.loading = true;
@@ -88,9 +111,9 @@ export default {
       } catch (error) {
         this.$toasted.error(this.$t('toaster.error.department'));
         throw new Error(error);
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     },
   },
 };

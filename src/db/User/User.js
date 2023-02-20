@@ -1,10 +1,10 @@
-import { arrayRemove, arrayUnion, db, storage } from '@/config/firebaseConfig';
+import { arrayRemove, arrayUnion, db } from '@/config/firebaseConfig';
 import preferences from './defaultPreferences';
-import UploadImage from '../common/uploadImage';
 
 const collectionReference = db.collection('users');
 
-export const getAllUserIds = () => collectionReference.get().then(({ docs }) => docs.map(({ id }) => id));
+export const getAllUserIds = () =>
+  collectionReference.get().then(({ docs }) => docs.map(({ id }) => id));
 export const getUserFromId = (id) => collectionReference.doc(id).get();
 
 export const create = async (user) => {
@@ -16,6 +16,8 @@ export const create = async (user) => {
 
     await collectionReference.doc(user.id).set({
       ...user,
+      superAdmin: false,
+      admin: [],
       preferences,
     });
 
@@ -48,7 +50,9 @@ export const update = async (user) => {
 
 export const addUsers = async (userList) => {
   if (!userList || !userList.length) throw new Error('Invalid data');
-  const promises = userList.map((email) => ({ id: email, email })).map(create);
+  const promises = userList
+    .map((email) => ({ id: email, email, superAdmin: false, admin: [] }))
+    .map(create);
 
   try {
     return Promise.all(promises);
@@ -57,36 +61,19 @@ export const addUsers = async (userList) => {
   }
 };
 
-export const uploadImage = (id, image) => {
-  return UploadImage(id, image, 'photos');
-};
-
-export const deleteImage = async (id) => {
-  try {
-    const { photoURL } = await collectionReference
-      .doc(id)
-      .get()
-      .then((snap) => snap.data());
-
-    await storage.refFromURL(photoURL).delete();
-    await update({ id, photoURL: null });
-
-    return true;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
 async function removeFromTeams(docRef) {
   try {
-    const products = await db.collection('products').where('team', 'array-contains', docRef).get();
+    const products = await db
+      .collection('products')
+      .where('team', 'array-contains', docRef)
+      .get();
 
     return Promise.all(
-      products.docs.map(({ ref }) => {
-        return ref.update({
+      products.docs.map(({ ref }) =>
+        ref.update({
           team: arrayRemove(docRef),
-        });
-      })
+        })
+      )
     );
   } catch (error) {
     throw new Error(error.message);
@@ -97,22 +84,25 @@ export const replaceFromTeams = async (oldDocId, newDocId) => {
   try {
     const oldDocRef = collectionReference.doc(oldDocId);
     const newDocRef = collectionReference.doc(newDocId);
-    const products = await db.collection('products').where('team', 'array-contains', oldDocRef).get();
+    const products = await db
+      .collection('products')
+      .where('team', 'array-contains', oldDocRef)
+      .get();
 
     await Promise.all(
-      products.docs.map(({ ref }) => {
-        return ref.update({
+      products.docs.map(({ ref }) =>
+        ref.update({
           team: arrayRemove(oldDocRef),
-        });
-      })
+        })
+      )
     );
 
     return Promise.all(
-      products.docs.map(({ ref }) => {
-        return ref.update({
+      products.docs.map(({ ref }) =>
+        ref.update({
           team: arrayUnion(newDocRef),
-        });
-      })
+        })
+      )
     );
   } catch (error) {
     throw new Error(error.message);

@@ -1,16 +1,30 @@
 <template>
-  <div class="access-requests">
+  <div v-if="accessRequest.length" class="access-requests">
     <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
 
     <ul class="access-requests__list">
-      <li v-for="request in requestAccess" :key="request.id" class="access-requests__item">
+      <li
+        v-for="request in accessRequest"
+        :key="request.id"
+        class="access-requests__item"
+      >
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button class="btn btn--ghost" data-cy="request-accept" @click="acceptRequest(request)">
+          <button
+            :disabled="isProcessingAccessRequest"
+            class="btn btn--ghost"
+            data-cy="request-accept"
+            @click="acceptRequest(request)"
+          >
             {{ $t('btn.acceptRequest') }}
           </button>
-          <button class="btn btn--ghost" data-cy="request-reject" @click="rejectRequest(request)">
+          <button
+            :disabled="isProcessingAccessRequest"
+            class="btn btn--ghost"
+            data-cy="request-reject"
+            @click="rejectRequest(request)"
+          >
             {{ $t('btn.rejectRequest') }}
           </button>
         </div>
@@ -21,35 +35,64 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
-import requestAccess from '@/db/RequestAccess';
+import api from '@/util/api';
+import { showToastMessage } from '@/util/toastUtils';
+import AccessRequestCollection from '../../../../functions/backend/utils/collectionUtils/AccessRequestCollection.js';
+
+const accessRequestCollection = new AccessRequestCollection(db);
 
 export default {
   name: 'AdminAccessRequests',
 
   data: () => ({
-    requestAccess: [],
+    accessRequest: [],
+    isProcessingAccessRequest: false,
   }),
 
   firestore: {
-    requestAccess: db.collection('requestAccess'),
+    accessRequest: accessRequestCollection.getCollection(),
   },
 
   methods: {
-    async acceptRequest(obj) {
-      await requestAccess.accept(obj.id);
-      this.$toasted.show(this.$t('toaster.request.accepted', { user: obj.email }));
+    showToastMessage(message, accessRequest, toastType) {
+      showToastMessage({
+        msg: message,
+        msgVars: { user: accessRequest.email },
+        type: toastType,
+      });
     },
-    async rejectRequest(obj) {
-      await requestAccess.reject(obj.id);
-      this.$toasted.show(this.$t('toaster.request.rejected', { user: obj.email }));
+    async handleAccessRequest(method, path, accessRequest) {
+      this.isProcessingAccessRequest = true;
+
+      try {
+        const { message } = await api(path, { method });
+        this.showToastMessage(message, accessRequest, 'success');
+      } catch (error) {
+        this.showToastMessage(error.message, accessRequest, 'error');
+      }
+
+      this.isProcessingAccessRequest = false;
+    },
+    acceptRequest(accessRequest) {
+      this.handleAccessRequest(
+        'post',
+        `/accessRequests/${accessRequest.id}/accept`,
+        accessRequest
+      );
+    },
+
+    rejectRequest(accessRequest) {
+      this.handleAccessRequest(
+        'delete',
+        `/accessRequests/${accessRequest.id}`,
+        accessRequest
+      );
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../../styles/_colors.scss';
-
 .access-requests__list {
   display: flex;
   flex-direction: column;
@@ -61,9 +104,9 @@ export default {
   flex-direction: column;
   margin-bottom: 0.5rem;
   padding: 1rem;
-  background: $color-green;
+  background: var(--color-green);
   border-radius: 3px;
-  box-shadow: 0 2px 3px rgba($color-grey-500, 0.5);
+  box-shadow: 0 2px 3px rgba(var(--color-grey-500-rgb), 0.5);
 }
 
 .access-requests__actions {

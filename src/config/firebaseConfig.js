@@ -11,38 +11,58 @@ const firestoreEmulator = {
   host: `localhost:${emulators.firestore.port}`,
   ssl: false,
   experimentalForceLongPolling: true,
+  merge: true,
 };
 
-export const dashboardUser = process.env.VUE_APP_DASHBOARD_USER;
+export const dashboardUser = import.meta.env.VITE_DASHBOARD_USER;
 
 const config = {
-  apiKey: process.env.VUE_APP_API_KEY,
-  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
-  databaseURL: process.env.VUE_APP_DATABASE_URL,
-  projectId: process.env.VUE_APP_PROJECT_ID,
-  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
-  appId: process.env.VUE_APP_APP_ID,
-  measurementId: process.env.VUE_APP_MEASUREMENT_ID,
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_DATABASE_URL,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
 firebase.initializeApp(config);
 
 // firebase utils
 const db = firebase.firestore();
-const loginProvider = new firebase.auth.GoogleAuthProvider();
+const loginProviderGoogle = new firebase.auth.GoogleAuthProvider();
+const loginProviderMS = new firebase.auth.OAuthProvider('microsoft.com');
+loginProviderMS.setCustomParameters({
+  // "tenant" parameter in case you are using an Azure AD tenant.
+  // The default value is "common".
+  tenant: import.meta.env.VITE_MICROSOFT_TENANT_ID || 'common',
+});
 const storage = firebase.storage();
 const auth = firebase.auth();
 const analytics = firebase.analytics();
-const functions = firebase.app().functions(process.env.VUE_APP_REGION);
+const functions = firebase.app().functions(import.meta.env.VITE_REGION);
 const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
 
-if (process.env.NODE_ENV === 'development' || window.Cypress) {
+if (import.meta.env.MODE === 'development' || window.Cypress) {
   db.settings(firestoreEmulator);
   functions.useEmulator('localhost', emulators.functions.port);
+  auth.useEmulator(`http://localhost:${emulators.auth.port}`);
+  storage.useEmulator('localhost', emulators.storage.port);
   console.log('Established dev connection to Firestore emulators');
 } else {
   console.log('Established connection to Firestore server');
 }
 
-export { db, auth, loginProvider, storage, analytics, functions, serverTimestamp, arrayRemove, arrayUnion };
+export {
+  db,
+  auth,
+  loginProviderGoogle,
+  storage,
+  analytics,
+  functions,
+  serverTimestamp,
+  arrayRemove,
+  arrayUnion,
+  loginProviderMS,
+};

@@ -10,10 +10,6 @@
           <i class="icon fa fa-trash-restore-alt" />
           {{ $t('btn.restore') }}
         </button>
-        <button class="btn btn--icon btn--danger" @click="deleteDeep">
-          <i class="icon fa fa-exclamation-triangle" />
-          {{ $t('btn.deletePermanently') }}
-        </button>
       </div>
     </div>
   </div>
@@ -28,22 +24,16 @@ export default {
       type: Function,
       required: true,
     },
-    deleteDeep: {
-      type: Function,
-      required: true,
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .archived {
   display: flex;
   margin-bottom: 1rem;
   padding: 1.5rem 1rem;
-  background: rgba($color-yellow, 0.25);
+  background: rgba(var(--color-yellow-rgb), 0.25);
   border-radius: 3px;
 }
 

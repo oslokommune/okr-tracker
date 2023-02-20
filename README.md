@@ -1,32 +1,39 @@
-# OKR Tracker
+# OKR Tracker (knowit)
 
-- [Demo](#demo)
-- [Project requirements](#project-requirements)
-- [Clone and install](#clone-and-install)
-- [Set up new instance](#set-up-new-instance)
-  - [Create Firebase project](#create-firebase-project)
-    - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
-  - [Environment variables](#environment-variables)
-  - [Link project](#link-project)
-  - [Create mock data](#create-mock-data)
-    - [Whitelist yourself](#whitelist-yourself)
-    - [Generate mock data](#generate-mock-data)
-    - [Exporting mock data](#exporting-mock-data)
-    - [Update mock data](#update-mock-data)
-- [Run locally](#run-locally)
-- [Build and deploy](#build-and-deploy)
-- [Lint and fix](#lint-and-fix)
-- [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
-  - [Requirements](#requirements)
-  - [Export production data](#export-production-data)
-- [Import production data](#import-production-data)
-- [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
-  - [Requirements for automated backups](#requirements-for-automated-backups)
-  - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
-- [Slack Integration](#slack-integration)
-  - [Set up](#set-up)
-- [Supported Providers](#supported-providers)
-  - [Keycloak integration](#keycloak-integration)
+- [OKR Tracker (knowit)](#okr-tracker-knowit)
+  - [Demo](#demo)
+  - [Project requirements](#project-requirements)
+  - [Clone and install](#clone-and-install)
+  - [Set up new instance](#set-up-new-instance)
+    - [Create Firebase project](#create-firebase-project)
+      - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
+    - [Environment variables](#environment-variables)
+    - [Link project](#link-project)
+    - [Run locally](#run-locally)
+  - [Make Firestore ready for production](#make-firestore-ready-for-production)
+    - [Create mock data](#create-mock-data)
+      - [Generate mock data](#generate-mock-data)
+      - [Exporting mock data](#exporting-mock-data)
+      - [Update mock data](#update-mock-data)
+      - [Possible problems](#possible-problems)
+  - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
+  - [Build and deploy](#build-and-deploy)
+  - [Lint and fix](#lint-and-fix)
+  - [Google Sheets integration](#google-sheets-integration)
+  - [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
+    - [Requirements](#requirements)
+    - [Export production data](#export-production-data)
+  - [Import production data](#import-production-data)
+  - [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
+    - [Requirements for automated backups](#requirements-for-automated-backups)
+    - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
+  - [Slack Integration](#slack-integration)
+    - [Set up](#set-up)
+    - [Push audit log to slack channels](#push-audit-log-to-slack-channels)
+  - [Supported providers](#supported-providers)
+    - [Microsoft integration](#microsoft-integration)
+    - [Google integration](#google-integration)
+  - [Common problems](#common-problems)
 
 ## Demo
 
@@ -38,7 +45,9 @@ If you would like to check out how the application works, you can go to the demo
 ## Project requirements
 
 - Node 14.x
-- Firebase >9.x
+- Firebase >=8.x (v9 is not supported)
+- Firebase tools >9.x
+- Firebase Blaze plan - Pay as you go
 
 ## Clone and install
 
@@ -56,7 +65,7 @@ npm install -g firebase-tools
 
 ## Set up new instance
 
-Follow this guide to set up a new clean instance of the OKR-tracker.
+Follow this guide to set up a new clean instance of the OKR-tracker. Please read the whole readme and not sequentially. There are some steps throughout the readme that are important to set up a new instance.
 
 ### Create Firebase project
 
@@ -70,17 +79,42 @@ This key is used for fetching data from Google Sheets (for automatically updatin
 
 ```bash
 firebase functions:config:set
-  sheets.email="<service account email>"
-  sheets.key="<service account private key>"
-  sheets.impersonator="email-address" (optional)
   service_account="<service account private key json-file>"
+  storage.bucket="<your-storage-bucket-name>"
+  slack.active=false
+  slack.webhook="YOUR SLACK WEBHOOK HERE" (required if slack.active === true)
+  slack.token="YOUR SLACK OAUTH TOKEN HERE" (required if slack.active === true)
+  slack.host_url="HOST URL" (required if slack.active === true)
+  sheets.impersonator="email-address" (optional)
+```
+
+Cat the whole service account private key json file into the environment key `service_account`.
+
+```bash
+
+zsh
+firebase functions:config:set service_account="$(cat origo-okr-tracker-private-key.json)"
+
+sh
+firebase functions:config:set service_account="${cat origo-okr-tracker-private-key.json}"
+
 ```
 
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
 
+We have Slack integrations. You can read about how to use the slack integration in the [slack section](#slack-integration).
+
+If you want to activate them, then you would need to add it to the Firebase functions config. If you do not want to use the slack integrations, then you don't need to do anything.
+
+```
+firebase functions:config:set slack.active=true
+```
+
 #### Enable Google Auth in Firebase
 
 We use Google Auth to authenticate users and this needs to be enabled in the Firebase Console.
+
+**NOTE: This does not apply if you are only running this locally. We support Google and Microsoft as authentications**
 
 - Navigate to your project in the [Firebase console](https://console.firebase.google.com/)
 - Press the **Authentication**-button in the side menu
@@ -94,27 +128,25 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 - Navigate to **Project settings**
 - Under **Your apps**, find Firebase SDK snippet and press **Config**
 - Copy the following secrets to a `.env.production` file in the root directory.
+- Use also need `.env.local` to run this locally
 
-| Secret                           | Description                                                                                                              |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `VUE_APP_API_KEY`                | _from SDK snippet_                                                                                                       |
-| `VUE_APP_AUTH_DOMAIN`            | _from SDK snippet_                                                                                                       |
-| `VUE_APP_DATABASE_URL`           | _from SDK snippet_                                                                                                       |
-| `VUE_APP_PROJECT_ID`             | _from SDK snippet_                                                                                                       |
-| `VUE_APP_STORAGE_BUCKET`         | _from SDK snippet_                                                                                                       |
-| `VUE_APP_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                                       |
-| `VUE_APP_APP_ID`                 | _from SDK snippet_                                                                                                       |
-| `VUE_APP_MEASUREMENT_ID`         | _from SDK snippet_                                                                                                       |
-| `VUE_APP_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                                |
-| `VUE_APP_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                                         |
-| `VUE_APP_REGION`                 | `europe-west2`                                                                                                           |
-| `VUE_APP_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email and keycloak. Ex: `google-keycloak-email` |
-| `VUE_APP_KEYCLOAK_URL`           | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_REALM`         | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_CLIENT_ID`     | _from keycloak server_ (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                               |
-| `VUE_APP_KEYCLOAK_LOGOUT_URL`    | Where to redirect user after sign out (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                                |
-| `VUE_APP_KEYCLOAK_ERROR_URL`     | Where to redirect user when error signing in (if keycloak provided to `VUE_APP_LOGIN_PROVIDERS`)                         |
-| `VUE_APP_KEYCLOAK_SIGN_IN_TEXT`  | A specialized text if you want the keycloak sign in button to say something else than 'keycloak'                         |
+| Secret                        | Description                                                                                                |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `VITE_API_KEY`                | _from SDK snippet_                                                                                         |
+| `VITE_AUTH_DOMAIN`            | _from SDK snippet_                                                                                         |
+| `VITE_DATABASE_URL`           | _from SDK snippet_                                                                                         |
+| `VITE_PROJECT_ID`             | _from SDK snippet_                                                                                         |
+| `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                         |
+| `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                         |
+| `VITE_APP_ID`                 | _from SDK snippet_                                                                                         |
+| `VITE_MEASUREMENT_ID`         | _from SDK snippet_                                                                                         |
+| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                  |
+| `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                           |
+| `VITE_REGION`                 | `europe-west2`                                                                                             |
+| `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email`         |
+| `VITE_HOST_URL`               | URL which points to cloud functions that are set up as API CRUD endpoints                                  |
+| `VITE_MICROSOFT_TENANT_ID`    | To limit the authentication to a certain TENANT, other wise everyone with a Microsoft account could log in |
+| `VITE_ORGANIZATION`           | Name of the organization                                                                                   |
 
 ### Link project
 
@@ -122,51 +154,9 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 firebase use --add
 ```
 
-### Create mock data
+### Run locally
 
-The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. The Auth module is still remote, so you will need to add your own email address to the emulated store before getting started.
-
-Start the Firebase Emulator:
-
-```bash
-firebase emulators:start
-```
-
-In a new terminal window, start run the local web server:
-
-```bash
-npx vue-cli-service serve
-```
-
-#### Whitelist yourself
-
-Then whitelist your own email address by manually inserting it to the emulated Firestore:
-
-1. Navigate to [http://localhost:7777/firestore](http://localhost:7777/firestore)
-2. Click **Start collection**
-3. Type 'users' as collection ID and hit **Next**
-4. Insert your own Google Account-email as Document ID. Create a new field 'admin' with type _boolean_ and value `true` and a new field 'email' with type _string_ and the same email address as value.
-5. Click **Save**
-
-Confirm the access by visiting [http://localhost:8080/](http://localhost:8080/), press **Sign in with Google** and select your Google Account.
-
-#### Generate mock data
-
-After successfully logging in to the OKR Tracker, navigate to the [Admin panel](http://localhost:8080/admin). Here you can create new organisations, departments and products to use as your mock data. On each object you can also create periods, objectives, key results and KPIs.
-
-#### Exporting mock data
-
-To export your mock data run the following command:
-
-```bash
-firebase emulators:export ./mock
-```
-
-#### Update mock data
-
-To update existing mock data, simply run the export command above and confirm overwrite existing export.
-
-## Run locally
+The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. There is no need to do anything, only run the development script and everything is set up with a local user through Google auth.
 
 Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
 
@@ -179,6 +169,93 @@ Start Firebase emulators, import mock data and run the development server:
 ```bash
 npm run dev
 ```
+
+## Make Firestore ready for production
+
+If you want to deploy to production or staging, you need to create multiple collections manually. Go to the Firestore Database in the [Firebase Cloud Console](https://console.firebase.google.com/)
+
+- audit
+- departments
+- keyResults
+- kpis
+- objectives
+- organizations
+- periods
+- products
+- requestAccess
+- slugs
+- users
+- domainWhitelist (optional)
+
+The collection `users` needs one document with the first user. Create a document and add the following fields:
+
+```json
+{
+  "id": "<email the user is signing in with",
+  "email": "<email the user is signing in with",
+  "superAdmin": true,
+  "widgets": {
+    "itemHome": {
+      "children": true,
+      "missionStatement": true,
+      "progression": true,
+      "team": true
+    },
+    "keyResultHome": {
+      "details": true,
+      "notes": true,
+      "weights": true
+    },
+    "objectiveHome": {
+      "details": false,
+      "progression": true,
+      "weights": true
+    }
+  }
+}
+```
+
+### Create mock data
+
+#### Generate mock data
+
+After successfully logging in to the OKR Tracker, navigate to the [Admin panel](http://localhost:8080/admin). Here you can create new organisations, departments and products to use as your mock data. On each object you can also create periods, objectives, key results and KPIs.
+
+#### Exporting mock data
+
+To export your mock data run the following command:
+
+```bash
+firebase emulators:export ./mock_data
+```
+
+#### Update mock data
+
+To update existing mock data, simply run the export command above and confirm overwrite existing export.
+
+#### Possible problems
+
+Firebase now exports storage emulator as well, even if you don't use it. These new folders are not checked into git because they are empty and git does not add empty folders. If you are a user that has problems running the mock data, you will need to add two folders to the `/mock_data/storage_export` folder. These are `blobs` and `metadata`.
+
+## Create Google Cloud API Gateway
+
+It is possible to set up open API end points for users outside of the OKR-tracker frontend to update progress of Key Results and KPI's. To do so, you only need to deploy all the functions as usual, and then give the users the Cloud Function URL, but we do not recommend to call the Cloud Function directly. The better approach would be to set up a Google Cloud API Gateway and then reroute all the calls to the right Cloud Function.
+
+We have set up an Open API specification which you can check out [here](./public/openapi/v1.2.0.yaml).
+
+You can read more about on how to set up an API Gateway [here](https://cloud.google.com/api-gateway/docs/quickstart).
+
+The TL;DR is:
+
+- Enable [required services](https://cloud.google.com/api-gateway/docs/quickstart#enabling_required_services)
+- Create an API
+- Create a new service account which has the correct access rights - we use the roles `APIGateway Admin` dsds `Cloud Functions Invoker`
+- Create an API config
+- Create a gateway
+
+After an API Gateway has been set up, we have closed the gateway with an API Key, which means that you would need to create an API Key through the Google Cloud Console
+
+If there are any questions regarding this, do not hesitate to get in contact with us and we will gladly help (i.e. create an issue)
 
 ## Build and deploy
 
@@ -305,8 +382,6 @@ We use cloud functions to backup our database every night and only keep backup o
 - Manually create a storage bucket
 - Cloud function
 
-You can follow [this tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-automated-backups/) on how to create automated backups.
-
 TLDR:
 
 - Navigate to **Google Cloud Console** and choose your project
@@ -317,8 +392,6 @@ TLDR:
 ### Automated Restore with Cloud Functions
 
 This is called automated restore but we still need to manually trigger a cloud function that does the restore from the Google Cloud Console
-
-Follow this [tutorial](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
 TLDR:
 
@@ -331,17 +404,6 @@ Gif of the process:
 ![Gif of the process src: thecloudfunction-blog](./documentation/recovery.gif)
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
-
-## Slack Integration
-
-We have a slack integration that is connected with a couple of cloud functions.
-
-There are two cloud functions that integrate with slack
-
-1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
-2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
-
-For these cloud functions to work you need to add a webhook url from a slack app.
 
 ### Set up
 
@@ -359,25 +421,59 @@ Slack steps:
 Copy the webhook URL and inject it into Firebase as an environment variable:
 
 ```bash
-firebase functions:config:set slack.deploymentWebhook="YOUR SLACK WEBHOOK HERE"
+firebase functions:config:set slack.webhook="YOUR SLACK WEBHOOK HERE"
 
 Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
 ```
 
+### Push audit log to slack channels
+
+We have added an integration with Slack, where a Slack user can subscribe to updates for an Organization, Department or Product.
+
+If you have already set up a Slack integration from the previous point with Slack request and Slack interactive, you can go to the Slack commands site and add a new Slack command. We use `/okr` as a Slack command. Find you app [here](https://api.slack.com/apps)
+
+The slash command requires a couple of variables:
+
+```
+Command: /okr
+Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/okrSlackBot
+Short Description: Subscribe to Org/Dep/Product
+Usage Hint: subscribe [org/dep/prod] slug
+```
+
+Firebase needs a couple of new configs as well. These are `slack.token` and `host_url`. The `host_url` is the URL of you okr-tracker site, for us, it is `https://okr.oslo.systems`, and the token is an OAuth token from you Slack App settings page, under the sub-page `OAuth & Permissions`, it is a Bot User OAuth Token.
+
+```
+firebase functions:config:set slack.token="YOUR SLACK OAUTH TOKEN HERE"
+firebase functions:config:set slack.host_url="HOST URL"
+```
+
 ## Supported providers
 
-OKR-tracker supports for the time being only three login providers: Google, email/pass and Keycloak. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
+OKR-tracker supports for the time being only four login providers: Microsoft, Google, email/pass. If you are looking for other providers that firebase support, we would love for you to open up a PR with the needed changes.
 
-### Keycloak integration
+### Microsoft integration
 
-We support Keycloak as a login provider, but since Firebase does not support this out of the box, we have set up our own integration with Firebase' SignInWithCustomToken-method that is supplied by them.
+For the Microsoft-integration a TENANT must be specified as the environment-variable VITE_MICROSOFT_TENANT_ID.
 
-For the integration to work you need to give your service account access to create tokens. You can do this by going to your GCP project, under the IAM and admin section and grant the service account access to `Service Account Token Creator` permission. Read more about it [here](https://firebase.google.com/docs/auth/admin/create-custom-tokens).
+### Google integration
 
-Download a new service account private key json-file and add it to your firebase config:
+Anyone with a google-account can login. To limit domain you have to implement this somehwhere, e.g. in `set_user.js` - e.g. `if (!user.email.lowerCase().endsWith('oslo.kommune.no')) rejectAccess();`
 
-```
-firebase functions:set service_account="$(cat private-key.json)"
-```
+## Common problems
 
-DO NOT share your private key with anyone.
+If there are some problems running the project locally, or you get an infinite spinner: inspect the console in the browser, your terminal or `firebase-debug.log` file for error messages. Some common messages when firing up the project for the first time:
+
+1. "No such file or directory, scandir storage_export/metadata"
+   1. You need to create two directories under `mock_data/storage_export` - `blobs` and `metadata`
+2. It looks like you're trying to access functions.config().service_account but there is no value there
+   1. Check if you have set the config key for service_account correctly. Read the readme again and se how you need to cat the private-key file correctly
+3. Missing permissions required for functions deploy. You must have permission iam.serviceAccounts.ActAs on service account
+   1. Open the [Google Cloud Console](https://console.cloud.google.com/) (check that you are in the correct project).
+   2. Go to IAM & Admin -> Service Accounts
+   3. Find the service account and click on it
+   4. Click on the "Permissions" panel, then click `Grant Access`
+   5. Add your IAM member email address. For the role, select Service Accounts -> Service Account User
+   6. Click Save
+4. Cannot read property `bucket` of underfined
+   1. Set the config key `storage.bucket`. Please read the readme again

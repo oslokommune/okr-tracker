@@ -1,10 +1,9 @@
 <template>
-  <widget v-if="activeObjective" :widget-id="widgetId" :title="$t('general.details')" icon="info-circle">
+  <widget v-if="activeObjective" :title="$t('general.details')">
     <div class="details">
       <div v-if="activeObjective.period && activeObjective.period.startDate" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-calendar-alt"></div>
           <div class="details__item-value">
             {{ activeObjective.period.name }} ({{ formatPeriodDates(activeObjective.period) }})
           </div>
@@ -14,7 +13,6 @@
       <div v-if="activeObjective.created" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.created') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-calendar"></div>
           <div class="details__item-value">{{ formatDate(activeObjective.created) }}</div>
         </div>
       </div>
@@ -23,15 +21,13 @@
         <h3 class="title-3 details__item-heading">{{ $t('objective.createdBy') }}</h3>
 
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-user"></div>
           <div class="details__item-value">
-            <router-link
-              v-if="activeObjective.createdBy.id"
-              :to="{ name: 'User', params: { id: activeObjective.createdBy.id } }"
-            >
-              {{ activeObjective.createdBy.displayName || activeObjective.createdBy.id }}
-            </router-link>
-            <span v-else>{{ activeObjective.createdBy }}</span>
+            <div class="details__item-value user">
+              <a v-if="activeObjective.createdBy.id" @click="openProfileModal(activeObjective.createdBy.id)">
+                <span>{{ activeObjective.createdBy.displayName || activeObjective.createdBy.id }}</span>
+              </a>
+              <span v-else>{{ activeObjective.createdBy }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -39,7 +35,6 @@
       <div v-if="activeObjective.edited" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.edited') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-calendar"></div>
           <div class="details__item-value">{{ formatDate(activeObjective.edited) }}</div>
         </div>
       </div>
@@ -48,42 +43,35 @@
         <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
 
         <div class="details__item-body">
-          <div class="details__item-icon fa fa-user"></div>
-          <div class="details__item-value">
-            <router-link
-              v-if="activeObjective.editedBy.id"
-              :to="{ name: 'User', params: { id: activeObjective.editedBy.id } }"
-            >
-              {{ activeObjective.editedBy.displayName || activeObjective.editedBy.id }}
-            </router-link>
+          <div class="details__item-value user">
+            <a v-if="activeObjective.editedBy.id" @click="openProfileModal(activeObjective.editedBy.id)">
+              <span>{{ activeObjective.editedBy.displayName || activeObjective.editedBy.id }}</span>
+            </a>
             <span v-else>{{ activeObjective.editedBy }}</span>
           </div>
         </div>
       </div>
     </div>
+
+    <profile-modal v-if="showProfileModal" :id="chosenProfileId" @close="closeProfileModal" />
   </widget>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { periodDates, dateShort, dateLong } from '@/util/formatDate';
+import { periodDates, dateShort, dateLong } from '@/util';
 
 export default {
   name: 'WidgetObjectiveDetails',
 
   components: {
-    Widget: () => import('./Widget.vue'),
-  },
-
-  props: {
-    widgetId: {
-      type: String,
-      required: true,
-    },
+    Widget: () => import('./WidgetWrapper.vue'),
+    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
   },
 
   data: () => ({
-    progress: [],
+    showProfileModal: false,
+    chosenProfileId: null,
   }),
 
   computed: {
@@ -94,9 +82,31 @@ export default {
     formatPeriodDates(period) {
       return periodDates(period, dateShort);
     },
+
     formatDate(date) {
       return dateLong(date.toDate());
+    },
+
+    openProfileModal(profileId) {
+      this.showProfileModal = true;
+      this.chosenProfileId = profileId;
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false;
+      this.chosenProfileId = null;
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.user {
+  padding: 0.2rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(var(--color-grey-500-rgb), 0.1);
+  }
+}
+</style>

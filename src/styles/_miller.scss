@@ -1,13 +1,11 @@
-@import 'colors';
-
 .miller {
   position: absolute;
   display: flex;
   min-width: 100%;
   height: 100%;
   overflow-x: scroll;
-  color: black;
-  background: rgba($color-border, 0.075);
+  color: var(--color-text);
+  background: rgba(var(--color-border-rgb), 0.075);
 
   &__container {
     position: relative;
@@ -22,10 +20,10 @@
     flex-shrink: 0;
     width: 220px;
     margin-right: -1px;
-    border: 1px solid $color-border;
+    border: 1px solid var(--color-border);
 
     &.active .miller__col__item.active {
-      background: $color-blue;
+      background: var(--color-blue);
 
       &::after {
         opacity: 0;
@@ -37,7 +35,7 @@
       font-weight: 500;
       line-height: 1rem;
       background: #eeeeee;
-      border-bottom: 1px solid $color-border;
+      border-bottom: 1px solid var(--color-border);
     }
 
     &__item {
@@ -55,7 +53,7 @@
       &.active {
         position: relative;
         font-weight: 500;
-        background: rgba($color-blue, 0.2);
+        background: rgba(var(--color-blue-rgb), 0.2);
 
         &::before {
           position: absolute;
@@ -63,7 +61,7 @@
           bottom: 0;
           left: 0;
           width: 2px;
-          background: $color-purple;
+          background: var(--color-primary);
           content: '';
         }
 
@@ -73,7 +71,7 @@
           right: 10px;
           border-top: 5px solid transparent;
           border-bottom: 5px solid transparent;
-          border-left: 6px solid $color-purple;
+          border-left: 6px solid var(--color-primary);
           transform: translateY(-5px);
           content: '';
         }
@@ -84,8 +82,8 @@
       margin-bottom: -1px;
       color: #666666;
       font-style: italic;
-      border-top: 1px solid $color-border;
-      border-bottom: 1px solid $color-border;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
     }
   }
 
@@ -97,7 +95,7 @@
     padding: 2rem;
     overflow-y: auto;
     background: white;
-    border: 1px solid $color-border;
+    border: 1px solid var(--color-border);
   }
 
   &--list {

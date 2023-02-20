@@ -1,35 +1,42 @@
-@import 'reset';
-@import 'colors';
-@import 'fonts';
-@import 'typography';
-@import 'buttons';
-@import 'tabs';
-@import 'forms';
-@import 'widgets';
-@import 'modal';
-@import 'widgets';
-@import 'tooltip';
-@import 'admin';
-@import 'alerts';
+@use 'griddle/griddle-overlay' as *;
+@use 'griddle/mixins' as *;
+@use 'griddle/functions' as *;
 
-@import '~@braid/griddle/scss/griddle-overlay.scss';
+@use 'reset';
+@use 'fonts';
+@use 'typography';
+@use 'buttons';
+@use 'forms';
+@use 'widgets';
+@use 'modal';
+@use 'tooltip';
+@use 'admin';
+@use 'alerts';
+@use 'vSelect';
+@use 'ods/ods-forms';
+@use 'ods/ods-hr';
+@use 'ods/ods-badge';
+
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
 
 html,
 body {
   margin: 0;
-  font-size: 14px;
 }
 
 button,
 input,
 textarea,
 body {
-  color: $color-purple;
-
   font-family: 'OsloSans', Helvetica, Arial, sans-serif;
-  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  line-height: 1.1;
 }
 
 html {
@@ -50,7 +57,7 @@ body.using-mouse :focus {
 }
 
 *:focus {
-  outline: 2px solid $color-link;
+  outline: 2px solid var(--color-link);
 }
 
 .toast {
@@ -61,8 +68,8 @@ body.using-mouse :focus {
 .table,
 .md table {
   width: 100%;
-  margin: 2rem 0 1rem;
-  border-bottom: 1px solid $color-border;
+  margin: 1rem 0 1rem;
+  border-bottom: 1px solid var(--color-border);
 
   th {
     font-weight: 500;
@@ -80,51 +87,171 @@ body.using-mouse :focus {
     padding: 0 0.5rem;
     text-align: left;
     vertical-align: middle;
-    border-top: 1px solid $color-border;
+    border-top: 1px solid var(--color-border);
   }
-}
-
-hr {
-  height: 1px;
-  margin: 1rem 0;
-  background: $color-grey-100;
-  border: none;
 }
 
 .main {
   position: relative;
   width: span(12);
-  padding: 1.5rem 0;
 
   @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(7, 0, span(10));
-  }
-
-  @media screen and (min-width: bp(xl)) {
-    width: span(7, 0, span(10));
+    width: span(8);
+    margin-right: span(0, 1);
+    margin-left: span(0, 1);
   }
 }
 
 .aside {
-  position: relative;
   width: span(12);
-  margin-top: 0.5rem;
 
   @media screen and (min-width: bp(m)) {
-    width: span(9, 0, span(9));
-  }
-
-  @media screen and (min-width: bp(l)) {
-    width: span(3, 0, span(10));
-    margin-left: span(0, 1, span(10));
+    width: span(2);
   }
 }
 
-.flex-container {
+.container {
+  @include container();
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
+  margin-top: 0.5rem;
 }
+
+.main__item {
+  padding: 1.5rem 1.75rem;
+  color: var(--color-text);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.main__second {
+  display: flex;
+  flex-direction: column;
+  width: span(12);
+  padding: 2rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(s)) {
+    width: span(6);
+    margin-left: span(3, 1);
+  }
+
+  @media screen and (min-width: bp(m)) {
+    width: span(4);
+    margin-left: span(4, 1);
+  }
+}
+
+:root {
+  --color-danger: #ff8174;
+  --color-success: #43f8b6;
+  --color-warning: #f8c66b;
+  --color-black: #2e2e2e;
+  --color-white: #ffffff;
+  --color-gray: #989898;
+  --color-light-gray: #f6f6f6;
+  --color-blue: #6ee9ff;
+  --color-blue-light: #b3f5ff;
+  --color-blue-light-2: #b2d2d8;
+  --color-purple: #292858;
+  --color-purple-medium: #4a72a1;
+  --color-purple-dark: #1f42aa;
+  --color-yellow: #f8c66b;
+  --color-yellow-dark: #ba944fff;
+  --color-yellow-light: #d1bfae;
+  --color-red: #ff8174;
+  --color-red-dark: #5b0800;
+  --color-red-light: #ff988e;
+  --color-beige: #f8f0dc;
+  --color-beige-dark: #d0bfae;
+
+  --color-green: #42f8b6;
+  --color-green-medium-dark: #207354;
+  --color-green-dark: #044b45;
+  --color-green-dark-2: #023834;
+  --color-green-light: #c7f7c9;
+
+  --color-bg: #f3f3f3;
+  --color-border: #dae3e5;
+  --color-bg-dark: #e6e6e6e6;
+
+  --color-grey-50: #f7f7f7;
+  --color-grey-100: #e1e1e6;
+  --color-grey-200: #c6c6cc;
+  --color-grey-300: #adadb3;
+  --color-grey-400: #939399;
+  --color-grey-500: #797980;
+  --color-grey-550: #6b6b8b;
+  --color-grey-600: #5e5e66;
+  --color-grey-700: #43434d;
+  --color-grey-800: #242433;
+  --color-grey-900: #0e0e1a;
+
+  --color-link: #0075eb;
+
+  // Colors in RGB value - add more if needed. SCSS rgba() function can read hex numbers with CSS Variables
+  --color-red-rgb: #{hexToRGB(#ff8174)};
+  --color-red-dark-rgb: #{hexToRGB(#5b0800)};
+  --color-green-rgb: #{hexToRGB(#43f8b6)};
+  --color-green-dark-rgb: #{hexToRGB(#034b45)};
+  --color-yellow-rgb: #{hexToRGB(#f8c66b)};
+  --color-yellow-dark-rgb: #{hexToRGB(#ba944fff)};
+  --color-brue-rgb: #{hexToRGB(#6ee9ff)};
+  --color-purple-rgb: #{hexToRGB(#292858)};
+  --color-purple-dark-rgb: #{hexToRGB(#1f1e43)};
+
+  --color-border-rgb: #{hexToRGB(#dae3e5)};
+  --color-grey-100-rgb: #{hexToRGB(#e1e1e6)};
+  --color-grey-400-rgb: #{hexToRGB(#939399)};
+  --color-grey-500-rgb: #{hexToRGB(#797980)};
+  --color-grey-800-rgb: #{hexToRGB(#242433)};
+
+  // Knowit colors
+  --color-mint: #DBEEDE;
+  --color-digital-black: #333333;
+  --color-pear: #B7DEBD;
+  --color-pear-dark: #7b957f;
+  --color-flamingo: #aa887a;
+  --color-flamingo-dark: #FAC0B1;
+  --color-peble: #F1F0ED;
+  --color-leather: #7C3647;
+  --color-clay: #A5B1AA;
+}
+
+[data-theme='knowit'] {
+  --color-text: var(--color-green-dark);
+  --color-text-secondary: var(--color-white);
+  --color-primary: var(--color-green-dark);
+  --color-secondary: var(--color-green);
+  --color-primary-dark: var(--color-purple-dark);
+  --color-secondary-light: var(--color-green-light);
+  --color-tertiary: var(--color-green-dark);
+  --color-progress-background: var(--color-green-medium-dark);
+  --color-hover: var(--color-clay);
+
+  --color-primary-rgb: var(--color-green-dark);
+}
+
+[data-theme='blue'] {
+  --color-text: var(--color-purple);
+  --color-text-secondary: var(--color-white);
+  --color-primary: var(--color-purple);
+  --color-primary-dark: var(--color-purple-dark);
+  --color-secondary: var(--color-blue);
+  --color-secondary-light: var(--color-blue-light);
+  --color-tertiary: var(--color-purple);
+  --color-progress-background: var(--color-purple-medium);
+  --color-hover: var(--color-purple-dark);
+
+  --color-primary-rgb: var(--color-purple-rgb);
+}
+
+
+

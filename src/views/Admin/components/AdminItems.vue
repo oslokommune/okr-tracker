@@ -25,7 +25,12 @@
             </div>
           </div>
           <div class="col__footer">
-            <router-link class="btn btn--fw" :to="{ name: 'CreateOrganization' }" data-cy="create-organization">
+            <router-link
+              v-if="user.superAdmin"
+              class="btn btn--fw"
+              :to="{ name: 'CreateOrganization' }"
+              data-cy="create-organization"
+            >
               {{ $t('btn.addOrganization') }}
             </router-link>
           </div>
@@ -104,6 +109,7 @@
 
 <script>
 import Fuse from 'fuse.js';
+import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 
 const fuseSettings = {
@@ -138,6 +144,10 @@ export default {
     filteredDeps: [],
     filteredProds: [],
   }),
+
+  computed: {
+    ...mapState(['user']),
+  },
 
   watch: {
     showArchived: {
@@ -210,8 +220,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .columns {
   display: grid;
   grid-gap: span(0, 1, span(12));
@@ -240,7 +248,7 @@ export default {
   height: 32rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 }
 
 .col__body {
@@ -251,7 +259,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: $color-grey-100;
+  background: var(--color-grey-100);
 }
 
 .col__footer {
@@ -273,10 +281,10 @@ export default {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  color: $color-purple;
+  color: var(--color-text);
   font-weight: 500;
   font-size: 1rem;
   text-decoration: none;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
 }
 </style>

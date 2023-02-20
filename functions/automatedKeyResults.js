@@ -1,24 +1,22 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
+import { getFirestore } from 'firebase-admin/firestore';
+import functions from 'firebase-functions';
 
-const getSheetsData = require('./util/getSheetsData');
-const config = require('./config');
-
-const db = admin.firestore();
+import getSheetsData from './util/getSheetsData.js';
+import config from './config.js';
 
 /**
  * Scheduled function that automatically updates the progress for all key results
  * with the `auto` property set to true, getting the data from the provided
  * google sheets details.
  */
-exports.fetchAutomatedKeyResOnSchedule = functions
+export const fetchAutomatedKeyResOnSchedule = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
-  .pubsub.schedule(config.autoKeyresFetchFrequency)
+  .pubsub.schedule(config.autoKeyResFetchFrequency)
   .timeZone(config.timeZone)
   .onRun(() => {
-    return db
-      .collection('keyResults')
+    const db = getFirestore();
+    return db.collection('keyResults')
       .where('archived', '==', false)
       .where('auto', '==', true)
       .get()
@@ -31,7 +29,7 @@ exports.fetchAutomatedKeyResOnSchedule = functions
 /**
  * Manually trigger the scheduled function
  */
-exports.triggerScheduledFunction = functions
+export const triggerScheduledFunction = functions
   .runWith(config.runtimeOpts)
   .region(config.region)
   .https.onCall(updateAutomaticKeyResult);
@@ -42,6 +40,7 @@ exports.triggerScheduledFunction = functions
  * @returns {number}
  */
 async function updateAutomaticKeyResult(id) {
+  const db = getFirestore();
   const docRef = db.doc(`keyResults/${id}`);
   const progressRef = docRef.collection(`progress`);
 
@@ -59,7 +58,7 @@ async function updateAutomaticKeyResult(id) {
 
     return value;
   } catch ({ message }) {
-    docRef.update({ valid: false, error: message });
+    await docRef.update({ valid: false, error: message });
     throw new functions.https.HttpsError('cancelled', message);
   }
 }

@@ -6,6 +6,7 @@ tests/e2e/videos/*
 tests/e2e/screenshots/*
 
 # local env files
+.env
 .env.*
 cypress.env.json
 
@@ -29,3 +30,6 @@ cypress.env.json
 mock/
 # Dont ignore the mock-folder for tests
 !tests/mock
+
+.npmrc
+setfirebase.json

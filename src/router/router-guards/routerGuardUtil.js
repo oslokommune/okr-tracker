@@ -11,7 +11,7 @@ const getSlugRef = async (slug) => {
 
   const { archived } = await reference.get().then((snap) => snap.data());
 
-  if (archived && !store.state.user.admin) {
+  if (archived && (!store.state.user.admin || !store.state.user.superAdmin)) {
     throw new Error(`cannot find ${slug}`);
   }
 

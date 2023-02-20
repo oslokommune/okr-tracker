@@ -51,18 +51,18 @@ describe('Create data for organization', () => {
   });
 
   it('Creates a key result for the objective', () => {
-    cy.get('[data-cy="okr-create-keyresult"]').click().wait(750);
+    cy.get('[data-cy="okr-create-keyResult"]').click().wait(750);
 
-    cy.get('[data-cy="keyres_name_field"]').clear().type(testKeyResult.name);
+    cy.get('[data-cy="keyResult_name_field"]').clear().type(testKeyResult.name);
 
-    cy.get('[data-cy="keyres_longdescription_field"]').clear().type(testKeyResult.longDescription);
+    cy.get('[data-cy="keyResult_longdescription_field"]').clear().type(testKeyResult.longDescription);
 
-    cy.get('[data-cy="keyres_startvalue_field"]').clear().type(testKeyResult.startValue);
+    cy.get('[data-cy="keyResult_startvalue_field"]').clear().type(testKeyResult.startValue);
 
-    cy.get('[data-cy="keyres_targetvalue_field"]').clear().type(testKeyResult.targetValue);
+    cy.get('[data-cy="keyResult_targetvalue_field"]').clear().type(testKeyResult.targetValue);
 
-    cy.get('[data-cy="keyres_unit_field"]').clear().type(testKeyResult.unit);
+    cy.get('[data-cy="keyResult_unit_field"]').clear().type(testKeyResult.unit);
 
-    cy.get('[data-cy="save_keyres_button"]').click();
+    cy.get('[data-cy="save_keyResult_button"]').click();
   });
 });

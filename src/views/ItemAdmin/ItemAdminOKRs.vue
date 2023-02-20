@@ -26,24 +26,71 @@
           class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
+          <empty-state
+            v-if="notSelected"
+            :icon="'arrow-left'"
+            :heading="notSelected"
+          />
 
           <ul v-else class="miller__list">
-            <empty-state v-if="!items.length" :icon="'exclamation'" :heading="nonexistent" />
-            <li v-for="{ id, name, archived } in items" :key="id" class="miller__list-item">
-              <router-link
-                class="miller__link"
-                :to="{ name: 'ItemAdminOKRs', query: { type, id } }"
-                :class="{
-                  active: activeClass(id),
-                  selected: selectedClass(id),
-                }"
+            <template v-if="!items.length && type === 'objective'">
+              <empty-state
+                v-if="!items.length && !isLoadingPeriod"
+                :icon="'exclamation'"
+                :heading="nonexistent"
+              />
+              <template v-if="isLoadingPeriod">
+                <template v-for="index in 2">
+                  <content-loader-okr-row
+                    :key="`okr-row-objective-${index}`"
+                  ></content-loader-okr-row>
+                </template>
+              </template>
+            </template>
+
+            <template v-else-if="!items.length && type === 'keyResult'">
+              <empty-state
+                v-if="
+                  !items.length && !isLoadingObjective && type === 'keyResult'
+                "
+                :icon="'exclamation'"
+                :heading="nonexistent"
+              />
+              <template v-if="isLoadingObjective">
+                <template v-for="index in 3">
+                  <content-loader-okr-row
+                    :key="`okr-row-objective-${index}`"
+                  ></content-loader-okr-row>
+                </template>
+              </template>
+            </template>
+
+            <template v-else>
+              <li
+                v-for="{ id, name, archived } in items"
+                :key="id"
+                class="miller__list-item"
               >
-                <i class="miller__icon fa" :class="icon" />
-                <span class="miller__label">{{ name }}</span>
-                <span v-if="archived" class="miller__archived fa fa-file-archive"></span>
-              </router-link>
-            </li>
+                <router-link
+                  class="miller__link"
+                  :to="{
+                    name: 'ItemAdmin',
+                    query: { tab: 'okr', type, id },
+                  }"
+                  :class="{
+                    active: activeClass(id),
+                    selected: selectedClass(id),
+                  }"
+                >
+                  <i class="miller__icon fa" :class="icon" />
+                  <span class="miller__label">{{ name }}</span>
+                  <span
+                    v-if="archived"
+                    class="miller__archived fa fa-file-archive"
+                  ></span>
+                </router-link>
+              </li>
+            </template>
           </ul>
           <button
             v-if="!notSelected"
@@ -57,9 +104,7 @@
         </div>
       </div>
 
-      <div v-if="editObject && editForm" class="details">
-        <component :is="editForm" :data="editObject"></component>
-      </div>
+      <component :is="editForm" :data="editObject"></component>
     </div>
   </div>
 </template>
@@ -76,6 +121,8 @@ export default {
 
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
+    ContentLoaderOkrRow: () =>
+      import('@/components/ContentLoader/ContentLoaderOKRRow.vue'),
   },
 
   data: () => ({
@@ -88,6 +135,8 @@ export default {
     selectedType: null,
     selectedPeriodId: null,
     selectedObjectiveId: null,
+    isLoadingPeriod: false,
+    isLoadingObjective: false,
   }),
 
   computed: {
@@ -97,7 +146,7 @@ export default {
       return [
         {
           heading: this.$t('admin.showPeriods'),
-          items: this.periods,
+          items: this.orderedPeriods,
           type: 'period',
           icon: 'fa-calendar-alt',
           activeClass: (id) => this.editObject && id === this.editObject.id,
@@ -109,30 +158,51 @@ export default {
         },
         {
           heading: this.$t('admin.showObjectives'),
-          items: this.objectives,
+          items: this.orderedObjectives,
           type: 'objective',
           icon: 'fa-trophy',
           activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: (id) => id === this.selectedObjectiveId,
-          notSelected: !this.selectedType ? this.$t('admin.noPeriodSelected') : false,
+          notSelected: !this.selectedType
+            ? this.$t('admin.noPeriodSelected')
+            : false,
           addEvent: this.createObjective,
           nonexistent: this.$t('empty.itemAdmin.objective'),
           cyCreate: 'okr-create-objective',
         },
         {
           heading: this.$t('admin.showKeyResults'),
-          items: this.keyResults,
+          items: this.orderedKeyResults,
           type: 'keyResult',
           icon: 'fa-chart-pie',
           activeClass: (id) => this.editObject && id === this.editObject.id,
           selectedClass: () => false,
           notSelected:
-            !this.selectedType || this.selectedType === 'period' ? this.$t('admin.noObjectiveSelected') : false,
+            !this.selectedType || this.selectedType === 'period'
+              ? this.$t('admin.noObjectiveSelected')
+              : false,
           addEvent: this.createKeyResult,
           nonexistent: this.$t('empty.itemAdmin.keyResult'),
-          cyCreate: 'okr-create-keyresult',
+          cyCreate: 'okr-create-keyResult',
         },
       ];
+    },
+
+    orderedPeriods() {
+      return this.orderItems(
+        this.periods,
+        (a, b) => b.startDate.toDate() - a.startDate.toDate()
+      );
+    },
+    orderedObjectives() {
+      return this.orderItems(this.objectives, (a, b) =>
+        a.name.localeCompare(b.name)
+      );
+    },
+    orderedKeyResults() {
+      return this.orderItems(this.keyResults, (a, b) =>
+        a.name.localeCompare(b.name)
+      );
     },
   },
 
@@ -145,7 +215,7 @@ export default {
         } else {
           await this.setItems(newQuery, false);
         }
-        this.setFormComponent(newQuery);
+        await this.setFormComponent(newQuery);
       },
     },
 
@@ -200,9 +270,13 @@ export default {
       }
 
       if (type === 'period') {
+        this.isLoadingPeriod = true;
+        this.keyResults = [];
         await this.bindObjectives({ parentId: id });
         if (this.keyResults.length) this.$unbind('keyResults');
+        this.isLoadingPeriod = false;
       } else if (type === 'objective') {
+        this.isLoadingObjective = true;
         await this.bindKeyResults({ parentId: id });
 
         if (update) {
@@ -214,11 +288,14 @@ export default {
 
           if (objective && objective.period) {
             await this.bindObjectives({ parentId: objective.period.id });
-            this.selectedPeriodId = objective.period.id;
+            if (this.selectedPeriodId !== objective.period.id) {
+              this.selectedPeriodId = objective.period.id;
+            }
           }
         }
 
         this.selectedObjectiveId = id;
+        this.isLoadingObjective = false;
       } else if (type === 'keyResult' && update) {
         const keyRes = await db
           .collection('keyResults')
@@ -239,6 +316,23 @@ export default {
       }
 
       this.selectedType = type;
+    },
+
+    orderItems(items, compareFn) {
+      const itemsCopy = items.map((x) => x);
+      return [
+        ...itemsCopy
+          .filter((period) => period.name === 'placeholder')
+          .sort((a, b) => {
+            if (a.created && b.created) {
+              return b.created.toDate() - a.created.toDate();
+            }
+            return a.name.localeCompare(b.name);
+          }),
+        ...itemsCopy
+          .filter((period) => period.name !== 'placeholder')
+          .sort(compareFn),
+      ];
     },
 
     bindPeriods() {
@@ -275,26 +369,46 @@ export default {
       const startDate = new Date();
       const endDate = new Date();
       try {
-        const { id } = await Period.create({ name: 'placeholder', parent: this.activeItemRef, startDate, endDate });
+        const { id } = await Period.create({
+          name: 'placeholder',
+          parent: this.activeItemRef,
+          startDate,
+          endDate,
+        });
 
         this.$toasted.show(this.$t('toaster.add.period'));
 
         await this.$router.push({ query: { type: 'period', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(
+          this.$t('toaster.error.create', {
+            document: this.$t('general.period'),
+          })
+        );
         throw new Error(error);
       }
     },
     async createObjective() {
       try {
         const period = db.collection('periods').doc(this.selectedPeriodId);
-        const { id } = await Objective.create({ name: 'placeholder', parent: this.activeItemRef, weight: 1, period });
+        const { id } = await Objective.create({
+          name: 'placeholder',
+          parent: this.activeItemRef,
+          weight: 1,
+          period,
+        });
 
-        this.$toasted.show(this.$t('toaster.add.objective', { period: period.name }));
+        this.$toasted.show(
+          this.$t('toaster.add.objective', { period: period.name })
+        );
 
         await this.$router.push({ query: { type: 'objective', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(
+          this.$t('toaster.error.create', {
+            document: this.$t('general.objective'),
+          })
+        );
         throw new Error(error);
       }
     },
@@ -316,7 +430,11 @@ export default {
 
         await this.$router.push({ query: { type: 'keyResult', id } });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.create'));
+        this.$toasted.error(
+          this.$t('toaster.error.create', {
+            document: this.$t('general.keyResult'),
+          })
+        );
         throw new Error(error);
       }
     },
@@ -325,8 +443,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/_colors.scss';
-
 .wrapper {
   width: 100%;
 
@@ -342,7 +458,7 @@ export default {
   align-self: flex-start;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(s)) {
     grid-template-columns: repeat(3, 1fr);
@@ -365,7 +481,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-left: 2px solid $color-grey-100;
+  border-left: 2px solid var(--color-grey-100);
 
   &:first-child {
     border-left: none;
@@ -382,28 +498,28 @@ export default {
 
 .miller__col-heading {
   padding: 0.5rem 0.75rem;
-  color: $color-grey-600;
-  border-bottom: 1px solid $color-grey-100;
+  color: var(--color-grey-600);
+  border-bottom: 1px solid var(--color-grey-100);
 }
 
 .miller__link {
   display: flex;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  color: $color-grey-800;
+  color: var(--color-text);
   text-decoration: none;
-  border-bottom: 1px solid $color-grey-100;
+  border-bottom: 1px solid var(--color-grey-100);
 
   &.selected {
-    color: black;
+    color: var(--color-text);
     font-weight: 500;
-    background: $color-grey-50;
+    background: var(--color-grey-50);
   }
 
   &.active {
-    color: black;
+    color: var(--color-text-secondary);
     font-weight: 500;
-    background: $color-yellow;
+    background: var(--color-primary);
   }
 }
 
@@ -426,7 +542,7 @@ export default {
 
 .miller__add {
   margin-top: auto;
-  border-top: 1px solid $color-grey-100;
+  border-top: 1px solid var(--color-grey-100);
 }
 
 .miller__icon {
@@ -448,7 +564,7 @@ export default {
   padding: 1rem;
   background: white;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba($color-grey-400, 0.3);
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

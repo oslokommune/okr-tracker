@@ -7,10 +7,11 @@
   "rules": {
     "color-hex-length": "long",
     "indentation": 2,
-    "order/properties-order": [ ],
+    "order/properties-order": [],
     "at-rule-no-unknown": null,
     "scss/at-rule-no-unknown": true,
     "no-descending-specificity": null,
+    "scss/no-global-function-names": null,
     "plugin/rational-order": [true, {
       "border-in-box-model": false,
       "empty-line-between-groups": false

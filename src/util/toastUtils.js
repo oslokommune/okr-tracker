@@ -1,7 +1,15 @@
 import Vue from 'vue';
 import i18n from '@/locale/i18n';
 
-export function toastArchiveAndRevert(obj) {
+export const showToastMessage = (opts) => {
+  const { msg, msgVars, type, toastOpts } = opts;
+
+  const toastMsg = i18n.t(msg, msgVars) || msg;
+
+  Vue.toasted.show(toastMsg, { type, ...toastOpts });
+};
+
+export default function toastArchiveAndRevert(obj) {
   const { name, callback } = obj;
 
   const options = {
@@ -20,11 +28,9 @@ export function toastArchiveAndRevert(obj) {
     ],
   };
 
-  if (name) {
-    Vue.toasted.show(i18n.t('toaster.delete.object', { name }), options);
-  } else {
-    Vue.toasted.show(i18n.t('toaster.deleted'), options);
-  }
+  showToastMessage({
+    msg: name ? 'toaster.delete.object' : 'toaster.deleted',
+    msgVars: { name },
+    toastOpts: options,
+  });
 }
-
-export default { toastArchiveAndRevert };

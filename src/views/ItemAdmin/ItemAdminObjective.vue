@@ -1,6 +1,9 @@
 <template>
-  <div v-if="objective">
-    <archived-restore v-if="objective.archived" :delete-deep="deleteDeep" :restore="restore" />
+  <content-loader-okr-details
+    v-if="isLoadingDetails"
+  ></content-loader-okr-details>
+  <div v-else-if="objective" class="details">
+    <archived-restore v-if="objective.archived" :restore="restore" />
 
     <validation-observer v-slot="{ handleSubmit }">
       <form id="update-objective" @submit.prevent="handleSubmit(update)">
@@ -15,7 +18,11 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.description') }}</span>
-          <input v-model="objective.description" class="form__field" type="text" />
+          <input
+            v-model="objective.description"
+            class="form__field"
+            type="text"
+          />
         </label>
 
         <form-component
@@ -29,9 +36,12 @@
 
         <label class="form-group">
           <span class="form-label">{{ $t('fields.icon') }}</span>
-          <v-select v-model="objective.icon" class="form-field" :options="icons" @input="dirty = true">
+          <v-select v-model="objective.icon" :options="icons">
             <template #selected-option="{ label }">
-              <span class="selected-icon fa fa-fw" :class="`fa-${label}`"></span>
+              <span
+                class="selected-icon fa fa-fw"
+                :class="`fa-${label}`"
+              ></span>
               {{ label }}
             </template>
             <template #option="option">
@@ -54,19 +64,21 @@
             >
               <template #option="option"> {{ option.name }} </template>
             </v-select>
-            <span v-if="errors[0]" class="form-field--error">{{ errors[0] }}</span>
+            <span v-if="errors[0]" class="form-field--error">{{
+              errors[0]
+            }}</span>
           </label>
         </validation-provider>
       </form>
     </validation-observer>
 
     <div class="button-row">
-      <button class="btn btn--icon btn--pri" form="update-objective" :disabled="loading">
-        <span class="icon fa fa-fw fa-save"></span> {{ $t('btn.saveChanges') }}
-      </button>
-      <button v-if="!objective.archived" class="btn btn--icon btn--danger" :disabled="loading" @click="archive">
-        <span class="icon fa fa-fw fa-trash"></span> {{ $t('btn.archive') }}
-      </button>
+      <btn-delete
+        v-if="!objective.archived"
+        :disabled="loading"
+        @click="archive"
+      />
+      <btn-save form="update-objective" :disabled="loading" />
     </div>
   </div>
 </template>
@@ -75,13 +87,18 @@
 import { db } from '@/config/firebaseConfig';
 import Objective from '@/db/Objective';
 import icons from '@/config/icons';
-import { toastArchiveAndRevert } from '@/util/toastUtils';
+import { toastArchiveAndRevert } from '@/util';
+import { BtnSave, BtnDelete } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ItemAdminObjective',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ContentLoaderOkrDetails: () =>
+      import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    BtnSave,
+    BtnDelete,
   },
 
   props: {
@@ -96,19 +113,25 @@ export default {
     changedPeriod: false,
     loading: false,
     icons,
+    isLoadingDetails: false,
   }),
 
   watch: {
     data: {
       immediate: true,
       async handler() {
+        this.isLoadingDetails = true;
         const parent = await db
           .collection('slugs')
           .doc(this.data.parent.slug)
           .get()
           .then((snapshot) => snapshot.data().reference);
-        this.$bind('periods', db.collection('periods').where('parent', '==', parent));
+        this.$bind(
+          'periods',
+          db.collection('periods').where('parent', '==', parent)
+        );
         this.objective = { ...this.data, id: this.data.id };
+        this.isLoadingDetails = false;
       },
     },
   },
@@ -143,14 +166,21 @@ export default {
     async archive() {
       this.loading = true;
       try {
-        await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
+        await this.$router.push({
+          query: { type: 'period', id: this.objective.period.id },
+        });
         await Objective.archive(this.objective.id);
 
         const restoreCallback = this.restore.bind(this);
 
-        toastArchiveAndRevert({ name: this.objective.name, callback: restoreCallback });
+        toastArchiveAndRevert({
+          name: this.objective.name,
+          callback: restoreCallback,
+        });
       } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.archive', { document: this.objective.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: this.objective.name })
+        );
       }
 
       this.loading = false;
@@ -162,26 +192,38 @@ export default {
         this.objective.archived = false;
         this.$toasted.show(this.$t('toaster.restored'));
       } catch {
-        this.$toasted.error(this.$t('toaster.error.restore', { document: this.objective.id }));
-      }
-    },
-
-    async deleteDeep() {
-      try {
-        await this.$router.push({ query: { type: 'period', id: this.objective.period.id } });
-        await Objective.deleteDeep(this.objective.id);
-        this.$toasted.show(this.$t('toaster.delete.permanently'));
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.delete', { document: this.objective.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.objective.id })
+        );
       }
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .selected-icon {
   display: inline-block;
   margin-right: 0.5rem;
+}
+
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(var(--color-grey-400-rgb), 0.3);
+
+  @media screen and (min-width: bp(l)) {
+    align-self: flex-start;
+    width: span(3, 0, span(10));
+    margin-top: 0;
+    margin-left: span(0, 1, span(10));
+  }
+
+  @media screen and (min-width: bp(xl)) {
+    width: span(3, 0, span(10));
+    margin-left: span(1, 2, span(10));
+  }
 }
 </style>
