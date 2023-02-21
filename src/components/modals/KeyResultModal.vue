@@ -4,38 +4,18 @@
       {{ $t('keyResult.newValue') }}
     </template>
 
-    <form-section>
-      <form-component
-        v-model="value"
-        input-type="input"
-        name="value"
-        :label="$t('keyResult.newValue')"
-        rules="required"
-        type="number"
-      />
-
-      <form-component
-        v-model="note"
-        input-type="textarea"
-        name="comment"
-        :label="$t('keyResult.addComment')"
-        :placeholder="$t('keyResult.commentPlaceholder')"
-      />
-
-      <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-save
-          :disabled="submitDisabled || loading"
-          @click="handleSubmit(saveProgress)"
-        />
-      </template>
-    </form-section>
+    <key-result-value-form
+      :key-result="keyResult"
+      :loading="loading"
+      @save="saveProgress"
+    />
   </modal-wrapper>
 </template>
 
 <script>
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
-import { FormSection, BtnSave } from '@/components/generic/form';
+import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -43,8 +23,7 @@ export default {
 
   components: {
     ModalWrapper,
-    FormSection,
-    BtnSave,
+    KeyResultValueForm,
   },
 
   props: {
@@ -55,31 +34,20 @@ export default {
   },
 
   data: () => ({
-    note: '',
-    value: 0,
     loading: false,
   }),
-
-  watch: {
-    keyResult: {
-      immediate: true,
-      async handler() {
-        this.value = this.keyResult.currentValue || this.keyResult.startValue || 0;
-      },
-    },
-  },
 
   methods: {
     close() {
       this.$emit('close');
     },
 
-    async saveProgress() {
+    async saveProgress(value, comment) {
       this.loading = true;
       try {
         await Progress.create(db.collection('keyResults'), this.keyResult.id, {
-          value: +this.value,
-          comment: this.note,
+          value,
+          comment,
           timestamp: new Date(),
         });
         this.$toasted.show(this.$t('toaster.add.progress'));

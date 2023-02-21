@@ -40,48 +40,12 @@
           </div>
         </div>
 
-        <div class="key-result-summary__value">
-          <div>
-            <h3 class="title-2">{{ $t('keyResult.newValue') }}</h3>
-
-            <validation-observer v-slot="{ handleSubmit }">
-              <form id="modal" @submit.prevent="handleSubmit(saveProgress)">
-                <label>
-                  <span class="title-4">{{ $t('keyResult.addComment') }}</span>
-                  <textarea
-                    v-model="progressNote"
-                    style="margin-top: 0.5rem"
-                    rows="2"
-                    :placeholder="$t('keyResult.commentPlaceholder')"
-                    :disabled="!allowedToEditPeriod"
-                  />
-                </label>
-
-                <div>
-                  <validation-provider v-slot="{ errors }" name="value" rules="required">
-                    <label class="form-group">
-                      <span class="form-label">{{ $t('keyResult.newValue') }}</span>
-                      <input
-                        v-model="value"
-                        style="margin-top: 0.25rem"
-                        type="number"
-                        step="any"
-                        :disabled="!allowedToEditPeriod"
-                      />
-                      <span class="form-field--error">{{ errors[0] }}</span>
-                    </label>
-                  </validation-provider>
-                </div>
-              </form>
-            </validation-observer>
-          </div>
-
-          <btn-save
-            v-if="allowedToEditPeriod"
-            form="modal"
-            variant="primary"
-            class="key-result__value--button"
-            :disabled="isSaving"
+        <div v-if="allowedToEditPeriod" class="key-result-summary__value">
+          <key-result-value-form
+            :key-result="activeKeyResult"
+            :loading="isSaving"
+            :comment-rows="2"
+            @save="saveProgress"
           />
         </div>
       </section>
@@ -124,7 +88,7 @@ import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import routerGuard from '@/router/router-guards/keyResultHome';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
-import { BtnSave } from '@/components/generic/form/buttons';
+import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
 
 export default {
   name: 'KeyResultHome',
@@ -135,8 +99,8 @@ export default {
       import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    KeyResultValueForm,
     WidgetProgressHistory,
-    BtnSave,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -153,13 +117,9 @@ export default {
 
   data: () => ({
     progress: [],
-    newValue: null,
     graph: null,
     isLoading: false,
-    progressNote: '',
     isSaving: false,
-    value: null,
-    chosenProfileId: null,
     progressDetails: {},
   }),
 
@@ -184,7 +144,6 @@ export default {
             .orderBy('timestamp', 'desc')
         );
         this.isLoading = false;
-        this.value = this.progressDetails.totalCompletedTasks;
         this.renderGraph();
       },
     },
@@ -255,7 +214,7 @@ export default {
       }
     },
 
-    async saveProgress() {
+    async saveProgress(value, comment) {
       if (!this.allowedToEditPeriod) {
         return;
       }
@@ -263,8 +222,8 @@ export default {
       this.isSaving = true;
       try {
         await Progress.create(db.collection('keyResults'), this.activeKeyResult.id, {
-          value: +this.value,
-          comment: this.progressNote,
+          value,
+          comment,
           timestamp: new Date(),
         });
         this.$toasted.show(this.$t('toaster.add.progress'));
@@ -289,9 +248,7 @@ export default {
 .key-result-summary {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
-  padding: 1.5rem 1.75rem;
-  background: var(--color-white);
+  gap: 0.5rem;
 
   @media screen and (min-width: bp(s)) {
     flex-direction: row;
@@ -301,16 +258,33 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    width: 100%;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-white);
+
+    @each $bp, $grow in (s: 1, m: 2, xl: 3) {
+      @media screen and (min-width: bp(#{$bp})) {
+        flex: #{$grow};
+      }
+    }
   }
 
   &__value {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex: 1;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-white);
 
-    button {
-      align-self: end;
+    ::v-deep form {
+      span:first-child .form-group {
+        margin-top: 0;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      .button-row {
+        margin-top: 0.5rem;
+      }
     }
   }
 }
