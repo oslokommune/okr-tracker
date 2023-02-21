@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed a bug where document references in a KPI document would be overwritten
   by resolved document data. This also includes a fix to the API which would
   fail while attempting to resolve these invalid document references.
+- The state of an opened measurement edit form is now kept as is, even if the
+  document has been updated in the background (e.g. while setting goals). This
+  also prevents other data fields of the document, that might have been updated
+  separately, from being overwritten with outdated data when saving the form
+  (e.g. cached progress and goals).
 
 ### Changed
 

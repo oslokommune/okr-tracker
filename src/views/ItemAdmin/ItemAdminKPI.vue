@@ -159,15 +159,10 @@ export default {
   methods: {
     formatKPIValue,
 
-    async save(kpi, afterSave) {
+    async save(data, afterSave) {
       this.loading = true;
-
-      // Do not update existing document references
-      delete kpi.parent;
-      delete kpi.createdBy;
-
       try {
-        await Kpi.update(kpi.id, kpi);
+        await Kpi.update(this.kpi.id, data);
         if (afterSave) {
           afterSave();
         }
@@ -178,27 +173,31 @@ export default {
       this.loading = false;
     },
 
-    async archive(kpi) {
+    async archive() {
       this.loading = true;
       try {
-        await Kpi.archive(kpi.id);
+        await Kpi.archive(this.kpi.id);
 
-        const restoreCallback = this.restore.bind(this, kpi);
+        const restoreCallback = this.restore.bind(this);
 
-        toastArchiveAndRevert({ name: kpi.name, callback: restoreCallback });
+        toastArchiveAndRevert({ name: this.kpi.name, callback: restoreCallback });
       } catch {
-        this.$toasted.error(this.$t('toaster.error.archive', { document: kpi.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: this.kpi.name })
+        );
       }
       this.loading = false;
     },
 
-    async restore(kpi) {
+    async restore() {
       this.loading = true;
       try {
-        await Kpi.restore(kpi.id);
+        await Kpi.restore(this.kpi.id);
         this.$toasted.show(this.$t('toaster.restored'));
       } catch {
-        this.$toasted.error(this.$t('toaster.error.restore', { document: kpi.name }));
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.kpi.name })
+        );
       }
       this.loading = false;
     },
