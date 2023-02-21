@@ -28,7 +28,7 @@ export default {
   name: 'ItemTabBar',
 
   computed: {
-    ...mapState(['activeItem', 'activeObjective', 'activeKeyResult']),
+    ...mapState(['activeItem', 'activeObjective', 'activeKeyResult', 'activeKpi']),
     ...mapGetters(['hasEditRights']),
 
     tabs() {
@@ -56,9 +56,10 @@ export default {
           return { tab: 'okr', type: 'objective', id: this.activeObjective?.id };
         case 'KeyResultHome':
           return { tab: 'okr', type: 'keyResult', id: this.activeKeyResult?.id };
-        case 'KpiHome':
         case 'ItemMeasurements':
           return { tab: 'kpi' };
+        case 'KpiHome':
+          return { tab: 'kpi', id: this.activeKpi?.id };
         default:
           return {};
       }

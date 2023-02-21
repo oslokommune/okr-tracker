@@ -22,6 +22,9 @@ All notable changes to this project will be documented in this file. The format 
   It is also moved outside the result indicator box.
 - Custom alerts have been replaced by the equivalent component from the [Punkt
   design system](https://punkt.oslo.kommune.no/latest/komponenter/alert/index).
+- The page scroll manipulation when administrating measurements have been
+  somewhat relaxed. When viewing details of a specific measurement, the admin
+  tab now also links directly to the measurement in question.
 
 ## [3.3.0] 2023-02-03
 

@@ -87,6 +87,15 @@ export default {
     WidgetProgressHistory,
   },
 
+  async beforeRouteLeave(to, from, next) {
+    try {
+      await this.$store.dispatch('set_active_kpi', null);
+      next();
+    } catch (error) {
+      next(false);
+    }
+  },
+
   data: () => ({
     progress: [],
     graph: null,
@@ -107,11 +116,15 @@ export default {
   watch: {
     activeKpi: {
       immediate: true,
-      async handler({ id }) {
+      async handler(kpi) {
+        if (!kpi) {
+          return;
+        }
+
         this.isLoading = true;
         await this.$bind(
           'progress',
-          db.collection(`kpis/${id}/progress`).orderBy('timestamp', 'desc')
+          db.collection(`kpis/${kpi.id}/progress`).orderBy('timestamp', 'desc')
         );
         this.isLoading = false;
       },

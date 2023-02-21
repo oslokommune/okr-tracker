@@ -55,37 +55,30 @@ export default {
         .sort((a, b) => a.name.localeCompare(b.name))
         .sort((a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType));
     },
-
-    anchoredKpiId() {
-      const { hash } = this.$route;
-      return hash ? hash.substring(1) : null;
-    },
   },
 
   watch: {
-    anchoredKpiId: {
+    '$route.query': {
       immediate: true,
-      async handler(kpiId) {
-        if (kpiId && this.kpis.map((kpi) => kpi.id).includes(kpiId)) {
-          this.selectedKpiId = kpiId;
-        }
+      async handler(query) {
+        this.selectedKpiId = query?.id;
       },
     },
 
-    selectedKpiId(kpiId) {
-      const { name, query, hash } = this.$route;
-      const kpiHash = kpiId ? `#${kpiId}` : '';
-      if (hash !== kpiHash) {
-        this.$router.replace({ name, query, hash: kpiHash });
+    async selectedKpiId(kpiId) {
+      const query = { tab: 'kpi', id: !kpiId ? undefined : kpiId };
+      if (this.$route.query?.id !== query.id) {
+        await this.$router.push({ query });
       }
     },
+  },
 
-    kpis() {
-      if (this.selectedKpiId) {
-        // Update the scroll position if the order of KPIs changes.
-        this.scrollToKpi(this.selectedKpiId);
-      }
-    },
+  mounted() {
+    const { query } = this.$route;
+    const queriedKpiId = query?.id;
+    if (queriedKpiId && this.kpis.map((kpi) => kpi.id).includes(queriedKpiId)) {
+      this.selectedKpiId = queriedKpiId;
+    }
   },
 
   methods: {
@@ -117,6 +110,7 @@ export default {
         throw new Error(error);
       } finally {
         this.loading = false;
+        this.scrollToKpi(this.selectedKpiId);
       }
     },
 
@@ -124,7 +118,8 @@ export default {
       this.$nextTick(() => {
         const kpiEl = document.getElementById(kpiId);
         if (kpiEl) {
-          window.scrollTo({ top: kpiEl.offsetTop, behavior: 'smooth' });
+          const bounds = kpiEl.getBoundingClientRect();
+          window.scrollTo({ top: bounds.top, behavior: 'smooth' });
         }
       });
     },
