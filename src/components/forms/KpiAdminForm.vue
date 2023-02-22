@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div v-if="localKpi">
     <edit-goals-modal
       v-if="showEditGoalsModal"
-      :kpi="localKpi"
+      :kpi="kpi"
       @close="showEditGoalsModal = false"
     />
 
@@ -62,17 +62,17 @@
             class="ods-form-group descriptive-radio"
           >
             <input
-              :id="localKpi.id + '-' + id"
+              :id="kpi.id + '-' + id"
               v-model="localKpi.kpiType"
               type="radio"
               class="ods-form-radio"
               name="radio-group"
               :value="id"
             />
-            <label class="ods-form-label" :for="localKpi.id + '-' + id">
+            <label class="ods-form-label" :for="kpi.id + '-' + id">
               <span class="title">{{ label }}</span>
             </label>
-            <label class="description" :for="localKpi.id + '-' + id">
+            <label class="description" :for="kpi.id + '-' + id">
               {{ description }}
             </label>
           </div>
@@ -148,7 +148,7 @@
           v-if="kpi"
           :disabled="loading"
           :icon-only="true"
-          @click="$emit('delete', kpi)"
+          @click="$emit('delete')"
         />
         <btn-save
           :disabled="submitDisabled || loading"
@@ -185,9 +185,8 @@ export default {
 
   props: {
     kpi: {
-      required: false,
+      required: true,
       type: Object,
-      default: null,
     },
     loading: {
       required: false,
@@ -211,40 +210,37 @@ export default {
     serviceAccountAddress: import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT,
   }),
 
-  watch: {
-    kpi: {
-      immediate: true,
-      handler() {
-        if (this.kpi) {
-          // For backwards compatibility, check for any previously configured sheet
-          // details if the `auto` property doesn't exist on the model.
-          const sheetsConfigured = Boolean(
-            (this.kpi.sheetId || this.kpi.sheetUrl) &&
-              this.kpi.sheetName &&
-              this.kpi.sheetCell
-          );
+  mounted() {
+    const {
+      auto,
+      description,
+      format,
+      kpiType,
+      name,
+      preferredTrend,
+      sheetCell,
+      sheetId,
+      sheetName,
+      sheetUrl,
+      updateFrequency,
+    } = this.kpi;
 
-          this.localKpi = {
-            id: this.kpi.id,
-            auto: this.kpi.auto || sheetsConfigured,
-            ...this.kpi,
-          };
-        } else {
-          this.localKpi = {
-            name: '',
-            description: '',
-            format: null,
-            kpiType: null,
-            preferredTrend: null,
-            updateFrequency: null,
-            sheetUrl: '',
-            sheetName: '',
-            sheetCell: '',
-            auto: false,
-          };
-        }
-      },
-    },
+    // For backwards compatibility, check for any previously configured sheet
+    // details if the `auto` property doesn't exist on the model.
+    const sheetsConfigured = Boolean((sheetId || sheetUrl) && sheetName && sheetCell);
+
+    this.localKpi = {
+      auto: auto || (auto === undefined && sheetsConfigured),
+      description,
+      format,
+      kpiType,
+      name,
+      preferredTrend,
+      sheetCell,
+      sheetName,
+      sheetUrl: sheetUrl || '',
+      updateFrequency,
+    };
   },
 
   methods: {
@@ -258,7 +254,7 @@ export default {
 
     async testConnection() {
       try {
-        await functions.httpsCallable('fetchKpiDataTrigger')(this.localKpi.id);
+        await functions.httpsCallable('fetchKpiDataTrigger')(this.kpi.id);
       } catch (error) {
         throw new Error(error.message);
       }
