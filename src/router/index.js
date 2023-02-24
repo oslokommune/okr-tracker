@@ -31,11 +31,6 @@ const routes = [
     beforeEnter: routerGuards.requestAccess,
   },
   {
-    path: '/logout',
-    name: 'Logout',
-    component: () => import('@/views/Logout.vue'),
-  },
-  {
     path: '/403',
     name: 'Forbidden',
     component: () => import('@/views/Forbidden.vue'),
