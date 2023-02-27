@@ -405,6 +405,16 @@ Gif of the process:
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
+## Slack Integration
+
+***NB! Slack is currently not supported for this version of the OKR-tracker, but it is possible to implement it from the upstream repository.***
+
+There are two cloud functions that integrate with slack
+
+handleSlackRequest - users requesting access - slack app posts to a channel that someone wants access
+handleSlackInteractive - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
+For these cloud functions to work you need to add a webhook url from a slack app.
+
 ### Set up
 
 Firebase steps:
