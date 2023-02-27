@@ -405,6 +405,10 @@ Gif of the process:
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
 
+## Slack Integration
+
+NB! Slack is currently not supported for this version of the OKR-tracker, but it is possible to implement it from the upstream repository.
+
 ### Set up
 
 Firebase steps:
