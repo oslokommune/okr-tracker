@@ -233,16 +233,6 @@
     },
     "loginWithUsername": "Sign in with username"
   },
-  "logout": {
-    "header": "You have been logged out!",
-    "reasons": {
-      "internal": "There was an internal error when trying to log you in. Please try to log in again. Contact the administrator of the site if the problem persists.",
-      "permission-denied": "The account you tried to log in with does not meet the required permissions to access the site. Contact the administrator to get the right permissions.",
-      "email-in-use": "The e-mail you tried to log in with is already in use. Contact the administrator for further assistance.",
-      "default": "Something went wrong with your sign in. Please contact the administrator and refer to your url.",
-      "email-not-whitelisted": "The e-mail is not whitelisted and/or allowed to access the website. Contact the administrator for further assistance."
-    }
-  },
   "toaster": {
     "welcome": "Welcome {user}",
     "add": {
