@@ -407,7 +407,7 @@ Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/fireba
 
 ## Slack Integration
 
-NB! Slack is currently not supported for this version of the OKR-tracker, but it is possible to implement it from the upstream repository.
+***NB! Slack is currently not supported for this version of the OKR-tracker, but it is possible to implement it from the upstream repository.***
 
 ### Set up
 
