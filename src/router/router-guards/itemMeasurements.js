@@ -3,7 +3,7 @@ import getPeriods from '@/config/periods';
 
 const { state } = store;
 
-export default async function dashboard(to, from, next) {
+export default async function itemMeasurements(to, from, next) {
   const { activeItem } = state;
 
   try {
