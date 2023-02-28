@@ -36,7 +36,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import locale from 'flatpickr/dist/l10n/no';
 import endOfDay from 'date-fns/endOfDay';
 import { dateLongCompact } from '@/util';
 import getPeriods from '@/config/periods';
@@ -55,7 +54,6 @@ export default {
       mode: 'range',
       minDate: null,
       maxDate: null,
-      locale: locale.no,
     },
     range: null,
     options: Object.values(getPeriods()),
@@ -71,7 +69,7 @@ export default {
       if (!this.selectedPeriod.label) {
         if (Array.isArray(this.range) && this.range.filter((d) => d).length === 2) {
           return [...new Set(this.range.map(dateLongCompact))].join(
-            this.flatPickerConfig.locale.rangeSeparator
+            this.$refs.datePicker.fp.l10n.rangeSeparator
           );
         }
       }
@@ -112,7 +110,7 @@ export default {
         startDate: range[0],
         endDate: endOfDay(range[1]),
         label: [...new Set(range.map(dateLongCompact))].join(
-          this.flatPickerConfig.locale.rangeSeparator
+          this.$refs.datePicker.fp.l10n.rangeSeparator
         ),
       });
       this.hide();

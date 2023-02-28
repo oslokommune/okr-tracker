@@ -99,7 +99,7 @@ export default {
   data: () => ({
     progress: [],
     graph: null,
-    range: '',
+    range: [],
     startDate: null,
     endDate: null,
     filteredProgress: [],
@@ -142,7 +142,7 @@ export default {
     if (this.$route.query.startDate && this.$route.query.endDate) {
       this.startDate = this.$route.query.startDate;
       this.endDate = this.$route.query.endDate;
-      this.range = `${this.startDate} til ${this.endDate}`;
+      this.range = [this.startDate, this.endDate];
     }
   },
 
@@ -233,7 +233,7 @@ export default {
     },
 
     handleChange(range) {
-      if (!range) {
+      if (!range.length) {
         this.$router
           .push({
             name: 'KpiHome',
@@ -249,12 +249,11 @@ export default {
         this.filterProgress();
         return;
       }
-      const parts = range.split(' til ').map((d) => new Date(d));
-      if (parts.length === 1) {
+      if (range.length === 1) {
         return;
       }
       this.dirty = true;
-      const [startDate, endDate] = parts;
+      const [startDate, endDate] = range;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
       this.isFiltered = true;

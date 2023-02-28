@@ -5,6 +5,7 @@
         <label v-if="progress.length" class="form-field">
           <span class="form-label">{{ $t('period.dateRange') }}</span>
           <flat-pickr
+            ref="datePicker"
             v-model="widgetRange"
             :config="flatPickerConfig"
             class="form-control flatpickr-input"
@@ -23,7 +24,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import locale from 'flatpickr/dist/l10n/no';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
 
 export default {
@@ -35,7 +35,7 @@ export default {
 
   props: {
     range: {
-      type: String,
+      type: Array,
       required: true,
     },
     progress: {
@@ -51,7 +51,6 @@ export default {
       minDate: null,
       mode: 'range',
       maxDate: null,
-      locale: locale.no,
     },
     widgetRange: null,
   }),
@@ -64,12 +63,19 @@ export default {
     range: {
       immediate: true,
       handler() {
-        this.widgetRange = this.range;
+        this.widgetRange = this.range.length ? this.range : null;
       },
     },
     widgetRange: {
       handler() {
-        this.$emit('listen', this.widgetRange);
+        if (this.widgetRange) {
+          const range = this.widgetRange
+            .split(this.$refs.datePicker.fp.l10n.rangeSeparator)
+            .map((d) => new Date(d));
+          this.$emit('listen', range);
+        } else {
+          this.$emit('listen', []);
+        }
       },
     },
   },
