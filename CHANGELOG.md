@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file. The format 
   also prevents other data fields of the document, that might have been updated
   separately, from being overwritten with outdated data when saving the form
   (e.g. cached progress and goals).
+- When deleting a user, all references to the user are now also removed from
+  organization and department member lists, like it is for products.
 
 ### Changed
 

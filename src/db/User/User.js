@@ -38,7 +38,12 @@ export const remove = async (user) => {
 
   try {
     const docRef = collectionReference.doc(user.id);
-    return Promise.all([removeFromTeams(docRef), docRef.delete()]);
+    return Promise.all([
+      removeFromTeams(db.collection('organizations'), docRef),
+      removeFromTeams(db.collection('departments'), docRef),
+      removeFromTeams(db.collection('products'), docRef),
+      docRef.delete(),
+    ]);
   } catch (error) {
     throw new Error(`Could not delete user ${user.id}`);
   }
@@ -71,15 +76,12 @@ export const addUsers = async (userList) => {
   }
 };
 
-async function removeFromTeams(docRef) {
+async function removeFromTeams(collectionRef, docRef) {
   try {
-    const products = await db
-      .collection('products')
-      .where('team', 'array-contains', docRef)
-      .get();
+    const items = await collectionRef.where('team', 'array-contains', docRef).get();
 
     return Promise.all(
-      products.docs.map(({ ref }) =>
+      items.docs.map(({ ref }) =>
         ref.update({
           team: arrayRemove(docRef),
         })
