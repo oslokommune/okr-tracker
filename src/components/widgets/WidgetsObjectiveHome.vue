@@ -2,7 +2,7 @@
   <aside v-if="activeObjective" class="aside">
     <div class="widgets">
       <widget-wrapper :title="$t('widget.progression.objective')">
-        <progression-chart :progression="activeObjective.progression" :dimmed="dimmed" />
+        <progression-chart :progression="activeObjective.progression" />
       </widget-wrapper>
       <widget-weights
         type="keyResults"

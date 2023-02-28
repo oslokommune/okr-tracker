@@ -1,6 +1,6 @@
 <template>
   <widget :title="getTitle()">
-    <progression-chart :dimmed="dimmed" />
+    <progression-chart />
   </widget>
 </template>
 
@@ -18,11 +18,6 @@ export default {
       type: String,
       required: false,
       default: null,
-    },
-    dimmed: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
     type: {
       type: String,
