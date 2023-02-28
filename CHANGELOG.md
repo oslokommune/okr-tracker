@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- The date picker on the KPI details page no longer disappears when the selected
+  period doesn't contain any measurements.
+
 ### Changed
 
 - The period selector is moved to a more prominent position in the item tab bar.

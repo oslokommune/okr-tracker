@@ -437,7 +437,7 @@
   },
   "empty": {
     "noKeyResultProgress": "This key result has no registered values.",
-    "noKPIProgress": "This measurement has no registered values.",
+    "noKPIProgress": "This measurement has no registered values in the period.",
     "noKeyResults": {
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
@@ -505,8 +505,7 @@
       "showComments": "Show comments",
       "hideComments": "Hide comments",
       "empty": {
-        "heading": "No history",
-        "body": "No values registered for this item."
+        "heading": "No history"
       },
       "overwriteWarning": "Note: This change will overwrite existing value for chosen date ({date}): {value}."
     }

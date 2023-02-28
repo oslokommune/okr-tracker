@@ -27,9 +27,8 @@
       />
     </main>
 
-    <aside v-if="filteredProgress.length" class="aside widgets">
+    <aside class="aside widgets">
       <widget-kpi-filter
-        v-if="filteredProgress.length"
         :range="range"
         :progress="progress"
         @listen="handleChange"
@@ -46,7 +45,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { extent } from 'd3-array';
+import { extent, min } from 'd3-array';
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Kpi/Progress';
@@ -167,22 +166,27 @@ export default {
     },
 
     renderGraph() {
+      if (!this.graph) {
+        return;
+      }
+
       const [startValue, targetValue] = extent(
         this.filteredProgress.map(({ value }) => value)
       );
-      const [startDate, endDate] = extent(
-        this.filteredProgress.map(({ timestamp }) => timestamp)
-      );
 
-      if (!this.graph || startValue === undefined || targetValue === undefined) {
-        return;
+      let startDate = new Date();
+
+      if (this.startDate) {
+        startDate = this.startDate;
+      } else if (this.filteredProgress.length) {
+        startDate = min(this.filteredProgress.map((p) => p.timestamp)).toDate();
       }
 
       this.graph.render({
         startValue,
         targetValue,
-        startDate: startDate.toDate(),
-        endDate: this.isFiltered ? endDate.toDate() : new Date(),
+        startDate,
+        endDate: this.endDate || new Date(),
         progress: this.filteredProgress,
         kpi: this.activeKpi,
       });
