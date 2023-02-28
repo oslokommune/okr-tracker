@@ -14,11 +14,6 @@ export default {
       type: Number,
       required: true,
     },
-    dimmed: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
 
   data: () => ({
@@ -33,9 +28,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.svg = this.$refs.progressionChartSvg;
-      this.chart = new PieChart(this.svg, {
-        dimmed: this.dimmed,
-      });
+      this.chart = new PieChart(this.svg);
 
       this.renderProgressionChart();
     }, 150);

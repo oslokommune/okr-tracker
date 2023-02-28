@@ -14,7 +14,6 @@ export const colors = {
   innerDone: 'var(--color-blue-dark)',
   innerFull: 'var(--color-grayscale-30)',
   outer: 'var(--color-blue)',
-  dimmed: 'var(--color-grayscale-20)',
 };
 
 export const formatPercent = format('.0%');
@@ -115,9 +114,6 @@ function updateInnerArcs(el, data) {
     .attr('fill', (d, i) => {
       if (this.darkmode) {
         return colors.outer;
-      }
-      if (this.dimmed) {
-        return i === 0 ? colors.dimmed : colors.innerFull;
       }
       return i === 0 ? colors.innerDone : colors.innerFull;
     })
