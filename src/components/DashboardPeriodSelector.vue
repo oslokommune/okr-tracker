@@ -63,17 +63,10 @@ export default {
     ...mapState(['selectedPeriod']),
 
     label() {
-      if (!this.selectedPeriod) {
-        return this.$t('period.choosePeriod');
+      if (this.selectedPeriod) {
+        return this.selectedPeriod.label;
       }
-      if (!this.selectedPeriod.label) {
-        if (Array.isArray(this.range) && this.range.filter((d) => d).length === 2) {
-          return [...new Set(this.range.map(dateLongCompact))].join(
-            this.$refs.datePicker.fp.l10n.rangeSeparator
-          );
-        }
-      }
-      return this.selectedPeriod.label;
+      return this.$t('period.choosePeriod');
     },
   },
 
