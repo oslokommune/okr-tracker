@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import locale from 'flatpickr/dist/l10n/no';
 import { FormSection, BtnSave } from '@/components/generic/form';
 import ModalWrapper from './ModalWrapper.vue';
 
@@ -88,7 +87,6 @@ export default {
       enableTime: true,
       enableSeconds: true,
       minuteIncrement: 1,
-      locale: locale.no,
       maxDate: new Date(),
       minDate: null,
       mode: 'single',

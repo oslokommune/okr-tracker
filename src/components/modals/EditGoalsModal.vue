@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import locale from 'flatpickr/dist/l10n/no';
 import { endOfDay, endOfYear, startOfYear } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
@@ -106,7 +105,6 @@ export default {
       minDate: null,
       mode: 'range',
       maxDate: null,
-      locale: locale.no,
       static: true,
     },
     goals: [],

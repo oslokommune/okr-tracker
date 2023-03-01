@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file. The format 
   (e.g. cached progress and goals).
 - When deleting a user, all references to the user are now also removed from
   organization and department member lists, like it is for products.
+- Date pickers used throughout the app now respect the selected language and
+  are translated accordingly.
 
 ### Changed
 

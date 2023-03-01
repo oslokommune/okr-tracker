@@ -88,7 +88,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import locale from 'flatpickr/dist/l10n/no';
 import { endOfDay } from 'date-fns';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
@@ -112,7 +111,6 @@ export default {
       altFormat: 'j M Y H:i:S',
       altInput: false,
       enableTime: false,
-      locale: locale.no,
       maxDate: endOfDay(new Date()),
       minDate: null,
       mode: 'single',

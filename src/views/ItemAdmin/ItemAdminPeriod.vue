@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import locale from 'flatpickr/dist/l10n/no';
 import Period from '@/db/Period';
 import { toastArchiveAndRevert } from '@/util';
 import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
@@ -67,7 +66,6 @@ export default {
       minDate: null,
       mode: 'range',
       maxDate: null,
-      locale: locale.no,
     },
     range: null,
     loading: false,
