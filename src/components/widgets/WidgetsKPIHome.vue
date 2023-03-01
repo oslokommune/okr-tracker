@@ -10,7 +10,7 @@
             :config="flatPickerConfig"
             class="form-control flatpickr-input"
             name="date"
-            placeholder="Velg start- og sluttdato"
+            :placeholder="$t('general.selectRange')"
           ></flat-pickr>
         </label>
 
