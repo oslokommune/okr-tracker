@@ -11,12 +11,10 @@ export default function getPeriods() {
   const currentDate = new Date();
   const endDate = endOfDay(currentDate);
   const currentYear = currentDate.getFullYear();
-  const sixMonthsBack = new Date();
-  sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
-
   const currentQuarter = getQuarter(currentDate);
   const prevQuarterDate = subQuarters(currentDate, 1);
-  // console.log(nextQuarter);
+  const sixMonthsBack = new Date();
+  sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
     all: {

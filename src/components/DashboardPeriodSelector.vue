@@ -1,6 +1,7 @@
 <template>
   <div v-click-outside="hide" class="periodSelector">
     <button
+      v-tooltip.bottom="$t('period.choosePeriod')"
       class="pkt-btn pkt-btn--secondary pkt-btn--small pkt-btn--icon-left"
       :class="{ 'pkt-btn--focus': isOpen }"
       @click="toggle"
@@ -118,18 +119,18 @@ export default {
   display: inline-block;
 
   .pkt-btn {
-    height: 100%;
     align-items: center;
+    height: 100%;
+    font-weight: 500;
     background-color: var(--color-blue-light);
     border-color: var(--color-blue-light);
-    font-weight: 500;
 
     &--focus,
     &:active {
+      color: var(--color-white);
       text-decoration: none;
       background-color: var(--color-hover);
       border-color: var(--color-hover);
-      color: var(--color-white);
     }
   }
 }
