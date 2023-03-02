@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import SwaggerUi from 'swagger-ui';
-import 'swagger-ui/dist/swagger-ui.css';
+import { SwaggerUIBundle } from 'swagger-ui-dist';
+import 'swagger-ui-dist/swagger-ui.css';
 
 export default {
   name: 'Api',
 
   mounted() {
-    SwaggerUi({
+    SwaggerUIBundle({
       url: './openapi.yaml',
       dom_id: '#swagger-ui',
     });
