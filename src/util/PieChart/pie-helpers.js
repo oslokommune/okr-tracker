@@ -4,6 +4,7 @@ import { format } from 'd3-format';
 import { interpolate } from 'd3-interpolate';
 import { easeCircleOut } from 'd3-ease';
 import 'd3-transition';
+import i18n from '@/locale/i18n';
 
 const size = 250;
 const padding = 50;
@@ -68,12 +69,12 @@ function initPercentText(el) {
 function updateTodayTextPosition(el, targetAngle) {
   el.text(() => {
     if (targetAngle <= 0) {
-      return 'Ikke startet';
+      return i18n.t('widget.progression.notStarted');
     }
     if (targetAngle >= Math.PI * 2) {
-      return 'Fullført';
+      return i18n.t('widget.progression.done');
     }
-    return 'I dag';
+    return i18n.t('widget.progression.today');
   })
     .transition()
     .duration(duration)

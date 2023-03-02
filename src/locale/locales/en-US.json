@@ -484,7 +484,10 @@
   "widget": {
     "progression": {
       "period": "Progress for period",
-      "objective": "Progress for objective"
+      "objective": "Progress for objective",
+      "done": "Completed",
+      "today": "Today",
+      "notStarted": "Not started"
     },
     "history": {
       "title": "History",

@@ -482,7 +482,10 @@
   "widget": {
     "progression": {
       "period": "Progresjon for periode",
-      "objective": "Progresjon for mål"
+      "objective": "Progresjon for mål",
+      "done": "Fullført",
+      "today": "I dag",
+      "notStarted": "Ikke startet"
     },
     "history": {
       "title": "Historikk",
