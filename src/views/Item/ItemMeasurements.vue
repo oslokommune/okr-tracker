@@ -6,7 +6,6 @@
           <h2 class="title-1">
             {{ $t('general.resultIndicator') }}
           </h2>
-          <dashboard-period-selector />
         </header>
         <dashboard-result-indicators-section />
       </section>
@@ -46,7 +45,6 @@
 import { mapState, mapGetters } from 'vuex';
 
 import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
-import DashboardPeriodSelector from '@/components/DashboardPeriodSelector.vue';
 import KpiGrid from '@/components/KpiGrid.vue';
 import EmptyState from '@/components/EmptyState.vue';
 
@@ -54,7 +52,6 @@ export default {
   name: 'DashboardHome',
   components: {
     DashboardResultIndicatorsSection,
-    DashboardPeriodSelector,
     EmptyState,
     KpiGrid,
   },

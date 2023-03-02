@@ -1,22 +1,31 @@
 <template>
-  <nav v-if="activeItem" class="tabs" role="tablist">
-    <router-link
-      v-for="(tab, index) in tabs"
-      :key="index"
-      :to="tab.route"
-      class="btn btn--sec tabs__tab"
-      role="tab"
-    >
-      {{ tab.label }}
-    </router-link>
-  </nav>
+  <div class="sub-navigation">
+    <nav v-if="activeItem" class="tabs" role="tablist">
+      <router-link
+        v-for="(tab, index) in tabs"
+        :key="index"
+        :to="tab.route"
+        class="btn btn--sec tabs__tab"
+        role="tab"
+      >
+        {{ tab.label }}
+      </router-link>
+    </nav>
+
+    <dashboard-period-selector v-if="$route.name === 'ItemMeasurements'" />
+  </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import DashboardPeriodSelector from '@/components/DashboardPeriodSelector.vue';
 
 export default {
   name: 'ItemTabBar',
+
+  components: {
+    DashboardPeriodSelector,
+  },
 
   computed: {
     ...mapState(['activeItem', 'activeObjective', 'activeKeyResult', 'activeKpi']),
@@ -64,6 +73,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.sub-navigation {
+  display: flex;
+}
+
 .tabs {
   position: sticky;
   top: 4rem;
@@ -75,7 +88,7 @@ export default {
   background-color: var(--color-white);
 
   &__tab {
-    padding: 1rem;
+    padding: 1.25rem 1rem;
     color: var(--color-grayscale-40);
     border: unset;
 
