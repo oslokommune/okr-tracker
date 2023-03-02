@@ -19,10 +19,10 @@
             v-if="dataLoading"
             class="itemHome__header--content-loader"
           ></content-loader-action-bar>
-          <action-bar v-else-if="tree.length" />
+          <action-bar v-else-if="periodObjectives.length" />
           <content-loader-item v-if="dataLoading"></content-loader-item>
           <empty-state
-            v-else-if="!tree.length && !dataLoading"
+            v-else-if="!periodObjectives.length && !dataLoading"
             :icon="'exclamation'"
             :heading="$t('empty.noPeriods.heading')"
             :body="$t('empty.noPeriods.body')"
@@ -35,11 +35,11 @@
               {{ $t('empty.noPeriods.buttonText') }}
             </router-link>
           </empty-state>
-          <ul v-if="tree && !dataLoading">
+          <ul v-if="periodObjectives && !dataLoading">
             <li
-              v-for="objective in tree"
+              v-for="objective in periodObjectives"
               :key="objective.id"
-              class="itemHome__tree--item"
+              class="itemHome__objectives--item"
             >
               <objective-row :objective="objective"></objective-row>
               <ul v-if="objective.keyResults.length">
@@ -74,6 +74,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { isBefore, addDays, isWithinInterval } from 'date-fns';
+import objectiveInPeriod from '@/util/okr';
 import tabIdsHelper from '@/util/tabUtils';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
@@ -103,17 +104,18 @@ export default {
 
   data: () => ({
     activeTab: 0,
+    periodObjectives: [],
   }),
 
   computed: {
     ...mapState([
       'activeItem',
-      'objectives',
-      'keyResults',
-      'dataLoading',
-      'user',
-      'periods',
       'activePeriod',
+      'dataLoading',
+      'keyResults',
+      'objectives',
+      'periods',
+      'user',
     ]),
     ...mapGetters(['hasEditRights']),
 
@@ -121,21 +123,6 @@ export default {
       return this.user.preferences.view === 'compact';
     },
 
-    tree() {
-      return this.objectives.reduce(
-        (acc, objective) => [
-          ...acc,
-          {
-            ...objective,
-            id: objective.id,
-            keyResults: this.keyResults.filter(
-              (keyRes) => keyRes.objective === `objectives/${objective.id}`
-            ),
-          },
-        ],
-        []
-      );
-    },
     tabIds() {
       return tabIdsHelper('periods');
     },
@@ -177,6 +164,7 @@ export default {
       try {
         await this.setDataLoading(true);
         await this.set_active_period_and_data(activePeriodId);
+        await this.setPeriodObjectives();
       } catch (e) {
         console.log(e);
       } finally {
@@ -190,6 +178,18 @@ export default {
       const activePeriodId = this.filteredPeriods[tabIndex].id;
       await this.setPeriod(activePeriodId);
       this.setActiveTab(tabIndex);
+    },
+
+    async setPeriodObjectives() {
+      this.periodObjectives = this.objectives
+        .filter((o) => objectiveInPeriod(this.activePeriod, o))
+        .map((o) => ({
+          ...o,
+          id: o.id,
+          keyResults: this.keyResults.filter(
+            (kr) => kr.objective === `objectives/${o.id}`
+          ),
+        }));
     },
 
     getCurrentPeriodIndex() {
@@ -228,7 +228,7 @@ export default {
   }
 }
 
-.itemHome__tree--item {
+.itemHome__objectives--item {
   margin-bottom: 1rem;
   background: var(--color-white);
 
