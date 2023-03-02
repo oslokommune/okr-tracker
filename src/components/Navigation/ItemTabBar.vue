@@ -3,20 +3,11 @@
     <router-link
       v-for="(tab, index) in tabs"
       :key="index"
-      :to="{ name: tab.route }"
+      :to="tab.route"
       class="btn btn--sec tabs__tab"
       role="tab"
     >
       {{ tab.label }}
-    </router-link>
-
-    <router-link
-      v-if="hasEditRights"
-      :to="{ name: 'ItemAdmin', query: adminLinkQuery }"
-      class="btn btn--sec tabs__tab tabs__tab--right"
-      role="tab"
-    >
-      <pkt-icon name="cogwheel" /> {{ $t('general.admin') }}
     </router-link>
   </nav>
 </template>
@@ -34,16 +25,20 @@ export default {
     tabs() {
       return [
         {
-          route: 'ItemHome',
+          route: { name: 'ItemHome' },
           label: this.$t('general.OKRsLong'),
         },
         {
-          route: 'ItemMeasurements',
+          route: { name: 'ItemMeasurements' },
           label: this.$t('general.KPIs'),
         },
         {
-          route: 'ItemAbout',
+          route: { name: 'ItemAbout' },
           label: `${this.$t('about.about')} ${this.activeItem.name}`,
+        },
+        {
+          route: { name: 'ItemAdmin', query: this.adminLinkQuery },
+          label: this.$t('general.admin'),
         },
       ];
     },
