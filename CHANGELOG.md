@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.4.0] 2023-03-03
+
 ### Fixed
 
 - Fixed a bug where document references in a KPI document would be overwritten
