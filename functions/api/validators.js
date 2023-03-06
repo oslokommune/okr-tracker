@@ -26,3 +26,5 @@ const checkMeasurementValue = (field) =>
 
 export const progressValidator = checkMeasurementValue(body('progress'));
 export const valueValidator = checkMeasurementValue(body('value'));
+
+export const commentValidator = body('comment').trim().escape();
