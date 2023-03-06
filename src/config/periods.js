@@ -36,13 +36,15 @@ export default function getPeriods() {
       endDate,
     },
     quarter: {
-      label: `Q${currentQuarter} ${currentYear}`,
+      label: `${i18n.t('period.thisQuarter')} (Q${currentQuarter} ${currentYear})`,
       key: 'quarter',
       startDate: startOfQuarter(currentDate),
       endDate: endOfQuarter(currentDate),
     },
     prevquarter: {
-      label: `Q${getQuarter(prevQuarterDate)} ${prevQuarterDate.getFullYear()}`,
+      label: `${i18n.t('period.previousQuarter')} (Q${getQuarter(
+        prevQuarterDate
+      )} ${prevQuarterDate.getFullYear()})`,
       key: 'prevquarter',
       startDate: startOfQuarter(prevQuarterDate),
       endDate: endOfQuarter(prevQuarterDate),
