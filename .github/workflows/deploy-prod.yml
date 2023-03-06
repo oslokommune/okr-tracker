@@ -2,6 +2,8 @@ name: Deploy to PROD
 
 on:
   workflow_dispatch:
+    branches:
+      - master
     workflow_call:
       secrets:
         ENV_FILE_PROD:
