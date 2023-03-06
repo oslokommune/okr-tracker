@@ -18,6 +18,7 @@
       - [Possible problems](#possible-problems)
   - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
   - [Build and deploy](#build-and-deploy)
+    - [Using Github Actions](#using-github-actions) 
   - [Lint and fix](#lint-and-fix)
   - [Google Sheets integration](#google-sheets-integration)
   - [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
@@ -266,12 +267,18 @@ npm run deploy
 ```
 
 ### Using Github Actions
-To deploy the `master` branch for production, use the `Deploy to PROD` action, select the `master` branch and manually run the workflow. 
-The following Github secrets needs to be configured if ran on another repository: 
+To configure automatic deploy to Firebase Hosting on merge to `master` (triggered as part of the `pipeline-prod.yml` workflow), add the following secrets to your GitHub repository:
 
 * `ENV_FILE_PROD`: Contains a dumped copy of the production dotenv file.
 * `FIREBASE_PROJECT_ID_PROD`: The Firebase Project ID.
 * `FIREBASE_SERVICE_ACCOUNT_PROD`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+
+It is also possible to deploy the `develop` branch to a testing environment in Firebase Hosting, by manually trigger the workflow `Deploy to DEV`. For this workflow to work, add the following secrets to your GitHub repository:
+
+* `ENV_FILE_DEV`: Contains a dumped copy of the production dotenv file.
+* `FIREBASE_PROJECT_ID_DEV`: The Firebase Project ID.
+* `FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+
 
 ## Lint and fix
 
