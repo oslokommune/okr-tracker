@@ -275,7 +275,7 @@ To configure automatic deploy to Firebase Hosting on merge to `master` (triggere
 
 It is also possible to deploy the `develop` branch to a testing environment in Firebase Hosting, by manually trigger the workflow `Deploy to DEV`. For this workflow to work, add the following secrets to your GitHub repository:
 
-* `ENV_FILE_DEV`: Contains a dumped copy of the production dotenv file.
+* `ENV_FILE_DEV`: Contains a dumped copy of the development dotenv file.
 * `FIREBASE_PROJECT_ID_DEV`: The Firebase Project ID.
 * `FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
 
