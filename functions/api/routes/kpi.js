@@ -10,6 +10,7 @@ import {
   updateKPIProgressionValue,
 } from '../helpers.js';
 import {
+  commentValidator,
   dateValidator,
   idValidator,
   progressValidator,
@@ -25,6 +26,7 @@ router.post(
   teamSecretValidator,
   idValidator,
   progressValidator,
+  commentValidator,
   async (req, res) => {
     const result = validationResult(req);
 
@@ -36,7 +38,7 @@ router.post(
       return;
     }
 
-    const { 'okr-team-secret': teamSecret, id, progress } = matchedData(req);
+    const { 'okr-team-secret': teamSecret, id, progress, comment } = matchedData(req);
 
     const db = getFirestore();
 
@@ -69,9 +71,11 @@ router.post(
       }
 
       const date = new Date();
-      await updateKPIProgressionValue(ref, date, progress);
+      const formattedDate = format(date, 'yyyy-MM-dd');
+      const data = { value: progress, ...(comment ? { comment } : {}) };
+      await updateKPIProgressionValue(ref, date, data);
 
-      res.send(`Updated KPI (${id}) with progress: ${progress}`);
+      res.send(`Updated progression on ${formattedDate} with: ${JSON.stringify(data)}`);
     } catch (e) {
       console.error('ERROR: ', e.message);
       res.status(500).send(e.message);
@@ -188,6 +192,7 @@ router.put(
   idValidator,
   dateValidator,
   valueValidator,
+  commentValidator,
   async (req, res) => {
     const result = validationResult(req);
 
@@ -199,7 +204,7 @@ router.put(
       return;
     }
 
-    const { 'okr-team-secret': teamSecret, id, date, value } = matchedData(req);
+    const { 'okr-team-secret': teamSecret, id, date, value, comment } = matchedData(req);
     const formattedDate = format(date, 'yyyy-MM-dd');
 
     const db = getFirestore();
@@ -230,10 +235,11 @@ router.put(
         return;
       }
 
-      await updateKPIProgressionValue(ref, date, value);
+      const data = { value, ...(comment ? { comment } : {}) };
+      await updateKPIProgressionValue(ref, date, data);
 
       res.json({
-        message: `KPI progression value for ${formattedDate} updated to ${value}`,
+        message: `Updated progression on ${formattedDate} with: ${JSON.stringify(data)}`,
       });
     } catch (e) {
       console.error('ERROR: ', e.message);
