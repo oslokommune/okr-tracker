@@ -266,12 +266,12 @@ npm run deploy
 ```
 
 ### Using Github Actions
-To deploy the master branch for production, use the "Deploy to PROD" action, select the "master" branch and manually run the workflow. 
+To deploy the `master` branch for production, use the `Deploy to PROD` action, select the `master` branch and manually run the workflow. 
 The following Github secrets needs to be configured if ran on another repository: 
 
-* ENV_FILE_PROD: Contains a dumped copy of the production dotenv file.
-* FIREBASE_PROJECT_ID_PROD: The Firebase Project ID.
-* FIREBASE_SERVICE_ACCOUNT_PROD: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+* `ENV_FILE_PROD`: Contains a dumped copy of the production dotenv file.
+* `FIREBASE_PROJECT_ID_PROD`: The Firebase Project ID.
+* `FIREBASE_SERVICE_ACCOUNT_PROD`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
 
 ## Lint and fix
 
