@@ -435,7 +435,8 @@
   },
   "empty": {
     "noKeyResultProgress": "Dette nøkkelresultatet har ingen registrerte verdier.",
-    "noKPIProgress": "Denne målingen har ingen registrerte verdier i perioden.",
+    "noKPIProgress": "Denne målingen har ingen registrerte verdier.",
+    "noKPIProgressInPeriod": "Denne målingen har ingen registrerte verdier i perioden.",
     "noKeyResults": {
       "heading": "Ingen nøkkelresultater",
       "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",

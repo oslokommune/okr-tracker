@@ -21,18 +21,16 @@
         :is-loading="isLoading"
         :value-formatter="_formatKPIValue"
         :date-formatter="dateShort"
-        :no-values-message="$t('empty.noKPIProgress')"
+        :no-values-message="
+          isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
+        "
         @update-record="updateProgressRecord"
         @delete-record="deleteProgressRecord"
       />
     </main>
 
     <aside class="aside widgets">
-      <widget-kpi-filter
-        :range="range"
-        :progress="progress"
-        @listen="handleChange"
-      />
+      <widget-kpi-filter :range="range" :progress="progress" @listen="handleChange" />
     </aside>
 
     <progress-modal
@@ -83,7 +81,6 @@ export default {
     startDate: null,
     endDate: null,
     filteredProgress: [],
-    isFiltered: false,
     isLoading: false,
     showValueModal: false,
   }),
@@ -91,6 +88,10 @@ export default {
   computed: {
     ...mapState(['activeKpi']),
     ...mapGetters(['hasEditRights']),
+
+    isFiltered() {
+      return this.startDate && this.endDate;
+    },
   },
 
   watch: {
@@ -193,13 +194,13 @@ export default {
     },
 
     filterProgress() {
-      if (!this.startDate && !this.endDate) {
-        this.filteredProgress = this.progress;
-      } else {
+      if (this.isFiltered) {
         this.filteredProgress = this.progress.filter(
           (a) =>
             a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
         );
+      } else {
+        this.filteredProgress = this.progress;
       }
 
       // Filter out any duplicate measurement values for each date
@@ -241,7 +242,6 @@ export default {
       const [startDate, endDate] = range;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
-      this.isFiltered = true;
 
       this.$router
         .push({

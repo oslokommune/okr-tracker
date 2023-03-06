@@ -437,7 +437,8 @@
   },
   "empty": {
     "noKeyResultProgress": "This key result has no registered values.",
-    "noKPIProgress": "This measurement has no registered values in the period.",
+    "noKPIProgress": "This measurement has no registered values.",
+    "noKPIProgressInPeriod": "This measurement has no registered values in the period.",
     "noKeyResults": {
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
