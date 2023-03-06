@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { itemHome as routerGuard } from '@/router/router-guards';
+import { itemCommon as routerGuard } from '@/router/router-guards';
 
 export default {
   name: 'ItemWrapper',

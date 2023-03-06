@@ -78,7 +78,7 @@ const routes = [
       default: () => import('@/views/Item/ItemWrapper.vue'),
       SubNav: () => import('@/components/Navigation/ItemTabBar.vue'),
     },
-    beforeEnter: routerGuards.itemHome,
+    beforeEnter: routerGuards.itemCommon,
     children: [
       {
         path: '',
@@ -88,30 +88,32 @@ const routes = [
         path: 'okr',
         name: 'ItemHome',
         component: () => import('@/views/Item/ItemOKRs.vue'),
-        beforeEnter: routerGuards.itemHome,
       },
       {
         path: 'measurements',
         name: 'ItemMeasurements',
         component: () => import('@/views/Item/ItemMeasurements.vue'),
-        beforeEnter: routerGuards.dashboard,
+        beforeEnter: routerGuards.itemMeasurements,
+      },
+      /*
+       * Alias for `measurements` -- redirect from the old `dashboard` path
+       * still in case people have bookmarked it.
+       */
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        redirect: { name: 'ItemMeasurements' },
       },
       {
         path: 'about',
         name: 'ItemAbout',
         component: () => import('@/views/Item/ItemAbout.vue'),
-        beforeEnter: routerGuards.itemHome,
       },
       {
         path: 'admin',
         name: 'ItemAdmin',
         component: () => import('@/views/ItemAdmin/ItemAdminWrapper.vue'),
         beforeEnter: routerGuards.itemAdmin,
-      },
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        redirect: { name: 'ItemMeasurements' },
       },
       {
         path: 'k/:keyResultId',
@@ -125,7 +127,6 @@ const routes = [
         component: () => import('@/views/ObjectiveHome.vue'),
         beforeEnter: routerGuards.objectiveHome,
       },
-
       {
         path: 'kpi/:kpiId',
         name: 'KpiHome',
