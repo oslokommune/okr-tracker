@@ -430,6 +430,7 @@ handleSlackRequest - users requesting access - slack app posts to a channel that
 handleSlackInteractive - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
 For these cloud functions to work you need to add a webhook url from a slack app.
 
+
 ### Set up
 
 Firebase steps:
