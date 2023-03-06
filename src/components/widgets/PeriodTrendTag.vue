@@ -90,7 +90,7 @@ export default {
       const { startDate, endDate } = this.selectedPeriod;
       this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
 
-      if (!this.progressCollection?.length > 0) {
+      if (!this.progressCollection || this.progressCollection.length === 0) {
         const query = getKPIProgressQuery(startDate, endDate, this.kpi);
         await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
       }
