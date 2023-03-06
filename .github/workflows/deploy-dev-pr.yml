@@ -2,30 +2,37 @@
 # https://github.com/firebase/firebase-tools
 
 name: (Dev) Deploy to Firebase Hosting on PR
-'on': pull_request
 
-env:
-  VITE_API_KEY: ${{secrets.VITE_API_KEY_DEVELOP}}
-  VITE_DATABASE_URL: ${{secrets.VITE_DATABASE_URL_DEVELOP}}
-  VITE_PROJECT_ID: okr-tracker-test
-  VITE_AUTH_DOMAIN: okr-tracker-test.firebaseapp.com
-  VITE_STORAGE_BUCKET: okr-tracker-test.appspot.com
-  VITE_MESSAGING_SENDER_ID: ${{secrets.VITE_MESSAGING_SENDER_ID_DEVELOP}}
-  VITE_APP_ID: ${{secrets.VITE_APP_ID_DEVELOP}}
-  VITE_SHEETS_SERVICE_ACCOUNT: ${{secrets.VITE_SHEETS_SERVICE_ACCOUNT_DEVELOP}}
-  VITE_I18N_LOCALE: nb-NO
-  VITE_REGION: europe-west2
-  VITE_LOGIN_PROVIDERS: google-email
+on: 
+  pull_request:
+    secrets:
+          ENV_FILE_DEV:
+            required: true
+          FIREBASE_PROJECT_ID_DEV:
+            required: true
+          FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST:
+            required: true
+    branches:
+      - develop
 
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
+      
+      - name: Populate env file
+        run: |
+          echo "${{ secrets.ENV_FILE_DEV }}" > .env
+          if ! grep -q VITE_PROJECT_ID .env; then
+            echo "::error:: The .env file is likely not populated correctly"
+            exit 1
+          fi
+      
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST }}'
-          projectId: okr-tracker-test
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
