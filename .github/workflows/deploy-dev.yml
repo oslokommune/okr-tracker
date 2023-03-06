@@ -2,15 +2,13 @@ name: Deploy to DEV
 
 on:
   workflow_dispatch:
-    branches:
-      - develop
-      secrets:
-        ENV_FILE_DEV:
-          required: true
-        FIREBASE_PROJECT_ID_DEV:
-          required: true
-        FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST:
-          required: true
+    secrets:
+      ENV_FILE_DEV:
+        required: true
+      FIREBASE_PROJECT_ID_DEV:
+        required: true
+      FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST:
+        required: true
 
 jobs:
   deploy:
