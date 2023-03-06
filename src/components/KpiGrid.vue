@@ -18,7 +18,7 @@
         <div class="kpi-card__parent">{{ kpi.parent.name }}</div>
         <div class="kpi-card__name">{{ kpi.name }}</div>
         <div>
-          <period-trend-tag :kpi="kpi" />
+          <period-trend-tag :kpi="kpi" :display-graph="true" />
         </div>
       </div>
     </router-link>
