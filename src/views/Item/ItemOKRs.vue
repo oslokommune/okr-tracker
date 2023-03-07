@@ -58,7 +58,16 @@
       </section>
     </main>
 
-    <widgets-right class="aside" />
+    <aside v-if="activeItem" class="aside widgets">
+      <widget
+        v-if="activePeriod && activePeriod.progression"
+        :title="$t(`widget.progression.period`)"
+        size="small"
+      >
+        <progression-chart :progression="activePeriod.progression" />
+      </widget>
+      <widget-weights type="objective" :active-item="activePeriod" :items="objectives" />
+    </aside>
   </div>
 </template>
 
@@ -71,16 +80,21 @@ import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue'
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
 import TabList from '@/components/TabList.vue';
 import TabPanel from '@/components/TabPanel.vue';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
+import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
+import ProgressionChart from '@/components/ProgressionChart.vue';
 
 export default {
   name: 'ItemHome',
 
   components: {
     ActionBar: () => import('@/components/ActionBar.vue'),
-    WidgetsRight: () => import('@/components/widgets/WidgetsItemHomeRight.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    Widget: WidgetWrapper,
+    WidgetWeights,
+    ProgressionChart,
     ContentLoaderItem,
     ContentLoaderActionBar,
     TabPanel,
