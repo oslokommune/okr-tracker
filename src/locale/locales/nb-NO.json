@@ -344,7 +344,9 @@
     "dateRange": "Start- og sluttdato",
     "sixmonths": "Siste 6 mnd",
     "year": "Hittil i år",
-    "all": "Fra første måling"
+    "all": "Fra første måling",
+    "thisQuarter": "Dette kvartalet",
+    "previousQuarter": "Forrige kvartal"
   },
   "tooltip": {
     "openMenu": "Åpne meny",

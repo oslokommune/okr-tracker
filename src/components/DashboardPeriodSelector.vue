@@ -1,7 +1,8 @@
 <template>
   <div v-click-outside="hide" class="periodSelector">
     <button
-      class="pkt-btn pkt-btn--flat pkt-btn--small pkt-btn--icon-right"
+      v-tooltip.bottom="$t('period.choosePeriod')"
+      class="pkt-btn pkt-btn--secondary pkt-btn--small pkt-btn--icon-left"
       :class="{ 'pkt-btn--focus': isOpen }"
       @click="toggle"
     >
@@ -117,11 +118,20 @@ export default {
   position: relative;
   display: inline-block;
 
-  .pkt-btn--focus {
-    // Somewhat alter the focus state to more clearly indicate
-    // that the button is in focused state while dropdown is open.
-    text-decoration: none;
-    border-color: var(--btn-focus-txt);
+  .pkt-btn {
+    align-items: center;
+    height: 100%;
+    font-weight: 500;
+    background-color: var(--color-blue-light);
+    border-color: var(--color-blue-light);
+
+    &--focus,
+    &:active {
+      color: var(--color-white);
+      text-decoration: none;
+      background-color: var(--color-hover);
+      border-color: var(--color-hover);
+    }
   }
 }
 

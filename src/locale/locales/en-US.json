@@ -346,7 +346,9 @@
     "dateRange": "Start and end dates",
     "sixmonths": "Past 6 months",
     "year": "So far this year",
-    "all": "From first measurement"
+    "all": "From first measurement",
+    "thisQuarter": "This quarter",
+    "previousQuarter": "Previous quarter"
   },
   "tooltip": {
     "openMenu": "Open menu",

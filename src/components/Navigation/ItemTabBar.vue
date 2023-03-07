@@ -1,31 +1,31 @@
 <template>
-  <nav v-if="activeItem" class="tabs" role="tablist">
-    <router-link
-      v-for="(tab, index) in tabs"
-      :key="index"
-      :to="{ name: tab.route }"
-      class="btn btn--sec tabs__tab"
-      role="tab"
-    >
-      {{ tab.label }}
-    </router-link>
+  <div class="sub-navigation">
+    <nav v-if="activeItem" class="tabs" role="tablist">
+      <router-link
+        v-for="(tab, index) in tabs"
+        :key="index"
+        :to="tab.route"
+        class="btn btn--sec tabs__tab"
+        role="tab"
+      >
+        {{ tab.label }}
+      </router-link>
+    </nav>
 
-    <router-link
-      v-if="hasEditRights"
-      :to="{ name: 'ItemAdmin', query: adminLinkQuery }"
-      class="btn btn--sec tabs__tab tabs__tab--right"
-      role="tab"
-    >
-      <pkt-icon name="cogwheel" /> {{ $t('general.admin') }}
-    </router-link>
-  </nav>
+    <dashboard-period-selector v-if="$route.name === 'ItemMeasurements'" />
+  </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import DashboardPeriodSelector from '@/components/DashboardPeriodSelector.vue';
 
 export default {
   name: 'ItemTabBar',
+
+  components: {
+    DashboardPeriodSelector,
+  },
 
   computed: {
     ...mapState(['activeItem', 'activeObjective', 'activeKeyResult', 'activeKpi']),
@@ -34,16 +34,20 @@ export default {
     tabs() {
       return [
         {
-          route: 'ItemHome',
+          route: { name: 'ItemHome' },
           label: this.$t('general.OKRsLong'),
         },
         {
-          route: 'ItemMeasurements',
+          route: { name: 'ItemMeasurements' },
           label: this.$t('general.KPIs'),
         },
         {
-          route: 'ItemAbout',
+          route: { name: 'ItemAbout' },
           label: `${this.$t('about.about')} ${this.activeItem.name}`,
+        },
+        {
+          route: { name: 'ItemAdmin', query: this.adminLinkQuery },
+          label: this.$t('general.admin'),
         },
       ];
     },
@@ -69,10 +73,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tabs {
+.sub-navigation {
   position: sticky;
   top: 4rem;
   z-index: 20;
+  display: flex;
+}
+
+.tabs {
   display: flex;
   flex-grow: 1;
   box-sizing: border-box;
@@ -80,7 +88,7 @@ export default {
   background-color: var(--color-white);
 
   &__tab {
-    padding: 1rem;
+    padding: 1.25rem 1rem;
     color: var(--color-grayscale-40);
     border: unset;
 

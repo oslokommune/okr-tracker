@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- The period selector is moved to a more prominent position in the item tab bar.
+  It also includes two more pre-defined periods: current and previous quarter.
+
 ## [3.4.0] 2023-03-03
 
 ### Fixed
