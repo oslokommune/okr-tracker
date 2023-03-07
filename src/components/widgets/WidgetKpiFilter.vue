@@ -1,33 +1,28 @@
 <template>
-  <div class="aside">
-    <div class="widgets">
-      <widget :title="$t('keyResultPage.filter')">
-        <label v-if="progress.length" class="form-field">
-          <span class="form-label">{{ $t('period.dateRange') }}</span>
-          <flat-pickr
-            ref="datePicker"
-            v-model="widgetRange"
-            :config="flatPickerConfig"
-            class="form-control flatpickr-input"
-            name="date"
-            :placeholder="$t('general.selectRange')"
-          ></flat-pickr>
-        </label>
+  <widget :title="$t('keyResultPage.filter')" size="small">
+    <label v-if="progress.length" class="form-field">
+      <span class="form-label">{{ $t('period.dateRange') }}</span>
+      <flat-pickr
+        ref="datePicker"
+        v-model="widgetRange"
+        :config="flatPickerConfig"
+        class="form-control flatpickr-input"
+        name="date"
+        :placeholder="$t('general.selectRange')"
+      ></flat-pickr>
+    </label>
 
-        <button class="btn btn--sec" :disabled="!widgetRange" @click="widgetRange = null">
-          {{ $t('btn.reset') }}
-        </button>
-      </widget>
-    </div>
-  </div>
+    <button class="btn btn--sec" :disabled="!widgetRange" @click="widgetRange = null">
+      {{ $t('btn.reset') }}
+    </button>
+  </widget>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Widget from '@/components/widgets/WidgetWrapper.vue';
 
 export default {
-  name: 'WidgetsKPIHome',
+  name: 'WidgetKpiFilter',
 
   components: {
     Widget,
@@ -55,10 +50,6 @@ export default {
     widgetRange: null,
   }),
 
-  computed: {
-    ...mapGetters(['hasEditRights']),
-  },
-
   watch: {
     range: {
       immediate: true,
@@ -81,9 +72,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.widgets__kpi {
-  padding: 0.5rem;
-}
-</style>

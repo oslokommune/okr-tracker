@@ -1,68 +1,45 @@
 <template>
   <div v-if="activeKpi" class="container">
     <main class="main">
-      <section>
+      <header>
         <h2 class="title-1">{{ activeKpi.name }}</h2>
+        <p v-if="activeKpi.description">{{ activeKpi.description }}</p>
+      </header>
 
-        <p>{{ activeKpi.description }}</p>
+      <widget-kpi-current-value
+        v-if="activeKpi.valid"
+        :progress="filteredProgress"
+        @show-value-modal="showValueModal = true"
+      />
 
-        <div class="main-widgets">
-          <div v-if="activeKpi.valid" class="main-widgets__current">
-            <div>
-              <h3 class="title-3">
-                {{ $t('kpi.currentValue') }}
-              </h3>
-              <div class="main-widgets__current--value">
-                {{
-                  filteredProgress.length
-                    ? formatKPIValue(activeKpi, filteredProgress[0].value)
-                    : formatKPIValue(activeKpi)
-                }}
-              </div>
-            </div>
-            <div v-if="hasEditRights">
-              <button
-                class="btn btn--ter btn--icon btn--fw"
-                @click="showValueModal = true"
-              >
-                <i class="icon fa fa-plus" />
-                <span>{{ $t('kpi.newValue') }}</span>
-              </button>
-            </div>
-          </div>
+      <widget :title="$t('kpi.progress')">
+        <svg ref="graph" class="graph"></svg>
+      </widget>
 
-          <div class="main-widgets__graph">
-            <h2 class="title-2">
-              {{ $t('kpi.progress') }}
-            </h2>
-
-            <svg ref="graph" class="graph"></svg>
-          </div>
-        </div>
-
-        <widget-progress-history
-          :progress="filteredProgress"
-          :is-loading="isLoading"
-          :value-formatter="_formatKPIValue"
-          :date-formatter="dateShort"
-          :no-values-message="$t('empty.noKPIProgress')"
-          @update-record="updateProgressRecord"
-          @delete-record="deleteProgressRecord"
-        />
-      </section>
-
-      <progress-modal
-        v-if="showValueModal"
-        @create-record="createProgressRecord"
-        @close="showValueModal = false"
+      <widget-progress-history
+        :progress="filteredProgress"
+        :is-loading="isLoading"
+        :value-formatter="_formatKPIValue"
+        :date-formatter="dateShort"
+        :no-values-message="$t('empty.noKPIProgress')"
+        @update-record="updateProgressRecord"
+        @delete-record="deleteProgressRecord"
       />
     </main>
 
-    <widgets-k-p-i-home
-      v-if="filteredProgress.length"
-      :range="range"
-      :progress="progress"
-      @listen="handleChange"
+    <aside v-if="filteredProgress.length" class="aside widgets">
+      <widget-kpi-filter
+        v-if="filteredProgress.length"
+        :range="range"
+        :progress="progress"
+        @listen="handleChange"
+      />
+    </aside>
+
+    <progress-modal
+      v-if="showValueModal"
+      @create-record="createProgressRecord"
+      @close="showValueModal = false"
     />
   </div>
 </template>
@@ -76,6 +53,8 @@ import Progress from '@/db/Kpi/Progress';
 import LineChart from '@/util/LineChart';
 import { dateShort, formatISOShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
+import WidgetKpiCurrentValue from '@/components/widgets/WidgetKpiCurrentValue.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
@@ -83,7 +62,9 @@ export default {
 
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
-    WidgetsKPIHome: () => import('@/components/widgets/WidgetsKPIHome.vue'),
+    WidgetKpiFilter: () => import('@/components/widgets/WidgetKpiFilter.vue'),
+    Widget: WidgetWrapper,
+    WidgetKpiCurrentValue,
     WidgetProgressHistory,
   },
 
@@ -277,42 +258,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.main-widgets {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1.5rem;
-}
-
-.main-widgets__current {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  width: span(12);
-  padding: 1rem;
-  background: var(--color-secondary);
-  box-shadow: 0 2px 3px rgba(black, 0.1);
-
-  @media screen and (min-width: bp(s)) {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-.main-widgets__current--value {
-  color: var(--color-primary);
-  font-weight: 700;
-  font-size: 50px;
-  word-wrap: break-word;
-}
-
-.main-widgets__graph {
-  width: span(12);
-
-  margin-top: 0.5rem;
-  padding: 1rem;
-  background: white;
-}
-</style>
