@@ -1,52 +1,41 @@
 <template>
   <div class="container">
     <aside class="aside aside--left">
-      <section class="widget">
-        <header class="widget__header">
-          <span class="widget__title">{{ appOwner }}</span>
-          <button
-            v-tooltip="isOpen ? $t('btn.minimize') : $t('btn.expand')"
-            class="widget__toggle fas fa-fw"
-            :class="isOpen ? 'fa-minus' : 'fa-plus'"
-            @click="toggleCollapse"
-          />
-        </header>
-        <div v-if="isOpen" class="widget__body">
-          <ul>
-            <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
-              <div class="ods-form-group">
-                <input
-                  :id="org.id"
-                  type="checkbox"
-                  class="ods-form-radio"
-                  :checked="getCollapse('organization', org.slug)"
-                  @click="toggle('organization', org.slug)"
-                />
-                <label class="ods-form-label" :for="org.id">
-                  {{ org.name }}
-                  <span v-if="org.children.length"> ({{ org.children.length }}) </span>
-                </label>
-              </div>
-              <ul v-if="getCollapse('organization', org.slug)">
-                <li v-for="dept in org.children" :key="`${dept.id}-check`">
-                  <div class="ods-form-group indent">
-                    <input
-                      :id="dept.id"
-                      type="checkbox"
-                      class="ods-form-radio"
-                      :checked="getCollapse('department', dept.slug)"
-                      @click="toggle('department', dept.slug)"
-                    />
-                    <label class="ods-form-label" :for="dept.id">
-                      {{ dept.name }}
-                    </label>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <widget :title="appOwner" :collapsable="true" size="small">
+        <ul>
+          <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
+            <div class="ods-form-group">
+              <input
+                :id="org.id"
+                type="checkbox"
+                class="ods-form-radio"
+                :checked="getCollapse('organization', org.slug)"
+                @click="toggle('organization', org.slug)"
+              />
+              <label class="ods-form-label" :for="org.id">
+                {{ org.name }}
+                <span v-if="org.children.length"> ({{ org.children.length }}) </span>
+              </label>
+            </div>
+            <ul v-if="getCollapse('organization', org.slug)">
+              <li v-for="dept in org.children" :key="`${dept.id}-check`">
+                <div class="ods-form-group indent">
+                  <input
+                    :id="dept.id"
+                    type="checkbox"
+                    class="ods-form-radio"
+                    :checked="getCollapse('department', dept.slug)"
+                    @click="toggle('department', dept.slug)"
+                  />
+                  <label class="ods-form-label" :for="dept.id">
+                    {{ dept.name }}
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </widget>
     </aside>
 
     <ul v-if="user" class="main">
@@ -76,17 +65,15 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 
 export default {
   name: 'Home',
 
   components: {
     ItemRow: () => import('@/components/ItemRow.vue'),
+    Widget: WidgetWrapper,
   },
-
-  data: () => ({
-    isOpen: true,
-  }),
 
   computed: {
     ...mapGetters(['tree', 'hasCheckedOrganizations']),
@@ -128,13 +115,10 @@ export default {
       }
       this.update_preferences();
     },
-
-    toggleCollapse() {
-      this.isOpen = !this.isOpen;
-    },
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .tree {
   margin-bottom: 0.5rem;
@@ -159,18 +143,5 @@ export default {
 
 .empty-state {
   padding: 1.5rem;
-}
-
-.widget__toggle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: auto;
-  margin-left: auto;
-  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 </style>

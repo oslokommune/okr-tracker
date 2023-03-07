@@ -1,25 +1,6 @@
 @use 'griddle/mixins' as *;
 @use 'griddle/functions' as *;
 
-.widget {
-  align-self: start;
-  width: 100%;
-  margin-bottom: 0.5rem;
-  color: var(--color-text);
-  background: var(--color-white);
-}
-
-.widget__header {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  padding: 1rem;
-}
-
-.widget__title {
-  font-weight: 500;
-}
-
 .details {
   display: flex;
   flex-direction: column;
@@ -53,20 +34,13 @@
 
 .widgets {
   display: grid;
-  grid-gap: span(0, 1);
+  grid-auto-rows: min-content;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  width: span(12);
+  gap: 1rem;
   margin-bottom: 1rem;
-}
 
-.widget__history {
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.5rem;
-  padding: 1.5rem 1.75rem;
-  background: var(--color-white);
-}
-
-.widget__body {
-  padding: 0 1rem 1rem;
+  .widget {
+    align-self: flex-start;
+    margin-bottom: 0;
+  }
 }

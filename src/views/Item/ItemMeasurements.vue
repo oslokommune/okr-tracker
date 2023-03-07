@@ -91,9 +91,16 @@ export default {
 
 .result-indicators {
   header {
+    display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    gap: 0.75rem;
+    align-items: center;
     justify-content: space-between;
+    margin-bottom: 1rem;
+
+    .title-1 {
+      margin-bottom: 0rem;
+    }
   }
 }
 </style>
