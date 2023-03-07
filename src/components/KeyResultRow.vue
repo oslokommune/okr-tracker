@@ -18,7 +18,7 @@
       }"
       @click="openModal"
     >
-      <widget-key-result-progress-details
+      <key-result-progress-details
         v-if="isDetailedView"
         :progress-details="progressDetails"
         :unit="keyRow.unit"
@@ -56,8 +56,7 @@ export default {
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     KeyResultModal: () => import('@/components/modals/KeyResultModal.vue'),
-    WidgetKeyResultProgressDetails: () =>
-      import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
+    KeyResultProgressDetails: () => import('@/components/KeyResultProgressDetails.vue'),
   },
 
   props: {
@@ -164,7 +163,7 @@ export default {
       background-color: var(--color-hover);
 
       .keyResult__progressionSummary,
-      .widgetKeyResultProgressDetails {
+      .keyResultProgressDetails {
         color: inherit;
       }
     }

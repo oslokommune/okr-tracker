@@ -1,5 +1,5 @@
 <template>
-  <widget :title="$t('keyResultsPage.notes.heading')">
+  <widget :title="$t('keyResultsPage.notes.heading')" size="small">
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <label>

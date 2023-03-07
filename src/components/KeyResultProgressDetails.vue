@@ -1,6 +1,6 @@
 <template>
-  <div class="widgetKeyResultProgressDetails">
-    <div class="widgetKeyResultProgressDetails__infoMessage">
+  <div class="keyResultProgressDetails">
+    <div class="keyResultProgressDetails__infoMessage">
       <strong>{{ progressDetails.percentageCompleted }}%</strong>
       {{ $t('progress.done') }}
     </div>
@@ -8,7 +8,7 @@
       <div v-if="progressDetails.isCompleted">
         {{ randomCompletedMessage() }}
       </div>
-      <div v-else class="widgetKeyResultProgressDetails__infoMessage">
+      <div v-else class="keyResultProgressDetails__infoMessage">
         <strong>
           {{ progressDetails.formattedTotalRemainingTasks }}
         </strong>
@@ -24,7 +24,7 @@ import vueI18n from '@/locale/i18n';
 import { getRandomInt } from '@/util';
 
 export default {
-  name: 'WidgetKeyResultProgressDetails',
+  name: 'KeyResultProgressDetails',
   props: {
     progressDetails: {
       type: Object,
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.widgetKeyResultProgressDetails {
+.keyResultProgressDetails {
   color: var(--color-text);
 
   &__infoMessage {

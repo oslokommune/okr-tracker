@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeKeyResult" :title="$t('general.details')">
+  <widget v-if="activeKeyResult" :title="$t('general.details')" size="small">
     <div class="details">
       <div v-if="activeKeyResult.objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
