@@ -18,6 +18,7 @@
       - [Possible problems](#possible-problems)
   - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
   - [Build and deploy](#build-and-deploy)
+    - [Using Github Actions](#using-github-actions) 
   - [Lint and fix](#lint-and-fix)
   - [Google Sheets integration](#google-sheets-integration)
   - [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
@@ -265,6 +266,20 @@ Build and deploy to production:
 npm run deploy
 ```
 
+### Using Github Actions
+To configure automatic deploy to Firebase Hosting on merge to `master` (triggered as part of the `pipeline-prod.yml` workflow), add the following secrets to your GitHub repository:
+
+* `ENV_FILE_PROD`: Contains a dumped copy of the production dotenv file.
+* `FIREBASE_PROJECT_ID_PROD`: The Firebase Project ID.
+* `FIREBASE_SERVICE_ACCOUNT_PROD`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+
+It is also possible to deploy the `develop` branch to a testing environment in Firebase Hosting, by manually trigger the workflow `Deploy to DEV`. For this workflow to work, add the following secrets to your GitHub repository:
+
+* `ENV_FILE_DEV`: Contains a dumped copy of the development dotenv file.
+* `FIREBASE_PROJECT_ID_DEV`: The Firebase Project ID.
+* `FIREBASE_SERVICE_ACCOUNT_OKR_TRACKER_TEST`: Exported JSON key for a GitHub Actions specific service account created for deploying to Firebase Hosting.
+
+
 ## Lint and fix
 
 Run linter
@@ -408,6 +423,13 @@ Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/fireba
 ## Slack Integration
 
 ***NB! Slack is currently not supported for this version of the OKR-tracker, but it is possible to implement it from the upstream repository.***
+
+There are two cloud functions that integrate with slack
+
+handleSlackRequest - users requesting access - slack app posts to a channel that someone wants access
+handleSlackInteractive - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
+For these cloud functions to work you need to add a webhook url from a slack app.
+
 
 ### Set up
 
