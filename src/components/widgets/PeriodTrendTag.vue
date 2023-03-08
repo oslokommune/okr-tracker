@@ -86,7 +86,6 @@ export default {
               const date = new Date(d[0]);
               return (!startDate || date >= startDate) && (!endDate || date <= endDate);
             })
-            .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1))
             .map((m) => {
               return {
                 timestamp: {
@@ -95,7 +94,8 @@ export default {
                 value: m[1],
                 comment: m[2],
               };
-            });
+            })
+            .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
         } else {
           let query = db.collection(`kpis/${this.kpi.id}/progress`);
 
