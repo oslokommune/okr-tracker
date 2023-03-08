@@ -71,16 +71,14 @@ paths:
           required: true
           description: Progression value
           schema:
-            type: number
+            type: object
+            properties:
+              progress:
+                type: number
+              comment:
+                type: string
             example:
               progress: 123
-        - name: comment
-          in: body
-          required: false
-          description: Progression comment
-          schema:
-            type: string
-            example:
               comment: A fine measurement
         - name: okr-team-secret
           in: header
@@ -145,16 +143,14 @@ paths:
           required: true
           description: Progression value
           schema:
-            type: number
+            type: object
+            properties:
+              progress:
+                type: number
+              comment:
+                type: string
             example:
-              value: 123
-        - name: comment
-          in: body
-          required: false
-          description: Progression comment
-          schema:
-            type: string
-            example:
+              progress: 123
               comment: A fine measurement
       responses:
         200:
@@ -224,16 +220,14 @@ paths:
           required: true
           description: Progression value
           schema:
-            type: number
+            type: object
+            properties:
+              progress:
+                type: number
+              comment:
+                type: string
             example:
               progress: 123
-        - name: comment
-          in: body
-          required: false
-          description: Progression comment
-          schema:
-            type: string
-            example:
               comment: A fine measurement
         - name: okr-team-secret
           in: header
