@@ -1,27 +1,38 @@
 <template>
   <div>
-    <span v-if="progressCollection.length > 0" class="trendTag__value">
-      {{ formatKPIValue(kpi, latestProgressRecord.value) }}
-      <span v-if="kpi" :class="bgColor" class="trendTag__trend">
-        {{ periodTrendFormatted }}
+    <div v-if="progressCollection.length > 0">
+      <span class="trendTag__value">
+        {{ formatKPIValue(kpi, latestProgressRecord.value) }}
+        <span v-if="kpi" :class="bgColor" class="trendTag__trend">
+          {{ periodTrendFormatted }}
+        </span>
       </span>
-    </span>
+      <mini-graph v-if="displayGraph" :kpi-data="progressCollection" />
+    </div>
     <span v-else class="trendTag__noData">{{ $t('kpi.noData') }}</span>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { formatKPIValue } from '@/util/kpiHelpers';
-import { db } from '@/config/firebaseConfig';
+import { formatKPIValue, getKPIProgress, getKPIProgressQuery } from '@/util/kpiHelpers';
 
 export default {
   name: 'PeriodTrendTag',
+
+  components: {
+    MiniGraph: () => import('@/util/LineChart/MiniGraph.vue'),
+  },
 
   props: {
     kpi: {
       type: Object,
       required: true,
+    },
+    displayGraph: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 
@@ -74,43 +85,14 @@ export default {
 
   methods: {
     formatKPIValue,
+
     async setProgress() {
       const { startDate, endDate } = this.selectedPeriod;
+      this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
 
-      if (this.kpi) {
-        if (this.kpi.progress) {
-          const data = JSON.parse(this.kpi.progress);
-
-          this.progressCollection = data
-            .filter((d) => {
-              const date = new Date(d[0]);
-              return (!startDate || date >= startDate) && (!endDate || date <= endDate);
-            })
-            .map((m) => {
-              return {
-                timestamp: {
-                  toDate: () => new Date(m[0]),
-                },
-                value: m[1],
-                comment: m[2],
-              };
-            })
-            .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
-        } else {
-          let query = db.collection(`kpis/${this.kpi.id}/progress`);
-
-          if (startDate) {
-            query = query.where('timestamp', '>=', startDate);
-          }
-
-          if (endDate) {
-            query = query.where('timestamp', '<=', endDate);
-          }
-
-          await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
-        }
-      } else {
-        this.progressCollection = [];
+      if (!this.progressCollection || this.progressCollection.length === 0) {
+        const query = getKPIProgressQuery(startDate, endDate, this.kpi);
+        await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
       }
     },
   },

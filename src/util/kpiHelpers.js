@@ -1,5 +1,6 @@
 import i18n from '@/locale/i18n';
 import { numberLocale } from '@/util';
+import { db } from '@/config/firebaseConfig';
 
 /**
  * Return a list of available KPI data display formats.
@@ -135,4 +136,44 @@ export function kpiInterval(formatId) {
     return [0, 1];
   }
   return [null, null];
+}
+
+export function getKPIProgress(startDate, endDate, kpi) {
+  if (!kpi?.progress) {
+    return null;
+  }
+
+  const data = JSON.parse(kpi.progress);
+
+  const coll = data
+    .filter((d) => {
+      const date = new Date(d[0]);
+      return (!startDate || date >= startDate) && (!endDate || date <= endDate);
+    })
+    .map((m) => {
+      return {
+        timestamp: {
+          toDate: () => new Date(m[0]),
+        },
+        value: m[1],
+        comment: m[2],
+      };
+    })
+    .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
+
+  return coll;
+}
+
+export function getKPIProgressQuery(startDate, endDate, kpi) {
+  let query = db.collection(`kpis/${kpi.id}/progress`);
+
+  if (startDate) {
+    query = query.where('timestamp', '>=', startDate);
+  }
+
+  if (endDate) {
+    query = query.where('timestamp', '<=', endDate);
+  }
+
+  return query;
 }

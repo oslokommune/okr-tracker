@@ -24,6 +24,7 @@
     "noChange": "no change",
     "ofTarget": "of the goal of",
     "noData": "No data in chosen period",
+    "noGraph": "Not enough data to display graph",
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"
