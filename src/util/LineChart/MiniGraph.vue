@@ -10,7 +10,7 @@
       viewBox="0 0 800 200"
       preserveAspectRatio="xMidYMid meet"
     >
-      <g class="lineChart" :transform="translate">
+      <g class="lineChart">
         <path class="area" :d="area" />
         <path class="line" :d="line" />
       </g>
@@ -19,7 +19,10 @@
 </template>
 
 <script>
-import * as d3 from 'd3';
+import { scaleTime, scaleLinear } from 'd3-scale';
+import { area, line, curveLinear } from 'd3-shape';
+import { axisBottom, axisLeft } from 'd3-axis';
+import { extent, max } from 'd3-array';
 
 export default {
   name: 'MiniGraph',
@@ -37,12 +40,9 @@ export default {
       chartDefaults: {
         width: 800,
         height: 200,
-        chartId: 'mini-line-chart',
-        gridOpacity: 1,
       },
       line: '',
       area: '',
-      translate: `translate(${0},${0})`,
     };
   },
 
@@ -71,32 +71,29 @@ export default {
       this.calculatePath();
     },
     getScales() {
-      const x = d3
-        .scaleTime()
+      const x = scaleTime()
         .domain(
-          d3.extent(this.data, function (d) {
+          extent(this.data, function (d) {
             return d.date;
           })
         )
         .rangeRound([0, this.chartDefaults.width]);
-      const y = d3
-        .scaleLinear()
+      const y = scaleLinear()
         .domain([
           0,
-          d3.max(this.data, function (d) {
+          max(this.data, function (d) {
             return d.count < 1 ? 1 : d.count;
           }),
         ])
         .range([this.chartDefaults.height, 0]);
-      d3.axisBottom().scale(x);
-      d3.axisLeft().scale(y);
+      axisBottom().scale(x);
+      axisLeft().scale(y);
 
       return { x, y };
     },
     calculatePath() {
       const scale = this.getScales();
-      const area = d3
-        .area()
+      const generateArea = area()
         .x((d) => {
           return scale.x(d.date);
         })
@@ -105,18 +102,17 @@ export default {
           return scale.y(d.count);
         });
 
-      const path = d3
-        .line()
+      const generateLine = line()
         .x((d) => {
           return scale.x(d.date);
         })
         .y((d) => {
           return scale.y(d.count);
         })
-        .curve(d3.curveLinear);
+        .curve(curveLinear);
 
-      this.area = area(this.data);
-      this.line = path(this.data);
+      this.area = generateArea(this.data);
+      this.line = generateLine(this.data);
     },
   },
 };
