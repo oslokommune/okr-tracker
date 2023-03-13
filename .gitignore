@@ -33,3 +33,6 @@ mock/
 
 .npmrc
 setfirebase.json
+
+# Terraform
+terraform/.terraform
