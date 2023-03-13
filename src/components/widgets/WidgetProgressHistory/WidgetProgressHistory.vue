@@ -7,7 +7,7 @@
         v-else-if="!progress.length || progress.length === 0"
         :icon="'history'"
         :heading="$t('widget.history.empty.heading')"
-        :body="noValuesMessage || $t('widget.history.empty.body')"
+        :body="noValuesMessage"
       />
 
       <table v-else class="table">
@@ -155,8 +155,7 @@ export default {
     },
     noValuesMessage: {
       type: String,
-      required: false,
-      default: null,
+      required: true,
     },
   },
 

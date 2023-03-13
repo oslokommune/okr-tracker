@@ -21,19 +21,16 @@
         :is-loading="isLoading"
         :value-formatter="_formatKPIValue"
         :date-formatter="dateShort"
-        :no-values-message="$t('empty.noKPIProgress')"
+        :no-values-message="
+          isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
+        "
         @update-record="updateProgressRecord"
         @delete-record="deleteProgressRecord"
       />
     </main>
 
-    <aside v-if="filteredProgress.length" class="aside widgets">
-      <widget-kpi-filter
-        v-if="filteredProgress.length"
-        :range="range"
-        :progress="progress"
-        @listen="handleChange"
-      />
+    <aside class="aside widgets">
+      <widget-kpi-filter :range="range" :progress="progress" @listen="handleChange" />
     </aside>
 
     <progress-modal
@@ -46,7 +43,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { extent } from 'd3-array';
+import { extent, min } from 'd3-array';
 import { endOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Kpi/Progress';
@@ -84,7 +81,6 @@ export default {
     startDate: null,
     endDate: null,
     filteredProgress: [],
-    isFiltered: false,
     isLoading: false,
     showValueModal: false,
   }),
@@ -92,6 +88,10 @@ export default {
   computed: {
     ...mapState(['activeKpi']),
     ...mapGetters(['hasEditRights']),
+
+    isFiltered() {
+      return this.startDate && this.endDate;
+    },
   },
 
   watch: {
@@ -167,35 +167,40 @@ export default {
     },
 
     renderGraph() {
+      if (!this.graph) {
+        return;
+      }
+
       const [startValue, targetValue] = extent(
         this.filteredProgress.map(({ value }) => value)
       );
-      const [startDate, endDate] = extent(
-        this.filteredProgress.map(({ timestamp }) => timestamp)
-      );
 
-      if (!this.graph || startValue === undefined || targetValue === undefined) {
-        return;
+      let startDate = new Date();
+
+      if (this.startDate) {
+        startDate = this.startDate;
+      } else if (this.filteredProgress.length) {
+        startDate = min(this.filteredProgress.map((p) => p.timestamp)).toDate();
       }
 
       this.graph.render({
         startValue,
         targetValue,
-        startDate: startDate.toDate(),
-        endDate: this.isFiltered ? endDate.toDate() : new Date(),
+        startDate,
+        endDate: this.endDate || new Date(),
         progress: this.filteredProgress,
         kpi: this.activeKpi,
       });
     },
 
     filterProgress() {
-      if (!this.startDate && !this.endDate) {
-        this.filteredProgress = this.progress;
-      } else {
+      if (this.isFiltered) {
         this.filteredProgress = this.progress.filter(
           (a) =>
             a.timestamp.toDate() > this.startDate && a.timestamp.toDate() < this.endDate
         );
+      } else {
+        this.filteredProgress = this.progress;
       }
 
       // Filter out any duplicate measurement values for each date
@@ -237,7 +242,6 @@ export default {
       const [startDate, endDate] = range;
       this.startDate = startDate;
       this.endDate = endOfDay(endDate);
-      this.isFiltered = true;
 
       this.$router
         .push({

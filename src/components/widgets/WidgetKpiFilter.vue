@@ -1,6 +1,6 @@
 <template>
   <widget :title="$t('keyResultPage.filter')" size="small">
-    <label v-if="progress.length" class="form-field">
+    <label class="form-field">
       <span class="form-label">{{ $t('period.dateRange') }}</span>
       <flat-pickr
         ref="datePicker"
@@ -9,6 +9,7 @@
         class="form-control flatpickr-input"
         name="date"
         :placeholder="$t('general.selectRange')"
+        :disabled="!progress.length"
       ></flat-pickr>
     </label>
 
@@ -72,3 +73,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep .flatpickr-input[disabled] {
+  cursor: not-allowed;
+}
+</style>
