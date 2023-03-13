@@ -1,5 +1,5 @@
 <template>
-  <widget :title="$t('weight.heading')">
+  <widget :title="$t('weight.heading')" size="small">
     <div class="scales">
       <router-link
         v-for="{ id, weight, name } in weights"

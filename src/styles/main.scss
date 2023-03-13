@@ -112,7 +112,7 @@ body.using-mouse :focus {
     margin-left: span(2, 1);
   }
 
-  header {
+  > header {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;

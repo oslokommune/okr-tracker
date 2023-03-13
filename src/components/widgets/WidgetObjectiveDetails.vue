@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeObjective" :title="$t('general.details')">
+  <widget v-if="activeObjective" :title="$t('general.details')" size="small">
     <div class="details">
       <div
         v-if="activeObjective.period && activeObjective.period.startDate"

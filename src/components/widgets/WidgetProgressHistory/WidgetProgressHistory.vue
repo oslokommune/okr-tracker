@@ -1,7 +1,5 @@
 <template>
-  <section class="widget__history">
-    <h2 class="title-2">{{ $t('widget.history.title') }}</h2>
-
+  <widget :title="$t('widget.history.title')">
     <div class="main__table">
       <v-spinner v-if="isLoading" />
 
@@ -88,14 +86,16 @@
         </tbody>
       </table>
     </div>
-    <button
-      v-if="progress.length > 10 && historyLimit !== null"
-      class="btn btn--sec"
-      style="align-self: center"
-      @click="historyLimit = null"
-    >
-      {{ $t('btn.showMore') }}
-    </button>
+
+    <template #footer>
+      <button
+        v-if="progress.length > 10 && historyLimit !== null"
+        class="btn btn--sec"
+        @click="historyLimit = null"
+      >
+        {{ $t('btn.showMore') }}
+      </button>
+    </template>
 
     <component
       :is="valueModal"
@@ -110,7 +110,7 @@
       :id="chosenProfileId"
       @close="closeProfileModal"
     />
-  </section>
+  </widget>
 </template>
 
 <script>
@@ -118,6 +118,7 @@ import { mapGetters } from 'vuex';
 import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
 import { Btn, BtnDelete } from '@/components/generic/form/buttons';
+import WidgetWrapper from '../WidgetWrapper.vue';
 import UserLink from './UserLink.vue';
 
 export default {
@@ -127,6 +128,7 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
     ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
+    Widget: WidgetWrapper,
     UserLink,
     Btn,
     BtnDelete,
@@ -246,5 +248,9 @@ export default {
 
 td {
   overflow-wrap: break-word;
+}
+
+::v-deep .widget__footer {
+  text-align: center;
 }
 </style>

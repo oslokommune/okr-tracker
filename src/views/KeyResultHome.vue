@@ -9,51 +9,53 @@
         </p>
       </header>
 
-      <section class="key-result-summary">
-        <div class="key-result-summary__progress">
-          <h3 class="title-2">
-            {{ $t('keyResult.registerProgression.value') }} ({{ activeKeyResult.unit }})
-          </h3>
+      <div class="key-result-summary widgets">
+        <widget
+          class="key-result-summary__progress"
+          :title="`${$t('keyResult.registerProgression.value')} (${
+            activeKeyResult.unit
+          })`"
+        >
+          <div class="key-result-summary__progress-inner">
+            <div class="key-result-progression">
+              <span class="key-result-progression__current">
+                {{ progressDetails.formattedTotalCompletedTasks }}
+              </span>
+              <span class="key-result-progression__target">
+                {{
+                  $t('progress.remainingOf', {
+                    progress: progressDetails.formattedTotalNumberOfTasks,
+                  })
+                }}
+              </span>
+            </div>
 
-          <div class="key-result-progression">
-            <span class="key-result-progression__current">
-              {{ progressDetails.formattedTotalCompletedTasks }}
-            </span>
-            <span class="key-result-progression__target">
-              {{
-                $t('progress.remainingOf', {
-                  progress: progressDetails.formattedTotalNumberOfTasks,
-                })
-              }}
-            </span>
+            <div class="key-result-progress-bar">
+              <key-result-progress-details
+                :progress-details="progressDetails"
+                :unit="activeKeyResult.unit"
+              />
+              <progress-bar
+                :progression="progressDetails.percentageCompleted"
+                :is-compact="false"
+              />
+            </div>
           </div>
+        </widget>
 
-          <div class="key-result-progress-bar">
-            <widget-key-result-progress-details
-              :progress-details="progressDetails"
-              :unit="activeKeyResult.unit"
-            />
-            <progress-bar
-              :progression="progressDetails.percentageCompleted"
-              :is-compact="false"
-            />
-          </div>
-        </div>
-
-        <div v-if="allowedToEditPeriod" class="key-result-summary__value">
+        <widget v-if="allowedToEditPeriod" class="key-result-summary__value">
           <key-result-value-form
             :key-result="activeKeyResult"
             :loading="isSaving"
             :comment-rows="2"
             @save="saveProgress"
           />
-        </div>
-      </section>
+        </widget>
+      </div>
 
-      <section class="key-result-graph">
-        <h3 class="title-2">{{ $t('objective.progression') }}</h3>
+      <widget class="key-result-graph" :title="$t('objective.progression')">
         <svg ref="graph" class="graph"></svg>
-      </section>
+      </widget>
 
       <pkt-alert v-if="activeKeyResult.auto" skin="info">
         <template #content>{{ $t('keyResult.autoHelpText') }}</template>
@@ -74,7 +76,10 @@
       />
     </main>
 
-    <widgets-right />
+    <aside v-if="activeItem" class="aside widgets">
+      <widget-key-result-notes />
+      <widget-key-result-details />
+    </aside>
   </div>
 </template>
 
@@ -87,6 +92,10 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import routerGuard from '@/router/router-guards/keyResultHome';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
+import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
+import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
+import KeyResultProgressDetails from '@/components/KeyResultProgressDetails.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
 
@@ -94,12 +103,13 @@ export default {
   name: 'KeyResultHome',
 
   components: {
-    WidgetsRight: () => import('@/components/widgets/WidgetsKeyResultHome.vue'),
-    WidgetKeyResultProgressDetails: () =>
-      import('@/components/widgets/WidgetKeyResultProgressDetails.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    KeyResultProgressDetails,
     KeyResultValueForm,
+    Widget: WidgetWrapper,
+    WidgetKeyResultDetails,
+    WidgetKeyResultNotes,
     WidgetProgressHistory,
   },
 
@@ -246,33 +256,23 @@ export default {
 }
 
 .key-result-summary {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  grid-template-columns: 1fr;
 
   @media screen and (min-width: bp(s)) {
-    flex-direction: row;
+    grid-template-columns: 1fr 20rem;
   }
 
   &__progress {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.5rem 1.75rem;
-    background: var(--color-white);
+    height: 100%;
 
-    @each $bp, $grow in (s: 1, m: 2, xl: 3) {
-      @media screen and (min-width: bp(#{$bp})) {
-        flex: #{$grow};
-      }
+    &-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
   }
 
   &__value {
-    flex: 1;
-    padding: 1.5rem 1.75rem;
-    background: var(--color-white);
-
     ::v-deep form {
       span:first-child .form-group {
         margin-top: 0;
@@ -313,10 +313,5 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.key-result-graph {
-  padding: 1.5rem 1.75rem;
-  background-color: var(--color-white);
 }
 </style>

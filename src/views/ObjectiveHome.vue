@@ -37,20 +37,41 @@
       </section>
     </main>
 
-    <widgets-right />
+    <aside v-if="activeObjective" class="aside widgets">
+      <widget
+        v-if="activeObjective.progression"
+        :title="$t('widget.progression.objective')"
+        size="small"
+      >
+        <progression-chart :progression="activeObjective.progression" />
+      </widget>
+      <widget-weights
+        type="keyResult"
+        :active-item="activeObjective"
+        :items="keyResults"
+      />
+      <widget-objective-details />
+    </aside>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
+import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
+import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
+import ProgressionChart from '@/components/ProgressionChart.vue';
 
 export default {
   name: 'ObjectiveHome',
 
   components: {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
-    WidgetsRight: () => import('@/components/widgets/WidgetsObjectiveHome.vue'),
+    Widget: WidgetWrapper,
+    WidgetWeights,
+    WidgetObjectiveDetails,
+    ProgressionChart,
     EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
