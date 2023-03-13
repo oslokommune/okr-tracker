@@ -145,7 +145,7 @@ paths:
           schema:
             type: object
             properties:
-              progress:
+              value:
                 type: number
               comment:
                 type: string
