@@ -77,6 +77,10 @@ export default {
   },
 
   watch: {
+    kpi: {
+      immediate: true,
+      handler: 'setProgress',
+    },
     selectedPeriod: {
       immediate: true,
       handler: 'setProgress',
