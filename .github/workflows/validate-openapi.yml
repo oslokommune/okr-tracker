@@ -1,0 +1,26 @@
+name: "OpenAPI validation"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - public/openapi.yaml
+  pull_request:
+    branches: [main]
+    paths:
+      - public/openapi.yaml
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: OpenAPI definition validation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+
+      - name: Validate OpenAPI definition
+        uses: char0n/swagger-editor-validate@65266f9d3147e446b96af879fd317ce6079529ea # v1.3.2
+        with:
+          definition-file: public/openapi.yaml
