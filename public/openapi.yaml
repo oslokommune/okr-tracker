@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   title: OKR Tracker API
   description: API for updating KPIs and key results.
-  version: 1.1.0
+  version: 1.4.0
   contact:
     name: Dataspeilet
     url: https://okr.oslo.systems
@@ -23,6 +23,19 @@ security:
   - api_key: []
 
 paths:
+  /kpi:
+    get:
+      summary: Get KPIs.
+      operationId: getKPIs
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Kpi'
+        500:
+          $ref: '#/responses/Unavailable'
   /kpi/{id}:
     get:
       summary: Get KPI.
@@ -56,11 +69,17 @@ paths:
         - name: progress
           in: body
           required: true
-          description: updated progress
+          description: Progression value
           schema:
-            type: number
+            type: object
+            properties:
+              progress:
+                type: number
+              comment:
+                type: string
             example:
               progress: 123
+              comment: A fine measurement
         - name: okr-team-secret
           in: header
           description: Identify yourself with the secret you chose in your Team's settings
@@ -124,9 +143,15 @@ paths:
           required: true
           description: Progression value
           schema:
-            type: number
+            type: object
+            properties:
+              value:
+                type: number
+              comment:
+                type: string
             example:
-              value: 123
+              progress: 123
+              comment: A fine measurement
       responses:
         200:
           description: A successful response
@@ -193,11 +218,17 @@ paths:
         - name: progress
           in: body
           required: true
-          description: updated progress
+          description: Progression value
           schema:
-            type: number
+            type: object
+            properties:
+              progress:
+                type: number
+              comment:
+                type: string
             example:
               progress: 123
+              comment: A fine measurement
         - name: okr-team-secret
           in: header
           description: Identify yourself with the secret you chose in your Team's settings
@@ -212,6 +243,17 @@ paths:
           $ref: '#/responses/BadRequest'
         404:
           $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+  /status:
+    get:
+      summary: Get OKR Tracker metrics.
+      operationId: getStatus
+      responses:
+        200:
+          description: A successful response
+          schema:
+            $ref: '#/definitions/TrackerMetrics'
         500:
           $ref: '#/responses/Unavailable'
 
@@ -278,6 +320,12 @@ definitions:
           timestamp:
             type: string
             format: date-time
+      updateFrequency:
+        type: string
+        enum: [daily, weekly, monthly, quarterly, annual, irregular]
+      isStale:
+        type: boolean
+        example: false
   KpiMeasurement:
     type: object
     properties:
@@ -298,6 +346,20 @@ definitions:
         format: date-time
       editedBy:
         type: string
+  TrackerMetrics:
+    properties:
+      kpis:
+        type: object
+        properties:
+          total:
+            type: integer
+          state:
+            type: object
+            properties:
+              stale:
+                type: integer
+              unknown:
+                type: integer
 
 responses:
   NotFound:

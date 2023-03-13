@@ -44,9 +44,9 @@ export async function isArchived(itemRef) {
  *
  * `kpiRef` is the reference to the parent KPI to update.
  * `date` specifies which date the measurement is made.
- * `value` is the progression value to set.
+ * `data` is the progression data to set.
  */
-export async function updateKPIProgressionValue(kpiRef, date, value) {
+export async function updateKPIProgressionValue(kpiRef, date, data) {
   date = startOfDay(date);
 
   const progressCollectionRef = kpiRef.collection('progress');
@@ -59,19 +59,18 @@ export async function updateKPIProgressionValue(kpiRef, date, value) {
 
   // TODO: Also populate `createdBy`/`editedBy` when using the API. This
   // might be possible by checking the `X-Apigateway-Api-Userinfo` header.
-  let data = {
-    value,
+  data = {
+    ...data,
     timestamp: setHours(date, 12),
     created: new Date(),
     createdBy: null,
   };
 
   if (!valuesSnapshot.empty) {
-    const { comment, created, createdBy } = valuesSnapshot.docs[0].data();
+    const { created, createdBy } = valuesSnapshot.docs[0].data();
 
     data = {
       ...data,
-      comment: comment || null,
       created: created || null,
       createdBy: createdBy || null,
       edited: new Date(),

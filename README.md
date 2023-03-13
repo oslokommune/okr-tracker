@@ -240,7 +240,7 @@ Firebase now exports storage emulator as well, even if you don't use it. These n
 
 It is possible to set up open API end points for users outside of the OKR-tracker frontend to update progress of Key Results and KPI's. To do so, you only need to deploy all the functions as usual, and then give the users the Cloud Function URL, but we do not recommend to call the Cloud Function directly. The better approach would be to set up a Google Cloud API Gateway and then reroute all the calls to the right Cloud Function.
 
-We have set up an Open API specification which you can check out [here](./public/openapi/v1.3.0.yaml).
+We have set up an OpenAPI specification which you can check out [here](./public/openapi.yaml).
 
 You can read more about on how to set up an API Gateway [here](https://cloud.google.com/api-gateway/docs/quickstart).
 
