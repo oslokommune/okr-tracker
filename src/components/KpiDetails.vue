@@ -1,17 +1,26 @@
 <template>
-  <main class="main--alt">
-    <header>
-      <h2 class="title-1">{{ kpi.name }}</h2>
-      <p v-if="kpi.description">{{ kpi.description }}</p>
+  <main class="main--alt kpi-details">
+    <header class="kpi-details__header">
+      <div>
+        <h2 class="title-1">{{ kpi.name }}</h2>
+        <p v-if="kpi.description">{{ kpi.description }}</p>
+      </div>
+      <div v-if="hasEditRights">
+        <button class="btn btn--ter btn--icon btn--fw" @click="showValueModal = true">
+          <i class="icon fa fa-plus" />
+          <span>{{ $t('kpi.newValue') }}</span>
+        </button>
+      </div>
     </header>
 
-    <widget-kpi-current-value
-      v-if="kpi.valid"
-      :latest-progress-record="latestProgressRecord"
-      @show-value-modal="showValueModal = true"
-    />
-
     <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
+
+    <widget-kpi-progress-stats
+      :kpi="kpi"
+      :progress="progress"
+      :goals="goals"
+      :latest-progress-record="latestProgressRecord"
+    />
 
     <widget-progress-history
       :progress="progress"
@@ -26,7 +35,7 @@
     />
 
     <progress-modal
-      v-if="showValueModal"
+      v-if="hasEditRights && showValueModal"
       @create-record="createProgressRecord"
       @close="showValueModal = false"
     />
@@ -34,11 +43,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
 import kpiProgress from '@/mixins/kpiProgress';
-import WidgetKpiCurrentValue from '@/components/widgets/WidgetKpiCurrentValue.vue';
 import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
+import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
@@ -46,8 +56,8 @@ export default {
 
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
-    WidgetKpiCurrentValue,
     WidgetKpiProgressGraph,
+    WidgetKpiProgressStats,
     WidgetProgressHistory,
   },
 
@@ -63,6 +73,10 @@ export default {
   data: () => ({
     showValueModal: false,
   }),
+
+  computed: {
+    ...mapGetters(['hasEditRights']),
+  },
 
   watch: {
     kpi: {
@@ -118,3 +132,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.kpi-details__header {
+  align-items: center;
+
+  .title-1 {
+    margin-bottom: 0.75rem;
+  }
+
+  @media screen and (min-width: bp(s)) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+</style>
