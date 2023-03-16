@@ -1,44 +1,38 @@
 <template>
-  <div v-if="activeKpi" class="container">
-    <main class="main">
-      <header>
-        <h2 class="title-1">{{ activeKpi.name }}</h2>
-        <p v-if="activeKpi.description">{{ activeKpi.description }}</p>
-      </header>
+  <main class="main--alt">
+    <header>
+      <h2 class="title-1">{{ activeKpi.name }}</h2>
+      <p v-if="activeKpi.description">{{ activeKpi.description }}</p>
+    </header>
 
-      <widget-kpi-current-value
-        v-if="activeKpi.valid"
-        :progress="filteredProgress"
-        @show-value-modal="showValueModal = true"
-      />
+    <widget-kpi-current-value
+      v-if="activeKpi.valid"
+      :progress="filteredProgress"
+      @show-value-modal="showValueModal = true"
+    />
 
-      <widget :title="$t('kpi.progress')">
-        <svg ref="graph" class="graph"></svg>
-      </widget>
+    <widget :title="$t('kpi.progress')">
+      <svg ref="graph" class="graph"></svg>
+    </widget>
 
-      <widget-progress-history
-        :progress="filteredProgress"
-        :is-loading="isLoading"
-        :value-formatter="_formatKPIValue"
-        :date-formatter="dateShort"
-        :no-values-message="
-          isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
-        "
-        @update-record="updateProgressRecord"
-        @delete-record="deleteProgressRecord"
-      />
-    </main>
-
-    <aside class="aside widgets">
-      <widget-kpi-filter :range="range" :progress="progress" @listen="handleChange" />
-    </aside>
+    <widget-progress-history
+      :progress="filteredProgress"
+      :is-loading="isLoading"
+      :value-formatter="_formatKPIValue"
+      :date-formatter="dateShort"
+      :no-values-message="
+        isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
+      "
+      @update-record="updateProgressRecord"
+      @delete-record="deleteProgressRecord"
+    />
 
     <progress-modal
       v-if="showValueModal"
       @create-record="createProgressRecord"
       @close="showValueModal = false"
     />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -55,23 +49,20 @@ import WidgetKpiCurrentValue from '@/components/widgets/WidgetKpiCurrentValue.vu
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
-  name: 'KpiHome',
+  name: 'KpiDetails',
 
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
-    WidgetKpiFilter: () => import('@/components/widgets/WidgetKpiFilter.vue'),
     Widget: WidgetWrapper,
     WidgetKpiCurrentValue,
     WidgetProgressHistory,
   },
 
-  async beforeRouteLeave(to, from, next) {
-    try {
-      await this.$store.dispatch('set_active_kpi', null);
-      next();
-    } catch (error) {
-      next(false);
-    }
+  props: {
+    kpi: {
+      type: Object,
+      required: true,
+    },
   },
 
   data: () => ({

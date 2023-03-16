@@ -4,11 +4,11 @@
     <router-link
       v-for="kpi in kpis"
       :key="kpi.id"
-      v-tooltip="kpi.description ? kpi.description : kpi.name"
+      v-tooltip="kpi.description ? kpi.description : null"
       :to="{
-        name: 'KpiHome',
+        name: 'ItemMeasurements',
         params: {
-          slug: kpi.parent.slug,
+          ...$route.params,
           kpiId: kpi.id,
         },
       }"
