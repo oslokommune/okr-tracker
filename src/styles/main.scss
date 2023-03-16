@@ -112,7 +112,9 @@ body.using-mouse :focus {
     margin-right: span(0, 1);
     margin-left: span(2, 1);
   }
+}
 
+.main, .main--alt {
   > header {
     display: flex;
     flex-direction: column;
@@ -181,6 +183,45 @@ body.using-mouse :focus {
   @media screen and (min-width: bp(m)) {
     width: span(4);
     margin-left: span(4, 1);
+  }
+}
+
+/*
+  Temporary alternative container variant; a "hack" which breaks the regular
+  grid in order to accomodate proposed new design for the measurements view.
+*/
+.container--alt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 95rem;
+  margin: 0 auto;
+
+  @each $bp, $padding in (s: 1, m: 2, l: 3.5) {
+    @media screen and (min-width: bp(#{$bp})) {
+      padding: #{$padding}rem 1rem;
+    }
+  }
+
+  @each $bp, $width in (s: 100%, m: 97%, l: 95%, xl: 90%) {
+    @media screen and (min-width: bp(#{$bp})) {
+      width: #{$width};
+    }
+  }
+
+  @media screen and (min-width: bp(l)) {
+    flex-direction: row;
+
+    .aside--alt {
+      width: 25rem;
+    }
+    .main--alt {
+      width: 100%;
+    }
+  }
+
+  .aside--alt.widgets {
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
   }
 }
 

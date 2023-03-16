@@ -1,5 +1,6 @@
 <template>
-  <div class="kpi-grid">
+  <div class="kpi-widget-group">
+    <h3 class="kpi-widget-group__title">{{ title }}</h3>
     <router-link
       v-for="kpi in kpis"
       :key="kpi.id"
@@ -11,8 +12,7 @@
           kpiId: kpi.id,
         },
       }"
-      class="kpi-link"
-      :class="{ 'kpi-link--isDisabled': kpi.error }"
+      class="kpi-widget-group__link"
     >
       <div class="kpi-card">
         <div class="kpi-card__parent">{{ kpi.parent.name }}</div>
@@ -37,6 +37,10 @@ export default {
   },
 
   props: {
+    title: {
+      type: String,
+      required: true,
+    },
     kpis: {
       type: Array,
       required: true,
@@ -56,18 +60,20 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.kpi-grid {
-  display: grid;
-  grid-auto-rows: 1fr;
-  grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-}
+.kpi-widget-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 
-.kpi-link {
-  text-decoration: none;
+  &__title {
+    color: var(--color-grayscale-40);
+    font-weight: 500;
+    font-size: typography.$font-size-1;
+  }
 
-  &--isDisabled {
-    opacity: 0.25;
+  &__link {
+    text-decoration: none;
   }
 }
 
