@@ -11,7 +11,7 @@
     </button>
     <div v-if="isOpen" class="periodSelector__content">
       <button
-        v-for="rangeOption in options"
+        v-for="rangeOption in periods"
         :key="rangeOption.value"
         class="periodSelector__option"
         :class="{
@@ -23,6 +23,7 @@
         {{ rangeOption.label }}
       </button>
       <flat-pickr
+        v-if="showDatePicker"
         ref="datePicker"
         v-model="range"
         :config="flatPickerConfig"
@@ -39,13 +40,25 @@ import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import endOfDay from 'date-fns/endOfDay';
 import { dateLongCompact } from '@/util';
-import getPeriods from '@/config/periods';
 
 export default {
   name: 'PeriodSelector',
 
   directives: {
     ClickOutside,
+  },
+
+  props: {
+    periods: {
+      type: Array,
+      required: false,
+      default: () => [],
+    },
+    showDatePicker: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
   },
 
   data: () => ({
@@ -57,7 +70,6 @@ export default {
       maxDate: null,
     },
     range: null,
-    options: Object.values(getPeriods()),
   }),
 
   computed: {
