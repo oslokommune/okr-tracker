@@ -22,19 +22,19 @@
       </router-link>
     </nav>
 
-    <dashboard-period-selector v-if="$route.name === 'ItemMeasurements'" />
+    <period-selector v-if="$route.name === 'ItemMeasurements'" />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import DashboardPeriodSelector from '@/components/DashboardPeriodSelector.vue';
+import PeriodSelector from '@/components/PeriodSelector.vue';
 
 export default {
   name: 'ItemTabBar',
 
   components: {
-    DashboardPeriodSelector,
+    PeriodSelector,
   },
 
   computed: {

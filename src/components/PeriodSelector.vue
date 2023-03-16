@@ -42,7 +42,7 @@ import { dateLongCompact } from '@/util';
 import getPeriods from '@/config/periods';
 
 export default {
-  name: 'DashboardPeriodSelector',
+  name: 'PeriodSelector',
 
   directives: {
     ClickOutside,
