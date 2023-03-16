@@ -182,9 +182,10 @@ export default {
       );
     },
     limitedProgress() {
-      return this.historyLimit
-        ? this.progress.slice(0, this.historyLimit)
-        : this.progress;
+      const progress = [...this.progress].sort((a, b) =>
+        a.timestamp.toDate() > b.timestamp.toDate() ? -1 : 1
+      );
+      return this.historyLimit ? progress.slice(0, this.historyLimit) : progress;
     },
   },
 

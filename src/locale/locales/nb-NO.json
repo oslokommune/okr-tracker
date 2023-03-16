@@ -23,7 +23,8 @@
     "inPeriod": "i perioden",
     "noChange": "ingen endring",
     "ofTarget": "av mål om",
-    "noData": "Ingen data i valgt periode",
+    "noData": "Ingen registrerte verdier",
+    "noDataFiltered": "Ingen data i valgt periode",
     "noGraph": "Ikke nok data til å vise graf",
     "formats": {
       "integer": "Heltall",

@@ -27,9 +27,10 @@ export default {
   },
 
   props: {
-    progress: {
-      type: Array,
-      required: true,
+    latestProgressRecord: {
+      type: Object,
+      required: false,
+      default: null,
     },
   },
 
@@ -38,8 +39,8 @@ export default {
     ...mapGetters(['hasEditRights']),
 
     kpiValue() {
-      return this.progress.length
-        ? formatKPIValue(this.activeKpi, this.progress[0].value)
+      return this.latestProgressRecord
+        ? formatKPIValue(this.activeKpi, this.latestProgressRecord.value)
         : formatKPIValue(this.activeKpi);
     },
   },

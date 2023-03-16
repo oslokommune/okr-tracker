@@ -6,6 +6,7 @@ export default {
   data: () => ({
     progressCollection: [],
     goals: [],
+    isProgressLoading: false,
   }),
 
   computed: {
@@ -31,6 +32,10 @@ export default {
       });
     },
 
+    progressIsFiltered() {
+      return this.selectedPeriod?.key !== 'all';
+    },
+
     latestProgressRecord() {
       if (this.progress.length) {
         return this.progress.slice(-1)[0];
@@ -43,6 +48,8 @@ export default {
     formatKPIValue,
 
     async setProgress() {
+      this.isProgressLoading = true;
+
       const { startDate, endDate } = this.selectedPeriod;
       this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
 
@@ -50,6 +57,8 @@ export default {
         const query = getKPIProgressQuery(startDate, endDate, this.kpi);
         await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
       }
+
+      this.isProgressLoading = false;
     },
 
     async setGoals() {

@@ -21,7 +21,9 @@
             <span v-else>{{ $t('kpi.noGraph') }}</span>
           </div>
         </template>
-        <span v-else class="kpi-card-widget__no-progress">{{ $t('kpi.noData') }}</span>
+        <span v-else class="kpi-card-widget__no-progress">
+          {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
+        </span>
       </div>
     </template>
   </widget>
@@ -57,7 +59,7 @@ export default {
       handler: 'setProgress',
     },
     selectedPeriod: {
-      immediate: true,
+      immediate: false,
       handler: 'setProgress',
     },
   },
