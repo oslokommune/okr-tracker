@@ -14,13 +14,7 @@
       }"
       class="kpi-widget-group__link"
     >
-      <div class="kpi-card">
-        <div class="kpi-card__parent">{{ kpi.parent.name }}</div>
-        <div class="kpi-card__name">{{ kpi.name }}</div>
-        <div>
-          <period-trend-tag :kpi="kpi" :display-graph="true" />
-        </div>
-      </div>
+      <widget-kpi-card :kpi="kpi" />
     </router-link>
   </div>
 </template>
@@ -28,12 +22,13 @@
 <script>
 import { mapState } from 'vuex';
 import { formatKPIValue } from '@/util/kpiHelpers';
+import WidgetKpiCard from '@/components/widgets/WidgetKpiCard/WidgetKpiCard.vue';
 
 export default {
-  name: 'KPIs',
+  name: 'KpiWidgetGroup',
 
   components: {
-    PeriodTrendTag: () => import('@/components/widgets/PeriodTrendTag.vue'),
+    WidgetKpiCard,
   },
 
   props: {
@@ -74,45 +69,24 @@ export default {
 
   &__link {
     text-decoration: none;
-  }
-}
+    border: 2px solid transparent;
 
-.kpi-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1rem;
-  overflow: hidden;
-  color: var(--color-blue-dark);
-  background: var(--color-white);
+    &.router-link-active {
+      border-color: var(--color-hover);
 
-  &__parent {
-    margin-bottom: 0.25rem;
-    font-weight: 400;
-    font-size: typography.$font-size-0;
-  }
-
-  &__name {
-    margin-bottom: 0.75rem;
-    font-weight: 500;
-    font-size: typography.$font-size-2;
-  }
-
-  &:hover {
-    color: var(--color-active);
-    background: var(--color-gray-light);
-    ::v-deep .progressStatistics__noData {
-      color: var(--color-active);
+      ::v-deep .widget__header {
+        color: var(--color-hover);
+      }
     }
-  }
-  &:hover &__parent {
-    color: var(--color-active);
-  }
 
-  @media screen and (min-width: bp(m)) {
-    &__value {
-      font-size: 2rem;
+    .kpi-card-widget {
+      &:hover {
+        background: var(--color-gray-light);
+
+        ::v-deep .widget__header {
+          color: var(--color-hover);
+        }
+      }
     }
   }
 }

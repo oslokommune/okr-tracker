@@ -9,7 +9,14 @@
         }}
       </span>
       <div>
-        <period-trend-tag :kpi="resultIndicator" />
+        <span class="progressStatistics__value">
+          {{ formatKPIValue(resultIndicator, latestProgressRecord.value) }}
+          <period-trend-tag
+            :kpi="resultIndicator"
+            :progress="progress"
+            :latest-progress-record="latestProgressRecord"
+          />
+        </span>
       </div>
     </div>
     <div v-if="goal">
@@ -49,6 +56,11 @@ export default {
     progress: {
       type: Array,
       required: false,
+      default: () => [],
+    },
+    latestProgressRecord: {
+      type: Object,
+      required: false,
       default: null,
     },
     goal: {
@@ -59,12 +71,6 @@ export default {
   },
 
   computed: {
-    latestProgressRecord() {
-      if (this.progress.length) {
-        return this.progress.slice(-1)[0];
-      }
-      return null;
-    },
     isGoalReached() {
       if (!this.goal || !this.goal.value || !this.progress.length) {
         return null;

@@ -1,13 +1,9 @@
 <template>
   <div class="miniGraph">
-    <span v-if="data.length === 1" class="miniGraph__noGraph">{{
-      $t('kpi.noGraph')
-    }}</span>
     <svg
-      v-else
       width="100%"
       height="100%"
-      viewBox="0 0 800 200"
+      viewBox="0 0 1000 200"
       preserveAspectRatio="xMidYMid meet"
     >
       <g class="lineChart">
@@ -38,7 +34,7 @@ export default {
     return {
       data: [],
       chartDefaults: {
-        width: 800,
+        width: 1000,
         height: 200,
       },
       line: '',
@@ -119,19 +115,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-.miniGraph {
-  padding-top: 2rem;
-
-  &__noGraph {
-    color: var(--color-grayscale-40);
-    font-weight: 400;
-    font-size: typography.$font-size-1;
-  }
-}
 path.line {
   fill: none;
-  stroke-width: 0.4rem;
+  stroke-width: 1rem;
   stroke: var(--color-blue-light);
 }
 .area {

@@ -39,23 +39,24 @@
         ref="progressGraphSvg"
         class="progressGraph"
         xmlns="http://www.w3.org/2000/svg"
-      />
+      ></svg>
 
       <div class="progressGraph__footer">
         <dashboard-result-indicator-statistics
-          v-if="activeResultIndicator"
-          :result-indicator="activeResultIndicator"
-          :progress="filteredProgressSorted"
+          v-if="kpi"
+          :result-indicator="kpi"
+          :progress="progress"
+          :latest-progress-record="latestProgressRecord"
           :goal="goal"
         />
 
         <router-link
-          v-if="activeResultIndicator"
+          v-if="kpi"
           :to="{
             name: 'KpiHome',
             params: {
-              slug: activeResultIndicator.parent.slug,
-              kpiId: activeResultIndicator.id,
+              slug: kpi.parent.slug,
+              kpiId: kpi.id,
             },
           }"
           class="btn btn--ter btn--icon"
@@ -86,7 +87,6 @@ import { mapState, mapGetters } from 'vuex';
 import { max, min } from 'd3-array';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
-import { db } from '@/config/firebaseConfig';
 import { PktIcon } from '@oslokommune/punkt-vue2';
 import { periodDates } from '@/util';
 import { kpiInterval } from '@/util/kpiHelpers';
@@ -96,6 +96,7 @@ import LineChart from '@/util/LineChart';
 import tabIdsHelper from '@/util/tabUtils';
 import i18n from '@/locale/i18n';
 import getPeriods from '@/config/periods';
+import kpiProgress from '@/mixins/kpiProgress';
 import DashboardResultIndicatorStatistics from './DashboardResultIndicatorStatistics.vue';
 import TabList from './TabList.vue';
 import TabPanel from './TabPanel.vue';
@@ -113,13 +114,13 @@ export default {
     DashboardResultIndicatorStatistics,
   },
 
+  mixins: [kpiProgress],
+
   data: () => ({
     activeTab: 0,
-    activeResultIndicator: null,
+    kpi: null,
     graph: null,
     downloadOption: '',
-    progressCollection: [],
-    goals: [],
     startDate: null,
     endDate: null,
     downloadIcon: {
@@ -140,15 +141,18 @@ export default {
   computed: {
     ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
     ...mapGetters(['hasEditRights']),
+
     tabIds() {
       return tabIdsHelper('resultIndicator');
     },
+
     resultIndicators() {
       return [
         ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
         ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
       ];
     },
+
     goal() {
       // Firebase doesn't support equality filtering on more than one field at
       // a time, so do the rest of the filtering client side.
@@ -161,42 +165,18 @@ export default {
       // overlapping goals, just pick the one with the closest end date.
       return goals ? goals[0] : null;
     },
-    filteredProgress() {
-      // Filter out any duplicate measurement values for each date
-      const seenDates = [];
-
-      return this.progressCollection.filter((a) => {
-        const date = a.timestamp.toDate().toISOString().slice(0, 10);
-        if (!seenDates.includes(date)) {
-          seenDates.push(date);
-
-          const { startDate, endDate } = this.selectedPeriod;
-
-          return (
-            (!startDate || a.timestamp.toDate() > startDate) &&
-            (!endDate || a.timestamp.toDate() < endDate)
-          );
-        }
-        return false;
-      });
-    },
-    filteredProgressSorted() {
-      return this.filteredProgress
-        .slice()
-        .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
-    },
   },
 
   watch: {
-    activeResultIndicator() {
-      Promise.all([this.fetchGoals(), this.setProgress()]).then(() => {
+    kpi() {
+      Promise.all([this.setGoals(), this.setProgress()]).then(() => {
         this.setStartAndEndDates();
         this.renderGraph();
       });
     },
 
     selectedPeriod() {
-      Promise.all([this.fetchGoals(), this.setProgress()]).then(() => {
+      Promise.all([this.setGoals(), this.setProgress()]).then(() => {
         this.setStartAndEndDates();
         this.renderGraph();
       });
@@ -204,20 +184,20 @@ export default {
 
     resultIndicators() {
       if (this.resultIndicators.length) {
-        if (this.activeResultIndicator) {
+        if (this.kpi) {
           // Change to new tab if the active result indicator changes position
           // within the result indicators array.
-          const activeResultIndicatorIndex = this.resultIndicators.findIndex(
-            (ri) => ri.id === this.activeResultIndicator.id
+          const activeKpiIndex = this.resultIndicators.findIndex(
+            (ri) => ri.id === this.kpi.id
           );
-          if (activeResultIndicatorIndex !== -1) {
-            this.setActiveTab(activeResultIndicatorIndex);
+          if (activeKpiIndex !== -1) {
+            this.setActiveTab(activeKpiIndex);
             return;
           }
         }
       } else {
         this.graph = null;
-        this.activeResultIndicator = null;
+        this.kpi = null;
       }
 
       this.setActiveTab(0);
@@ -225,44 +205,12 @@ export default {
   },
 
   mounted() {
-    this.activeResultIndicator = this.resultIndicators[this.activeTab];
+    this.kpi = this.resultIndicators[this.activeTab];
   },
 
   methods: {
-    async setProgress() {
-      if (this.activeResultIndicator) {
-        if (this.activeResultIndicator.progress) {
-          const data = JSON.parse(this.activeResultIndicator.progress);
-
-          this.progressCollection = data.map((m) => {
-            return {
-              timestamp: {
-                toDate: () => new Date(m[0]),
-              },
-              value: m[1],
-              comment: m[2],
-            };
-          });
-        } else {
-          let query = db.collection(`kpis/${this.activeResultIndicator.id}/progress`);
-
-          if (this.selectedPeriod.startDate) {
-            query = query.where('timestamp', '>=', this.selectedPeriod.startDate);
-          }
-
-          if (this.selectedPeriod.endDate) {
-            query = query.where('timestamp', '<=', this.selectedPeriod.endDate);
-          }
-
-          await this.$bind('progressCollection', query.orderBy('timestamp', 'desc'));
-        }
-      } else {
-        this.progressCollection = [];
-      }
-    },
-
     setStartAndEndDates() {
-      if (this.selectedPeriod?.key === 'all' && !this.progressCollection.length) {
+      if (this.selectedPeriod?.key === 'all' && !this.progress.length) {
         // Return dates for all year if it's not possible to identify a start
         // or end date due to missing progress data in the current collection.
         const { startDate, endDate } = getPeriods().year;
@@ -271,24 +219,12 @@ export default {
         return;
       }
 
-      this.startDate = this.getStartDate(this.selectedPeriod, this.progressCollection);
-      this.endDate = this.getEndDate(this.selectedPeriod, this.progressCollection);
-    },
-
-    async fetchGoals() {
-      if (this.activeResultIndicator) {
-        await this.$bind(
-          'goals',
-          db
-            .collection(`kpis/${this.activeResultIndicator.id}/goals`)
-            .where('archived', '==', false)
-            .orderBy('toDate', 'desc')
-        );
-      }
+      this.startDate = this.getStartDate(this.selectedPeriod, this.progress);
+      this.endDate = this.getEndDate(this.selectedPeriod, this.progress);
     },
 
     renderGraph() {
-      if (!this.resultIndicators.length || !this.activeResultIndicator) {
+      if (!this.resultIndicators.length || !this.kpi) {
         return;
       }
 
@@ -300,13 +236,13 @@ export default {
         });
       }
 
-      const kpi = this.activeResultIndicator;
+      const kpi = this.kpi;
       const [startValue, targetValue] = kpiInterval(kpi.format);
 
       this.graph.render({
         startDate: this.startDate,
         endDate: this.endDate,
-        progress: this.filteredProgress,
+        progress: this.progress,
         targets: this.goals
           .map((g) => ({
             startDate: g.fromDate.toDate(),
@@ -321,10 +257,10 @@ export default {
     },
 
     download(value) {
-      if (!this.activeResultIndicator) {
+      if (!this.kpi) {
         return;
       }
-      const filename = this.activeResultIndicator.name;
+      const filename = this.kpi.name;
 
       if (value.downloadOption === 'png') {
         const svgRef = this.$refs.progressGraphSvg;
@@ -332,8 +268,8 @@ export default {
           `#resultIndicatorTabButton-${this.activeTab}`
         )?.innerText;
         const formattedPeriod = periodDates({
-          startDate: this.getStartDate(this.selectedPeriod, this.filteredProgress),
-          endDate: this.getEndDate(this.selectedPeriod, this.filteredProgress),
+          startDate: this.getStartDate(this.selectedPeriod, this.progress),
+          endDate: this.getEndDate(this.selectedPeriod, this.progress),
         });
 
         downloadPng(svgRef, filename, activeTabName, formattedPeriod);
@@ -358,7 +294,7 @@ export default {
 
     setActiveTab(tabIndex) {
       this.activeTab = tabIndex;
-      this.activeResultIndicator = this.resultIndicators[tabIndex];
+      this.kpi = this.resultIndicators[tabIndex];
     },
 
     /**
