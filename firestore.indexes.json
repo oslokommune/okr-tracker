@@ -165,6 +165,24 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "parent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "objectives",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "period",
           "order": "ASCENDING"
         },
@@ -271,6 +289,7 @@
     {
       "collectionGroup": "departments",
       "fieldPath": "slug",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -293,6 +312,7 @@
     {
       "collectionGroup": "keyResults",
       "fieldPath": "auto",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -315,6 +335,7 @@
     {
       "collectionGroup": "keyResults",
       "fieldPath": "createdBy",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -337,6 +358,7 @@
     {
       "collectionGroup": "objectives",
       "fieldPath": "createdBy",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -359,6 +381,7 @@
     {
       "collectionGroup": "periods",
       "fieldPath": "createdBy",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -381,6 +404,7 @@
     {
       "collectionGroup": "products",
       "fieldPath": "slug",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -403,6 +427,7 @@
     {
       "collectionGroup": "products",
       "fieldPath": "team",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
@@ -425,6 +450,7 @@
     {
       "collectionGroup": "progress",
       "fieldPath": "createdBy",
+      "ttl": false,
       "indexes": [
         {
           "order": "ASCENDING",
