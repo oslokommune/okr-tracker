@@ -11,9 +11,7 @@
       @show-value-modal="showValueModal = true"
     />
 
-    <widget :title="$t('kpi.progress')">
-      <svg ref="graph" class="graph"></svg>
-    </widget>
+    <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
 
     <widget-progress-history
       :progress="progress"
@@ -36,13 +34,11 @@
 </template>
 
 <script>
-import { extent, min } from 'd3-array';
 import Progress from '@/db/Kpi/Progress';
-import LineChart from '@/util/LineChart';
 import { dateShort } from '@/util';
 import kpiProgress from '@/mixins/kpiProgress';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetKpiCurrentValue from '@/components/widgets/WidgetKpiCurrentValue.vue';
+import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 
 export default {
@@ -50,8 +46,8 @@ export default {
 
   components: {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
-    Widget: WidgetWrapper,
     WidgetKpiCurrentValue,
+    WidgetKpiProgressGraph,
     WidgetProgressHistory,
   },
 
@@ -65,33 +61,21 @@ export default {
   },
 
   data: () => ({
-    graph: null,
     showValueModal: false,
   }),
 
   watch: {
     kpi: {
       immediate: true,
-      async handler() {
-        this.setProgress().then(() => {
-          this.renderGraph();
-        });
+      handler() {
+        this.setProgress();
+        this.setGoals();
       },
     },
     selectedPeriod: {
       immediate: false,
-      async handler() {
-        this.setProgress().then(() => {
-          this.renderGraph();
-        });
-      },
+      handler: 'setProgress',
     },
-  },
-
-  mounted() {
-    if (this.$refs.graph) {
-      this.graph = new LineChart(this.$refs.graph);
-    }
   },
 
   methods: {
@@ -130,29 +114,6 @@ export default {
 
     _formatKPIValue(value) {
       return this.formatKPIValue(this.kpi, value);
-    },
-
-    renderGraph() {
-      if (!this.graph) {
-        return;
-      }
-
-      const [startValue, targetValue] = extent(this.progress.map(({ value }) => value));
-
-      let startDate = new Date();
-
-      if (this.progress.length) {
-        startDate = min(this.progress.map((p) => p.timestamp)).toDate();
-      }
-
-      this.graph.render({
-        startValue,
-        targetValue,
-        startDate,
-        endDate: new Date(),
-        progress: this.progress,
-        kpi: this.kpi,
-      });
     },
   },
 };
