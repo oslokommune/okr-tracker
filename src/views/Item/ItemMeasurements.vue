@@ -1,11 +1,13 @@
 <template>
   <div class="container--alt">
     <aside class="aside--alt widgets">
-      <kpi-widget-group
-        v-for="(group, index) in kpiGroups"
-        :key="`kpi-group-${index}`"
-        v-bind="group"
-      />
+      <template v-for="(group, index) in kpiGroups">
+        <kpi-widget-group
+          v-if="group.kpis.length > 0"
+          :key="`kpi-group-${index}`"
+          v-bind="group"
+        />
+      </template>
     </aside>
 
     <kpi-details v-if="activeKpi" :kpi="activeKpi" />
