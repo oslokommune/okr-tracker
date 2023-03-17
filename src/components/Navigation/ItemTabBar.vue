@@ -70,8 +70,6 @@ export default {
           return { tab: 'okr', type: 'keyResult', id: this.activeKeyResult?.id };
         case 'ItemMeasurements':
           return { tab: 'kpi' };
-        case 'KpiHome':
-          return { tab: 'kpi', id: this.activeKpi?.id };
         default:
           return {};
       }

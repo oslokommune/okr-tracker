@@ -190,7 +190,7 @@ export default {
   },
 
   mounted() {
-    if (this.$route.name === 'KpiHome') {
+    if (this.$route.name === 'ItemMeasurements') {
       this.valueModal = () => import('@/components/modals/KPIProgressModal.vue');
     } else {
       this.valueModal = () => import('@/components/modals/ProgressModal.vue');
