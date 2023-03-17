@@ -3,14 +3,16 @@
     <header class="kpi-details__header">
       <div>
         <h2 class="title-1">{{ kpi.name }}</h2>
-        <p v-if="kpi.description">{{ kpi.description }}</p>
-      </div>
-      <div v-if="hasEditRights">
-        <button class="btn btn--ter btn--icon btn--fw" @click="showValueModal = true">
+        <button
+          v-if="hasEditRights"
+          class="btn btn--ter btn--icon btn--fw"
+          @click="showValueModal = true"
+        >
           <i class="icon fa fa-plus" />
           <span>{{ $t('kpi.newValue') }}</span>
         </button>
       </div>
+      <p v-if="kpi.description" class="description">{{ kpi.description }}</p>
     </header>
 
     <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
@@ -135,15 +137,20 @@ export default {
 
 <style lang="scss" scoped>
 .kpi-details__header {
-  align-items: center;
+  gap: 0.25rem;
 
-  .title-1 {
-    margin-bottom: 0.75rem;
-  }
+  > div {
+    display: flex;
+    align-items: center;
 
-  @media screen and (min-width: bp(s)) {
-    flex-direction: row;
-    justify-content: space-between;
+    button {
+      flex: 0;
+    }
+
+    @media screen and (min-width: bp(s)) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 }
 </style>
