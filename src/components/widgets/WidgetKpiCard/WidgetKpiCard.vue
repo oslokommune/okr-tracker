@@ -107,6 +107,10 @@ export default {
     color: var(--color-grayscale-40);
     font-weight: 400;
     font-size: typography.$font-size-0;
+
+    @media screen and (max-width: bp(xs)), (min-width: bp(s)) and (max-width: bp(l)) {
+      display: none;
+    }
   }
 
   &__no-progress {

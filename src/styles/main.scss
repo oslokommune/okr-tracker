@@ -197,7 +197,7 @@ body.using-mouse :focus {
   max-width: 95rem;
   margin: 0 auto;
 
-  @each $bp, $padding in (s: 1, m: 2, l: 3.5) {
+  @each $bp, $padding in (base: 1, m: 2, l: 3.5) {
     @media screen and (min-width: bp(#{$bp})) {
       padding: #{$padding}rem 1rem;
     }
@@ -209,19 +209,33 @@ body.using-mouse :focus {
     }
   }
 
-  @media screen and (min-width: bp(l)) {
+  @media screen and (min-width: bp(m)) {
     flex-direction: row;
+  }
 
-    .aside--alt {
-      width: 25rem;
-    }
-    .main--alt {
-      width: 100%;
-    }
+  .main--alt {
+    flex: 1;
   }
 
   .aside--alt.widgets {
-    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    display: flex;
+    flex: 0;
+    flex-direction: column;
+
+    @media screen and (min-width: bp(s)) and (max-width: bp(m)) {
+      flex-direction: row;
+
+      > div {
+        flex: 1;
+      }
+    }
+
+    @media screen and (min-width: bp(m)) {
+      flex-basis: 18rem;
+    }
+    @media screen and (min-width: bp(l)) {
+      flex-basis: 25rem;
+    }
   }
 }
 
