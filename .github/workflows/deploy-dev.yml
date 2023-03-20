@@ -36,7 +36,7 @@ jobs:
         run: |
           npm ci
           npm --prefix functions ci functions
-          npm run build:dev
+          npm run build:test
 
       - name: Deploy DEV
         uses: FirebaseExtended/action-hosting-deploy@v0
