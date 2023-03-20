@@ -9,14 +9,14 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
 
-  deploy-prod:
+  deploy-dev:
     name: Deploy to DEV
     needs: [ test ]
     uses: ./.github/workflows/deploy-dev.yml
     secrets:
-      ENV_FILE_PROD: ${{ secrets.ENV_FILE_DEV }}
-      FIREBASE_PROJECT_ID_PROD: ${{ secrets.FIREBASE_PROJECT_ID_DEV }}
-      FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}
+      ENV_FILE_DEV: ${{ secrets.ENV_FILE_DEV }}
+      FIREBASE_PROJECT_ID_DEV: ${{ secrets.FIREBASE_PROJECT_ID_DEV }}
+      FIREBASE_SERVICE_ACCOUNT_DEV: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}
 #  deploy-prod:
 #    name: Deploy to PROD
 #    needs: [test]
