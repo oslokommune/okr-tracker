@@ -762,7 +762,7 @@ OKR-tracker will get out of beta/RC by the end of June 2021. It has been in a be
 ### Fixed
 
 - Typo in cloud function code for KPIs
-- Call cloud function in correct region - change from central1 to europe-west2
+- Call cloud function in correct region - change from central1 to europe-west1
 
 ### Changes
 

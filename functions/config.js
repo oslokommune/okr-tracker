@@ -1,5 +1,5 @@
 export default {
-  region: 'europe-west2',
+  region: 'europe-west1',
   autoKpiFetchFrequency: '45 6,18 * * *',
   autoKeyResFetchFrequency: '35 7 * * *',
   backupFrequency: '45 2 * * *',
