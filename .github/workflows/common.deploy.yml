@@ -1,48 +1,44 @@
-name: Deploy to DEV
+name: Deploy
 
 on:
-  workflow_dispatch:
   workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: false
     secrets:
-      ENV_FILE_DEV:
+      ENV_FILE:
         required: true
-      FIREBASE_PROJECT_ID_DEV:
+      FIREBASE_PROJECT_ID:
         required: true
-      FIREBASE_SERVICE_ACCOUNT_DEV:
+      FIREBASE_TOKEN:
         required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
           node-version: 16
-
       - name: Populate env file
         run: |
-          echo "${{ secrets.ENV_FILE_DEV }}" > .env
+          echo "${{ secrets.ENV_FILE }}" > .env
           if ! grep -q VITE_PROJECT_ID .env; then
             echo "::error:: The .env file is likely not populated correctly"
             exit 1
           fi
-
       - name: Build
         run: |
           export NODE_OPTIONS="--max-old-space-size=4096"
           npm ci
           npm --prefix functions ci functions
-          npm run build:test
-
-      - name: Deploy DEV
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}"
-          projectId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
-          channelId: live
+          npm run build:ci -- --mode=${{ inputs.environment }}
+      - name: Deploy
+        run: |
+          npm install -g firebase-tools
+          firebase deploy --project="${{ secrets.FIREBASE_PROJECT_ID }}" --token="${{ secrets.FIREBASE_TOKEN }}"

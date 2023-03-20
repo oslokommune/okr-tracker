@@ -8,6 +8,7 @@
     "dev": "firebase emulators:start --import=./mock_data & vite",
     "dev:test": "firebase emulators:start --import=./tests & vite",
     "build": "vite build --mode production",
+    "build:ci": "vite build",
     "build:test": "vite build --mode staging",
     "deploy": ". ./.env.production && sed -i -e \"s|<host>|$VITE_API_GATEWAY_URL|g\" public/openapi.yaml && npm run build && sed -i -e \"s|$VITE_API_GATEWAY_URL|<host>|g\" public/openapi.yaml && firebase deploy --project=okr-prod-98cb",
     "deploy:test": "npm run build:test && firebase deploy --project=okr-dev-e2e3",

@@ -2,26 +2,30 @@ name: Pipeline
 
 on:
   push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   test:
     uses: ./.github/workflows/test.yml
-
   deploy-dev:
-    name: Deploy to DEV
+    name: Deploy to dev
     needs: [ test ]
-    uses: ./.github/workflows/deploy-dev.yml
+    uses: ./.github/workflows/common.deploy.yml
+    if: github.ref == 'refs/heads/master'
+    with:
+      environment: staging
     secrets:
-      ENV_FILE_DEV: ${{ secrets.ENV_FILE_DEV }}
-      FIREBASE_PROJECT_ID_DEV: ${{ secrets.FIREBASE_PROJECT_ID_DEV }}
-      FIREBASE_SERVICE_ACCOUNT_DEV: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}
-#  deploy-prod:
-#    name: Deploy to PROD
-#    needs: [test]
-#    uses: ./.github/workflows/deploy-prod.yml
-#    secrets:
-#      ENV_FILE_PROD: ${{ secrets.ENV_FILE_PROD }}
-#      FIREBASE_PROJECT_ID_PROD: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
-#      FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}
+      ENV_FILE: ${{ secrets.ENV_FILE_DEV }}
+      FIREBASE_PROJECT_ID: okr-dev-e2e3
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_DEV }}
+  deploy-prod:
+    name: Deploy to prod
+    needs: [ test ]
+    uses: ./.github/workflows/common.deploy.yml
+    if: github.ref == 'refs/heads/master'
+    with:
+      environment: production
+    secrets:
+      ENV_FILE: ${{ secrets.ENV_FILE_PROD }}
+      FIREBASE_PROJECT_ID: okr-prod-98cb
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_PROD }}
