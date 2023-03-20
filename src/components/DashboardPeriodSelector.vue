@@ -117,10 +117,16 @@ export default {
 .periodSelector {
   position: relative;
   display: inline-block;
+  width: 100%;
+
+  @media screen and (min-width: bp(s)) {
+    width: auto;
+  }
 
   .pkt-btn {
     align-items: center;
-    height: 100%;
+    width: inherit;
+    height: 3.5rem;
     font-weight: 500;
     background-color: var(--color-blue-light);
     border-color: var(--color-blue-light);
@@ -139,15 +145,19 @@ export default {
   position: absolute;
   right: 0;
   z-index: 1;
+  padding-bottom: 2px;
+  background-color: var(--color-white);
   border: 1px solid var(--color-grayscale-10);
+
+  @media screen and (max-width: bp(s)) {
+    border-right: 0;
+    border-left: 0;
+  }
 
   ::v-deep .flatpickr {
     &-calendar {
-      margin-top: -3px;
-      border: 1px solid var(--color-grayscale-10);
-      border-right: 0;
-      border-left: 0;
-      border-radius: 0;
+      margin: 0 auto;
+      border: 0;
       box-shadow: none;
 
       &::before,
@@ -178,6 +188,10 @@ export default {
   &--active {
     color: var(--color-text);
     background: var(--color-gray-light);
+  }
+
+  &:last-of-type {
+    border-bottom: 1px solid var(--color-grayscale-10);
   }
 }
 </style>
