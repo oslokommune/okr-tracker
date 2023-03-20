@@ -11,7 +11,7 @@ jobs:
     name: Deploy to dev
     needs: [ test ]
     uses: ./.github/workflows/common.deploy.yml
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     with:
       environment: staging
     secrets:
@@ -22,7 +22,7 @@ jobs:
     name: Deploy to prod
     needs: [ test ]
     uses: ./.github/workflows/common.deploy.yml
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     with:
       environment: production
     secrets:
