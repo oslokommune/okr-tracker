@@ -2,7 +2,7 @@ name: Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -10,11 +10,18 @@ jobs:
     uses: ./.github/workflows/test.yml
 
   deploy-prod:
-    name: Deploy to PROD
-    needs: [test]
-    uses: ./.github/workflows/deploy-prod.yml
+    name: Deploy to DEV
+    needs: [ test ]
+    uses: ./.github/workflows/deploy-dev.yml
     secrets:
-      API_GATEWAY_URL_PROD: ${{ secrets.API_GATEWAY_URL_PROD }}
-      ENV_FILE_PROD: ${{ secrets.ENV_FILE_PROD }}
-      FIREBASE_PROJECT_ID_PROD: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
-      FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}
+      ENV_FILE_PROD: ${{ secrets.ENV_FILE_DEV }}
+      FIREBASE_PROJECT_ID_PROD: ${{ secrets.FIREBASE_PROJECT_ID_DEV }}
+      FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}
+#  deploy-prod:
+#    name: Deploy to PROD
+#    needs: [test]
+#    uses: ./.github/workflows/deploy-prod.yml
+#    secrets:
+#      ENV_FILE_PROD: ${{ secrets.ENV_FILE_PROD }}
+#      FIREBASE_PROJECT_ID_PROD: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
+#      FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}

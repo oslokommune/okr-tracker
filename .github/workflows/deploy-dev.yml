@@ -1,0 +1,47 @@
+name: Deploy to DEV
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      ENV_FILE_DEV:
+        required: true
+      FIREBASE_PROJECT_ID_DEV:
+        required: true
+      FIREBASE_SERVICE_ACCOUNT_DEV:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Populate env file
+        run: |
+          echo "${{ secrets.ENV_FILE_DEV }}" > .env
+          if ! grep -q VITE_PROJECT_ID .env; then
+            echo "::error:: The .env file is likely not populated correctly"
+            exit 1
+          fi
+
+      - name: Build
+        run: |
+          npm ci
+          npm --prefix functions ci functions
+          npm run build:dev
+
+      - name: Deploy DEV
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}"
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID_DEV }}"
+          channelId: live
