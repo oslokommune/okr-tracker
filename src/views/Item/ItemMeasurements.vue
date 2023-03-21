@@ -1,23 +1,41 @@
 <template>
   <div class="container--alt">
-    <aside class="aside--alt widgets">
-      <template v-for="(group, index) in kpiGroups">
-        <kpi-widget-group
-          v-if="group.kpis.length > 0"
-          :key="`kpi-group-${index}`"
-          v-bind="group"
-        />
-      </template>
-    </aside>
+    <template v-if="allKpis.length">
+      <aside class="aside--alt widgets">
+        <template v-for="(group, index) in kpiGroups">
+          <kpi-widget-group
+            v-if="group.kpis.length > 0"
+            :key="`kpi-group-${index}`"
+            v-bind="group"
+          />
+        </template>
+      </aside>
 
-    <kpi-details v-if="activeKpi" :kpi="activeKpi" />
+      <kpi-details v-if="activeKpi" :kpi="activeKpi" />
+    </template>
+
+    <empty-state
+      v-else
+      :icon="'exclamation'"
+      :heading="$t('empty.noKPIs.heading')"
+      :body="$t('empty.noKPIs.body')"
+    >
+      <router-link
+        v-if="hasEditRights"
+        :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+        class="btn btn--ter"
+      >
+        {{ $t('empty.noKPIs.linkText') }}
+      </router-link>
+    </empty-state>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
+import EmptyState from '@/components/EmptyState.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
 
 export default {
@@ -26,6 +44,7 @@ export default {
   components: {
     KpiWidgetGroup,
     KpiDetails,
+    EmptyState,
   },
 
   async beforeRouteLeave(to, from, next) {
@@ -39,6 +58,7 @@ export default {
 
   computed: {
     ...mapState(['kpis', 'subKpis', 'activeKpi', 'selectedPeriod']),
+    ...mapGetters(['hasEditRights']),
 
     kpiGroups() {
       return [
@@ -74,6 +94,10 @@ export default {
     otherKpis() {
       return this.kpis.filter((kpi) => kpi.kpiType === 'plain');
     },
+
+    allKpis() {
+      return this.resultIndicators.concat(this.keyFigures, this.otherKpis);
+    },
   },
 
   watch: {
@@ -81,15 +105,11 @@ export default {
       immediate: true,
       async handler(params) {
         const { kpiId } = params;
-        if (!kpiId) {
-          const availableKpis = this.resultIndicators.concat(
-            this.keyFigures,
-            this.otherKpis
-          );
+        if (!kpiId && this.allKpis.length) {
           this.$router.replace({
             params: {
               ...params,
-              kpiId: availableKpis[0].id,
+              kpiId: this.allKpis[0].id,
             },
           });
         } else if (kpiId !== this.activeKpi?.id) {
