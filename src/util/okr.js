@@ -15,5 +15,5 @@ export default function objectiveInPeriod(period, objective) {
    * Fall back to checking the old-style `period` reference to retain backwards
    * compatibility.
    */
-  return objective.period.endDate >= startDate && objective.period.startDate <= endDate;
+  return objective.period.id === period.id;
 }
