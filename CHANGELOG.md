@@ -32,6 +32,8 @@ All notable changes to this project will be documented in this file. The format 
   organization and department member lists, like it is for products.
 - Date pickers used throughout the app now respect the selected language and
   are translated accordingly.
+- The admin link is no longer displayed in the item tab bar for users without
+  edit rights.
 
 ### Changed
 
