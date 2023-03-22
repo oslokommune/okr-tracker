@@ -35,7 +35,7 @@
               {{ $t('empty.noPeriods.buttonText') }}
             </router-link>
           </empty-state>
-          <ul v-if="periodObjectives && !dataLoading">
+          <ul v-if="periodObjectives.length && !dataLoading">
             <li
               v-for="objective in periodObjectives"
               :key="objective.id"
@@ -104,7 +104,6 @@ export default {
 
   data: () => ({
     activeTab: 0,
-    periodObjectives: [],
   }),
 
   computed: {
@@ -126,6 +125,7 @@ export default {
     tabIds() {
       return tabIdsHelper('periods');
     },
+
     filteredPeriods() {
       if (this.hasEditRights) {
         return this.periods;
@@ -142,6 +142,22 @@ export default {
         tabName: period.name,
         tooltip: { content: periodDates(period) },
       }));
+    },
+
+    periodObjectives() {
+      if (!this.activePeriod) {
+        return [];
+      }
+
+      return this.objectives
+        .filter((o) => objectiveInPeriod(this.activePeriod, o))
+        .map((o) => ({
+          ...o,
+          id: o.id,
+          keyResults: this.keyResults.filter(
+            (kr) => kr.objective === `objectives/${o.id}`
+          ),
+        }));
     },
   },
 
@@ -164,7 +180,6 @@ export default {
       try {
         await this.setDataLoading(true);
         await this.set_active_period_and_data(activePeriodId);
-        await this.setPeriodObjectives();
       } catch (e) {
         console.log(e);
       } finally {
@@ -178,18 +193,6 @@ export default {
       const activePeriodId = this.filteredPeriods[tabIndex].id;
       await this.setPeriod(activePeriodId);
       this.setActiveTab(tabIndex);
-    },
-
-    async setPeriodObjectives() {
-      this.periodObjectives = this.objectives
-        .filter((o) => objectiveInPeriod(this.activePeriod, o))
-        .map((o) => ({
-          ...o,
-          id: o.id,
-          keyResults: this.keyResults.filter(
-            (kr) => kr.objective === `objectives/${o.id}`
-          ),
-        }));
     },
 
     getCurrentPeriodIndex() {
