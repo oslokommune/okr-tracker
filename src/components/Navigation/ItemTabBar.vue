@@ -2,13 +2,22 @@
   <div class="sub-navigation">
     <nav v-if="activeItem" class="tabs" role="tablist">
       <router-link
-        v-for="(tab, index) in tabs"
+        v-for="(tab, index) in itemTabs"
         :key="index"
         :to="tab.route"
         class="btn btn--sec tabs__tab"
         role="tab"
       >
         {{ tab.label }}
+      </router-link>
+
+      <router-link
+        v-if="hasEditRights"
+        :to="{ name: 'ItemAdmin', query: adminLinkQuery }"
+        class="btn btn--sec tabs__tab"
+        role="tab"
+      >
+        {{ $t('general.admin') }}
       </router-link>
     </nav>
 
@@ -31,7 +40,7 @@ export default {
     ...mapState(['activeItem', 'activeObjective', 'activeKeyResult', 'activeKpi']),
     ...mapGetters(['hasEditRights']),
 
-    tabs() {
+    itemTabs() {
       return [
         {
           route: { name: 'ItemHome' },
@@ -44,10 +53,6 @@ export default {
         {
           route: { name: 'ItemAbout' },
           label: `${this.$t('about.about')} ${this.activeItem.name}`,
-        },
-        {
-          route: { name: 'ItemAdmin', query: this.adminLinkQuery },
-          label: this.$t('general.admin'),
         },
       ];
     },
