@@ -45,10 +45,10 @@ import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
 import {
+  filterDuplicatedProgressValues,
   formatKPIValue,
-  getKPIProgress,
+  getCachedKPIProgress,
   getKPIProgressQuery,
-  filterProgressValues,
 } from '@/util/kpiHelpers';
 import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
 import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
@@ -83,7 +83,7 @@ export default {
     ...mapGetters(['hasEditRights']),
 
     progress() {
-      return filterProgressValues(this.progressCollection, this.selectedPeriod);
+      return filterDuplicatedProgressValues(this.progressCollection);
     },
 
     progressIsFiltered() {
@@ -112,11 +112,11 @@ export default {
       this.isProgressLoading = true;
 
       const { startDate, endDate } = this.selectedPeriod;
-      this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
+      this.progressCollection = getCachedKPIProgress(this.kpi, startDate, endDate);
 
-      if (!this.progressCollection || this.progressCollection.length === 0) {
-        const query = getKPIProgressQuery(startDate, endDate, this.kpi);
-        await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
+      if (!this.progressCollection.length) {
+        const query = getKPIProgressQuery(this.kpi, startDate, endDate);
+        await this.$bind('progressCollection', query);
       }
 
       this.isProgressLoading = false;

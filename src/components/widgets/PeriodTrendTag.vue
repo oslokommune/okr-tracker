@@ -30,8 +30,8 @@ export default {
     ...mapState(['selectedPeriod']),
 
     periodTrend() {
-      const firstProgressRecord = this.progress[0]?.value;
-      const latestProgressRecord = this.latestProgressRecord?.value;
+      const firstProgressRecord = this.progress.slice(-1)[0].value;
+      const latestProgressRecord = this.latestProgressRecord.value;
       const diff = latestProgressRecord - firstProgressRecord;
       return Math.round(diff * 100) / 100;
     },

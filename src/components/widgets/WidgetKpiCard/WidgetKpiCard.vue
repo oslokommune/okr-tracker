@@ -32,10 +32,10 @@
 <script>
 import { mapState } from 'vuex';
 import {
+  filterDuplicatedProgressValues,
   formatKPIValue,
-  getKPIProgress,
+  getCachedKPIProgress,
   getKPIProgressQuery,
-  filterProgressValues,
 } from '@/util/kpiHelpers';
 import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
@@ -66,7 +66,7 @@ export default {
     ...mapState(['selectedPeriod']),
 
     progress() {
-      return filterProgressValues(this.progressCollection, this.selectedPeriod);
+      return filterDuplicatedProgressValues(this.progressCollection);
     },
 
     progressIsFiltered() {
@@ -74,10 +74,7 @@ export default {
     },
 
     latestProgressRecord() {
-      if (this.progress.length) {
-        return this.progress.slice(-1)[0];
-      }
-      return null;
+      return this.progress.length ? this.progress[0] : null;
     },
   },
 
@@ -99,11 +96,11 @@ export default {
       this.isProgressLoading = true;
 
       const { startDate, endDate } = this.selectedPeriod;
-      this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
+      this.progressCollection = getCachedKPIProgress(this.kpi, startDate, endDate);
 
-      if (!this.progressCollection || this.progressCollection.length === 0) {
-        const query = getKPIProgressQuery(startDate, endDate, this.kpi);
-        await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
+      if (!this.progressCollection.length) {
+        const query = getKPIProgressQuery(this.kpi, startDate, endDate);
+        await this.$bind('progressCollection', query);
       }
 
       this.isProgressLoading = false;

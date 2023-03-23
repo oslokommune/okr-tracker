@@ -86,10 +86,7 @@ export default {
     },
 
     latestProgressRecord() {
-      if (this.progress.length) {
-        return this.progress.slice(-1)[0];
-      }
-      return null;
+      return this.progress.length ? this.progress[0] : null;
     },
 
     goal() {
@@ -123,7 +120,7 @@ export default {
         return false;
       }
 
-      const record = progressRecordsInGoalPeriod.slice(-1)[0];
+      const record = progressRecordsInGoalPeriod[0];
       return record.value >= this.goal.value;
     },
   },
