@@ -2,12 +2,12 @@
   <div v-click-outside="hide" class="periodSelector">
     <button
       v-tooltip.bottom="$t('period.choosePeriod')"
-      class="pkt-btn pkt-btn--secondary pkt-btn--small pkt-btn--icon-left"
+      class="pkt-btn pkt-btn--secondary pkt-btn--small pkt-btn--icon"
       :class="{ 'pkt-btn--focus': isOpen }"
       @click="toggle"
     >
       <pkt-icon name="calendar" class="pkt-btn__icon" />
-      <span class="pkt-btn__text">{{ label }}</span>
+      <span class="pkt-btn__text pkt-show-phablet-up">{{ label }}</span>
     </button>
     <div v-if="isOpen" class="periodSelector__content">
       <button
@@ -114,19 +114,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
 .periodSelector {
   position: relative;
   display: inline-block;
-  width: 100%;
-
-  @media screen and (min-width: bp(s)) {
-    width: auto;
-  }
 
   .pkt-btn {
     align-items: center;
     width: inherit;
-    height: 3.5rem;
+    height: 100%;
     font-weight: 500;
     background-color: var(--color-blue-light);
     border-color: var(--color-blue-light);
@@ -138,6 +135,12 @@ export default {
       background-color: var(--color-hover);
       border-color: var(--color-hover);
     }
+
+    @include bp('phablet-up') {
+      .pkt-btn__icon {
+        margin-right: 0.3125rem;
+      }
+    }
   }
 }
 
@@ -148,11 +151,6 @@ export default {
   padding-bottom: 2px;
   background-color: var(--color-white);
   border: 1px solid var(--color-grayscale-10);
-
-  @media screen and (max-width: bp(s)) {
-    border-right: 0;
-    border-left: 0;
-  }
 
   ::v-deep .flatpickr {
     &-calendar {

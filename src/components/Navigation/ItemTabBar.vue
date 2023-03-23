@@ -85,10 +85,7 @@ export default {
   position: sticky;
   top: 4rem;
   z-index: 20;
-
-  @media screen and (min-width: bp(s)) {
-    display: flex;
-  }
+  display: flex;
 }
 
 .tabs {
