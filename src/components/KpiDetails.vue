@@ -17,12 +17,7 @@
 
     <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
 
-    <widget-kpi-progress-stats
-      :kpi="kpi"
-      :progress="progress"
-      :goals="goals"
-      :latest-progress-record="latestProgressRecord"
-    />
+    <widget-kpi-progress-stats :kpi="kpi" :progress="progress" :goals="goals" />
 
     <widget-progress-history
       :progress="progress"
@@ -45,10 +40,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
+import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
-import kpiProgress from '@/mixins/kpiProgress';
+import {
+  formatKPIValue,
+  getKPIProgress,
+  getKPIProgressQuery,
+  filterProgressValues,
+} from '@/util/kpiHelpers';
 import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
 import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
@@ -63,8 +64,6 @@ export default {
     WidgetProgressHistory,
   },
 
-  mixins: [kpiProgress],
-
   props: {
     kpi: {
       type: Object,
@@ -73,11 +72,23 @@ export default {
   },
 
   data: () => ({
+    progressCollection: [],
+    goals: [],
+    isProgressLoading: false,
     showValueModal: false,
   }),
 
   computed: {
+    ...mapState(['selectedPeriod']),
     ...mapGetters(['hasEditRights']),
+
+    progress() {
+      return filterProgressValues(this.progressCollection, this.selectedPeriod);
+    },
+
+    progressIsFiltered() {
+      return this.selectedPeriod?.key !== 'all';
+    },
   },
 
   watch: {
@@ -96,6 +107,30 @@ export default {
 
   methods: {
     dateShort,
+
+    async setProgress() {
+      this.isProgressLoading = true;
+
+      const { startDate, endDate } = this.selectedPeriod;
+      this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
+
+      if (!this.progressCollection || this.progressCollection.length === 0) {
+        const query = getKPIProgressQuery(startDate, endDate, this.kpi);
+        await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
+      }
+
+      this.isProgressLoading = false;
+    },
+
+    async setGoals() {
+      await this.$bind(
+        'goals',
+        db
+          .collection(`kpis/${this.kpi.id}/goals`)
+          .where('archived', '==', false)
+          .orderBy('toDate', 'desc')
+      );
+    },
 
     async createProgressRecord(data, modalCloseHandler) {
       try {
@@ -129,7 +164,7 @@ export default {
     },
 
     _formatKPIValue(value) {
-      return this.formatKPIValue(this.kpi, value);
+      return formatKPIValue(this.kpi, value);
     },
   },
 };

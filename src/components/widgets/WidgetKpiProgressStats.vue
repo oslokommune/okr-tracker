@@ -74,11 +74,6 @@ export default {
       required: false,
       default: () => [],
     },
-    latestProgressRecord: {
-      type: Object,
-      required: false,
-      default: null,
-    },
   },
 
   computed: {
@@ -88,6 +83,13 @@ export default {
       return this.latestProgressRecord
         ? formatKPIValue(this.kpi, this.latestProgressRecord.value)
         : formatKPIValue(this.kpi);
+    },
+
+    latestProgressRecord() {
+      if (this.progress.length) {
+        return this.progress.slice(-1)[0];
+      }
+      return null;
     },
 
     goal() {

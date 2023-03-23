@@ -21,7 +21,7 @@
             <span v-else>{{ $t('kpi.noGraph') }}</span>
           </div>
         </template>
-        <span v-else class="kpi-card-widget__no-progress">
+        <span v-else-if="!isProgressLoading" class="kpi-card-widget__no-progress">
           {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
         </span>
       </div>
@@ -30,7 +30,13 @@
 </template>
 
 <script>
-import kpiProgress from '@/mixins/kpiProgress';
+import { mapState } from 'vuex';
+import {
+  formatKPIValue,
+  getKPIProgress,
+  getKPIProgressQuery,
+  filterProgressValues,
+} from '@/util/kpiHelpers';
 import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
 import MiniGraph from './MiniGraph.vue';
@@ -44,12 +50,34 @@ export default {
     MiniGraph,
   },
 
-  mixins: [kpiProgress],
-
   props: {
     kpi: {
       type: Object,
       required: true,
+    },
+  },
+
+  data: () => ({
+    progressCollection: [],
+    isProgressLoading: false,
+  }),
+
+  computed: {
+    ...mapState(['selectedPeriod']),
+
+    progress() {
+      return filterProgressValues(this.progressCollection, this.selectedPeriod);
+    },
+
+    progressIsFiltered() {
+      return this.selectedPeriod?.key !== 'all';
+    },
+
+    latestProgressRecord() {
+      if (this.progress.length) {
+        return this.progress.slice(-1)[0];
+      }
+      return null;
     },
   },
 
@@ -61,6 +89,24 @@ export default {
     selectedPeriod: {
       immediate: false,
       handler: 'setProgress',
+    },
+  },
+
+  methods: {
+    formatKPIValue,
+
+    async setProgress() {
+      this.isProgressLoading = true;
+
+      const { startDate, endDate } = this.selectedPeriod;
+      this.progressCollection = getKPIProgress(startDate, endDate, this.kpi);
+
+      if (!this.progressCollection || this.progressCollection.length === 0) {
+        const query = getKPIProgressQuery(startDate, endDate, this.kpi);
+        await this.$bind('progressCollection', query.orderBy('timestamp', 'asc'));
+      }
+
+      this.isProgressLoading = false;
     },
   },
 };

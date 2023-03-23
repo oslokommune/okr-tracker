@@ -177,3 +177,29 @@ export function getKPIProgressQuery(startDate, endDate, kpi) {
 
   return query;
 }
+
+/**
+ * Return a filtered list of measurement values by period and where any
+ * duplicated values for each date are removed.
+ *
+ * `progressCollection` is the list of progress records to filter.
+ * `period` is the period to filter by.
+ */
+export function filterProgressValues(progressCollection, period) {
+  const seenDates = [];
+
+  return progressCollection.filter((a) => {
+    const date = a.timestamp.toDate().toISOString().slice(0, 10);
+    if (!seenDates.includes(date)) {
+      seenDates.push(date);
+
+      const { startDate, endDate } = period;
+
+      return (
+        (!startDate || a.timestamp.toDate() > startDate) &&
+        (!endDate || a.timestamp.toDate() < endDate)
+      );
+    }
+    return false;
+  });
+}
