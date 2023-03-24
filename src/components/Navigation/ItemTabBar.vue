@@ -8,7 +8,8 @@
         class="btn btn--sec tabs__tab"
         role="tab"
       >
-        {{ tab.label }}
+        <span class="pkt-show-tablet-big-up">{{ tab.label }}</span>
+        <span class="pkt-hide-tablet-big-up">{{ tab.shortLabel || tab.label }}</span>
       </router-link>
 
       <router-link
@@ -45,6 +46,7 @@ export default {
         {
           route: { name: 'ItemHome' },
           label: this.$t('general.OKRsLong'),
+          shortLabel: this.$t('general.OKRs'),
         },
         {
           route: { name: 'ItemMeasurements' },
@@ -53,6 +55,7 @@ export default {
         {
           route: { name: 'ItemAbout' },
           label: `${this.$t('about.about')} ${this.activeItem.name}`,
+          shortLabel: this.$t('about.about'),
         },
       ];
     },
@@ -86,10 +89,8 @@ export default {
 }
 
 .tabs {
-  display: flex;
   flex-grow: 1;
   box-sizing: border-box;
-  padding: 0 1.5rem;
   background-color: var(--color-white);
 
   &__tab {

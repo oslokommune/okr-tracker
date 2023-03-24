@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - The date picker on the KPI details page no longer disappears when the selected
   period doesn't contain any measurements.
+- The item tab bar is now more responsive.
 
 ### Changed
 
