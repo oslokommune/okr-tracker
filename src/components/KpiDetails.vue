@@ -19,14 +19,8 @@
 
     <widget-kpi-progress-stats :kpi="kpi" :progress="progress" :goals="goals" />
 
-    <widget-progress-history
-      :progress="progress"
-      :is-loading="isProgressLoading"
-      :value-formatter="_formatKPIValue"
-      :date-formatter="dateShort"
-      :no-values-message="
-        progressIsFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
-      "
+    <widget-kpi-progress-history
+      :kpi="kpi"
       @update-record="updateProgressRecord"
       @delete-record="deleteProgressRecord"
     />
@@ -43,16 +37,14 @@
 import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Kpi/Progress';
-import { dateShort } from '@/util';
 import {
   filterDuplicatedProgressValues,
-  formatKPIValue,
   getCachedKPIProgress,
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
 import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
 import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
+import WidgetKpiProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetKpiProgressHistory.vue';
 
 export default {
   name: 'KpiDetails',
@@ -61,7 +53,7 @@ export default {
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetKpiProgressGraph,
     WidgetKpiProgressStats,
-    WidgetProgressHistory,
+    WidgetKpiProgressHistory,
   },
 
   props: {
@@ -74,7 +66,6 @@ export default {
   data: () => ({
     progressCollection: [],
     goals: [],
-    isProgressLoading: false,
     showValueModal: false,
   }),
 
@@ -84,10 +75,6 @@ export default {
 
     progress() {
       return filterDuplicatedProgressValues(this.progressCollection);
-    },
-
-    progressIsFiltered() {
-      return this.selectedPeriod?.key !== 'all';
     },
   },
 
@@ -106,11 +93,7 @@ export default {
   },
 
   methods: {
-    dateShort,
-
     async setProgress() {
-      this.isProgressLoading = true;
-
       const { startDate, endDate } = this.selectedPeriod;
       this.progressCollection = getCachedKPIProgress(this.kpi, startDate, endDate);
 
@@ -118,8 +101,6 @@ export default {
         const query = getKPIProgressQuery(this.kpi, startDate, endDate);
         await this.$bind('progressCollection', query);
       }
-
-      this.isProgressLoading = false;
     },
 
     async setGoals() {
@@ -161,10 +142,6 @@ export default {
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
       }
-    },
-
-    _formatKPIValue(value) {
-      return formatKPIValue(this.kpi, value);
     },
   },
 };

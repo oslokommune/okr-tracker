@@ -70,7 +70,6 @@
       <widget-progress-history
         :progress="progress"
         :is-loading="isLoading"
-        :no-values-message="$t('empty.noKeyResultProgress')"
         @update-record="updateHistoryRecord"
         @delete-record="deleteHistoryRecord"
       />
