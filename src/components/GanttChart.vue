@@ -23,16 +23,17 @@
         <span class="ticks__padding"></span>
       </div>
     </div>
-    <div
+    <router-link
       v-for="o in orderedObjectives"
       :key="o.id"
+      :to="{ name: 'ObjectiveHome', params: { objectiveId: o.id } }"
       class="objective"
       :style="objectiveStyle(o)"
     >
       <div class="objective__tag">{{ item.name }}</div>
       <div class="objective__title">{{ o.name }}</div>
       <progress-bar :progression="o.progression * 100" />
-    </div>
+    </router-link>
     <div class="today-tick" :style="todayStyle()"></div>
   </div>
 </template>
@@ -238,12 +239,19 @@ export default {
 .objective {
   position: relative;
   z-index: 1;
+  display: block;
   margin: 1.25rem 0;
   padding: 1rem;
+  color: var(--color-text);
   line-height: 1.35;
+  text-decoration: none;
   background: var(--color-white);
   box-shadow: 0 0 10px rgba(black, 0.1);
   cursor: pointer;
+
+  &:hover .objective__title {
+    color: var(--color-hover);
+  }
 
   .objective__tag {
     display: inline-block;
