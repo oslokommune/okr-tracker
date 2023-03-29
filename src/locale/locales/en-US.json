@@ -420,7 +420,8 @@
   },
   "view": {
     "compact": "Compact",
-    "details": "Details"
+    "details": "Details",
+    "timeline": "Timeline"
   },
   "keyResultsPage": {
     "notes": {

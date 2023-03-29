@@ -418,7 +418,8 @@
   },
   "view": {
     "compact": "Kompakt",
-    "details": "Detaljer"
+    "details": "Detaljer",
+    "timeline": "Tidslinje"
   },
   "keyResultsPage": {
     "notes": {

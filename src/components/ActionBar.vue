@@ -6,7 +6,7 @@
 
     <div class="views">
       <button
-        v-for="view in views"
+        v-for="view in _views"
         :key="view.id"
         v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
         class="action-bar__view"
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import i18n from '@/locale/i18n';
 import { mapState, mapActions } from 'vuex';
 import { periodDates } from '@/util';
 
@@ -28,6 +29,18 @@ export default {
 
   computed: {
     ...mapState(['activePeriod', 'views', 'user']),
+
+    _views() {
+      /*
+       * XXX: Super admin feature preview. Open it up by extending `views` in
+       * `src/store/index.js` instead when/if it becomes ready.
+       */
+      if (this.user.superAdmin) {
+        return this.views.concat({ id: 'timeline', label: i18n.t('view.timeline') });
+      }
+
+      return this.views;
+    },
   },
 
   methods: {
