@@ -35,25 +35,32 @@
               {{ $t('empty.noPeriods.buttonText') }}
             </router-link>
           </empty-state>
-          <ul v-if="periodObjectives.length && !dataLoading">
-            <li
-              v-for="objective in periodObjectives"
-              :key="objective.id"
-              class="itemHome__objectives--item"
-            >
-              <objective-row :objective="objective"></objective-row>
-              <ul v-if="objective.keyResults.length">
-                <li
-                  v-for="keyResult in objective.keyResults"
-                  :key="keyResult.id"
-                  class="keyResultRow"
-                  :class="{ 'keyResultRow--isCompact': isCompact }"
-                >
-                  <key-result-row :key-result="keyResult"></key-result-row>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <div v-if="periodObjectives.length && !dataLoading">
+            <ul v-if="['compact', 'details'].includes(view)">
+              <li
+                v-for="objective in periodObjectives"
+                :key="objective.id"
+                class="itemHome__objectives--item"
+              >
+                <objective-row :objective="objective"></objective-row>
+                <ul v-if="objective.keyResults.length">
+                  <li
+                    v-for="keyResult in objective.keyResults"
+                    :key="keyResult.id"
+                    class="keyResultRow"
+                    :class="{ 'keyResultRow--isCompact': view === 'compact' }"
+                  >
+                    <key-result-row :key-result="keyResult"></key-result-row>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <gantt-chart
+              v-else-if="view === 'timeline'"
+              :objectives="periodObjectives"
+              :item="activeItem"
+            />
+          </div>
         </tab-panel>
       </section>
     </main>
@@ -90,6 +97,7 @@ export default {
 
   components: {
     ActionBar: () => import('@/components/ActionBar.vue'),
+    GanttChart: () => import('@/components/GanttChart.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
@@ -118,8 +126,8 @@ export default {
     ]),
     ...mapGetters(['hasEditRights']),
 
-    isCompact() {
-      return this.user.preferences.view === 'compact';
+    view() {
+      return this.user.preferences.view;
     },
 
     tabIds() {

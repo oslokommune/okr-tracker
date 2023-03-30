@@ -251,8 +251,8 @@ export default new Vuex.Store({
     subKpis: [],
     loginError: null,
     views: [
-      { label: i18n.t('view.compact'), id: 'compact', icon: '' },
-      { label: i18n.t('view.details'), id: 'details', icon: '' },
+      { id: 'compact', label: i18n.t('view.compact') },
+      { id: 'details', label: i18n.t('view.details') },
     ],
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
