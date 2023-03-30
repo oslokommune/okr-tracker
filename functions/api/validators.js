@@ -7,6 +7,11 @@ export const teamSecretValidator = header('okr-team-secret')
   .isEmpty()
   .withMessage('The `okr-team-secret` header is required');
 
+export const adminSecretValidator = header('okr-admin-secret')
+  .not()
+  .isEmpty()
+  .withMessage('The `okr-admin-secret` header is required');
+
 export const idValidator = param('id').trim().escape();
 
 export const dateValidator = param('date')
@@ -28,3 +33,7 @@ export const progressValidator = checkMeasurementValue(body('progress'));
 export const valueValidator = checkMeasurementValue(body('value'));
 
 export const commentValidator = body('comment').trim().escape();
+
+export const displayNameValidator = body('displayName').trim().escape();
+
+export const positionValidator = body('position').trim().escape();

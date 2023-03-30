@@ -256,6 +256,50 @@ paths:
             $ref: '#/definitions/TrackerMetrics'
         500:
           $ref: '#/responses/Unavailable'
+  /user/{id}:
+    patch:
+      summary: Update user details.
+      operationId: patchUser
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          type: string
+        - name: details
+          in: body
+          required: true
+          description: User details
+          schema:
+            type: object
+            properties:
+              displayName:
+                type: number
+              position:
+                type: string
+            example:
+              displayName: Foo Bar
+              position: director
+        - name: okr-admin-secret
+          in: header
+          description: OKR Tracker admin secret value
+          type: string
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+            example: "User updated"
+        '400':
+          $ref: '#/responses/BadRequest'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/Unavailable'
 
 securityDefinitions:
   api_key:
@@ -364,6 +408,13 @@ definitions:
 responses:
   NotFound:
     description: Resource not found
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+  Unauthorized:
+    description: Unauthorized for the requested operation on the resource
     schema:
       type: object
       properties:
