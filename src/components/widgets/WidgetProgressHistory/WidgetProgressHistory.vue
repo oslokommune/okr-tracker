@@ -1,11 +1,13 @@
 <template>
   <widget :title="$t('widget.history.title')">
     <progress-history-table
+      :history-records="historyRecords"
       :is-loading="isLoading"
-      :history-records="progress"
+      :is-limited="isLimited"
       :no-values-message="$t('empty.noKeyResultProgress')"
       @edit-record="openValueModal"
       @delete-record="(record) => $emit('delete-record', record.id)"
+      @load-more="progressLimit = null"
     >
       <template #value-cell="{ record }">{{ formatValue(record.value) }}</template>
       <template #date-cell="{ record }">
@@ -50,6 +52,7 @@ export default {
   },
 
   data: () => ({
+    progressLimit: 10,
     showValueModal: false,
     chosenProgressRecord: null,
   }),
@@ -58,9 +61,14 @@ export default {
     ...mapGetters(['hasEditRights']),
 
     historyRecords() {
-      return [...this.progress].sort((a, b) =>
+      const records = [...this.progress].sort((a, b) =>
         a.timestamp.toDate() > b.timestamp.toDate() ? -1 : 1
       );
+      return this.progressLimit ? records.slice(0, this.progressLimit) : records;
+    },
+
+    isLimited() {
+      return this.progressLimit && this.progress.length > this.progressLimit;
     },
   },
 

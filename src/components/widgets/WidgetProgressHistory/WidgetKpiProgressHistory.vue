@@ -1,13 +1,15 @@
 <template>
   <widget :title="$t('widget.history.title')">
     <progress-history-table
-      :is-loading="isLoading"
       :history-records="historyRecords"
+      :is-loading="isLoading"
+      :is-limited="isLimited"
       :no-values-message="
         isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
       "
       @edit-record="openValueModal"
       @delete-record="(record) => $emit('delete-record', record.id)"
+      @load-more="loadAllRecords"
     >
       <template #value-cell="{ record }">
         {{ formatKPIValue(kpi, record.value) }}
@@ -56,6 +58,7 @@ export default {
   data: () => ({
     progressCollection: [],
     isLoading: false,
+    progressLimit: 10,
     showValueModal: false,
     chosenProgressRecord: null,
   }),
@@ -70,6 +73,10 @@ export default {
     isFiltered() {
       return this.selectedPeriod?.key !== 'all';
     },
+
+    isLimited() {
+      return this.progressLimit && this.progressCollection.length === this.progressLimit;
+    },
   },
 
   watch: {
@@ -83,13 +90,28 @@ export default {
     formatKPIValue,
     dateShort,
 
-    async setProgress() {
-      const { startDate, endDate } = this.selectedPeriod;
-      const query = getKPIProgressQuery(this.kpi, startDate, endDate);
+    async setProgress(options) {
       this.isLoading = true;
-      this.$bind('progressCollection', query).then(() => {
-        this.isLoading = false;
-      });
+      const { startDate, endDate } = this.selectedPeriod;
+
+      let query = getKPIProgressQuery(this.kpi, startDate, endDate);
+      if (this.progressLimit) {
+        query = query.limit(this.progressLimit);
+      }
+      await this.$bind('progressCollection', query, options);
+
+      // For now assume that the resulting dataset is limited if the document
+      // count is equal to the query limit. This should be based on an actual
+      // count, but "cheap" count aggregation is only available in a preview
+      // release of the SDK and seemingly not for Web version 8.
+      //  https://firebase.blog/posts/2022/12/introducing-firestore-count-ttl-scale
+      //  https://firebase.google.com/docs/firestore/query-data/aggregation-queries
+      this.isLoading = false;
+    },
+
+    loadAllRecords() {
+      this.progressLimit = null;
+      this.setProgress({ reset: false, wait: true });
     },
 
     openValueModal(record) {

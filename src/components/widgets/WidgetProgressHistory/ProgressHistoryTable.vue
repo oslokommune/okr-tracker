@@ -1,18 +1,6 @@
 <template>
   <div class="progress-history-table">
-    <div v-if="isLoading" class="progress-history-table__loading">
-      <loading-small />
-      {{ $t('general.loading') }}
-    </div>
-
-    <empty-state
-      v-else-if="!historyRecords.length"
-      icon="history"
-      :heading="$t('widget.history.empty.heading')"
-      :body="noValuesMessage"
-    />
-
-    <table v-else class="table">
+    <table v-if="historyRecords.length" class="table">
       <thead>
         <tr>
           <th>{{ $t('widget.history.value') }}</th>
@@ -41,7 +29,7 @@
       </thead>
 
       <tbody>
-        <tr v-for="record in records" :key="record.id">
+        <tr v-for="record in historyRecords" :key="record.id">
           <td>
             <slot name="value-cell" :record="record">{{ record.value }}</slot>
           </td>
@@ -90,11 +78,23 @@
       </tbody>
     </table>
 
+    <div v-if="isLoading" class="progress-history-table__loading">
+      <loading-small />
+      {{ $t('general.loading') }}
+    </div>
+
+    <empty-state
+      v-else-if="!historyRecords.length"
+      icon="history"
+      :heading="$t('widget.history.empty.heading')"
+      :body="noValuesMessage"
+    />
+
     <div class="progress-history-table__footer">
       <button
-        v-if="!isLoading && historyRecords.length > 10 && historyLimit !== null"
+        v-if="!isLoading && isLimited"
         class="btn btn--sec"
-        @click="historyLimit = null"
+        @click="$emit('load-more')"
       >
         {{ $t('btn.showMore') }}
       </button>
@@ -135,6 +135,11 @@ export default {
       type: Boolean,
       required: true,
     },
+    isLimited: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     noValuesMessage: {
       type: String,
       required: false,
@@ -143,7 +148,6 @@ export default {
   },
 
   data: () => ({
-    historyLimit: 10,
     showComments: true,
     showProfileModal: false,
     chosenProfileId: null,
@@ -151,12 +155,6 @@ export default {
 
   computed: {
     ...mapGetters(['hasEditRights']),
-
-    records() {
-      return this.historyLimit
-        ? this.historyRecords.slice(0, this.historyLimit)
-        : this.historyRecords;
-    },
 
     hasAnyComments() {
       return this.historyRecords.find(({ comment }) => comment) !== undefined;
@@ -186,7 +184,11 @@ export default {
 
 <style lang="scss" scoped>
 .progress-history-table {
-  &__loading,
+  &__loading {
+    padding: 0.65rem 0;
+    text-align: center;
+  }
+
   &__footer {
     text-align: center;
   }
