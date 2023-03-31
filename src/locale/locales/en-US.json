@@ -23,7 +23,8 @@
     "inPeriod": "in period",
     "noChange": "no change",
     "ofTarget": "of the goal of",
-    "noData": "No data in chosen period",
+    "noData": "No registered values",
+    "noDataFiltered": "No data in chosen period",
     "noGraph": "Not enough data to display graph",
     "formats": {
       "integer": "Integer",
@@ -212,7 +213,7 @@
     "restore": "Restore",
     "confirmDelete": "Confirm delete",
     "reset": "Reset",
-    "showMore": "Show more",
+    "showMore": "Show all",
     "syncData": "Synchronize data",
     "moreDetails": "More details"
   },

@@ -90,19 +90,10 @@ const routes = [
         component: () => import('@/views/Item/ItemOKRs.vue'),
       },
       {
-        path: 'measurements',
+        path: 'measurements/:kpiId?',
         name: 'ItemMeasurements',
         component: () => import('@/views/Item/ItemMeasurements.vue'),
         beforeEnter: routerGuards.itemMeasurements,
-      },
-      /*
-       * Alias for `measurements` -- redirect from the old `dashboard` path
-       * still in case people have bookmarked it.
-       */
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        redirect: { name: 'ItemMeasurements' },
       },
       {
         path: 'about',
@@ -127,11 +118,19 @@ const routes = [
         component: () => import('@/views/ObjectiveHome.vue'),
         beforeEnter: routerGuards.objectiveHome,
       },
+      /*
+       * Aliases for `measurements` -- redirect from the old `dashboard` and
+       * KPI details paths in case people have them bookmarked.
+       */
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        redirect: { name: 'ItemMeasurements' },
+      },
       {
         path: 'kpi/:kpiId',
         name: 'KpiHome',
-        component: () => import('@/views/KpiHome.vue'),
-        beforeEnter: routerGuards.kpiHome,
+        redirect: { name: 'ItemMeasurements' },
       },
     ],
   },

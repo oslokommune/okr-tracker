@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file. The format 
   It also includes two more pre-defined periods: current and previous quarter.
 - The API endpoints for updating key result and KPI progression values now
   accept an optional `comment` parameter.
+- The measurements tab have been redesigned and now integrates the previous
+  measurement details page. This in order to provide an improved overview of all
+  measurements.
 
 ## [3.4.0] 2023-03-03
 

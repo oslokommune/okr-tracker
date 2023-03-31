@@ -1,64 +1,88 @@
 <template>
-  <div class="container">
-    <main class="main">
-      <section class="result-indicators">
-        <header>
-          <h2 class="title-1">
-            {{ $t('general.resultIndicator') }}
-          </h2>
-        </header>
-        <dashboard-result-indicators-section />
-      </section>
+  <div class="container--alt">
+    <template v-if="allKpis.length">
+      <aside class="aside--alt widgets">
+        <template v-for="(group, index) in kpiGroups">
+          <kpi-widget-group
+            v-if="group.kpis.length > 0"
+            :key="`kpi-group-${index}`"
+            v-bind="group"
+          />
+        </template>
+      </aside>
 
-      <section>
-        <h2 class="title-1">
-          {{ $t('general.keyFigures') }}
-        </h2>
-        <kpi-grid v-if="keyFigures.length" :kpis="keyFigures" />
-        <empty-state
-          v-else
-          :icon="'exclamation'"
-          :heading="$t('empty.noKeyFigures.heading')"
-          :body="$t('empty.noKeyFigures.body')"
-        >
-          <router-link
-            v-if="hasEditRights"
-            :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
-            class="btn btn--ter"
-          >
-            {{ $t('empty.noKPIs.linkText') }}
-          </router-link>
-        </empty-state>
-      </section>
+      <kpi-details v-if="activeKpi" :kpi="activeKpi" />
+    </template>
 
-      <section v-if="otherKpis.length">
-        <h2 class="title-1">
-          {{ $t('general.otherMeasurements') }}
-        </h2>
-        <kpi-grid v-if="otherKpis.length" :kpis="otherKpis" />
-      </section>
-    </main>
+    <empty-state
+      v-else
+      :icon="'exclamation'"
+      :heading="$t('empty.noKPIs.heading')"
+      :body="$t('empty.noKPIs.body')"
+    >
+      <router-link
+        v-if="hasEditRights"
+        :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+        class="btn btn--ter"
+      >
+        {{ $t('empty.noKPIs.linkText') }}
+      </router-link>
+    </empty-state>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 
-import DashboardResultIndicatorsSection from '@/components/DashboardResultIndicatorsSection.vue';
-import KpiGrid from '@/components/KpiGrid.vue';
+import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
 import EmptyState from '@/components/EmptyState.vue';
+import KpiDetails from '@/components/KpiDetails.vue';
 
 export default {
-  name: 'DashboardHome',
+  name: 'ItemMeasurements',
+
   components: {
-    DashboardResultIndicatorsSection,
+    KpiWidgetGroup,
+    KpiDetails,
     EmptyState,
-    KpiGrid,
+  },
+
+  async beforeRouteLeave(to, from, next) {
+    try {
+      await this.$store.dispatch('set_active_kpi', null);
+      next();
+    } catch (error) {
+      next(false);
+    }
   },
 
   computed: {
-    ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
+    ...mapState(['kpis', 'subKpis', 'activeKpi', 'selectedPeriod']),
     ...mapGetters(['hasEditRights']),
+
+    kpiGroups() {
+      return [
+        {
+          title: this.$t('general.resultIndicator'),
+          kpis: this.resultIndicators,
+        },
+        {
+          title: this.$t('general.keyFigures'),
+          kpis: this.keyFigures,
+        },
+        {
+          title: this.$t('general.otherMeasurements'),
+          kpis: this.otherKpis,
+        },
+      ];
+    },
+
+    resultIndicators() {
+      return [
+        ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
+        ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
+      ];
+    },
 
     keyFigures() {
       return [
@@ -70,9 +94,30 @@ export default {
     otherKpis() {
       return this.kpis.filter((kpi) => kpi.kpiType === 'plain');
     },
+
+    allKpis() {
+      return this.resultIndicators.concat(this.keyFigures, this.otherKpis);
+    },
   },
 
   watch: {
+    '$route.params': {
+      immediate: true,
+      async handler(params) {
+        const { kpiId } = params;
+        if (!kpiId && this.allKpis.length) {
+          this.$router.replace({
+            params: {
+              ...params,
+              kpiId: this.allKpis[0].id,
+            },
+          });
+        } else if (kpiId !== this.activeKpi?.id) {
+          await this.$store.dispatch('set_active_kpi', kpiId);
+        }
+      },
+    },
+
     selectedPeriod(period) {
       if (this.$route.query?.resultIndicatorPeriod !== period.key) {
         this.$router.replace({ query: { resultIndicatorPeriod: period.key } });
@@ -83,12 +128,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
-  > section {
-    margin-bottom: 5rem;
-  }
-}
-
 .result-indicators {
   header {
     display: flex;

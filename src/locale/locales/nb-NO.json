@@ -23,7 +23,8 @@
     "inPeriod": "i perioden",
     "noChange": "ingen endring",
     "ofTarget": "av mål om",
-    "noData": "Ingen data i valgt periode",
+    "noData": "Ingen registrerte verdier",
+    "noDataFiltered": "Ingen data i valgt periode",
     "noGraph": "Ikke nok data til å vise graf",
     "formats": {
       "integer": "Heltall",
@@ -210,7 +211,7 @@
     "restore": "Gjenopprett",
     "confirmDelete": "Bekreft sletting",
     "reset": "Nullstill",
-    "showMore": "Vis mer",
+    "showMore": "Vis alle",
     "syncData": "Synkroniser data",
     "moreDetails": "Flere detaljer"
   },

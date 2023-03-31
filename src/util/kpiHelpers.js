@@ -138,14 +138,21 @@ export function kpiInterval(formatId) {
   return [null, null];
 }
 
-export function getKPIProgress(startDate, endDate, kpi) {
+/**
+ * Return progress data cached on the KPI object.
+ *
+ * `kpi` is the KPI document to return cached progress data for.
+ * `startDate` is the start date to filter by (inclusive).
+ * `endDate` is the end date to filter by (inclusive).
+ */
+export function getCachedKPIProgress(kpi, startDate, endDate) {
   if (!kpi?.progress) {
-    return null;
+    return [];
   }
 
   const data = JSON.parse(kpi.progress);
 
-  const coll = data
+  return data
     .filter((d) => {
       const date = new Date(d[0]);
       return (!startDate || date >= startDate) && (!endDate || date <= endDate);
@@ -159,12 +166,17 @@ export function getKPIProgress(startDate, endDate, kpi) {
         comment: m[2],
       };
     })
-    .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? 1 : -1));
-
-  return coll;
+    .sort((a, b) => (a.timestamp.toDate() > b.timestamp.toDate() ? -1 : 1));
 }
 
-export function getKPIProgressQuery(startDate, endDate, kpi) {
+/**
+ * Return KPI progress collection query.
+ *
+ * `kpi` is the KPI document to build a collection query for.
+ * `startDate` is the start date to filter by (inclusive).
+ * `endDate` is the end date to filter by (inclusive).
+ */
+export function getKPIProgressQuery(kpi, startDate, endDate) {
   let query = db.collection(`kpis/${kpi.id}/progress`);
 
   if (startDate) {
@@ -175,5 +187,24 @@ export function getKPIProgressQuery(startDate, endDate, kpi) {
     query = query.where('timestamp', '<=', endDate);
   }
 
-  return query;
+  return query.orderBy('timestamp', 'desc');
+}
+
+/**
+ * Return a filtered list of measurement values where duplicated values for each
+ * date are removed.
+ *
+ * `progressCollection` is the list of progress records to filter.
+ */
+export function filterDuplicatedProgressValues(progressCollection) {
+  const seenDates = [];
+
+  return progressCollection.filter((a) => {
+    const date = a.timestamp.toDate().toISOString().slice(0, 10);
+    if (!seenDates.includes(date)) {
+      seenDates.push(date);
+      return true;
+    }
+    return false;
+  });
 }
