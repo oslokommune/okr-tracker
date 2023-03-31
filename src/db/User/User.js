@@ -1,5 +1,6 @@
 import { arrayRemove, arrayUnion, db } from '@/config/firebaseConfig';
 import preferences from './defaultPreferences';
+import { updateDocument } from '../common';
 
 const collectionReference = db.collection('users');
 
@@ -55,7 +56,7 @@ export const update = async (user) => {
   }
 
   try {
-    return collectionReference.doc(user.id).update(user);
+    return updateDocument(collectionReference.doc(user.id), user);
   } catch (error) {
     throw new Error(`Could not update user ${user.id}`);
   }

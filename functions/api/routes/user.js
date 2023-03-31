@@ -60,7 +60,11 @@ router.patch(
       };
 
       if (data) {
-        await ref.update(data);
+        await ref.update({
+          ...data,
+          edited: new Date(),
+          editedBy: 'API',
+        });
         res.send('User updated');
       } else {
         res.send('Nothing to update');
