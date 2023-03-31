@@ -41,6 +41,7 @@
     }
   },
   "functions": {
+    "codebase": "okr-tracker",
     "source": "functions"
   }
 }
