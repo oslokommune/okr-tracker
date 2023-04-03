@@ -22,6 +22,7 @@
       >
         {{ rangeOption.label }}
       </button>
+      <div v-if="showDatePicker" class="periodSelector__sep"></div>
       <flat-pickr
         v-if="showDatePicker"
         ref="datePicker"
@@ -199,9 +200,11 @@ export default {
     color: var(--color-text);
     background: var(--color-gray-light);
   }
+}
 
-  &:last-of-type {
-    border-bottom: 1px solid var(--color-grayscale-10);
-  }
+.periodSelector__sep {
+  width: 100%;
+  height: 1px;
+  background: var(--color-grayscale-10);
 }
 </style>
