@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fixed rendering of charts containing goals with missing value.
+- The period selector dropdown menu has been made more responsive.
 
 ## [3.5.0] 2023-04-03
 

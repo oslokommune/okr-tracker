@@ -161,9 +161,14 @@ export default {
   position: absolute;
   right: 0;
   z-index: 1;
+  width: 100vw;
   padding-bottom: 2px;
   background-color: var(--color-white);
   border: 1px solid var(--color-grayscale-10);
+
+  @include bp('phablet-up') {
+    width: unset;
+  }
 
   ::v-deep .flatpickr {
     &-calendar {
@@ -194,6 +199,10 @@ export default {
   background: var(--color-white);
   border: 0;
   cursor: pointer;
+
+  @include bp('phablet-up') {
+    white-space: nowrap;
+  }
 
   &:hover,
   &--active {
