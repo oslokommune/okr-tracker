@@ -276,7 +276,7 @@ paths:
             type: object
             properties:
               displayName:
-                type: number
+                type: string
               position:
                 type: string
             example:
