@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- A new site admin API for updating user details has been added.
+
 ### Fixed
 
 - The date picker on the KPI details page no longer disappears when the selected
