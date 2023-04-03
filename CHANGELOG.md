@@ -4,15 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.5.0] 2023-04-03
+
 ### Added
 
+- Added mini graphs to KPI cards.
 - A new site admin API for updating user details has been added.
-
-### Fixed
-
-- The date picker on the KPI details page no longer disappears when the selected
-  period doesn't contain any measurements.
-- The item tab bar is now more responsive.
 
 ### Changed
 
@@ -20,28 +17,21 @@ All notable changes to this project will be documented in this file. The format 
   It also includes two more pre-defined periods: current and previous quarter.
 - The API endpoints for updating key result and KPI progression values now
   accept an optional `comment` parameter.
-- The measurements tab have been redesigned and now integrates the previous
+- The measurements tab has been redesigned and now integrates the previous
   measurement details page. This in order to provide an improved overview of all
   measurements.
-
-## [3.4.0] 2023-03-03
+- Upgraded from Vue 2.6 to 2.7.
 
 ### Fixed
 
-- Fixed a bug where document references in a KPI document would be overwritten
-  by resolved document data. This also includes a fix to the API which would
-  fail while attempting to resolve these invalid document references.
-- The state of an opened measurement edit form is now kept as is, even if the
-  document has been updated in the background (e.g. while setting goals). This
-  also prevents other data fields of the document, that might have been updated
-  separately, from being overwritten with outdated data when saving the form
-  (e.g. cached progress and goals).
-- When deleting a user, all references to the user are now also removed from
-  organization and department member lists, like it is for products.
-- Date pickers used throughout the app now respect the selected language and
-  are translated accordingly.
+- Fixed a bug that caused KPI trend indicators to be displayed in inverse.
+- The date picker on the KPI details page no longer disappears when the selected
+  period doesn't contain any measurements.
 - The admin link is no longer displayed in the item tab bar for users without
   edit rights.
+- The item tab bar is now more responsive.
+
+## [3.4.0] 2023-03-03
 
 ### Changed
 
@@ -58,7 +48,21 @@ All notable changes to this project will be documented in this file. The format 
 - The page scroll manipulation when administrating measurements have been
   somewhat relaxed. When viewing details of a specific measurement, the admin
   tab now also links directly to the measurement in question.
-- Added mini graphs to KPI cards.
+
+### Fixed
+
+- Fixed a bug where document references in a KPI document would be overwritten
+  by resolved document data. This also includes a fix to the API which would
+  fail while attempting to resolve these invalid document references.
+- The state of an opened measurement edit form is now kept as is, even if the
+  document has been updated in the background (e.g. while setting goals). This
+  also prevents other data fields of the document, that might have been updated
+  separately, from being overwritten with outdated data when saving the form
+  (e.g. cached progress and goals).
+- When deleting a user, all references to the user are now also removed from
+  organization and department member lists, like it is for products.
+- Date pickers used throughout the app now respect the selected language and
+  are translated accordingly.
 
 ## [3.3.0] 2023-02-03
 
@@ -229,7 +233,7 @@ Tracker, and strive to make new releases more frequently than before.
 - Removed the previous dashboard view and all related code.
 - Removed API endpoint returning the current user's authentication token.
 
-### Fixes
+### Fixed
 
 - Various text and translation fixes.
 - Fixed a display bug for radio buttons.
