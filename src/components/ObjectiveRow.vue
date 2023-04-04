@@ -60,10 +60,14 @@ export default {
   grid-template-rows: auto auto;
   grid-template-columns: 1fr;
   align-items: center;
-  padding: 2.5rem 2rem 2rem 2rem;
+  padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
   background: var(--color-white);
+
+  .title-2 {
+    line-height: 1.25;
+  }
 
   &:hover {
     color: var(--color-hover);
@@ -76,6 +80,7 @@ export default {
 
 .objective__header {
   display: flex;
+  gap: 1.5rem;
   justify-content: space-between;
   margin-bottom: 0;
 }
@@ -86,6 +91,6 @@ export default {
 }
 
 .objective__spacer {
-  height: 1.5rem;
+  height: 0.5rem;
 }
 </style>

@@ -236,6 +236,6 @@ export default {
 .objective {
   position: relative;
   z-index: 1;
-  margin: 1.25rem 0;
+  margin: 1rem 0;
 }
 </style>
