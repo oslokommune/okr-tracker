@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - Improved OKR overview page styling.
+- Improved tooltip styling.
 
 ### Fixed
 
