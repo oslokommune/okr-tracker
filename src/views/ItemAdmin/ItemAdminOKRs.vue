@@ -92,7 +92,7 @@
             :data-cy="cyCreate"
             @click="addEvent"
           >
-            <i class="icon fa fa-plus" />
+            <pkt-icon class="icon" name="plus-sign" />
             <span>{{ $t('btn.create') }}</span>
           </button>
         </div>
@@ -527,6 +527,11 @@ export default {
 .miller__add {
   margin-top: auto;
   border-top: 1px solid var(--color-grayscale-10);
+
+  .icon {
+    height: 1.5rem;
+    margin-right: -0.25rem;
+  }
 }
 
 .miller__icon {

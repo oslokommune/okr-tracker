@@ -8,7 +8,7 @@
           class="btn btn--ter btn--icon btn--fw"
           @click="showValueModal = true"
         >
-          <i class="icon fa fa-plus" />
+          <pkt-icon class="icon" name="plus-sign" />
           <span>{{ $t('kpi.newValue') }}</span>
         </button>
       </div>
@@ -163,6 +163,11 @@ export default {
       flex-direction: row;
       justify-content: space-between;
     }
+  }
+
+  .icon {
+    height: 1.5rem;
+    margin-right: -0.25rem;
   }
 }
 </style>
