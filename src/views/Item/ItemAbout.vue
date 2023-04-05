@@ -125,25 +125,33 @@ export default {
 
         this.activeItem.team.forEach((employee) => {
           if (!employee.position) {
-            !this.teamMembers.others
-              ? (this.teamMembers.others = [employee])
-              : this.teamMembers.others.push(employee);
+            if (!this.teamMembers.others) {
+              this.teamMembers.others = [employee];
+            } else {
+              this.teamMembers.others.push(employee);
+            }
           } else if (possibleDevelopers.includes(employee.position)) {
-            !this.teamMembers.developers
-              ? (this.teamMembers.developers = [employee])
-              : this.teamMembers.developers.push(employee);
+            if (!this.teamMembers.developers) {
+              this.teamMembers.developers = [employee];
+            } else {
+              this.teamMembers.developers.push(employee);
+            }
           } else if (possibleDesigners.includes(employee.position)) {
-            !this.teamMembers.designers
-              ? (this.teamMembers.designers = [employee])
-              : this.teamMembers.designers.push(employee);
+            if (!this.teamMembers.designers) {
+              this.teamMembers.designers = [employee];
+            } else {
+              this.teamMembers.designers.push(employee);
+            }
           } else if (possibleAdm.includes(employee.position)) {
-            !this.teamMembers.administration
-              ? (this.teamMembers.administration = [employee])
-              : this.teamMembers.administration.push(employee);
+            if (!this.teamMembers.administration) {
+              this.teamMembers.administration = [employee];
+            } else {
+              this.teamMembers.administration.push(employee);
+            }
+          } else if (!this.teamMembers[employee.position]) {
+            this.teamMembers[employee.position] = [employee];
           } else {
-            !this.teamMembers[employee.position]
-              ? (this.teamMembers[employee.position] = [employee])
-              : this.teamMembers[employee.position].push(employee);
+            this.teamMembers[employee.position].push(employee);
           }
         });
       },
