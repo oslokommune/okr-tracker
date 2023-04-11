@@ -42,7 +42,8 @@
                 :key="objective.id"
                 class="itemHome__objectives--item"
               >
-                <objective-row :objective="objective"></objective-row>
+                <objective-row :objective="objective" :show-description="true">
+                </objective-row>
                 <ul v-if="objective.keyResults.length">
                   <li
                     v-for="keyResult in objective.keyResults"

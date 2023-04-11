@@ -7,9 +7,11 @@
       <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>
     </h3>
-    <p v-if="objective.description" class="objective__description">
+    <p v-if="showDescription && objective.description" class="objective__description">
       {{ objective.description }}
     </p>
+    <div v-if="showProgress" class="objective__spacer"></div>
+    <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
   </router-link>
 </template>
 
@@ -20,10 +22,22 @@ import { format } from 'd3-format';
 export default {
   name: 'ObjectiveRow',
 
+  components: {
+    ProgressBar: () => import('@/components/ProgressBar.vue'),
+  },
+
   props: {
     objective: {
       type: Object,
       required: true,
+    },
+    showDescription: {
+      type: Boolean,
+      default: false,
+    },
+    showProgress: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -46,9 +60,14 @@ export default {
   grid-template-rows: auto auto;
   grid-template-columns: 1fr;
   align-items: center;
-  padding: 2.5rem 2rem 2rem 2rem;
+  padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
+  background: var(--color-white);
+
+  .title-2 {
+    line-height: 1.25;
+  }
 
   &:hover {
     color: var(--color-hover);
@@ -61,6 +80,7 @@ export default {
 
 .objective__header {
   display: flex;
+  gap: 1.5rem;
   justify-content: space-between;
   margin-bottom: 0;
 }
@@ -68,5 +88,9 @@ export default {
 .objective__description {
   margin-top: 0.25rem;
   line-height: 1.5rem;
+}
+
+.objective__spacer {
+  height: 0.5rem;
 }
 </style>

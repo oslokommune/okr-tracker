@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file. The format 
 - A new timeline view for objectives has been added (visualized in a Gantt
   chart).
 
+### Changed
+
+- Improved OKR overview page styling.
+
 ### Fixed
 
 - Fixed rendering of charts containing goals with missing value.
