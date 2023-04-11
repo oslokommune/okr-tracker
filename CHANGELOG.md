@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- A new timeline view for objectives has been added (visualized in a Gantt
+  chart).
+
 ### Fixed
 
 - Fixed rendering of charts containing goals with missing value.
