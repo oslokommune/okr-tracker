@@ -46,15 +46,16 @@
           />
 
           <form-component
-            v-model="goalValue"
+            v-model="value"
             input-type="input"
             name="value"
             :label="$t('fields.value')"
             type="number"
             rules="required"
           />
-          <span v-if="goalValue" class="display-as">
-            {{ $t('general.displayedAs') }} {{ formatKPIValue(kpi, value) }}
+          <span v-if="value" class="display-as">
+            {{ $t('general.displayedAs') }}
+            {{ formatKPIValue(kpi, typePercentage ? value / 100 : value) }}
           </span>
 
           <template #actions="{ handleSubmit, submitDisabled }">
@@ -120,14 +121,6 @@ export default {
     typePercentage() {
       return this.kpi.format === 'percentage';
     },
-    goalValue: {
-      get() {
-        return this.typePercentage ? this.value * 100 : this.value;
-      },
-      set(val) {
-        this.value = this.typePercentage ? val / 100 : val;
-      },
-    },
   },
 
   watch: {
@@ -155,6 +148,10 @@ export default {
 
   methods: {
     formatKPIValue,
+
+    truncateFloat(f) {
+      return parseFloat(f.toFixed(4));
+    },
 
     close() {
       this.$emit('close');
@@ -202,7 +199,8 @@ export default {
         this.period = [fromDate.toDate(), toDate.toDate()];
         [this.fromDate, this.toDate] = this.period;
       }
-      this.value = activeGoal.get('value');
+      const val = activeGoal.get('value');
+      this.value = this.typePercentage ? this.truncateFloat(val * 100) : val;
     },
 
     async clearActiveGoal() {
@@ -221,7 +219,7 @@ export default {
           name: this.name,
           fromDate: this.fromDate,
           toDate: this.toDate,
-          value: this.value,
+          value: this.typePercentage ? this.value / 100 : this.value,
         });
 
         this.$toasted.show(this.$t('toaster.savedChanges'));
