@@ -49,9 +49,7 @@ module.exports = {
     'import/extensions': [0, 'never'],
     'prefer-destructuring': 'off',
     'no-underscore-dangle': 'off',
-    // TODO: Re-enable and lint this rule separately.
-    'no-unused-expressions': 'off',
-    'curly': ['error', 'all'],
+    curly: ['error', 'all'],
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
