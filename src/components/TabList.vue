@@ -34,9 +34,7 @@
         :tabindex="isActiveTab(index) ? 0 : -1"
         @click="() => setActiveTab(index)"
       >
-        <!-- TODO: Remove once all users have been updated to use Punkt icons only. -->
-        <i v-if="tab.icon" class="tabList__icon fa" :class="`fa-${tab.icon}`" />
-        <pkt-icon v-if="tab.pktIcon" class="tabList__icon" :name="tab.pktIcon" />
+        <pkt-icon v-if="tab.icon" class="tabList__icon" :name="tab.icon" />
         {{ tab.tabName }}
       </button>
     </div>

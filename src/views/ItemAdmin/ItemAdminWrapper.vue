@@ -46,17 +46,17 @@ export default {
     tabs() {
       return [
         {
-          icon: 'cogs',
+          icon: 'cogwheel',
           tabName: this.$t('general.general'),
           tooltip: null,
         },
         {
-          icon: 'chart-pie',
+          icon: 'bullseye',
           tabName: this.$t('general.OKRsLong'),
           tooltip: null,
         },
         {
-          pktIcon: 'graph',
+          icon: 'graph',
           tabName: this.$t('general.KPIs'),
           tooltip: null,
         },
