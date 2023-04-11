@@ -19,7 +19,7 @@
           </li>
         </ul>
         <button class="btn btn--ter btn--icon btn--fw" @click="addGoal(kpi)">
-          <i class="icon fa fa-plus" />
+          <pkt-icon class="icon" name="plus-sign" />
           <span>{{ $t('kpi.goals.new') }}</span>
         </button>
       </div>
@@ -338,6 +338,11 @@ export default {
     button {
       margin-top: auto;
       border-top: 1px solid var(--color-grayscale-10);
+    }
+
+    .icon {
+      height: 1.5rem;
+      margin-right: -0.25rem;
     }
   }
 
