@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fixed rendering of charts containing goals with missing value.
+
 ## [3.5.0] 2023-04-03
 
 ### Added

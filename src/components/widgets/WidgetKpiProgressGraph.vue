@@ -135,6 +135,7 @@ export default {
         endDate: this.endDate,
         progress: this.progress,
         targets: this.goals
+          .filter((g) => g.value !== null)
           .map((g) => ({
             startDate: g.fromDate.toDate(),
             endDate: g.toDate.toDate(),
