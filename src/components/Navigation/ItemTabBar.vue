@@ -22,23 +22,34 @@
       </router-link>
     </nav>
 
-    <dashboard-period-selector v-if="$route.name === 'ItemMeasurements'" />
+    <period-selector
+      v-if="_periods.length"
+      :periods="_periods"
+      :show-date-picker="$route.name === 'ItemMeasurements'"
+    />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import DashboardPeriodSelector from '@/components/DashboardPeriodSelector.vue';
+import PeriodSelector from '@/components/PeriodSelector.vue';
+import getPeriods from '@/config/periods';
 
 export default {
   name: 'ItemTabBar',
 
   components: {
-    DashboardPeriodSelector,
+    PeriodSelector,
   },
 
   computed: {
-    ...mapState(['activeItem', 'activeObjective', 'activeKeyResult', 'activeKpi']),
+    ...mapState([
+      'activeItem',
+      'activeKeyResult',
+      'activeKpi',
+      'activeObjective',
+      'periods',
+    ]),
     ...mapGetters(['hasEditRights']),
 
     itemTabs() {
@@ -73,6 +84,22 @@ export default {
         default:
           return {};
       }
+    },
+
+    _periods() {
+      if (this.$route.name === 'ItemHome') {
+        return this.periods.map((p) => ({
+          label: p.name,
+          key: p.id,
+          id: p.id,
+          startDate: p.startDate.toDate(),
+          endDate: p.endDate.toDate(),
+        }));
+      }
+      if (this.$route.name === 'ItemMeasurements') {
+        return Object.values(getPeriods());
+      }
+      return [];
     },
   },
 };

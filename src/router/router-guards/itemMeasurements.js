@@ -7,8 +7,13 @@ export default async function itemMeasurements(to, from, next) {
   const { activeItem } = state;
 
   try {
-    if (!state.selectedPeriod) {
-      const periods = getPeriods();
+    const periods = getPeriods();
+
+    /*
+     * TODO: The second test here is only temporary and can be removed once the
+     * period selectors on the OKR and KPI pages have been reconciled.
+     */
+    if (!state.selectedPeriod || !periods[state.selectedPeriod]) {
       const { resultIndicatorPeriod } = to.query;
       const selectedPeriod =
         resultIndicatorPeriod && Object.keys(periods).includes(resultIndicatorPeriod)

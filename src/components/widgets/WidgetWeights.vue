@@ -18,7 +18,6 @@
 <script>
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
-import objectiveInPeriod from '@/util/okr';
 
 export default {
   name: 'WidgetWeights',
@@ -54,12 +53,12 @@ export default {
         return [];
       }
 
-      let siblings = null;
+      let siblings = this.items;
 
-      if (this.type === 'objective') {
-        siblings = (o) => objectiveInPeriod(this.activeItem, o);
-      } else {
-        siblings = ({ objective }) => objective.split('/')[1] === this.activeItem.id;
+      if (this.type !== 'objective') {
+        siblings = siblings.filter(
+          ({ objective }) => objective.split('/')[1] === this.activeItem.id
+        );
       }
 
       const processWeights = ({ weight, id, name }) => ({
@@ -68,7 +67,7 @@ export default {
         name,
       });
 
-      return this.items.filter(siblings).map(processWeights);
+      return siblings.map(processWeights);
     },
   },
 

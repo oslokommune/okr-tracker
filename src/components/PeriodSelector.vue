@@ -11,7 +11,7 @@
     </button>
     <div v-if="isOpen" class="periodSelector__content">
       <button
-        v-for="rangeOption in options"
+        v-for="rangeOption in periods"
         :key="rangeOption.value"
         class="periodSelector__option"
         :class="{
@@ -22,7 +22,9 @@
       >
         {{ rangeOption.label }}
       </button>
+      <div v-if="showDatePicker" class="periodSelector__sep"></div>
       <flat-pickr
+        v-if="showDatePicker"
         ref="datePicker"
         v-model="range"
         :config="flatPickerConfig"
@@ -39,13 +41,25 @@ import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import endOfDay from 'date-fns/endOfDay';
 import { dateLongCompact } from '@/util';
-import getPeriods from '@/config/periods';
 
 export default {
-  name: 'DashboardPeriodSelector',
+  name: 'PeriodSelector',
 
   directives: {
     ClickOutside,
+  },
+
+  props: {
+    periods: {
+      type: Array,
+      required: false,
+      default: () => [],
+    },
+    showDatePicker: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
   },
 
   data: () => ({
@@ -57,7 +71,6 @@ export default {
       maxDate: null,
     },
     range: null,
-    options: Object.values(getPeriods()),
   }),
 
   computed: {
@@ -148,9 +161,14 @@ export default {
   position: absolute;
   right: 0;
   z-index: 1;
+  width: 100vw;
   padding-bottom: 2px;
   background-color: var(--color-white);
   border: 1px solid var(--color-grayscale-10);
+
+  @include bp('phablet-up') {
+    width: unset;
+  }
 
   ::v-deep .flatpickr {
     &-calendar {
@@ -182,14 +200,20 @@ export default {
   border: 0;
   cursor: pointer;
 
+  @include bp('phablet-up') {
+    white-space: nowrap;
+  }
+
   &:hover,
   &--active {
     color: var(--color-text);
     background: var(--color-gray-light);
   }
+}
 
-  &:last-of-type {
-    border-bottom: 1px solid var(--color-grayscale-10);
-  }
+.periodSelector__sep {
+  width: 100%;
+  height: 1px;
+  background: var(--color-grayscale-10);
 }
 </style>

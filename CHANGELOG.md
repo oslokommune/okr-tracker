@@ -11,12 +11,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
+- The OKR period selection tabs have been moved into a drop down menu in the top
+  bar matching the period selector on the KPI page.
 - Improved OKR overview page styling.
 - Improved tooltip styling.
 
 ### Fixed
 
 - Fixed rendering of charts containing goals with missing value.
+- The period selector dropdown menu has been made more responsive.
 
 ## [3.5.0] 2023-04-03
 

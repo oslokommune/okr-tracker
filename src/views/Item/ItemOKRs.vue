@@ -6,63 +6,53 @@
       </header>
 
       <section>
-        <tab-list
-          aria-label="Velg periode"
-          :tabs="tabs"
-          :active-tab="activeTab"
-          :set-active-tab="handleTabChange"
-          :tab-ids="tabIds"
-        />
-
-        <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
-          <content-loader-action-bar
-            v-if="dataLoading"
-            class="itemHome__header--content-loader"
-          ></content-loader-action-bar>
-          <action-bar v-else-if="periodObjectives.length" />
-          <content-loader-item v-if="dataLoading"></content-loader-item>
-          <empty-state
-            v-else-if="!periodObjectives.length && !dataLoading"
-            :icon="'exclamation'"
-            :heading="$t('empty.noPeriods.heading')"
-            :body="$t('empty.noPeriods.body')"
+        <content-loader-action-bar
+          v-if="dataLoading"
+          class="itemHome__header--content-loader"
+        ></content-loader-action-bar>
+        <action-bar v-else-if="periodObjectives.length" />
+        <content-loader-item v-if="dataLoading"></content-loader-item>
+        <empty-state
+          v-else-if="!periodObjectives.length && !dataLoading"
+          :icon="'exclamation'"
+          :heading="$t('empty.noPeriods.heading')"
+          :body="$t('empty.noPeriods.body')"
+        >
+          <router-link
+            v-if="hasEditRights"
+            class="btn btn--ter"
+            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
           >
-            <router-link
-              v-if="hasEditRights"
-              class="btn btn--ter"
-              :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
+            {{ $t('empty.noPeriods.buttonText') }}
+          </router-link>
+        </empty-state>
+        <div v-if="periodObjectives.length && !dataLoading">
+          <ul v-if="['compact', 'details'].includes(view)">
+            <li
+              v-for="objective in periodObjectives"
+              :key="objective.id"
+              class="itemHome__objectives--item"
             >
-              {{ $t('empty.noPeriods.buttonText') }}
-            </router-link>
-          </empty-state>
-          <div v-if="periodObjectives.length && !dataLoading">
-            <ul v-if="['compact', 'details'].includes(view)">
-              <li
-                v-for="objective in periodObjectives"
-                :key="objective.id"
-                class="itemHome__objectives--item"
-              >
-                <objective-row :objective="objective" :show-description="true">
-                </objective-row>
-                <ul v-if="objective.keyResults.length">
-                  <li
-                    v-for="keyResult in objective.keyResults"
-                    :key="keyResult.id"
-                    class="keyResultRow"
-                    :class="{ 'keyResultRow--isCompact': view === 'compact' }"
-                  >
-                    <key-result-row :key-result="keyResult"></key-result-row>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <gantt-chart
-              v-else-if="view === 'timeline'"
-              :objectives="periodObjectives"
-              :item="activeItem"
-            />
-          </div>
-        </tab-panel>
+              <objective-row :objective="objective" :show-description="true">
+              </objective-row>
+              <ul v-if="objective.keyResults.length">
+                <li
+                  v-for="keyResult in objective.keyResults"
+                  :key="keyResult.id"
+                  class="keyResultRow"
+                  :class="{ 'keyResultRow--isCompact': view === 'compact' }"
+                >
+                  <key-result-row :key-result="keyResult"></key-result-row>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <gantt-chart
+            v-else-if="view === 'timeline'"
+            :objectives="periodObjectives"
+            :item="activeItem"
+          />
+        </div>
       </section>
     </main>
 
@@ -74,7 +64,12 @@
       >
         <progression-chart :progression="activePeriod.progression" />
       </widget>
-      <widget-weights type="objective" :active-item="activePeriod" :items="objectives" />
+      <widget-weights
+        v-if="periodObjectives.length"
+        type="objective"
+        :active-item="activeItem"
+        :items="periodObjectives"
+      />
     </aside>
   </div>
 </template>
@@ -83,12 +78,9 @@
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { isBefore, addDays, isWithinInterval } from 'date-fns';
 import objectiveInPeriod from '@/util/okr';
-import tabIdsHelper from '@/util/tabUtils';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
-import TabList from '@/components/TabList.vue';
-import TabPanel from '@/components/TabPanel.vue';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
@@ -107,8 +99,6 @@ export default {
     ProgressionChart,
     ContentLoaderItem,
     ContentLoaderActionBar,
-    TabPanel,
-    TabList,
   },
 
   data: () => ({
@@ -123,16 +113,13 @@ export default {
       'keyResults',
       'objectives',
       'periods',
+      'selectedPeriod',
       'user',
     ]),
     ...mapGetters(['hasEditRights']),
 
     view() {
       return this.user.preferences.view;
-    },
-
-    tabIds() {
-      return tabIdsHelper('periods');
     },
 
     filteredPeriods() {
@@ -144,13 +131,6 @@ export default {
       return this.periods.filter(({ startDate }) =>
         isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance))
       );
-    },
-
-    tabs() {
-      return this.filteredPeriods.map((period) => ({
-        tabName: period.name,
-        tooltip: { content: periodDates(period) },
-      }));
     },
 
     periodObjectives() {
@@ -170,25 +150,42 @@ export default {
     },
   },
 
+  watch: {
+    selectedPeriod: {
+      immediate: true,
+      handler() {
+        if (this.selectedPeriod && this.selectedPeriod.id) {
+          this.setPeriod(this.selectedPeriod.id, false);
+        }
+      },
+    },
+  },
+
   created() {
     if (this.filteredPeriods.length > 0) {
       const defaultPeriodIndex = this.getCurrentPeriodIndex() || 0;
-      this.setPeriod(this.filteredPeriods[defaultPeriodIndex].id);
-      this.setActiveTab(defaultPeriodIndex);
+      this.setPeriod(this.filteredPeriods[defaultPeriodIndex].id, true);
+    } else {
+      this.setPeriod(null, false);
     }
   },
 
   methods: {
-    ...mapActions(['set_active_period_and_data', 'setDataLoading']),
+    ...mapActions(['set_active_period_and_data', 'setDataLoading', 'setSelectedPeriod']),
 
-    setActiveTab(tabIndex) {
-      this.activeTab = tabIndex;
-    },
-
-    async setPeriod(activePeriodId) {
+    async setPeriod(activePeriodId, setSelectedPeriod) {
       try {
         await this.setDataLoading(true);
         await this.set_active_period_and_data(activePeriodId);
+        if (setSelectedPeriod) {
+          await this.setSelectedPeriod({
+            label: this.activePeriod.name,
+            key: this.activePeriod.id,
+            id: this.activePeriod.id,
+            startDate: this.activePeriod.startDate.toDate(),
+            endDate: this.activePeriod.endDate.toDate(),
+          });
+        }
       } catch (e) {
         console.log(e);
       } finally {
@@ -197,12 +194,6 @@ export default {
     },
 
     periodDates,
-
-    async handleTabChange(tabIndex) {
-      const activePeriodId = this.filteredPeriods[tabIndex].id;
-      await this.setPeriod(activePeriodId);
-      this.setActiveTab(tabIndex);
-    },
 
     getCurrentPeriodIndex() {
       const now = new Date();
