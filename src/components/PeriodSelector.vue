@@ -1,14 +1,17 @@
 <template>
   <div v-click-outside="hide" class="periodSelector">
-    <button
-      v-tooltip.bottom="$t('period.choosePeriod')"
-      class="pkt-btn pkt-btn--secondary pkt-btn--small pkt-btn--icon"
+    <pkt-button
+      v-tooltip.bottom="!isOpen ? $t('period.choosePeriod') : null"
+      size="medium"
+      skin="secondary"
+      variant="icon-left"
+      icon-name="calendar"
       :class="{ 'pkt-btn--focus': isOpen }"
-      @click="toggle"
+      @onClick="toggle"
     >
-      <pkt-icon name="calendar" class="pkt-btn__icon" />
-      <span class="pkt-btn__text pkt-show-phablet-up">{{ label }}</span>
-    </button>
+      {{ label }}
+    </pkt-button>
+
     <div v-if="isOpen" class="periodSelector__content">
       <button
         v-for="rangeOption in periods"
@@ -40,6 +43,7 @@
 import { mapState, mapActions } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import endOfDay from 'date-fns/endOfDay';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { dateLongCompact } from '@/util';
 
 export default {
@@ -47,6 +51,10 @@ export default {
 
   directives: {
     ClickOutside,
+  },
+
+  components: {
+    PktButton,
   },
 
   props: {
@@ -137,21 +145,31 @@ export default {
     align-items: center;
     width: inherit;
     height: 100%;
-    font-weight: 500;
+    font-size: 1rem;
     background-color: var(--color-blue-light);
-    border-color: var(--color-blue-light);
+    border: 0;
+
+    &:hover {
+      color: var(--color-blue-dark);
+    }
 
     &--focus,
     &:active {
       color: var(--color-white);
       text-decoration: none;
       background-color: var(--color-hover);
-      border-color: var(--color-hover);
+      outline: 0;
+
+      &:hover {
+        color: var(--color-white);
+      }
     }
 
-    @include bp('phablet-up') {
-      .pkt-btn__icon {
-        margin-right: 0.3125rem;
+    ::v-deep .pkt-btn__text {
+      display: none;
+
+      @include bp('phablet-up') {
+        display: block;
       }
     }
   }

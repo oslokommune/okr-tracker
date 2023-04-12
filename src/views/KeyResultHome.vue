@@ -58,13 +58,11 @@
       </widget>
 
       <pkt-alert v-if="activeKeyResult.auto" skin="info">
-        <template #content>{{ $t('keyResult.autoHelpText') }}</template>
+        {{ $t('keyResult.autoHelpText') }}
       </pkt-alert>
 
       <pkt-alert v-if="activeKeyResult.auto && activeKeyResult.error" skin="error">
-        <template #content>
-          {{ $t('keyResult.autoError') }} {{ activeKeyResult.error }}
-        </template>
+        {{ $t('keyResult.autoError') }} {{ activeKeyResult.error }}
       </pkt-alert>
 
       <widget-progress-history

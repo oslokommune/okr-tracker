@@ -25,7 +25,7 @@
   "dependencies": {
     "@braid/griddle": "^2.3.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "@oslokommune/punkt-vue2": "0.20.28",
+    "@oslokommune/punkt-vue2": "^3.1.2",
     "canvg": "^3.0.7",
     "d3": "^7.6.1",
     "d3-array": "^3.1.1",
@@ -69,8 +69,8 @@
   "devDependencies": {
     "@babel/eslint-parser": "7.16.5",
     "@babel/preset-env": "^7.16.5",
-    "@oslokommune/punkt-cli": "0.20.26",
-    "@oslokommune/punkt-css": "^0.20.20",
+    "@oslokommune/punkt-cli": "^3.1.2",
+    "@oslokommune/punkt-css": "^3.1.2",
     "@vitejs/plugin-vue2": "^2.2.0",
     "env-cmd": "^10.1.0",
     "esbuild": "^0.15.14",
