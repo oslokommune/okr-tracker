@@ -39,11 +39,11 @@
 
     <aside v-if="activeObjective" class="aside widgets">
       <widget
-        v-if="activeObjective.progression"
+        v-if="typeof activeObjective.progression === 'number'"
         :title="$t('widget.progression.objective')"
         size="small"
       >
-        <progression-chart :progression="activeObjective.progression" />
+        <progression-chart :progression="activeObjective.progression" :period="period" />
       </widget>
       <widget-weights
         type="keyResult"
@@ -94,6 +94,15 @@ export default {
   computed: {
     ...mapState(['activeObjective', 'keyResults']),
     ...mapGetters(['hasEditRights']),
+
+    period() {
+      if (this.activeObjective.startDate && this.activeObjective.endDate) {
+        const { startDate, endDate } = this.activeObjective;
+        return { startDate, endDate };
+      }
+
+      return this.activeObjective.period;
+    },
   },
 
   watch: {

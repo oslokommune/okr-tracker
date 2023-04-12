@@ -42,7 +42,7 @@ function initGroup(g, name = 'group') {
   );
 }
 
-// Initializes the outer group element by appending the neccessary elements within
+// Initializes the outer group element by appending the necessary elements within
 function initOuterGroup(el) {
   el.append('g');
   el.append('line').attr('stroke', 'black');

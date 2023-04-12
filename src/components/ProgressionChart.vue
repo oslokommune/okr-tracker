@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import PieChart from '@/util/PieChart';
 
 export default {
@@ -14,16 +13,16 @@ export default {
       type: Number,
       required: true,
     },
+    period: {
+      type: Object,
+      required: true,
+    },
   },
 
   data: () => ({
     svg: null,
     chart: null,
   }),
-
-  computed: {
-    ...mapState(['activePeriod']),
-  },
 
   mounted() {
     setTimeout(() => {
@@ -37,7 +36,7 @@ export default {
   methods: {
     renderProgressionChart() {
       if (this.chart) {
-        this.chart.render(this.progression, this.activePeriod);
+        this.chart.render(this.progression, this.period);
       }
     },
     getTitle() {
