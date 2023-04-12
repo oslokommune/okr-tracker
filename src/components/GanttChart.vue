@@ -80,13 +80,13 @@ export default {
 
   computed: {
     minDate() {
-      return min([this.now, ...this.objectives.map((o) => o.period.startDate.toDate())]);
+      return min([this.now, ...this.objectives.map((o) => this.startDate(o).toDate())]);
     },
 
     maxDate() {
       const date = max([
         this.now,
-        ...this.objectives.map((o) => o.period.endDate.toDate()),
+        ...this.objectives.map((o) => this.endDate(o).toDate()),
       ]);
       return addMonths(date, 1);
     },
@@ -98,11 +98,19 @@ export default {
     orderedObjectives() {
       return this.objectives
         .slice()
-        .sort((a, b) => a.period.startDate - b.period.startDate);
+        .sort((a, b) => this.startDate(a) - this.startDate(b));
     },
   },
 
   methods: {
+    startDate(o) {
+      return o.startDate || o.period.startDate;
+    },
+
+    endDate(o) {
+      return o.endDate || o.period.endDate;
+    },
+
     formatMonth(d) {
       return capitalize(dateMonthYear(d));
     },
@@ -117,12 +125,12 @@ export default {
     objectiveStyle(o) {
       return [
         `margin-left: ${
-          differenceInDays(o.period.startDate.toDate(), startOfMonth(this.minDate)) *
+          differenceInDays(this.startDate(o).toDate(), startOfMonth(this.minDate)) *
             this.PPD +
           this.endPadding
         }px`,
         `width: ${
-          differenceInDays(o.period.endDate.toDate(), o.period.startDate.toDate()) *
+          differenceInDays(this.endDate(o).toDate(), this.startDate(o).toDate()) *
           this.PPD
         }px`,
       ].join(';');
