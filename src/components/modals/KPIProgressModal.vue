@@ -53,14 +53,12 @@
       </div>
 
       <pkt-alert v-if="existingValue" skin="warning">
-        <template #content>
-          {{
-            $t('widget.history.overwriteWarning', {
-              date: dateShort(existingValue.timestamp.toDate()),
-              value: formatKPIValue(activeKpi, existingValue.value),
-            })
-          }}
-        </template>
+        {{
+          $t('widget.history.overwriteWarning', {
+            date: dateShort(existingValue.timestamp.toDate()),
+            value: formatKPIValue(activeKpi, existingValue.value),
+          })
+        }}
       </pkt-alert>
 
       <template #actions="{ handleSubmit, submitDisabled }">

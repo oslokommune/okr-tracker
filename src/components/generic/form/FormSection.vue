@@ -2,18 +2,20 @@
   <validation-observer v-slot="{ errors, valid, validated }" ref="form" tag="form">
     <slot />
 
-    <pkt-alert v-if="validated && !valid" skin="error" class="form-errors">
-      <template #title>{{ $t('general.formErrors') }}</template>
-      <template #content>
-        <ul v-if="errors" class="form-errors__list">
-          <template v-for="(fieldErrors, fieldName) in errors">
-            <li v-if="fieldErrors.length" :key="fieldName">
-              <span>{{ $t('fields.' + fieldName) }}</span>
-              <span>{{ fieldErrors[0] }}</span>
-            </li>
-          </template>
-        </ul>
-      </template>
+    <pkt-alert
+      v-if="validated && !valid"
+      skin="error"
+      class="form-errors"
+      :title="$t('general.formErrors')"
+    >
+      <ul v-if="errors" class="form-errors__list">
+        <template v-for="(fieldErrors, fieldName) in errors">
+          <li v-if="fieldErrors.length" :key="fieldName">
+            <span>{{ $t('fields.' + fieldName) }}</span>
+            <span>{{ fieldErrors[0] }}</span>
+          </li>
+        </template>
+      </ul>
     </pkt-alert>
 
     <div class="button-row">

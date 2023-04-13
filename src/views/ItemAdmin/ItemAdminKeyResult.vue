@@ -116,9 +116,7 @@
       </toggle-button>
 
       <pkt-alert v-if="keyResult.auto && keyResult.api" skin="warning">
-        <template #content>
-          {{ $t('keyResult.apiAndKeyRes') }}
-        </template>
+        {{ $t('keyResult.apiAndKeyRes') }}
       </pkt-alert>
 
       <template #actions="{ handleSubmit, submitDisabled }">
