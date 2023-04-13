@@ -18,10 +18,9 @@ import { getTimeProgression } from './helpers';
 
 export default class Pie {
   /**
-   * Initialize the SVG and create the necessary DOM elements
+   * Initialize the SVG and create the necessary DOM elements.
    */
-  constructor(svg, { darkmode } = {}) {
-    this.darkmode = darkmode || false;
+  constructor(svg) {
     this.svg = select(svg).call(initSvg.bind(this));
     this.canvas = this.svg.append('g').classed('canvas', true);
     this.inner = this.canvas.append('g').call(initGroup, 'inner');
@@ -32,7 +31,7 @@ export default class Pie {
   }
 
   /**
-   * Update the visualisation using the provided data
+   * Update the visualization using the provided data.
    */
   render(progression, period) {
     const time = getTimeProgression(period);
@@ -49,7 +48,7 @@ export default class Pie {
     const todayAngle = outerArcs[0].endAngle;
     this.outer.select('line').call(updateTodayLine, todayAngle);
     this.outer.select('text').call(updateTodayTextPosition, todayAngle);
-    this.outer.select('text').attr('fill', this.darkmode ? 'white' : colors.innerDone);
+    this.outer.select('text').attr('fill', colors.innerDone);
     // Update the percentage text by tweening to the provided value
     this.percentText.call(updatePercentText.bind(this), progression);
   }

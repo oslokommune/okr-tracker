@@ -45,13 +45,13 @@ function initGroup(g, name = 'group') {
 // Initializes the outer group element by appending the neccessary elements within
 function initOuterGroup(el) {
   el.append('g');
-  el.append('line').attr('stroke', this.darkmode ? 'white' : 'black');
+  el.append('line').attr('stroke', 'black');
 
   el.append('text')
     .attr('font-size', 14)
     .attr('y', 5)
     .text('I dag')
-    .attr('fill', this.darkmode ? 'white' : colors.innerDone);
+    .attr('fill', colors.innerDone);
 }
 
 // Positions and styles the percentage text element
@@ -61,7 +61,7 @@ function initPercentText(el) {
     .attr('text-anchor', 'middle')
     .attr('font-size', 24)
     .attr('font-weight', 'bold')
-    .attr('fill', this.darkmode ? 'white' : colors.innerDone)
+    .attr('fill', colors.innerDone)
     .attr('y', 8);
 }
 
@@ -104,7 +104,7 @@ function updatePercentText(el, tweenTo) {
         select(j[i]).text(formatPercent(counter(t) || 0));
       };
     })
-    .attr('fill', this.darkmode ? 'white' : colors.innerDone);
+    .attr('fill', colors.innerDone);
 }
 
 // Draws/redraws the shape of the inner arc
@@ -112,12 +112,7 @@ function updateInnerArcs(el, data) {
   el.selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', (d, i) => {
-      if (this.darkmode) {
-        return colors.outer;
-      }
-      return i === 0 ? colors.innerDone : colors.innerFull;
-    })
+    .attr('fill', (d, i) => (i === 0 ? colors.innerDone : colors.innerFull))
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0.15))
     .transition()
     .duration(duration)
@@ -131,7 +126,7 @@ function updateOuterArcs(el, data) {
     .selectAll('path')
     .data(data)
     .join('path')
-    .attr('fill', () => (this.darkmode ? 'white' : colors.outer))
+    .attr('fill', colors.outer)
     .attr('fill-opacity', (d, i) => (i === 0 ? 1 : 0))
     .transition()
     .duration(duration)
