@@ -292,11 +292,13 @@ export default {
       try {
         const myCall = functions.httpsCallable('triggerScheduledFunction');
         await myCall(this.keyResult.id);
+        this.keyResult.valid = true;
+        this.keyResult.error = false;
         this.$toasted.show(this.$t('general.success'));
       } catch (error) {
         this.loadingConnection = false;
-        this.$toasted.error(error.message);
-        throw new Error(error.message);
+        this.keyResult.valid = false;
+        this.keyResult.error = error.message;
       }
       this.loadingConnection = false;
     },
