@@ -482,6 +482,7 @@
   },
   "sheets": {
     "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",
+    "400": "Klarte ikke å lese ut data. Er navnet på Google Sheets-fanen riktig?",
     "403": "Systemet har ikke tilgang til å lese Google Sheets-dokumentet.",
     "404": "Fant ikke Google Sheets-dokumentet. Feil URL?",
     "noDataInCell": "Celle {cell} er tom."

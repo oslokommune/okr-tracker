@@ -304,13 +304,9 @@ export default {
     },
 
     showError(msg) {
-      if (msg === '403') {
-        return this.$t('sheets.403');
+      if (['400', '403', '404'].includes(msg)) {
+        return this.$t(`sheets.${msg}`);
       }
-      if (msg === '404') {
-        return this.$t('sheets.404');
-      }
-
       if (msg.includes('Cannot find data in cell')) {
         const cell = msg.split('cell ')[1];
         return this.$t('sheets.noDataInCell', { cell });
