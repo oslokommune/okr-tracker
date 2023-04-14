@@ -305,7 +305,8 @@
       "googleSheetUrl": "Google Sheets URL",
       "googleSheetUrlHelp": "Den fulle nettadressen til Google Sheets-regnearket",
       "sheetsTab": "Fane",
-      "sheetsTabHelp": "Samme som navnet på fanen i Google Sheets",
+      "sheetsTabPlaceholder": "Ark 1",
+      "sheetsTabHelp": "Navnet på arkfanen i Google Sheets",
       "sheetsCell": "Celle",
       "sheetsCellHelp": "For eksempel «A12»",
       "testConnection": "Lagre og test kobling"
