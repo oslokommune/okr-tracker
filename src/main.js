@@ -39,6 +39,19 @@ Vue.use(VueMeta);
 Vue.use(firestorePlugin);
 Vue.use(VueFlatPickr);
 
+VueSelect.props.components.default = () => ({
+  Deselect: {
+    render: (createElement) => {
+      return createElement(PktIcon, { props: { name: 'close' } });
+    },
+  },
+  OpenIndicator: {
+    render: (createElement) => {
+      return createElement(PktIcon, { props: { name: 'chevron-thin-down' } });
+    },
+  },
+});
+
 // Global components
 Vue.component('VSelect', VueSelect);
 Vue.component('VueGriddle', VueGriddle);
