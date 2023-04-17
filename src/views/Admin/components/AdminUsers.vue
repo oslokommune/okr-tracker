@@ -4,14 +4,12 @@
 
     <div v-if="!selectedUser && !viewAddUsers" class="users">
       <div class="search">
-        <label class="form__group">
-          <input
-            v-model="query"
-            class="form__field"
-            type="text"
-            :placeholder="$t('admin.users.search', { count: users.length })"
-          />
-        </label>
+        <input
+          v-model="query"
+          class="pkt-form-input"
+          type="text"
+          :placeholder="$t('admin.users.search', { count: users.length })"
+        />
       </div>
 
       <div class="users__list">

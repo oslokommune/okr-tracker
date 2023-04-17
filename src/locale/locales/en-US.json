@@ -139,7 +139,8 @@
     "size": "Must be less than {size}KB",
     "double": "Must be a valid decimal",
     "positiveNotZero": "Must be a valid value",
-    "decimal": "Must be a decimal"
+    "decimal": "Must be a decimal",
+    "optional": "Optional"
   },
   "general": {
     "appName": "OKR-tracker",
@@ -319,7 +320,6 @@
     "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
-    "addComment": "Add comment (optional)",
     "chooseDate": "Select date",
     "belongsTo": "Related objective",
     "numberOfUpdates": "Update count",
@@ -502,7 +502,6 @@
       "value": "Value",
       "date": "Date",
       "comment": "Comment",
-      "comment_optional": "Comment (optional)",
       "actions": "Actions",
       "time": "Time",
       "changedBy": "Last edited by",

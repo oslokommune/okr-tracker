@@ -3,8 +3,14 @@
     <slot name="back"></slot>
 
     <div class="add-users__body">
-      <p>{{ $t('admin.users.registerUsersText') }}</p>
-      <textarea v-model="emails" class="add-users__input form-field" />
+      <form-component
+        v-model="emails"
+        input-type="textarea"
+        name="comment"
+        rules="required"
+        :label="$t('admin.users.registerUsersText')"
+        class="add-users__input"
+      />
     </div>
     <div class="add-users__footer">
       <button class="btn btn--fw" :disabled="loading" @click="save">
@@ -33,6 +39,7 @@ export default {
 
       if (!list.length) {
         this.$toasted.error(this.$t('toaster.error.email'));
+        this.loading = false;
         return;
       }
 
@@ -69,8 +76,11 @@ export default {
 
 .add-users__input {
   flex-grow: 1;
-  margin-top: 0.5rem;
-  padding: 1rem;
+
+  ::v-deep .pkt-form-group,
+  ::v-deep .form-input__wrapper {
+    height: 100%;
+  }
 }
 
 .add-users__footer {

@@ -6,16 +6,14 @@
 
         <div class="col">
           <div v-if="filteredOrgs.length > 10" class="search">
-            <label class="form__group">
-              <input
-                v-model="queryOrgs"
-                class="form__field"
-                type="text"
-                :placeholder="
-                  $t('admin.organization.search', { count: organizations.length })
-                "
-              />
-            </label>
+            <input
+              v-model="queryOrgs"
+              class="pkt-form-input"
+              type="text"
+              :placeholder="
+                $t('admin.organization.search', { count: organizations.length })
+              "
+            />
           </div>
           <div class="col__body">
             <div
@@ -53,16 +51,12 @@
         <h2 class="title-2">{{ $t('general.departments') }}</h2>
         <div class="col">
           <div v-if="filteredDeps.length > 15" class="search">
-            <label class="form__group">
-              <input
-                v-model="queryDeps"
-                class="form__field"
-                type="text"
-                :placeholder="
-                  $t('admin.department.search', { count: departments.length })
-                "
-              />
-            </label>
+            <input
+              v-model="queryDeps"
+              class="pkt-form-input"
+              type="text"
+              :placeholder="$t('admin.department.search', { count: departments.length })"
+            />
           </div>
           <div class="col__body">
             <div v-for="department in filteredDeps" :key="department.id" class="col__row">
@@ -95,14 +89,12 @@
         <h2 class="title-2">{{ $t('general.products') }}</h2>
         <div class="col">
           <div v-if="filteredProds.length > 15" class="search">
-            <label class="form__group">
-              <input
-                v-model="queryProds"
-                class="form__field"
-                type="text"
-                :placeholder="$t('admin.product.search', { count: products.length })"
-              />
-            </label>
+            <input
+              v-model="queryProds"
+              class="pkt-form-input"
+              type="text"
+              :placeholder="$t('admin.product.search', { count: products.length })"
+            />
           </div>
           <div class="col__body">
             <div v-for="product in filteredProds" :key="product.id" class="col__row">
@@ -129,10 +121,15 @@
       </div>
     </div>
 
-    <div class="actions">
-      <label class="form-group--checkbox">
-        <input v-model="showArchived" type="checkbox" class="form__checkbox" />
-        <span class="form-label">{{ $t('admin.objects.showArchived') }}</span>
+    <div class="actions pkt-form-group pkt-form-group--row">
+      <input
+        id="showArchived"
+        v-model="showArchived"
+        type="checkbox"
+        class="pkt-form-check-input"
+      />
+      <label class="pkt-form-label" for="showArchived">
+        {{ $t('admin.objects.showArchived') }}
       </label>
     </div>
   </div>
@@ -326,5 +323,9 @@ export default {
   font-size: 1rem;
   text-decoration: none;
   border-bottom: 1px solid var(--color-grayscale-10);
+}
+
+.actions {
+  margin: 1.5rem 0;
 }
 </style>

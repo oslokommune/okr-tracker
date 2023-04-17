@@ -31,9 +31,13 @@
         :disabled="user.email === selectedUser.email || !user.superAdmin"
       />
 
-      <div class="form-group">
-        <span class="form-label">Admin</span>
+      <div class="pkt-form-group">
+        <span class="pkt-form-label" for="admin">
+          {{ $t('general.admin') }}
+          <span class="pkt-badge">{{ $t('validation.optional') }}</span>
+        </span>
         <v-select
+          id="admin"
           v-model="thisUser.admin"
           multiple
           :options="organizations"

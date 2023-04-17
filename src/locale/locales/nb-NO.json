@@ -137,7 +137,8 @@
     "size": "Må være mindre enn {size}KB",
     "double": "Må være en gyldig desimal",
     "positiveNotZero": "Ugyldig verdi",
-    "decimal": "Må være tall"
+    "decimal": "Må være tall",
+    "optional": "Valgfritt"
   },
   "general": {
     "appName": "OKR-tracker",
@@ -317,7 +318,6 @@
     "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Oppdater verdi",
     "dateAndTime": "Dato og tid",
-    "addComment": "Legg ved kommentarer (valgfritt)",
     "chooseDate": "Velg dato",
     "belongsTo": "Tilhører mål",
     "numberOfUpdates": "Antall oppdateringer",
@@ -500,7 +500,6 @@
       "value": "Verdi",
       "date": "Dato",
       "comment": "Kommentar",
-      "comment_optional": "Kommentar (valgfritt)",
       "actions": "Handlinger",
       "time": "Tidspunkt",
       "changedBy": "Sist endret av",
