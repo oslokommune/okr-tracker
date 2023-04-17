@@ -13,10 +13,12 @@
         type="text"
       />
 
-      <label class="form-group">
-        <span class="form-label">{{ $t('keyResult.description') }}</span>
-        <input v-model="keyResult.description" class="form__field" type="text" />
-      </label>
+      <form-component
+        v-model="keyResult.description"
+        input-type="input"
+        name="description"
+        :label="$t('keyResult.description')"
+      />
 
       <form-component
         v-model="keyResult.objective"

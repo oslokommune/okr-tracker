@@ -39,6 +39,7 @@
         v-if="type === 'department'"
         v-model="activeItem.organization"
         input-type="select"
+        name="parent"
         :label="$t('admin.department.parentOrganisation')"
         rules="required"
         :select-options="organizations"
@@ -48,14 +49,19 @@
         v-else-if="type === 'product'"
         v-model="activeItem.department"
         input-type="select"
+        name="parent"
         :label="$t('admin.product.parentDepartment')"
         rules="required"
         :select-options="departments"
       />
 
-      <div class="form-group">
-        <span class="form-label">{{ $t('general.teamMembers') }}</span>
+      <div class="pkt-form-group">
+        <span class="pkt-form-label" for="teamMembers">
+          {{ $t('general.teamMembers') }}
+          <span class="pkt-badge">{{ $t('validation.optional') }}</span>
+        </span>
         <v-select
+          id="teamMembers"
           v-model="activeItem.team"
           multiple
           :options="users"
@@ -74,9 +80,7 @@
         name="secret"
         :label="$t('fields.secret')"
       >
-        <template #help>
-          <span class="form-help">{{ $t('admin.apiSecret') }}</span>
-        </template>
+        <template #help><span v-html="$t('admin.apiSecret')" /></template>
       </form-component>
 
       <template #actions="{ handleSubmit, submitDisabled }">

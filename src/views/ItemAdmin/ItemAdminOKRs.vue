@@ -1,9 +1,14 @@
 <template>
   <div>
-    <div class="action-bar">
-      <label class="form-group--checkbox">
-        <input v-model="showArchived" class="form__checkbox" type="checkbox" />
-        <span class="form-label">{{ $t('admin.objects.showArchived') }}</span>
+    <div class="action-bar pkt-form-group pkt-form-group--row">
+      <input
+        id="showArchived"
+        v-model="showArchived"
+        type="checkbox"
+        class="pkt-form-check-input"
+      />
+      <label class="pkt-form-label" for="showArchived">
+        {{ $t('admin.objects.showArchived') }}
       </label>
     </div>
 
