@@ -4,30 +4,32 @@
       <widget :title="appOwner" :collapsable="true" size="small">
         <ul>
           <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
-            <div class="ods-form-group">
+            <div class="pkt-form-group pkt-form-group--row">
               <input
                 :id="org.id"
                 type="checkbox"
-                class="ods-form-radio"
+                class="pkt-form-check-input"
                 :checked="getCollapse('organization', org.slug)"
                 @click="toggle('organization', org.slug)"
               />
-              <label class="ods-form-label" :for="org.id">
+              <label class="pkt-form-label" :for="org.id">
                 {{ org.name }}
-                <span v-if="org.children.length"> ({{ org.children.length }}) </span>
+                <template v-if="org.children.length">
+                  ({{ org.children.length }})
+                </template>
               </label>
             </div>
             <ul v-if="getCollapse('organization', org.slug)">
               <li v-for="dept in org.children" :key="`${dept.id}-check`">
-                <div class="ods-form-group indent">
+                <div class="pkt-form-group pkt-form-group--row indent">
                   <input
                     :id="dept.id"
                     type="checkbox"
-                    class="ods-form-radio"
+                    class="pkt-form-check-input"
                     :checked="getCollapse('department', dept.slug)"
                     @click="toggle('department', dept.slug)"
                   />
-                  <label class="ods-form-label" :for="dept.id">
+                  <label class="pkt-form-label" :for="dept.id">
                     {{ dept.name }}
                   </label>
                 </div>
@@ -129,6 +131,10 @@ export default {
 .tree__organization {
   padding: 0 1rem;
   text-transform: uppercase;
+}
+
+.pkt-form-group {
+  margin-bottom: 0.5rem;
 }
 
 .indent {

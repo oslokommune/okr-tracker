@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file. The format 
   bar matching the period selector on the KPI page.
 - Improved OKR overview page styling.
 - Improved tooltip styling.
+- All forms now use Punkt-styled input fields.
 
 ### Fixed
 

@@ -9,21 +9,24 @@
       </div>
       <h2 class="title-1">{{ $t('login.requestAccess') }}</h2>
 
-      <form @submit.prevent="send">
-        <label class="form__group">
-          <span class="form-label">{{ $t('login.email') }}</span>
-          <input
-            v-model="email"
-            class="form__field"
-            type="email"
-            required
-            data-cy="request-input"
+      <form-section>
+        <form-component
+          v-model="email"
+          input-type="input"
+          name="email"
+          :label="$t('login.email')"
+          rules="required"
+          type="email"
+        />
+
+        <template #actions="{ handleSubmit, submitDisabled }">
+          <btn
+            :disabled="submitDisabled || loading"
+            :label="$t('login.requestButton')"
+            @click="handleSubmit(send)"
           />
-        </label>
-        <button class="btn btn--pri" :disabled="loading" data-cy="request-btn">
-          {{ $t('login.requestButton') }}
-        </button>
-      </form>
+        </template>
+      </form-section>
     </div>
   </div>
 </template>
@@ -32,9 +35,15 @@
 import { mapMutations } from 'vuex';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
+import { FormSection, Btn } from '@/components/generic/form';
 
 export default {
   name: 'RequestAccess',
+
+  components: {
+    FormSection,
+    Btn,
+  },
 
   data: () => ({
     email: '',
