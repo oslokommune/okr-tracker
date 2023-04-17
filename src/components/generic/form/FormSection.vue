@@ -1,5 +1,10 @@
 <template>
-  <validation-observer v-slot="{ errors, valid, validated }" ref="form" tag="form">
+  <validation-observer
+    v-slot="{ errors, valid, validated }"
+    ref="form"
+    tag="form"
+    class="pkt-form"
+  >
     <slot />
 
     <pkt-alert

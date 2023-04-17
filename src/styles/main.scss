@@ -12,8 +12,6 @@
 @use 'tooltip';
 @use 'admin';
 @use 'vSelect';
-@use 'ods/ods-forms';
-@use 'ods/ods-badge';
 
 /*
  * Ultimately we'd like to import Punkt as a whole by doing:
@@ -25,8 +23,10 @@
  */
 @use '@oslokommune/punkt-css/dist/scss/base/_colors';
 @use '@oslokommune/punkt-css/dist/scss/base/_visibility';
+@use '@oslokommune/punkt-css/dist/scss/elements/_form';
 @use '@oslokommune/punkt-css/dist/scss/elements/_hr';
 @use '@oslokommune/punkt-css/dist/scss/elements/_button';
+@use '@oslokommune/punkt-css/dist/scss/components/_badge';
 @use '@oslokommune/punkt-css/dist/scss/components/_alert';
 
 @function hexToRGB($hex) {
@@ -45,10 +45,6 @@ body {
   font-family: 'OsloSans', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-button {
-  line-height: 1.1;
 }
 
 html {
