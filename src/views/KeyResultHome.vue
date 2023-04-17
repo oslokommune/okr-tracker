@@ -278,10 +278,6 @@ export default {
       textarea {
         resize: vertical;
       }
-
-      .button-row {
-        margin-top: 0.5rem;
-      }
     }
   }
 }
