@@ -22,7 +22,7 @@
         input-type="input"
         name="sheetTab"
         :label="$t('keyResult.automation.sheetsTab')"
-        placeholder="Sheet1"
+        :placeholder="$t('keyResult.automation.sheetsTabPlaceholder')"
         rules="required"
         type="text"
       >
