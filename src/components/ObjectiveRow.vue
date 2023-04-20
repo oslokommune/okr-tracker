@@ -10,7 +10,6 @@
     <p v-if="showDescription && objective.description" class="objective__description">
       {{ objective.description }}
     </p>
-    <div v-if="showProgress" class="objective__spacer"></div>
     <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
   </router-link>
 </template>
@@ -55,11 +54,9 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
-  display: grid;
-  grid-gap: 0.25rem;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
@@ -86,11 +83,6 @@ export default {
 }
 
 .objective__description {
-  margin-top: 0.25rem;
   line-height: 1.5rem;
-}
-
-.objective__spacer {
-  height: 0.5rem;
 }
 </style>
