@@ -62,7 +62,10 @@
         :title="$t(`widget.progression.period`)"
         size="small"
       >
-        <progression-chart :progression="activePeriod.progression" />
+        <progression-chart
+          :progression="activePeriod.progression"
+          :period="activePeriod"
+        />
       </widget>
       <widget-weights
         v-if="periodObjectives.length"
