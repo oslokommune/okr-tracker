@@ -61,7 +61,9 @@ export default {
     keyResult: {
       immediate: true,
       async handler() {
-        this.value = this.keyResult.currentValue || this.keyResult.startValue || 0;
+        if (this.value !== null) {
+          this.value = this.keyResult.currentValue || this.keyResult.startValue || 0;
+        }
       },
     },
   },
@@ -69,6 +71,8 @@ export default {
   methods: {
     submitForm() {
       this.$emit('save', this.value, this.comment);
+      this.value = null;
+      this.comment = '';
     },
   },
 };
