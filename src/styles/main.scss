@@ -5,13 +5,10 @@
 @use 'reset';
 @use 'fonts';
 @use 'typography';
-@use 'buttons';
-@use 'forms';
 @use 'widgets';
 @use 'modal';
 @use 'tooltip';
 @use 'admin';
-@use 'vSelect';
 
 /*
  * Ultimately we'd like to import Punkt as a whole by doing:
@@ -28,6 +25,10 @@
 @use '@oslokommune/punkt-css/dist/scss/elements/_button';
 @use '@oslokommune/punkt-css/dist/scss/components/_badge';
 @use '@oslokommune/punkt-css/dist/scss/components/_alert';
+
+@use 'buttons';
+@use 'forms';
+@use 'vSelect';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
@@ -57,14 +58,15 @@ html {
   box-sizing: border-box;
 }
 
-/* When mouse is detected, ALL focused elements have outline removed. */
+/* When mouse is detected, ALL focused elements, except for Punkt-inputs,
+   have outline removed. (Kept for now.) */
 
 /* You could apply this selector only to buttons, if you wanted. */
-body.using-mouse :focus {
+body.using-mouse :not([class^='pkt-'], [class*=' pkt-']):focus {
   outline: none;
 }
 
-*:focus {
+*:not([class^='pkt-'], [class*=' pkt-'])::focus {
   outline: 2px solid var(--color-active);
 }
 
