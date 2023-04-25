@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fixed rendering of charts containing goals with missing value.
+- Fixed a bug in the measurement goal value input field.
 - The period selector dropdown menu has been made more responsive.
 - The key result progression update form is now cleared on submit to prevent
   double submission.
