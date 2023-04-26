@@ -18,7 +18,8 @@
     "newValue": "New value",
     "editValue": "Edit value",
     "description": "Description",
-    "display": "Display",
+    "format": "Format",
+    "startValue": "Start value for display",
     "preferredTrend": "Trend",
     "inPeriod": "in period",
     "noChange": "no change",
@@ -29,6 +30,10 @@
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"
+    },
+    "startValues": {
+      "zero": "Zero",
+      "min": "Lowest measured value"
     },
     "trendOptions": {
       "increase": "Increasing (high numbers preferred)",

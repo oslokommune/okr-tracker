@@ -19,6 +19,22 @@ export function kpiFormats() {
 }
 
 /**
+ * Return a list of available KPI start value display options.
+ */
+export function kpiStartValues() {
+  return [
+    {
+      id: 'zero',
+      label: i18n.t('kpi.startValues.zero'),
+    },
+    {
+      id: 'min',
+      label: i18n.t('kpi.startValues.min'),
+    },
+  ];
+}
+
+/**
  * Return a list of available KPI expected trend options.
  */
 export function kpiTrendOptions() {
@@ -126,16 +142,6 @@ export function formatKPIValue(kpi, value = null, options = {}) {
   }
 
   return '–––';
-}
-
-/**
- * Return an appropriate value interval for a given KPI format type.
- */
-export function kpiInterval(formatId) {
-  if (formatId === 'percentage') {
-    return [0, 1];
-  }
-  return [null, null];
 }
 
 /**

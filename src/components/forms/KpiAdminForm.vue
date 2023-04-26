@@ -23,15 +23,26 @@
         :label="$t('fields.description')"
       />
 
-      <div class="form-row">
+      <div class="display-settings">
         <form-component
           v-model="localKpi.format"
           input-type="select"
           name="format"
-          :label="$t('kpi.display')"
+          :label="$t('kpi.format')"
           rules="required"
           select-label="label"
           :select-options="formats"
+          :select-reduce="(option) => option.id"
+          type="text"
+        />
+        <form-component
+          v-model="localKpi.startValue"
+          input-type="select"
+          name="startValue"
+          :label="$t('kpi.startValue')"
+          rules="required"
+          select-label="label"
+          :select-options="startValues"
           :select-reduce="(option) => option.id"
           type="text"
         />
@@ -161,6 +172,7 @@
 import { functions } from '@/config/firebaseConfig';
 import {
   kpiFormats,
+  kpiStartValues,
   kpiTypes,
   kpiTrendOptions,
   kpiUpdateFrequencies,
@@ -201,6 +213,7 @@ export default {
   data: () => ({
     localKpi: null,
     formats: kpiFormats(),
+    startValues: kpiStartValues(),
     trendOptions: kpiTrendOptions(),
     types: kpiTypes(),
     updateFrequencies: kpiUpdateFrequencies(),
@@ -220,6 +233,7 @@ export default {
       sheetId,
       sheetName,
       sheetUrl,
+      startValue,
       updateFrequency,
     } = this.kpi;
 
@@ -237,6 +251,7 @@ export default {
       sheetCell,
       sheetName,
       sheetUrl: sheetUrl || '',
+      startValue,
       updateFrequency,
     };
   },
@@ -283,13 +298,30 @@ export default {
     }
   }
 }
-::v-deep .form-row {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 
-  > span {
-    flex: 1;
+::v-deep .display-settings {
+  display: grid;
+  grid-column-gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+
+  > * {
+    grid-column: 1 / 3;
+
+    @media screen and (min-width: bp(s)) {
+      grid-column: unset;
+
+      .pkt-form-group {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  > *:last-child {
+    grid-column: 1 / 3;
+
+    .pkt-form-group {
+      margin-bottom: 1.5rem;
+    }
   }
 
   @media screen and (min-width: bp(s)) {

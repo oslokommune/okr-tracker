@@ -18,7 +18,7 @@
 import { scaleTime, scaleLinear } from 'd3-scale';
 import { area, line, curveLinear } from 'd3-shape';
 import { axisBottom, axisLeft } from 'd3-axis';
-import { extent, max } from 'd3-array';
+import { extent, max, min } from 'd3-array';
 
 export default {
   name: 'MiniGraph',
@@ -28,6 +28,11 @@ export default {
       type: Array,
       required: false,
       default: () => [],
+    },
+    startValue: {
+      type: String,
+      required: false,
+      default: 'zero',
     },
   },
   data() {
@@ -76,7 +81,7 @@ export default {
         .rangeRound([0, this.chartDefaults.width]);
       const y = scaleLinear()
         .domain([
-          0,
+          this.startValue === 'min' ? min(this.data, (d) => d.count) : 0,
           max(this.data, function (d) {
             return d.count < 1 ? 1 : d.count;
           }),

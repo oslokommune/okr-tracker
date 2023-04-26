@@ -29,7 +29,6 @@ import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
 import { PktIcon } from '@oslokommune/punkt-vue2';
 import { periodDates } from '@/util';
-import { kpiInterval } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
@@ -128,7 +127,6 @@ export default {
       this.setStartAndEndDates();
 
       const kpi = this.kpi;
-      const [startValue, targetValue] = kpiInterval(kpi.format);
 
       this.graph.render({
         startDate: this.startDate,
@@ -143,8 +141,8 @@ export default {
           }))
           .filter((g) => g.endDate >= this.startDate && g.startDate <= this.endDate),
         kpi,
-        startValue,
-        targetValue,
+        startValue: kpi.startValue === 'min' ? null : 0,
+        targetValue: kpi.format === 'percentage' ? 1 : null,
       });
     },
 

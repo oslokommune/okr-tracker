@@ -90,6 +90,7 @@ export default {
         name: this.$t('kpi.placeholderName'),
         description: '',
         format: 'integer',
+        startValue: 'zero',
         preferredTrend: 'increase',
         kpiType: 'plain',
         updateFrequency: 'daily',
