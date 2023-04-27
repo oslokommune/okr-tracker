@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file. The format 
 - The period selector dropdown menu has been made more responsive.
 - The key result progression update form is now cleared on submit to prevent
   double submission.
+- Top bar content centering has been fixed on public pages.
 
 ## [3.5.0] 2023-04-03
 
