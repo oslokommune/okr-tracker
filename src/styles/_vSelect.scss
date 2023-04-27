@@ -48,7 +48,16 @@
 
 .vs__selected {
   top: 5.5px;
+
+  &-options {
+    padding: 2px;
+  }
 }
+
+.vs__search {
+  outline: none !important;
+}
+
 .vs__deselect {
   margin-left: 0.5rem;
 
@@ -56,10 +65,6 @@
     --fg-color: var(--color-blue-dark);
     height: 0.75rem;
   }
-}
-
-.vs__selected-options {
-  padding: 2px;
 }
 
 .vs__open-indicator {
