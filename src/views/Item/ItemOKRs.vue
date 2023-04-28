@@ -80,7 +80,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { isBefore, addDays, isWithinInterval } from 'date-fns';
-import objectiveInPeriod from '@/util/okr';
+import { objectiveInPeriod } from '@/util/okr';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';

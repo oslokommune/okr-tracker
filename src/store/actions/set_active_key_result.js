@@ -14,6 +14,6 @@ export default firestoreAction(
       await bindFirestoreRef('activeObjective', objective, { maxRefDepth: 1 });
     }
 
-    return bindFirestoreRef('activeKeyResult', reference, { maxRefDepth: 1 });
+    return bindFirestoreRef('activeKeyResult', reference, { maxRefDepth: 2 });
   }
 );

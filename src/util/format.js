@@ -17,7 +17,7 @@ export function periodDates({ startDate, endDate }, strategy = dateLong) {
     endDate instanceof Date ? endDate : endDate.toDate(),
   ]
     .map(strategy)
-    .join(' – ');
+    .join('​–​');
 }
 
 export const parseDate = (d) => parseISO(d);

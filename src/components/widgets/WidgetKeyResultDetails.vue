@@ -17,11 +17,11 @@
         </div>
       </div>
 
-      <div v-if="activePeriod && activePeriod.startDate" class="details__item">
+      <div v-if="formattedPeriod(activeKeyResult.objective)" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
-            {{ activePeriod.name }} ({{ formatPeriodDates(activePeriod) }})
+            {{ formattedPeriod(activeKeyResult.objective) }}
           </div>
         </div>
       </div>
@@ -109,7 +109,8 @@
 <script>
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { periodDates, dateShort, dateLong } from '@/util';
+import { dateLong } from '@/util';
+import { formattedPeriod } from '@/util/okr';
 
 export default {
   name: 'WidgetKeyResultDetails',
@@ -126,7 +127,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod']),
+    ...mapState(['activeKeyResult']),
     createdBy() {
       return (
         this.activeKeyResult.createdBy.displayName || this.activeKeyResult.createdBy.id
@@ -155,9 +156,7 @@ export default {
   },
 
   methods: {
-    formatPeriodDates(period) {
-      return periodDates(period, dateShort);
-    },
+    formattedPeriod,
 
     formatDate(date) {
       return dateLong(date.toDate());
