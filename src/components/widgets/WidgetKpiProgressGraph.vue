@@ -13,12 +13,12 @@
       </v-select>
     </div>
 
-    <!-- xmlns for download purposes -->
-    <svg
-      ref="progressGraphSvg"
-      class="progressGraph"
-      xmlns="http://www.w3.org/2000/svg"
-    ></svg>
+    <div class="progress-graph">
+      <!-- xmlns for download purposes -->
+      <svg ref="progressGraphSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <kpi-period-trend class="progress-graph__trend" :kpi="kpi" :progress="progress" />
+    </div>
   </widget>
 </template>
 
@@ -34,6 +34,7 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import i18n from '@/locale/i18n';
 import getPeriods from '@/config/periods';
+import KpiPeriodTrend from '@/components/KpiPeriodTrend.vue';
 import WidgetWrapper from './WidgetWrapper.vue';
 
 const { Timestamp } = firebase.firestore;
@@ -43,6 +44,7 @@ export default {
 
   components: {
     Widget: WidgetWrapper,
+    KpiPeriodTrend,
   },
 
   props: {
@@ -116,6 +118,10 @@ export default {
     },
 
     renderGraph() {
+      this.$nextTick(this._renderGraph);
+    },
+
+    _renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.progressGraphSvg, {
           height: 550,
@@ -206,12 +212,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
-::v-deep .widget__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.progress-graph__trend {
+  margin: 0.5rem 0 0.75rem 0;
 }
 
 .dropdownButton {
