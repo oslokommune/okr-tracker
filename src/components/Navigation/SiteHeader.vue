@@ -1,12 +1,16 @@
 <template>
-  <header class="siteHeader">
+  <header class="site-header">
     <button class="btn btn--ter btn-pri" @click="toggleShowAsideLeft">
       <pkt-icon name="menu" />
     </button>
-    <h1 v-if="title" class="siteHeader__title">
+    <h1 v-if="title" class="site-header__title">
       {{ title }}
     </h1>
-    <button v-if="user" class="btn btn--ter btn--pri" @click="toggleShowAsideRight">
+    <button
+      class="btn btn--ter btn--pri"
+      :class="{ hidden: !user }"
+      @click="toggleShowAsideRight"
+    >
       <pkt-icon name="user" />
     </button>
   </header>
@@ -68,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.siteHeader {
+.site-header {
   position: sticky;
   top: 0;
   z-index: 20;
@@ -97,5 +101,9 @@ export default {
     --fg-color: var(--color-white);
     height: 1.75rem;
   }
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>
