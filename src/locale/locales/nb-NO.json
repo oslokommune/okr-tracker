@@ -37,7 +37,8 @@
     },
     "trendOptions": {
       "increase": "Stigende (høyt tall er bra)",
-      "decrease": "Synkende (lavt tall er bra)"
+      "decrease": "Synkende (lavt tall er bra)",
+      "neutral": "Likegyldig (alle tall er like gode)"
     },
     "updateFrequency": {
       "label": "Oppdateringshyppighet",
