@@ -193,6 +193,7 @@ export default {
         startDate,
         endDate,
         progress: this.progress,
+        initialValue: startValue,
       });
     },
 

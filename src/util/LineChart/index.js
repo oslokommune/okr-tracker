@@ -78,10 +78,10 @@ export default class LineChart {
    * Render the graph. Takes the following parameters:
    *
    * `startValue`: Optional. The start value of the y axis. Will start at the
-   *     lowest value present in `progress` if unset.
+   *   lowest value present in `progress` if unset.
    *
    * `targetValue`: Optional. The end value of the y axis. Will end at the
-   *     highest value present in `progress` if unset.
+   *   highest value present in `progress` if unset.
    *
    * `startDate`: The first date on the x axis.
    *
@@ -93,8 +93,20 @@ export default class LineChart {
    *   object specifying `startDate, `endDate`, and `value`.
    *
    * `kpi`: Optional. A KPI to format the y axis for.
+   *
+   * `initialValue`: Optional. If given, plot a value `initialValue` at
+   *   `startDate`.
    */
-  render({ startValue, targetValue, startDate, endDate, progress, targets, kpi }) {
+  render({
+    startValue,
+    targetValue,
+    startDate,
+    endDate,
+    progress,
+    targets,
+    kpi,
+    initialValue,
+  }) {
     let fromValue = startValue;
     let toValue = targetValue;
 
@@ -179,16 +191,13 @@ export default class LineChart {
       .map((d) => {
         const timestamp = d.timestamp.toDate();
         timestamp.setHours(0, 0, 0, 0);
-
-        return {
-          timestamp,
-          value: +d.value,
-          comment: d?.comment,
-          kpi,
-          startValue: +fromValue,
-        };
+        return { timestamp, value: +d.value, comment: d?.comment };
       })
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+
+    if (data.length && typeof initialValue === 'number') {
+      data.unshift({ timestamp: _startDate, value: initialValue });
+    }
 
     this.canvas.selectAll('.single-point').remove();
 
