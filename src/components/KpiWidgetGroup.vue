@@ -4,7 +4,6 @@
     <router-link
       v-for="kpi in kpis"
       :key="kpi.id"
-      v-tooltip="kpi.description ? kpi.description : null"
       :to="{
         name: 'ItemMeasurements',
         params: {
