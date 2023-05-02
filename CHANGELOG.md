@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - A new timeline view for objectives has been added (visualized in a Gantt
   chart).
+- A separate list view has been added to the measurements tab.
 
 ### Changed
 
@@ -19,6 +20,8 @@ All notable changes to this project will be documented in this file. The format 
 - Y-axes in measurement graphs now start counting from zero by default. It's
   possible to revert individual measurements to the old behavior of starting the
   y-axis around the lowest measured value in the measurement admin settings.
+- The change within a selected period (first and latest progress value) is now
+  displayed beneath the progress graph for measurements.
 
 ### Fixed
 
