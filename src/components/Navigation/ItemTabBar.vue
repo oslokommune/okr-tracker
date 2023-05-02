@@ -181,9 +181,6 @@ export default {
 
 <style lang="scss" scoped>
 .sub-navigation {
-  position: sticky;
-  top: 4rem;
-  z-index: 20;
   display: flex;
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-grayscale-10);
