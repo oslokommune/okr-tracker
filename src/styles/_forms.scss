@@ -72,10 +72,10 @@
 
   &:disabled,
   &[readonly] {
+    color: var(--color-disabled);
     background-color: var(--color-disabled-light);
     border-color: var(--color-disabled);
-    color: var(--color-disabled);
-}
+  }
 
   &.flatpickr-input[readonly] {
     // Reset `readonly` state style for flatpickr inputs.
