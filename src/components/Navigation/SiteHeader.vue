@@ -18,6 +18,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'SiteHeader',
@@ -37,14 +38,17 @@ export default {
     ...mapState(['activeItem', 'user']),
 
     /**
-     * Dynamically determines the page title based on the route
-     * @returns {string} page title
+     * Return the page title based on the current route.
      */
     title() {
       const parts = this.$route.matched.map(({ name }) => name);
 
       if (parts.includes('Admin')) {
-        return 'Admin';
+        return i18n.t('general.admin');
+      }
+
+      if (parts.includes('Help')) {
+        return i18n.t('general.help');
       }
 
       if (
