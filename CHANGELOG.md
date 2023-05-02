@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file. The format 
 - Improved OKR overview page styling.
 - Improved tooltip styling.
 - All forms now use Punkt-styled input fields.
+- Y-axes in measurement graphs now start counting from zero by default. It's
+  possible to revert individual measurements to the old behavior of starting the
+  y-axis around the lowest measured value in the measurement admin settings.
 
 ### Fixed
 

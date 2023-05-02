@@ -18,7 +18,8 @@
     "newValue": "Legg til målepunkt",
     "editValue": "Endre målepunkt",
     "description": "Beskrivelse",
-    "display": "Visning",
+    "format": "Format",
+    "startValue": "Startverdi ved visning",
     "preferredTrend": "Ønsket trend",
     "inPeriod": "i perioden",
     "noChange": "ingen endring",
@@ -29,6 +30,10 @@
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"
+    },
+    "startValues": {
+      "zero": "Null",
+      "min": "Lavest målte verdi"
     },
     "trendOptions": {
       "increase": "Stigende (høyt tall er bra)",

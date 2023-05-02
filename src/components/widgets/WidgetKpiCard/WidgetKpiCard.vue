@@ -17,7 +17,11 @@
             :latest-progress-record="latestProgressRecord"
           />
           <div class="kpi-card-widget__graph">
-            <mini-graph v-if="progress.length > 1" :kpi-data="progress" />
+            <mini-graph
+              v-if="progress.length > 1"
+              :kpi-data="progress"
+              :start-value="kpi.startValue"
+            />
             <span v-else>{{ $t('kpi.noGraph') }}</span>
           </div>
         </template>
