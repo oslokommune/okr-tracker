@@ -130,10 +130,11 @@ export default {
     },
 
     selectedPeriod(period) {
-      const { query } = this.$route;
-      if (query?.resultIndicatorPeriod !== period.key) {
+      const { view, resultIndicatorPeriod } = this.$route.query;
+      const targetView = view === 'list' ? 'list' : undefined;
+      if (resultIndicatorPeriod !== period.key) {
         this.$router.replace({
-          query: { ...query, resultIndicatorPeriod: period.key },
+          query: { view: targetView, resultIndicatorPeriod: period.key },
         });
       }
     },
