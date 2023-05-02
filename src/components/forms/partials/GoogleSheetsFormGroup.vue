@@ -9,10 +9,7 @@
       type="url"
     >
       <template #help>
-        <span
-          class="form-help"
-          v-html="$t('keyResult.automation.googleSheetUrlHelp')"
-        ></span>
+        <span v-html="$t('keyResult.automation.googleSheetUrlHelp')" />
       </template>
     </form-component>
 
@@ -27,10 +24,7 @@
         type="text"
       >
         <template #help>
-          <span
-            class="form-help"
-            v-html="$t('keyResult.automation.sheetsTabHelp')"
-          ></span>
+          <span v-html="$t('keyResult.automation.sheetsTabHelp')" />
         </template>
       </form-component>
 
@@ -44,10 +38,7 @@
         type="text"
       >
         <template #help>
-          <span
-            class="form-help"
-            v-html="$t('keyResult.automation.sheetsCellHelp')"
-          ></span>
+          <span v-html="$t('keyResult.automation.sheetsCellHelp')" />
         </template>
       </form-component>
     </div>

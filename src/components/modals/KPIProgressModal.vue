@@ -16,17 +16,20 @@
             rules="required"
             type="number"
             data-cy="progress_value"
-          />
-          <span v-if="updatedValue" class="display-as">
-            {{ $t('general.displayedAs') }}
-            {{ formatKPIValue(activeKpi, thisRecord.value) }}
-          </span>
+          >
+            <template #sub>
+              <span v-if="updatedValue" class="display-as">
+                {{ $t('general.displayedAs') }}
+                {{ formatKPIValue(activeKpi, thisRecord.value) }}
+              </span>
+            </template>
+          </form-component>
 
           <form-component
             v-model="thisRecord.comment"
             input-type="textarea"
             name="comment"
-            :label="$t('widget.history.comment_optional')"
+            :label="$t('widget.history.comment')"
             :placeholder="$t('keyResult.commentPlaceholder')"
             data-cy="progress_comment"
             class="progress-form__comment-group"
@@ -34,19 +37,17 @@
         </div>
 
         <div class="progress-form__right">
-          <validation-provider v-slot="{ errors }" name="datetime" rules="required">
-            <label class="form-group">
-              <span class="form-label">{{ $t('widget.history.date') }}</span>
-
+          <validation-provider name="datetime" rules="required">
+            <label class="pkt-form-group">
+              <span class="pkt-form-label">{{ $t('widget.history.date') }}</span>
               <flat-pickr
                 v-model="thisRecord.timestamp"
                 :config="flatPickerConfig"
-                class="form-control flatpickr-input"
+                class="pkt-form-input flatpickr-input"
                 name="datetime"
                 :placeholder="$t('widget.history.date')"
                 @on-change="onDateSelected"
               />
-              <span class="form-field--error">{{ errors[0] }}</span>
             </label>
           </validation-provider>
         </div>

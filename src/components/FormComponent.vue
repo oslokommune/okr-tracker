@@ -1,45 +1,46 @@
 <template>
   <validation-provider v-slot="{ errors }" :rules="rules" :name="name || label">
-    <label
+    <div
       :class="{
-        'form-group': true,
-        'form-group--error': errors.length,
+        'pkt-form-group': true,
+        'pkt-form-group--error': errors.length,
       }"
     >
-      <span
-        :class="{
-          'form-label': true,
-          'form-label--hasPrimaryBackground': hasPrimaryBackground,
-        }"
-      >
+      <label class="pkt-form-label" :for="name">
         {{ label || name }}
-        <span v-if="errors[0]" class="ods-badge ods-badge--danger">{{ errors[0] }}</span>
-      </span>
+        <span v-if="isOptionalField && !disabled && !readonly" class="pkt-badge">
+          {{ $t('validation.optional') }}
+        </span>
+      </label>
 
-      <slot name="help"></slot>
+      <div v-if="$slots.help" class="pkt-form-help">
+        <slot name="help"></slot>
+      </div>
 
       <div class="form-input__wrapper">
         <input
           v-if="inputType === 'input'"
+          :id="name"
           v-model="innerValue"
           :type="type"
           :name="name"
           :disabled="disabled"
           :readonly="readonly"
           :placeholder="placeholder"
-          :class="fieldClass"
+          class="pkt-form-input"
           :data-cy="dataCy"
           step="any"
         />
 
         <textarea
           v-if="inputType === 'textarea'"
+          :id="name"
           v-model="innerValue"
           :disabled="disabled"
           :name="name"
           :readonly="readonly"
           :placeholder="placeholder"
-          :class="fieldClass"
+          class="pkt-form-textarea"
           :rows="rows"
           :data-cy="dataCy"
         />
@@ -56,6 +57,9 @@
           :append-to-body="true"
           @input="$emit('select', $event)"
         >
+          <template #search="{ attributes, events }">
+            <input :id="name" v-bind="attributes" class="vs__search" v-on="events" />
+          </template>
           <template #option="option">
             {{ option[selectLabel] }}
             <span v-if="option.period && option.period.name">
@@ -66,10 +70,11 @@
 
         <flat-pickr
           v-if="inputType === 'date'"
+          :id="name"
           ref="datePicker"
           :value="value"
           :config="datePickerConfig"
-          class="flatpickr-input"
+          class="pkt-form-input flatpickr-input"
           :placeholder="placeholder"
           :name="name"
           @on-close="updateDatePickerValue"
@@ -81,16 +86,26 @@
           class="btn btn--sec"
           @click="copyFieldText"
         >
-          <i class="form-label__copy-button far fa-clone" />
+          <i class="form-input__copy-button far fa-clone" />
         </button>
       </div>
-    </label>
+
+      <div v-if="$slots.sub" class="pkt-form-help">
+        <slot name="sub"></slot>
+      </div>
+
+      <pkt-alert v-if="errors[0]" skin="error">{{ errors[0] }}</pkt-alert>
+    </div>
   </validation-provider>
 </template>
 
 <script>
 export default {
   name: 'FormComponent',
+
+  components: {
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+  },
 
   props: {
     hasPrimaryBackground: {
@@ -194,8 +209,11 @@ export default {
   }),
 
   computed: {
-    fieldClass() {
-      return ['form-input', { 'form-input--readonly': this.readonly }];
+    isOptionalField() {
+      if (typeof this.rules === 'object') {
+        return !Object.keys(this.rules).includes('required');
+      }
+      return !this.rules.includes('required');
     },
   },
 
@@ -218,6 +236,23 @@ export default {
   created() {
     if (this.value !== undefined) {
       this.innerValue = this.value;
+    }
+  },
+
+  mounted() {
+    if (this.inputType === 'date' && this.name && this.datePickerConfig?.altInput) {
+      // Attach a custom event handler to the date picker label when `altInput`
+      // is used. This in order to focus the alternative input when the label
+      // is clicked (as the `id` attribute is attached to a hidden element).
+      const datePickerInstance = this.$refs.datePicker;
+      const labelEl = document.querySelector(
+        `label[for='${datePickerInstance.$attrs.id}']`
+      );
+      if (labelEl) {
+        labelEl.addEventListener('click', () => {
+          datePickerInstance.fpInput().focus();
+        });
+      }
     }
   },
 

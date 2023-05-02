@@ -162,6 +162,17 @@ export default {
   }
 }
 
+.form-group {
+  display: block;
+  margin: 1rem 0;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
 .form-value {
   font-weight: 500;
 }

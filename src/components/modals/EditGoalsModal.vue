@@ -52,11 +52,14 @@
             :label="$t('fields.value')"
             type="number"
             rules="required"
-          />
-          <span v-if="value" class="display-as">
-            {{ $t('general.displayedAs') }}
-            {{ formatKPIValue(kpi, typePercentage ? value / 100 : value) }}
-          </span>
+          >
+            <template #sub>
+              <span v-if="value" class="display-as">
+                {{ $t('general.displayedAs') }}
+                {{ formatKPIValue(kpi, typePercentage ? value / 100 : value) }}
+              </span>
+            </template>
+          </form-component>
 
           <template #actions="{ handleSubmit, submitDisabled }">
             <btn-delete @click="archive($event)" />
@@ -285,8 +288,7 @@ export default {
   }
 
   .display-as {
-    padding-bottom: 0.5rem;
-    color: var(--color-grey-500);
+    color: var(--color-grayscale-50);
     font-weight: 500;
     font-size: typography.$font-size-1;
   }
@@ -348,10 +350,6 @@ export default {
     display: flex;
     flex-basis: 45%;
     flex-direction: column;
-  }
-
-  ::v-deep form span:first-child .form-group {
-    margin-top: 0;
   }
 
   .button-row {

@@ -23,7 +23,7 @@
         :label="$t('fields.description')"
       />
 
-      <div class="kpi-format-and-trend">
+      <div class="form-row">
         <form-component
           v-model="localKpi.format"
           input-type="select"
@@ -50,30 +50,27 @@
 
       <hr class="pkt-hr" />
 
-      <validation-provider v-slot="{ errors }" rules="required" name="kpiType">
-        <div class="form-group">
-          <span class="form-label">{{ $t('fields.kpitype') }}</span>
-          <span v-if="errors[0]" class="form-field--error">
-            {{ errors[0] }}
-          </span>
+      <validation-provider rules="required" name="kpiType">
+        <div class="pkt-form-group">
+          <span class="pkt-form-label">{{ $t('fields.kpitype') }}</span>
           <div
             v-for="{ id, label, description } in types"
             :key="id"
-            class="ods-form-group descriptive-radio"
+            class="pkt-form-group pkt-form-group--row"
           >
             <input
               :id="kpi.id + '-' + id"
               v-model="localKpi.kpiType"
               type="radio"
-              class="ods-form-radio"
+              class="pkt-form-check-input pkt-form-check-input--tile"
               name="radio-group"
               :value="id"
             />
-            <label class="ods-form-label" :for="kpi.id + '-' + id">
-              <span class="title">{{ label }}</span>
-            </label>
-            <label class="description" :for="kpi.id + '-' + id">
-              {{ description }}
+            <label class="pkt-form-label" :for="kpi.id + '-' + id">
+              {{ label }}
+              <span class="description">
+                {{ description }}
+              </span>
             </label>
           </div>
         </div>
@@ -82,20 +79,21 @@
       <hr class="pkt-hr" />
 
       <div v-if="kpi" class="goal-section">
-        <h3>{{ $t('kpi.goals.goals') }}</h3>
-        <div class="goal-section__content-wrapper">
-          <span>{{ $t('kpi.goals.help') }}</span>
-          <button
-            class="btn btn--sec"
-            @click="
-              $event.preventDefault();
-              showEditGoalsModal = true;
-            "
-          >
-            {{ $t(hasGoal ? 'kpi.goals.edit' : 'kpi.goals.set') }}
-          </button>
+        <div class="pkt-form-group">
+          <span class="pkt-form-label">{{ $t('kpi.goals.goals') }}</span>
+          <div class="goal-section__content-wrapper">
+            <span>{{ $t('kpi.goals.help') }}</span>
+            <button
+              class="btn btn--sec"
+              @click="
+                $event.preventDefault();
+                showEditGoalsModal = true;
+              "
+            >
+              {{ $t(hasGoal ? 'kpi.goals.edit' : 'kpi.goals.set') }}
+            </button>
+          </div>
         </div>
-
         <hr class="pkt-hr" />
       </div>
 
@@ -139,7 +137,7 @@
         type="text"
       >
         <template #help>
-          <span class="form-help" v-html="$t('kpi.updateFrequency.help')"></span>
+          {{ $t('kpi.updateFrequency.help') }}
         </template>
       </form-component>
 
@@ -265,11 +263,6 @@ export default {
 
 <style lang="scss" scoped>
 .goal-section {
-  h3 {
-    margin-bottom: 1rem;
-    color: var(--color-text);
-  }
-
   &__content-wrapper {
     display: flex;
     flex-direction: column;
@@ -290,22 +283,18 @@ export default {
     }
   }
 }
-</style>
-
-<style lang="scss">
-#kpiFormat,
-#preferredTrend {
-  flex-direction: column;
-}
-
-.kpi-format-and-trend {
+::v-deep .form-row {
   display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
+  flex-direction: column;
   align-items: stretch;
 
   > span {
     flex: 1;
+  }
+
+  @media screen and (min-width: bp(s)) {
+    flex-direction: row;
+    gap: 1.5rem;
   }
 }
 

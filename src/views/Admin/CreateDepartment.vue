@@ -34,9 +34,13 @@
           data-cy="dep-parentOrg"
         />
 
-        <div class="form-group">
-          <span class="form-label">{{ $t('general.teamMembers') }}</span>
+        <div class="pkt-form-group">
+          <span class="pkt-form-label" for="teamMembers">
+            {{ $t('general.teamMembers') }}
+            <span class="pkt-badge">{{ $t('validation.optional') }}</span>
+          </span>
           <v-select
+            id="teamMembers"
             v-model="team"
             multiple
             :options="users"

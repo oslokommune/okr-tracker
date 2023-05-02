@@ -44,4 +44,8 @@ export default {
   font-size: 1.5rem;
   text-align: center;
 }
+
+.button-row {
+  margin-top: 1.5rem;
+}
 </style>

@@ -14,7 +14,7 @@
       input-type="textarea"
       name="comment"
       :rows="commentRows"
-      :label="$t('keyResult.addComment')"
+      :label="$t('fields.comment')"
       :placeholder="$t('keyResult.commentPlaceholder')"
     />
 

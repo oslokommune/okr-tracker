@@ -1,35 +1,119 @@
-$vs-colors: (
-  lightest: var(--color-primary),
-  light: var(--color-primary),
-  dark: var(--color-primary),
-  darkest: var(--color-primary),
-) !default;
+// Styling for Vue Select that somewhat matches the proposed styling for
+// dropdown selects in Punkt (see Figma):
+//  https://punkt.oslo.kommune.no/3.1/komponenter/select/
+//  https://vue-select.org/guide/css.html#available-css-variables-3-18
 
-//  Active State
-$vs-state-active-bg: var(--color-secondary) !default;
-$vs-state-active-color: var(--color-text) !default;
+@use 'typography';
+@import 'vue-select/dist/vue-select';
 
-//  Disabled State
-$vs-state-disabled-color: rgba(60, 60, 60, 0.5) !default;
-$vs-state-disabled-controls-color: rgba(60, 60, 60, 0.5) !default;
-
-//  Borders
-$vs-border-radius: 0 !default;
-
-//  Dropdown
-$vs-dropdown-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15) !default;
-
-.vs__selected {
-  font-weight: 500;
+:root {
+  --vs-font-size: typography.$font-size-2;
+  --vs-border-color: var(--color-blue-dark);
+  --vs-border-width: 2px;
+  --vs-border-radius: 0;
+  --vs-controls-color: var(--color-blue-dark);
+  --vs-dropdown-option--active-bg: var(--color-gray-light);
+  --vs-dropdown-option--active-color: var(--color-active);
+  --vs-dropdown-box-shadow: 0px 5px 30px -10px rgba(0, 0, 0, 0.2);
+  --vs-transition-duration: 100ms;
 }
 
 .vs__dropdown-toggle {
-  padding: 0.3321rem 0.0625rem !important;
+  min-height: 3.125rem;
+}
+
+.vs__dropdown-menu {
+  padding: 0;
+  border: 0;
+
+  .vs__no-options {
+    padding: 1rem;
+    color: var(--color-gray-dark);
+    font-style: italic;
+  }
 }
 
 .vs__dropdown-option {
-  color: var(--color-text) !important;
+  padding: 0.5rem 1rem;
+  color: var(--color-blue-dark);
+  line-height: 1.688rem; // 27px
+
+  &--highlight {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    color: var(--color-active);
+  }
 }
 
-/* stylelint-disable-next-line no-invalid-position-at-import-rule */
-@import 'vue-select/src/scss/vue-select';
+.vs__selected {
+  top: 5.5px;
+
+  &-options {
+    padding: 2px;
+  }
+}
+
+.vs__search {
+  outline: none !important;
+}
+
+.vs__deselect {
+  margin-left: 0.5rem;
+
+  svg {
+    --fg-color: var(--color-blue-dark);
+    height: 0.75rem;
+  }
+}
+
+.vs__open-indicator {
+  height: 1.5rem;
+}
+
+.v-select {
+  &.vs--multiple {
+    .vs__selected {
+      // Style inspired by the Punkt badge/label.
+      height: 2.125rem; // 34px
+      margin: 4px 4px 0 ;
+      padding: 0.25rem 0.5rem;
+      font-weight: 500;
+      font-size: typography.$font-size-1;
+      background-color: var(--color-beige-light);
+      border: 0;
+    }
+  }
+
+  &.vs--single {
+    &.vs--open {
+      .vs__selected {
+        color: var(--color-white);
+        opacity: 0.6;
+      }
+    }
+  }
+
+  &.vs--open {
+    .vs__dropdown-toggle {
+      color: var(--color-white);
+      background-color: var(--color-active);
+      border-color: var(--color-active);
+    }
+
+    .vs__open-indicator {
+      --fg-color: var(--color-white);
+    }
+  }
+
+  &:focus-within:not(.vs--open) {
+    outline: 4px solid var(--color-visited-light);
+
+    .vs__dropdown-toggle {
+      border-color: var(--color-active);
+    }
+    &.vs--single .vs__selected {
+      color: var(--color-active);
+    }
+  }
+}

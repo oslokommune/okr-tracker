@@ -21,7 +21,7 @@
             v-model="thisRecord.comment"
             input-type="textarea"
             name="comment"
-            :label="$t('widget.history.comment_optional')"
+            :label="$t('widget.history.comment')"
             :placeholder="$t('keyResult.commentPlaceholder')"
             data-cy="progress_comment"
             class="progress-form__comment-group"
@@ -29,18 +29,16 @@
         </div>
 
         <div class="progress-form__right">
-          <validation-provider v-slot="{ errors }" name="datetime" rules="required">
-            <label class="form-group">
-              <span class="form-label">{{ $t('widget.history.time') }}</span>
-
+          <validation-provider name="datetime" rules="required">
+            <label class="pkt-form-group">
+              <span class="pkt-form-label">{{ $t('widget.history.time') }}</span>
               <flat-pickr
                 v-model="thisRecord.timestamp"
                 :config="flatPickerConfig"
-                class="form-control flatpickr-input"
+                class="pkt-form-input flatpickr-input"
                 name="datetime"
                 :placeholder="$t('widget.history.time')"
               />
-              <span class="form-field--error">{{ errors[0] }}</span>
             </label>
           </validation-provider>
         </div>
@@ -155,8 +153,7 @@ export default {
   }
 
   .display-as {
-    padding-bottom: 0.5rem;
-    color: var(--color-grey-500);
+    color: var(--color-grayscale-50);
     font-weight: 500;
     font-size: typography.$font-size-1;
   }
@@ -174,8 +171,8 @@ export default {
   ::v-deep &__comment-group {
     flex-grow: 1;
 
-    .form-group {
-      height: calc(100% - 3.5rem);
+    .pkt-form-group {
+      height: calc(100% - 2rem);
     }
     .form-input__wrapper {
       height: 100%;
@@ -194,7 +191,7 @@ export default {
 }
 
 ::v-deep .flatpickr-calendar {
-  border: 1px solid var(--color-primary);
+  border: 2px solid var(--color-blue-dark);
   border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -202,9 +199,5 @@ export default {
   &.inline {
     top: 0;
   }
-}
-
-.help-text {
-  margin-top: 0.5rem;
 }
 </style>
