@@ -1,17 +1,18 @@
 <template>
   <div class="container--alt">
     <template v-if="allKpis.length">
-      <aside class="aside--alt widgets">
+      <div :class="showKpiDetails ? 'aside--alt widgets' : 'main'">
         <template v-for="(group, index) in kpiGroups">
           <kpi-widget-group
             v-if="group.kpis.length > 0"
             :key="`kpi-group-${index}`"
             v-bind="group"
+            :compact="showKpiDetails"
           />
         </template>
-      </aside>
+      </div>
 
-      <kpi-details v-if="activeKpi" :kpi="activeKpi" />
+      <kpi-details v-if="showKpiDetails && activeKpi" :kpi="activeKpi" />
     </template>
 
     <empty-state
@@ -55,6 +56,10 @@ export default {
       next(false);
     }
   },
+
+  data: () => ({
+    showKpiDetails: true,
+  }),
 
   computed: {
     ...mapState(['kpis', 'subKpis', 'activeKpi', 'selectedPeriod']),
@@ -101,26 +106,35 @@ export default {
   },
 
   watch: {
-    '$route.params': {
+    $route: {
       immediate: true,
-      async handler(params) {
+      async handler({ params, query }) {
+        if (query.view === 'list') {
+          this.showKpiDetails = false;
+          return;
+        }
+
         const { kpiId } = params;
+
         if (!kpiId && this.allKpis.length) {
           this.$router.replace({
-            params: {
-              ...params,
-              kpiId: this.allKpis[0].id,
-            },
+            params: { ...params, kpiId: this.allKpis[0].id },
+            query: { resultIndicatorPeriod: this.selectedPeriod?.key },
           });
         } else if (kpiId !== this.activeKpi?.id) {
           await this.$store.dispatch('set_active_kpi', kpiId);
         }
+
+        this.showKpiDetails = true;
       },
     },
 
     selectedPeriod(period) {
-      if (this.$route.query?.resultIndicatorPeriod !== period.key) {
-        this.$router.replace({ query: { resultIndicatorPeriod: period.key } });
+      const { query } = this.$route;
+      if (query?.resultIndicatorPeriod !== period.key) {
+        this.$router.replace({
+          query: { ...query, resultIndicatorPeriod: period.key },
+        });
       }
     },
   },

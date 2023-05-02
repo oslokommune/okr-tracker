@@ -361,7 +361,7 @@
   "tooltip": {
     "openMenu": "Open menu",
     "keyResultValue": "Insert new value",
-    "changeView": "Change view to {view}",
+    "changeView": "View: {view}",
     "editProgress": "Edit value",
     "deleteProgress": "Delete value",
     "isMember": "Member of team",
@@ -428,7 +428,8 @@
   "view": {
     "compact": "Compact",
     "details": "Details",
-    "timeline": "Timeline"
+    "timeline": "Timeline",
+    "list": "List"
   },
   "keyResultsPage": {
     "notes": {

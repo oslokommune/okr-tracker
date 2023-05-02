@@ -359,7 +359,7 @@
   "tooltip": {
     "openMenu": "Åpne meny",
     "keyResultValue": "Skriv inn ny måleverdi",
-    "changeView": "Endre visning til {view}",
+    "changeView": "Visning: {view}",
     "editProgress": "Endre målepunkt",
     "deleteProgress": "Slett målepukt",
     "isMember": "Medlem av team",
@@ -426,7 +426,8 @@
   "view": {
     "compact": "Kompakt",
     "details": "Detaljer",
-    "timeline": "Tidslinje"
+    "timeline": "Tidslinje",
+    "list": "Liste"
   },
   "keyResultsPage": {
     "notes": {

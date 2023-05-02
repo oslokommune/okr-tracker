@@ -1,33 +1,40 @@
 <template>
-  <widget class="kpi-card-widget" size="small">
+  <widget
+    size="small"
+    :class="['kpi-card-widget', { 'kpi-card-widget--compact': compact }]"
+  >
     <template #header>
-      <h3 class="title-4">{{ kpi.name }}</h3>
+      <h3 class="title-3">{{ kpi.name }}</h3>
     </template>
 
     <template #default>
       <div class="kpi-card-widget__inner">
-        <template v-if="progress.length">
-          <span class="kpi-card-widget__value">
-            {{ formatKPIValue(kpi, latestProgressRecord.value) }}
-          </span>
-          <period-trend-tag
-            v-if="progress.length > 1"
+        <div v-if="!compact" class="kpi-card-widget__description">
+          {{ kpi.description }}
+        </div>
+
+        <div class="kpi-card-widget__trend">
+          <kpi-period-trend
+            v-if="progress.length"
             :kpi="kpi"
             :progress="progress"
-            :latest-progress-record="latestProgressRecord"
+            :compact="compact"
           />
-          <div class="kpi-card-widget__graph">
-            <mini-graph
-              v-if="progress.length > 1"
-              :kpi-data="progress"
-              :start-value="kpi.startValue"
-            />
-            <span v-else>{{ $t('kpi.noGraph') }}</span>
-          </div>
-        </template>
-        <span v-else-if="!isProgressLoading" class="kpi-card-widget__no-progress">
-          {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
-        </span>
+          <span v-else-if="!isProgressLoading" class="no-data">
+            {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
+          </span>
+        </div>
+
+        <div class="kpi-card-widget__graph">
+          <mini-graph
+            v-if="progress.length > 1"
+            :kpi-data="progress"
+            :start-value="kpi.startValue"
+          />
+          <span v-else-if="progress.length === 1" class="no-data">{{
+            $t('kpi.noGraph')
+          }}</span>
+        </div>
       </div>
     </template>
   </widget>
@@ -41,7 +48,7 @@ import {
   getCachedKPIProgress,
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
-import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
+import KpiPeriodTrend from '@/components/KpiPeriodTrend.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
 import MiniGraph from './MiniGraph.vue';
 
@@ -50,7 +57,7 @@ export default {
 
   components: {
     Widget: WidgetWrapper,
-    PeriodTrendTag,
+    KpiPeriodTrend,
     MiniGraph,
   },
 
@@ -58,6 +65,11 @@ export default {
     kpi: {
       type: Object,
       required: true,
+    },
+    compact: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 
@@ -116,54 +128,86 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-::v-deep .widget__header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  color: var(--color-text);
-
-  .title-3 {
-    color: inherit;
-  }
-
-  .title-label {
-    font-weight: 400;
-    font-size: 0.75rem;
-  }
-}
-
 .kpi-card-widget {
-  gap: 0;
+  gap: 0.75rem;
+  min-height: 6rem;
+  margin: 0;
 
   &__inner {
     display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    height: 2rem;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
+    min-height: 2.25rem;
   }
 
-  &__value {
-    color: var(--color-blue-dark);
-    font-weight: 500;
-    font-size: typography.$font-size-3;
+  &__description {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-grayscale-60);
+    font-size: typography.$font-size-0;
+    line-height: 1.5;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  &__trend {
+    display: flex;
+    order: 1;
   }
 
   &__graph {
-    flex-basis: 10rem;
-    margin-left: auto;
-    color: var(--color-grayscale-40);
-    font-weight: 400;
-    font-size: typography.$font-size-0;
+    display: flex;
+    align-self: center;
+    min-width: 10rem;
+    max-width: 50%;
 
-    @media screen and (max-width: bp(xs)), (min-width: bp(s)) and (max-width: bp(l)) {
-      display: none;
+    .no-data {
+      font-size: typography.$font-size-0;
     }
   }
 
-  &__no-progress {
-    color: var(--color-grayscale-40);
-    font-weight: 400;
-    font-size: typography.$font-size-1;
+  .no-data {
+    flex: 1;
+    align-self: center;
+    text-align: center;
   }
+
+  @media screen and (min-width: bp(m)) {
+    &__inner {
+      flex-direction: row;
+    }
+
+    &__description {
+      flex-basis: 30%;
+    }
+
+    &__trend {
+      flex-basis: 50%;
+      flex-shrink: 0;
+    }
+
+    &__graph {
+      flex-basis: 20%;
+      flex-shrink: 0;
+    }
+  }
+
+  &--compact {
+    .kpi-card-widget__trend {
+      order: 0;
+    }
+
+    .no-data {
+      text-align: left;
+    }
+  }
+}
+
+.no-data {
+  color: var(--color-grayscale-40);
+  font-weight: 400;
+  font-size: typography.$font-size-1;
+  font-style: italic;
 }
 </style>
