@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/views/Home.vue';
-import Api from '@/views/Api.vue';
 import * as routerGuards from './router-guards';
 
 Vue.use(Router);
@@ -16,7 +15,7 @@ const routes = [
   {
     path: '/api',
     name: 'Api',
-    component: Api,
+    component: () => import('@/views/Api.vue'),
   },
   {
     path: '/login',
