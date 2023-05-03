@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- The option of where to start measurement y-axes has been set to zero by
+  default for existing measurements too.
+
 ### Fixed
 
 - Fixed a bug that made pressing Enter on the access request page clear the form
