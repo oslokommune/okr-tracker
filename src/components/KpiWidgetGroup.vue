@@ -115,8 +115,20 @@ export default {
       &:hover {
         background: var(--color-gray-light);
 
-        ::v-deep .widget__header h3 {
-          color: var(--color-hover);
+        ::v-deep {
+          .widget__header h3 {
+            color: var(--color-hover);
+          }
+
+          .period-trend-tag__trend {
+            &:before {
+              border-left-color: var(--color-gray-light);
+            }
+            &:after {
+              border-top-color: var(--color-gray-light);
+              border-bottom-color: var(--color-gray-light);
+            }
+          }
         }
       }
     }

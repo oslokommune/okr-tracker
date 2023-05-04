@@ -145,8 +145,7 @@ export default {
   &__trend {
     position: relative;
     order: 0;
-    margin-right: 0.5em;
-    padding: 0 0.5em 0 1.5em;
+    padding: 0 1.5em;
     color: var(--color-blue-dark);
     font-size: 0.75em;
     line-height: 2;
@@ -167,29 +166,22 @@ export default {
       position: absolute;
       top: 0;
       width: 0;
-      height: 0;
+      height: 100%;
       border-color: transparent;
       border-style: solid;
+      border-width: 1em 0 1em 0.76em;
       content: '';
     }
 
     &:before {
       left: 0;
-      border-width: 1em 0 1em 0.75em;
       border-left-color: var(--color-white);
     }
 
     &:after {
-      right: -0.75em;
-      border-width: 1em 0 1em 0.75em;
-      border-left-color: var(--color-blue-light);
-    }
-
-    &--positive:after {
-      border-left-color: var(--color-green-light);
-    }
-    &--negative:after {
-      border-left-color: #f9b3ab; // TODO: når implementert i Punkt: var(--color-red-30);
+      right: 0;
+      border-top-color: var(--color-white);
+      border-bottom-color: var(--color-white);
     }
   }
 
