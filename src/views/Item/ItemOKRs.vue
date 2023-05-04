@@ -34,9 +34,9 @@
             >
               <objective-row :objective="objective" :show-description="true">
               </objective-row>
-              <ul v-if="objective.keyResults.length">
+              <ul v-if="objective.id in keyResults">
                 <li
-                  v-for="keyResult in objective.keyResults"
+                  v-for="keyResult in keyResults[objective.id]"
                   :key="keyResult.id"
                   class="keyResultRow"
                   :class="{ 'keyResultRow--isCompact': view === 'compact' }"
@@ -79,6 +79,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { isBefore, addDays, isWithinInterval } from 'date-fns';
+import { db } from '@/config/firebaseConfig';
 import { objectiveInPeriod } from '@/util/okr';
 import { periodDates } from '@/util';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
@@ -105,6 +106,8 @@ export default {
 
   data: () => ({
     activeTab: 0,
+    keyResults: {},
+    foreignObjectives: [],
   }),
 
   computed: {
@@ -112,8 +115,8 @@ export default {
       'activeItem',
       'activePeriod',
       'dataLoading',
-      'keyResults',
       'objectives',
+      'ownKeyResults',
       'periods',
       'selectedPeriod',
       'user',
@@ -140,14 +143,11 @@ export default {
         return [];
       }
 
-      return this.objectives
+      return [...this.objectives, ...this.foreignObjectives]
         .filter((o) => objectiveInPeriod(this.selectedPeriod, o))
         .map((o) => ({
           ...o,
           id: o.id,
-          keyResults: this.keyResults.filter(
-            (kr) => kr.objective === `objectives/${o.id}`
-          ),
         }));
     },
   },
@@ -170,6 +170,42 @@ export default {
     } else {
       this.setPeriod(null, false);
     }
+
+    this.periodObjectives.forEach(async (o) => {
+      const oref = db.collection('objectives').doc(o.id);
+      const kr = await db
+        .collection('keyResults')
+        .where('objective', '==', oref)
+        .where('archived', '==', false)
+        .get();
+      this.keyResults[o.id] = kr.docs.map((d) => ({ id: d.id, ...d.data() }));
+    });
+
+    this.ownKeyResults.forEach(async (kr) => {
+      const keyResult = await db
+        .collection('keyResults')
+        .doc(kr.id)
+        .get()
+        .then((d) => ({ id: d.id, ...d.data() }));
+
+      const objective = await db
+        .collection('objectives')
+        .doc(keyResult.objective.id)
+        .get()
+        .then((d) => ({ id: d.id, ...d.data() }));
+
+      if (keyResult.parent.id !== objective.parent.id) {
+        if (objective.id in this.keyResults) {
+          this.keyResults[objective.id].push(keyResult);
+        } else {
+          this.keyResults[objective.id] = [keyResult];
+        }
+
+        if (!this.foreignObjectives.map((o) => o.id).includes(objective.id)) {
+          this.foreignObjectives.push(objective);
+        }
+      }
+    });
   },
 
   methods: {

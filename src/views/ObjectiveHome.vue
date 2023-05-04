@@ -11,7 +11,7 @@
 
       <section>
         <empty-state
-          v-if="!keyRes.length"
+          v-if="!keyResults.length"
           :icon="'poop'"
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
@@ -26,7 +26,7 @@
 
         <div class="key-results__list">
           <key-result-row
-            v-for="keyResult in keyRes"
+            v-for="keyResult in keyResults"
             :key="keyResult.id"
             :key-result="keyResult"
             :force-expanded="true"
@@ -85,10 +85,6 @@ export default {
       next(false);
     }
   },
-
-  data: () => ({
-    keyRes: [],
-  }),
 
   computed: {
     ...mapState(['activeObjective', 'keyResults']),
