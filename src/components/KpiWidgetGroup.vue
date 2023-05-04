@@ -4,8 +4,7 @@
       <h2>{{ title }}</h2>
       <template v-if="!compact">
         <span v-if="selectedPeriod.startDate && selectedPeriod.endDate">
-          {{ dateLong(selectedPeriod.startDate) }} –
-          {{ dateLong(selectedPeriod.endDate) }}
+          {{ periodDates(selectedPeriod) }}
         </span>
         <span v-else>
           {{ selectedPeriod.label }}
@@ -31,7 +30,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { dateLong } from '@/util';
+import { periodDates } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import WidgetKpiCard from '@/components/widgets/WidgetKpiCard/WidgetKpiCard.vue';
 
@@ -63,7 +62,7 @@ export default {
   },
 
   methods: {
-    dateLong,
+    periodDates,
     formatKPIValue,
   },
 };
