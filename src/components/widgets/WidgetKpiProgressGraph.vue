@@ -17,7 +17,7 @@
       <!-- xmlns for download purposes -->
       <svg ref="progressGraphSvg" xmlns="http://www.w3.org/2000/svg"></svg>
 
-      <kpi-period-trend class="progress-graph__trend" :kpi="kpi" :progress="progress" />
+      <period-trend-tag class="progress-graph__trend" :kpi="kpi" :progress="progress" />
     </div>
   </widget>
 </template>
@@ -34,7 +34,7 @@ import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import i18n from '@/locale/i18n';
 import getPeriods from '@/config/periods';
-import KpiPeriodTrend from '@/components/KpiPeriodTrend.vue';
+import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from './WidgetWrapper.vue';
 
 const { Timestamp } = firebase.firestore;
@@ -44,7 +44,7 @@ export default {
 
   components: {
     Widget: WidgetWrapper,
-    KpiPeriodTrend,
+    PeriodTrendTag,
   },
 
   props: {

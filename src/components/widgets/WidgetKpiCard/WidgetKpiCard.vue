@@ -14,7 +14,7 @@
         </div>
 
         <div class="kpi-card-widget__trend">
-          <kpi-period-trend
+          <period-trend-tag
             v-if="progress.length"
             :kpi="kpi"
             :progress="progress"
@@ -48,7 +48,7 @@ import {
   getCachedKPIProgress,
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
-import KpiPeriodTrend from '@/components/KpiPeriodTrend.vue';
+import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
 import MiniGraph from './MiniGraph.vue';
 
@@ -57,7 +57,7 @@ export default {
 
   components: {
     Widget: WidgetWrapper,
-    KpiPeriodTrend,
+    PeriodTrendTag,
     MiniGraph,
   },
 

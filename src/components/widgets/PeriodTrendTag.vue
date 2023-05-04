@@ -1,30 +1,30 @@
 <template>
   <div
     v-if="kpi && progress.length"
-    :class="['period-trend', { 'period-trend--compact': compact }]"
+    :class="['period-trend-tag', { 'period-trend-tag--compact': compact }]"
   >
-    <div v-if="!compact && progress.length > 1" class="period-trend__value-wrapper">
-      <span class="period-trend__value">
+    <div v-if="!compact && progress.length > 1" class="period-trend-tag__value-wrapper">
+      <span class="period-trend-tag__value">
         {{ formatKPIValue(kpi, firstProgressRecord.value) }}
       </span>
-      <span class="period-trend__date">
+      <span class="period-trend-tag__date">
         {{ formatDate(firstProgressRecord.timestamp) }}
       </span>
     </div>
     <span
       v-if="progress.length > 1"
       :class="[
-        'period-trend__trend-tag',
-        `period-trend__trend-tag--${trendClassModifier}`,
+        'period-trend-tag__trend',
+        `period-trend-tag__trend--${trendClassModifier}`,
       ]"
     >
       {{ periodTrendFormatted }}
     </span>
-    <div class="period-trend__value-wrapper">
-      <span class="period-trend__value">
+    <div class="period-trend-tag__value-wrapper">
+      <span class="period-trend-tag__value">
         {{ formatKPIValue(kpi, latestProgressRecord.value) }}
       </span>
-      <span v-if="!compact" class="period-trend__date">
+      <span v-if="!compact" class="period-trend-tag__date">
         {{ formatDate(latestProgressRecord.timestamp) }}
       </span>
     </div>
@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.period-trend {
+.period-trend-tag {
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -142,7 +142,7 @@ export default {
     font-size: typography.$font-size-1;
   }
 
-  &__trend-tag {
+  &__trend {
     position: relative;
     order: 0;
     margin-right: 0.5em;
@@ -197,7 +197,7 @@ export default {
     justify-content: flex-start;
     font-size: typography.$font-size-3;
 
-    .period-trend__trend-tag {
+    .period-trend-tag__trend {
       order: 1;
       padding: 0 0.25rem;
       line-height: 1.5;
