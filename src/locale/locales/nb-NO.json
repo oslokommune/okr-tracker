@@ -361,7 +361,7 @@
     "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Visning: {view}",
     "editProgress": "Endre målepunkt",
-    "deleteProgress": "Slett målepukt",
+    "deleteProgress": "Slett målepunkt",
     "isMember": "Medlem av team",
     "emptyPeriod": "Ingen aktiv periode",
     "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet",
@@ -448,17 +448,17 @@
     "noKPIProgressInPeriod": "Denne målingen har ingen registrerte verdier i perioden.",
     "noKeyResults": {
       "heading": "Ingen nøkkelresultater",
-      "body": "Oops! Her er finnes det ingen nøkkelresultater ennå.",
+      "body": "Oops! Her finnes det ingen nøkkelresultater ennå.",
       "linkText": "Opprett et nøkkelresultat"
     },
     "noResultIndicators": {
       "heading": "Ingen resultatindikatorer",
-      "body": "Oops! Her er finnes det ingen resultatindikatorer ennå.",
+      "body": "Oops! Her finnes det ingen resultatindikatorer ennå.",
       "linkText": "Opprett en resultatindikator"
     },
     "noKeyFigures": {
       "heading": "Ingen nøkkeltall",
-      "body": "Oops! Her er finnes det ingen nøkkeltall ennå.",
+      "body": "Oops! Her finnes det ingen nøkkeltall ennå.",
       "linkText": "Opprett et nøkkeltall"
     },
     "itemAdmin": {
@@ -468,7 +468,7 @@
     },
     "noKPIs": {
       "heading": "Ingen målinger",
-      "body": "Oops! Her er finnes det ingen målinger ennå.",
+      "body": "Oops! Her finnes det ingen målinger ennå.",
       "adminBody": "Her kan du opprette målinger som automatisk henter data fra Google Sheets. ",
       "linkText": "Opprett en måling"
     },
