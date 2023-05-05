@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.6.0] 2023-05-05
+
 ### Added
 
 - A new timeline view for objectives has been added (visualized in a Gantt
@@ -12,8 +14,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
-- The OKR period selection tabs have been moved into a drop down menu in the top
-  bar matching the period selector on the KPI page.
+- The OKR period selection tabs have been moved into a dropdown menu in the top
+  bar matching the period selector on the measurements page.
 - Improved OKR overview page styling.
 - Improved tooltip styling.
 - All forms now use Punkt-styled input fields.
@@ -25,7 +27,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- Fixed rendering of charts containing goals with missing value.
+- Fixed rendering of charts containing goals with missing values.
 - Fixed a bug in the measurement goal value input field.
 - The period selector dropdown menu has been made more responsive.
 - The key result progression update form is now cleared on submit to prevent
