@@ -17,12 +17,6 @@
         <div>
           <span class="progressStatistics__value">
             {{ formattedKpiValue }}
-            <period-trend-tag
-              v-if="progress.length > 1"
-              :kpi="kpi"
-              :progress="progress"
-              :latest-progress-record="latestProgressRecord"
-            />
           </span>
         </div>
       </div>
@@ -38,7 +32,9 @@
         <div>
           <span class="progressStatistics__value">
             {{ formatKPIValue(kpi, goal.value) }}
-            <pkt-icon v-if="isGoalReached" name="alert-success" />
+            <span class="check-icon">
+              <pkt-icon v-if="isGoalReached" name="check-medium" />
+            </span>
           </span>
         </div>
       </div>
@@ -57,7 +53,6 @@ export default {
 
   components: {
     Widget: WidgetWrapper,
-    PeriodTrendTag: () => import('@/components/widgets/PeriodTrendTag.vue'),
   },
 
   props: {
@@ -157,11 +152,13 @@ export default {
     flex-direction: column;
     gap: 0.75rem;
   }
+
   &__title {
     color: var(--color-grayscale-40);
     font-weight: 500;
     font-size: typography.$font-size-1;
   }
+
   &__value {
     display: flex;
     gap: 0.5rem;
@@ -170,8 +167,16 @@ export default {
     font-weight: 500;
     font-size: typography.$font-size-4;
 
-    svg {
+    .check-icon {
+      width: 1.25rem;
       height: 1.25rem;
+      line-height: 1.25rem;
+      background-color: var(--color-green-light);
+      border-radius: 50%;
+
+      svg {
+        height: 1em;
+      }
     }
   }
 }

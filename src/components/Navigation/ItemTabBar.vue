@@ -1,31 +1,55 @@
 <template>
   <div class="sub-navigation">
-    <nav v-if="activeItem" class="tabs" role="tablist">
-      <router-link
-        v-for="(tab, index) in itemTabs"
-        :key="index"
-        :to="tab.route"
-        class="btn btn--sec tabs__tab"
-        role="tab"
-      >
-        <span class="pkt-show-tablet-big-up">{{ tab.label }}</span>
-        <span class="pkt-hide-tablet-big-up">{{ tab.shortLabel || tab.label }}</span>
-      </router-link>
-
-      <router-link
-        v-if="hasEditRights"
-        :to="{ name: 'ItemAdmin', query: adminLinkQuery }"
-        class="btn btn--sec tabs__tab"
-        role="tab"
-      >
-        {{ $t('general.admin') }}
-      </router-link>
+    <nav v-if="activeItem" class="sub-navigation__menu">
+      <template v-for="(tabMenu, tabMenuIndex) in itemTabs">
+        <menu
+          v-if="tabMenu.show === undefined ? true : tabMenu.show"
+          :key="`item_tabs_${tabMenuIndex}`"
+          :class="['tabs', { 'tabs--right': tabMenu.right }]"
+          role="tablist"
+        >
+          <li
+            v-for="(tabItem, tabItemIndex) in tabMenu.items"
+            :key="`item_tab_${tabItemIndex}`"
+            class="tabs__tab-wrapper"
+            role="tab"
+          >
+            <router-link
+              v-slot="{ href, navigate, isExactActive }"
+              :to="tabItem.route"
+              custom
+            >
+              <a
+                v-tooltip.bottom="tabItem.tooltip"
+                :href="href"
+                :class="[
+                  'tabs__tab',
+                  { 'tabs__tab--toggle': tabMenu.type },
+                  {
+                    'tabs__tab--active': tabItem.activeMatchOverride || isExactActive,
+                  },
+                ]"
+                @click="navigate"
+              >
+                <pkt-icon v-if="tabItem.icon" :name="tabItem.icon" />
+                <template v-if="tabItem.label && tabItem.type !== 'toggle'">
+                  <span class="pkt-show-tablet-big-up">{{ tabItem.label }}</span>
+                  <span class="pkt-hide-tablet-big-up">
+                    {{ tabItem.shortLabel || tabItem.label }}
+                  </span>
+                </template>
+              </a>
+            </router-link>
+          </li>
+        </menu>
+      </template>
     </nav>
 
     <period-selector
       v-if="_periods.length"
+      class="sub-navigation__period"
       :periods="_periods"
-      :show-date-picker="$route.name === 'ItemMeasurements'"
+      :show-date-picker="isMeasurementsView"
     />
   </div>
 </template>
@@ -49,24 +73,70 @@ export default {
       'activeKpi',
       'activeObjective',
       'periods',
+      'selectedPeriod',
     ]),
     ...mapGetters(['hasEditRights']),
 
     itemTabs() {
+      const { name, query } = this.$route;
+
       return [
         {
-          route: { name: 'ItemHome' },
-          label: this.$t('general.OKRsLong'),
-          shortLabel: this.$t('general.OKRs'),
+          items: [
+            {
+              route: { name: 'ItemHome' },
+              label: this.$t('general.OKRsLong'),
+              shortLabel: this.$t('general.OKRs'),
+            },
+            {
+              route: { name: 'ItemMeasurements' },
+              label: this.$t('general.KPIs'),
+              activeMatchOverride: name === 'ItemMeasurements',
+            },
+            {
+              route: { name: 'ItemAbout' },
+              label: `${this.$t('about.about')} ${this.activeItem.name}`,
+              shortLabel: this.$t('about.about'),
+            },
+            {
+              show: this.hasEditRights,
+              route: { name: 'ItemAdmin', query: this.adminLinkQuery },
+              label: this.$t('general.admin'),
+            },
+          ],
         },
         {
-          route: { name: 'ItemMeasurements' },
-          label: this.$t('general.KPIs'),
-        },
-        {
-          route: { name: 'ItemAbout' },
-          label: `${this.$t('about.about')} ${this.activeItem.name}`,
-          shortLabel: this.$t('about.about'),
+          show: this.isMeasurementsView,
+          right: true,
+          type: 'toggle',
+          items: [
+            {
+              route: {
+                name: 'ItemMeasurements',
+                query: {
+                  resultIndicatorPeriod: this.selectedPeriod?.key,
+                },
+              },
+              activeMatchOverride: name === 'ItemMeasurements' && query?.view !== 'list',
+              icon: 'graph',
+              tooltip: this.$t('tooltip.changeView', {
+                view: this.$t('view.details'),
+              }),
+            },
+            {
+              route: {
+                name: 'ItemMeasurements',
+                query: {
+                  view: 'list',
+                  resultIndicatorPeriod: this.selectedPeriod?.key,
+                },
+              },
+              icon: 'list',
+              tooltip: this.$t('tooltip.changeView', {
+                view: this.$t('view.list'),
+              }),
+            },
+          ],
         },
       ];
     },
@@ -96,10 +166,14 @@ export default {
           endDate: p.endDate.toDate(),
         }));
       }
-      if (this.$route.name === 'ItemMeasurements') {
+      if (this.isMeasurementsView) {
         return Object.values(getPeriods());
       }
       return [];
+    },
+
+    isMeasurementsView() {
+      return ['ItemMeasurements', 'ItemMeasurementsList'].includes(this.$route.name);
     },
   },
 };
@@ -111,52 +185,91 @@ export default {
   top: 4rem;
   z-index: 20;
   display: flex;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-grayscale-10);
+
+  &__menu {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  &__period {
+    padding-left: 2rem;
+  }
 }
 
 .tabs {
-  flex-grow: 1;
-  box-sizing: border-box;
-  background-color: var(--color-white);
+  display: flex;
+  list-style: none;
+
+  &--right {
+    margin-left: auto;
+  }
 
   &__tab {
-    padding: 1.25rem 1rem;
+    $tab-selector: &;
+    $tab-line-height: 1.25rem;
+
+    &-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
     color: var(--color-grayscale-40);
-    border: unset;
+    font-weight: 500;
+    line-height: $tab-line-height;
+    text-decoration: none;
 
-    > svg {
+    svg {
       --fg-color: var(--color-grayscale-40);
-      height: 1rem;
-      margin-right: 0.5rem;
+      height: $tab-line-height;
     }
 
-    &--right {
-      margin-left: auto;
-    }
-
-    &.router-link-active {
-      position: relative;
+    &--active,
+    &:hover {
       color: var(--color-blue-dark);
-      cursor: default;
 
-      > svg {
+      svg {
         --fg-color: var(--color-blue-dark);
       }
+    }
 
-      &::after {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        height: 0.25rem;
-        background-color: var(--color-active-light);
-        content: '';
+    &:not(#{$tab-selector}--toggle) {
+      position: relative;
+      padding: 1rem;
+
+      &#{$tab-selector}--active {
+        &::after {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          height: 0.25rem;
+          background-color: var(--color-active-light);
+          content: '';
+        }
+      }
+
+      &:hover:not(#{$tab-selector}--active) {
+        background-color: var(--color-gray-light);
       }
     }
 
-    &:hover:not(.router-link-active):not(:disabled) {
-      position: relative;
-      color: var(--color-blue-dark);
-      background-color: var(--color-gray-light);
+    &--toggle {
+      margin: 0 0.15rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+
+      &#{$tab-selector}--active {
+        background-color: var(--color-beige-light);
+      }
+
+      &:hover:not(#{$tab-selector}--active) {
+        background-color: var(--color-gray-light);
+      }
     }
   }
 }

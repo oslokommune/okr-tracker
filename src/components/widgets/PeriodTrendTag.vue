@@ -1,11 +1,39 @@
 <template>
-  <span v-if="kpi" :class="bgColor" class="period-trend-tag">
-    {{ periodTrendFormatted }}
-  </span>
+  <div
+    v-if="kpi && progress.length"
+    :class="['period-trend-tag', { 'period-trend-tag--compact': compact }]"
+  >
+    <div v-if="!compact && progress.length > 1" class="period-trend-tag__value-wrapper">
+      <span class="period-trend-tag__value">
+        {{ formatKPIValue(kpi, firstProgressRecord.value) }}
+      </span>
+      <span class="period-trend-tag__date">
+        {{ formatDate(firstProgressRecord.timestamp) }}
+      </span>
+    </div>
+    <span
+      v-if="progress.length > 1"
+      :class="[
+        'period-trend-tag__trend',
+        `period-trend-tag__trend--${trendClassModifier}`,
+      ]"
+    >
+      {{ periodTrendFormatted }}
+    </span>
+    <div class="period-trend-tag__value-wrapper">
+      <span class="period-trend-tag__value">
+        {{ formatKPIValue(kpi, latestProgressRecord.value) }}
+      </span>
+      <span v-if="!compact" class="period-trend-tag__date">
+        {{ formatDate(latestProgressRecord.timestamp) }}
+      </span>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { dateLongCompact } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 
 export default {
@@ -20,9 +48,10 @@ export default {
       type: Array,
       required: true,
     },
-    latestProgressRecord: {
-      type: Object,
-      required: true,
+    compact: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 
@@ -30,35 +59,51 @@ export default {
     ...mapState(['selectedPeriod']),
 
     periodTrend() {
-      const firstProgressRecord = this.progress.slice(-1)[0].value;
-      const latestProgressRecord = this.latestProgressRecord.value;
-      const diff = latestProgressRecord - firstProgressRecord;
-      return Math.round(diff * 100) / 100;
+      if (this.firstProgressRecord && this.latestProgressRecord) {
+        const diff = this.latestProgressRecord.value - this.firstProgressRecord.value;
+        return Math.round(diff * 100) / 100;
+      }
+      return null;
     },
-    periodTrendFormatted() {
-      const prefix = this.periodTrend > 0 ? '+' : '';
-      const formattedTrend = formatKPIValue(this.kpi, this.periodTrend);
 
-      return `${prefix + formattedTrend}`;
+    periodTrendFormatted() {
+      if (this.periodTrend !== null) {
+        const prefix = this.periodTrend > 0 ? '+' : '';
+        const formattedTrend = formatKPIValue(this.kpi, this.periodTrend);
+        return `${prefix + formattedTrend}`;
+      }
+      return '?';
     },
-    bgColor() {
+
+    firstProgressRecord() {
+      return this.progress.length ? this.progress[this.progress.length - 1] : null;
+    },
+
+    latestProgressRecord() {
+      return this.progress.length ? this.progress[0] : null;
+    },
+
+    trendClassModifier() {
       const ri = this.kpi;
       const preferredTrendIsSet = ri?.preferredTrend !== undefined;
-      const preferredTrendFulfilled =
-        (ri?.preferredTrend === 'increase' && this.periodTrend > 0) ||
-        (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
 
-      return {
-        neutral: !preferredTrendIsSet || this.periodTrend === 0,
-        positive: preferredTrendIsSet && preferredTrendFulfilled,
-        negative:
-          preferredTrendIsSet && this.periodTrend !== 0 && !preferredTrendFulfilled,
-      };
+      if (preferredTrendIsSet && this.periodTrend !== null) {
+        const preferredTrendFulfilled =
+          (ri?.preferredTrend === 'increase' && this.periodTrend > 0) ||
+          (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
+
+        return preferredTrendFulfilled ? 'positive' : 'negative';
+      }
+      return 'neutral';
     },
   },
 
   methods: {
     formatKPIValue,
+
+    formatDate(date) {
+      return dateLongCompact(date instanceof Date ? date : date.toDate());
+    },
   },
 };
 </script>
@@ -67,23 +112,93 @@ export default {
 @use '@/styles/typography';
 
 .period-trend-tag {
-  padding: 0.25rem;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-around;
   font-weight: 500;
-  font-size: typography.$font-size-0;
-}
+  font-size: typography.$font-size-2;
+  white-space: nowrap;
 
-.neutral {
-  color: var(--color-blue-dark);
-  background: var(--color-blue-light);
-}
+  @media screen and (min-width: bp(s)) {
+    font-size: typography.$font-size-5;
+  }
 
-.positive {
-  color: var(--color-success);
-  background: var(--color-green-light);
-}
+  &__value-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
 
-.negative {
-  color: #770d01; // TODO: når implementert i Punkt: var(--color-red-80);
-  background: #f9b3ab; // TODO: når implementert i Punkt: var(--color-red-30);
+  &__value {
+    color: var(--color-text);
+  }
+
+  &__date {
+    color: var(--color-grayscale-40);
+    font-size: typography.$font-size-1;
+  }
+
+  &__trend {
+    position: relative;
+    order: 0;
+    padding: 0 1.5em;
+    color: var(--color-blue-dark);
+    font-size: 0.75em;
+    line-height: 2;
+    background: var(--color-blue-light);
+
+    &--positive {
+      color: var(--color-success);
+      background: var(--color-green-light);
+    }
+
+    &--negative {
+      color: #770d01; // TODO: når implementert i Punkt: var(--color-red-80);
+      background: #f9b3ab; // TODO: når implementert i Punkt: var(--color-red-30);
+    }
+
+    &:before,
+    &:after {
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 100%;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 1em 0 1em 0.76em;
+      content: '';
+    }
+
+    &:before {
+      left: 0;
+      border-left-color: var(--color-white);
+    }
+
+    &:after {
+      right: 0;
+      border-top-color: var(--color-white);
+      border-bottom-color: var(--color-white);
+    }
+  }
+
+  &--compact {
+    justify-content: flex-start;
+    font-size: typography.$font-size-3;
+
+    .period-trend-tag__trend {
+      order: 1;
+      padding: 0 0.25rem;
+      line-height: 1.5;
+
+      &:after,
+      &:before {
+        display: none;
+      }
+    }
+  }
 }
 </style>
