@@ -130,7 +130,6 @@ export default {
 
 .kpi-card-widget {
   gap: 0.75rem;
-  min-height: 6rem;
   margin: 0;
 
   &__inner {
@@ -158,8 +157,9 @@ export default {
 
   &__graph {
     display: flex;
+    flex-grow: 1;
     align-self: center;
-    min-width: 10rem;
+    min-width: 8rem;
     max-width: 50%;
 
     .no-data {
@@ -190,6 +190,7 @@ export default {
     &__graph {
       flex-basis: 20%;
       flex-shrink: 0;
+      min-width: auto;
     }
   }
 
@@ -200,6 +201,16 @@ export default {
 
     .no-data {
       text-align: left;
+    }
+
+    @media screen and (max-width: bp(m)) {
+      .kpi-card-widget__inner {
+        min-height: auto;
+      }
+
+      .kpi-card-widget__graph {
+        display: none;
+      }
     }
   }
 }
