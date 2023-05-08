@@ -1,0 +1,121 @@
+@use "sass:selector";
+
+$-module-name: 'menu';
+$-base-height: 3rem;
+$-base-width: 15rem;
+// TODO: Border color should be changed to `--color-gray``
+// as soon as new background color is implemented.
+$-border-color: var(--color-grayscale-10);
+
+.#{$-module-name} {
+  display: flex;
+  align-items: stretch;
+  list-style-type: none;
+  background-color: var(--color-white);
+
+  // Mode
+  &--vertical {
+    flex-direction: column;
+    width: $-base-width;
+
+    > .#{$-module-name}-item {
+      height: $-base-height;
+      border-bottom: 1px solid $-border-color;
+
+      &--dropdown {
+        .#{$-module-name}-item__toggle {
+          transform: rotate(270deg);
+        }
+
+        .#{$-module-name}-item__content {
+          top: 0;
+          left: 100%;
+        }
+      }
+    }
+  }
+
+  &--horizontal {
+    flex-direction: row;
+    height: $-base-height;
+    border-bottom: 1px solid $-border-color;
+
+    > .#{$-module-name}-item {
+      height: 100%;
+    }
+  }
+}
+
+.#{$-module-name}-item {
+  position: relative;
+  height: 100%;
+  background-color: inherit;
+
+  &__inner {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+    color: var(--color-blue-dark);
+    font-weight: 400;
+    font-size: 1rem;
+
+    @at-root a#{&} {
+      text-decoration: none;
+    }
+
+    &--active {
+      // Hack to prevent layout shift when overriding
+      // `font-weight` for active state. This is an
+      // attempt to somewhat emulate `500`.
+      text-shadow: .25px 0px .1px, -.25px 0px .1px;
+    }
+  }
+
+  &__icon {
+    height: 1.5rem;
+  }
+
+  &__toggle {
+    flex-shrink: 0;
+    height: 1.5rem;
+    margin-left: auto;
+  }
+
+  &__content {
+    width: 100%;
+    background-color: inherit;
+
+    @at-root .#{$-module-name}-item--dropdown > #{&} {
+      width: auto;
+    }
+  }
+
+  &--open > .#{$-module-name}-item__inner,
+  > .#{$-module-name}-item__inner:hover {
+    background-color: var(--color-gray-light);
+    cursor: pointer;
+  }
+
+  @at-root .#{$-module-name}--horizontal,
+  &--dropdown {
+    .#{$-module-name}-item__content {
+      position: absolute;
+      z-index: 99;
+      box-shadow: 0px 5px 30px -10px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &--tab {
+    .#{$-module-name}-item__inner--active::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 0.25rem;
+      background-color: var(--color-active-light);
+      content: '';
+    }
+  }
+}

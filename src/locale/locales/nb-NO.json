@@ -160,7 +160,6 @@
     "owner": "Oslo kommune",
     "help": "Hjelp",
     "admin": "Admin",
-    "administration": "Administrasjon",
     "superAdmin": "Super admin",
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
@@ -517,7 +516,6 @@
     "myProducts": "Min tilhørighet",
     "products": "Tilhørighet",
     "language": "Språk",
-    "access": "Tilgang",
     "position": {
       "groups": {
         "developers": "Utvikling",

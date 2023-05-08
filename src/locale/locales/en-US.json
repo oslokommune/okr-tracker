@@ -162,7 +162,6 @@
     "owner": "City of Oslo",
     "help": "Help",
     "admin": "Admin",
-    "administration": "Administration",
     "superAdmin": "Super admin",
     "signOut": "Sign out",
     "createdBy": "Created by",
@@ -519,7 +518,6 @@
     "hasAdmin": "Has admin rights for some organizations",
     "myProducts": "My affiliations",
     "products": "Products",
-    "access": "Access",
     "position": {
       "groups": {
         "developers": "Developers",
