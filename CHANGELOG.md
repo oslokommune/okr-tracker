@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fixed a bug that made pressing Enter on the access request page clear the form
+  instead of submitting it.
+
 ## [3.6.0] 2023-05-05
 
 ### Added

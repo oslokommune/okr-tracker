@@ -20,9 +20,10 @@
         />
 
         <template #actions="{ handleSubmit, submitDisabled }">
-          <btn
+          <btn-save
             :disabled="submitDisabled || loading"
             :label="$t('login.requestButton')"
+            :icon="null"
             @click="handleSubmit(send)"
           />
         </template>
@@ -35,14 +36,14 @@
 import { mapMutations } from 'vuex';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
-import { FormSection, Btn } from '@/components/generic/form';
+import { FormSection, BtnSave } from '@/components/generic/form';
 
 export default {
   name: 'RequestAccess',
 
   components: {
     FormSection,
-    Btn,
+    BtnSave,
   },
 
   data: () => ({
