@@ -23,6 +23,7 @@
           <btn-save
             :disabled="submitDisabled || loading"
             :label="$t('login.requestButton')"
+            :icon="null"
             @click="handleSubmit(send)"
           />
         </template>
