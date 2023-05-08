@@ -1,5 +1,6 @@
 <template>
   <collapse-container
+    :id="kpi.id"
     :visible="visible"
     :class="[
       'form-card',
@@ -10,7 +11,6 @@
   >
     <template #collapse-header>
       <div class="kpi__header">
-        <a :id="`${kpi.id}`" class="anchor" />
         <span class="kpi__header-label">{{ typeLabel }}</span>
         <h2>{{ kpi.name }}</h2>
       </div>
@@ -242,15 +242,6 @@ export default {
 
 .kpi__header {
   flex-grow: 1;
-
-  > a.anchor {
-    // Position the anchor with an offset to account
-    // for the fixed site header.
-    position: relative;
-    top: -12rem;
-    display: block;
-    visibility: hidden;
-  }
 
   > h2 {
     font-weight: 500;

@@ -119,8 +119,13 @@ export default {
       this.$nextTick(() => {
         const kpiEl = document.getElementById(kpiId);
         if (kpiEl) {
-          const bounds = kpiEl.getBoundingClientRect();
-          window.scrollTo({ top: bounds.top, behavior: 'smooth' });
+          const wrapperEl = document.querySelector('.router-view-wrapper');
+          const kpiElBounds = kpiEl.getBoundingClientRect();
+          const wrapperElBounds = wrapperEl.getBoundingClientRect();
+          wrapperEl.scrollTo({
+            top: kpiElBounds.top - wrapperElBounds.top,
+            behavior: 'smooth',
+          });
         }
       });
     },

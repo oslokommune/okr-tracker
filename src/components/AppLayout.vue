@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-wrapper">
     <site-header
       :toggle-show-aside-left="toggleShowAsideLeft"
       :toggle-show-aside-right="toggleShowAsideRight"
@@ -22,7 +22,9 @@
       <user-profile-menu :id="user.id" />
     </slider-container>
     <v-spinner v-if="loading" />
-    <router-view v-else></router-view>
+    <div v-else class="router-view-wrapper">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -64,3 +66,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.router-view-wrapper {
+  overflow-y: scroll;
+}
+</style>
