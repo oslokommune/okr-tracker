@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - The option of where to start measurement y-axes has been set to zero by
   default for existing measurements too.
+- The initial value of OKR key results are now plotted on the OKR period's start
+  date in the line chart.
 
 ### Fixed
 
