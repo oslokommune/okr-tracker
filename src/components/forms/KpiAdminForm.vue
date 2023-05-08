@@ -251,7 +251,7 @@ export default {
       sheetCell,
       sheetName,
       sheetUrl: sheetUrl || '',
-      startValue,
+      startValue: startValue || 'zero',
       updateFrequency,
     };
   },
