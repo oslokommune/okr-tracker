@@ -47,6 +47,10 @@ export function kpiTrendOptions() {
       id: 'decrease',
       label: i18n.t('kpi.trendOptions.decrease'),
     },
+    {
+      id: 'neutral',
+      label: i18n.t('kpi.trendOptions.neutral'),
+    },
   ];
 }
 

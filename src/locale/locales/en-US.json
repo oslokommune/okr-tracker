@@ -37,7 +37,8 @@
     },
     "trendOptions": {
       "increase": "Increasing (high numbers preferred)",
-      "decrease": "Decreasing (low numbers preferred)"
+      "decrease": "Decreasing (low numbers preferred)",
+      "neutral": "Indifferent (all numbers are equally preferred)"
     },
     "updateFrequency": {
       "label": "Update frequency",

@@ -84,17 +84,17 @@ export default {
     },
 
     trendClassModifier() {
-      const ri = this.kpi;
-      const preferredTrendIsSet = ri?.preferredTrend !== undefined;
+      const preferredTrend = this.kpi?.preferredTrend;
 
-      if (preferredTrendIsSet && this.periodTrend !== null) {
-        const preferredTrendFulfilled =
-          (ri?.preferredTrend === 'increase' && this.periodTrend > 0) ||
-          (ri?.preferredTrend === 'decrease' && this.periodTrend < 0);
-
-        return preferredTrendFulfilled ? 'positive' : 'negative';
+      if ([undefined, 'neutral'].includes(preferredTrend) || !this.periodTrend) {
+        return 'neutral';
       }
-      return 'neutral';
+
+      const preferredTrendFulfilled =
+        (preferredTrend === 'increase' && this.periodTrend > 0) ||
+        (preferredTrend === 'decrease' && this.periodTrend < 0);
+
+      return preferredTrendFulfilled ? 'positive' : 'negative';
     },
   },
 

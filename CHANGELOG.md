@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- A new "neutral" choice for the preferred trend of measurements.
+
 ### Changed
 
 - The option of where to start measurement y-axes has been set to zero by
