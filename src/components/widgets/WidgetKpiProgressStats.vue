@@ -32,8 +32,8 @@
         <div>
           <span class="progressStatistics__value">
             {{ formatKPIValue(kpi, goal.value) }}
-            <span class="check-icon">
-              <pkt-icon v-if="isGoalReached" name="check-medium" />
+            <span v-if="isGoalReached" class="check-icon">
+              <pkt-icon name="check-medium" />
             </span>
           </span>
         </div>
