@@ -7,7 +7,8 @@ $font-size-2: map.get(variables.$font-size, "size-16");
 $font-size-3: map.get(variables.$font-size, "size-18");
 $font-size-4: map.get(variables.$font-size, "size-20");
 $font-size-5: map.get(variables.$font-size, "size-24");
-$font-size-7: map.get(variables.$font-size, "size-30");
+$font-size-6: map.get(variables.$font-size, "size-30");
+$font-size-7: map.get(variables.$font-size, "size-54");
 
 .md h1,
 .title-1 {

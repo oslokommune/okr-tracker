@@ -154,7 +154,6 @@
     "OKRs": "OKR-er",
     "OKRsLong": "Mål og nøkkelresultater",
     "KPIs": "Målinger",
-    "team": "Team",
     "project": "OKR",
     "loading": "Laster ...",
     "owner": "Oslo kommune",
@@ -194,6 +193,7 @@
   },
   "about": {
     "about": "Om",
+    "members": "Medlemmer",
     "aboutOrganization": "Om organisasjonen",
     "aboutDepartment": "Om området",
     "aboutProduct": "Om produktet"
@@ -370,9 +370,6 @@
     "emptyPeriod": "Ingen aktiv periode",
     "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet",
     "copyToClipboard": "Kopier til utklippstavlen"
-  },
-  "document": {
-    "mission": "Oppdrag"
   },
   "admin": {
     "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
