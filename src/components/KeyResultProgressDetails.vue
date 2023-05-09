@@ -48,13 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.keyResultProgressDetails {
-  color: var(--color-text);
-
-  &__infoMessage {
-    &:not(:last-child) {
-      margin-bottom: 0.25rem;
-    }
-  }
+.keyResultProgressDetails__infoMessage:not(:last-child) {
+  margin-bottom: 0.25rem;
 }
 </style>

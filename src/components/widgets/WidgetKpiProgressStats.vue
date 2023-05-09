@@ -163,7 +163,6 @@ export default {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    color: var(--color-text);
     font-weight: 500;
     font-size: typography.$font-size-4;
 

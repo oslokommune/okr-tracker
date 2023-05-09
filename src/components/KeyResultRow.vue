@@ -190,8 +190,6 @@ export default {
   }
 
   &__progressionSummary {
-    color: var(--color-blue-dark);
-    font-weight: 300;
     text-align: right;
   }
 }

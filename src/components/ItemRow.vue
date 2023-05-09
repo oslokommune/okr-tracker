@@ -226,7 +226,6 @@ export default {
   display: inline-block;
   margin-left: auto;
   padding: 0 0.5rem;
-  color: var(--color-text);
   text-align: center;
 }
 

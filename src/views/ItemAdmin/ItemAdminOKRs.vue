@@ -500,7 +500,6 @@ export default {
   border-bottom: 1px solid var(--color-grayscale-10);
 
   &.selected {
-    color: var(--color-text);
     font-weight: 500;
     background: var(--color-gray-light);
   }

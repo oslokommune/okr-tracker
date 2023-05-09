@@ -320,7 +320,6 @@ export default {
   padding: 0.5rem 1rem;
   color: var(--color-text);
   font-weight: 500;
-  font-size: 1rem;
   text-decoration: none;
   border-bottom: 1px solid var(--color-grayscale-10);
 }

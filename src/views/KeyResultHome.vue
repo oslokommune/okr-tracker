@@ -287,7 +287,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  color: var(--color-text);
 
   &__current {
     padding: 1rem 2rem;

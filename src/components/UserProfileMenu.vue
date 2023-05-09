@@ -147,26 +147,6 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.profileModal__label {
-  display: inline-block;
-  margin: 0.8rem 0 0.5rem 0;
-  color: var(--color-grayscale-30);
-  font-weight: 500;
-  font-size: typography.$font-size-2;
-  letter-spacing: -0.03rem;
-}
-
-.profileModal__input {
-  width: 100%;
-  padding: 0.7rem;
-  background: var(--color-gray-light);
-  border-radius: 0;
-}
-
-.profileModal__required {
-  color: var(--color-red);
-}
-
 .profileModal__info {
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
@@ -177,11 +157,9 @@ export default {
   flex-basis: 100%;
   flex-direction: column;
   width: 100%;
-  /* max-width: 600px; */
   max-height: calc(100vh - 8rem);
   padding: 0 0 0 1.5rem;
   overflow: auto;
-  color: var(--color-text);
   background: white;
   border-radius: 1px;
   box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
@@ -203,20 +181,6 @@ export default {
   flex-direction: column;
   flex-grow: 2;
   padding: 0 1.5rem 0 0;
-}
-
-.profileModal__save-button {
-  align-self: end;
-  margin-top: 1rem;
-}
-
-.product {
-  margin-bottom: 1rem;
-  padding: 0.75rem 0.75rem 0.6rem 0.75rem;
-  color: var(--color-text);
-  font-weight: 500;
-  border: 1px solid black;
-  border-radius: 0px;
 }
 
 .button-link {

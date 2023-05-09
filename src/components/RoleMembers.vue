@@ -53,9 +53,5 @@ export default {
     margin-bottom: 0.25rem;
     color: var(--color-grayscale-30);
   }
-
-  &__members-list {
-    line-height: 1.5rem;
-  }
 }
 </style>

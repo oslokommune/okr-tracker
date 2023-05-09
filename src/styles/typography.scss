@@ -1,15 +1,17 @@
-$font-size-0: 0.75rem;
-$font-size-1: 0.875rem;
-$font-size-2: 1rem;
-$font-size-3: 1.125rem;
-$font-size-4: 1.25rem;
-$font-size-5: 1.5rem;
-$font-size-7: 2rem;
+@use "sass:map";
+@use "@oslokommune/punkt-css/dist/scss/abstracts/variables";
+
+$font-size-0: map.get(variables.$font-size, "size-12");
+$font-size-1: map.get(variables.$font-size, "size-14");
+$font-size-2: map.get(variables.$font-size, "size-16");
+$font-size-3: map.get(variables.$font-size, "size-18");
+$font-size-4: map.get(variables.$font-size, "size-20");
+$font-size-5: map.get(variables.$font-size, "size-24");
+$font-size-7: map.get(variables.$font-size, "size-30");
 
 .md h1,
 .title-1 {
   margin-bottom: 1.5rem;
-  color: var(--color-text);
   font-weight: 500;
   font-size: $font-size-5;
 }
@@ -17,7 +19,6 @@ $font-size-7: 2rem;
 .md h2,
 .title-2 {
   margin-bottom: 0.5rem;
-  color: var(--color-text);
   font-weight: 500;
   font-size: $font-size-3;
 }
@@ -74,14 +75,6 @@ code {
   letter-spacing: -0.05em;
   word-break: normal;
   background-color: var(--color-grayscale-10);
-}
-
-em {
-  font-style: italic;
-}
-
-.font-weight-medium {
-  font-weight: 500;
 }
 
 p + p {

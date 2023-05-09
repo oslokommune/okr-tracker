@@ -4,7 +4,6 @@
 
 @use 'reset';
 @use 'fonts';
-@use 'typography';
 @use 'widgets';
 @use 'modal';
 @use 'tooltip';
@@ -19,6 +18,7 @@
  * to be phased in piece by piece.
  */
 @use '@oslokommune/punkt-css/dist/scss/base/_colors';
+@use '@oslokommune/punkt-css/dist/scss/base/_typography';
 @use '@oslokommune/punkt-css/dist/scss/base/_visibility';
 @use '@oslokommune/punkt-css/dist/scss/elements/_form';
 @use '@oslokommune/punkt-css/dist/scss/elements/_hr';
@@ -121,11 +121,6 @@ body.using-mouse :not([class^='pkt-'], [class*=' pkt-']):focus {
 
     .title-1, .title-2, .title-3 {
       margin-bottom: 0rem;
-    }
-
-    .description {
-      color: var(--color-text);
-      line-height: 1.5rem;
     }
   }
 

@@ -312,26 +312,17 @@ export default {
     li {
       display: block;
       padding: 0.5rem 0.75rem;
-      color: var(--color-text);
       text-decoration: none;
       border-bottom: 1px solid var(--color-grayscale-10);
       cursor: pointer;
 
       &.selected {
-        color: var(--color-text);
         font-weight: 500;
         background: var(--color-gray-light);
-      }
-
-      &.active {
-        color: var(--color-text-secondary);
-        font-weight: 500;
-        background: var(--color-primary);
       }
     }
 
     a {
-      color: var(--color-text);
       text-decoration: none;
     }
 
