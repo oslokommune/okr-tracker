@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed a bug that made pressing Enter on the access request page clear the form
   instead of submitting it.
 - Fixed anchor link positioning.
+- Fixed a bug causing the goal reach icon to be halfway drawn when the goal
+  isn't reached yet.
 
 ## [3.6.0] 2023-05-05
 
