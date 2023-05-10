@@ -454,16 +454,6 @@
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
     },
-    "noResultIndicators": {
-      "heading": "No result indicators",
-      "body": "Oops! Could not find any result indicators.",
-      "linkText": "Create a result indicator"
-    },
-    "noKeyFigures": {
-      "heading": "No key figures",
-      "body": "Oops! Could not find any key figures.",
-      "linkText": "Create a key figure"
-    },
     "itemAdmin": {
       "keyResult": "No key results for selected objective",
       "objective": "No objectives for selected period",
@@ -479,10 +469,6 @@
       "heading": "Empty?",
       "body": "It looks like there are no objectives and key results here ...",
       "buttonText": "Create objectives and key results"
-    },
-    "team": {
-      "body": "Team Ninja much?",
-      "heading": "No team members"
     }
   },
   "archived": {
