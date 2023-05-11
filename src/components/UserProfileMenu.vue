@@ -1,72 +1,80 @@
 <template>
-  <div v-if="user" class="modal__main--flex">
-    <div class="column">
-      <h2 class="widget__title title-2">{{ $t('user.profile') }}</h2>
-
-      <user-profile-form :user="user" :loading="loading" @save="save" />
-
-      <hr class="pkt-hr" />
-
-      <h3 class="widget__title title-2">{{ $t('user.myProducts') }}</h3>
-
-      <ul v-if="products.length > 0">
-        <li v-for="product in products" :key="product.id">
-          <div class="profileModal__info">
-            <h2 class="title-2">{{ product.department.name }}</h2>
-            <div>{{ product.name }}</div>
-          </div>
-        </li>
-      </ul>
-
-      <hr class="pkt-hr" />
-
-      <h3 class="widget__title title-2">{{ $t('user.access') }}</h3>
-
-      <div v-if="user.superAdmin" class="profileModal__info">
-        <h2 class="title-2">{{ $t('user.superAdmin') }}</h2>
-        <div>{{ $t('user.hasSuperAdmin') }}</div>
+  <div v-if="user" class="user-menu">
+    <div class="user-menu__header">
+      <div class="user-profile">
+        <h1 class="title-2">{{ user.displayName }}</h1>
+        <ul class="user-profile__access">
+          <template v-if="user.superAdmin">
+            <li v-tooltip.bottom="$t('user.hasSuperAdmin')">
+              {{ $t('user.superAdmin') }}
+            </li>
+          </template>
+          <template v-if="user.admin && user.admin.length > 0">
+            <li v-tooltip.bottom="$t('user.hasAdmin')">{{ $t('user.admin') }}</li>
+          </template>
+        </ul>
       </div>
 
-      <div v-if="user.admin && user.admin.length > 0" class="profileModal__info">
-        <h2 class="title-2">{{ $t('user.admin') }}</h2>
-        <div>{{ $t('user.hasAdmin') }}</div>
+      <pkt-button
+        size="small"
+        skin="tertiary"
+        variant="icon-left"
+        icon-name="exit"
+        :text="$t('general.signOut')"
+        @onClick="signOut"
+      />
+    </div>
+
+    <div class="user-menu__body">
+      <div class="user-profile-form">
+        <h2 class="title-2">{{ $t('user.profile') }}</h2>
+
+        <user-profile-form :user="user" :loading="loading" @save="save" />
       </div>
 
-      <hr class="pkt-hr" />
+      <div class="user-products">
+        <h2 class="title-2">{{ $t('user.myProducts') }}</h2>
 
-      <h3 class="widget__title title-2">{{ $t('general.administration') }}</h3>
-
-      <div class="sidebar__group sidebar__bottom button-col">
-        <router-link
-          v-if="user.admin"
-          :to="{ name: 'Admin' }"
-          class="btn btn--ter button-link"
-        >
-          <span>{{ $t('general.admin') }}</span>
-        </router-link>
-        <router-link :to="{ name: 'Help' }" class="btn btn--ter button-link">
-          <span>{{ $t('general.help') }}</span>
-        </router-link>
-        <router-link :to="{ name: 'Api' }" class="btn btn--ter button-link">
-          <span>{{ $t('general.api') }}</span>
-        </router-link>
-        <button class="btn btn--ter btn--icon btn--icon-pri button-link" @click="signOut">
-          <span class="">{{ $t('general.signOut') }}</span>
-        </button>
+        <ul v-if="products.length > 0" class="user-products__list">
+          <li v-for="product in products" :key="product.id">
+            <h3 class="title-4">{{ product.department.name }}</h3>
+            <span class="products-list__name">{{ product.name }}</span>
+          </li>
+        </ul>
       </div>
+    </div>
+
+    <div class="user-menu__footer">
+      <template v-for="link in links">
+        <pkt-button
+          v-if="link.show !== undefined ? link.show : true"
+          :key="`link_${link.key}`"
+          size="small"
+          skin="tertiary"
+          variant="icon-left"
+          :name="link.key"
+          :icon-name="link.icon"
+          :text="link.text"
+          role="link"
+          @onClick="navigate($event, link.route)"
+        />
+      </template>
     </div>
   </div>
 </template>
+
 <script>
 import { mapActions } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import User from '@/db/User';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 
 export default {
   name: 'UserProfileMenu',
 
   components: {
+    PktButton,
     UserProfileForm,
   },
 
@@ -76,10 +84,14 @@ export default {
       required: false,
       default: false,
     },
-
     id: {
       type: String,
       required: true,
+    },
+    handleNavigation: {
+      type: Function,
+      required: false,
+      default: null,
     },
   },
 
@@ -94,6 +106,30 @@ export default {
   computed: {
     me() {
       return this.$store.state.user?.id === this.user?.id;
+    },
+
+    links() {
+      return [
+        {
+          key: 'admin',
+          text: this.$t('general.admin'),
+          icon: 'cogwheel',
+          route: { name: 'Admin' },
+          show: this.user.admin,
+        },
+        {
+          key: 'help',
+          text: this.$t('general.help'),
+          icon: 'question',
+          route: { name: 'Help' },
+        },
+        {
+          key: 'api',
+          text: this.$t('general.api'),
+          icon: 'crane',
+          route: { name: 'Api' },
+        },
+      ];
     },
   },
 
@@ -136,9 +172,23 @@ export default {
       this.loading = false;
     },
 
-    async signOut() {
+    async signOut(event) {
+      if (this.handleNavigation) {
+        this.handleNavigation(event);
+      }
       await auth.signOut();
       await this.reset_state();
+    },
+
+    navigate(event, route) {
+      this.$router.push(route).catch((error) => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error;
+        }
+      });
+      if (this.handleNavigation) {
+        this.handleNavigation(event);
+      }
     },
   },
 };
@@ -147,56 +197,104 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.profileModal__info {
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
-}
+$-dropdown-max-height: calc(100vh - 4.5rem);
 
-.modal__main--flex {
+.user-menu {
   display: flex;
-  flex-basis: 100%;
   flex-direction: column;
-  width: 100%;
-  max-height: calc(100vh - 8rem);
-  padding: 0 0 0 1.5rem;
-  overflow: auto;
-  background: white;
-  border-radius: 1px;
-  box-shadow: 0 0.25rem 0.45rem rgba(black, 0.5);
+  gap: 2rem;
+  height: $-dropdown-max-height;
+  width: 100vw;
 
-  @media screen and (min-width: bp(s)) {
-    flex-direction: row;
+  @each $bp, $width in (s: 80, m: 60, l: 50, xl: 40, xxl: 30) {
+    @media screen and (min-width: bp(#{$bp})) {
+      width: #{$width}vw;
+      height: auto;
+      max-height: $-dropdown-max-height;
+    }
   }
 
-  scrollbar-width: none; /* Hide scrollbar styles Firefox */
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
+  &__header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background-color: var(--color-yellow);
+
+    .pkt-btn {
+      &:hover {
+        background-color: var(--color-yellow-50);
+        border-color: var(--color-yellow-50);
+      }
+      &:focus {
+        color: var(--color-grayscale-70);
+        background-color: var(--color-yellow-50);
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    padding: 0 1.5rem;
+
+    @media screen and (min-width: bp(s)) {
+      flex-direction: row;
+      gap: 4rem;
+    }
+
+    .title-2 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid var(--color-grayscale-20);
+
+    button[name='admin'] {
+      margin-right: auto;
+    }
   }
 }
 
-.column {
+.user-profile {
   display: flex;
   flex-direction: column;
-  flex-grow: 2;
-  padding: 0 1.5rem 0 0;
-}
 
-.button-link {
-  padding: 0.75rem 0 0 0;
-  color: var(--color-text);
-  background: transparent;
-  border-style: none;
+  &__access {
+    display: flex;
+    gap: 0.2rem;
+    font-size: typography.$font-size-0;
+    font-weight: 500;
 
-  &:hover {
-    text-decoration: underline;
+    li:not(:last-of-type):after {
+      content: '/';
+    }
   }
 }
 
-.desktop-only {
-  @media screen and (min-width: bp(m)) {
-    display: none;
+.user-profile-form {
+  flex: 1;
+}
+
+.user-products {
+  flex: 1;
+
+  &__list {
+    li {
+      margin-bottom: 1.25rem;
+    }
+
+    &__name {
+      font-size: typography.$font-size-1;
+    }
   }
 }
 </style>
