@@ -8,7 +8,7 @@
     >
       <g class="lineChart">
         <path class="area" :d="area" />
-        <path class="line" :d="line" />
+        <path class="line" :d="line" :stroke-width="compact ? 16 : 8" />
       </g>
     </svg>
   </div>
@@ -34,7 +34,13 @@ export default {
       required: false,
       default: 'zero',
     },
+    compact: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
+
   data() {
     return {
       data: [],
@@ -122,7 +128,6 @@ export default {
 <style lang="scss" scoped>
 path.line {
   fill: none;
-  stroke-width: 1rem;
   stroke: var(--color-blue-light);
 }
 .area {

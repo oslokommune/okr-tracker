@@ -9,10 +9,6 @@
 
     <template #default>
       <div class="kpi-card-widget__inner">
-        <div v-if="!compact" class="kpi-card-widget__description">
-          {{ kpi.description }}
-        </div>
-
         <div class="kpi-card-widget__trend">
           <period-trend-tag
             v-if="progress.length"
@@ -30,6 +26,7 @@
             v-if="progress.length > 1"
             :kpi-data="progress"
             :start-value="kpi.startValue"
+            :compact="compact"
           />
           <span v-else-if="progress.length === 1" class="no-data">{{
             $t('kpi.noGraph')
@@ -140,19 +137,8 @@ export default {
     min-height: 2.25rem;
   }
 
-  &__description {
-    display: -webkit-box;
-    overflow: hidden;
-    color: var(--color-grayscale-60);
-    font-size: typography.$font-size-0;
-    line-height: 1.5;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-
   &__trend {
     display: flex;
-    order: 1;
   }
 
   &__graph {
@@ -178,10 +164,6 @@ export default {
       flex-direction: row;
     }
 
-    &__description {
-      flex-basis: 30%;
-    }
-
     &__trend {
       flex-basis: 50%;
       flex-shrink: 0;
@@ -195,10 +177,6 @@ export default {
   }
 
   &--compact {
-    .kpi-card-widget__trend {
-      order: 0;
-    }
-
     .no-data {
       text-align: left;
     }
