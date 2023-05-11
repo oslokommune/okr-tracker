@@ -1,98 +1,44 @@
 <template>
-  <div class="sidebar">
-    <div class="flex__column">
-      <h1 class="sidebar__header title-1">{{ $t('general.appName') }}</h1>
-      <router-link
-        :to="{ name: 'Home' }"
-        class="btn btn--ter btn--sidebar sidebar__item"
-        :class="{ active: $route.name === 'Home' }"
-      >
-        <h1>{{ $t('general.frontPage') }}</h1>
-      </router-link>
+  <div class="site-menu">
+    <router-link
+      :to="{ name: 'Home' }"
+      class="pkt-btn pkt-btn--tertiary"
+      @click.native="handleNavigation"
+    >
+      {{ $t('general.frontPage') }}
+    </router-link>
+
+    <template v-if="user">
+      <hr class="pkt-hr" />
+
+      <organization-selector />
 
       <hr class="pkt-hr" />
 
-      <h2
-        class="btn btn--ter sidebar__item sidebar__item--organizations"
-        @click="isCollapsed = !isCollapsed"
-      >
-        {{ $t('general.orgs') }}
-        <pkt-icon :name="isCollapsed ? 'chevron-thin-up' : 'chevron-thin-down'" />
-      </h2>
-      <div v-if="isCollapsed">
-        <button
-          v-for="org in organizations"
-          :key="org.id"
-          class="btn btn--ter sidebar__item sidebar__item--org"
-          :class="{ active: activeOrganization && activeOrganization.id === org.id }"
-          @click="handleActiveOrganization(org)"
-        >
-          {{ org.name }}
-        </button>
-      </div>
+      <organization-tree @selection="handleNavigation" />
+    </template>
 
-      <hr class="pkt-hr" />
-
-      <div v-if="!user" class="sidebar__header">{{ $t('general.signIn') }}</div>
-      <template v-if="user">
-        <ul v-if="activeOrganization" class="sidebar__group">
-          <li v-for="org in tree" :key="org.id" class="margin-top-1">
-            <template v-if="org.id === activeOrganization.id">
-              <router-link
-                :class="{ active: org.slug === $route.params.slug }"
-                :to="{ name: 'ItemHome', params: { slug: org.slug } }"
-                class="btn btn--ter sidebar__item"
-                @click.native="handleNavigation"
-              >
-                <h2>{{ org.name }}</h2>
-              </router-link>
-              <ul>
-                <li v-for="dept in org.children" :key="dept.id" class="margin-top-1">
-                  <router-link
-                    :class="{ active: dept.slug === $route.params.slug }"
-                    :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
-                    class="btn btn--ter sidebar__item"
-                    @click.native="handleNavigation"
-                  >
-                    <h3>{{ dept.name }}</h3>
-                  </router-link>
-                  <ul>
-                    <li v-for="prod in dept.children" :key="prod.id" class="card--prod">
-                      <router-link
-                        :class="{ active: prod.slug === $route.params.slug }"
-                        :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
-                        class="btn btn--ter sidebar__item sidebar__item--product"
-                        @click.native="handleNavigation"
-                      >
-                        <h3>{{ prod.name }}</h3>
-                      </router-link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </template>
-          </li>
-        </ul>
-      </template>
-    </div>
-    <div class="flex__row--space-between">
-      <div class="logo">
-        <oslo-logo class="logo__img" />
-      </div>
-      <div class="align__self--center">v{{ appVersion }}</div>
+    <div class="site-menu__footer">
+      <img
+        alt="Oslo kommune logo"
+        src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
+      />
+      <span>v{{ appVersion }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
-import OsloLogo from '@/components/OsloLogo.vue';
+import { mapState } from 'vuex';
+import OrganizationSelector from './header/OrganizationSelector.vue';
+import OrganizationTree from './header/OrganizationTree.vue';
 
 export default {
   name: 'SiteSidebar',
 
   components: {
-    OsloLogo,
+    OrganizationSelector,
+    OrganizationTree,
   },
 
   props: {
@@ -103,194 +49,67 @@ export default {
   },
 
   data: () => ({
-    isCollapsed: false,
     appVersion: __APP_VERSION__, // eslint-disable-line no-undef
   }),
 
   computed: {
-    ...mapState(['activeItem', 'user', 'activeOrganization', 'organizations']),
-    ...mapGetters(['sidebarGroups', 'tree']),
+    ...mapState(['user']),
 
     hostOrg() {
       return import.meta.env.VITE_ORGANIZATION;
-    },
-  },
-
-  watch: {
-    tree: {
-      immediate: true,
-      handler() {
-        if (!this.activeOrganization) {
-          for (const org of this.tree) {
-            if (!!org.team && org.team.find(({ id }) => id === this.user.id)) {
-              this.setActiveOrganization(org);
-              break;
-            }
-            for (const dep of org.children) {
-              if (!!dep.team && dep.team.find(({ id }) => id === this.user.id)) {
-                this.setActiveOrganization(dep.organization);
-                break;
-              }
-              for (const prod of dep.children) {
-                if (!!prod.team && prod.team.find(({ id }) => id === this.user.id)) {
-                  this.setActiveOrganization(prod.organization);
-                  break;
-                }
-              }
-            }
-          }
-        }
-      },
-    },
-  },
-
-  methods: {
-    ...mapActions(['setActiveOrganization']),
-
-    async handleActiveOrganization(org) {
-      await this.setActiveOrganization(org);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@use 'sass:math';
 @use '@/styles/typography';
 
-$header-height: 4em;
+$-dropdown-max-height: calc(100vh - 4.5rem);
 
-.margin-top-1 {
-  margin-top: 1rem;
-}
-
-.sidebar {
+.site-menu {
+  height: $-dropdown-max-height;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 4rem);
-  line-height: 1;
-}
+  gap: 0.25rem;
+  padding: 1rem;
 
-.sidebar__item {
-  width: 100%;
-  padding: 0.5rem 1.5rem;
-  color: var(--color-text-secondary);
-  font-weight: 400;
-  font-size: typography.$font-size-4;
-  white-space: unset;
-  border-radius: 0;
-
-  svg {
-    --fg-color: var(--color-white);
-    height: 1.5rem;
-  }
-
-  &:visited {
-    color: var(--color-text-secondary);
-  }
-
-  &:hover {
-    color: var(--color-text);
-    text-decoration: none;
-    background-color: var(--color-secondary) !important;
-
-    svg {
-      --fg-color: var(--color-text);
+  @each $bp, $width in (xs: 80, s: 45, m: 30, l: 25, xl: 20, xxl: 15) {
+    @media screen and (min-width: bp(#{$bp})) {
+      width: #{$width}vw;
+      height: auto;
+      max-height: $-dropdown-max-height;
     }
   }
 
-  &.active {
-    color: var(--color-secondary);
+  ::v-deep .pkt-btn {
+    width: 100%;
+    font-size: inherit;
+    line-height: 1;
 
-    &:hover {
-      color: var(--color-text);
+    &:not(:active).router-link-active {
+      color: var(--btn-hover-txt);
     }
   }
-}
 
-.sidebar__item--organizations {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: typography.$font-size-4;
-  text-transform: uppercase;
-}
-
-.sidebar__item--org {
-  font-weight: 400;
-  font-size: typography.$font-size-4;
-  text-align: start;
-}
-
-.sidebar__item--product {
-  color: var(--color-text-secondary);
-  font-weight: normal;
-  font-size: typography.$font-size-2;
-}
-
-.sidebar__group {
-  margin-bottom: 1rem;
-}
-
-.btn--sidebar {
-  padding: 1rem 0 1rem 1.5rem;
-  color: var(--color-text-secondary);
-  font-weight: 400;
-  font-size: typography.$font-size-4;
-
-  &:hover {
-    color: var(--color-text);
-    background: var(--color-secondary);
+  hr.pkt-hr {
+    margin: 0.5rem 0;
   }
 
-  &.active {
-    color: var(--color-secondary);
+  &__footer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: typography.$font-size-0;
+    opacity: 0.25;
+    margin-top: auto;
+    padding-top: 1rem;
 
-    &:hover {
-      color: var(--color-text);
+    img {
+      height: 1.5rem;
     }
   }
-}
-
-hr {
-  margin: 1.5rem;
-}
-
-.logo__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.logo {
-  display: block;
-  width: span(4);
-  padding: 5rem 1.5rem;
-}
-
-.flex__column {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex__row--space-between {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.align__self--center {
-  align-self: center;
-  justify-self: center;
-  padding-right: 1.5rem;
-  color: var(--color-white);
-}
-
-.sidebar__header {
-  padding-left: 1.5rem;
-  color: white;
-  font-weight: 500;
-  font-size: typography.$font-size-4;
-  text-transform: uppercase;
 }
 </style>
