@@ -452,16 +452,6 @@
       "body": "Oops! Her finnes det ingen nøkkelresultater ennå.",
       "linkText": "Opprett et nøkkelresultat"
     },
-    "noResultIndicators": {
-      "heading": "Ingen resultatindikatorer",
-      "body": "Oops! Her finnes det ingen resultatindikatorer ennå.",
-      "linkText": "Opprett en resultatindikator"
-    },
-    "noKeyFigures": {
-      "heading": "Ingen nøkkeltall",
-      "body": "Oops! Her finnes det ingen nøkkeltall ennå.",
-      "linkText": "Opprett et nøkkeltall"
-    },
     "itemAdmin": {
       "keyResult": "Ingen nøkkelresultater for mål",
       "objective": "Ingen mål for periode",
@@ -477,10 +467,6 @@
       "heading": "Tomt?",
       "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
       "buttonText": "Opprett mål og nøkkelresultater her"
-    },
-    "team": {
-      "body": "«Team Ninja» much?",
-      "heading": "Ingen teammedlemmer"
     }
   },
   "archived": {
