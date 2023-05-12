@@ -171,7 +171,7 @@ export default {
             i18n.t('fields.comment'),
           ]),
           csvFormatBody(
-            this.filteredProgress.map((d) => [
+            this.progress.map((d) => [
               d.value,
               d.timestamp.toDate().toISOString(),
               d.comment,

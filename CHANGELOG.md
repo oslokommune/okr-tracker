@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed anchor link positioning.
 - Fixed a bug causing the goal reach icon to be halfway drawn when the goal
   isn't reached yet.
+- Fixed the CSV download function for measurement data (regression introduced in
+  version 3.5.0).
 
 ## [3.6.0] 2023-05-05
 
