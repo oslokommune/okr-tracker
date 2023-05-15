@@ -1,40 +1,44 @@
 <template>
   <li
     v-click-outside="close"
-    :class="['menu-item', `menu-item--${variant}`, { 'menu-item--open': isOpen }]"
+    :class="[
+      'nav-menu-item',
+      `nav-menu-item--${variant}`,
+      { 'nav-menu-item--open': isOpen },
+    ]"
   >
     <router-link v-if="route" v-slot="{ href, navigate, isActive }" :to="route" custom>
       <a
         :href="href"
-        :class="['menu-item__inner', { 'menu-item__inner--active': isActive }]"
+        :class="['nav-menu-item__inner', { 'nav-menu-item__inner--active': isActive }]"
         @click="activate($event, navigate)"
       >
         <slot name="label">
-          <pkt-icon v-if="icon" class="menu-item__icon" :name="icon" />
-          <span v-if="label" class="menu-item__label">{{ label }}</span>
+          <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
+          <span v-if="label" class="nav-menu-item__label">{{ label }}</span>
         </slot>
       </a>
     </router-link>
 
     <template v-else>
       <div
-        :class="['menu-item__inner', { 'menu-item__inner--active': isOpen }]"
+        :class="['nav-menu-item__inner', { 'nav-menu-item__inner--active': isOpen }]"
         tabindex="0"
         @click="activate"
         @keyup.enter="activate"
       >
         <slot name="label">
-          <pkt-icon v-if="icon" class="menu-item__icon" :name="icon" />
-          <span v-if="label" class="menu-item__label">{{ label }}</span>
+          <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
+          <span v-if="label" class="nav-menu-item__label">{{ label }}</span>
         </slot>
         <pkt-icon
           v-if="variant === 'dropdown'"
-          class="menu-item__toggle"
+          class="nav-menu-item__toggle"
           :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'"
         />
       </div>
 
-      <div v-if="isOpen" class="menu-item__content">
+      <div v-if="isOpen" class="nav-menu-item__content">
         <slot name="dropdown" :close="close" />
       </div>
     </template>
@@ -45,7 +49,7 @@
 import ClickOutside from 'vue-click-outside';
 
 export default {
-  name: 'MenuItem',
+  name: 'NavMenuItem',
 
   directives: {
     ClickOutside,

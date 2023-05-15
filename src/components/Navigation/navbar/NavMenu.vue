@@ -1,12 +1,12 @@
 <template>
-  <menu :class="['menu', `menu--${mode}`]">
+  <menu :class="['nav-menu', `nav-menu--${mode}`]">
     <slot />
   </menu>
 </template>
 
 <script>
 export default {
-  name: 'MenuComponent',
+  name: 'NavMenu',
 
   props: {
     mode: {
