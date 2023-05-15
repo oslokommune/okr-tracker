@@ -1,5 +1,5 @@
 <template>
-  <div class="miniGraph">
+  <div class="mini-graph">
     <svg
       width="100%"
       height="100%"
@@ -126,10 +126,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mini-graph {
+  width: 100%;
+}
+
 path.line {
   fill: none;
   stroke: var(--color-blue-light);
 }
+
 .area {
   fill: var(--color-blue-5);
   stroke-width: 0;
