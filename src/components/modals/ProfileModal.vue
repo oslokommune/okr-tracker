@@ -170,7 +170,6 @@ export default {
 .form-label {
   display: block;
   margin-bottom: 0.5rem;
-  color: var(--color-text);
 }
 
 .form-value {

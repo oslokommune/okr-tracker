@@ -168,6 +168,7 @@ $header-height: 4em;
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 4rem);
+  line-height: 1;
 }
 
 .sidebar__item {
@@ -184,8 +185,13 @@ $header-height: 4em;
     height: 1.5rem;
   }
 
+  &:visited {
+    color: var(--color-text-secondary);
+  }
+
   &:hover {
     color: var(--color-text);
+    text-decoration: none;
     background-color: var(--color-secondary) !important;
 
     svg {

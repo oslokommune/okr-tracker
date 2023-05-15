@@ -221,6 +221,7 @@ export default {
 
 .form-card {
   padding: 0;
+  line-height: 1;
 }
 
 ::v-deep .collapse {
@@ -245,7 +246,6 @@ export default {
 
   > h2 {
     font-weight: 500;
-    font-size: typography.$font-size-2;
   }
 
   &-label {
@@ -266,7 +266,7 @@ export default {
 
   &-value {
     display: block;
-    font-size: typography.$font-size-2;
+    font-weight: 400;
   }
 }
 
@@ -274,7 +274,6 @@ export default {
   display: flex;
   gap: 0.5rem;
   padding: 0.75rem;
-  font-size: typography.$font-size-2;
   background: var(--color-gray-light);
   border-bottom-right-radius: 3px;
 

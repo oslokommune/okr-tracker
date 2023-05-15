@@ -167,13 +167,11 @@ export default {
     align-items: center;
     margin: 0.125rem 0.5rem 0 0;
     padding: 0.7rem 1rem;
-    color: var(--color-text);
     font-weight: 500;
     white-space: nowrap;
 
     &--isFilled {
       margin-right: 0.5rem;
-      color: var(--color-text);
       text-decoration: none;
       background-color: var(--color-grayscale-10);
       border: 0;

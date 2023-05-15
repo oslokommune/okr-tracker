@@ -119,7 +119,6 @@ export default {
   align-items: center;
   justify-content: space-around;
   font-weight: 500;
-  font-size: typography.$font-size-2;
   white-space: nowrap;
 
   @media screen and (min-width: bp(s)) {

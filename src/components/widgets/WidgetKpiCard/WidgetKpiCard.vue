@@ -128,6 +128,7 @@ export default {
 .kpi-card-widget {
   gap: 0.75rem;
   margin: 0;
+  line-height: 1;
 
   &__inner {
     display: flex;

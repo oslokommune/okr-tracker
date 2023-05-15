@@ -7,7 +7,7 @@
       <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>
     </h3>
-    <p v-if="showDescription && objective.description" class="objective__description">
+    <p v-if="showDescription && objective.description">
       {{ objective.description }}
     </p>
     <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
@@ -80,9 +80,5 @@ export default {
   gap: 1.5rem;
   justify-content: space-between;
   margin-bottom: 0;
-}
-
-.objective__description {
-  line-height: 1.5rem;
 }
 </style>

@@ -8,7 +8,6 @@
 */
 
 .pkt-form {
-  color: var(--color-blue-dark);
   line-height: 1.5rem;
 
   .pkt-hr {
@@ -20,7 +19,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  color: var(--color-blue-dark);
 
   &--row {
     flex-direction: row;
@@ -42,11 +40,6 @@
   gap: 0.5rem;
   align-items: center;
   font-weight: 500;
-  // According to Figma, `font-size` and `line-height` for labels should be
-  // `1.125rem` and `1.5rem` respectively. This is for now scaled down somewhat
-  // until the rest of the design is adjusted.
-  font-size: typography.$font-size-2;
-  line-height: 1.5rem;
 
   .pkt-badge {
     // Align badges, used to indicate optional form fields, with Figma design.
@@ -60,7 +53,6 @@
 
 .pkt-form-help {
   margin: 0;
-  font-weight: 300;
   line-height: 1.375rem; // 22px
 }
 
@@ -114,17 +106,13 @@
     align-items: flex-start;
     margin-top: 0.15rem;
     font-weight: 300;
-    font-size: 1rem;
-    line-height: 1.5rem;
 
     .description {
       display: block;
       margin-top: 0.5rem;
       font-weight: 300;
-      font-size: typography.$font-size-2;
     }
   }
-
 
   &--tile {
     // TODO: Fully implemented the tiled check box and radio button.
@@ -254,7 +242,6 @@
     align-items: center;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    color: var(--color-text);
   }
 
   &--disabled {

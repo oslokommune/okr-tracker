@@ -213,14 +213,11 @@ export default {
 
   &__box {
     flex: 1 1 0px;
-    font-size: typography.$font-size-2;
-    line-height: 1.5rem;
 
     .title-2 {
       display: flex;
       align-items: center;
       margin-bottom: 1rem;
-      color: var(--color-blue-dark);
 
       svg {
         height: 1.5rem;

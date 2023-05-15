@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. The format 
   default for existing measurements too.
 - The initial value of OKR key results are now plotted on the OKR period's start
   date in the line chart.
+- Typography across the app is now more Punkt-styled.
 
 ### Fixed
 
