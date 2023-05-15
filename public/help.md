@@ -29,7 +29,7 @@ Kontakt en systemadministrator for å legge deg inn som medlem av et team.
 På produktsiden klikk på «Admin» i toppmenyen, og skriv deretter inn navn eller
 e-postadresse under «Teammedlemmer»-feltet.
 
-Dersom en persom du ønsker å legge til ikke eksisterer i listen må en
+Dersom en person du ønsker å legge til ikke eksisterer i listen må en
 systemadministrator legge til brukeren til systemet først.
 
 Kun systemadministratorer og eksisterende teammedlemmer har rettigheter til å
@@ -50,8 +50,8 @@ og trykk `Lagre`.
 
 ### Åpne adminpanelet
 
-Administratorer har tilgang til adminpanelet. Klikk på knappen til helt til
-høyre i toppmenyen og velg «Admin».
+Administratorer har tilgang til adminpanelet. Klikk på brukerprofilknappen helt
+til høyre i toppmenyen og velg «Admin».
 
 ### Legge til en ny bruker til systemet
 
@@ -141,7 +141,7 @@ Arkiverte produktområder kan gjenopprettes av systemadministratorer fra
 [adminpanelet](/admin).
 
 - Huk av for «Vis arkiverte objekter» nederst på siden.
-- Velg det arkiverte produktetområdet som skal gjenopprettes.
+- Velg det arkiverte produktområdet som skal gjenopprettes.
 - Trykk «Gjenopprett».
 
 ### Hvordan beregnes progresjon?
@@ -276,10 +276,10 @@ for et nøkkelresultat.
 Det finnes flere måter å registrere progresjon for et nøkkelresultat på:
 
 - Ved å bytte til `Detaljer`-visning på organisasjonen/produktområdet/produktet
-  og klikke på fremdriftsvisnignen der.
+  og klikke på fremdriftsvisningen der.
 - Direkte inne på detaljsiden for et nøkkelresultatsiden.
 - Via API-et. Instruksjoner for dette finner du når du redigerer eller oppretter
-  et n̨økkelresultat.
+  et nøkkelresultat.
 - Ved å sette opp en [Google Sheets-integrasjon](#google-sheets-integrasjon).
 
 ### Slette eller endre progresjon for et nøkkelresultat
