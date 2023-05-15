@@ -1,7 +1,9 @@
 <template>
-  <menu :class="['nav-menu', `nav-menu--${mode}`]">
+  <ul
+    :class="['nav-menu', { 'nav-menu--vertical': vertical }, { 'nav-menu--tabs': tabs }]"
+  >
     <slot />
-  </menu>
+  </ul>
 </template>
 
 <script>
@@ -9,10 +11,13 @@ export default {
   name: 'NavMenu',
 
   props: {
-    mode: {
-      type: String,
-      default: 'vertical',
-      validator: (value) => ['vertical', 'horizontal'].includes(value),
+    tabs: {
+      type: Boolean,
+      default: false,
+    },
+    vertical: {
+      type: Boolean,
+      default: false,
     },
   },
 };

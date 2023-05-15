@@ -3,7 +3,7 @@
     v-click-outside="close"
     :class="[
       'nav-menu-item',
-      `nav-menu-item--${variant}`,
+      { 'nav-menu-item--dropdown': dropdown },
       { 'nav-menu-item--open': isOpen },
     ]"
   >
@@ -32,14 +32,14 @@
           <span v-if="label" class="nav-menu-item__label">{{ label }}</span>
         </slot>
         <pkt-icon
-          v-if="variant === 'dropdown'"
+          v-if="dropdown"
           class="nav-menu-item__toggle"
           :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'"
         />
       </div>
 
       <div v-if="isOpen" class="nav-menu-item__content">
-        <slot name="dropdown" :close="close" />
+        <slot :close="close" />
       </div>
     </template>
   </li>
@@ -56,10 +56,9 @@ export default {
   },
 
   props: {
-    variant: {
-      type: String,
-      default: null,
-      validator: (value) => ['tab', 'dropdown'].includes(value),
+    dropdown: {
+      type: Boolean,
+      default: false,
     },
     icon: {
       type: String,

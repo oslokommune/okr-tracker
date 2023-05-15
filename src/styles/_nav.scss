@@ -1,52 +1,71 @@
 @use "sass:selector";
 
-$-module-name: 'menu';
+$-module-name: 'nav';
 $-base-height: 3rem;
 $-base-width: 15rem;
 // TODO: Border color should be changed to `--color-gray``
 // as soon as new background color is implemented.
 $-border-color: var(--color-grayscale-10);
 
-.#{$-module-name} {
+.#{$-module-name}-bar {
+  background-color: var(--color-white);
+  height: $-base-height;
+  border-bottom: 1px solid $-border-color;
+
+  > .#{$-module-name}-menu {
+    height: 100%;
+  }
+}
+
+.#{$-module-name}-menu {
   display: flex;
+  flex-direction: row;
   align-items: stretch;
   list-style-type: none;
+  height: $-base-height;
   background-color: var(--color-white);
 
-  // Mode
   &--vertical {
     flex-direction: column;
     width: $-base-width;
+    height: auto;
+    border: 1px solid $-border-color;
 
-    > .#{$-module-name}-item {
+    > .#{$-module-name}-menu-item {
       height: $-base-height;
-      border-bottom: 1px solid $-border-color;
+
+      &:not(:last-of-type) {
+        border-bottom: 1px solid $-border-color;
+      }
 
       &--dropdown {
-        .#{$-module-name}-item__toggle {
+        .#{$-module-name}-menu-item__toggle {
           transform: rotate(270deg);
         }
 
-        .#{$-module-name}-item__content {
+        .#{$-module-name}-menu-item__content {
           top: 0;
-          left: 100%;
+          left: calc(100% + 1px);
         }
       }
     }
   }
 
-  &--horizontal {
-    flex-direction: row;
-    height: $-base-height;
-    border-bottom: 1px solid $-border-color;
-
-    > .#{$-module-name}-item {
-      height: 100%;
-    }
+  &--tabs {
+    > .#{$-module-name}-menu-item
+      .#{$-module-name}-menu-item__inner--active::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 0.25rem;
+        background-color: var(--color-active-light);
+        content: '';
+      }
   }
 }
 
-.#{$-module-name}-item {
+.#{$-module-name}-menu-item {
   position: relative;
   height: 100%;
   background-color: inherit;
@@ -85,22 +104,23 @@ $-border-color: var(--color-grayscale-10);
 
   &__content {
     width: 100%;
+    top: calc(100% + 1px);
     background-color: inherit;
 
-    @at-root .#{$-module-name}-item--dropdown > #{&} {
+    @at-root .#{$-module-name}-menu-item--dropdown > #{&} {
       width: auto;
     }
   }
 
-  &--open > .#{$-module-name}-item__inner,
-  > .#{$-module-name}-item__inner:hover {
+  &--open > .#{$-module-name}-menu-item__inner,
+  > .#{$-module-name}-menu-item__inner:hover {
     background-color: var(--color-gray-light);
     cursor: pointer;
   }
 
-  @at-root .#{$-module-name}--horizontal,
+  @at-root .#{$-module-name}-menu--horizontal,
   &--dropdown {
-    .#{$-module-name}-item__content {
+    .#{$-module-name}-menu-item__content {
       position: absolute;
       z-index: 99;
       box-shadow: 0px 5px 30px -10px rgba(0, 0, 0, 0.2);
@@ -108,7 +128,7 @@ $-border-color: var(--color-grayscale-10);
   }
 
   &--tab {
-    .#{$-module-name}-item__inner--active::after {
+    .#{$-module-name}-menu-item__inner--active::after {
       position: absolute;
       right: 0;
       bottom: 0;

@@ -1,28 +1,29 @@
 <template>
   <header class="site-header">
-    <menu-component mode="horizontal">
-      <!-- Site menu dropdown -->
-      <menu-item variant="dropdown" class="menu-item--site">
-        <template #label>
-          <span class="logo">
-            <img
-              alt="Oslo kommune logo"
-              src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
-            />
-          </span>
-          <span class="pkt-show-phablet-up">{{ siteMenuLabel }}</span>
-        </template>
-        <template #dropdown="{ close }">
-          <site-sidebar :handle-navigation="close" />
-        </template>
-      </menu-item>
+    <nav-bar>
+      <!-- Site menu -->
+      <nav-menu class="nav-menu--site">
+        <nav-menu-item dropdown>
+          <template #label>
+            <span class="logo">
+              <img
+                alt="Oslo kommune logo"
+                src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
+              />
+            </span>
+            <span class="pkt-show-phablet-up">{{ siteMenuLabel }}</span>
+          </template>
+          <template #default="{ close }">
+            <site-sidebar :handle-navigation="close" />
+          </template>
+        </nav-menu-item>
+      </nav-menu>
 
       <!-- Item tabs -->
-      <template v-if="activeItem && $route.params?.slug">
-        <menu-item
+      <nav-menu v-if="activeItem && $route.params?.slug" tabs>
+        <nav-menu-item
           v-for="(itemMenuTab, index) in itemTabs"
           :key="`item_tabs_${index}`"
-          variant="tab"
           v-bind="itemMenuTab"
         >
           <template #label>
@@ -31,40 +32,36 @@
               {{ itemMenuTab.shortLabel || itemMenuTab.label }}
             </span>
           </template>
-        </menu-item>
-      </template>
+        </nav-menu-item>
+      </nav-menu>
 
-      <!-- User menu dropdown -->
-      <menu-item
-        v-if="user"
-        ref="userMenu"
-        variant="dropdown"
-        icon="user"
-        class="menu-item--user"
-      >
-        <template #dropdown="{ close }">
+      <!-- User menu -->
+      <nav-menu class="nav-menu--user">
+        <nav-menu-item v-if="user" ref="userMenu" v-slot="{ close }" icon="user" dropdown>
           <user-profile-menu :id="user.id" :handle-navigation="close" />
-        </template>
-      </menu-item>
-    </menu-component>
+        </nav-menu-item>
+      </nav-menu>
+    </nav-bar>
   </header>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import i18n from '@/locale/i18n';
-import MenuComponent from '@/components/menu/MenuComponent.vue';
-import MenuItem from '@/components/menu/MenuItem.vue';
 import SiteSidebar from '@/components/Navigation/SiteSidebar.vue';
 import UserProfileMenu from '@/components/UserProfileMenu.vue';
 import getActiveItemType from '@/util/getActiveItemType';
+import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
+import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
+import NavBar from '@/components/Navigation/navbar/NavBar.vue';
 
 export default {
   name: 'SiteHeader',
 
   components: {
-    MenuComponent,
-    MenuItem,
+    NavBar,
+    NavMenu,
+    NavMenuItem,
     SiteSidebar,
     UserProfileMenu,
   },
@@ -154,6 +151,10 @@ export default {
           return {};
       }
     },
+
+    toolbar() {
+      return this.$route.meta?.toolbar;
+    },
   },
 
   mounted() {
@@ -167,18 +168,19 @@ export default {
 <style lang="scss" scoped>
 .site-header {
   display: flex;
-  flex: 0 0 3.5rem;
+  flex-direction: column;
 
-  .menu {
-    flex-basis: 100%;
-    height: 100%;
+  .nav-bar {
+    flex-basis: 3.5rem;
   }
 
-  .menu-item {
-    &--site {
-      border-right: 1px solid var(--color-gray);
+  .nav-menu {
+    + .nav-menu {
+      border-left: 1px solid var(--color-gray);
+    }
 
-      ::v-deep .menu-item__inner {
+    &--site {
+      ::v-deep .nav-menu-item__inner {
         text-shadow: 0.25px 0px 0.1px, -0.25px 0px 0.1px;
       }
 
@@ -196,12 +198,15 @@ export default {
 
     &--user {
       margin-left: auto;
-      border-left: 1px solid var(--color-gray);
 
-      ::v-deep .menu-item__content {
+      ::v-deep .nav-menu-item__content {
         right: 0;
       }
     }
+  }
+
+  .sub-navigation {
+    flex-basis: 3.5rem;
   }
 }
 </style>
