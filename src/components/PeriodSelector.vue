@@ -1,72 +1,62 @@
 <template>
-  <div v-click-outside="hide" class="periodSelector">
-    <pkt-button
-      v-tooltip.bottom="!isOpen ? $t('period.choosePeriod') : null"
-      size="medium"
-      skin="secondary"
-      variant="icon-left"
-      icon-name="calendar"
-      :class="{ 'pkt-btn--focus': isOpen }"
-      @onClick="toggle"
-    >
-      {{ label }}
-    </pkt-button>
+  <nav-menu class="period-selector-menu">
+    <nav-menu-text
+      :text="`${$t('general.period')}:`"
+      strong
+      class="pkt-show-phablet-up"
+    />
+    <nav-menu-item v-slot="{ close }" :text="label" dropdown @open="onOpen">
+      <div class="period-selector-menu__dropdown-wrapper">
+        <nav-menu vertical>
+          <nav-menu-item
+            v-for="rangeOption in _periods"
+            :key="rangeOption.value"
+            class="period-selector-menu__period-option"
+            :text="rangeOption.label"
+            :active="selectedPeriod && rangeOption.key === selectedPeriod.key"
+            @click="selectRangeOption(rangeOption, close)"
+          />
+        </nav-menu>
 
-    <div v-if="isOpen" class="periodSelector__content">
-      <button
-        v-for="rangeOption in periods"
-        :key="rangeOption.value"
-        class="periodSelector__option"
-        :class="{
-          'periodSelector__option--active':
-            selectedPeriod && rangeOption.key === selectedPeriod.key,
-        }"
-        @click="selectRangeOption(rangeOption)"
-      >
-        {{ rangeOption.label }}
-      </button>
-      <div v-if="showDatePicker" class="periodSelector__sep"></div>
-      <flat-pickr
-        v-if="showDatePicker"
-        ref="datePicker"
-        v-model="range"
-        :config="flatPickerConfig"
-        class="form-control flatpickr-input"
-        name="date"
-        @on-change="selectCustomRange"
-      />
-    </div>
-  </div>
+        <div v-if="isMeasurementsView" class="period-selector-menu__separator"></div>
+
+        <flat-pickr
+          v-if="isMeasurementsView"
+          ref="datePicker"
+          v-model="range"
+          :config="flatPickerConfig"
+          class="form-control flatpickr-input"
+          name="date"
+          @on-change="(range) => selectCustomRange(range, close)"
+        />
+      </div>
+    </nav-menu-item>
+  </nav-menu>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import ClickOutside from 'vue-click-outside';
 import endOfDay from 'date-fns/endOfDay';
-import { PktButton } from '@oslokommune/punkt-vue2';
 import { dateLongCompact } from '@/util';
+import getPeriods from '@/config/periods';
+import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
+import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
+import NavMenuText from '@/components/Navigation/navbar/NavMenuText.vue';
 
 export default {
   name: 'PeriodSelector',
 
-  directives: {
-    ClickOutside,
-  },
-
   components: {
-    PktButton,
+    NavMenu,
+    NavMenuItem,
+    NavMenuText,
   },
 
   props: {
-    periods: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
     showDatePicker: {
       type: Boolean,
       required: false,
-      default: true,
+      default: false,
     },
   },
 
@@ -82,7 +72,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState(['periods', 'selectedPeriod']),
 
     label() {
       if (this.selectedPeriod) {
@@ -90,10 +80,32 @@ export default {
       }
       return this.$t('period.choosePeriod');
     },
+
+    _periods() {
+      if (this.$route.name === 'ItemHome') {
+        return this.periods.map((p) => ({
+          label: p.name,
+          key: p.id,
+          id: p.id,
+          startDate: p.startDate.toDate(),
+          endDate: p.endDate.toDate(),
+        }));
+      }
+      if (this.isMeasurementsView) {
+        return Object.values(getPeriods());
+      }
+      return [];
+    },
+
+    isMeasurementsView() {
+      return ['ItemMeasurements', 'ItemMeasurementsList'].includes(this.$route.name);
+    },
   },
 
-  watch: {
-    isOpen() {
+  methods: {
+    ...mapActions(['setSelectedPeriod']),
+
+    onOpen() {
       // Reset the internal range property to the currenct period selection when
       // toggling the picker. This to ensure that no invalid (incomplete) range
       // selections are kept in the component state, and that the range is set
@@ -101,23 +113,16 @@ export default {
       const { startDate, endDate } = this.selectedPeriod;
       this.range = startDate && endDate ? [startDate, endDate] : null;
     },
-  },
 
-  methods: {
-    ...mapActions(['setSelectedPeriod']),
-
-    toggle() {
-      this.isOpen = !this.isOpen;
-    },
-    hide() {
-      this.isOpen = false;
-    },
-    selectRangeOption(rangeOption) {
+    selectRangeOption(rangeOption, afterSelection) {
       this.range = [rangeOption.startDate, rangeOption.endDate];
       this.setSelectedPeriod(rangeOption);
-      this.hide();
+      if (afterSelection) {
+        afterSelection();
+      }
     },
-    selectCustomRange(range) {
+
+    selectCustomRange(range, afterSelection) {
       if (range.length !== 2) {
         return;
       }
@@ -128,7 +133,9 @@ export default {
           this.$refs.datePicker.fp.l10n.rangeSeparator
         ),
       });
-      this.hide();
+      if (afterSelection) {
+        afterSelection();
+      }
     },
   },
 };
@@ -137,61 +144,34 @@ export default {
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-.periodSelector {
-  position: relative;
-  display: inline-block;
-
-  .pkt-btn {
-    align-items: center;
-    width: inherit;
-    height: 100%;
-    font-size: 1rem;
-    background-color: var(--color-blue-light);
-    border: 0;
-
-    &:hover {
-      color: var(--color-blue-dark);
+.period-selector-menu {
+  &__dropdown-wrapper {
+    width: 100vw;
+    .nav-menu {
+      width: inherit;
     }
 
-    &--focus,
-    &:active {
-      color: var(--color-white);
-      text-decoration: none;
-      background-color: var(--color-hover);
-      outline: 0;
-
-      &:hover {
-        color: var(--color-white);
-      }
-    }
-
-    ::v-deep .pkt-btn__text {
-      display: none;
-
-      @include bp('phablet-up') {
-        display: block;
-      }
+    @include bp('phablet-up') {
+      width: unset;
     }
   }
-}
 
-.periodSelector__content {
-  position: absolute;
-  right: 0;
-  z-index: 1;
-  width: 100vw;
-  padding-bottom: 2px;
-  background-color: var(--color-white);
-  border: 1px solid var(--color-grayscale-10);
+  &__period-option {
+    ::v-deep .nav-menu-item__inner--active {
+      background-color: var(--color-gray-light);
+    }
 
-  @include bp('phablet-up') {
-    width: unset;
+    ::v-deep .nav-menu-item__content {
+      border: 1px solid red;
+    }
   }
 
   ::v-deep .flatpickr {
     &-calendar {
       margin: 0 auto;
+      top: 0;
       border: 0;
+      border-radius: 0;
       box-shadow: none;
 
       &::before,
@@ -204,34 +184,11 @@ export default {
       display: none;
     }
   }
-}
 
-.periodSelector__option {
-  width: 100%;
-  margin: 0;
-  padding: 1rem;
-  color: var(--color-grayscale-40);
-  font-weight: 500;
-  font-size: 1rem;
-  text-align: left;
-  background: var(--color-white);
-  border: 0;
-  cursor: pointer;
-
-  @include bp('phablet-up') {
-    white-space: nowrap;
+  &__separator {
+    width: 100%;
+    height: 1px;
+    background: var(--color-grayscale-10);
   }
-
-  &:hover,
-  &--active {
-    color: var(--color-text);
-    background: var(--color-gray-light);
-  }
-}
-
-.periodSelector__sep {
-  width: 100%;
-  height: 1px;
-  background: var(--color-grayscale-10);
 }
 </style>
