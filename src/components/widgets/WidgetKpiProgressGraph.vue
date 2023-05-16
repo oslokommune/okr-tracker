@@ -228,13 +228,12 @@ export default {
     height: 100%;
 
     .vs__dropdown-toggle {
-      border-color: var(--color-grayscale-10);
-      border-width: 1px;
+      border: 0;
       cursor: pointer;
     }
 
     .vs__open-indicator {
-      height: 1.25rem;
+      height: 1.5rem;
       margin: 0.25rem 0.4rem;
       padding: 0rem;
     }
@@ -256,8 +255,7 @@ export default {
 
     &:hover:not(.vs--open) {
       .vs__dropdown-toggle {
-        background: var(--color-gray-light);
-        border-color: var(--color-gray-light);
+        background: var(--color-gray);
       }
     }
   }

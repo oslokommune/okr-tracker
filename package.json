@@ -46,6 +46,7 @@
     "flatpickr": "^4.6.9",
     "focus-trap": "^7.0.0",
     "fuse.js": "^6.5.3",
+    "html2canvas": "^1.4.1",
     "marked": "^4.3.0",
     "save-svg-as-png": "^1.4.17",
     "swagger-ui-dist": "^4.17.0",

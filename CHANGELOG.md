@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - A new "neutral" choice for the preferred trend of measurements.
+- A download button has been added to the measurements overview page for
+  downloading an image of multiple measurements simultaneously.
 
 ### Changed
 
