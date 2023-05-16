@@ -1,10 +1,10 @@
 <template>
-  <header class="site-header">
-    <nav-bar>
+  <header class="site-navigation">
+    <nav-bar class="site-navigation__menubar">
       <!-- Site menu -->
-      <nav-menu class="nav-menu--site">
+      <nav-menu class="site-menu">
         <nav-menu-item dropdown>
-          <template #label>
+          <template #text>
             <span class="logo">
               <img
                 alt="Oslo kommune logo"
@@ -24,9 +24,10 @@
         <nav-menu-item
           v-for="(itemMenuTab, index) in itemTabs"
           :key="`item_tabs_${index}`"
-          v-bind="itemMenuTab"
+          :route="itemMenuTab.route"
+          :active="itemMenuTab.active"
         >
-          <template #label>
+          <template #text>
             <span class="pkt-show-tablet-big-up">{{ itemMenuTab.label }}</span>
             <span class="pkt-hide-tablet-big-up">
               {{ itemMenuTab.shortLabel || itemMenuTab.label }}
@@ -36,11 +37,16 @@
       </nav-menu>
 
       <!-- User menu -->
-      <nav-menu class="nav-menu--user">
+      <nav-menu class="user-menu">
         <nav-menu-item v-if="user" ref="userMenu" v-slot="{ close }" icon="user" dropdown>
           <user-profile-menu :id="user.id" :handle-navigation="close" />
         </nav-menu-item>
       </nav-menu>
+    </nav-bar>
+
+    <nav-bar v-if="showToolbar" class="site-navigation__toolbar">
+      <period-selector />
+      <view-toggle />
     </nav-bar>
   </header>
 </template>
@@ -54,6 +60,8 @@ import getActiveItemType from '@/util/getActiveItemType';
 import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
 import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
 import NavBar from '@/components/Navigation/navbar/NavBar.vue';
+import PeriodSelector from '@/components/Navigation/toolbar/PeriodSelector.vue';
+import ViewToggle from '@/components/Navigation/toolbar/ViewToggle.vue';
 
 export default {
   name: 'SiteHeader',
@@ -64,6 +72,8 @@ export default {
     NavMenuItem,
     SiteSidebar,
     UserProfileMenu,
+    PeriodSelector,
+    ViewToggle,
   },
 
   computed: {
@@ -110,6 +120,7 @@ export default {
         {
           route: { name: 'ItemMeasurements' },
           label: this.$t('general.KPIs'),
+          active: this.$route.name === 'ItemMeasurements',
         },
         {
           route: { name: 'ItemAbout' },
@@ -120,6 +131,7 @@ export default {
           show: this.hasEditRights,
           route: { name: 'ItemAdmin', query: this.adminLinkQuery },
           label: this.$t('general.admin'),
+          active: this.$route.name === 'ItemAdmin',
         },
       ];
     },
@@ -152,8 +164,8 @@ export default {
       }
     },
 
-    toolbar() {
-      return this.$route.meta?.toolbar;
+    showToolbar() {
+      return ['ItemHome', 'ItemMeasurements'].includes(this.$route.name);
     },
   },
 
@@ -166,7 +178,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.site-header {
+.site-navigation {
   display: flex;
   flex-direction: column;
 
@@ -174,39 +186,40 @@ export default {
     flex-basis: 3.5rem;
   }
 
-  .nav-menu {
-    + .nav-menu {
+  &__menubar {
+    .nav-menu + .nav-menu {
       border-left: 1px solid var(--color-gray);
-    }
-
-    &--site {
-      ::v-deep .nav-menu-item__inner {
-        text-shadow: 0.25px 0px 0.1px, -0.25px 0px 0.1px;
-      }
-
-      .logo {
-        height: 1.5rem;
-        width: 1.5rem;
-        line-height: 1;
-        overflow: hidden;
-
-        img {
-          height: 100%;
-        }
-      }
-    }
-
-    &--user {
-      margin-left: auto;
-
-      ::v-deep .nav-menu-item__content {
-        right: 0;
-      }
     }
   }
 
-  .sub-navigation {
-    flex-basis: 3.5rem;
+  &__toolbar {
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+}
+
+.site-menu {
+  ::v-deep .nav-menu-item__inner {
+    text-shadow: 0.25px 0px 0.1px, -0.25px 0px 0.1px;
+  }
+
+  .logo {
+    height: 1.5rem;
+    width: 1.5rem;
+    line-height: 1;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+    }
+  }
+}
+
+.user-menu {
+  margin-left: auto;
+
+  ::v-deep .nav-menu-item__content {
+    right: 0;
   }
 }
 </style>

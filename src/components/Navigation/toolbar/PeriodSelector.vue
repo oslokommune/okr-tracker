@@ -3,9 +3,9 @@
     <nav-menu-text
       :text="`${$t('general.period')}:`"
       strong
-      class="pkt-show-phablet-up"
+      class="period-selector-menu__label pkt-show-phablet-up"
     />
-    <nav-menu-item v-slot="{ close }" :text="label" dropdown @open="onOpen">
+    <nav-menu-item v-slot="{ close }" :text="periodLabel" dropdown @open="onOpen">
       <div class="period-selector-menu__dropdown-wrapper">
         <nav-menu vertical>
           <nav-menu-item
@@ -74,7 +74,7 @@ export default {
   computed: {
     ...mapState(['periods', 'selectedPeriod']),
 
-    label() {
+    periodLabel() {
       if (this.selectedPeriod) {
         return this.selectedPeriod.label;
       }
@@ -154,6 +154,12 @@ export default {
     @include bp('phablet-up') {
       width: unset;
       min-width: 10rem;
+    }
+  }
+
+  &__label {
+    ::v-deep .nav-menu-text__inner {
+      padding-right: 0;
     }
   }
 
