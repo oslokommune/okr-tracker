@@ -153,6 +153,7 @@ export default {
 
     @include bp('phablet-up') {
       width: unset;
+      min-width: 10rem;
     }
   }
 
