@@ -1,6 +1,11 @@
 <template>
   <ul
-    :class="['nav-menu', { 'nav-menu--vertical': vertical }, { 'nav-menu--tabs': tabs }]"
+    :class="[
+      'nav-menu',
+      { 'nav-menu--vertical': vertical },
+      { 'nav-menu--tabs': tabs },
+      { 'nav-menu--toggles': toggles },
+    ]"
   >
     <slot />
   </ul>
@@ -11,11 +16,15 @@ export default {
   name: 'NavMenu',
 
   props: {
+    vertical: {
+      type: Boolean,
+      default: false,
+    },
     tabs: {
       type: Boolean,
       default: false,
     },
-    vertical: {
+    toggles: {
       type: Boolean,
       default: false,
     },

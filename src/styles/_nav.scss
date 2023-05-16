@@ -7,6 +7,23 @@ $-base-width: 15rem;
 // as soon as new background color is implemented.
 $-border-color: var(--color-grayscale-10);
 
+@mixin -menu-item {
+  position: relative;
+  height: 100%;
+  background-color: inherit;
+
+  &__inner {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+    color: var(--color-blue-dark);
+    font-weight: 400;
+    font-size: 1em;
+  }
+}
+
 .#{$-module-name}-bar {
   background-color: var(--color-white);
   height: $-base-height;
@@ -29,14 +46,9 @@ $-border-color: var(--color-grayscale-10);
     flex-direction: column;
     width: $-base-width;
     height: auto;
-    border: 1px solid $-border-color;
 
     > .#{$-module-name}-menu-item {
       height: $-base-height;
-
-      &:not(:last-of-type) {
-        border-bottom: 1px solid $-border-color;
-      }
 
       &--dropdown {
         .#{$-module-name}-menu-item__toggle {
@@ -45,41 +57,17 @@ $-border-color: var(--color-grayscale-10);
 
         .#{$-module-name}-menu-item__content {
           top: 0;
-          left: calc(100% + 1px);
+          left: 100%;
         }
       }
     }
   }
-
-  &--tabs {
-    > .#{$-module-name}-menu-item
-      .#{$-module-name}-menu-item__inner--active::after {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        height: 0.25rem;
-        background-color: var(--color-active-light);
-        content: '';
-      }
-  }
 }
 
 .#{$-module-name}-menu-item {
-  position: relative;
-  height: 100%;
-  background-color: inherit;
+  @include -menu-item;
 
   &__inner {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    height: 100%;
-    padding: 0 1rem;
-    color: var(--color-blue-dark);
-    font-weight: 400;
-    font-size: 1rem;
-
     @at-root a#{&} {
       text-decoration: none;
     }
@@ -93,22 +81,21 @@ $-border-color: var(--color-grayscale-10);
   }
 
   &__icon {
-    height: 1.5rem;
+    height: 1.2em;
   }
 
   &__toggle {
     flex-shrink: 0;
-    height: 1.5rem;
+    height: 1.5em;
     margin-left: auto;
   }
 
   &__content {
-    width: 100%;
-    top: calc(100% + 1px);
     background-color: inherit;
+    border: 1px solid $-border-color;
 
-    @at-root .#{$-module-name}-menu-item--dropdown > #{&} {
-      width: auto;
+    > .#{$-module-name}-menu--vertical {
+      min-width: 100%;
     }
   }
 
@@ -118,7 +105,6 @@ $-border-color: var(--color-grayscale-10);
     cursor: pointer;
   }
 
-  @at-root .#{$-module-name}-menu--horizontal,
   &--dropdown {
     .#{$-module-name}-menu-item__content {
       position: absolute;
@@ -127,15 +113,59 @@ $-border-color: var(--color-grayscale-10);
     }
   }
 
-  &--tab {
-    .#{$-module-name}-menu-item__inner--active::after {
+  @at-root .#{$-module-name}-menu--tabs #{&} {
+    &__inner--active::after {
       position: absolute;
       right: 0;
       bottom: 0;
       left: 0;
-      height: 0.25rem;
+      height: 0.25em;
       background-color: var(--color-active-light);
       content: '';
     }
+  }
+
+  @at-root .#{$-module-name}-menu--toggles #{&} {
+    display: flex;
+    align-items: center;
+    margin: 0 0.1em;
+
+    &:first-of-type {
+      margin-left: 1em;
+    }
+    &:last-of-type {
+      margin-right: 1em;
+    }
+
+    &__inner {
+      height: auto;
+      padding: 0.5em;
+
+      &--icon-only {
+        border-radius: 50%;
+      }
+
+      &:hover {
+        background-color: var(--color-gray-light);
+      }
+
+      &--active,
+      &--active:hover {
+        background-color: var(--color-blue-light);
+      }
+    }
+  }
+}
+
+.#{$-module-name}-menu-text {
+  @include -menu-item;
+
+  &__inner {
+    gap: 0.25em;
+    padding: 0 1em;
+  }
+
+  &--strong #{&}__inner {
+    font-weight: 500;
   }
 }

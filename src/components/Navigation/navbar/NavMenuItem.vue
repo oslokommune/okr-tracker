@@ -7,29 +7,41 @@
       { 'nav-menu-item--open': isOpen },
     ]"
   >
-    <router-link v-if="route" v-slot="{ href, navigate, isActive }" :to="route" custom>
+    <router-link
+      v-if="route"
+      v-slot="{ href, navigate, isExactActive }"
+      :to="route"
+      custom
+    >
       <a
         :href="href"
-        :class="['nav-menu-item__inner', { 'nav-menu-item__inner--active': isActive }]"
+        :class="[
+          'nav-menu-item__inner',
+          { 'nav-menu-item__inner--icon-only': icon && !text },
+          { 'nav-menu-item__inner--active': active || isExactActive },
+        ]"
         @click="activate($event, navigate)"
       >
-        <slot name="label">
+        <slot name="text">
           <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
-          <span v-if="label" class="nav-menu-item__label">{{ label }}</span>
+          <span v-if="text" class="nav-menu-item__text">{{ text }}</span>
         </slot>
       </a>
     </router-link>
 
     <template v-else>
       <div
-        :class="['nav-menu-item__inner', { 'nav-menu-item__inner--active': isOpen }]"
+        :class="[
+          'nav-menu-item__inner',
+          { 'nav-menu-item__inner--active': active || isOpen },
+        ]"
         tabindex="0"
         @click="activate"
         @keyup.enter="activate"
       >
-        <slot name="label">
+        <slot name="text">
           <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
-          <span v-if="label" class="nav-menu-item__label">{{ label }}</span>
+          <span v-if="text" class="nav-menu-item__text">{{ text }}</span>
         </slot>
         <pkt-icon
           v-if="dropdown"
@@ -65,7 +77,7 @@ export default {
       required: false,
       default: null,
     },
-    label: {
+    text: {
       type: String,
       required: false,
       default: null,
@@ -75,21 +87,32 @@ export default {
       required: false,
       default: null,
     },
+    active: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data: () => ({
     isOpen: false,
   }),
 
+  watch: {
+    isOpen() {
+      this.$emit('open');
+    },
+  },
+
   methods: {
-    activate(e, handler) {
-      if (!this.route) {
+    activate(e, routeHandler) {
+      if (this.dropdown) {
         this.isOpen = !this.isOpen;
         return;
       }
-      if (handler) {
-        handler(e);
-        this.close();
+      if (routeHandler) {
+        routeHandler(e);
+        return;
       }
       this.$emit('click', e);
     },
