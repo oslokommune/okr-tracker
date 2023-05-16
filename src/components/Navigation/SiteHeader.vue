@@ -188,7 +188,7 @@ export default {
 
   &__menubar {
     .nav-menu + .nav-menu {
-      border-left: 1px solid var(--color-gray);
+      border-left: 1px solid var(--color-grayscale-10);
     }
   }
 
@@ -204,10 +204,10 @@ export default {
   }
 
   .logo {
-    height: 1.5rem;
     width: 1.5rem;
-    line-height: 1;
+    height: 1.5rem;
     overflow: hidden;
+    line-height: 1;
 
     img {
       height: 100%;

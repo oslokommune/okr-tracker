@@ -107,8 +107,8 @@ export default {
     }
 
     &--product {
-      font-size: typography.$font-size-1;
       font-weight: 400;
+      font-size: typography.$font-size-1;
 
       .pkt-btn {
         font-weight: 400;

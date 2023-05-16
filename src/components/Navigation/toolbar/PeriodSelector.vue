@@ -175,8 +175,8 @@ export default {
 
   ::v-deep .flatpickr {
     &-calendar {
-      margin: 0 auto;
       top: 0;
+      margin: 0 auto;
       border: 0;
       border-radius: 0;
       box-shadow: none;

@@ -81,8 +81,8 @@ export default {
   }
 
   &__item {
-    align-items: center;
     gap: 0.25rem;
+    align-items: center;
     margin: 0.25rem 1.25rem;
 
     .pkt-form-check-input {

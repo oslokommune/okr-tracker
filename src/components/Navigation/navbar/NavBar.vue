@@ -9,9 +9,3 @@ export default {
   name: 'NavBar',
 };
 </script>
-
-<style lang="scss" scoped>
-.nav-bar {
-  display: flex;
-}
-</style>

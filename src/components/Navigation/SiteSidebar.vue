@@ -1,5 +1,5 @@
 <template>
-  <div class="site-menu">
+  <div class="site-menu-dropdown">
     <router-link
       :to="{ name: 'Home' }"
       class="pkt-btn pkt-btn--tertiary"
@@ -18,7 +18,7 @@
       <organization-tree @selection="handleNavigation" />
     </template>
 
-    <div class="site-menu__footer">
+    <div class="site-menu-dropdown__footer">
       <img
         alt="Oslo kommune logo"
         src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
@@ -65,14 +65,14 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-$-dropdown-max-height: calc(100vh - 4.5rem);
+$-dropdown-max-height: calc(100vh - 3.5rem);
 
-.site-menu {
-  height: $-dropdown-max-height;
-  width: 100vw;
+.site-menu-dropdown {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  width: 100vw;
+  height: $-dropdown-max-height;
   padding: 1rem;
 
   @each $bp, $width in (xs: 80, s: 45, m: 30, l: 25, xl: 20, xxl: 15) {
@@ -102,10 +102,10 @@ $-dropdown-max-height: calc(100vh - 4.5rem);
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    font-size: typography.$font-size-0;
-    opacity: 0.25;
     margin-top: auto;
     padding-top: 1rem;
+    font-size: typography.$font-size-0;
+    opacity: 0.25;
 
     img {
       height: 1.5rem;

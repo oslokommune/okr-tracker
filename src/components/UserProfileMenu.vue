@@ -1,6 +1,6 @@
 <template>
-  <div v-if="user" class="user-menu">
-    <div class="user-menu__header">
+  <div v-if="user" class="user-menu-dropdown">
+    <div class="user-menu-dropdown__header">
       <div class="user-profile">
         <h1 class="title-2">{{ user.displayName }}</h1>
         <ul class="user-profile__access">
@@ -25,7 +25,7 @@
       />
     </div>
 
-    <div class="user-menu__body">
+    <div class="user-menu-dropdown__body">
       <div class="user-profile-form">
         <h2 class="title-2">{{ $t('user.profile') }}</h2>
 
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="user-menu__footer">
+    <div class="user-menu-dropdown__footer">
       <template v-for="link in links">
         <pkt-button
           v-if="link.show !== undefined ? link.show : true"
@@ -197,14 +197,14 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-$-dropdown-max-height: calc(100vh - 4.5rem);
+$-dropdown-max-height: calc(100vh - 3.5rem);
 
-.user-menu {
+.user-menu-dropdown {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  height: $-dropdown-max-height;
   width: 100vw;
+  height: $-dropdown-max-height;
 
   @each $bp, $width in (s: 80, m: 60, l: 50, xl: 40, xxl: 30) {
     @media screen and (min-width: bp(#{$bp})) {
@@ -238,8 +238,8 @@ $-dropdown-max-height: calc(100vh - 4.5rem);
     flex: 1;
     flex-direction: column;
     gap: 1rem;
-    overflow-y: auto;
     padding: 0 1.5rem;
+    overflow-y: auto;
 
     @media screen and (min-width: bp(s)) {
       flex-direction: row;
@@ -271,8 +271,8 @@ $-dropdown-max-height: calc(100vh - 4.5rem);
   &__access {
     display: flex;
     gap: 0.2rem;
-    font-size: typography.$font-size-0;
     font-weight: 500;
+    font-size: typography.$font-size-0;
 
     li:not(:last-of-type):after {
       content: '/';
