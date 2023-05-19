@@ -122,11 +122,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main,
+.widget {
+  background: var(--color-gray-light);
+  border: 0;
+}
+
 .tree {
   margin-bottom: 0.5rem;
   padding: 1rem 0;
   line-height: 1;
-  background-color: var(--color-white);
 }
 
 .tree__organization {

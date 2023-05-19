@@ -160,9 +160,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .main {
   padding: 2rem;
   background-color: var(--color-white);
+}
+
+.item-info {
+  position: relative;
+  padding: 2rem 1.5rem;
+  overflow: auto;
 }
 
 section {

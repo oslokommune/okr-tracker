@@ -9,7 +9,7 @@
         </p>
       </header>
 
-      <section class="itemHome__tree--item">
+      <section>
         <empty-state
           v-if="!keyRes.length"
           :icon="'poop'"
@@ -142,9 +142,5 @@ export default {
 .objective__heading-text {
   max-width: 46rem;
   margin-right: 2.5rem;
-}
-
-.itemHome__tree--item {
-  background: var(--color-white);
 }
 </style>

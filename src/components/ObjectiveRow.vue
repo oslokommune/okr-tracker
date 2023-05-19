@@ -60,7 +60,6 @@ export default {
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
-  background: var(--color-white);
 
   .title-2 {
     line-height: 1.25;

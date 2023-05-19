@@ -115,8 +115,6 @@ export default {
 @use '@/styles/typography';
 
 .keyResult {
-  background: white;
-
   @media screen and (min-width: bp(s)) {
     display: flex;
   }
@@ -141,6 +139,7 @@ export default {
 
   &__title {
     margin-bottom: 0;
+    font-weight: 400;
   }
 
   &__description {

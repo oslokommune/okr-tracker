@@ -36,8 +36,7 @@ export default {
 .content-loader-item__objective-container {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--color-border);
 }
 
 .content-loader-item__objective {
