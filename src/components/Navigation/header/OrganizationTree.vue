@@ -1,58 +1,66 @@
 <template>
   <ul v-if="activeOrganization" class="organization-tree">
-    <li class="organization-tree__item organization-tree__item--organization">
-      <router-link
-        :to="{ name: 'ItemHome', params: { slug: activeOrganization.slug } }"
-        :class="[
-          'organization-tree__link',
-          {
-            'organization-tree__link--active':
-              activeOrganization.slug === $route.params.slug,
-          },
-        ]"
-        @click.native="$emit('selection')"
+    <template v-for="org in tree">
+      <li
+        v-if="org.id === activeOrganization.id"
+        :key="org.id"
+        class="organization-tree__item organization-tree__item--organization"
       >
-        {{ activeOrganization.name }}
-      </router-link>
-
-      <ul>
-        <li
-          v-for="dept in children"
-          :key="dept.id"
-          class="organization-tree__item organization-tree__item--department"
+        <router-link
+          :to="{ name: 'ItemHome', params: { slug: activeOrganization.slug } }"
+          :class="[
+            'organization-tree__link',
+            {
+              'organization-tree__link--active':
+                activeOrganization.slug === $route.params.slug,
+            },
+          ]"
+          @click.native="$emit('selection')"
         >
-          <router-link
-            :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
-            :class="[
-              'organization-tree__link',
-              { 'organization-tree__link--active': dept.slug === $route.params.slug },
-            ]"
-            @click.native="$emit('selection')"
-          >
-            {{ dept.name }}
-          </router-link>
+          {{ org.name }}
+        </router-link>
 
-          <ul>
-            <li
-              v-for="prod in dept.children"
-              :key="prod.id"
-              class="organization-tree__item organization-tree__item--product"
+        <ul>
+          <li
+            v-for="dept in children"
+            :key="dept.id"
+            class="organization-tree__item organization-tree__item--department"
+          >
+            <router-link
+              :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
+              :class="[
+                'organization-tree__link',
+                { 'organization-tree__link--active': dept.slug === $route.params.slug },
+              ]"
+              @click.native="$emit('selection')"
             >
-              <router-link
-                :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
-                :class="[
-                  'organization-tree__link',
-                  { 'organization-tree__link--active': prod.slug === $route.params.slug },
-                ]"
-                @click.native="$emit('selection')"
+              {{ dept.name }}
+            </router-link>
+
+            <ul>
+              <li
+                v-for="prod in dept.children"
+                :key="prod.id"
+                class="organization-tree__item organization-tree__item--product"
               >
-                {{ prod.name }}
-              </router-link>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
+                <router-link
+                  :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
+                  :class="[
+                    'organization-tree__link',
+                    {
+                      'organization-tree__link--active': prod.slug === $route.params.slug,
+                    },
+                  ]"
+                  @click.native="$emit('selection')"
+                >
+                  {{ prod.name }}
+                </router-link>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </template>
   </ul>
 </template>
 
@@ -111,7 +119,7 @@ export default {
 @use '@/styles/typography';
 
 .organization-tree {
-  margin: 0 0 1rem 1rem;
+  margin: 1rem 0 0 1rem;
 
   &:last-of-type {
     margin-bottom: 0;
@@ -119,7 +127,7 @@ export default {
 
   &__item {
     > ul {
-      margin: 0 0 1em 0.5em;
+      margin-left: 0.5rem;
     }
 
     &--organization {
@@ -127,6 +135,7 @@ export default {
     }
 
     &--department {
+      margin-top: 0.5rem;
       font-weight: 400;
     }
 
