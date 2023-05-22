@@ -3,7 +3,13 @@
     <li class="organization-tree__item organization-tree__item--organization">
       <router-link
         :to="{ name: 'ItemHome', params: { slug: activeOrganization.slug } }"
-        class="pkt-btn pkt-btn--tertiary"
+        :class="[
+          'organization-tree__link',
+          {
+            'organization-tree__link--active':
+              activeOrganization.slug === $route.params.slug,
+          },
+        ]"
         @click.native="$emit('selection')"
       >
         {{ activeOrganization.name }}
@@ -17,7 +23,10 @@
         >
           <router-link
             :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
-            class="pkt-btn pkt-btn--tertiary"
+            :class="[
+              'organization-tree__link',
+              { 'organization-tree__link--active': dept.slug === $route.params.slug },
+            ]"
             @click.native="$emit('selection')"
           >
             {{ dept.name }}
@@ -31,7 +40,10 @@
             >
               <router-link
                 :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
-                class="pkt-btn pkt-btn--tertiary"
+                :class="[
+                  'organization-tree__link',
+                  { 'organization-tree__link--active': prod.slug === $route.params.slug },
+                ]"
                 @click.native="$emit('selection')"
               >
                 {{ prod.name }}
@@ -99,24 +111,40 @@ export default {
 @use '@/styles/typography';
 
 .organization-tree {
+  margin: 0 0 1rem 1rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
   &__item {
-    font-size: typography.$font-size-2;
+    > ul {
+      margin: 0 0 1em 0.5em;
+    }
+
+    &--organization {
+      font-weight: 500;
+    }
 
     &--department {
-      font-size: typography.$font-size-1;
+      font-weight: 400;
     }
 
     &--product {
-      font-weight: 400;
+      font-weight: 300;
       font-size: typography.$font-size-1;
-
-      .pkt-btn {
-        font-weight: 400;
-      }
     }
+  }
 
-    > ul {
-      margin-left: 0.5rem;
+  &__link {
+    color: var(--color-blue-dark);
+    text-decoration: none;
+
+    &--active,
+    &:active,
+    &:hover {
+      color: var(--color-hover);
+      text-decoration: underline;
     }
   }
 }

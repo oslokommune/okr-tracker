@@ -2,7 +2,10 @@
   <div class="site-menu-dropdown">
     <router-link
       :to="{ name: 'Home' }"
-      class="pkt-btn pkt-btn--tertiary"
+      :class="[
+        'site-menu-dropdown__link',
+        { 'site-menu-dropdown__link--active': $route.name === 'Home' },
+      ]"
       @click.native="handleNavigation"
     >
       {{ $t('general.frontPage') }}
@@ -74,6 +77,9 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   width: 100vw;
   height: $-dropdown-max-height;
   padding: 1rem;
+  font-weight: 500;
+  font-size: typography.$font-size-2;
+  line-height: 2;
 
   @each $bp, $width in (xs: 80, s: 45, m: 30, l: 25, xl: 20, xxl: 15) {
     @media screen and (min-width: bp(#{$bp})) {
@@ -86,7 +92,6 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   ::v-deep .pkt-btn {
     width: 100%;
     font-size: inherit;
-    line-height: 1;
 
     &:not(:active).router-link-active {
       color: var(--btn-hover-txt);
@@ -95,6 +100,19 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
 
   hr.pkt-hr {
     margin: 0.5rem 0;
+  }
+
+  &__link {
+    padding-left: 1rem;
+    color: var(--color-blue-dark);
+    text-decoration: none;
+
+    &--active,
+    &:active,
+    &:hover {
+      color: var(--color-hover);
+      text-decoration: underline;
+    }
   }
 
   &__footer {
