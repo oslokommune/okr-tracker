@@ -82,14 +82,15 @@
           @on-close="updateDatePickerValue"
         />
 
-        <button
+        <pkt-button
           v-if="copyButton"
           v-tooltip="$t('tooltip.copyToClipboard')"
-          class="pkt-btn pkt-btn--tertiary pkt-btn--icon-only form-input__copy-button"
-          @click="copyFieldText"
-        >
-          <pkt-icon class="pkt-btn__icon" name="copy" />
-        </button>
+          skin="tertiary"
+          variant="icon-only"
+          icon-name="copy"
+          class="form-input__copy-button"
+          @onClick="copyFieldText"
+        />
       </div>
 
       <div v-if="$slots.sub" class="pkt-form-help">
@@ -102,11 +103,14 @@
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'FormComponent',
 
   components: {
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktButton,
   },
 
   props: {
@@ -272,10 +276,8 @@ export default {
       }
     },
 
-    copyFieldText(e) {
-      e.preventDefault();
-      const inputWrapperElement = e.currentTarget.parentElement;
-      const inputElement = inputWrapperElement.querySelector(this.inputType);
+    copyFieldText() {
+      const inputElement = this.$el.querySelector(this.inputType);
       if (inputElement) {
         navigator.clipboard.writeText(inputElement.value).then(() => {
           this.$toasted.show(this.$t('toaster.action.copiedToClipboard'));

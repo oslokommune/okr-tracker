@@ -5,9 +5,14 @@
         <h2 class="title-2">
           <slot name="header" />
         </h2>
-        <button ref="closeButton" class="btn btn--ter btn--icon" @click="close">
-          <i class="fa fa-times" />
-        </button>
+        <pkt-button
+          ref="closeButton"
+          size="small"
+          variant="icon-only"
+          icon-name="close"
+          skin="tertiary"
+          @onClick="close"
+        />
       </div>
 
       <div ref="modalContent" class="modal__content">
@@ -28,9 +33,14 @@
 <script>
 import { focusable } from 'tabbable';
 import * as focusTrap from 'focus-trap';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ModalWrapper',
+
+  components: {
+    PktButton,
+  },
 
   props: {
     variant: {

@@ -8,19 +8,19 @@
           <th v-if="hasAnyChangedBy">
             {{ $t('widget.history.changedBy') }}
           </th>
-          <th v-if="hasAnyComments">
+          <th v-if="hasAnyComments" class="table__comments">
             <span v-if="showComments">{{ $t('widget.history.comment') }}</span>
-            <button class="btn btn--icon btn--ter" @click="showComments = !showComments">
-              <span
-                v-tooltip="
-                  !showComments
-                    ? $t('widget.history.showComments')
-                    : $t('widget.history.hideComments')
-                "
-                class="fa"
-                :class="!showComments ? 'fa-eye' : 'fa-eye-slash'"
-              ></span>
-            </button>
+            <pkt-button
+              v-tooltip="
+                !showComments
+                  ? $t('widget.history.showComments')
+                  : $t('widget.history.hideComments')
+              "
+              skin="tertiary"
+              variant="icon-only"
+              :icon-name="showComments ? 'close' : 'eye'"
+              @onClick="showComments = !showComments"
+            />
           </th>
           <th v-if="hasEditRights" style="width: 1rem">
             {{ $t('widget.history.actions') }}
@@ -59,13 +59,13 @@
           </td>
           <td v-if="hasEditRights">
             <div class="record__actions">
-              <btn
+              <pkt-button
                 v-tooltip="$t('tooltip.editProgress')"
-                icon="edit"
-                :label="$t('tooltip.editProgress')"
-                :hide-label="true"
-                variant="tertiary"
-                @click="$emit('edit-record', record)"
+                size="small"
+                skin="tertiary"
+                variant="icon-only"
+                icon-name="edit"
+                @onClick="$emit('edit-record', record)"
               />
               <btn-delete
                 v-tooltip="$t('tooltip.deleteProgress')"
@@ -113,7 +113,7 @@
 import { mapGetters } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import LoadingSmall from '@/components/LoadingSmall.vue';
-import { Btn, BtnDelete } from '@/components/generic/form/buttons';
+import { BtnDelete } from '@/components/generic/form/buttons';
 import UserLink from './UserLink.vue';
 
 export default {
@@ -125,7 +125,6 @@ export default {
     ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
     LoadingSmall,
     UserLink,
-    Btn,
     BtnDelete,
   },
 
@@ -197,7 +196,6 @@ export default {
   }
 }
 
-.btn--icon,
 .record__comment-icon {
   display: inline-flex;
   align-items: center;
@@ -212,6 +210,12 @@ export default {
 
 .record__actions {
   display: flex;
+}
+
+.table__comments {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
 }
 
 td {

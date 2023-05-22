@@ -18,10 +18,10 @@
       </div>
 
       <div v-if="editNotes" class="notes__btn">
-        <button class="btn btn--ter" :disabled="!dirty || loading" @click="saveNotes">
-          {{ $t('keyResultPage.notes.save') }}
-        </button>
-        <button class="btn btn--ter" @click="closeNotes">{{ $t('btn.close') }}</button>
+        <btn-save :disabled="!dirty || loading" @click="saveNotes" />
+        <pkt-button skin="tertiary" @onClick="closeNotes">
+          {{ $t('btn.close') }}
+        </pkt-button>
       </div>
       <div v-else>
         <button class="btn" @click="editNotes = !editNotes">
@@ -35,8 +35,10 @@
 <script>
 import { mapState } from 'vuex';
 import { marked } from 'marked';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import dompurify from 'dompurify';
 import KeyResult from '@/db/KeyResult';
+import { BtnSave } from '@/components/generic/form';
 
 marked.setOptions({
   smartypants: true,
@@ -46,6 +48,8 @@ export default {
   name: 'WidgetKeyResultNotes',
 
   components: {
+    BtnSave,
+    PktButton,
     Widget: () => import('./WidgetWrapper.vue'),
   },
 
@@ -113,5 +117,6 @@ export default {
 .notes__btn {
   display: flex;
   flex-direction: row;
+  gap: 0.5rem;
 }
 </style>

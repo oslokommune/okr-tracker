@@ -3,20 +3,23 @@
     <h3 class="title-3">{{ $t('user.position.groups.' + role) }}</h3>
     <div class="role-group__members-list">
       <span v-for="member in membersWithRole" :key="member.id" class="role-group__member">
-        <button
-          class="pkt-btn pkt-btn--tertiary pkt-btn--small"
-          @click="openProfileModal(member.id)"
-        >
+        <pkt-button size="small" skin="tertiary" @onClick="openProfileModal(member.id)">
           {{ member.displayName || firstPartOfEmail(member.id) }}
-        </button>
+        </pkt-button>
       </span>
     </div>
   </div>
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'RoleMembers',
+
+  components: {
+    PktButton,
+  },
 
   props: {
     role: {

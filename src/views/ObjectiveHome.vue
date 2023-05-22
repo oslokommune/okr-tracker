@@ -19,7 +19,6 @@
           <router-link
             v-if="hasEditRights"
             :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-            class="btn btn--ter"
           >
             {{ $t('empty.noKeyResults.linkText') }}
           </router-link>

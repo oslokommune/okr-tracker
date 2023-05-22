@@ -1,5 +1,5 @@
 import FormSection from './FormSection.vue';
 import ToggleButton from './ToggleButton.vue';
-import { Btn, BtnDelete, BtnSave } from './buttons';
+import { BtnDelete, BtnSave } from './buttons';
 
-export { FormSection, ToggleButton, Btn, BtnDelete, BtnSave };
+export { FormSection, ToggleButton, BtnDelete, BtnSave };

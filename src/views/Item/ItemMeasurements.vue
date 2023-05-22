@@ -24,7 +24,6 @@
       <router-link
         v-if="hasEditRights"
         :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
-        class="btn btn--ter"
       >
         {{ $t('empty.noKPIs.linkText') }}
       </router-link>

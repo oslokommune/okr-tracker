@@ -1,13 +1,15 @@
 <template>
   <div :class="['organization-selector', { 'organization-selector--open': isCollapsed }]">
-    <button
-      class="pkt-btn pkt-btn--tertiary organization-selector__toggle"
+    <pkt-button
+      class="organization-selector__toggle"
       tabindex="0"
-      @click="isCollapsed = !isCollapsed"
+      skin="tertiary"
+      variant="icon-right"
+      :icon-name="isCollapsed ? 'chevron-thin-up' : 'chevron-thin-down'"
+      @onClick="isCollapsed = !isCollapsed"
     >
       {{ $t('general.orgs') }}
-      <pkt-icon :name="isCollapsed ? 'chevron-thin-up' : 'chevron-thin-down'" />
-    </button>
+    </pkt-button>
 
     <div v-if="isCollapsed">
       <div
@@ -34,9 +36,14 @@
 
 <script>
 import { mapState } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'OrganizationSelector',
+
+  components: {
+    PktButton,
+  },
 
   props: {
     orgId: {
@@ -66,13 +73,7 @@ export default {
 
 .organization-selector {
   &__toggle {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-
-    svg {
-      height: 1.5rem;
-    }
   }
 
   > div {
