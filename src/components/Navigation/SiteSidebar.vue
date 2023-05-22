@@ -1,25 +1,27 @@
 <template>
   <div class="site-menu-dropdown">
-    <router-link
-      :to="{ name: 'Home' }"
-      :class="[
-        'site-menu-dropdown__link',
-        { 'site-menu-dropdown__link--active': $route.name === 'Home' },
-      ]"
-      @click.native="handleNavigation"
-    >
-      {{ $t('general.frontPage') }}
-    </router-link>
+    <div class="site-menu-dropdown__body">
+      <router-link
+        :to="{ name: 'Home' }"
+        :class="[
+          'site-menu-dropdown__link',
+          { 'site-menu-dropdown__link--active': $route.name === 'Home' },
+        ]"
+        @click.native="handleNavigation"
+      >
+        {{ $t('general.frontPage') }}
+      </router-link>
 
-    <template v-if="user">
-      <hr class="pkt-hr" />
+      <template v-if="user">
+        <hr class="pkt-hr" />
 
-      <organization-selector />
+        <organization-selector />
 
-      <hr class="pkt-hr" />
+        <hr class="pkt-hr" />
 
-      <organization-tree @selection="handleNavigation" />
-    </template>
+        <organization-tree @selection="handleNavigation" />
+      </template>
+    </div>
 
     <div class="site-menu-dropdown__footer">
       <img
@@ -92,10 +94,6 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   ::v-deep .pkt-btn {
     width: 100%;
     font-size: inherit;
-
-    &:not(:active).router-link-active {
-      color: var(--btn-hover-txt);
-    }
   }
 
   hr.pkt-hr {
@@ -113,6 +111,10 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
       color: var(--color-hover);
       text-decoration: underline;
     }
+  }
+
+  &__body {
+    overflow-y: auto;
   }
 
   &__footer {
