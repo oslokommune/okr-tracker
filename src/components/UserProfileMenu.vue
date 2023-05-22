@@ -115,7 +115,7 @@ export default {
           text: this.$t('general.admin'),
           icon: 'cogwheel',
           route: { name: 'Admin' },
-          show: this.user.admin,
+          show: !!this.user?.admin,
         },
         {
           key: 'help',
