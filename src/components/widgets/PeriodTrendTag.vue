@@ -69,7 +69,15 @@ export default {
     periodTrendFormatted() {
       if (this.periodTrend !== null) {
         const prefix = this.periodTrend > 0 ? '+' : '';
-        const formattedTrend = formatKPIValue(this.kpi, this.periodTrend);
+        let formattedTrend = formatKPIValue(this.kpi, this.periodTrend);
+        /*
+         * The percentage sign is misleading when used to indicate a value
+         * difference like here, as the computed change is actually in
+         * percentage points/absolute value, and not in percentage change.
+         */
+        if (formattedTrend.endsWith('%')) {
+          formattedTrend = formattedTrend.slice(0, formattedTrend.length - 1);
+        }
         return `${prefix + formattedTrend}`;
       }
       return '?';

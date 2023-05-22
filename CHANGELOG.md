@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file. The format 
   isn't reached yet.
 - Fixed the CSV download function for measurement data (regression introduced in
   version 3.5.0).
+- Fixed misleading percentage change numbers.
 
 ## [3.6.0] 2023-05-05
 
