@@ -5,7 +5,13 @@
       strong
       class="period-selector-menu__label pkt-show-phablet-up"
     />
-    <nav-menu-item v-slot="{ close }" :text="periodLabel" dropdown @open="onOpen">
+    <nav-menu-item
+      v-if="_periods.length"
+      v-slot="{ close }"
+      :text="periodLabel"
+      dropdown
+      @open="onOpen"
+    >
       <div class="period-selector-menu__dropdown-wrapper">
         <nav-menu vertical>
           <nav-menu-item
@@ -31,6 +37,11 @@
         />
       </div>
     </nav-menu-item>
+    <nav-menu-text
+      v-else
+      :text="$t('period.noPeriods')"
+      class="period-selector-menu__no-periods pkt-show-phablet-up"
+    />
   </nav-menu>
 </template>
 
@@ -167,9 +178,12 @@ export default {
     ::v-deep .nav-menu-item__inner--active {
       background-color: var(--color-gray-light);
     }
+  }
 
-    ::v-deep .nav-menu-item__content {
-      border: 1px solid red;
+  &__no-periods {
+    ::v-deep .nav-menu-text__inner {
+      color: var(--color-grayscale-40);
+      font-style: italic;
     }
   }
 

@@ -354,6 +354,7 @@
   },
   "period": {
     "choosePeriod": "Choose period",
+    "noPeriods": "No periods defined",
     "dateRange": "Start and end dates",
     "sixmonths": "Past 6 months",
     "year": "So far this year",
