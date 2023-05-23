@@ -191,7 +191,7 @@ export default class LineChart {
       .map((d) => {
         const timestamp = d.timestamp.toDate();
         timestamp.setHours(0, 0, 0, 0);
-        return { timestamp, value: +d.value, comment: d?.comment };
+        return { timestamp, value: +d.value, comment: d?.comment, kpi };
       })
       .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
 
