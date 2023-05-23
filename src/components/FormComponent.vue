@@ -17,7 +17,9 @@
         <slot name="help"></slot>
       </div>
 
-      <div class="form-input__wrapper">
+      <div
+        :class="['form-input__wrapper', { 'form-input__wrapper--copiable': copyButton }]"
+      >
         <input
           v-if="inputType === 'input'"
           :id="name"
@@ -83,10 +85,10 @@
         <button
           v-if="copyButton"
           v-tooltip="$t('tooltip.copyToClipboard')"
-          class="btn btn--sec"
+          class="pkt-btn pkt-btn--tertiary pkt-btn--icon-only form-input__copy-button"
           @click="copyFieldText"
         >
-          <i class="form-input__copy-button far fa-clone" />
+          <pkt-icon class="pkt-btn__icon" name="copy" />
         </button>
       </div>
 

@@ -122,14 +122,32 @@
   }
 }
 
-.form-input__wrapper {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+.form-input {
+  &__wrapper {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
 
-  > .flatpickr-wrapper {
-    display: block;
-    width: 100%;
+    > .flatpickr-wrapper {
+      display: block;
+      width: 100%;
+    }
+
+    &--copiable {
+      position: relative;
+
+      .pkt-form-input,
+      .pkt-form-textarea {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  &__copy-button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    height: 2.875rem;
   }
 }
 
