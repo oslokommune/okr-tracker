@@ -29,6 +29,7 @@ function updateUser(email, data) {
       'x-api-key': '<api-key>',
     },
     payload: JSON.stringify(data),
+    muteHttpExceptions: true,
   });
 
   const text = res.getContentText();
@@ -36,7 +37,7 @@ function updateUser(email, data) {
   if (res.getResponseCode() === 200) {
     console.log(text);
   } else {
-    throw new Error(text);
+    console.log(`[${res.getResponseCode()}] Error updating user`);
   }
 }
 
