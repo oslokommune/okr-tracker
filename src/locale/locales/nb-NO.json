@@ -213,6 +213,7 @@
     "create": "Opprett",
     "delete": "Slett",
     "editItem": "Endre «{item}»",
+    "download": "Last ned",
     "upload": "Last opp",
     "minimize": "Minimer",
     "expand": "Ekspander",

@@ -215,6 +215,7 @@
     "create": "Create",
     "delete": "Delete",
     "editItem": "Change «{item}»",
+    "download": "Download",
     "upload": "Upload",
     "minimize": "Minimize",
     "expand": "Expand",
