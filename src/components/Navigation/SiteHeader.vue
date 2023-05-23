@@ -200,7 +200,7 @@ export default {
 
 .site-menu {
   ::v-deep .nav-menu-item__inner {
-    text-shadow: 0.25px 0px 0.1px, -0.25px 0px 0.1px;
+    font-weight: 500;
   }
 
   .logo {
