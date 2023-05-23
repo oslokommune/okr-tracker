@@ -118,7 +118,7 @@ export default {
           shortLabel: this.$t('general.OKRs'),
         },
         {
-          route: { name: 'ItemMeasurements' },
+          route: { name: 'ItemMeasurements', query: { view: 'list' } },
           label: this.$t('general.KPIs'),
           active: this.$route.name === 'ItemMeasurements',
         },

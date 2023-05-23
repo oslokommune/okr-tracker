@@ -42,18 +42,6 @@ export default {
       if (name === 'ItemMeasurements') {
         return [
           {
-            key: 'details',
-            name: this.$t('view.details'),
-            icon: 'graph',
-            route: {
-              name: 'ItemMeasurements',
-              query: {
-                resultIndicatorPeriod: this.selectedPeriod?.key,
-              },
-            },
-            active: name === 'ItemMeasurements' && query?.view !== 'list',
-          },
-          {
             key: 'list',
             name: this.$t('view.list'),
             icon: 'list',
@@ -64,6 +52,19 @@ export default {
                 resultIndicatorPeriod: this.selectedPeriod?.key,
               },
             },
+            active: name === 'ItemMeasurements' && query?.view === 'list',
+          },
+          {
+            key: 'details',
+            name: this.$t('view.details'),
+            icon: 'graph',
+            route: {
+              name: 'ItemMeasurements',
+              query: {
+                resultIndicatorPeriod: this.selectedPeriod?.key,
+              },
+            },
+            active: name === 'ItemMeasurements' && query?.view !== 'list',
           },
         ];
       }
