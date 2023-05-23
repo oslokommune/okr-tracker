@@ -89,7 +89,7 @@ export default {
               shortLabel: this.$t('general.OKRs'),
             },
             {
-              route: { name: 'ItemMeasurements' },
+              route: { name: 'ItemMeasurements', query: { view: 'list' } },
               label: this.$t('general.KPIs'),
               activeMatchOverride: name === 'ItemMeasurements',
             },
@@ -114,6 +114,20 @@ export default {
               route: {
                 name: 'ItemMeasurements',
                 query: {
+                  view: 'list',
+                  resultIndicatorPeriod: this.selectedPeriod?.key,
+                },
+              },
+              activeMatchOverride: name === 'ItemMeasurements' && query?.view === 'list',
+              icon: 'list',
+              tooltip: this.$t('tooltip.changeView', {
+                view: this.$t('view.list'),
+              }),
+            },
+            {
+              route: {
+                name: 'ItemMeasurements',
+                query: {
                   resultIndicatorPeriod: this.selectedPeriod?.key,
                 },
               },
@@ -121,19 +135,6 @@ export default {
               icon: 'graph',
               tooltip: this.$t('tooltip.changeView', {
                 view: this.$t('view.details'),
-              }),
-            },
-            {
-              route: {
-                name: 'ItemMeasurements',
-                query: {
-                  view: 'list',
-                  resultIndicatorPeriod: this.selectedPeriod?.key,
-                },
-              },
-              icon: 'list',
-              tooltip: this.$t('tooltip.changeView', {
-                view: this.$t('view.list'),
               }),
             },
           ],

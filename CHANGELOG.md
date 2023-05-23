@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. The format 
   date in the line chart.
 - Typography across the app is now more Punkt-styled.
 - The help page has been reworked.
+- The list view is now the default view on the measurements page.
 
 ### Fixed
 
