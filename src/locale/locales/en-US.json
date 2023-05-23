@@ -71,7 +71,8 @@
     "help": {
       "updates": "Measurements can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating measurements {readMoreLink} (in Norwegian).",
       "readMoreHere": "here",
-      "apiProgress": "New measurements can be registered with {apiLink} calls, for instance by using curl as shown below."
+      "apiProgress": "New measurements can be registered with {apiLink} calls, for instance by using curl as shown below.",
+      "resultIndicatorWarning": "Result indicators are considered indicators of the organization's effect and target achievement, and should therefore be clarified with the organization's management before creation."
     },
     "automation": {
       "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"

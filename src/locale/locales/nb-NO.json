@@ -71,7 +71,8 @@
     "help": {
       "updates": "Målinger kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av målinger {readMoreLink}.",
       "readMoreHere": "her",
-      "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor."
+      "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor.",
+      "resultIndicatorWarning": "Resultatindikatorer regnes som indikatorer på virksomhetens effekt og måloppnåelse, og bør derfor være avklart med virksomhetens ledelse før opprettelse."
     },
     "automation": {
       "radio": "Hente måleverdier automatisk fra et regneark (Google Sheets)?"

@@ -84,6 +84,10 @@
               </span>
             </label>
           </div>
+
+          <pkt-alert v-if="localKpi.kpiType === 'ri' && localKpi.kpiType !== kpi.kpiType">
+            {{ $t('kpi.help.resultIndicatorWarning') }}
+          </pkt-alert>
         </div>
       </validation-provider>
 
@@ -186,6 +190,7 @@ export default {
 
   components: {
     FormSection,
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     ToggleButton,
     BtnSave,
     BtnDelete,
