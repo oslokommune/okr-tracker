@@ -1,29 +1,29 @@
 <template>
   <div class="container">
     <main class="main">
-      <h1 class="title-1">{{ activeItem.name }}</h1>
-      <section class="mission-statement">
-        <HTML-output :html="activeItem.missionStatement" />
+      <h1 class="pkt-txt-54">{{ activeItem.name }}</h1>
+      <section>
+        <HTML-output class="pkt-txt-24-light" :html="activeItem.missionStatement" />
       </section>
 
       <section v-if="activeItem.targetAudience">
-        <h2 class="title-2">{{ $t('dashboard.targetAudience') }}</h2>
-        <HTML-output :html="activeItem.targetAudience" />
+        <h2 class="pkt-txt-30">{{ $t('dashboard.targetAudience') }}</h2>
+        <HTML-output class="pkt-txt-18" :html="activeItem.targetAudience" />
       </section>
 
       <section v-if="children">
-        <h2 class="title-2">{{ childrenTitle }}</h2>
+        <h2 class="pkt-txt-30">{{ childrenTitle }}</h2>
         <div
           v-for="child in children"
           :key="child.id"
           class="item-info__box item-info__box--link"
         >
-          <h3 class="title-3">{{ child.name }}</h3>
-          <HTML-output :html="child.missionStatement" />
+          <h3 class="pkt-txt-24">{{ child.name }}</h3>
+          <HTML-output class="pkt-txt-18" :html="child.missionStatement" />
         </div>
       </section>
 
-      <h2 class="title-2">{{ $t('about.members') }}</h2>
+      <h2 class="pkt-txt-30">{{ $t('about.members') }}</h2>
       <role-members
         v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
         :key="role"
@@ -158,35 +158,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .main {
   padding: 2rem;
-  font-size: typography.$font-size-3;
   background-color: var(--color-white);
 }
 
-.title-1 {
-  margin: 2rem 0;
-  font-weight: 400;
-  font-size: typography.$font-size-7;
+section {
+  margin: 2.75rem 0 3.625rem 0;
+
+  .item-info__box:first-of-type h3 {
+    margin-top: 1.5rem;
+  }
 }
 
-.title-2 {
-  margin: 5rem 0 2rem;
-  font-weight: 400;
-  font-size: typography.$font-size-6;
+h2 {
+  margin: 1.25rem 0;
 }
 
-.title-3 {
-  margin: 2rem 0 1rem;
-  font-weight: 400;
-  font-size: typography.$font-size-5;
-}
-
-.mission-statement {
-  margin: 5rem 0;
-  font-size: typography.$font-size-5;
-  line-height: 2.25rem;
+h3 {
+  margin: 2rem 0 0.5rem;
 }
 </style>
