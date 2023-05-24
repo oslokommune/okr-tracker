@@ -1,16 +1,14 @@
 <template>
   <div class="role-group">
-    <h4 class="role-group__title">{{ $t('user.position.groups.' + role) }}</h4>
+    <h3 class="title-3">{{ $t('user.position.groups.' + role) }}</h3>
     <div class="role-group__members-list">
-      <span
-        v-for="(member, index) in membersWithRole"
-        :key="member.id"
-        class="role-group__member"
-      >
-        <a href="#" @click="openProfileModal(member.id)">{{
-          member.displayName || firstPartOfEmail(member.id)
-        }}</a>
-        <template v-if="index < membersWithRole.length - 1">, </template>
+      <span v-for="member in membersWithRole" :key="member.id" class="role-group__member">
+        <button
+          class="pkt-btn pkt-btn--tertiary pkt-btn--small"
+          @click="openProfileModal(member.id)"
+        >
+          {{ member.displayName || firstPartOfEmail(member.id) }}
+        </button>
       </span>
     </div>
   </div>
@@ -44,14 +42,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+.title-3 {
+  margin: 1rem 0 0.25rem;
+  font-weight: 400;
+  font-size: 18px;
+}
 
-.role-group {
-  margin-bottom: 1.5rem;
-
-  &__title {
-    margin-bottom: 0.25rem;
-    color: var(--color-grayscale-30);
-  }
+.pkt-btn--small {
+  font-size: 18px;
 }
 </style>

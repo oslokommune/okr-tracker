@@ -156,7 +156,6 @@
     "OKRs": "OKRs",
     "OKRsLong": "Objectives and Key results",
     "KPIs": "Measurements",
-    "team": "Team",
     "project": "OKR",
     "loading": "Loading ...",
     "owner": "City of Oslo",
@@ -196,9 +195,12 @@
   },
   "about": {
     "about": "About",
+    "members": "Members",
     "aboutOrganization": "About the organization",
     "aboutDepartment": "About the department",
-    "aboutProduct": "About the product"
+    "aboutProduct": "About the product",
+    "organizationChildren": "Departments in the organization",
+    "departmentChildren": "Teams in the department"
   },
   "btn": {
     "close": "Close",
@@ -372,9 +374,6 @@
     "emptyPeriod": "No active period",
     "periodEnd": "You are not allowed to edit after a period has ended",
     "copyToClipboard": "Copy to the clipboard"
-  },
-  "document": {
-    "mission": "Mission statement"
   },
   "admin": {
     "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
