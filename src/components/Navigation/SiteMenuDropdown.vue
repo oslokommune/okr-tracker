@@ -1,6 +1,6 @@
 <template>
   <aside class="site-menu-dropdown">
-    <div class="site-menu-dropdown__body">
+    <nav class="site-menu-dropdown__body">
       <router-link
         :to="{ name: 'Home' }"
         :class="[
@@ -21,7 +21,7 @@
 
         <organization-tree @selection="handleNavigation" />
       </template>
-    </div>
+    </nav>
 
     <div class="site-menu-dropdown__footer">
       <img
