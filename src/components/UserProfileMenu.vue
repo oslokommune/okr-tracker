@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" class="user-menu-dropdown">
+  <aside v-if="user" class="user-menu-dropdown">
     <div class="user-menu-dropdown__header">
       <div class="user-profile">
         <h1 class="title-2">{{ user.displayName }}</h1>
@@ -60,7 +60,7 @@
         />
       </template>
     </div>
-  </div>
+  </aside>
 </template>
 
 <script>

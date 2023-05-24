@@ -1,5 +1,5 @@
 <template>
-  <div class="site-menu-dropdown">
+  <aside class="site-menu-dropdown">
     <div class="site-menu-dropdown__body">
       <router-link
         :to="{ name: 'Home' }"
@@ -30,7 +30,7 @@
       />
       <span>v{{ appVersion }}</span>
     </div>
-  </div>
+  </aside>
 </template>
 
 <script>
