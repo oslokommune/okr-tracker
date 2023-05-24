@@ -19,6 +19,8 @@ All notable changes to this project will be documented in this file. The format 
 - Typography across the app is now more Punkt-styled.
 - The help page has been reworked.
 - The list view is now the default view on the measurements page.
+- The site header and navigation bar has been integrated while more view
+  specific options are kept in a separate toolbar.
 
 ### Fixed
 

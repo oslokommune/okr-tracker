@@ -160,7 +160,6 @@
     "owner": "Oslo kommune",
     "help": "Hjelp",
     "admin": "Admin",
-    "administration": "Administrasjon",
     "superAdmin": "Super admin",
     "signOut": "Logg ut",
     "createdBy": "Opprettet av",
@@ -190,7 +189,8 @@
     "selectRange": "Velg start- og sluttdato",
     "formErrors": "Skjemaet inneholder feil som må rettes.",
     "displayedAs": "Vises som: ",
-    "today": "I dag"
+    "today": "I dag",
+    "view": "Visning"
   },
   "about": {
     "about": "Om",
@@ -352,6 +352,7 @@
   },
   "period": {
     "choosePeriod": "Velg periode",
+    "noPeriods": "Ingen perioder definert",
     "dateRange": "Start- og sluttdato",
     "sixmonths": "Siste 6 mnd",
     "year": "Hittil i år",
@@ -517,7 +518,6 @@
     "myProducts": "Min tilhørighet",
     "products": "Tilhørighet",
     "language": "Språk",
-    "access": "Tilgang",
     "position": {
       "groups": {
         "developers": "Utvikling",

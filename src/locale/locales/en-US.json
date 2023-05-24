@@ -162,7 +162,6 @@
     "owner": "City of Oslo",
     "help": "Help",
     "admin": "Admin",
-    "administration": "Administration",
     "superAdmin": "Super admin",
     "signOut": "Sign out",
     "createdBy": "Created by",
@@ -192,7 +191,8 @@
     "selectRange": "Select a start and end date",
     "formErrors": "The form contains errors that must be corrected.",
     "displayedAs": "Displayed as: ",
-    "today": "Today"
+    "today": "Today",
+    "view": "View"
   },
   "about": {
     "about": "About",
@@ -354,6 +354,7 @@
   },
   "period": {
     "choosePeriod": "Choose period",
+    "noPeriods": "No periods defined",
     "dateRange": "Start and end dates",
     "sixmonths": "Past 6 months",
     "year": "So far this year",
@@ -519,7 +520,6 @@
     "hasAdmin": "Has admin rights for some organizations",
     "myProducts": "My affiliations",
     "products": "Products",
-    "access": "Access",
     "position": {
       "groups": {
         "developers": "Developers",
