@@ -143,7 +143,7 @@ export default {
   &__kpis {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.25rem;
   }
 
   &__link {
@@ -187,10 +187,6 @@ export default {
 
     .kpi-widget-group__title h2 {
       font-size: typography.$font-size-1;
-    }
-
-    .kpi-widget-group__kpis {
-      gap: 0.5rem;
     }
   }
 }
