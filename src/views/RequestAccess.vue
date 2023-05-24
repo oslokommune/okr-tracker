@@ -21,9 +21,9 @@
 
         <template #actions="{ handleSubmit, submitDisabled }">
           <btn-save
+            variant="label-only"
             :disabled="submitDisabled || loading"
             :label="$t('login.requestButton')"
-            :icon="null"
             @click="handleSubmit(send)"
           />
         </template>

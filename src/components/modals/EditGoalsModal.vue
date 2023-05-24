@@ -62,12 +62,8 @@
           </form-component>
 
           <template #actions="{ handleSubmit, submitDisabled }">
-            <btn-delete @click="archive($event)" />
-            <btn-save
-              :label="$t('btn.saveChanges')"
-              :disabled="submitDisabled"
-              @click="handleSubmit(update)"
-            />
+            <btn-delete @click="archive" />
+            <btn-save :disabled="submitDisabled" @click="handleSubmit(update)" />
           </template>
         </form-section>
       </div>
@@ -232,9 +228,7 @@ export default {
       }
     },
 
-    async archive(event) {
-      event.preventDefault();
-
+    async archive() {
       try {
         await Goal.archive(this.kpi.id, this.activeGoalId);
         const restoreCallback = this.restore.bind(this, this.kpi.id, this.activeGoalId);

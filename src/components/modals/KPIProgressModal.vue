@@ -63,11 +63,7 @@
       </pkt-alert>
 
       <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-save
-          :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
-          :disabled="submitDisabled || loading"
-          @click="handleSubmit(save)"
-        />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(save)" />
       </template>
     </form-section>
 

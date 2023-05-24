@@ -45,11 +45,7 @@
       </div>
 
       <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-save
-          :label="$t(record ? 'btn.saveChanges' : 'btn.save')"
-          :disabled="submitDisabled || loading"
-          @click="handleSubmit(save)"
-        />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(save)" />
       </template>
     </form-section>
   </modal-wrapper>
@@ -188,6 +184,10 @@ export default {
   input[name='datetime'] {
     display: none;
   }
+}
+
+.pkt-alert {
+  margin-bottom: 1.5rem;
 }
 
 ::v-deep .flatpickr-calendar {

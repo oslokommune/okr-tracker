@@ -53,7 +53,6 @@
           @click="remove(selectedUser)"
         />
         <btn-save
-          :label="$t('btn.saveChanges')"
           :disabled="submitDisabled || loading"
           data-cy="btn-createOrg"
           @click="handleSubmit(save)"
