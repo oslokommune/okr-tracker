@@ -39,7 +39,7 @@ import OrganizationSelector from './header/OrganizationSelector.vue';
 import OrganizationTree from './header/OrganizationTree.vue';
 
 export default {
-  name: 'SiteSidebar',
+  name: 'SiteMenuDropdown',
 
   components: {
     OrganizationSelector,

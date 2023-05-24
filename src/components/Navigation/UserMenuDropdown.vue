@@ -71,7 +71,7 @@ import { PktButton } from '@oslokommune/punkt-vue2';
 import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 
 export default {
-  name: 'UserProfileMenu',
+  name: 'UserMenuDropdown',
 
   components: {
     PktButton,
