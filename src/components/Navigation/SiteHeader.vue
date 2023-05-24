@@ -1,6 +1,6 @@
 <template>
   <header class="site-navigation">
-    <nav-bar class="site-navigation__menubar">
+    <nav class="nav-bar site-navigation__menubar">
       <!-- Site menu -->
       <nav-menu class="site-menu">
         <nav-menu-item dropdown>
@@ -42,12 +42,12 @@
           <user-profile-menu :id="user.id" :handle-navigation="close" />
         </nav-menu-item>
       </nav-menu>
-    </nav-bar>
+    </nav>
 
-    <nav-bar v-if="showToolbar" class="site-navigation__toolbar">
+    <nav v-if="showToolbar" class="nav-bar site-navigation__toolbar">
       <period-selector />
       <view-toggle />
-    </nav-bar>
+    </nav>
   </header>
 </template>
 
@@ -59,7 +59,6 @@ import UserProfileMenu from '@/components/UserProfileMenu.vue';
 import getActiveItemType from '@/util/getActiveItemType';
 import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
 import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
-import NavBar from '@/components/Navigation/navbar/NavBar.vue';
 import PeriodSelector from '@/components/Navigation/toolbar/PeriodSelector.vue';
 import ViewToggle from '@/components/Navigation/toolbar/ViewToggle.vue';
 
@@ -67,7 +66,6 @@ export default {
   name: 'SiteHeader',
 
   components: {
-    NavBar,
     NavMenu,
     NavMenuItem,
     SiteSidebar,
