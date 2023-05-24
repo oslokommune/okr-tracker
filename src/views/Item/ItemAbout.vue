@@ -129,10 +129,10 @@ export default {
       const itemType = getActiveItemType(this.activeItem);
 
       if (itemType === 'organization') {
-        return i18n.t('about.aboutDepartment');
+        return i18n.t('about.organizationChildren');
       }
       if (itemType === 'department') {
-        return i18n.t('about.aboutProduct');
+        return i18n.t('about.departmentChildren');
       }
 
       return null;

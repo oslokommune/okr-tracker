@@ -196,7 +196,9 @@
     "members": "Medlemmer",
     "aboutOrganization": "Om organisasjonen",
     "aboutDepartment": "Om området",
-    "aboutProduct": "Om produktet"
+    "aboutProduct": "Om produktet",
+    "organizationChildren": "Områdene i organisasjonen",
+    "departmentChildren": "Teamene i området"
   },
   "btn": {
     "close": "Lukk",

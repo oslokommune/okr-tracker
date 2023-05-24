@@ -198,7 +198,9 @@
     "members": "Members",
     "aboutOrganization": "About the organization",
     "aboutDepartment": "About the department",
-    "aboutProduct": "About the product"
+    "aboutProduct": "About the product",
+    "organizationChildren": "Departments in the organization",
+    "departmentChildren": "Teams in the department"
   },
   "btn": {
     "close": "Close",
