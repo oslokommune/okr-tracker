@@ -188,10 +188,6 @@ export default {
     .kpi-widget-group__title h2 {
       font-size: typography.$font-size-1;
     }
-
-    .kpi-widget-group__kpis {
-      gap: 0.5rem;
-    }
   }
 }
 </style>
