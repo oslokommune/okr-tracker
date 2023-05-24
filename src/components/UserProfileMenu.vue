@@ -118,16 +118,16 @@ export default {
           show: !!this.user?.admin,
         },
         {
-          key: 'help',
-          text: this.$t('general.help'),
-          icon: 'question',
-          route: { name: 'Help' },
-        },
-        {
           key: 'api',
           text: this.$t('general.api'),
           icon: 'crane',
           route: { name: 'Api' },
+        },
+        {
+          key: 'help',
+          text: this.$t('general.help'),
+          icon: 'question',
+          route: { name: 'Help' },
         },
       ];
     },
