@@ -100,22 +100,6 @@
   }
 }
 
-.btn--ghost {
-  background: none;
-  border: 1px solid var(--color-primary);
-
-  &.btn--negative {
-    color: var(--color-white);
-    border-color: var(--color-white);
-
-    &:hover {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.3em;
-    }
-  }
-}
-
 .btn--fw {
   justify-content: center;
   width: 100%;

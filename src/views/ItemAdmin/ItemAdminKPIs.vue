@@ -1,8 +1,8 @@
 <template>
   <div v-if="kpis.length">
-    <button class="btn btn--ghost" :disabled="loading" @click="createKpi">
+    <pkt-button skin="secondary" :disabled="loading" @onClick="createKpi">
       {{ $t('kpi.add') }}
-    </button>
+    </pkt-button>
 
     <div class="kpis">
       <ItemAdminKPI
@@ -30,6 +30,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import Kpi from '@/db/Kpi';
 
 export default {
@@ -38,6 +39,7 @@ export default {
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ItemAdminKPI: () => import('@/views/ItemAdmin/ItemAdminKPI.vue'),
+    PktButton,
   },
 
   data: () => ({
