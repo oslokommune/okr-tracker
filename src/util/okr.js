@@ -10,14 +10,23 @@ export function objectiveInPeriod(period, objective) {
   const { startDate, endDate } = period;
 
   if (objective.startDate && objective.endDate) {
-    return objective.endDate >= startDate && objective.startDate <= endDate;
+    return (
+      objective.endDate.toDate() >= startDate && objective.startDate.toDate() <= endDate
+    );
   }
 
   /*
    * Fall back to checking the old-style `period` reference to retain backwards
    * compatibility.
    */
-  return objective.period.id === period.id;
+  if (objective.period.endDate && objective.period.startDate) {
+    return (
+      objective.period.endDate.toDate() >= startDate &&
+      objective.period.startDate.toDate() <= endDate
+    );
+  }
+
+  return false;
 }
 
 /**
