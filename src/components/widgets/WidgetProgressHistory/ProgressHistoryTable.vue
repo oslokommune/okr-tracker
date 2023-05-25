@@ -92,13 +92,13 @@
     />
 
     <div class="progress-history-table__footer">
-      <button
+      <pkt-button
         v-if="!isLoading && isLimited"
-        class="btn btn--sec"
-        @click="$emit('load-more')"
+        skin="secondary"
+        @onClick="$emit('load-more')"
       >
         {{ $t('btn.showMore') }}
-      </button>
+      </pkt-button>
     </div>
 
     <profile-modal
@@ -111,6 +111,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 import { Btn, BtnDelete } from '@/components/generic/form/buttons';
 import UserLink from './UserLink.vue';
@@ -120,6 +121,7 @@ export default {
 
   components: {
     EmptyState: () => import('@/components/EmptyState.vue'),
+    PktButton,
     ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
     LoadingSmall,
     UserLink,

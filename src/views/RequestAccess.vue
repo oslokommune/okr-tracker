@@ -2,9 +2,10 @@
   <div class="container">
     <div class="main__second">
       <div class="back">
-        <router-link class="btn btn--sec btn--icon" :to="{ name: 'Login' }">
-          <i class="icon fa-xs fa fa-fw fa-chevron-left" />
-          {{ $t('login.backToLogin') }}
+        <router-link :to="{ name: 'Login' }">
+          <pkt-button skin="secondary" variant="icon-left" icon-name="chevron-left">
+            {{ $t('login.backToLogin') }}
+          </pkt-button>
         </router-link>
       </div>
       <h2 class="title-1">{{ $t('login.requestAccess') }}</h2>
@@ -34,6 +35,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
 import { FormSection, BtnSave } from '@/components/generic/form';
@@ -44,6 +46,7 @@ export default {
   components: {
     FormSection,
     BtnSave,
+    PktButton,
   },
 
   data: () => ({
@@ -94,6 +97,6 @@ export default {
 
 <style lang="scss" scoped>
 .back {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 </style>

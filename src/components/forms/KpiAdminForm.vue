@@ -98,15 +98,13 @@
           <span class="pkt-form-label">{{ $t('kpi.goals.goals') }}</span>
           <div class="goal-section__content-wrapper">
             <span>{{ $t('kpi.goals.help') }}</span>
-            <button
-              class="btn btn--sec"
-              @click="
-                $event.preventDefault();
-                showEditGoalsModal = true;
-              "
+            <pkt-button
+              type="button"
+              skin="secondary"
+              @onClick="showEditGoalsModal = true"
             >
               {{ $t(hasGoal ? 'kpi.goals.edit' : 'kpi.goals.set') }}
-            </button>
+            </pkt-button>
           </div>
         </div>
         <hr class="pkt-hr" />
@@ -169,6 +167,7 @@
 
 <script>
 import { functions } from '@/config/firebaseConfig';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import {
   kpiFormats,
   kpiStartValues,
@@ -186,6 +185,7 @@ export default {
   components: {
     FormSection,
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktButton,
     ToggleButton,
     BtnSave,
     BtnDelete,
@@ -288,14 +288,15 @@ export default {
       flex-direction: row;
       gap: 2rem;
     }
+
+    > span {
+      flex: 1 1 auto;
+    }
   }
 
   button {
+    flex: 0 0 auto;
     align-self: flex-end;
-
-    @media screen and (min-width: bp(s)) {
-      align-self: inherit;
-    }
   }
 }
 
