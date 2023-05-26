@@ -90,6 +90,7 @@
   },
   "fields": {
     "email": "Email",
+    "emails": "Email addresses",
     "uid": "Unique ID",
     "name": "Name",
     "missionStatement": "Mission statement",

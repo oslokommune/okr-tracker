@@ -90,6 +90,7 @@
   },
   "fields": {
     "email": "E-post",
+    "emails": "E-postadresser",
     "uid": "Unik ID",
     "name": "Navn",
     "missionStatement": "Oppdragsbeskrivelse",

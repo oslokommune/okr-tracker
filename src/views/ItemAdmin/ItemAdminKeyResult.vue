@@ -94,9 +94,14 @@
             <i class="fa fa-check-circle" />
             OK
           </div>
-          <button class="btn validation-check" type="button" @click="testConnection">
+          <pkt-button
+            class="validation-check"
+            type="button"
+            skin="secondary"
+            @onClick="testConnection"
+          >
             {{ $t('keyResult.automation.testConnection') }}
-          </button>
+          </pkt-button>
         </div>
       </toggle-button>
 
@@ -130,6 +135,7 @@
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { db, functions } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import { toastArchiveAndRevert } from '@/util';
@@ -143,6 +149,7 @@ export default {
 
   components: {
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktButton,
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),

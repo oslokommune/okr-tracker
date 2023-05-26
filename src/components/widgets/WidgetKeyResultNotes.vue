@@ -24,9 +24,9 @@
         </pkt-button>
       </div>
       <div v-else>
-        <button class="btn" @click="editNotes = !editNotes">
+        <pkt-button skin="secondary" @onClick="editNotes = !editNotes">
           {{ $t('btn.editNotes') }}
-        </button>
+        </pkt-button>
       </div>
     </div>
   </widget>

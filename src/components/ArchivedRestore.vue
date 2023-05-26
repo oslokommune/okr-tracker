@@ -1,20 +1,18 @@
 <template>
   <div class="archived">
     <i class="archived__icon fa fa-file-archive" />
-    <div>
+    <div class="archived__body">
       <h3 class="title-2">{{ $t('archived.heading') }}</h3>
       <p>{{ $t('archived.body') }}</p>
 
-      <div class="button-row">
-        <pkt-button
-          skin="secondary"
-          variant="icon-left"
-          icon-name="arrow-circle"
-          @onClick="restore"
-        >
-          {{ $t('btn.restore') }}
-        </pkt-button>
-      </div>
+      <pkt-button
+        skin="secondary"
+        variant="icon-left"
+        icon-name="arrow-circle"
+        @onClick="restore"
+      >
+        {{ $t('btn.restore') }}
+      </pkt-button>
     </div>
   </div>
 </template>
@@ -55,7 +53,13 @@ export default {
   text-align: center;
 }
 
-.button-row {
-  margin-top: 1.5rem;
+.archived__body {
+  display: flex;
+  flex-direction: column;
+
+  .pkt-btn {
+    align-self: end;
+    margin-top: 1rem;
+  }
 }
 </style>

@@ -58,3 +58,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+</style>
