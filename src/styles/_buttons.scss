@@ -61,15 +61,6 @@
   }
 }
 
-.btn--confirm {
-  background: var(--color-green);
-
-  &:hover {
-    color: var(--color-text-secondary);
-    background-color: var(--color-hover);
-  }
-}
-
 .btn--ods {
   color: var(--color-text-secondary);
   background: var(--color-primary);
