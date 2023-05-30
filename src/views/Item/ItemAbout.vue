@@ -166,12 +166,6 @@ export default {
   padding: 2rem;
 }
 
-.item-info {
-  position: relative;
-  padding: 2rem 1.5rem;
-  overflow: auto;
-}
-
 section {
   margin: 2.75rem 0 3.625rem 0;
 
