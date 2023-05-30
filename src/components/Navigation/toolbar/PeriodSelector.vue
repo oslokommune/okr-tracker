@@ -24,10 +24,13 @@
           />
         </nav-menu>
 
-        <div v-if="isMeasurementsView" class="period-selector-menu__separator"></div>
+        <div
+          v-if="isMeasurementsView || user.superAdmin"
+          class="period-selector-menu__separator"
+        ></div>
 
         <flat-pickr
-          v-if="isMeasurementsView"
+          v-if="isMeasurementsView || user.superAdmin"
           ref="datePicker"
           v-model="range"
           :config="flatPickerConfig"
@@ -63,14 +66,6 @@ export default {
     NavMenuText,
   },
 
-  props: {
-    showDatePicker: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
   data: () => ({
     isOpen: false,
     flatPickerConfig: {
@@ -83,7 +78,11 @@ export default {
   }),
 
   computed: {
-    ...mapState(['periods', 'selectedPeriod']),
+    ...mapState([
+      'periods',
+      'selectedPeriod',
+      'user', // XXX: Only temporarily needed for the `superAdmin` check above.
+    ]),
 
     periodLabel() {
       if (this.selectedPeriod) {

@@ -56,7 +56,7 @@
       </section>
     </main>
 
-    <aside v-if="activeItem" class="aside widgets">
+    <aside v-if="selectedPeriod?.id && activeItem" class="aside widgets">
       <widget
         v-if="activePeriod && activePeriod.progression"
         :title="$t(`widget.progression.period`)"
@@ -137,12 +137,12 @@ export default {
     },
 
     periodObjectives() {
-      if (!this.activePeriod) {
+      if (!this.selectedPeriod) {
         return [];
       }
 
       return this.objectives
-        .filter((o) => objectiveInPeriod(this.activePeriod, o))
+        .filter((o) => objectiveInPeriod(this.selectedPeriod, o))
         .map((o) => ({
           ...o,
           id: o.id,
