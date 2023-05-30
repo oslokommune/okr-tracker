@@ -164,7 +164,6 @@ export default {
 
 .main {
   padding: 2rem;
-  background-color: var(--color-white);
 }
 
 .item-info {
