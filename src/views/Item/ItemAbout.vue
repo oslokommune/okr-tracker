@@ -23,6 +23,7 @@
         </div>
       </section>
 
+      <!--
       <h2 class="pkt-txt-30">{{ $t('about.members') }}</h2>
       <role-members
         v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
@@ -31,6 +32,7 @@
         :members-with-role="teamMembers[role]"
         @openModal="openProfileModal"
       />
+      -->
 
       <profile-modal
         v-if="showProfileModal"
@@ -58,7 +60,7 @@ export default {
 
   components: {
     HTMLOutput,
-    RoleMembers: () => import('@/components/RoleMembers.vue'),
+    // RoleMembers: () => import('@/components/RoleMembers.vue'),
     ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
   },
 
@@ -168,6 +170,10 @@ section {
 
   .item-info__box:first-of-type h3 {
     margin-top: 1.5rem;
+  }
+
+  &:last-of-type {
+    margin-bottom: 1.5rem;
   }
 }
 
