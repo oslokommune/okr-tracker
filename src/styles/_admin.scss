@@ -4,9 +4,7 @@
 @mixin card() {
   position: relative;
   padding: 1.5rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
+  background: var(--color-gray-light);
 
   &--danger::after {
     position: absolute;

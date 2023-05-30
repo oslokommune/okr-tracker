@@ -81,7 +81,7 @@ export default {
   width: 100%;
   margin-bottom: 1rem;
   padding: 1.5rem;
-  background-color: var(--color-white);
+  border: 2px solid var(--color-border);
 
   &__toggle {
     position: absolute;

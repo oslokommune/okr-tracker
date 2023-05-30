@@ -222,6 +222,7 @@ export default {
 .form-card {
   padding: 0;
   line-height: 1;
+  background: var(--color-gray);
 }
 
 ::v-deep .collapse {
@@ -251,7 +252,7 @@ export default {
   &-label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--color-grayscale-50);
+    color: var(--color-grayscale-70);
     font-size: 0.75rem;
   }
 

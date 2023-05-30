@@ -454,9 +454,7 @@ export default {
   grid-gap: 1.75rem 0;
   grid-template-columns: repeat(1, 1fr);
   align-self: flex-start;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
+  border: 2px solid var(--color-border);
 
   @media screen and (min-width: bp(m)) {
     grid-template-columns: repeat(3, 1fr);
@@ -472,7 +470,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-top: 2px solid var(--color-grayscale-10);
+  border-top: 2px solid var(--color-border);
 
   @media screen and (min-width: bp(s)) {
     min-height: 15rem;
@@ -481,14 +479,18 @@ export default {
   @media screen and (min-width: bp(m)) {
     min-height: 25rem;
     border-top: none;
-    border-left: 2px solid var(--color-grayscale-10);
+    border-left: 2px solid var(--color-border);
+
+    &:first-child {
+      border: 0;
+    }
   }
 }
 
 .miller__col-heading {
   padding: 0.5rem 0.75rem;
   color: var(--color-grayscale-60);
-  border-bottom: 1px solid var(--color-grayscale-10);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .miller__link {
@@ -497,7 +499,7 @@ export default {
   padding: 0.5rem 0.75rem;
   color: var(--color-text);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-grayscale-10);
+  border-bottom: 2px solid var(--color-border);
 
   &.selected {
     font-weight: 500;
@@ -530,7 +532,7 @@ export default {
 
 .miller__add {
   margin-top: auto;
-  border-top: 1px solid var(--color-grayscale-10);
+  border-top: 2px solid var(--color-border);
 
   .icon {
     height: 1.5rem;
@@ -555,9 +557,7 @@ export default {
 .details {
   margin-top: 1rem;
   padding: 1rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
+  border: 2px solid var(--color-border);
 
   @media screen and (min-width: bp(l)) {
     align-self: flex-start;

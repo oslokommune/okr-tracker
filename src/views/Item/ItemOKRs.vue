@@ -236,7 +236,7 @@ export default {
 
 .itemHome__objectives--item {
   margin-bottom: 1rem;
-  background: var(--color-white);
+  border: 2px solid var(--color-border);
 
   > ul {
     padding-bottom: 0.5rem;

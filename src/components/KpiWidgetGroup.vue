@@ -153,6 +153,10 @@ export default {
     &.router-link-active {
       border-color: var(--color-hover);
 
+      .kpi-card-widget {
+        border-color: var(--color-white);
+      }
+
       ::v-deep .widget__header h3 {
         color: var(--color-hover);
       }

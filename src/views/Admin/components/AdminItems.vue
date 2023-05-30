@@ -283,9 +283,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 32rem;
-  background: white;
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(var(--color-grayscale-40-rgb), 0.3);
+  background: var(--color-gray-light);
 }
 
 .col__body {
@@ -321,7 +319,7 @@ export default {
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
-  border-bottom: 1px solid var(--color-grayscale-10);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .actions {

@@ -245,5 +245,6 @@ export default {
   position: relative;
   z-index: 1;
   margin: 1rem 0;
+  border: 2px solid var(--color-border);
 }
 </style>

@@ -160,9 +160,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@/styles/typography';
+
 .main {
   padding: 2rem;
-  background-color: var(--color-white);
 }
 
 section {
