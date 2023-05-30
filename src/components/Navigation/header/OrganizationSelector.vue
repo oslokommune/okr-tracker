@@ -17,11 +17,12 @@
       >
         <input
           :id="org.id"
-          v-model="organizationId"
           type="radio"
           class="pkt-form-check-input pkt-form-check-input--tile"
           name="radio-group"
           :value="org.id"
+          :checked="org.id === orgId"
+          @change="onChange"
         />
         <label class="pkt-form-label" :for="org.id">
           {{ org.name }}
@@ -32,32 +33,30 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'OrganizationSelector',
+
+  props: {
+    orgId: {
+      type: String,
+      required: true,
+    },
+  },
 
   data: () => ({
     isCollapsed: false,
   }),
 
   computed: {
-    ...mapState(['activeOrganization', 'organizations']),
-
-    organizationId: {
-      get() {
-        return this.activeOrganization?.id;
-      },
-      async set(orgId) {
-        await this.setActiveOrganization(
-          this.organizations.find((org) => org.id === orgId)
-        );
-      },
-    },
+    ...mapState(['organizations']),
   },
 
   methods: {
-    ...mapActions(['setActiveOrganization']),
+    onChange(e) {
+      this.$emit('select', e.target.value);
+    },
   },
 };
 </script>
