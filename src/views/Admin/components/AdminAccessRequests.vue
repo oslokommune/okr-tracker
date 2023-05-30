@@ -11,22 +11,22 @@
         <div class="access-requests__email">{{ request.email }}</div>
 
         <div class="access-requests__actions">
-          <button
+          <pkt-button
             :disabled="isProcessingAccessRequest"
-            class="btn btn--ghost"
+            skin="secondary"
             data-cy="request-accept"
-            @click="acceptRequest(request)"
+            @onClick="acceptRequest(request)"
           >
             {{ $t('btn.acceptRequest') }}
-          </button>
-          <button
+          </pkt-button>
+          <pkt-button
             :disabled="isProcessingAccessRequest"
-            class="btn btn--ghost"
+            skin="secondary"
             data-cy="request-reject"
-            @click="rejectRequest(request)"
+            @onClick="rejectRequest(request)"
           >
             {{ $t('btn.rejectRequest') }}
-          </button>
+          </pkt-button>
         </div>
       </li>
     </ul>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { db } from '@/config/firebaseConfig';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
@@ -44,6 +45,10 @@ const accessRequestCollection = new AccessRequestCollection(db);
 
 export default {
   name: 'AdminAccessRequests',
+
+  components: {
+    PktButton,
+  },
 
   data: () => ({
     accessRequest: [],
@@ -112,11 +117,8 @@ export default {
 
 .access-requests__actions {
   display: flex;
-  margin: 0.25rem -0.25rem -0.25rem;
-
-  & > .btn {
-    margin: 0.25rem;
-  }
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .access-requests__email {

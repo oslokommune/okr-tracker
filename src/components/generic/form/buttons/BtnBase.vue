@@ -65,8 +65,6 @@ export default {
           return 'btn--ter';
         case 'confirm':
           return 'btn--confirm';
-        case 'ghost':
-          return 'btn--ghost';
         default:
           return 'btn--pri';
       }
