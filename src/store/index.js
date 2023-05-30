@@ -179,11 +179,6 @@ export const actions = {
     return true;
   },
 
-  setActiveOrganization: async ({ commit }, payload) => {
-    commit('SET_ACTIVE_ORGANIZATION', payload);
-    return true;
-  },
-
   setSelectedPeriod: async ({ commit }, payload) => {
     commit('SET_SELECTED_PERIOD', payload);
     return true;
@@ -221,10 +216,6 @@ export const mutations = {
     state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
   },
 
-  SET_ACTIVE_ORGANIZATION(state, payload) {
-    state.activeOrganization = payload;
-  },
-
   SET_SELECTED_PERIOD(state, payload) {
     state.selectedPeriod = payload;
   },
@@ -242,7 +233,6 @@ export default new Vuex.Store({
     activeKeyResult: null,
     activePeriod: null,
     activeObjective: null,
-    activeOrganization: null,
     activeKpi: null,
     periods: [],
     objectives: [],

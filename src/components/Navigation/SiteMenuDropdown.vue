@@ -15,11 +15,11 @@
       <template v-if="user">
         <hr class="pkt-hr" />
 
-        <organization-selector />
+        <organization-selector :org-id="orgId" @select="setOrgId" />
 
         <hr class="pkt-hr" />
 
-        <organization-tree @selection="handleNavigation" />
+        <organization-tree :org-id="orgId" @selection="handleNavigation" />
       </template>
     </nav>
 
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import OrganizationSelector from './header/OrganizationSelector.vue';
 import OrganizationTree from './header/OrganizationTree.vue';
 
@@ -55,13 +55,41 @@ export default {
 
   data: () => ({
     appVersion: __APP_VERSION__, // eslint-disable-line no-undef
+    selectedOrgId: null,
   }),
 
   computed: {
     ...mapState(['user']),
+    ...mapGetters(['tree']),
 
-    hostOrg() {
-      return import.meta.env.VITE_ORGANIZATION;
+    defaultOrgId() {
+      for (const org of this.tree) {
+        if (!!org.team && org.team.find(({ id }) => id === this.user.id)) {
+          return org.id;
+        }
+        for (const dep of org.children) {
+          if (!!dep.team && dep.team.find(({ id }) => id === this.user.id)) {
+            return dep.organization.id;
+          }
+          for (const prod of dep.children) {
+            if (!!prod.team && prod.team.find(({ id }) => id === this.user.id)) {
+              return prod.organization.id;
+            }
+          }
+        }
+      }
+
+      return null;
+    },
+
+    orgId() {
+      return this.selectedOrgId || this.defaultOrgId;
+    },
+  },
+
+  methods: {
+    setOrgId(orgId) {
+      this.selectedOrgId = orgId;
     },
   },
 };

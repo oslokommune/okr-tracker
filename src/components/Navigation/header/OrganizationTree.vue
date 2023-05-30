@@ -1,18 +1,17 @@
 <template>
-  <ul v-if="activeOrganization" class="organization-tree">
+  <ul v-if="organization" class="organization-tree">
     <template v-for="org in tree">
       <li
-        v-if="org.id === activeOrganization.id"
+        v-if="org.id === organization.id"
         :key="org.id"
         class="organization-tree__item organization-tree__item--organization"
       >
         <router-link
-          :to="{ name: 'ItemHome', params: { slug: activeOrganization.slug } }"
+          :to="{ name: 'ItemHome', params: { slug: organization.slug } }"
           :class="[
             'organization-tree__link',
             {
-              'organization-tree__link--active':
-                activeOrganization.slug === $route.params.slug,
+              'organization-tree__link--active': organization.slug === $route.params.slug,
             },
           ]"
           @click.native="$emit('selection')"
@@ -65,52 +64,30 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'OrganizationTree',
 
+  props: {
+    orgId: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+
   computed: {
-    ...mapState(['activeOrganization', 'user']),
+    ...mapState(['organizations', 'user']),
     ...mapGetters(['tree']),
 
+    organization() {
+      return this.organizations.find((o) => o.id === this.orgId);
+    },
+
     children() {
-      return (
-        this.tree.find((org) => org.id === this.activeOrganization.id)?.children || []
-      );
+      return this.tree.find((org) => org.id === this.organization.id)?.children || [];
     },
-  },
-
-  watch: {
-    tree: {
-      immediate: true,
-      handler() {
-        if (!this.activeOrganization) {
-          for (const org of this.tree) {
-            if (!!org.team && org.team.find(({ id }) => id === this.user.id)) {
-              this.setActiveOrganization(org);
-              break;
-            }
-            for (const dep of org.children) {
-              if (!!dep.team && dep.team.find(({ id }) => id === this.user.id)) {
-                this.setActiveOrganization(dep.organization);
-                break;
-              }
-              for (const prod of dep.children) {
-                if (!!prod.team && prod.team.find(({ id }) => id === this.user.id)) {
-                  this.setActiveOrganization(prod.organization);
-                  break;
-                }
-              }
-            }
-          }
-        }
-      },
-    },
-  },
-
-  methods: {
-    ...mapActions(['setActiveOrganization']),
   },
 };
 </script>
