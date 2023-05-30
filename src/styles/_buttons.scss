@@ -51,16 +51,6 @@
   }
 }
 
-.btn--sec {
-  background: none;
-  border: 1px solid var(--color-primary);
-
-  &:hover {
-    color: var(--color-primary-dark);
-    border-color: var(--color-primary-dark);
-  }
-}
-
 .btn--ods {
   color: var(--color-text-secondary);
   background: var(--color-primary);

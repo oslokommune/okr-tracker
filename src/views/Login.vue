@@ -72,20 +72,18 @@
           {{ $t('login.google') }}
         </button>
 
-        <button
+        <pkt-button
           v-if="providers.includes('email')"
-          class="btn btn--sec"
+          skin="secondary"
           data-cy="login-username"
-          @click="showForm = true"
+          @onClick="showForm = true"
         >
           {{ $t('login.loginWithUsername') }}
-        </button>
-        <router-link
-          class="btn btn--sec"
-          :to="{ name: 'request-access' }"
-          data-cy="login-request"
-        >
-          {{ $t('login.requestAccess') }}
+        </pkt-button>
+        <router-link :to="{ name: 'request-access' }" data-cy="login-request">
+          <pkt-button skin="secondary">
+            {{ $t('login.requestAccess') }}
+          </pkt-button>
         </router-link>
       </div>
     </div>
@@ -94,6 +92,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
@@ -101,7 +100,10 @@ import LoadingSmall from '@/components/LoadingSmall.vue';
 export default {
   name: 'Login',
 
-  components: { LoadingSmall },
+  components: {
+    LoadingSmall,
+    PktButton,
+  },
 
   data: () => ({
     email: '',
@@ -182,15 +184,9 @@ export default {
   flex-direction: column;
   gap: 0.5rem 0.5rem;
   margin-top: 2rem;
-}
 
-.login__secondary {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 1.75rem -0.25rem -0.25rem;
-
-  & > .btn {
-    margin: 0.25rem;
+  button {
+    width: 100%;
   }
 }
 

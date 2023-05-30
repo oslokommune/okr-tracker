@@ -2,8 +2,7 @@
   <div class="container">
     <div class="main__second">
       <div class="back">
-        <router-link class="btn btn--sec btn--icon" :to="{ name: 'Login' }">
-          <i class="icon fa-xs fa fa-fw fa-chevron-left" />
+        <router-link :to="{ name: 'Login' }">
           {{ $t('login.backToLogin') }}
         </router-link>
       </div>
@@ -94,6 +93,6 @@ export default {
 
 <style lang="scss" scoped>
 .back {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 </style>

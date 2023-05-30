@@ -59,8 +59,6 @@ export default {
       switch (this.variant) {
         case 'primary':
           return 'btn--pri';
-        case 'secondary':
-          return 'btn--sec';
         case 'tertiary':
           return 'btn--ter';
         default:

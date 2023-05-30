@@ -6,18 +6,28 @@
       <p>{{ $t('archived.body') }}</p>
 
       <div class="button-row">
-        <button class="btn btn--icon btn--sec" @click="restore">
-          <i class="icon fa fa-trash-restore-alt" />
+        <pkt-button
+          skin="secondary"
+          variant="icon-left"
+          icon-name="arrow-circle"
+          @onClick="restore"
+        >
           {{ $t('btn.restore') }}
-        </button>
+        </pkt-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'ArchivedRestore',
+
+  components: {
+    PktButton,
+  },
 
   props: {
     restore: {
