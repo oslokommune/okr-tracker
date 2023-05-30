@@ -69,7 +69,8 @@
               />
               <btn-delete
                 v-tooltip="$t('tooltip.deleteProgress')"
-                :hide-label="true"
+                size="small"
+                variant="icon-only"
                 @click="$emit('delete-record', record)"
               />
             </div>

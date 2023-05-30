@@ -63,8 +63,6 @@ export default {
           return 'btn--sec';
         case 'tertiary':
           return 'btn--ter';
-        case 'confirm':
-          return 'btn--confirm';
         default:
           return 'btn--pri';
       }

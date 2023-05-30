@@ -205,7 +205,6 @@
   "btn": {
     "close": "Close",
     "save": "Save",
-    "saveChanges": "Save changes",
     "add": "Add",
     "editNotes": "Change notes",
     "addOrganization": "Add organization",

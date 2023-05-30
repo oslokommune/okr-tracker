@@ -6,6 +6,7 @@
 .button-row {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
   justify-content: flex-end;
 
   .btn {
@@ -60,15 +61,6 @@
   }
 }
 
-.btn--confirm {
-  background: var(--color-green);
-
-  &:hover {
-    color: var(--color-text-secondary);
-    background-color: var(--color-hover);
-  }
-}
-
 .btn--ods {
   color: var(--color-text-secondary);
   background: var(--color-primary);
@@ -89,14 +81,6 @@
 
   &:hover:not([disabled]) {
     background: rgba(var(--color-grayscale-50-rgb), 0.1);
-  }
-
-  &.btn--negative {
-    color: var(--color-white);
-
-    &:hover {
-      background: rgba(white, 0.1);
-    }
   }
 }
 

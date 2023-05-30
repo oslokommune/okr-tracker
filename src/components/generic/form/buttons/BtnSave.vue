@@ -1,15 +1,27 @@
+<template>
+  <pkt-button
+    :type="type"
+    :text="label"
+    :variant="variant"
+    :icon-name="icon"
+    :disabled="disabled"
+    @onClick="$emit('click', $event)"
+  />
+</template>
+
 <script>
-import Btn from './BtnBase.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'BtnSave',
-  extends: Btn,
+  components: { PktButton },
+  extends: PktButton,
 
   props: {
     type: {
       type: String,
       required: false,
-      default: 'submit',
+      default: 'button',
     },
     label: {
       type: String,
@@ -21,7 +33,7 @@ export default {
     variant: {
       type: String,
       required: false,
-      default: 'confirm',
+      default: 'icon-left',
     },
     icon: {
       type: String,

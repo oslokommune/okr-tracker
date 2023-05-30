@@ -157,12 +157,7 @@
       </form-component>
 
       <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-delete
-          v-if="kpi"
-          :disabled="loading"
-          :icon-only="true"
-          @click="$emit('delete')"
-        />
+        <btn-delete v-if="kpi" :disabled="loading" @click="$emit('delete')" />
         <btn-save
           :disabled="submitDisabled || loading"
           @click="handleSubmit(submitForm)"
