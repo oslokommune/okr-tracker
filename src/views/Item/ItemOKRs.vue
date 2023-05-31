@@ -183,12 +183,12 @@ export default {
     ...mapActions(['set_active_period_and_data', 'setDataLoading', 'setSelectedPeriod']),
     ...mapMutations(['TOGGLE_DRAWER']),
 
-    openObjectiveDrawer (){
+    openObjectiveDrawer() {
       this.TOGGLE_DRAWER({
         type: 'objective',
         show: 'true',
-        content: null
-      })
+        content: null,
+      });
     },
 
     async setPeriod(activePeriodId, setSelectedPeriod) {

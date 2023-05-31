@@ -7,69 +7,74 @@
       <h2 class="title-1">{{ $t('keyResult.created') }}</h2>
       <div class="saved-key-result__button-row">
         <button class="btn btn--ter" @click="close">{{ $t('btn.close') }}</button>
-        <button class="btn btn--sec" @click="addKeyResult">{{ $t('btn.addKeyResult') }}</button>
+        <button class="btn btn--sec" @click="addKeyResult">
+          {{ $t('btn.addKeyResult') }}
+        </button>
       </div>
     </div>
     <clapping-hands class="applause"></clapping-hands>
   </div>
 </template>
 <script>
-  import ClappingHands from '@/components/ClappingHands.vue';
-  import { mapMutations } from 'vuex';
-  import store from '@/store';
+import ClappingHands from '@/components/ClappingHands.vue';
+import { mapMutations } from 'vuex';
+import store from '@/store';
 
-  export default {
-    name: 'SavedKeyResult',
+export default {
+  name: 'SavedKeyResult',
 
-    props: {
-      data: {
-        type: Object,
+  components: {
+    ClappingHands,
+  },
+
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {};
       },
-      created: {
-        type: Boolean,
-        default: false,
-      }
     },
-
-    components: {
-      ClappingHands,
+    created: {
+      type: Boolean,
+      default: false,
     },
+  },
 
-    methods: {
-      ...mapMutations(['TOGGLE_DRAWER']),
-      close (){
-        store.commit('TOGGLE_DRAWER', '');
-      },
-      addKeyResult () {
-        this.TOGGLE_DRAWER({
-          type: 'keyResult',
-          show: true,
-          data: {
-            objective: this.data.objective,
-          }
-        })
-      },
-    }
-  }
+  methods: {
+    ...mapMutations(['TOGGLE_DRAWER']),
+    close() {
+      store.commit('TOGGLE_DRAWER', '');
+    },
+    addKeyResult() {
+      this.TOGGLE_DRAWER({
+        type: 'keyResult',
+        show: true,
+        data: {
+          objective: this.data.objective,
+        },
+      });
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
-  .saved-key-result {
-    position: relative;
+.saved-key-result {
+  position: relative;
 
-    .title-1 {
-      padding-bottom: 1.5rem;
-      padding-left: 2rem;
-    }
-    .saved-key-result__button-row {
-      padding-left: 2rem;
+  .title-1 {
+    padding-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+  .saved-key-result__button-row {
+    padding-left: 2rem;
 
-      .btn--sec {
-        margin-left: 0.5rem;
-      }
-    }
-    .applause {
-      position: fixed;
-      bottom: 0;
+    .btn--sec {
+      margin-left: 0.5rem;
     }
   }
+  .applause {
+    position: fixed;
+    bottom: 0;
+  }
+}
 </style>

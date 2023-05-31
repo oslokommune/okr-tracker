@@ -7,7 +7,7 @@
         </span>
 
         <div class="objective__heading">
-          <h2 class="title-1" >{{ activeObjective.name }}</h2>
+          <h2 class="title-1">{{ activeObjective.name }}</h2>
           <div class="objective__edit">
             <btn
               v-tooltip="$t('objective.change')"
@@ -15,8 +15,8 @@
               :label="$t('objective.change')"
               :hide-label="true"
               variant="tertiary"
-              @click="toggleDrawer('objective')"
               class="objective__edit"
+              @click="toggleDrawer('objective')"
             />
           </div>
         </div>
@@ -146,14 +146,14 @@ export default {
 
   methods: {
     ...mapMutations(['TOGGLE_DRAWER']),
-    toggleDrawer (type){
+    toggleDrawer(type) {
       this.TOGGLE_DRAWER({
-        type: type,
+        type,
         show: 'true',
         data: {
           objective: this.activeObjective,
         },
-      })
+      });
     },
   },
 };
@@ -183,9 +183,9 @@ export default {
 }
 
 .objective__heading {
-  display:flex;
+  display: flex;
   flex-direction: row;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
 }
 

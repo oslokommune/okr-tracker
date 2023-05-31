@@ -67,7 +67,9 @@ export default {
       return this.drawer.placement === 'left';
     },
     hasSuccessBackground() {
-      return this.drawer.type === 'savedObjective' || this.drawer.type === 'savedKeyResult';
+      return (
+        this.drawer.type === 'savedObjective' || this.drawer.type === 'savedKeyResult'
+      );
     },
     transitionName() {
       return this.shouldSlideInFromLeft

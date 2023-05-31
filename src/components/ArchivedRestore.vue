@@ -3,7 +3,7 @@
     <i class="archived__icon fa fa-file-archive" />
     <div class="archived__body">
       <h3 class="title-2">{{ $t('archived.heading') }}</h3>
-      <p>{{ $t('archived.body', {objectType:objectType}) }}</p>
+      <p>{{ $t('archived.body', { objectType: objectType }) }}</p>
 
       <pkt-button
         skin="secondary"
@@ -34,9 +34,9 @@ export default {
     },
     objectType: {
       type: String,
-      default: "objekt",
-      required: false
-    }
+      default: 'objekt',
+      required: false,
+    },
   },
 };
 </script>

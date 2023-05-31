@@ -8,8 +8,10 @@ export default function validateUpdateProps(props, data) {
     if (Object.hasOwnProperty.call(data, prop)) {
       // ... check that the referenced document exists
       if (type === 'reference') {
-        if (!(data[prop] instanceof firebase.firestore.DocumentReference)
-        && !(data[prop].isEqual(firebase.firestore.FieldValue.delete()))){
+        if (
+          !(data[prop] instanceof firebase.firestore.DocumentReference) &&
+          !data[prop].isEqual(firebase.firestore.FieldValue.delete())
+        ) {
           throw new TypeError(`${prop} is not a valid reference`);
         }
       } else if (type === 'array') {
