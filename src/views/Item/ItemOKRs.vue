@@ -52,6 +52,13 @@
             :item="activeItem"
           />
         </div>
+        <button
+          class="miller__add btn btn--ter btn--icon btn--fw btn-new"
+          @click="openObjectiveDrawer"
+        >
+          <i class="icon fa fa-plus" />
+          <span>{{ $t('btn.createObjective') }}</span>
+        </button>
       </section>
     </template>
 
@@ -77,7 +84,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex';
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { isBefore, addDays, isWithinInterval } from 'date-fns';
 import { objectiveInPeriod } from '@/util/okr';
 import { periodDates } from '@/util';
@@ -174,6 +181,15 @@ export default {
 
   methods: {
     ...mapActions(['set_active_period_and_data', 'setDataLoading', 'setSelectedPeriod']),
+    ...mapMutations(['TOGGLE_DRAWER']),
+
+    openObjectiveDrawer (){
+      this.TOGGLE_DRAWER({
+        type: 'objective',
+        show: 'true',
+        content: null
+      })
+    },
 
     async setPeriod(activePeriodId, setSelectedPeriod) {
       try {
@@ -240,5 +256,10 @@ export default {
   > ul {
     padding-bottom: 0.5rem;
   }
+}
+
+.btn-new {
+  display: flex;
+  justify-content: flex-start;
 }
 </style>

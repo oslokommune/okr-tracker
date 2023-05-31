@@ -3,7 +3,20 @@
     <template #default>
       <header>
         <span class="title-label">{{ $t('general.keyResult') }}</span>
-        <h2 class="title-1">{{ activeKeyResult.name }}</h2>
+        <div class="keyResult__heading">
+          <h2 class="title-1">{{ activeKeyResult.name }}</h2>
+          <div class="keyResult__edit">
+            <btn
+              v-tooltip="$t('admin.keyResult.change')"
+              icon="edit"
+              :label="$t('admin.keyResult.change')"
+              :hide-label="true"
+              variant="tertiary"
+              @click="editKeyResult()"
+              class="keyResult__edit"
+            />
+          </div>
+        </div>
         <p v-if="activeKeyResult.description" class="description">
           {{ activeKeyResult.description }}
         </p>
@@ -81,7 +94,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapMutations } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
@@ -95,6 +108,7 @@ import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.
 import KeyResultProgressDetails from '@/components/KeyResultProgressDetails.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
+import { Btn } from '@/components/generic/form/buttons';
 
 export default {
   name: 'KeyResultHome',
@@ -108,6 +122,7 @@ export default {
     WidgetKeyResultDetails,
     WidgetKeyResultNotes,
     WidgetProgressHistory,
+    Btn,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -131,7 +146,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+    ...mapState(['activeKeyResult', 'activeObjective', 'activePeriod', 'user', 'activeItem']),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
   },
 
@@ -173,6 +188,18 @@ export default {
 
   methods: {
     format,
+    ...mapMutations(['TOGGLE_DRAWER']),
+    editKeyResult (){
+      console.log("activeKeyResult", this.activeKeyResult);
+      this.TOGGLE_DRAWER({
+        type: 'keyResult',
+        show: 'true',
+        data: {
+          objective: this.activeObjective,
+          keyResult: this.activeKeyResult,
+        },
+      })
+    },
 
     renderGraph() {
       if (!this.graph) {
@@ -281,6 +308,18 @@ export default {
       }
     }
   }
+}
+
+.keyResult__edit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.keyResult__heading {
+  display:flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content: space-between;
 }
 
 .key-result-progression {

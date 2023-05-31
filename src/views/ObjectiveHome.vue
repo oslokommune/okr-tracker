@@ -2,8 +2,24 @@
   <page-layout v-if="activeObjective">
     <template #default>
       <header>
-        <span class="title-label">{{ $t('general.objective') }}</span>
-        <h2 class="title-1">{{ activeObjective.name }}</h2>
+        <span class="title-label">
+          {{ $t('general.objective') }}
+        </span>
+
+        <div class="objective__heading">
+          <h2 class="title-1" >{{ activeObjective.name }}</h2>
+          <div class="objective__edit">
+            <btn
+              v-tooltip="$t('objective.change')"
+              icon="edit"
+              :label="$t('objective.change')"
+              :hide-label="true"
+              variant="tertiary"
+              @click="toggleDrawer('objective')"
+              class="objective__edit"
+            />
+          </div>
+        </div>
         <p v-if="activeObjective.description" class="description">
           {{ activeObjective.description }}
         </p>
@@ -34,6 +50,13 @@
           />
         </div>
       </section>
+      <button
+        class="miller__add btn btn--ter btn--icon btn--fw key-result__new"
+        @click="toggleDrawer('keyResult')"
+      >
+        <i class="icon fa fa-plus" />
+        <span>{{ $t('btn.createKeyResult') }}</span>
+      </button>
     </template>
 
     <template #sidebar>
@@ -55,12 +78,13 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapMutations } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
+import { Btn } from '@/components/generic/form/buttons';
 
 export default {
   name: 'ObjectiveHome',
@@ -71,6 +95,7 @@ export default {
     WidgetWeights,
     WidgetObjectiveDetails,
     ProgressionChart,
+    Btn,
     EmptyState: () => import('@/components/EmptyState.vue'),
   },
 
@@ -118,6 +143,19 @@ export default {
       },
     },
   },
+
+  methods: {
+    ...mapMutations(['TOGGLE_DRAWER']),
+    toggleDrawer (type){
+      this.TOGGLE_DRAWER({
+        type: type,
+        show: 'true',
+        data: {
+          objective: this.activeObjective,
+        },
+      })
+    },
+  },
 };
 </script>
 
@@ -134,8 +172,21 @@ export default {
   }
 }
 
-.objective__heading {
+.key-result__new {
   display: flex;
+  justify-content: flex-start;
+}
+
+.objective__edit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.objective__heading {
+  display:flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content: space-between;
 }
 
 .objective__heading-text {

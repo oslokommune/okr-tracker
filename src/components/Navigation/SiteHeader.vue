@@ -162,8 +162,23 @@ export default {
     },
   },
 
+  methods: {
+    ...mapMutations(['TOGGLE_DRAWER']),
+    openMenu (){
+      this.TOGGLE_DRAWER({
+        type: 'menu',
+      })
+    },
+    openProfileMenu (){
+      this.TOGGLE_DRAWER({
+        type: 'profile',
+      })
+    },
+  },
+
   mounted() {
     if (this.user && this.user.position === null) {
+      // this.openProfileMenu(); TODO: Decide one of two
       this.$refs.userMenu.activate();
     }
   },

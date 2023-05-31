@@ -113,9 +113,12 @@
     "password": "Passord",
     "secret": "API Hemmelighet",
     "comment": "Kommentar",
+    "format": "Visning",
+    "timestamp": "Timestamp",
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
-    "language": "Språk"
+    "language": "Språk",
+    "owner": "Ansvarlig team"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -189,7 +192,11 @@
     "formErrors": "Skjemaet inneholder feil som må rettes.",
     "displayedAs": "Vises som: ",
     "today": "I dag",
-    "view": "Visning"
+    "view": "Visning",
+    "newObjective": "Nytt mål",
+    "newKeyResult": "Nytt nøkkelresultat",
+    "step": "Steg {step} av 2",
+    "or": "eller"
   },
   "home": {
     "welcome": "Velkommen til {appName}!",
@@ -215,7 +222,16 @@
     "acceptRequest": "Gi tilgang",
     "rejectRequest": "Slett forespørsel",
     "deleteUser": "Slett bruker",
+    "cancel": "Avbryt",
     "create": "Opprett",
+    "continue": "Fortsett",
+    "back": "Gå tilbake",
+    "createObjective": "Opprett mål",
+    "updateObjective": "Oppdater mål",
+    "createKeyResult": "Opprett nøkkelresultat",
+    "updateKeyResult": "Oppdater nøkkelresultat",
+    "addKeyResult": "Legg til nytt nøkkelresultat",
+    "addKeyResults": "Legg til nøkkelresultater",
     "delete": "Slett",
     "editItem": "Endre «{item}»",
     "download": "Last ned",
@@ -227,7 +243,9 @@
     "reset": "Nullstill",
     "showMore": "Vis alle",
     "syncData": "Synkroniser data",
-    "moreDetails": "Flere detaljer"
+    "moreDetails": "Flere detaljer",
+    "archiveObjective": "Arkiver mål",
+    "archiveKeyResult": "Arkiver nøkkelresultat"
   },
   "login": {
     "login": "Logg inn",
@@ -293,7 +311,7 @@
     },
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet object",
-    "restored": "Gjenopprettet dokument",
+    "restored": "Gjenopprettet dokumentdokument",
     "request": {
       "noEmail": "Forespørselen feilet. E-post mangler.",
       "requested": "Forespørsel om tilgang sendt til admin",
@@ -342,7 +360,10 @@
       "radio": "Oppdatere via API?",
       "tooltip": "Skru på denne hvis du har planer om å oppdatere nøkkelresultatet selv via OKR-tracker sitt API - du kan fortsatt oppdatere manuelt også"
     },
-    "apiAndKeyRes": "Vi anbefaler ikke å skru på begge samtidig. Dette kan forårsake problemer med progresjonen til ditt nøkkelresultat"
+    "apiAndKeyRes": "Vi anbefaler ikke å skru på begge samtidig. Dette kan forårsake problemer med progresjonen til ditt nøkkelresultat",
+    "created": "Nøkkelresultatet ble opprettet!",
+    "updated": "Nøkkelresultatet ble endret!",
+    "edit": "Rediger nøkkelresultat"
   },
   "objective": {
     "period": "Periode",
@@ -353,7 +374,8 @@
     "createdBy": "Opprettet av",
     "editedBy": "Endret av",
     "created": "Opprettet",
-    "edited": "Sist endret"
+    "edited": "Sist endret",
+    "updated": "Målet ble endret!"
   },
   "period": {
     "choosePeriod": "Velg periode",
@@ -377,6 +399,18 @@
     "copyToClipboard": "Kopier til utklippstavlen"
   },
   "admin": {
+    "objective": {
+      "new": "Nytt mål",
+      "created": "Målet ble opprettet!",
+      "updated": "Målet ble endret!",
+      "change": "Rediger mål"
+    },
+    "keyResult": {
+      "new": "Nytt Nøkkelresultatet",
+      "created": "Nøkkelresultatet ble opprettet!",
+      "updated": "Nøkkelresultatet ble endret!",
+      "change": "Rediger Nøkkelresultat"
+    },
     "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "curlHelp": "Oppdatering via {apiLink}-kall, f.eks. ved bruk av curl.",
     "apiDocs": "API-dokumentasjon",
@@ -475,7 +509,9 @@
   },
   "archived": {
     "heading": "Arkivert",
-    "body": "Dette objektet er arkivert og vises ikke for brukerne. Du kan endre detaljer før du gjenoppretter objektet."
+    "objective": "mål",
+    "keyResult": "nøkkelresultat",
+    "body": "Dette {objectType}et er arkivert og vises ikke lenger i listen over {objectType}. Savner du det, er det bare å gjenopprette det."
   },
   "sheets": {
     "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",
