@@ -1,20 +1,18 @@
 <template>
-  <div class="container">
-    <div class="main">
-      <tab-list
-        aria-label="Velg periode"
-        :tabs="tabs"
-        :active-tab="activeTab"
-        :set-active-tab="setActiveTab"
-        :tab-ids="tabIds"
-      />
-      <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
-        <item-admin-general v-if="activeTab === 0" />
-        <item-admin-OKRs v-if="activeTab === 1" />
-        <item-admin-KPIs v-if="activeTab === 2" />
-      </tab-panel>
-    </div>
-  </div>
+  <page-layout breakpoint="tablet-big">
+    <tab-list
+      aria-label="Velg periode"
+      :tabs="tabs"
+      :active-tab="activeTab"
+      :set-active-tab="setActiveTab"
+      :tab-ids="tabIds"
+    />
+    <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
+      <item-admin-general v-if="activeTab === 0" />
+      <item-admin-OKRs v-if="activeTab === 1" />
+      <item-admin-KPIs v-if="activeTab === 2" />
+    </tab-panel>
+  </page-layout>
 </template>
 
 <script>

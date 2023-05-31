@@ -2,11 +2,7 @@
   <collapse-container
     :id="kpi.id"
     :visible="visible"
-    :class="[
-      'form-card',
-      'form-card--state-line',
-      { [`form-card--${stateClass}`]: stateClass },
-    ]"
+    :class="['card', { [`card--${stateClass}`]: stateClass }]"
     @toggle="$emit('toggle', $event, kpi)"
   >
     <template #collapse-header>
@@ -219,7 +215,7 @@ export default {
 <style lang="scss" scoped>
 @use '@/styles/typography';
 
-.form-card {
+.card {
   padding: 0;
   line-height: 1;
   background: var(--color-gray);

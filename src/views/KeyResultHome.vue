@@ -1,6 +1,6 @@
 <template>
-  <div v-if="activeKeyResult" class="container">
-    <main class="main">
+  <page-layout v-if="activeKeyResult">
+    <template #default>
       <header>
         <span class="title-label">{{ $t('general.keyResult') }}</span>
         <h2 class="title-1">{{ activeKeyResult.name }}</h2>
@@ -71,13 +71,13 @@
         @update-record="updateHistoryRecord"
         @delete-record="deleteHistoryRecord"
       />
-    </main>
+    </template>
 
-    <aside v-if="activeItem" class="aside widgets">
+    <template #sidebar>
       <widget-key-result-notes />
       <widget-key-result-details />
-    </aside>
-  </div>
+    </template>
+  </page-layout>
 </template>
 
 <script>

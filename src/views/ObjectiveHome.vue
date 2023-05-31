@@ -1,6 +1,6 @@
 <template>
-  <div v-if="activeObjective" class="container">
-    <main class="main">
+  <page-layout v-if="activeObjective">
+    <template #default>
       <header>
         <span class="title-label">{{ $t('general.objective') }}</span>
         <h2 class="title-1">{{ activeObjective.name }}</h2>
@@ -34,9 +34,9 @@
           />
         </div>
       </section>
-    </main>
+    </template>
 
-    <aside v-if="activeObjective" class="aside widgets">
+    <template #sidebar>
       <widget
         v-if="typeof activeObjective.progression === 'number'"
         :title="$t('widget.progression.objective')"
@@ -50,8 +50,8 @@
         :items="keyResults"
       />
       <widget-objective-details />
-    </aside>
-  </div>
+    </template>
+  </page-layout>
 </template>
 
 <script>

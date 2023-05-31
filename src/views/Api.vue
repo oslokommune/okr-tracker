@@ -1,9 +1,7 @@
 <template>
-  <div class="container">
-    <div class="main">
-      <div id="swagger-ui"></div>
-    </div>
-  </div>
+  <page-layout breakpoint="tablet-big">
+    <div id="swagger-ui"></div>
+  </page-layout>
 </template>
 
 <script>

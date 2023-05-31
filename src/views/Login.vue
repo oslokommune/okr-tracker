@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="main__second">
+  <page-layout breakpoint="phablet">
+    <div class="card">
       <h1 class="title-1">{{ $t('login.login') }}</h1>
       <div v-if="loginLoading && loginError === null">
         <loading-small></loading-small>
@@ -87,7 +87,7 @@
         </router-link>
       </div>
     </div>
-  </div>
+  </page-layout>
 </template>
 
 <script>

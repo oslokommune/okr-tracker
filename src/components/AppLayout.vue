@@ -45,6 +45,9 @@ export default {
 }
 
 .router-view-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   overflow-y: scroll;
 }
 </style>

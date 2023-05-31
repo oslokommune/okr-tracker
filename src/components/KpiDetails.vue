@@ -1,5 +1,5 @@
 <template>
-  <main class="main--alt kpi-details">
+  <div class="kpi-details">
     <header class="kpi-details__header">
       <div>
         <h2 class="title-1">{{ kpi.name }}</h2>
@@ -31,7 +31,7 @@
       @create-record="createProgressRecord"
       @close="showValueModal = false"
     />
-  </main>
+  </div>
 </template>
 
 <script>
@@ -153,6 +153,7 @@ export default {
 <style lang="scss" scoped>
 .kpi-details__header {
   gap: 0.25rem;
+  margin-bottom: 1rem;
 
   > div {
     display: flex;
@@ -161,6 +162,10 @@ export default {
     button {
       flex: 0;
       white-space: nowrap;
+    }
+
+    .title-1 {
+      margin: 0;
     }
 
     @media screen and (min-width: bp(s)) {
