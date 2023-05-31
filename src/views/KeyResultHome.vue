@@ -12,8 +12,8 @@
               :label="$t('admin.keyResult.change')"
               :hide-label="true"
               variant="tertiary"
-              @click="editKeyResult()"
               class="keyResult__edit"
+              @click="editKeyResult()"
             />
           </div>
         </div>
@@ -146,7 +146,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activeObjective', 'activePeriod', 'user', 'activeItem']),
+    ...mapState([
+      'activeKeyResult',
+      'activeObjective',
+      'activePeriod',
+      'user',
+      'activeItem',
+    ]),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
   },
 
@@ -189,8 +195,8 @@ export default {
   methods: {
     format,
     ...mapMutations(['TOGGLE_DRAWER']),
-    editKeyResult (){
-      console.log("activeKeyResult", this.activeKeyResult);
+    editKeyResult() {
+      console.log('activeKeyResult', this.activeKeyResult);
       this.TOGGLE_DRAWER({
         type: 'keyResult',
         show: 'true',
@@ -198,7 +204,7 @@ export default {
           objective: this.activeObjective,
           keyResult: this.activeKeyResult,
         },
-      })
+      });
     },
 
     renderGraph() {
@@ -316,9 +322,9 @@ export default {
 }
 
 .keyResult__heading {
-  display:flex;
+  display: flex;
   flex-direction: row;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
 }
 

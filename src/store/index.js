@@ -227,10 +227,10 @@ export const mutations = {
   },
 
   TOGGLE_DRAWER(state, payload) {
-    state.drawer.show = payload.show !== undefined? payload.show: !state.drawer.show;
-    state.drawer.placement = (payload.type && payload.type === 'menu')? 'left' : 'right';
+    state.drawer.show = payload.show !== undefined ? payload.show : !state.drawer.show;
+    state.drawer.placement = payload.type && payload.type === 'menu' ? 'left' : 'right';
     state.drawer.type = payload.type;
-    state.drawer.data = payload.data? payload.data : null;
+    state.drawer.data = payload.data ? payload.data : null;
   },
 };
 

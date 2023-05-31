@@ -1,29 +1,27 @@
 <script>
-  import Btn from './BtnBase.vue';
+import Btn from './BtnBase.vue';
 
-  export default {
-    name: 'BtnCancel',
-    extends: Btn,
+export default {
+  name: 'BtnCancel',
 
-    components: {
-      Btn,
-    },
+  components: {
+    Btn,
+  },
+  extends: Btn,
 
-    extends: Btn,
-
-    props: {
-      label: {
-        type: String,
-        required: false,
-        default() {
-          return this.$t('btn.cancel');
-        },
-      },
-      variant: {
-        type: String,
-        required: false,
-        default: 'tertiary',
+  props: {
+    label: {
+      type: String,
+      required: false,
+      default() {
+        return this.$t('btn.cancel');
       },
     },
-  };
+    variant: {
+      type: String,
+      required: false,
+      default: 'tertiary',
+    },
+  },
+};
 </script>
