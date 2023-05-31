@@ -1,12 +1,13 @@
 <template>
-  <div :class="{ overlay: isOpen }" @click.self="toggle">
+  <div :class="{ overlay: drawer.show }" @click.self="toggle">
     <transition :name="transitionName">
       <aside
-        v-if="isOpen"
+        v-if="drawer.show"
         class="sliderContainer"
         :class="{
           'sliderContainer--shouldSlideInFromLeft': shouldSlideInFromLeft,
           'sliderContainer--hasPrimaryBackground': hasPrimaryBackground,
+          'sliderContainer--hasSuccessBackground': hasSuccessBackground,
         }"
       >
         <div class="sliderContainer__closeButtonContainer">
@@ -26,6 +27,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+import store from '@/store';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
@@ -56,10 +59,27 @@ export default {
   },
 
   computed: {
+    ...mapState(['drawer']),
+    shouldSlideInFromLeft() {
+      return this.drawer.placement === 'left';
+    },
+    hasPrimaryBackground() {
+      return this.drawer.placement === 'left';
+    },
+    hasSuccessBackground() {
+      return this.drawer.type === 'savedObjective' || this.drawer.type === 'savedKeyResult';
+    },
     transitionName() {
       return this.shouldSlideInFromLeft
         ? 'shouldSlideInFromLeft'
         : 'shouldSlideInFromRight';
+    },
+  },
+
+  methods: {
+    ...mapMutations(['TOGGLE_DRAWER']),
+    toggle() {
+      store.commit('TOGGLE_DRAWER', '');
     },
   },
 };
@@ -72,12 +92,16 @@ export default {
   right: 0;
   z-index: 200;
   width: calc(100vw - 4rem);
-  max-width: 36rem;
+  max-width: 37.5rem;
   height: 100vh;
   background-color: var(--color-white);
 
   &--hasPrimaryBackground {
     background-color: var(--color-primary);
+  }
+
+  &--hasSuccessBackground {
+    background-color: var(--color-green-light);
   }
 
   &--shouldSlideInFromLeft {
