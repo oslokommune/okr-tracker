@@ -3,14 +3,15 @@
     <header class="kpi-details__header">
       <div>
         <h2 class="title-1">{{ kpi.name }}</h2>
-        <button
+        <pkt-button
           v-if="hasEditRights"
-          class="btn btn--ter btn--icon btn--fw"
-          @click="showValueModal = true"
+          skin="tertiary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="showValueModal = true"
         >
-          <pkt-icon class="icon" name="plus-sign" />
-          <span>{{ $t('kpi.newValue') }}</span>
-        </button>
+          {{ $t('kpi.newValue') }}
+        </pkt-button>
       </div>
       <p v-if="kpi.description" class="description">{{ kpi.description }}</p>
     </header>
@@ -36,6 +37,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import Progress from '@/db/Kpi/Progress';
 import {
   filterDuplicatedProgressValues,
@@ -50,10 +52,11 @@ export default {
   name: 'KpiDetails',
 
   components: {
+    PktButton,
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     WidgetKpiProgressGraph,
-    WidgetKpiProgressStats,
     WidgetKpiProgressHistory,
+    WidgetKpiProgressStats,
   },
 
   props: {
@@ -157,17 +160,13 @@ export default {
 
     button {
       flex: 0;
+      white-space: nowrap;
     }
 
     @media screen and (min-width: bp(s)) {
       flex-direction: row;
       justify-content: space-between;
     }
-  }
-
-  .icon {
-    height: 1.5rem;
-    margin-right: -0.25rem;
   }
 }
 </style>

@@ -7,15 +7,6 @@
       collapsable ? `widget--${show ? 'open' : 'collapsed'}` : '',
     ]"
   >
-    <button
-      v-if="collapsable"
-      v-tooltip="show ? $t('btn.minimize') : $t('btn.expand')"
-      class="btn btn--ter widget__toggle"
-      @click="toggle"
-    >
-      <i :class="['fa', `fa-chevron-${show ? 'up' : 'down'}`]" />
-    </button>
-
     <header
       v-if="$slots.header || title"
       class="widget__header"
@@ -25,6 +16,16 @@
       <h3 v-else :class="size === 'small' ? 'title-3' : 'title-2'">
         {{ title }}
       </h3>
+
+      <pkt-button
+        v-if="collapsable"
+        v-tooltip="show ? $t('btn.minimize') : $t('btn.expand')"
+        class="widget__toggle"
+        size="small"
+        skin="tertiary"
+        variant="icon-only"
+        :icon-name="show ? 'chevron-thin-up' : 'chevron-thin-down'"
+      />
     </header>
 
     <div v-if="$slots.default && show" class="widget__body">
@@ -38,8 +39,14 @@
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'WidgetWrapper',
+
+  components: {
+    PktButton,
+  },
 
   props: {
     title: {
@@ -83,16 +90,13 @@ export default {
   padding: 1.5rem;
   border: 2px solid var(--color-border);
 
-  &__toggle {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem;
-  }
-
   &__header {
+    display: flex;
+    align-items: center;
+
     .title-2,
     .title-3 {
+      flex: 1 0 auto;
       margin-bottom: 0;
       color: var(--color-text);
     }
@@ -110,12 +114,6 @@ export default {
 
   &--small {
     padding: 1rem;
-
-    .widget__toggle {
-      top: 0.5rem;
-      right: 0.5rem;
-      padding: 0.5rem;
-    }
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <empty-state :icon="'ban'" :heading="$t('403.title')" :body="$t('403.body')">
-      <router-link class="btn btn--ter" :to="{ name: 'Home' }">
+      <router-link :to="{ name: 'Home' }">
         {{ $t('403.linkText') }}
       </router-link>
     </empty-state>

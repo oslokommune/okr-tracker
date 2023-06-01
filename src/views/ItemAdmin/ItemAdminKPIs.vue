@@ -22,9 +22,9 @@
     :heading="$t('empty.noKPIs.heading')"
     :body="$t('empty.noKPIs.adminBody')"
   >
-    <button class="btn btn--ter" :disabled="loading" @click="createKpi">
+    <pkt-button skin="tertiary" :disabled="loading" @onClick="createKpi">
       {{ $t('kpi.add') }}
-    </button>
+    </pkt-button>
   </empty-state>
 </template>
 

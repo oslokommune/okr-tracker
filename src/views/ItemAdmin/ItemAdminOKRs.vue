@@ -91,15 +91,17 @@
               </li>
             </template>
           </ul>
-          <button
+          <pkt-button
             v-if="!notSelected"
-            class="miller__add btn btn--ter btn--icon btn--fw"
+            variant="icon-left"
+            icon-name="plus-sign"
+            class="miller__add"
+            skin="tertiary"
             :data-cy="cyCreate"
-            @click="addEvent"
+            @onClick="addEvent"
           >
-            <pkt-icon class="icon" name="plus-sign" />
-            <span>{{ $t('btn.create') }}</span>
-          </button>
+            {{ $t('btn.create') }}
+          </pkt-button>
         </div>
       </div>
 
@@ -111,6 +113,7 @@
 <script>
 import { mapState } from 'vuex';
 import { endOfYear, startOfYear } from 'date-fns';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { db } from '@/config/firebaseConfig';
 import Period from '@/db/Period';
 import Objective from '@/db/Objective';
@@ -123,6 +126,7 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     ContentLoaderOkrRow: () =>
       import('@/components/ContentLoader/ContentLoaderOKRRow.vue'),
+    PktButton,
   },
 
   data: () => ({
@@ -531,13 +535,9 @@ export default {
 }
 
 .miller__add {
+  justify-content: center;
   margin-top: auto;
   border-top: 2px solid var(--color-border);
-
-  .icon {
-    height: 1.5rem;
-    margin-right: -0.25rem;
-  }
 }
 
 .miller__icon {

@@ -18,10 +18,14 @@
             </a>
           </li>
         </ul>
-        <button class="btn btn--ter btn--icon btn--fw" @click="addGoal(kpi)">
-          <pkt-icon class="icon" name="plus-sign" />
-          <span>{{ $t('kpi.goals.new') }}</span>
-        </button>
+        <pkt-button
+          skin="tertiary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="addGoal(kpi)"
+        >
+          {{ $t('kpi.goals.new') }}
+        </pkt-button>
       </div>
 
       <div class="goal-form__right">
@@ -75,6 +79,7 @@
 
 <script>
 import { endOfDay, endOfYear, startOfYear } from 'date-fns';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
@@ -90,6 +95,7 @@ export default {
     FormSection,
     BtnDelete,
     BtnSave,
+    PktButton,
   },
 
   props: {
@@ -322,6 +328,8 @@ export default {
     }
 
     button {
+      display: flex;
+      justify-content: center;
       margin-top: auto;
       border-top: 2px solid var(--color-border);
     }

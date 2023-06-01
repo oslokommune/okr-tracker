@@ -418,8 +418,7 @@
     "change": "Update key result",
     "add": "Add key result",
     "notes": {
-      "empty": "Notes can only be seen by team members",
-      "save": "Save notes"
+      "empty": "Notes can only be seen by team members"
     },
     "filter": "Filter"
   },

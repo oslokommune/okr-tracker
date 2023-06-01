@@ -416,8 +416,7 @@
     "change": "Endre nøkkelresultat",
     "add": "Legg til nøkkelresultat",
     "notes": {
-      "empty": "Her kan du skrive notater som bare teamet ditt kan se.",
-      "save": "Lagre notater"
+      "empty": "Her kan du skrive notater som bare teamet ditt kan se."
     },
     "filter": "Filtrer"
   },

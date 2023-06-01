@@ -66,14 +66,6 @@
   color: var(--color-text-secondary);
 }
 
-.btn--ter {
-  background: none;
-
-  &:hover:not([disabled]) {
-    background: rgba(var(--color-grayscale-50-rgb), 0.1);
-  }
-}
-
 .btn--fw {
   justify-content: center;
   width: 100%;

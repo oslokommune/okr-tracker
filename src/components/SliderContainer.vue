@@ -10,16 +10,12 @@
         }"
       >
         <div class="sliderContainer__closeButtonContainer">
-          <button
-            class="btn"
-            :class="{
-              'btn--pri': hasPrimaryBackground,
-              'btn--ter': !hasPrimaryBackground,
-            }"
-            @click.stop="toggle"
-          >
-            <pkt-icon name="close" />
-          </button>
+          <pkt-button
+            :skin="hasPrimaryBackground ? 'primary' : 'tertiary'"
+            variant="icon-only"
+            icon-name="close"
+            @onClick="toggle"
+          />
         </div>
         <div class="sliderContainer__content">
           <slot />
@@ -30,8 +26,14 @@
 </template>
 
 <script>
+import { PktButton } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'SliderContainer',
+
+  components: {
+    PktButton,
+  },
 
   props: {
     isOpen: {
