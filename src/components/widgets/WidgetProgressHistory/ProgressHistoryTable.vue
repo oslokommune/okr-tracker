@@ -48,9 +48,13 @@
               {{ record.comment }}
             </span>
             <v-popover v-if="record.comment && !showComments" placement="top">
-              <i
+              <pkt-button
                 v-tooltip="$t('widget.history.showComment')"
-                class="fa fa-comment-alt record__comment-icon"
+                class="record__comment-icon"
+                size="small"
+                skin="tertiary"
+                variant="icon-only"
+                icon-name="feedback"
               />
               <template slot="popover">
                 {{ record.comment }}
@@ -197,15 +201,7 @@ export default {
 }
 
 .record__comment-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 0.75rem;
-  border-radius: 3px;
-
-  &:hover {
-    background: rgba(var(--color-grayscale-50-rgb), 0.1);
-  }
 }
 
 .record__actions {
