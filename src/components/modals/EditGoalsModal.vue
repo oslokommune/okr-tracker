@@ -317,6 +317,7 @@ export default {
     }
 
     a {
+      color: var(--color-text);
       text-decoration: none;
     }
 
