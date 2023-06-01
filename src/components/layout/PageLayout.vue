@@ -70,8 +70,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use 'sass:map';
-
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
 .container {
