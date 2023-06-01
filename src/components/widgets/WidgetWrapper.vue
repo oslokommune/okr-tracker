@@ -13,7 +13,7 @@
       v-on="collapsable ? { click: toggle } : {}"
     >
       <slot v-if="$slots.header" name="header" />
-      <h3 v-else :class="size === 'small' ? 'title-3' : 'title-2'">
+      <h3 v-else :class="size === 'small' ? 'pkt-txt-16-medium' : 'pkt-txt-18-medium'">
         {{ title }}
       </h3>
 
@@ -92,13 +92,16 @@ export default {
 
   &__header {
     display: flex;
+    gap: 0.5rem;
     align-items: center;
 
-    .title-2,
-    .title-3 {
-      flex: 1 0 auto;
+    h3 {
       margin-bottom: 0;
       color: var(--color-text);
+    }
+
+    .widget__toggle {
+      margin-left: auto;
     }
   }
 
