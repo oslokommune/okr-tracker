@@ -1,39 +1,34 @@
 <template>
   <widget
     size="small"
+    :title="kpi.name"
     :class="['kpi-card-widget', { 'kpi-card-widget--compact': compact }]"
   >
-    <template #header>
-      <h3 class="title-3">{{ kpi.name }}</h3>
-    </template>
-
-    <template #default>
-      <div class="kpi-card-widget__inner">
-        <div class="kpi-card-widget__trend">
-          <period-trend-tag
-            v-if="progress.length"
-            :kpi="kpi"
-            :progress="progress"
-            :compact="compact"
-          />
-          <span v-else-if="!isProgressLoading" class="no-data">
-            {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
-          </span>
-        </div>
-
-        <div class="kpi-card-widget__graph">
-          <mini-graph
-            v-if="progress.length > 1"
-            :kpi-data="progress"
-            :start-value="kpi.startValue"
-            :compact="compact"
-          />
-          <span v-else-if="progress.length === 1" class="no-data">{{
-            $t('kpi.noGraph')
-          }}</span>
-        </div>
+    <div class="kpi-card-widget__inner">
+      <div class="kpi-card-widget__trend">
+        <period-trend-tag
+          v-if="progress.length"
+          :kpi="kpi"
+          :progress="progress"
+          :compact="compact"
+        />
+        <span v-else-if="!isProgressLoading" class="no-data">
+          {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
+        </span>
       </div>
-    </template>
+
+      <div class="kpi-card-widget__graph">
+        <mini-graph
+          v-if="progress.length > 1"
+          :kpi-data="progress"
+          :start-value="kpi.startValue"
+          :compact="compact"
+        />
+        <span v-else-if="progress.length === 1" class="no-data">{{
+          $t('kpi.noGraph')
+        }}</span>
+      </div>
+    </div>
   </widget>
 </template>
 
