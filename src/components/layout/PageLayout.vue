@@ -1,19 +1,5 @@
 <template>
   <div :class="['container', 'pkt-grid', `pkt-grid--${breakpoint}`]">
-    <aside
-      v-if="$slots.sidebar"
-      :class="[
-        'container__sidebar',
-        { 'container__sidebar--right': sidebarPosition === 'right' },
-        'pkt-cell',
-        'pkt-cell--span12',
-        `pkt-cell--span${sidebarCols}-${sidebarBreakpoint}-up`,
-        { widgets: sidebarGrid },
-      ]"
-    >
-      <slot name="sidebar" />
-    </aside>
-
     <main
       v-if="$slots.default"
       :class="[
@@ -27,6 +13,20 @@
     >
       <slot name="default" />
     </main>
+
+    <aside
+      v-if="$slots.sidebar"
+      :class="[
+        'container__sidebar',
+        { 'container__sidebar--left': sidebarPosition === 'left' },
+        'pkt-cell',
+        'pkt-cell--span12',
+        `pkt-cell--span${sidebarCols}-${sidebarBreakpoint}-up`,
+        { widgets: sidebarGrid },
+      ]"
+    >
+      <slot name="sidebar" />
+    </aside>
   </div>
 </template>
 
@@ -82,8 +82,8 @@ export default {
   }
 
   &__sidebar {
-    &--right {
-      order: 1;
+    &--left {
+      order: -1;
     }
   }
 }
