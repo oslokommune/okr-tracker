@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="main__second">
+  <page-layout breakpoint="phablet">
+    <div class="card">
       <div class="back">
         <router-link :to="{ name: 'Login' }">
           {{ $t('login.backToLogin') }}
@@ -28,7 +28,7 @@
         </template>
       </form-section>
     </div>
-  </div>
+  </page-layout>
 </template>
 
 <script>

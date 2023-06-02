@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <main class="main">
+  <page-layout>
+    <template #default>
       <header>
         <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
       </header>
@@ -53,9 +53,9 @@
           />
         </div>
       </section>
-    </main>
+    </template>
 
-    <aside v-if="selectedPeriod?.id && activeItem" class="aside widgets">
+    <template v-if="selectedPeriod?.id && activeItem" #sidebar>
       <widget
         v-if="activePeriod && activePeriod.progression"
         :title="$t(`widget.progression.period`)"
@@ -72,8 +72,8 @@
         :active-item="activeItem"
         :items="periodObjectives"
       />
-    </aside>
-  </div>
+    </template>
+  </page-layout>
 </template>
 
 <script>

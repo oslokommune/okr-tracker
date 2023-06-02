@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <aside class="aside aside--left">
+  <page-layout sidebar-position="left">
+    <template #sidebar>
       <widget :title="appOwner" :collapsable="true" size="small">
         <ul>
           <li v-for="org in tree" :key="`${org.id}-check`" style="margin-bottom: 1rem">
@@ -38,7 +38,7 @@
           </li>
         </ul>
       </widget>
-    </aside>
+    </template>
 
     <ul v-if="user" class="main">
       <li v-if="!hasCheckedOrganizations" class="tree empty-state">
@@ -62,7 +62,7 @@
         </li>
       </template>
     </ul>
-  </div>
+  </page-layout>
 </template>
 
 <script>
@@ -148,9 +148,7 @@ export default {
 }
 
 .card {
-  &:last-child {
-    border-bottom: none;
-  }
+  padding: 0;
 }
 
 .empty-state {

@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="create-container">
+  <page-layout breakpoint="tablet">
+    <div class="card">
       <h1 class="title-1">{{ $t('admin.organization.create') }}</h1>
 
       <form-section>
@@ -52,7 +52,7 @@
         </template>
       </form-section>
     </div>
-  </div>
+  </page-layout>
 </template>
 
 <script>

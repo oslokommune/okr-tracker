@@ -1,34 +1,40 @@
 <template>
-  <div class="container--alt">
-    <template v-if="allKpis.length">
-      <div :class="showKpiDetails ? 'aside--alt widgets' : 'main'">
-        <template v-for="(group, index) in kpiGroups">
-          <kpi-widget-group
-            v-if="group.kpis.length > 0"
-            :key="`kpi-group-${index}`"
-            v-bind="group"
-            :compact="showKpiDetails"
-          />
-        </template>
-      </div>
+  <page-layout
+    :breakpoint="showKpiDetails ? 'desktop' : 'tablet-big'"
+    sidebar-position="left"
+    :sidebar-cols="showKpiDetails ? 3 : 12"
+    :sidebar-grid="showKpiDetails"
+  >
+    <template v-if="allKpis.length" #sidebar>
+      <template v-for="(group, index) in kpiGroups">
+        <kpi-widget-group
+          v-if="group.kpis.length > 0"
+          :key="`kpi-group-${index}`"
+          v-bind="group"
+          :compact="showKpiDetails"
+        />
+      </template>
+    </template>
 
+    <template v-if="allKpis.length" #default>
       <kpi-details v-if="showKpiDetails && activeKpi" :kpi="activeKpi" />
     </template>
 
-    <empty-state
-      v-else
-      :icon="'exclamation'"
-      :heading="$t('empty.noKPIs.heading')"
-      :body="$t('empty.noKPIs.body')"
-    >
-      <router-link
-        v-if="hasEditRights"
-        :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+    <template v-else #default>
+      <empty-state
+        :icon="'exclamation'"
+        :heading="$t('empty.noKPIs.heading')"
+        :body="$t('empty.noKPIs.body')"
       >
-        {{ $t('empty.noKPIs.linkText') }}
-      </router-link>
-    </empty-state>
-  </div>
+        <router-link
+          v-if="hasEditRights"
+          :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
+        >
+          {{ $t('empty.noKPIs.linkText') }}
+        </router-link>
+      </empty-state>
+    </template>
+  </page-layout>
 </template>
 
 <script>

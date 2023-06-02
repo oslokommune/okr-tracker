@@ -155,9 +155,5 @@ export default {
   flex-direction: column;
   gap: 1.5rem;
   margin: 1.5rem 0;
-
-  @media screen and (min-width: bp(l)) {
-    width: span(6, 0, span(8));
-  }
 }
 </style>

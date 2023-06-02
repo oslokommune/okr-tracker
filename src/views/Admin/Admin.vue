@@ -1,15 +1,13 @@
 <template>
-  <div class="container">
-    <div class="admin">
-      <div class="grid">
-        <admin-items class="admin-items"></admin-items>
-        <div class="admin-users">
-          <admin-access-requests v-if="user.superAdmin" />
-          <admin-users />
-        </div>
+  <page-layout>
+    <div class="grid">
+      <admin-items class="admin-items"></admin-items>
+      <div class="admin-users">
+        <admin-access-requests v-if="user.superAdmin" />
+        <admin-users />
       </div>
     </div>
-  </div>
+  </page-layout>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="markdown" class="container">
-    <aside class="aside aside--left">
+  <page-layout v-if="markdown" sidebar-position="left" :sidebar-grid="false">
+    <template #sidebar>
       <widget>
         <ol v-if="toc" class="toc help__toc">
           <h2 class="title-1">{{ $t('help.toc') }}</h2>
@@ -19,14 +19,14 @@
           </li>
         </ol>
       </widget>
-    </aside>
+    </template>
 
-    <main class="main">
+    <template #default>
       <widget>
         <div class="md" v-html="markdown"></div>
       </widget>
-    </main>
-  </div>
+    </template>
+  </page-layout>
 </template>
 
 <script>

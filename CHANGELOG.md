@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file. The format 
 - The site header and navigation bar has been integrated while more view
   specific options are kept in a separate toolbar.
 - The about page has been redesigned.
+- The layout of pages are now based on the Punkt grid.
 
 ### Fixed
 

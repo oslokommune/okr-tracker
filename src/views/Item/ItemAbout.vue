@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <page-layout breakpoint="tablet-big">
     <main class="main">
       <h1 class="pkt-txt-54">{{ activeItem.name }}</h1>
       <section>
@@ -40,7 +40,7 @@
         @close="closeProfileModal"
       />
     </main>
-  </div>
+  </page-layout>
 </template>
 
 <script>

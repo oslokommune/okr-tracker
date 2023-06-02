@@ -18,6 +18,7 @@ import router from '@/router';
 import store from '@/store';
 import i18n from '@/locale/i18n';
 import Spinner from '@/components/VSpinner.vue';
+import PageLayout from '@/components/layout/PageLayout.vue';
 import FormComponent from '@/components/FormComponent.vue';
 
 import { auth } from './config/firebaseConfig';
@@ -53,6 +54,7 @@ VueSelect.props.components.default = () => ({
 });
 
 // Global components
+Vue.component('PageLayout', PageLayout);
 Vue.component('VSelect', VueSelect);
 Vue.component('VueGriddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);

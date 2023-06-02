@@ -68,6 +68,12 @@ $font-size-7: map.get(variables.$font-size, "size-54");
   }
 }
 
+.title-label {
+  color: var(--color-grayscale-40);
+  font-size: 1rem;
+  line-height: 2.5rem;
+}
+
 code {
   padding: 0 0.3em;
   font-size: $font-size-1;
