@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - All buttons are now Punkt-styled.
+- Graphs for percentage measurements are no longer locked to 100% on the y-axis
+  by default.
 
 ## [3.7.0] 2023-06-06
 

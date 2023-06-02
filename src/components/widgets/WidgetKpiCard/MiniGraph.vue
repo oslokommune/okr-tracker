@@ -88,9 +88,7 @@ export default {
       const y = scaleLinear()
         .domain([
           this.startValue === 'min' ? min(this.data, (d) => d.count) : 0,
-          max(this.data, function (d) {
-            return d.count < 1 ? 1 : d.count;
-          }),
+          max(this.data, (d) => d.count),
         ])
         .range([this.chartDefaults.height, 0]);
       axisBottom().scale(x);
