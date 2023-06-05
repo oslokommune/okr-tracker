@@ -170,12 +170,9 @@ export default {
       width: 1.25rem;
       height: 1.25rem;
       line-height: 1.25rem;
+      text-align: center;
       background-color: var(--color-green-light);
       border-radius: 50%;
-
-      svg {
-        height: 1em;
-      }
     }
   }
 }

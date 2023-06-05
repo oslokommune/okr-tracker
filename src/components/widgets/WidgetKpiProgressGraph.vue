@@ -233,8 +233,9 @@ export default {
     }
 
     .vs__open-indicator {
-      height: 1.5rem;
-      margin: 0.25rem 0.4rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0 0.4rem;
       padding: 0rem;
     }
 
