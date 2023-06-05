@@ -82,6 +82,11 @@
       font-size: typography.$font-size-1;
       background-color: var(--color-beige-light);
       border: 0;
+
+      .pkt-icon {
+        min-width: auto;
+        min-height: auto;
+      }
     }
   }
 
@@ -107,7 +112,7 @@
   }
 
   &:focus-within:not(.vs--open) {
-    outline: 4px solid var(--color-visited-light);
+    outline: 2px solid var(--color-active);
 
     .vs__dropdown-toggle {
       border-color: var(--color-active);
