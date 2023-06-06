@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.7.0] 2023-06-06
+
 ### Added
 
 - A new "neutral" choice for the preferred trend of measurements.
@@ -24,6 +26,10 @@ All notable changes to this project will be documented in this file. The format 
 - The about page has been redesigned.
 - The layout of pages are now based on the Punkt grid.
 
+### Removed
+
+- The team member listing on the about page has been removed.
+
 ### Fixed
 
 - Fixed a bug that made pressing Enter on the access request page clear the form
@@ -34,6 +40,10 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed the CSV download function for measurement data (regression introduced in
   version 3.5.0).
 - Fixed misleading percentage change numbers.
+
+### Security
+
+- Updated dependencies.
 
 ## [3.6.0] 2023-05-05
 
