@@ -148,7 +148,6 @@ export default {
           .filter((g) => g.endDate >= this.startDate && g.startDate <= this.endDate),
         kpi,
         startValue: kpi.startValue === 'min' ? null : 0,
-        targetValue: kpi.format === 'percentage' ? 1 : null,
       });
     },
 
