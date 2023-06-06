@@ -34,9 +34,9 @@
         </button>
       </div>
       <div class="users__footer">
-        <button class="btn btn--fw" @click="viewAddUsers = true">
+        <pkt-button skin="secondary" @onClick="viewAddUsers = true">
           {{ $t('admin.users.addUsers') }}
-        </button>
+        </pkt-button>
       </div>
     </div>
 
@@ -47,18 +47,18 @@
     >
       <template #back>
         <div>
-          <button class="btn" @click="selectedUser = null">
+          <pkt-button skin="secondary" @onClick="selectedUser = null">
             {{ $t('admin.users.backToUsers') }}
-          </button>
+          </pkt-button>
         </div>
       </template>
     </edit-user>
     <add-users v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
         <div>
-          <button class="btn" @click="viewAddUsers = false">
+          <pkt-button skin="secondary" @onClick="viewAddUsers = false">
             {{ $t('admin.users.backToUsers') }}
-          </button>
+          </pkt-button>
         </div>
       </template>
     </add-users>
@@ -68,6 +68,7 @@
 <script>
 import { mapState } from 'vuex';
 import Fuse from 'fuse.js';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 const fuseSettings = {
   threshold: 0.5,
@@ -93,6 +94,7 @@ export default {
   components: {
     EditUser: () => import('./EditUser.vue'),
     AddUsers: () => import('./AddUsers.vue'),
+    PktButton,
   },
 
   data: () => ({
@@ -187,5 +189,10 @@ export default {
   margin-top: auto;
   padding: 1rem;
   font-size: 0.79rem;
+
+  .pkt-btn {
+    justify-content: center;
+    width: 100%;
+  }
 }
 </style>

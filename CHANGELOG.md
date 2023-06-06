@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- All buttons are now Punkt-styled.
+
 ## [3.7.0] 2023-06-06
 
 ### Added

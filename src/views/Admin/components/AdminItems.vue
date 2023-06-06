@@ -37,7 +37,7 @@
           <div class="col__footer">
             <router-link
               v-if="user.superAdmin"
-              class="btn btn--fw"
+              class="create-link"
               :to="{ name: 'CreateOrganization' }"
               data-cy="create-organization"
             >
@@ -75,7 +75,7 @@
           </div>
           <div class="col__footer">
             <router-link
-              class="btn btn--fw"
+              class="create-link"
               :to="{ name: 'CreateDepartment' }"
               data-cy="create-department"
             >
@@ -110,7 +110,7 @@
           </div>
           <div class="col__footer">
             <router-link
-              class="btn btn--fw"
+              class="create-link"
               :to="{ name: 'CreateProduct' }"
               data-cy="create-product"
             >
@@ -324,5 +324,19 @@ export default {
 
 .actions {
   margin: 1.5rem 0;
+}
+
+.create-link {
+  display: block;
+  padding: 0.75rem;
+  color: var(--color-text);
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  background: var(--color-grayscale-10);
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>

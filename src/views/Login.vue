@@ -50,27 +50,17 @@
             />
           </form>
         </validation-observer>
-        <button class="btn btn--pri" form="login">{{ $t('login.login') }}</button>
+        <pkt-button form="login">{{ $t('login.login') }}</pkt-button>
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
-        <button
-          v-if="providers.includes('microsoft')"
-          class="btn btn--pri btn--icon btn--icon-pri"
-          @click="loginWithMicrosoft"
-        >
-          <i class="icon fab fa-fw fa-microsoft" />
+        <pkt-button v-if="providers.includes('microsoft')" @onClick="loginWithMicrosoft">
           {{ $t('login.microsoft') }}
-        </button>
+        </pkt-button>
 
-        <button
-          v-if="providers.includes('google')"
-          class="btn btn--icon btn--pri btn--icon-pri"
-          @click="loginWithGoogle"
-        >
-          <i class="icon fab fa-fw fa-google" />
+        <pkt-button v-if="providers.includes('google')" @onClick="loginWithGoogle">
           {{ $t('login.google') }}
-        </button>
+        </pkt-button>
 
         <pkt-button
           v-if="providers.includes('email')"

@@ -345,10 +345,5 @@ export default {
     flex-basis: 45%;
     flex-direction: column;
   }
-
-  .button-row {
-    justify-content: flex-end;
-    margin-top: 2rem;
-  }
 }
 </style>
