@@ -3,7 +3,7 @@
 
 /*
   Some Punkt elements, e.g. inputs, check- and radio-buttons, are still marked
-  work in progress (as per v5.0.6). The following is an attempt to match the
+  work in progress (as per v5.0.8). The following is an attempt to match the
   design in Figma until these are fully implemented in CSS and as components.
 */
 
@@ -80,15 +80,6 @@
     color: var(--color-active);
   }
 
-  &:active {
-    border-width: 4px;
-    outline: 2px solid var(--color-active);
-  }
-
-  &:focus {
-    outline: 2px solid var(--color-active);
-  }
-
   + .pkt-form-label {
     flex-direction: column;
     gap: 0;
@@ -110,9 +101,8 @@
     }
   }
 
-  /* Temporary fix for invalid reference in @oslokommune/punkt-css v5.0.6  */
   &[type='checkbox']:checked {
-    --svg: url(https://punkt-cdn.oslo.kommune.no/latest/components/checkbox.svg);
+    background-color: var(--choice-checked-rb-bc);
   }
 }
 
