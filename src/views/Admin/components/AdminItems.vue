@@ -20,7 +20,10 @@
               :key="organization.id"
               class="col__row"
             >
-              <router-link class="col__link" :to="itemLink(organization.slug)">
+              <router-link
+                class="col__link pkt-txt-16-medium"
+                :to="itemLink(organization.slug)"
+              >
                 <pkt-icon class="icon" name="organization" />
                 <span class="col__text">{{ organization.name }}</span>
                 <pkt-icon v-if="organization.archived" class="icon" name="archive" />
@@ -53,7 +56,10 @@
           </div>
           <div class="col__body">
             <div v-for="department in filteredDeps" :key="department.id" class="col__row">
-              <router-link class="col__link" :to="itemLink(department.slug)">
+              <router-link
+                class="col__link pkt-txt-16-medium"
+                :to="itemLink(department.slug)"
+              >
                 <pkt-icon class="icon" name="district" />
                 <span class="col__text">{{ department.name }}</span>
                 <pkt-icon v-if="department.archived" class="icon" name="archive" />
@@ -85,7 +91,10 @@
           </div>
           <div class="col__body">
             <div v-for="product in filteredProds" :key="product.id" class="col__row">
-              <router-link class="col__link" :to="itemLink(product.slug)">
+              <router-link
+                class="col__link pkt-txt-16-medium"
+                :to="itemLink(product.slug)"
+              >
                 <pkt-icon class="icon" name="house-heart" />
                 <span class="col__text">{{ product.name }}</span>
                 <pkt-icon v-if="product.archived" class="icon" name="archive" />
@@ -280,7 +289,6 @@ export default {
   align-items: center;
   padding: 0.5rem 1rem;
   color: var(--color-text);
-  font-weight: 500;
   text-decoration: none;
   border-bottom: 2px solid var(--color-border);
 

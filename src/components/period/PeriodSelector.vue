@@ -153,6 +153,10 @@ export default {
         // Hide flatpickr arrow
         display: none;
       }
+
+      svg {
+        vertical-align: baseline;
+      }
     }
     &-input {
       display: none;
