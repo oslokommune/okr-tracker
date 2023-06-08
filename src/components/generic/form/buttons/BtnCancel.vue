@@ -1,9 +1,5 @@
 <template>
-  <pkt-button
-    :text="label"
-    :variant="variant"
-    @onClick="$emit('click', $event)"
-  />
+  <pkt-button :text="label" :variant="variant" @onClick="$emit('click', $event)" />
 </template>
 <script>
 import { PktButton } from '@oslokommune/punkt-vue2';

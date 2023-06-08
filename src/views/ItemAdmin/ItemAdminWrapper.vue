@@ -19,7 +19,6 @@ import TabList from '@/components/TabList.vue';
 import TabPanel from '@/components/TabPanel.vue';
 import tabIdsHelper from '@/util/tabUtils';
 import ItemAdminGeneral from './ItemAdminGeneral.vue';
-import ItemAdminOKRs from './ItemAdminOKRs.vue';
 import ItemAdminKPIs from './ItemAdminKPIs.vue';
 
 export default {
@@ -29,7 +28,6 @@ export default {
     TabList,
     TabPanel,
     ItemAdminGeneral,
-    ItemAdminOKRs,
     ItemAdminKPIs,
   },
 
