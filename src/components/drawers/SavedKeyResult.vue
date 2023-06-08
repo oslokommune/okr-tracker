@@ -1,6 +1,6 @@
 <template>
   <div class="saved-key-result">
-    <div v-if="data?.keyResult?.editedBy">
+    <div v-if="!data.newKeyResult">
       <h2 class="title-1">{{ $t('keyResult.updated') }}</h2>
     </div>
     <div v-else>

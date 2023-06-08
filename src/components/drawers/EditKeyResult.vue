@@ -232,12 +232,12 @@ export default {
         this.continue();
       } else {
         this.loading = true;
+        this.newKeyResult = false;
         try {
-          const { id, name, description, unit, weight, startValue, targetValue } =
-            this.keyResult;
+          const { name, description, unit, weight, startValue, targetValue } = this.keyResult;
           const parent = this.activeItemRef;
 
-          if (id) {
+          if (this.keyResult.id) {
             const data = {
               name,
               description: description || '',
@@ -247,9 +247,9 @@ export default {
               targetValue,
               parent,
             };
-            await KeyResult.update(id, data);
+            await KeyResult.update(this.keyResult.id, data);
           } else {
-            const { newKeyResId } = await KeyResult.create({
+            const { id } = await KeyResult.create({
               name,
               description: description || '',
               unit: unit || 1,
@@ -260,9 +260,10 @@ export default {
               parent,
             });
             this.keyResult = {
-              ...db.collection('keyResults').doc(newKeyResId),
-              id: newKeyResId,
+              ...db.collection('keyResults').doc(id),
+              id: id,
             };
+            this.newKeyResult = true
           }
 
           this.TOGGLE_DRAWER({
@@ -271,6 +272,7 @@ export default {
             data: {
               objective: this.data.objective,
               keyResult: this.keyResult,
+              newKeyResult: this.newKeyResult,
             },
           });
         } catch (error) {
