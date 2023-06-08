@@ -18,12 +18,6 @@
           :heading="$t('empty.noPeriods.heading')"
           :body="$t('empty.noPeriods.body')"
         >
-          <router-link
-            v-if="hasEditRights"
-            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-          >
-            {{ $t('empty.noPeriods.buttonText') }}
-          </router-link>
         </empty-state>
         <div v-if="periodObjectives.length && !dataLoading">
           <ul v-if="['compact', 'details'].includes(view)">
@@ -260,6 +254,7 @@ export default {
 
 .btn-new {
   display: flex;
-  justify-content: flex-start;
+  width: auto;
+  background: var(--color-blue-light);
 }
 </style>

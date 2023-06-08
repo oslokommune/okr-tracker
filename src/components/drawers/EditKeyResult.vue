@@ -72,6 +72,8 @@
           <btn-save
             :label="$t('btn.continue')"
             :disabled="!changed || loading"
+            variant="label-only"
+            skin="primary"
             @click="handleSubmit(update)"
           />
         </div>
@@ -85,6 +87,8 @@
           <btn-save
             :label="$t('btn.continue')"
             :disabled="!changed || loading"
+            variant="label-only"
+            skin="primary"
             @click="handleSubmit(update)"
           />
         </div>
@@ -246,7 +250,6 @@ export default {
               parent,
             };
             await KeyResult.update(id, data);
-            await this.$router.push({ query: { type: 'keyResult', id } });
           } else {
             const { newKeyResId } = await KeyResult.create({
               name,
@@ -258,7 +261,10 @@ export default {
               objective: db.collection('objectives').doc(this.data.objective.id),
               parent,
             });
-            await this.$router.push({ query: { type: 'keyResult', newKeyResId } });
+            this.keyResult = {
+              ...db.collection('keyResults').doc(newKeyResId),
+              id: newKeyResId,
+            };
           }
 
           this.TOGGLE_DRAWER({

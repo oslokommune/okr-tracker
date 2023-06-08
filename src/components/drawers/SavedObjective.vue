@@ -5,11 +5,11 @@
     </div>
     <div v-else>
       <h2 class="title-1">{{ $t('objective.created') }}</h2>
-      <div class="saved-objective__button-row">
-        <button class="btn btn--ter" @click="close">{{ $t('btn.close') }}</button>
-        <button class="btn btn--sec" @click="addKeyResults">
+      <div class="saved-objective__button-row btn-group">
+        <pkt-button skin="tertiary" class="btn-close" @onClick="$emit('click', close())">{{ $t('btn.close') }}</pkt-button>
+        <pkt-button skin="secondary" @onClick="$emit('click', addKeyResults())">
           {{ $t('btn.addKeyResults') }}
-        </button>
+        </pkt-button>
       </div>
     </div>
     <clapping-hands class="applause"></clapping-hands>
@@ -19,12 +19,14 @@
 import ClappingHands from '@/components/ClappingHands.vue';
 import { mapMutations } from 'vuex';
 import store from '@/store';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'SavedObjective',
 
   components: {
     ClappingHands,
+    PktButton,
   },
 
   props: {
@@ -68,13 +70,14 @@ export default {
   .saved-objective__button-row {
     padding-left: 2rem;
 
-    .btn--sec {
-      margin-left: 0.5rem;
+    .btn-close {
+      margin-right: 1rem;
     }
   }
   .applause {
     position: fixed;
     bottom: 0;
+    z-index: -1;
   }
 }
 </style>

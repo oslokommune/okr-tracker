@@ -32,12 +32,6 @@
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
         >
-          <router-link
-            v-if="hasEditRights"
-            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-          >
-            {{ $t('empty.noKeyResults.linkText') }}
-          </router-link>
         </empty-state>
 
         <div class="key-results__list">

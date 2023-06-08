@@ -6,7 +6,7 @@
         <h1 class="heading">
           {{ objective.id ? $t('admin.objective.change') : $t('admin.objective.new') }}
         </h1>
-        <form-section>
+        <form-section :hideErrors="true">
           <form-component
             v-model="objective.name"
             input-type="textarea"
@@ -35,11 +35,15 @@
           />
 
           <template v-if="!objective.archived" #actions="{ handleSubmit }">
-            <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
+            <btn-cancel
+              :disabled="loading"
+              @click="TOGGLE_DRAWER({ show: false })" />
             <btn-save
               :label="
                 objective.id ? $t('btn.updateObjective') : $t('btn.createObjective')
               "
+              variant="label-only"
+              skin="primary"
               :disabled="!changed || loading"
               @click="handleSubmit(update)"
             />
@@ -64,11 +68,13 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
+import store from '@/store';
 import Objective from '@/db/Objective';
 import { db } from '@/config/firebaseConfig';
 import firebase from 'firebase/app';
 import locale from 'flatpickr/dist/l10n/no';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'EditObjective',
@@ -81,6 +87,7 @@ export default {
     BtnSave,
     BtnDelete,
     BtnCancel,
+    PktButton
   },
 
   props: {
@@ -176,9 +183,8 @@ export default {
             data.period = period;
           }
           await Objective.update(id, data);
-          await this.$router.push({ query: { type: 'objective', id } });
         } else {
-          const { newObjectiveId } = await Objective.create({
+          const { id } = await Objective.create({
             name,
             description: description || '',
             weight: weight || 1,
@@ -187,10 +193,10 @@ export default {
             endDate: end,
           });
           this.objective = {
-            ...db.collection('objectives').doc(newObjectiveId),
-            newObjectiveId,
+            ...db.collection('objectives').doc(id),
+            id: id,
           };
-          await this.$router.push({ query: { type: 'objective', newObjectiveId } });
+          await store.dispatch('set_active_objective', id);
         }
 
         this.TOGGLE_DRAWER({
