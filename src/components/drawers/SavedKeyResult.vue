@@ -6,10 +6,10 @@
     <div v-else>
       <h2 class="title-1">{{ $t('keyResult.created') }}</h2>
       <div class="saved-key-result__button-row">
-        <button class="btn btn--ter" @click="close">{{ $t('btn.close') }}</button>
-        <button class="btn btn--sec" @click="addKeyResult">
-          {{ $t('btn.addKeyResult') }}
-        </button>
+        <pkt-button skin="tertiary" class="btn-close" @onClick="$emit('click', close())">{{ $t('btn.close') }}</pkt-button>
+        <pkt-button skin="secondary" @onClick="$emit('click', addKeyResults())">
+          {{ $t('btn.addKeyResults') }}
+        </pkt-button>
       </div>
     </div>
     <clapping-hands class="applause"></clapping-hands>
@@ -17,6 +17,7 @@
 </template>
 <script>
 import ClappingHands from '@/components/ClappingHands.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { mapMutations } from 'vuex';
 import store from '@/store';
 
@@ -25,6 +26,7 @@ export default {
 
   components: {
     ClappingHands,
+    PktButton,
   },
 
   props: {
@@ -45,7 +47,7 @@ export default {
     close() {
       store.commit('TOGGLE_DRAWER', '');
     },
-    addKeyResult() {
+    addKeyResults() {
       this.TOGGLE_DRAWER({
         type: 'keyResult',
         show: true,
@@ -68,13 +70,14 @@ export default {
   .saved-key-result__button-row {
     padding-left: 2rem;
 
-    .btn--sec {
-      margin-left: 0.5rem;
+    .btn-close {
+      margin-right: 1rem;
     }
   }
   .applause {
     position: fixed;
     bottom: 0;
+    z-index: -1;
   }
 }
 </style>

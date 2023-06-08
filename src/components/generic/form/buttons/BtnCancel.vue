@@ -1,13 +1,20 @@
+<template>
+  <pkt-button
+    :text="label"
+    :variant="variant"
+    @onClick="$emit('click', $event)"
+  />
+</template>
 <script>
-import Btn from './BtnBase.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'BtnCancel',
 
   components: {
-    Btn,
+    PktButton,
   },
-  extends: Btn,
+  extends: PktButton,
 
   props: {
     label: {
