@@ -264,18 +264,6 @@ export default {
   padding: 0 2rem 0 2rem;
 }
 
-.delete {
-  position: absolute;
-  right: 2rem;
-  bottom: 2rem;
-}
-
-.editObjective__footer {
-  margin-top: auto;
-  padding: 1rem;
-  font-size: 0.79rem;
-}
-
 .footer {
   display: flex;
   flex-direction: row;

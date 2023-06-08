@@ -1,105 +1,109 @@
 <template>
   <div class="editKeyResult">
-    <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
-    <span class="steps">{{ $t('general.step', { step: step }) }}</span>
-    <h1 class="heading">
-      {{ keyResult.id ? $t('admin.keyResult.change') : $t('admin.keyResult.new') }}
-    </h1>
-    <archived-restore
-      v-if="keyResult && keyResult.archived"
-      :restore="restore"
-      :object-type="$t('archived.keyResult')"
-    />
-    <form-section>
-      <div v-if="step === 1">
-        <form-component
-          v-model="keyResult.name"
-          input-type="textarea"
-          name="name"
-          :rows="2"
-          :label="$t('fields.name')"
-          rules="required"
-        />
-        <form-component
-          v-model="keyResult.description"
-          input-type="textarea"
-          name="description"
-          :rows="2"
-          :label="$t('fields.description')"
-        />
-        <form-component
-          v-if="isOrganization || isDepartment"
-          v-model="keyResult.parent"
-          name="owner"
-          input-type="select"
-          :select-options="ownerOptions"
-          :label="$t('fields.owner')"
-          rules="required"
-        />
-      </div>
-
-      <div v-if="step === 2">
-        <form-component
-          v-model="keyResult.unit"
-          input-type="input"
-          name="unit"
-          :label="$t('keyResult.unit')"
-          rules="required|max:25"
-        />
-        <div class="form-row">
-          <form-component
-            v-model.number="keyResult.startValue"
-            input-type="input"
-            name="startValue"
-            :label="$t('keyResult.startValue')"
-            rules="required"
-            type="number"
-            class="form-column"
-          />
-
-          <form-component
-            v-model.number="keyResult.targetValue"
-            input-type="input"
-            name="targetValue"
-            :label="$t('keyResult.targetValue')"
-            rules="required"
-            type="number"
-            class="form-column"
-          />
-        </div>
-      </div>
-      <template v-if="!keyResult.archived" #actions="{ handleSubmit }">
+    <div class="body">
+      <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
+      <span class="steps">{{ $t('general.step', { step: step }) }}</span>
+      <h1 class="heading">
+        {{ keyResult.id ? $t('admin.keyResult.change') : $t('admin.keyResult.new') }}
+      </h1>
+      <form-section>
         <div v-if="step === 1">
-          <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
-          <btn-save
-            :label="$t('btn.continue')"
-            :disabled="!changed || loading"
-            variant="label-only"
-            skin="primary"
-            class="btn-continue"
-            @click="handleSubmit(update)"
+          <form-component
+            v-model="keyResult.name"
+            input-type="textarea"
+            name="name"
+            :rows="2"
+            :label="$t('fields.name')"
+            rules="required"
+          />
+          <form-component
+            v-model="keyResult.description"
+            input-type="textarea"
+            name="description"
+            :rows="2"
+            :label="$t('fields.description')"
+          />
+          <form-component
+            v-if="isOrganization || isDepartment"
+            v-model="keyResult.parent"
+            name="owner"
+            input-type="select"
+            :select-options="ownerOptions"
+            :label="$t('fields.owner')"
+            rules="required"
           />
         </div>
-        <div v-if="step === 2" class="button-row">
-          <pkt-button
-            v-tooltip="$t('btn.back')"
-            :text="$t('btn.back')"
-            variant="tertiary"
-            @onClick="$emit('click', back())"
+
+        <div v-if="step === 2">
+          <form-component
+            v-model="keyResult.unit"
+            input-type="input"
+            name="unit"
+            :label="$t('keyResult.unit')"
+            rules="required|max:25"
           />
-          <btn-save
-            :label="$t('btn.complete')"
-            :disabled="!changed || loading"
-            variant="label-only"
-            skin="primary"
-            @click="handleSubmit(update)"
-          />
+          <div class="form-row">
+            <form-component
+              v-model.number="keyResult.startValue"
+              input-type="input"
+              name="startValue"
+              :label="$t('keyResult.startValue')"
+              rules="required"
+              type="number"
+              class="form-column"
+            />
+
+            <form-component
+              v-model.number="keyResult.targetValue"
+              input-type="input"
+              name="targetValue"
+              :label="$t('keyResult.targetValue')"
+              rules="required"
+              type="number"
+              class="form-column"
+            />
+          </div>
         </div>
-        <div v-if="keyResult.id" class="delete">
-          <btn-delete :disabled="loading" @click="archive" />
-        </div>
-      </template>
-    </form-section>
+        <template v-if="!keyResult.archived" #actions="{ handleSubmit }">
+          <div v-if="step === 1">
+            <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
+            <btn-save
+              :label="$t('btn.continue')"
+              :disabled="!changed || loading"
+              variant="label-only"
+              skin="primary"
+              class="btn-continue"
+              @click="handleSubmit(update)"
+            />
+          </div>
+          <div v-if="step === 2" class="button-row">
+            <pkt-button
+              v-tooltip="$t('btn.back')"
+              :text="$t('btn.back')"
+              variant="tertiary"
+              @onClick="$emit('click', back())"
+            />
+            <btn-save
+              :label="$t('btn.complete')"
+              :disabled="!changed || loading"
+              variant="label-only"
+              skin="primary"
+              @click="handleSubmit(update)"
+            />
+          </div>
+        </template>
+      </form-section>
+    </div>
+    <div class="footer">
+      <archived-restore
+        v-if="keyResult && keyResult.archived"
+        :restore="restore"
+        :object-type="$t('archived.keyResult')"
+      />
+      <div v-if="keyResult.id && !keyResult.archived" class="delete">
+        <btn-delete :disabled="loading" @click="archive" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -319,6 +323,10 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .editKeyResult {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 4rem);
+  min-height: 100%;
   padding: 0 2.5rem 2.5rem 2.5rem;
 }
 
@@ -326,6 +334,12 @@ export default {
   padding-bottom: 1rem;
   @include get-text('pkt-txt-30-medium');
   color: var(--color-text);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .steps {
@@ -355,9 +369,9 @@ export default {
   margin-left: 1rem;
 }
 
-.delete {
-  position: absolute;
-  right: 2rem;
-  bottom: 2rem;
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
 }
 </style>
