@@ -138,6 +138,14 @@ export default {
         );
       },
     },
+    keyResults: {
+      immediate: true,
+      handler() {
+        this.keyRes = this.keyResults.filter(
+          (keyRes) => keyRes.objective === `objectives/${this.activeObjective.id}`
+        );
+      },
+    },
   },
 
   methods: {
