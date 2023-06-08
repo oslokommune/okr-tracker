@@ -15,7 +15,7 @@
       <template v-if="user">
         <hr class="pkt-hr" />
 
-        <organization-selector :org-id="orgId" @select="setOrgId" />
+        <organization-selector :org-id="orgId" @select="setActiveOrganization" />
 
         <hr class="pkt-hr" />
 
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import OrganizationSelector from './header/OrganizationSelector.vue';
 import OrganizationTree from './header/OrganizationTree.vue';
 
@@ -55,12 +55,11 @@ export default {
 
   data: () => ({
     appVersion: __APP_VERSION__, // eslint-disable-line no-undef
-    selectedOrgId: null,
   }),
 
   computed: {
     ...mapState(['user']),
-    ...mapGetters(['tree']),
+    ...mapGetters(['tree', 'activeOrganization']),
 
     defaultOrgId() {
       for (const org of this.tree) {
@@ -83,14 +82,12 @@ export default {
     },
 
     orgId() {
-      return this.selectedOrgId || this.defaultOrgId;
+      return this.activeOrganization?.id || this.defaultOrgId;
     },
   },
 
   methods: {
-    setOrgId(orgId) {
-      this.selectedOrgId = orgId;
-    },
+    ...mapActions(['setActiveOrganization']),
   },
 };
 </script>

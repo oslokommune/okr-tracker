@@ -4,6 +4,7 @@ import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
 import { sortByLocale } from '@/store/actions/actionUtils';
 
+import defaultPreferences from '@/db/User/defaultPreferences';
 import moduleActions from './actions';
 
 Vue.use(Vuex);
@@ -151,6 +152,15 @@ export const getters = {
 
     return checked.length > 0;
   },
+
+  activeOrganization: (state) => {
+    const { organizations, user } = state;
+    const organizationSlug = user?.preferences?.homeOrganization;
+    if (!organizationSlug) {
+      return null;
+    }
+    return organizations.find((org) => org.slug === organizationSlug) || null;
+  },
 };
 
 export const actions = {
@@ -182,6 +192,14 @@ export const actions = {
   setSelectedPeriod: async ({ commit }, payload) => {
     commit('SET_SELECTED_PERIOD', payload);
     return true;
+  },
+
+  setActiveOrganization: async ({ commit, dispatch, state }, orgId) => {
+    const orgSlug = orgId
+      ? state.organizations.find((org) => org.id === orgId)?.slug || null
+      : null;
+    commit('SET_HOME_ORGANIZATION', orgSlug);
+    dispatch('update_preferences');
   },
 };
 
@@ -218,6 +236,13 @@ export const mutations = {
 
   SET_SELECTED_PERIOD(state, payload) {
     state.selectedPeriod = payload;
+  },
+
+  SET_HOME_ORGANIZATION(state, orgSlug) {
+    if (!state.user.preferences) {
+      state.user.preferences = defaultPreferences;
+    }
+    state.user.preferences.homeOrganization = orgSlug;
   },
 };
 
