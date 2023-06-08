@@ -9,14 +9,13 @@
         <div class="objective__heading">
           <h2 class="title-1">{{ activeObjective.name }}</h2>
           <div class="objective__edit">
-            <btn
+            <pkt-button
               v-tooltip="$t('objective.change')"
-              icon="edit"
-              :label="$t('objective.change')"
-              :hide-label="true"
-              variant="tertiary"
-              class="objective__edit"
-              @click="toggleDrawer('objective')"
+              icon-name="edit"
+              :text="$t('objective.change')"
+              :variant="'icon-only'"
+              skin="tertiary"
+              @onClick="$emit('click', toggleDrawer('objective'))"
             />
           </div>
         </div>
@@ -44,13 +43,16 @@
           />
         </div>
       </section>
-      <button
-        class="miller__add btn btn--ter btn--icon btn--fw key-result__new"
-        @click="toggleDrawer('keyResult')"
-      >
-        <i class="icon fa fa-plus" />
-        <span>{{ $t('btn.createKeyResult') }}</span>
-      </button>
+      <div :data-mode="(!keyRes.length) ? 'dark' : ''">
+        <pkt-button
+          v-tooltip="$t('btn.createKeyResult')"
+          :text="$t('btn.createKeyResult')"
+          :skin="!keyRes.length ? 'primary' : 'tertiary'"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="$emit('click', toggleDrawer('keyResult'))"
+        />
+      </div>
     </template>
 
     <template #sidebar>
@@ -78,7 +80,7 @@ import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
-import { Btn } from '@/components/generic/form/buttons';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ObjectiveHome',
@@ -89,8 +91,8 @@ export default {
     WidgetWeights,
     WidgetObjectiveDetails,
     ProgressionChart,
-    Btn,
     EmptyState: () => import('@/components/EmptyState.vue'),
+    PktButton,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -169,11 +171,6 @@ export default {
 .key-result__new {
   display: flex;
   justify-content: flex-start;
-}
-
-.objective__edit {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .objective__heading {
