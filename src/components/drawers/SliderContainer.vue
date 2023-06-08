@@ -38,26 +38,6 @@ export default {
     PktButton,
   },
 
-  props: {
-    isOpen: {
-      type: Boolean,
-      required: true,
-    },
-    hasPrimaryBackground: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    shouldSlideInFromLeft: {
-      type: Boolean,
-      required: true,
-    },
-    toggle: {
-      type: Function,
-      required: true,
-    },
-  },
-
   computed: {
     ...mapState(['drawer']),
     shouldSlideInFromLeft() {

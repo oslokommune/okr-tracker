@@ -1,5 +1,5 @@
 <template>
-  <div class="editKeyResult">
+  <div class="editKeyResult" >
     <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
     <span class="steps">{{ $t('general.step', { step: step }) }}</span>
     <h1 class="heading">
@@ -54,6 +54,7 @@
             :label="$t('keyResult.startValue')"
             rules="required"
             type="number"
+            class="form-column"
           />
 
           <form-component
@@ -63,6 +64,7 @@
             :label="$t('keyResult.targetValue')"
             rules="required"
             type="number"
+            class="form-column"
           />
         </div>
       </div>
@@ -75,17 +77,18 @@
             variant="label-only"
             skin="primary"
             @click="handleSubmit(update)"
+            class="btn-continue"
           />
         </div>
-        <div v-if="step === 2">
-          <btn
+        <div v-if="step === 2" class="button-row">
+          <pkt-button
             v-tooltip="$t('btn.back')"
-            :label="$t('btn.back')"
+            :text="$t('btn.back')"
             variant="tertiary"
-            @click="back()"
+            @onClick="$emit('click', back())"
           />
           <btn-save
-            :label="$t('btn.continue')"
+            :label="$t('btn.complete')"
             :disabled="!changed || loading"
             variant="label-only"
             skin="primary"
@@ -103,8 +106,8 @@
 import { mapMutations, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import getActiveItemType from '@/util/getActiveItemType';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import {
-  Btn,
   FormSection,
   BtnSave,
   BtnDelete,
@@ -119,7 +122,7 @@ export default {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ContentLoaderOkrDetails: () =>
       import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
-    Btn,
+    PktButton,
     FormSection,
     BtnSave,
     BtnDelete,
@@ -330,6 +333,28 @@ export default {
 .steps {
   @include get-text('pkt-txt-16-medium');
   color: var(--color-grayscale-40);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 1rem;
+
+  .form-column {
+    flex: 1;
+  }
+}
+
+.button-row {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.btn-continue {
+  margin-left: 1rem;
 }
 
 .delete {

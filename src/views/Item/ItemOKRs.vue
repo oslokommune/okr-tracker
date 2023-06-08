@@ -46,13 +46,16 @@
             :item="activeItem"
           />
         </div>
-        <button
-          class="miller__add btn btn--ter btn--icon btn--fw btn-new"
-          @click="openObjectiveDrawer"
-        >
-          <i class="icon fa fa-plus" />
-          <span>{{ $t('btn.createObjective') }}</span>
-        </button>
+        <div :data-mode="(!periodObjectives.length && !dataLoading) ? 'dark' : ''">
+          <pkt-button
+            v-tooltip="$t('btn.createObjective')"
+            :text="$t('btn.createObjective')"
+            :skin="(!periodObjectives.length && !dataLoading) ? 'primary' : 'tertiary'"
+            variant="icon-left"
+            icon-name="plus-sign"
+            @onClick="$emit('click', openObjectiveDrawer())"
+          />
+        </div>
       </section>
     </template>
 
@@ -87,6 +90,7 @@ import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActi
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ItemHome',
@@ -102,6 +106,7 @@ export default {
     ProgressionChart,
     ContentLoaderItem,
     ContentLoaderActionBar,
+    PktButton,
   },
 
   data: () => ({
@@ -250,11 +255,5 @@ export default {
   > ul {
     padding-bottom: 0.5rem;
   }
-}
-
-.btn-new {
-  display: flex;
-  width: auto;
-  background: var(--color-blue-light);
 }
 </style>

@@ -265,21 +265,6 @@ export default {
   padding: 0 2rem 0 2rem;
 }
 
-.form-row {
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: minmax(10rem, 2fr) auto minmax(10rem, 2fr);
-  align-items: end;
-  margin: 1rem 0;
-
-  & .form-group {
-    margin: 0;
-  }
-  .form-field + .form-field {
-    margin-left: 1rem;
-  }
-}
-
 .delete {
   position: absolute;
   right: 2rem;
