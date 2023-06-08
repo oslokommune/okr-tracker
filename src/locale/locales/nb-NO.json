@@ -179,7 +179,6 @@
     "frontPage": "Forside",
     "signIn": "Vennligst logg inn",
     "orgs": "Virksomheter",
-    "emptyHome": "Vennligst velg en etat fra listen.",
     "api": "API",
     "resultIndicator": "Resultatindikator",
     "keyFigures": "Nøkkeltall",
@@ -191,6 +190,10 @@
     "displayedAs": "Vises som: ",
     "today": "I dag",
     "view": "Visning"
+  },
+  "home": {
+    "welcome": "Velkommen til {appName}!",
+    "changeOrganization": "Bytt virksomhet"
   },
   "about": {
     "about": "Om",

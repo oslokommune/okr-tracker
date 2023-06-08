@@ -181,7 +181,6 @@
     "frontPage": "Front page",
     "signIn": "Please sign in",
     "orgs": "Organizations",
-    "emptyHome": "Please pick an organization.",
     "api": "API",
     "resultIndicator": "Result indicator",
     "keyFigures": "Key figures",
@@ -193,6 +192,10 @@
     "displayedAs": "Displayed as: ",
     "today": "Today",
     "view": "View"
+  },
+  "home": {
+    "welcome": "Welcome to {appName}!",
+    "changeOrganization": "Change organization"
   },
   "about": {
     "about": "About",
