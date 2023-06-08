@@ -234,7 +234,8 @@ export default {
         this.loading = true;
         this.newKeyResult = false;
         try {
-          const { name, description, unit, weight, startValue, targetValue } = this.keyResult;
+          const { name, description, unit, weight, startValue, targetValue } =
+            this.keyResult;
           const parent = this.activeItemRef;
 
           if (this.keyResult.id) {
@@ -261,9 +262,9 @@ export default {
             });
             this.keyResult = {
               ...db.collection('keyResults').doc(id),
-              id: id,
+              id,
             };
-            this.newKeyResult = true
+            this.newKeyResult = true;
           }
 
           this.TOGGLE_DRAWER({
