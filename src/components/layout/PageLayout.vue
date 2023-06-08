@@ -1,32 +1,42 @@
 <template>
-  <div :class="['container', 'pkt-grid', `pkt-grid--${breakpoint}`]">
-    <main
-      v-if="$slots.default"
-      :class="[
-        'container__main',
-        'pkt-cell',
-        'pkt-cell--span12',
-        $slots.sidebar
-          ? `pkt-cell--span${12 - sidebarCols}-${sidebarBreakpoint}-up`
-          : null,
-      ]"
-    >
-      <slot name="default" />
-    </main>
+  <div class="page">
+    <header v-if="$slots.header" class="page__header">
+      <slot name="header" />
+    </header>
 
-    <aside
-      v-if="$slots.sidebar"
-      :class="[
-        'container__sidebar',
-        { 'container__sidebar--left': sidebarPosition === 'left' },
-        'pkt-cell',
-        'pkt-cell--span12',
-        `pkt-cell--span${sidebarCols}-${sidebarBreakpoint}-up`,
-        { widgets: sidebarGrid },
-      ]"
-    >
-      <slot name="sidebar" />
-    </aside>
+    <div :class="['page__container', 'pkt-grid', `pkt-grid--${breakpoint}`]">
+      <main
+        v-if="$slots.default"
+        :class="[
+          'page__main',
+          'pkt-cell',
+          'pkt-cell--span12',
+          $slots.sidebar
+            ? `pkt-cell--span${12 - sidebarCols}-${sidebarBreakpoint}-up`
+            : null,
+        ]"
+      >
+        <slot name="default" />
+      </main>
+
+      <aside
+        v-if="$slots.sidebar"
+        :class="[
+          'page__sidebar',
+          { 'page__sidebar--left': sidebarPosition === 'left' },
+          'pkt-cell',
+          'pkt-cell--span12',
+          `pkt-cell--span${sidebarCols}-${sidebarBreakpoint}-up`,
+          { widgets: sidebarGrid },
+        ]"
+      >
+        <slot name="sidebar" />
+      </aside>
+    </div>
+
+    <footer v-if="$slots.footer" class="page__footer">
+      <slot name="footer" />
+    </footer>
   </div>
 </template>
 
@@ -72,13 +82,27 @@ export default {
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-.container {
-  padding: 1.5rem;
+.page {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
-  @each $bp-name, $padding in ('tablet-up': 2, 'laptop-up': 3.5) {
-    @include bp('#{$bp-name}') {
-      padding: #{$padding}rem 1.5rem;
+  &__header {
+    padding: 1.5rem;
+  }
+
+  &__container {
+    padding: 1.5rem;
+
+    @each $bp-name, $padding in ('tablet-up': 2, 'laptop-up': 3.5) {
+      @include bp('#{$bp-name}') {
+        padding: #{$padding}rem 1.5rem;
+      }
     }
+  }
+
+  &__footer {
+    margin-top: auto;
   }
 
   &__sidebar {
