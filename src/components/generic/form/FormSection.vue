@@ -38,16 +38,16 @@
 export default {
   name: 'FormSection',
 
+  components: {
+    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+  },
+
   props: {
     hideErrors: {
       type: Boolean,
       required: false,
-      default: false
-    }
-  },
-
-  components: {
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+      default: false,
+    },
   },
 
   methods: {

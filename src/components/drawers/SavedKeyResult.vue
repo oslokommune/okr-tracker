@@ -6,7 +6,12 @@
     <div v-else>
       <h2 class="title-1">{{ $t('keyResult.created') }}</h2>
       <div class="saved-key-result__button-row">
-        <pkt-button skin="tertiary" class="btn-close" @onClick="$emit('click', close())">{{ $t('btn.close') }}</pkt-button>
+        <pkt-button
+          skin="tertiary"
+          class="btn-close"
+          @onClick="$emit('click', close())"
+          >{{ $t('btn.close') }}</pkt-button
+        >
         <pkt-button skin="secondary" @onClick="$emit('click', addKeyResults())">
           {{ $t('btn.addKeyResults') }}
         </pkt-button>

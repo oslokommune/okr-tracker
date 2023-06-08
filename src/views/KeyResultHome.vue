@@ -6,14 +6,13 @@
         <div class="keyResult__heading">
           <h2 class="title-1">{{ activeKeyResult.name }}</h2>
           <div class="keyResult__edit">
-            <btn
+            <pkt-button
               v-tooltip="$t('admin.keyResult.change')"
-              icon="edit"
-              :label="$t('admin.keyResult.change')"
-              :hide-label="true"
-              variant="tertiary"
-              class="keyResult__edit"
-              @click="editKeyResult()"
+              icon-name="edit"
+              :text="$t('admin.keyResult.change')"
+              :variant="'icon-only'"
+              skin="tertiary"
+              @onClick="$emit('click', editKeyResult())"
             />
           </div>
         </div>
@@ -108,7 +107,7 @@ import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.
 import KeyResultProgressDetails from '@/components/KeyResultProgressDetails.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
-import { Btn } from '@/components/generic/form/buttons';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'KeyResultHome',
@@ -122,7 +121,7 @@ export default {
     WidgetKeyResultDetails,
     WidgetKeyResultNotes,
     WidgetProgressHistory,
-    Btn,
+    PktButton,
   },
 
   beforeRouteUpdate: routerGuard,

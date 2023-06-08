@@ -1,5 +1,5 @@
 <template>
-  <div class="editKeyResult" >
+  <div class="editKeyResult">
     <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
     <span class="steps">{{ $t('general.step', { step: step }) }}</span>
     <h1 class="heading">
@@ -76,8 +76,8 @@
             :disabled="!changed || loading"
             variant="label-only"
             skin="primary"
-            @click="handleSubmit(update)"
             class="btn-continue"
+            @click="handleSubmit(update)"
           />
         </div>
         <div v-if="step === 2" class="button-row">
@@ -107,12 +107,7 @@ import { mapMutations, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import getActiveItemType from '@/util/getActiveItemType';
 import { PktButton } from '@oslokommune/punkt-vue2';
-import {
-  FormSection,
-  BtnSave,
-  BtnDelete,
-  BtnCancel,
-} from '@/components/generic/form';
+import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
 import KeyResult from '@/db/KeyResult';
 
 export default {
@@ -338,8 +333,8 @@ export default {
 .form-row {
   display: flex;
   flex-direction: row;
-  width: 100%;
   gap: 1rem;
+  width: 100%;
 
   .form-column {
     flex: 1;
@@ -347,10 +342,10 @@ export default {
 }
 
 .button-row {
-  width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+  width: 100%;
 }
 
 .btn-continue {

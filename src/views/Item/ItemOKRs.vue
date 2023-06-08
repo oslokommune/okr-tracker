@@ -46,11 +46,11 @@
             :item="activeItem"
           />
         </div>
-        <div :data-mode="(!periodObjectives.length && !dataLoading) ? 'dark' : ''">
+        <div :data-mode="!periodObjectives.length && !dataLoading ? 'dark' : ''">
           <pkt-button
             v-tooltip="$t('btn.createObjective')"
             :text="$t('btn.createObjective')"
-            :skin="(!periodObjectives.length && !dataLoading) ? 'primary' : 'tertiary'"
+            :skin="!periodObjectives.length && !dataLoading ? 'primary' : 'tertiary'"
             variant="icon-left"
             icon-name="plus-sign"
             @onClick="$emit('click', openObjectiveDrawer())"

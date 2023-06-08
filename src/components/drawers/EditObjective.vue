@@ -6,7 +6,7 @@
         <h1 class="heading">
           {{ objective.id ? $t('admin.objective.change') : $t('admin.objective.new') }}
         </h1>
-        <form-section :hideErrors="true">
+        <form-section :hide-errors="true">
           <form-component
             v-model="objective.name"
             input-type="textarea"
@@ -35,9 +35,7 @@
           />
 
           <template v-if="!objective.archived" #actions="{ handleSubmit }">
-            <btn-cancel
-              :disabled="loading"
-              @click="TOGGLE_DRAWER({ show: false })" />
+            <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
             <btn-save
               :label="
                 objective.id ? $t('btn.updateObjective') : $t('btn.createObjective')
@@ -74,7 +72,6 @@ import { db } from '@/config/firebaseConfig';
 import firebase from 'firebase/app';
 import locale from 'flatpickr/dist/l10n/no';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
-import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'EditObjective',
@@ -87,7 +84,6 @@ export default {
     BtnSave,
     BtnDelete,
     BtnCancel,
-    PktButton
   },
 
   props: {
@@ -160,11 +156,12 @@ export default {
     },
     async update() {
       this.loading = true;
+      this.newObjective = false;
       try {
-        const { id, name, description, weight, period } = this.objective;
+        const { name, description, weight, period } = this.objective;
         const [start, end] = this.periodRange;
 
-        if (id) {
+        if (this.objective.id) {
           const data = {
             name,
             description: description || '',
@@ -182,7 +179,7 @@ export default {
           } else {
             data.period = period;
           }
-          await Objective.update(id, data);
+          await Objective.update(this.objective.id, data);
         } else {
           const { id } = await Objective.create({
             name,
@@ -194,8 +191,9 @@ export default {
           });
           this.objective = {
             ...db.collection('objectives').doc(id),
-            id: id,
+            id,
           };
+          this.newObjective = true;
           await store.dispatch('set_active_objective', id);
         }
 
@@ -204,6 +202,7 @@ export default {
           show: true,
           data: {
             objective: this.objective,
+            newObjective: this.newObjective,
           },
         });
       } catch (error) {

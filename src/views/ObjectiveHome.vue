@@ -43,7 +43,7 @@
           />
         </div>
       </section>
-      <div :data-mode="(!keyRes.length) ? 'dark' : ''">
+      <div :data-mode="!keyRes.length ? 'dark' : ''">
         <pkt-button
           v-tooltip="$t('btn.createKeyResult')"
           :text="$t('btn.createKeyResult')"
