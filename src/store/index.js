@@ -134,25 +134,6 @@ export const getters = {
     ];
   },
 
-  hasCheckedOrganizations: (state) => {
-    const { organizations, user } = state;
-    const orgs = user.preferences?.home?.collapse?.organization;
-
-    if (!orgs) {
-      return false;
-    }
-
-    const checked = [];
-
-    organizations.forEach((org) => {
-      if (orgs[org.slug]) {
-        checked.push(orgs[org.slug]);
-      }
-    });
-
-    return checked.length > 0;
-  },
-
   activeOrganization: (state) => {
     const { organizations, user } = state;
     const organizationSlug = user?.preferences?.homeOrganization;
