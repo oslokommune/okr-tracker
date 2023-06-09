@@ -10,7 +10,6 @@
         v-else-if="drawer.type === 'savedKeyResult'"
         :data="drawer.data"
       />
-      <user-profile-menu v-else-if="drawer.type === 'profile'" :id="user.id" />
     </slider-container>
     <v-spinner v-if="loading" />
 
@@ -28,7 +27,6 @@ import EditObjective from '@/components/drawers/EditObjective.vue';
 import SavedObjective from '@/components/drawers/SavedObjective.vue';
 import EditKeyResult from '@/components/drawers/EditKeyResult.vue';
 import SavedKeyResult from '@/components/drawers/SavedKeyResult.vue';
-import UserProfileMenu from './drawers/UserProfileMenu.vue';
 import SiteHeader from './Navigation/SiteHeader.vue';
 
 export default {
@@ -36,7 +34,6 @@ export default {
   components: {
     SiteHeader,
     SliderContainer,
-    UserProfileMenu,
     EditObjective,
     SavedObjective,
     EditKeyResult,

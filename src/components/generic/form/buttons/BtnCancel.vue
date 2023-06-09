@@ -1,5 +1,5 @@
 <template>
-  <pkt-button :text="label" :variant="variant" @onClick="$emit('click', $event)" />
+  <pkt-button :text="label" :skin="skin" @onClick="$emit('click', $event)" />
 </template>
 <script>
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -20,7 +20,7 @@ export default {
         return this.$t('btn.cancel');
       },
     },
-    variant: {
+    skin: {
       type: String,
       required: false,
       default: 'tertiary',

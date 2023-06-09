@@ -1,8 +1,18 @@
 <template>
   <page-layout>
     <template #default>
-      <header>
+      <header class="itemOKRs__header">
         <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
+        <div data-mode="dark">
+          <pkt-button
+            v-tooltip="$t('btn.createObjective')"
+            :text="$t('btn.createObjective')"
+            skin="primary"
+            variant="icon-left"
+            icon-name="plus-sign"
+            @onClick="$emit('click', openObjectiveDrawer())"
+          />
+        </div>
       </header>
 
       <section>
@@ -44,16 +54,6 @@
             v-else-if="view === 'timeline'"
             :objectives="periodObjectives"
             :item="activeItem"
-          />
-        </div>
-        <div :data-mode="!periodObjectives.length && !dataLoading ? 'dark' : ''">
-          <pkt-button
-            v-tooltip="$t('btn.createObjective')"
-            :text="$t('btn.createObjective')"
-            :skin="!periodObjectives.length && !dataLoading ? 'primary' : 'tertiary'"
-            variant="icon-left"
-            icon-name="plus-sign"
-            @onClick="$emit('click', openObjectiveDrawer())"
           />
         </div>
       </section>
@@ -234,6 +234,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.itemOKRs__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
 .keyResultRow {
   &:not(:first-child) {
     margin-top: 4px;
