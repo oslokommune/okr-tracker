@@ -12,10 +12,15 @@
     </template>
 
     <template #default>
-      <div class="home-page">
+      <div
+        :class="[
+          'home-page',
+          activeOrganization ? null : ['mt-size-32', 'mt-size-64--tablet-up'],
+        ]"
+      >
         <template v-if="!activeOrganization">
-          <div class="mt-size-32">
-            <h1>
+          <div>
+            <h1 class="home-page__title">
               {{ $t('home.welcome', { appName: $t('general.appName') }) }}
             </h1>
             <span class="pkt-txt-20">{{ appOwner }}</span>
@@ -39,14 +44,19 @@
         <template v-else>
           <router-link
             :to="{ name: 'ItemHome', params: { slug: activeOrganization.slug } }"
-            class="pkt-link pkt-txt-40-medium"
+            class="home-page__title pkt-link"
           >
             <pkt-icon name="chevron-right" class="pkt-link__icon" />
             {{ activeOrganization.name }}
           </router-link>
           <p
             v-if="activeOrganization.missionStatement"
-            class="pkt-txt-18 mx-size-0 mx-size-104--tablet-big-up"
+            :class="[
+              'home-page__text',
+              'mb-size-16',
+              'mx-size-0',
+              'mx-size-104--tablet-big-up',
+            ]"
           >
             {{ activeOrganization.missionStatement }}
           </p>
@@ -55,7 +65,12 @@
             <div
               v-for="department in sortItemsByName(organizationChildren)"
               :key="department.id"
-              class="pkt-cell pkt-cell--span12 pkt-cell--span6-phablet-up"
+              :class="[
+                'pkt-cell',
+                'pkt-cell--span12',
+                'pkt-cell--span6-phablet-up',
+                'pkt-cell--span4-laptop-up',
+              ]"
             >
               <div>
                 <router-link
@@ -72,7 +87,7 @@
                 </router-link>
                 <div
                   v-if="department.children.length"
-                  class="home-page__products py-size-24 px-size-40 pkt-txt-20-medium"
+                  class="home-page__products py-size-20 px-size-32"
                 >
                   <router-link
                     v-for="product in sortItemsByName(department.children)"
@@ -138,11 +153,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:map';
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/variables';
 
 .page {
   background-color: var(--color-blue-light);
+
+  ::v-deep .page__container {
+    // Use same padding for the container as Punkt grid gap.
+    // https://github.com/oslokommune/punkt/blob/main/packages/css/src/scss/base/_grid.scss
+    padding: 1rem;
+
+    @include bp('tablet-up') {
+      padding: 0 2rem;
+    }
+  }
 
   ::v-deep .page__footer {
     display: flex;
@@ -156,11 +183,15 @@ export default {
 .home-page {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1rem;
   align-items: center;
   text-align: center;
 
-  h1 {
+  @include bp('tablet-up') {
+    gap: 1.5rem;
+  }
+
+  &__title {
     @include get-text('pkt-txt-28-medium');
 
     @include bp('tablet-up') {
@@ -169,6 +200,14 @@ export default {
 
     @include bp('laptop-up') {
       @include get-text('pkt-txt-36-medium');
+    }
+  }
+
+  &__text {
+    @include get-text('pkt-txt-16');
+
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-18');
     }
   }
 
@@ -182,33 +221,57 @@ export default {
   &__departments {
     ::v-deep .pkt-linkcard {
       height: 100%;
-
-      &__title {
-        margin-bottom: 0;
-      }
     }
   }
 
   &__products {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+
+    .pkt-link {
+      @include get-text('pkt-txt-18-medium');
+
+      .pkt-link__icon {
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+    }
   }
 }
 
 .pkt-link {
   text-decoration: none;
 
-  &.pkt-linkcard {
-    width: 100%;
-    background-color: var(--color-white);
-  }
-
   &.pkt-txt-40-medium {
     .pkt-link__icon {
       width: 2.5rem;
       height: 2.5rem;
     }
+  }
+}
+
+::v-deep .pkt-linkcard {
+  width: 100%;
+  padding: map.get(variables.$spacing, 'size-16');
+  background-color: var(--color-white);
+
+  &__title {
+    @include get-text('pkt-txt-18-medium');
+    margin-bottom: 0;
+
+    @include bp('laptop-up') {
+      @include get-text('pkt-txt-20-medium');
+    }
+  }
+
+  &__text:not(:empty) {
+    margin-top: 0.5rem;
+  }
+
+  .pkt-link__icon {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 </style>
