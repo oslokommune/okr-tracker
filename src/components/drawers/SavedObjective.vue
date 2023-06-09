@@ -13,7 +13,7 @@
           >{{ $t('btn.close') }}</pkt-button
         >
         <pkt-button skin="secondary" @onClick="$emit('click', addKeyResults())">
-          {{ $t('btn.addKeyResults') }}
+          {{ $t('btn.createKeyResult') }}
         </pkt-button>
       </div>
     </div>

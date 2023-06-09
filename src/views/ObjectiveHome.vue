@@ -19,9 +19,21 @@
             />
           </div>
         </div>
-        <p v-if="activeObjective.description" class="description">
-          {{ activeObjective.description }}
-        </p>
+        <div class="objective__description">
+          <p v-if="activeObjective.description" class="description">
+            {{ activeObjective.description }}
+          </p>
+          <div data-mode="dark" class="objective__add-key-res">
+            <pkt-button
+              v-tooltip="$t('btn.createKeyResult')"
+              :text="$t('btn.createKeyResult')"
+              skin="primary"
+              variant="icon-left"
+              icon-name="plus-sign"
+              @onClick="$emit('click', toggleDrawer('keyResult'))"
+            />
+          </div>
+        </div>
       </header>
 
       <section>
@@ -43,16 +55,6 @@
           />
         </div>
       </section>
-      <div :data-mode="!keyRes.length ? 'dark' : ''">
-        <pkt-button
-          v-tooltip="$t('btn.createKeyResult')"
-          :text="$t('btn.createKeyResult')"
-          :skin="!keyRes.length ? 'primary' : 'tertiary'"
-          variant="icon-left"
-          icon-name="plus-sign"
-          @onClick="$emit('click', toggleDrawer('keyResult'))"
-        />
-      </div>
     </template>
 
     <template #sidebar>
@@ -191,5 +193,17 @@ export default {
 .objective__heading-text {
   max-width: 46rem;
   margin-right: 2.5rem;
+}
+
+.objective__description {
+  display: flex;
+  flex-direction: row;
+  align-items: self-end;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.objective__add-key-res {
+  margin-left: auto;
 }
 </style>

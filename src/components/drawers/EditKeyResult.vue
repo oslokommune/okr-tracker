@@ -23,7 +23,8 @@
             :rows="2"
             :label="$t('fields.description')"
           />
-          <form-component
+          <!-- TODO: Include when related views have been implemented -->
+          <!--form-component
             v-if="isOrganization || isDepartment"
             v-model="keyResult.parent"
             name="owner"
@@ -31,7 +32,7 @@
             :select-options="ownerOptions"
             :label="$t('fields.owner')"
             rules="required"
-          />
+          /-->
         </div>
 
         <div v-if="step === 2">
