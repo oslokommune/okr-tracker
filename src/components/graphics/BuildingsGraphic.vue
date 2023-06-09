@@ -651,6 +651,6 @@
 
 <script>
 export default {
-  name: 'Buildings',
+  name: 'BuildingsGraphic',
 };
 </script>

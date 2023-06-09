@@ -92,7 +92,7 @@
     </template>
 
     <template #footer>
-      <buildings />
+      <buildings-graphic />
     </template>
   </page-layout>
 </template>
@@ -101,13 +101,13 @@
 import i18n from '@/locale/i18n';
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { PktButton, PktLinkcard } from '@oslokommune/punkt-vue2';
-import Buildings from '@/components/graphics/Buildings.vue';
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 
 export default {
   name: 'Home',
 
   components: {
-    Buildings,
+    BuildingsGraphic,
     PktButton,
     PktLinkcard,
   },
