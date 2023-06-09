@@ -3,7 +3,7 @@
 
 /*
   Some Punkt elements, e.g. inputs, check- and radio-buttons, are still marked
-  work in progress (as per v. 3.1.2). The following is an attempt to match the
+  work in progress (as per v5.0.8). The following is an attempt to match the
   design in Figma until these are fully implemented in CSS and as components.
 */
 
@@ -58,17 +58,6 @@
 
 .pkt-form-input,
 .pkt-form-textarea {
-  &:focus {
-    outline: 4px solid var(--color-visited-light);
-  }
-
-  &:disabled,
-  &[readonly] {
-    color: var(--color-disabled);
-    background-color: var(--color-disabled-light);
-    border-color: var(--color-disabled);
-  }
-
   &.flatpickr-input[readonly] {
     // Reset `readonly` state style for flatpickr inputs.
     color: var(--color-blue-dark);
@@ -77,6 +66,7 @@
 
     &:focus {
       color: var(--color-active);
+      border-color: var(--color-active);
     }
   }
 }
@@ -88,16 +78,6 @@
 
   &:hover + .pkt-form-label {
     color: var(--color-active);
-  }
-
-  &:active {
-    border-width: 4px;
-    outline: 2px solid var(--color-active);
-  }
-
-  &:focus {
-    outline: 4px solid var(--color-visited-light);
-    outline-offset: 0;
   }
 
   + .pkt-form-label {
@@ -119,6 +99,10 @@
     + .pkt-form-label {
       font-weight: 500;
     }
+  }
+
+  &[type='checkbox']:checked {
+    background-color: var(--choice-checked-rb-bc);
   }
 }
 
