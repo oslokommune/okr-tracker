@@ -23,7 +23,7 @@
 
           <div v-if="organizations.length" class="home-page__organizations">
             <pkt-linkcard
-              v-for="organization in sortedOrganizations"
+              v-for="organization in sortItemsByName(organizations)"
               :key="organization.id"
               href="#"
               :title="organization.name"
@@ -53,7 +53,7 @@
 
           <div class="home-page__departments pkt-grid">
             <div
-              v-for="department in organizationChildren"
+              v-for="department in sortItemsByName(organizationChildren)"
               :key="department.id"
               class="pkt-cell pkt-cell--span12 pkt-cell--span6-phablet-up"
             >
@@ -75,7 +75,7 @@
                   class="home-page__products py-size-24 px-size-40 pkt-txt-20-medium"
                 >
                   <router-link
-                    v-for="product in department.children"
+                    v-for="product in sortItemsByName(department.children)"
                     :key="product.id"
                     :to="{ name: 'ItemHome', params: { slug: product.slug } }"
                     class="pkt-link"
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import i18n from '@/locale/i18n';
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { PktButton, PktLinkcard } from '@oslokommune/punkt-vue2';
 import Buildings from '@/components/graphics/Buildings.vue';
@@ -119,10 +120,6 @@ export default {
       return import.meta.env.VITE_ORGANIZATION;
     },
 
-    sortedOrganizations() {
-      return this.organizations.slice().sort((a, b) => a.name.localeCompare(b.name));
-    },
-
     organizationChildren() {
       return (
         this.tree.find((org) => org.id === this.activeOrganization.id)?.children || []
@@ -132,6 +129,10 @@ export default {
 
   methods: {
     ...mapActions(['setActiveOrganization']),
+
+    sortItemsByName(items) {
+      return items.slice().sort((a, b) => a.name.localeCompare(b.name, i18n.locale));
+    },
   },
 };
 </script>
