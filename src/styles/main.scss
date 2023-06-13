@@ -20,6 +20,7 @@
 @use '@oslokommune/punkt-css/dist/scss/base/_colors';
 @use '@oslokommune/punkt-css/dist/scss/base/_typography';
 @use '@oslokommune/punkt-css/dist/scss/base/_grid';
+@use '@oslokommune/punkt-css/dist/scss/base/_spacing';
 @use '@oslokommune/punkt-css/dist/scss/base/_visibility';
 @use '@oslokommune/punkt-css/dist/scss/elements/_form';
 @use '@oslokommune/punkt-css/dist/scss/elements/_hr';
@@ -28,6 +29,7 @@
 @use '@oslokommune/punkt-css/dist/scss/components/_icon';
 @use '@oslokommune/punkt-css/dist/scss/components/_badge';
 @use '@oslokommune/punkt-css/dist/scss/components/_alert';
+@use '@oslokommune/punkt-css/dist/scss/components/_linkcard';
 
 @use 'forms';
 @use 'vSelect';

@@ -31,6 +31,8 @@ All notable changes to this project will be documented in this file. The format 
   specific options are kept in a separate toolbar.
 - The about page has been redesigned.
 - The layout of pages are now based on the Punkt grid.
+- The home page has been redesigned. The selected organization are now persisted
+  as a user preference between visits.
 
 ### Removed
 
