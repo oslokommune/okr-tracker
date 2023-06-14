@@ -6,7 +6,7 @@
         :key="view.id"
         v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
         class="action-bar__view"
-        :class="{ active: isActive(view.id) }"
+        :class="{ active: view.id === user.preferences.view }"
         @click="updateView(view.id)"
       >
         <span>{{ view.label }}</span>
