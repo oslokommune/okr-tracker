@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file. The format 
 - The period date range can now be set freely on the OKR page. The period choice
   is also made persistent between the OKR page and the measurements page.
 - The default objective view is now the timeline view.
+- The design of empty states and error pages have been refreshed.
 
 ### Removed
 
