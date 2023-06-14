@@ -5,12 +5,7 @@
       <nav-menu class="site-menu">
         <nav-menu-item dropdown>
           <template #text>
-            <span class="logo">
-              <img
-                alt="Oslo kommune logo"
-                src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
-              />
-            </span>
+            <pkt-icon class="nav-menu-item__icon" name="bullseye" />
             <span class="pkt-show-phablet-up">{{ siteMenuLabel }}</span>
           </template>
           <template #default="{ close }">
@@ -199,17 +194,6 @@ export default {
 .site-menu {
   ::v-deep .nav-menu-item__inner {
     font-weight: 500;
-  }
-
-  .logo {
-    width: 1.5rem;
-    height: 1.5rem;
-    overflow: hidden;
-    line-height: 1;
-
-    img {
-      height: 100%;
-    }
   }
 }
 
