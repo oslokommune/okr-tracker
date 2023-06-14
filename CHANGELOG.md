@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file. The format 
   by default.
 - The main navigation menu icon has been replaced by a more generic one.
 
+### Fixed
+
+- Fixed a bug causing dropdown toggles in the navigation bar not working.
+
 ## [3.7.0] 2023-06-06
 
 ### Added
@@ -49,7 +53,6 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed the CSV download function for measurement data (regression introduced in
   version 3.5.0).
 - Fixed misleading percentage change numbers.
-- Fixed a bug causing dropdown toggles in the navigation bar not firing.
 
 ### Security
 
