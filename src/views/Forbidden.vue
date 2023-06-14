@@ -1,6 +1,7 @@
 <template>
   <empty-page :heading="$t('403.title')" :body="$t('403.body')" skin="error">
-    <router-link :to="{ name: 'Home' }">
+    <router-link :to="{ name: 'Home' }" class="pkt-link">
+      <pkt-icon class="pkt-link__icon" name="chevron-left" />
       {{ $t('403.linkText') }}
     </router-link>
   </empty-page>
