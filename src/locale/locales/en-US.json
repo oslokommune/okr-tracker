@@ -498,7 +498,7 @@
       "heading": "No measurements",
       "body": "Oops! Could not find any measurements.",
       "adminBody": "Add measurement that automatically fetches data from Google Sheets.",
-      "linkText": "Create a measurement"
+      "buttonText": "Create a measurement"
     },
     "noPeriods": {
       "heading": "Empty?",

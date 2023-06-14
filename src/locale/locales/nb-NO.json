@@ -498,7 +498,7 @@
       "heading": "Ingen målinger",
       "body": "Oops! Her finnes det ingen målinger ennå.",
       "adminBody": "Her kan du opprette målinger som automatisk henter data fra Google Sheets. ",
-      "linkText": "Opprett en måling"
+      "buttonText": "Opprett en måling"
     },
     "noPeriods": {
       "heading": "Tomt?",
