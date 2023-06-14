@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <empty-state :icon="'meh'" :heading="$t('404.title')" :body="$t('404.body')">
-      <router-link :to="{ name: 'Home' }">
-        {{ $t('404.linkText') }}
-      </router-link>
-    </empty-state>
-  </div>
+  <empty-page :heading="$t('404.title')" :body="$t('404.body')" skin="warning">
+    <router-link :to="{ name: 'Home' }">
+      {{ $t('404.linkText') }}
+    </router-link>
+  </empty-page>
 </template>
 
 <script>
 import i18n from '@/locale/i18n';
-import EmptyState from '@/components/EmptyState.vue';
+import EmptyPage from '@/components/pages/EmptyPage.vue';
 
 export default {
   name: 'NotFound',
   components: {
-    EmptyState,
+    EmptyPage,
   },
 
   metaInfo() {
