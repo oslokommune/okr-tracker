@@ -1,12 +1,12 @@
 {
   "403": {
     "title": "Ingen tilgang",
-    "body": "Du har ikke tilgang til denne ressursen.",
+    "body": "Du har ikke tilgang til denne siden.",
     "linkText": "Gå tilbake til forsiden"
   },
   "404": {
     "title": "Siden finnes ikke",
-    "body": "Denne ressursen ser ikke ut til å eksistere.",
+    "body": "Denne siden ser ikke ut til å eksistere.",
     "linkText": "Gå tilbake til forsiden"
   },
   "kpi": {

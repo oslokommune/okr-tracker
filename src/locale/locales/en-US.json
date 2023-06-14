@@ -1,12 +1,12 @@
 {
   "403": {
     "title": "Forbidden",
-    "body": "You do not have access to this resource.",
+    "body": "You do not have access to this page.",
     "linkText": "Go back to the front page"
   },
   "404": {
     "title": "Page not found",
-    "body": "This resource does not seem to exist.",
+    "body": "This page does not seem to exist.",
     "linkText": "Go back to the front page"
   },
   "kpi": {
