@@ -36,7 +36,7 @@
           { 'nav-menu-item__inner--active': active || isOpen },
         ]"
         tabindex="0"
-        @click="activate"
+        @click.stop="activate"
         @keyup.enter="activate"
       >
         <slot name="text">
