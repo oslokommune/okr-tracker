@@ -500,10 +500,15 @@
       "adminBody": "Add measurement that automatically fetches data from Google Sheets.",
       "buttonText": "Create a measurement"
     },
-    "noPeriods": {
-      "heading": "Empty?",
+    "noObjectives": {
+      "heading": "No objectives here!",
       "body": "It looks like there are no objectives and key results here ...",
       "buttonText": "Create objectives and key results"
+    },
+    "noObjectivesInPeriod": {
+      "heading": "Empty?",
+      "body": "No objectives registered within the selected period.",
+      "buttonText": "Create objective"
     }
   },
   "archived": {

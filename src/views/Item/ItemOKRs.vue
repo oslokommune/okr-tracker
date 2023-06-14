@@ -1,5 +1,5 @@
 <template>
-  <page-layout>
+  <page-layout v-if="objectives.length || dataLoading">
     <template #default>
       <header class="itemOKRs__header">
         <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
@@ -16,44 +16,73 @@
       </header>
 
       <section>
-        <content-loader-action-bar
-          v-if="dataLoading"
-          class="itemHome__header--content-loader"
-        ></content-loader-action-bar>
-        <action-bar v-else-if="periodObjectives.length" />
-        <content-loader-item v-if="dataLoading"></content-loader-item>
-        <empty-state
-          v-else-if="!periodObjectives.length && !dataLoading"
-          :icon="'exclamation'"
-          :heading="$t('empty.noPeriods.heading')"
-          :body="$t('empty.noPeriods.body')"
-        >
-        </empty-state>
-        <div v-if="periodObjectives.length && !dataLoading">
-          <ul v-if="view === 'list'">
-            <li
-              v-for="objective in periodObjectives"
-              :key="objective.id"
-              class="itemHome__objectives--item"
-            >
-              <objective-row :objective="objective" :show-description="true">
-              </objective-row>
-              <ul v-if="objective.keyResults.length">
-                <li
-                  v-for="keyResult in objective.keyResults"
-                  :key="keyResult.id"
-                  class="keyResultRow"
-                >
-                  <key-result-row :key-result="keyResult" />
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <gantt-chart v-else :objectives="periodObjectives" :item="activeItem" />
-        </div>
+        <template v-if="dataLoading">
+          <content-loader-action-bar />
+          <content-loader-item />
+        </template>
+
+        <template v-else>
+          <action-bar />
+
+          <template v-if="periodObjectives.length">
+            <ul v-if="view === 'list'">
+              <li
+                v-for="objective in periodObjectives"
+                :key="objective.id"
+                class="itemHome__objectives--item"
+              >
+                <objective-row :objective="objective" :show-description="true" />
+
+                <ul v-if="objective.keyResults.length">
+                  <li
+                    v-for="keyResult in objective.keyResults"
+                    :key="keyResult.id"
+                    class="keyResultRow"
+                  >
+                    <key-result-row :key-result="keyResult" />
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <gantt-chart v-else :objectives="periodObjectives" :item="activeItem" />
+          </template>
+
+          <empty-state
+            v-else
+            :heading="$t('empty.noObjectivesInPeriod.heading')"
+            :body="$t('empty.noObjectivesInPeriod.body')"
+          >
+            <div v-if="hasEditRights" data-mode="dark">
+              <pkt-button
+                :text="$t('empty.noObjectivesInPeriod.buttonText')"
+                skin="primary"
+                variant="icon-left"
+                icon-name="plus-sign"
+                @onClick="$router.push({ name: 'ItemAdmin', query: { tab: 'okr' } })"
+              />
+            </div>
+          </empty-state>
+        </template>
       </section>
     </template>
   </page-layout>
+
+  <empty-page
+    v-else
+    :heading="$t('empty.noObjectives.heading')"
+    :body="$t('empty.noObjectives.body')"
+  >
+    <div v-if="hasEditRights" data-mode="dark">
+      <pkt-button
+        :text="$t('empty.noObjectives.buttonText')"
+        skin="primary"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="$router.push({ name: 'ItemAdmin', query: { tab: 'okr' } })"
+      />
+    </div>
+  </empty-page>
 </template>
 
 <script>
@@ -74,6 +103,8 @@ export default {
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
+    EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
+    PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
     ContentLoaderItem,
     ContentLoaderActionBar,
     PktButton,

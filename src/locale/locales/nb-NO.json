@@ -500,10 +500,15 @@
       "adminBody": "Her kan du opprette målinger som automatisk henter data fra Google Sheets. ",
       "buttonText": "Opprett en måling"
     },
-    "noPeriods": {
-      "heading": "Tomt?",
+    "noObjectives": {
+      "heading": "Her var det visst tomt!",
       "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
-      "buttonText": "Opprett mål og nøkkelresultater her"
+      "buttonText": "Opprett mål"
+    },
+    "noObjectivesInPeriod": {
+      "heading": "Tomt?",
+      "body": "Ingen mål registrert innenfor valgt periode.",
+      "buttonText": "Opprett mål"
     }
   },
   "archived": {
