@@ -30,7 +30,7 @@
         >
         </empty-state>
         <div v-if="periodObjectives.length && !dataLoading">
-          <ul v-if="['compact', 'details'].includes(view)">
+          <ul v-if="view === 'list'">
             <li
               v-for="objective in periodObjectives"
               :key="objective.id"
@@ -43,18 +43,13 @@
                   v-for="keyResult in objective.keyResults"
                   :key="keyResult.id"
                   class="keyResultRow"
-                  :class="{ 'keyResultRow--isCompact': view === 'compact' }"
                 >
-                  <key-result-row :key-result="keyResult"></key-result-row>
+                  <key-result-row :key-result="keyResult" />
                 </li>
               </ul>
             </li>
           </ul>
-          <gantt-chart
-            v-else-if="view === 'timeline'"
-            :objectives="periodObjectives"
-            :item="activeItem"
-          />
+          <gantt-chart v-else :objectives="periodObjectives" :item="activeItem" />
         </div>
       </section>
     </template>
@@ -163,14 +158,6 @@ export default {
 .keyResultRow {
   &:not(:first-child) {
     margin-top: 4px;
-  }
-
-  &--isCompact {
-    @media screen and (min-width: bp(s)) {
-      &:not(:first-child) {
-        margin-top: 1px;
-      }
-    }
   }
 }
 

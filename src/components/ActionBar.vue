@@ -6,7 +6,7 @@
         :key="view.id"
         v-tooltip.top="$t('tooltip.changeView', { view: view.label })"
         class="action-bar__view"
-        :class="{ active: view.id === user.preferences.view }"
+        :class="{ active: isActive(view.id) }"
         @click="updateView(view.id)"
       >
         <span>{{ view.label }}</span>
@@ -17,19 +17,40 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'ActionBar',
 
   computed: {
     ...mapState(['views', 'user']),
+
+    views() {
+      return [
+        { id: 'timeline', label: i18n.t('view.timeline') },
+        { id: 'list', label: i18n.t('view.list') },
+      ];
+    },
   },
 
   methods: {
     ...mapActions(['update_preferences']),
+
     updateView(view) {
       this.user.preferences.view = view;
       this.update_preferences();
+    },
+
+    /**
+     * Return `true` if `viewId` is the currently active view.
+     */
+    isActive(viewId) {
+      if (this.views.map((v) => v.id).includes(this.user.preferences.view)) {
+        return this.user.preferences.view === viewId;
+      }
+
+      // The default view in case the user perefence is a legacy view.
+      return viewId === 'timeline';
     },
   },
 };
