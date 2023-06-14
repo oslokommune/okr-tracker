@@ -216,6 +216,7 @@ export default {
       try {
         await Objective.archive(this.objective.id);
         this.objective.archived = true;
+        await this.$router.push({ name: 'ItemHome' });
       } catch (error) {
         this.$toasted.error(
           this.$t('toaster.error.archive', { document: this.objective.name })

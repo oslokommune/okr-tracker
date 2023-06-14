@@ -294,6 +294,10 @@ export default {
       try {
         this.keyResult.archived = true;
         await KeyResult.archive(this.keyResult.id);
+        await this.$router.push({
+          name: 'ObjectiveHome',
+          params: { objectiveId: this.data.objective.id },
+        });
       } catch (error) {
         this.$toasted.error(
           this.$t('toaster.error.archive', { document: this.keyResult.name })
