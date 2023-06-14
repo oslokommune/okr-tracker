@@ -6,7 +6,7 @@
       skin="tertiary"
       variant="icon-right"
       :icon-name="isCollapsed ? 'chevron-thin-up' : 'chevron-thin-down'"
-      @onClick="isCollapsed = !isCollapsed"
+      @click.native.stop="isCollapsed = !isCollapsed"
     >
       {{ $t('general.orgs') }}
     </pkt-button>
