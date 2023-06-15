@@ -1,5 +1,10 @@
 <template>
-  <pkt-button :text="label" :skin="skin" @onClick="$emit('click', $event)" />
+  <pkt-button
+    :text="label"
+    :skin="skin"
+    type="button"
+    @onClick="$emit('click', $event)"
+  />
 </template>
 <script>
 import { PktButton } from '@oslokommune/punkt-vue2';
