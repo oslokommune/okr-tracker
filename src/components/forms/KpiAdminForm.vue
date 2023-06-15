@@ -95,7 +95,10 @@
 
       <div v-if="kpi" class="goal-section">
         <div class="pkt-form-group">
-          <span class="pkt-form-label">{{ $t('kpi.goals.goals') }}</span>
+          <span class="pkt-form-label">
+            {{ $t('kpi.goals.goals') }}
+            <span class="pkt-badge">{{ $t('validation.optional') }} </span>
+          </span>
           <div class="goal-section__content-wrapper">
             <span>{{ $t('kpi.goals.help') }}</span>
             <pkt-button
