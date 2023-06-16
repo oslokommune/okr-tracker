@@ -84,7 +84,7 @@
       "set": "Set goals",
       "edit": "Edit goals",
       "the": "the goal",
-      "help": "Measurements can have goals for specific periods. As of now, only goals for result indicators are shown, but this is subject to change.",
+      "help": "Measurements can have progression goals for specific periods. These are drawn in the diagram together with the progression graph. Use the button to the right in order to add or edit goals.",
       "goalTitle": "Goal for {formattedDateRange}"
     }
   },
