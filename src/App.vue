@@ -1,7 +1,6 @@
 <template>
   <div class="app">
     <app-layout />
-    <vue-griddle />
   </div>
 </template>
 

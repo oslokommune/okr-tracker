@@ -25,7 +25,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-        @use "@/styles/griddle/griddle.scss" as *;
+        @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
         `,
       },
     },
