@@ -84,7 +84,7 @@
       "set": "Sett mål",
       "edit": "Endre mål",
       "the": "målet",
-      "help": "Målinger kan ha progresjonsmål for bestemte perioder. Disse tegnes opp i diagrammet sammen med progresjonsgrafen. Klikk på knappen til høyre for å sette eller endre mål.",
+      "help": "Målinger kan ha progresjonsmål for bestemte perioder. Disse tegnes opp i diagrammet sammen med progresjonsgrafen. Bruk knappen til høyre for å sette eller endre mål.",
       "goalTitle": "Mål for {formattedDateRange}"
     }
   },
