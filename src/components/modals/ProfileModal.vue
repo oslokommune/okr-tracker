@@ -1,5 +1,5 @@
 <template>
-  <modal-wrapper v-if="user" @close="$emit('close')">
+  <modal-wrapper v-if="user" variant="wide" @close="$emit('close')">
     <template #header>
       {{ $t('user.profile') }}
     </template>
@@ -129,6 +129,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
 .profileModal__info {
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
@@ -139,7 +141,7 @@ export default {
   flex-basis: 100%;
   flex-direction: column;
 
-  @media screen and (min-width: bp(s)) {
+  @include bp('phablet-up') {
     flex-direction: row;
   }
 }
@@ -149,7 +151,7 @@ export default {
   flex: 1 1 50%;
   flex-direction: column;
 
-  @media screen and (min-width: bp(s)) {
+  @include bp('phablet-up') {
     padding-left: 3rem;
   }
 

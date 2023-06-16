@@ -129,7 +129,7 @@ export default {
   font-weight: 500;
   white-space: nowrap;
 
-  @media screen and (min-width: bp(s)) {
+  @include bp('phablet-up') {
     font-size: typography.$font-size-5;
   }
 

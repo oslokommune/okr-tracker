@@ -206,12 +206,10 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   width: 100vw;
   height: $-dropdown-max-height;
 
-  @each $bp, $width in (s: 80, m: 60, l: 50, xl: 40, xxl: 30) {
-    @media screen and (min-width: bp(#{$bp})) {
-      width: #{$width}vw;
-      height: auto;
-      max-height: $-dropdown-max-height;
-    }
+  @include bp('tablet-up') {
+    width: 45rem;
+    height: auto;
+    max-height: $-dropdown-max-height;
   }
 
   &__header {
@@ -241,7 +239,7 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     padding: 0 1.5rem;
     overflow-y: auto;
 
-    @media screen and (min-width: bp(s)) {
+    @include bp('phablet-up') {
       flex-direction: row;
       gap: 4rem;
     }

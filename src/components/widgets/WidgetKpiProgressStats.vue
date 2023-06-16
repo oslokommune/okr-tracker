@@ -141,8 +141,8 @@ export default {
   display: grid;
   gap: 2rem;
 
-  @each $bp, $cols in (s: 2, m: 3) {
-    @media screen and (min-width: bp(#{$bp})) {
+  @each $bp-name, $cols in ('phablet-up': 2, 'tablet-up': 3) {
+    @include bp('#{$bp-name}') {
       grid-template-columns: repeat(#{$cols}, 1fr);
     }
   }

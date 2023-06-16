@@ -280,6 +280,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
 .goal-section {
   &__content-wrapper {
     display: flex;
@@ -287,7 +289,7 @@ export default {
     gap: 1rem;
     align-items: flex-start;
 
-    @media screen and (min-width: bp(s)) {
+    @include bp('tablet-up') {
       flex-direction: row;
       gap: 2rem;
     }
@@ -311,7 +313,7 @@ export default {
   > * {
     grid-column: 1 / 3;
 
-    @media screen and (min-width: bp(s)) {
+    @include bp('phablet-up') {
       grid-column: unset;
 
       .pkt-form-group {
@@ -328,7 +330,7 @@ export default {
     }
   }
 
-  @media screen and (min-width: bp(s)) {
+  @include bp('phablet-up') {
     flex-direction: row;
     gap: 1.5rem;
   }

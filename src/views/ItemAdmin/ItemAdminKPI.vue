@@ -253,11 +253,12 @@ export default {
   }
 
   &-value-container {
+    display: none;
     flex-basis: 6.5rem;
     text-align: right;
 
-    @media screen and (max-width: bp(s)) {
-      display: none;
+    @include bp('phablet-up') {
+      display: block;
     }
   }
 
