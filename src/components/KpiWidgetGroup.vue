@@ -79,7 +79,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState(['activeItem', 'selectedPeriod']),
 
     itemSlug() {
       if (this.kpis.length && this.kpis[0]?.parent?.slug) {
@@ -100,12 +100,15 @@ export default {
 
     orderedKpis: {
       get() {
-        return this.kpis.map((kpi) => kpi).sort(compareKPIs);
+        return this.kpis.map((kpi) => kpi).sort(compareKPIs(this.activeItem.id));
       },
       set(kpis) {
         kpis.forEach((kpi, i) => {
-          if (kpi.order !== i) {
-            Kpi.update(kpi.id, { order: i });
+          const order = kpi.order ? kpi.order : {};
+
+          if (order[this.activeItem.id] !== i) {
+            order[this.activeItem.id] = i;
+            Kpi.update(kpi.id, { order });
           }
         });
       },
