@@ -47,10 +47,7 @@
                 :progress-details="progressDetails"
                 :unit="activeKeyResult.unit"
               />
-              <progress-bar
-                :progression="progressDetails.percentageCompleted"
-                :is-compact="false"
-              />
+              <progress-bar :progression="progressDetails.percentageCompleted" />
             </div>
           </div>
         </widget>

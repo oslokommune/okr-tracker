@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- A new list view for objectives has been added. This replaces the previous
+  compact and detailed list views.
+
 ### Changed
 
 - All buttons are now Punkt-styled.
@@ -15,6 +20,11 @@ All notable changes to this project will be documented in this file. The format 
   tied to a predefined period.
 - The period date range can now be set freely on the OKR page. The period choice
   is also made persistent between the OKR page and the measurements page.
+- The default objective view is now the timeline view.
+
+### Removed
+
+- The compact and detailed objective list views have been removed.
 
 ### Fixed
 

@@ -50,7 +50,6 @@
             v-for="keyResult in keyRes"
             :key="keyResult.id"
             :key-result="keyResult"
-            :force-expanded="true"
             class="key-results__list--row"
           />
         </div>

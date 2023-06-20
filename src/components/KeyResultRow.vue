@@ -1,43 +1,30 @@
 <template>
-  <div class="keyResult" :class="{ 'keyResult--isDetailedView': isDetailedView }">
+  <div class="keyResult">
     <router-link
-      :to="{ name: 'KeyResultHome', params: { keyResultId: keyRow.id } }"
+      :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }"
       class="keyResult__infoLink"
-      :class="{ 'keyResult__infoLink--isDetailedView': isDetailedView }"
     >
-      <h4 class="keyResult__title title-3">{{ keyRow.name }}</h4>
-      <p v-if="isDetailedView" class="keyResult__description">{{ keyRow.description }}</p>
+      <h4 class="keyResult__title title-3">{{ keyResult.name }}</h4>
+      <p v-if="keyResult.description" class="keyResult__description">
+        {{ keyResult.description }}
+      </p>
     </router-link>
 
     <div
       v-tooltip="allowedToEditPeriod ? false : 'Not allowed to edit'"
       class="keyResult__progress"
       :class="{
-        'keyResult__progress--isDetailedView': isDetailedView,
         'keyResult__progress--isDisabled': !allowedToEditPeriod,
       }"
       @click="openModal"
     >
-      <key-result-progress-details
-        v-if="isDetailedView"
-        :progress-details="progressDetails"
-        :unit="keyRow.unit"
-      />
-      <progress-bar
-        :progression="progressDetails.percentageCompleted"
-        :is-compact="!isDetailedView"
-        class="keyResult__progressBar"
-        :class="{ 'keyResult__progressBar--isDetailedView': isDetailedView }"
-      />
-      <div v-if="isDetailedView" class="keyResult__progressionSummary">
-        {{ progressDetails.formattedTotalCompletedTasks }} /
-        {{ progressDetails.formattedTotalNumberOfTasks }}
-      </div>
+      <progress-bar :progression="progressPercentage" class="keyResult__progressBar" />
+      {{ progressPercentage }}%
     </div>
 
     <key-result-modal
       v-if="isOpen"
-      :key-result="keyRow"
+      :key-result="keyResult"
       :unsaved-values="changed"
       @close="isOpen = false"
     />
@@ -48,7 +35,6 @@
 import { mapState, mapGetters } from 'vuex';
 import { format } from 'd3-format';
 import { numberLocale } from '@/util';
-import { getKeyResultProgressDetails } from '../util/keyResultProgress';
 
 export default {
   name: 'KeyResultRow',
@@ -56,7 +42,6 @@ export default {
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     KeyResultModal: () => import('@/components/modals/KeyResultModal.vue'),
-    KeyResultProgressDetails: () => import('@/components/KeyResultProgressDetails.vue'),
   },
 
   props: {
@@ -64,15 +49,9 @@ export default {
       type: Object,
       required: true,
     },
-    forceExpanded: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
 
   data: () => ({
-    keyRow: null,
     isOpen: false,
     changed: false,
   }),
@@ -80,20 +59,9 @@ export default {
   computed: {
     ...mapState(['user']),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
-    isDetailedView() {
-      return this.forceExpanded || this.user.preferences.view === 'details';
-    },
-    progressDetails() {
-      return getKeyResultProgressDetails(this.keyResult);
-    },
-  },
 
-  watch: {
-    keyResult: {
-      immediate: true,
-      handler() {
-        this.keyRow = this.keyResult;
-      },
+    progressPercentage() {
+      return this.keyResult.progression * 100;
     },
   },
 
@@ -122,14 +90,10 @@ export default {
   &__infoLink {
     display: block;
     flex: 1;
-    padding: 0.5rem 1.5rem;
+    padding: 1.5rem;
     color: var(--color-text);
     text-decoration: none;
     background-color: var(--color-gray-light);
-
-    &--isDetailedView {
-      padding: 1.5rem;
-    }
 
     &:hover {
       color: var(--color-white);
@@ -143,17 +107,18 @@ export default {
   }
 
   &__description {
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 0;
     font-size: typography.$font-size-1;
     line-height: 1.25rem;
   }
 
   &__progress {
     display: flex;
-    flex: 0 0 25%;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem 1.5rem;
+    flex: 0 0 100%;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 1.5rem;
+    font-weight: 500;
     background-color: var(--color-gray-light);
     cursor: pointer;
 
@@ -161,7 +126,6 @@ export default {
       color: var(--color-white);
       background-color: var(--color-hover);
 
-      .keyResult__progressionSummary,
       .keyResultProgressDetails {
         color: inherit;
       }
@@ -171,25 +135,13 @@ export default {
       flex: 0 0 20rem;
     }
 
-    &--isDetailedView {
-      padding: 1.5rem;
-    }
-
     &--isDisabled {
       cursor: not-allowed;
     }
-  }
 
-  &__progressInfoText {
-    margin-bottom: 0.25rem;
-  }
-
-  &__progressBar--isDetailedView {
-    margin: 1rem 0 0.5rem;
-  }
-
-  &__progressionSummary {
-    text-align: right;
+    .progress {
+      flex: 1 1 auto;
+    }
   }
 }
 </style>
