@@ -497,18 +497,16 @@
     "noKPIs": {
       "heading": "Ingen målinger",
       "body": "Oops! Her finnes det ingen målinger ennå.",
-      "adminBody": "Her kan du opprette målinger som automatisk henter data fra Google Sheets. ",
+      "adminBody": "Legg til målinger som gir en pekepinn på hva dere har oppnådd!",
       "buttonText": "Opprett en måling"
     },
     "noObjectives": {
-      "heading": "Her var det visst tomt!",
-      "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
-      "buttonText": "Opprett mål"
+      "heading": "Her var det visst helt tomt!",
+      "body": "Det ser ut som at det mangler noen mål og nøkkelresultater her ..."
     },
     "noObjectivesInPeriod": {
-      "heading": "Tomt?",
-      "body": "Ingen mål registrert innenfor valgt periode.",
-      "buttonText": "Opprett mål"
+      "heading": "Ingen mål i valgt periode",
+      "body": "Vi fant ingen mål registrert innenfor den valgte perioden."
     }
   },
   "archived": {

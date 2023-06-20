@@ -497,18 +497,16 @@
     "noKPIs": {
       "heading": "No measurements",
       "body": "Oops! Could not find any measurements.",
-      "adminBody": "Add measurement that automatically fetches data from Google Sheets.",
+      "adminBody": "Add measurements that show what you have accomplished!",
       "buttonText": "Create a measurement"
     },
     "noObjectives": {
       "heading": "No objectives here!",
-      "body": "It looks like there are no objectives and key results here ...",
-      "buttonText": "Create objectives and key results"
+      "body": "It looks like there are no objectives and key results here ..."
     },
     "noObjectivesInPeriod": {
-      "heading": "Empty?",
-      "body": "No objectives registered within the selected period.",
-      "buttonText": "Create objective"
+      "heading": "No objectives in selected period",
+      "body": "No objectives registered within the selected period."
     }
   },
   "archived": {

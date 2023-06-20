@@ -3,7 +3,7 @@
     <template #default>
       <header class="itemOKRs__header">
         <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
-        <div data-mode="dark">
+        <div v-if="hasEditRights && periodObjectives.length" data-mode="dark">
           <pkt-button
             v-tooltip="$t('btn.createObjective')"
             :text="$t('btn.createObjective')"
@@ -22,7 +22,7 @@
         </template>
 
         <template v-else>
-          <action-bar />
+          <action-bar v-if="periodObjectives.length" />
 
           <template v-if="periodObjectives.length">
             <ul v-if="view === 'list'">
@@ -55,11 +55,11 @@
           >
             <div v-if="hasEditRights" data-mode="dark">
               <pkt-button
-                :text="$t('empty.noObjectivesInPeriod.buttonText')"
+                :text="$t('btn.createObjective')"
                 skin="primary"
                 variant="icon-left"
                 icon-name="plus-sign"
-                @onClick="$router.push({ name: 'ItemAdmin', query: { tab: 'okr' } })"
+                @onClick="$emit('click', openObjectiveDrawer())"
               />
             </div>
           </empty-state>
@@ -75,11 +75,11 @@
   >
     <div v-if="hasEditRights" data-mode="dark">
       <pkt-button
-        :text="$t('empty.noObjectives.buttonText')"
+        :text="$t('btn.createObjective')"
         skin="primary"
         variant="icon-left"
         icon-name="plus-sign"
-        @onClick="$router.push({ name: 'ItemAdmin', query: { tab: 'okr' } })"
+        @onClick="$emit('click', openObjectiveDrawer())"
       />
     </div>
   </empty-page>
@@ -104,7 +104,6 @@ export default {
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
-    PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
     ContentLoaderItem,
     ContentLoaderActionBar,
     PktButton,
