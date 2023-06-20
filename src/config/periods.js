@@ -7,7 +7,9 @@ import {
 } from 'date-fns';
 import i18n from '@/locale/i18n';
 
-export default function getPeriods() {
+export const DEFAULT_PERIOD = 'quarter';
+
+export function getPeriods() {
   const currentDate = new Date();
   const endDate = endOfDay(currentDate);
   const currentYear = currentDate.getFullYear();
@@ -17,24 +19,6 @@ export default function getPeriods() {
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
-    all: {
-      label: i18n.t('period.all'),
-      key: 'all',
-      startDate: false,
-      endDate,
-    },
-    year: {
-      label: i18n.t('period.year'),
-      key: 'year',
-      startDate: new Date(currentYear, 0, 1),
-      endDate,
-    },
-    sixmonths: {
-      label: i18n.t('period.sixmonths'),
-      key: 'sixmonths',
-      startDate: sixMonthsBack,
-      endDate,
-    },
     quarter: {
       label: `${i18n.t('period.thisQuarter')} (Q${currentQuarter} ${currentYear})`,
       key: 'quarter',
@@ -48,6 +32,24 @@ export default function getPeriods() {
       key: 'prevquarter',
       startDate: startOfQuarter(prevQuarterDate),
       endDate: endOfQuarter(prevQuarterDate),
+    },
+    sixmonths: {
+      label: i18n.t('period.sixmonths'),
+      key: 'sixmonths',
+      startDate: sixMonthsBack,
+      endDate,
+    },
+    year: {
+      label: i18n.t('period.year'),
+      key: 'year',
+      startDate: new Date(currentYear, 0, 1),
+      endDate,
+    },
+    all: {
+      label: i18n.t('period.all'),
+      key: 'all',
+      startDate: false,
+      endDate,
     },
   };
 }

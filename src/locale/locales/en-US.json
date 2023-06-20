@@ -380,11 +380,10 @@
   },
   "period": {
     "choosePeriod": "Choose period",
-    "noPeriods": "No periods defined",
     "dateRange": "Start and end dates",
     "sixmonths": "Past 6 months",
     "year": "So far this year",
-    "all": "From first measurement",
+    "all": "Everything",
     "thisQuarter": "This quarter",
     "previousQuarter": "Previous quarter"
   },

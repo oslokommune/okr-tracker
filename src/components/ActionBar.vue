@@ -1,9 +1,5 @@
 <template>
   <div class="action-bar">
-    <div v-if="activePeriod" class="action-bar__period-dates">
-      {{ periodDates(activePeriod) }}
-    </div>
-
     <div class="views">
       <button
         v-for="view in views"
@@ -21,13 +17,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { periodDates } from '@/util';
 
 export default {
   name: 'ActionBar',
 
   computed: {
-    ...mapState(['activePeriod', 'views', 'user']),
+    ...mapState(['views', 'user']),
   },
 
   methods: {
@@ -36,7 +31,6 @@ export default {
       this.user.preferences.view = view;
       this.update_preferences();
     },
-    periodDates,
   },
 };
 </script>
@@ -46,7 +40,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   justify-items: center;
   width: 100%;
   margin-bottom: 2rem;
@@ -55,17 +49,6 @@ export default {
   @media screen and (min-width: bp(s)) {
     flex-direction: row;
     margin-bottom: 1rem;
-  }
-}
-
-.action-bar__period-dates {
-  margin-bottom: 1.5rem;
-  color: var(--color-primary);
-  font-size: 0.9em;
-
-  @media screen and (min-width: bp(s)) {
-    margin-right: auto;
-    margin-bottom: 0;
   }
 }
 

@@ -84,6 +84,8 @@ const routes = [
         path: 'okr',
         name: 'ItemHome',
         component: () => import('@/views/Item/ItemOKRs.vue'),
+        beforeEnter: routerGuards.itemOKRs,
+        beforeRouteUpdate: routerGuards.itemOKRs,
       },
       {
         path: 'measurements/:kpiId?',

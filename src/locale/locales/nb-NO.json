@@ -380,11 +380,10 @@
   },
   "period": {
     "choosePeriod": "Velg periode",
-    "noPeriods": "Ingen perioder definert",
     "dateRange": "Start- og sluttdato",
     "sixmonths": "Siste 6 mnd",
     "year": "Hittil i år",
-    "all": "Fra første måling",
+    "all": "Alt",
     "thisQuarter": "Dette kvartalet",
     "previousQuarter": "Forrige kvartal"
   },

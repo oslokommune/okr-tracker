@@ -10,9 +10,11 @@ All notable changes to this project will be documented in this file. The format 
 - Graphs for percentage measurements are no longer locked to 100% on the y-axis
   by default.
 - The main navigation menu icon has been replaced by a more generic one.
-- New flow for registering and editing of objectives and key results. 
+- New flow for registering and editing of objectives and key results.
 - Introducing startDate and endDate on objectives instead of them being
   tied to a predefined period.
+- The period date range can now be set freely on the OKR page. The period choice
+  is also made persistent between the OKR page and the measurements page.
 
 ### Fixed
 

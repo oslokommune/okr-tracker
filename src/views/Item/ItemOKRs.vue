@@ -58,38 +58,16 @@
         </div>
       </section>
     </template>
-
-    <template v-if="selectedPeriod?.id && activeItem" #sidebar>
-      <widget
-        v-if="activePeriod && activePeriod.progression"
-        :title="$t(`widget.progression.period`)"
-        size="small"
-      >
-        <progression-chart
-          :progression="activePeriod.progression"
-          :period="activePeriod"
-        />
-      </widget>
-      <widget-weights
-        v-if="periodObjectives.length"
-        type="objective"
-        :active-item="activeItem"
-        :items="periodObjectives"
-      />
-    </template>
   </page-layout>
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-import { isBefore, addDays, isWithinInterval } from 'date-fns';
 import { objectiveInPeriod } from '@/util/okr';
 import { periodDates } from '@/util';
+import routerGuard from '@/router/router-guards/itemOKRs';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
-import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
-import ProgressionChart from '@/components/ProgressionChart.vue';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
@@ -101,13 +79,12 @@ export default {
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    Widget: WidgetWrapper,
-    WidgetWeights,
-    ProgressionChart,
     ContentLoaderItem,
     ContentLoaderActionBar,
     PktButton,
   },
+
+  beforeRouteUpdate: routerGuard,
 
   data: () => ({
     activeTab: 0,
@@ -116,11 +93,9 @@ export default {
   computed: {
     ...mapState([
       'activeItem',
-      'activePeriod',
       'dataLoading',
       'keyResults',
       'objectives',
-      'periods',
       'selectedPeriod',
       'user',
     ]),
@@ -128,17 +103,6 @@ export default {
 
     view() {
       return this.user.preferences.view;
-    },
-
-    filteredPeriods() {
-      if (this.hasEditRights) {
-        return this.periods;
-      }
-      const daysInAdvance = 7; // Prior to period start
-
-      return this.periods.filter(({ startDate }) =>
-        isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance))
-      );
     },
 
     periodObjectives() {
@@ -158,28 +122,21 @@ export default {
     },
   },
 
-  watch: {
-    selectedPeriod: {
-      immediate: true,
-      handler() {
-        if (this.selectedPeriod && this.selectedPeriod.id) {
-          this.setPeriod(this.selectedPeriod.id, false);
-        }
-      },
-    },
-  },
-
-  created() {
-    if (this.filteredPeriods.length > 0) {
-      const defaultPeriodIndex = this.getCurrentPeriodIndex() || 0;
-      this.setPeriod(this.filteredPeriods[defaultPeriodIndex].id, true);
-    } else {
-      this.setPeriod(null, false);
+  async created() {
+    try {
+      await this.setDataLoading(true);
+      await this.set_active_period_and_data({
+        item: this.activeItem,
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      await this.setDataLoading(false);
     }
   },
 
   methods: {
-    ...mapActions(['set_active_period_and_data', 'setDataLoading', 'setSelectedPeriod']),
+    ...mapActions(['set_active_period_and_data', 'setDataLoading']),
     ...mapMutations(['TOGGLE_DRAWER']),
 
     openObjectiveDrawer() {
@@ -190,45 +147,7 @@ export default {
       });
     },
 
-    async setPeriod(activePeriodId, setSelectedPeriod) {
-      try {
-        await this.setDataLoading(true);
-        await this.set_active_period_and_data(activePeriodId);
-        if (setSelectedPeriod) {
-          await this.setSelectedPeriod({
-            label: this.activePeriod.name,
-            key: this.activePeriod.id,
-            id: this.activePeriod.id,
-            startDate: this.activePeriod.startDate.toDate(),
-            endDate: this.activePeriod.endDate.toDate(),
-          });
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        await this.setDataLoading(false);
-      }
-    },
-
     periodDates,
-
-    getCurrentPeriodIndex() {
-      const now = new Date();
-
-      for (const [index, period] of this.filteredPeriods.entries()) {
-        if (
-          period.startDate &&
-          period.endDate &&
-          isWithinInterval(now, {
-            start: period.startDate.toDate(),
-            end: period.endDate.toDate(),
-          })
-        ) {
-          return index;
-        }
-      }
-      return null;
-    },
   },
 };
 </script>
