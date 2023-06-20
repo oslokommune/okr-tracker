@@ -117,7 +117,8 @@
     "timestamp": "Timestamp",
     "preferredTrend": "Trend",
     "updateFrequency": "Update frequency",
-    "language": "Language"
+    "language": "Language",
+    "owner": "Responsible team"
   },
   "validation": {
     "alpha": "May only contain alphabetic characters",
@@ -191,7 +192,11 @@
     "formErrors": "The form contains errors that must be corrected.",
     "displayedAs": "Displayed as: ",
     "today": "Today",
-    "view": "View"
+    "view": "View",
+    "newObjective": "New objective",
+    "newKeyResult": "New key result",
+    "step": "Step {step} of 2",
+    "or": "or"
   },
   "home": {
     "welcome": "Welcome to {appName}!",
@@ -217,7 +222,17 @@
     "acceptRequest": "Grant access",
     "rejectRequest": "Delete request",
     "deleteUser": "Delete user",
+    "cancel": "Cancel",
     "create": "Create",
+    "continue": "Continue",
+    "complete": "Complete",
+    "back": "Go back",
+    "createObjective": "Create objective",
+    "updateObjective": "Update objective",
+    "createKeyResult": "Create key result",
+    "updateKeyResult": "Update key result",
+    "addKeyResult": "Add new key results",
+    "addKeyResults": "Add key results",
     "delete": "Delete",
     "editItem": "Change «{item}»",
     "download": "Download",
@@ -229,7 +244,9 @@
     "reset": "Reset",
     "showMore": "Show all",
     "syncData": "Synchronize data",
-    "moreDetails": "More details"
+    "moreDetails": "More details",
+    "archiveObjective": "Archive objective",
+    "archiveKeyResult": "Archive key result"
   },
   "login": {
     "login": "Sign in",
@@ -344,7 +361,10 @@
       "radio": "Update via API?",
       "tooltip": "Toggle this if you have plans to update your Key Results yourself via the OKR-tracker API - you can still update manually as well"
     },
-    "apiAndKeyRes": "We do not recommend toggling both at the same time. This may create problem your Key Result progression"
+    "apiAndKeyRes": "We do not recommend toggling both at the same time. This may create problem your Key Result progression",
+    "created": "Key result was created!",
+    "updated": "Nøkkelresultatet ble endret!",
+    "edit": "Rediger nøkkelresultat"
   },
   "objective": {
     "period": "Period",
@@ -355,7 +375,8 @@
     "createdBy": "Created by",
     "editedBy": "Changed by",
     "created": "Created",
-    "edited": "Changed"
+    "edited": "Changed",
+    "updated": "Objective was changed!"
   },
   "period": {
     "choosePeriod": "Choose period",
@@ -379,6 +400,18 @@
     "copyToClipboard": "Copy to the clipboard"
   },
   "admin": {
+    "objective": {
+      "new": "New objective",
+      "created": "Objective was created!",
+      "updated": "Objective was updated!",
+      "change": "Edit objective"
+    },
+    "keyResult": {
+      "new": "New key result",
+      "created": "Key result was created!",
+      "updated": "Key result was updated!",
+      "change": "Edit key result"
+    },
     "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "curlHelp": "Push updates via {apiLink}, i.e. using curl.",
     "apiDocs": "API documentation",
@@ -477,7 +510,9 @@
   },
   "archived": {
     "heading": "Archived",
-    "body": "This object is archived and is hidden. You may change details before restoring it."
+    "objective": "objective",
+    "keyResult": "key result",
+    "body": "This {objectType} is archived and is no longer shown in the list of {objectType}s. If you miss it, just restore it."
   },
   "sheets": {
     "infoText": "Note! The following address must be given read access to the Google Sheets document:",

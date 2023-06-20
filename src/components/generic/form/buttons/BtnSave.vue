@@ -2,6 +2,7 @@
   <pkt-button
     :type="type"
     :text="label"
+    :skin="skin"
     :variant="variant"
     :icon-name="icon"
     :disabled="disabled"
@@ -34,6 +35,11 @@ export default {
       type: String,
       required: false,
       default: 'icon-left',
+    },
+    skin: {
+      type: String,
+      required: false,
+      default: 'primary',
     },
     icon: {
       type: String,

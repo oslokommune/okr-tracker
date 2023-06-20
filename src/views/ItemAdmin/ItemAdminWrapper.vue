@@ -9,8 +9,7 @@
     />
     <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
       <item-admin-general v-if="activeTab === 0" />
-      <item-admin-OKRs v-if="activeTab === 1" />
-      <item-admin-KPIs v-if="activeTab === 2" />
+      <item-admin-KPIs v-if="activeTab === 1" />
     </tab-panel>
   </page-layout>
 </template>
@@ -20,7 +19,6 @@ import TabList from '@/components/TabList.vue';
 import TabPanel from '@/components/TabPanel.vue';
 import tabIdsHelper from '@/util/tabUtils';
 import ItemAdminGeneral from './ItemAdminGeneral.vue';
-import ItemAdminOKRs from './ItemAdminOKRs.vue';
 import ItemAdminKPIs from './ItemAdminKPIs.vue';
 
 export default {
@@ -30,7 +28,6 @@ export default {
     TabList,
     TabPanel,
     ItemAdminGeneral,
-    ItemAdminOKRs,
     ItemAdminKPIs,
   },
 
@@ -49,11 +46,6 @@ export default {
           tooltip: null,
         },
         {
-          icon: 'bullseye',
-          tabName: this.$t('general.OKRsLong'),
-          tooltip: null,
-        },
-        {
           icon: 'graph',
           tabName: this.$t('general.KPIs'),
           tooltip: null,
@@ -68,11 +60,8 @@ export default {
   methods: {
     getInitialActiveTab() {
       switch (this.$route.query.tab) {
-        case 'okr': {
-          return 1;
-        }
         case 'kpi': {
-          return 2;
+          return 1;
         }
         default: {
           return 0;
@@ -82,10 +71,6 @@ export default {
     setActiveTab(tabIndex) {
       switch (tabIndex) {
         case 1: {
-          this.$router.push({ query: { tab: 'okr' } });
-          break;
-        }
-        case 2: {
           this.$router.push({ query: { tab: 'kpi' } });
           break;
         }

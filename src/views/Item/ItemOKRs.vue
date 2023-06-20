@@ -1,8 +1,18 @@
 <template>
   <page-layout>
     <template #default>
-      <header>
+      <header class="itemOKRs__header">
         <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
+        <div data-mode="dark">
+          <pkt-button
+            v-tooltip="$t('btn.createObjective')"
+            :text="$t('btn.createObjective')"
+            skin="primary"
+            variant="icon-left"
+            icon-name="plus-sign"
+            @onClick="$emit('click', openObjectiveDrawer())"
+          />
+        </div>
       </header>
 
       <section>
@@ -18,12 +28,6 @@
           :heading="$t('empty.noPeriods.heading')"
           :body="$t('empty.noPeriods.body')"
         >
-          <router-link
-            v-if="hasEditRights"
-            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-          >
-            {{ $t('empty.noPeriods.buttonText') }}
-          </router-link>
         </empty-state>
         <div v-if="periodObjectives.length && !dataLoading">
           <ul v-if="['compact', 'details'].includes(view)">
@@ -77,7 +81,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex';
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { isBefore, addDays, isWithinInterval } from 'date-fns';
 import { objectiveInPeriod } from '@/util/okr';
 import { periodDates } from '@/util';
@@ -86,6 +90,7 @@ import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActi
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ItemHome',
@@ -101,6 +106,7 @@ export default {
     ProgressionChart,
     ContentLoaderItem,
     ContentLoaderActionBar,
+    PktButton,
   },
 
   data: () => ({
@@ -174,6 +180,15 @@ export default {
 
   methods: {
     ...mapActions(['set_active_period_and_data', 'setDataLoading', 'setSelectedPeriod']),
+    ...mapMutations(['TOGGLE_DRAWER']),
+
+    openObjectiveDrawer() {
+      this.TOGGLE_DRAWER({
+        type: 'objective',
+        show: 'true',
+        content: null,
+      });
+    },
 
     async setPeriod(activePeriodId, setSelectedPeriod) {
       try {
@@ -219,6 +234,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.itemOKRs__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
 .keyResultRow {
   &:not(:first-child) {
     margin-top: 4px;

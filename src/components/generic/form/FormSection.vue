@@ -8,7 +8,7 @@
     <slot />
 
     <pkt-alert
-      v-if="validated && !valid"
+      v-if="validated && !valid && !hideErrors"
       skin="error"
       class="form-errors"
       :title="$t('general.formErrors')"
@@ -40,6 +40,14 @@ export default {
 
   components: {
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+  },
+
+  props: {
+    hideErrors: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   methods: {

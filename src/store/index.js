@@ -225,6 +225,13 @@ export const mutations = {
     }
     state.user.preferences.homeOrganization = orgSlug;
   },
+
+  TOGGLE_DRAWER(state, payload) {
+    state.drawer.show = payload.show !== undefined ? payload.show : !state.drawer.show;
+    state.drawer.placement = payload.type && payload.type === 'menu' ? 'left' : 'right';
+    state.drawer.type = payload.type;
+    state.drawer.data = payload.data ? payload.data : null;
+  },
 };
 
 export default new Vuex.Store({
@@ -256,6 +263,12 @@ export default new Vuex.Store({
     loginLoading: false,
     dataLoading: false,
     selectedPeriod: null,
+    drawer: {
+      show: false,
+      placement: 'left',
+      type: null,
+      data: null,
+    },
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
