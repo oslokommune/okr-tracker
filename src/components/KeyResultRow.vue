@@ -77,8 +77,8 @@ export default {
   }
 
   &__info {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 0.5rem;
   }
@@ -90,7 +90,7 @@ export default {
     align-items: center;
 
     @include bp('tablet-up') {
-      flex-basis: 20rem;
+      flex-basis: 25%;
     }
 
     .progress {

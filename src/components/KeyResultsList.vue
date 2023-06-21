@@ -26,8 +26,6 @@ export default {
 
 <style lang="scss" scoped>
 .key-results-list {
-  // margin: 1.5rem 0;
-
   &__row {
     margin-top: 0.25rem;
 
