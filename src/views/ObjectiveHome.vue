@@ -37,22 +37,14 @@
       </header>
 
       <section>
+        <key-results-list v-if="keyRes.length" :key-results="keyRes" />
+
         <empty-state
-          v-if="!keyRes.length"
+          v-else
           :icon="'poop'"
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
-        >
-        </empty-state>
-
-        <div class="key-results__list">
-          <key-result-row
-            v-for="keyResult in keyRes"
-            :key="keyResult.id"
-            :key-result="keyResult"
-            class="key-results__list--row"
-          />
-        </div>
+        />
       </section>
     </template>
 
@@ -87,7 +79,7 @@ export default {
   name: 'ObjectiveHome',
 
   components: {
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
+    KeyResultsList: () => import('@/components/KeyResultsList.vue'),
     Widget: WidgetWrapper,
     WidgetWeights,
     WidgetObjectiveDetails,
@@ -165,23 +157,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.key-results__list {
-  margin: 1.5rem 0;
-}
-
-.key-results__list--row {
-  margin-top: 4px;
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-
-.key-result__new {
-  display: flex;
-  justify-content: flex-start;
-}
-
 .objective__heading {
   display: flex;
   flex-direction: row;
@@ -204,5 +179,9 @@ export default {
 
 .objective__add-key-res {
   margin-left: auto;
+}
+
+.key-results-list {
+  margin-top: 1.5rem;
 }
 </style>
