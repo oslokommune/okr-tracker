@@ -18,13 +18,20 @@
 
   <empty-state
     v-else
-    :icon="'lightbulb'"
     :heading="$t('empty.noKPIs.heading')"
     :body="$t('empty.noKPIs.adminBody')"
   >
-    <pkt-button skin="tertiary" :disabled="loading" @onClick="createKpi">
-      {{ $t('kpi.add') }}
-    </pkt-button>
+    <div data-mode="dark">
+      <pkt-button
+        skin="primary"
+        :disabled="loading"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="createKpi"
+      >
+        {{ $t('kpi.add') }}
+      </pkt-button>
+    </div>
   </empty-state>
 </template>
 

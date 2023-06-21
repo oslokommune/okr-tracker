@@ -1,12 +1,12 @@
 {
   "403": {
     "title": "Ingen tilgang",
-    "body": "Du har ikke tilgang til denne ressursen.",
+    "body": "Du har ikke tilgang til denne siden.",
     "linkText": "Gå tilbake til forsiden"
   },
   "404": {
     "title": "Siden finnes ikke",
-    "body": "Denne ressursen ser ikke ut til å eksistere.",
+    "body": "Denne siden ser ikke ut til å eksistere.",
     "linkText": "Gå tilbake til forsiden"
   },
   "kpi": {
@@ -497,13 +497,16 @@
     "noKPIs": {
       "heading": "Ingen målinger",
       "body": "Oops! Her finnes det ingen målinger ennå.",
-      "adminBody": "Her kan du opprette målinger som automatisk henter data fra Google Sheets. ",
-      "linkText": "Opprett en måling"
+      "adminBody": "Legg til målinger som gir en pekepinn på hva dere har oppnådd!",
+      "buttonText": "Opprett en måling"
     },
-    "noPeriods": {
-      "heading": "Tomt?",
-      "body": "Det ser visst ut som at det mangler noen mål og nøkkelresultater her ...",
-      "buttonText": "Opprett mål og nøkkelresultater her"
+    "noObjectives": {
+      "heading": "Her var det visst helt tomt!",
+      "body": "Det ser ut som at det mangler noen mål og nøkkelresultater her ..."
+    },
+    "noObjectivesInPeriod": {
+      "heading": "Ingen mål i valgt periode",
+      "body": "Vi fant ingen mål registrert innenfor den valgte perioden."
     }
   },
   "archived": {

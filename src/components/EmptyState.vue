@@ -1,11 +1,16 @@
 <template>
-  <div class="empty">
-    <div v-if="icon" class="empty__icon" :class="`fa fa-${icon}`"></div>
-    <div v-if="heading" class="empty__heading" v-text="heading"></div>
-    <div v-if="body" class="empty__body" v-text="body"></div>
+  <div :class="['empty', `empty--${skin}`]">
+    <div class="empty__wrapper">
+      <h1 v-if="heading" class="empty__heading" v-text="heading" />
+      <p v-if="body" class="empty__body" v-text="body" />
 
-    <div class="empty__actions">
-      <slot></slot>
+      <div class="empty__actions">
+        <slot />
+      </div>
+    </div>
+
+    <div v-if="showGraphic" class="empty__footer">
+      <buildings-graphic :skin="skin" class="empty__graphic" />
     </div>
   </div>
 </template>
@@ -14,66 +19,113 @@
 export default {
   name: 'EmptyState',
 
+  components: {
+    BuildingsGraphic: () => import('@/components/graphics/BuildingsGraphic.vue'),
+  },
+
   props: {
-    icon: {
-      type: String,
-      required: false,
-      default: '',
-    },
     heading: {
       type: String,
       required: false,
       default: '',
     },
+
     body: {
       type: String,
       required: false,
       default: '',
+    },
+
+    skin: {
+      type: String,
+      default: 'info',
+      validator: (value) => ['info', 'success', 'warning', 'error'].includes(value),
+    },
+
+    showGraphic: {
+      type: Boolean,
+      default: true,
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:map';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/variables';
+
+$-empty-state-skins: (
+  info: var(--color-blue-10),
+  success: var(--color-green-10),
+  warning: var(--color-yellow-50),
+  error: var(--color-red-5),
+);
+
 .empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 30rem;
-  margin: 1.5rem auto 1rem;
-  padding: 1rem 1.5rem;
-  color: var(--color-grayscale-40);
-  text-align: center;
-  border-radius: 3px;
-}
+  @each $skin, $color in $-empty-state-skins {
+    &--#{$skin} {
+      background-color: $color;
+    }
+  }
 
-.empty__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  margin-bottom: 2rem;
-  color: var(--color-gray);
-  font-size: 2.5rem;
-  text-align: center;
-  background: var(--color-grayscale-10);
-  border-radius: 3.5rem;
-}
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    max-width: map.get(variables.$breakpoints, 'phablet');
+    height: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 2rem 1.5rem;
 
-.empty__heading {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  word-break: break-all;
-}
+    @include bp('tablet-up') {
+      gap: 1.5rem;
+    }
 
-.empty__body {
-  color: var(--color-grayscale-30);
-  line-height: 1.2;
-  overflow-wrap: break-word;
-}
+    @each $bp-name, $padding in ('tablet-up': 4.5, 'laptop-up': 5.5) {
+      @include bp('#{$bp-name}') {
+        padding: #{$padding}rem 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+    }
+  }
 
-.empty__actions {
-  margin-top: 1.5rem;
+  &__heading {
+    @include get-text('pkt-txt-28-medium');
+
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-30-medium');
+    }
+
+    @include bp('laptop-up') {
+      @include get-text('pkt-txt-36-medium');
+    }
+  }
+
+  &__body {
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-20');
+    }
+  }
+
+  &__actions {
+    margin-top: 1rem;
+  }
+
+  &__graphic {
+    display: block;
+  }
+
+  &__footer {
+    display: flex;
+    padding: 0 1.5rem;
+
+    @include bp('tablet-up') {
+      padding: 0 10%;
+    }
+  }
 }
 </style>

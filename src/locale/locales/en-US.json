@@ -1,12 +1,12 @@
 {
   "403": {
     "title": "Forbidden",
-    "body": "You do not have access to this resource.",
+    "body": "You do not have access to this page.",
     "linkText": "Go back to the front page"
   },
   "404": {
     "title": "Page not found",
-    "body": "This resource does not seem to exist.",
+    "body": "This page does not seem to exist.",
     "linkText": "Go back to the front page"
   },
   "kpi": {
@@ -497,13 +497,16 @@
     "noKPIs": {
       "heading": "No measurements",
       "body": "Oops! Could not find any measurements.",
-      "adminBody": "Add measurement that automatically fetches data from Google Sheets.",
-      "linkText": "Create a measurement"
+      "adminBody": "Add measurements that show what you have accomplished!",
+      "buttonText": "Create a measurement"
     },
-    "noPeriods": {
-      "heading": "Empty?",
-      "body": "It looks like there are no objectives and key results here ...",
-      "buttonText": "Create objectives and key results"
+    "noObjectives": {
+      "heading": "No objectives here!",
+      "body": "It looks like there are no objectives and key results here ..."
+    },
+    "noObjectivesInPeriod": {
+      "heading": "No objectives in selected period",
+      "body": "No objectives registered within the selected period."
     }
   },
   "archived": {
