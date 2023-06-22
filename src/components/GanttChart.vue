@@ -23,14 +23,15 @@
         <span class="ticks__padding"></span>
       </div>
     </div>
-    <objective-row
-      v-for="o in orderedObjectives"
-      :key="o.id"
-      :objective="o"
-      :show-progress="true"
-      :style="objectiveStyle(o)"
-    >
-    </objective-row>
+    <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
+      <objective-row
+        v-for="o in group.objectives"
+        :key="o.objective.id"
+        :objective="o.objective"
+        :show-progress="true"
+        :style="objectiveStyle(o)"
+      />
+    </div>
     <div class="today-tick" :style="todayStyle()"></div>
   </div>
 </template>
@@ -40,9 +41,11 @@ import {
   addMonths,
   differenceInDays,
   eachMonthOfInterval,
+  endOfDay,
   getDaysInMonth,
   max,
   min,
+  startOfDay,
   startOfMonth,
 } from 'date-fns';
 import { capitalize, dateMonthYear } from '@/util';
@@ -96,13 +99,88 @@ export default {
     },
 
     orderedObjectives() {
-      return this.objectives
-        .slice()
-        .sort((a, b) => this.startDate(a) - this.startDate(b));
+      return (
+        this.objectives
+          .slice()
+          /*
+           * Sort first by shortest objectives first. This is so that they
+           * stack as nice as possible in the timeline view, since the first
+           * rows are filled with short goals first.
+           */
+          .sort(
+            (a, b) =>
+              this.endDate(a) - this.startDate(a) - (this.endDate(b) - this.startDate(b))
+          )
+          /*
+           * Then sort by start date, so that the goals that start first come
+           * first.
+           */
+          .sort((a, b) => this.startDate(a) - this.startDate(b))
+      );
+    },
+
+    /**
+     * Return objectives grouped by rows in which they are to be displayed in
+     * the timeline view.
+     */
+    groupedObjectives() {
+      return this.orderedObjectives.reduce((rows, o) => {
+        return this.placeObjective(o, rows);
+      }, []);
     },
   },
 
   methods: {
+    /*
+     * Return the end date of the last goal in `row`.
+     */
+    rowEndDate(row) {
+      return this.endDate(row.objectives[row.objectives.length - 1].objective);
+    },
+
+    /*
+     * Place the objective `o` in a suitable place in `rows`. Return the
+     * resulting row.
+     *
+     * Goals are placed in the earliest row possible, that is, where there is
+     * still room given the goals' start and end dates. If there isn't room for
+     * a goal in any of the existing rows, a new row is created for it on the
+     * end.
+     */
+    placeObjective(o, rows) {
+      let i = 0;
+
+      while (i < rows.length) {
+        if (this.rowEndDate(rows[i]) <= this.startDate(o)) {
+          break;
+        }
+        i += 1;
+      }
+
+      if (rows[i]) {
+        rows[i].objectives.push({
+          objective: o,
+          /*
+           * `dayDiff` is the number of days between this objective and the one
+           * before it on the same row. This is used to compute the amount of
+           * margin later.
+           */
+          dayDiff: differenceInDays(
+            endOfDay(this.startDate(o).toDate()),
+            startOfDay(this.rowEndDate(rows[i]).toDate())
+          ),
+        });
+      } else {
+        /*
+         * `dayDiff: null` means that the objective is the first one in its
+         * row.
+         */
+        rows[i] = { i, objectives: [{ objective: o, dayDiff: null }] };
+      }
+
+      return rows;
+    },
+
     startDate(o) {
       return o.startDate || o.period.startDate;
     },
@@ -122,16 +200,40 @@ export default {
       }px + ${this.lineWidth} / 2 - 50%))`;
     },
 
+    /*
+     * Return appropriate styling of the left margin and width for the
+     * objective `o`.
+     */
     objectiveStyle(o) {
+      /*
+       * `dayDiff === null` means that the objective is the first one on its
+       * row, so compute the day difference from the date all the way to the
+       * left of the timeline instead of the previous objective on the row.
+       */
+      const dayDiff =
+        o.dayDiff === null
+          ? differenceInDays(
+              endOfDay(this.startDate(o.objective).toDate()),
+              startOfDay(startOfMonth(this.minDate))
+            )
+          : o.dayDiff;
+
+      /*
+       * The total margin is the number of days between the previous objective
+       * or the earliest date on the timeline (when this is the first objective
+       * on the row), times the number of pixels per day. When this is the
+       * first objective on the row (`dayDiff === null`), we need to add the
+       * end padding in addition.
+       */
+      const marginLeft = dayDiff * this.PPD + (o.dayDiff === null ? this.endPadding : 0);
+
       return [
-        `margin-left: ${
-          differenceInDays(this.startDate(o).toDate(), startOfMonth(this.minDate)) *
-            this.PPD +
-          this.endPadding
-        }px`,
-        `width: ${
-          differenceInDays(this.endDate(o).toDate(), this.startDate(o).toDate()) *
-          this.PPD
+        `margin-left: ${marginLeft}px`,
+        `flex: 0 0 ${
+          differenceInDays(
+            endOfDay(this.endDate(o.objective).toDate()),
+            startOfDay(this.startDate(o.objective).toDate())
+          ) * this.PPD
         }px`,
       ].join(';');
     },
@@ -241,10 +343,15 @@ export default {
   border-left: var(--line-width) dashed var(--color-yellow);
 }
 
+.objective-row {
+  display: flex;
+  align-items: flex-start;
+  margin: 1rem 0;
+}
+
 .objective {
   position: relative;
   z-index: 1;
-  margin: 1rem 0;
   background: var(--color-white);
   border: 2px solid var(--color-border);
 }

@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file. The format 
   is also made persistent between the OKR page and the measurements page.
 - The default objective view is now the timeline view.
 - The design of empty states and error pages have been refreshed.
+- The timeline view for goals now fills up horizontally instead of having one
+  goal per row.
 
 ### Removed
 
