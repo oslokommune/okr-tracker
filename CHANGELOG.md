@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file. The format 
 - The main navigation menu icon has been replaced by a more generic one.
 - The timeline view for goals now fills up horizontally instead of having one
   goal per row.
+- The CSV export of measurements no longer includes the time part of the
+  timestamps, as only one measurement can exist per day anyway.
 
 ### Fixed
 
