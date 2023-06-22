@@ -1,38 +1,40 @@
 <template>
   <div class="gantt">
-    <div class="month-wrapper" @mousedown="startDrag">
-      <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
-      <div class="months">
-        <div
-          v-for="m in months"
-          :key="m.valueOf()"
-          class="month"
-          :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
-        >
-          <span>{{ dateLongCompact(m) }}</span>
+    <div class="gantt__inner">
+      <div class="month-wrapper" @mousedown="startDrag">
+        <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
+        <div class="months">
+          <div
+            v-for="m in months"
+            :key="m.valueOf()"
+            class="month"
+            :style="`width: ${getDaysInMonth(m) * PPD}px`"
+          >
+            <span>{{ dateLongCompact(m) }}</span>
+          </div>
+        </div>
+        <div class="ticks">
+          <span class="ticks__padding"></span>
+          <div
+            v-for="m in months"
+            :key="m.valueOf()"
+            class="ticks__tick"
+            :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
+          ></div>
+          <span class="ticks__padding"></span>
         </div>
       </div>
-      <div class="ticks">
-        <span class="ticks__padding"></span>
-        <div
-          v-for="m in months"
-          :key="m.valueOf()"
-          class="ticks__tick"
-          :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
-        ></div>
-        <span class="ticks__padding"></span>
+      <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
+        <objective-row
+          v-for="o in group.objectives"
+          :key="o.objective.id"
+          :objective="o.objective"
+          :show-progress="true"
+          :style="objectiveStyle(o)"
+        />
       </div>
+      <div class="today-tick" :style="todayStyle()"></div>
     </div>
-    <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
-      <objective-row
-        v-for="o in group.objectives"
-        :key="o.objective.id"
-        :objective="o.objective"
-        :show-progress="true"
-        :style="objectiveStyle(o)"
-      />
-    </div>
-    <div class="today-tick" :style="todayStyle()"></div>
   </div>
 </template>
 
@@ -270,19 +272,27 @@ export default {
   --end-padding: 75px;
 
   position: relative;
-  min-height: 85vh;
-  margin-top: 0.5rem;
-  overflow-x: auto;
+  padding-bottom: 1.5rem;
+  overflow: auto;
+
+  &__inner {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
 }
 
 .month-wrapper {
-  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: inline-block;
   padding-top: 1.5rem;
+  background-color: var(--color-gray-light);
   cursor: col-resize;
 }
 
 .months {
-  display: flex;
+  display: inline-flex;
   margin-bottom: 0.5rem;
   margin-left: var(--end-padding);
   font-weight: 500;
@@ -327,10 +337,23 @@ export default {
 }
 
 .today {
+  position: absolute;
+  top: 0;
+  z-index: 2;
   display: inline-block;
   height: 1.5rem;
   color: var(--color-yellow);
   font-weight: 500;
+  background-color: inherit;
+
+  &::after {
+    position: absolute;
+    top: 3.125rem;
+    left: calc(50% - 0.1rem);
+    height: 1.125rem;
+    border-left: var(--line-width) solid var(--color-yellow);
+    content: '';
+  }
 }
 
 .today-tick {
