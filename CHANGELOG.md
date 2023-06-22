@@ -29,6 +29,8 @@ All notable changes to this project will be documented in this file. The format 
 - The timeline view now fills all available screen space when browsing OKRs.
 - A modal is now used to show a quick summary of objectives in the timeline
   view.
+- The timeline view now always displays all objectives. The period selector puts
+  a specified period in focus instead of filtering the objectives.
 
 ### Removed
 
