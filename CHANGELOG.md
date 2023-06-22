@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file. The format 
 - Graphs for percentage measurements are no longer locked to 100% on the y-axis
   by default.
 - The main navigation menu icon has been replaced by a more generic one.
+- The timeline view for goals now fills up horizontally instead of having one
+  goal per row.
 
 ### Fixed
 
