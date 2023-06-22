@@ -3,6 +3,13 @@
     class="objective"
     :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
   >
+    <ul>
+      <li v-for="owner in owners" :key="owner" class="owner">
+        <pkt-tag skin="grey" size="small">
+          <span>{{ owner }}</span>
+        </pkt-tag>
+      </li>
+    </ul>
     <h3 class="objective__header title-2">
       <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>
@@ -17,12 +24,15 @@
 <script>
 import { mapState } from 'vuex';
 import { format } from 'd3-format';
+import { db } from '@/config/firebaseConfig';
+import { PktTag } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ObjectiveRow',
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
+    PktTag,
   },
 
   props: {
@@ -40,13 +50,34 @@ export default {
     },
   },
 
+  data: () => ({
+    owners: [],
+  }),
+
   computed: {
     ...mapState(['user']),
+  },
+
+  mounted() {
+    const ownerNames = [];
+
+    this.objective.keyResults.map((k) => {
+      return this.ownerName(k.parent).then((n) => {
+        if (!ownerNames.includes(n)) {
+          ownerNames.push(n);
+        }
+      });
+    });
+    this.owners = ownerNames;
   },
 
   methods: {
     percent(value) {
       return format('.0%')(value);
+    },
+    async ownerName(ref) {
+      const parentRef = db.doc(ref);
+      return parentRef.get().then((p) => p.data().name);
     },
   },
 };
@@ -79,5 +110,10 @@ export default {
   gap: 1.5rem;
   justify-content: space-between;
   margin-bottom: 0;
+}
+
+.owner {
+  display: inline;
+  margin-right: 0.5rem;
 }
 </style>
