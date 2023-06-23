@@ -4,7 +4,6 @@ import { format, parseISO, formatISO } from 'date-fns';
 export const dateLong = (d) => format(d, 'PPP');
 export const dateLongCompact = (d) => format(d, 'PP');
 export const dateShort = (d) => format(d, 'P');
-export const dateMonthYear = (d) => format(d, 'MMMM y');
 export const dateTimeShort = (d) => format(d, 'Pp');
 export const dateTimeLong = (d) => format(d, 'PPPp');
 

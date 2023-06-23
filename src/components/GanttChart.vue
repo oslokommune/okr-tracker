@@ -9,7 +9,7 @@
           class="month"
           :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
         >
-          <span>{{ formatMonth(m) }}</span>
+          <span>{{ dateLongCompact(m) }}</span>
         </div>
       </div>
       <div class="ticks">
@@ -48,7 +48,7 @@ import {
   startOfDay,
   startOfMonth,
 } from 'date-fns';
-import { capitalize, dateMonthYear } from '@/util';
+import { dateLongCompact } from '@/util';
 
 export default {
   name: 'GanttChart',
@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       PPD: 6, // Pixels per day
-      minPPD: 4.5,
+      minPPD: 4,
       lineWidth: '0.25rem',
       endPadding: 75, // Padding in pixels before/after the first/last months
       now: new Date(),
@@ -189,10 +189,6 @@ export default {
       return o.endDate || o.period.endDate;
     },
 
-    formatMonth(d) {
-      return capitalize(dateMonthYear(d));
-    },
-
     todayStyle() {
       return `transform: translateX(calc(${
         differenceInDays(this.now, startOfMonth(this.minDate)) * this.PPD +
@@ -260,6 +256,7 @@ export default {
     },
 
     addMonths,
+    dateLongCompact,
     differenceInDays,
     getDaysInMonth,
     startOfMonth,
