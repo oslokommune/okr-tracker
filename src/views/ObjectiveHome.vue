@@ -41,7 +41,6 @@
 
         <empty-state
           v-else
-          :icon="'poop'"
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
         />

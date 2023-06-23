@@ -32,7 +32,7 @@
           :show-progress="true"
           :style="objectiveStyle(o)"
           :is-link="false"
-          @click="openObjectiveModal(o)"
+          @click="openObjectiveModal(o.objective)"
         />
       </div>
       <div class="today-tick" :style="todayStyle()"></div>

@@ -26,12 +26,9 @@ All notable changes to this project will be documented in this file. The format 
   goal per row.
 - The CSV export of measurements no longer includes the time part of the
   timestamps, as only one measurement can exist per day anyway.
-<<<<<<< HEAD
 - The timeline view now fills all available screen space when browsing OKRs.
-=======
 - A modal is now used to show a quick summary of objectives in the timeline
   view.
->>>>>>> Add modal for objectives in OKR timeline view
 
 ### Removed
 

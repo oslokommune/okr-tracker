@@ -29,6 +29,12 @@
       v-if="objective.keyResults.length"
       :key-results="objective.keyResults"
     />
+
+    <empty-state
+      v-else
+      :heading="$t('empty.noKeyResults.heading')"
+      :body="$t('empty.noKeyResults.body')"
+    />
   </modal-wrapper>
 </template>
 
@@ -39,12 +45,13 @@ import ProgressBar from '@/components/ProgressBar.vue';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
-  name: 'ObjectiveSummaryModal',
+  name: 'ObjectiveModal',
 
   components: {
+    EmptyState: () => import('@/components/EmptyState.vue'),
+    KeyResultsList,
     ModalWrapper,
     ProgressBar,
-    KeyResultsList,
   },
 
   props: {
