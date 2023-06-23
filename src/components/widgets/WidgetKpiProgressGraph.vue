@@ -172,7 +172,7 @@ export default {
           csvFormatBody(
             this.progress.map((d) => [
               d.value,
-              d.timestamp.toDate().toISOString(),
+              d.timestamp.toDate().toISOString().slice(0, 10),
               d.comment,
             ])
           ),
