@@ -272,11 +272,13 @@ export default {
   --end-padding: 75px;
 
   position: relative;
-  padding-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
   overflow: auto;
 
   &__inner {
     position: relative;
+    flex: 1 0 auto;
     padding-bottom: 1.5rem;
   }
 }
