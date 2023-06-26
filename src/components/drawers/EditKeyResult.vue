@@ -66,22 +66,20 @@
           </div>
         </div>
         <template v-if="!keyResult.archived" #actions="{ handleSubmit }">
-          <div v-if="step === 1">
+          <template v-if="step === 1">
             <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
             <btn-save
               :label="$t('btn.continue')"
               :disabled="!changed || loading"
               variant="label-only"
               skin="primary"
-              class="btn-continue"
               @click="handleSubmit(update)"
             />
-          </div>
-          <div v-if="step === 2" class="button-row">
+          </template>
+          <template v-if="step === 2">
             <pkt-button
-              v-tooltip="$t('btn.back')"
               :text="$t('btn.back')"
-              variant="tertiary"
+              skin="tertiary"
               @onClick="$emit('click', back())"
             />
             <btn-save
@@ -91,7 +89,7 @@
               skin="primary"
               @click="handleSubmit(update)"
             />
-          </div>
+          </template>
         </template>
       </form-section>
     </div>
@@ -368,10 +366,6 @@ export default {
   flex-flow: row wrap;
   justify-content: space-between;
   width: 100%;
-}
-
-.btn-continue {
-  margin-left: 1rem;
 }
 
 .footer {
