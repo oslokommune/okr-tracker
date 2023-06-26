@@ -1,70 +1,38 @@
 <template>
-  <page-layout v-if="objectives.length || dataLoading">
+  <page-layout
+    v-if="objectives.length || dataLoading"
+    breakpoint="full"
+    :class="{ 'okrs--timeline': periodObjectives.length }"
+  >
+    <template #header>
+      <h1 class="pkt-txt-24-medium">{{ $t('general.OKRsLong') }}</h1>
+
+      <div v-if="hasEditRights" data-mode="dark">
+        <pkt-button
+          v-tooltip="$t('btn.createObjective')"
+          :text="$t('btn.createObjective')"
+          skin="primary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="$emit('click', openObjectiveDrawer())"
+        />
+      </div>
+    </template>
+
     <template #default>
-      <header class="itemOKRs__header">
-        <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
-        <div v-if="hasEditRights && periodObjectives.length" data-mode="dark">
-          <pkt-button
-            v-tooltip="$t('btn.createObjective')"
-            :text="$t('btn.createObjective')"
-            skin="primary"
-            variant="icon-left"
-            icon-name="plus-sign"
-            @onClick="$emit('click', openObjectiveDrawer())"
-          />
-        </div>
-      </header>
+      <content-loader-item v-if="dataLoading" />
 
-      <section>
-        <template v-if="dataLoading">
-          <content-loader-action-bar />
-          <content-loader-item />
-        </template>
+      <gantt-chart
+        v-else-if="periodObjectives.length"
+        :objectives="periodObjectives"
+        :item="activeItem"
+      />
 
-        <template v-else>
-          <action-bar v-if="periodObjectives.length" />
-
-          <template v-if="periodObjectives.length">
-            <ul v-if="view === 'list'">
-              <li
-                v-for="objective in periodObjectives"
-                :key="objective.id"
-                class="itemHome__objectives--item"
-              >
-                <objective-row :objective="objective" :show-description="true" />
-
-                <ul v-if="objective.keyResults.length">
-                  <li
-                    v-for="keyResult in objective.keyResults"
-                    :key="keyResult.id"
-                    class="keyResultRow"
-                  >
-                    <key-result-row :key-result="keyResult" />
-                  </li>
-                </ul>
-              </li>
-            </ul>
-
-            <gantt-chart v-else :objectives="periodObjectives" :item="activeItem" />
-          </template>
-
-          <empty-state
-            v-else
-            :heading="$t('empty.noObjectivesInPeriod.heading')"
-            :body="$t('empty.noObjectivesInPeriod.body')"
-          >
-            <div v-if="hasEditRights" data-mode="dark">
-              <pkt-button
-                :text="$t('btn.createObjective')"
-                skin="primary"
-                variant="icon-left"
-                icon-name="plus-sign"
-                @onClick="$emit('click', openObjectiveDrawer())"
-              />
-            </div>
-          </empty-state>
-        </template>
-      </section>
+      <empty-state
+        v-else
+        :heading="$t('empty.noObjectivesInPeriod.heading')"
+        :body="$t('empty.noObjectivesInPeriod.body')"
+      />
     </template>
   </page-layout>
 
@@ -91,21 +59,16 @@ import { objectiveInPeriod } from '@/util/okr';
 import { periodDates } from '@/util';
 import routerGuard from '@/router/router-guards/itemOKRs';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
-import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ItemHome',
 
   components: {
-    ActionBar: () => import('@/components/ActionBar.vue'),
     GanttChart: () => import('@/components/GanttChart.vue'),
-    ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
     ContentLoaderItem,
-    ContentLoaderActionBar,
     PktButton,
   },
 
@@ -178,25 +141,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.itemOKRs__header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-bottom: 1rem;
-}
-
-.keyResultRow {
-  &:not(:first-child) {
-    margin-top: 4px;
+.page {
+  ::v-deep &__header {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
   }
-}
+  &.okrs--timeline {
+    background-color: var(--color-gray-light);
 
-.itemHome__objectives--item {
-  margin-bottom: 1rem;
-  border: 2px solid var(--color-border);
+    ::v-deep .page__container,
+    ::v-deep .page__main {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      height: 0;
+      padding: 0;
+    }
 
-  > ul {
-    padding-bottom: 0.5rem;
+    .gantt {
+      flex-grow: 1;
+    }
   }
 }
 </style>
