@@ -44,7 +44,7 @@
             />
           </td>
           <td v-if="hasAnyComments" style="max-width: 200px; padding: 0.25rem 0.5rem">
-            <span v-if="record.comment && showComments">
+            <span v-if="record.comment && showComments" class="record__comment">
               {{ record.comment }}
             </span>
             <v-popover v-if="record.comment && !showComments" placement="top">
@@ -198,6 +198,10 @@ export default {
   &__footer {
     text-align: center;
   }
+}
+
+.record__comment {
+  white-space: pre-line;
 }
 
 .record__comment-icon {
