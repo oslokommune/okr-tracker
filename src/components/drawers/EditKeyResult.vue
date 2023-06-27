@@ -30,6 +30,7 @@
             name="owner"
             input-type="select"
             :select-options="ownerOptions"
+            :select-reduce="(option) => option.value"
             :label="$t('fields.owner')"
             rules="required"
           /-->
@@ -81,7 +82,8 @@
             <pkt-button
               v-tooltip="$t('btn.back')"
               :text="$t('btn.back')"
-              variant="tertiary"
+              skin="tertiary"
+              variant="label-only"
               @onClick="$emit('click', back())"
             />
             <btn-save
@@ -167,7 +169,7 @@ export default {
       const nameEdited = this.keyResult?.name !== this.data?.keyResult?.name;
       const descriptionEdited =
         this.keyResult?.description !== this.data?.keyResult?.description;
-      const ownerEdited = this.keyResult?.owner !== this.data?.keyResult?.owner;
+      const ownerEdited = this.keyResult?.parent !== this.data?.keyResult?.parent;
 
       return !!(nameEdited || descriptionEdited || ownerEdited);
     },
@@ -239,9 +241,8 @@ export default {
         this.loading = true;
         this.newKeyResult = false;
         try {
-          const { name, description, unit, weight, startValue, targetValue } =
+          const { name, description, unit, weight, startValue, targetValue, parent } =
             this.keyResult;
-          const parent = this.activeItemRef;
 
           if (this.keyResult.id) {
             const data = {
