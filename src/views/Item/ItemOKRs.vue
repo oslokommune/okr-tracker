@@ -159,10 +159,6 @@ export default {
       height: 0;
       padding: 0;
     }
-
-    .gantt {
-      flex-grow: 1;
-    }
   }
 }
 </style>

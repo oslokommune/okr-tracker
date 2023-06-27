@@ -1,5 +1,5 @@
 <template>
-  <div class="gantt">
+  <simplebar :auto-hide="false" class="gantt">
     <div class="gantt__inner">
       <div class="month-wrapper" @mousedown="startDrag">
         <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
@@ -35,10 +35,12 @@
       </div>
       <div class="today-tick" :style="todayStyle()"></div>
     </div>
-  </div>
+  </simplebar>
 </template>
 
 <script>
+import simplebar from 'simplebar-vue';
+import 'simplebar-vue/dist/simplebar.min.css';
 import {
   addMonths,
   differenceInDays,
@@ -56,6 +58,7 @@ export default {
   name: 'GanttChart',
 
   components: {
+    simplebar,
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
   },
 
@@ -272,11 +275,12 @@ export default {
   --end-padding: 75px;
 
   position: relative;
-  padding-bottom: 1.5rem;
   overflow: auto;
+  height: 100%;
 
   &__inner {
     position: relative;
+    height: 100%;
     padding-bottom: 1.5rem;
   }
 }
@@ -286,7 +290,9 @@ export default {
   top: 0;
   z-index: 2;
   display: inline-block;
-  padding-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding-top: 2rem;
+  height: 4.25rem;
   background-color: var(--color-gray-light);
   cursor: col-resize;
 }
@@ -374,5 +380,29 @@ export default {
   z-index: 1;
   background: var(--color-white);
   border: 2px solid var(--color-border);
+}
+
+::v-deep .simplebar {
+  &-content {
+    height: 100%;
+  }
+
+  &-track {
+    background-color: var(--color-grayscale-20);
+  }
+
+  &-scrollbar:before {
+    background-color: var(--color-blue-dark);
+    opacity: 1;
+    border-radius: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  &-horizontal {
+    top: 4.25rem;
+  }
 }
 </style>
