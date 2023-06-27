@@ -4,7 +4,7 @@
       <h1 v-if="heading" class="empty__heading" v-text="heading" />
       <p v-if="body" class="empty__body" v-text="body" />
 
-      <div class="empty__actions">
+      <div v-if="$slots.default" class="empty__actions">
         <slot />
       </div>
     </div>

@@ -1,38 +1,25 @@
 <template>
-  <div class="keyResult">
+  <div class="key-result-row">
     <router-link
       :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }"
-      class="keyResult__infoLink"
+      class="key-result-row__link"
     >
-      <h4 class="keyResult__title title-3">{{ keyResult.name }}</h4>
-      <p v-if="keyResult.description" class="keyResult__description">
-        {{ keyResult.description }}
-      </p>
+      <div class="key-result-row__info">
+        <h4 class="pkt-txt-16">{{ keyResult.name }}</h4>
+        <p v-if="keyResult.description" class="pkt-txt-14-light">
+          {{ keyResult.description }}
+        </p>
+      </div>
+
+      <div class="key-result-row__progress">
+        <progress-bar :progression="progressPercentage" />
+        <span class="pkt-txt-16">{{ progressPercentage }}%</span>
+      </div>
     </router-link>
-
-    <div
-      v-tooltip="allowedToEditPeriod ? false : 'Not allowed to edit'"
-      class="keyResult__progress"
-      :class="{
-        'keyResult__progress--isDisabled': !allowedToEditPeriod,
-      }"
-      @click="openModal"
-    >
-      <progress-bar :progression="progressPercentage" class="keyResult__progressBar" />
-      {{ progressPercentage }}%
-    </div>
-
-    <key-result-modal
-      v-if="isOpen"
-      :key-result="keyResult"
-      :unsaved-values="changed"
-      @close="isOpen = false"
-    />
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
 import { format } from 'd3-format';
 import { numberLocale } from '@/util';
 
@@ -41,7 +28,6 @@ export default {
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
-    KeyResultModal: () => import('@/components/modals/KeyResultModal.vue'),
   },
 
   props: {
@@ -51,15 +37,7 @@ export default {
     },
   },
 
-  data: () => ({
-    isOpen: false,
-    changed: false,
-  }),
-
   computed: {
-    ...mapState(['user']),
-    ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
-
     progressPercentage() {
       return this.keyResult.progression * 100;
     },
@@ -67,11 +45,7 @@ export default {
 
   methods: {
     format,
-    openModal() {
-      if (this.allowedToEditPeriod) {
-        this.isOpen = true;
-      }
-    },
+
     formatLargeNumber(value) {
       return numberLocale.format(',')(value);
     },
@@ -80,16 +54,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-.keyResult {
-  @media screen and (min-width: bp(s)) {
+.key-result-row {
+  &__link {
     display: flex;
-  }
-
-  &__infoLink {
-    display: block;
-    flex: 1;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1.5rem;
     color: var(--color-text);
     text-decoration: none;
@@ -99,44 +70,27 @@ export default {
       color: var(--color-white);
       background-color: var(--color-hover);
     }
+
+    @include bp('tablet-up') {
+      flex-direction: row;
+    }
   }
 
-  &__title {
-    margin-bottom: 0;
-    font-weight: 400;
-  }
-
-  &__description {
-    margin: 0.5rem 0 0;
-    font-size: typography.$font-size-1;
-    line-height: 1.25rem;
+  &__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   &__progress {
     display: flex;
     flex: 0 0 100%;
-    gap: 0.75rem;
+    gap: 1rem;
     align-items: center;
-    padding: 1.5rem;
-    font-weight: 500;
-    background-color: var(--color-gray-light);
-    cursor: pointer;
 
-    &:hover {
-      color: var(--color-white);
-      background-color: var(--color-hover);
-
-      .keyResultProgressDetails {
-        color: inherit;
-      }
-    }
-
-    @media screen and (min-width: bp(s)) {
-      flex: 0 0 20rem;
-    }
-
-    &--isDisabled {
-      cursor: not-allowed;
+    @include bp('tablet-up') {
+      flex-basis: 25%;
     }
 
     .progress {

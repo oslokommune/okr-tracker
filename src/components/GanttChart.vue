@@ -31,10 +31,18 @@
           :objective="o.objective"
           :show-progress="true"
           :style="objectiveStyle(o)"
+          :is-link="false"
+          @click="openObjectiveModal(o.objective)"
         />
       </div>
       <div class="today-tick" :style="todayStyle()"></div>
     </div>
+
+    <objective-modal
+      v-if="showObjectiveModal"
+      :objective="activeObjective"
+      @close="closeObjectiveModal"
+    />
   </div>
 </template>
 
@@ -57,6 +65,7 @@ export default {
 
   components: {
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
+    ObjectiveModal: () => import('@/components/modals/ObjectiveModal.vue'),
   },
 
   props: {
@@ -80,6 +89,8 @@ export default {
       dragSense: 8,
       dragSpeed: 0.25,
       mouseX: null,
+      showObjectiveModal: false,
+      activeObjective: null,
     };
   },
 
@@ -255,6 +266,16 @@ export default {
     stopDrag() {
       window.removeEventListener('mousemove', this.drag);
       window.removeEventListener('mouseup', this.stopDrag);
+    },
+
+    openObjectiveModal(objective) {
+      this.activeObjective = objective;
+      this.showObjectiveModal = true;
+    },
+
+    closeObjectiveModal() {
+      this.showObjectiveModal = false;
+      this.activeObjective = null;
     },
 
     addMonths,

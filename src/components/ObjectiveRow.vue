@@ -1,17 +1,21 @@
 <template>
-  <router-link
+  <component
+    :is="isLink ? 'router-link' : 'div'"
+    :to="isLink ? { name: 'ObjectiveHome', params: { objectiveId: objective.id } } : null"
     class="objective"
-    :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
+    @click="isLink ? () => {} : $emit('click')"
   >
     <h3 class="objective__header title-2">
       <span>{{ objective.name }}</span>
       <span>{{ percent(objective.progression) }}</span>
     </h3>
+
     <p v-if="showDescription && objective.description">
       {{ objective.description }}
     </p>
+
     <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
-  </router-link>
+  </component>
 </template>
 
 <script>
@@ -38,6 +42,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isLink: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   computed: {
@@ -60,6 +68,7 @@ export default {
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
+  cursor: pointer;
 
   .title-2 {
     line-height: 1.25;

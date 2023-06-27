@@ -40,20 +40,17 @@
 
   &__header {
     display: flex;
+    gap: 1rem;
     align-items: center;
     margin-bottom: 0.5rem;
-    line-height: 2.5rem;
 
-    .btn {
-      align-self: stretch;
-      margin: 0;
-      padding: 0 1rem;
+    .pkt-btn {
+      align-self: flex-start;
     }
 
-    .title-2 {
+    h1 {
       flex: 1;
       margin: 0;
-      text-transform: uppercase;
     }
   }
 
