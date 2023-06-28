@@ -1,27 +1,33 @@
+<!--
+  XXX: Should be reverted to use `PktButton` again once this issue is resolved:
+    https://github.com/oslokommune/punkt/issues/870
+-->
+
 <template>
-  <pkt-button
+  <button
     :type="type"
-    :text="label"
-    :variant="variant"
-    :icon-name="icon"
+    class="pkt-btn"
+    :class="variantClass"
     :disabled="disabled"
-    @onClick="$emit('click', $event)"
-  />
+    @click="onClick"
+  >
+    <pkt-icon v-if="variant !== 'label-only'" class="pkt-btn__icon" name="save">
+    </pkt-icon>
+    <span class="pkt-btn__text">
+      <slot>{{ label }}</slot>
+    </span>
+  </button>
 </template>
 
 <script>
-import { PktButton } from '@oslokommune/punkt-vue2';
-
 export default {
   name: 'BtnSave',
-  components: { PktButton },
-  extends: PktButton,
 
   props: {
     type: {
       type: String,
       required: false,
-      default: 'button',
+      default: 'submit',
     },
     label: {
       type: String,
@@ -35,10 +41,23 @@ export default {
       required: false,
       default: 'icon-left',
     },
-    icon: {
-      type: String,
+    disabled: {
+      type: Boolean,
       required: false,
-      default: 'save',
+      default: false,
+    },
+  },
+
+  computed: {
+    variantClass() {
+      return this.variant !== 'label-only' ? `pkt-btn--${this.variant}` : '';
+    },
+  },
+
+  methods: {
+    onClick(e) {
+      e.preventDefault();
+      this.$emit('click', e);
     },
   },
 };

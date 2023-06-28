@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fixed a bug causing dropdown toggles in the navigation bar not working.
+- Fixed handling forms when pressing the Enter button.
 
 ### Security
 
