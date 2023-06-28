@@ -2,7 +2,9 @@
   <div class="gantt">
     <div class="gantt__inner">
       <div class="month-wrapper" @mousedown="startDrag">
-        <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
+        <div ref="today" class="today" :style="todayStyle()">
+          {{ $t('general.today') }}
+        </div>
         <div class="months">
           <div
             v-for="m in months"
@@ -157,15 +159,18 @@ export default {
   watch: {
     period: {
       async handler() {
-        this.$nextTick(() =>
-          this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' })
-        );
+        this.$nextTick(() => {
+          if (this.$refs.period) {
+            this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+          }
+        });
       },
     },
   },
 
   mounted() {
-    this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'instant' });
+    const ref = this.$refs.period || this.$refs.today;
+    ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
   },
 
   methods: {
