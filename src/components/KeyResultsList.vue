@@ -1,7 +1,7 @@
 <template>
   <ul class="key-results-list">
     <li v-for="keyResult in keyResults" :key="keyResult.id" class="key-results-list__row">
-      <key-result-row :key-result="keyResult" />
+      <key-result-row :key-result="keyResult" :compact="compact" />
     </li>
   </ul>
 </template>
@@ -19,6 +19,11 @@ export default {
       type: Array,
       required: false,
       default: () => [],
+    },
+    compact: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 };

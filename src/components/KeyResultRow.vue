@@ -1,5 +1,5 @@
 <template>
-  <div class="key-result-row">
+  <div class="key-result-row" :class="{ compact }">
     <router-link
       :to="{ name: 'KeyResultHome', params: { keyResultId: keyResult.id } }"
       class="key-result-row__link"
@@ -35,11 +35,16 @@ export default {
       type: Object,
       required: true,
     },
+    compact: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   computed: {
     progressPercentage() {
-      return this.keyResult.progression * 100;
+      return Math.round(this.keyResult.progression * 100);
     },
   },
 
@@ -60,7 +65,6 @@ export default {
   &__link {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     padding: 1.5rem;
     color: var(--color-text);
     text-decoration: none;
@@ -78,23 +82,33 @@ export default {
 
   &__info {
     display: flex;
-    flex: 1;
+    flex: 0 0 70%;
     flex-direction: column;
     gap: 0.5rem;
+    padding-right: 1rem;
   }
 
   &__progress {
     display: flex;
-    flex: 0 0 100%;
+    flex: 0 0 30%;
     gap: 1rem;
     align-items: center;
 
-    @include bp('tablet-up') {
-      flex-basis: 25%;
+    .progress {
+      flex: 0 0 80%;
     }
 
-    .progress {
-      flex: 1 1 auto;
+    span {
+      flex: 1 0 auto;
+      text-align: right;
+    }
+  }
+
+  &.compact .key-result-row__progress .progress {
+    flex-basis: 80%;
+
+    @include bp('tablet-up') {
+      flex-basis: 70%;
     }
   }
 }
