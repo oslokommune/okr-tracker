@@ -3,7 +3,7 @@
     :is="isLink ? 'router-link' : 'div'"
     :to="isLink ? { name: 'ObjectiveHome', params: { objectiveId: objective.id } } : null"
     class="objective"
-    @click="isLink ? () => {} : $emit('click')"
+    @click="isLink ? () => {} : $emit('click', $event)"
   >
     <h3 class="objective__header title-2">
       <span>{{ objective.name }}</span>

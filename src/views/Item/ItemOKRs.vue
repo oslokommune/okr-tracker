@@ -1,38 +1,47 @@
 <template>
   <page-layout
-    v-if="objectives.length || dataLoading"
+    v-if="objectivesWithKeyResults.length || dataLoading"
     breakpoint="full"
-    :class="{ 'okrs--timeline': objectives.length }"
+    :sidebar-grid="false"
+    :sidebar-cols="5"
   >
-    <template #header>
-      <h1 class="pkt-txt-24-medium">{{ $t('general.OKRsLong') }}</h1>
+    <template #default>
+      <div class="okrs-timeline">
+        <div class="okrs-timeline__header">
+          <h1 class="pkt-txt-24-medium">{{ $t('general.OKRsLong') }}</h1>
 
-      <div v-if="hasEditRights" data-mode="dark">
-        <pkt-button
-          v-tooltip="$t('btn.createObjective')"
-          :text="$t('btn.createObjective')"
-          skin="primary"
-          variant="icon-left"
-          icon-name="plus-sign"
-          @onClick="$emit('click', openObjectiveDrawer())"
-        />
+          <div v-if="hasEditRights" data-mode="dark">
+            <pkt-button
+              v-tooltip="$t('btn.createObjective')"
+              :text="$t('btn.createObjective')"
+              skin="primary"
+              variant="icon-left"
+              icon-name="plus-sign"
+              @onClick="$emit('click', openObjectiveDrawer())"
+            />
+          </div>
+        </div>
+
+        <div class="okrs-timeline__body">
+          <content-loader-item v-if="dataLoading" />
+
+          <gantt-chart
+            v-else-if="objectivesWithKeyResults.length"
+            :objectives="objectivesWithKeyResults"
+            :period="selectedPeriod"
+          />
+
+          <empty-state
+            v-else
+            :heading="$t('empty.noObjectivesInPeriod.heading')"
+            :body="$t('empty.noObjectivesInPeriod.body')"
+          />
+        </div>
       </div>
     </template>
 
-    <template #default>
-      <content-loader-item v-if="dataLoading" />
-
-      <gantt-chart
-        v-else-if="objectives.length"
-        :objectives="_objectives"
-        :period="selectedPeriod"
-      />
-
-      <empty-state
-        v-else
-        :heading="$t('empty.noObjectivesInPeriod.heading')"
-        :body="$t('empty.noObjectivesInPeriod.body')"
-      />
+    <template v-if="selectedObjectives?.length" #sidebar>
+      <objective-workbench />
     </template>
   </page-layout>
 
@@ -66,40 +75,19 @@ export default {
     GanttChart: () => import('@/components/GanttChart.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
+    ObjectiveWorkbench: () => import('@/components/ObjectiveWorkbench.vue'),
     ContentLoaderItem,
     PktButton,
   },
 
   beforeRouteUpdate: routerGuard,
 
-  data: () => ({
-    activeTab: 0,
-  }),
-
   computed: {
-    ...mapState([
-      'activeItem',
-      'dataLoading',
-      'keyResults',
-      'objectives',
-      'selectedPeriod',
-      'user',
-    ]),
-    ...mapGetters(['hasEditRights']),
+    ...mapState(['activeItem', 'dataLoading', 'selectedPeriod', 'user']),
+    ...mapGetters(['objectivesWithKeyResults', 'selectedObjectives', 'hasEditRights']),
 
     view() {
       return this.user.preferences.view;
-    },
-
-    /**
-     * Return `this.objectives` enriched with ID and key results.
-     */
-    _objectives() {
-      return this.objectives.map((o) => ({
-        ...o,
-        id: o.id,
-        keyResults: this.keyResults.filter((kr) => kr.objective === `objectives/${o.id}`),
-      }));
     },
   },
 
@@ -132,28 +120,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
 .page {
-  ::v-deep &__header {
+  ::v-deep .page__container,
+  ::v-deep .page__main,
+  ::v-deep .page__sidebar {
+    gap: 0;
+    height: 100%;
+    padding: 0;
+  }
+
+  ::v-deep .page__sidebar {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    border-top: 1px solid var(--color-grayscale-10);
+
+    @include bp('tablet-big-up') {
+      border-top: unset;
+      border-left: 1px solid var(--color-grayscale-10);
+    }
+  }
+}
+
+.okrs-timeline {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__header {
+    display: flex;
+    gap: 1rem;
     align-items: center;
     justify-content: space-between;
+    padding: 1.5rem;
   }
-  &.okrs--timeline {
-    background-color: var(--color-gray-light);
 
-    ::v-deep .page__container,
-    ::v-deep .page__main {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      height: 0;
-      padding: 0;
-    }
-
-    .gantt {
-      flex-grow: 1;
-    }
+  &__body {
+    flex: 1 0 auto;
+    height: 0;
   }
+}
+
+.objective-workbench {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  height: 0;
+  overflow: auto;
 }
 </style>
