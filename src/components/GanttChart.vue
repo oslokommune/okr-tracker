@@ -2,7 +2,9 @@
   <div class="gantt">
     <div class="gantt__inner">
       <div class="month-wrapper" @mousedown="startDrag">
-        <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
+        <div ref="today" class="today" :style="todayStyle()">
+          {{ $t('general.today') }}
+        </div>
         <div class="months">
           <div
             v-for="m in months"
@@ -23,7 +25,18 @@
           ></div>
           <span class="ticks__padding"></span>
         </div>
+        <!--
+          This is only here as a reference for `scrollIntoView`. Scrolling to
+          the `.period` element risks scrolling vertically.
+        -->
+        <div
+          v-if="period.startDate"
+          ref="period"
+          class="period-ref"
+          :style="periodStyle()"
+        ></div>
       </div>
+      <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
       <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
         <objective-row
           v-for="o in group.objectives"
@@ -73,7 +86,7 @@ export default {
       type: Array,
       required: true,
     },
-    item: {
+    period: {
       type: Object,
       required: true,
     },
@@ -143,6 +156,23 @@ export default {
     },
   },
 
+  watch: {
+    period: {
+      async handler() {
+        this.$nextTick(() => {
+          if (this.$refs.period) {
+            this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+          }
+        });
+      },
+    },
+  },
+
+  mounted() {
+    const ref = this.$refs.period || this.$refs.today;
+    ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
+  },
+
   methods: {
     /*
      * Return the end date of the last goal in `row`.
@@ -207,6 +237,19 @@ export default {
         differenceInDays(this.now, startOfMonth(this.minDate)) * this.PPD +
         this.endPadding
       }px + ${this.lineWidth} / 2 - 50%))`;
+    },
+
+    periodStyle() {
+      const periodStart = this.period.startDate;
+      const periodEnd = this.period.endDate;
+
+      const margin =
+        differenceInDays(periodStart, startOfMonth(this.minDate)) * this.PPD +
+        this.endPadding;
+
+      const width = differenceInDays(periodEnd, periodStart) * this.PPD + this.PPD;
+
+      return [`margin-left: ${margin}px`, `width: ${width}px`].join(';');
     },
 
     /*
@@ -289,8 +332,9 @@ export default {
 
 <style lang="scss" scoped>
 .gantt {
-  --line-width: 0.2rem;
+  --line-width: 3px;
   --end-padding: 75px;
+  --period-offset-top: 60px;
 
   position: relative;
   display: flex;
@@ -365,16 +409,15 @@ export default {
   z-index: 2;
   display: inline-block;
   height: 1.5rem;
-  color: var(--color-yellow);
+  color: var(--color-active);
   font-weight: 500;
-  background-color: inherit;
 
   &::after {
     position: absolute;
     top: 3.125rem;
     left: calc(50% - 0.1rem);
     height: 1.125rem;
-    border-left: var(--line-width) solid var(--color-yellow);
+    border-left: var(--line-width) solid var(--color-active);
     content: '';
   }
 }
@@ -383,7 +426,25 @@ export default {
   position: absolute;
   top: 3rem;
   height: calc(100% - 3rem);
-  border-left: var(--line-width) dashed var(--color-yellow);
+  border-left: var(--line-width) dashed var(--color-active);
+}
+
+.period-ref {
+  position: absolute;
+  top: 0;
+}
+
+.period {
+  position: absolute;
+  top: var(--period-offset-top);
+  height: calc(100% - var(--period-offset-top));
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-blue-dark-10),
+    var(--color-blue-dark-10) 4px,
+    var(--color-gray-light) 4px,
+    var(--color-gray-light) 8px
+  );
 }
 
 .objective-row {

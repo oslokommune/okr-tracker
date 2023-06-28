@@ -2,7 +2,7 @@
   <page-layout
     v-if="objectives.length || dataLoading"
     breakpoint="full"
-    :class="{ 'okrs--timeline': periodObjectives.length }"
+    :class="{ 'okrs--timeline': objectives.length }"
   >
     <template #header>
       <h1 class="pkt-txt-24-medium">{{ $t('general.OKRsLong') }}</h1>
@@ -23,9 +23,9 @@
       <content-loader-item v-if="dataLoading" />
 
       <gantt-chart
-        v-else-if="periodObjectives.length"
-        :objectives="periodObjectives"
-        :item="activeItem"
+        v-else-if="objectives.length"
+        :objectives="_objectives"
+        :period="selectedPeriod"
       />
 
       <empty-state
@@ -55,8 +55,6 @@
 
 <script>
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-import { objectiveInPeriod } from '@/util/okr';
-import { periodDates } from '@/util';
 import routerGuard from '@/router/router-guards/itemOKRs';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -93,20 +91,15 @@ export default {
       return this.user.preferences.view;
     },
 
-    periodObjectives() {
-      if (!this.selectedPeriod) {
-        return [];
-      }
-
-      return this.objectives
-        .filter((o) => objectiveInPeriod(this.selectedPeriod, o))
-        .map((o) => ({
-          ...o,
-          id: o.id,
-          keyResults: this.keyResults.filter(
-            (kr) => kr.objective === `objectives/${o.id}`
-          ),
-        }));
+    /**
+     * Return `this.objectives` enriched with ID and key results.
+     */
+    _objectives() {
+      return this.objectives.map((o) => ({
+        ...o,
+        id: o.id,
+        keyResults: this.keyResults.filter((kr) => kr.objective === `objectives/${o.id}`),
+      }));
     },
   },
 
@@ -134,8 +127,6 @@ export default {
         content: null,
       });
     },
-
-    periodDates,
   },
 };
 </script>

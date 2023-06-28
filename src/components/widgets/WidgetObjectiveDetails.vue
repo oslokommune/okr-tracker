@@ -70,7 +70,7 @@
 <script>
 import { mapState } from 'vuex';
 import { dateLong } from '@/util';
-import { formattedPeriod } from '@/util/okr';
+import formattedPeriod from '@/util/okr';
 
 export default {
   name: 'WidgetObjectiveDetails',
