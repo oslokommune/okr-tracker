@@ -150,6 +150,14 @@ export default {
       'activeItem',
     ]),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
+
+    startDate() {
+      return this.activeKeyResult.objective.startDate || this.activePeriod.startDate;
+    },
+
+    endDate() {
+      return this.activeKeyResult.objective.endDate || this.activePeriod.endDate;
+    },
   },
 
   watch: {
@@ -211,16 +219,14 @@ export default {
         });
       }
 
-      const startDate = this.activePeriod.startDate.toDate();
-      const endDate = this.activePeriod.endDate.toDate();
       const { startValue, targetValue } = this.activeKeyResult;
       const progressValues = this.progress.map((record) => record.value);
 
       this.graph.render({
         startValue: min(progressValues) > startValue ? startValue : null,
         targetValue: max(progressValues) < targetValue ? targetValue : null,
-        startDate,
-        endDate,
+        startDate: this.startDate.toDate(),
+        endDate: this.endDate.toDate(),
         progress: this.progress,
         initialValue: startValue,
       });
