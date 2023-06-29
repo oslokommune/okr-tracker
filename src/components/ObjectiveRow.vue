@@ -88,7 +88,6 @@ export default {
 
   &__progress {
     display: flex;
-    flex: 0 0 100%;
     gap: 0.75rem;
     align-items: center;
     font-weight: 500;
