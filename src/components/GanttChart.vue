@@ -407,7 +407,7 @@ export default {
 
 .sep {
   height: var(--sep-height);
-  background: var(--color-grayscale-20);
+  background: var(--color-grayscale-10);
   border-top: var(--sep-border-width) solid var(--color-primary);
 
   .sep__period {
