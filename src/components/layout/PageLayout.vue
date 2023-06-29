@@ -110,6 +110,8 @@ export default {
   }
 
   &__sidebar {
+    overflow-x: hidden;
+
     &--left {
       order: -1;
     }
