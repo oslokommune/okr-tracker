@@ -48,21 +48,24 @@
           :show-progress="true"
           :style="objectiveStyle(o)"
           :is-link="false"
-          @click="openObjectiveModal(o.objective)"
+          :class="[
+            'objective',
+            {
+              'objective--selected': selectedObjectives
+                .map((o) => o.id)
+                .includes(o.objective.id),
+            },
+          ]"
+          @click="selectObjective($event, o)"
         />
       </div>
       <div class="today-tick" :style="todayStyle()"></div>
     </div>
-
-    <objective-modal
-      v-if="showObjectiveModal"
-      :objective="activeObjective"
-      @close="closeObjectiveModal"
-    />
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import {
   addMonths,
   differenceInDays,
@@ -81,7 +84,6 @@ export default {
 
   components: {
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
-    ObjectiveModal: () => import('@/components/modals/ObjectiveModal.vue'),
   },
 
   props: {
@@ -105,12 +107,12 @@ export default {
       dragSense: 8,
       dragSpeed: 0.25,
       mouseX: null,
-      showObjectiveModal: false,
-      activeObjective: null,
     };
   },
 
   computed: {
+    ...mapGetters(['selectedObjectives']),
+
     minDate() {
       return min([this.now, ...this.objectives.map((o) => this.startDate(o).toDate())]);
     },
@@ -177,6 +179,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['setSelectedObjective']),
+
     /*
      * Return the end date of the last goal in `row`.
      */
@@ -314,14 +318,15 @@ export default {
       window.removeEventListener('mouseup', this.stopDrag);
     },
 
-    openObjectiveModal(objective) {
-      this.activeObjective = objective;
-      this.showObjectiveModal = true;
-    },
-
-    closeObjectiveModal() {
-      this.showObjectiveModal = false;
-      this.activeObjective = null;
+    selectObjective(e, o) {
+      this.setSelectedObjective(o.objective);
+      this.$nextTick(() => {
+        e.currentTarget.scrollIntoView({
+          block: 'center',
+          inline: 'start',
+          behavior: 'smooth',
+        });
+      });
     },
 
     addMonths,
@@ -344,7 +349,9 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
   overflow: auto;
+  background-color: var(--color-gray-light);
 
   &__inner {
     position: relative;
@@ -359,7 +366,7 @@ export default {
   z-index: 2;
   display: inline-block;
   padding-top: 1.5rem;
-  background-color: var(--color-gray-light);
+  background-color: var(--color-white);
   cursor: col-resize;
 }
 
@@ -471,5 +478,10 @@ export default {
   z-index: 1;
   background: var(--color-white);
   border: 2px solid var(--color-border);
+  scroll-margin-left: 3rem;
+
+  &--selected {
+    outline: 2px solid var(--color-hover);
+  }
 }
 </style>
