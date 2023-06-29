@@ -19,6 +19,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed a bug causing dropdown toggles in the navigation bar not working.
 
+### Security
+
+- Updated dependencies.
+
 ## [3.7.0] 2023-06-06
 
 ### Added
