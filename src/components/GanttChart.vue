@@ -45,11 +45,10 @@
           v-for="o in group.objectives"
           :key="o.objective.id"
           :objective="o.objective"
-          :show-progress="true"
+          :compact="true"
           :style="objectiveStyle(o)"
           :is-link="false"
           :class="[
-            'objective',
             {
               'objective--selected': selectedObjectives
                 .map((o) => o.id)
@@ -478,7 +477,6 @@ export default {
   z-index: 1;
   background: var(--color-white);
   border: 2px solid var(--color-border);
-  scroll-margin-left: 3rem;
 
   &--selected {
     outline: 2px solid var(--color-hover);

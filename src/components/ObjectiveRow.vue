@@ -2,18 +2,19 @@
   <component
     :is="isLink ? 'router-link' : 'div'"
     :to="isLink ? { name: 'ObjectiveHome', params: { objectiveId: objective.id } } : null"
-    class="objective"
+    :class="['objective', { 'objective--compact': compact }]"
     @click="isLink ? () => {} : $emit('click', $event)"
   >
-    <h3 class="title-2">
+    <h3 class="pkt-txt-18-medium mb-size-8">
       {{ objective.name }}
     </h3>
 
-    <p v-if="showDescription && objective.description">
+    <p v-if="!compact && objective.description" class="mb-size-8">
       {{ objective.description }}
     </p>
+
     <div class="objective__progress">
-      <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
+      <progress-bar :progression="objective.progression * 100" />
       {{ percent(objective.progression) }}
     </div>
   </component>
@@ -35,12 +36,9 @@ export default {
       type: Object,
       required: true,
     },
-    showDescription: {
+    compact: {
       type: Boolean,
-      default: false,
-    },
-    showProgress: {
-      type: Boolean,
+      required: false,
       default: false,
     },
     isLink: {
@@ -63,27 +61,23 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
+  display: block;
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
-  &,
-  & > * {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
 
-  .title-2 {
-    line-height: 1.25;
+  &--compact {
+    &,
+    & > * {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   &:hover {
     color: var(--color-hover);
-
-    .title-2 {
-      color: inherit;
-    }
   }
 
   &__progress {
