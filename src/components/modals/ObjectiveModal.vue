@@ -28,6 +28,7 @@
     <key-results-list
       v-if="objective.keyResults.length"
       :key-results="objective.keyResults"
+      :compact="true"
     />
 
     <empty-state
