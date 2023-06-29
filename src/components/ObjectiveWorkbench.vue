@@ -1,7 +1,7 @@
 <template>
   <div class="objective-workbench">
-    <div class="objective-workbench__header">
-      <span class="pkt-txt-22-medium">
+    <header class="objective-workbench__header">
+      <h1 class="pkt-txt-22-medium">
         <template v-if="selectedObjectives.length > 1">
           {{ $t('general.selectedObjectives') }} ({{ selectedObjectives.length }})
         </template>
@@ -16,7 +16,7 @@
           {{ selectedObjectives[0].name }}
           <pkt-icon class="pkt-link__icon" name="chevron-right" />
         </router-link>
-      </span>
+      </h1>
 
       <pkt-button
         v-tooltip="$t('btn.close')"
@@ -26,7 +26,7 @@
         skin="tertiary"
         @onClick="setSelectedObjective(null)"
       />
-    </div>
+    </header>
 
     <div v-if="selectedObjectives.length > 1" class="objective-workbench__list">
       <div
