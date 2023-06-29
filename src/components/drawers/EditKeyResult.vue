@@ -70,7 +70,7 @@
             <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
             <btn-save
               :label="$t('btn.continue')"
-              :disabled="!changed || loading"
+              :disabled="loading"
               variant="label-only"
               @click="handleSubmit(update)"
             />
@@ -83,7 +83,7 @@
             />
             <btn-save
               :label="$t('btn.complete')"
-              :disabled="!changed || loading"
+              :disabled="loading"
               variant="label-only"
               @click="handleSubmit(update)"
             />
@@ -158,14 +158,6 @@ export default {
     },
     isDepartment() {
       return getActiveItemType(this.activeItem) === 'department';
-    },
-    changed() {
-      const nameEdited = this.keyResult?.name !== this.data?.keyResult?.name;
-      const descriptionEdited =
-        this.keyResult?.description !== this.data?.keyResult?.description;
-      const ownerEdited = this.keyResult?.owner !== this.data?.keyResult?.owner;
-
-      return !!(nameEdited || descriptionEdited || ownerEdited);
     },
     thisLevel() {
       if (this.isOrganization) {
