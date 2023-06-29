@@ -5,16 +5,17 @@
     class="objective"
     @click="isLink ? () => {} : $emit('click')"
   >
-    <h3 class="objective__header title-2">
-      <span>{{ objective.name }}</span>
-      <span>{{ percent(objective.progression) }}</span>
+    <h3 class="title-2">
+      {{ objective.name }}
     </h3>
 
     <p v-if="showDescription && objective.description">
       {{ objective.description }}
     </p>
-
-    <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
+    <div class="objective__progress">
+      <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
+      {{ percent(objective.progression) }}
+    </div>
   </component>
 </template>
 
@@ -62,13 +63,16 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
+  &,
+  & > * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
   .title-2 {
     line-height: 1.25;
@@ -81,12 +85,16 @@ export default {
       color: inherit;
     }
   }
-}
 
-.objective__header {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: space-between;
-  margin-bottom: 0;
+  &__progress {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    font-weight: 500;
+
+    .progress {
+      flex: 1 1 auto;
+    }
+  }
 }
 </style>
