@@ -35,6 +35,9 @@
           class="period-ref"
           :style="periodStyle()"
         ></div>
+        <div class="sep">
+          <div v-if="period.startDate" class="sep__period" :style="periodStyle()"></div>
+        </div>
       </div>
       <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
       <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
@@ -332,7 +335,9 @@ export default {
 
 <style lang="scss" scoped>
 .gantt {
-  --line-width: 3px;
+  --tick-width: 3px;
+  --sep-height: 11px;
+  --sep-border-width: 1px;
   --end-padding: 75px;
   --period-offset-top: 60px;
 
@@ -373,7 +378,7 @@ export default {
 
   span {
     position: absolute;
-    transform: translateX(calc(var(--line-width) / 2 - 50%));
+    transform: translateX(calc(var(--tick-width) / 2 - 50%));
   }
 }
 
@@ -384,22 +389,30 @@ export default {
     position: relative;
     z-index: 1;
     height: 0.75rem;
-    border-bottom: var(--line-width) solid var(--color-primary);
-    border-left: var(--line-width) solid var(--color-primary);
+    border-left: var(--tick-width) solid var(--color-primary);
 
     &:last-of-type {
-      flex-basis: var(--line-width) !important;
-      border-bottom: 0;
+      flex-basis: var(--tick-width) !important;
     }
   }
 
   .ticks__padding {
     flex: 0 0 var(--end-padding);
-    border-bottom: var(--line-width) solid var(--color-primary);
 
     &:last-of-type {
       flex-basis: var(--end-padding);
     }
+  }
+}
+
+.sep {
+  height: var(--sep-height);
+  background: var(--color-grayscale-10);
+  border-top: var(--sep-border-width) solid var(--color-primary);
+
+  .sep__period {
+    height: calc(var(--sep-height) - var(--sep-border-width));
+    background: var(--color-primary);
   }
 }
 
@@ -417,7 +430,7 @@ export default {
     top: 3.125rem;
     left: calc(50% - 0.1rem);
     height: 1.125rem;
-    border-left: var(--line-width) solid var(--color-active);
+    border-left: var(--tick-width) solid var(--color-active);
     content: '';
   }
 }
@@ -426,7 +439,7 @@ export default {
   position: absolute;
   top: 3rem;
   height: calc(100% - 3rem);
-  border-left: var(--line-width) dashed var(--color-active);
+  border-left: var(--tick-width) dashed var(--color-active);
 }
 
 .period-ref {
