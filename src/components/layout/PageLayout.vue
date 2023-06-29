@@ -101,6 +101,10 @@ export default {
     }
   }
 
+  &__main {
+    overflow-x: hidden;
+  }
+
   &__footer {
     margin-top: auto;
   }
