@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file. The format 
   view.
 - The timeline view now always displays all objectives. The period selector puts
   a specified period in focus instead of filtering the objectives.
+- Line breaks in measurement comments are now rendered.
 
 ### Removed
 
