@@ -72,7 +72,6 @@
               :label="$t('btn.continue')"
               :disabled="!changed || loading"
               variant="label-only"
-              skin="primary"
               @click="handleSubmit(update)"
             />
           </template>
@@ -86,7 +85,6 @@
               :label="$t('btn.complete')"
               :disabled="!changed || loading"
               variant="label-only"
-              skin="primary"
               @click="handleSubmit(update)"
             />
           </template>

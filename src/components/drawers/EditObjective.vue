@@ -41,7 +41,6 @@
                 objective.id ? $t('btn.updateObjective') : $t('btn.createObjective')
               "
               variant="label-only"
-              skin="primary"
               :disabled="!changed || loading"
               @click="handleSubmit(update)"
             />
