@@ -49,7 +49,6 @@
           :style="objectiveStyle(o)"
           :is-link="false"
           :class="[
-            'objective',
             {
               'objective--selected': selectedObjectives
                 .map((o) => o.id)
