@@ -178,6 +178,8 @@
     "success": "Success",
     "objective": "Objective",
     "selectedObjectives": "Selected objectives",
+    "selectObjectivesInPeriod": "Select all objectives in this period",
+    "noObjectivesInPeriod": "No objectives in this period",
     "keyResult": "Key result",
     "period": "Period",
     "frontPage": "Front page",

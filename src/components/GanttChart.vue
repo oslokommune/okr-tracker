@@ -36,7 +36,21 @@
           :style="periodStyle()"
         ></div>
         <div class="sep">
-          <div v-if="period.startDate" class="sep__period" :style="periodStyle()"></div>
+          <div
+            v-if="period.startDate"
+            v-tooltip="{
+              content: periodObjectives.length
+                ? $t('general.selectObjectivesInPeriod')
+                : $t('general.noObjectivesInPeriod'),
+              delay: { show: 750 },
+            }"
+            :class="[
+              'sep__period',
+              { 'sep__period--clickable': periodObjectives.length },
+            ]"
+            :style="periodStyle()"
+            @click="selectPeriodObjectives"
+          ></div>
         </div>
       </div>
       <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
@@ -174,6 +188,38 @@ export default {
       return this.orderedObjectives.reduce((rows, o) => {
         return this.placeObjective(o, rows);
       }, []);
+    },
+
+    /**
+     * Return objectives within current `period`.
+     */
+    periodObjectives() {
+      if (this.period && this.period.key !== 'all') {
+        return this.objectives.filter((objective) => {
+          const { startDate, endDate } = this.period;
+
+          if (objective.startDate && objective.endDate) {
+            return (
+              objective.endDate.toDate() >= startDate &&
+              objective.startDate.toDate() <= endDate
+            );
+          }
+
+          /*
+           * Fall back to checking the old-style `period` reference to retain backwards
+           * compatibility.
+           */
+          if (objective.period.endDate && objective.period.startDate) {
+            return (
+              objective.period.endDate.toDate() >= startDate &&
+              objective.period.startDate.toDate() <= endDate
+            );
+          }
+
+          return false;
+        });
+      }
+      return [];
     },
   },
 
@@ -345,6 +391,18 @@ export default {
       });
     },
 
+    selectPeriodObjectives() {
+      this.periodObjectives
+        .filter((po) => !this.selectedObjectives.map((o) => o.id).includes(po.id))
+        .forEach(this.setSelectedObjective);
+
+      this.$nextTick(() => {
+        if (this.$refs.period) {
+          this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+        }
+      });
+    },
+
     addMonths,
     dateLongCompact,
     differenceInDays,
@@ -436,6 +494,10 @@ export default {
   .sep__period {
     height: calc(var(--sep-height) - var(--sep-border-width));
     background: var(--color-primary);
+
+    &--clickable {
+      cursor: pointer;
+    }
   }
 }
 

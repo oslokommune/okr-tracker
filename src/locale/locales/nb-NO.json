@@ -178,6 +178,8 @@
     "success": "Suksess",
     "objective": "Mål",
     "selectedObjectives": "Valgte mål",
+    "selectObjectivesInPeriod": "Velg alle mål i denne perioden",
+    "noObjectivesInPeriod": "Ingen mål i denne perioden",
     "keyResult": "Nøkkelresultat",
     "period": "Periode",
     "frontPage": "Forside",
