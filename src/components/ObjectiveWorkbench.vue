@@ -34,7 +34,7 @@
         :key="objective.id"
         class="objective-workbench__list-item"
       >
-        <objective-row :objective="objective" :show-description="true" />
+        <objective-row :objective="objective" />
 
         <key-results-list
           v-if="objective.keyResults.length"

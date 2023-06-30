@@ -95,7 +95,7 @@ export default {
     align-items: center;
 
     .progress {
-      flex: 0 0 80%;
+      flex: 0 1 80%;
     }
 
     span {
