@@ -439,6 +439,7 @@ export default {
   top: 0;
   z-index: 2;
   display: inline-block;
+  min-width: 100%;
   padding-top: 1.5rem;
   background-color: var(--color-white);
   cursor: col-resize;
