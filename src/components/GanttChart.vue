@@ -113,13 +113,16 @@ export default {
     ...mapGetters(['selectedObjectives']),
 
     minDate() {
-      return min([this.now, ...this.objectives.map((o) => this.startDate(o).toDate())]);
+      return min([
+        this.now,
+        ...this.temporalObjectives.map((o) => this.startDate(o).toDate()),
+      ]);
     },
 
     maxDate() {
       const date = max([
         this.now,
-        ...this.objectives.map((o) => this.endDate(o).toDate()),
+        ...this.temporalObjectives.map((o) => this.endDate(o).toDate()),
       ]);
       return addMonths(date, 1);
     },
@@ -128,9 +131,23 @@ export default {
       return eachMonthOfInterval({ start: this.minDate, end: this.maxDate });
     },
 
+    /**
+     * Return only objectives with a known (resolved) period, either dynamic or
+     * old-style.
+     *
+     * TODO: This filter is a TEMPORARY FIX, should ideally not be necessary,
+     * and should hopefully be fixed with a review and refactor of store data
+     * fetching/use.
+     */
+    temporalObjectives() {
+      return this.objectives.filter(
+        (o) => (o.startDate && o.endDate) || (o.period && typeof o.period !== 'string')
+      );
+    },
+
     orderedObjectives() {
       return (
-        this.objectives
+        this.temporalObjectives
           .slice()
           /*
            * Sort first by shortest objectives first. This is so that they
