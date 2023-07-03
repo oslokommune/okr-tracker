@@ -4,33 +4,28 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-### Added
-
-- A new list view for objectives has been added. This replaces the previous
-  compact and detailed list views.
-
 ### Changed
 
+- New flow for registering and editing of objectives and key results.
+- Introduced individual start- and end dates on objectives instead of them being
+  tied to a predefined period.
+- The timeline view is now the default (and only) view on the OKR page.
+- A sidebar has been added to the timeline view that provides an optional
+  at-a-glance summary of one or more selected objectives.
+- The timeline view now always displays all objectives. The period selector puts
+  a specified period in focus instead of filtering the objectives. The date
+  range can now also be set freely, and the period choice is made persistent
+  between the OKR page and the measurements page.
+- The timeline view now fills all available screen space when browsing OKRs.
+- Goals in the timeline view now fills up horizontally instead of having one
+  goal per row.
 - All buttons are now Punkt-styled.
 - Graphs for percentage measurements are no longer locked to 100% on the y-axis
   by default.
 - The main navigation menu icon has been replaced by a more generic one.
-- New flow for registering and editing of objectives and key results.
-- Introducing startDate and endDate on objectives instead of them being
-  tied to a predefined period.
-- The period date range can now be set freely on the OKR page. The period choice
-  is also made persistent between the OKR page and the measurements page.
-- The default objective view is now the timeline view.
 - The design of empty states and error pages have been refreshed.
-- The timeline view for goals now fills up horizontally instead of having one
-  goal per row.
 - The CSV export of measurements no longer includes the time part of the
   timestamps, as only one measurement can exist per day anyway.
-- The timeline view now fills all available screen space when browsing OKRs.
-- A sidebar has been added to the timeline view that provides an optional
-  at-a-glance summary of one or more selected objectives.
-- The timeline view now always displays all objectives. The period selector puts
-  a specified period in focus instead of filtering the objectives.
 - Line breaks in measurement comments are now rendered.
 
 ### Removed
