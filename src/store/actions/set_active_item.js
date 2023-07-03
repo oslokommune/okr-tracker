@@ -22,10 +22,9 @@ export default firestoreAction(
     await bindFirestoreRef('periods', periodsRef, { maxRefDepth: 0 });
 
     // Bind active period
-    await dispatch(
-      'set_active_period_and_data',
-      activePeriodRef ? activePeriodRef.id : null
-    );
+    await dispatch('set_active_period_and_data', {
+      periodId: activePeriodRef ? activePeriodRef.id : null,
+    });
 
     // Bind KPIs
     const kpisRef = db

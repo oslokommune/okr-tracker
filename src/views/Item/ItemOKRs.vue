@@ -1,244 +1,172 @@
 <template>
-  <page-layout>
+  <page-layout
+    v-if="objectivesWithKeyResults.length || dataLoading"
+    breakpoint="full"
+    :sidebar-grid="false"
+    :sidebar-cols="5"
+  >
     <template #default>
-      <header>
-        <h2 class="title-1">{{ $t('general.OKRsLong') }}</h2>
-      </header>
+      <div class="okrs-timeline">
+        <div class="okrs-timeline__header">
+          <h1 class="pkt-txt-24-medium">{{ $t('general.OKRsLong') }}</h1>
 
-      <section>
-        <content-loader-action-bar
-          v-if="dataLoading"
-          class="itemHome__header--content-loader"
-        ></content-loader-action-bar>
-        <action-bar v-else-if="periodObjectives.length" />
-        <content-loader-item v-if="dataLoading"></content-loader-item>
-        <empty-state
-          v-else-if="!periodObjectives.length && !dataLoading"
-          :icon="'exclamation'"
-          :heading="$t('empty.noPeriods.heading')"
-          :body="$t('empty.noPeriods.body')"
-        >
-          <router-link
-            v-if="hasEditRights"
-            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-          >
-            {{ $t('empty.noPeriods.buttonText') }}
-          </router-link>
-        </empty-state>
-        <div v-if="periodObjectives.length && !dataLoading">
-          <ul v-if="['compact', 'details'].includes(view)">
-            <li
-              v-for="objective in periodObjectives"
-              :key="objective.id"
-              class="itemHome__objectives--item"
-            >
-              <objective-row :objective="objective" :show-description="true">
-              </objective-row>
-              <ul v-if="objective.keyResults.length">
-                <li
-                  v-for="keyResult in objective.keyResults"
-                  :key="keyResult.id"
-                  class="keyResultRow"
-                  :class="{ 'keyResultRow--isCompact': view === 'compact' }"
-                >
-                  <key-result-row :key-result="keyResult"></key-result-row>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <div v-if="hasEditRights" data-mode="dark">
+            <pkt-button
+              v-tooltip="$t('btn.createObjective')"
+              :text="$t('btn.createObjective')"
+              skin="primary"
+              variant="icon-left"
+              icon-name="plus-sign"
+              @onClick="$emit('click', openObjectiveDrawer())"
+            />
+          </div>
+        </div>
+
+        <div class="okrs-timeline__body">
+          <content-loader-item v-if="dataLoading" />
+
           <gantt-chart
-            v-else-if="view === 'timeline'"
-            :objectives="periodObjectives"
-            :item="activeItem"
+            v-else-if="objectivesWithKeyResults.length"
+            :objectives="objectivesWithKeyResults"
+            :period="selectedPeriod"
+          />
+
+          <empty-state
+            v-else
+            :heading="$t('empty.noObjectivesInPeriod.heading')"
+            :body="$t('empty.noObjectivesInPeriod.body')"
           />
         </div>
-      </section>
+      </div>
     </template>
 
-    <template v-if="selectedPeriod?.id && activeItem" #sidebar>
-      <widget
-        v-if="activePeriod && activePeriod.progression"
-        :title="$t(`widget.progression.period`)"
-        size="small"
-      >
-        <progression-chart
-          :progression="activePeriod.progression"
-          :period="activePeriod"
-        />
-      </widget>
-      <widget-weights
-        v-if="periodObjectives.length"
-        type="objective"
-        :active-item="activeItem"
-        :items="periodObjectives"
-      />
+    <template v-if="selectedObjectives?.length" #sidebar>
+      <objective-workbench />
     </template>
   </page-layout>
+
+  <empty-page
+    v-else
+    :heading="$t('empty.noObjectives.heading')"
+    :body="$t('empty.noObjectives.body')"
+  >
+    <div v-if="hasEditRights" data-mode="dark">
+      <pkt-button
+        :text="$t('btn.createObjective')"
+        skin="primary"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="$emit('click', openObjectiveDrawer())"
+      />
+    </div>
+  </empty-page>
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex';
-import { isBefore, addDays, isWithinInterval } from 'date-fns';
-import { objectiveInPeriod } from '@/util/okr';
-import { periodDates } from '@/util';
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+import routerGuard from '@/router/router-guards/itemOKRs';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
-import ContentLoaderActionBar from '@/components/ContentLoader/ContentLoaderActionBar.vue';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
-import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
-import ProgressionChart from '@/components/ProgressionChart.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ItemHome',
 
   components: {
-    ActionBar: () => import('@/components/ActionBar.vue'),
     GanttChart: () => import('@/components/GanttChart.vue'),
-    ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
     EmptyState: () => import('@/components/EmptyState.vue'),
-    Widget: WidgetWrapper,
-    WidgetWeights,
-    ProgressionChart,
+    EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
+    ObjectiveWorkbench: () => import('@/components/ObjectiveWorkbench.vue'),
     ContentLoaderItem,
-    ContentLoaderActionBar,
+    PktButton,
   },
 
-  data: () => ({
-    activeTab: 0,
-  }),
+  beforeRouteUpdate: routerGuard,
 
   computed: {
-    ...mapState([
-      'activeItem',
-      'activePeriod',
-      'dataLoading',
-      'keyResults',
-      'objectives',
-      'periods',
-      'selectedPeriod',
-      'user',
-    ]),
-    ...mapGetters(['hasEditRights']),
+    ...mapState(['activeItem', 'dataLoading', 'selectedPeriod', 'user']),
+    ...mapGetters(['objectivesWithKeyResults', 'selectedObjectives', 'hasEditRights']),
 
     view() {
       return this.user.preferences.view;
     },
-
-    filteredPeriods() {
-      if (this.hasEditRights) {
-        return this.periods;
-      }
-      const daysInAdvance = 7; // Prior to period start
-
-      return this.periods.filter(({ startDate }) =>
-        isBefore(startDate.toDate(), addDays(new Date(), daysInAdvance))
-      );
-    },
-
-    periodObjectives() {
-      if (!this.selectedPeriod) {
-        return [];
-      }
-
-      return this.objectives
-        .filter((o) => objectiveInPeriod(this.selectedPeriod, o))
-        .map((o) => ({
-          ...o,
-          id: o.id,
-          keyResults: this.keyResults.filter(
-            (kr) => kr.objective === `objectives/${o.id}`
-          ),
-        }));
-    },
   },
 
-  watch: {
-    selectedPeriod: {
-      immediate: true,
-      handler() {
-        if (this.selectedPeriod && this.selectedPeriod.id) {
-          this.setPeriod(this.selectedPeriod.id, false);
-        }
-      },
-    },
-  },
-
-  created() {
-    if (this.filteredPeriods.length > 0) {
-      const defaultPeriodIndex = this.getCurrentPeriodIndex() || 0;
-      this.setPeriod(this.filteredPeriods[defaultPeriodIndex].id, true);
-    } else {
-      this.setPeriod(null, false);
+  async created() {
+    try {
+      await this.setDataLoading(true);
+      await this.set_active_period_and_data({
+        item: this.activeItem,
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      await this.setDataLoading(false);
     }
   },
 
   methods: {
-    ...mapActions(['set_active_period_and_data', 'setDataLoading', 'setSelectedPeriod']),
+    ...mapActions(['set_active_period_and_data', 'setDataLoading']),
+    ...mapMutations(['TOGGLE_DRAWER']),
 
-    async setPeriod(activePeriodId, setSelectedPeriod) {
-      try {
-        await this.setDataLoading(true);
-        await this.set_active_period_and_data(activePeriodId);
-        if (setSelectedPeriod) {
-          await this.setSelectedPeriod({
-            label: this.activePeriod.name,
-            key: this.activePeriod.id,
-            id: this.activePeriod.id,
-            startDate: this.activePeriod.startDate.toDate(),
-            endDate: this.activePeriod.endDate.toDate(),
-          });
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        await this.setDataLoading(false);
-      }
-    },
-
-    periodDates,
-
-    getCurrentPeriodIndex() {
-      const now = new Date();
-
-      for (const [index, period] of this.filteredPeriods.entries()) {
-        if (
-          period.startDate &&
-          period.endDate &&
-          isWithinInterval(now, {
-            start: period.startDate.toDate(),
-            end: period.endDate.toDate(),
-          })
-        ) {
-          return index;
-        }
-      }
-      return null;
+    openObjectiveDrawer() {
+      this.TOGGLE_DRAWER({
+        type: 'objective',
+        show: 'true',
+        content: null,
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.keyResultRow {
-  &:not(:first-child) {
-    margin-top: 4px;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
+.page {
+  ::v-deep .page__container,
+  ::v-deep .page__main,
+  ::v-deep .page__sidebar {
+    gap: 0;
+    height: 100%;
+    padding: 0;
   }
 
-  &--isCompact {
-    @media screen and (min-width: bp(s)) {
-      &:not(:first-child) {
-        margin-top: 1px;
-      }
+  ::v-deep .page__sidebar {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-grayscale-10);
+
+    @include bp('tablet-big-up') {
+      border-top: unset;
+      border-left: 1px solid var(--color-grayscale-10);
     }
   }
 }
 
-.itemHome__objectives--item {
-  margin-bottom: 1rem;
-  border: 2px solid var(--color-border);
+.okrs-timeline {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
-  > ul {
-    padding-bottom: 0.5rem;
+  &__header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
   }
+
+  &__body {
+    flex: 1 0 auto;
+    height: 0;
+  }
+}
+
+.objective-workbench {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  height: 0;
+  overflow: auto;
 }
 </style>

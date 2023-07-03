@@ -2,37 +2,48 @@
   <page-layout v-if="activeObjective">
     <template #default>
       <header>
-        <span class="title-label">{{ $t('general.objective') }}</span>
-        <h2 class="title-1">{{ activeObjective.name }}</h2>
-        <p v-if="activeObjective.description" class="description">
-          {{ activeObjective.description }}
-        </p>
+        <span class="title-label">
+          {{ $t('general.objective') }}
+        </span>
+
+        <div class="objective__heading">
+          <h2 class="title-1">{{ activeObjective.name }}</h2>
+          <div class="objective__edit">
+            <pkt-button
+              v-tooltip="$t('objective.change')"
+              icon-name="edit"
+              :text="$t('objective.change')"
+              :variant="'icon-only'"
+              skin="tertiary"
+              @onClick="$emit('click', toggleDrawer('objective'))"
+            />
+          </div>
+        </div>
+        <div class="objective__description">
+          <p v-if="activeObjective.description" class="description">
+            {{ activeObjective.description }}
+          </p>
+          <div data-mode="dark" class="objective__add-key-res">
+            <pkt-button
+              v-tooltip="$t('btn.createKeyResult')"
+              :text="$t('btn.createKeyResult')"
+              skin="primary"
+              variant="icon-left"
+              icon-name="plus-sign"
+              @onClick="$emit('click', toggleDrawer('keyResult'))"
+            />
+          </div>
+        </div>
       </header>
 
       <section>
+        <key-results-list v-if="keyRes.length" :key-results="keyRes" />
+
         <empty-state
-          v-if="!keyRes.length"
-          :icon="'poop'"
+          v-else
           :heading="$t('empty.noKeyResults.heading')"
           :body="$t('empty.noKeyResults.body')"
-        >
-          <router-link
-            v-if="hasEditRights"
-            :to="{ name: 'ItemAdmin', query: { tab: 'okr' } }"
-          >
-            {{ $t('empty.noKeyResults.linkText') }}
-          </router-link>
-        </empty-state>
-
-        <div class="key-results__list">
-          <key-result-row
-            v-for="keyResult in keyRes"
-            :key="keyResult.id"
-            :key-result="keyResult"
-            :force-expanded="true"
-            class="key-results__list--row"
-          />
-        </div>
+        />
       </section>
     </template>
 
@@ -55,23 +66,25 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapMutations } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'ObjectiveHome',
 
   components: {
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
+    KeyResultsList: () => import('@/components/KeyResultsList.vue'),
     Widget: WidgetWrapper,
     WidgetWeights,
     WidgetObjectiveDetails,
     ProgressionChart,
     EmptyState: () => import('@/components/EmptyState.vue'),
+    PktButton,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -117,29 +130,57 @@ export default {
         );
       },
     },
+    keyResults: {
+      immediate: true,
+      handler() {
+        this.keyRes = this.keyResults.filter(
+          (keyRes) => keyRes.objective === `objectives/${this.activeObjective.id}`
+        );
+      },
+    },
+  },
+
+  methods: {
+    ...mapMutations(['TOGGLE_DRAWER']),
+    toggleDrawer(type) {
+      this.TOGGLE_DRAWER({
+        type,
+        show: 'true',
+        data: {
+          objective: this.activeObjective,
+        },
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.key-results__list {
-  margin: 1.5rem 0;
-}
-
-.key-results__list--row {
-  margin-top: 4px;
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-
 .objective__heading {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .objective__heading-text {
   max-width: 46rem;
   margin-right: 2.5rem;
+}
+
+.objective__description {
+  display: flex;
+  flex-direction: row;
+  align-items: self-end;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.objective__add-key-res {
+  margin-left: auto;
+}
+
+.key-results-list {
+  margin-top: 1.5rem;
 }
 </style>

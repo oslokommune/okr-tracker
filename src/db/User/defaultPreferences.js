@@ -1,5 +1,5 @@
 export default {
-  view: 'compact',
+  view: 'timeline',
   widgets: {
     itemHome: {
       progression: true,

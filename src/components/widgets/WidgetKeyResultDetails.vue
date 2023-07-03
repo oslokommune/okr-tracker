@@ -110,7 +110,7 @@
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import { dateLong } from '@/util';
-import { formattedPeriod } from '@/util/okr';
+import formattedPeriod from '@/util/okr';
 
 export default {
   name: 'WidgetKeyResultDetails',

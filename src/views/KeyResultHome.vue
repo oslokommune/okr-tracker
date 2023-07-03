@@ -3,7 +3,19 @@
     <template #default>
       <header>
         <span class="title-label">{{ $t('general.keyResult') }}</span>
-        <h2 class="title-1">{{ activeKeyResult.name }}</h2>
+        <div class="keyResult__heading">
+          <h2 class="title-1">{{ activeKeyResult.name }}</h2>
+          <div class="keyResult__edit">
+            <pkt-button
+              v-tooltip="$t('admin.keyResult.change')"
+              icon-name="edit"
+              :text="$t('admin.keyResult.change')"
+              :variant="'icon-only'"
+              skin="tertiary"
+              @onClick="$emit('click', editKeyResult())"
+            />
+          </div>
+        </div>
         <p v-if="activeKeyResult.description" class="description">
           {{ activeKeyResult.description }}
         </p>
@@ -35,10 +47,7 @@
                 :progress-details="progressDetails"
                 :unit="activeKeyResult.unit"
               />
-              <progress-bar
-                :progression="progressDetails.percentageCompleted"
-                :is-compact="false"
-              />
+              <progress-bar :progression="progressDetails.percentageCompleted" />
             </div>
           </div>
         </widget>
@@ -81,7 +90,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapMutations } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
@@ -95,6 +104,7 @@ import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.
 import KeyResultProgressDetails from '@/components/KeyResultProgressDetails.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'KeyResultHome',
@@ -108,6 +118,7 @@ export default {
     WidgetKeyResultDetails,
     WidgetKeyResultNotes,
     WidgetProgressHistory,
+    PktButton,
   },
 
   beforeRouteUpdate: routerGuard,
@@ -131,7 +142,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult', 'activePeriod', 'user', 'activeItem']),
+    ...mapState([
+      'activeKeyResult',
+      'activeObjective',
+      'activePeriod',
+      'user',
+      'activeItem',
+    ]),
     ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
 
     startDate() {
@@ -181,6 +198,18 @@ export default {
 
   methods: {
     format,
+    ...mapMutations(['TOGGLE_DRAWER']),
+    editKeyResult() {
+      console.log('activeKeyResult', this.activeKeyResult);
+      this.TOGGLE_DRAWER({
+        type: 'keyResult',
+        show: 'true',
+        data: {
+          objective: this.activeObjective,
+          keyResult: this.activeKeyResult,
+        },
+      });
+    },
 
     renderGraph() {
       if (!this.graph) {
@@ -287,6 +316,18 @@ export default {
       }
     }
   }
+}
+
+.keyResult__edit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.keyResult__heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .key-result-progression {

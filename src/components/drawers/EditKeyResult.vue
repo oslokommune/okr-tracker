@@ -1,0 +1,366 @@
+<template>
+  <div class="editKeyResult">
+    <div class="body">
+      <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
+      <span class="steps">{{ $t('general.step', { step: step }) }}</span>
+      <h1 class="heading">
+        {{ keyResult.id ? $t('admin.keyResult.change') : $t('admin.keyResult.new') }}
+      </h1>
+      <form-section>
+        <div v-if="step === 1">
+          <form-component
+            v-model="keyResult.name"
+            input-type="textarea"
+            name="name"
+            :rows="2"
+            :label="$t('fields.name')"
+            rules="required"
+          />
+          <form-component
+            v-model="keyResult.description"
+            input-type="textarea"
+            name="description"
+            :rows="2"
+            :label="$t('fields.description')"
+          />
+          <!-- TODO: Include when related views have been implemented -->
+          <!--form-component
+            v-if="isOrganization || isDepartment"
+            v-model="keyResult.parent"
+            name="owner"
+            input-type="select"
+            :select-options="ownerOptions"
+            :label="$t('fields.owner')"
+            rules="required"
+          /-->
+        </div>
+
+        <div v-if="step === 2">
+          <form-component
+            v-model="keyResult.unit"
+            input-type="input"
+            name="unit"
+            :label="$t('keyResult.unit')"
+            rules="required|max:25"
+          />
+          <div class="form-row">
+            <form-component
+              v-model.number="keyResult.startValue"
+              input-type="input"
+              name="startValue"
+              :label="$t('keyResult.startValue')"
+              rules="required"
+              type="number"
+              class="form-column"
+            />
+
+            <form-component
+              v-model.number="keyResult.targetValue"
+              input-type="input"
+              name="targetValue"
+              :label="$t('keyResult.targetValue')"
+              rules="required"
+              type="number"
+              class="form-column"
+            />
+          </div>
+        </div>
+        <template v-if="!keyResult.archived" #actions="{ handleSubmit }">
+          <template v-if="step === 1">
+            <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
+            <btn-save
+              :label="$t('btn.continue')"
+              :disabled="loading"
+              variant="label-only"
+              @click="handleSubmit(update)"
+            />
+          </template>
+          <template v-if="step === 2">
+            <pkt-button
+              :text="$t('btn.back')"
+              skin="tertiary"
+              @onClick="$emit('click', back())"
+            />
+            <btn-save
+              :label="$t('btn.complete')"
+              :disabled="loading"
+              variant="label-only"
+              @click="handleSubmit(update)"
+            />
+          </template>
+        </template>
+      </form-section>
+    </div>
+    <div class="footer">
+      <archived-restore
+        v-if="keyResult && keyResult.archived"
+        :restore="restore"
+        :object-type="$t('archived.keyResult')"
+      />
+      <div v-if="keyResult.id && !keyResult.archived" class="delete">
+        <btn-delete :disabled="loading" @click="archive" />
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { mapMutations, mapState } from 'vuex';
+import { db } from '@/config/firebaseConfig';
+import getActiveItemType from '@/util/getActiveItemType';
+import { PktButton } from '@oslokommune/punkt-vue2';
+import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import KeyResult from '@/db/KeyResult';
+
+export default {
+  name: 'EditKeyResult',
+
+  components: {
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ContentLoaderOkrDetails: () =>
+      import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    PktButton,
+    FormSection,
+    BtnSave,
+    BtnDelete,
+    BtnCancel,
+  },
+
+  props: {
+    data: {
+      type: Object,
+      required: false,
+      default() {
+        return {};
+      },
+    },
+  },
+
+  data: () => ({
+    step: 1,
+    keyResult: {},
+    objective: {},
+    loading: false,
+    isLoadingDetails: false,
+  }),
+
+  computed: {
+    ...mapState([
+      'activeObjective',
+      'activeItem',
+      'activeItemRef',
+      'keyResults',
+      'organizations',
+      'departments',
+      'products',
+    ]),
+    isOrganization() {
+      return getActiveItemType(this.activeItem) === 'organization';
+    },
+    isDepartment() {
+      return getActiveItemType(this.activeItem) === 'department';
+    },
+    thisLevel() {
+      if (this.isOrganization) {
+        return this.organizations.find((o) => o.id === this.activeItem.id);
+      }
+      if (this.isDepartment) {
+        return this.departments.find((d) => d.id === this.activeItem.id);
+      }
+      return {};
+    },
+    children() {
+      if (this.isOrganization) {
+        return this.departments.filter(
+          (department) => department.organization.id === this.activeItem.id
+        );
+      }
+      if (this.isDepartment) {
+        return this.products.filter(
+          (product) => product.department.id === this.activeItem.id
+        );
+      }
+      return {};
+    },
+    thisLevelOption() {
+      return {
+        value: this.thisLevel.path,
+        name: this.activeItem.name,
+      };
+    },
+    ownerOptions() {
+      const childrenOptions = this.children.map((child) => ({
+        value: child.path,
+        name: child.name,
+      }));
+
+      return [this.thisLevelOption, ...childrenOptions];
+    },
+  },
+
+  watch: {
+    data: {
+      immediate: true,
+      async handler() {
+        this.isLoadingDetails = true;
+        if (this.data?.keyResult?.id) {
+          this.keyResult = { ...this.data.keyResult, id: this.data.keyResult.id };
+        }
+        this.isLoadingDetails = false;
+      },
+    },
+    thisLevel: {
+      immediate: true,
+      async handler() {
+        // Set currentLevel as default option for key result owner
+        if (!this.keyResult.id) {
+          this.keyResult.parent = this.thisLevelOption;
+        }
+      },
+    },
+  },
+  methods: {
+    ...mapMutations(['TOGGLE_DRAWER']),
+    async update() {
+      if (this.step === 1) {
+        this.continue();
+      } else {
+        this.loading = true;
+        this.newKeyResult = false;
+        try {
+          const { name, description, unit, weight, startValue, targetValue } =
+            this.keyResult;
+          const parent = this.activeItemRef;
+
+          if (this.keyResult.id) {
+            const data = {
+              name,
+              description: description || '',
+              unit: unit || 1,
+              weight: weight || 1,
+              startValue,
+              targetValue,
+              parent,
+            };
+            await KeyResult.update(this.keyResult.id, data);
+          } else {
+            const { id } = await KeyResult.create({
+              name,
+              description: description || '',
+              unit: unit || 1,
+              weight: weight || 1,
+              startValue,
+              targetValue,
+              objective: db.collection('objectives').doc(this.data.objective.id),
+              parent,
+            });
+            this.keyResult = {
+              ...db.collection('keyResults').doc(id),
+              id,
+            };
+            this.newKeyResult = true;
+          }
+
+          this.TOGGLE_DRAWER({
+            type: 'savedKeyResult',
+            show: true,
+            data: {
+              objective: this.data.objective,
+              keyResult: this.keyResult,
+              newKeyResult: this.newKeyResult,
+            },
+          });
+        } catch (error) {
+          console.log('ERROR: ', error);
+          this.$toasted.error(this.$t('toaster.error.save'));
+        }
+
+        this.loading = false;
+      }
+    },
+    async archive() {
+      this.loading = true;
+      try {
+        this.keyResult.archived = true;
+        await KeyResult.archive(this.keyResult.id);
+        await this.$router.push({
+          name: 'ObjectiveHome',
+          params: { objectiveId: this.data.objective.id },
+        });
+      } catch (error) {
+        this.$toasted.error(
+          this.$t('toaster.error.archive', { document: this.keyResult.name })
+        );
+      }
+      this.loading = false;
+    },
+    async restore() {
+      try {
+        await KeyResult.restore(this.keyResult.id);
+        this.keyResult.archived = false;
+      } catch {
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.keyResult.id })
+        );
+      }
+    },
+    continue() {
+      this.step = 2;
+    },
+    back() {
+      this.step = 1;
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
+.editKeyResult {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 4rem);
+  min-height: 100%;
+  padding: 0 2.5rem 2.5rem 2.5rem;
+}
+
+.heading {
+  padding-bottom: 1rem;
+  @include get-text('pkt-txt-30-medium');
+  color: var(--color-text);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.steps {
+  @include get-text('pkt-txt-16-medium');
+  color: var(--color-grayscale-40);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+
+  .form-column {
+    flex: 1;
+  }
+}
+
+.button-row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+</style>

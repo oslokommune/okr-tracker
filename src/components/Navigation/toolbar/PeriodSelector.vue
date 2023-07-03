@@ -5,17 +5,11 @@
       strong
       class="period-selector-menu__label pkt-show-phablet-up"
     />
-    <nav-menu-item
-      v-if="_periods.length"
-      v-slot="{ close }"
-      :text="periodLabel"
-      dropdown
-      @open="onOpen"
-    >
+    <nav-menu-item v-slot="{ close }" :text="periodLabel" dropdown @open="onOpen">
       <div class="period-selector-menu__dropdown-wrapper">
         <nav-menu vertical>
           <nav-menu-item
-            v-for="rangeOption in _periods"
+            v-for="rangeOption in _predefinedPeriods"
             :key="rangeOption.value"
             class="period-selector-menu__period-option"
             :text="rangeOption.label"
@@ -24,14 +18,9 @@
           />
         </nav-menu>
 
-        <div
-          v-if="isMeasurementsView || user.superAdmin"
-          class="period-selector-menu__separator"
-        ></div>
+        <div class="period-selector-menu__separator"></div>
 
         <flat-pickr
-          v-if="isMeasurementsView || user.superAdmin"
-          ref="datePicker"
           v-model="range"
           :config="flatPickerConfig"
           class="form-control flatpickr-input"
@@ -40,19 +29,14 @@
         />
       </div>
     </nav-menu-item>
-    <nav-menu-text
-      v-else
-      :text="$t('period.noPeriods')"
-      class="period-selector-menu__no-periods pkt-show-phablet-up"
-    />
   </nav-menu>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import endOfDay from 'date-fns/endOfDay';
-import { dateLongCompact } from '@/util';
-import getPeriods from '@/config/periods';
+import { periodDates } from '@/util';
+import { getPeriods } from '@/config/periods';
 import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
 import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
 import NavMenuText from '@/components/Navigation/navbar/NavMenuText.vue';
@@ -78,11 +62,7 @@ export default {
   }),
 
   computed: {
-    ...mapState([
-      'periods',
-      'selectedPeriod',
-      'user', // XXX: Only temporarily needed for the `superAdmin` check above.
-    ]),
+    ...mapState(['selectedPeriod']),
 
     periodLabel() {
       if (this.selectedPeriod) {
@@ -91,24 +71,8 @@ export default {
       return this.$t('period.choosePeriod');
     },
 
-    _periods() {
-      if (this.$route.name === 'ItemHome') {
-        return this.periods.map((p) => ({
-          label: p.name,
-          key: p.id,
-          id: p.id,
-          startDate: p.startDate.toDate(),
-          endDate: p.endDate.toDate(),
-        }));
-      }
-      if (this.isMeasurementsView) {
-        return Object.values(getPeriods());
-      }
-      return [];
-    },
-
-    isMeasurementsView() {
-      return ['ItemMeasurements', 'ItemMeasurementsList'].includes(this.$route.name);
+    _predefinedPeriods() {
+      return Object.values(getPeriods());
     },
   },
 
@@ -120,8 +84,12 @@ export default {
       // toggling the picker. This to ensure that no invalid (incomplete) range
       // selections are kept in the component state, and that the range is set
       // correctly when navigation back to the parent view.
-      const { startDate, endDate } = this.selectedPeriod;
-      this.range = startDate && endDate ? [startDate, endDate] : null;
+      if (this.selectedPeriod) {
+        const { startDate, endDate } = this.selectedPeriod;
+        this.range = startDate && endDate ? [startDate, endDate] : null;
+      } else {
+        this.range = null;
+      }
     },
 
     selectRangeOption(rangeOption, afterSelection) {
@@ -136,12 +104,11 @@ export default {
       if (range.length !== 2) {
         return;
       }
+      const [startDate, endDate] = range;
       this.setSelectedPeriod({
-        startDate: range[0],
-        endDate: endOfDay(range[1]),
-        label: [...new Set(range.map(dateLongCompact))].join(
-          this.$refs.datePicker.fp.l10n.rangeSeparator
-        ),
+        startDate,
+        endDate: endOfDay(endDate),
+        label: periodDates({ startDate, endDate }),
       });
       if (afterSelection) {
         afterSelection();

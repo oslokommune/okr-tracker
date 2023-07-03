@@ -9,10 +9,10 @@ export default {
   },
   period: {
     type: 'reference',
-    required: true,
+    required: false,
   },
   weight: {
     type: 'number',
-    required: true,
+    required: false,
   },
 };

@@ -1,17 +1,23 @@
 <template>
-  <router-link
-    class="objective"
-    :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
+  <component
+    :is="isLink ? 'router-link' : 'div'"
+    :to="isLink ? { name: 'ObjectiveHome', params: { objectiveId: objective.id } } : null"
+    :class="['objective', { 'objective--compact': compact }]"
+    @click="isLink ? () => {} : $emit('click', $event)"
   >
-    <h3 class="objective__header title-2">
-      <span>{{ objective.name }}</span>
-      <span>{{ percent(objective.progression) }}</span>
+    <h3 class="pkt-txt-18-medium mb-size-8">
+      {{ objective.name }}
     </h3>
-    <p v-if="showDescription && objective.description">
+
+    <p v-if="!compact && objective.description" class="mb-size-8">
       {{ objective.description }}
     </p>
-    <progress-bar v-if="showProgress" :progression="objective.progression * 100" />
-  </router-link>
+
+    <div class="objective__progress">
+      <progress-bar :progression="objective.progression * 100" />
+      {{ percent(objective.progression) }}
+    </div>
+  </component>
 </template>
 
 <script>
@@ -30,13 +36,14 @@ export default {
       type: Object,
       required: true,
     },
-    showDescription: {
+    compact: {
       type: Boolean,
+      required: false,
       default: false,
     },
-    showProgress: {
+    isLink: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
 
@@ -54,30 +61,34 @@ export default {
 
 <style lang="scss" scoped>
 .objective {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: block;
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   color: var(--color-text);
   text-decoration: none;
+  cursor: pointer;
 
-  .title-2 {
-    line-height: 1.25;
+  &--compact {
+    &,
+    & > * {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   &:hover {
     color: var(--color-hover);
+  }
 
-    .title-2 {
-      color: inherit;
+  &__progress {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    font-weight: 500;
+
+    .progress {
+      flex: 1 1 auto;
     }
   }
-}
-
-.objective__header {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: space-between;
-  margin-bottom: 0;
 }
 </style>

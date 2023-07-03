@@ -107,7 +107,7 @@
     </template>
 
     <template #footer>
-      <buildings-graphic />
+      <buildings-graphic class="home-page__graphic" skin="success" />
     </template>
   </page-layout>
 </template>
@@ -170,14 +170,6 @@ export default {
       padding: 0 2rem;
     }
   }
-
-  ::v-deep .page__footer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    overflow: hidden;
-  }
 }
 
 .home-page {
@@ -237,6 +229,10 @@ export default {
         height: 1.125rem;
       }
     }
+  }
+
+  &__graphic {
+    display: block;
   }
 }
 

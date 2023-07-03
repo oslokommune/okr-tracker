@@ -31,15 +31,18 @@
           class="miller__col"
         >
           <div class="miller__col-heading">{{ heading }}</div>
-          <empty-state v-if="notSelected" :icon="'arrow-left'" :heading="notSelected" />
+          <div v-if="notSelected" class="miller__col-empty">
+            <pkt-icon name="chevron-left" />
+            <span>{{ notSelected }}</span>
+          </div>
 
           <ul v-else class="miller__list">
             <template v-if="!items.length && type === 'objective'">
-              <empty-state
-                v-if="!items.length && !isLoadingPeriod"
-                :icon="'exclamation'"
-                :heading="nonexistent"
-              />
+              <div v-if="!items.length && !isLoadingPeriod" class="miller__col-empty">
+                <pkt-icon name="exclamation-mark-circle" />
+                <span>{{ nonexistent }}</span>
+              </div>
+
               <template v-if="isLoadingPeriod">
                 <template v-for="index in 2">
                   <content-loader-okr-row
@@ -50,11 +53,13 @@
             </template>
 
             <template v-else-if="!items.length && type === 'keyResult'">
-              <empty-state
+              <div
                 v-if="!items.length && !isLoadingObjective && type === 'keyResult'"
-                :icon="'exclamation'"
-                :heading="nonexistent"
-              />
+                class="miller__col-empty"
+              >
+                <pkt-icon name="exclamation-mark-circle" />
+                <span>{{ nonexistent }}</span>
+              </div>
               <template v-if="isLoadingObjective">
                 <template v-for="index in 3">
                   <content-loader-okr-row
@@ -123,7 +128,6 @@ export default {
   name: 'ItemAdminOKRs',
 
   components: {
-    EmptyState: () => import('@/components/EmptyState.vue'),
     ContentLoaderOkrRow: () =>
       import('@/components/ContentLoader/ContentLoaderOKRRow.vue'),
     PktButton,
@@ -495,6 +499,26 @@ export default {
   padding: 0.5rem 0.75rem;
   color: var(--color-grayscale-60);
   border-bottom: 2px solid var(--color-border);
+}
+
+.miller__col-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+
+  .pkt-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    --fg-color: var(--color-grayscale-20);
+  }
+
+  span {
+    color: var(--color-grayscale-40);
+    font-weight: 500;
+  }
 }
 
 .miller__link {

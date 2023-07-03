@@ -1,11 +1,12 @@
 <template>
   <page-layout
+    v-if="allKpis.length"
     :breakpoint="showKpiDetails ? 'desktop' : 'tablet-big'"
     sidebar-position="left"
     :sidebar-cols="showKpiDetails ? 3 : 12"
     :sidebar-grid="showKpiDetails"
   >
-    <template v-if="allKpis.length" #sidebar>
+    <template #sidebar>
       <template v-for="(group, index) in kpiGroups">
         <kpi-widget-group
           v-if="group.kpis.length > 0"
@@ -16,32 +17,32 @@
       </template>
     </template>
 
-    <template v-if="allKpis.length" #default>
+    <template #default>
       <kpi-details v-if="showKpiDetails && activeKpi" :kpi="activeKpi" />
     </template>
-
-    <template v-else #default>
-      <empty-state
-        :icon="'exclamation'"
-        :heading="$t('empty.noKPIs.heading')"
-        :body="$t('empty.noKPIs.body')"
-      >
-        <router-link
-          v-if="hasEditRights"
-          :to="{ name: 'ItemAdmin', query: { tab: 'kpi' } }"
-        >
-          {{ $t('empty.noKPIs.linkText') }}
-        </router-link>
-      </empty-state>
-    </template>
   </page-layout>
+
+  <empty-page
+    v-else
+    :heading="$t('empty.noKPIs.heading')"
+    :body="$t('empty.noKPIs.body')"
+  >
+    <div v-if="hasEditRights" data-mode="dark">
+      <pkt-button
+        :text="$t('empty.noKPIs.buttonText')"
+        skin="primary"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="$router.push({ name: 'ItemAdmin', query: { tab: 'kpi' } })"
+      />
+    </div>
+  </empty-page>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 
 import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
-import EmptyState from '@/components/EmptyState.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
 
 export default {
@@ -50,7 +51,8 @@ export default {
   components: {
     KpiWidgetGroup,
     KpiDetails,
-    EmptyState,
+    EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
+    PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
   },
 
   async beforeRouteLeave(to, from, next) {

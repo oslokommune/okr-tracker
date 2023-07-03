@@ -9,7 +9,7 @@ import moduleActions from './actions';
 
 Vue.use(Vuex);
 
-export const getters = {
+export const storeGetters = {
   tree: (state) => {
     const { organizations, departments, products } = state;
 
@@ -142,6 +142,31 @@ export const getters = {
     }
     return organizations.find((org) => org.slug === organizationSlug) || null;
   },
+
+  /**
+   * Return `state.objectives` enriched with ID and key results.
+   */
+  objectivesWithKeyResults: (state) => {
+    return state.objectives.map((o) => ({
+      ...o,
+      id: o.id,
+      keyResults: state.keyResults.filter((kr) => kr.objective === `objectives/${o.id}`),
+    }));
+  },
+
+  /**
+   * Return selected objectives for `state.activeItem`.
+   */
+  selectedObjectives: (state, getters) => {
+    if (!state.activeItem || !state.selectedObjectives) {
+      return [];
+    }
+    const objectiveIds = state.selectedObjectives[state.activeItem.id] || [];
+    if (!objectiveIds.length) {
+      return [];
+    }
+    return getters.objectivesWithKeyResults.filter((o) => objectiveIds.includes(o.id));
+  },
 };
 
 export const actions = {
@@ -173,6 +198,15 @@ export const actions = {
   setSelectedPeriod: async ({ commit }, payload) => {
     commit('SET_SELECTED_PERIOD', payload);
     return true;
+  },
+
+  setSelectedObjective: async ({ commit, state }, objective) => {
+    if (state.activeItem) {
+      commit('SET_SELECTED_OBJECTIVE', {
+        itemId: state.activeItem.id,
+        objectiveId: objective?.id,
+      });
+    }
   },
 
   setActiveOrganization: async ({ commit, dispatch, state }, orgId) => {
@@ -219,11 +253,38 @@ export const mutations = {
     state.selectedPeriod = payload;
   },
 
+  SET_SELECTED_OBJECTIVE(state, { itemId, objectiveId }) {
+    if (Object.hasOwnProperty.call(state.selectedObjectives, itemId)) {
+      const objectives = state.selectedObjectives[itemId];
+
+      if (objectiveId && objectives.includes(objectiveId)) {
+        Vue.set(
+          state.selectedObjectives,
+          itemId,
+          objectives.filter((id) => id !== objectiveId)
+        );
+      } else if (objectiveId) {
+        objectives.push(objectiveId);
+      } else {
+        Vue.delete(state.selectedObjectives, itemId);
+      }
+    } else {
+      Vue.set(state.selectedObjectives, itemId, [objectiveId]);
+    }
+  },
+
   SET_HOME_ORGANIZATION(state, orgSlug) {
     if (!state.user.preferences) {
       state.user.preferences = defaultPreferences;
     }
     state.user.preferences.homeOrganization = orgSlug;
+  },
+
+  TOGGLE_DRAWER(state, payload) {
+    state.drawer.show = payload.show !== undefined ? payload.show : !state.drawer.show;
+    state.drawer.placement = payload.type && payload.type === 'menu' ? 'left' : 'right';
+    state.drawer.type = payload.type;
+    state.drawer.data = payload.data ? payload.data : null;
   },
 };
 
@@ -246,21 +307,23 @@ export default new Vuex.Store({
     kpis: [],
     subKpis: [],
     loginError: null,
-    views: [
-      { id: 'compact', label: i18n.t('view.compact') },
-      { id: 'details', label: i18n.t('view.details') },
-      { id: 'timeline', label: i18n.t('view.timeline') },
-    ],
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
     selectedPeriod: null,
+    selectedObjectives: {},
+    drawer: {
+      show: false,
+      placement: 'left',
+      type: null,
+      data: null,
+    },
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
   },
-  getters,
+  getters: storeGetters,
   mutations,
   actions,
 });

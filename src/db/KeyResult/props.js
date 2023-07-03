@@ -29,7 +29,7 @@ export default {
   },
   weight: {
     type: 'number',
-    required: true,
+    required: false,
   },
   auto: {
     type: 'boolean',

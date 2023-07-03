@@ -101,11 +101,17 @@ export default {
     }
   }
 
+  &__main {
+    overflow-x: hidden;
+  }
+
   &__footer {
     margin-top: auto;
   }
 
   &__sidebar {
+    overflow-x: hidden;
+
     &--left {
       order: -1;
     }

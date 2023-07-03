@@ -1,10 +1,10 @@
 <template>
-  <div ref="modalOverlay" class="overlay" @keydown.esc="close">
+  <div ref="modalOverlay" class="overlay" @keydown.esc="close" @click.self="close">
     <div :class="['modal', `modal--${variant}`]">
       <div class="modal__header">
-        <h2 class="title-2">
+        <h1 class="pkt-txt-18-medium">
           <slot name="header" />
-        </h2>
+        </h1>
         <pkt-button
           ref="closeButton"
           size="small"
@@ -49,6 +49,18 @@ export default {
       default: 'normal',
       validator: (value) => ['normal', 'wide'].includes(value),
     },
+
+    initialFocus: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+
+    clickOutside: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data: () => ({
@@ -70,13 +82,16 @@ export default {
     close() {
       this.$emit('close');
     },
+
     createFocusTrap() {
       this.focusTrap = focusTrap.createFocusTrap(this.$refs.modalOverlay, {
-        onActivate: this.setInitialFocus,
+        initialFocus: this.initialFocus,
+        onActivate: this.initialFocus ? this.setInitialFocus : null,
         allowOutsideClick: true,
       });
       this.focusTrap.activate();
     },
+
     setInitialFocus() {
       const focusableElement =
         focusable(this.$refs.modalContent)[0] || this.$refs.closeButton;

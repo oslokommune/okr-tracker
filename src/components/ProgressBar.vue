@@ -1,11 +1,6 @@
 <template>
   <div v-tooltip="label" class="progress">
-    <progress
-      :class="{ 'progress--isCompact': isCompact }"
-      max="100"
-      :value="Math.min(progression, 100)"
-      :aria-label="label"
-    />
+    <progress max="100" :value="Math.min(progression, 100)" :aria-label="label" />
   </div>
 </template>
 
@@ -19,10 +14,6 @@ export default {
     progression: {
       type: Number,
       default: 0,
-    },
-    isCompact: {
-      type: Boolean,
-      default: true,
     },
   },
 
@@ -40,7 +31,7 @@ export default {
 progress {
   display: block;
   width: 100%;
-  height: 0.625rem;
+  height: 0.5rem;
   border: 0;
   border-radius: 0;
 
@@ -55,10 +46,6 @@ progress {
 
   &[value]::-moz-progress-bar {
     background: var(--color-secondary);
-  }
-
-  &.progress--isCompact {
-    height: 0.3125rem;
   }
 }
 </style>

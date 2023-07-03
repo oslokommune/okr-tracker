@@ -1,42 +1,84 @@
 <template>
   <div class="gantt">
-    <div class="month-wrapper" @mousedown="startDrag">
-      <div class="today" :style="todayStyle()">{{ $t('general.today') }}</div>
-      <div class="months">
+    <div class="gantt__inner">
+      <div class="month-wrapper" @mousedown="startDrag">
+        <div ref="today" class="today" :style="todayStyle()">
+          {{ $t('general.today') }}
+        </div>
+        <div class="months">
+          <div
+            v-for="m in months"
+            :key="m.valueOf()"
+            class="month"
+            :style="`width: ${getDaysInMonth(m) * PPD}px`"
+          >
+            <span>{{ dateLongCompact(m) }}</span>
+          </div>
+        </div>
+        <div class="ticks">
+          <span class="ticks__padding"></span>
+          <div
+            v-for="m in months"
+            :key="m.valueOf()"
+            class="ticks__tick"
+            :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
+          ></div>
+          <span class="ticks__padding"></span>
+        </div>
+        <!--
+          This is only here as a reference for `scrollIntoView`. Scrolling to
+          the `.period` element risks scrolling vertically.
+        -->
         <div
-          v-for="m in months"
-          :key="m.valueOf()"
-          class="month"
-          :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
-        >
-          <span>{{ dateLongCompact(m) }}</span>
+          v-if="period.startDate"
+          ref="period"
+          class="period-ref"
+          :style="periodStyle()"
+        ></div>
+        <div class="sep">
+          <div
+            v-if="period.startDate"
+            v-tooltip="{
+              content: periodObjectives.length
+                ? $t('general.selectObjectivesInPeriod')
+                : $t('general.noObjectivesInPeriod'),
+              delay: { show: 750 },
+            }"
+            :class="[
+              'sep__period',
+              { 'sep__period--clickable': periodObjectives.length },
+            ]"
+            :style="periodStyle()"
+            @click="selectPeriodObjectives"
+          ></div>
         </div>
       </div>
-      <div class="ticks">
-        <span class="ticks__padding"></span>
-        <div
-          v-for="m in months"
-          :key="m.valueOf()"
-          class="ticks__tick"
-          :style="`flex: 0 0 ${getDaysInMonth(m) * PPD}px`"
-        ></div>
-        <span class="ticks__padding"></span>
+      <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
+      <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
+        <objective-row
+          v-for="o in group.objectives"
+          :key="o.objective.id"
+          :objective="o.objective"
+          :compact="true"
+          :style="objectiveStyle(o)"
+          :is-link="false"
+          :class="[
+            {
+              'objective--selected': selectedObjectives
+                .map((o) => o.id)
+                .includes(o.objective.id),
+            },
+          ]"
+          @click="selectObjective($event, o)"
+        />
       </div>
+      <div class="today-tick" :style="todayStyle()"></div>
     </div>
-    <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
-      <objective-row
-        v-for="o in group.objectives"
-        :key="o.objective.id"
-        :objective="o.objective"
-        :show-progress="true"
-        :style="objectiveStyle(o)"
-      />
-    </div>
-    <div class="today-tick" :style="todayStyle()"></div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import {
   addMonths,
   differenceInDays,
@@ -62,7 +104,7 @@ export default {
       type: Array,
       required: true,
     },
-    item: {
+    period: {
       type: Object,
       required: true,
     },
@@ -82,14 +124,19 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['selectedObjectives']),
+
     minDate() {
-      return min([this.now, ...this.objectives.map((o) => this.startDate(o).toDate())]);
+      return min([
+        this.now,
+        ...this.temporalObjectives.map((o) => this.startDate(o).toDate()),
+      ]);
     },
 
     maxDate() {
       const date = max([
         this.now,
-        ...this.objectives.map((o) => this.endDate(o).toDate()),
+        ...this.temporalObjectives.map((o) => this.endDate(o).toDate()),
       ]);
       return addMonths(date, 1);
     },
@@ -98,9 +145,23 @@ export default {
       return eachMonthOfInterval({ start: this.minDate, end: this.maxDate });
     },
 
+    /**
+     * Return only objectives with a known (resolved) period, either dynamic or
+     * old-style.
+     *
+     * TODO: This filter is a TEMPORARY FIX, should ideally not be necessary,
+     * and should hopefully be fixed with a review and refactor of store data
+     * fetching/use.
+     */
+    temporalObjectives() {
+      return this.objectives.filter(
+        (o) => (o.startDate && o.endDate) || (o.period && typeof o.period !== 'string')
+      );
+    },
+
     orderedObjectives() {
       return (
-        this.objectives
+        this.temporalObjectives
           .slice()
           /*
            * Sort first by shortest objectives first. This is so that they
@@ -128,9 +189,60 @@ export default {
         return this.placeObjective(o, rows);
       }, []);
     },
+
+    /**
+     * Return objectives within current `period`.
+     */
+    periodObjectives() {
+      if (this.period && this.period.key !== 'all') {
+        return this.objectives.filter((objective) => {
+          const { startDate, endDate } = this.period;
+
+          if (objective.startDate && objective.endDate) {
+            return (
+              objective.endDate.toDate() >= startDate &&
+              objective.startDate.toDate() <= endDate
+            );
+          }
+
+          /*
+           * Fall back to checking the old-style `period` reference to retain backwards
+           * compatibility.
+           */
+          if (objective.period.endDate && objective.period.startDate) {
+            return (
+              objective.period.endDate.toDate() >= startDate &&
+              objective.period.startDate.toDate() <= endDate
+            );
+          }
+
+          return false;
+        });
+      }
+      return [];
+    },
+  },
+
+  watch: {
+    period: {
+      async handler() {
+        this.$nextTick(() => {
+          if (this.$refs.period) {
+            this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+          }
+        });
+      },
+    },
+  },
+
+  mounted() {
+    const ref = this.$refs.period || this.$refs.today;
+    ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
   },
 
   methods: {
+    ...mapActions(['setSelectedObjective']),
+
     /*
      * Return the end date of the last goal in `row`.
      */
@@ -196,6 +308,19 @@ export default {
       }px + ${this.lineWidth} / 2 - 50%))`;
     },
 
+    periodStyle() {
+      const periodStart = this.period.startDate;
+      const periodEnd = this.period.endDate;
+
+      const margin =
+        differenceInDays(periodStart, startOfMonth(this.minDate)) * this.PPD +
+        this.endPadding;
+
+      const width = differenceInDays(periodEnd, periodStart) * this.PPD + this.PPD;
+
+      return [`margin-left: ${margin}px`, `width: ${width}px`].join(';');
+    },
+
     /*
      * Return appropriate styling of the left margin and width for the
      * objective `o`.
@@ -255,6 +380,29 @@ export default {
       window.removeEventListener('mouseup', this.stopDrag);
     },
 
+    selectObjective(e, o) {
+      this.setSelectedObjective(o.objective);
+      this.$nextTick(() => {
+        e.currentTarget.scrollIntoView({
+          block: 'center',
+          inline: 'start',
+          behavior: 'smooth',
+        });
+      });
+    },
+
+    selectPeriodObjectives() {
+      this.periodObjectives
+        .filter((po) => !this.selectedObjectives.map((o) => o.id).includes(po.id))
+        .forEach(this.setSelectedObjective);
+
+      this.$nextTick(() => {
+        if (this.$refs.period) {
+          this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+        }
+      });
+    },
+
     addMonths,
     dateLongCompact,
     differenceInDays,
@@ -266,23 +414,39 @@ export default {
 
 <style lang="scss" scoped>
 .gantt {
-  --line-width: 0.2rem;
+  --tick-width: 3px;
+  --sep-height: 11px;
+  --sep-border-width: 1px;
   --end-padding: 75px;
+  --period-offset-top: 60px;
 
   position: relative;
-  min-height: 85vh;
-  margin-top: 0.5rem;
-  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--color-gray-light);
+
+  &__inner {
+    position: relative;
+    flex: 1 0 auto;
+    padding-bottom: 1.5rem;
+  }
 }
 
 .month-wrapper {
-  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: inline-block;
+  min-width: 100%;
   padding-top: 1.5rem;
+  background-color: var(--color-white);
   cursor: col-resize;
 }
 
 .months {
-  display: flex;
+  display: inline-flex;
   margin-bottom: 0.5rem;
   margin-left: var(--end-padding);
   font-weight: 500;
@@ -296,7 +460,7 @@ export default {
 
   span {
     position: absolute;
-    transform: translateX(calc(var(--line-width) / 2 - 50%));
+    transform: translateX(calc(var(--tick-width) / 2 - 50%));
   }
 }
 
@@ -307,18 +471,15 @@ export default {
     position: relative;
     z-index: 1;
     height: 0.75rem;
-    border-bottom: var(--line-width) solid var(--color-primary);
-    border-left: var(--line-width) solid var(--color-primary);
+    border-left: var(--tick-width) solid var(--color-primary);
 
     &:last-of-type {
-      flex-basis: var(--line-width) !important;
-      border-bottom: 0;
+      flex-basis: var(--tick-width) !important;
     }
   }
 
   .ticks__padding {
     flex: 0 0 var(--end-padding);
-    border-bottom: var(--line-width) solid var(--color-primary);
 
     &:last-of-type {
       flex-basis: var(--end-padding);
@@ -326,18 +487,63 @@ export default {
   }
 }
 
+.sep {
+  height: var(--sep-height);
+  background: var(--color-grayscale-10);
+  border-top: var(--sep-border-width) solid var(--color-primary);
+
+  .sep__period {
+    height: calc(var(--sep-height) - var(--sep-border-width));
+    background: var(--color-primary);
+
+    &--clickable {
+      cursor: pointer;
+    }
+  }
+}
+
 .today {
+  position: absolute;
+  top: 0;
+  z-index: 2;
   display: inline-block;
   height: 1.5rem;
-  color: var(--color-yellow);
+  color: var(--color-active);
   font-weight: 500;
+
+  &::after {
+    position: absolute;
+    top: 3.125rem;
+    left: calc(50% - 0.1rem);
+    height: 1.125rem;
+    border-left: var(--tick-width) solid var(--color-active);
+    content: '';
+  }
 }
 
 .today-tick {
   position: absolute;
   top: 3rem;
   height: calc(100% - 3rem);
-  border-left: var(--line-width) dashed var(--color-yellow);
+  border-left: var(--tick-width) dashed var(--color-active);
+}
+
+.period-ref {
+  position: absolute;
+  top: 0;
+}
+
+.period {
+  position: absolute;
+  top: var(--period-offset-top);
+  height: calc(100% - var(--period-offset-top));
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-blue-dark-10),
+    var(--color-blue-dark-10) 4px,
+    var(--color-gray-light) 4px,
+    var(--color-gray-light) 8px
+  );
 }
 
 .objective-row {
@@ -351,5 +557,9 @@ export default {
   z-index: 1;
   background: var(--color-white);
   border: 2px solid var(--color-border);
+
+  &--selected {
+    outline: 2px solid var(--color-hover);
+  }
 }
 </style>

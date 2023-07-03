@@ -5,8 +5,6 @@ import { periodDates } from '@/util';
 const { state } = store;
 
 export default async function itemMeasurements(to, from, next) {
-  const { activeItem } = state;
-
   try {
     const periods = getPeriods();
 
@@ -25,7 +23,6 @@ export default async function itemMeasurements(to, from, next) {
         label: periodDates({ startDate, endDate }),
       });
     }
-    await store.dispatch('set_sub_kpis', activeItem.id);
     next();
   } catch (error) {
     console.error(error);

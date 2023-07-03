@@ -33,7 +33,7 @@ import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
 import i18n from '@/locale/i18n';
-import getPeriods from '@/config/periods';
+import { getPeriods } from '@/config/periods';
 import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from './WidgetWrapper.vue';
 
