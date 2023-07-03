@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   title: OKR Tracker API
   description: API for updating KPIs and key results.
-  version: 1.5.0
+  version: 1.5.1
   contact:
     name: Dataspeilet
     url: https://okr.oslo.systems
@@ -150,7 +150,7 @@ paths:
               comment:
                 type: string
             example:
-              progress: 123
+              value: 123
               comment: A fine measurement
       responses:
         200:
