@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.8.0] 2023-07-03
+
 ### Changed
 
 - New flow for registering and editing of objectives and key results.
