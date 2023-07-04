@@ -70,6 +70,7 @@ export default {
     progressCollection: [],
     goals: [],
     showValueModal: false,
+    order: null,
   }),
 
   computed: {
@@ -84,9 +85,15 @@ export default {
   watch: {
     kpi: {
       immediate: true,
-      handler() {
-        this.setProgress();
-        this.setGoals();
+      handler(kpi) {
+        if (this.order === null) {
+          this.order = kpi.order;
+        }
+        // Order changes shouldn't result in rerendering of the graph.
+        if (this.order === kpi.order) {
+          this.setProgress();
+          this.setGoals();
+        }
       },
     },
     selectedPeriod: {

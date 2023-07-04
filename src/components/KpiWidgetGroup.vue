@@ -19,31 +19,35 @@
         </pkt-button>
       </template>
     </div>
-    <div class="kpi-widget-group__kpis">
-      <router-link
-        v-for="kpi in kpis"
-        :key="kpi.id"
-        :to="{
-          name: 'ItemMeasurements',
-          params: { ...$route.params, kpiId: kpi.id },
-          query: { resultIndicatorPeriod: selectedPeriod?.key },
-        }"
-        class="kpi-widget-group__link"
-      >
-        <widget-kpi-card :kpi="kpi" :compact="compact" />
-      </router-link>
-    </div>
+    <draggable v-model="orderedKpis" animation="200">
+      <transition-group class="kpi-widget-group__kpis">
+        <router-link
+          v-for="kpi in orderedKpis"
+          :key="kpi.id"
+          :to="{
+            name: 'ItemMeasurements',
+            params: { ...$route.params, kpiId: kpi.id },
+            query: { resultIndicatorPeriod: selectedPeriod?.key },
+          }"
+          class="kpi-widget-group__link"
+        >
+          <widget-kpi-card :kpi="kpi" :compact="compact" />
+        </router-link>
+      </transition-group>
+    </draggable>
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable';
 import html2canvas from 'html2canvas';
 import { mapState } from 'vuex';
 import { periodDates } from '@/util';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import downloadFile from '@/util/downloadFile';
-import { formatKPIValue } from '@/util/kpiHelpers';
+import Kpi from '@/db/Kpi';
 import WidgetKpiCard from '@/components/widgets/WidgetKpiCard/WidgetKpiCard.vue';
+import { compareKPIs } from '@/util/kpiHelpers';
 
 export default {
   name: 'KpiWidgetGroup',
@@ -51,6 +55,7 @@ export default {
   components: {
     PktButton,
     WidgetKpiCard,
+    draggable,
   },
 
   props: {
@@ -74,7 +79,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState(['activeItem', 'selectedPeriod']),
 
     itemSlug() {
       if (this.kpis.length && this.kpis[0]?.parent?.slug) {
@@ -92,11 +97,26 @@ export default {
         now.toISOString().slice(0, 10),
       ].join('-');
     },
+
+    orderedKpis: {
+      get() {
+        return this.kpis.map((kpi) => kpi).sort(compareKPIs(this.activeItem.id));
+      },
+      set(kpis) {
+        kpis.forEach((kpi, i) => {
+          const order = kpi.order ? kpi.order : {};
+
+          if (order[this.activeItem.id] !== i) {
+            order[this.activeItem.id] = i;
+            Kpi.update(kpi.id, { order });
+          }
+        });
+      },
+    },
   },
 
   methods: {
     periodDates,
-    formatKPIValue,
 
     download() {
       this.rendering = true;

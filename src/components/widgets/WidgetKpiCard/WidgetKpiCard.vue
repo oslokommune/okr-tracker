@@ -68,6 +68,8 @@ export default {
   data: () => ({
     progressCollection: [],
     isProgressLoading: false,
+    order: null,
+    isReordering: false,
   }),
 
   computed: {
@@ -89,7 +91,7 @@ export default {
   watch: {
     kpi: {
       immediate: true,
-      handler: 'setProgress',
+      handler: 'onKPIUpdate',
     },
     selectedPeriod: {
       immediate: false,
@@ -99,6 +101,20 @@ export default {
 
   methods: {
     formatKPIValue,
+
+    async onKPIUpdate(kpi) {
+      if (this.order === null) {
+        this.order = kpi.order;
+      }
+      if (this.order !== kpi.order) {
+        this.order = kpi.order;
+        this.isReordering = true;
+      } else if (this.isReordering) {
+        this.isReordering = false;
+      } else {
+        this.setProgress();
+      }
+    },
 
     async setProgress() {
       this.isProgressLoading = true;

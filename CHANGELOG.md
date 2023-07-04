@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- Measurements can now be rearranged by drag and drop on the measurement list
+  and detail pages.
+
 ## [3.8.0] 2023-07-03
 
 ### Changed

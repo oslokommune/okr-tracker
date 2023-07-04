@@ -38,6 +38,7 @@
 <script>
 import { mapState } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
+import { compareKPIs } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 
 export default {
@@ -58,11 +59,7 @@ export default {
     ...mapState(['kpis', 'activeItemRef']),
 
     orderedKpis() {
-      const kpiOrder = ['ri', 'keyfig', 'plain'];
-      return this.kpis
-        .map((x) => x)
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .sort((a, b) => kpiOrder.indexOf(a.kpiType) - kpiOrder.indexOf(b.kpiType));
+      return this.kpis.map((x) => x).sort(compareKPIs);
     },
   },
 
