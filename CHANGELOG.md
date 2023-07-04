@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
-- Measurements can now be rearranged by drag and drop on the measurements
-  overview page.
+- Measurements can now be rearranged by drag and drop on the measurement list
+  and detail pages.
 
 ## [3.8.0] 2023-07-03
 
