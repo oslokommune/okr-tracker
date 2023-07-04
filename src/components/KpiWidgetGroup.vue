@@ -19,7 +19,7 @@
         </pkt-button>
       </template>
     </div>
-    <draggable v-model="orderedKpis" :options="{ animation: 200 }">
+    <draggable v-model="orderedKpis" animation="200">
       <transition-group class="kpi-widget-group__kpis">
         <router-link
           v-for="kpi in orderedKpis"
