@@ -4,10 +4,17 @@
     "body": "You do not have access to this page.",
     "linkText": "Go back to the front page"
   },
-  "404": {
+  "notFound": {
     "title": "Page not found",
-    "body": "This page does not seem to exist.",
-    "linkText": "Go back to the front page"
+    "body": "This page doesn't seem to exist.",
+    "linkText": "Go back to the front page",
+    "linkTextAlt": "Go back to {page}",
+    "objectiveHeading": "Objective not found",
+    "objectiveBody": "This objective doesn't seem to exist.",
+    "keyResultHeading": "Key result not found",
+    "keyResultBody": "This key result doesn't seem to exist.",
+    "measurementHeading": "Measurement not found",
+    "measurementBody": "This measurement doesn't seem to exist."
   },
   "kpi": {
     "add": "Add measurement",

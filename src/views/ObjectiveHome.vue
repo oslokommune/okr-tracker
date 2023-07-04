@@ -87,10 +87,18 @@
       <widget-objective-details />
     </template>
   </page-layout>
+  <not-found-page
+    v-else
+    :heading="$t('notFound.objectiveHeading')"
+    :body="$t('notFound.objectiveBody')"
+    back-to="ItemHome"
+    :back-text="$t('notFound.linkTextAlt', { page: activeItem.name })"
+  />
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 import Objective from '@/db/Objective';
 import routerGuard from '@/router/router-guards/objectiveHome';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
@@ -104,6 +112,7 @@ export default {
 
   components: {
     KeyResultsList: () => import('@/components/KeyResultsList.vue'),
+    NotFoundPage,
     Widget: WidgetWrapper,
     WidgetWeights,
     WidgetObjectiveDetails,
@@ -133,7 +142,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeObjective', 'keyResults']),
+    ...mapState(['activeObjective', 'activeItem', 'keyResults']),
     ...mapGetters(['hasEditRights']),
 
     period() {

@@ -4,12 +4,12 @@ export default async function objectiveHome(to, from, next) {
   const { objectiveId } = to.params;
 
   try {
-    const { period } = await store.dispatch('set_active_objective', objectiveId);
+    const activeObjective = await store.dispatch('set_active_objective', objectiveId);
     const { activeItem, activePeriod } = store.state;
 
-    if (!activePeriod || activePeriod.id !== period?.id) {
+    if (!activePeriod || activePeriod.id !== activeObjective?.period?.id) {
       await store.dispatch('set_active_period_and_data', {
-        periodId: period?.id,
+        periodId: activeObjective?.period?.id,
         item: activeItem,
       });
     }

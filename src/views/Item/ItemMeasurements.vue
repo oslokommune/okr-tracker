@@ -17,8 +17,13 @@
       </template>
     </template>
 
-    <template #default>
-      <kpi-details v-if="showKpiDetails && kpi" :kpi="kpi" />
+    <template v-if="showKpiDetails" #default>
+      <kpi-details v-if="kpi" :kpi="kpi" />
+      <not-found-page
+        v-else
+        :heading="$t('notFound.measurementHeading')"
+        :body="$t('notFound.measurementBody')"
+      />
     </template>
   </page-layout>
 
@@ -44,6 +49,7 @@ import { mapState, mapGetters } from 'vuex';
 
 import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
 export default {
   name: 'ItemMeasurements',
@@ -53,6 +59,7 @@ export default {
     KpiDetails,
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
     PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
+    NotFoundPage,
   },
 
   data: () => ({

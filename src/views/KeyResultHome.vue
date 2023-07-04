@@ -101,12 +101,20 @@
       <widget-key-result-details />
     </template>
   </page-layout>
+  <not-found-page
+    v-else
+    :heading="$t('notFound.keyResultHeading')"
+    :body="$t('notFound.keyResultBody')"
+    back-to="ItemHome"
+    :back-text="$t('notFound.linkTextAlt', { page: activeItem.name })"
+  />
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
@@ -125,6 +133,7 @@ export default {
   name: 'KeyResultHome',
 
   components: {
+    NotFoundPage,
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     KeyResultProgressDetails,

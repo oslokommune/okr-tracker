@@ -4,10 +4,17 @@
     "body": "Du har ikke tilgang til denne siden.",
     "linkText": "Gå tilbake til forsiden"
   },
-  "404": {
+  "notFound": {
     "title": "Siden finnes ikke",
     "body": "Denne siden ser ikke ut til å eksistere.",
-    "linkText": "Gå tilbake til forsiden"
+    "linkText": "Gå tilbake til forsiden",
+    "linkTextAlt": "Gå tilbake til {page}",
+    "objectiveHeading": "Målet finnes ikke",
+    "objectiveBody": "Dette målet ser ikke ut til å eksistere.",
+    "keyResultHeading": "Nøkkelresultatet finnes ikke",
+    "keyResultBody": "Dette nøkkelresultatet ser ikke ut til å eksistere.",
+    "measurementHeading": "Målingen finnes ikke",
+    "measurementBody": "Denne målingen ser ikke ut til å eksistere."
   },
   "kpi": {
     "add": "Legg til måling",

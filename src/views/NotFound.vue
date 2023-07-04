@@ -1,8 +1,8 @@
 <template>
-  <empty-page :heading="$t('404.title')" :body="$t('404.body')" skin="warning">
+  <empty-page :heading="$t('notFound.title')" :body="$t('notFound.body')" skin="warning">
     <router-link :to="{ name: 'Home' }" class="pkt-link">
       <pkt-icon class="pkt-link__icon" name="chevron-left" />
-      {{ $t('404.linkText') }}
+      {{ $t('notFound.linkText') }}
     </router-link>
   </empty-page>
 </template>
@@ -19,7 +19,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${i18n.t('404.title')} | ${i18n.t('general.project')}`,
+      title: `${i18n.t('notFound.title')} | ${i18n.t('general.project')}`,
     };
   },
 };
