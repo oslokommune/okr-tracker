@@ -47,7 +47,7 @@ import { PktButton } from '@oslokommune/punkt-vue2';
 import downloadFile from '@/util/downloadFile';
 import Kpi from '@/db/Kpi';
 import WidgetKpiCard from '@/components/widgets/WidgetKpiCard/WidgetKpiCard.vue';
-import { compareKPIs, formatKPIValue } from '@/util/kpiHelpers';
+import { compareKPIs } from '@/util/kpiHelpers';
 
 export default {
   name: 'KpiWidgetGroup',
@@ -117,7 +117,6 @@ export default {
 
   methods: {
     periodDates,
-    formatKPIValue,
 
     download() {
       this.rendering = true;
