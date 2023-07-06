@@ -84,6 +84,10 @@ export default {
       immediate: true,
       handler: 'setProgress',
     },
+    kpi: {
+      immediate: true,
+      handler: 'setProgress',
+    },
   },
 
   methods: {

@@ -18,7 +18,7 @@
     </template>
 
     <template #default>
-      <kpi-details v-if="showKpiDetails && activeKpi" :kpi="activeKpi" />
+      <kpi-details v-if="showKpiDetails && kpi" :kpi="kpi" />
     </template>
   </page-layout>
 
@@ -55,21 +55,13 @@ export default {
     PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
   },
 
-  async beforeRouteLeave(to, from, next) {
-    try {
-      await this.$store.dispatch('set_active_kpi', null);
-      next();
-    } catch (error) {
-      next(false);
-    }
-  },
-
   data: () => ({
+    kpi: null,
     showKpiDetails: true,
   }),
 
   computed: {
-    ...mapState(['kpis', 'subKpis', 'activeKpi', 'selectedPeriod']),
+    ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
     ...mapGetters(['hasEditRights']),
 
     kpiGroups() {
@@ -128,8 +120,8 @@ export default {
             params: { ...params, kpiId: this.allKpis[0].id },
             query: { resultIndicatorPeriod: this.selectedPeriod?.key },
           });
-        } else if (kpiId !== this.activeKpi?.id) {
-          await this.$store.dispatch('set_active_kpi', kpiId);
+        } else {
+          this.kpi = this.allKpis.find((k) => k.id === kpiId) || null;
         }
 
         this.showKpiDetails = true;
