@@ -151,10 +151,6 @@ export default {
     formatKPIValue,
 
     async onDateSelected() {
-      if (!this.kpi) {
-        return;
-      }
-
       const existingValueSnapshot = await Progress.get(
         this.kpi.id,
         new Date(this.thisRecord.timestamp)
