@@ -198,7 +198,7 @@
     "view": "Visning",
     "newObjective": "Nytt mål",
     "newKeyResult": "Nytt nøkkelresultat",
-    "step": "Steg {step} av 2",
+    "step": "Steg {step} av {steps}",
     "or": "eller"
   },
   "home": {
@@ -410,7 +410,7 @@
       "change": "Rediger mål"
     },
     "keyResult": {
-      "new": "Nytt Nøkkelresultatet",
+      "new": "Nytt nøkkelresultatet",
       "created": "Nøkkelresultatet ble opprettet!",
       "updated": "Nøkkelresultatet ble endret!",
       "change": "Rediger Nøkkelresultat"

@@ -1,25 +1,31 @@
 <template>
-  <div :class="{ overlay: drawer.show }" @click.self="toggle">
-    <transition :name="transitionName">
-      <aside
-        v-if="drawer.show"
-        class="sliderContainer"
-        :class="{
-          'sliderContainer--shouldSlideInFromLeft': shouldSlideInFromLeft,
-          'sliderContainer--hasPrimaryBackground': hasPrimaryBackground,
-          'sliderContainer--hasSuccessBackground': hasSuccessBackground,
-        }"
-      >
+  <div>
+    <transition name="fade" mode="out-in">
+      <div v-if="visible" class="overlay" @click.self="close"></div>
+    </transition>
+    <transition name="slide" @after-leave="$emit('hidden')">
+      <aside v-if="visible" class="sliderContainer">
         <div class="sliderContainer__closeButtonContainer">
           <pkt-button
-            :skin="hasPrimaryBackground ? 'primary' : 'tertiary'"
+            skin="tertiary"
             variant="icon-only"
             icon-name="close"
-            @onClick="toggle"
+            @onClick="close"
           />
         </div>
-        <div class="sliderContainer__content">
-          <slot />
+
+        <div class="sliderContainer__inner">
+          <header v-if="$slots.header" class="sliderContainer__header">
+            <slot name="header" />
+          </header>
+
+          <div class="sliderContainer__content">
+            <slot name="default" />
+          </div>
+
+          <footer v-if="$slots.footer" class="sliderContainer__footer">
+            <slot name="footer" />
+          </footer>
         </div>
       </aside>
     </transition>
@@ -27,8 +33,6 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import store from '@/store';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
@@ -38,30 +42,17 @@ export default {
     PktButton,
   },
 
-  computed: {
-    ...mapState(['drawer']),
-    shouldSlideInFromLeft() {
-      return this.drawer.placement === 'left';
-    },
-    hasPrimaryBackground() {
-      return this.drawer.placement === 'left';
-    },
-    hasSuccessBackground() {
-      return (
-        this.drawer.type === 'savedObjective' || this.drawer.type === 'savedKeyResult'
-      );
-    },
-    transitionName() {
-      return this.shouldSlideInFromLeft
-        ? 'shouldSlideInFromLeft'
-        : 'shouldSlideInFromRight';
+  props: {
+    visible: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_DRAWER']),
-    toggle() {
-      store.commit('TOGGLE_DRAWER', '');
+    close(e) {
+      this.$emit('close', e);
     },
   },
 };
@@ -73,25 +64,15 @@ export default {
   top: 0;
   right: 0;
   z-index: 200;
+  display: flex;
+  flex-direction: column;
   width: calc(100vw - 4rem);
   max-width: 37.5rem;
   height: 100vh;
   background-color: var(--color-white);
 
-  &--hasPrimaryBackground {
-    background-color: var(--color-primary);
-  }
-
-  &--hasSuccessBackground {
-    background-color: var(--color-green-light);
-  }
-
-  &--shouldSlideInFromLeft {
-    left: 0;
-  }
-
   &__closeButtonContainer {
-    padding: 1rem;
+    margin: 1rem;
     text-align: right;
 
     svg {
@@ -100,39 +81,42 @@ export default {
     }
   }
 
-  &--hasPrimaryBackground &__closeButtonContainer svg {
-    --fg-color: var(--color-white);
-  }
-
-  &__content {
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+    padding: 2.5rem;
+    padding-top: 0;
     overflow-y: auto;
+  }
 
-    scrollbar-width: none; /* Hide scrollbar styles Firefox */
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  &__footer {
+    margin-top: auto;
   }
 }
 
-.shouldSlideInFromLeft-enter-active,
-.shouldSlideInFromLeft-leave-active {
-  transition: left 0.25s ease-in-out;
+.fade {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.25s ease-out;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+  }
 }
 
-.shouldSlideInFromLeft-enter,
-.shouldSlideInFromLeft-leave-to {
-  left: -504px;
-}
+.slide {
+  &-enter-active,
+  &-leave-active {
+    transition: right 0.25s ease-in-out;
+  }
 
-.shouldSlideInFromRight-enter-active,
-.shouldSlideInFromRight-leave-active {
-  transition: right 0.25s ease-in-out;
-}
-
-.shouldSlideInFromRight-enter,
-.shouldSlideInFromRight-leave-to {
-  right: -504px;
+  &-enter,
+  &-leave-to {
+    right: -504px;
+  }
 }
 </style>

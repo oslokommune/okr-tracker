@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import i18n from '@/locale/i18n';
 import SiteMenuDropdown from '@/components/Navigation/SiteMenuDropdown.vue';
 import getActiveItemType from '@/util/getActiveItemType';
@@ -166,15 +166,6 @@ export default {
     if (this.user && this.user.position === null) {
       this.$refs.userMenu.activate();
     }
-  },
-
-  methods: {
-    ...mapMutations(['TOGGLE_DRAWER']),
-    openMenu() {
-      this.TOGGLE_DRAWER({
-        type: 'menu',
-      });
-    },
   },
 };
 </script>

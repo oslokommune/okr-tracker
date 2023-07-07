@@ -76,6 +76,7 @@
           ref="datePicker"
           :value="value"
           :config="datePickerConfig"
+          :disabled="disabled"
           class="pkt-form-input flatpickr-input"
           :placeholder="placeholder"
           :name="name"

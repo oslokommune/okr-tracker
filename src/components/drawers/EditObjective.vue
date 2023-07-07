@@ -1,84 +1,118 @@
 <template>
-  <div class="editObjective">
-    <div class="body">
-      <content-loader-okr-details v-if="isLoadingDetails"></content-loader-okr-details>
-      <div v-else-if="!isLoadingDetails">
-        <h1 class="heading">
-          {{ objective.id ? $t('admin.objective.change') : $t('admin.objective.new') }}
-        </h1>
-        <form-section :hide-errors="true">
-          <form-component
-            v-model="objective.name"
-            input-type="textarea"
-            name="name"
-            :rows="2"
-            :label="$t('fields.name')"
-            rules="required"
-          />
+  <paged-drawer-wrapper ref="drawer" :visible="visible" @close="close">
+    <template #title="{ isDone, isSuccess }">
+      <template v-if="!isDone">
+        {{ $t(objective ? 'admin.objective.change' : 'admin.objective.new') }}
+      </template>
+      <template v-else-if="isSuccess">
+        {{ $t(objective ? 'objective.updated' : 'admin.objective.created') }}
+      </template>
+      <template v-else>{{ $t('toaster.error.save') }}</template>
+    </template>
 
-          <form-component
-            v-model="objective.description"
-            input-type="textarea"
-            :rows="2"
-            name="description"
-            :label="$t('fields.description')"
-          />
+    <template #page>
+      <form-section :hide-errors="true">
+        <form-component
+          v-model="thisObjective.name"
+          input-type="textarea"
+          name="name"
+          :disabled="objective?.archived"
+          :rows="2"
+          :label="$t('fields.name')"
+          rules="required"
+        />
 
-          <form-component
-            v-model="periodRange"
-            input-type="date"
-            name="period"
-            :label="$t('fields.period')"
-            :placeholder="$t('general.selectRange')"
-            :date-picker-config="flatPickerConfig"
-            rules="required"
-          />
+        <form-component
+          v-model="thisObjective.description"
+          input-type="textarea"
+          :disabled="objective?.archived"
+          :rows="2"
+          name="description"
+          :label="$t('fields.description')"
+        />
 
-          <template v-if="!objective.archived" #actions="{ handleSubmit }">
-            <btn-cancel :disabled="loading" @click="TOGGLE_DRAWER({ show: false })" />
-            <btn-save
-              :label="
-                objective.id ? $t('btn.updateObjective') : $t('btn.createObjective')
-              "
-              variant="label-only"
-              :disabled="!changed || loading"
-              @click="handleSubmit(update)"
-            />
-          </template>
-        </form-section>
+        <form-component
+          v-model="periodRange"
+          input-type="date"
+          name="period"
+          :disabled="objective?.archived"
+          :label="$t('fields.period')"
+          :placeholder="$t('general.selectRange')"
+          :date-picker-config="flatPickerConfig"
+          rules="required"
+        />
+
+        <template v-if="!objective?.archived" #actions="{ handleSubmit }">
+          <btn-cancel :disabled="loading" @click="close" />
+          <btn-save
+            :label="objective ? $t('btn.updateObjective') : $t('btn.createObjective')"
+            variant="label-only"
+            :disabled="loading"
+            @click="handleSubmit(save)"
+          />
+        </template>
+      </form-section>
+    </template>
+
+    <template #done="{ isSuccess, reset }">
+      <div class="button-row button-row--left">
+        <template v-if="!isSuccess">
+          <pkt-button skin="secondary" @onClick="reset">
+            {{ $t('btn.back') }}
+          </pkt-button>
+        </template>
+        <template v-else-if="!objective">
+          <pkt-button skin="tertiary" @onClick="close">
+            {{ $t('btn.close') }}
+          </pkt-button>
+          <pkt-button
+            v-if="thisObjective.id"
+            skin="secondary"
+            @onClick="
+              $router.push({
+                name: 'ObjectiveHome',
+                params: { objectiveId: thisObjective.id },
+                query: { createKeyResult: '1' },
+              })
+            "
+          >
+            {{ $t('btn.createKeyResult') }}
+          </pkt-button>
+        </template>
       </div>
-    </div>
-    <div class="footer">
-      <archived-restore
-        v-if="objective && objective.archived"
-        :restore="restore"
-        :object-type="$t('archived.objective')"
-      />
-      <btn-delete
-        v-if="objective.id && !objective.archived"
-        :disabled="loading"
-        @click="archive"
-      />
-    </div>
-  </div>
+    </template>
+
+    <template #footer="{ isDone }">
+      <template v-if="objective && !isDone">
+        <archived-restore
+          v-if="objective.archived"
+          :restore="restore"
+          :object-type="$t('archived.objective')"
+        />
+        <div v-else class="button-row">
+          <btn-delete :disabled="loading" @click="archive" />
+        </div>
+      </template>
+    </template>
+  </paged-drawer-wrapper>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
-import store from '@/store';
+import { mapState } from 'vuex';
 import Objective from '@/db/Objective';
-import { db } from '@/config/firebaseConfig';
 import firebase from 'firebase/app';
 import locale from 'flatpickr/dist/l10n/no';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
   name: 'EditObjective',
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
-    ContentLoaderOkrDetails: () =>
-      import('@/components/ContentLoader/ContentLoaderItemAdminOKRDetails.vue'),
+    PktButton,
+    PagedDrawerWrapper,
     FormSection,
     BtnSave,
     BtnDelete,
@@ -86,16 +120,21 @@ export default {
   },
 
   props: {
-    data: {
+    visible: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+
+    objective: {
       type: Object,
       required: false,
-      default() {
-        return {};
-      },
+      default: null,
     },
   },
+
   data: () => ({
-    objective: {},
+    thisObjective: null,
     flatPickerConfig: {
       altFormat: 'j M Y',
       altInput: true,
@@ -106,46 +145,39 @@ export default {
     },
     periodRange: null,
     loading: false,
-    isLoadingDetails: false,
-    periodEdited: false,
   }),
 
   computed: {
-    ...mapState(['activeItemRef', 'periods']),
-    changed() {
-      const nameEdited = this.objective?.name !== this.data?.name;
-      const descriptionEdited = this.objective?.description !== this.data?.description;
-      const periodEdited = this.objective?.period !== this.data?.period;
-      const startEndEdited =
-        this.periodRange?.[0].getTime() !== this.data?.startDate?.toDate().getTime() ||
-        this.periodRange?.[1].getTime() !== this.data?.endDate?.toDate().getTime();
-
-      return !!(nameEdited || descriptionEdited || periodEdited || startEndEdited);
-    },
+    ...mapState(['activeItemRef']),
   },
 
   watch: {
-    data: {
+    visible: {
       immediate: true,
-      async handler() {
-        this.isLoadingDetails = true;
-        if (this.data?.objective.id) {
-          this.objective = { ...this.data.objective, id: this.data.objective.id };
-          this.periodRange = this.getCurrentDateRange();
+      async handler(visible) {
+        if (!visible) {
+          this.thisObjective = null;
+          this.periodRange = null;
+          return;
         }
-        this.isLoadingDetails = false;
+
+        if (this.objective) {
+          this.thisObjective = { ...this.objective };
+          this.periodRange = this.getCurrentDateRange();
+        } else {
+          this.thisObjective = {};
+          this.periodRange = null;
+        }
       },
     },
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_DRAWER']),
-
     getCurrentDateRange() {
-      if (this.objective.startDate && this.objective.endDate) {
+      if (this.thisObjective.startDate && this.thisObjective.endDate) {
         return [this.objective.startDate.toDate(), this.objective.endDate.toDate()];
       }
-      if (this.objective.period) {
+      if (this.thisObjective.period) {
         return [
           this.objective.period.startDate.toDate(),
           this.objective.period.endDate.toDate(),
@@ -153,24 +185,23 @@ export default {
       }
       return null;
     },
-    async update() {
+
+    async save() {
       this.loading = true;
-      this.newObjective = false;
+
       try {
-        const { name, description, weight, period } = this.objective;
+        const { name, description, weight, period } = this.thisObjective;
         const [start, end] = this.periodRange;
 
-        if (this.objective.id) {
+        if (this.objective) {
           const data = {
             name,
             description: description || '',
             weight: weight || 1,
           };
-
           if (start && end) {
             data.startDate = start;
             data.endDate = end;
-
             if (period) {
               const { FieldValue } = firebase.firestore;
               data.period = FieldValue.delete();
@@ -188,23 +219,11 @@ export default {
             startDate: start,
             endDate: end,
           });
-          this.objective = {
-            ...db.collection('objectives').doc(id),
-            id,
-          };
-          this.newObjective = true;
-          await store.dispatch('set_active_objective', id);
+          this.thisObjective.id = id;
         }
-
-        this.TOGGLE_DRAWER({
-          type: 'savedObjective',
-          show: true,
-          data: {
-            objective: this.objective,
-            newObjective: this.newObjective,
-          },
-        });
+        this.$refs.drawer.next();
       } catch (error) {
+        this.$refs.drawer.next(false);
         this.$toasted.error(this.$t('toaster.error.save'));
       }
       this.loading = false;
@@ -214,7 +233,6 @@ export default {
       this.loading = true;
       try {
         await Objective.archive(this.objective.id);
-        this.objective.archived = true;
         await this.$router.push({ name: 'ItemHome' });
       } catch (error) {
         this.$toasted.error(
@@ -227,46 +245,16 @@ export default {
     async restore() {
       try {
         await Objective.restore(this.objective.id);
-        this.objective.archived = false;
       } catch {
         this.$toasted.error(
           this.$t('toaster.error.restore', { document: this.objective.id })
         );
       }
     },
+
+    close(e) {
+      this.$emit('close', e);
+    },
   },
 };
 </script>
-<style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
-.editObjective {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 4rem);
-  min-height: 100%;
-  padding: 0 2.5rem 2.5rem 2.5rem;
-}
-
-.heading {
-  padding-bottom: 1rem;
-  @include get-text('pkt-txt-30-medium');
-  color: var(--color-text);
-}
-
-.body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
-.details {
-  padding: 0 2rem 0 2rem;
-}
-
-.footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-}
-</style>

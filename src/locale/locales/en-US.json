@@ -198,7 +198,7 @@
     "view": "View",
     "newObjective": "New objective",
     "newKeyResult": "New key result",
-    "step": "Step {step} of 2",
+    "step": "Step {step} of {steps}",
     "or": "or"
   },
   "home": {
