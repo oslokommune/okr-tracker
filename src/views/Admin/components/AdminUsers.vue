@@ -19,18 +19,11 @@
           class="users__list-item"
           @click="selectedUser = user"
         >
-          <span
-            class="users__list-item-icon fa"
-            :class="
-              (user.admin && user.admin.length > 0) || user.superAdmin
-                ? 'fa-user-cog'
-                : 'fa-user'
-            "
-          ></span>
+          <pkt-icon class="icon" :name="isAdmin(user) ? 'cogwheel' : 'user'" />
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
           </span>
-          <i class="users__list-item-chevron fa fa-chevron-right" />
+          <pkt-icon class="icon" name="chevron-right" />
         </button>
       </div>
       <div class="users__footer">
@@ -125,6 +118,12 @@ export default {
       }
     },
   },
+
+  methods: {
+    isAdmin(user) {
+      return user.admin?.length > 0 || user.superAdmin;
+    },
+  },
 };
 </script>
 
@@ -150,6 +149,7 @@ export default {
 
 .users__list-item {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   padding: 0.5rem 1rem;
   color: var(--color-text);
@@ -159,29 +159,18 @@ export default {
   border-bottom: 2px solid var(--color-border);
   cursor: pointer;
 
-  &:hover {
-    background: var(--color-gray-light);
-
-    & > .users__list-item-chevron {
-      opacity: 1;
-    }
+  &:hover .users__list-item-name {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
   }
 }
 
-.users__list-item-chevron {
-  margin-left: auto;
-  padding-left: 0.25rem;
-  opacity: 0.25;
-}
-
-.users__list-item-icon {
-  flex: 0 0 1.75rem;
-  text-align: left;
-}
-
 .users__list-item-name {
+  flex: 1 0 auto;
   overflow: hidden;
   white-space: nowrap;
+  text-align: left;
   text-overflow: ellipsis;
 }
 
@@ -194,5 +183,9 @@ export default {
     justify-content: center;
     width: 100%;
   }
+}
+
+.icon {
+  height: 1rem;
 }
 </style>
