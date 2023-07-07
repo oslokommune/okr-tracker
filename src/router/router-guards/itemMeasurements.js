@@ -7,6 +7,10 @@ const { state } = store;
 export default async function itemMeasurements(to, from, next) {
   const { activeItem } = state;
 
+  if (!activeItem) {
+    return next();
+  }
+
   try {
     const periods = getPeriods();
 
@@ -26,9 +30,9 @@ export default async function itemMeasurements(to, from, next) {
       });
     }
     await store.dispatch('set_sub_kpis', activeItem.id);
-    next();
+    return next();
   } catch (error) {
     console.error(error);
-    next(false);
+    return next(false);
   }
 }
