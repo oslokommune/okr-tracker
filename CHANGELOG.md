@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 - The date column now comes first in progress tables and CSV exports.
 - Export of progress graph (png) and raw data (csv) are now triggered from its
   respective widgets in the measurement details page.
+- Improved "not found" pages.
 
 ### Fixed
 

@@ -6,17 +6,19 @@ const getSlugRef = async (slug) => {
   const slugSnapshot = await db.doc(`slugs/${firestoreEncode(slug)}`).get();
 
   if (!slugSnapshot.exists) {
-    throw new Error(`cannot find ${slug}`);
+    return null;
   }
   const { reference } = slugSnapshot.data();
 
-  const { archived } = await reference.get().then((snap) => snap.data());
+  const refData = await reference
+    .get()
+    .then((snap) => snap.data())
+    .catch(() => null);
 
-  if (archived && (!store.state.user.admin || !store.state.user.superAdmin)) {
-    throw new Error(`cannot find ${slug}`);
-  }
-
-  return reference;
+  return !refData ||
+    (refData.archived && (!store.state.user.admin || !store.state.user.superAdmin))
+    ? null
+    : reference;
 };
 
 export default getSlugRef;

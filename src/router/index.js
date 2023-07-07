@@ -35,11 +35,6 @@ const routes = [
     component: () => import('@/views/Forbidden.vue'),
   },
   {
-    path: '/404',
-    name: 'Not found',
-    component: () => import('@/views/NotFound.vue'),
-  },
-  {
     path: '/admin',
     beforeEnter: routerGuards.admin,
     component: () => import('@/views/Admin/AdminWrapper.vue'),
@@ -131,6 +126,11 @@ const routes = [
         redirect: { name: 'ItemMeasurements' },
       },
     ],
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue'),
   },
 ];
 

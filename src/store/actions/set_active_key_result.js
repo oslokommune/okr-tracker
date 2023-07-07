@@ -7,8 +7,13 @@ export default firestoreAction(
       return unbindFirestoreRef('activeKeyResult');
     }
     const reference = db.collection('keyResults').doc(id);
+    const refData = await reference.get().then((snapshot) => snapshot.data());
 
-    const { objective } = await reference.get().then((snapshot) => snapshot.data());
+    if (!refData) {
+      return unbindFirestoreRef('activeKeyResult');
+    }
+
+    const objective = refData.objective;
 
     if (!state.activeObjective || state.activeObjective.id !== objective.id) {
       await bindFirestoreRef('activeObjective', objective, { maxRefDepth: 1 });

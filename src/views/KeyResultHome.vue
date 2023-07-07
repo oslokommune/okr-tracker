@@ -101,6 +101,13 @@
       <widget-key-result-details />
     </template>
   </page-layout>
+  <not-found-page
+    v-else
+    :heading="$t('notFound.keyResultHeading')"
+    :body="$t('notFound.keyResultBody')"
+    back-to="ItemHome"
+    :back-text="$t('notFound.linkTextAlt', { page: activeItem.name })"
+  />
 </template>
 
 <script>
@@ -125,6 +132,7 @@ export default {
   name: 'KeyResultHome',
 
   components: {
+    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     KeyResultProgressDetails,
