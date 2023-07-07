@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Measurements can now be rearranged by drag and drop on the measurement list
   and detail pages.
+- The date column now comes first in progress tables and CSV exports.
 
 ### Fixed
 

@@ -165,14 +165,14 @@ export default {
       } else if (value.downloadOption === 'csv') {
         const content = [
           csvFormatRow([
-            i18n.t('fields.value'),
             i18n.t('fields.date'),
+            i18n.t('fields.value'),
             i18n.t('fields.comment'),
           ]),
           csvFormatBody(
             this.progress.map((d) => [
-              d.value,
               d.timestamp.toDate().toISOString().slice(0, 10),
+              d.value,
               d.comment,
             ])
           ),
