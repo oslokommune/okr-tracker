@@ -310,10 +310,6 @@ export default {
       this.loading = true;
       try {
         await KeyResult.archive(this.keyResult.id);
-        await this.$router.push({
-          name: 'ObjectiveHome',
-          params: { objectiveId: this.objective.id },
-        });
       } catch (error) {
         this.$toasted.error(
           this.$t('toaster.error.archive', { document: this.keyResult.name })

@@ -40,6 +40,8 @@ All notable changes to this project will be documented in this file. The format 
 - The CSV export of measurements no longer includes the time part of the
   timestamps, as only one measurement can exist per day anyway.
 - Line breaks in measurement comments are now rendered.
+- Users are no longer redirected after archiving objectives and key results. It
+  is now possible to restore these objects from their respective detail pages.
 
 ### Removed
 

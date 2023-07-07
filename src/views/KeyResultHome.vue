@@ -21,6 +21,13 @@
         </p>
       </header>
 
+      <archived-restore
+        v-if="activeKeyResult.archived"
+        class="mt-size-16"
+        :restore="restore"
+        :object-type="$t('archived.keyResult')"
+      />
+
       <div class="key-result-summary widgets">
         <widget
           class="key-result-summary__progress"
@@ -101,6 +108,7 @@ import { mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
+import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
@@ -127,6 +135,7 @@ export default {
     WidgetProgressHistory,
     PktButton,
     KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -272,6 +281,16 @@ export default {
         this.$toasted.error(this.$t('toaster.error.addProgress'));
       } finally {
         this.isSaving = false;
+      }
+    },
+
+    async restore() {
+      try {
+        await KeyResult.restore(this.activeKeyResult.id);
+      } catch {
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.activeKeyResult.id })
+        );
       }
     },
   },
