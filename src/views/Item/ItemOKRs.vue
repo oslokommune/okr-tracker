@@ -17,7 +17,7 @@
               skin="primary"
               variant="icon-left"
               icon-name="plus-sign"
-              @onClick="$emit('click', openObjectiveDrawer())"
+              @onClick="showObjectiveDrawer = true"
             />
           </div>
         </div>
@@ -38,6 +38,11 @@
           />
         </div>
       </div>
+
+      <objective-drawer
+        :visible="showObjectiveDrawer"
+        @close="showObjectiveDrawer = false"
+      />
     </template>
 
     <template v-if="selectedObjectives?.length" #sidebar>
@@ -56,14 +61,14 @@
         skin="primary"
         variant="icon-left"
         icon-name="plus-sign"
-        @onClick="$emit('click', openObjectiveDrawer())"
+        @onClick="showObjectiveDrawer = true"
       />
     </div>
   </empty-page>
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 import routerGuard from '@/router/router-guards/itemOKRs';
 import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -76,11 +81,16 @@ export default {
     EmptyState: () => import('@/components/EmptyState.vue'),
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
     ObjectiveWorkbench: () => import('@/components/ObjectiveWorkbench.vue'),
+    ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
     ContentLoaderItem,
     PktButton,
   },
 
   beforeRouteUpdate: routerGuard,
+
+  data: () => ({
+    showObjectiveDrawer: false,
+  }),
 
   computed: {
     ...mapState(['activeItem', 'dataLoading', 'selectedPeriod', 'user']),
@@ -106,15 +116,6 @@ export default {
 
   methods: {
     ...mapActions(['set_active_period_and_data', 'setDataLoading']),
-    ...mapMutations(['TOGGLE_DRAWER']),
-
-    openObjectiveDrawer() {
-      this.TOGGLE_DRAWER({
-        type: 'objective',
-        show: 'true',
-        content: null,
-      });
-    },
   },
 };
 </script>

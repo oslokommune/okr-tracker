@@ -12,7 +12,7 @@
               :text="$t('admin.keyResult.change')"
               :variant="'icon-only'"
               skin="tertiary"
-              @onClick="$emit('click', editKeyResult())"
+              @onClick="showKeyResultDrawer = true"
             />
           </div>
         </div>
@@ -80,6 +80,13 @@
         @update-record="updateHistoryRecord"
         @delete-record="deleteHistoryRecord"
       />
+
+      <key-result-drawer
+        :visible="showKeyResultDrawer"
+        :objective="activeObjective"
+        :key-result="activeKeyResult"
+        @close="showKeyResultDrawer = false"
+      />
     </template>
 
     <template #sidebar>
@@ -90,7 +97,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
@@ -119,6 +126,7 @@ export default {
     WidgetKeyResultNotes,
     WidgetProgressHistory,
     PktButton,
+    KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -139,6 +147,7 @@ export default {
     isLoading: false,
     isSaving: false,
     progressDetails: {},
+    showKeyResultDrawer: false,
   }),
 
   computed: {
@@ -198,18 +207,6 @@ export default {
 
   methods: {
     format,
-    ...mapMutations(['TOGGLE_DRAWER']),
-    editKeyResult() {
-      console.log('activeKeyResult', this.activeKeyResult);
-      this.TOGGLE_DRAWER({
-        type: 'keyResult',
-        show: 'true',
-        data: {
-          objective: this.activeObjective,
-          keyResult: this.activeKeyResult,
-        },
-      });
-    },
 
     renderGraph() {
       if (!this.graph) {

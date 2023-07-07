@@ -15,7 +15,7 @@
               :text="$t('objective.change')"
               :variant="'icon-only'"
               skin="tertiary"
-              @onClick="$emit('click', toggleDrawer('objective'))"
+              @onClick="showObjectiveDrawer = true"
             />
           </div>
         </div>
@@ -30,7 +30,7 @@
               skin="primary"
               variant="icon-left"
               icon-name="plus-sign"
-              @onClick="$emit('click', toggleDrawer('keyResult'))"
+              @onClick="showKeyResultDrawer = true"
             />
           </div>
         </div>
@@ -45,6 +45,18 @@
           :body="$t('empty.noKeyResults.body')"
         />
       </section>
+
+      <objective-drawer
+        :visible="showObjectiveDrawer"
+        :objective="activeObjective"
+        @close="showObjectiveDrawer = false"
+      />
+
+      <key-result-drawer
+        :visible="showKeyResultDrawer"
+        :objective="activeObjective"
+        @close="closeKeyResultDrawer"
+      />
     </template>
 
     <template #sidebar>
@@ -66,7 +78,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import routerGuard from '@/router/router-guards/objectiveHome';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
@@ -85,6 +97,8 @@ export default {
     ProgressionChart,
     EmptyState: () => import('@/components/EmptyState.vue'),
     PktButton,
+    ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
+    KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -101,6 +115,8 @@ export default {
 
   data: () => ({
     keyRes: [],
+    showObjectiveDrawer: false,
+    showKeyResultDrawer: false,
   }),
 
   computed: {
@@ -138,18 +154,21 @@ export default {
         );
       },
     },
+    '$route.query': {
+      immediate: true,
+      async handler(query) {
+        this.showKeyResultDrawer = query?.createKeyResult === '1';
+      },
+    },
   },
 
   methods: {
-    ...mapMutations(['TOGGLE_DRAWER']),
-    toggleDrawer(type) {
-      this.TOGGLE_DRAWER({
-        type,
-        show: 'true',
-        data: {
-          objective: this.activeObjective,
-        },
-      });
+    closeKeyResultDrawer() {
+      this.showKeyResultDrawer = false;
+      const { query } = this.$route;
+      if (query?.createKeyResult) {
+        this.$router.replace({ query: { ...query, createKeyResult: undefined } });
+      }
     },
   },
 };
