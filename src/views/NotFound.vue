@@ -4,12 +4,11 @@
 
 <script>
 import i18n from '@/locale/i18n';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
 export default {
   name: 'NotFound',
   components: {
-    NotFoundPage,
+    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
   },
 
   metaInfo() {

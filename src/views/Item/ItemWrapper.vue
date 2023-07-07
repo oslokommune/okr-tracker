@@ -5,14 +5,13 @@
 
 <script>
 import { mapState } from 'vuex';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 import { itemCommon as routerGuard } from '@/router/router-guards';
 
 export default {
   name: 'ItemWrapper',
 
   components: {
-    NotFoundPage,
+    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
   },
 
   async beforeRouteUpdate(to, from, next) {

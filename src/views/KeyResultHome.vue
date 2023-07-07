@@ -114,7 +114,6 @@
 import { mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
@@ -133,7 +132,7 @@ export default {
   name: 'KeyResultHome',
 
   components: {
-    NotFoundPage,
+    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     KeyResultProgressDetails,

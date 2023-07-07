@@ -98,7 +98,6 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 import Objective from '@/db/Objective';
 import routerGuard from '@/router/router-guards/objectiveHome';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
@@ -112,7 +111,7 @@ export default {
 
   components: {
     KeyResultsList: () => import('@/components/KeyResultsList.vue'),
-    NotFoundPage,
+    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
     Widget: WidgetWrapper,
     WidgetWeights,
     WidgetObjectiveDetails,

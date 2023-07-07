@@ -49,7 +49,6 @@ import { mapState, mapGetters } from 'vuex';
 
 import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
 export default {
   name: 'ItemMeasurements',
@@ -59,7 +58,7 @@ export default {
     KpiDetails,
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
     PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
-    NotFoundPage,
+    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
   },
 
   data: () => ({
