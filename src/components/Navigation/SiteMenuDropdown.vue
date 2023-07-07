@@ -108,12 +108,10 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   font-size: typography.$font-size-2;
   line-height: 2;
 
-  @each $bp, $width in (xs: 80, s: 45, m: 30, l: 25, xl: 20, xxl: 15) {
-    @media screen and (min-width: bp(#{$bp})) {
-      width: #{$width}vw;
-      height: auto;
-      max-height: $-dropdown-max-height;
-    }
+  @include bp('phablet-up') {
+    width: 25rem;
+    height: auto;
+    max-height: $-dropdown-max-height;
   }
 
   ::v-deep .pkt-btn {

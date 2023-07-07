@@ -272,6 +272,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 @use '@/styles/typography';
 
 ::v-deep .modal {
@@ -283,8 +284,9 @@ export default {
   flex-direction: column;
   gap: 1rem;
 
-  @media screen and (min-width: bp(s)) {
+  @include bp('phablet-up') {
     flex-direction: row;
+    gap: 1.5rem;
   }
 
   .display-as {
@@ -299,10 +301,6 @@ export default {
     flex-grow: 1;
     height: 100%;
     border: 2px solid var(--color-border);
-
-    @media screen and (min-width: bp(s)) {
-      margin-right: 1.5rem;
-    }
 
     ul {
       height: 19rem;

@@ -169,7 +169,7 @@ export default {
       margin: 0;
     }
 
-    @media screen and (min-width: bp(s)) {
+    @include bp('phablet-up') {
       flex-direction: row;
       justify-content: space-between;
     }

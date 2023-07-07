@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div class="columns">
-      <div>
+    <div class="pkt-grid pkt-grid--full">
+      <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.organizations') }}</h2>
-
         <div class="col">
           <div v-if="filteredOrgs.length > 10" class="search">
             <input
@@ -47,7 +46,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.departments') }}</h2>
         <div class="col">
           <div v-if="filteredDeps.length > 15" class="search">
@@ -85,7 +84,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.products') }}</h2>
         <div class="col">
           <div v-if="filteredProds.length > 15" class="search">
@@ -257,28 +256,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.columns {
-  display: grid;
-  grid-gap: span(0, 1, span(12));
-  grid-template-rows: repeat(auto-fill, auto);
-  grid-template-columns: repeat(1, 1fr);
-
-  @media screen and (min-width: bp(s)) {
-    grid-gap: span(0, 1, span(6));
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-  @media screen and (min-width: bp(m)) {
-    grid-gap: span(0, 1, span(6));
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media screen and (min-width: bp(l)) {
-    grid-gap: span(0, 1, span(7));
-    width: span(6, 0, span(7));
-  }
-}
-
 .col {
   display: flex;
   flex-direction: column;

@@ -144,7 +144,7 @@ export default {
 @use '@/styles/typography';
 
 .progress-form {
-  @media screen and (min-width: bp(s)) {
+  @include bp('phablet-up') {
     display: flex;
   }
 
@@ -159,7 +159,7 @@ export default {
     flex-direction: column;
     flex-grow: 1;
 
-    @media screen and (min-width: bp(s)) {
+    @include bp('phablet-up') {
       padding-right: 1.5rem;
     }
   }

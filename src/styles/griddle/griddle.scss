@@ -1,6 +1,0 @@
-// This is stolen from wearebraid/griddle until they release a version that supports @use/@forward rules
-// https://github.com/wearebraid/griddle/issues/7
-@forward "variables";
-@forward "computed-variables";
-@forward "functions";
-@forward "mixins";

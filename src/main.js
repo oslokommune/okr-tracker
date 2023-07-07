@@ -9,7 +9,6 @@ import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
 import { ContentLoader } from 'vue-content-loader';
 
 import { firestorePlugin } from 'vuefire';
-import { VueGriddle } from '@braid/griddle';
 
 import { PktIcon } from '@oslokommune/punkt-vue2';
 
@@ -56,7 +55,6 @@ VueSelect.props.components.default = () => ({
 // Global components
 Vue.component('PageLayout', PageLayout);
 Vue.component('VSelect', VueSelect);
-Vue.component('VueGriddle', VueGriddle);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', FormComponent);

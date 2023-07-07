@@ -171,7 +171,7 @@ export default {
     text-align: center;
   }
 
-  @media screen and (min-width: bp(m)) {
+  @include bp('tablet-big-up') {
     &__inner {
       flex-direction: row;
     }
@@ -193,13 +193,20 @@ export default {
       text-align: left;
     }
 
-    @media screen and (max-width: bp(m)) {
-      .kpi-card-widget__inner {
-        min-height: auto;
-      }
+    .kpi-card-widget__graph {
+      display: none;
+    }
 
+    .kpi-card-widget__inner {
+      min-height: auto;
+    }
+
+    @include bp('laptop-up') {
       .kpi-card-widget__graph {
-        display: none;
+        display: flex;
+      }
+      .kpi-card-widget__inner {
+        min-height: 2.25rem;
       }
     }
   }

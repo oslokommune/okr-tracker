@@ -288,7 +288,7 @@ export default {
 .key-result-summary {
   grid-template-columns: 1fr;
 
-  @media screen and (min-width: bp(s)) {
+  @include bp('tablet-up') {
     grid-template-columns: 1fr 20rem;
   }
 
@@ -303,6 +303,8 @@ export default {
   }
 
   &__value {
+    margin-bottom: 0;
+
     ::v-deep form {
       span:first-child .form-group {
         margin-top: 0;
