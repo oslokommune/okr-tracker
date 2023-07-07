@@ -6,7 +6,6 @@ import {
   validateUpdateProps,
   updateDocument,
 } from '../common';
-import KeyResult from '../KeyResult';
 
 const collection = db.collection('objectives');
 
@@ -24,14 +23,7 @@ const update = (id, data) => {
   return updateDocument(collection.doc(id), data);
 };
 
-const archive = (id) => {
-  db.collection('keyResults')
-    .where('objective', '==', collection.doc(id))
-    .get()
-    .then(({ docs }) => docs.forEach(({ ref }) => KeyResult.archive(ref.id)));
-
-  update(id, { archived: true });
-};
+const archive = (id) => update(id, { archived: true });
 const restore = (id) => update(id, { archived: false });
 
 export default { create, update, archive, restore };
