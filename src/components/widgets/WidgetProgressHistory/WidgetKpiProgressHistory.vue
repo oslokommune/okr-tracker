@@ -22,6 +22,7 @@
     <edit-value-modal
       v-if="showValueModal"
       :record="chosenProgressRecord"
+      :kpi="kpi"
       @close="closeValueModal"
       @update-record="(id, data, close) => $emit('update-record', id, data, close)"
     />
