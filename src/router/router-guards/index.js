@@ -8,4 +8,3 @@ export { default as keyResultHome } from './keyResultHome';
 export { default as login } from './login';
 export { default as objectiveHome } from './objectiveHome';
 export { default as requestAccess } from './requestAccess';
-export { default as user } from './user';
