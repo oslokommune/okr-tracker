@@ -130,10 +130,9 @@ export default {
           return null;
         }
 
-        const n = this.typePercentage
-          ? this.thisRecord.value * 100
-          : this.thisRecord.value;
-        return parseFloat(n.toFixed(4));
+        return this.typePercentage
+          ? parseFloat(this.thisRecord.value) * 100
+          : parseFloat(this.thisRecord.value);
       },
       set(val) {
         this.thisRecord.value = this.typePercentage ? val / 100 : val;
