@@ -24,12 +24,9 @@
                 class="col__link"
                 :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }"
               >
-                <i class="col__icon fa fa-industry" />
-                {{ organization.name }}
-                <span
-                  v-if="organization.archived"
-                  class="col__archived fa fa-file-archive"
-                ></span>
+                <pkt-icon class="icon" name="organization" />
+                <span class="col__text">{{ organization.name }}</span>
+                <pkt-icon v-if="organization.archived" class="icon" name="archive" />
               </router-link>
             </div>
           </div>
@@ -63,12 +60,9 @@
                 class="col__link"
                 :to="{ name: 'ItemAdmin', params: { slug: department.slug } }"
               >
-                <i class="col__icon fa fa-cubes" />
-                {{ department.name }}
-                <span
-                  v-if="department.archived"
-                  class="col__archived fa fa-file-archive"
-                ></span>
+                <pkt-icon class="icon" name="district" />
+                <span class="col__text">{{ department.name }}</span>
+                <pkt-icon v-if="department.archived" class="icon" name="archive" />
               </router-link>
             </div>
           </div>
@@ -101,9 +95,9 @@
                 class="col__link"
                 :to="{ name: 'ItemAdmin', params: { slug: product.slug } }"
               >
-                <i class="col__icon fa fa-cube" />
-                {{ product.name }}
-                <i v-if="product.archived" class="col__archived fa fa-file-archive" />
+                <pkt-icon class="icon" name="house-heart" />
+                <span class="col__text">{{ product.name }}</span>
+                <pkt-icon v-if="product.archived" class="icon" name="archive" />
               </router-link>
             </div>
           </div>
@@ -279,24 +273,25 @@ export default {
   padding: 1rem;
 }
 
-.col__icon {
-  flex-shrink: 0;
-  margin-right: 0.25rem;
-}
-
-.col__archived {
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
 .col__link {
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   padding: 0.5rem 1rem;
   color: var(--color-text);
   font-weight: 500;
   text-decoration: none;
   border-bottom: 2px solid var(--color-border);
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+}
+
+.col__text {
+  flex: 1 0 auto;
 }
 
 .actions {
@@ -314,6 +309,12 @@ export default {
 
   &:hover {
     text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
   }
+}
+
+.icon {
+  height: 1rem;
 }
 </style>
