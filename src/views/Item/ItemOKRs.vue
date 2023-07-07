@@ -64,6 +64,11 @@
         @onClick="showObjectiveDrawer = true"
       />
     </div>
+
+    <objective-drawer
+      :visible="showObjectiveDrawer"
+      @close="showObjectiveDrawer = false"
+    />
   </empty-page>
 </template>
 
