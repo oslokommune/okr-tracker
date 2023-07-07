@@ -37,8 +37,10 @@
       </header>
 
       <section>
-        <key-results-list v-if="keyRes.length" :key-results="keyRes" />
-
+        <key-results-list
+          v-if="objectiveKeyResults.length"
+          :key-results="objectiveKeyResults"
+        />
         <empty-state
           v-else
           :heading="$t('empty.noKeyResults.heading')"
@@ -114,7 +116,6 @@ export default {
   },
 
   data: () => ({
-    keyRes: [],
     showObjectiveDrawer: false,
     showKeyResultDrawer: false,
   }),
@@ -131,29 +132,17 @@ export default {
 
       return this.activeObjective.period;
     },
+
+    objectiveKeyResults() {
+      return this.activeObjective
+        ? this.keyResults.filter(
+            (kr) => kr.objective === `objectives/${this.activeObjective.id}`
+          )
+        : [];
+    },
   },
 
   watch: {
-    activeObjective: {
-      immediate: true,
-      handler(objective) {
-        if (!objective) {
-          return;
-        }
-
-        this.keyRes = this.keyResults.filter(
-          (keyRes) => keyRes.objective === `objectives/${objective.id}`
-        );
-      },
-    },
-    keyResults: {
-      immediate: true,
-      handler() {
-        this.keyRes = this.keyResults.filter(
-          (keyRes) => keyRes.objective === `objectives/${this.activeObjective.id}`
-        );
-      },
-    },
     '$route.query': {
       immediate: true,
       async handler(query) {
