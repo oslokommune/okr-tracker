@@ -3,8 +3,8 @@
     <table v-if="historyRecords.length" class="table">
       <thead>
         <tr>
-          <th>{{ $t('widget.history.value') }}</th>
           <th>{{ $t('widget.history.date') }}</th>
+          <th>{{ $t('widget.history.value') }}</th>
           <th v-if="hasAnyChangedBy">
             {{ $t('widget.history.changedBy') }}
           </th>
@@ -31,10 +31,10 @@
       <tbody>
         <tr v-for="record in historyRecords" :key="record.id">
           <td>
-            <slot name="value-cell" :record="record">{{ record.value }}</slot>
+            <slot name="date-cell" :record="record">{{ record.timestamp.toDate() }}</slot>
           </td>
           <td>
-            <slot name="date-cell" :record="record">{{ record.timestamp.toDate() }}</slot>
+            <slot name="value-cell" :record="record">{{ record.value }}</slot>
           </td>
           <td v-if="hasAnyChangedBy">
             <user-link
