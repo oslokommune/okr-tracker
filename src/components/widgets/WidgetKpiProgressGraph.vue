@@ -1,38 +1,33 @@
 <template>
   <widget :title="$t('kpi.progress')">
-    <div class="dropdownButton">
-      <v-select
-        label="label"
-        class="download"
-        :value="downloadOption"
-        :options="downloadOptions"
-        :components="{ OpenIndicator: downloadIcon, Deselect: null }"
-        :close-on-select="true"
-        @input="download"
+    <template #title-actions>
+      <pkt-button
+        v-tooltip="$t('dashboard.downloadOptions.png')"
+        size="small"
+        skin="tertiary"
+        variant="icon-left"
+        icon-name="download"
+        @onClick="download"
       >
-      </v-select>
-    </div>
+        {{ $t('btn.download') }}
+      </pkt-button>
+    </template>
 
-    <div class="progress-graph">
-      <!-- xmlns for download purposes -->
-      <svg ref="progressGraphSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <!-- xmlns for download purposes -->
+    <svg ref="progressGraphSvg" xmlns="http://www.w3.org/2000/svg"></svg>
 
-      <period-trend-tag class="progress-graph__trend" :kpi="kpi" :progress="progress" />
-    </div>
+    <period-trend-tag :kpi="kpi" :progress="progress" class="mt-size-8 mb-size-12" />
   </widget>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { max, min } from 'd3-array';
-import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import firebase from 'firebase/app';
-import { PktIcon } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { periodDates } from '@/util';
-import downloadFile from '@/util/downloadFile';
 import downloadPng from '@/util/downloadPng';
 import LineChart from '@/util/LineChart';
-import i18n from '@/locale/i18n';
 import { getPeriods } from '@/config/periods';
 import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from './WidgetWrapper.vue';
@@ -45,6 +40,7 @@ export default {
   components: {
     Widget: WidgetWrapper,
     PeriodTrendTag,
+    PktButton,
   },
 
   props: {
@@ -68,19 +64,6 @@ export default {
     downloadOption: '',
     startDate: null,
     endDate: null,
-    downloadIcon: {
-      render: (createElement) => createElement(PktIcon, { props: { name: 'download' } }),
-    },
-    downloadOptions: [
-      {
-        label: i18n.t('dashboard.downloadOptions.png'),
-        downloadOption: 'png',
-      },
-      {
-        label: i18n.t('dashboard.downloadOptions.csv'),
-        downloadOption: 'csv',
-      },
-    ],
   }),
 
   computed: {
@@ -151,34 +134,15 @@ export default {
       });
     },
 
-    download(value) {
+    download() {
       const kpiName = this.kpi.name;
+      const svgRef = this.$refs.progressGraphSvg;
+      const formattedPeriod = periodDates({
+        startDate: this.getStartDate(this.selectedPeriod, this.progress),
+        endDate: this.getEndDate(this.selectedPeriod, this.progress),
+      });
 
-      if (value.downloadOption === 'png') {
-        const svgRef = this.$refs.progressGraphSvg;
-        const formattedPeriod = periodDates({
-          startDate: this.getStartDate(this.selectedPeriod, this.progress),
-          endDate: this.getEndDate(this.selectedPeriod, this.progress),
-        });
-
-        downloadPng(svgRef, kpiName, kpiName, formattedPeriod);
-      } else if (value.downloadOption === 'csv') {
-        const content = [
-          csvFormatRow([
-            i18n.t('fields.date'),
-            i18n.t('fields.value'),
-            i18n.t('fields.comment'),
-          ]),
-          csvFormatBody(
-            this.progress.map((d) => [
-              d.timestamp.toDate().toISOString().slice(0, 10),
-              d.value,
-              d.comment,
-            ])
-          ),
-        ].join('\n');
-        downloadFile(content, kpiName, '.csv');
-      }
+      downloadPng(svgRef, kpiName, kpiName, formattedPeriod);
     },
 
     /**
@@ -209,55 +173,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.progress-graph__trend {
-  margin: 0.5rem 0 0.75rem 0;
-}
-
-.dropdownButton {
-  position: absolute;
-  top: 0.75rem;
-  right: 1.5rem;
-  display: inline-block;
-
-  ::v-deep .v-select.download {
-    display: inline-flex;
-    min-width: 1rem;
-    height: 100%;
-
-    .vs__dropdown-toggle {
-      border: 0;
-      cursor: pointer;
-    }
-
-    .vs__open-indicator {
-      width: 1.25rem;
-      height: 1.25rem;
-      margin: 0 0.4rem;
-      padding: 0rem;
-    }
-
-    .vs__dropdown-menu {
-      left: -3.6rem;
-      border: 1px solid var(--color-grayscale-10);
-    }
-
-    .vs__search {
-      padding: 0rem;
-    }
-
-    &.vs--open {
-      .vs__open-indicator {
-        transform: rotate(0deg) scale(1);
-      }
-    }
-
-    &:hover:not(.vs--open) {
-      .vs__dropdown-toggle {
-        background: var(--color-gray);
-      }
-    }
-  }
-}
-</style>
