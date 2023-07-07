@@ -630,8 +630,8 @@
     "effect": "Effect",
     "noRIs": "The department doesn't have any result indicators.",
     "downloadOptions": {
-      "png": "Image (.png)",
-      "csv": "Raw data (.csv)"
+      "png": "Download graph as image (.png)",
+      "csv": "Download raw data (.csv)"
     }
   },
   "languages": {
