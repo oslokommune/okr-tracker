@@ -1,19 +1,5 @@
 <template>
   <widget :title="$t('widget.history.title')">
-    <template v-if="historyRecords.length" #title-actions>
-      <pkt-button
-        v-tooltip="$t('dashboard.downloadOptions.csv')"
-        size="small"
-        skin="tertiary"
-        variant="icon-left"
-        icon-name="download"
-        :disabled="downloadInProgress"
-        @onClick="download"
-      >
-        {{ $t('btn.download') }}
-      </pkt-button>
-    </template>
-
     <progress-history-table
       :history-records="historyRecords"
       :is-loading="isLoading"
@@ -45,16 +31,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import { csvFormatBody, csvFormatRow } from 'd3-dsv';
-import i18n from '@/locale/i18n';
 import { dateShort } from '@/util';
 import {
   filterDuplicatedProgressValues,
   formatKPIValue,
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
-import downloadFile from '@/util/downloadFile';
-import { PktButton } from '@oslokommune/punkt-vue2';
 import ProgressHistoryTable from './ProgressHistoryTable.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
 
@@ -65,7 +47,6 @@ export default {
     Widget: WidgetWrapper,
     ProgressHistoryTable,
     EditValueModal: () => import('@/components/modals/KPIProgressModal.vue'),
-    PktButton,
   },
 
   props: {
@@ -81,7 +62,6 @@ export default {
     progressLimit: 10,
     showValueModal: false,
     chosenProgressRecord: null,
-    downloadInProgress: false,
   }),
 
   computed: {
@@ -147,36 +127,6 @@ export default {
     closeValueModal() {
       this.showValueModal = false;
       this.chosenProgressRecord = null;
-    },
-
-    download() {
-      const { startDate, endDate } = this.selectedPeriod;
-      this.downloadInProgress = true;
-      getKPIProgressQuery(this.kpi, startDate, endDate)
-        .get()
-        .then((snapshot) => {
-          const progressRecords = filterDuplicatedProgressValues(
-            snapshot.docs.map((doc) => doc.data())
-          );
-
-          const content = [
-            csvFormatRow([
-              i18n.t('fields.date'),
-              i18n.t('fields.value'),
-              i18n.t('fields.comment'),
-            ]),
-            csvFormatBody(
-              progressRecords.map((d) => [
-                d.timestamp.toDate().toISOString().slice(0, 10),
-                d.value,
-                d.comment,
-              ])
-            ),
-          ].join('\n');
-
-          downloadFile(content, this.kpi.name, '.csv');
-          this.downloadInProgress = false;
-        });
     },
   },
 };
