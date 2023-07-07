@@ -58,7 +58,7 @@
 
 .pkt-form-input,
 .pkt-form-textarea {
-  &.flatpickr-input[readonly] {
+  &.flatpickr-input:not(:disabled)[readonly] {
     // Reset `readonly` state style for flatpickr inputs.
     color: var(--color-blue-dark);
     background-color: var(--color-white);
@@ -259,5 +259,16 @@
         color: var(--color-grayscale-30);
       }
     }
+  }
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+
+  &--left {
+    justify-content: flex-start;
   }
 }
