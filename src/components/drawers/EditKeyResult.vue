@@ -112,7 +112,7 @@
             {{ $t('btn.back') }}
           </pkt-button>
         </template>
-        <template v-else>
+        <template v-else-if="!keyResult">
           <pkt-button skin="tertiary" @onClick="close">
             {{ $t('btn.close') }}
           </pkt-button>
