@@ -87,7 +87,7 @@
     "postcss-html": "1.5.0",
     "prettier": "^2.5.1",
     "sass": "^1.45.1",
-    "stylelint": "^14.15.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-prettier-scss": "^0.0.1",
     "stylelint-config-rational-order-fix": "0.1.9",
     "stylelint-config-recommended-scss": "8.0.0",
