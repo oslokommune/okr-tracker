@@ -8,7 +8,7 @@
 
         <div class="objective__heading">
           <h2 class="title-1">{{ activeObjective.name }}</h2>
-          <div class="objective__edit">
+          <div v-if="hasEditRights" class="objective__edit">
             <pkt-button
               v-tooltip="$t('objective.change')"
               icon-name="edit"
@@ -23,7 +23,11 @@
           <p v-if="activeObjective.description" class="description">
             {{ activeObjective.description }}
           </p>
-          <div data-mode="dark" class="objective__add-key-res">
+          <div
+            v-if="hasEditRights && !activeObjective.archived"
+            data-mode="dark"
+            class="objective__add-key-res"
+          >
             <pkt-button
               v-tooltip="$t('btn.createKeyResult')"
               :text="$t('btn.createKeyResult')"
@@ -35,6 +39,12 @@
           </div>
         </div>
       </header>
+
+      <archived-restore
+        v-if="activeObjective.archived"
+        :restore="restore"
+        :object-type="$t('archived.objective')"
+      />
 
       <section>
         <key-results-list v-if="keyRes.length" :key-results="keyRes" />
@@ -79,6 +89,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import Objective from '@/db/Objective';
 import routerGuard from '@/router/router-guards/objectiveHome';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
@@ -99,6 +110,7 @@ export default {
     PktButton,
     ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
     KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
+    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
   },
 
   beforeRouteUpdate: routerGuard,
@@ -168,6 +180,16 @@ export default {
       const { query } = this.$route;
       if (query?.createKeyResult) {
         this.$router.replace({ query: { ...query, createKeyResult: undefined } });
+      }
+    },
+
+    async restore() {
+      try {
+        await Objective.restore(this.activeObjective.id);
+      } catch {
+        this.$toasted.error(
+          this.$t('toaster.error.restore', { document: this.activeObjective.id })
+        );
       }
     },
   },

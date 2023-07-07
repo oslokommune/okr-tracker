@@ -4,6 +4,7 @@
       <p>{{ $t('archived.body', { objectType: objectType }) }}</p>
 
       <pkt-button
+        v-if="hasEditRights"
         skin="secondary"
         variant="icon-left"
         icon-name="arrow-circle"
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
@@ -36,6 +38,10 @@ export default {
       default: 'objekt',
       required: false,
     },
+  },
+
+  computed: {
+    ...mapGetters(['hasEditRights']),
   },
 };
 </script>
