@@ -13,9 +13,14 @@
       v-on="collapsable ? { click: toggle } : {}"
     >
       <slot v-if="$slots.header" name="header" />
-      <h3 v-else :class="size === 'small' ? 'pkt-txt-16-medium' : 'pkt-txt-18-medium'">
-        {{ title }}
-      </h3>
+      <template v-else>
+        <h3 :class="size === 'small' ? 'pkt-txt-16-medium' : 'pkt-txt-18-medium'">
+          {{ title }}
+        </h3>
+        <div v-if="$slots['title-actions']" class="widget__actions">
+          <slot name="title-actions" />
+        </div>
+      </template>
 
       <pkt-button
         v-if="collapsable"
@@ -100,6 +105,7 @@ export default {
       color: var(--color-text);
     }
 
+    .widget__actions,
     .widget__toggle {
       margin-left: auto;
     }

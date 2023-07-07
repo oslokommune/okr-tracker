@@ -630,8 +630,8 @@
     "effect": "Effekt",
     "noRIs": "Området har ingen resultatindikatorer.",
     "downloadOptions": {
-      "png": "Bilde (.png)",
-      "csv": "Rådata (.csv)"
+      "png": "Last ned graf som bilde (.png)",
+      "csv": "Last ned rådata (.csv)"
     }
   },
   "languages": {
