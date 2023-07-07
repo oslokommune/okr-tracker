@@ -22,6 +22,7 @@
     <edit-value-modal
       v-if="showValueModal"
       :record="chosenProgressRecord"
+      :kpi="kpi"
       @close="closeValueModal"
       @update-record="(id, data, close) => $emit('update-record', id, data, close)"
     />
@@ -81,6 +82,10 @@ export default {
 
   watch: {
     selectedPeriod: {
+      immediate: true,
+      handler: 'setProgress',
+    },
+    kpi: {
       immediate: true,
       handler: 'setProgress',
     },

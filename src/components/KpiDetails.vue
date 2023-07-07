@@ -28,6 +28,7 @@
 
     <progress-modal
       v-if="hasEditRights && showValueModal"
+      :kpi="kpi"
       @create-record="createProgressRecord"
       @close="showValueModal = false"
     />
@@ -70,7 +71,6 @@ export default {
     progressCollection: [],
     goals: [],
     showValueModal: false,
-    order: null,
   }),
 
   computed: {
@@ -85,15 +85,9 @@ export default {
   watch: {
     kpi: {
       immediate: true,
-      handler(kpi) {
-        if (this.order === null) {
-          this.order = kpi.order;
-        }
-        // Order changes shouldn't result in rerendering of the graph.
-        if (this.order === kpi.order) {
-          this.setProgress();
-          this.setGoals();
-        }
+      handler() {
+        this.setProgress();
+        this.setGoals();
       },
     },
     selectedPeriod: {

@@ -20,7 +20,7 @@
             <template #sub>
               <span v-if="updatedValue" class="display-as">
                 {{ $t('general.displayedAs') }}
-                {{ formatKPIValue(activeKpi, thisRecord.value) }}
+                {{ formatKPIValue(kpi, thisRecord.value) }}
               </span>
             </template>
           </form-component>
@@ -57,7 +57,7 @@
         {{
           $t('widget.history.overwriteWarning', {
             date: dateShort(existingValue.timestamp.toDate()),
-            value: formatKPIValue(activeKpi, existingValue.value),
+            value: formatKPIValue(kpi, existingValue.value),
           })
         }}
       </pkt-alert>
@@ -76,13 +76,12 @@
           </router-link>
         </template>
       </i18n>
-      <progress-update-API-example :path="`kpi/${activeKpi.id}`" />
+      <progress-update-API-example :path="`kpi/${kpi.id}`" />
     </template>
   </modal-wrapper>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { endOfDay } from 'date-fns';
 import Progress from '@/db/Kpi/Progress';
 import { dateShort } from '@/util';
@@ -100,6 +99,13 @@ export default {
 
   extends: ProgressModal,
 
+  props: {
+    kpi: {
+      type: Object,
+      required: true,
+    },
+  },
+
   data: () => ({
     existingValue: null,
     flatPickerConfig: {
@@ -115,9 +121,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKpi']),
     typePercentage() {
-      return this.activeKpi.format === 'percentage';
+      return this.kpi.format === 'percentage';
     },
     recordValue: {
       get() {
@@ -146,12 +151,8 @@ export default {
     formatKPIValue,
 
     async onDateSelected() {
-      if (!this.activeKpi) {
-        return;
-      }
-
       const existingValueSnapshot = await Progress.get(
-        this.activeKpi.id,
+        this.kpi.id,
         new Date(this.thisRecord.timestamp)
       );
 
