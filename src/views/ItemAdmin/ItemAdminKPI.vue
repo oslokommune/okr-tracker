@@ -41,7 +41,7 @@
         v-if="errorMessage"
         :class="['kpi__footer', { [`kpi__footer--${stateClass}`]: stateClass }]"
       >
-        <i :class="['fa', `fa-${stateIcon}`, { 'fa-pulse': state === 'loading' }]" />
+        <pkt-icon v-if="stateIcon" :name="stateIcon" />
         <span>{{ errorMessage }}</span>
       </div>
     </template>
@@ -106,11 +106,11 @@ export default {
     stateIcon() {
       switch (this.state) {
         case 'error':
-          return 'exclamation-triangle';
+          return 'alert-error';
         case 'valid':
           return 'check-circle';
         default:
-          return 'spinner';
+          return null;
       }
     },
     errorMessage() {
@@ -271,6 +271,7 @@ export default {
 .kpi__footer {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
   padding: 0.75rem;
   background: var(--color-gray-light);
   border-bottom-right-radius: 3px;
@@ -288,5 +289,9 @@ export default {
       display: none;
     }
   }
+}
+
+.pkt-icon {
+  height: 1rem;
 }
 </style>

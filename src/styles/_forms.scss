@@ -177,7 +177,7 @@
 
       &::before {
         left: 1.25rem;
-        content: '\f00c';
+        content: '✔';
       }
 
       &::after {
@@ -206,8 +206,6 @@
       width: 1.5rem;
       height: 1.5rem;
       font-weight: 900;
-
-      font-family: 'Font Awesome 5 Free';
       text-align: center;
       background: white;
       border-radius: 50%;

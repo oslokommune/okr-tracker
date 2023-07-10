@@ -55,8 +55,6 @@ module.exports = {
     'length-zero-no-unit': null,
     'alpha-value-notation': null,
     'font-family-name-quotes': 'always-unless-keyword',
-    'font-family-no-missing-generic-family-keyword': [true, {
-      'ignoreFontFamilies': ['Font Awesome 5 Free'],
-    }],
+    'font-family-no-missing-generic-family-keyword': true,
   },
 }
