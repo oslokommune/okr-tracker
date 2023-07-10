@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Removed flickering on the measurement details page when moving between
   measurements.
+- Logging in by email and password is now possible again.
 
 ### Security
 

@@ -50,7 +50,7 @@
             />
           </form>
         </validation-observer>
-        <pkt-button form="login">{{ $t('login.login') }}</pkt-button>
+        <pkt-button type="submit" form="login">{{ $t('login.login') }}</pkt-button>
       </div>
 
       <div v-if="!loginLoading || loginError !== null" class="login__footer">
