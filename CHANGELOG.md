@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file. The format 
 - Improved "not found" pages.
 - All icons are now provided by Punkt and the previous icon provider, Font
   Awesome, is no longer loaded.
+- Node.js 18 is now the default runtime for all Cloud Functions and when running
+  the app locally.
+
+### Removed
+
+- Dropped support for Node.js 16 and below.
 
 ### Fixed
 
