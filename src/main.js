@@ -23,7 +23,6 @@ import FormComponent from '@/components/FormComponent.vue';
 import { auth } from './config/firebaseConfig';
 
 // import plugin styles
-import '@fortawesome/fontawesome-free/css/all.css';
 import 'flatpickr/dist/flatpickr.css';
 
 import './styles/main.scss';

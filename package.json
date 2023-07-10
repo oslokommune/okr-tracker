@@ -23,7 +23,6 @@
     "node": "16"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.4",
     "@oslokommune/punkt-vue2": "^5.0.8",
     "canvg": "^3.0.7",
     "d3": "^7.6.1",

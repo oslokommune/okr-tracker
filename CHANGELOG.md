@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file. The format 
 - Export of progress graph (png) and raw data (csv) are now triggered from its
   respective widgets in the measurement details page.
 - Improved "not found" pages.
+- All icons are now provided by Punkt and the previous icon provider, Font
+  Awesome, is no longer loaded.
 
 ### Fixed
 

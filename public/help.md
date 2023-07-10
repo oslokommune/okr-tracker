@@ -288,11 +288,10 @@ Kun administratorer og teammedlemmer har rettigheter til å endre progresjon for
 et nøkkelresultat.
 
 På nøkkelresultatsiden (trykk på et nøkkelresultat for å åpne), kan du slette et
-målepunkt ved å trykke på <i class="fa fa-trash"></i>-knappen på høyre side av
-målepunktet.
+målepunkt ved å trykke på sletteknappen på høyre side av målepunktet.
 
-På samme side kan et eksisterende målepunkt endres ved å bruke <i class="fa
-fa-edit"></i>-knappen på høyre side av målepunktet.
+På samme side kan et eksisterende målepunkt endres ved å bruke
+redigeringsknappen på høyre side av målepunktet.
 
 ---
 
