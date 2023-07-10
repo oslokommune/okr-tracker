@@ -18,6 +18,10 @@ All notable changes to this project will be documented in this file. The format 
 - Removed flickering on the measurement details page when moving between
   measurements.
 
+### Security
+
+- Updated dependencies.
+
 ## [3.8.0] 2023-07-03
 
 ### Changed
