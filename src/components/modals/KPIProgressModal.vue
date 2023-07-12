@@ -8,7 +8,7 @@
       <div class="progress-form">
         <div class="progress-form__left">
           <form-component
-            v-model="recordValue"
+            :value="recordValue"
             input-type="input"
             name="value"
             class="progress-form__value-group"
@@ -16,11 +16,12 @@
             rules="required"
             type="number"
             data-cy="progress_value"
+            @input="(value) => (updatedValue = value)"
           >
             <template #sub>
-              <span v-if="updatedValue" class="display-as">
+              <span class="display-as">
                 {{ $t('general.displayedAs') }}
-                {{ formatKPIValue(kpi, thisRecord.value) }}
+                {{ formatKPIValue(kpi, displayValue) }}
               </span>
             </template>
           </form-component>
@@ -63,7 +64,7 @@
       </pkt-alert>
 
       <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(save)" />
+        <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(_save)" />
       </template>
     </form-section>
 
@@ -124,21 +125,25 @@ export default {
     typePercentage() {
       return this.kpi.format === 'percentage';
     },
-    recordValue: {
-      get() {
-        if (!this.thisRecord.value) {
-          return null;
-        }
 
-        const n = this.typePercentage
-          ? this.thisRecord.value * 100
-          : this.thisRecord.value;
-        return parseFloat(n.toFixed(4));
-      },
-      set(val) {
-        this.thisRecord.value = this.typePercentage ? val / 100 : val;
-        this.updatedValue = this.thisRecord.value;
-      },
+    recordValue() {
+      let val = this.thisRecord.value;
+
+      if (val === null) {
+        return null;
+      }
+
+      if (this.typePercentage) {
+        val *= 100;
+      }
+
+      return parseFloat(val.toFixed(6));
+    },
+
+    displayValue() {
+      const val = this.updatedValue === null ? this.thisRecord.value : this.updatedValue;
+
+      return this.typePercentage ? val / 100 : val;
     },
   },
 
@@ -149,6 +154,14 @@ export default {
   methods: {
     dateShort,
     formatKPIValue,
+
+    async _save() {
+      const val = parseFloat(this.updatedValue);
+
+      this.thisRecord.value = this.typePercentage ? val / 100 : val;
+
+      this.save();
+    },
 
     async onDateSelected() {
       const existingValueSnapshot = await Progress.get(
