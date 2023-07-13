@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file. The format 
   measurements.
 - Logging in by email and password is now possible again.
 - Fixed an error when editing measurement progress values.
+- Fixed ordering of items in the main menu (by respecting the user locale when
+  sorting).
 
 ### Security
 

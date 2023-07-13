@@ -1,3 +1,4 @@
+import i18n from '@/locale/i18n';
 import { db } from '@/config/firebaseConfig';
 
 /**
@@ -37,5 +38,5 @@ export default async function getActivePeriod(slugRef) {
 
 export const sortByLocale = (arr) =>
   arr.sort((a, b) =>
-    a.slug.trim().toUpperCase().localeCompare(b.slug.trim().toUpperCase())
+    a.name.trim().toUpperCase().localeCompare(b.name.trim().toUpperCase(), i18n.locale)
   );
