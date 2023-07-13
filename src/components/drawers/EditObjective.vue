@@ -100,7 +100,7 @@
 <script>
 import { mapState } from 'vuex';
 import Objective from '@/db/Objective';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';

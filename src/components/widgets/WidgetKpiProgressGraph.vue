@@ -23,7 +23,7 @@
 <script>
 import { mapState } from 'vuex';
 import { max, min } from 'd3-array';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { periodDates } from '@/util';
 import downloadPng from '@/util/downloadPng';
