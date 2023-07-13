@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. The format 
   Awesome, is no longer loaded.
 - Node.js 18 is now the default runtime for all Cloud Functions and when running
   the app locally.
+- Upgraded to Firebase 9.
 
 ### Removed
 
