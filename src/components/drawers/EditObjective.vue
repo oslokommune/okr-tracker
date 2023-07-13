@@ -42,6 +42,16 @@
           rules="required"
         />
 
+        <pkt-button
+          v-if="newestObjective?.startDate && newestObjective?.endDate"
+          class="period-suggestion"
+          skin="secondary"
+          size="small"
+          @onClick="useSuggestedPeriod"
+        >
+          {{ formattedPeriod(newestObjective) }}
+        </pkt-button>
+
         <template v-if="!objective?.archived" #actions="{ handleSubmit }">
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
@@ -99,6 +109,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import formattedPeriod from '@/util/okr';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
@@ -127,6 +138,12 @@ export default {
     },
 
     objective: {
+      type: Object,
+      required: false,
+      default: null,
+    },
+
+    newestObjective: {
       type: Object,
       required: false,
       default: null,
@@ -173,6 +190,8 @@ export default {
   },
 
   methods: {
+    formattedPeriod,
+
     getCurrentDateRange() {
       if (this.thisObjective.startDate && this.thisObjective.endDate) {
         return [this.objective.startDate.toDate(), this.objective.endDate.toDate()];
@@ -254,6 +273,19 @@ export default {
     close(e) {
       this.$emit('close', e);
     },
+
+    async useSuggestedPeriod() {
+      this.periodRange = [
+        this.newestObjective.startDate.toDate(),
+        this.newestObjective.endDate.toDate(),
+      ];
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.period-suggestion {
+  margin-bottom: 1rem;
+}
+</style>

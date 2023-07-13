@@ -41,6 +41,7 @@
 
       <objective-drawer
         :visible="showObjectiveDrawer"
+        :newest-objective="newestObjective"
         @close="showObjectiveDrawer = false"
       />
     </template>
@@ -103,6 +104,22 @@ export default {
 
     view() {
       return this.user.preferences.view;
+    },
+
+    /**
+     * Return the most recently created objective for the current item.
+     */
+    newestObjective() {
+      if (!this.objectivesWithKeyResults.length) {
+        return null;
+      }
+
+      return this.objectivesWithKeyResults.slice().sort((a, b) => {
+        if (a.created && b.created) {
+          return a.created.seconds > b.created.seconds ? -1 : 1;
+        }
+        return 0;
+      })[0];
     },
   },
 
