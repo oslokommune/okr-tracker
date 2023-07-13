@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Added a shortcut to quickly select the last used period when creating a new
+  objective.
+
 ### Changed
 
 - Measurements can now be rearranged by drag and drop on the measurement list
