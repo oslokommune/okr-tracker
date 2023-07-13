@@ -2,7 +2,7 @@
   <div class="gantt">
     <div class="gantt__inner">
       <div class="month-wrapper" @mousedown="startDrag">
-        <div ref="today" class="today" :style="todayStyle()">
+        <div v-if="!loading" ref="today" class="today" :style="todayStyle()">
           {{ $t('general.today') }}
         </div>
         <div class="months">
@@ -12,7 +12,7 @@
             class="month"
             :style="`width: ${getDaysInMonth(m) * PPD}px`"
           >
-            <span>{{ dateLongCompact(m) }}</span>
+            <span v-if="!loading">{{ dateLongCompact(m) }}</span>
           </div>
         </div>
         <div class="ticks">
@@ -35,9 +35,9 @@
           class="period-ref"
           :style="periodStyle()"
         ></div>
-        <div class="sep">
+        <div class="sep" :class="{ loading }">
           <div
-            v-if="period.startDate"
+            v-if="!loading && period.startDate"
             v-tooltip="{
               content: periodObjectives.length
                 ? $t('general.selectObjectivesInPeriod')
@@ -53,26 +53,28 @@
           ></div>
         </div>
       </div>
-      <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
-      <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
-        <objective-row
-          v-for="o in group.objectives"
-          :key="o.objective.id"
-          :objective="o.objective"
-          :compact="true"
-          :style="objectiveStyle(o)"
-          :is-link="false"
-          :class="[
-            {
-              'objective--selected': selectedObjectives
-                .map((o) => o.id)
-                .includes(o.objective.id),
-            },
-          ]"
-          @click="selectObjective($event, o)"
-        />
-      </div>
-      <div class="today-tick" :style="todayStyle()"></div>
+      <template v-if="!loading">
+        <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
+        <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
+          <objective-row
+            v-for="o in group.objectives"
+            :key="o.objective.id"
+            :objective="o.objective"
+            :compact="true"
+            :style="objectiveStyle(o)"
+            :is-link="false"
+            :class="[
+              {
+                'objective--selected': selectedObjectives
+                  .map((o) => o.id)
+                  .includes(o.objective.id),
+              },
+            ]"
+            @click="selectObjective($event, o)"
+          />
+        </div>
+      </template>
+      <div v-if="!loading" class="today-tick" :style="todayStyle()"></div>
     </div>
   </div>
 </template>
@@ -108,6 +110,11 @@ export default {
       type: Object,
       required: true,
     },
+    loading: {
+      type: Boolean,
+      requred: false,
+      default: false,
+    },
   },
 
   data() {
@@ -142,7 +149,13 @@ export default {
     },
 
     months() {
-      return eachMonthOfInterval({ start: this.minDate, end: this.maxDate });
+      return this.loading
+        ? /*
+           * Bogus dates for the loading screen, enough to fill the width of
+           * most screens.
+           */
+          eachMonthOfInterval({ start: new Date(2020, 1, 1), end: new Date(2023, 1, 1) })
+        : eachMonthOfInterval({ start: this.minDate, end: this.maxDate });
     },
 
     /**
@@ -500,6 +513,10 @@ export default {
       cursor: pointer;
     }
   }
+
+  &.loading {
+    animation: loading 0.5s alternate infinite;
+  }
 }
 
 .today {
@@ -560,6 +577,15 @@ export default {
 
   &--selected {
     outline: 2px solid var(--color-hover);
+  }
+}
+
+@keyframes loading {
+  0% {
+    background: var(--color-grayscale-20);
+  }
+  100% {
+    background: var(--color-grayscale-10);
   }
 }
 </style>
