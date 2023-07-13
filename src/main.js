@@ -6,7 +6,6 @@ import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
-import { ContentLoader } from 'vue-content-loader';
 
 import { firestorePlugin } from 'vuefire';
 
@@ -57,7 +56,6 @@ Vue.component('VSelect', VueSelect);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('FormComponent', FormComponent);
-Vue.component('ContentLoader', ContentLoader);
 Vue.component('VSpinner', Spinner);
 Vue.component('PktIcon', PktIcon);
 

@@ -23,14 +23,12 @@
         </div>
 
         <div class="okrs-timeline__body">
-          <content-loader-item v-if="dataLoading" />
-
           <gantt-chart
-            v-else-if="objectivesWithKeyResults.length"
+            v-if="dataLoading || objectivesWithKeyResults.length"
             :objectives="objectivesWithKeyResults"
             :period="selectedPeriod"
+            :loading="dataLoading"
           />
-
           <empty-state
             v-else
             :heading="$t('empty.noObjectivesInPeriod.heading')"
@@ -76,7 +74,6 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import routerGuard from '@/router/router-guards/itemOKRs';
-import ContentLoaderItem from '@/components/ContentLoader/ContentLoaderItem.vue';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
@@ -88,7 +85,6 @@ export default {
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
     ObjectiveWorkbench: () => import('@/components/ObjectiveWorkbench.vue'),
     ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
-    ContentLoaderItem,
     PktButton,
   },
 
