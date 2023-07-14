@@ -5,7 +5,14 @@ import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
-import { required, email, numeric, min, max } from 'vee-validate/dist/rules';
+import {
+  email,
+  max,
+  min,
+  min_value as minValue,
+  numeric,
+  required,
+} from 'vee-validate/dist/rules';
 
 import { firestorePlugin } from 'vuefire';
 
@@ -73,6 +80,7 @@ extend('required', required);
 extend('email', email);
 extend('numeric', numeric);
 extend('min', min);
+extend('min_value', minValue);
 extend('max', max);
 extend('decimal', (num) => typeof num === 'number');
 extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);

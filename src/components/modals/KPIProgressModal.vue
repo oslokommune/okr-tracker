@@ -13,7 +13,7 @@
             name="value"
             class="progress-form__value-group"
             :label="$t('widget.history.value')"
-            rules="required"
+            rules="required|min_value:0"
             type="number"
             data-cy="progress_value"
             @input="(value) => (updatedValue = value)"
