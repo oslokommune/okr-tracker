@@ -19,7 +19,7 @@
             @input="(value) => (updatedValue = value)"
           >
             <template #sub>
-              <span class="display-as">
+              <span v-if="updatedValue" class="display-as">
                 {{ $t('general.displayedAs') }}
                 {{ formatKPIValue(kpi, displayValue) }}
               </span>
@@ -129,7 +129,7 @@ export default {
     recordValue() {
       let val = this.thisRecord.value;
 
-      if (val === null) {
+      if (val === null || val === undefined) {
         return null;
       }
 
@@ -141,9 +141,7 @@ export default {
     },
 
     displayValue() {
-      const val = this.updatedValue === null ? this.thisRecord.value : this.updatedValue;
-
-      return this.typePercentage ? val / 100 : val;
+      return this.typePercentage ? this.updatedValue / 100 : this.updatedValue;
     },
   },
 
