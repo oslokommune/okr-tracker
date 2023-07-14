@@ -246,11 +246,17 @@ export default {
         });
       },
     },
-  },
 
-  mounted() {
-    const ref = this.$refs.period || this.$refs.today;
-    ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
+    loading: {
+      async handler() {
+        if (!this.loading) {
+          this.$nextTick(() => {
+            const ref = this.$refs.period || this.$refs.today;
+            ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
+          });
+        }
+      },
+    },
   },
 
   methods: {
