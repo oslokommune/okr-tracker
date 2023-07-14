@@ -27,7 +27,13 @@ export const dateValidator = param('date')
   });
 
 const checkMeasurementValue = (field) =>
-  field.not().isEmpty().withMessage('Required field').isFloat().escape().toFloat();
+  field
+    .not()
+    .isEmpty()
+    .withMessage('Required field')
+    .isFloat({ min: 0 })
+    .escape()
+    .toFloat();
 
 export const progressValidator = checkMeasurementValue(body('progress'));
 export const valueValidator = checkMeasurementValue(body('value'));

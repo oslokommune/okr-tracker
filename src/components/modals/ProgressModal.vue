@@ -12,7 +12,7 @@
             input-type="input"
             name="value"
             :label="$t('widget.history.value')"
-            rules="required"
+            rules="required|min_value:0"
             type="number"
             data-cy="progress_value"
           />

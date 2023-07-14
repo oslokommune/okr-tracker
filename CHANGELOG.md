@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file. The format 
 - Node.js 18 is now the default runtime for all Cloud Functions and when running
   the app locally.
 - Upgraded to Firebase 9.
+- Progression values are now required to be positive on entry, both from the web
+  interface and from the API.
 
 ### Removed
 

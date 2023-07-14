@@ -5,7 +5,7 @@
       input-type="input"
       name="value"
       :label="$t('keyResult.newValue')"
-      rules="required"
+      rules="required|min_value:0"
       type="number"
     />
 
