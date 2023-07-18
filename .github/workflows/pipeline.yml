@@ -14,6 +14,7 @@ jobs:
     needs: [test]
     uses: ./.github/workflows/deploy-prod.yml
     secrets:
+      API_GATEWAY_URL_PROD: ${{ secrets.API_GATEWAY_URL_PROD }}
       ENV_FILE_PROD: ${{ secrets.ENV_FILE_PROD }}
       FIREBASE_PROJECT_ID_PROD: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
       FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}

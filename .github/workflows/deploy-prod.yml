@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
+      API_GATEWAY_URL_PROD:
+        required: true
       ENV_FILE_PROD:
         required: true
       FIREBASE_PROJECT_ID_PROD:
