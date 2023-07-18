@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   title: OKR Tracker API
   description: API for updating KPIs and key results.
-  version: 1.5.1
+  version: 1.5.2
   contact:
     name: Dataspeilet
     url: https://okr.oslo.systems
@@ -11,6 +11,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
+host: <host>
 schemes:
   - https
 produces:
