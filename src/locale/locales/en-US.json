@@ -62,7 +62,7 @@
     "types": {
       "plain": {
         "label": "Measurement",
-        "description": "A measurement that the team or department whishes to keep an eye on. These are only displayed under the same item's measurement tab."
+        "description": "A measurement that the team or department wishes to keep an eye on. These are only displayed under the same item's measurement tab."
       },
       "keyFigure": {
         "label": "Key figure",
@@ -286,7 +286,7 @@
       "department": "Created new department. Please wait, you will be redirected in 5 seconds",
       "keyResult": "Created new key result",
       "period": "Created new period",
-      "organization": "Created new organisation. Please wait, you will be redirected in 5 seconds",
+      "organization": "Created new organization. Please wait, you will be redirected in 5 seconds",
       "kpi": "Created new measurement",
       "progress": "Created new value"
     },
@@ -358,7 +358,7 @@
     "registerProgression": {
       "value": "Value"
     },
-    "commentPlaceholder": "Dette er en kommentar...",
+    "commentPlaceholder": "This is a comment...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
     "chooseDate": "Select date",
@@ -373,9 +373,9 @@
       "tooltip": "Toggle this if you have plans to update your Key Results yourself via the OKR-tracker API - you can still update manually as well"
     },
     "apiAndKeyRes": "We do not recommend toggling both at the same time. This may create problem your Key Result progression",
-    "created": "Key result was created!",
-    "updated": "Nøkkelresultatet ble endret!",
-    "edit": "Rediger nøkkelresultat"
+    "created": "The key result was created!",
+    "updated": "The key result was updated!",
+    "edit": "Edit key result"
   },
   "objective": {
     "period": "Period",
@@ -605,7 +605,7 @@
       "principalEngineer": "Principal Engineer",
       "legalAdvisor": "Legal advisor",
       "itCustodian": "IT-Custodian",
-      "hr": "HR og personnel management",
+      "hr": "HR and personnel management",
       "hardwareDeveloper": "Hardware developer",
       "humanResourcesManager": "Human resources manager",
       "dataEngineer": "Data engineer",

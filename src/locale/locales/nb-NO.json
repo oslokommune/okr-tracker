@@ -322,8 +322,8 @@
       "updateProgress": "Kunne ikke oppdatere målepunkt"
     },
     "savedChanges": "Lagret endringer",
-    "deleted": "Slettet object",
-    "restored": "Gjenopprettet dokumentdokument",
+    "deleted": "Slettet",
+    "restored": "Gjenopprettet",
     "request": {
       "noEmail": "Forespørselen feilet. E-post mangler.",
       "requested": "Forespørsel om tilgang sendt til admin",
@@ -422,7 +422,7 @@
       "updated": "Nøkkelresultatet ble endret!",
       "change": "Rediger Nøkkelresultat"
     },
-    "apiSecret": "Hvis du har tenkt til å bruke APIet for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
+    "apiSecret": "Hvis du har tenkt til å bruke API-et for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "curlHelp": "Oppdatering via {apiLink}-kall, f.eks. ved bruk av curl.",
     "apiDocs": "API-dokumentasjon",
     "department": {
@@ -626,7 +626,7 @@
     "completedMessages": {
       "1": "Nå er dere gode!",
       "2": "Dødsbra jobba, folkens!",
-      "3": "Wohoo! 100%",
+      "3": "Wohoo! 100 %",
       "4": "Nice, dere klarte det!"
     }
   },
