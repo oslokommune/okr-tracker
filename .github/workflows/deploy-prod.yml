@@ -32,6 +32,10 @@ jobs:
             exit 1
           fi
 
+      - name: Populate OpenAPI spec
+        run: |
+          sed -i -e "s|<host>|${{ secrets.API_GATEWAY_URL_PROD }}|g" public/openapi.yaml
+
       - name: Build
         run: |
           npm ci
