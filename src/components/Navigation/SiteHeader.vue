@@ -53,7 +53,7 @@ import SiteMenuDropdown from '@/components/Navigation/SiteMenuDropdown.vue';
 import getActiveItemType from '@/util/getActiveItemType';
 import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
 import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
-import PeriodSelector from '@/components/Navigation/toolbar/PeriodSelector.vue';
+import PeriodSelector from '@/components/period/PeriodSelector.vue';
 import ViewToggle from '@/components/Navigation/toolbar/ViewToggle.vue';
 import UserMenuDropdown from '@/components/Navigation/UserMenuDropdown.vue';
 
