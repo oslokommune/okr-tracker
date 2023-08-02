@@ -1,45 +1,35 @@
 <template>
-  <nav-menu class="period-selector-menu">
-    <nav-menu-text
-      :text="`${$t('general.period')}:`"
-      strong
-      class="period-selector-menu__label pkt-show-phablet-up"
-    />
-    <nav-menu-item v-slot="{ close }" :text="periodLabel" dropdown @open="onOpen">
-      <div class="period-selector-menu__dropdown-wrapper">
-        <nav-menu vertical>
-          <nav-menu-item
-            v-for="rangeOption in _predefinedPeriods"
-            :key="rangeOption.value"
-            class="period-selector-menu__period-option"
-            :text="rangeOption.label"
-            :active="selectedPeriod && rangeOption.key === selectedPeriod.key"
-            @click="selectRangeOption(rangeOption, close)"
-          />
-        </nav-menu>
-
-        <div class="period-selector-menu__separator"></div>
-
-        <flat-pickr
-          v-model="range"
-          :config="flatPickerConfig"
-          class="form-control flatpickr-input"
-          name="date"
-          @on-change="(range) => selectCustomRange(range, close)"
+  <div class="period-selector">
+    <template v-if="options && options.length">
+      <nav-menu vertical>
+        <nav-menu-item
+          v-for="rangeOption in options"
+          :key="rangeOption.value"
+          class="period-selector__period-option"
+          :text="rangeOption.label"
+          :active="value && rangeOption.key === value.key"
+          @click="$emit('input', rangeOption)"
         />
-      </div>
-    </nav-menu-item>
-  </nav-menu>
+      </nav-menu>
+
+      <div class="period-selector__separator"></div>
+    </template>
+
+    <flat-pickr
+      :value="range"
+      :config="flatPickerConfig"
+      class="form-control flatpickr-input"
+      name="date"
+      @on-change="(range) => setRange(range)"
+    />
+  </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import endOfDay from 'date-fns/endOfDay';
+import { endOfDay, startOfDay } from 'date-fns';
 import { periodDates } from '@/util';
-import { getPeriods } from '@/config/periods';
 import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
 import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
-import NavMenuText from '@/components/Navigation/navbar/NavMenuText.vue';
 
 export default {
   name: 'PeriodSelector',
@@ -47,72 +37,66 @@ export default {
   components: {
     NavMenu,
     NavMenuItem,
-    NavMenuText,
+  },
+
+  props: {
+    value: {
+      type: Object,
+      required: false,
+      default: null,
+    },
+    options: {
+      type: Array,
+      required: false,
+      default: () => [],
+    },
   },
 
   data: () => ({
-    isOpen: false,
     flatPickerConfig: {
       inline: true,
       mode: 'range',
       minDate: null,
       maxDate: null,
     },
-    range: null,
   }),
 
   computed: {
-    ...mapState(['selectedPeriod']),
-
-    periodLabel() {
-      if (this.selectedPeriod) {
-        return this.selectedPeriod.label;
+    range() {
+      if (!this.value) {
+        return null;
       }
-      return this.$t('period.choosePeriod');
-    },
 
-    _predefinedPeriods() {
-      return Object.values(getPeriods());
+      const { startDate, endDate } = this.value;
+      return startDate && endDate ? [startDate, endDate] : null;
     },
   },
 
   methods: {
-    ...mapActions(['setSelectedPeriod']),
-
-    onOpen() {
-      // Reset the internal range property to the currenct period selection when
-      // toggling the picker. This to ensure that no invalid (incomplete) range
-      // selections are kept in the component state, and that the range is set
-      // correctly when navigation back to the parent view.
-      if (this.selectedPeriod) {
-        const { startDate, endDate } = this.selectedPeriod;
-        this.range = startDate && endDate ? [startDate, endDate] : null;
-      } else {
-        this.range = null;
-      }
-    },
-
-    selectRangeOption(rangeOption, afterSelection) {
-      this.range = [rangeOption.startDate, rangeOption.endDate];
-      this.setSelectedPeriod(rangeOption);
-      if (afterSelection) {
-        afterSelection();
-      }
-    },
-
-    selectCustomRange(range, afterSelection) {
+    setRange(range) {
       if (range.length !== 2) {
         return;
       }
-      const [startDate, endDate] = range;
-      this.setSelectedPeriod({
-        startDate,
-        endDate: endOfDay(endDate),
-        label: periodDates({ startDate, endDate }),
-      });
-      if (afterSelection) {
-        afterSelection();
+
+      let [selectedStart, selectedEnd] = range;
+      selectedStart = startOfDay(selectedStart);
+      selectedEnd = endOfDay(selectedEnd);
+
+      if (this.range) {
+        const [currentStart, currentEnd] = this.range;
+        if (
+          selectedStart.getTime() === startOfDay(currentStart).getTime() &&
+          selectedEnd.getTime() === endOfDay(currentEnd).getTime()
+        ) {
+          return;
+        }
       }
+
+      this.$emit('input', {
+        startDate: selectedStart,
+        endDate: selectedEnd,
+        label: periodDates({ startDate: selectedStart, endDate: selectedEnd }),
+      });
     },
   },
 };
@@ -121,35 +105,16 @@ export default {
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-.period-selector-menu {
-  &__dropdown-wrapper {
-    width: 100vw;
-    .nav-menu {
-      width: inherit;
-    }
+.period-selector {
+  width: 100%;
 
-    @include bp('phablet-up') {
-      width: unset;
-      min-width: 10rem;
-    }
-  }
-
-  &__label {
-    ::v-deep .nav-menu-text__inner {
-      padding-right: 0;
-    }
+  .nav-menu {
+    width: inherit;
   }
 
   &__period-option {
     ::v-deep .nav-menu-item__inner--active {
       background-color: var(--color-gray-light);
-    }
-  }
-
-  &__no-periods {
-    ::v-deep .nav-menu-text__inner {
-      color: var(--color-grayscale-40);
-      font-style: italic;
     }
   }
 

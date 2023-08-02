@@ -40,7 +40,7 @@
     </nav>
 
     <nav v-if="showToolbar" class="nav-bar site-navigation__toolbar">
-      <period-selector />
+      <period-selector-menu />
       <view-toggle />
     </nav>
   </header>
@@ -53,7 +53,7 @@ import SiteMenuDropdown from '@/components/Navigation/SiteMenuDropdown.vue';
 import getActiveItemType from '@/util/getActiveItemType';
 import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
 import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
-import PeriodSelector from '@/components/period/PeriodSelector.vue';
+import PeriodSelectorMenu from '@/components/Navigation/toolbar/PeriodSelectorMenu.vue';
 import ViewToggle from '@/components/Navigation/toolbar/ViewToggle.vue';
 import UserMenuDropdown from '@/components/Navigation/UserMenuDropdown.vue';
 
@@ -65,7 +65,7 @@ export default {
     NavMenuItem,
     SiteMenuDropdown,
     UserMenuDropdown,
-    PeriodSelector,
+    PeriodSelectorMenu,
     ViewToggle,
   },
 
