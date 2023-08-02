@@ -1,43 +1,47 @@
 <template>
   <div class="period-selector">
-    <template v-if="options && options.length">
-      <nav-menu vertical>
-        <nav-menu-item
-          v-for="rangeOption in options"
-          :key="rangeOption.value"
-          class="period-selector__period-option"
-          :text="rangeOption.label"
-          :active="value && rangeOption.key === value.key"
-          @click="$emit('input', rangeOption)"
-        />
-      </nav-menu>
-
-      <div class="period-selector__separator"></div>
-    </template>
-
+    <h2 class="pkt-txt-18-medium">
+      {{ $t('period.choosePeriod') }}
+    </h2>
     <flat-pickr
       :value="range"
-      :config="flatPickerConfig"
-      class="form-control flatpickr-input"
+      :config="calendarConfig"
+      class="flatpickr-input"
       name="date"
       @on-change="(range) => setRange(range)"
     />
+
+    <div v-if="options && options.length">
+      <h3 class="pkt-txt-16-medium">
+        {{ $t('general.shortcuts') }}
+      </h3>
+      <div class="period-selector__options">
+        <span
+          v-for="rangeOption in options"
+          :key="rangeOption.value"
+          :class="[
+            'pkt-tag',
+            'pkt-tag--large',
+            'pkt-tag--thin-text',
+            'pkt-tag--grey',
+            'period-selector__option',
+            { 'period-selector__option--active': value && rangeOption.key === value.key },
+          ]"
+          @click="$emit('input', rangeOption)"
+        >
+          {{ rangeOption.label }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { endOfDay, startOfDay } from 'date-fns';
 import { periodDates } from '@/util';
-import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
-import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
 
 export default {
   name: 'PeriodSelector',
-
-  components: {
-    NavMenu,
-    NavMenuItem,
-  },
 
   props: {
     value: {
@@ -50,16 +54,12 @@ export default {
       required: false,
       default: () => [],
     },
-  },
-
-  data: () => ({
-    flatPickerConfig: {
-      inline: true,
-      mode: 'range',
-      minDate: null,
-      maxDate: null,
+    months: {
+      type: Number,
+      required: false,
+      default: 1,
     },
-  }),
+  },
 
   computed: {
     range() {
@@ -69,6 +69,16 @@ export default {
 
       const { startDate, endDate } = this.value;
       return startDate && endDate ? [startDate, endDate] : null;
+    },
+
+    calendarConfig() {
+      return {
+        inline: true,
+        mode: 'range',
+        minDate: null,
+        maxDate: null,
+        showMonths: this.months,
+      };
     },
   },
 
@@ -103,18 +113,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .period-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   width: 100%;
+  padding: 1rem;
 
-  .nav-menu {
-    width: inherit;
+  &__section-title {
+    margin-bottom: 0.5rem;
   }
 
-  &__period-option {
-    ::v-deep .nav-menu-item__inner--active {
-      background-color: var(--color-gray-light);
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  &__option {
+    @include get-text('pkt-txt-16-light');
+    white-space: nowrap;
+
+    &--active {
+      background-color: var(--color-blue-light);
+    }
+
+    &:hover {
+      background-color: var(--color-beige-light);
+      cursor: pointer;
     }
   }
 
@@ -135,12 +164,6 @@ export default {
     &-input {
       display: none;
     }
-  }
-
-  &__separator {
-    width: 100%;
-    height: 1px;
-    background: var(--color-grayscale-10);
   }
 }
 </style>
