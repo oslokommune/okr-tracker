@@ -6,7 +6,7 @@
         <nav-menu-item dropdown>
           <template #text>
             <pkt-icon class="nav-menu-item__icon" name="bullseye" />
-            <span class="pkt-show-phablet-up">{{ siteMenuLabel }}</span>
+            <span class="pkt-show-tablet-up">{{ siteMenuLabel }}</span>
           </template>
           <template #default="{ close }">
             <site-menu-dropdown :handle-navigation="close" />

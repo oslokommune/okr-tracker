@@ -3,12 +3,13 @@
     <nav-menu-text
       :text="`${$t('general.period')}:`"
       strong
-      class="period-selector-menu__label pkt-show-phablet-up"
+      class="period-selector-menu__label pkt-show-tablet-up"
     />
     <nav-menu-item v-slot="{ close }" :text="periodLabel" dropdown>
       <period-selector
         v-model="period"
         :options="_predefinedPeriods"
+        :months="2"
         class="period-selector-menu__dropdown"
         @input="close"
       />
@@ -71,7 +72,7 @@ export default {
   &__dropdown {
     width: 100vw;
 
-    @include bp('phablet-up') {
+    @include bp('tablet-up') {
       width: unset;
       min-width: 10rem;
     }
