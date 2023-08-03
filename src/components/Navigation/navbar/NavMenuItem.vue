@@ -36,7 +36,7 @@
           { 'nav-menu-item__inner--active': active || isOpen },
         ]"
         tabindex="0"
-        @click.stop="activate"
+        @click="activate"
         @keyup.enter="activate"
       >
         <slot name="text">
@@ -58,13 +58,13 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside';
+import vClickOutside from 'v-click-outside';
 
 export default {
   name: 'NavMenuItem',
 
   directives: {
-    ClickOutside,
+    clickOutside: vClickOutside.directive,
   },
 
   props: {
