@@ -31,7 +31,7 @@ service cloud.firestore {
 
       // Check if the document the user tries to access has an organization - this means that is is a product or department
       let hasOrgProperty = 'organization' in request.resource.data;
-      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgProperty && getAfter(request.resource.data.organization).data.id in userDoc.data.admin;
+      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgProperty && getAfter(request.resource.data.organization).id in userDoc.data.admin;
 
       // Check if the user has access to the document which is an organization (given that the first check is false)
       let isAdminOfOrg = userIsAdmin && request.resource.data.id in userDoc.data.admin;
@@ -214,6 +214,32 @@ service cloud.firestore {
       allow create: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
       allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
       allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+    }
+
+    match /apiClients/{document} {
+      function isAdminOfQueriedParent() {
+        let userDoc = getUserDoc();
+        let userIsAdmin = isAdmin();
+        let parentDoc = getAfter(resource.data.parent);
+        let hasOrgDocumentInParent = 'organization' in parentDoc.data;
+        let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgDocumentInParent && getAfter(parentDoc.data.organization).id in userDoc.data.admin;
+        let isAdminOfParent = userIsAdmin && !isAdminFromOrgOfProdOrDep && parentDoc.data.id in userDoc.data.admin;
+        return isSignedIn() && (isAdminFromOrgOfProdOrDep || isAdminOfParent);
+      }
+      function isMemberOfQueriedParent() {
+        let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+        let parentDoc = getAfter(resource.data.parent);
+        let userIsMemberOfParent = userRef in parentDoc.data.team;
+        return isSignedIn() && userIsMemberOfParent;
+      }
+
+      allow read: if isSuperAdmin() || isMemberOfQueriedParent() || isAdminOfQueriedParent();
+      allow write: if isSuperAdmin() || isMemberOfParent(document, 'apiClients') || isAdminOfParent(document, 'apiClients');
+
+      match /secrets/{key} {
+        allow read: if false;
+        allow write: if isSuperAdmin() || isMemberOfParent(document, 'apiClients') || isAdminOfParent(document, 'apiClients');
+      }
     }
 
     match /slugs/{document} {
