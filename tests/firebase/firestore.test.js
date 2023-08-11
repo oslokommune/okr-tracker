@@ -30,6 +30,7 @@ describe('Test Firestore rules', () => {
       const db = context.firestore();
       const users = db.collection('users');
       const organizations = db.collection('organizations');
+      const apiClients = db.collection('apiClients');
 
       await users
         .doc('superadmin@example.com')
@@ -40,6 +41,14 @@ describe('Test Firestore rules', () => {
       await organizations
         .doc('organization')
         .set({ name: 'Organization', team: [users.doc('user@example.com')] });
+
+      await apiClients
+        .doc('organization-api-client')
+        .set({ parent: organizations.doc('organization'), clientId: 'foo' });
+      await apiClients
+        .doc('organization-api-client')
+        .collection('secrets')
+        .add({ secret: 'bar' });
     });
   });
 
@@ -104,6 +113,83 @@ describe('Test Firestore rules', () => {
       const organizations = db.collection('organizations');
       await expectPermissionDenied(organizations.add({ foo: 'bar' }));
     });
+  });
+
+  test('anonymous users cannot read api clients', async () => {
+    await withUnauthenticatedUser(testEnv, async (db) => {
+      const clients = db.collection('apiClients');
+      await expectPermissionDenied(clients.get());
+    });
+  });
+
+  test('users cannot read any random api client', async () => {
+    await withAuthenticatedUser(testEnv, 'user@example.com', async (db) => {
+      const clients = db.collection('apiClients');
+      await expectPermissionDenied(clients.get());
+    });
+  });
+
+  test('members can read own api clients', async () => {
+    await withAuthenticatedUser(testEnv, 'user@example.com', async (db) => {
+      const orgRef = db.collection('organizations').doc('organization');
+      const clients = db.collection('apiClients').where('parent', '==', orgRef);
+      const result = await clients.get();
+      expectGetSucceeds(result);
+      expect(result).toHaveProperty('size', 1);
+    });
+
+    await withAuthenticatedUser(testEnv, 'user2@example.com', async (db) => {
+      const orgRef = db.collection('organizations').doc('organization');
+      const clients = db.collection('apiClients').where('parent', '==', orgRef);
+      await expectPermissionDenied(clients.get());
+    });
+  });
+
+  test('members can write own api clients and secrets', async () => {
+    await withAuthenticatedUser(testEnv, 'user@example.com', async (db) => {
+      const apiClientRef = db.collection('apiClients').doc('organization-api-client');
+      await expectUpdateSucceeds(apiClientRef.update({ name: 'foo' }));
+      const apiClientSnap = await apiClientRef.get();
+      expect(apiClientSnap.data().name).toBe('foo');
+      const secrets = apiClientRef.collection('secrets');
+      await expectUpdateSucceeds(secrets.doc('foo').set({ foo: 'bar' }));
+    });
+
+    await withAuthenticatedUser(testEnv, 'user2@example.com', async (db) => {
+      const apiClientRef = db.collection('apiClients').doc('organization-api-client');
+      await expectPermissionDenied(apiClientRef.update({ name: 'foo' }));
+    });
+  });
+
+  test('super admin can read any api client', async () => {
+    await withAuthenticatedUser(testEnv, 'superadmin@example.com', async (db) => {
+      const clients = db.collection('apiClients');
+      const result = await clients.get();
+      expectGetSucceeds(result);
+      expect(result).toHaveProperty('size', 1);
+    });
+  });
+
+  test('super admin can write any api client', async () => {
+    await withAuthenticatedUser(testEnv, 'superadmin@example.com', async (db) => {
+      const clients = db.collection('apiClients');
+      const apiClientRef = clients.doc('organization-api-client');
+      await expectUpdateSucceeds(apiClientRef.update({ name: 'foo' }));
+      const secrets = apiClientRef.collection('secrets');
+      await expectUpdateSucceeds(secrets.doc('foo').set({ foo: 'bar' }));
+    });
+  });
+
+  test('no one can read api client secrets', async () => {
+    async function readApiClientSecrets(db) {
+      const apiClientRef = db.collection('apiClients').doc('organization-api-client');
+      const apiClientSecrets = apiClientRef.collection('secrets');
+      await expectPermissionDenied(apiClientSecrets.get());
+    }
+
+    await withUnauthenticatedUser(testEnv, readApiClientSecrets);
+    await withAuthenticatedUser(testEnv, 'user@example.com', readApiClientSecrets);
+    await withAuthenticatedUser(testEnv, 'superadmin@example.com', readApiClientSecrets);
   });
 });
 
