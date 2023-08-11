@@ -8,38 +8,30 @@ import {
   isArchived,
   refreshKPILatestValue,
   updateKPIProgressionValue,
+  checkApiAuth,
 } from '../helpers.js';
 import {
   commentValidator,
   dateValidator,
   idValidator,
   progressValidator,
-  teamSecretValidator,
+  clientSecretValidator,
   valueValidator,
 } from '../validators.js';
+import validateRules from '../validateRules.js';
 
-const { matchedData, validationResult } = validator;
+const { matchedData } = validator;
 const router = express.Router();
 
 router.post(
   '/:id',
-  teamSecretValidator,
+  clientSecretValidator,
   idValidator,
   progressValidator,
   commentValidator,
+  validateRules,
   async (req, res) => {
-    const result = validationResult(req);
-
-    if (!result.isEmpty()) {
-      res.status(400).json({
-        message: 'Invalid request data',
-        errors: result.mapped(),
-      });
-      return;
-    }
-
-    const { 'okr-team-secret': teamSecret, id, progress, comment } = matchedData(req);
-
+    const { id, progress, comment } = req.matchedData;
     const db = getFirestore();
 
     try {
@@ -54,19 +46,7 @@ router.post(
 
       const { parent } = kpi.data();
 
-      const parentData = await parent.get().then((snapshot) => snapshot.data());
-
-      if (!parentData.secret) {
-        res
-          .status(401)
-          .send(
-            `'${parentData.name}' is not set up for API usage. Please set ` +
-              'a secret using the OKR Tracker admin interface.'
-          );
-        return;
-      }
-      if (parentData.secret !== teamSecret) {
-        res.status(401).send('Wrong okr-team-secret');
+      if (!(await checkApiAuth(parent, req, res))) {
         return;
       }
 
@@ -188,25 +168,15 @@ router.get('/:id/values', idValidator, async (req, res) => {
 
 router.put(
   '/:id/values/:date',
-  teamSecretValidator,
+  clientSecretValidator,
   idValidator,
   dateValidator,
   valueValidator,
   commentValidator,
+  validateRules,
   async (req, res) => {
-    const result = validationResult(req);
-
-    if (!result.isEmpty()) {
-      res.status(400).json({
-        message: 'Invalid request data',
-        errors: result.mapped(),
-      });
-      return;
-    }
-
-    const { 'okr-team-secret': teamSecret, id, date, value, comment } = matchedData(req);
+    const { id, date, value, comment } = req.matchedData;
     const formattedDate = format(date, 'yyyy-MM-dd');
-
     const db = getFirestore();
 
     try {
@@ -220,18 +190,8 @@ router.put(
       }
 
       const { parent } = kpi.data();
-      const parentData = await parent.get().then((snapshot) => snapshot.data());
 
-      if (!parentData.secret) {
-        res.status(401).json({
-          message:
-            `'${parentData.name}' is not set up for API usage. Please set ` +
-            'a secret using the OKR Tracker admin interface.',
-        });
-        return;
-      }
-      if (parentData.secret !== teamSecret) {
-        res.status(401).json({ message: 'Wrong okr-team-secret' });
+      if (!(await checkApiAuth(parent, req, res))) {
         return;
       }
 
@@ -250,21 +210,12 @@ router.put(
 
 router.delete(
   '/:id/values/:date',
-  teamSecretValidator,
+  clientSecretValidator,
   idValidator,
   dateValidator,
+  validateRules,
   async (req, res) => {
-    const result = validationResult(req);
-
-    if (!result.isEmpty()) {
-      res.status(400).json({
-        message: 'Invalid request data',
-        errors: result.mapped(),
-      });
-      return;
-    }
-
-    const { 'okr-team-secret': teamSecret, id, date } = matchedData(req);
+    const { id, date } = req.matchedData;
     const formattedDate = format(date, 'yyyy-MM-dd');
 
     const db = getFirestore();
@@ -280,18 +231,8 @@ router.delete(
       }
 
       const { parent } = kpi.data();
-      const parentData = await parent.get().then((snapshot) => snapshot.data());
 
-      if (!parentData.secret) {
-        res.status(401).json({
-          message:
-            `'${parentData.name}' is not set up for API usage. Please set ` +
-            'a secret using the OKR Tracker admin interface.',
-        });
-        return;
-      }
-      if (parentData.secret !== teamSecret) {
-        res.status(401).json({ message: 'Wrong okr-team-secret' });
+      if (!(await checkApiAuth(parent, req, res))) {
         return;
       }
 

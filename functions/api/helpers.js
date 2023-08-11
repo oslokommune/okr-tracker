@@ -209,3 +209,80 @@ function isKPIStale(updateFrequency, progressRecord) {
     return null;
   }
 }
+
+/**
+ * Return true if the client is authorized to perform the requested API
+ * operation. Set response data and return false in case the client is not
+ * authorized based on provided request parameters.
+ *
+ * `parentRef` is the item to check API authorization against.
+ * `req` is the HTTP request object.
+ * `res` is the HTTP response object.
+ */
+export async function checkApiAuth(parentRef, req, res) {
+  const parentData = await parentRef.get().then((snapshot) => snapshot.data());
+
+  const {
+    'okr-client-id': clientId,
+    'okr-client-secret': clientSecret,
+    'okr-team-secret': teamSecret,
+  } = req.matchedData;
+
+  if (clientId && clientSecret) {
+    const db = getFirestore();
+    const apiClientRef = await db
+      .collection('apiClients')
+      .where('parent', '==', parentRef)
+      .where('clientId', '==', clientId)
+      .where('archived', '==', false)
+      .limit(1)
+      .get()
+      .then((snapshot) => (!snapshot.empty ? snapshot.docs[0].ref : null));
+
+    if (!apiClientRef) {
+      const { name: parentName } = parentData;
+      res.status(401).json({
+        message:
+          `No API client \`${clientId}\` exists for '${parentName}'. Please ` +
+          'create one using the OKR Tracker admin interface.',
+      });
+      return false;
+    }
+
+    const apiClientSecret = await apiClientRef
+      .collection('secrets')
+      .where('archived', '==', false)
+      .orderBy('created', 'desc')
+      .limit(1)
+      .get()
+      .then((snapshot) => (!snapshot.empty ? snapshot.docs[0].data() : null));
+
+    if (!apiClientSecret || apiClientSecret.secret !== clientSecret) {
+      res.status(401).json({
+        message:
+          `Invalid client secret provided for API client \`${clientId}\`. ` +
+          'Check the OKR Tracker admin interface for how to rotate the secret.',
+      });
+      return false;
+    }
+
+    await apiClientRef.update({ used: FieldValue.serverTimestamp() });
+    return true;
+  }
+
+  if (!parentData.secret) {
+    res.status(401).json({
+      message:
+        `'${parentData.name}' is not set up for API usage. Please set ` +
+        'a secret using the OKR Tracker admin interface.',
+    });
+    return false;
+  }
+
+  if (parentData.secret !== teamSecret) {
+    res.status(401).json({ message: 'Wrong `okr-team-secret`' });
+    return false;
+  }
+
+  return true;
+}
