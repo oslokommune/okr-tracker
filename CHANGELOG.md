@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed ordering of items in the main menu (by respecting the user locale when
   sorting).
 - Fixed the API base URL on the API spec page.
+- Fixed outside click detection for dropdown menus.
 
 ### Security
 
