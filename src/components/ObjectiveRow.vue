@@ -5,8 +5,9 @@
     :class="['objective', { 'objective--compact': compact }]"
     @click="isLink ? () => {} : $emit('click', $event)"
   >
-    <h3 class="pkt-txt-18-medium mb-size-8">
+    <h3 class="objective__title pkt-txt-18-medium mb-size-8">
       {{ objective.name }}
+      <pkt-icon v-if="isLink" class="pkt-link__icon" name="chevron-right" />
     </h3>
 
     <p v-if="!compact && objective.description" class="mb-size-8">
@@ -78,6 +79,12 @@ export default {
 
   &:hover {
     color: var(--color-hover);
+  }
+
+  &__title {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
   }
 
   &__progress {
