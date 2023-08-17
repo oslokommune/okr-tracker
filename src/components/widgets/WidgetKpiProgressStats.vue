@@ -154,8 +154,8 @@ export default {
   }
 
   &__title {
-    color: var(--color-grayscale-40);
-    font-weight: 500;
+    color: var(--color-dark-blue);
+    font-weight: 400;
     font-size: typography.$font-size-1;
   }
 

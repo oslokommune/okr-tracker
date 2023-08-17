@@ -126,7 +126,7 @@ export default {
   gap: 0.5rem;
   align-items: center;
   justify-content: space-around;
-  font-weight: 500;
+  font-weight: 400;
   white-space: nowrap;
 
   @include bp('phablet-up') {

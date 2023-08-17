@@ -151,8 +151,8 @@ export default {
 
     h2 {
       flex-grow: 1;
-      font-weight: 500;
-      font-size: typography.$font-size-3;
+      font-weight: 400;
+      font-size: typography.$font-size-2;
     }
 
     span {
@@ -177,7 +177,8 @@ export default {
         border-color: var(--color-white);
       }
 
-      ::v-deep .widget__header h3 {
+      ::v-deep .widget__header h3,
+      ::v-deep .period-trend-tag__value {
         color: var(--color-hover);
       }
     }
@@ -185,9 +186,11 @@ export default {
     .kpi-card-widget {
       &:hover {
         background: var(--color-gray-light);
+        border-color: var(--color-gray);
 
         ::v-deep {
-          .widget__header h3 {
+          .widget__header h3,
+          .period-trend-tag__value {
             color: var(--color-hover);
           }
 
@@ -206,7 +209,7 @@ export default {
   }
 
   &--compact {
-    gap: 0.5rem;
+    gap: 0.125rem;
     margin-bottom: 1rem;
 
     .kpi-widget-group__title h2 {
