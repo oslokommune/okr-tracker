@@ -1,6 +1,6 @@
 <template>
   <page-layout
-    v-if="objectivesWithKeyResults.length || dataLoading"
+    v-if="objectivesWithID.length || dataLoading"
     breakpoint="full"
     :sidebar-grid="false"
     :sidebar-cols="5"
@@ -24,8 +24,8 @@
 
         <div class="okrs-timeline__body">
           <gantt-chart
-            v-if="dataLoading || objectivesWithKeyResults.length"
-            :objectives="objectivesWithKeyResults"
+            v-if="dataLoading || objectivesWithID.length"
+            :objectives="objectivesWithID"
             :period="selectedPeriod"
             :loading="dataLoading"
           />
@@ -96,7 +96,7 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'dataLoading', 'selectedPeriod', 'user']),
-    ...mapGetters(['objectivesWithKeyResults', 'selectedObjectives', 'hasEditRights']),
+    ...mapGetters(['objectivesWithID', 'selectedObjectives', 'hasEditRights']),
 
     view() {
       return this.user.preferences.view;
@@ -106,11 +106,11 @@ export default {
      * Return the most recently created objective for the current item.
      */
     newestObjective() {
-      if (!this.objectivesWithKeyResults.length) {
+      if (!this.objectivesWithID.length) {
         return null;
       }
 
-      return this.objectivesWithKeyResults.slice().sort((a, b) => {
+      return this.objectivesWithID.slice().sort((a, b) => {
         if (a.created && b.created) {
           return a.created.seconds > b.created.seconds ? -1 : 1;
         }

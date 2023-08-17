@@ -7,7 +7,6 @@ export default firestoreAction(
     if (!periodId && !item) {
       unbindFirestoreRef('periods');
       unbindFirestoreRef('objectives');
-      unbindFirestoreRef('keyResults');
       unbindFirestoreRef('activePeriod');
       return false;
     }
@@ -34,17 +33,9 @@ export default firestoreAction(
       .then((snapshot) => snapshot.docs.map((doc) => doc.ref));
 
     if (activeObjectivesList.length) {
-      const keyResultsRef = db
-        .collection('keyResults')
-        .where('archived', '==', false)
-        .where('parent', '==', parentRef)
-        .orderBy('name');
-
       await bindFirestoreRef('objectives', objectivesRef, { maxRefDepth: 1 });
-      await bindFirestoreRef('keyResults', keyResultsRef, { maxRefDepth: 0 });
     } else {
       unbindFirestoreRef('objectives');
-      unbindFirestoreRef('keyResults');
     }
 
     return true;

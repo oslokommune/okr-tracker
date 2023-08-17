@@ -47,15 +47,7 @@
       />
 
       <section>
-        <key-results-list
-          v-if="objectiveKeyResults.length"
-          :key-results="objectiveKeyResults"
-        />
-        <empty-state
-          v-else
-          :heading="$t('empty.noKeyResults.heading')"
-          :body="$t('empty.noKeyResults.body')"
-        />
+        <key-results-list :objective="activeObjective" />
       </section>
 
       <objective-drawer
@@ -79,11 +71,7 @@
       >
         <progression-chart :progression="activeObjective.progression" :period="period" />
       </widget>
-      <widget-weights
-        type="keyResult"
-        :active-item="activeObjective"
-        :items="keyResults"
-      />
+      <widget-weights :objective="activeObjective" />
       <widget-objective-details />
     </template>
   </page-layout>
@@ -116,7 +104,6 @@ export default {
     WidgetWeights,
     WidgetObjectiveDetails,
     ProgressionChart,
-    EmptyState: () => import('@/components/EmptyState.vue'),
     PktButton,
     ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
     KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
@@ -141,7 +128,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeObjective', 'activeItem', 'keyResults']),
+    ...mapState(['activeObjective', 'activeItem']),
     ...mapGetters(['hasEditRights']),
 
     period() {
@@ -151,14 +138,6 @@ export default {
       }
 
       return this.activeObjective.period;
-    },
-
-    objectiveKeyResults() {
-      return this.activeObjective
-        ? this.keyResults.filter(
-            (kr) => kr.objective === `objectives/${this.activeObjective.id}`
-          )
-        : [];
     },
   },
 

@@ -144,13 +144,12 @@ export const storeGetters = {
   },
 
   /**
-   * Return `state.objectives` enriched with ID and key results.
+   * Return `state.objectives` enriched with ID.
    */
-  objectivesWithKeyResults: (state) => {
+  objectivesWithID: (state) => {
     return state.objectives.map((o) => ({
       ...o,
       id: o.id,
-      keyResults: state.keyResults.filter((kr) => kr.objective === `objectives/${o.id}`),
     }));
   },
 
@@ -165,7 +164,7 @@ export const storeGetters = {
     if (!objectiveIds.length) {
       return [];
     }
-    return getters.objectivesWithKeyResults.filter((o) => objectiveIds.includes(o.id));
+    return getters.objectivesWithID.filter((o) => objectiveIds.includes(o.id));
   },
 };
 
@@ -295,7 +294,6 @@ export default new Vuex.Store({
     activeObjective: null,
     periods: [],
     objectives: [],
-    keyResults: [],
     kpis: [],
     subKpis: [],
     loginError: null,

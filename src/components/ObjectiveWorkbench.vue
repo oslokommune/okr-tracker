@@ -28,20 +28,35 @@
       />
     </header>
 
-    <div v-if="selectedObjectives.length > 1" class="objective-workbench__list">
+    <div
+      :class="singular ? 'objective-workbench__objective' : 'objective-workbench__list'"
+    >
+      <p v-if="singular && selectedObjectives[0].description" class="mb-size-16">
+        {{ selectedObjectives[0].description }}
+      </p>
+
       <div
         v-for="objective in selectedObjectives"
         :key="objective.id"
-        class="objective-workbench__list-item"
+        :class="{
+          'objective-workbench__list-item': !singular,
+        }"
       >
-        <objective-row :objective="objective" />
+        <div
+          v-if="singular"
+          class="objective-workbench__objective-progression mb-size-16"
+        >
+          <progress-bar :is-compact="false" :progression="objective.progression * 100" />
+          <span class="pkt-txt-20-medium">
+            {{ percent(objective.progression) }}
+          </span>
+        </div>
+        <objective-row v-else :objective="objective" />
 
-        <key-results-list
-          v-if="objective.keyResults.length"
-          :key-results="objective.keyResults"
-        />
+        <key-results-list :objective="objective" :show-empty-state="singular" />
 
         <pkt-button
+          v-if="!singular"
           v-tooltip.bottom="$t('btn.remove')"
           class="objective-workbench__remove-button"
           size="small"
@@ -51,33 +66,6 @@
           @onClick="setSelectedObjective(objective)"
         />
       </div>
-    </div>
-
-    <div v-else class="objective-workbench__objective">
-      <p v-if="selectedObjectives[0].description" class="mb-size-16">
-        {{ selectedObjectives[0].description }}
-      </p>
-
-      <div class="objective-workbench__objective-progression mb-size-16">
-        <progress-bar
-          :is-compact="false"
-          :progression="selectedObjectives[0].progression * 100"
-        />
-        <span class="pkt-txt-20-medium">
-          {{ percent(selectedObjectives[0].progression) }}
-        </span>
-      </div>
-
-      <key-results-list
-        v-if="selectedObjectives[0].keyResults.length"
-        :key-results="selectedObjectives[0].keyResults"
-      />
-
-      <empty-state
-        v-else
-        :heading="$t('empty.noKeyResults.heading')"
-        :body="$t('empty.noKeyResults.body')"
-      />
     </div>
   </div>
 </template>
@@ -91,7 +79,6 @@ export default {
   name: 'ObjectiveWorkbench',
 
   components: {
-    EmptyState: () => import('@/components/EmptyState.vue'),
     KeyResultsList: () => import('@/components/KeyResultsList.vue'),
     ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
     ProgressBar: () => import('@/components/ProgressBar.vue'),
@@ -100,6 +87,10 @@ export default {
 
   computed: {
     ...mapGetters(['selectedObjectives']),
+
+    singular() {
+      return this.selectedObjectives.length === 1;
+    },
   },
 
   methods: {

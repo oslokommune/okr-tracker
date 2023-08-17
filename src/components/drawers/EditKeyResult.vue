@@ -194,7 +194,6 @@ export default {
     ...mapState([
       'activeItem',
       'activeItemRef',
-      'keyResults',
       'organizations',
       'departments',
       'products',
