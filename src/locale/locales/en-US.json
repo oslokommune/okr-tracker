@@ -125,7 +125,8 @@
     "preferredTrend": "Trend",
     "updateFrequency": "Update frequency",
     "language": "Language",
-    "owner": "Responsible team"
+    "owner": "Responsible team",
+    "contributors": "Contributors"
   },
   "validation": {
     "alpha": "May only contain alphabetic characters",

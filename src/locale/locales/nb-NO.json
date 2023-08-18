@@ -125,7 +125,8 @@
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
     "language": "Språk",
-    "owner": "Ansvarlig team"
+    "owner": "Ansvarlig team",
+    "contributors": "Bidragsytere"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",

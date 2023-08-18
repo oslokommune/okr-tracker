@@ -52,6 +52,27 @@
           {{ formattedPeriod(newestObjective) }}
         </pkt-button>
 
+        <!--
+          XXX: Comment this in when the rest of the UI concerning objective contribuors has landed.
+        -->
+        <!--div class="pkt-form-group">
+          <span class="pkt-form-label" for="contributors">
+            {{ $t('fields.contributors') }}
+            <span class="pkt-badge">{{ $t('validation.optional') }}</span>
+          </span>
+          <v-select
+            id="contributors"
+            v-model="contributors"
+            multiple
+            :options="teams"
+            :get-option-label="(option) => option.name || option.id"
+          >
+            <template #option="option">
+              {{ option.name || option.id }}
+            </template>
+          </v-select>
+        </div-->
+
         <template v-if="!objective?.archived" #actions="{ handleSubmit }">
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
@@ -111,10 +132,14 @@
 import { mapState } from 'vuex';
 import formattedPeriod from '@/util/okr';
 import Objective from '@/db/Objective';
+import ObjectiveContributors from '@/db/ObjectiveContributors';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
+import { db } from '@/config/firebaseConfig';
+import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import { sortByLocale } from '@/store/actions/actionUtils';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
@@ -162,10 +187,35 @@ export default {
     },
     periodRange: null,
     loading: false,
+    contributors: [],
   }),
 
   computed: {
-    ...mapState(['activeItemRef']),
+    ...mapState(['activeItem', 'activeItemRef', 'departments', 'products']),
+
+    childCollection() {
+      if (isOrganization(this.activeItem)) {
+        return 'departments';
+      }
+      if (isDepartment(this.activeItem)) {
+        return 'products';
+      }
+      return null;
+    },
+
+    children() {
+      if (isOrganization(this.activeItem)) {
+        return this.departments.filter((d) => d.organization.id === this.activeItem.id);
+      }
+      if (isDepartment(this.activeItem)) {
+        return this.products.filter((p) => p.department.id === this.activeItem.id);
+      }
+      return [];
+    },
+
+    teams() {
+      return this.children.map(({ name, id }) => ({ name, id }));
+    },
   },
 
   watch: {
@@ -181,6 +231,8 @@ export default {
         if (this.objective) {
           this.thisObjective = { ...this.objective };
           this.periodRange = this.getCurrentDateRange();
+          this.contributors = await this.getObjectiveContributors();
+          this.existingContributorIDs = this.contributors.map((c) => c.id);
         } else {
           this.thisObjective = {};
           this.periodRange = null;
@@ -205,6 +257,37 @@ export default {
       return null;
     },
 
+    async getObjectiveContributors() {
+      const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
+
+      const objectiveContributorsRef = db
+        .collection('objectiveContributors')
+        .where('objective', '==', objectiveRef);
+
+      const contributors = Promise.all(
+        await objectiveContributorsRef.get().then((snapshot) =>
+          snapshot.docs.map(async (doc) => {
+            const item = await doc.data().item.get();
+            return { id: item.id, name: item.data().name };
+          })
+        )
+      );
+
+      return sortByLocale(await contributors);
+    },
+
+    async createObjectiveContributor(itemId, objectiveId) {
+      const itemRef = await db.doc(`${this.childCollection}/${itemId}`);
+      const objectiveRef = await db.doc(`objectives/${objectiveId}`);
+      return ObjectiveContributors.create(itemRef, objectiveRef);
+    },
+
+    async removeObjectiveContributor(itemId, objectiveId) {
+      const itemRef = await db.doc(`${this.childCollection}/${itemId}`);
+      const objectiveRef = await db.doc(`objectives/${objectiveId}`);
+      return ObjectiveContributors.remove(itemRef, objectiveRef);
+    },
+
     async save() {
       this.loading = true;
 
@@ -213,6 +296,8 @@ export default {
         const [start, end] = this.periodRange;
 
         if (this.objective) {
+          const { id } = this.objective;
+
           const data = {
             name,
             description: description || '',
@@ -228,7 +313,22 @@ export default {
           } else {
             data.period = period;
           }
-          await Objective.update(this.objective.id, data);
+          await Objective.update(id, data);
+
+          // Create new `ObjectiveContributor` documents ...
+          this.contributors.forEach(async (c) => {
+            if (!this.existingContributorIDs.includes(c.id)) {
+              this.createObjectiveContributor(c.id, id);
+            }
+          });
+
+          // ... and delete removed ones.
+          const contributorIDs = this.contributors.map((c) => c.id);
+          this.existingContributorIDs.forEach((cid) => {
+            if (!contributorIDs.includes(cid)) {
+              this.removeObjectiveContributor(cid, id);
+            }
+          });
         } else {
           const { id } = await Objective.create({
             name,
@@ -239,6 +339,8 @@ export default {
             endDate: end,
           });
           this.thisObjective.id = id;
+
+          this.contributors.forEach((c) => this.createObjectiveContributor(c.id, id));
         }
         this.$refs.drawer.next();
       } catch (error) {
