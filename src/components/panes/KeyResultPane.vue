@@ -26,9 +26,11 @@
       :object-type="$t('archived.keyResult')"
     />
 
-    <p v-if="activeKeyResult.description" class="key-result-pane__description">
-      {{ activeKeyResult.description }}
-    </p>
+    <HTML-output
+      v-if="activeKeyResult.description"
+      class="key-result-pane__description"
+      :html="activeKeyResult.description"
+    />
 
     <progress-bar
       class="key-result-pane__progression"
@@ -115,6 +117,7 @@ export default {
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
     ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
+    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
     Widget: WidgetWrapper,
     WidgetProgressHistory,
     WidgetKeyResultDetails,

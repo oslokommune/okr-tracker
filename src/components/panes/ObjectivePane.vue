@@ -22,9 +22,11 @@
       {{ periodDates(period) }}
     </span>
 
-    <p v-if="activeObjective.description" class="objective-pane__description">
-      {{ activeObjective.description }}
-    </p>
+    <HTML-output
+      v-if="activeObjective.description"
+      class="objective-pane__description"
+      :html="activeObjective.description"
+    />
 
     <progress-bar
       class="objective-pane__progression"
@@ -99,6 +101,7 @@ export default {
     PaneWrapper,
     EmptyState: () => import('@/components/EmptyState.vue'),
     OkrLinkCard: () => import('@/components/OkrLinkCard.vue'),
+    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
     LoadingSmall,
     PktButton,
     ProgressBar,
