@@ -81,6 +81,17 @@ const routes = [
         component: () => import('@/views/Item/ItemOKRs.vue'),
         beforeEnter: routerGuards.itemOKRs,
         beforeRouteUpdate: routerGuards.itemOKRs,
+        children: [
+          {
+            path: 'o/:objectiveId',
+            name: 'ObjectiveHome',
+          },
+          {
+            path: 'o/:objectiveId/k/:keyResultId',
+            name: 'KeyResultHome',
+            beforeEnter: routerGuards.keyResultHome,
+          },
+        ],
       },
       {
         path: 'measurements/:kpiId?',
@@ -99,17 +110,16 @@ const routes = [
         component: () => import('@/views/ItemAdmin/ItemAdminWrapper.vue'),
         beforeEnter: routerGuards.itemAdmin,
       },
-      {
-        path: 'k/:keyResultId',
-        name: 'KeyResultHome',
-        component: () => import('@/views/KeyResultHome.vue'),
-        beforeEnter: routerGuards.keyResultHome,
-      },
+      /*
+       * Redirect old paths for objective and key result details.
+       */
       {
         path: 'o/:objectiveId',
-        name: 'ObjectiveHome',
-        component: () => import('@/views/ObjectiveHome.vue'),
-        beforeEnter: routerGuards.objectiveHome,
+        redirect: (to) => ({ name: 'ObjectiveHome', params: to.params }),
+      },
+      {
+        path: 'k/:keyResultId',
+        redirect: (to) => ({ name: 'KeyResultHome', params: to.params }),
       },
       /*
        * Aliases for `measurements` -- redirect from the old `dashboard` and

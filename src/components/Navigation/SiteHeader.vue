@@ -109,6 +109,9 @@ export default {
           route: { name: 'ItemHome' },
           label: this.$t('general.OKRsLong'),
           shortLabel: this.$t('general.OKRs'),
+          active: ['ItemHome', 'ObjectiveHome', 'KeyResultHome'].includes(
+            this.$route.name
+          ),
         },
         {
           route: { name: 'ItemMeasurements', query: { view: 'list' } },
@@ -158,7 +161,9 @@ export default {
     },
 
     showToolbar() {
-      return ['ItemHome', 'ItemMeasurements'].includes(this.$route.name);
+      return ['ItemHome', 'ObjectiveHome', 'KeyResultHome', 'ItemMeasurements'].includes(
+        this.$route.name
+      );
     },
   },
 

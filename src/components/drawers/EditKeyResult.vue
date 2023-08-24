@@ -1,16 +1,16 @@
 <template>
   <paged-drawer-wrapper
     ref="drawer"
-    :visible="visible"
+    :visible="visible && !!thisKeyResult"
     :page-count="pageCount"
     @close="close"
   >
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
-        {{ $t(keyResult ? 'admin.keyResult.change' : 'admin.keyResult.new') }}
+        {{ $t(editMode ? 'admin.keyResult.change' : 'admin.keyResult.new') }}
       </template>
       <template v-else-if="isSuccess">
-        {{ $t(keyResult ? 'keyResult.updated' : 'keyResult.created') }}
+        {{ $t(editMode ? 'keyResult.updated' : 'keyResult.created') }}
       </template>
       <template v-else>{{ $t('toaster.error.save') }}</template>
     </template>
@@ -22,7 +22,7 @@
             v-model="thisKeyResult.name"
             input-type="textarea"
             name="name"
-            :disabled="keyResult?.archived"
+            :disabled="thisKeyResult?.archived"
             :rows="2"
             :label="$t('fields.name')"
             rules="required"
@@ -31,7 +31,7 @@
             v-model="thisKeyResult.description"
             input-type="textarea"
             name="description"
-            :disabled="keyResult?.archived"
+            :disabled="thisKeyResult?.archived"
             :rows="2"
             :label="$t('fields.description')"
           />
@@ -79,7 +79,7 @@
           </div>
         </template>
 
-        <template v-if="!keyResult?.archived" #actions="{ handleSubmit }">
+        <template v-if="!thisKeyResult?.archived" #actions="{ handleSubmit }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
@@ -112,7 +112,7 @@
             {{ $t('btn.back') }}
           </pkt-button>
         </template>
-        <template v-else-if="!keyResult">
+        <template v-else-if="!thisKeyResult.id">
           <pkt-button skin="tertiary" @onClick="close">
             {{ $t('btn.close') }}
           </pkt-button>
@@ -130,9 +130,9 @@
     </template>
 
     <template #footer="{ isDone }">
-      <template v-if="keyResult && !isDone">
+      <template v-if="editMode && !isDone">
         <archived-restore
-          v-if="keyResult.archived"
+          v-if="thisKeyResult.archived"
           :restore="restore"
           :object-type="$t('archived.keyResult')"
         />
@@ -240,17 +240,38 @@ export default {
 
       return [this.thisLevelOption, ...childrenOptions];
     },
+    editMode() {
+      return !!this.thisKeyResult?.id;
+    },
   },
 
   watch: {
     visible: {
       immediate: true,
       async handler(visible) {
-        if (!visible) {
-          this.thisKeyResult = null;
+        this.thisKeyResult = null;
+        if (visible) {
+          this.$refs.drawer.reset();
+        }
+
+        if (!this.keyResult) {
+          this.thisKeyResult = {
+            unit: 'prosent',
+            startValue: 0,
+            targetValue: 100,
+          };
           return;
         }
-        this.thisKeyResult = this.keyResult ? { ...this.keyResult } : {};
+
+        this.loading = true;
+        db.collection('keyResults')
+          .doc(this.keyResult.id)
+          .get()
+          .then((snapshot) => {
+            this.thisKeyResult = snapshot.data();
+            this.thisKeyResult.id = this.keyResult.id;
+            this.loading = false;
+          });
       },
     },
     // thisLevel: {
@@ -287,16 +308,22 @@ export default {
             parent,
           };
 
-          if (this.keyResult) {
-            await KeyResult.update(this.keyResult.id, data);
+          if (this.thisKeyResult?.id) {
+            await KeyResult.update(this.thisKeyResult.id, data);
+            this.$emit('update', this.thisKeyResult);
           } else {
-            await KeyResult.create({
+            const objectiveRef = db.collection('objectives').doc(this.objective.id);
+            const { id } = await KeyResult.create({
               ...data,
-              objective: db.collection('objectives').doc(this.objective.id),
+              objective: objectiveRef,
             });
+            this.thisKeyResult.id = id;
+            this.thisKeyResult.objective = objectiveRef;
+            this.$emit('create', this.thisKeyResult);
           }
           this.$refs.drawer.next();
         } catch (error) {
+          console.log(error);
           this.$refs.drawer.next(false);
           this.$toasted.error(this.$t('toaster.error.save'));
         }
@@ -308,10 +335,12 @@ export default {
     async archive() {
       this.loading = true;
       try {
-        await KeyResult.archive(this.keyResult.id);
+        await KeyResult.archive(this.thisKeyResult.id);
+        this.thisKeyResult.archived = true;
+        this.$emit('archive', this.thisKeyResult);
       } catch (error) {
         this.$toasted.error(
-          this.$t('toaster.error.archive', { document: this.keyResult.name })
+          this.$t('toaster.error.archive', { document: this.thisKeyResult.name })
         );
       }
       this.loading = false;
@@ -319,10 +348,12 @@ export default {
 
     async restore() {
       try {
-        await KeyResult.restore(this.keyResult.id);
+        await KeyResult.restore(this.thisKeyResult.id);
+        this.thisKeyResult.archived = false;
+        this.$emit('restore', this.thisKeyResult);
       } catch {
         this.$toasted.error(
-          this.$t('toaster.error.restore', { document: this.keyResult.id })
+          this.$t('toaster.error.restore', { document: this.thisKeyResult.id })
         );
       }
     },

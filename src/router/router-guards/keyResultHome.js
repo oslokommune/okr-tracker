@@ -1,13 +1,24 @@
-import store from '@/store';
+import { db } from '@/config/firebaseConfig';
 
 export default async function keyResultHome(to, from, next) {
-  const { keyResultId } = to.params;
+  const { objectiveId, keyResultId } = to.params;
 
-  try {
-    await store.dispatch('set_active_key_result', keyResultId);
+  if (!objectiveId) {
+    // Look up objective id from key result if redirected legacy
+    // key result paths.
+    try {
+      const keyRes = await db.collection('keyResults').doc(keyResultId).get();
+      next({
+        name: 'KeyResultHome',
+        params: {
+          ...to.params,
+          objectiveId: keyRes.data().objective.id,
+        },
+      });
+    } catch {
+      next({ name: 'ItemHome', params: to.params });
+    }
+  } else {
     next();
-  } catch (error) {
-    console.error(error);
-    next(false);
   }
 }
