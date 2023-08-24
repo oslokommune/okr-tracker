@@ -6,6 +6,7 @@ import { sortByLocale } from '@/store/actions/actionUtils';
 
 import defaultPreferences from '@/db/User/defaultPreferences';
 import moduleActions from './actions';
+import okrsModule from './modules/okrs';
 
 Vue.use(Vuex);
 
@@ -134,20 +135,6 @@ export const storeGetters = {
       id: o.id,
     }));
   },
-
-  /**
-   * Return selected objectives for `state.activeItem`.
-   */
-  selectedObjectives: (state, getters) => {
-    if (!state.activeItem || !state.selectedObjectives) {
-      return [];
-    }
-    const objectiveIds = state.selectedObjectives[state.activeItem.id] || [];
-    if (!objectiveIds.length) {
-      return [];
-    }
-    return getters.objectivesWithID.filter((o) => objectiveIds.includes(o.id));
-  },
 };
 
 export const actions = {
@@ -179,15 +166,6 @@ export const actions = {
   setSelectedPeriod: async ({ commit }, payload) => {
     commit('SET_SELECTED_PERIOD', payload);
     return true;
-  },
-
-  setSelectedObjective: async ({ commit, state }, objective) => {
-    if (state.activeItem) {
-      commit('SET_SELECTED_OBJECTIVE', {
-        itemId: state.activeItem.id,
-        objectiveId: objective?.id,
-      });
-    }
   },
 
   setActiveOrganization: async ({ commit, dispatch, state }, orgId) => {
@@ -234,26 +212,6 @@ export const mutations = {
     state.selectedPeriod = payload;
   },
 
-  SET_SELECTED_OBJECTIVE(state, { itemId, objectiveId }) {
-    if (Object.hasOwnProperty.call(state.selectedObjectives, itemId)) {
-      const objectives = state.selectedObjectives[itemId];
-
-      if (objectiveId && objectives.includes(objectiveId)) {
-        Vue.set(
-          state.selectedObjectives,
-          itemId,
-          objectives.filter((id) => id !== objectiveId)
-        );
-      } else if (objectiveId) {
-        objectives.push(objectiveId);
-      } else {
-        Vue.delete(state.selectedObjectives, itemId);
-      }
-    } else {
-      Vue.set(state.selectedObjectives, itemId, [objectiveId]);
-    }
-  },
-
   SET_HOME_ORGANIZATION(state, orgSlug) {
     if (!state.user.preferences) {
       state.user.preferences = defaultPreferences;
@@ -263,6 +221,9 @@ export const mutations = {
 };
 
 export default new Vuex.Store({
+  modules: {
+    okrs: okrsModule,
+  },
   state: {
     user: null,
     users: [],
@@ -271,9 +232,7 @@ export default new Vuex.Store({
     products: [],
     activeItem: null,
     activeItemRef: null,
-    activeKeyResult: null,
     activePeriod: null,
-    activeObjective: null,
     periods: [],
     objectives: [],
     kpis: [],
@@ -284,7 +243,6 @@ export default new Vuex.Store({
     loginLoading: false,
     dataLoading: false,
     selectedPeriod: null,
-    selectedObjectives: {},
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},
