@@ -7,6 +7,7 @@
   >
     <template #actions>
       <pkt-button
+        v-if="hasEditRights"
         v-tooltip="$t('btn.updateObjective')"
         skin="tertiary"
         variant="icon-only"
@@ -34,6 +35,7 @@
     <div class="objective-pane__key-results-header" data-mode="dark">
       <h3>{{ $t('general.keyResults') }}</h3>
       <pkt-button
+        v-if="hasEditRights"
         v-tooltip="$t('btn.createKeyResult')"
         :text="$t('btn.createKeyResult')"
         skin="primary"
@@ -70,18 +72,25 @@
         :body="$t('empty.noKeyResults.body')"
       />
     </div>
+
+    <div class="objective-pane__widgets">
+      <widget-weights v-if="keyResults.length" :objective="activeObjective" />
+      <widget-objective-details />
+    </div>
   </pane-wrapper>
 </template>
 
 <script>
 import { format } from 'd3-format';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { dateLong, periodDates } from '@/util';
 import { db } from '@/config/firebaseConfig';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import ProgressBar from '@/components/ProgressBar.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
+import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
+import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 
 export default {
   name: 'ObjectivePane',
@@ -93,6 +102,8 @@ export default {
     LoadingSmall,
     PktButton,
     ProgressBar,
+    WidgetWeights,
+    WidgetObjectiveDetails,
   },
 
   data: () => ({
@@ -102,6 +113,7 @@ export default {
 
   computed: {
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
+    ...mapGetters(['hasEditRights']),
 
     period() {
       if (this.activeObjective.startDate && this.activeObjective.endDate) {
@@ -183,6 +195,15 @@ export default {
 
   &__key-results > .okr-link-card {
     margin-bottom: 1rem;
+  }
+
+  &__widgets {
+    margin-top: 2rem;
+
+    ::v-deep .widget {
+      border: 0;
+      padding: 0;
+    }
   }
 }
 </style>

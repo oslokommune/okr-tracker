@@ -72,6 +72,16 @@
       {{ $t('keyResult.autoError') }} {{ activeKeyResult.error }}
     </pkt-alert>
 
+    <div class="key-result-pane__widgets">
+      <!--
+        Hide notes widget for now. This one needs work separately. We give the
+        impression that these notes are secret to the team, which is really not
+        the case currently.
+      -->
+      <!-- <widget-key-result-notes /> -->
+      <widget-key-result-details />
+    </div>
+
     <progress-modal
       v-if="showValueModal"
       @create-record="createHistoryRecord"
@@ -93,6 +103,8 @@ import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
+// import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
+import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 
@@ -105,6 +117,8 @@ export default {
     ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
     Widget: WidgetWrapper,
     WidgetProgressHistory,
+    WidgetKeyResultDetails,
+    // WidgetKeyResultNotes,
     PaneWrapper,
     PktButton,
     ProgressBar,
@@ -275,14 +289,16 @@ export default {
   &__values,
   &__graph {
     margin-top: 3rem;
-  }
-
-  ::v-deep .widget {
     padding: 0;
     border: 0;
+  }
 
-    h3 {
-      @include get-text('pkt-txt-18-medium');
+  &__widgets {
+    margin-top: 2rem;
+
+    ::v-deep .widget {
+      border: 0;
+      padding: 0;
     }
   }
 }

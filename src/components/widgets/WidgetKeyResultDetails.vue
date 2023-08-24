@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeKeyResult" :title="$t('general.details')" size="small">
+  <widget v-if="activeKeyResult" :title="$t('general.details')" size="small" collapsable>
     <div class="details">
       <div v-if="activeKeyResult.objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
@@ -127,7 +127,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult']),
+    ...mapState('okrs', ['activeKeyResult']),
     createdBy() {
       return (
         this.activeKeyResult.createdBy.displayName || this.activeKeyResult.createdBy.id
