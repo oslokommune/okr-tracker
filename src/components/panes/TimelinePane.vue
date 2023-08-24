@@ -1,0 +1,64 @@
+<template>
+  <pane-wrapper :title="$t('general.OKRsLong')" class="timeline-pane">
+    <template #actions>
+      <div v-if="hasEditRights" data-mode="dark">
+        <pkt-button
+          v-tooltip="$t('btn.createObjective')"
+          :text="$t('btn.createObjective')"
+          skin="primary"
+          size="small"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="$emit('add-objective')"
+        />
+      </div>
+    </template>
+
+    <gantt-chart
+      :objectives="objectivesWithKeyResults"
+      :period="selectedPeriod"
+      :loading="dataLoading"
+    />
+  </pane-wrapper>
+</template>
+
+<script>
+import { mapGetters, mapState } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
+import PaneWrapper from '@/components/panes/PaneWrapper.vue';
+import GanttChart from '@/components/GanttChart.vue';
+
+export default {
+  name: 'TimelinePane',
+
+  components: {
+    PaneWrapper,
+    GanttChart,
+    PktButton,
+  },
+
+  computed: {
+    ...mapState(['dataLoading', 'selectedPeriod']),
+    ...mapGetters(['objectivesWithKeyResults', 'hasEditRights']),
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.timeline-pane {
+  ::v-deep .pane__inner {
+    height: 100%;
+    padding: 0;
+  }
+
+  ::v-deep .pane__header {
+    padding: 1.5rem;
+  }
+
+  ::v-deep .pane__body {
+    flex: 1 0 auto;
+    height: 0;
+    padding: 0;
+  }
+}
+</style>

@@ -184,7 +184,6 @@
     "keyResults": "Key results",
     "success": "Success",
     "objective": "Objective",
-    "selectedObjectives": "Selected objectives",
     "selectObjectivesInPeriod": "Select all objectives in this period",
     "noObjectivesInPeriod": "No objectives in this period",
     "keyResult": "Key result",
@@ -207,7 +206,8 @@
     "newKeyResult": "New key result",
     "step": "Step {step} of {steps}",
     "or": "or",
-    "shortcuts": "Shortcuts"
+    "shortcuts": "Shortcuts",
+    "graph": "Graph"
   },
   "home": {
     "welcome": "Welcome to {appName}!",
@@ -342,9 +342,11 @@
     "description": "Description",
     "startValue": "Start value",
     "targetValue": "Target value",
+    "progression": "Progression",
     "unit": "Unit of measurement",
     "newValue": "New value",
     "editValue": "Edit value",
+    "registeredValues": "Registered values",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
       "googleSheetUrl": "Google Sheets URL",
@@ -380,7 +382,7 @@
   },
   "objective": {
     "period": "Period",
-    "progression": "Progress",
+    "progressionTitle": "Progression in percent based on the sum of key results:",
     "weight": "Weight",
     "change": "Change objective",
     "add": "Add objective",
@@ -398,6 +400,10 @@
     "all": "Everything",
     "thisQuarter": "This quarter",
     "previousQuarter": "Previous quarter"
+  },
+  "workbench": {
+    "selectedObjectives": "Selected objectives",
+    "progressionTitle": "Overall progression based on selected objectives:"
   },
   "tooltip": {
     "openMenu": "Open menu",
