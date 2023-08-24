@@ -1,11 +1,11 @@
 <template>
-  <paged-drawer-wrapper ref="drawer" :visible="visible" @close="close">
+  <paged-drawer-wrapper ref="drawer" :visible="visible && !!thisObjective" @close="close">
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
-        {{ $t(objective ? 'admin.objective.change' : 'admin.objective.new') }}
+        {{ $t(editMode ? 'admin.objective.change' : 'admin.objective.new') }}
       </template>
       <template v-else-if="isSuccess">
-        {{ $t(objective ? 'objective.updated' : 'admin.objective.created') }}
+        {{ $t(editMode ? 'objective.updated' : 'admin.objective.created') }}
       </template>
       <template v-else>{{ $t('toaster.error.save') }}</template>
     </template>
@@ -16,7 +16,7 @@
           v-model="thisObjective.name"
           input-type="textarea"
           name="name"
-          :disabled="objective?.archived"
+          :disabled="thisObjective?.archived"
           :rows="2"
           :label="$t('fields.name')"
           rules="required"
@@ -25,7 +25,7 @@
         <form-component
           v-model="thisObjective.description"
           input-type="textarea"
-          :disabled="objective?.archived"
+          :disabled="thisObjective?.archived"
           :rows="2"
           name="description"
           :label="$t('fields.description')"
@@ -35,7 +35,7 @@
           v-model="periodRange"
           input-type="date"
           name="period"
-          :disabled="objective?.archived"
+          :disabled="thisObjective?.archived"
           :label="$t('fields.period')"
           :placeholder="$t('general.selectRange')"
           :date-picker-config="flatPickerConfig"
@@ -52,10 +52,10 @@
           {{ formattedPeriod(newestObjective) }}
         </pkt-button>
 
-        <template v-if="!objective?.archived" #actions="{ handleSubmit }">
+        <template v-if="!thisObjective?.archived" #actions="{ handleSubmit }">
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
-            :label="objective ? $t('btn.updateObjective') : $t('btn.createObjective')"
+            :label="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
             :disabled="loading"
             @click="handleSubmit(save)"
@@ -78,13 +78,7 @@
           <pkt-button
             v-if="thisObjective.id"
             skin="secondary"
-            @onClick="
-              $router.push({
-                name: 'ObjectiveHome',
-                params: { objectiveId: thisObjective.id },
-                query: { createKeyResult: '1' },
-              })
-            "
+            @onClick="$emit('add-key-result')"
           >
             {{ $t('btn.createKeyResult') }}
           </pkt-button>
@@ -93,9 +87,9 @@
     </template>
 
     <template #footer="{ isDone }">
-      <template v-if="objective && !isDone">
+      <template v-if="editMode && !isDone">
         <archived-restore
-          v-if="objective.archived"
+          v-if="thisObjective.archived"
           :restore="restore"
           object-type="objective"
         />
@@ -108,7 +102,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { db } from '@/config/firebaseConfig';
 import formattedPeriod from '@/util/okr';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
@@ -166,31 +161,45 @@ export default {
 
   computed: {
     ...mapState(['activeItemRef']),
+
+    editMode() {
+      return !!this.thisObjective?.id;
+    },
   },
 
   watch: {
     visible: {
       immediate: true,
       async handler(visible) {
-        if (!visible) {
-          this.thisObjective = null;
+        this.thisObjective = null;
+        this.periodRange = null;
+        if (visible) {
+          this.$refs.drawer.reset();
+        }
+
+        if (!this.objective) {
+          this.thisObjective = {};
           this.periodRange = null;
           return;
         }
 
-        if (this.objective) {
-          this.thisObjective = { ...this.objective };
-          this.periodRange = this.getCurrentDateRange();
-        } else {
-          this.thisObjective = {};
-          this.periodRange = null;
-        }
+        this.loading = true;
+        db.collection('objectives')
+          .doc(this.objective.id)
+          .get()
+          .then((snapshot) => {
+            this.thisObjective = snapshot.data();
+            this.thisObjective.id = this.objective.id;
+            this.periodRange = this.getCurrentDateRange();
+            this.loading = false;
+          });
       },
     },
   },
 
   methods: {
     formattedPeriod,
+    ...mapActions('okrs', ['setActiveObjective', 'addWorkbenchObjective']),
 
     getCurrentDateRange() {
       if (this.thisObjective.startDate && this.thisObjective.endDate) {
@@ -212,7 +221,7 @@ export default {
         const { name, description, weight, period } = this.thisObjective;
         const [start, end] = this.periodRange;
 
-        if (this.objective) {
+        if (this.thisObjective?.id) {
           const data = {
             name,
             description: description || '',
@@ -228,7 +237,8 @@ export default {
           } else {
             data.period = period;
           }
-          await Objective.update(this.objective.id, data);
+          await Objective.update(this.thisObjective.id, data);
+          this.$emit('update', this.thisObjective);
         } else {
           const { id } = await Objective.create({
             name,
@@ -239,6 +249,7 @@ export default {
             endDate: end,
           });
           this.thisObjective.id = id;
+          this.$emit('create', this.thisObjective);
         }
         this.$refs.drawer.next();
       } catch (error) {
@@ -251,10 +262,12 @@ export default {
     async archive() {
       this.loading = true;
       try {
-        await Objective.archive(this.objective.id);
+        await Objective.archive(this.thisObjective.id);
+        this.thisObjective.archived = true;
+        this.$emit('archive', this.thisObjective);
       } catch (error) {
         this.$toasted.error(
-          this.$t('toaster.error.archive', { document: this.objective.name })
+          this.$t('toaster.error.archive', { document: this.thisObjective.name })
         );
       }
       this.loading = false;
@@ -262,10 +275,12 @@ export default {
 
     async restore() {
       try {
-        await Objective.restore(this.objective.id);
+        await Objective.restore(this.thisObjective.id);
+        this.thisObjective.archived = false;
+        this.$emit('restore', this.thisObjective);
       } catch {
         this.$toasted.error(
-          this.$t('toaster.error.restore', { document: this.objective.id })
+          this.$t('toaster.error.restore', { document: this.thisObjective.id })
         );
       }
     },
