@@ -1,5 +1,5 @@
 <template>
-  <widget :title="$t('keyResultsPage.notes.heading')" size="small">
+  <widget :title="$t('keyResultsPage.notes.heading')" size="small" collapsable>
     <div class="notes">
       <div v-if="editNotes" class="notes--margin-bottom">
         <label>
@@ -62,7 +62,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeKeyResult']),
+    ...mapState('okrs', ['activeKeyResult']),
   },
 
   watch: {
