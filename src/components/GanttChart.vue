@@ -49,28 +49,30 @@
               { 'sep__period--clickable': periodObjectives.length },
             ]"
             :style="periodStyle()"
-            @click="selectPeriodObjectives"
+            @click="periodObjectivesToWorkbench"
           ></div>
         </div>
       </div>
       <template v-if="!loading">
         <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
         <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
-          <objective-row
+          <okr-link-card
             v-for="o in group.objectives"
             :key="o.objective.id"
-            :objective="o.objective"
-            :compact="true"
+            :route="{
+              name: 'ObjectiveHome',
+              params: { objectiveId: o.objective.id },
+            }"
+            :title="o.objective.name"
+            :tabindex="o.tabindex"
+            :progression="o.objective.progression"
             :style="objectiveStyle(o)"
-            :is-link="false"
-            :class="[
-              {
-                'objective--selected': selectedObjectives
-                  .map((o) => o.id)
-                  .includes(o.objective.id),
-              },
-            ]"
-            @click="selectObjective($event, o)"
+            :active="
+              (activeObjective && activeObjective.id === o.objective.id) ||
+              workbenchObjectives.map((o) => o.id).includes(o.objective.id)
+            "
+            :before-navigate="beforeSelectObjective(o.objective)"
+            :after-navigate="afterSelectObjective"
           />
         </div>
       </template>
@@ -80,7 +82,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import {
   addMonths,
   differenceInDays,
@@ -98,7 +100,7 @@ export default {
   name: 'GanttChart',
 
   components: {
-    ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
+    OkrLinkCard: () => import('@/components/OkrLinkCard.vue'),
   },
 
   props: {
@@ -131,7 +133,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['selectedObjectives']),
+    ...mapState('okrs', ['activeObjective']),
+    ...mapGetters('okrs', ['workbenchObjectives']),
 
     minDate() {
       return min([
@@ -198,9 +201,11 @@ export default {
      * the timeline view.
      */
     groupedObjectives() {
-      return this.orderedObjectives.reduce((rows, o) => {
-        return this.placeObjective(o, rows);
-      }, []);
+      return this.orderedObjectives
+        .map((o, i) => ({ tabindex: i + 1, objective: o }))
+        .reduce((rows, o) => {
+          return this.placeObjective(o, rows);
+        }, []);
     },
 
     /**
@@ -260,7 +265,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setSelectedObjective']),
+    ...mapActions('okrs', [
+      'addWorkbenchObjective',
+      'removeWorkbenchObjective',
+      'clearWorkbenchObjectives',
+    ]),
 
     /*
      * Return the end date of the last goal in `row`.
@@ -281,8 +290,10 @@ export default {
     placeObjective(o, rows) {
       let i = 0;
 
+      const { objective } = o;
+
       while (i < rows.length) {
-        if (this.rowEndDate(rows[i]) <= this.startDate(o)) {
+        if (this.rowEndDate(rows[i]) <= this.startDate(objective)) {
           break;
         }
         i += 1;
@@ -290,14 +301,14 @@ export default {
 
       if (rows[i]) {
         rows[i].objectives.push({
-          objective: o,
+          ...o,
           /*
            * `dayDiff` is the number of days between this objective and the one
            * before it on the same row. This is used to compute the amount of
            * margin later.
            */
           dayDiff: differenceInDays(
-            endOfDay(this.startDate(o).toDate()),
+            endOfDay(this.startDate(objective).toDate()),
             startOfDay(this.rowEndDate(rows[i]).toDate())
           ),
         });
@@ -306,7 +317,7 @@ export default {
          * `dayDiff: null` means that the objective is the first one in its
          * row.
          */
-        rows[i] = { i, objectives: [{ objective: o, dayDiff: null }] };
+        rows[i] = { i, objectives: [{ ...o, dayDiff: null }] };
       }
 
       return rows;
@@ -399,21 +410,66 @@ export default {
       window.removeEventListener('mouseup', this.stopDrag);
     },
 
-    selectObjective(e, o) {
-      this.setSelectedObjective(o.objective);
-      this.$nextTick(() => {
-        e.currentTarget.scrollIntoView({
-          block: 'center',
-          inline: 'start',
-          behavior: 'smooth',
-        });
+    beforeSelectObjective(objective) {
+      return async (event) => {
+        if (event.metaKey) {
+          event.preventDefault();
+
+          if (this.activeObjective && objective.id !== this.activeObjective.id) {
+            // Add currently active objective to workbench if the next objective
+            // is selected with the modifier key.
+            await this.addWorkbenchObjective(this.activeObjective.id);
+          }
+
+          if (!this.workbenchObjectives.find((o) => o.id === objective.id)) {
+            await this.addWorkbenchObjective(objective.id);
+
+            if (this.activeObjective && objective.id !== this.activeObjective.id) {
+              await this.$router.replace({
+                name: 'ObjectiveHome',
+                params: { objectiveId: objective.id },
+              });
+            }
+          } else {
+            await this.removeWorkbenchObjective(objective.id);
+          }
+        } else if (
+          this.workbenchObjectives.length &&
+          !this.workbenchObjectives.find((o) => objective.id === o.id)
+        ) {
+          // Clear the workbench if an object is selected with the modifier key
+          // and it is not currently listed.
+          this.clearWorkbenchObjectives();
+        }
+      };
+    },
+
+    afterSelectObjective(event) {
+      const target = event.currentTarget;
+      if (!this.activeObjective) {
+        // Hack to ensure that the selected objective is scrolled into view
+        // when the pane transition first occurs. This should be solved by using
+        // transition hooks or by making the timeline canvas responsive to
+        // resizing (i.e. keeping current scroll position).
+        setTimeout(() => this.scrollTo(target), 50);
+      } else {
+        this.$nextTick(() => this.scrollTo(target));
+      }
+    },
+
+    scrollTo(target) {
+      target.scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth',
       });
     },
 
-    selectPeriodObjectives() {
+    async periodObjectivesToWorkbench() {
       this.periodObjectives
-        .filter((po) => !this.selectedObjectives.map((o) => o.id).includes(po.id))
-        .forEach(this.setSelectedObjective);
+        .filter((po) => !this.workbenchObjectives.map((o) => o.id).includes(po.id))
+        .map((o) => o.id)
+        .forEach(this.addWorkbenchObjective);
 
       this.$nextTick(() => {
         if (this.$refs.period) {
@@ -575,15 +631,9 @@ export default {
   margin: 1rem 0;
 }
 
-.objective {
+.okr-link-card {
   position: relative;
   z-index: 1;
-  background: var(--color-white);
-  border: 2px solid var(--color-border);
-
-  &--selected {
-    outline: 2px solid var(--color-hover);
-  }
 }
 
 @keyframes loading {
