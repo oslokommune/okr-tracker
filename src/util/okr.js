@@ -9,7 +9,7 @@ function formattedPeriod(objective) {
   if (startDate && endDate) {
     return periodDates({ startDate, endDate }, dateShort);
   }
-  if (period) {
+  if (period && typeof period !== 'string') {
     return `${period.name} (${periodDates(period, dateShort)})`;
   }
 
