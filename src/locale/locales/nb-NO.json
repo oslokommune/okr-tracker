@@ -184,7 +184,6 @@
     "keyResults": "Nøkkelresultater",
     "success": "Suksess",
     "objective": "Mål",
-    "selectedObjectives": "Valgte mål",
     "selectObjectivesInPeriod": "Velg alle mål i denne perioden",
     "noObjectivesInPeriod": "Ingen mål i denne perioden",
     "keyResult": "Nøkkelresultat",
@@ -207,7 +206,8 @@
     "newKeyResult": "Nytt nøkkelresultat",
     "step": "Steg {step} av {steps}",
     "or": "eller",
-    "shortcuts": "Snarveier"
+    "shortcuts": "Snarveier",
+    "graph": "Graf"
   },
   "home": {
     "welcome": "Velkommen til {appName}!",
@@ -342,9 +342,11 @@
     "description": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
+    "progression": "Progresjon",
     "unit": "Måleenhet",
     "newValue": "Ny verdi",
     "editValue": "Endre verdi",
+    "registeredValues": "Registrerte verdier",
     "automation": {
       "header": "Automatisk registrering av progresjon (Google Sheets)",
       "googleSheetUrl": "Google Sheets URL",
@@ -380,7 +382,7 @@
   },
   "objective": {
     "period": "Periode",
-    "progression": "Progresjon",
+    "progressionTitle": "Prosentvis fremdrift basert på summen av fremdrift i nøkkelresultatene:",
     "weight": "Vekt",
     "change": "Endre mål",
     "add": "Legg til mål",
@@ -398,6 +400,10 @@
     "all": "Alt",
     "thisQuarter": "Dette kvartalet",
     "previousQuarter": "Forrige kvartal"
+  },
+  "workbench": {
+    "selectedObjectives": "Valgte mål",
+    "progressionTitle": "Samlet progresjon for valgte mål i listen:"
   },
   "tooltip": {
     "openMenu": "Åpne meny",
