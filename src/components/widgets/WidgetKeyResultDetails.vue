@@ -1,27 +1,30 @@
 <template>
   <widget v-if="activeKeyResult" :title="$t('general.details')" size="small" collapsable>
     <div class="details">
-      <div v-if="activeKeyResult.objective" class="details__item">
+      <div v-if="activeObjective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
             <router-link
               :to="{
                 name: 'ObjectiveHome',
-                params: { objectiveId: activeKeyResult.objective.id },
+                params: { objectiveId: activeObjective.id },
               }"
             >
-              {{ activeKeyResult.objective.name }}
+              {{ activeObjective.name }}
             </router-link>
           </div>
         </div>
       </div>
 
-      <div v-if="formattedPeriod(activeKeyResult.objective)" class="details__item">
+      <div
+        v-if="activeObjective && formattedPeriod(activeObjective)"
+        class="details__item"
+      >
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
-            {{ formattedPeriod(activeKeyResult.objective) }}
+            {{ formattedPeriod(activeObjective) }}
           </div>
         </div>
       </div>
@@ -127,7 +130,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('okrs', ['activeKeyResult']),
+    ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
     createdBy() {
       return (
         this.activeKeyResult.createdBy.displayName || this.activeKeyResult.createdBy.id
