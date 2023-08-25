@@ -249,11 +249,7 @@ export default {
         }
 
         if (!this.keyResult) {
-          this.thisKeyResult = {
-            unit: 'prosent',
-            startValue: 0,
-            targetValue: 100,
-          };
+          this.thisKeyResult = {};
           return;
         }
 

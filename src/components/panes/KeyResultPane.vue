@@ -300,8 +300,8 @@ export default {
     margin-top: 2rem;
 
     ::v-deep .widget {
-      border: 0;
       padding: 0;
+      border: 0;
     }
   }
 }
