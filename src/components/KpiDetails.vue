@@ -152,8 +152,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.kpi-details {
-  margin-left: 3rem;
+@include bp('laptop-up') {
+  .kpi-details {
+    margin-left: 3rem;
+  }
 }
 
 .kpi-details__header {
