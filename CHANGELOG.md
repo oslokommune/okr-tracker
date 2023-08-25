@@ -36,6 +36,12 @@ All notable changes to this project will be documented in this file. The format 
 - Progression values are now required to be positive on entry, both from the web
   interface and from the API.
 - The design of the period selector has been refreshed.
+- Detail views for both objectives and key results are now shown as panes in the
+  OKR timeline view. The number of simultaneously visible panes depends on the
+  viewport size (and is otherwise stacked). Clicking objectives in the timeline
+  now toggles the detail pane rather than adding objectives to a list. To group
+  objectives in a list (and see combined progression), the meta key must now be
+  pressed while selecing one or more objectives.
 
 ### Removed
 
