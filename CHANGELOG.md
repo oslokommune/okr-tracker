@@ -39,6 +39,9 @@ All notable changes to this project will be documented in this file. The format 
   sorting).
 - Fixed the API base URL on the API spec page.
 - Fixed outside click detection for dropdown menus.
+- Regular team members are now also allowed to update key results within ended
+  periods. This is a simplification and fixes a bug where some users couldn't
+  update key results for objectives with an individual start and end date.
 
 ### Security
 

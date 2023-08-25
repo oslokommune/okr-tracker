@@ -59,7 +59,7 @@
           </div>
         </widget>
 
-        <widget v-if="allowedToEditPeriod" class="key-result-summary__value">
+        <widget v-if="hasEditRights" class="key-result-summary__value">
           <key-result-value-form
             :key-result="activeKeyResult"
             :loading="isSaving"
@@ -175,7 +175,7 @@ export default {
       'user',
       'activeItem',
     ]),
-    ...mapGetters(['hasEditRights', 'allowedToEditPeriod']),
+    ...mapGetters(['hasEditRights']),
 
     startDate() {
       return this.activeKeyResult.objective.startDate || this.activePeriod.startDate;
@@ -272,10 +272,6 @@ export default {
     },
 
     async saveProgress(value, comment) {
-      if (!this.allowedToEditPeriod) {
-        return;
-      }
-
       this.isSaving = true;
       try {
         await Progress.create(db.collection('keyResults'), this.activeKeyResult.id, {
