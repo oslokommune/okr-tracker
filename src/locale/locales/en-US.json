@@ -206,7 +206,8 @@
     "newObjective": "New objective",
     "newKeyResult": "New key result",
     "step": "Step {step} of {steps}",
-    "or": "or"
+    "or": "or",
+    "shortcuts": "Shortcuts"
   },
   "home": {
     "welcome": "Welcome to {appName}!",

@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file. The format 
 - Upgraded to Firebase 9.
 - Progression values are now required to be positive on entry, both from the web
   interface and from the API.
+- The design of the period selector has been refreshed.
 
 ### Removed
 
