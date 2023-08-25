@@ -107,7 +107,7 @@ export default {
       if (!objectiveIds.length) {
         return [];
       }
-      return rootGetters.objectivesWithId.filter((o) => objectiveIds.includes(o.id));
+      return rootGetters.objectivesWithID.filter((o) => objectiveIds.includes(o.id));
     },
   },
 };
