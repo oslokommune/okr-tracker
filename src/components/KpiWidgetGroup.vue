@@ -1,7 +1,7 @@
 <template>
   <div :class="['kpi-widget-group', { 'kpi-widget-group--compact': compact }]">
     <div class="kpi-widget-group__title">
-      <h2>{{ title }}</h2>
+      <h2 class="pkt-txt-16">{{ title }}</h2>
       <template v-if="!compact">
         <span v-if="selectedPeriod.startDate && selectedPeriod.endDate">
           {{ $t('general.period') }}: {{ periodDates(selectedPeriod) }}
@@ -151,8 +151,6 @@ export default {
 
     h2 {
       flex-grow: 1;
-      font-weight: 400;
-      font-size: typography.$font-size-2;
     }
 
     span {
