@@ -2,7 +2,7 @@
   <div class="kpi-details">
     <header class="kpi-details__header">
       <div>
-        <h2 class="title-1">{{ kpi.name }}</h2>
+        <h2 class="pkt-txt-30">{{ kpi.name }}</h2>
         <pkt-button
           v-if="hasEditRights"
           skin="tertiary"
@@ -13,7 +13,7 @@
           {{ $t('kpi.newValue') }}
         </pkt-button>
       </div>
-      <p v-if="kpi.description" class="description">{{ kpi.description }}</p>
+      <p v-if="kpi.description" class="pkt-txt-14-light">{{ kpi.description }}</p>
     </header>
 
     <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
@@ -152,6 +152,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@include bp('laptop-up') {
+  .kpi-details {
+    margin-left: 3rem;
+  }
+}
+
 .kpi-details__header {
   gap: 0.25rem;
   margin-bottom: 1rem;
@@ -165,7 +171,7 @@ export default {
       white-space: nowrap;
     }
 
-    .title-1 {
+    h2 {
       margin: 0;
     }
 

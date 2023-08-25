@@ -2,7 +2,7 @@
   <widget>
     <div class="progressStatistics">
       <div>
-        <span class="progressStatistics__title">
+        <span class="progressStatistics__title pkt-txt-14">
           <template v-if="latestProgressRecord">
             {{
               $t('kpi.latestValueTitle', {
@@ -22,7 +22,7 @@
       </div>
 
       <div v-if="goal">
-        <span class="progressStatistics__title">
+        <span class="progressStatistics__title pkt-txt-14">
           {{
             $t('kpi.goals.goalTitle', {
               formattedDateRange: formatDateRange(goal.fromDate, goal.toDate),
@@ -154,9 +154,7 @@ export default {
   }
 
   &__title {
-    color: var(--color-grayscale-40);
-    font-weight: 500;
-    font-size: typography.$font-size-1;
+    color: var(--color-dark-blue);
   }
 
   &__value {
