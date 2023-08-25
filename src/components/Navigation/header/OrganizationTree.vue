@@ -40,7 +40,7 @@
               <li
                 v-for="prod in dept.children"
                 :key="prod.id"
-                class="organization-tree__item organization-tree__item--product"
+                class="organization-tree__item organization-tree__item--product pkt-txt-14-light"
               >
                 <router-link
                   :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
@@ -93,8 +93,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .organization-tree {
   margin: 1rem 0 0 1rem;
 
@@ -117,8 +115,7 @@ export default {
     }
 
     &--product {
-      font-weight: 300;
-      font-size: typography.$font-size-1;
+      margin: 0.25rem 0;
     }
   }
 

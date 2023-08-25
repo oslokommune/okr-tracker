@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ tabList: true, 'tabList--isFilled': isFilled }"
+    :class="{ tabList: true }"
     role="tablist"
     :aria-label="ariaLabel"
     @keydown="updateFocus"
@@ -8,7 +8,6 @@
     <div
       :class="{
         tabList__container: true,
-        'tabList__container--isFilled': isFilled,
       }"
     >
       <button
@@ -26,8 +25,6 @@
         :class="{
           tabList__button: true,
           'tabList__button--isActive': isActiveTab(index),
-          'tabList__button--isFilled': isFilled,
-          'tabList__button--isOutlined': !isFilled,
         }"
         :aria-selected="isActiveTab(index)"
         :aria-controls="tabIds.tabPanel(index)"
@@ -65,11 +62,6 @@ export default {
     tabIds: {
       type: Object,
       required: true,
-    },
-    isFilled: {
-      type: Boolean,
-      required: false,
-      default: true,
     },
   },
 
@@ -130,6 +122,7 @@ export default {
 <style lang="scss" scoped>
 .tabList {
   position: relative;
+  margin-bottom: 1.5rem;
   overflow-x: auto;
 
   &::-webkit-slider-runnable-track {
@@ -149,17 +142,10 @@ export default {
     background-color: var(--color-grayscale-70);
   }
 
-  &--isFilled {
-    margin-bottom: 1.5rem;
-  }
-
   &__container {
     display: flex;
     margin-bottom: 0.25rem;
-
-    &--isFilled {
-      border-bottom: 0.125rem solid var(--color-primary);
-    }
+    border-bottom: 0.125rem solid var(--color-primary);
   }
 
   &__button {
@@ -169,39 +155,18 @@ export default {
     padding: 0.7rem 1rem;
     font-weight: 500;
     white-space: nowrap;
+    text-decoration: none;
+    background-color: var(--color-grayscale-10);
+    border: 0;
+    cursor: pointer;
 
-    &--isFilled {
-      margin-right: 0.5rem;
-      text-decoration: none;
-      background-color: var(--color-grayscale-10);
-      border: 0;
-      cursor: pointer;
-    }
-
-    &--isFilled#{&}--isActive {
+    &#{&}--isActive {
       color: var(--color-text-secondary);
       background-color: var(--color-primary);
 
       .tabList__icon {
         --fg-color: var(--color-white);
       }
-    }
-
-    &--isOutlined {
-      color: var(--color-grayscale-50);
-      font-size: var(--font-size-1);
-      background: transparent;
-      border: none;
-
-      &:hover {
-        color: var(--color-text);
-        background: var(--color-gray-light);
-      }
-    }
-
-    &--isOutlined#{&}--isActive {
-      color: var(--color-text);
-      border-bottom: 0.25rem solid var(--color-secondary-light);
     }
   }
 

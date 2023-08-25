@@ -15,7 +15,7 @@
           </template>
         </span>
         <div>
-          <span class="progressStatistics__value">
+          <span class="progressStatistics__value pkt-txt-20-medium">
             {{ formattedKpiValue }}
           </span>
         </div>
@@ -30,7 +30,7 @@
           }}
         </span>
         <div>
-          <span class="progressStatistics__value">
+          <span class="progressStatistics__value pkt-txt-20-medium">
             {{ formatKPIValue(kpi, goal.value) }}
             <span v-if="isGoalReached" class="check-icon">
               <pkt-icon name="check-medium" />
@@ -135,8 +135,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .progressStatistics {
   display: grid;
   gap: 2rem;
@@ -161,8 +159,6 @@ export default {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    font-weight: 500;
-    font-size: typography.$font-size-4;
 
     .check-icon {
       width: 1.25rem;

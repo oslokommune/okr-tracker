@@ -2,7 +2,7 @@
   <page-layout v-if="activeObjective">
     <template #default>
       <header>
-        <span class="title-label">
+        <span class="title-label pkt-txt-16-light">
           {{ $t('general.objective') }}
         </span>
 
@@ -173,6 +173,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-label {
+  margin-bottom: 0.5rem;
+  color: var(--color-grayscale-40);
+}
+
 .objective__heading {
   display: flex;
   flex-direction: row;

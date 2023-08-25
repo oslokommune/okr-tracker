@@ -7,7 +7,7 @@
       <span class="period-trend-tag__value">
         {{ formatKPIValue(kpi, firstProgressRecord.value) }}
       </span>
-      <span class="period-trend-tag__date">
+      <span class="period-trend-tag__date pkt-txt-14">
         {{ formatDate(firstProgressRecord.timestamp) }}
       </span>
     </div>
@@ -24,7 +24,7 @@
       <span class="period-trend-tag__value">
         {{ formatKPIValue(kpi, latestProgressRecord.value) }}
       </span>
-      <span v-if="!compact" class="period-trend-tag__date">
+      <span v-if="!compact" class="period-trend-tag__date pkt-txt-14">
         {{ formatDate(latestProgressRecord.timestamp) }}
       </span>
     </div>
@@ -117,7 +117,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .period-trend-tag {
   display: flex;
@@ -130,13 +130,13 @@ export default {
   white-space: nowrap;
 
   @include bp('phablet-up') {
-    font-size: typography.$font-size-5;
+    @include get-text('pkt-txt-24');
   }
 
   &__value-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.375rem;
     text-align: center;
   }
 
@@ -146,7 +146,6 @@ export default {
 
   &__date {
     color: var(--color-grayscale-40);
-    font-size: typography.$font-size-1;
   }
 
   &__trend {
@@ -193,8 +192,8 @@ export default {
   }
 
   &--compact {
+    @include get-text('pkt-txt-18');
     justify-content: flex-start;
-    font-size: typography.$font-size-3;
 
     .period-trend-tag__trend {
       order: 1;

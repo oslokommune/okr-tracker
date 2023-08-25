@@ -1,4 +1,4 @@
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .tooltip {
   z-index: 10000;
@@ -6,12 +6,10 @@
   pointer-events: none;
 
   .tooltip-inner {
+    @include get-text('pkt-txt-14-medium');
     max-width: 14rem;
     padding: 1em;
     color: var(--color-text-secondary);
-    font-weight: 500;
-    font-size: typography.$font-size-1;
-    line-height: 1.225rem;
     background: var(--color-primary);
   }
 

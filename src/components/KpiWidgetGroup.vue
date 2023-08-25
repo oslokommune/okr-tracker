@@ -3,10 +3,15 @@
     <div class="kpi-widget-group__title">
       <h2 class="pkt-txt-16">{{ title }}</h2>
       <template v-if="!compact">
-        <span v-if="selectedPeriod.startDate && selectedPeriod.endDate">
+        <span
+          v-if="selectedPeriod.startDate && selectedPeriod.endDate"
+          class="pkt-txt-14"
+        >
           {{ $t('general.period') }}: {{ periodDates(selectedPeriod) }}
         </span>
-        <span v-else>{{ $t('general.period') }}: {{ selectedPeriod.label }}</span>
+        <span v-else class="pkt-txt-14"
+          >{{ $t('general.period') }}: {{ selectedPeriod.label }}
+        </span>
         <pkt-button
           v-if="!rendering && kpis.length"
           size="small"
@@ -134,7 +139,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .kpi-widget-group {
   display: flex;
@@ -151,10 +156,6 @@ export default {
 
     h2 {
       flex-grow: 1;
-    }
-
-    span {
-      font-size: typography.$font-size-1;
     }
   }
 
@@ -211,7 +212,7 @@ export default {
     margin-bottom: 1rem;
 
     .kpi-widget-group__title h2 {
-      font-size: typography.$font-size-1;
+      @include get-text('pkt-txt-14');
     }
   }
 }

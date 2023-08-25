@@ -19,7 +19,7 @@
             @input="(value) => (updatedValue = value)"
           >
             <template #sub>
-              <span v-if="updatedValue" class="display-as">
+              <span v-if="updatedValue" class="display-as pkt-txt-14-medium">
                 {{ $t('general.displayedAs') }}
                 {{ formatKPIValue(kpi, displayValue) }}
               </span>

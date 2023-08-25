@@ -3,11 +3,12 @@
 //  https://punkt.oslo.kommune.no/3.1/komponenter/select/
 //  https://vue-select.org/guide/css.html#available-css-variables-3-18
 
-@use 'typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 @import 'vue-select/dist/vue-select';
 
 :root {
-  --vs-font-size: typography.$font-size-2;
+  --vs-font-size: 16px;
   --vs-border-color: var(--color-blue-dark);
   --vs-border-width: 2px;
   --vs-border-radius: 0;
@@ -75,11 +76,10 @@
   &.vs--multiple {
     .vs__selected {
       // Style inspired by the Punkt badge/label.
+      @include get-text('pkt-txt-14-medium');
       height: 2.125rem; // 34px
       margin: 4px 4px 0 ;
       padding: 0.25rem 0.5rem;
-      font-weight: 500;
-      font-size: typography.$font-size-1;
       background-color: var(--color-beige-light);
       border: 0;
 

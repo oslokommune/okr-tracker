@@ -1,5 +1,5 @@
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 @use 'range-slider' as *;
-@use 'typography';
 
 /*
   Some Punkt elements, e.g. inputs, check- and radio-buttons, are still marked
@@ -43,11 +43,9 @@
 
   .pkt-badge {
     // Align badges, used to indicate optional form fields, with Figma design.
+    @include get-text('pkt-txt-14-light');
     height: auto;
     padding: 0.125rem 0.5rem;
-    font-weight: 300;
-    font-size: typography.$font-size-1;
-    line-height: 1.375rem; // 22px
   }
 }
 
@@ -139,15 +137,15 @@
   margin: 1.5rem 0;
 
   &__list {
-    font-size: typography.$font-size-1;
+    @include get-text('pkt-txt-14-light');
     list-style: square;
 
     > li {
       margin: 0 1.5rem;
 
       > span:first-child {
+        @include get-text('pkt-txt-14-medium');
         margin-right: 0.5rem;
-        font-weight: 500;
       }
     }
   }
