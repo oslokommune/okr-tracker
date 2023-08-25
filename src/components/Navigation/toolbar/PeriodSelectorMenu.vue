@@ -9,7 +9,7 @@
       <period-selector
         v-model="period"
         :options="_predefinedPeriods"
-        :months="2"
+        :max-months="3"
         class="period-selector-menu__dropdown"
         @input="close"
       />

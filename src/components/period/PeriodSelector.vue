@@ -1,8 +1,6 @@
 <template>
   <div class="period-selector">
-    <h2 class="pkt-txt-18-medium">
-      {{ $t('period.choosePeriod') }}
-    </h2>
+    <h2 class="pkt-txt-18-medium">{{ $t('period.choosePeriod') }}</h2>
     <flat-pickr
       :value="range"
       :config="calendarConfig"
@@ -54,12 +52,16 @@ export default {
       required: false,
       default: () => [],
     },
-    months: {
+    maxMonths: {
       type: Number,
       required: false,
       default: 1,
     },
   },
+
+  data: () => ({
+    showMonths: 1,
+  }),
 
   computed: {
     range() {
@@ -77,9 +79,15 @@ export default {
         mode: 'range',
         minDate: null,
         maxDate: null,
-        showMonths: this.months,
+        showMonths: this.showMonths,
       };
     },
+  },
+
+  mounted() {
+    const calculatedMonthLimit = Math.floor(window.innerWidth / 380);
+    this.showMonths =
+      this.maxMonths > calculatedMonthLimit ? calculatedMonthLimit : this.maxMonths;
   },
 
   methods: {
