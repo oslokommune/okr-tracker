@@ -311,10 +311,6 @@ export default {
 .key-result-summary {
   grid-template-columns: 1fr;
 
-  @include bp('tablet-up') {
-    grid-template-columns: 1fr 20rem;
-  }
-
   &__progress {
     height: 100%;
 
@@ -336,6 +332,19 @@ export default {
       textarea {
         resize: vertical;
       }
+    }
+  }
+
+  @include bp('tablet-up') {
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+
+    .key-result-summary__progress {
+      grid-column: span 7;
+    }
+
+    .key-result-summary__value {
+      grid-column: span 5;
     }
   }
 }
