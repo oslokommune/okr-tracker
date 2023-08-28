@@ -55,6 +55,7 @@
           :options="selectOptions"
           :clearable="selectClearable"
           :reduce="selectReduce"
+          :disabled="disabled"
           :data-cy="dataCy"
           :append-to-body="true"
           @input="$emit('select', $event)"

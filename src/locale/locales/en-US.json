@@ -411,6 +411,10 @@
     "copyToClipboard": "Copy to the clipboard"
   },
   "admin": {
+    "item": {
+      "change": "Edit {name}",
+      "updated": "{name} was updated!"
+    },
     "objective": {
       "new": "New objective",
       "created": "Objective was created!",
@@ -525,7 +529,10 @@
     "heading": "Archived",
     "body": {
       "objective": "This objective is archived and is no longer shown in the list of objectives.",
-      "keyResult": "This key result is archived and is no longer shown in the list of key results."
+      "keyResult": "This key result is archived and is no longer shown in the list of key results.",
+      "organization": "This organization is archived and no longer visible.",
+      "department": "This department is archived and no longer visible.",
+      "product": "This product is archived and no longer visible."
     },
     "restoreText": "If you miss it, just restore it."
   },
