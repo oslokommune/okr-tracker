@@ -8,8 +8,7 @@
       :tab-ids="tabIds"
     />
     <tab-panel :active-tab="activeTab" :tab-ids="tabIds">
-      <item-admin-general v-if="activeTab === 0" />
-      <item-admin-KPIs v-if="activeTab === 1" />
+      <item-admin-KPIs v-if="activeTab === 0" />
     </tab-panel>
   </page-layout>
 </template>
@@ -18,7 +17,6 @@
 import TabList from '@/components/TabList.vue';
 import TabPanel from '@/components/TabPanel.vue';
 import tabIdsHelper from '@/util/tabUtils';
-import ItemAdminGeneral from './ItemAdminGeneral.vue';
 import ItemAdminKPIs from './ItemAdminKPIs.vue';
 
 export default {
@@ -27,24 +25,18 @@ export default {
   components: {
     TabList,
     TabPanel,
-    ItemAdminGeneral,
     ItemAdminKPIs,
   },
 
   data() {
     return {
-      activeTab: this.getInitialActiveTab(),
+      activeTab: 0,
     };
   },
 
   computed: {
     tabs() {
       return [
-        {
-          icon: 'cogwheel',
-          tabName: this.$t('general.general'),
-          tooltip: null,
-        },
         {
           icon: 'graph',
           tabName: this.$t('general.KPIs'),
@@ -58,26 +50,12 @@ export default {
   },
 
   methods: {
-    getInitialActiveTab() {
-      switch (this.$route.query.tab) {
-        case 'kpi': {
-          return 1;
-        }
-        default: {
-          return 0;
-        }
-      }
-    },
     setActiveTab(tabIndex) {
-      switch (tabIndex) {
-        case 1: {
-          this.$router.push({ query: { tab: 'kpi' } });
-          break;
+      this.$router.push({ query: { tab: 'kpi' } }).catch((error) => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error;
         }
-        default: {
-          this.$router.push({ query: {} });
-        }
-      }
+      });
       this.activeTab = tabIndex;
     },
   },

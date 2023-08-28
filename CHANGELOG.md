@@ -31,6 +31,8 @@ All notable changes to this project will be documented in this file. The format 
 - Progression values are now required to be positive on entry, both from the web
   interface and from the API.
 - The design of the period selector has been refreshed.
+- Organization, deparment and product details are now edited from within the
+  current item's about page.
 
 ### Removed
 
