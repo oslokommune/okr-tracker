@@ -25,7 +25,7 @@
         v-if="activeKeyResult.archived"
         class="mt-size-16"
         :restore="restore"
-        :object-type="$t('archived.keyResult')"
+        object-type="keyResult"
       />
 
       <div class="key-result-summary widgets">

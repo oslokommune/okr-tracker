@@ -523,9 +523,11 @@
   },
   "archived": {
     "heading": "Archived",
-    "objective": "objective",
-    "keyResult": "key result",
-    "body": "This {objectType} is archived and is no longer shown in the list of {objectType}s. If you miss it, just restore it."
+    "body": {
+      "objective": "This objective is archived and is no longer shown in the list of objectives.",
+      "keyResult": "This key result is archived and is no longer shown in the list of key results."
+    },
+    "restoreText": "If you miss it, just restore it."
   },
   "sheets": {
     "infoText": "Note! The following address must be given read access to the Google Sheets document:",

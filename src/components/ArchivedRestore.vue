@@ -1,7 +1,7 @@
 <template>
   <pkt-alert :title="$t('archived.heading')" skin="warning" class="archived-alert">
     <div class="archived-alert__body">
-      <p>{{ $t('archived.body', { objectType: objectType }) }}</p>
+      <p>{{ $t(`archived.body.${objectType}`) }} {{ $t('archived.restoreText') }}</p>
 
       <pkt-button
         v-if="hasEditRights"
@@ -35,8 +35,7 @@ export default {
     },
     objectType: {
       type: String,
-      default: 'objekt',
-      required: false,
+      required: true,
     },
   },
 

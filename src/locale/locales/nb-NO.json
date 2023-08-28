@@ -523,9 +523,11 @@
   },
   "archived": {
     "heading": "Arkivert",
-    "objective": "mål",
-    "keyResult": "nøkkelresultat",
-    "body": "Dette {objectType}et er arkivert og vises ikke lenger i listen over {objectType}. Savner du det, er det bare å gjenopprette det."
+    "body": {
+      "objective": "Dette målet er arkivert og vises ikke lenger i listen over mål.",
+      "keyResult": "Dette nøkkelresultatet er arkivert og vises ikke lenger i listen over nøkkelresultater."
+    },
+    "restoreText": "Savner du det, er det bare å gjenopprette det."
   },
   "sheets": {
     "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",
