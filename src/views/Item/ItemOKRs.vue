@@ -87,6 +87,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
+import { firestoreEncode } from '@/util/firebaseUtil';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import routerGuard from '@/router/router-guards/itemOKRs';
 import PaneLayout from '@/components/layout/PaneLayout.vue';
@@ -190,7 +191,7 @@ export default {
 
       if (objectiveId) {
         if (objectiveId !== this.activeObjective?.id) {
-          await this.setActiveObjective(objectiveId);
+          await this.setActiveObjective(firestoreEncode(objectiveId));
         }
         if (!this.activeObjective) {
           this.notFoundState = true;
@@ -199,7 +200,7 @@ export default {
 
       if (this.activeObjective && keyResultId) {
         if (keyResultId !== this.activeKeyResult?.id) {
-          await this.setActiveKeyResult(keyResultId);
+          await this.setActiveKeyResult(firestoreEncode(keyResultId));
         }
         if (!this.activeKeyResult) {
           this.notFoundState = true;
