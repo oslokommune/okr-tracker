@@ -41,7 +41,7 @@ All notable changes to this project will be documented in this file. The format 
   viewport size (and is otherwise stacked). Clicking objectives in the timeline
   now toggles the detail pane rather than adding objectives to a list. To group
   objectives in a list (and see combined progression), the meta key must now be
-  pressed while selecing one or more objectives.
+  pressed while selecting one or more objectives.
 
 ### Removed
 
