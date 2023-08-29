@@ -25,6 +25,12 @@ export default {
       deep: true,
       immediate: true,
       async handler(html) {
+        dompurify.addHook('afterSanitizeAttributes', function (node) {
+          // set all elements owning target to target=_blank
+          if ('target' in node) {
+            node.setAttribute('target', '_blank');
+          }
+        });
         this.sanitizedHtml = await dompurify.sanitize(marked(html));
       },
     },

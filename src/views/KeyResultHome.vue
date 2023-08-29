@@ -16,9 +16,7 @@
             />
           </div>
         </div>
-        <p v-if="activeKeyResult.description" class="description">
-          {{ activeKeyResult.description }}
-        </p>
+        <HTML-output v-if="activeKeyResult.description" :html="activeKeyResult.description" />
       </header>
 
       <archived-restore
@@ -144,6 +142,7 @@ export default {
     PktButton,
     KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
   },
 
   beforeRouteUpdate: routerGuard,

@@ -13,7 +13,7 @@
           {{ $t('kpi.newValue') }}
         </pkt-button>
       </div>
-      <p v-if="kpi.description" class="pkt-txt-14-light">{{ kpi.description }}</p>
+      <HTML-output v-if="kpi.description" class="pkt-txt-14-light" :html="kpi.description" />
     </header>
 
     <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
@@ -55,6 +55,7 @@ export default {
   components: {
     PktButton,
     ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
+    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
     WidgetKpiProgressGraph,
     WidgetKpiProgressHistory,
     WidgetKpiProgressStats,
