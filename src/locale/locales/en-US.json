@@ -413,7 +413,9 @@
   "admin": {
     "item": {
       "change": "Edit {name}",
-      "updated": "{name} was updated!"
+      "updated": "{name} was updated!",
+      "slugChangeInfo": "When changing the name of this item, the address to it might also change. In that case you will be automatically redirected after saving the form.",
+      "redirectInfo": "You will be redirected in {count} seconds."
     },
     "objective": {
       "new": "New objective",

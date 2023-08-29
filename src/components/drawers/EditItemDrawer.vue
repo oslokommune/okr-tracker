@@ -26,12 +26,15 @@
             :label="$t('fields.name')"
             rules="required"
           />
+          <pkt-alert v-if="thisItem.name !== item.name" skin="info" class="mb-size-16">
+            {{ $t('admin.item.slugChangeInfo', { name: item.name }) }}
+          </pkt-alert>
           <form-component
             v-model="thisItem.missionStatement"
             input-type="textarea"
             name="missionStatement"
             :disabled="thisItem?.archived"
-            :rows="6"
+            :rows="5"
             :label="$t('fields.missionStatement')"
             rules="required"
           />
@@ -40,7 +43,7 @@
             input-type="textarea"
             name="targetAudience"
             :disabled="thisItem?.archived"
-            :rows="6"
+            :rows="4"
             :label="$t('dashboard.targetAudience')"
           />
         </template>
@@ -125,6 +128,12 @@
       </form-section>
     </template>
 
+    <template #done>
+      <em v-if="redirectTimer">
+        {{ $t('admin.item.redirectInfo', { count: redirectCounter }) }}
+      </em>
+    </template>
+
     <template #footer="{ isDone }">
       <template v-if="!isDone">
         <archived-restore
@@ -146,7 +155,7 @@ import Organization from '@/db/Organization';
 import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
@@ -155,6 +164,7 @@ export default {
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    PktAlert,
     PktButton,
     PagedDrawerWrapper,
     FormSection,
@@ -179,6 +189,8 @@ export default {
     thisItem: null,
     pageCount: 2,
     loading: false,
+    redirectCounter: 3,
+    redirectTimer: null,
   }),
 
   computed: {
@@ -202,11 +214,32 @@ export default {
       async handler(visible) {
         if (visible) {
           this.$refs.drawer.reset();
+          this.redirectTimer = null;
+          this.redirectCounter = 3;
         }
+
         this.loading = true;
         this.thisItem = { ...this.item };
         this.loading = false;
       },
+    },
+
+    item(item, prevItem) {
+      // Watch for slug changes and redirect if needed.
+      if (item.id === prevItem.id && item.slug !== prevItem.slug && !this.redirectTimer) {
+        this.redirectTimer = setInterval(() => {
+          this.redirectCounter -= 1;
+          if (this.redirectCounter === 0) {
+            clearInterval(this.redirectTimer);
+            const { name, params, query } = this.$route;
+            this.$router.replace({
+              name,
+              params: { ...params, slug: item.slug },
+              query,
+            });
+          }
+        }, 1000);
+      }
     },
   },
 
@@ -220,14 +253,14 @@ export default {
         this.loading = true;
 
         try {
-          const { id, name, missionStatement, targetAudience, secret } = this.thisItem;
+          const { id: itemId } = this.item;
+          const { name, missionStatement, targetAudience, secret } = this.thisItem;
 
           const team = this.thisItem.team.map((user) =>
             db.collection('users').doc(user.id)
           );
 
           const data = {
-            id,
             name,
             team,
             missionStatement,
@@ -236,20 +269,22 @@ export default {
           };
 
           if (this.type === 'organization') {
-            await Organization.update(id, data);
+            await Organization.update(itemId, data);
           } else if (this.type === 'department') {
             const organization = await db
               .collection('organizations')
-              .doc(this.item.organization.id);
+              .doc(this.thisItem.organization.id);
 
-            await Department.update(id, {
+            await Department.update(itemId, {
               ...data,
               organization,
             });
           } else {
-            const department = db.collection('departments').doc(this.item.department.id);
+            const department = db
+              .collection('departments')
+              .doc(this.thisItem.department.id);
 
-            await Product.update(id, {
+            await Product.update(itemId, {
               ...data,
               department,
             });
