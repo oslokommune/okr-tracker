@@ -20,7 +20,10 @@
           </div>
         </div>
         <div class="objective__description">
-          <HTML-output v-if="activeObjective.description" :html="activeObjective.description" />
+          <HTML-output
+            v-if="activeObjective.description"
+            :html="activeObjective.description"
+          />
           <div
             v-if="hasEditRights && !activeObjective.archived"
             data-mode="dark"

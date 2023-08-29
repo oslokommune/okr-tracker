@@ -13,7 +13,11 @@
           {{ $t('kpi.newValue') }}
         </pkt-button>
       </div>
-      <HTML-output v-if="kpi.description" class="pkt-txt-14-light" :html="kpi.description" />
+      <HTML-output
+        v-if="kpi.description"
+        class="pkt-txt-14-light"
+        :html="kpi.description"
+      />
     </header>
 
     <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />

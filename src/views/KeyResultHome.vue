@@ -16,7 +16,10 @@
             />
           </div>
         </div>
-        <HTML-output v-if="activeKeyResult.description" :html="activeKeyResult.description" />
+        <HTML-output
+          v-if="activeKeyResult.description"
+          :html="activeKeyResult.description"
+        />
       </header>
 
       <archived-restore
