@@ -78,10 +78,7 @@ export default {
 
   computed: {
     show() {
-      if (!this.collapsable) {
-        return true;
-      }
-      return this.isCollapsed;
+      return !this.collapsable || this.isCollapsed;
     },
   },
 
