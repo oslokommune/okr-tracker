@@ -22,7 +22,7 @@
       {{ periodDates(period) }}
     </span>
 
-    <p v-if="activeObjective.description" class="objective-pane__description">
+    <p v-if="activeObjective.description" class="pkt-txt-18-light">
       {{ activeObjective.description }}
     </p>
 
@@ -33,7 +33,7 @@
     />
 
     <div class="objective-pane__key-results-header" data-mode="dark">
-      <h3>{{ $t('general.keyResults') }}</h3>
+      <h3 class="pkt-txt-18-medium">{{ $t('general.keyResults') }}</h3>
       <pkt-button
         v-if="hasEditRights"
         v-tooltip="$t('btn.createKeyResult')"
@@ -163,8 +163,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
 .objective-pane {
   &__period {
     display: flex;
@@ -174,16 +172,8 @@ export default {
     --fg-color: var(--color-grayscale-40);
   }
 
-  &__description {
-    @include get-text('pkt-txt-18-light');
-  }
-
   &__progression {
     margin-top: 1rem;
-  }
-
-  h3 {
-    @include get-text('pkt-txt-18-medium');
   }
 
   &__key-results-header {

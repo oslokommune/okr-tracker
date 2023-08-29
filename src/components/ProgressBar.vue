@@ -1,6 +1,6 @@
 <template>
   <div class="progress-bar">
-    <h4 v-if="title" class="progress-bar__title">{{ title }}</h4>
+    <h4 v-if="title" class="pkt-txt-14-medium">{{ title }}</h4>
     <div class="progress-bar__bar">
       <span class="progress-bar__label" :style="progressLabelStyle">
         {{ formattedPercent }}
@@ -80,10 +80,6 @@ export default {
 
 .progress-bar {
   width: 100%;
-
-  &__title {
-    @include get-text('pkt-txt-14-medium');
-  }
 
   &__bar {
     position: relative;

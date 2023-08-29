@@ -26,7 +26,7 @@
       :object-type="$t('archived.keyResult')"
     />
 
-    <p v-if="activeKeyResult.description" class="key-result-pane__description">
+    <p v-if="activeKeyResult.description" class="pkt-txt-18-light">
       {{ activeKeyResult.description }}
     </p>
 
@@ -278,10 +278,6 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .key-result-pane {
-  &__description {
-    @include get-text('pkt-txt-18-light');
-  }
-
   &__progression {
     margin-top: 1rem;
   }
