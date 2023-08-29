@@ -5,7 +5,7 @@
       :href="href"
       @click="activate($event, navigate)"
     >
-      <div class="okr-link-card__title">
+      <div class="okr-link-card__title pkt-txt-16-medium">
         <span>{{ title }}</span>
       </div>
 
@@ -66,8 +66,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
 .okr-link-card {
   display: flex;
   flex-direction: column;
@@ -92,7 +90,6 @@ export default {
     flex-grow: 1;
     align-items: center;
     padding: 0.5rem 1rem 0 1rem;
-    @include get-text('pkt-txt-16-medium');
   }
 }
 </style>

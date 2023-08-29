@@ -281,10 +281,6 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .key-result-pane {
-  &__description {
-    @include get-text('pkt-txt-18-light');
-  }
-
   &__progression {
     margin-top: 1rem;
   }

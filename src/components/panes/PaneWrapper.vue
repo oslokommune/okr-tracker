@@ -2,7 +2,7 @@
   <div class="pane">
     <div class="pane__inner">
       <div class="pane__header">
-        <h1>{{ title }}</h1>
+        <h1 class="pkt-txt-20-medium">{{ title }}</h1>
 
         <div class="pane__buttons">
           <slot name="actions" />
@@ -49,8 +49,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
 .pane {
   &__inner {
     display: flex;
@@ -64,10 +62,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    h1 {
-      @include get-text('pkt-txt-20-medium');
-    }
   }
 
   &__buttons {
