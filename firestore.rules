@@ -69,7 +69,9 @@ service cloud.firestore {
       return userIsTeamMember;
     }
 
-    // Is a member from the parent of the Objective/KeyResult/Period/KPI
+    /**
+     * Return true if the current user is a member of `document.parent`.
+     */
     function isMemberOfParent(document, type) {
       let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
       let doc = getAfter(/databases/$(database)/documents/$(type)/$(document));
@@ -149,9 +151,6 @@ service cloud.firestore {
 
     match /periods/{document} {
       allow read: if isSignedIn();
-      allow create: if isSuperAdmin() || isMemberOfParent(document, 'periods') || isAdminOfParent(document, 'periods');
-      allow update: if isSuperAdmin() || isMemberOfParent(document, 'periods') || isAdminOfParent(document, 'periods');
-      allow delete: if isSuperAdmin();
     }
 
     match /kpis/{document} {
