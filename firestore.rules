@@ -39,19 +39,28 @@ service cloud.firestore {
       return isSignedIn() && (isAdminOfOrg || isAdminFromOrgOfProdOrDep);
     }
 
-    // Same as isMemberOfParent but to check if you are an admin instead of the organization the parent is a part of
+    /**
+     * Return true if the current user is an admin of the organization that
+     * `document` belongs to.
+     *
+     * The document can belong to an organization either by a transitive link
+     * (`document` → `parent` → `organization`) or directly
+     * (`document` → `parent`).
+     */
     function isAdminOfParent(document, type) {
       let userDoc = getUserDoc();
       let userIsAdmin = isAdmin();
+      let item = getAfter(/databases/$(database)/documents/$(type)/$(document));
+      let parentDoc = getAfter(item.data.parent);
 
-      let parentDoc = getAfter(get(/databases/$(database)/documents/$(type)/$(document)).data.parent);
-
-      // Check if the parentDoc the user tries to access has an organization - this means that is is a product or department
+      // Check whether the parent of the document the user tries to access has
+      // an organization – this means that it is a product or department.
       let hasOrgDocumentInParent = 'organization' in parentDoc.data;
-      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgDocumentInParent && getAfter(parentDoc.data.organization).data.id in userDoc.data.admin;
+      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgDocumentInParent && getAfter(parentDoc.data.organization).id in userDoc.data.admin;
 
-      // Check if the user has access to the parentDoc which is an organization (given that the first check is false)
-      let isAdminOfParent = userIsAdmin && !isAdminFromOrgOfProdOrDep && parentDoc.data.id in userDoc.data.admin;
+      // Check whether the user has access to the parent, which is an
+      // organization (given that the first check is false).
+      let isAdminOfParent = userIsAdmin && !isAdminFromOrgOfProdOrDep && parentDoc.id in userDoc.data.admin;
 
       return isSignedIn() && (isAdminFromOrgOfProdOrDep || isAdminOfParent);
     }
@@ -164,7 +173,7 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow create: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
       allow update: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
-      allow delete: if isSuperAdmin() || isMemberOfParent(document, 'kpis') || isAdminOfParent(document, 'kpis');
+      allow delete: if isSuperAdmin();
     }
 
     match /kpis/{document}/progress/{progress} {
