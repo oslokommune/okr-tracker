@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [3.9.0] 2023-09-01
+
 ### Added
 
 - Added a shortcut to quickly select the last used period when creating a new
