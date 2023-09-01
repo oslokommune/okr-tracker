@@ -144,17 +144,6 @@ Arkiverte produktområder kan gjenopprettes av systemadministratorer fra
 - Velg det arkiverte produktområdet som skal gjenopprettes.
 - Trykk «Gjenopprett».
 
-### Hvordan beregnes progresjon?
-
-Den totale progresjonen for et produkt eller produktområde beregnes ut fra
-gjennomsnitt av progresjonen for _målene_ innenfor en periode (kvartal). Alle
-målene vektes ut fra «vekt»-verdien som er satt.
-
-Progresjonen for et nøkkelresultat er prosent av nåværende verdi sammenlignet
-med avstanden mellom start- og målverdiene. Dersom nåværende verdi er lavere enn
-startverdien blir den satt til 0 % og dersom den er passert målverdien blir
-progresjonen satt til 100 %.
-
 ---
 
 ## Produkter
@@ -194,57 +183,28 @@ Arkiverte produkter kan gjenopprettes av systemadministratorer fra
 ## Mål
 
 Et _mål_ skal være noe som ditt team ønsker å oppnå. Dette skal ikke være helt
-konkret. Mål er knyttet til en periode.
-
-### Opprette ny periode for mål
-
-- Gå til «Admin» i toppmenyen.
-- Naviger til `Mål og nøkkelresultater`-fanen.
-- Trykk `+ Opprett` i kolonnen «Vis perioder».
-- Skriv et kort og beskrivende navn for perioden (for eksempel «Q4 2020» eller
-  «Høst 2020»).
-- Velg start- og sluttdato for perioden i datovelgeren.
-- Trykk `Lagre`.
-
-Nå kan nye mål knyttes til denne perioden.
-
-Mål og nøkkelresultater for fremtidige perioder vil ikke vises til andre enn
-dine teammedlemmer og er kun tilgjengelige fra «Administrer mål og
-nøkkelresultater»-siden.
-
-### Arkivere en periode
-
-Det er mulig å arkivere en periode, men merk at tilhørende mål og
-nøkkelresultater _ikke_ vil bli arkiverte.
-
-- Gå til «Admin» i toppmenyen.
-- Naviger til `Mål og nøkkelresultater`-fanen.
-- Velg perioden som skal arkiveres.
-- Trykk `Slett`.
-
-### Kan jeg gjenbruke et tidligere mål?
-
-Det er ikke mulig å kopiere et mål over til en ny periode, men det er mulig å
-flytte et mål over fra en periode til en annen.
+konkret.
 
 ### Opprette nytt mål
 
-- Gå til «Admin» i toppmenyen.
-- Naviger til `Mål og nøkkelresultater`-fanen
-- Trykk `+ Opprett` i kolonnen «Vis mål» for valgt periode.
-- Skriv inn navn og beskrivelse.
-- Velg hvilken periode målet skal knyttes til (blir automatisk satt til valgt
-  periode).
-- Trykk `Lagre`.
+- Gå til produktet, området eller organisasjonen du ønsker å lage et nytt mål
+  for.
+- Trykk på `+ Opprett mål`-knappen øverst til høyre.
+- Skriv inn navn, beskrivelse og ønsket periode.
+- Trykk `Opprett mål`.
 
 Nå kan nye nøkkelresultater knyttes til dette målet.
 
+### Hvordan beregnes progresjon?
+
+Progresjonen for et mål er gjennomsnittet av progresjonen på de tilhørende
+nøkkelresultatene.
+
 ### Arkivere et mål
 
-- Gå til «Admin» i toppmenyen.
-- Naviger til `Mål og nøkkelresultater`-fanen.
-- Velg målet som skal arkiveres under valgt periode.
-- Trykk `Slett`.
+- Naviger til målet du ønsker å arkivere.
+- Trykk på `Endre mål`-knappen.
+- Trykk på `Slett` nederst i skuffen.
 
 ---
 
@@ -254,19 +214,10 @@ Nøkkelresultater er det du _måler_ for et spesifikt [mål](#mål).
 
 ### Opprette nytt nøkkelresultat
 
-- Gå til «Admin» i toppmenyen.
-- Naviger til `Mål og nøkkelresultater`-fanen.
-- Trykk `+ Opprett` i kolonnen «Vis nøkkelresultater» for valgt mål.
+- Naviger til målet du ønsker å opprette et nytt nøkkelresultat for.
+- Trykk `+ Opprett nøkkelresultat`.
 - Fyll inn feltene.
-- Trykk `Lagre`.
-- (Valgfritt) Sett opp [Google Sheets-integrasjon](#google-sheets-integrasjon).
-
-### Arkivere et nøkkelresultat
-
-- Gå til «Admin» i toppmenyen.
-- Naviger til `Mål og nøkkelresultater`-fanen.
-- Velg nøkkelresultatet som skal arkiveres under valgt mål.
-- Trykk `Slett`.
+- Trykk `Fortsett` og deretter `Fullfør` når du er ferdig.
 
 ### Registrere progresjon for et nøkkelresultat
 
@@ -292,6 +243,19 @@ målepunkt ved å trykke på sletteknappen på høyre side av målepunktet.
 
 På samme side kan et eksisterende målepunkt endres ved å bruke
 redigeringsknappen på høyre side av målepunktet.
+
+### Hvordan beregnes progresjon?
+
+Progresjonen for et nøkkelresultat er prosent av nåværende verdi sammenlignet
+med avstanden mellom start- og målverdiene. Dersom nåværende verdi er lavere enn
+startverdien blir den satt til 0 % og dersom den er passert målverdien blir
+progresjonen satt til 100 %.
+
+### Arkivere et nøkkelresultat
+
+- Naviger til nøkkelresultatet du ønsker å arkivere.
+- Trykk på `Rediger nøkkelresultat`-knappen.
+- Trykk på `Slett` nederst i skuffen.
 
 ---
 
