@@ -382,7 +382,7 @@
   },
   "objective": {
     "period": "Period",
-    "progressionTitle": "Progression in percent based on the sum of key results:",
+    "progressionTitle": "Objective progression:",
     "weight": "Weight",
     "change": "Change objective",
     "add": "Add objective",
