@@ -35,7 +35,7 @@ export default {
     width: 0;
     height: 100%;
     overflow: auto;
-    border-left: 1px solid var(--color-grayscale-10);
+    border-left: 1px solid var(--color-grayscale-20);
 
     &:nth-last-child(-n + 1) {
       display: block;
