@@ -19,7 +19,7 @@
       />
     </div>
 
-    <p v-if="activeObjective.description" class="pkt-txt-14-regular">
+    <p v-if="activeObjective.description" class="pkt-txt-14">
       {{ activeObjective.description }}
     </p>
 
