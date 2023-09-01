@@ -103,7 +103,7 @@ export default {
   color: var(--color-text);
   text-decoration: none;
   background-color: var(--color-white);
-  border: 2px solid var(--color-grayscale-10);
+  border: 2px solid rgba(42, 40, 89, 0.25); // blue-dark, 25%
   cursor: pointer;
 
   &:hover {

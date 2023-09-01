@@ -500,7 +500,7 @@ export default {
   flex-direction: column;
   height: 100%;
   overflow: auto;
-  background-color: var(--color-gray-light);
+  background-color: var(--color-gray);
 
   &__inner {
     position: relative;
@@ -564,7 +564,7 @@ export default {
 
 .sep {
   height: var(--sep-height);
-  background: var(--color-grayscale-10);
+  background: rgba(42, 40, 89, 0.25); // blue-dark, 25%;
   border-top: var(--sep-border-width) solid var(--color-primary);
 
   .sep__period {
@@ -616,13 +616,7 @@ export default {
   position: absolute;
   top: var(--period-offset-top);
   height: calc(100% - var(--period-offset-top));
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--color-blue-dark-10),
-    var(--color-blue-dark-10) 4px,
-    var(--color-gray-light) 4px,
-    var(--color-gray-light) 8px
-  );
+  background-color: rgba(42, 40, 89, 0.15); // blue-dark, 15%
 }
 
 .objective-row {
