@@ -28,7 +28,7 @@
       />
     </div>
 
-    <p v-if="activeKeyResult.description" class="pkt-txt-14-regular">
+    <p v-if="activeKeyResult.description" class="pkt-txt-14">
       {{ activeKeyResult.description }}
     </p>
 
