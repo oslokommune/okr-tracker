@@ -1,13 +1,22 @@
 <template>
   <pane-wrapper
-    :title="activeKeyResult.name"
+    ref="pane"
+    title="Nøkkelresultat"
     class="key-result-pane"
     closable
     @close="
       $router.push({ name: 'ObjectiveHome', params: { objectiveId: activeObjective.id } })
     "
   >
-    <template #actions>
+    <archived-restore
+      v-if="activeKeyResult.archived"
+      class="mt-size-16"
+      :restore="restore"
+      :object-type="$t('archived.keyResult')"
+    />
+
+    <div class="key-result-pane__title">
+      <h2 class="pkt-txt-16-medium">{{ activeKeyResult.name }}</h2>
       <pkt-button
         v-if="hasEditRights"
         v-tooltip="$t('btn.updateKeyResult')"
@@ -17,16 +26,9 @@
         icon-name="edit"
         @onClick="$emit('edit-key-result')"
       />
-    </template>
+    </div>
 
-    <archived-restore
-      v-if="activeKeyResult.archived"
-      class="mt-size-16"
-      :restore="restore"
-      :object-type="$t('archived.keyResult')"
-    />
-
-    <p v-if="activeKeyResult.description" class="pkt-txt-18-light">
+    <p v-if="activeKeyResult.description" class="pkt-txt-14-regular">
       {{ activeKeyResult.description }}
     </p>
 
@@ -46,9 +48,8 @@
       @delete-record="deleteHistoryRecord"
     >
       <template #title-actions>
-        <div v-if="hasEditRights" data-mode="dark">
+        <div v-if="hasEditRights">
           <pkt-button
-            v-tooltip="$t('keyResult.newValue')"
             :text="$t('keyResult.newValue')"
             skin="primary"
             size="small"
@@ -172,6 +173,10 @@ export default {
           return;
         }
 
+        this.$nextTick(() => {
+          this.$refs.pane.$el.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
         this.isLoading = true;
         await this.$bind(
           'progress',
@@ -274,27 +279,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .key-result-pane {
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+
+    .pkt-btn {
+      margin: -0.75rem 0 0 1rem;
+    }
+  }
+
   &__progression {
     margin-top: 1rem;
   }
 
   &__values,
   &__graph {
-    margin-top: 3rem;
     padding: 0;
     border: 0;
   }
+  &__values {
+    margin-top: 1rem;
+  }
+
+  ::v-deep .widget {
+    padding: 1.5rem 0;
+
+    h3 {
+      @include get-text('pkt-txt-16-medium');
+    }
+  }
 
   &__widgets {
-    margin-top: 2rem;
-
     ::v-deep .widget {
-      padding: 0;
       border: 0;
+
+      h3 {
+        @include get-text('pkt-txt-16');
+      }
     }
   }
 }
