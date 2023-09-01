@@ -286,6 +286,7 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
+    text-wrap: balance;
 
     .pkt-btn {
       margin: -0.75rem 0 0 1rem;
