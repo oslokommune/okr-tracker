@@ -21,7 +21,7 @@
         {{ activeItem.name }}
       </pkt-tag>
 
-      <span class="pkt-txt-14-medium">
+      <span class="okr-link-card__title pkt-txt-14">
         {{ title }}
       </span>
 
@@ -108,6 +108,10 @@ export default {
 
   &:hover {
     color: var(--color-hover);
+  }
+
+  &__title {
+    text-wrap: balance;
   }
 
   &--active {
