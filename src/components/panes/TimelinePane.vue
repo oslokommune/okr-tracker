@@ -1,17 +1,16 @@
 <template>
   <pane-wrapper :title="$t('general.OKRsLong')" class="timeline-pane">
     <template #actions>
-      <div v-if="hasEditRights" data-mode="dark">
-        <pkt-button
-          v-tooltip="$t('btn.createObjective')"
-          :text="$t('btn.createObjective')"
-          skin="primary"
-          size="small"
-          variant="icon-left"
-          icon-name="plus-sign"
-          @onClick="$emit('add-objective')"
-        />
-      </div>
+      <pkt-button
+        v-if="hasEditRights"
+        v-tooltip="$t('btn.createObjective')"
+        :text="$t('btn.createObjective')"
+        skin="primary"
+        size="small"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="$emit('add-objective')"
+      />
     </template>
 
     <gantt-chart
@@ -46,6 +45,11 @@ export default {
 
 <style lang="scss" scoped>
 .timeline-pane {
+  ::v-deep .pane__actions {
+    top: 1rem;
+    right: 1rem;
+  }
+
   ::v-deep .pane__inner {
     height: 100%;
     padding: 0;
