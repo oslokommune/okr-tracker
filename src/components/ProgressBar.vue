@@ -1,10 +1,7 @@
 <template>
-  <div class="progress-bar">
+  <div :class="['progress-bar', { 'progress-bar--compact': compact }]">
     <h4 v-if="title" class="pkt-txt-14-medium">{{ title }}</h4>
     <div class="progress-bar__bar">
-      <span class="progress-bar__label" :style="progressLabelStyle">
-        {{ formattedPercent }}
-      </span>
       <div
         :class="[
           'progress-bar__value',
@@ -17,6 +14,9 @@
         aria-valuemax="100"
         :aria-valuenow="percent"
       ></div>
+      <span class="progress-bar__label" :style="progressLabelStyle">
+        {{ formattedPercent }}
+      </span>
     </div>
     <div v-if="leftLabel || rightLabel" class="progress-bar__sub-labels">
       <span v-if="leftLabel" class="progress-bar__label">
@@ -52,6 +52,10 @@ export default {
       type: String,
       default: null,
     },
+    compact: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -83,12 +87,12 @@ export default {
 
   &__bar {
     position: relative;
-    margin-top: 1.5rem;
+    margin: 0.5rem 0 1rem 0;
     background-color: var(--color-grayscale-10);
 
     > span {
       position: absolute;
-      top: -1.25rem;
+      bottom: -1.25rem;
       width: 2.1rem;
       text-align: center;
     }
@@ -117,6 +121,12 @@ export default {
 
     .progress-bar__label--right {
       margin-left: auto;
+    }
+  }
+
+  &--compact {
+    .progress-bar__value {
+      height: 0.5rem;
     }
   }
 }

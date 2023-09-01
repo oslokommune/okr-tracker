@@ -1,25 +1,45 @@
 <template>
   <router-link v-slot="{ href, navigate, isExactActive }" :to="route" custom>
     <a
-      :class="['okr-link-card', { 'okr-link-card--active': isExactActive || active }]"
+      :class="[
+        'okr-link-card',
+        {
+          'okr-link-card--active': isExactActive || active,
+          'okr-link-card--compact': compact,
+        },
+      ]"
       :href="href"
       @click="activate($event, navigate)"
     >
-      <div class="okr-link-card__title pkt-txt-16-medium">
-        <span>{{ title }}</span>
-      </div>
+      <pkt-tag
+        v-if="!compact"
+        class="okr-link-card__owner-tag"
+        text-style="normal-text"
+        skin="yellow"
+        size="small"
+      >
+        {{ activeItem.name }}
+      </pkt-tag>
 
-      <progress-bar :progression="progression" />
+      <span class="pkt-txt-14-medium">
+        {{ title }}
+      </span>
+
+      <progress-bar :progression="progression" :compact="compact" />
     </a>
   </router-link>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { PktTag } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'OkrLinkCard',
 
   components: {
     ProgressBar: () => import('@/components/ProgressBar.vue'),
+    PktTag,
   },
 
   props: {
@@ -39,6 +59,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    compact: {
+      type: Boolean,
+      default: false,
+    },
     beforeNavigate: {
       type: Function,
       default: null,
@@ -47,6 +71,10 @@ export default {
       type: Function,
       default: null,
     },
+  },
+
+  computed: {
+    ...mapState(['activeItem']),
   },
 
   methods: {
@@ -69,7 +97,9 @@ export default {
 .okr-link-card {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   min-height: 6.5rem;
+  padding: 1rem;
   color: var(--color-text);
   text-decoration: none;
   background-color: var(--color-white);
@@ -82,14 +112,8 @@ export default {
 
   &--active {
     color: var(--color-hover);
+    background-color: var(--color-blue-5);
     border: 2px solid var(--color-hover);
-  }
-
-  &__title {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    padding: 0.5rem 1rem 0 1rem;
   }
 }
 </style>
