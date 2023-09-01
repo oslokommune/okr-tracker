@@ -2,14 +2,19 @@
   <div class="gantt">
     <div class="gantt__inner">
       <div class="month-wrapper" @mousedown="startDrag">
-        <div v-if="!loading" ref="today" class="today" :style="todayStyle()">
+        <div
+          v-if="!loading"
+          ref="today"
+          class="today pkt-txt-14-medium"
+          :style="todayStyle()"
+        >
           {{ $t('general.today') }}
         </div>
         <div class="months">
           <div
             v-for="m in months"
             :key="m.valueOf()"
-            class="month"
+            class="month pkt-txt-12-medium"
             :style="`width: ${getDaysInMonth(m) * PPD}px`"
           >
             <span v-if="!loading">{{ dateLongCompact(m) }}</span>
@@ -121,7 +126,7 @@ export default {
 
   data() {
     return {
-      PPD: 6, // Pixels per day
+      PPD: 4, // Pixels per day
       minPPD: 4,
       lineWidth: '0.25rem',
       endPadding: 75, // Padding in pixels before/after the first/last months
@@ -522,9 +527,7 @@ export default {
 
 .months {
   display: inline-flex;
-  margin-bottom: 0.5rem;
   margin-left: var(--end-padding);
-  font-weight: 500;
 }
 
 .month {
@@ -588,7 +591,6 @@ export default {
   display: inline-block;
   height: 1.5rem;
   color: var(--color-active);
-  font-weight: 500;
 
   &::after {
     position: absolute;
