@@ -1,11 +1,13 @@
 <template>
   <pane-wrapper
-    :title="activeObjective.name"
+    ref="pane"
+    title="Mål"
     class="objective-pane"
     closable
     @close="$router.push({ name: 'ItemHome' })"
   >
-    <template #actions>
+    <div class="objective-pane__title">
+      <h2 class="pkt-txt-16-medium">{{ activeObjective.name }}</h2>
       <pkt-button
         v-if="hasEditRights"
         v-tooltip="$t('btn.updateObjective')"
@@ -15,12 +17,7 @@
         icon-name="edit"
         @onClick="$emit('edit-objective')"
       />
-    </template>
-
-    <span v-if="period" class="objective-pane__period">
-      <pkt-icon name="calendar" />
-      {{ periodDates(period) }}
-    </span>
+    </div>
 
     <HTML-output
       v-if="activeObjective.description"
@@ -34,27 +31,33 @@
       :progression="activeObjective.progression"
     />
 
-    <div class="objective-pane__key-results-header" data-mode="dark">
-      <h3 class="pkt-txt-18-medium">{{ $t('general.keyResults') }}</h3>
-      <pkt-button
-        v-if="hasEditRights"
-        v-tooltip="$t('btn.createKeyResult')"
-        :text="$t('btn.createKeyResult')"
-        skin="primary"
-        size="small"
-        variant="icon-left"
-        icon-name="plus-sign"
-        @onClick="$emit('add-key-result')"
-      />
+    <div v-if="period" class="objective-pane__period">
+      <span class="pkt-txt-16-light">{{ $t('objective.period') }}</span>
+      <pkt-tag text-style="normal-text" skin="beige" size="small">
+        {{ periodDates(period) }}
+      </pkt-tag>
     </div>
 
     <div class="objective-pane__key-results">
+      <div class="objective-pane__key-results-header">
+        <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
+        <pkt-button
+          v-if="hasEditRights"
+          :text="$t('btn.createKeyResult')"
+          skin="primary"
+          size="small"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="$emit('add-key-result')"
+        />
+      </div>
+
       <div v-if="loadingKeyResults">
         <loading-small />
         {{ $t('general.loading') }}
       </div>
 
-      <template v-else-if="keyResults.length">
+      <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
         <okr-link-card
           v-for="keyResult in keyResults"
           :key="keyResult.id"
@@ -65,8 +68,9 @@
           :title="keyResult.name"
           :progression="keyResult.progression"
           :active="activeKeyResult && activeKeyResult.id === keyResult.id"
+          compact
         />
-      </template>
+      </div>
 
       <empty-state
         v-else
@@ -87,7 +91,7 @@ import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
 import { dateLong, periodDates } from '@/util';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton, PktTag } from '@oslokommune/punkt-vue2';
 import ProgressBar from '@/components/ProgressBar.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
@@ -104,6 +108,7 @@ export default {
     HTMLOutput: () => import('@/components/HTMLOutput.vue'),
     LoadingSmall,
     PktButton,
+    PktTag,
     ProgressBar,
     WidgetWeights,
     WidgetObjectiveDetails,
@@ -141,6 +146,9 @@ export default {
     activeObjective: {
       immediate: true,
       async handler(objective) {
+        this.$nextTick(() => {
+          this.$refs.pane.$el.scrollTo({ top: 0, behavior: 'smooth' });
+        });
         this.loadingKeyResults = true;
         const objectiveRef = await db.doc(`objectives/${objective.id}`);
         const keyResults = await db
@@ -166,28 +174,84 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 .objective-pane {
-  &__period {
+  background-color: var(--color-gray-light);
+
+  &__title {
     display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    color: var(--color-grayscale-60);
-    --fg-color: var(--color-grayscale-40);
+    justify-content: space-between;
+    margin-top: 1rem;
+
+    .pkt-btn {
+      margin: -0.75rem 0 0 1rem;
+    }
+  }
+
+  &__period > span {
+    &:first-child {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--color-grayscale-60);
+    }
   }
 
   &__progression {
     margin-top: 1rem;
   }
 
-  &__key-results-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 3rem 0 0 0;
-  }
+  &__key-results {
+    margin-top: 3rem;
 
-  &__key-results > .okr-link-card {
-    margin-bottom: 1rem;
+    @include bp('tablet-up') {
+      padding-right: 1.5rem;
+    }
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    &-list {
+      position: relative;
+
+      @include bp('tablet-up') {
+        margin-left: 3rem;
+      }
+
+      > .okr-link-card {
+        position: relative;
+        margin-top: 1rem;
+
+        @include bp('tablet-up') {
+          &::before,
+          &::after {
+            position: absolute;
+            left: -2.125rem;
+            width: 2rem;
+            border-left: 2px solid var(--color-grayscale-10);
+          }
+
+          &::before {
+            position: absolute;
+            top: 0;
+            left: -2.125rem;
+            height: 50%;
+            border-bottom: 2px solid var(--color-grayscale-10);
+            content: '';
+          }
+          &:not(:last-child)::after {
+            top: 50%;
+            height: calc(50% + 1.5rem);
+            content: '';
+          }
+        }
+      }
+    }
   }
 
   &__widgets {
@@ -196,6 +260,10 @@ export default {
     ::v-deep .widget {
       padding: 0;
       border: 0;
+
+      h3 {
+        @include get-text('pkt-txt-16');
+      }
     }
   }
 }

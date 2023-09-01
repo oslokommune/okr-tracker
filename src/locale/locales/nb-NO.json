@@ -381,8 +381,8 @@
     "edit": "Rediger nøkkelresultat"
   },
   "objective": {
-    "period": "Periode",
-    "progressionTitle": "Prosentvis fremdrift basert på summen av fremdrift i nøkkelresultatene:",
+    "period": "Arbeisdperiode",
+    "progressionTitle": "Prosentvis fremdrift for målet:",
     "weight": "Vekt",
     "change": "Endre mål",
     "add": "Legg til mål",
