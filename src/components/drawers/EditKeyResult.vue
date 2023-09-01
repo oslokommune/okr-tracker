@@ -148,7 +148,7 @@
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
-import getActiveItemType from '@/util/getActiveItemType';
+import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -198,28 +198,22 @@ export default {
       'departments',
       'products',
     ]),
-    isOrganization() {
-      return getActiveItemType(this.activeItem) === 'organization';
-    },
-    isDepartment() {
-      return getActiveItemType(this.activeItem) === 'department';
-    },
     thisLevel() {
-      if (this.isOrganization) {
+      if (isOrganization(this.activeItem)) {
         return this.organizations.find((o) => o.id === this.activeItem.id);
       }
-      if (this.isDepartment) {
+      if (isDepartment(this.activeItem)) {
         return this.departments.find((d) => d.id === this.activeItem.id);
       }
       return {};
     },
     children() {
-      if (this.isOrganization) {
+      if (isOrganization(this.activeItem)) {
         return this.departments.filter(
           (department) => department.organization.id === this.activeItem.id
         );
       }
-      if (this.isDepartment) {
+      if (isDepartment(this.activeItem)) {
         return this.products.filter(
           (product) => product.department.id === this.activeItem.id
         );

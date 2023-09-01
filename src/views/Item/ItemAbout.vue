@@ -52,7 +52,7 @@ import {
   displayOrder,
 } from '@/config/jobPositions';
 import HTMLOutput from '@/components/HTMLOutput.vue';
-import getActiveItemType from '@/util/getActiveItemType';
+import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import i18n from '@/locale/i18n';
 
 export default {
@@ -108,14 +108,12 @@ export default {
     },
 
     children() {
-      const itemType = getActiveItemType(this.activeItem);
-
-      if (itemType === 'organization') {
+      if (isOrganization(this.activeItem)) {
         return this.departments.filter(
           (department) => department.organization.id === this.activeItem.id
         );
       }
-      if (itemType === 'department') {
+      if (isDepartment(this.activeItem)) {
         return this.products.filter(
           (product) => product.department.id === this.activeItem.id
         );
@@ -128,12 +126,10 @@ export default {
      * Return a fitting title for the list of sub-items under the current item.
      */
     childrenTitle() {
-      const itemType = getActiveItemType(this.activeItem);
-
-      if (itemType === 'organization') {
+      if (isOrganization(this.activeItem)) {
         return i18n.t('about.organizationChildren');
       }
-      if (itemType === 'department') {
+      if (isDepartment(this.activeItem)) {
         return i18n.t('about.departmentChildren');
       }
 

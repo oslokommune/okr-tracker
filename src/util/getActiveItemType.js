@@ -16,6 +16,10 @@ const getActiveItemType = (activeItem) => {
 
 export default getActiveItemType;
 
-export function isDepartment(activeItem) {
-  return getActiveItemType(activeItem) === 'department';
+export function isOrganization(item) {
+  return getActiveItemType(item) === 'organization';
+}
+
+export function isDepartment(item) {
+  return getActiveItemType(item) === 'department';
 }
