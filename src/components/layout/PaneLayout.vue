@@ -1,7 +1,12 @@
 <template>
   <div class="pane-layout">
     <template v-for="(pane, i) in $slots.default">
-      <transition :key="`pane${i}`" name="slide-fade">
+      <transition
+        :key="`pane${i}`"
+        name="slide-fade"
+        @enter="onTransitionEvent('pane-enter', $event)"
+        @leave="onTransitionEvent('pane-leave', $event)"
+      >
         <v-nodes v-if="pane.data" :vnodes="pane" />
       </transition>
     </template>
@@ -9,6 +14,8 @@
 </template>
 
 <script>
+import paneEvents from './paneEvents';
+
 export default {
   name: 'PaneLayout',
 
@@ -16,6 +23,12 @@ export default {
     VNodes: {
       functional: true,
       render: (h, ctx) => ctx.props.vnodes,
+    },
+  },
+
+  methods: {
+    onTransitionEvent(name, e) {
+      paneEvents.$emit(name, e);
     },
   },
 };
