@@ -76,8 +76,9 @@
               (activeObjective && activeObjective.id === o.objective.id) ||
               workbenchObjectives.map((o) => o.id).includes(o.objective.id)
             "
+            :data-id="o.objective.id"
             :before-navigate="beforeSelectObjective(o.objective)"
-            :after-navigate="afterSelectObjective"
+            @hook:mounted="onObjectiveMounted(o.objective)"
           />
         </div>
       </template>
@@ -100,6 +101,7 @@ import {
   startOfMonth,
 } from 'date-fns';
 import { dateLongCompact } from '@/util';
+import paneEvents from '@/components/layout/paneEvents';
 
 export default {
   name: 'GanttChart',
@@ -267,6 +269,18 @@ export default {
         }
       },
     },
+
+    activeObjective: {
+      handler: 'scrollToObjective',
+    },
+  },
+
+  mounted() {
+    paneEvents.$on('pane-enter', () => {
+      if (this.activeObjective) {
+        this.scrollToObjective(this.activeObjective);
+      }
+    });
   },
 
   methods: {
@@ -449,25 +463,27 @@ export default {
       };
     },
 
-    afterSelectObjective(event) {
-      const target = event.currentTarget;
-      if (!this.activeObjective) {
-        // Hack to ensure that the selected objective is scrolled into view
-        // when the pane transition first occurs. This should be solved by using
-        // transition hooks or by making the timeline canvas responsive to
-        // resizing (i.e. keeping current scroll position).
-        setTimeout(() => this.scrollTo(target), 50);
-      } else {
-        this.$nextTick(() => this.scrollTo(target));
+    onObjectiveMounted(objective) {
+      // Scroll to active objective when first mounted in the timeline.
+      if (objective.id === this.activeObjective?.id) {
+        this.scrollToObjective(objective);
       }
     },
 
-    scrollTo(target) {
-      target.scrollIntoView({
-        block: 'center',
-        inline: 'center',
-        behavior: 'smooth',
-      });
+    scrollToObjective(objective) {
+      if (!objective) {
+        return;
+      }
+
+      const objectiveElQuery = document.querySelectorAll(`[data-id="${objective.id}"]`);
+
+      if (objectiveElQuery.length) {
+        objectiveElQuery[0].scrollIntoView({
+          block: 'center',
+          inline: 'center',
+          behavior: 'smooth',
+        });
+      }
     },
 
     async periodObjectivesToWorkbench() {
