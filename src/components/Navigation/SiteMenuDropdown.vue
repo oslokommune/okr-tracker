@@ -23,7 +23,7 @@
       </template>
     </nav>
 
-    <div class="site-menu-dropdown__footer">
+    <div class="site-menu-dropdown__footer pkt-txt-12-medium">
       <img
         alt="Oslo kommune logo"
         src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
@@ -93,19 +93,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 $-dropdown-max-height: calc(100vh - 3.5rem);
 
 .site-menu-dropdown {
+  @include get-text('pkt-txt-16-medium');
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   width: 100vw;
   height: $-dropdown-max-height;
   padding: 1rem;
-  font-weight: 500;
-  font-size: typography.$font-size-2;
   line-height: 2;
 
   @include bp('phablet-up') {
@@ -147,7 +146,6 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     justify-content: space-between;
     margin-top: auto;
     padding-top: 1rem;
-    font-size: typography.$font-size-0;
     opacity: 0.25;
 
     img {

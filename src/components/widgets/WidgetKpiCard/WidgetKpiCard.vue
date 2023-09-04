@@ -12,7 +12,7 @@
           :progress="progress"
           :compact="compact"
         />
-        <span v-else-if="!isProgressLoading" class="no-data">
+        <span v-else-if="!isProgressLoading" class="no-data pkt-txt-14">
           {{ $t(`kpi.${progressIsFiltered ? 'noDataFiltered' : 'noData'}`) }}
         </span>
       </div>
@@ -24,7 +24,7 @@
           :start-value="kpi.startValue"
           :compact="compact"
         />
-        <span v-else-if="progress.length === 1" class="no-data">{{
+        <span v-else-if="progress.length === 1" class="no-data pkt-txt-12">{{
           $t('kpi.noGraph')
         }}</span>
       </div>
@@ -134,8 +134,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .kpi-card-widget {
   gap: 0.75rem;
   margin: 0;
@@ -159,10 +157,6 @@ export default {
     align-self: center;
     min-width: 8rem;
     max-width: 50%;
-
-    .no-data {
-      font-size: typography.$font-size-0;
-    }
   }
 
   .no-data {
@@ -214,8 +208,6 @@ export default {
 
 .no-data {
   color: var(--color-grayscale-40);
-  font-weight: 400;
-  font-size: typography.$font-size-1;
   font-style: italic;
 }
 </style>

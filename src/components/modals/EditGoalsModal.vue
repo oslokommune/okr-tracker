@@ -58,7 +58,7 @@
             rules="required"
           >
             <template #sub>
-              <span v-if="value" class="display-as">
+              <span v-if="value" class="display-as pkt-txt-14-medium">
                 {{ $t('general.displayedAs') }}
                 {{ formatKPIValue(kpi, typePercentage ? value / 100 : value) }}
               </span>
@@ -273,7 +273,6 @@ export default {
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
-@use '@/styles/typography';
 
 ::v-deep .modal {
   overflow-y: visible;
@@ -291,8 +290,6 @@ export default {
 
   .display-as {
     color: var(--color-grayscale-50);
-    font-weight: 500;
-    font-size: typography.$font-size-1;
   }
 
   &__left {

@@ -1,0 +1,16 @@
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
+.title-1 {
+  @include get-text('pkt-txt-24-medium');
+  margin-bottom: 1.5rem;
+}
+
+.title-2 {
+  @include get-text('pkt-txt-18-medium');
+  margin-bottom: 0.5rem;
+}
+
+.title-3 {
+  @include get-text('pkt-txt-16-medium');
+  margin-bottom: 0.5rem;
+}

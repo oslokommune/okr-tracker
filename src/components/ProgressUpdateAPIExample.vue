@@ -55,10 +55,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 ::v-deep textarea {
+  @include get-text('pkt-txt-14');
   margin: 0;
-  font-size: typography.$font-size-1;
 }
 </style>

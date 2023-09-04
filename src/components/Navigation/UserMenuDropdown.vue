@@ -3,7 +3,7 @@
     <div class="user-menu-dropdown__header">
       <div class="user-profile">
         <h1 class="title-2">{{ user.displayName }}</h1>
-        <ul class="user-profile__access">
+        <ul class="user-profile__access pkt-txt-12-medium">
           <template v-if="user.superAdmin">
             <li v-tooltip.bottom="$t('user.hasSuperAdmin')">
               {{ $t('user.superAdmin') }}
@@ -37,8 +37,8 @@
 
         <ul v-if="products.length > 0" class="user-products__list">
           <li v-for="product in products" :key="product.id">
-            <h3 class="title-4">{{ product.department.name }}</h3>
-            <span class="products-list__name">{{ product.name }}</span>
+            <h3 class="pkt-txt-14-medium">{{ product.department.name }}</h3>
+            <span>{{ product.name }}</span>
           </li>
         </ul>
       </div>
@@ -195,8 +195,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 $-dropdown-max-height: calc(100vh - 3.5rem);
 
 .user-menu-dropdown {
@@ -269,8 +267,6 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   &__access {
     display: flex;
     gap: 0.2rem;
-    font-weight: 500;
-    font-size: typography.$font-size-0;
 
     li:not(:last-of-type):after {
       content: '/';
@@ -288,10 +284,6 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   &__list {
     li {
       margin-bottom: 1.25rem;
-    }
-
-    &__name {
-      font-size: typography.$font-size-1;
     }
   }
 }

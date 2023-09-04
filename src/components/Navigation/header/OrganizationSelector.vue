@@ -26,7 +26,7 @@
           :checked="org.id === orgId"
           @change="onChange"
         />
-        <label class="pkt-form-label" :for="org.id">
+        <label class="pkt-form-label pkt-txt-14" :for="org.id">
           {{ org.name }}
         </label>
       </div>
@@ -69,8 +69,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .organization-selector {
   &__toggle {
     justify-content: space-between;
@@ -83,15 +81,11 @@ export default {
   &__item {
     gap: 0.25rem;
     align-items: center;
-    margin: 0.25rem 1.25rem;
+    margin: 0.5rem 1.25rem;
 
     .pkt-form-check-input {
       width: 1rem;
       height: 1rem;
-    }
-
-    .pkt-form-label {
-      font-size: typography.$font-size-1;
     }
   }
 

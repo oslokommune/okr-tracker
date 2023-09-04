@@ -141,8 +141,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .progress-form {
   @include bp('phablet-up') {
     display: flex;
@@ -150,8 +148,6 @@ export default {
 
   .display-as {
     color: var(--color-grayscale-50);
-    font-weight: 500;
-    font-size: typography.$font-size-1;
   }
 
   &__left {

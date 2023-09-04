@@ -2,7 +2,7 @@
   <page-layout v-if="activeKeyResult">
     <template #default>
       <header>
-        <span class="title-label">{{ $t('general.keyResult') }}</span>
+        <span class="title-label pkt-txt-16-light">{{ $t('general.keyResult') }}</span>
         <div class="keyResult__heading">
           <h2 class="title-1">{{ activeKeyResult.name }}</h2>
           <div class="keyResult__edit">
@@ -37,10 +37,10 @@
         >
           <div class="key-result-summary__progress-inner">
             <div class="key-result-progression">
-              <span class="key-result-progression__current">
+              <span class="key-result-progression__current pkt-txt-24-bold">
                 {{ progressDetails.formattedTotalCompletedTasks }}
               </span>
-              <span class="key-result-progression__target">
+              <span class="key-result-progression__target pkt-txt-12-light">
                 {{
                   $t('progress.remainingOf', {
                     progress: progressDetails.formattedTotalNumberOfTasks,
@@ -302,7 +302,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-label {
+  margin-bottom: 0.5rem;
+  color: var(--color-grayscale-40);
+}
 
 .pkt-alert {
   margin-bottom: 1rem;
@@ -367,16 +375,13 @@ export default {
   align-items: flex-start;
 
   &__current {
-    padding: 1rem 2rem;
-    font-weight: 700;
-    font-size: typography.$font-size-5;
+    padding: 0.75rem 2rem;
     background-color: var(--color-gray);
   }
 
   &__target {
     margin-left: 2.5rem;
     padding: 0.5rem 0.5rem;
-    font-size: typography.$font-size-0;
   }
 }
 

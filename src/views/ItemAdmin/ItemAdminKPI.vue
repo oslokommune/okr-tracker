@@ -213,7 +213,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .card {
   padding: 0;
@@ -283,7 +283,7 @@ export default {
 
 .collapse--collapsed {
   .kpi__footer {
-    font-size: typography.$font-size-0;
+    @include get-text('pkt-txt-12-light');
 
     &--success {
       display: none;

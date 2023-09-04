@@ -29,6 +29,8 @@
 @use '@oslokommune/punkt-css/dist/scss/components/_tag';
 
 @use 'forms';
+@use 'markdown';
+@use 'titles';
 @use 'vSelect';
 
 @function hexToRGB($hex) {
@@ -50,6 +52,10 @@ body {
   font-family: 'OsloSans', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+p + p {
+  margin-top: 1em;
 }
 
 *,

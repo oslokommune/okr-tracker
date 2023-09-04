@@ -68,6 +68,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 aside,
 main {
   line-height: 1.2;
@@ -86,5 +88,13 @@ main {
 
 .md :first-child {
   margin-top: 0;
+}
+
+::v-deep code {
+  @include get-text('pkt-txt-14');
+  padding: 0 0.3em;
+  font-family: 'Monaco', monospace;
+  word-break: normal;
+  background-color: var(--color-grayscale-10);
 }
 </style>
