@@ -414,8 +414,8 @@
     "item": {
       "change": "Rediger {name}",
       "updated": "{name} ble endret!",
-      "slugChangeInfo": "Endring av navn kan også resultere i at gjeldende adresse for \"{name}\" endres. Du blir i så fall automatisk videreført til den nye adressen etter at skjemaet lagres.",
-      "redirectInfo": "Du videreføres om {count} sekunder."
+      "slugChangeInfo": "Endring av navn kan også resultere i at gjeldende adresse for \"{name}\" endres. Du blir i så fall automatisk videresendt til den nye adressen etter at skjemaet lagres.",
+      "redirectInfo": "Du videresendes om {count} sekunder."
     },
     "objective": {
       "new": "Nytt mål",
