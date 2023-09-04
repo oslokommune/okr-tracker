@@ -130,7 +130,9 @@ export const storeGetters = {
    * `state.objectiveContributors` enriched with ID.
    */
   objectivesWithID: (state) => {
-    const externalObjectives = state.objectiveContributors.map((oc) => oc.objective);
+    const externalObjectives = state.objectiveContributors
+      .filter((oc) => typeof oc.objective !== 'string')
+      .map((oc) => oc.objective);
 
     return state.objectives.concat(externalObjectives).map((o) => ({
       ...o,
