@@ -95,6 +95,7 @@
             params: { objectiveId: activeObjective.id, keyResultId: keyResult.id },
           }"
           :title="keyResult.name"
+          :key-result="keyResult"
           :progression="keyResult.progression"
           :active="activeKeyResult && activeKeyResult.id === keyResult.id"
           compact

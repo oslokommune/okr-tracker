@@ -17,6 +17,7 @@
         <okr-link-card
           :route="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
           :title="objective.name"
+          :objective-id="objective.id"
           :progression="objective.progression"
           :active="activeObjective && objective.id === activeObjective.id"
         />

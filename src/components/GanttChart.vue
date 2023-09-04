@@ -69,6 +69,7 @@
               params: { objectiveId: o.objective.id },
             }"
             :title="o.objective.name"
+            :objective-id="o.objective.id"
             :tabindex="o.tabindex"
             :progression="o.objective.progression"
             :style="objectiveStyle(o)"
