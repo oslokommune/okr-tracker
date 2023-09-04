@@ -1,7 +1,7 @@
 <template>
   <pane-wrapper
     ref="pane"
-    title="Nøkkelresultat"
+    :title="$t('general.keyResult')"
     class="key-result-pane"
     closable
     @close="

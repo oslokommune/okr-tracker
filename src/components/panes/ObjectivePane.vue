@@ -1,7 +1,7 @@
 <template>
   <pane-wrapper
     ref="pane"
-    title="Mål"
+    :title="$t('general.objective')"
     class="objective-pane"
     closable
     @close="$router.push({ name: 'ItemHome' })"
