@@ -126,10 +126,15 @@ export const storeGetters = {
   },
 
   /**
-   * Return `state.objectives` enriched with ID.
+   * Return `state.objectives` and external objectives from
+   * `state.objectiveContributors` enriched with ID.
    */
   objectivesWithID: (state) => {
-    return state.objectives.map((o) => ({
+    const externalObjectives = state.objectiveContributors
+      .filter((oc) => typeof oc.objective !== 'string')
+      .map((oc) => oc.objective);
+
+    return state.objectives.concat(externalObjectives).map((o) => ({
       ...o,
       id: o.id,
     }));
@@ -276,6 +281,7 @@ export default new Vuex.Store({
     activeObjective: null,
     periods: [],
     objectives: [],
+    objectiveContributors: [],
     kpis: [],
     subKpis: [],
     loginError: null,

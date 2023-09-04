@@ -149,6 +149,13 @@ service cloud.firestore {
       allow delete: if isSuperAdmin();
     }
 
+    /*
+     * TODO: Needs to be extended with rules for `create` and `delete`.
+     */
+    match /objectiveContributors/{document} {
+      allow read: if isSignedIn();
+    }
+
     match /periods/{document} {
       allow read: if isSignedIn();
     }
