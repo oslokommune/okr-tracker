@@ -11,13 +11,7 @@
       :href="href"
       @click="activate($event, navigate)"
     >
-      <pkt-tag
-        v-if="!compact"
-        class="okr-link-card__owner-tag"
-        text-style="normal-text"
-        skin="yellow"
-        size="small"
-      >
+      <pkt-tag v-if="!compact" text-style="normal-text" skin="yellow" size="small">
         {{ activeItem.name }}
       </pkt-tag>
 
