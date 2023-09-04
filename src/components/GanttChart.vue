@@ -127,7 +127,7 @@ export default {
   data() {
     return {
       PPD: 4, // Pixels per day
-      minPPD: 4,
+      minPPD: 3,
       lineWidth: '0.25rem',
       endPadding: 75, // Padding in pixels before/after the first/last months
       now: new Date(),
