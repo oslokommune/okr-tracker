@@ -442,6 +442,7 @@ export default {
 
           if (!this.workbenchObjectives.find((o) => o.id === objective.id)) {
             await this.addWorkbenchObjective(objective.id);
+            this.scrollToObjective(objective);
 
             if (this.activeObjective && objective.id !== this.activeObjective.id) {
               await this.$router.replace({
