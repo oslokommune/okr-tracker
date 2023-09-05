@@ -177,8 +177,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/styles/typography';
-
 .about-page {
   padding: 2rem;
 
