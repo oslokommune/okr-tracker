@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fixed create/edit/delete rights for organization admins.
+
 ## [3.9.0] 2023-09-01
 
 ### Added
