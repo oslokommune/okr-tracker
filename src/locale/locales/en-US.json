@@ -411,6 +411,12 @@
     "copyToClipboard": "Copy to the clipboard"
   },
   "admin": {
+    "item": {
+      "change": "Edit {name}",
+      "updated": "{name} was updated!",
+      "slugChangeInfo": "When changing the name of this item, the address to it might also change. In that case you will be automatically redirected after saving the form.",
+      "redirectInfo": "You will be redirected in {count} seconds."
+    },
     "objective": {
       "new": "New objective",
       "created": "Objective was created!",
@@ -523,9 +529,14 @@
   },
   "archived": {
     "heading": "Archived",
-    "objective": "objective",
-    "keyResult": "key result",
-    "body": "This {objectType} is archived and is no longer shown in the list of {objectType}s. If you miss it, just restore it."
+    "body": {
+      "objective": "This objective is archived and is no longer shown in the list of objectives.",
+      "keyResult": "This key result is archived and is no longer shown in the list of key results.",
+      "organization": "This organization is archived and no longer visible.",
+      "department": "This department is archived and no longer visible.",
+      "product": "This product is archived and no longer visible."
+    },
+    "restoreText": "If you miss it, just restore it."
   },
   "sheets": {
     "infoText": "Note! The following address must be given read access to the Google Sheets document:",

@@ -134,7 +134,7 @@
         <archived-restore
           v-if="keyResult.archived"
           :restore="restore"
-          :object-type="$t('archived.keyResult')"
+          object-type="keyResult"
         />
         <div v-else class="button-row">
           <btn-delete :disabled="loading" @click="archive" />

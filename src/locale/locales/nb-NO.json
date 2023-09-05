@@ -411,6 +411,12 @@
     "copyToClipboard": "Kopier til utklippstavlen"
   },
   "admin": {
+    "item": {
+      "change": "Rediger {name}",
+      "updated": "{name} ble endret!",
+      "slugChangeInfo": "Endring av navn kan også resultere i at gjeldende adresse for \"{name}\" endres. Du blir i så fall automatisk videresendt til den nye adressen etter at skjemaet lagres.",
+      "redirectInfo": "Du videresendes om {count} sekunder."
+    },
     "objective": {
       "new": "Nytt mål",
       "created": "Målet ble opprettet!",
@@ -523,9 +529,14 @@
   },
   "archived": {
     "heading": "Arkivert",
-    "objective": "mål",
-    "keyResult": "nøkkelresultat",
-    "body": "Dette {objectType}et er arkivert og vises ikke lenger i listen over {objectType}. Savner du det, er det bare å gjenopprette det."
+    "body": {
+      "objective": "Dette målet er arkivert og vises ikke lenger i listen over mål.",
+      "keyResult": "Dette nøkkelresultatet er arkivert og vises ikke lenger i listen over nøkkelresultater.",
+      "organization": "Denne organisasjonen er arkivert og ikke lenger synlig.",
+      "department": "Dette produktområdet er arkivert og ikke lenger synlig.",
+      "product": "Dette produktet er arkivert og ikke lenger synlig."
+    },
+    "restoreText": "Savner du det, er det bare å gjenopprette det."
   },
   "sheets": {
     "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",

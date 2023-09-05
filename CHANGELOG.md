@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed create/edit/delete rights for organization admins.
 
+### Changed
+
+- Organization, department and product details are now edited from within the
+  current item's about page.
+
 ## [3.9.0] 2023-09-01
 
 ### Added

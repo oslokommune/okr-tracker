@@ -43,7 +43,7 @@
       <archived-restore
         v-if="activeObjective.archived"
         :restore="restore"
-        :object-type="$t('archived.objective')"
+        object-type="objective"
       />
 
       <section>

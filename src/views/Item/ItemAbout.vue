@@ -1,50 +1,66 @@
 <template>
-  <page-layout breakpoint="tablet-big">
-    <main class="main">
+  <page-layout breakpoint="tablet-big" class="about-page">
+    <header class="about-page__header">
       <h1 class="pkt-txt-54">{{ activeItem.name }}</h1>
-      <section>
-        <HTML-output class="pkt-txt-24-light" :html="activeItem.missionStatement" />
-      </section>
-
-      <section v-if="activeItem.targetAudience">
-        <h2 class="pkt-txt-30">{{ $t('dashboard.targetAudience') }}</h2>
-        <HTML-output class="pkt-txt-18" :html="activeItem.targetAudience" />
-      </section>
-
-      <section v-if="children">
-        <h2 class="pkt-txt-30">{{ childrenTitle }}</h2>
-        <div
-          v-for="child in children"
-          :key="child.id"
-          class="item-info__box item-info__box--link"
-        >
-          <h3 class="pkt-txt-24">{{ child.name }}</h3>
-          <HTML-output class="pkt-txt-18" :html="child.missionStatement" />
-        </div>
-      </section>
-
-      <!--
-      <h2 class="pkt-txt-30">{{ $t('about.members') }}</h2>
-      <role-members
-        v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
-        :key="role"
-        :role="role"
-        :members-with-role="teamMembers[role]"
-        @openModal="openProfileModal"
+      <pkt-button
+        v-if="hasEditRights"
+        v-tooltip="$t('admin.item.change', { name: activeItem.name })"
+        skin="tertiary"
+        size="small"
+        variant="icon-only"
+        icon-name="edit"
+        @onClick="showItemDrawer = true"
       />
-      -->
+    </header>
 
-      <profile-modal
-        v-if="showProfileModal"
-        :id="chosenProfileId"
-        @close="closeProfileModal"
-      />
-    </main>
+    <section>
+      <HTML-output class="pkt-txt-24-light" :html="activeItem.missionStatement" />
+    </section>
+
+    <section v-if="activeItem.targetAudience">
+      <h2 class="pkt-txt-30">{{ $t('dashboard.targetAudience') }}</h2>
+      <HTML-output class="pkt-txt-18" :html="activeItem.targetAudience" />
+    </section>
+
+    <section v-if="children">
+      <h2 class="pkt-txt-30">{{ childrenTitle }}</h2>
+      <div
+        v-for="child in children"
+        :key="child.id"
+        class="item-info__box item-info__box--link"
+      >
+        <h3 class="pkt-txt-24">{{ child.name }}</h3>
+        <HTML-output class="pkt-txt-18" :html="child.missionStatement" />
+      </div>
+    </section>
+
+    <!--
+    <h2 class="pkt-txt-30">{{ $t('about.members') }}</h2>
+    <role-members
+      v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
+      :key="role"
+      :role="role"
+      :members-with-role="teamMembers[role]"
+      @openModal="openProfileModal"
+    />
+    -->
+
+    <item-drawer
+      :visible="hasEditRights && showItemDrawer"
+      :item="activeItem"
+      @close="showItemDrawer = false"
+    />
+
+    <profile-modal
+      v-if="showProfileModal"
+      :id="chosenProfileId"
+      @close="closeProfileModal"
+    />
   </page-layout>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import {
   possibleDevelopers,
   possibleAdm,
@@ -52,6 +68,7 @@ import {
   displayOrder,
 } from '@/config/jobPositions';
 import HTMLOutput from '@/components/HTMLOutput.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import i18n from '@/locale/i18n';
 
@@ -60,16 +77,20 @@ export default {
 
   components: {
     HTMLOutput,
+    PktButton,
     // RoleMembers: () => import('@/components/RoleMembers.vue'),
+    ItemDrawer: () => import('@/components/drawers/EditItemDrawer.vue'),
     ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
   },
 
   data: () => ({
+    showItemDrawer: false,
     showProfileModal: false,
     chosenProfileId: null,
   }),
 
   computed: {
+    ...mapGetters(['hasEditRights']),
     ...mapState(['activeItem', 'departments', 'products']),
 
     teamMembers() {
@@ -156,8 +177,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
+.about-page {
   padding: 2rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 section {
