@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="fade" mode="out-in">
-      <div v-if="visible" class="overlay" @click.self="close"></div>
+      <div v-if="visible" class="overlay"></div>
     </transition>
     <transition name="slide" @after-leave="$emit('hidden')">
       <aside v-if="visible" class="sliderContainer">

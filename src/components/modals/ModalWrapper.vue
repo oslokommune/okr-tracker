@@ -1,5 +1,5 @@
 <template>
-  <div ref="modalOverlay" class="overlay" @keydown.esc="close" @click.self="close">
+  <div ref="modalOverlay" class="overlay" @keydown.esc="close">
     <div :class="['modal', `modal--${variant}`]">
       <div class="modal__header">
         <h1 class="pkt-txt-18-medium">
