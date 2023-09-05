@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Organization, department and product details are now edited from within the
   current item's about page.
+- Made links clickable in the description of objects, key results and goals.
 
 ## [3.9.0] 2023-09-01
 

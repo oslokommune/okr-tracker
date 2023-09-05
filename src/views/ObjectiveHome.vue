@@ -20,9 +20,10 @@
           </div>
         </div>
         <div class="objective__description">
-          <p v-if="activeObjective.description" class="description">
-            {{ activeObjective.description }}
-          </p>
+          <HTML-output
+            v-if="activeObjective.description"
+            :html="activeObjective.description"
+          />
           <div
             v-if="hasEditRights && !activeObjective.archived"
             data-mode="dark"
@@ -93,6 +94,7 @@ import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import ProgressionChart from '@/components/ProgressionChart.vue';
 import { PktButton } from '@oslokommune/punkt-vue2';
+import HTMLOutput from '@/components/HTMLOutput.vue';
 
 export default {
   name: 'ObjectiveHome',
@@ -105,6 +107,7 @@ export default {
     WidgetObjectiveDetails,
     ProgressionChart,
     PktButton,
+    HTMLOutput,
     ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
     KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
