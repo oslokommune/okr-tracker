@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file. The format 
 - Organization, department and product details are now edited from within the
   current item's about page.
 - Made links clickable in the description of objects, key results and goals.
+- It is no longer possible to close open modals or drawers by clicking outside
+  them. This is meant to prevent accidental data loss in unsaved forms.
 
 ## [3.9.0] 2023-09-01
 
