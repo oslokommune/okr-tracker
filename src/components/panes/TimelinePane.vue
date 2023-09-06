@@ -3,7 +3,6 @@
     <template #actions>
       <pkt-button
         v-if="hasEditRights"
-        v-tooltip="$t('btn.createObjective')"
         :text="$t('btn.createObjective')"
         skin="primary"
         size="small"
