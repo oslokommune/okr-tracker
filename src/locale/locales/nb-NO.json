@@ -421,7 +421,8 @@
       "new": "Nytt mål",
       "created": "Målet ble opprettet!",
       "updated": "Målet ble endret!",
-      "change": "Rediger mål"
+      "change": "Rediger mål",
+      "useLastPeriod": "Sett til sist brukte periode:"
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",
