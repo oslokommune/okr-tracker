@@ -49,6 +49,7 @@
       :visible="hasEditRights && showItemDrawer"
       :item="activeItem"
       @close="showItemDrawer = false"
+      @hook:mounted="showItemDrawer = String($route.query.edit).toLowerCase() === 'true'"
     />
 
     <profile-modal
@@ -155,6 +156,14 @@ export default {
       }
 
       return null;
+    },
+  },
+
+  watch: {
+    showItemDrawer(show) {
+      if (!show && this.$route.query.edit) {
+        this.$router.replace({ query: null });
+      }
     },
   },
 

@@ -20,10 +20,7 @@
               :key="organization.id"
               class="col__row"
             >
-              <router-link
-                class="col__link"
-                :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }"
-              >
+              <router-link class="col__link" :to="itemLink(organization.slug)">
                 <pkt-icon class="icon" name="organization" />
                 <span class="col__text">{{ organization.name }}</span>
                 <pkt-icon v-if="organization.archived" class="icon" name="archive" />
@@ -56,10 +53,7 @@
           </div>
           <div class="col__body">
             <div v-for="department in filteredDeps" :key="department.id" class="col__row">
-              <router-link
-                class="col__link"
-                :to="{ name: 'ItemAdmin', params: { slug: department.slug } }"
-              >
+              <router-link class="col__link" :to="itemLink(department.slug)">
                 <pkt-icon class="icon" name="district" />
                 <span class="col__text">{{ department.name }}</span>
                 <pkt-icon v-if="department.archived" class="icon" name="archive" />
@@ -91,10 +85,7 @@
           </div>
           <div class="col__body">
             <div v-for="product in filteredProds" :key="product.id" class="col__row">
-              <router-link
-                class="col__link"
-                :to="{ name: 'ItemAdmin', params: { slug: product.slug } }"
-              >
+              <router-link class="col__link" :to="itemLink(product.slug)">
                 <pkt-icon class="icon" name="house-heart" />
                 <span class="col__text">{{ product.name }}</span>
                 <pkt-icon v-if="product.archived" class="icon" name="archive" />
@@ -244,6 +235,16 @@ export default {
       } else {
         this.filteredProds = this.fuseProds.search(str).map(({ item }) => item);
       }
+    },
+  },
+
+  methods: {
+    itemLink(slug) {
+      return {
+        name: 'ItemAbout',
+        params: { slug },
+        query: { edit: true },
+      };
     },
   },
 };
