@@ -4,7 +4,7 @@
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.organizations') }}</h2>
         <div class="col">
-          <div v-if="filteredOrgs.length > 10" class="search">
+          <div v-if="organizations.length > 10" class="search">
             <input
               v-model="queryOrgs"
               class="pkt-form-input"
@@ -46,7 +46,7 @@
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.departments') }}</h2>
         <div class="col">
-          <div v-if="filteredDeps.length > 15" class="search">
+          <div v-if="departments.length > 10" class="search">
             <input
               v-model="queryDeps"
               class="pkt-form-input"
@@ -81,7 +81,7 @@
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.products') }}</h2>
         <div class="col">
-          <div v-if="filteredProds.length > 15" class="search">
+          <div v-if="products.length > 10" class="search">
             <input
               v-model="queryProds"
               class="pkt-form-input"
