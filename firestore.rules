@@ -39,14 +39,14 @@ service cloud.firestore {
       return isSignedIn() && (isAdminOfOrg || isAdminFromOrgOfProdOrDep);
     }
 
-    /**
-     * Return true if the current user is an admin of the organization that
-     * `document` belongs to.
-     *
-     * The document can belong to an organization either by a transitive link
-     * (`document` → `parent` → `organization`) or directly
-     * (`document` → `parent`).
-     */
+    //
+    // Return true if the current user is an admin of the organization that
+    // `document` belongs to.
+    //
+    // The document can belong to an organization either by a transitive link
+    // (`document` → `parent` → `organization`) or directly
+    // (`document` → `parent`).
+    //
     function isAdminOfParent(document, type) {
       let userDoc = getUserDoc();
       let userIsAdmin = isAdmin();
@@ -78,13 +78,39 @@ service cloud.firestore {
       return userIsTeamMember;
     }
 
-    /**
-     * Return true if the current user is a member of `document.parent`.
-     */
+    //
+    // Return true if the current user is a member of `document.parent`.
+    //
     function isMemberOfParent(document, type) {
       let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
       let doc = getAfter(/databases/$(database)/documents/$(type)/$(document));
       let parentDoc = getAfter(doc.data.parent);
+      let userIsMemberOfParent = userRef in parentDoc.data.team;
+      return userIsMemberOfParent;
+    }
+
+    //
+    // Return true if the current user is a member of the parent of the
+    // document's objective *before* performing the action.
+    //
+    function isMemberOfObjectiveParentBefore(document, type) {
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let doc = get(/databases/$(database)/documents/$(type)/$(document));
+      let objectiveDoc = get(doc.data.objective);
+      let parentDoc = get(objectiveDoc.data.parent);
+      let userIsMemberOfParent = userRef in parentDoc.data.team;
+      return userIsMemberOfParent;
+    }
+
+    //
+    // Return true if the current user is a member of the parent of the
+    // document's objective *after* performing the action.
+    //
+    function isMemberOfObjectiveParentAfter(document, type) {
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let doc = getAfter(/databases/$(database)/documents/$(type)/$(document));
+      let objectiveDoc = getAfter(doc.data.objective);
+      let parentDoc = getAfter(objectiveDoc.data.parent);
       let userIsMemberOfParent = userRef in parentDoc.data.team;
       return userIsMemberOfParent;
     }
@@ -158,11 +184,11 @@ service cloud.firestore {
       allow delete: if isSuperAdmin();
     }
 
-    /*
-     * TODO: Needs to be extended with rules for `create` and `delete`.
-     */
+    // TODO: Should also allow create/delete by organization admins.
     match /objectiveContributors/{document} {
       allow read: if isSignedIn();
+      allow create: if isSuperAdmin() || isMemberOfObjectiveParentAfter(document, 'objectiveContributors');
+      allow delete: if isSuperAdmin() || isMemberOfObjectiveParentBefore(document, 'objectiveContributors');
     }
 
     match /periods/{document} {
