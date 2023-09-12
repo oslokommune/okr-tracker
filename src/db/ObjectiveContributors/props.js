@@ -5,6 +5,6 @@ export default {
   },
   objective: {
     type: 'reference',
-    required: false,
+    required: true,
   },
 };
