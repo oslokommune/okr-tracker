@@ -645,8 +645,44 @@ export default {
 }
 
 .okr-link-card {
+  --card-bg-color: var(--color-white);
+
   position: relative;
   z-index: 1;
+  height: 9.5rem;
+  overflow: hidden;
+
+  ::v-deep &__inner {
+    justify-content: space-between;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      width: 1rem;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--card-bg-color) 75%,
+        var(--card-bg-color) 100%
+      );
+      content: '';
+    }
+  }
+
+  ::v-deep &__title {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+  }
+
+  &--active {
+    --card-bg-color: var(--color-blue-5);
+  }
 }
 
 @keyframes loading {

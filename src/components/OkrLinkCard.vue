@@ -11,15 +11,23 @@
       :href="href"
       @click="activate($event, navigate)"
     >
-      <pkt-tag v-if="!compact" text-style="normal-text" skin="yellow" size="small">
-        {{ activeItem.name }}
-      </pkt-tag>
+      <div class="okr-link-card__inner">
+        <pkt-tag
+          v-if="!compact"
+          text-style="normal-text"
+          skin="yellow"
+          size="small"
+          class="okr-link-card__owner"
+        >
+          {{ activeItem.name }}
+        </pkt-tag>
 
-      <span class="okr-link-card__title pkt-txt-14">
-        {{ title }}
-      </span>
+        <span class="okr-link-card__title pkt-txt-14">
+          {{ title }}
+        </span>
 
-      <progress-bar :progression="progression" :compact="compact" />
+        <progress-bar :progression="progression" :compact="compact" />
+      </div>
     </a>
   </router-link>
 </template>
@@ -89,11 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .okr-link-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-height: 6.5rem;
-  padding: 1rem;
+  display: block;
   color: var(--color-text);
   text-decoration: none;
   background-color: var(--color-white);
@@ -102,6 +106,18 @@ export default {
 
   &:hover {
     color: var(--color-hover);
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 1rem;
+  }
+
+  &__owner {
+    white-space: nowrap;
   }
 
   &__title {
