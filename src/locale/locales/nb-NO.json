@@ -34,6 +34,7 @@
     "noData": "Ingen registrerte verdier",
     "noDataFiltered": "Ingen data i valgt periode",
     "noGraph": "Ikke nok data til å vise graf",
+    "archived": "Denne målingen er arkivert og vil ikke lenger være synlig.",
     "formats": {
       "integer": "Heltall",
       "percentage": "Prosent"
@@ -82,7 +83,11 @@
       "resultIndicatorWarning": "Resultatindikatorer regnes som indikatorer på virksomhetens effekt og måloppnåelse, og bør derfor være avklart med virksomhetens ledelse før opprettelse."
     },
     "automation": {
-      "radio": "Hente måleverdier automatisk fra et regneark (Google Sheets)?"
+      "title": "Automatisert progresjon",
+      "error": "En feil har oppstått under oppdatering av progresjon for denne målingen.",
+      "radio": "Hente måleverdier automatisk fra et regneark (Google Sheets)?",
+      "reviewSettings": "Vennligst kontroller {0}.",
+      "automationLink": "innstillingene for automatisert progresjon"
     },
     "goals": {
       "goal": "Mål",
@@ -91,7 +96,7 @@
       "set": "Sett mål",
       "edit": "Endre mål",
       "the": "målet",
-      "help": "Målinger kan ha progresjonsmål for bestemte perioder. Disse tegnes opp i diagrammet sammen med progresjonsgrafen. Bruk knappen til høyre for å sette eller endre mål.",
+      "help": "Målinger kan ha progresjonsmål for bestemte perioder. Disse tegnes opp i diagrammet sammen med progresjonsgrafen.",
       "goalTitle": "Mål for {formattedDateRange}"
     }
   },
@@ -125,7 +130,8 @@
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
     "language": "Språk",
-    "owner": "Ansvarlig team"
+    "owner": "Ansvarlig team",
+    "kpiType": "Type"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
@@ -207,7 +213,8 @@
     "newKeyResult": "Nytt nøkkelresultat",
     "step": "Steg {step} av {steps}",
     "or": "eller",
-    "shortcuts": "Snarveier"
+    "shortcuts": "Snarveier",
+    "error": "Feil"
   },
   "home": {
     "welcome": "Velkommen til {appName}!",
@@ -429,6 +436,12 @@
       "created": "Nøkkelresultatet ble opprettet!",
       "updated": "Nøkkelresultatet ble endret!",
       "change": "Rediger Nøkkelresultat"
+    },
+    "measurement": {
+      "new": "Legg til måling",
+      "created": "Målingen ble opprettet!",
+      "updated": "Målingen ble endret!",
+      "change": "Rediger måling"
     },
     "apiSecret": "Hvis du har tenkt til å bruke API-et for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "apiDocs": "API-dokumentasjon",

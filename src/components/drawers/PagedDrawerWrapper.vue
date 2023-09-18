@@ -101,6 +101,12 @@ export default {
       }
     },
 
+    goToPage(pageIndex) {
+      if (pageIndex !== this.pageIndex && pageIndex >= 1 && pageIndex <= this.pageCount) {
+        this.pageIndex = pageIndex;
+      }
+    },
+
     reset() {
       this.isDone = false;
       this.skin = null;
