@@ -16,7 +16,7 @@
     </template>
 
     <template #page="{ pageIndex, prev }">
-      <form-section :hide-errors="true">
+      <form-section>
         <template v-if="pageIndex === 1">
           <form-component
             v-model="thisItem.name"
@@ -102,7 +102,7 @@
           </form-component>
         </template>
 
-        <template v-if="!thisItem?.archived" #actions="{ handleSubmit }">
+        <template v-if="!thisItem?.archived" #actions="{ handleSubmit, submitDisabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
@@ -120,7 +120,7 @@
 
           <btn-save
             :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="loading"
+            :disabled="submitDisabled || loading"
             variant="label-only"
             @click="handleSubmit(save)"
           />

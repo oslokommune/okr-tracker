@@ -6,7 +6,7 @@
       @close="showEditGoalsModal = false"
     />
 
-    <form-section>
+    <form-section error-summary>
       <form-component
         v-model="localKpi.name"
         input-type="input"

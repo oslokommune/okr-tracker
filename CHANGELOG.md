@@ -21,6 +21,8 @@ All notable changes to this project will be documented in this file. The format 
   with the edit drawer opened.
 - The currently active item tab is now kept when navigating between
   organizational items.
+- Validation in forms are now less "eager" and errors are only displayed after
+  attempted form submissions.
 
 ## [3.9.0] 2023-09-01
 

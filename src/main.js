@@ -4,16 +4,7 @@ import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import VueMeta from 'vue-meta';
 import VueFlatPickr from 'vue-flatpickr-component';
-import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
-import {
-  email,
-  max,
-  min,
-  min_value as minValue,
-  numeric,
-  required,
-} from 'vee-validate/dist/rules';
-
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { firestorePlugin } from 'vuefire';
 
 import { PktIcon } from '@oslokommune/punkt-vue2';
@@ -27,6 +18,7 @@ import PageLayout from '@/components/layout/PageLayout.vue';
 import FormComponent from '@/components/FormComponent.vue';
 
 import { auth } from './config/firebaseConfig';
+import configureFormValidation from './config/validation';
 
 // import plugin styles
 import 'flatpickr/dist/flatpickr.css';
@@ -66,24 +58,9 @@ Vue.component('FormComponent', FormComponent);
 Vue.component('VSpinner', Spinner);
 Vue.component('PktIcon', PktIcon);
 
-/* eslint-disable */
-configure({
-  defaultMessage: (field, values) => {
-    values._field_ = i18n.t(`fields.${field}`);
-
-    return i18n.t(`validation.${values._rule_}`, values);
-  },
-});
-/* eslint-enable */
-
-extend('required', required);
-extend('email', email);
-extend('numeric', numeric);
-extend('min', min);
-extend('min_value', minValue);
-extend('max', max);
-extend('decimal', (num) => typeof num === 'number');
-extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
+// Configure VeeValidate for form validation.
+// https://vee-validate.logaretm.com/v3/
+configureFormValidation();
 
 Vue.config.productionTip = false;
 

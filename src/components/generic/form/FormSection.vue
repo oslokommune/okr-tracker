@@ -8,7 +8,7 @@
     <slot />
 
     <pkt-alert
-      v-if="validated && !valid && !hideErrors"
+      v-if="errorSummary && validated && !valid"
       skin="error"
       class="form-errors"
       :title="$t('general.formErrors')"
@@ -43,7 +43,7 @@ export default {
   },
 
   props: {
-    hideErrors: {
+    errorSummary: {
       type: Boolean,
       required: false,
       default: false,

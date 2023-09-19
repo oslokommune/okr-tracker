@@ -11,7 +11,7 @@
     </template>
 
     <template #page>
-      <form-section :hide-errors="true">
+      <form-section>
         <form-component
           v-model="thisObjective.name"
           input-type="textarea"
@@ -52,12 +52,12 @@
           {{ formattedPeriod(newestObjective) }}
         </pkt-button>
 
-        <template v-if="!objective?.archived" #actions="{ handleSubmit }">
+        <template v-if="!objective?.archived" #actions="{ handleSubmit, submitDisabled }">
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
             :label="objective ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
-            :disabled="loading"
+            :disabled="submitDisabled || loading"
             @click="handleSubmit(save)"
           />
         </template>
