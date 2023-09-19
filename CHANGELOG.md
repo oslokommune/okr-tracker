@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file. The format 
   organizational items.
 - Validation in forms are now less "eager" and errors are only displayed after
   attempted form submissions.
-- Administration of measurements have been moved to drawers and follows the same
+- Administration of measurements has been moved to drawers and follows the same
   pattern as when editing OKRs and other items.
 
 ### Removed

@@ -82,7 +82,7 @@
     },
     "automation": {
       "title": "Automated progression",
-      "error": "An error has occured while updating progression for this measurement.",
+      "error": "An error has occurred while updating progression for this measurement.",
       "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?",
       "reviewSettings": "Please review {0}.",
       "automationLink": "the settings for automated progression"
