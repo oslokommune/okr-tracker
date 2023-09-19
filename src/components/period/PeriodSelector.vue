@@ -83,6 +83,10 @@ export default {
 
   mounted() {
     const calculatedMonthLimit = Math.floor(window.innerWidth / 380);
+    if (calculatedMonthLimit === 0) {
+      this.showMonths = 1;
+      return;
+    }
     this.showMonths =
       this.maxMonths > calculatedMonthLimit ? calculatedMonthLimit : this.maxMonths;
   },
