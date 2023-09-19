@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed create/edit/delete rights for organization admins.
 - Organization, department and product filter in admin panel should no longer
   disappear when search result count reaches certain threshold.
+- Improved WCAG compliance with respect to text color contrast.
 
 ### Changed
 

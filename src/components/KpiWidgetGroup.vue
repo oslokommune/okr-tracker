@@ -152,7 +152,7 @@ export default {
     gap: 0.75rem;
     align-items: center;
     justify-content: space-between;
-    color: var(--color-grayscale-40);
+    color: var(--color-grayscale-60);
 
     h2 {
       flex-grow: 1;
