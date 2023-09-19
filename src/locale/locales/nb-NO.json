@@ -17,8 +17,6 @@
     "measurementBody": "Denne målingen ser ikke ut til å eksistere."
   },
   "kpi": {
-    "add": "Legg til måling",
-    "placeholderName": "Ny måling",
     "currentValue": "Nåværende verdi",
     "latestValueTitle": "Siste verdi per {formattedDate}",
     "progress": "Progresjon",
@@ -519,11 +517,6 @@
       "heading": "Ingen nøkkelresultater",
       "body": "Oops! Her finnes det ingen nøkkelresultater ennå.",
       "linkText": "Opprett et nøkkelresultat"
-    },
-    "itemAdmin": {
-      "keyResult": "Ingen nøkkelresultater for mål",
-      "objective": "Ingen mål for periode",
-      "period": "Ingen perioder"
     },
     "noKPIs": {
       "heading": "Ingen målinger",

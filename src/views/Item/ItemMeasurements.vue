@@ -40,7 +40,7 @@
     <empty-page
       v-else
       :heading="$t('empty.noKPIs.heading')"
-      :body="$t('empty.noKPIs.body')"
+      :body="$t(hasEditRights ? 'empty.noKPIs.adminBody' : 'empty.noKPIs.body')"
     >
       <div v-if="hasEditRights" data-mode="dark">
         <pkt-button

@@ -17,8 +17,6 @@
     "measurementBody": "This measurement doesn't seem to exist."
   },
   "kpi": {
-    "add": "Add measurement",
-    "placeholderName": "New measurement",
     "currentValue": "Current value",
     "latestValueTitle": "Latest value per {formattedDate}",
     "progress": "Progress",
@@ -519,11 +517,6 @@
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
-    },
-    "itemAdmin": {
-      "keyResult": "No key results for selected objective",
-      "objective": "No objectives for selected period",
-      "period": "No periods"
     },
     "noKPIs": {
       "heading": "No measurements",
