@@ -42,15 +42,15 @@
           rules="required"
         />
 
-        <pkt-button
+        <period-shortcut
           v-if="newestObjective?.startDate && newestObjective?.endDate"
           class="period-suggestion"
-          skin="secondary"
-          size="small"
-          @onClick="useSuggestedPeriod"
-        >
-          {{ formattedPeriod(newestObjective) }}
-        </pkt-button>
+          :label="$t('admin.objective.useLastPeriod')"
+          :start-date="newestObjective.startDate.toDate()"
+          :end-date="newestObjective.endDate.toDate()"
+          :active="isSuggestedPeriod"
+          @click="useSuggestedPeriod"
+        />
 
         <template v-if="!objective?.archived" #actions="{ handleSubmit, submitDisabled }">
           <btn-cancel :disabled="loading" @click="close" />
@@ -109,7 +109,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import formattedPeriod from '@/util/okr';
+import { isEqual } from 'date-fns';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
@@ -122,6 +122,7 @@ export default {
 
   components: {
     ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    PeriodShortcut: () => import('@/components/period/PeriodShortcut.vue'),
     PktButton,
     PagedDrawerWrapper,
     FormSection,
@@ -166,6 +167,16 @@ export default {
 
   computed: {
     ...mapState(['activeItemRef']),
+
+    isSuggestedPeriod() {
+      return (
+        this.periodRange &&
+        this.newestObjective?.startDate &&
+        this.newestObjective?.endDate &&
+        isEqual(this.periodRange[0], this.newestObjective.startDate.toDate()) &&
+        isEqual(this.periodRange[1], this.newestObjective.endDate.toDate())
+      );
+    },
   },
 
   watch: {
@@ -190,8 +201,6 @@ export default {
   },
 
   methods: {
-    formattedPeriod,
-
     getCurrentDateRange() {
       if (this.thisObjective.startDate && this.thisObjective.endDate) {
         return [this.objective.startDate.toDate(), this.objective.endDate.toDate()];
@@ -286,6 +295,6 @@ export default {
 
 <style lang="scss" scoped>
 .period-suggestion {
-  margin-bottom: 1rem;
+  margin: -0.75rem 0 1rem 0;
 }
 </style>

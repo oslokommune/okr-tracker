@@ -421,7 +421,8 @@
       "new": "New objective",
       "created": "Objective was created!",
       "updated": "Objective was updated!",
-      "change": "Edit objective"
+      "change": "Edit objective",
+      "useLastPeriod": "Set to last used period:"
     },
     "keyResult": {
       "new": "New key result",

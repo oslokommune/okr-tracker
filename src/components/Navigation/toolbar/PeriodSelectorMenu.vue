@@ -76,6 +76,14 @@ export default {
       width: unset;
       min-width: 10rem;
     }
+
+    ::v-deep .period-selector__options button {
+      min-height: 4rem;
+
+      @media screen and (min-width: 0rem) and (max-width: 28rem) {
+        width: 100%;
+      }
+    }
   }
 
   &__label {
