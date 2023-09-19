@@ -19,6 +19,8 @@ All notable changes to this project will be documented in this file. The format 
   them. This is meant to prevent accidental data loss in unsaved forms.
 - Items in the admin panel now links directly to each respective item about page
   with the edit drawer opened.
+- The currently active item tab is now kept when navigating between
+  organizational items.
 
 ## [3.9.0] 2023-09-01
 

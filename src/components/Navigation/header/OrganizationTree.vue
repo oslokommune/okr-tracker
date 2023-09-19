@@ -7,7 +7,7 @@
         class="organization-tree__item organization-tree__item--organization"
       >
         <router-link
-          :to="{ name: 'ItemHome', params: { slug: organization.slug } }"
+          :to="getRoute(organization.slug)"
           :class="[
             'organization-tree__link',
             {
@@ -26,7 +26,7 @@
             class="organization-tree__item organization-tree__item--department"
           >
             <router-link
-              :to="{ name: 'ItemHome', params: { slug: dept.slug } }"
+              :to="getRoute(dept.slug)"
               :class="[
                 'organization-tree__link',
                 { 'organization-tree__link--active': dept.slug === $route.params.slug },
@@ -43,7 +43,7 @@
                 class="organization-tree__item organization-tree__item--product pkt-txt-14-light"
               >
                 <router-link
-                  :to="{ name: 'ItemHome', params: { slug: prod.slug } }"
+                  :to="getRoute(prod.slug)"
                   :class="[
                     'organization-tree__link',
                     {
@@ -87,6 +87,17 @@ export default {
 
     children() {
       return this.tree.find((org) => org.id === this.organization.id)?.children || [];
+    },
+  },
+
+  methods: {
+    getRoute(slug) {
+      const { name: currentRouteName, query: currentQuery } = this.$route;
+      const name = ['ItemMeasurements', 'ItemAbout'].includes(currentRouteName)
+        ? currentRouteName
+        : 'ItemHome';
+      const query = currentQuery?.view ? { view: currentQuery.view } : null;
+      return { name, params: { slug }, query };
     },
   },
 };
