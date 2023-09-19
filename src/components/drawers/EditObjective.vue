@@ -169,16 +169,13 @@ export default {
     ...mapState(['activeItemRef']),
 
     isSuggestedPeriod() {
-      if (
+      return (
         this.periodRange &&
         this.newestObjective?.startDate &&
         this.newestObjective?.endDate &&
         isEqual(this.periodRange[0], this.newestObjective.startDate.toDate()) &&
         isEqual(this.periodRange[1], this.newestObjective.endDate.toDate())
-      ) {
-        return true;
-      }
-      return false;
+      );
     },
   },
 
