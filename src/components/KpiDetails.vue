@@ -1,27 +1,45 @@
 <template>
   <div class="kpi-details">
     <header class="kpi-details__header">
-      <div>
-        <h2 class="pkt-txt-30">{{ kpi.name }}</h2>
-        <pkt-button
-          v-if="hasEditRights"
-          skin="tertiary"
-          variant="icon-left"
-          icon-name="plus-sign"
-          @onClick="showValueModal = true"
-        >
-          {{ $t('kpi.newValue') }}
-        </pkt-button>
-      </div>
+      <h2>{{ kpi.name }}</h2>
+      <pkt-button
+        v-if="hasEditRights"
+        v-tooltip="$t('admin.measurement.change')"
+        skin="tertiary"
+        variant="icon-only"
+        size="medium"
+        icon-name="edit"
+        @onClick="$emit('edit-kpi')"
+      />
     </header>
 
     <HTML-output
       v-if="kpi.description"
-      class="kpi-details__description pkt-txt-14-light"
+      class="mb-size-16 pkt-txt-14-light"
       :html="kpi.description"
     />
 
-    <widget-kpi-progress-graph :kpi="kpi" :progress="progress" :goals="goals" />
+    <pkt-alert
+      v-if="hasEditRights && kpi.error && kpi.auto"
+      skin="error"
+      :close-alert="true"
+      class="mb-size-16"
+    >
+      {{ $t('kpi.automation.error') }}
+      <i18n path="kpi.automation.reviewSettings">
+        <a href="#" @click="$emit('edit-kpi')">{{
+          $t('kpi.automation.automationLink')
+        }}</a>
+      </i18n>
+    </pkt-alert>
+
+    <widget-kpi-progress-graph
+      :kpi="kpi"
+      :progress="progress"
+      :goals="goals"
+      @add-value="showValueModal = true"
+      @set-goals="showEditGoalsModal = true"
+    />
 
     <widget-kpi-progress-stats :kpi="kpi" :progress="progress" :goals="goals" />
 
@@ -37,13 +55,19 @@
       @create-record="createProgressRecord"
       @close="showValueModal = false"
     />
+
+    <edit-goals-modal
+      v-if="hasEditRights && showEditGoalsModal"
+      :kpi="kpi"
+      @close="showEditGoalsModal = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 import Progress from '@/db/Kpi/Progress';
 import {
   filterDuplicatedProgressValues,
@@ -58,9 +82,11 @@ export default {
   name: 'KpiDetails',
 
   components: {
+    PktAlert,
     PktButton,
-    ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
     HTMLOutput: () => import('@/components/HTMLOutput.vue'),
+    ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
+    EditGoalsModal: () => import('@/components/modals/EditGoalsModal.vue'),
     WidgetKpiProgressGraph,
     WidgetKpiProgressHistory,
     WidgetKpiProgressStats,
@@ -77,6 +103,7 @@ export default {
     progressCollection: [],
     goals: [],
     showValueModal: false,
+    showEditGoalsModal: false,
   }),
 
   computed: {
@@ -158,6 +185,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 @include bp('laptop-up') {
   .kpi-details {
     margin-left: 3rem;
@@ -165,30 +194,17 @@ export default {
 }
 
 .kpi-details__header {
-  gap: 0.25rem;
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 
-  > div {
-    display: flex;
-    align-items: center;
+  @include get-text('pkt-txt-18');
 
-    button {
-      flex: 0;
-      white-space: nowrap;
-    }
-
-    h2 {
-      margin: 0;
-    }
-
-    @include bp('phablet-up') {
-      flex-direction: row;
-      justify-content: space-between;
-    }
+  @include bp('tablet-up') {
+    @include get-text('pkt-txt-24');
   }
-}
-
-.kpi-details__description {
-  margin-bottom: 1.5rem;
 }
 </style>

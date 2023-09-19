@@ -4,6 +4,8 @@
       {{ $t('kpi.goals.edit') }}
     </template>
 
+    <p class="mb-size-16 pkt-txt-14">{{ $t('kpi.goals.help') }}</p>
+
     <div class="goal-form">
       <div class="goal-form__left">
         <ul>

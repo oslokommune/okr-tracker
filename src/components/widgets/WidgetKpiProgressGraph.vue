@@ -2,6 +2,27 @@
   <widget :title="$t('kpi.progress')">
     <template #title-actions>
       <pkt-button
+        v-if="hasEditRights"
+        size="small"
+        skin="primary"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="$emit('add-value')"
+      >
+        {{ $t('kpi.newValue') }}
+      </pkt-button>
+      <pkt-button
+        v-if="hasEditRights"
+        size="small"
+        skin="tertiary"
+        variant="icon-left"
+        icon-name="bullseye"
+        @onClick="$emit('set-goals')"
+      >
+        {{ $t('kpi.goals.set') }}
+      </pkt-button>
+      <div class="separator"></div>
+      <pkt-button
         v-tooltip="$t('dashboard.downloadOptions.png')"
         size="small"
         skin="tertiary"
@@ -21,7 +42,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { max, min } from 'd3-array';
 import firebase from 'firebase/compat/app';
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -68,6 +89,7 @@ export default {
 
   computed: {
     ...mapState(['selectedPeriod']),
+    ...mapGetters(['hasEditRights']),
   },
 
   watch: {

@@ -105,6 +105,15 @@ export default {
       color: var(--color-text);
     }
 
+    .widget__actions {
+      display: flex;
+      gap: 0.5rem;
+
+      ::v-deep .separator {
+        border-left: 1px solid var(--color-border);
+      }
+    }
+
     .widget__actions,
     .widget__toggle {
       margin-left: auto;
