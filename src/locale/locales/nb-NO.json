@@ -431,7 +431,6 @@
       "change": "Rediger Nøkkelresultat"
     },
     "apiSecret": "Hvis du har tenkt til å bruke API-et for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
-    "curlHelp": "Oppdatering via {apiLink}-kall, f.eks. ved bruk av curl.",
     "apiDocs": "API-dokumentasjon",
     "department": {
       "picture": "Bilde",

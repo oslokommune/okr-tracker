@@ -431,7 +431,6 @@
       "change": "Edit key result"
     },
     "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
-    "curlHelp": "Push updates via {apiLink}, i.e. using curl.",
     "apiDocs": "API documentation",
     "department": {
       "picture": "Image",
