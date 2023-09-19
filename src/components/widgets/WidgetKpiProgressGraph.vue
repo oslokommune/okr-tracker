@@ -1,27 +1,27 @@
 <template>
   <widget :title="$t('kpi.progress')">
     <template #title-actions>
-      <pkt-button
-        v-if="hasEditRights"
-        size="small"
-        skin="primary"
-        variant="icon-left"
-        icon-name="plus-sign"
-        @onClick="$emit('add-value')"
-      >
-        {{ $t('kpi.newValue') }}
-      </pkt-button>
-      <pkt-button
-        v-if="hasEditRights"
-        size="small"
-        skin="tertiary"
-        variant="icon-left"
-        icon-name="bullseye"
-        @onClick="$emit('set-goals')"
-      >
-        {{ $t('kpi.goals.set') }}
-      </pkt-button>
-      <div class="separator"></div>
+      <template v-if="hasEditRights">
+        <pkt-button
+          size="small"
+          skin="primary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="$emit('add-value')"
+        >
+          {{ $t('kpi.newValue') }}
+        </pkt-button>
+        <pkt-button
+          size="small"
+          skin="tertiary"
+          variant="icon-left"
+          icon-name="bullseye"
+          @onClick="$emit('set-goals')"
+        >
+          {{ $t('kpi.goals.set') }}
+        </pkt-button>
+        <div class="separator"></div>
+      </template>
       <pkt-button
         v-tooltip="$t('dashboard.downloadOptions.png')"
         size="small"
