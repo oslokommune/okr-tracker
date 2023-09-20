@@ -114,6 +114,10 @@ export default {
     $route: {
       immediate: true,
       async handler({ params, query }) {
+        this.$nextTick(() => {
+          this.$el.parentElement.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
         if (query.view === 'list') {
           this.showKpiDetails = false;
           return;
