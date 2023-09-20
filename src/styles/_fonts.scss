@@ -3,7 +3,8 @@
   font-family: 'OsloSans';
   font-style: normal;
   font-stretch: normal;
-  src: url('./fonts/OsloSans-Light.woff') format('woff');
+  src: url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Light.woff2') format('woff2'),
+    url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Light.woff') format('woff');
   font-display: auto;
 }
 
@@ -12,7 +13,8 @@
   font-family: 'OsloSans';
   font-style: normal;
   font-stretch: normal;
-  src: url('./fonts/OsloSans-Regular.woff') format('woff');
+  src: url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Regular.woff2') format('woff2'),
+    url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Regular.woff') format('woff');
   font-display: auto;
 }
 
@@ -21,7 +23,8 @@
   font-family: 'OsloSans';
   font-style: normal;
   font-stretch: normal;
-  src: url('./fonts/OsloSans-Medium.woff') format('woff');
+  src: url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Medium.woff2') format('woff2'),
+    url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Medium.woff') format('woff');
   font-display: auto;
 }
 
@@ -30,6 +33,7 @@
   font-family: 'OsloSans';
   font-style: normal;
   font-stretch: normal;
-  src: url('./fonts/OsloSans-Bold.woff') format('woff');
+  src: url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Bold.woff2') format('woff2'),
+    url('@oslokommune/punkt-assets/dist/fonts/OsloSans-Bold.woff') format('woff');
   font-display: auto;
 }
