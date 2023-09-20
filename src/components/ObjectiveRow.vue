@@ -24,12 +24,13 @@
 <script>
 import { mapState } from 'vuex';
 import { format } from 'd3-format';
+import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
   name: 'ObjectiveRow',
 
   components: {
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
+    ProgressBar,
   },
 
   props: {

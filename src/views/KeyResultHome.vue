@@ -112,30 +112,35 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
+import { mapGetters, mapState } from 'vuex';
 import { max, min } from 'd3-array';
+import { PktButton, PktAlert } from '@oslokommune/punkt-vue2';
 import { db } from '@/config/firebaseConfig';
-import KeyResult from '@/db/KeyResult';
-import Progress from '@/db/Progress';
-import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
-import routerGuard from '@/router/router-guards/keyResultHome';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
-import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
-import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import KeyResult from '@/db/KeyResult';
+import KeyResultDrawer from '@/components/drawers/EditKeyResult.vue';
 import KeyResultProgressDetails from '@/components/KeyResultProgressDetails.vue';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 import KeyResultValueForm from '@/components/forms/KeyResultValueForm.vue';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import LineChart from '@/util/LineChart';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
+import Progress from '@/db/Progress';
+import ProgressBar from '@/components/ProgressBar.vue';
+import routerGuard from '@/router/router-guards/keyResultHome';
+import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
+import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
+import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 
 export default {
   name: 'KeyResultHome',
 
   components: {
-    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    NotFoundPage,
+    ProgressBar,
+    PktAlert,
     KeyResultProgressDetails,
     KeyResultValueForm,
     Widget: WidgetWrapper,
@@ -143,9 +148,9 @@ export default {
     WidgetKeyResultNotes,
     WidgetProgressHistory,
     PktButton,
-    KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
-    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
+    KeyResultDrawer,
+    ArchivedRestore,
+    HTMLOutput,
   },
 
   beforeRouteUpdate: routerGuard,

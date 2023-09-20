@@ -215,8 +215,8 @@
 
 <script>
 import { mapState } from 'vuex';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 import { functions } from '@/config/firebaseConfig';
-import Kpi from '@/db/Kpi';
 import {
   kpiFormats,
   kpiStartValues,
@@ -224,17 +224,18 @@ import {
   kpiTrendOptions,
   kpiUpdateFrequencies,
 } from '@/util/kpiHelpers';
-import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, ToggleButton, BtnSave, BtnDelete } from '@/components/generic/form';
-import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import GoogleSheetsFormGroup from '@/components/forms/partials/GoogleSheetsFormGroup.vue';
+import Kpi from '@/db/Kpi';
+import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
   name: 'EditItemDrawer',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    ArchivedRestore,
+    PktAlert,
     PktButton,
     PagedDrawerWrapper,
     FormSection,

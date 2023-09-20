@@ -115,14 +115,16 @@ import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+import PeriodShortcut from '@/components/period/PeriodShortcut.vue';
 
 export default {
   name: 'EditObjective',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
-    PeriodShortcut: () => import('@/components/period/PeriodShortcut.vue'),
+    ArchivedRestore,
+    PeriodShortcut,
     PktButton,
     PagedDrawerWrapper,
     FormSection,

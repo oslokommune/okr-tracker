@@ -35,11 +35,13 @@
 </template>
 
 <script>
+import { PktAlert } from '@oslokommune/punkt-vue2';
+
 export default {
   name: 'FormSection',
 
   components: {
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktAlert,
   },
 
   props: {

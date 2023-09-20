@@ -69,9 +69,12 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-
-import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
+import { PktButton } from '@oslokommune/punkt-vue2';
+import EmptyPage from '@/components/pages/EmptyPage.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
+import KpiDrawer from '@/components/drawers/KpiDrawer.vue';
+import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
 export default {
   name: 'ItemMeasurements',
@@ -79,10 +82,10 @@ export default {
   components: {
     KpiWidgetGroup,
     KpiDetails,
-    EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
-    PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
-    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
-    KpiDrawer: () => import('@/components/drawers/KpiDrawer.vue'),
+    EmptyPage,
+    NotFoundPage,
+    PktButton,
+    KpiDrawer,
   },
 
   data: () => ({

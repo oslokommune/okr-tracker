@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import ClappingHands from '@/components/ClappingHands.vue';
 import SliderContainer from '@/components/drawers/SliderContainer.vue';
 
 export default {
@@ -43,7 +44,7 @@ export default {
 
   components: {
     SliderContainer,
-    ClappingHands: () => import('@/components/ClappingHands.vue'),
+    ClappingHands,
   },
 
   props: {

@@ -62,6 +62,8 @@
 import { mapState } from 'vuex';
 import Fuse from 'fuse.js';
 import { PktButton } from '@oslokommune/punkt-vue2';
+import AddUsers from './AddUsers.vue';
+import EditUser from './EditUser.vue';
 
 const fuseSettings = {
   threshold: 0.5,
@@ -85,8 +87,8 @@ export default {
   name: 'AdminUsers',
 
   components: {
-    EditUser: () => import('./EditUser.vue'),
-    AddUsers: () => import('./AddUsers.vue'),
+    EditUser,
+    AddUsers,
     PktButton,
   },
 

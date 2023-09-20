@@ -16,11 +16,13 @@
 </template>
 
 <script>
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
+
 export default {
   name: 'EmptyState',
 
   components: {
-    BuildingsGraphic: () => import('@/components/graphics/BuildingsGraphic.vue'),
+    BuildingsGraphic,
   },
 
   props: {

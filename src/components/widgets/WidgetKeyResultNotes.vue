@@ -37,8 +37,9 @@ import { mapState } from 'vuex';
 import { marked } from 'marked';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import dompurify from 'dompurify';
-import KeyResult from '@/db/KeyResult';
 import { BtnSave } from '@/components/generic/form';
+import KeyResult from '@/db/KeyResult';
+import Widget from './WidgetWrapper.vue';
 
 marked.setOptions({
   smartypants: true,
@@ -50,7 +51,7 @@ export default {
   components: {
     BtnSave,
     PktButton,
-    Widget: () => import('./WidgetWrapper.vue'),
+    Widget,
   },
 
   data: () => ({

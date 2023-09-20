@@ -1,6 +1,24 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
+import Admin from '@/views/Admin/Admin.vue';
+import AdminWrapper from '@/views/Admin/AdminWrapper.vue';
+import CreateDepartment from '@/views/Admin/CreateDepartment.vue';
+import CreateOrganization from '@/views/Admin/CreateOrganization.vue';
+import CreateProduct from '@/views/Admin/CreateProduct.vue';
+import Forbidden from '@/views/Forbidden.vue';
+import Help from '@/views/Help.vue';
 import Home from '@/views/Home.vue';
+import ItemAbout from '@/views/Item/ItemAbout.vue';
+import ItemMeasurements from '@/views/Item/ItemMeasurements.vue';
+import ItemOKRs from '@/views/Item/ItemOKRs.vue';
+import ItemWrapper from '@/views/Item/ItemWrapper.vue';
+import KeyResultHome from '@/views/KeyResultHome.vue';
+import Login from '@/views/Login.vue';
+import NotFound from '@/views/NotFound.vue';
+import ObjectiveHome from '@/views/ObjectiveHome.vue';
+import RequestAccess from '@/views/RequestAccess.vue';
+
 import * as routerGuards from './router-guards';
 
 Vue.use(Router);
@@ -20,55 +38,55 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login.vue'),
+    component: Login,
     beforeEnter: routerGuards.login,
   },
   {
     path: '/request-access',
     name: 'request-access',
-    component: () => import('@/views/RequestAccess.vue'),
+    component: RequestAccess,
     beforeEnter: routerGuards.requestAccess,
   },
   {
     path: '/403',
     name: 'Forbidden',
-    component: () => import('@/views/Forbidden.vue'),
+    component: Forbidden,
   },
   {
     path: '/admin',
     beforeEnter: routerGuards.admin,
-    component: () => import('@/views/Admin/AdminWrapper.vue'),
+    component: AdminWrapper,
     children: [
       {
         path: '',
         name: 'Admin',
-        component: () => import('@/views/Admin/Admin.vue'),
+        component: Admin,
       },
       {
         path: 'create-organization',
         name: 'CreateOrganization',
-        component: () => import('@/views/Admin/CreateOrganization.vue'),
+        component: CreateOrganization,
       },
       {
         path: 'create-department',
         name: 'CreateDepartment',
-        component: () => import('@/views/Admin/CreateDepartment.vue'),
+        component: CreateDepartment,
       },
       {
         path: 'create-product',
         name: 'CreateProduct',
-        component: () => import('@/views/Admin/CreateProduct.vue'),
+        component: CreateProduct,
       },
     ],
   },
   {
     path: '/help',
     name: 'Help',
-    component: () => import('@/views/Help.vue'),
+    component: Help,
   },
   {
     path: '/:slug',
-    component: () => import('@/views/Item/ItemWrapper.vue'),
+    component: ItemWrapper,
     beforeEnter: routerGuards.itemCommon,
     children: [
       {
@@ -78,31 +96,31 @@ const routes = [
       {
         path: 'okr',
         name: 'ItemHome',
-        component: () => import('@/views/Item/ItemOKRs.vue'),
+        component: ItemOKRs,
         beforeEnter: routerGuards.itemOKRs,
         beforeRouteUpdate: routerGuards.itemOKRs,
       },
       {
         path: 'measurements/:kpiId?',
         name: 'ItemMeasurements',
-        component: () => import('@/views/Item/ItemMeasurements.vue'),
+        component: ItemMeasurements,
         beforeEnter: routerGuards.itemMeasurements,
       },
       {
         path: 'about',
         name: 'ItemAbout',
-        component: () => import('@/views/Item/ItemAbout.vue'),
+        component: ItemAbout,
       },
       {
         path: 'k/:keyResultId',
         name: 'KeyResultHome',
-        component: () => import('@/views/KeyResultHome.vue'),
+        component: KeyResultHome,
         beforeEnter: routerGuards.keyResultHome,
       },
       {
         path: 'o/:objectiveId',
         name: 'ObjectiveHome',
-        component: () => import('@/views/ObjectiveHome.vue'),
+        component: ObjectiveHome,
         beforeEnter: routerGuards.objectiveHome,
       },
       /*
@@ -124,7 +142,7 @@ const routes = [
   {
     path: '*',
     name: 'NotFound',
-    component: () => import('@/views/NotFound.vue'),
+    component: NotFound,
   },
 ];
 
