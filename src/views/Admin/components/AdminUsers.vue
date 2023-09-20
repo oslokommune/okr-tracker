@@ -16,7 +16,7 @@
         <button
           v-for="user in filteredUsers"
           :key="user.id"
-          class="users__list-item"
+          class="users__list-item pkt-txt-14-medium"
           @click="selectedUser = user"
         >
           <pkt-icon class="icon" :name="isAdmin(user) ? 'cogwheel' : 'user'" />
@@ -153,7 +153,6 @@ export default {
   align-items: center;
   padding: 0.5rem 1rem;
   color: var(--color-text);
-  font-weight: 500;
   background: none;
   border: 0;
   border-bottom: 2px solid var(--color-border);
