@@ -1,5 +1,19 @@
 <template>
   <div class="measurements-page">
+    <div v-if="allKpis.length" class="measurements-page__header">
+      <h1 class="pkt-txt-24-medium">{{ $t('kpi.heading') }}</h1>
+
+      <div v-if="hasEditRights" data-mode="dark">
+        <pkt-button
+          :text="$t('admin.measurement.new')"
+          skin="primary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="openKpiDrawer(false)"
+        />
+      </div>
+    </div>
+
     <page-layout
       v-if="allKpis.length"
       :breakpoint="showKpiDetails ? 'desktop' : 'tablet-big'"
@@ -16,15 +30,6 @@
             :compact="showKpiDetails"
           />
         </template>
-
-        <pkt-button
-          v-if="hasEditRights"
-          skin="tertiary"
-          variant="icon-left"
-          icon-name="plus-sign"
-          :text="$t('admin.measurement.new')"
-          @onClick="openKpiDrawer(false)"
-        />
       </template>
 
       <template v-if="showKpiDetails" #default>
@@ -192,5 +197,17 @@ export default {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+
+  &__header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+  }
+
+  ::v-deep .page__container {
+    padding-top: 0.5rem;
+  }
 }
 </style>

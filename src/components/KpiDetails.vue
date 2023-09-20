@@ -15,7 +15,7 @@
 
     <HTML-output
       v-if="kpi.description"
-      class="mb-size-16 pkt-txt-14-light"
+      class="mb-size-32 pkt-txt-16-light"
       :html="kpi.description"
     />
 
@@ -201,10 +201,12 @@ export default {
   justify-content: space-between;
   margin-bottom: 0.5rem;
 
-  @include get-text('pkt-txt-18');
+  h2 {
+    @include get-text('pkt-txt-20');
 
-  @include bp('tablet-up') {
-    @include get-text('pkt-txt-24');
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-22');
+    }
   }
 }
 </style>
