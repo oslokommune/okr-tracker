@@ -17,8 +17,6 @@
     "measurementBody": "This measurement doesn't seem to exist."
   },
   "kpi": {
-    "add": "Add measurement",
-    "placeholderName": "New measurement",
     "currentValue": "Current value",
     "latestValueTitle": "Latest value per {formattedDate}",
     "progress": "Progress",
@@ -34,6 +32,7 @@
     "noData": "No registered values",
     "noDataFiltered": "No data in chosen period",
     "noGraph": "Not enough data to display graph",
+    "archived": "This measurement is archived and no longer visible.",
     "formats": {
       "integer": "Integer",
       "percentage": "Percentage"
@@ -82,7 +81,11 @@
       "resultIndicatorWarning": "Result indicators are considered indicators of the organization's effect and target achievement, and should therefore be clarified with the organization's management before creation."
     },
     "automation": {
-      "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?"
+      "title": "Automated progression",
+      "error": "An error has occurred while updating progression for this measurement.",
+      "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?",
+      "reviewSettings": "Please review {0}.",
+      "automationLink": "the settings for automated progression"
     },
     "goals": {
       "goal": "Goal",
@@ -91,7 +94,7 @@
       "set": "Set goals",
       "edit": "Edit goals",
       "the": "the goal",
-      "help": "Measurements can have progression goals for specific periods. These are drawn in the diagram together with the progression graph. Use the button to the right in order to add or edit goals.",
+      "help": "Measurements can have progression goals for specific periods. These are drawn in the diagram together with the progression graph.",
       "goalTitle": "Goal for {formattedDateRange}"
     }
   },
@@ -125,7 +128,8 @@
     "preferredTrend": "Trend",
     "updateFrequency": "Update frequency",
     "language": "Language",
-    "owner": "Responsible team"
+    "owner": "Responsible team",
+    "kpiType": "Type"
   },
   "validation": {
     "alpha": "May only contain alphabetic characters",
@@ -207,7 +211,8 @@
     "newKeyResult": "New key result",
     "step": "Step {step} of {steps}",
     "or": "or",
-    "shortcuts": "Shortcuts"
+    "shortcuts": "Shortcuts",
+    "error": "Error"
   },
   "home": {
     "welcome": "Welcome to {appName}!",
@@ -430,6 +435,12 @@
       "updated": "Key result was updated!",
       "change": "Edit key result"
     },
+    "measurement": {
+      "new": "New measurement",
+      "created": "Measurement created!",
+      "updated": "Measurement updated!",
+      "change": "Edit measurement"
+    },
     "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "apiDocs": "API documentation",
     "department": {
@@ -506,11 +517,6 @@
       "heading": "No key results",
       "body": "Oops! Could not find any key results.",
       "linkText": "Create a key result"
-    },
-    "itemAdmin": {
-      "keyResult": "No key results for selected objective",
-      "objective": "No objectives for selected period",
-      "period": "No periods"
     },
     "noKPIs": {
       "heading": "No measurements",

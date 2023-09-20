@@ -94,12 +94,6 @@ const routes = [
         component: () => import('@/views/Item/ItemAbout.vue'),
       },
       {
-        path: 'admin',
-        name: 'ItemAdmin',
-        component: () => import('@/views/ItemAdmin/ItemAdminWrapper.vue'),
-        beforeEnter: routerGuards.itemAdmin,
-      },
-      {
         path: 'k/:keyResultId',
         name: 'KeyResultHome',
         component: () => import('@/views/KeyResultHome.vue'),

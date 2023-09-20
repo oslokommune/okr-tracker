@@ -1,47 +1,70 @@
 <template>
-  <page-layout
-    v-if="allKpis.length"
-    :breakpoint="showKpiDetails ? 'desktop' : 'tablet-big'"
-    sidebar-position="left"
-    :sidebar-cols="showKpiDetails ? 3 : 12"
-    :sidebar-grid="showKpiDetails"
-  >
-    <template #sidebar>
-      <template v-for="(group, index) in kpiGroups">
-        <kpi-widget-group
-          v-if="group.kpis.length > 0"
-          :key="`kpi-group-${index}`"
-          v-bind="group"
-          :compact="showKpiDetails"
+  <div class="measurements-page">
+    <div v-if="allKpis.length" class="measurements-page__header">
+      <h1 class="pkt-txt-24-medium">{{ $t('kpi.heading') }}</h1>
+
+      <div v-if="hasEditRights" data-mode="dark">
+        <pkt-button
+          :text="$t('admin.measurement.new')"
+          skin="primary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="openKpiDrawer(false)"
+        />
+      </div>
+    </div>
+
+    <page-layout
+      v-if="allKpis.length"
+      :breakpoint="showKpiDetails ? 'desktop' : 'tablet-big'"
+      sidebar-position="left"
+      :sidebar-cols="showKpiDetails ? 3 : 12"
+      :sidebar-grid="showKpiDetails"
+    >
+      <template #sidebar>
+        <template v-for="(group, index) in kpiGroups">
+          <kpi-widget-group
+            v-if="group.kpis.length > 0"
+            :key="`kpi-group-${index}`"
+            v-bind="group"
+            :compact="showKpiDetails"
+          />
+        </template>
+      </template>
+
+      <template v-if="showKpiDetails" #default>
+        <kpi-details v-if="activeKpi" :kpi="activeKpi" @edit-kpi="openKpiDrawer(true)" />
+        <not-found-page
+          v-else
+          :heading="$t('notFound.measurementHeading')"
+          :body="$t('notFound.measurementBody')"
         />
       </template>
-    </template>
+    </page-layout>
 
-    <template v-if="showKpiDetails" #default>
-      <kpi-details v-if="kpi" :kpi="kpi" />
-      <not-found-page
-        v-else
-        :heading="$t('notFound.measurementHeading')"
-        :body="$t('notFound.measurementBody')"
-      />
-    </template>
-  </page-layout>
+    <empty-page
+      v-else
+      :heading="$t('empty.noKPIs.heading')"
+      :body="$t(hasEditRights ? 'empty.noKPIs.adminBody' : 'empty.noKPIs.body')"
+    >
+      <div v-if="hasEditRights" data-mode="dark">
+        <pkt-button
+          :text="$t('empty.noKPIs.buttonText')"
+          skin="primary"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="openKpiDrawer(false)"
+        />
+      </div>
+    </empty-page>
 
-  <empty-page
-    v-else
-    :heading="$t('empty.noKPIs.heading')"
-    :body="$t('empty.noKPIs.body')"
-  >
-    <div v-if="hasEditRights" data-mode="dark">
-      <pkt-button
-        :text="$t('empty.noKPIs.buttonText')"
-        skin="primary"
-        variant="icon-left"
-        icon-name="plus-sign"
-        @onClick="$router.push({ name: 'ItemAdmin', query: { tab: 'kpi' } })"
-      />
-    </div>
-  </empty-page>
+    <kpi-drawer
+      :visible="hasEditRights && showKpiDrawer"
+      :kpi="drawerEditMode ? activeKpi : null"
+      @create="kpiCreated"
+      @close="showKpiDrawer = false"
+    />
+  </div>
 </template>
 
 <script>
@@ -59,11 +82,14 @@ export default {
     EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
     PktButton: () => import('@oslokommune/punkt-vue2').then(({ PktButton }) => PktButton),
     NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
+    KpiDrawer: () => import('@/components/drawers/KpiDrawer.vue'),
   },
 
   data: () => ({
-    kpi: null,
     showKpiDetails: true,
+    showKpiDrawer: false,
+    drawerEditMode: false,
+    activeKpiId: null,
   }),
 
   computed: {
@@ -108,6 +134,10 @@ export default {
     allKpis() {
       return this.resultIndicators.concat(this.keyFigures, this.otherKpis);
     },
+
+    activeKpi() {
+      return this.allKpis.find((k) => k.id === this.activeKpiId) || null;
+    },
   },
 
   watch: {
@@ -131,7 +161,7 @@ export default {
             query: { resultIndicatorPeriod: this.selectedPeriod?.key },
           });
         } else {
-          this.kpi = this.allKpis.find((k) => k.id === kpiId) || null;
+          this.activeKpiId = this.allKpis.find((k) => k.id === kpiId) ? kpiId : null;
         }
 
         this.showKpiDetails = true;
@@ -148,22 +178,40 @@ export default {
       }
     },
   },
+
+  methods: {
+    openKpiDrawer(edit) {
+      this.drawerEditMode = edit;
+      this.showKpiDrawer = true;
+    },
+    kpiCreated(kpi) {
+      const { params, query } = this.$route;
+      this.$router.push({
+        name: 'ItemMeasurements',
+        params: { ...params, kpiId: kpi.id },
+        query,
+      });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.result-indicators {
-  header {
+.measurements-page {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+
+  &__header {
     display: flex;
-    flex-direction: row;
-    gap: 0.75rem;
+    gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
 
-    .title-1 {
-      margin-bottom: 0rem;
-    }
+  ::v-deep .page__container {
+    padding-top: 0.5rem;
   }
 }
 </style>

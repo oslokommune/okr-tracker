@@ -24,6 +24,13 @@ All notable changes to this project will be documented in this file. The format 
   organizational items.
 - Validation in forms are now less "eager" and errors are only displayed after
   attempted form submissions.
+- Administration of measurements has been moved to drawers and follows the same
+  pattern as when editing OKRs and other items.
+
+### Removed
+
+- The admin panel tab has been completely removed from the item tab bar (all
+  functionality moved to drawers).
 
 ## [3.9.0] 2023-09-01
 
