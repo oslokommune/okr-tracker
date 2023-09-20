@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file. The format 
   current item's about page.
 - Made links clickable in the description of objects, key results and goals.
 - It is no longer possible to close open modals or drawers by clicking outside
-  them. This is meant to prevent accidental data loss in unsaved forms.
+  them. This is meant to prevent accidental data loss in unsaved forms. Drawers
+  can however still be closed by outside click after form submission.
 - Items in the admin panel now links directly to each respective item about page
   with the edit drawer opened.
 - The currently active item tab is now kept when navigating between
