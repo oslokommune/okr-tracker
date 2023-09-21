@@ -183,7 +183,7 @@ header {
 
 .title-label {
   margin-bottom: 0.5rem;
-  color: var(--color-grayscale-40);
+  color: var(--color-grayscale-60);
 }
 
 .objective__heading {

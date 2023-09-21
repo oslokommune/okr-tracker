@@ -207,7 +207,7 @@ export default {
 }
 
 .no-data {
-  color: var(--color-grayscale-40);
+  color: var(--color-grayscale-60);
   font-style: italic;
 }
 </style>
