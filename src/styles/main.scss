@@ -1,5 +1,4 @@
 @use 'reset';
-@use 'fonts';
 @use 'widgets';
 @use 'nav';
 @use 'modal';
@@ -28,7 +27,6 @@ button,
 input,
 textarea,
 body {
-  font-family: 'OsloSans', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
