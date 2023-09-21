@@ -62,7 +62,7 @@ export default function downloadPng(svgRef, filename, title, period) {
 function styleText(el, size, weight) {
   el.attr('font-size', size)
     .attr('font-weight', weight)
-    .attr('font-family', '"OsloSans", Helvetica, Arial, sans-serif');
+    .attr('font-family', '"Oslo Sans", Helvetica, Arial, sans-serif');
 }
 
 function getViewBoxDimensions(svg) {
