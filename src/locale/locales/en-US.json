@@ -195,7 +195,7 @@
     "frontPage": "Front page",
     "signIn": "Please sign in",
     "orgs": "Organizations",
-    "api": "API",
+    "api": "API documentation",
     "integrations": "Integrations",
     "resultIndicator": "Result indicator",
     "keyFigures": "Key figures",
@@ -449,7 +449,6 @@
       "change": "Edit measurement",
       "delete": "Delete measurement"
     },
-    "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "department": {
       "picture": "Image",
       "create": "Create new department",
@@ -704,7 +703,7 @@
       "secretCloseText": "I'm done",
       "delete": "When deleting, all running applications which uses this client will stop working.",
       "rotate": "When rotating, all running applications which uses the old secret will stop working.",
-      "deprecation": "It is no longer possible to add/edit the API secret here. Please visit the 'integrations' tab in order to create a new API client. The old secret wil still work for the time being:"
+      "deprecation": "It is no longer possible to add/edit the API secret here. Please visit the 'integrations' tab in the menu to create a new API client. The old secret wil still work for the time being:"
     },
     "error": {
       "loading": "Could not fetch clients: {error}."

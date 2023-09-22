@@ -15,18 +15,27 @@
       </nav-menu>
 
       <!-- Item tabs -->
-      <nav-menu v-if="activeItem && $route.params?.slug" tabs>
+      <nav-menu v-if="activeItem && $route.params?.slug" class="item-menu" tabs>
         <nav-menu-item
           v-for="(itemMenuTab, index) in itemTabs"
           :key="`item_tabs_${index}`"
+          v-tooltip.bottom="itemMenuTab.tooltip"
+          :class="['item-menu__item', `item-menu__item--${itemMenuTab.pull || 'left'}`]"
           :route="itemMenuTab.route"
           :active="itemMenuTab.active"
         >
           <template #text>
-            <span class="pkt-show-tablet-big-up">{{ itemMenuTab.label }}</span>
-            <span class="pkt-hide-tablet-big-up">
-              {{ itemMenuTab.shortLabel || itemMenuTab.label }}
-            </span>
+            <pkt-icon
+              v-if="itemMenuTab.icon"
+              class="nav-menu-item__icon"
+              :name="itemMenuTab.icon"
+            />
+            <template v-if="itemMenuTab.label">
+              <span class="pkt-show-tablet-big-up">{{ itemMenuTab.label }}</span>
+              <span class="pkt-hide-tablet-big-up">
+                {{ itemMenuTab.shortLabel || itemMenuTab.label }}
+              </span>
+            </template>
           </template>
         </nav-menu-item>
       </nav-menu>
@@ -47,7 +56,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import i18n from '@/locale/i18n';
 import SiteMenuDropdown from '@/components/Navigation/SiteMenuDropdown.vue';
 import getActiveItemType from '@/util/getActiveItemType';
@@ -70,6 +79,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['hasEditRights']),
     ...mapState(['activeItem', 'activeKeyResult', 'activeObjective', 'user']),
 
     siteMenuLabel() {
@@ -88,6 +98,7 @@ export default {
         (parts.includes('ItemHome') ||
           parts.includes('ItemMeasurements') ||
           parts.includes('ItemAbout') ||
+          parts.includes('ItemIntegrations') ||
           parts.includes('KeyResultHome') ||
           parts.includes('ObjectiveHome')) &&
         this.activeItem
@@ -99,7 +110,7 @@ export default {
     },
 
     itemTabs() {
-      return [
+      const items = [
         {
           route: { name: 'ItemHome' },
           label: this.$t('general.OKRsLong'),
@@ -116,6 +127,15 @@ export default {
           shortLabel: this.$t('about.about'),
         },
       ];
+      if (this.hasEditRights) {
+        items.push({
+          route: { name: 'ItemIntegrations' },
+          icon: 'crane',
+          tooltip: this.$t('general.integrations'),
+          pull: 'right',
+        });
+      }
+      return items;
     },
 
     aboutLabel() {
@@ -168,6 +188,14 @@ export default {
 .site-menu {
   ::v-deep .nav-menu-item__inner {
     font-weight: 500;
+  }
+}
+
+.item-menu {
+  flex: 1;
+
+  &__item--right {
+    margin-left: auto;
   }
 }
 

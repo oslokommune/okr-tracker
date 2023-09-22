@@ -1,7 +1,8 @@
 <template>
-  <div class="integrations">
-    <h1 class="pkt-txt-24-medium">{{ $t('general.integrations') }}</h1>
-    <i18n path="integration.info" tag="p">
+  <page-layout breakpoint="tablet-big" class="integrations">
+    <h1 class="pkt-txt-24-medium mb-size-24">{{ $t('general.integrations') }}</h1>
+
+    <i18n path="integration.info" tag="p" class="mb-size-24">
       <template #clientIdHeader>
         <code>okr-client-id</code>
       </template>
@@ -20,7 +21,7 @@
     </pkt-alert>
 
     <template v-else-if="apiClients.length">
-      <div>
+      <div class="mb-size-32">
         <pkt-button skin="secondary" :disabled="loading" @onClick="create">
           {{ $t('integration.action.add') }}
         </pkt-button>
@@ -29,6 +30,7 @@
       <api-client-card
         v-for="client in apiClients"
         :key="client.id"
+        class="mb-size-24"
         :client="client"
         :loading="loading"
         :visible-secret="client.id === updatedClientId ? updatedClientSecret : null"
@@ -62,7 +64,7 @@
         </pkt-button>
       </div>
     </empty-state>
-  </div>
+  </page-layout>
 </template>
 
 <script>
@@ -72,7 +74,7 @@ import { PktButton } from '@oslokommune/punkt-vue2';
 import ApiClient from '@/db/ApiClient';
 
 export default {
-  name: 'ItemAdminApiIntegrations',
+  name: 'ItemIntegrations',
 
   components: {
     PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
@@ -95,7 +97,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItemRef']),
+    ...mapState(['activeItem', 'activeItemRef']),
     ...mapGetters(['isAdmin', 'hasEditRights']),
   },
 
@@ -209,14 +211,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
-.integrations {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 3rem;
-}
-</style>

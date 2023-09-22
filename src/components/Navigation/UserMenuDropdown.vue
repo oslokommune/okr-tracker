@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
 import User from '@/db/User';
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -104,6 +104,8 @@ export default {
   }),
 
   computed: {
+    ...mapState(['activeItem']),
+
     me() {
       return this.$store.state.user?.id === this.user?.id;
     },
@@ -120,7 +122,7 @@ export default {
         {
           key: 'api',
           text: this.$t('general.api'),
-          icon: 'crane',
+          icon: 'document-code',
           route: { name: 'Api' },
         },
         {
@@ -250,12 +252,11 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   &__footer {
     display: flex;
     gap: 1rem;
-    justify-content: flex-end;
     padding: 1rem;
     border-top: 1px solid var(--color-grayscale-20);
 
-    button[name='admin'] {
-      margin-right: auto;
+    button:nth-last-child(2) {
+      margin-left: auto;
     }
   }
 }

@@ -195,7 +195,7 @@
     "frontPage": "Forside",
     "signIn": "Vennligst logg inn",
     "orgs": "Virksomheter",
-    "api": "API",
+    "api": "API-dokumentasjon",
     "integrations": "Integrasjoner",
     "resultIndicator": "Resultatindikator",
     "keyFigures": "Nøkkeltall",
@@ -449,7 +449,6 @@
       "change": "Rediger måling",
       "delete": "Slett måling"
     },
-    "apiSecret": "Hvis du har tenkt til å bruke API-et for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "department": {
       "picture": "Bilde",
       "create": "Opprett nytt produktområde",
@@ -704,7 +703,7 @@
       "secretCloseText": "jeg er ferdig",
       "delete": "Ved sletting vil alle kjørende applikasjoner som benytter denne klienten slutte å fungere.",
       "rotate": "Ved rotering vil alle kjørende applikasjoner som benytter gammel hemmelighet slutte å fungere.",
-      "deprecation": "Det er ikke lenger mulig å legge til eller endre API-hemmelighet her. Besøk adminfanen 'integrasjoner' for å opprette en API-klient. Den gamle hemmeligheten fungerer enn så lenge:"
+      "deprecation": "Det er ikke lenger mulig å legge til eller endre API-hemmelighet her. Besøk fanen 'integrasjoner' i toppmenyen for å opprette en API-klient. Den gamle hemmeligheten fungerer enn så lenge:"
     },
     "error": {
       "loading": "Kunne ikke hente ut klienter: {error}."
