@@ -68,15 +68,18 @@
 import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
-import Progress from '@/db/Kpi/Progress';
 import {
   filterDuplicatedProgressValues,
   getCachedKPIProgress,
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
+import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import Progress from '@/db/Kpi/Progress';
+import ProgressModal from '@/components/modals/KPIProgressModal.vue';
 import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
-import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
 import WidgetKpiProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetKpiProgressHistory.vue';
+import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
 
 export default {
   name: 'KpiDetails',
@@ -84,9 +87,9 @@ export default {
   components: {
     PktAlert,
     PktButton,
-    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
-    ProgressModal: () => import('@/components/modals/KPIProgressModal.vue'),
-    EditGoalsModal: () => import('@/components/modals/EditGoalsModal.vue'),
+    ProgressModal,
+    HTMLOutput,
+    EditGoalsModal,
     WidgetKpiProgressGraph,
     WidgetKpiProgressHistory,
     WidgetKpiProgressStats,

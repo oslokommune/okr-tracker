@@ -151,13 +151,14 @@ import KeyResult from '@/db/KeyResult';
 import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
   name: 'EditKeyResult',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ArchivedRestore,
     PktButton,
     PagedDrawerWrapper,
     FormSection,

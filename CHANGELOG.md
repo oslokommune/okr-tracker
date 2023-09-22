@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file. The format 
 - Organization, department and product filter in admin panel should no longer
   disappear when search result count reaches certain threshold.
 - Improved WCAG compliance with respect to text color contrast.
+- Fixed a problem that would sometimes cause an "infinite spinner" when a new
+  version of the app was deployed.
 
 ### Changed
 

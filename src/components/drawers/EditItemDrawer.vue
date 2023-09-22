@@ -157,13 +157,14 @@ import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
   name: 'EditItemDrawer',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ArchivedRestore,
     PktAlert,
     PktButton,
     PagedDrawerWrapper,

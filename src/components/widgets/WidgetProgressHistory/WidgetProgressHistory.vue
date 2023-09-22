@@ -28,6 +28,7 @@
 import { mapGetters } from 'vuex';
 import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
+import EditValueModal from '@/components/modals/ProgressModal.vue';
 import ProgressHistoryTable from './ProgressHistoryTable.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
 
@@ -37,7 +38,7 @@ export default {
   components: {
     Widget: WidgetWrapper,
     ProgressHistoryTable,
-    EditValueModal: () => import('@/components/modals/ProgressModal.vue'),
+    EditValueModal,
   },
 
   props: {

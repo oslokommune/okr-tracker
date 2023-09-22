@@ -22,12 +22,13 @@
 <script>
 import { format } from 'd3-format';
 import { numberLocale } from '@/util';
+import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
   name: 'KeyResultRow',
 
   components: {
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
+    ProgressBar,
   },
 
   props: {

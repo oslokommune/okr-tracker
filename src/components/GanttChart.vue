@@ -93,12 +93,13 @@ import {
   startOfMonth,
 } from 'date-fns';
 import { dateLongCompact } from '@/util';
+import ObjectiveRow from '@/components/ObjectiveRow.vue';
 
 export default {
   name: 'GanttChart',
 
   components: {
-    ObjectiveRow: () => import('@/components/ObjectiveRow.vue'),
+    ObjectiveRow,
   },
 
   props: {

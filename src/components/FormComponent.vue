@@ -105,13 +105,13 @@
 </template>
 
 <script>
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 
 export default {
   name: 'FormComponent',
 
   components: {
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktAlert,
     PktButton,
   },
 

@@ -13,13 +13,15 @@
 
 <script>
 import { db } from '@/config/firebaseConfig';
+import EmptyState from '@/components/EmptyState.vue';
+import KeyResultRow from '@/components/KeyResultRow.vue';
 
 export default {
   name: 'KeyResultsList',
 
   components: {
-    EmptyState: () => import('@/components/EmptyState.vue'),
-    KeyResultRow: () => import('@/components/KeyResultRow.vue'),
+    EmptyState,
+    KeyResultRow,
   },
 
   props: {

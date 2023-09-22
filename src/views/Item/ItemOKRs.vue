@@ -73,18 +73,23 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
-import routerGuard from '@/router/router-guards/itemOKRs';
 import { PktButton } from '@oslokommune/punkt-vue2';
+import EmptyPage from '@/components/pages/EmptyPage.vue';
+import EmptyState from '@/components/EmptyState.vue';
+import GanttChart from '@/components/GanttChart.vue';
+import ObjectiveDrawer from '@/components/drawers/EditObjective.vue';
+import ObjectiveWorkbench from '@/components/ObjectiveWorkbench.vue';
+import routerGuard from '@/router/router-guards/itemOKRs';
 
 export default {
   name: 'ItemHome',
 
   components: {
-    GanttChart: () => import('@/components/GanttChart.vue'),
-    EmptyState: () => import('@/components/EmptyState.vue'),
-    EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
-    ObjectiveWorkbench: () => import('@/components/ObjectiveWorkbench.vue'),
-    ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
+    GanttChart,
+    EmptyState,
+    EmptyPage,
+    ObjectiveWorkbench,
+    ObjectiveDrawer,
     PktButton,
   },
 

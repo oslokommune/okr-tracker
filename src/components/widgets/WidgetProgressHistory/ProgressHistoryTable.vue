@@ -116,17 +116,19 @@
 <script>
 import { mapGetters } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
-import LoadingSmall from '@/components/LoadingSmall.vue';
 import { BtnDelete } from '@/components/generic/form/buttons';
+import EmptyState from '@/components/EmptyState.vue';
+import LoadingSmall from '@/components/LoadingSmall.vue';
+import ProfileModal from '@/components/modals/ProfileModal.vue';
 import UserLink from './UserLink.vue';
 
 export default {
   name: 'ProgressHistoryTable',
 
   components: {
-    EmptyState: () => import('@/components/EmptyState.vue'),
+    EmptyState,
     PktButton,
-    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
+    ProfileModal,
     LoadingSmall,
     UserLink,
     BtnDelete,

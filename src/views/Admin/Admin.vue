@@ -12,14 +12,17 @@
 
 <script>
 import { mapState } from 'vuex';
+import AdminAccessRequests from './components/AdminAccessRequests.vue';
+import AdminItems from './components/AdminItems.vue';
+import AdminUsers from './components/AdminUsers.vue';
 
 export default {
   name: 'Admin',
 
   components: {
-    AdminAccessRequests: () => import('./components/AdminAccessRequests.vue'),
-    AdminUsers: () => import('./components/AdminUsers.vue'),
-    AdminItems: () => import('./components/AdminItems.vue'),
+    AdminAccessRequests,
+    AdminUsers,
+    AdminItems,
   },
 
   computed: {

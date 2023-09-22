@@ -87,30 +87,35 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import KeyResultDrawer from '@/components/drawers/EditKeyResult.vue';
+import KeyResultsList from '@/components/KeyResultsList.vue';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 import Objective from '@/db/Objective';
+import ObjectiveDrawer from '@/components/drawers/EditObjective.vue';
+import ProgressionChart from '@/components/ProgressionChart.vue';
 import routerGuard from '@/router/router-guards/objectiveHome';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
-import ProgressionChart from '@/components/ProgressionChart.vue';
-import { PktButton } from '@oslokommune/punkt-vue2';
-import HTMLOutput from '@/components/HTMLOutput.vue';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 
 export default {
   name: 'ObjectiveHome',
 
   components: {
-    KeyResultsList: () => import('@/components/KeyResultsList.vue'),
-    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
+    KeyResultsList,
+    NotFoundPage,
     Widget: WidgetWrapper,
     WidgetWeights,
     WidgetObjectiveDetails,
     ProgressionChart,
     PktButton,
     HTMLOutput,
-    ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
-    KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ObjectiveDrawer,
+    KeyResultDrawer,
+    ArchivedRestore,
   },
 
   beforeRouteUpdate: routerGuard,

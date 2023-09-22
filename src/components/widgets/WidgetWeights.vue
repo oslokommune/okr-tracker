@@ -19,12 +19,13 @@
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
+import Widget from './WidgetWrapper.vue';
 
 export default {
   name: 'WidgetWeights',
 
   components: {
-    Widget: () => import('./WidgetWrapper.vue'),
+    Widget,
   },
 
   props: {
