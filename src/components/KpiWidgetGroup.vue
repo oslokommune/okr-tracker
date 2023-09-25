@@ -24,43 +24,44 @@
         </pkt-button>
       </template>
     </div>
-    <draggable v-model="orderedKpis" animation="200">
+    <draggable v-if="hasEditRights" v-model="orderedKpis" animation="200">
       <transition-group class="kpi-widget-group__kpis">
-        <router-link
+        <kpi-widget-group-link
           v-for="kpi in orderedKpis"
           :key="kpi.id"
-          :to="{
-            name: 'ItemMeasurements',
-            params: { ...$route.params, kpiId: kpi.id },
-            query: { resultIndicatorPeriod: selectedPeriod?.key },
-          }"
-          class="kpi-widget-group__link"
-        >
-          <widget-kpi-card :kpi="kpi" :compact="compact" />
-        </router-link>
+          :kpi="kpi"
+          :compact="compact"
+        />
       </transition-group>
     </draggable>
+    <kpi-widget-group-link
+      v-for="kpi in orderedKpis"
+      v-else
+      :key="kpi.id"
+      :kpi="kpi"
+      :compact="compact"
+    />
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
 import html2canvas from 'html2canvas';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { periodDates } from '@/util';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import downloadFile from '@/util/downloadFile';
 import Kpi from '@/db/Kpi';
-import WidgetKpiCard from '@/components/widgets/WidgetKpiCard/WidgetKpiCard.vue';
+import KpiWidgetGroupLink from '@/components/KpiWidgetGroupLink.vue';
 import { compareKPIs } from '@/util/kpiHelpers';
 
 export default {
   name: 'KpiWidgetGroup',
 
   components: {
-    PktButton,
-    WidgetKpiCard,
     draggable,
+    KpiWidgetGroupLink,
+    PktButton,
   },
 
   props: {
@@ -85,6 +86,7 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'selectedPeriod']),
+    ...mapGetters(['hasEditRights']),
 
     itemSlug() {
       if (this.kpis.length && this.kpis[0]?.parent?.slug) {
@@ -163,48 +165,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-  }
-
-  &__link {
-    text-decoration: none;
-    border: 2px solid transparent;
-
-    &.router-link-active {
-      border-color: var(--color-hover);
-
-      .kpi-card-widget {
-        border-color: var(--color-white);
-      }
-
-      ::v-deep .widget__header h3,
-      ::v-deep .period-trend-tag__value {
-        color: var(--color-hover);
-      }
-    }
-
-    .kpi-card-widget {
-      &:hover {
-        background: var(--color-gray-light);
-        border-color: var(--color-gray);
-
-        ::v-deep {
-          .widget__header h3,
-          .period-trend-tag__value {
-            color: var(--color-hover);
-          }
-
-          .period-trend-tag__trend {
-            &:before {
-              border-left-color: var(--color-gray-light);
-            }
-            &:after {
-              border-top-color: var(--color-gray-light);
-              border-bottom-color: var(--color-gray-light);
-            }
-          }
-        }
-      }
-    }
   }
 
   &--compact {

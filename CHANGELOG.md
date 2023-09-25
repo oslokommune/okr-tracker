@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file. The format 
   version of the app was deployed.
 - Fixed cropping of dropdown menus when creating new
   organizations/departments/products.
+- Unauthorized users can no longer attempt to drag and drop reorder
+  measurements.
 
 ### Changed
 
