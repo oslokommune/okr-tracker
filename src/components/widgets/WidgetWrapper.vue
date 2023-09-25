@@ -14,7 +14,7 @@
     >
       <slot v-if="$slots.header" name="header" />
       <template v-else>
-        <h3 :class="size === 'small' ? 'pkt-txt-16' : 'pkt-txt-20'">
+        <h3 :class="size === 'small' ? 'pkt-txt-16' : 'pkt-txt-18'">
           {{ title }}
         </h3>
         <div v-if="$slots['title-actions']" class="widget__actions">
@@ -109,6 +109,15 @@ export default {
     h3 {
       margin-bottom: 0;
       color: var(--color-text);
+    }
+
+    .widget__actions {
+      display: flex;
+      gap: 0.5rem;
+
+      ::v-deep .separator {
+        border-left: 1px solid var(--color-border);
+      }
     }
 
     .widget__actions,

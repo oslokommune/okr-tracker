@@ -1,32 +1,10 @@
 @use 'reset';
-@use 'fonts';
 @use 'widgets';
 @use 'nav';
 @use 'modal';
 @use 'tooltip';
 
-/*
- * Ultimately we'd like to import Punkt as a whole by doing:
- *
- *   @use '@oslokommune/punkt-css/dist/scss/pkt';
- *
- * Doing so now wreaks havoc with our existing styles, so it'll have
- * to be phased in piece by piece.
- */
-@use '@oslokommune/punkt-css/dist/scss/base/_colors';
-@use '@oslokommune/punkt-css/dist/scss/base/_typography';
-@use '@oslokommune/punkt-css/dist/scss/base/_grid';
-@use '@oslokommune/punkt-css/dist/scss/base/_spacing';
-@use '@oslokommune/punkt-css/dist/scss/base/_visibility';
-@use '@oslokommune/punkt-css/dist/scss/elements/_form';
-@use '@oslokommune/punkt-css/dist/scss/elements/_hr';
-@use '@oslokommune/punkt-css/dist/scss/elements/_button';
-@use '@oslokommune/punkt-css/dist/scss/elements/_checkbox-radio';
-@use '@oslokommune/punkt-css/dist/scss/components/_icon';
-@use '@oslokommune/punkt-css/dist/scss/components/_badge';
-@use '@oslokommune/punkt-css/dist/scss/components/_alert';
-@use '@oslokommune/punkt-css/dist/scss/components/_linkcard';
-@use '@oslokommune/punkt-css/dist/scss/components/_tag';
+@use '@oslokommune/punkt-css/dist/scss/pkt';
 
 @use 'forms';
 @use 'markdown';
@@ -49,7 +27,6 @@ button,
 input,
 textarea,
 body {
-  font-family: 'OsloSans', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

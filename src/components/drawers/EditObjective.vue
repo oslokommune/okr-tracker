@@ -11,7 +11,7 @@
     </template>
 
     <template #page>
-      <form-section :hide-errors="true">
+      <form-section>
         <form-component
           v-model="thisObjective.name"
           input-type="textarea"
@@ -42,22 +42,25 @@
           rules="required"
         />
 
-        <pkt-button
+        <period-shortcut
           v-if="newestObjective?.startDate && newestObjective?.endDate"
           class="period-suggestion"
-          skin="secondary"
-          size="small"
-          @onClick="useSuggestedPeriod"
-        >
-          {{ formattedPeriod(newestObjective) }}
-        </pkt-button>
+          :label="$t('admin.objective.useLastPeriod')"
+          :start-date="newestObjective.startDate.toDate()"
+          :end-date="newestObjective.endDate.toDate()"
+          :active="isSuggestedPeriod"
+          @click="useSuggestedPeriod"
+        />
 
-        <template v-if="!thisObjective?.archived" #actions="{ handleSubmit }">
+        <template
+          v-if="!thisObjective?.archived"
+          #actions="{ handleSubmit, submitDisabled }"
+        >
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
             :label="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
-            :disabled="loading"
+            :disabled="submitDisabled || loading"
             @click="handleSubmit(save)"
           />
         </template>
@@ -103,6 +106,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import { isEqual } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import formattedPeriod from '@/util/okr';
 import Objective from '@/db/Objective';
@@ -110,13 +114,16 @@ import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+import PeriodShortcut from '@/components/period/PeriodShortcut.vue';
 
 export default {
   name: 'EditObjective',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ArchivedRestore,
+    PeriodShortcut,
     PktButton,
     PagedDrawerWrapper,
     FormSection,
@@ -164,6 +171,16 @@ export default {
 
     editMode() {
       return !!this.thisObjective?.id;
+    },
+
+    isSuggestedPeriod() {
+      return (
+        this.periodRange &&
+        this.newestObjective?.startDate &&
+        this.newestObjective?.endDate &&
+        isEqual(this.periodRange[0], this.newestObjective.startDate.toDate()) &&
+        isEqual(this.periodRange[1], this.newestObjective.endDate.toDate())
+      );
     },
   },
 
@@ -301,6 +318,6 @@ export default {
 
 <style lang="scss" scoped>
 .period-suggestion {
-  margin-bottom: 1rem;
+  margin: -0.75rem 0 1rem 0;
 }
 </style>

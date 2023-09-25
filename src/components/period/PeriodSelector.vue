@@ -14,21 +14,13 @@
         {{ $t('general.shortcuts') }}
       </h3>
       <div class="period-selector__options">
-        <span
+        <period-shortcut
           v-for="rangeOption in options"
-          :key="rangeOption.value"
-          :class="[
-            'pkt-tag',
-            'pkt-tag--large',
-            'pkt-tag--thin-text',
-            'pkt-tag--grey',
-            'period-selector__option',
-            { 'period-selector__option--active': value && rangeOption.key === value.key },
-          ]"
+          :key="rangeOption.key"
+          v-bind="rangeOption"
+          :active="value && rangeOption.key === value.key"
           @click="$emit('input', rangeOption)"
-        >
-          {{ rangeOption.label }}
-        </span>
+        />
       </div>
     </div>
   </div>
@@ -37,9 +29,14 @@
 <script>
 import { endOfDay, startOfDay } from 'date-fns';
 import { periodDates } from '@/util';
+import PeriodShortcut from './PeriodShortcut.vue';
 
 export default {
   name: 'PeriodSelector',
+
+  components: {
+    PeriodShortcut,
+  },
 
   props: {
     value: {
@@ -86,6 +83,10 @@ export default {
 
   mounted() {
     const calculatedMonthLimit = Math.floor(window.innerWidth / 380);
+    if (calculatedMonthLimit === 0) {
+      this.showMonths = 1;
+      return;
+    }
     this.showMonths =
       this.maxMonths > calculatedMonthLimit ? calculatedMonthLimit : this.maxMonths;
   },
@@ -121,8 +122,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
 .period-selector {
   display: flex;
   flex-direction: column;
@@ -141,20 +140,6 @@ export default {
     margin-top: 0.5rem;
   }
 
-  &__option {
-    @include get-text('pkt-txt-16-light');
-    white-space: nowrap;
-
-    &--active {
-      background-color: var(--color-blue-light);
-    }
-
-    &:hover {
-      background-color: var(--color-beige-light);
-      cursor: pointer;
-    }
-  }
-
   ::v-deep .flatpickr {
     &-calendar {
       top: 0;
@@ -167,6 +152,10 @@ export default {
       &::after {
         // Hide flatpickr arrow
         display: none;
+      }
+
+      svg {
+        vertical-align: baseline;
       }
     }
     &-input {

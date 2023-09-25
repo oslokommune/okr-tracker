@@ -114,13 +114,15 @@ import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import { dateLong } from '@/util';
 import formattedPeriod from '@/util/okr';
+import ProfileModal from '@/components/modals/ProfileModal.vue';
+import Widget from './WidgetWrapper.vue';
 
 export default {
   name: 'WidgetKeyResultDetails',
 
   components: {
-    Widget: () => import('./WidgetWrapper.vue'),
-    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
+    Widget,
+    ProfileModal,
   },
 
   data: () => ({

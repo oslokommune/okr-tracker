@@ -147,7 +147,7 @@ export default {
   }
 
   .display-as {
-    color: var(--color-grayscale-50);
+    color: var(--color-grayscale-60);
   }
 
   &__left {

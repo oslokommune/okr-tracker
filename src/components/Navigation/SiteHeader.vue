@@ -76,10 +76,6 @@ export default {
       const defaultLabel = i18n.t('general.appName') || 'OKR Tracker';
       const parts = this.$route.matched.map(({ name }) => name);
 
-      if (parts.includes('Admin')) {
-        return `${defaultLabel}: ${i18n.t('general.admin')}`;
-      }
-
       if (parts.includes('Help')) {
         return `${defaultLabel}: ${i18n.t('general.help')}`;
       }
@@ -90,7 +86,6 @@ export default {
 
       if (
         (parts.includes('ItemHome') ||
-          parts.includes('ItemAdmin') ||
           parts.includes('ItemMeasurements') ||
           parts.includes('ItemAbout') ||
           parts.includes('KeyResultHome') ||
@@ -123,12 +118,6 @@ export default {
           label: this.aboutLabel,
           shortLabel: this.$t('about.about'),
         },
-        {
-          show: this.hasEditRights,
-          route: { name: 'ItemAdmin', query: this.adminLinkQuery },
-          label: this.$t('general.admin'),
-          active: this.$route.name === 'ItemAdmin',
-        },
       ];
     },
 
@@ -142,21 +131,6 @@ export default {
           return this.$t('about.aboutProduct');
         default:
           return this.$t('about.about');
-      }
-    },
-
-    adminLinkQuery() {
-      switch (this.$route.name) {
-        case 'ItemHome':
-          return { tab: 'okr' };
-        case 'ObjectiveHome':
-          return { tab: 'okr', type: 'objective', id: this.activeObjective?.id };
-        case 'KeyResultHome':
-          return { tab: 'okr', type: 'keyResult', id: this.activeKeyResult?.id };
-        case 'ItemMeasurements':
-          return { tab: 'kpi' };
-        default:
-          return {};
       }
     },
 

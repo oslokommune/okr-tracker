@@ -16,7 +16,7 @@
     </template>
 
     <template #page="{ pageIndex, prev }">
-      <form-section :hide-errors="true">
+      <form-section>
         <template v-if="pageIndex === 1">
           <form-component
             v-model="thisKeyResult.name"
@@ -79,7 +79,10 @@
           </div>
         </template>
 
-        <template v-if="!thisKeyResult?.archived" #actions="{ handleSubmit }">
+        <template
+          v-if="!thisKeyResult?.archived"
+          #actions="{ handleSubmit, submitDisabled }"
+        >
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
@@ -97,7 +100,7 @@
 
           <btn-save
             :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="loading"
+            :disabled="submitDisabled || loading"
             variant="label-only"
             @click="handleSubmit(save)"
           />
@@ -151,13 +154,14 @@ import KeyResult from '@/db/KeyResult';
 import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
   name: 'EditKeyResult',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ArchivedRestore,
     PktButton,
     PagedDrawerWrapper,
     FormSection,

@@ -145,7 +145,7 @@ export default {
   }
 
   &__date {
-    color: var(--color-grayscale-40);
+    color: var(--color-grayscale-60);
   }
 
   &__trend {

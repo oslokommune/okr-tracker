@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
+import { mapState } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import i18n from '@/locale/i18n';
 import { dateShort } from '@/util';
 import {
@@ -54,7 +55,7 @@ import {
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import EditValueModal from '@/components/modals/KPIProgressModal.vue';
 import ProgressHistoryTable from './ProgressHistoryTable.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
 
@@ -64,7 +65,7 @@ export default {
   components: {
     Widget: WidgetWrapper,
     ProgressHistoryTable,
-    EditValueModal: () => import('@/components/modals/KPIProgressModal.vue'),
+    EditValueModal,
     PktButton,
   },
 

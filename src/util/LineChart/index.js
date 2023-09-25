@@ -235,7 +235,7 @@ export default class LineChart {
     if (this.legend) {
       const legendItems = [
         {
-          label: kpi ? kpi.name : i18n.t('general.value'),
+          label: kpi ? i18n.t('kpi.progress') : i18n.t('general.value'),
           color: GRAPH_COLORS.valueLine,
         },
         ...(targets && targets.length

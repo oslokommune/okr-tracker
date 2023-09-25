@@ -49,6 +49,7 @@
       :visible="hasEditRights && showItemDrawer"
       :item="activeItem"
       @close="showItemDrawer = false"
+      @hook:mounted="showItemDrawer = String($route.query.edit).toLowerCase() === 'true'"
     />
 
     <profile-modal
@@ -61,6 +62,8 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import { PktButton } from '@oslokommune/punkt-vue2';
+import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import {
   possibleDevelopers,
   possibleAdm,
@@ -68,9 +71,9 @@ import {
   displayOrder,
 } from '@/config/jobPositions';
 import HTMLOutput from '@/components/HTMLOutput.vue';
-import { PktButton } from '@oslokommune/punkt-vue2';
-import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import i18n from '@/locale/i18n';
+import ItemDrawer from '@/components/drawers/EditItemDrawer.vue';
+import ProfileModal from '@/components/modals/ProfileModal.vue';
 
 export default {
   name: 'ItemAbout',
@@ -78,9 +81,8 @@ export default {
   components: {
     HTMLOutput,
     PktButton,
-    // RoleMembers: () => import('@/components/RoleMembers.vue'),
-    ItemDrawer: () => import('@/components/drawers/EditItemDrawer.vue'),
-    ProfileModal: () => import('@/components/modals/ProfileModal.vue'),
+    ItemDrawer,
+    ProfileModal,
   },
 
   data: () => ({
@@ -155,6 +157,14 @@ export default {
       }
 
       return null;
+    },
+  },
+
+  watch: {
+    showItemDrawer(show) {
+      if (!show && this.$route.query.edit) {
+        this.$router.replace({ query: null });
+      }
     },
   },
 

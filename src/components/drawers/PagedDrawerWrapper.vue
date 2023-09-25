@@ -8,6 +8,7 @@
     ]"
     @close="$emit('close')"
     @hidden="reset"
+    @click-outside="clickOutside"
   >
     <template #header>
       <span
@@ -35,6 +36,7 @@
 </template>
 
 <script>
+import ClappingHands from '@/components/ClappingHands.vue';
 import SliderContainer from '@/components/drawers/SliderContainer.vue';
 
 export default {
@@ -42,7 +44,7 @@ export default {
 
   components: {
     SliderContainer,
-    ClappingHands: () => import('@/components/ClappingHands.vue'),
+    ClappingHands,
   },
 
   props: {
@@ -100,10 +102,22 @@ export default {
       }
     },
 
+    goToPage(pageIndex) {
+      if (pageIndex !== this.pageIndex && pageIndex >= 1 && pageIndex <= this.pageCount) {
+        this.pageIndex = pageIndex;
+      }
+    },
+
     reset() {
       this.isDone = false;
       this.skin = null;
       this.pageIndex = 1;
+    },
+
+    clickOutside(e) {
+      if (this.isDone) {
+        this.$emit('close', e);
+      }
     },
   },
 };
@@ -128,7 +142,7 @@ export default {
   }
 
   &__step-indicator {
-    color: var(--color-grayscale-40);
+    color: var(--color-grayscale-60);
   }
 
   &__graphic {

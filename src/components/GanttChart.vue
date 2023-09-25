@@ -102,12 +102,13 @@ import {
 } from 'date-fns';
 import { dateLongCompact } from '@/util';
 import paneEvents from '@/components/layout/paneEvents';
+import OkrLinkCard from '@/components/OkrLinkCard.vue';
 
 export default {
   name: 'GanttChart',
 
   components: {
-    OkrLinkCard: () => import('@/components/OkrLinkCard.vue'),
+    OkrLinkCard,
   },
 
   props: {

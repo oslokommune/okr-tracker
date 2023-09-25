@@ -4,7 +4,7 @@
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.organizations') }}</h2>
         <div class="col">
-          <div v-if="filteredOrgs.length > 10" class="search">
+          <div v-if="organizations.length > 10" class="search">
             <input
               v-model="queryOrgs"
               class="pkt-form-input"
@@ -21,8 +21,8 @@
               class="col__row"
             >
               <router-link
-                class="col__link"
-                :to="{ name: 'ItemAdmin', params: { slug: organization.slug } }"
+                class="col__link pkt-txt-16-medium"
+                :to="itemLink(organization.slug)"
               >
                 <pkt-icon class="icon" name="organization" />
                 <span class="col__text">{{ organization.name }}</span>
@@ -46,7 +46,7 @@
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.departments') }}</h2>
         <div class="col">
-          <div v-if="filteredDeps.length > 15" class="search">
+          <div v-if="departments.length > 10" class="search">
             <input
               v-model="queryDeps"
               class="pkt-form-input"
@@ -57,8 +57,8 @@
           <div class="col__body">
             <div v-for="department in filteredDeps" :key="department.id" class="col__row">
               <router-link
-                class="col__link"
-                :to="{ name: 'ItemAdmin', params: { slug: department.slug } }"
+                class="col__link pkt-txt-16-medium"
+                :to="itemLink(department.slug)"
               >
                 <pkt-icon class="icon" name="district" />
                 <span class="col__text">{{ department.name }}</span>
@@ -81,7 +81,7 @@
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span4-tablet-up">
         <h2 class="title-2">{{ $t('general.products') }}</h2>
         <div class="col">
-          <div v-if="filteredProds.length > 15" class="search">
+          <div v-if="products.length > 10" class="search">
             <input
               v-model="queryProds"
               class="pkt-form-input"
@@ -92,8 +92,8 @@
           <div class="col__body">
             <div v-for="product in filteredProds" :key="product.id" class="col__row">
               <router-link
-                class="col__link"
-                :to="{ name: 'ItemAdmin', params: { slug: product.slug } }"
+                class="col__link pkt-txt-16-medium"
+                :to="itemLink(product.slug)"
               >
                 <pkt-icon class="icon" name="house-heart" />
                 <span class="col__text">{{ product.name }}</span>
@@ -246,6 +246,16 @@ export default {
       }
     },
   },
+
+  methods: {
+    itemLink(slug) {
+      return {
+        name: 'ItemAbout',
+        params: { slug },
+        query: { edit: true },
+      };
+    },
+  },
 };
 </script>
 
@@ -279,7 +289,6 @@ export default {
   align-items: center;
   padding: 0.5rem 1rem;
   color: var(--color-text);
-  font-weight: 500;
   text-decoration: none;
   border-bottom: 2px solid var(--color-border);
 

@@ -84,17 +84,18 @@
 
 <script>
 import { endOfDay } from 'date-fns';
-import Progress from '@/db/Kpi/Progress';
+import { PktAlert } from '@oslokommune/punkt-vue2';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
+import Progress from '@/db/Kpi/Progress';
+import ProgressModal from '@/components/modals/ProgressModal.vue';
 import ProgressUpdateAPIExample from '@/components/ProgressUpdateAPIExample.vue';
-import ProgressModal from './ProgressModal.vue';
 
 export default {
   name: 'KPIProgressModal',
 
   components: {
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktAlert,
     ProgressUpdateAPIExample,
   },
 

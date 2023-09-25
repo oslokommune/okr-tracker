@@ -92,21 +92,28 @@ import { PktButton } from '@oslokommune/punkt-vue2';
 import routerGuard from '@/router/router-guards/itemOKRs';
 import PaneLayout from '@/components/layout/PaneLayout.vue';
 import TimelinePane from '@/components/panes/TimelinePane.vue';
+import ObjectivePane from '@/components/panes/ObjectivePane.vue';
+import KeyResultPane from '@/components/panes/KeyResultPane.vue';
+import WorkbenchPane from '@/components/panes/WorkbenchPane.vue';
+import ObjectiveDrawer from '@/components/drawers/EditObjective.vue';
+import KeyResultDrawer from '@/components/drawers/EditKeyResult.vue';
+import EmptyPage from '@/components/pages/EmptyPage.vue';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
 export default {
   name: 'ItemOKRs',
 
   components: {
-    WorkbenchPane: () => import('@/components/panes/WorkbenchPane.vue'),
-    KeyResultPane: () => import('@/components/panes/KeyResultPane.vue'),
-    ObjectivePane: () => import('@/components/panes/ObjectivePane.vue'),
-    EmptyPage: () => import('@/components/pages/EmptyPage.vue'),
-    NotFoundPage: () => import('@/components/pages/NotFoundPage.vue'),
-    ObjectiveDrawer: () => import('@/components/drawers/EditObjective.vue'),
-    KeyResultDrawer: () => import('@/components/drawers/EditKeyResult.vue'),
+    PktButton,
     PaneLayout,
     TimelinePane,
-    PktButton,
+    ObjectivePane,
+    KeyResultPane,
+    WorkbenchPane,
+    ObjectiveDrawer,
+    KeyResultDrawer,
+    EmptyPage,
+    NotFoundPage,
   },
 
   beforeRouteUpdate: routerGuard,

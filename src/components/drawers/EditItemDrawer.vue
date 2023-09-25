@@ -16,7 +16,7 @@
     </template>
 
     <template #page="{ pageIndex, prev }">
-      <form-section :hide-errors="true">
+      <form-section>
         <template v-if="pageIndex === 1">
           <form-component
             v-model="thisItem.name"
@@ -102,7 +102,7 @@
           </form-component>
         </template>
 
-        <template v-if="!thisItem?.archived" #actions="{ handleSubmit }">
+        <template v-if="!thisItem?.archived" #actions="{ handleSubmit, submitDisabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
@@ -120,7 +120,7 @@
 
           <btn-save
             :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="loading"
+            :disabled="submitDisabled || loading"
             variant="label-only"
             @click="handleSubmit(save)"
           />
@@ -157,13 +157,14 @@ import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
 export default {
   name: 'EditItemDrawer',
 
   components: {
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
+    ArchivedRestore,
     PktAlert,
     PktButton,
     PagedDrawerWrapper,
