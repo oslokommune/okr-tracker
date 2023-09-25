@@ -419,6 +419,7 @@
     "item": {
       "change": "Rediger {name}",
       "updated": "{name} ble endret!",
+      "delete": "Slett {name}",
       "slugChangeInfo": "Endring av navn kan også resultere i at gjeldende adresse for \"{name}\" endres. Du blir i så fall automatisk videresendt til den nye adressen etter at skjemaet lagres.",
       "redirectInfo": "Du videresendes om {count} sekunder."
     },
@@ -427,19 +428,22 @@
       "created": "Målet ble opprettet!",
       "updated": "Målet ble endret!",
       "change": "Rediger mål",
+      "delete": "Slett mål",
       "useLastPeriod": "Sett til sist brukte periode:"
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",
       "created": "Nøkkelresultatet ble opprettet!",
       "updated": "Nøkkelresultatet ble endret!",
-      "change": "Rediger Nøkkelresultat"
+      "change": "Rediger Nøkkelresultat",
+      "delete": "Slett nøkkelresultat"
     },
     "measurement": {
       "new": "Legg til måling",
       "created": "Målingen ble opprettet!",
       "updated": "Målingen ble endret!",
-      "change": "Rediger måling"
+      "change": "Rediger måling",
+      "delete": "Slett måling"
     },
     "apiSecret": "Hvis du har tenkt til å bruke API-et for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
     "apiDocs": "API-dokumentasjon",
