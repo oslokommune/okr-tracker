@@ -97,15 +97,18 @@ import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
+import EmptyState from '@/components/EmptyState.vue';
+import OkrLinkCard from '@/components/OkrLinkCard.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
 
 export default {
   name: 'ObjectivePane',
 
   components: {
     PaneWrapper,
-    EmptyState: () => import('@/components/EmptyState.vue'),
-    OkrLinkCard: () => import('@/components/OkrLinkCard.vue'),
-    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
+    EmptyState,
+    OkrLinkCard,
+    HTMLOutput,
     LoadingSmall,
     PktButton,
     PktTag,

@@ -35,12 +35,13 @@
 <script>
 import { mapState } from 'vuex';
 import { PktTag } from '@oslokommune/punkt-vue2';
+import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
   name: 'OkrLinkCard',
 
   components: {
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
+    ProgressBar,
     PktTag,
   },
 

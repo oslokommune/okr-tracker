@@ -39,14 +39,16 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
+import OkrLinkCard from '@/components/OkrLinkCard.vue';
+import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
   name: 'WorkbenchPane',
 
   components: {
     PaneWrapper,
-    OkrLinkCard: () => import('@/components/OkrLinkCard.vue'),
-    ProgressBar: () => import('@/components/ProgressBar.vue'),
+    OkrLinkCard,
+    ProgressBar,
     PktButton,
   },
 

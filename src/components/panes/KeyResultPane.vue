@@ -103,28 +103,31 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getRandomInt } from '@/util';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
-import PaneWrapper from '@/components/panes/PaneWrapper.vue';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import ProgressModal from '@/components/modals/ProgressModal.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
   name: 'KeyResultPane',
 
   components: {
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
-    ArchivedRestore: () => import('@/components/ArchivedRestore.vue'),
-    ProgressModal: () => import('@/components/modals/ProgressModal.vue'),
-    HTMLOutput: () => import('@/components/HTMLOutput.vue'),
+    PktAlert,
+    PktButton,
+    PaneWrapper,
     Widget: WidgetWrapper,
     WidgetProgressHistory,
-    WidgetKeyResultDetails,
     // WidgetKeyResultNotes,
-    PaneWrapper,
-    PktButton,
+    WidgetKeyResultDetails,
+    ArchivedRestore,
+    HTMLOutput,
+    ProgressModal,
     ProgressBar,
   },
 
