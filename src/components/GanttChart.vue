@@ -262,7 +262,7 @@ export default {
 
     loading: {
       async handler() {
-        if (!this.loading) {
+        if (!this.loading && !this.activeObjective) {
           this.$nextTick(() => {
             const ref = this.$refs.period || this.$refs.today;
             ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
