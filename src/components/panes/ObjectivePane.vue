@@ -1,13 +1,22 @@
 <template>
   <pane-wrapper
     ref="pane"
-    :title="$t('general.objective')"
     class="objective-pane"
     closable
     @close="$router.push({ name: 'ItemHome' })"
   >
+    <pkt-breadcrumbs
+      class="pkt-hide-laptop-up"
+      navigation-type="router"
+      :breadcrumbs="breadcrumbs"
+    />
+
+    <pkt-tag text-style="normal-text" skin="grey" class="mt-size-8">
+      {{ $t('general.objective') }}
+    </pkt-tag>
+
     <div class="objective-pane__title">
-      <h2 class="pkt-txt-16-medium">{{ activeObjective.name }}</h2>
+      <h2 class="pkt-txt-18-medium">{{ activeObjective.name }}</h2>
       <pkt-button
         v-if="hasEditRights"
         v-tooltip="$t('btn.updateObjective')"
@@ -31,11 +40,9 @@
       :progression="activeObjective.progression"
     />
 
-    <div v-if="period" class="objective-pane__period">
-      <span class="pkt-txt-16-light">{{ $t('objective.period') }}</span>
-      <pkt-tag text-style="normal-text" skin="beige" size="small">
-        {{ periodDates(period) }}
-      </pkt-tag>
+    <div v-if="period" class="mt-size-16">
+      <div class="pkt-txt-14-medium">{{ $t('objective.period') }}</div>
+      <div class="pkt-txt-14">{{ periodDates(period) }}</div>
     </div>
 
     <div class="objective-pane__key-results">
@@ -91,7 +98,7 @@ import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
 import { dateLong, periodDates } from '@/util';
 import { db } from '@/config/firebaseConfig';
-import { PktButton, PktTag } from '@oslokommune/punkt-vue2';
+import { PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
 import ProgressBar from '@/components/ProgressBar.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
@@ -110,6 +117,7 @@ export default {
     OkrLinkCard,
     HTMLOutput,
     LoadingSmall,
+    PktBreadcrumbs,
     PktButton,
     PktTag,
     ProgressBar,
@@ -123,6 +131,7 @@ export default {
   }),
 
   computed: {
+    ...mapState(['activeItem']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
 
@@ -142,6 +151,13 @@ export default {
       }
 
       return null;
+    },
+
+    breadcrumbs() {
+      return [
+        { text: this.activeItem.name, href: { name: 'ItemHome' } },
+        { text: this.activeObjective.name },
+      ];
     },
   },
 
@@ -186,19 +202,10 @@ export default {
   &__title {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
     text-wrap: balance;
 
     .pkt-btn {
       margin: -0.75rem 0 0 1rem;
-    }
-  }
-
-  &__period > span {
-    &:first-child {
-      display: block;
-      margin-bottom: 0.25rem;
-      color: var(--color-grayscale-60);
     }
   }
 
@@ -269,6 +276,14 @@ export default {
         @include get-text('pkt-txt-16');
       }
     }
+  }
+}
+
+::v-deep .pkt-breadcrumbs--mobile {
+  width: 100%;
+
+  .pkt-breadcrumbs__text {
+    white-space: nowrap;
   }
 }
 </style>
