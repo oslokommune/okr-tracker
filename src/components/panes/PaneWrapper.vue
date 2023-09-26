@@ -14,7 +14,7 @@
     </div>
 
     <div class="pane__inner">
-      <div class="pane__header">
+      <div v-if="title" class="pane__header">
         <h1 class="pkt-txt-18-medium">{{ title }}</h1>
       </div>
 
@@ -38,7 +38,7 @@ export default {
   props: {
     title: {
       type: String,
-      required: true,
+      default: null,
     },
     closable: {
       type: Boolean,

@@ -1,22 +1,24 @@
 <template>
   <pane-wrapper
     ref="pane"
-    :title="$t('general.keyResult')"
     class="key-result-pane"
     closable
     @close="
       $router.push({ name: 'ObjectiveHome', params: { objectiveId: activeObjective.id } })
     "
   >
-    <archived-restore
-      v-if="activeKeyResult.archived"
-      class="mt-size-16"
-      :restore="restore"
-      :object-type="$t('archived.keyResult')"
+    <pkt-breadcrumbs
+      class="pkt-hide-laptop-up"
+      navigation-type="router"
+      :breadcrumbs="breadcrumbs"
     />
 
+    <pkt-tag text-style="normal-text" skin="grey" class="mt-size-8">
+      {{ $t('general.keyResult') }}
+    </pkt-tag>
+
     <div class="key-result-pane__title">
-      <h2 class="pkt-txt-16-medium">{{ activeKeyResult.name }}</h2>
+      <h2 class="pkt-txt-18-medium">{{ activeKeyResult.name }}</h2>
       <pkt-button
         v-if="hasEditRights"
         v-tooltip="$t('btn.updateKeyResult')"
@@ -103,13 +105,12 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getRandomInt } from '@/util';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import ProgressModal from '@/components/modals/ProgressModal.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
@@ -120,12 +121,13 @@ export default {
   components: {
     PktAlert,
     PktButton,
+    PktBreadcrumbs,
+    PktTag,
     PaneWrapper,
     Widget: WidgetWrapper,
     WidgetProgressHistory,
     // WidgetKeyResultNotes,
     WidgetKeyResultDetails,
-    ArchivedRestore,
     HTMLOutput,
     ProgressModal,
     ProgressBar,
@@ -140,7 +142,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activePeriod']),
+    ...mapState(['activeItem', 'activePeriod']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
 
@@ -168,6 +170,20 @@ export default {
         'progress.remaining',
         { unit: this.activeKeyResult.unit }
       )}`;
+    },
+
+    breadcrumbs() {
+      return [
+        { text: this.activeItem.name, href: { name: 'ItemHome' } },
+        {
+          text: this.activeObjective.name,
+          href: {
+            name: 'ObjectiveHome',
+            params: { objectiveId: this.activeObjective.id },
+          },
+        },
+        { text: this.activeKeyResult.name },
+      ];
     },
   },
 
@@ -291,7 +307,6 @@ export default {
   &__title {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
     text-wrap: balance;
 
     .pkt-btn {
@@ -328,6 +343,14 @@ export default {
         @include get-text('pkt-txt-16');
       }
     }
+  }
+}
+
+::v-deep .pkt-breadcrumbs--mobile {
+  width: 100%;
+
+  .pkt-breadcrumbs__text {
+    white-space: nowrap;
   }
 }
 </style>
