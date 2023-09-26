@@ -419,6 +419,7 @@
     "item": {
       "change": "Edit {name}",
       "updated": "{name} was updated!",
+      "delete": "Delete {name}",
       "slugChangeInfo": "When changing the name of this item, the address to it might also change. In that case you will be automatically redirected after saving the form.",
       "redirectInfo": "You will be redirected in {count} seconds."
     },
@@ -427,19 +428,22 @@
       "created": "Objective was created!",
       "updated": "Objective was updated!",
       "change": "Edit objective",
+      "delete": "Delete objective",
       "useLastPeriod": "Set to last used period:"
     },
     "keyResult": {
       "new": "New key result",
       "created": "Key result was created!",
       "updated": "Key result was updated!",
-      "change": "Edit key result"
+      "change": "Edit key result",
+      "delete": "Delete key result"
     },
     "measurement": {
       "new": "New measurement",
       "created": "Measurement created!",
       "updated": "Measurement updated!",
-      "change": "Edit measurement"
+      "change": "Edit measurement",
+      "delete": "Delete measurement"
     },
     "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
     "apiDocs": "API documentation",

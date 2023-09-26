@@ -142,7 +142,11 @@
           :object-type="type"
         />
         <div v-else class="button-row">
-          <btn-delete :disabled="loading" @click="archive" />
+          <btn-delete
+            :disabled="loading"
+            :label="$t('admin.item.delete', { name: item.name })"
+            @click="archive"
+          />
         </div>
       </template>
     </template>
