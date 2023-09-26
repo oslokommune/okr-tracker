@@ -112,7 +112,7 @@
 import { mapActions, mapState } from 'vuex';
 import { isEqual } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
-import formattedPeriod from '@/util/okr';
+import { formattedPeriod } from '@/util/okr';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
