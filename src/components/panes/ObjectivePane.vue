@@ -67,9 +67,10 @@
       <draggable
         v-else-if="hasEditRights && keyResults.length"
         v-model="orderedKeyResults"
+        class="objective-pane__key-results-list"
         animation="200"
       >
-        <transition-group class="objective-pane__key-results-list">
+        <transition-group>
           <okr-link-card
             v-for="keyResult in orderedKeyResults"
             :key="keyResult.id"
@@ -272,7 +273,7 @@ export default {
         margin-left: 3rem;
       }
 
-      > .okr-link-card {
+      & .okr-link-card {
         position: relative;
         margin-top: 1rem;
 
