@@ -2,18 +2,18 @@
   <router-link v-slot="{ href, navigate, isExactActive }" :to="route" custom>
     <a
       :class="[
-        'okr-link-card',
+        'objective-link-card',
         {
-          'okr-link-card--active': isExactActive || active,
-          'okr-link-card--checked': checked,
-          'okr-link-card--compact': compact,
+          'objective-link-card--active': isExactActive || active,
+          'objective-link-card--checked': checked,
+          'objective-link-card--compact': compact,
         },
       ]"
       :href="href"
       @click="activate($event, navigate)"
     >
-      <div class="okr-link-card__inner">
-        <div v-if="!compact" class="okr-link-card__heading">
+      <div class="objective-link-card__inner">
+        <div class="objective-link-card__heading">
           <input
             v-if="checkable"
             type="checkbox"
@@ -25,7 +25,7 @@
             text-style="normal-text"
             skin="yellow"
             size="small"
-            class="okr-link-card__owner"
+            class="objective-link-card__owner"
           >
             <template v-if="keyResult">
               {{ keyResult.parent.name }}
@@ -35,15 +35,15 @@
             </template>
           </pkt-tag>
 
-          <ul class="okr-link-card__tags">
+          <ul class="objective-link-card__tags">
             <li
               v-for="c in contributors"
               :key="c.id"
               v-tooltip="c.name"
               :class="[
-                'okr-link-card__tag',
+                'objective-link-card__tag',
                 'pkt-txt-12-medium',
-                `okr-link-card__tag--${contributorTagMode(c.name)}`,
+                `objective-link-card__tag--${contributorTagMode(c.name)}`,
               ]"
               :style="{ background: contributorTagColor(c.name) }"
             >
@@ -52,7 +52,7 @@
           </ul>
         </div>
 
-        <span class="okr-link-card__title pkt-txt-14">
+        <span class="objective-link-card__title pkt-txt-14">
           {{ title }}
         </span>
 
@@ -72,7 +72,7 @@ import { db } from '@/config/firebaseConfig';
 import { uniqueBy } from '@/util';
 
 export default {
-  name: 'OkrLinkCard',
+  name: 'ObjectiveLinkCard',
 
   components: {
     ProgressBar,
@@ -195,7 +195,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.okr-link-card {
+.objective-link-card {
   display: block;
   color: var(--color-text);
   text-decoration: none;
@@ -236,18 +236,18 @@ export default {
   }
 }
 
-.okr-link-card__heading {
+.objective-link-card__heading {
   display: flex;
   gap: 0.5rem;
   justify-content: space-between;
 }
 
-.okr-link-card__tags {
+.objective-link-card__tags {
   display: flex;
   gap: 0.25rem;
 }
 
-.okr-link-card__tag {
+.objective-link-card__tag {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,11 +256,11 @@ export default {
   border-radius: 50%;
 }
 
-.okr-link-card__tag--light {
+.objective-link-card__tag--light {
   color: rgba(0, 0, 0, 0.6);
 }
 
-.okr-link-card__tag--dark {
+.objective-link-card__tag--dark {
   color: var(--color-white);
 }
 </style>

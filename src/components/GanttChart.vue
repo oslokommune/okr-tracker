@@ -701,7 +701,7 @@ export default {
   margin: 1rem 0;
 }
 
-.okr-link-card {
+.objective-link-card {
   --card-bg-color: var(--color-white);
 
   position: relative;

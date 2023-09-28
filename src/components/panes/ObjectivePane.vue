@@ -71,7 +71,7 @@
         animation="200"
       >
         <transition-group>
-          <okr-link-card
+          <objective-link-card
             v-for="keyResult in orderedKeyResults"
             :key="keyResult.id"
             :route="{
@@ -274,7 +274,7 @@ export default {
         margin-left: 3rem;
       }
 
-      & .okr-link-card {
+      & .objective-link-card {
         position: relative;
         margin-top: 1rem;
 
