@@ -206,7 +206,11 @@
           :text="$t('kpi.archived')"
         />
         <div v-else class="button-row">
-          <btn-delete :disabled="loading" @click="archive" />
+          <btn-delete
+            :disabled="loading"
+            :label="$t('admin.measurement.delete')"
+            @click="archive"
+          />
         </div>
       </template>
     </template>

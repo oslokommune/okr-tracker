@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file. The format 
 - Improved WCAG compliance with respect to text color contrast.
 - Fixed a problem that would sometimes cause an "infinite spinner" when a new
   version of the app was deployed.
+- Fixed cropping of dropdown menus when creating new
+  organizations/departments/products.
 
 ### Changed
 
