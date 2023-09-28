@@ -6,7 +6,6 @@
         {
           'objective-link-card--active': isExactActive || active,
           'objective-link-card--checked': checked,
-          'objective-link-card--compact': compact,
         },
       ]"
       :href="href"
@@ -27,12 +26,7 @@
             size="small"
             class="objective-link-card__owner"
           >
-            <template v-if="keyResult">
-              {{ keyResult.parent.name }}
-            </template>
-            <template v-else>
-              {{ activeItem.name }}
-            </template>
+            {{ activeItem.name }}
           </pkt-tag>
 
           <ul class="objective-link-card__tags">
@@ -42,7 +36,7 @@
               v-tooltip="c.name"
               :class="[
                 'objective-link-card__tag',
-                'pkt-txt-12-medium',
+                'pkt-txt-12-bold',
                 `objective-link-card__tag--${contributorTagMode(c.name)}`,
               ]"
               :style="{ background: contributorTagColor(c.name) }"
@@ -56,7 +50,7 @@
           {{ title }}
         </span>
 
-        <progress-bar :progression="progression" :compact="compact" />
+        <progress-bar :progression="progression" />
       </div>
     </a>
   </router-link>
@@ -65,9 +59,8 @@
 <script>
 import { mapState } from 'vuex';
 import { PktTag } from '@oslokommune/punkt-vue2';
-import CONTRIBUTOR_TAG_COLORS from '@/config/colors';
 import ProgressBar from '@/components/ProgressBar.vue';
-import simpleHash from '@/util/hash';
+import { contributorTagColor, contributorTagMode } from '@/util/okr';
 import { db } from '@/config/firebaseConfig';
 import { uniqueBy } from '@/util';
 
@@ -104,25 +97,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    compact: {
-      type: Boolean,
-      default: false,
-    },
     beforeNavigate: {
-      type: Function,
-      default: null,
-    },
-    afterNavigate: {
       type: Function,
       default: null,
     },
     objectiveId: {
       type: String,
-      required: false,
-      default: null,
-    },
-    keyResult: {
-      type: Object,
       required: false,
       default: null,
     },
@@ -161,34 +141,15 @@ export default {
   },
 
   methods: {
+    contributorTagColor,
+    contributorTagMode,
+
     async activate(event, rootHandler) {
       if (this.beforeNavigate) {
         await this.beforeNavigate(event);
       }
 
       await rootHandler(event);
-
-      if (this.afterNavigate) {
-        await this.afterNavigate(event);
-      }
-    },
-
-    /**
-     * Return the color to use for the contributor tag of the
-     * organization/department/product called `name`.
-     */
-    contributorTagColor(name) {
-      const c = CONTRIBUTOR_TAG_COLORS[simpleHash(name) % CONTRIBUTOR_TAG_COLORS.length];
-      return `var(--${c.name})`;
-    },
-
-    /**
-     * Return the color mode to use for the contributor tag of the
-     * organization/department/product called `name`.
-     */
-    contributorTagMode(name) {
-      const c = CONTRIBUTOR_TAG_COLORS[simpleHash(name) % CONTRIBUTOR_TAG_COLORS.length];
-      return c.mode;
     },
   },
 };

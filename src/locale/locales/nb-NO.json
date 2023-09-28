@@ -388,6 +388,8 @@
   "objective": {
     "period": "Arbeidsperiode",
     "progressionTitle": "Prosentvis fremdrift for målet:",
+    "owner": "Eier",
+    "contributors": "Bidragsytere",
     "weight": "Vekt",
     "change": "Endre mål",
     "add": "Legg til mål",
