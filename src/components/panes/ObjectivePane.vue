@@ -87,8 +87,8 @@
       </draggable>
 
       <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
-        <okr-link-card
-          v-for="keyResult in orderedKeyResults"
+        <objective-link-card
+          v-for="keyResult in keyResults"
           :key="keyResult.id"
           :route="{
             name: 'KeyResultHome',
@@ -131,7 +131,7 @@ import LoadingSmall from '@/components/LoadingSmall.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import EmptyState from '@/components/EmptyState.vue';
-import OkrLinkCard from '@/components/OkrLinkCard.vue';
+import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 
 export default {
@@ -141,7 +141,7 @@ export default {
     draggable,
     PaneWrapper,
     EmptyState,
-    OkrLinkCard,
+    ObjectiveLinkCard,
     HTMLOutput,
     LoadingSmall,
     PktBreadcrumbs,
