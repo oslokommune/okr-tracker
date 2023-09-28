@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file. The format 
   now toggles the detail pane rather than adding objectives to a list. To group
   objectives in a list (and see combined progression), the meta key must now be
   pressed while selecting one or more objectives.
+- Key results can now be rearranged by drag and drop.
 
 ### Removed
 

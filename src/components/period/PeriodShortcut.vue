@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import formattedPeriod from '@/util/okr';
+import { formattedPeriod } from '@/util/okr';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
 export default {

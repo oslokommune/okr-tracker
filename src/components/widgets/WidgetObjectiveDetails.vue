@@ -70,7 +70,7 @@
 <script>
 import { mapState } from 'vuex';
 import { dateLong } from '@/util';
-import formattedPeriod from '@/util/okr';
+import { formattedPeriod } from '@/util/okr';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
 import Widget from './WidgetWrapper.vue';
 

@@ -64,9 +64,31 @@
         {{ $t('general.loading') }}
       </div>
 
+      <draggable
+        v-else-if="hasEditRights && keyResults.length"
+        v-model="orderedKeyResults"
+        class="objective-pane__key-results-list"
+        animation="200"
+      >
+        <transition-group>
+          <okr-link-card
+            v-for="keyResult in orderedKeyResults"
+            :key="keyResult.id"
+            :route="{
+              name: 'KeyResultHome',
+              params: { objectiveId: activeObjective.id, keyResultId: keyResult.id },
+            }"
+            :title="keyResult.name"
+            :progression="keyResult.progression"
+            :active="activeKeyResult && activeKeyResult.id === keyResult.id"
+            compact
+          />
+        </transition-group>
+      </draggable>
+
       <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
         <okr-link-card
-          v-for="keyResult in keyResults"
+          v-for="keyResult in orderedKeyResults"
           :key="keyResult.id"
           :route="{
             name: 'KeyResultHome',
@@ -96,9 +118,12 @@
 <script>
 import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
+import { PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
+import draggable from 'vuedraggable';
+import { compareKeyResults } from '@/util/okr';
 import { dateLong, periodDates } from '@/util';
 import { db } from '@/config/firebaseConfig';
-import { PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
+import KeyResult from '@/db/KeyResult';
 import ProgressBar from '@/components/ProgressBar.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
@@ -112,6 +137,7 @@ export default {
   name: 'ObjectivePane',
 
   components: {
+    draggable,
     PaneWrapper,
     EmptyState,
     OkrLinkCard,
@@ -158,6 +184,19 @@ export default {
         { text: this.activeItem.name, href: { name: 'ItemHome' } },
         { text: this.activeObjective.name },
       ];
+    },
+
+    orderedKeyResults: {
+      get() {
+        return this.keyResults.map((kr) => kr).sort(compareKeyResults);
+      },
+      set(keyResults) {
+        keyResults.forEach((kr, i) => {
+          if (kr.order !== i) {
+            KeyResult.update(kr.id, { order: i });
+          }
+        });
+      },
     },
   },
 
@@ -234,7 +273,7 @@ export default {
         margin-left: 3rem;
       }
 
-      > .okr-link-card {
+      & .okr-link-card {
         position: relative;
         margin-top: 1rem;
 
