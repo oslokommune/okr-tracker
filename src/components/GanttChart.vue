@@ -72,12 +72,12 @@
             :tabindex="o.tabindex"
             :progression="o.objective.progression"
             :style="objectiveStyle(o)"
-            :active="
-              (activeObjective && activeObjective.id === o.objective.id) ||
-              workbenchObjectives.map((o) => o.id).includes(o.objective.id)
-            "
+            :checkable="workbenchObjectives.length > 0"
+            :checked="workbenchObjectives.map((o) => o.id).includes(o.objective.id)"
+            :active="activeObjective && activeObjective.id === o.objective.id"
             :data-id="o.objective.id"
-            :before-navigate="beforeSelectObjective(o.objective)"
+            :before-navigate="beforeObjectiveNavigate(o.objective)"
+            @toggle="toggleObjective($event, o.objective)"
             @hook:mounted="onObjectiveMounted(o.objective)"
           />
         </div>
@@ -430,39 +430,72 @@ export default {
       window.removeEventListener('mouseup', this.stopDrag);
     },
 
-    beforeSelectObjective(objective) {
+    async selectObjective(objective) {
+      if (!this.workbenchObjectives.length) {
+        if (this.activeObjective && objective.id !== this.activeObjective.id) {
+          // Add currently active objective to workbench if the next objective
+          // is selected for the workbench
+          await this.addWorkbenchObjective(this.activeObjective.id);
+          this.$router.push({ name: 'ItemHome' });
+        }
+      }
+
+      // Add selected objective to workbench
+      await this.addWorkbenchObjective(objective.id);
+      this.scrollToObjective(objective);
+    },
+
+    async unselectObjective(objective) {
+      // Remove objective from workbench
+      await this.removeWorkbenchObjective(objective.id);
+
+      // Set next workbench objective as active if available
+      if (this.activeObjective && this.activeObjective.id === objective.id) {
+        if (this.workbenchObjectives.length) {
+          this.$router.replace({
+            name: 'ObjectiveHome',
+            params: { objectiveId: this.workbenchObjectives[0].id },
+          });
+        } else {
+          this.$router.push({ name: 'ItemHome' });
+        }
+      }
+    },
+
+    beforeObjectiveNavigate(objective) {
       return async (event) => {
-        if (event.metaKey) {
-          event.preventDefault();
+        const modifierKey = event.metaKey || event.altKey;
 
+        if (!modifierKey && !this.workbenchObjectives.length) {
+          return;
+        }
+
+        // Prevent default link navigation when selecting/unselecting
+        // objectives for the workbench
+        event.preventDefault();
+
+        if (!this.workbenchObjectives.find((o) => o.id === objective.id)) {
+          await this.selectObjective(objective);
+
+          // Replace any active objective with the one newly selected
           if (this.activeObjective && objective.id !== this.activeObjective.id) {
-            // Add currently active objective to workbench if the next objective
-            // is selected with the modifier key.
-            await this.addWorkbenchObjective(this.activeObjective.id);
+            await this.$router.replace({
+              name: 'ObjectiveHome',
+              params: { objectiveId: objective.id },
+            });
           }
-
-          if (!this.workbenchObjectives.find((o) => o.id === objective.id)) {
-            await this.addWorkbenchObjective(objective.id);
-            this.scrollToObjective(objective);
-
-            if (this.activeObjective && objective.id !== this.activeObjective.id) {
-              await this.$router.replace({
-                name: 'ObjectiveHome',
-                params: { objectiveId: objective.id },
-              });
-            }
-          } else {
-            await this.removeWorkbenchObjective(objective.id);
-          }
-        } else if (
-          this.workbenchObjectives.length &&
-          !this.workbenchObjectives.find((o) => objective.id === o.id)
-        ) {
-          // Clear the workbench if an object is selected with the modifier key
-          // and it is not currently listed.
-          this.clearWorkbenchObjectives();
+        } else {
+          await this.unselectObjective(objective);
         }
       };
+    },
+
+    async toggleObjective(checked, objective) {
+      if (checked) {
+        await this.selectObjective(objective);
+      } else {
+        await this.unselectObjective(objective);
+      }
     },
 
     onObjectiveMounted(objective) {
@@ -489,10 +522,20 @@ export default {
     },
 
     async periodObjectivesToWorkbench() {
-      this.periodObjectives
-        .filter((po) => !this.workbenchObjectives.map((o) => o.id).includes(po.id))
-        .map((o) => o.id)
-        .forEach(this.addWorkbenchObjective);
+      // Reset and add all objectives within current period to the workbench
+      await this.clearWorkbenchObjectives();
+
+      if (!this.periodObjectives.length) {
+        return;
+      }
+
+      this.periodObjectives.map((o) => o.id).forEach(this.addWorkbenchObjective);
+
+      // Set first workbench objective as active
+      await this.$router.replace({
+        name: 'ObjectiveHome',
+        params: { objectiveId: this.periodObjectives[0].id },
+      });
 
       this.$nextTick(() => {
         if (this.$refs.period) {

@@ -5,6 +5,7 @@
         'okr-link-card',
         {
           'okr-link-card--active': isExactActive || active,
+          'okr-link-card--checked': checked,
           'okr-link-card--compact': compact,
         },
       ]"
@@ -12,15 +13,18 @@
       @click="activate($event, navigate)"
     >
       <div class="okr-link-card__inner">
-        <pkt-tag
-          v-if="!compact"
-          text-style="normal-text"
-          skin="yellow"
-          size="small"
-          class="okr-link-card__owner"
-        >
-          {{ activeItem.name }}
-        </pkt-tag>
+        <div v-if="!compact" class="okr-link-card__header">
+          <input
+            v-if="checkable"
+            type="checkbox"
+            class="pkt-form-check-input"
+            :checked="checked"
+            @click.stop="$emit('toggle', $event.target.checked)"
+          />
+          <pkt-tag text-style="normal-text" skin="yellow" size="small">
+            {{ activeItem.name }}
+          </pkt-tag>
+        </div>
 
         <span class="okr-link-card__title pkt-txt-14">
           {{ title }}
@@ -59,6 +63,14 @@ export default {
       required: true,
     },
     active: {
+      type: Boolean,
+      default: false,
+    },
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+    checkable: {
       type: Boolean,
       default: false,
     },
@@ -117,7 +129,10 @@ export default {
     padding: 1rem;
   }
 
-  &__owner {
+  &__header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
     white-space: nowrap;
   }
 
@@ -125,10 +140,13 @@ export default {
     text-wrap: balance;
   }
 
-  &--active {
+  &--active,
+  &--checked {
     color: var(--color-hover);
-    background-color: var(--color-blue-5);
     border: 2px solid var(--color-hover);
+  }
+  &--active {
+    background-color: var(--color-blue-5);
   }
 }
 </style>
