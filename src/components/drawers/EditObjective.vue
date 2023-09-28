@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { isEqual } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { formattedPeriod } from '@/util/okr';
@@ -220,7 +220,6 @@ export default {
 
   methods: {
     formattedPeriod,
-    ...mapActions('okrs', ['setActiveObjective', 'addWorkbenchObjective']),
 
     getCurrentDateRange() {
       if (this.thisObjective.startDate && this.thisObjective.endDate) {
