@@ -75,10 +75,10 @@ export default {
 }
 
 .slide-fade-enter-active {
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 .slide-fade-leave-active {
-  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: none;
 }
 .slide-fade-enter,
 .slide-fade-leave-to {

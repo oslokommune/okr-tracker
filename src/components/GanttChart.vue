@@ -431,13 +431,25 @@ export default {
     },
 
     async selectObjective(objective) {
-      if (!this.workbenchObjectives.length) {
-        if (this.activeObjective && objective.id !== this.activeObjective.id) {
-          // Add currently active objective to workbench if the next objective
-          // is selected for the workbench
-          await this.addWorkbenchObjective(this.activeObjective.id);
-          this.$router.push({ name: 'ItemHome' });
-        }
+      if (
+        !this.workbenchObjectives.length &&
+        this.activeObjective &&
+        objective.id !== this.activeObjective.id
+      ) {
+        // Close currently active objective if next objective is selected for
+        // the workbench
+        const activeObjectiveId = this.activeObjective.id;
+        this.$router.push({ name: 'ItemHome' });
+
+        // Add both objectives to the workbench using `setTimeout` to give the
+        // browser a chance to "catch up" while toggling panes
+        setTimeout(async () => {
+          await Promise.all(
+            [activeObjectiveId, objective.id].map(this.addWorkbenchObjective)
+          );
+          this.scrollToObjective(objective);
+        });
+        return;
       }
 
       // Add selected objective to workbench
