@@ -8,7 +8,7 @@
         },
       ]"
       :href="href"
-      @click="activate($event, navigate)"
+      @click="navigate($event)"
     >
       <div class="key-result-link-card__inner">
         <div class="key-result-link-card__heading">
@@ -74,10 +74,6 @@ export default {
   methods: {
     contributorTagColor,
     contributorTagMode,
-
-    async activate(event, rootHandler) {
-      await rootHandler(event);
-    },
   },
 };
 </script>
