@@ -166,7 +166,7 @@ export default {
     ...mapActions('okrs', [
       'setActiveObjective',
       'setActiveKeyResult',
-      'clearWorkbenchObjectives',
+      'addWorkbenchObjective',
     ]),
 
     async setData() {
@@ -247,7 +247,7 @@ export default {
       this.$router.push({ name: 'ObjectiveHome', params: { objectiveId: objective.id } });
 
       if (this.workbenchObjectives.length) {
-        await this.addWorkbenchObjective(objective);
+        await this.addWorkbenchObjective(objective.id);
       }
     },
   },

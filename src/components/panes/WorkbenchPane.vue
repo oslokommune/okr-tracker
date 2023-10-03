@@ -28,7 +28,7 @@
           variant="icon-only"
           icon-name="minus-circle"
           skin="tertiary"
-          @onClick="removeObject(objective)"
+          @onClick="removeObjective(objective)"
         />
       </div>
     </div>
@@ -66,7 +66,7 @@ export default {
   methods: {
     ...mapActions('okrs', ['removeWorkbenchObjective', 'clearWorkbenchObjectives']),
 
-    async removeObject(objective) {
+    async removeObjective(objective) {
       await this.removeWorkbenchObjective(objective.id);
 
       // Set next objective as active or unset current if removed.
@@ -84,9 +84,6 @@ export default {
 
     async close() {
       await this.clearWorkbenchObjectives();
-      if (this.$route.name !== 'ItemHome') {
-        this.$router.push({ name: 'ItemHome' });
-      }
     },
   },
 };
@@ -108,7 +105,7 @@ export default {
     top: -1rem;
     right: -1rem;
     height: 2rem;
-    padding: 0 0.25rem;
+    padding: 0 0.25rem !important;
     color: var(--color-grayscale-40);
     background-color: var(--color-white);
     border-radius: 50%;
