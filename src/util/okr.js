@@ -1,4 +1,6 @@
 import { dateShort, periodDates } from '@/util';
+import CONTRIBUTOR_TAG_COLORS from '@/config/colors';
+import simpleHash from '@/util/hash';
 
 /**
  * Return a nicely formatted period range for `objective`'s period.
@@ -39,4 +41,22 @@ export function compareKeyResults(a, b) {
   }
   // Otherwise fall back to ordering by name.
   return a.name.localeCompare(b.name);
+}
+
+/**
+ * Return the color to use for the contributor tag of the
+ * organization/department/product called `name`.
+ */
+export function contributorTagColor(name) {
+  const c = CONTRIBUTOR_TAG_COLORS[simpleHash(name) % CONTRIBUTOR_TAG_COLORS.length];
+  return `var(--${c.name})`;
+}
+
+/**
+ * Return the color mode to use for the contributor tag of the
+ * organization/department/product called `name`.
+ */
+export function contributorTagMode(name) {
+  const c = CONTRIBUTOR_TAG_COLORS[simpleHash(name) % CONTRIBUTOR_TAG_COLORS.length];
+  return c.mode;
 }

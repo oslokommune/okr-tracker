@@ -13,3 +13,19 @@ export { default as toastArchiveAndRevert } from './toastUtils';
 export { default as validateEmail } from './validateEmail';
 
 export const getRandomInt = (max) => Math.floor(Math.random() * max);
+
+/**
+ * Return an array of all members of `arr` that are unique with respect to the
+ * attribute `key`.
+ */
+export function uniqueBy(arr, key) {
+  const res = {};
+
+  arr.forEach((x) => {
+    if (!(x[key] in res)) {
+      res[x[key]] = x;
+    }
+  });
+
+  return Object.values(res);
+}

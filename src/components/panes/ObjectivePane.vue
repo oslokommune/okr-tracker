@@ -34,6 +34,33 @@
       :html="activeObjective.description"
     />
 
+    <div class="objective-pane__members">
+      <div>
+        <h4 class="pkt-txt-14-medium">{{ $t('objective.owner') }}</h4>
+        <pkt-tag text-style="normal-text" skin="yellow" size="small">
+          {{ activeObjective.parent.name }}
+        </pkt-tag>
+      </div>
+
+      <div class="objective-pane__contributors">
+        <h4 class="pkt-txt-14-medium">{{ $t('objective.contributors') }}</h4>
+        <ul>
+          <li v-for="c in contributors" :key="c.id" class="objective-pane__contributor">
+            <span class="pkt-txt-14">{{ c.name }}</span>
+            <span
+              class="objective-pane__contributor-tag"
+              :class="[
+                'objective-link-card__tag',
+                'pkt-txt-12-bold',
+                `objective-link-card__tag--${contributorTagMode(c.name)}`,
+              ]"
+              :style="{ background: contributorTagColor(c.name) }"
+            ></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <progress-bar
       class="objective-pane__progression"
       :title="$t('objective.progressionTitle')"
@@ -71,7 +98,7 @@
         animation="200"
       >
         <transition-group>
-          <okr-link-card
+          <key-result-link-card
             v-for="keyResult in orderedKeyResults"
             :key="keyResult.id"
             :route="{
@@ -80,14 +107,14 @@
             }"
             :title="keyResult.name"
             :progression="keyResult.progression"
+            :owner="keyResult.parent?.name ? keyResult.parent.name : ''"
             :active="activeKeyResult && activeKeyResult.id === keyResult.id"
-            compact
           />
         </transition-group>
       </draggable>
 
       <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
-        <okr-link-card
+        <key-result-link-card
           v-for="keyResult in orderedKeyResults"
           :key="keyResult.id"
           :route="{
@@ -96,8 +123,8 @@
           }"
           :title="keyResult.name"
           :progression="keyResult.progression"
+          :owner="keyResult.parent?.name ? keyResult.parent.name : ''"
           :active="activeKeyResult && activeKeyResult.id === keyResult.id"
-          compact
         />
       </div>
 
@@ -120,9 +147,10 @@ import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
 import { PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
 import draggable from 'vuedraggable';
-import { compareKeyResults } from '@/util/okr';
-import { dateLong, periodDates } from '@/util';
+import { compareKeyResults, contributorTagColor, contributorTagMode } from '@/util/okr';
+import { dateLong, periodDates, uniqueBy } from '@/util';
 import { db } from '@/config/firebaseConfig';
+import i18n from '@/locale/i18n';
 import KeyResult from '@/db/KeyResult';
 import ProgressBar from '@/components/ProgressBar.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
@@ -130,7 +158,7 @@ import LoadingSmall from '@/components/LoadingSmall.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import EmptyState from '@/components/EmptyState.vue';
-import OkrLinkCard from '@/components/OkrLinkCard.vue';
+import KeyResultLinkCard from '@/components/KeyResultLinkCard.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 
 export default {
@@ -140,7 +168,7 @@ export default {
     draggable,
     PaneWrapper,
     EmptyState,
-    OkrLinkCard,
+    KeyResultLinkCard,
     HTMLOutput,
     LoadingSmall,
     PktBreadcrumbs,
@@ -198,6 +226,13 @@ export default {
         });
       },
     },
+
+    contributors() {
+      return uniqueBy(
+        this.keyResults.map((kr) => kr.parent).filter((item) => item.name),
+        'id'
+      ).sort((a, b) => a.name.localeCompare(b.name, i18n.locale));
+    },
   },
 
   watch: {
@@ -221,6 +256,8 @@ export default {
   },
 
   methods: {
+    contributorTagColor,
+    contributorTagMode,
     dateLong,
     periodDates,
 
@@ -248,6 +285,36 @@ export default {
     }
   }
 
+  &__members {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+
+    & h4 {
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  &__contributors {
+    margin-right: calc(2.5rem + 2px);
+  }
+
+  &__contributor {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+
+  &__contributor-tag {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+  }
+
   &__progression {
     margin-top: 1rem;
   }
@@ -273,7 +340,7 @@ export default {
         margin-left: 3rem;
       }
 
-      & .okr-link-card {
+      & .key-result-link-card {
         position: relative;
         margin-top: 1rem;
 

@@ -388,6 +388,8 @@
   "objective": {
     "period": "Period",
     "progressionTitle": "Objective progression:",
+    "owner": "Owner",
+    "contributors": "Contributors",
     "weight": "Weight",
     "change": "Change objective",
     "add": "Add objective",

@@ -61,7 +61,7 @@
       <template v-if="!loading">
         <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
         <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
-          <okr-link-card
+          <objective-link-card
             v-for="o in group.objectives"
             :key="o.objective.id"
             :route="{
@@ -69,6 +69,7 @@
               params: { objectiveId: o.objective.id },
             }"
             :title="o.objective.name"
+            :objective-id="o.objective.id"
             :tabindex="o.tabindex"
             :progression="o.objective.progression"
             :style="objectiveStyle(o)"
@@ -102,13 +103,13 @@ import {
 } from 'date-fns';
 import { dateLongCompact } from '@/util';
 import paneEvents from '@/components/layout/paneEvents';
-import OkrLinkCard from '@/components/OkrLinkCard.vue';
+import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 
 export default {
   name: 'GanttChart',
 
   components: {
-    OkrLinkCard,
+    ObjectiveLinkCard,
   },
 
   props: {
@@ -700,7 +701,7 @@ export default {
   margin: 1rem 0;
 }
 
-.okr-link-card {
+.objective-link-card {
   --card-bg-color: var(--color-white);
 
   position: relative;

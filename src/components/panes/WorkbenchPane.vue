@@ -14,9 +14,10 @@
 
     <div class="workbench-pane__objectives">
       <div v-for="objective in workbenchObjectives" :key="objective.id" class="">
-        <okr-link-card
+        <objective-link-card
           :route="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
           :title="objective.name"
+          :objective-id="objective.id"
           :progression="objective.progression"
           :active="activeObjective && objective.id === activeObjective.id"
         />
@@ -39,7 +40,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
-import OkrLinkCard from '@/components/OkrLinkCard.vue';
+import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
@@ -47,7 +48,7 @@ export default {
 
   components: {
     PaneWrapper,
-    OkrLinkCard,
+    ObjectiveLinkCard,
     ProgressBar,
     PktButton,
   },
