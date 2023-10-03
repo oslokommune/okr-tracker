@@ -205,7 +205,9 @@ export default {
 
 .objective-link-card__tags {
   display: flex;
+  flex: 1 0 auto;
   gap: 0.25rem;
+  justify-content: flex-end;
 }
 
 .objective-link-card__tag {
