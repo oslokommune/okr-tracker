@@ -130,7 +130,7 @@
           <pkt-button
             skin="secondary"
             @onClick="
-              thisKeyResult = {};
+              thisKeyResult = { ...keyResultDefaults };
               reset();
             "
           >
@@ -202,6 +202,9 @@ export default {
 
   data: () => ({
     thisKeyResult: null,
+    keyResultDefaults: {
+      weight: 1,
+    },
     pageCount: 2,
     loading: false,
   }),
@@ -260,7 +263,10 @@ export default {
           this.thisKeyResult = null;
           return;
         }
-        this.thisKeyResult = this.keyResult ? { ...this.keyResult } : {};
+
+        this.thisKeyResult = this.keyResult
+          ? { ...this.keyResultDefaults, ...this.keyResult }
+          : { ...this.keyResultDefaults };
       },
     },
     // thisLevel: {
