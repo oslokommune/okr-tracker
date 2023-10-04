@@ -1,12 +1,11 @@
 <template>
-  <div :class="['progress-bar', { 'progress-bar--compact': compact }]">
+  <div :class="['progress-bar', skinClass, { 'progress-bar--compact': compact }]">
     <h4 v-if="title" class="pkt-txt-14-medium">{{ title }}</h4>
     <div class="progress-bar__bar">
       <div
         :class="[
           'progress-bar__value',
           { 'progress-bar__value--indicator': progression > 0 && progression < 1 },
-          { 'progress-bar__value--complete': progression >= 1 },
         ]"
         :style="progressValueStyle"
         role="progressbar"
@@ -44,6 +43,11 @@ export default {
       type: Number,
       default: 0,
     },
+    skin: {
+      type: String,
+      default: 'blue',
+      validator: (value) => ['blue', 'yellow', 'green'].includes(value),
+    },
     leftLabel: {
       type: String,
       default: null,
@@ -75,6 +79,13 @@ export default {
     progressValueStyle() {
       return `width: ${this.percent}%`;
     },
+
+    skinClass() {
+      if (this.progression >= 1) {
+        return 'progress-bar--green';
+      }
+      return `progress-bar--${this.skin}`;
+    },
   },
 };
 </script>
@@ -83,6 +94,11 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .progress-bar {
+  // Default skin colors: `blue`
+  --progress-bar-bg: var(--color-grayscale-10);
+  --progress-bar-value: var(--color-blue);
+  --progress-bar-value-indicator: var(--color-blue-dark);
+
   width: 100%;
 
   h4 + &__bar {
@@ -92,7 +108,7 @@ export default {
   &__bar {
     position: relative;
     margin-bottom: 1rem;
-    background-color: var(--color-grayscale-10);
+    background-color: var(--progress-bar-bg);
 
     > span {
       position: absolute;
@@ -104,14 +120,10 @@ export default {
 
   &__value {
     height: 1rem;
-    background-color: var(--color-blue);
+    background-color: var(--progress-bar-value);
 
     &--indicator {
-      border-right: 1px solid var(--color-blue-dark);
-    }
-
-    &--complete {
-      background-color: var(--color-green);
+      border-right: 1px solid var(--progress-bar-value-indicator);
     }
   }
 
@@ -132,6 +144,16 @@ export default {
     .progress-bar__value {
       height: 0.5rem;
     }
+  }
+
+  &--green {
+    --progress-bar-value: var(--color-green);
+    --progress-bar-value-indicator: var(--color-green-dark);
+  }
+
+  &--yellow {
+    --progress-bar-value: var(--color-yellow);
+    --progress-bar-value-indicator: var(--color-yellow-70);
   }
 }
 </style>
