@@ -77,6 +77,17 @@
               class="pkt-cell pkt-cell--span6"
             />
           </div>
+
+          <form-component
+            v-model.number="thisKeyResult.weight"
+            input-type="input"
+            name="weight"
+            :label="$t('keyResult.weight.label')"
+            rules="required|decimal|positiveNotZero"
+            type="number"
+          >
+            <template #help><span v-html="$t('keyResult.weight.help')" /></template>
+          </form-component>
         </template>
 
         <template v-if="!keyResult?.archived" #actions="{ handleSubmit, submitDisabled }">

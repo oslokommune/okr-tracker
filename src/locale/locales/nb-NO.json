@@ -370,7 +370,10 @@
     "chooseDate": "Velg dato",
     "belongsTo": "Tilhører mål",
     "numberOfUpdates": "Antall oppdateringer",
-    "weight": "Vekt",
+    "weight": {
+      "label": "Vekt",
+      "help": "I utregningen av samlet progresjon for et mål vektes i utgangspunktet progresjonen for hvert nøkkelresultat likt (1). Det er imidlertid mulig å overstyre dette for hvert enkelt nøkkelresultat ved å endre tallverdien under."
+    },
     "automatic": "Oppdateres automatisk",
     "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
     "autoError": "Feil i henting av data fra Google Sheets:",
