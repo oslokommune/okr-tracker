@@ -61,16 +61,16 @@
         </div>
       </div>
 
+      <div v-if="period" class="mt-size-16">
+        <div class="pkt-txt-14-medium">{{ $t('objective.period') }}</div>
+        <div class="pkt-txt-14">{{ periodDates(period) }}</div>
+      </div>
+
       <progress-bar
         class="objective-pane__progression"
         :title="$t('objective.progressionTitle')"
         :progression="activeObjective.progression"
       />
-
-      <div v-if="period" class="mt-size-16">
-        <div class="pkt-txt-14-medium">{{ $t('objective.period') }}</div>
-        <div class="pkt-txt-14">{{ periodDates(period) }}</div>
-      </div>
     </div>
 
     <div class="objective-pane__key-results">
