@@ -35,16 +35,16 @@
             :rows="2"
             :label="$t('fields.description')"
           />
-          <!-- TODO: Include when related views have been implemented -->
-          <!--form-component
+          <form-component
             v-if="isOrganization || isDepartment"
-            v-model="thisKeyResult.parent"
+            v-model="contributor"
             name="owner"
             input-type="select"
             :select-options="ownerOptions"
+            :select-reduce="(option) => option.value"
             :label="$t('fields.owner')"
             rules="required"
-          /-->
+          />
         </template>
 
         <template v-else-if="pageIndex === 2">
@@ -155,11 +155,13 @@
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
-import { isDepartment, isOrganization } from '@/util/getActiveItemType';
+import ObjectiveContributors from '@/db/ObjectiveContributors';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+import { isDepartment, isOrganization } from '@/util/getActiveItemType';
+import getActiveItemType from '@/util/getActiveItemType';
 
 export default {
   name: 'EditKeyResult',
@@ -196,6 +198,9 @@ export default {
     thisKeyResult: null,
     pageCount: 2,
     loading: false,
+    contributor: null,
+    contributors: [],
+    keyResultOwners: [],
   }),
 
   computed: {
@@ -227,6 +232,15 @@ export default {
         );
       }
       return {};
+    },
+    childCollection() {
+      if (isOrganization(this.activeItem)) {
+        return 'departments';
+      }
+      if (isDepartment(this.activeItem)) {
+        return 'products';
+      }
+      return null;
     },
     thisLevelOption() {
       return {
@@ -268,8 +282,12 @@ export default {
           .then((snapshot) => {
             this.thisKeyResult = snapshot.data();
             this.thisKeyResult.id = this.keyResult.id;
+            this.contributor = this.ownerOptions.find(o => o.name === this.keyResult.parent.name);
             this.loading = false;
           });
+
+        this.getObjectiveContributors();
+        this.getKeyResultOwners();
       },
     },
     // thisLevel: {
@@ -284,6 +302,8 @@ export default {
   },
 
   methods: {
+    isDepartment, isOrganization,
+
     async save() {
       const { pageIndex, next } = this.$refs.drawer;
 
@@ -295,7 +315,10 @@ export default {
         try {
           const { name, description, unit, weight, startValue, targetValue } =
             this.thisKeyResult;
-          const parent = this.activeItemRef;
+
+          const parent = db.doc(this.contributor);
+          console.log("PARENT. ", parent);
+
           const data = {
             name,
             description: description || '',
@@ -303,7 +326,7 @@ export default {
             weight: weight || 1,
             startValue,
             targetValue,
-            parent,
+            parent
           };
 
           if (this.thisKeyResult?.id) {
@@ -315,10 +338,30 @@ export default {
               ...data,
               objective: objectiveRef,
             });
-            this.thisKeyResult.id = id;
-            this.thisKeyResult.objective = objectiveRef;
+
+            await db.collection('keyResults')
+              .doc(id)
+              .get()
+              .then((snapshot) => {
+                this.thisKeyResult = snapshot.data();
+                this.thisKeyResult.objective = objectiveRef;
+                console.log("snapshot.parent", snapshot);
+                //this.thisKeyResult.parent = snapshot.parent;
+                this.thisKeyResult.id = id;
+                this.contributor = this.ownerOptions.find(o => o.name === this.keyResult.parent.name);
+                this.loading = false;
+              });
+            console.log("kr parent", this.thisKeyResult)
+            //parentRef = await activePeriodRef.get().then((snapshot) => snapshot.data().parent);
+
+            // TODO: Map this shit
+            // this.thisKeyResult.id = id;
+            //this.thisKeyResult.objective = objectiveRef;
+            //this.thisKeyResult.parent = data.parent;
+            //this.keyResultOwners.push(this.thisKeyResult); // TODO: ????
             this.$emit('create', this.thisKeyResult);
           }
+          await this.syncObjectiveContributor();
           this.$refs.drawer.next();
         } catch (error) {
           console.log(error);
@@ -334,6 +377,7 @@ export default {
       this.loading = true;
       try {
         await KeyResult.archive(this.thisKeyResult.id);
+        await this.syncObjectiveContributor();
         this.thisKeyResult.archived = true;
         this.$emit('archive', this.thisKeyResult);
       } catch (error) {
@@ -347,6 +391,7 @@ export default {
     async restore() {
       try {
         await KeyResult.restore(this.thisKeyResult.id);
+        await this.syncObjectiveContributor();
         this.thisKeyResult.archived = false;
         this.$emit('restore', this.thisKeyResult);
       } catch {
@@ -354,6 +399,65 @@ export default {
           this.$t('toaster.error.restore', { document: this.thisKeyResult.id })
         );
       }
+    },
+
+    async getObjectiveContributors() {
+      const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
+      const objectiveContributorsRefs = db
+        .collection('objectiveContributors')
+        .where('objective', '==', objectiveRef)
+        .where('archived', '==', false);
+
+      this.$bind('contributors', objectiveContributorsRefs);
+    },
+
+    async getKeyResultOwners() {
+      const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
+      const keyResultRefs = db
+        .collection('keyResults')
+        .where('objective', '==', objectiveRef)
+        .where('archived', '==', false);
+
+      this.$bind('keyResultOwners', keyResultRefs);
+    },
+
+    async syncObjectiveContributor() {
+      let contributors = [...this.contributors];
+      let keyResultOwners = [...this.keyResultOwners];
+
+      // Filter out already present links
+      this.contributors.map(c => {
+        this.keyResultOwners.map(k => {
+          if (c.item.name === k.parent.name) {
+            contributors = contributors.filter((con) => con.item.name !== c.item.name);
+            keyResultOwners = keyResultOwners.filter((kr) => kr.parent.name !== k.parent.name);
+          }
+        });
+      });
+
+      // Add missing contributor
+      keyResultOwners.map(k => {
+        this.createObjectiveContributor(k.parent)
+      });
+
+      // Remove redundant contributors
+      contributors.map(c => {
+        this.removeObjectiveContributor(c.item);
+      });
+    },
+
+    createObjectiveContributor(item) {
+      const itemType = getActiveItemType(item);
+      const itemRef = db.doc(`${itemType}s/${item.id}`);
+      const objectiveRef = db.doc(`objectives/${this.objective.id}`);
+      ObjectiveContributors.create(itemRef, objectiveRef);
+    },
+
+    async removeObjectiveContributor(item) {
+      const itemType = getActiveItemType(item);
+      const itemRef = db.doc(`${itemType}s/${item.id}`);
+      const objectiveRef = db.doc(`objectives/${this.objective.id}`);
+      return ObjectiveContributors.remove(itemRef, objectiveRef);
     },
 
     close(e) {
