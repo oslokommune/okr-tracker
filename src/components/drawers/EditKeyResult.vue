@@ -413,12 +413,15 @@ export default {
 
     async getKeyResultOwners() {
       const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
-      const keyResultRefs = db
+      const keyResults = await db
         .collection('keyResults')
         .where('objective', '==', objectiveRef)
-        .where('archived', '==', false);
+        .where('archived', '==', false)
+        .get()
+        .then((snapshot) => snapshot.docs)
+        .then((docs) => docs.map((d) => d.data()));
 
-      this.$bind('keyResultOwners', keyResultRefs);
+      this.keyResultOwners = keyResults;
     },
 
     async syncObjectiveContributor() {
@@ -436,8 +439,8 @@ export default {
       });
 
       // Add missing contributor
-      keyResultOwners.map(k => {
-        this.createObjectiveContributor(k.parent)
+      keyResultOwners.map(async (k) => {
+        this.createObjectiveContributor(await k.parent.get());
       });
 
       // Remove redundant contributors
@@ -447,7 +450,7 @@ export default {
     },
 
     createObjectiveContributor(item) {
-      const itemType = getActiveItemType(item);
+      const itemType = getActiveItemType(item.data());
       const itemRef = db.doc(`${itemType}s/${item.id}`);
       const objectiveRef = db.doc(`objectives/${this.objective.id}`);
       ObjectiveContributors.create(itemRef, objectiveRef);
