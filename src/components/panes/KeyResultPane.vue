@@ -13,57 +13,75 @@
       :breadcrumbs="breadcrumbs"
     />
 
-    <pkt-tag text-style="normal-text" skin="grey" class="mt-size-8">
-      {{ $t('general.keyResult') }}
-    </pkt-tag>
+    <div class="key-result-pane__details">
+      <div class="key-result-pane__header">
+        <pkt-tag text-style="normal-text" skin="yellow">
+          {{ $t('general.keyResult') }}
+        </pkt-tag>
 
-    <div class="key-result-pane__title">
+        <pkt-button
+          v-if="hasEditRights"
+          v-tooltip="$t('btn.updateKeyResult')"
+          skin="tertiary"
+          size="small"
+          variant="icon-only"
+          icon-name="edit"
+          @onClick="$emit('edit-key-result')"
+        />
+      </div>
+
       <h2 class="pkt-txt-18-medium">{{ activeKeyResult.name }}</h2>
-      <pkt-button
-        v-if="hasEditRights"
-        v-tooltip="$t('btn.updateKeyResult')"
-        skin="tertiary"
-        size="small"
-        variant="icon-only"
-        icon-name="edit"
-        @onClick="$emit('edit-key-result')"
+
+      <HTML-output
+        v-if="activeKeyResult.description"
+        class="key-result-pane__description"
+        :html="activeKeyResult.description"
+      />
+
+      <progress-bar
+        class="key-result-pane__progression"
+        :title="`${$t('keyResult.progression')}:`"
+        :progression="progression"
+        :right-label="progressionRightLabel"
+        skin="yellow"
       />
     </div>
 
-    <HTML-output
-      v-if="activeKeyResult.description"
-      class="key-result-pane__description"
-      :html="activeKeyResult.description"
-    />
+    <div class="key-result-pane__values">
+      <div class="key-result-pane__values-header">
+        <h3 class="pkt-txt-16-medium">{{ $t('keyResult.registeredValues') }}</h3>
+        <pkt-button
+          v-if="hasEditRights"
+          :text="$t('keyResult.newValue')"
+          skin="primary"
+          size="small"
+          variant="icon-left"
+          icon-name="plus-sign"
+          @onClick="showValueModal = true"
+        />
+      </div>
 
-    <progress-bar
-      class="key-result-pane__progression"
-      :title="`${$t('keyResult.progression')}:`"
-      :progression="progression"
-      :right-label="progressionRightLabel"
-    />
+      <div v-if="isLoading">
+        <loading-small />
+        {{ $t('general.loading') }}
+      </div>
 
-    <widget-progress-history
-      class="key-result-pane__values"
-      :title="$t('keyResult.registeredValues')"
-      :progress="progress"
-      :is-loading="isLoading"
-      @update-record="updateHistoryRecord"
-      @delete-record="deleteHistoryRecord"
-    >
-      <template #title-actions>
-        <div v-if="hasEditRights">
-          <pkt-button
-            :text="$t('keyResult.newValue')"
-            skin="primary"
-            size="small"
-            variant="icon-left"
-            icon-name="plus-sign"
-            @onClick="showValueModal = true"
-          />
-        </div>
-      </template>
-    </widget-progress-history>
+      <widget-progress-history
+        v-else-if="progress.length"
+        :progress="progress"
+        :is-loading="isLoading"
+        @update-record="updateHistoryRecord"
+        @delete-record="deleteHistoryRecord"
+      />
+
+      <empty-state
+        v-else
+        icon="history"
+        :heading="$t('widget.history.empty.heading')"
+        :body="$t('empty.noKeyResultProgress')"
+        skin="warning"
+      />
+    </div>
 
     <widget class="key-result-pane__graph" :title="$t('general.graph')">
       <svg ref="graph" class="graph"></svg>
@@ -114,6 +132,8 @@ import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import ProgressModal from '@/components/modals/ProgressModal.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
+import LoadingSmall from '@/components/LoadingSmall.vue';
+import EmptyState from '@/components/EmptyState.vue';
 
 export default {
   name: 'KeyResultPane',
@@ -131,6 +151,8 @@ export default {
     HTMLOutput,
     ProgressModal,
     ProgressBar,
+    LoadingSmall,
+    EmptyState,
   },
 
   data: () => ({
@@ -304,13 +326,28 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .key-result-pane {
-  &__title {
+  background-color: #faf6f1;
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--color-white);
+    border-left: 0.25rem solid var(--color-yellow-50);
+
+    @include bp('laptop-up') {
+      margin-top: 2rem;
+    }
+  }
+
+  &__header {
     display: flex;
     justify-content: space-between;
     text-wrap: balance;
 
     .pkt-btn {
-      margin: -0.75rem 0 0 1rem;
+      margin: -0.5rem -0.5rem 0 0;
     }
   }
 
@@ -318,32 +355,51 @@ export default {
     margin-top: 1rem;
   }
 
-  &__values,
-  &__graph {
-    padding: 0;
-    border: 0;
-  }
   &__values {
-    margin-top: 1rem;
+    margin-top: 3rem;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    ::v-deep .widget__header {
+      // Temporarily hide the history widget header. The table is
+      // to be replaced
+      display: none;
+    }
   }
 
-  ::v-deep .widget {
-    padding: 1.5rem 0;
+  &__graph {
+    margin-top: 3rem;
 
-    h3 {
-      @include get-text('pkt-txt-16-medium');
+    ::v-deep .widget__header {
+      h3 {
+        @include get-text('pkt-txt-16-medium');
+      }
     }
   }
 
   &__widgets {
-    ::v-deep .widget {
-      border: 0;
+    margin-top: 3rem;
 
+    ::v-deep .widget__header {
       h3 {
         @include get-text('pkt-txt-16');
       }
     }
   }
+}
+
+.empty {
+  background-color: transparent;
+}
+
+::v-deep .widget {
+  padding: 0;
+  border: 0;
 }
 
 ::v-deep .pkt-breadcrumbs--mobile {

@@ -11,65 +11,68 @@
       :breadcrumbs="breadcrumbs"
     />
 
-    <pkt-tag text-style="normal-text" skin="grey" class="mt-size-8">
-      {{ $t('general.objective') }}
-    </pkt-tag>
-
-    <div class="objective-pane__title">
-      <h2 class="pkt-txt-18-medium">{{ activeObjective.name }}</h2>
-      <pkt-button
-        v-if="hasEditRights"
-        v-tooltip="$t('btn.updateObjective')"
-        skin="tertiary"
-        variant="icon-only"
-        size="small"
-        icon-name="edit"
-        @onClick="$emit('edit-objective')"
-      />
-    </div>
-
-    <HTML-output
-      v-if="activeObjective.description"
-      class="objective-pane__description"
-      :html="activeObjective.description"
-    />
-
-    <div class="objective-pane__members">
-      <div>
-        <h4 class="pkt-txt-14-medium">{{ $t('objective.owner') }}</h4>
-        <pkt-tag text-style="normal-text" skin="yellow" size="small">
-          {{ activeObjective.parent.name }}
+    <div class="objective-pane__details">
+      <div class="objective-pane__header">
+        <pkt-tag text-style="normal-text" skin="blue">
+          {{ $t('general.objective') }}
         </pkt-tag>
+
+        <pkt-button
+          v-if="hasEditRights"
+          v-tooltip="$t('btn.updateObjective')"
+          skin="tertiary"
+          variant="icon-only"
+          size="small"
+          icon-name="edit"
+          @onClick="$emit('edit-objective')"
+        />
       </div>
 
-      <div class="objective-pane__contributors">
-        <h4 class="pkt-txt-14-medium">{{ $t('objective.contributors') }}</h4>
-        <ul>
-          <li v-for="c in contributors" :key="c.id" class="objective-pane__contributor">
-            <span class="pkt-txt-14">{{ c.name }}</span>
-            <span
-              class="objective-pane__contributor-tag"
-              :class="[
-                'objective-link-card__tag',
-                'pkt-txt-12-bold',
-                `objective-link-card__tag--${contributorTagMode(c.name)}`,
-              ]"
-              :style="{ background: contributorTagColor(c.name) }"
-            ></span>
-          </li>
-        </ul>
+      <h2 class="pkt-txt-18-medium">{{ activeObjective.name }}</h2>
+
+      <HTML-output
+        v-if="activeObjective.description"
+        class="objective-pane__description"
+        :html="activeObjective.description"
+      />
+
+      <div class="objective-pane__members">
+        <div>
+          <h4 class="pkt-txt-14-medium">{{ $t('objective.owner') }}</h4>
+          <pkt-tag text-style="normal-text" skin="yellow" size="small">
+            {{ activeObjective.parent.name }}
+          </pkt-tag>
+        </div>
+
+        <div class="objective-pane__contributors">
+          <h4 class="pkt-txt-14-medium">{{ $t('objective.contributors') }}</h4>
+          <ul>
+            <li v-for="c in contributors" :key="c.id" class="objective-pane__contributor">
+              <span class="pkt-txt-14">{{ c.name }}</span>
+              <span
+                class="objective-pane__contributor-tag"
+                :class="[
+                  'objective-link-card__tag',
+                  'pkt-txt-12-bold',
+                  `objective-link-card__tag--${contributorTagMode(c.name)}`,
+                ]"
+                :style="{ background: contributorTagColor(c.name) }"
+              ></span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
 
-    <progress-bar
-      class="objective-pane__progression"
-      :title="$t('objective.progressionTitle')"
-      :progression="activeObjective.progression"
-    />
+      <progress-bar
+        class="objective-pane__progression"
+        :title="$t('objective.progressionTitle')"
+        :progression="activeObjective.progression"
+      />
 
-    <div v-if="period" class="mt-size-16">
-      <div class="pkt-txt-14-medium">{{ $t('objective.period') }}</div>
-      <div class="pkt-txt-14">{{ periodDates(period) }}</div>
+      <div v-if="period" class="mt-size-16">
+        <div class="pkt-txt-14-medium">{{ $t('objective.period') }}</div>
+        <div class="pkt-txt-14">{{ periodDates(period) }}</div>
+      </div>
     </div>
 
     <div class="objective-pane__key-results">
@@ -273,15 +276,28 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .objective-pane {
-  background-color: var(--color-gray-light);
+  background-color: #f5f5f8;
 
-  &__title {
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--color-white);
+    border-left: 0.25rem solid var(--color-blue-light);
+
+    @include bp('laptop-up') {
+      margin-top: 2rem;
+    }
+  }
+
+  &__header {
     display: flex;
     justify-content: space-between;
     text-wrap: balance;
 
     .pkt-btn {
-      margin: -0.75rem 0 0 1rem;
+      margin: -0.5rem -0.5rem 0 0;
     }
   }
 
@@ -322,10 +338,6 @@ export default {
   &__key-results {
     margin-top: 3rem;
 
-    @include bp('tablet-up') {
-      padding-right: 1.5rem;
-    }
-
     &-header {
       display: flex;
       align-items: center;
@@ -337,7 +349,7 @@ export default {
       position: relative;
 
       @include bp('tablet-up') {
-        margin-left: 3rem;
+        margin: 0 3rem;
       }
 
       & .key-result-link-card {
@@ -383,6 +395,10 @@ export default {
       }
     }
   }
+}
+
+.empty {
+  background-color: transparent;
 }
 
 ::v-deep .pkt-breadcrumbs--mobile {

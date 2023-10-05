@@ -579,7 +579,7 @@ export default {
   flex-direction: column;
   height: 100%;
   overflow: auto;
-  background-color: var(--color-gray);
+  background-color: var(--color-gray-light);
 
   &__inner {
     position: relative;
