@@ -1,5 +1,9 @@
 <template>
-  <router-link v-slot="{ href, navigate, isExactActive }" :to="route" custom>
+  <router-link
+    v-slot="{ href, navigate, isExactActive }"
+    :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
+    custom
+  >
     <a
       :class="[
         'objective-link-card',
@@ -21,12 +25,13 @@
             @click.stop="$emit('toggle', $event.target.checked)"
           />
           <pkt-tag
+            v-if="objectiveOwner"
             text-style="normal-text"
             skin="yellow"
             size="small"
             class="objective-link-card__owner"
           >
-            {{ activeItem.name }}
+            {{ objectiveOwner.name }}
           </pkt-tag>
 
           <ul class="objective-link-card__tags">
@@ -47,17 +52,17 @@
         </div>
 
         <span class="objective-link-card__title pkt-txt-14">
-          {{ title }}
+          {{ objective.name }}
         </span>
 
-        <progress-bar :progression="progression" />
+        <progress-bar :progression="objective.progression" />
       </div>
     </a>
   </router-link>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import getActiveItemType from '@/util/getActiveItemType';
 import { PktTag } from '@oslokommune/punkt-vue2';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { contributorTagColor, contributorTagMode } from '@/util/okr';
@@ -73,16 +78,8 @@ export default {
   },
 
   props: {
-    route: {
+    objective: {
       type: Object,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    progression: {
-      type: Number,
       required: true,
     },
     active: {
@@ -101,20 +98,14 @@ export default {
       type: Function,
       default: null,
     },
-    objectiveId: {
-      type: String,
-      required: false,
-      default: null,
-    },
   },
 
   data: () => ({
     keyResults: [],
+    objectiveOwner: null,
   }),
 
   computed: {
-    ...mapState(['activeItem']),
-
     /**
      * Return a list of unique contributors to the key results in
      * `this.keyResults`.
@@ -128,15 +119,26 @@ export default {
   },
 
   async created() {
-    if (this.objectiveId !== null) {
-      const objectiveRef = await db.doc(`objectives/${this.objectiveId}`);
-      const keyResults = await db
-        .collection('keyResults')
-        .where('archived', '==', false)
-        .where('objective', '==', objectiveRef)
-        .orderBy('name');
+    if (this.objective === null) {
+      return;
+    }
 
-      this.$bind('keyResults', keyResults);
+    const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
+    const keyResults = await db
+      .collection('keyResults')
+      .where('archived', '==', false)
+      .where('objective', '==', objectiveRef)
+      .orderBy('name');
+    this.$bind('keyResults', keyResults);
+
+    if (typeof this.objective.parent === 'string') {
+      this.$bind('objectiveOwner', db.doc(this.objective.parent));
+    } else {
+      const parentType = getActiveItemType(this.objective.parent);
+      this.$bind(
+        'objectiveOwner',
+        db.collection(`${parentType}s`).doc(this.objective.parent.id)
+      );
     }
   },
 

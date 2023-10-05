@@ -39,9 +39,7 @@
       <div class="objective-pane__members">
         <div>
           <h4 class="pkt-txt-14-medium">{{ $t('objective.owner') }}</h4>
-          <pkt-tag text-style="normal-text" skin="yellow" size="small">
-            {{ activeObjective.parent.name }}
-          </pkt-tag>
+          <span class="pkt-txt-14">{{ activeObjective.parent.name }}</span>
         </div>
 
         <div class="objective-pane__contributors">

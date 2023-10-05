@@ -64,14 +64,8 @@
           <objective-link-card
             v-for="o in group.objectives"
             :key="o.objective.id"
-            :route="{
-              name: 'ObjectiveHome',
-              params: { objectiveId: o.objective.id },
-            }"
-            :title="o.objective.name"
-            :objective-id="o.objective.id"
+            :objective="o.objective"
             :tabindex="o.tabindex"
-            :progression="o.objective.progression"
             :style="objectiveStyle(o)"
             :checkable="workbenchObjectives.length > 0"
             :checked="workbenchObjectives.map((o) => o.id).includes(o.objective.id)"
