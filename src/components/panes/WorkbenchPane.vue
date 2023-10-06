@@ -15,10 +15,7 @@
     <div class="workbench-pane__objectives">
       <div v-for="objective in workbenchObjectives" :key="objective.id" class="">
         <objective-link-card
-          :route="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
-          :title="objective.name"
-          :objective-id="objective.id"
-          :progression="objective.progression"
+          :objective="objective"
           :active="activeObjective && objective.id === activeObjective.id"
         />
 
