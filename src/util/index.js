@@ -1,6 +1,7 @@
 export { dateLong } from './format';
 export { dateLongCompact } from './format';
 export { dateShort } from './format';
+export { dateExtraShort } from './format';
 export { dateTimeShort } from './format';
 export { dateTimeLong } from './format';
 export { periodDates } from './format';

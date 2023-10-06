@@ -347,7 +347,7 @@ export default {
       position: relative;
 
       @include bp('tablet-up') {
-        margin: 0 3rem;
+        margin: 0 1.5rem 0 2rem;
       }
 
       & .key-result-link-card {
@@ -358,15 +358,15 @@ export default {
           &::before,
           &::after {
             position: absolute;
-            left: -2.125rem;
-            width: 2rem;
+            left: -2rem;
+            width: 1.875rem;
             border-left: 2px solid var(--color-grayscale-10);
           }
 
           &::before {
             position: absolute;
             top: 0;
-            left: -2.125rem;
+            left: -2rem;
             height: 50%;
             border-bottom: 2px solid var(--color-grayscale-10);
             content: '';
