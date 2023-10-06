@@ -77,6 +77,17 @@
               class="pkt-cell pkt-cell--span6"
             />
           </div>
+
+          <form-component
+            v-model.number="thisKeyResult.weight"
+            input-type="input"
+            name="weight"
+            :label="$t('keyResult.weight.label')"
+            rules="required|decimal|positiveNotZero"
+            type="number"
+          >
+            <template #help><span v-html="$t('keyResult.weight.help')" /></template>
+          </form-component>
         </template>
 
         <template v-if="!keyResult?.archived" #actions="{ handleSubmit, submitDisabled }">
@@ -119,7 +130,7 @@
           <pkt-button
             skin="secondary"
             @onClick="
-              thisKeyResult = {};
+              thisKeyResult = { ...keyResultDefaults };
               reset();
             "
           >
@@ -191,6 +202,9 @@ export default {
 
   data: () => ({
     thisKeyResult: null,
+    keyResultDefaults: {
+      weight: 1,
+    },
     pageCount: 2,
     loading: false,
   }),
@@ -249,7 +263,10 @@ export default {
           this.thisKeyResult = null;
           return;
         }
-        this.thisKeyResult = this.keyResult ? { ...this.keyResult } : {};
+
+        this.thisKeyResult = this.keyResult
+          ? { ...this.keyResultDefaults, ...this.keyResult }
+          : { ...this.keyResultDefaults };
       },
     },
     // thisLevel: {

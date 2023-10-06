@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file. The format 
   attempted form submissions.
 - Administration of measurements has been moved to drawers and follows the same
   pattern as when editing OKRs and other items.
+- It is now again possible to adjust the weight of each key result used in the
+  calculation of overall progression of an objective.
 
 ### Removed
 
