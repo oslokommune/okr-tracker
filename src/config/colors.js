@@ -8,10 +8,6 @@ const CONTRIBUTOR_TAG_COLORS = [
     mode: 'light',
   },
   {
-    name: 'color-blue',
-    mode: 'light',
-  },
-  {
     name: 'color-blue-40',
     mode: 'dark',
   },
@@ -21,6 +17,10 @@ const CONTRIBUTOR_TAG_COLORS = [
   },
   {
     name: 'color-blue-dark-15',
+    mode: 'dark',
+  },
+  {
+    name: 'color-blue-dark-40',
     mode: 'dark',
   },
   {
