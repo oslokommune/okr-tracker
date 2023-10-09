@@ -40,6 +40,8 @@ All notable changes to this project will be documented in this file. The format 
   objectives in a list (and see combined progression), the meta key must now be
   pressed while selecting one or more objectives.
 - Key results can now be rearranged by drag and drop.
+- It is now again possible to adjust the weight of each key result used in the
+  calculation of overall progression of an objective.
 
 ### Removed
 
