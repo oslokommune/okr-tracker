@@ -41,6 +41,10 @@ All notable changes to this project will be documented in this file. The format 
 - The admin panel tab has been completely removed from the item tab bar (all
   functionality moved to drawers).
 
+### Security
+
+- Fixed an XSS issue with the rendering of tooltips.
+
 ## [3.9.0] 2023-09-01
 
 ### Added
