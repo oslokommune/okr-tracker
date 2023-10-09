@@ -96,7 +96,7 @@
         v-else-if="hasEditRights && keyResults.length"
         v-model="orderedKeyResults"
         class="objective-pane__key-results-list"
-        animation="200"
+        animation="300"
       >
         <transition-group>
           <key-result-link-card
@@ -377,6 +377,17 @@ export default {
             height: calc(50% + 1.5rem);
             content: '';
           }
+        }
+      }
+
+      ::v-deep & .sortable-ghost {
+        background: var(--color-grayscale-10);
+        border-color: var(--color-grayscale-10);
+
+        & .key-result-link-card__inner * {
+          color: var(--color-grayscale-10);
+          background: var(--color-grayscale-10) !important;
+          border-color: var(--color-grayscale-10);
         }
       }
     }
