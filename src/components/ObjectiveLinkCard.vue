@@ -178,10 +178,11 @@ export default {
     padding: 1rem;
   }
 
-  &__header {
+  &__heading {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    justify-content: space-between;
     white-space: nowrap;
   }
 
@@ -197,12 +198,6 @@ export default {
   &--active {
     background-color: var(--color-blue-5);
   }
-}
-
-.objective-link-card__heading {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: space-between;
 }
 
 .objective-link-card__tags {

@@ -57,7 +57,7 @@
           size="small"
           variant="icon-left"
           icon-name="plus-sign"
-          @onClick="showValueModal = true"
+          @onClick="openValueModal(null)"
         />
       </div>
 
@@ -66,12 +66,12 @@
         {{ $t('general.loading') }}
       </div>
 
-      <widget-progress-history
+      <key-result-values-list
         v-else-if="progress.length"
         :progress="progress"
-        :is-loading="isLoading"
-        @update-record="updateHistoryRecord"
-        @delete-record="deleteHistoryRecord"
+        class="key-result-pane__table"
+        @edit-value="openValueModal"
+        @delete-value="(record) => deleteHistoryRecord(record.id)"
       />
 
       <empty-state
@@ -107,7 +107,10 @@
 
     <progress-modal
       v-if="showValueModal"
+      :record="chosenProgressValue"
       @create-record="createHistoryRecord"
+      @update-record="updateHistoryRecord"
+      @delete-record="deleteHistoryRecord"
       @close="showValueModal = false"
     />
   </pane-wrapper>
@@ -126,9 +129,9 @@ import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { PktAlert, PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
-import WidgetProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetProgressHistory.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
+import KeyResultValuesList from '@/components/KeyResultValuesList.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import ProgressModal from '@/components/modals/ProgressModal.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
@@ -145,9 +148,9 @@ export default {
     PktTag,
     PaneWrapper,
     Widget: WidgetWrapper,
-    WidgetProgressHistory,
     // WidgetKeyResultNotes,
     WidgetKeyResultDetails,
+    KeyResultValuesList,
     HTMLOutput,
     ProgressModal,
     ProgressBar,
@@ -161,6 +164,7 @@ export default {
     isLoading: false,
     showKeyResultDrawer: false,
     showValueModal: false,
+    chosenProgressValue: null,
   }),
 
   computed: {
@@ -282,12 +286,14 @@ export default {
       }
     },
 
-    async deleteHistoryRecord(id) {
+    async deleteHistoryRecord(id, modalCloseHandler) {
       try {
         await Progress.remove(db.collection('keyResults'), this.activeKeyResult.id, id);
         this.$toasted.show(this.$t('toaster.delete.progress'));
       } catch {
         this.$toasted.error(this.$t('toaster.error.deleteProgress'));
+      } finally {
+        modalCloseHandler();
       }
     },
 
@@ -310,6 +316,11 @@ export default {
           this.$t('toaster.error.restore', { document: this.activeKeyResult.id })
         );
       }
+    },
+
+    openValueModal(record) {
+      this.showValueModal = true;
+      this.chosenProgressValue = record;
     },
 
     randomCompletedMessage() {
@@ -364,12 +375,10 @@ export default {
       justify-content: space-between;
       margin-bottom: 1rem;
     }
+  }
 
-    ::v-deep .widget__header {
-      // Temporarily hide the history widget header. The table is
-      // to be replaced
-      display: none;
-    }
+  &__table {
+    margin-top: 1rem;
   }
 
   &__graph {
