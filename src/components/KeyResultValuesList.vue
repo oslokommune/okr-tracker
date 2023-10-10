@@ -6,7 +6,7 @@
           <th>{{ $t('widget.history.value') }}</th>
           <th>{{ $t('widget.history.date') }}</th>
           <th>{{ $t('widget.history.comment') }}</th>
-          <th></th>
+          <th>{{ $t('widget.history.changedBy') }}</th>
           <th></th>
         </tr>
       </thead>
