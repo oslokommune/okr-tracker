@@ -132,6 +132,7 @@ export default {
 
     &:nth-child(3) {
       width: 100%;
+      white-space: pre-line;
     }
 
     &:nth-child(4) {
