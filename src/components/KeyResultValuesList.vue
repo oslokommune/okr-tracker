@@ -6,6 +6,7 @@
           <th>{{ $t('widget.history.value') }}</th>
           <th>{{ $t('widget.history.date') }}</th>
           <th>{{ $t('widget.history.comment') }}</th>
+          <th>{{ $t('widget.history.changedBy') }}</th>
           <th></th>
         </tr>
       </thead>
@@ -15,56 +16,30 @@
             {{ formatValue(record.value) }}
           </td>
           <td>
-            {{ dateExtraShort(record.timestamp.toDate()) }}
+            <span v-tooltip="addedBy(record)">
+              {{ dateExtraShort(record.timestamp.toDate()) }}
+            </span>
           </td>
           <td>
-            <div>
-              <p v-if="record.comment">{{ record.comment }}</p>
-              <div>
-                <user-link
-                  v-if="record.editedBy || record.createdBy"
-                  :user="record.editedBy || record.createdBy"
-                  @open-user-modal="openProfileModal"
-                />
-                <pkt-button
-                  v-if="hasEditRights"
-                  v-tooltip="$t('tooltip.editProgress')"
-                  size="small"
-                  skin="tertiary"
-                  variant="icon-only"
-                  icon-name="edit"
-                  @onClick="$emit('edit-value', record)"
-                />
-              </div>
-            </div>
+            <p v-if="record.comment">{{ record.comment }}</p>
           </td>
           <td>
-            <div>
-              <user-link
-                v-if="record.editedBy || record.createdBy"
-                :user="record.editedBy || record.createdBy"
-                @open-user-modal="openProfileModal"
-              />
-              <pkt-button
-                v-if="hasEditRights"
-                v-tooltip="$t('tooltip.editProgress')"
-                size="small"
-                skin="tertiary"
-                variant="icon-only"
-                icon-name="edit"
-                @onClick="$emit('edit-value', record)"
-              />
-            </div>
+            <span v-if="addedBy(record)">{{ addedBy(record) }}</span>
+          </td>
+          <td>
+            <pkt-button
+              v-if="hasEditRights"
+              v-tooltip="$t('tooltip.editProgress')"
+              size="small"
+              skin="tertiary"
+              variant="icon-only"
+              icon-name="edit"
+              @onClick="$emit('edit-value', record)"
+            />
           </td>
         </tr>
       </tbody>
     </table>
-
-    <profile-modal
-      v-if="showProfileModal"
-      :id="chosenProfileId"
-      @close="closeProfileModal"
-    />
   </div>
 </template>
 
@@ -73,16 +48,12 @@ import { mapGetters } from 'vuex';
 import { dateExtraShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
 import { PktButton } from '@oslokommune/punkt-vue2';
-import ProfileModal from '@/components/modals/ProfileModal.vue';
-import UserLink from '@/components/widgets/WidgetProgressHistory/UserLink.vue';
 
 export default {
   name: 'KeyResultValuesList',
 
   components: {
     PktButton,
-    ProfileModal,
-    UserLink,
   },
 
   props: {
@@ -92,11 +63,6 @@ export default {
     },
   },
 
-  data: () => ({
-    showProfileModal: false,
-    chosenProfileId: null,
-  }),
-
   computed: {
     ...mapGetters(['hasEditRights']),
   },
@@ -105,14 +71,9 @@ export default {
     formatValue,
     dateExtraShort,
 
-    openProfileModal(profileId) {
-      this.showProfileModal = true;
-      this.chosenProfileId = profileId;
-    },
-
-    closeProfileModal() {
-      this.showProfileModal = false;
-      this.chosenProfileId = null;
+    addedBy(record) {
+      const user = record.editedBy || record.createdBy;
+      return user ? user.displayName || user.id : null;
     },
   },
 };
@@ -134,7 +95,7 @@ export default {
   border-spacing: 0 0.5rem;
 
   th {
-    padding: 0 2rem;
+    padding: 0 1rem;
     text-align: left;
     @include get-text('pkt-txt-14-medium');
 
@@ -149,13 +110,15 @@ export default {
   }
 
   td {
-    padding: 1rem 2rem;
+    padding: 1rem;
     text-align: left;
+    text-wrap: balance;
     background-color: var(--color-white);
     @include get-text('pkt-txt-14');
 
     &:nth-child(1) {
       @include get-text('pkt-txt-16-bold');
+      padding: 1rem 2rem;
       color: var(--color-yellow-100);
       text-align: center;
       text-wrap: nowrap;
@@ -163,50 +126,22 @@ export default {
     }
 
     &:nth-child(2) {
-      padding-right: 1rem;
+      padding-left: 2rem;
       text-align: center;
     }
 
     &:nth-child(3) {
-      padding-left: 1rem;
-
-      > div {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-
-        > p {
-          @include get-text('pkt-txt-14-light');
-        }
-
-        > div {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-
-          .pkt-btn {
-            margin-left: auto;
-          }
-
-          @include bp('desktop-up') {
-            display: none;
-          }
-        }
-      }
+      width: 100%;
+      white-space: pre-line;
     }
 
     &:nth-child(4) {
       @include table-cell-desktop-up;
+      min-width: 10rem;
+    }
 
-      > div {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-
-        .pkt-btn {
-          margin-left: auto;
-        }
-      }
+    &:nth-child(5) {
+      padding-left: 0;
     }
   }
 }
