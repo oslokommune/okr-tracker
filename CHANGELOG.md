@@ -4,32 +4,22 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
-### Fixed
-
-- Fixed create/edit/delete rights for organization admins.
-- Organization, department and product filter in admin panel should no longer
-  disappear when search result count reaches certain threshold.
-- Improved WCAG compliance with respect to text color contrast.
-- Fixed a problem that would sometimes cause an "infinite spinner" when a new
-  version of the app was deployed.
-- Fixed cropping of dropdown menus when creating new
-  organizations/departments/products.
-- Unauthorized users can no longer attempt to drag and drop reorder
-  measurements.
+## [3.10.0] 2023-10-10
 
 ### Changed
 
 - Organization, department and product details are now edited from within the
   current item's about page.
-- Made links clickable in the description of objects, key results and goals.
+- Made links clickable in the description of objectives, key results and
+  measurements.
 - It is no longer possible to close open modals or drawers by clicking outside
   them. This is meant to prevent accidental data loss in unsaved forms. Drawers
   can however still be closed by outside click after form submission.
-- Items in the admin panel now links directly to each respective item about page
+- Items in the admin panel now link directly to each respective item about page
   with the edit drawer opened.
 - The currently active item tab is now kept when navigating between
   organizational items.
-- Validation in forms are now less "eager" and errors are only displayed after
+- Validation in forms is now less "eager" and errors are only displayed after
   attempted form submissions.
 - Administration of measurements has been moved to drawers and follows the same
   pattern as when editing OKRs and other items.
@@ -41,9 +31,23 @@ All notable changes to this project will be documented in this file. The format 
 - The admin panel tab has been completely removed from the item tab bar (all
   functionality moved to drawers).
 
+### Fixed
+
+- Fixed create/edit/delete rights for organization admins.
+- Organization, department and product filters in the admin panel should no
+  longer disappear when the search result count reaches a certain threshold.
+- Improved WCAG compliance with respect to text color contrast.
+- Fixed a problem that would sometimes cause an "infinite spinner" when a new
+  version of the app was deployed.
+- Fixed cropping of dropdown menus when creating new
+  organizations/departments/products.
+- Unauthorized users can no longer attempt to drag and drop reorder
+  measurements.
+
 ### Security
 
 - Fixed an XSS issue with the rendering of tooltips.
+- Updated dependencies.
 
 ## [3.9.0] 2023-09-01
 
