@@ -31,7 +31,9 @@ Vue.use(Toasted, {
   className: 'toast',
   duration: 3500,
 });
-Vue.use(VTooltip);
+Vue.use(VTooltip, {
+  defaultHtml: false,
+});
 Vue.use(VueMeta);
 Vue.use(firestorePlugin);
 Vue.use(VueFlatPickr);
