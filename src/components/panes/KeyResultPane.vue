@@ -38,9 +38,11 @@
         :html="activeKeyResult.description"
       />
 
+      <h4 class="pkt-txt-14-medium">{{ $t('keyResult.progression') }}:</h4>
+
+      <svg ref="graph" class="key-result-pane__graph"></svg>
+
       <progress-bar
-        class="key-result-pane__progression"
-        :title="`${$t('keyResult.progression')}:`"
         :progression="progression"
         :right-label="progressionRightLabel"
         skin="yellow"
@@ -83,10 +85,6 @@
       />
     </div>
 
-    <widget class="key-result-pane__graph" :title="$t('general.graph')">
-      <svg ref="graph" class="graph"></svg>
-    </widget>
-
     <pkt-alert v-if="activeKeyResult.auto" skin="info">
       {{ $t('keyResult.autoHelpText') }}
     </pkt-alert>
@@ -128,7 +126,6 @@ import { getRandomInt } from '@/util';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { PktAlert, PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
 import KeyResultValuesList from '@/components/KeyResultValuesList.vue';
@@ -147,7 +144,6 @@ export default {
     PktBreadcrumbs,
     PktTag,
     PaneWrapper,
-    Widget: WidgetWrapper,
     // WidgetKeyResultNotes,
     WidgetKeyResultDetails,
     KeyResultValuesList,
@@ -254,7 +250,7 @@ export default {
     renderGraph() {
       if (!this.graph) {
         this.graph = new LineChart(this.$refs.graph, {
-          height: 450,
+          height: 350,
           tooltips: true,
         });
       }
@@ -362,10 +358,6 @@ export default {
     }
   }
 
-  &__progression {
-    margin-top: 1rem;
-  }
-
   &__values {
     margin-top: 3rem;
 
@@ -382,13 +374,9 @@ export default {
   }
 
   &__graph {
-    margin-top: 3rem;
-
-    ::v-deep .widget__header {
-      h3 {
-        @include get-text('pkt-txt-16-medium');
-      }
-    }
+    --graph-value-line: var(--color-yellow);
+    --graph-symbol-fill: var(--color-yellow);
+    --graph-symbol-color: var(--color-yellow-100);
   }
 
   &__widgets {

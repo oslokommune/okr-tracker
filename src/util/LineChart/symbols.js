@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export function addCommentSymbol(el) {
-  const fill = 'var(--color-secondary-light)';
-  const color = 'var(--primary-color)';
+  const fill = 'var(--graph-symbol-fill, var(--color-blue-light))';
+  const color = 'var(--graph-symbol-color, var(--color-blue-dark))';
 
   const pattern = el
     .append('pattern')
