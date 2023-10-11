@@ -204,6 +204,8 @@ export default {
     thisKeyResult: null,
     keyResultDefaults: {
       weight: 1,
+      startValue: 0,
+      targetValue: 100,
     },
     pageCount: 2,
     loading: false,
@@ -263,6 +265,8 @@ export default {
           this.thisKeyResult = null;
           return;
         }
+
+        this.keyResultDefaults.unit = this.$t('keyResult.defaultUnit');
 
         this.thisKeyResult = this.keyResult
           ? { ...this.keyResultDefaults, ...this.keyResult }

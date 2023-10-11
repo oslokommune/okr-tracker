@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- New key results are now given a start value of 0, a target value of 100, and
+  percentage as unit of measurement by default.
+
 ## [3.10.0] 2023-10-10
 
 ### Changed
