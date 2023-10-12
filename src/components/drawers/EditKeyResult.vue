@@ -41,7 +41,6 @@
             name="owner"
             input-type="select"
             :select-options="ownerOptions"
-            :select-reduce="(option) => option.value"
             :label="$t('fields.owner')"
             rules="required"
           />
@@ -199,8 +198,6 @@ export default {
     pageCount: 2,
     loading: false,
     contributor: null,
-    contributors: [],
-    keyResultOwners: [],
   }),
 
   computed: {
@@ -214,11 +211,11 @@ export default {
     thisLevel() {
       if (isOrganization(this.activeItem)) {
         return this.organizations.find((o) => o.id === this.activeItem.id);
-      }
-      if (isDepartment(this.activeItem)) {
+      } else if (isDepartment(this.activeItem)) {
         return this.departments.find((d) => d.id === this.activeItem.id);
+      } else {
+        return this.products.find((p) => p.id === this.activeItem.id);
       }
-      return {};
     },
     children() {
       if (isOrganization(this.activeItem)) {
@@ -231,16 +228,7 @@ export default {
           (product) => product.department.id === this.activeItem.id
         );
       }
-      return {};
-    },
-    childCollection() {
-      if (isOrganization(this.activeItem)) {
-        return 'departments';
-      }
-      if (isDepartment(this.activeItem)) {
-        return 'products';
-      }
-      return null;
+      return [];
     },
     thisLevelOption() {
       return {
@@ -290,15 +278,15 @@ export default {
         this.getKeyResultOwners();
       },
     },
-    // thisLevel: {
-    //   immediate: true,
-    //   async handler() {
-    //     // Set currentLevel as default option for key result owner
-    //     if (!this.keyResult.id) {
-    //       this.thisKeyResult.parent = this.thisLevelOption;
-    //     }
-    //   },
-    // },
+     thisLevel: {
+       immediate: true,
+       async handler() {
+         // Set currentLevel as default option for key result owner
+         if (!this.keyResult?.id) {
+           this.contributor = this.thisLevelOption;
+         }
+       },
+     },
   },
 
   methods: {
@@ -316,8 +304,7 @@ export default {
           const { name, description, unit, weight, startValue, targetValue } =
             this.thisKeyResult;
 
-          const parent = db.doc(this.contributor);
-          console.log("PARENT. ", parent);
+          const parent = db.doc(this.contributor.value);
 
           const data = {
             name,
@@ -338,27 +325,8 @@ export default {
               ...data,
               objective: objectiveRef,
             });
-
-            await db.collection('keyResults')
-              .doc(id)
-              .get()
-              .then((snapshot) => {
-                this.thisKeyResult = snapshot.data();
-                this.thisKeyResult.objective = objectiveRef;
-                console.log("snapshot.parent", snapshot);
-                //this.thisKeyResult.parent = snapshot.parent;
-                this.thisKeyResult.id = id;
-                this.contributor = this.ownerOptions.find(o => o.name === this.keyResult.parent.name);
-                this.loading = false;
-              });
-            console.log("kr parent", this.thisKeyResult)
-            //parentRef = await activePeriodRef.get().then((snapshot) => snapshot.data().parent);
-
-            // TODO: Map this shit
-            // this.thisKeyResult.id = id;
-            //this.thisKeyResult.objective = objectiveRef;
-            //this.thisKeyResult.parent = data.parent;
-            //this.keyResultOwners.push(this.thisKeyResult); // TODO: ????
+            this.thisKeyResult.id = id;
+            this.thisKeyResult.objective = objectiveRef;
             this.$emit('create', this.thisKeyResult);
           }
           await this.syncObjectiveContributor();
@@ -403,12 +371,23 @@ export default {
 
     async getObjectiveContributors() {
       const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
-      const objectiveContributorsRefs = db
+      const objectiveContributors = await db
         .collection('objectiveContributors')
         .where('objective', '==', objectiveRef)
-        .where('archived', '==', false);
+        .where('archived', '==', false)
+        .get()
+        .then((snapshot) => snapshot.docs)
+        .then((docs) => docs.map((d) => d.data()));
 
-      this.$bind('contributors', objectiveContributorsRefs);
+      const contributors = await Promise.all(
+        objectiveContributors.map(async (con) => {
+          return {
+            ref: await con.item.get(),
+            name: await con.item.get().then((snapshot) => snapshot.data().name),
+          }
+        })
+      );
+      return contributors;
     },
 
     async getKeyResultOwners() {
@@ -421,31 +400,42 @@ export default {
         .then((snapshot) => snapshot.docs)
         .then((docs) => docs.map((d) => d.data()));
 
-      this.keyResultOwners = keyResults;
+      const keyResultNames = await Promise.all(
+        keyResults.map(async (owner) => {
+          return {
+            ref: await owner.parent.get(),
+            name: await owner.parent.get().then((snapshot) => snapshot.data().name),
+          }
+        })
+      );
+      return keyResultNames;
     },
 
     async syncObjectiveContributor() {
-      let contributors = [...this.contributors];
-      let keyResultOwners = [...this.keyResultOwners];
+      const keyResultOwners = await this.getKeyResultOwners();
+      const contributors = await this.getObjectiveContributors();
+
+      let contributorsCopy = [...contributors];
+      let keyResultOwnersCopy = [...keyResultOwners];
 
       // Filter out already present links
-      this.contributors.map(c => {
-        this.keyResultOwners.map(k => {
-          if (c.item.name === k.parent.name) {
-            contributors = contributors.filter((con) => con.item.name !== c.item.name);
-            keyResultOwners = keyResultOwners.filter((kr) => kr.parent.name !== k.parent.name);
+      contributors.map(async c => {
+        keyResultOwners.map(async k => {
+          if (c.name === k.name) {
+            contributorsCopy = contributorsCopy.filter((con) => con.name !== c.name);
+            keyResultOwnersCopy = keyResultOwnersCopy.filter((kr) => kr.name !== k.name);
           }
         });
       });
 
       // Add missing contributor
-      keyResultOwners.map(async (k) => {
-        this.createObjectiveContributor(await k.parent.get());
+      keyResultOwnersCopy.map(async (k) => {
+        this.createObjectiveContributor(await k.ref);
       });
 
       // Remove redundant contributors
-      contributors.map(c => {
-        this.removeObjectiveContributor(c.item);
+      contributorsCopy.map(async c => {
+        this.removeObjectiveContributor(await c.ref);
       });
     },
 
@@ -457,7 +447,7 @@ export default {
     },
 
     async removeObjectiveContributor(item) {
-      const itemType = getActiveItemType(item);
+      const itemType = getActiveItemType(item.data());
       const itemRef = db.doc(`${itemType}s/${item.id}`);
       const objectiveRef = db.doc(`objectives/${this.objective.id}`);
       return ObjectiveContributors.remove(itemRef, objectiveRef);
