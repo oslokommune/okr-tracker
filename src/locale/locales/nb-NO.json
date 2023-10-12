@@ -349,6 +349,7 @@
     "targetValue": "Målverdi",
     "progression": "Progresjon",
     "unit": "Måleenhet",
+    "defaultUnit": "prosent",
     "newValue": "Ny verdi",
     "editValue": "Endre verdi",
     "registeredValues": "Registrerte verdier",

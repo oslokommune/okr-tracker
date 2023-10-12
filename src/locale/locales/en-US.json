@@ -349,6 +349,7 @@
     "targetValue": "Target value",
     "progression": "Progression",
     "unit": "Unit of measurement",
+    "defaultUnit": "percent",
     "newValue": "New value",
     "editValue": "Edit value",
     "registeredValues": "Registered values",

@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file. The format 
   objectives in a list (and see combined progression), the meta key must now be
   pressed while selecting one or more objectives.
 - Key results can now be rearranged by drag and drop.
+- New key results are now given a start value of 0, a target value of 100, and
+  percentage as unit of measurement by default.
 
 ## [3.10.0] 2023-10-10
 
