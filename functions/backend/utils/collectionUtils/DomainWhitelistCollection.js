@@ -3,8 +3,8 @@ class DomainWhitelistCollection {
     this.collection = firestore.collection('domainWhitelist');
   }
 
-  getDocumentById(id) {
-    return this.collection.doc(id).get();
+  listDocuments() {
+    return this.collection.listDocuments();
   }
 }
 
