@@ -27,15 +27,13 @@ export const createAccessRequest = async (db, accessRequest) => {
     return { code: 400, message: 'toaster.request.noEmail' };
   }
 
-  const emailDomain = email.split('@')[1];
+  const emailDomain = email.split('@')[1].trim();
   const domainWhitelistCollection = new DomainWhitelistCollection(db);
   const usersCollection = new UsersCollection(db);
 
-  const domainWhitelistSnapshot = await domainWhitelistCollection.getDocumentById(
-    emailDomain
-  );
+  const whitelist = await domainWhitelistCollection.listDocuments();
 
-  if (domainWhitelistSnapshot.exists) {
+  if (whitelist.some((x) => x.id.trim() === emailDomain)) {
     try {
       await usersCollection.addDocument({ id: email, email });
 
