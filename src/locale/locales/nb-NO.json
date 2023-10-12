@@ -348,6 +348,7 @@
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
     "unit": "Måleenhet",
+    "defaultUnit": "prosent",
     "newValue": "Ny verdi",
     "editValue": "Endre verdi",
     "automation": {
