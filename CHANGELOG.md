@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Security
 
+- A Content Security Policy is now set.
 - Updated dependencies.
 
 ## [3.10.0] 2023-10-10
