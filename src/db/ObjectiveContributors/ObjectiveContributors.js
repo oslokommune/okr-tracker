@@ -20,7 +20,7 @@ const create = async (itemRef, objectiveRef) => {
     .then((snapshot) => snapshot.docs.map((doc) => doc.ref));
 
   if (contributors.length > 0) {
-    return;
+    return undefined;
   }
 
   const data = { item: itemRef, objective: objectiveRef };

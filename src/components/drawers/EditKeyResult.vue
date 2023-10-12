@@ -159,8 +159,10 @@ import { PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
-import { isDepartment, isOrganization } from '@/util/getActiveItemType';
-import getActiveItemType from '@/util/getActiveItemType';
+import getActiveItemType, {
+  isDepartment,
+  isOrganization,
+} from '@/util/getActiveItemType';
 
 export default {
   name: 'EditKeyResult',
@@ -211,11 +213,11 @@ export default {
     thisLevel() {
       if (isOrganization(this.activeItem)) {
         return this.organizations.find((o) => o.id === this.activeItem.id);
-      } else if (isDepartment(this.activeItem)) {
-        return this.departments.find((d) => d.id === this.activeItem.id);
-      } else {
-        return this.products.find((p) => p.id === this.activeItem.id);
       }
+      if (isDepartment(this.activeItem)) {
+        return this.departments.find((d) => d.id === this.activeItem.id);
+      }
+      return this.products.find((p) => p.id === this.activeItem.id);
     },
     children() {
       if (isOrganization(this.activeItem)) {
@@ -270,7 +272,9 @@ export default {
           .then((snapshot) => {
             this.thisKeyResult = snapshot.data();
             this.thisKeyResult.id = this.keyResult.id;
-            this.contributor = this.ownerOptions.find(o => o.name === this.keyResult.parent.name);
+            this.contributor = this.ownerOptions.find(
+              (o) => o.name === this.keyResult.parent.name
+            );
             this.loading = false;
           });
 
@@ -278,19 +282,20 @@ export default {
         this.getKeyResultOwners();
       },
     },
-     thisLevel: {
-       immediate: true,
-       async handler() {
-         // Set currentLevel as default option for key result owner
-         if (!this.keyResult?.id) {
-           this.contributor = this.thisLevelOption;
-         }
-       },
-     },
+    thisLevel: {
+      immediate: true,
+      async handler() {
+        // Set currentLevel as default option for key result owner
+        if (!this.keyResult?.id) {
+          this.contributor = this.thisLevelOption;
+        }
+      },
+    },
   },
 
   methods: {
-    isDepartment, isOrganization,
+    isDepartment,
+    isOrganization,
 
     async save() {
       const { pageIndex, next } = this.$refs.drawer;
@@ -313,7 +318,7 @@ export default {
             weight: weight || 1,
             startValue,
             targetValue,
-            parent
+            parent,
           };
 
           if (this.thisKeyResult?.id) {
@@ -384,7 +389,7 @@ export default {
           return {
             ref: await con.item.get(),
             name: await con.item.get().then((snapshot) => snapshot.data().name),
-          }
+          };
         })
       );
       return contributors;
@@ -405,7 +410,7 @@ export default {
           return {
             ref: await owner.parent.get(),
             name: await owner.parent.get().then((snapshot) => snapshot.data().name),
-          }
+          };
         })
       );
       return keyResultNames;
@@ -419,8 +424,8 @@ export default {
       let keyResultOwnersCopy = [...keyResultOwners];
 
       // Filter out already present links
-      contributors.map(async c => {
-        keyResultOwners.map(async k => {
+      contributors.map(async (c) => {
+        keyResultOwners.map(async (k) => {
           if (c.name === k.name) {
             contributorsCopy = contributorsCopy.filter((con) => con.name !== c.name);
             keyResultOwnersCopy = keyResultOwnersCopy.filter((kr) => kr.name !== k.name);
@@ -434,7 +439,7 @@ export default {
       });
 
       // Remove redundant contributors
-      contributorsCopy.map(async c => {
+      contributorsCopy.map(async (c) => {
         this.removeObjectiveContributor(await c.ref);
       });
     },
