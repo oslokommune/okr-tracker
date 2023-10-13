@@ -277,9 +277,6 @@ export default {
             );
             this.loading = false;
           });
-
-        this.getObjectiveContributors();
-        this.getKeyResultOwners();
       },
     },
     thisLevel: {
@@ -420,27 +417,36 @@ export default {
       const keyResultOwners = await this.getKeyResultOwners();
       const contributors = await this.getObjectiveContributors();
 
-      let contributorsCopy = [...contributors];
-      let keyResultOwnersCopy = [...keyResultOwners];
+      let redundantContributors = [...contributors];
+      let keyResWithNoContributor = [...keyResultOwners];
 
       // Filter out already present links
-      contributors.map(async (c) => {
-        keyResultOwners.map(async (k) => {
+      contributors.forEach((c) => {
+        keyResultOwners.forEach((k) => {
           if (c.name === k.name) {
-            contributorsCopy = contributorsCopy.filter((con) => con.name !== c.name);
-            keyResultOwnersCopy = keyResultOwnersCopy.filter((kr) => kr.name !== k.name);
+            redundantContributors = redundantContributors.filter(
+              (con) => con.name !== c.name
+            );
+            keyResWithNoContributor = keyResWithNoContributor.filter(
+              (kr) => kr.name !== k.name
+            );
           }
         });
       });
 
+      // We only need one contributor element per unique keyRes parent (here mapped by name)
+      const uniqueKeyResWithNoContributor = keyResWithNoContributor.filter(
+        (value, index, self) => index === self.findIndex((t) => t.name === value.name)
+      );
+
       // Add missing contributor
-      keyResultOwnersCopy.map(async (k) => {
-        this.createObjectiveContributor(await k.ref);
+      uniqueKeyResWithNoContributor.forEach((k) => {
+        this.createObjectiveContributor(k.ref);
       });
 
       // Remove redundant contributors
-      contributorsCopy.map(async (c) => {
-        this.removeObjectiveContributor(await c.ref);
+      redundantContributors.forEach((c) => {
+        this.removeObjectiveContributor(c.ref);
       });
     },
 

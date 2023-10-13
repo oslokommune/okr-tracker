@@ -188,7 +188,6 @@ service cloud.firestore {
     match /objectiveContributors/{document} {
       allow read: if isSignedIn();
       allow create: if isSuperAdmin() || isMemberOfObjectiveParentAfter(document, 'objectiveContributors');
-      allow update: if isSuperAdmin() || isMemberOfObjectiveParentAfter(document, 'objectiveContributors');
       allow delete: if isSuperAdmin() || isMemberOfObjectiveParentBefore(document, 'objectiveContributors');
     }
 

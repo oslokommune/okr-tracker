@@ -19,8 +19,9 @@ const create = async (itemRef, objectiveRef) => {
     .get()
     .then((snapshot) => snapshot.docs.map((doc) => doc.ref));
 
+  // Avoid creating duplicates
   if (contributors.length > 0) {
-    return undefined;
+    return contributors[0];
   }
 
   const data = { item: itemRef, objective: objectiveRef };
