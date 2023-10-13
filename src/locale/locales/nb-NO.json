@@ -442,7 +442,9 @@
       "updated": "Målet ble endret!",
       "change": "Rediger mål",
       "delete": "Slett mål",
-      "useLastPeriod": "Sett til sist brukte periode:"
+      "useLastPeriod": "Sett til sist brukte periode:",
+      "liftWarning1": "Målet vil med dette flyttes fra {curOwner} til {newOwner} og kan ikke flyttes tilbake.",
+      "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}."
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",

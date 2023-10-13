@@ -442,7 +442,9 @@
       "updated": "Objective was updated!",
       "change": "Edit objective",
       "delete": "Delete objective",
-      "useLastPeriod": "Set to last used period:"
+      "useLastPeriod": "Set to last used period:",
+      "liftWarning1": "With this the objective will move from {curOwner} to {newOwner} and can't be moved back.",
+      "liftWarning2": "You will no longer be able to edit the objective since you aren't a member of {newOwner}."
     },
     "keyResult": {
       "new": "New key result",

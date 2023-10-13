@@ -52,6 +52,32 @@
           @click="useSuggestedPeriod"
         />
 
+        <form-component
+          v-if="canLift"
+          v-model="owner"
+          name="owner"
+          input-type="select"
+          :select-options="ownerOptions"
+          :select-reduce="(option) => option.value"
+          select-label="label"
+          label="Målansvarlig"
+          rules="required"
+        />
+
+        <pkt-alert v-if="hasNewOwner" skin="warning">
+          <p>
+            {{
+              $t('admin.objective.liftWarning1', {
+                curOwner: objective.parent.name,
+                newOwner: parentName,
+              })
+            }}
+          </p>
+          <p v-if="!hasParentEditRights">
+            {{ $t('admin.objective.liftWarning2', { newOwner: parentName }) }}
+          </p>
+        </pkt-alert>
+
         <template
           v-if="!thisObjective?.archived"
           #actions="{ handleSubmit, submitDisabled }"
@@ -109,14 +135,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { isEqual } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { formattedPeriod } from '@/util/okr';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -128,6 +154,7 @@ export default {
   components: {
     ArchivedRestore,
     PeriodShortcut,
+    PktAlert,
     PktButton,
     PagedDrawerWrapper,
     FormSection,
@@ -168,10 +195,14 @@ export default {
     },
     periodRange: null,
     loading: false,
+    owner: null,
+    parentRef: null,
+    parentName: null,
   }),
 
   computed: {
     ...mapState(['activeItemRef']),
+    ...mapGetters(['hasParentEditRights']),
 
     editMode() {
       return !!this.thisObjective?.id;
@@ -184,6 +215,31 @@ export default {
         this.newestObjective?.endDate &&
         isEqual(this.periodRange[0], this.newestObjective.startDate.toDate()) &&
         isEqual(this.periodRange[1], this.newestObjective.endDate.toDate())
+      );
+    },
+
+    /**
+     * Return `true` if the user should be able to lift current objective.
+     */
+    canLift() {
+      return this.objective?.parent.department || this.objective?.parent.organization;
+    },
+
+    ownerOptions() {
+      return [
+        { label: this.objective.parent.name, value: this.thisObjective.parent.path },
+        { label: this.parentName, value: this.parentRef.path },
+      ];
+    },
+
+    /**
+     * Return `true` if a new owner has been chosen for the current objective.
+     */
+    hasNewOwner() {
+      return (
+        this.owner &&
+        this.objective &&
+        this.owner.split('/')[1] !== this.objective.parent.id
       );
     },
   },
@@ -212,8 +268,16 @@ export default {
             this.thisObjective = snapshot.data();
             this.thisObjective.id = this.objective.id;
             this.periodRange = this.getCurrentDateRange();
+            this.owner = this.thisObjective.parent.path;
             this.loading = false;
           });
+
+        if (this.canLift) {
+          this.parentRef = await db.doc(
+            this.objective.parent.department || this.objective.parent.organization
+          );
+          this.parentName = (await this.parentRef.get()).data().name;
+        }
       },
     },
   },
@@ -256,6 +320,9 @@ export default {
             }
           } else {
             data.period = period;
+          }
+          if (this.hasNewOwner) {
+            data.parent = this.parentRef;
           }
           await Objective.update(this.thisObjective.id, data);
           this.$emit('update', this.thisObjective);
@@ -322,5 +389,9 @@ export default {
 <style lang="scss" scoped>
 .period-suggestion {
   margin: -0.75rem 0 1rem 0;
+}
+
+.pkt-alert {
+  margin: 1.5rem 0;
 }
 </style>

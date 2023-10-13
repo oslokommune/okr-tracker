@@ -4,6 +4,7 @@ import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
 import { sortByLocale } from '@/store/actions/actionUtils';
 
+import { isDepartment, isProduct } from '@/util/getActiveItemType';
 import defaultPreferences from '@/db/User/defaultPreferences';
 import moduleActions from './actions';
 import okrsModule from './modules/okrs';
@@ -66,6 +67,42 @@ export const storeGetters = {
       return false;
     }
     return activeItem.team.map(({ id }) => id).includes(user.id);
+  },
+
+  /**
+   * Return `true` if the current user is an admin of the active item or a
+   * member of its parent item.
+   */
+  hasParentEditRights: (state) => {
+    const { user, activeItem } = state;
+
+    if (!user || !activeItem) {
+      return false;
+    }
+
+    const { organization } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? user.admin && user.admin.includes(organization.id)
+      : user.admin && user.admin.includes(activeItem.id);
+
+    if ((user && user.superAdmin) || isAdminOfOrganization) {
+      return true;
+    }
+
+    if (isProduct(activeItem) && activeItem.department.team) {
+      return activeItem.department.team
+        .map((userDoc) => userDoc.split('/')[1])
+        .includes(user.id);
+    }
+
+    if (isDepartment(activeItem) && activeItem.organization.team) {
+      return activeItem.organization.team
+        .map((userDoc) => userDoc.split('/')[1])
+        .includes(user.id);
+    }
+
+    return false;
   },
 
   sidebarGroups: (state) => {

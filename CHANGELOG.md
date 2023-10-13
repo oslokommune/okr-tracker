@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file. The format 
 - Key results can now be rearranged by drag and drop.
 - New key results are now given a start value of 0, a target value of 100, and
   percentage as unit of measurement by default.
+- Objectives can now be "lifted" from a product or department to the level above
+  (to a department or organization, respectively).
 
 ### Fixed
 
