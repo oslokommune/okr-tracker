@@ -135,8 +135,11 @@ export const storeGetters = {
     const externalObjectives = state.objectiveContributors
       .filter((oc) => {
         return (
-          // Filter out those that aren't external
-          typeof oc.objective !== 'string' && !objectiveIDs.includes(oc.objective.id)
+          typeof oc.objective !== 'string' &&
+          // Filter out archived objectives ...
+          !oc.objective.archived &&
+          // ... and those that aren't external.
+          !objectiveIDs.includes(oc.objective.id)
         );
       })
       .map((oc) => oc.objective);
