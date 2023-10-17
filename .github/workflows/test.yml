@@ -26,14 +26,21 @@ jobs:
             !~/cache/exclude
             **/node_modules
             ~/.cache
+            ~/root/.cache/firebase/emulators
           key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Use Node.js ${{matrix.node-version}}
-        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Use Java
+        uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3.13.0
+        with:
+          distribution: 'zulu'
+          java-version: '17.x'
 
       - name: npm install
         run: |
@@ -50,5 +57,6 @@ jobs:
       - name: npm test:unit
         run: |
           npm run test:unit
+          npm run test:unit:firestore
         env:
           CI: true
