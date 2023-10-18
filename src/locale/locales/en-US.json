@@ -347,7 +347,7 @@
     "description": "Description",
     "startValue": "Start value",
     "targetValue": "Target value",
-    "progression": "Progression",
+    "progression": "Key result progression:",
     "unit": "Unit of measurement",
     "defaultUnit": "percent",
     "newValue": "New value",
