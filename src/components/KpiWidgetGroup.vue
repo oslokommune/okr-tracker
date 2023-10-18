@@ -24,7 +24,7 @@
         </pkt-button>
       </template>
     </div>
-    <draggable v-if="hasEditRights" v-model="orderedKpis" animation="200">
+    <draggable v-if="hasEditRights" v-model="orderedKpis" animation="300">
       <transition-group class="kpi-widget-group__kpis">
         <kpi-widget-group-link
           v-for="kpi in orderedKpis"
@@ -173,6 +173,21 @@ export default {
 
     .kpi-widget-group__title h2 {
       @include get-text('pkt-txt-14');
+    }
+  }
+}
+
+::v-deep .kpi-widget-group-link.sortable-ghost * {
+  color: var(--color-grayscale-10) !important;
+  background: var(--color-grayscale-10) !important;
+  border-color: var(--color-grayscale-10) !important;
+  fill: var(--color-grayscale-10);
+  stroke: var(--color-grayscale-10);
+
+  & .period-trend-tag__trend {
+    &::after,
+    &::before {
+      border-color: var(--color-grayscale-10);
     }
   }
 }
