@@ -4,10 +4,8 @@
       <thead>
         <tr>
           <th>{{ $t('widget.history.value') }}</th>
-          <th>{{ $t('widget.history.date') }}</th>
+          <th>{{ $t('general.details') }}</th>
           <th>{{ $t('widget.history.comment') }}</th>
-          <th>{{ $t('widget.history.changedBy') }}</th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -16,17 +14,17 @@
             {{ formatValue(record.value) }}
           </td>
           <td>
-            <span v-tooltip="addedBy(record)">
-              {{ dateExtraShort(record.timestamp.toDate()) }}
+            <span>
+              {{ dateTimeShort(record.timestamp.toDate()) }}
             </span>
+            <div v-if="addedBy(record)" class="mt-size-8">
+              {{ addedBy(record) }}
+            </div>
           </td>
           <td>
-            <p v-if="record.comment">{{ record.comment }}</p>
-          </td>
-          <td>
-            <span v-if="addedBy(record)">{{ addedBy(record) }}</span>
-          </td>
-          <td>
+            <p v-if="record.comment" :class="{ 'mr-size-40': hasEditRights }">
+              {{ record.comment }}
+            </p>
             <pkt-button
               v-if="hasEditRights"
               v-tooltip="$t('tooltip.editProgress')"
@@ -45,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { dateExtraShort } from '@/util';
+import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
 import { PktButton } from '@oslokommune/punkt-vue2';
 
@@ -69,7 +67,7 @@ export default {
 
   methods: {
     formatValue,
-    dateExtraShort,
+    dateTimeShort,
 
     addedBy(record) {
       const user = record.editedBy || record.createdBy;
@@ -97,51 +95,38 @@ export default {
   th {
     padding: 0 1rem;
     text-align: left;
-    @include get-text('pkt-txt-14-medium');
-
-    &:nth-child(1),
-    &:nth-child(2) {
-      text-align: center;
-    }
-
-    &:nth-child(4) {
-      @include table-cell-desktop-up;
-    }
+    @include get-text('pkt-txt-12-medium');
   }
 
   td {
     padding: 1rem;
     text-align: left;
     text-wrap: balance;
+    vertical-align: top;
     background-color: var(--color-white);
-    @include get-text('pkt-txt-14');
+    @include get-text('pkt-txt-14-light');
 
     &:nth-child(1) {
-      @include get-text('pkt-txt-16-bold');
-      padding: 1rem 2rem;
-      color: var(--color-yellow-100);
-      text-align: center;
       text-wrap: nowrap;
-      background: var(--color-yellow-50);
+      border-left: 0.125rem solid var(--color-yellow-50);
     }
 
     &:nth-child(2) {
-      padding-left: 2rem;
-      text-align: center;
+      @include bp('phablet-up') {
+        min-width: 10rem;
+      }
     }
 
     &:nth-child(3) {
+      position: relative;
       width: 100%;
       white-space: pre-line;
-    }
 
-    &:nth-child(4) {
-      @include table-cell-desktop-up;
-      min-width: 10rem;
-    }
-
-    &:nth-child(5) {
-      padding-left: 0;
+      .pkt-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
     }
   }
 }
