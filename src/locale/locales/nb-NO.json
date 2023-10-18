@@ -347,7 +347,7 @@
     "description": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
-    "progression": "Progresjon",
+    "progression": "Progresjon for nøkkelresultatet:",
     "unit": "Måleenhet",
     "defaultUnit": "prosent",
     "newValue": "Ny verdi",

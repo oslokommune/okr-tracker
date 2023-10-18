@@ -13,11 +13,13 @@
       :breadcrumbs="breadcrumbs"
     />
 
+    <h1 class="key-result-pane__title pkt-txt-18-medium">
+      {{ $t('general.keyResult') }}
+    </h1>
+
     <div class="key-result-pane__details">
       <div class="key-result-pane__header">
-        <pkt-tag text-style="normal-text" skin="yellow">
-          {{ $t('general.keyResult') }}
-        </pkt-tag>
+        <h2 class="pkt-txt-18-medium">{{ activeKeyResult.name }}</h2>
 
         <pkt-button
           v-if="hasEditRights"
@@ -30,31 +32,17 @@
         />
       </div>
 
-      <h2 class="pkt-txt-18-medium">{{ activeKeyResult.name }}</h2>
-
       <HTML-output
         v-if="activeKeyResult.description"
         class="key-result-pane__description"
         :html="activeKeyResult.description"
       />
 
-      <h4 class="pkt-txt-14-medium">{{ $t('keyResult.progression') }}:</h4>
-
-      <svg ref="graph" class="key-result-pane__graph"></svg>
-
-      <progress-bar
-        :progression="progression"
-        :right-label="progressionRightLabel"
-        skin="yellow"
-      />
-    </div>
-
-    <div class="key-result-pane__values">
-      <div class="key-result-pane__values-header">
-        <h3 class="pkt-txt-16-medium">{{ $t('keyResult.registeredValues') }}</h3>
+      <div class="key-result-pane__progression">
+        <h4 class="pkt-txt-14-medium">{{ $t('keyResult.progression') }}</h4>
         <pkt-button
           v-if="hasEditRights"
-          :text="$t('keyResult.newValue')"
+          :text="$t('widget.history.value')"
           skin="primary"
           size="small"
           variant="icon-left"
@@ -62,6 +50,14 @@
           @onClick="openValueModal(null)"
         />
       </div>
+
+      <svg ref="graph" class="key-result-pane__graph"></svg>
+
+      <progress-bar :progression="progression" :right-label="progressionRightLabel" />
+    </div>
+
+    <div class="key-result-pane__values">
+      <h3 class="pkt-txt-16-medium">{{ $t('keyResult.registeredValues') }}</h3>
 
       <div v-if="isLoading">
         <loading-small />
@@ -124,7 +120,7 @@ import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
 import { getRandomInt } from '@/util';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
-import { PktAlert, PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
@@ -142,7 +138,6 @@ export default {
     PktAlert,
     PktButton,
     PktBreadcrumbs,
-    PktTag,
     PaneWrapper,
     // WidgetKeyResultNotes,
     WidgetKeyResultDetails,
@@ -333,7 +328,13 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .key-result-pane {
-  background-color: #faf6f1;
+  background-color: var(--color-gray);
+
+  &__title {
+    @include bp('laptop-up') {
+      margin-top: 2rem;
+    }
+  }
 
   &__details {
     display: flex;
@@ -341,11 +342,7 @@ export default {
     gap: 1rem;
     padding: 1.5rem;
     background-color: var(--color-white);
-    border-left: 0.25rem solid var(--color-yellow-50);
-
-    @include bp('laptop-up') {
-      margin-top: 2rem;
-    }
+    border-left: 0.125rem solid var(--color-yellow-50);
   }
 
   &__header {
@@ -358,25 +355,19 @@ export default {
     }
   }
 
+  &__progression {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+  }
+
   &__values {
     margin-top: 3rem;
-
-    &-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
   }
 
   &__table {
     margin-top: 1rem;
-  }
-
-  &__graph {
-    --graph-value-line: var(--color-yellow);
-    --graph-symbol-fill: var(--color-yellow);
-    --graph-symbol-color: var(--color-yellow-100);
   }
 
   &__widgets {

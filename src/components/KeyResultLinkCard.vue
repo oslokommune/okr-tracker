@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <progress-bar :progression="progression" skin="yellow" compact />
+        <progress-bar :progression="progression" compact />
       </div>
     </a>
   </router-link>
@@ -111,8 +111,8 @@ export default {
 
   &--active {
     color: var(--color-hover);
-    background-color: var(--color-yellow-5);
-    border-color: var(--color-yellow);
+    background-color: var(--color-blue-5);
+    border: 2px solid var(--color-hover);
   }
 }
 

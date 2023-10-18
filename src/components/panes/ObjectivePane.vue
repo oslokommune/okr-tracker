@@ -11,11 +11,13 @@
       :breadcrumbs="breadcrumbs"
     />
 
+    <h1 class="objective-pane__title pkt-txt-18-medium">
+      {{ $t('general.objective') }}
+    </h1>
+
     <div class="objective-pane__details">
       <div class="objective-pane__header">
-        <pkt-tag text-style="normal-text" skin="blue">
-          {{ $t('general.objective') }}
-        </pkt-tag>
+        <h2 class="pkt-txt-18-medium">{{ activeObjective.name }}</h2>
 
         <pkt-button
           v-if="hasEditRights"
@@ -27,8 +29,6 @@
           @onClick="$emit('edit-objective')"
         />
       </div>
-
-      <h2 class="pkt-txt-18-medium">{{ activeObjective.name }}</h2>
 
       <HTML-output
         v-if="activeObjective.description"
@@ -78,7 +78,7 @@
         <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
         <pkt-button
           v-if="hasEditRights"
-          :text="$t('btn.createKeyResult')"
+          :text="$t('general.keyResult')"
           skin="primary"
           size="small"
           variant="icon-left"
@@ -146,7 +146,7 @@
 <script>
 import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
-import { PktBreadcrumbs, PktButton, PktTag } from '@oslokommune/punkt-vue2';
+import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import draggable from 'vuedraggable';
 import { compareKeyResults, contributorTagColor, contributorTagMode } from '@/util/okr';
 import { dateLong, periodDates, uniqueBy } from '@/util';
@@ -174,7 +174,6 @@ export default {
     LoadingSmall,
     PktBreadcrumbs,
     PktButton,
-    PktTag,
     ProgressBar,
     WidgetWeights,
     WidgetObjectiveDetails,
@@ -274,7 +273,13 @@ export default {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .objective-pane {
-  background-color: #f5f5f8;
+  background-color: var(--color-gray-light);
+
+  &__title {
+    @include bp('laptop-up') {
+      margin-top: 2rem;
+    }
+  }
 
   &__details {
     display: flex;
@@ -282,11 +287,7 @@ export default {
     gap: 1rem;
     padding: 1.5rem;
     background-color: var(--color-white);
-    border-left: 0.25rem solid var(--color-blue-light);
-
-    @include bp('laptop-up') {
-      margin-top: 2rem;
-    }
+    border-left: 0.125rem solid var(--color-blue);
   }
 
   &__header {
