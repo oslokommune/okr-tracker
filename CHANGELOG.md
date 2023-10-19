@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- The team member listing on the about page has been reintroduced, but is now
+  only visible to members of the same organization.
+
 ### Changed
 
 - New key results are now given a start value of 0, a target value of 100, and
