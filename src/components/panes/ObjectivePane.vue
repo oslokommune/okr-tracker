@@ -66,12 +66,17 @@
         <div class="pkt-txt-14">{{ periodDates(period) }}</div>
       </div>
 
-      <progress-bar
-        class="objective-pane__progression"
-        :title="$t('objective.progressionTitle')"
-        :progression="activeObjective.progression"
-        :show-min-max-indicators="true"
-      />
+      <div class="objective-pane__progression">
+        <h4 class="pkt-txt-14-medium">
+          {{ $t('objective.progressionTitle') }}
+        </h4>
+        <progress-bar
+          :progression="activeObjective.progression"
+          :secondary-progression="periodProgression"
+          :secondary-value-label="$t('general.today')"
+          :show-min-max-indicators="true"
+        />
+      </div>
     </div>
 
     <div class="objective-pane__key-results">
@@ -149,6 +154,7 @@ import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
 import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import draggable from 'vuedraggable';
+import { startOfDay } from 'date-fns';
 import { compareKeyResults, contributorTagColor, contributorTagMode } from '@/util/okr';
 import { dateLong, periodDates, uniqueBy } from '@/util';
 import { db } from '@/config/firebaseConfig';
@@ -206,6 +212,22 @@ export default {
       }
 
       return null;
+    },
+
+    periodProgression() {
+      if (!this.period) {
+        return null;
+      }
+
+      const start = this.period.startDate.getTime();
+      const end = this.period.endDate.getTime();
+      const now = startOfDay(new Date()).getTime();
+
+      if (now < start || now > end) {
+        return null;
+      }
+
+      return (now - start) / (end - start);
     },
 
     breadcrumbs() {
