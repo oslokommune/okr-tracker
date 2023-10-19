@@ -4,6 +4,10 @@
     :title="kpi.name"
     :class="['kpi-card-widget', { 'kpi-card-widget--compact': compact }]"
   >
+    <template v-if="hasEditRights" #title-actions>
+      <pkt-icon class="drag-icon" name="drag" />
+    </template>
+
     <div class="kpi-card-widget__inner">
       <div class="kpi-card-widget__trend">
         <period-trend-tag
@@ -33,7 +37,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import {
   filterDuplicatedProgressValues,
   formatKPIValue,
@@ -74,6 +78,7 @@ export default {
 
   computed: {
     ...mapState(['selectedPeriod']),
+    ...mapGetters(['hasEditRights']),
 
     progress() {
       return filterDuplicatedProgressValues(this.progressCollection);
@@ -157,6 +162,19 @@ export default {
     align-self: center;
     min-width: 8rem;
     max-width: 50%;
+  }
+
+  ::v-deep .widget__header {
+    align-items: flex-start;
+  }
+
+  .drag-icon {
+    --fg-color: var(--color-grayscale-30);
+
+    ::v-deep svg {
+      height: 0.875rem;
+      min-height: 0.875rem;
+    }
   }
 
   .no-data {
