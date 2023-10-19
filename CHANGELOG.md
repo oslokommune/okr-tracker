@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Security
 
+- More security headers are now set: `Content-Security-Policy`,
+  `Referrer-Policy`, `X-Content-Type-Options`, and `X-Frame-Options`.
 - Updated dependencies.
 
 ## [3.10.0] 2023-10-10
