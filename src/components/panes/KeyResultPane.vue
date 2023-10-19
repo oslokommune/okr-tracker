@@ -53,7 +53,7 @@
 
       <svg ref="graph" class="key-result-pane__graph"></svg>
 
-      <progress-bar :progression="progression" :right-label="progressionRightLabel" />
+      <progress-bar :progression="progression" :show-min-max-indicators="true" />
     </div>
 
     <div class="key-result-pane__values">
@@ -118,7 +118,6 @@ import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
 import LineChart from '@/util/LineChart';
-import { getRandomInt } from '@/util';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
@@ -174,19 +173,6 @@ export default {
     progression() {
       const progressDetails = getKeyResultProgressDetails(this.activeKeyResult);
       return progressDetails.percentageCompleted / 100;
-    },
-
-    progressionRightLabel() {
-      const progressDetails = getKeyResultProgressDetails(this.activeKeyResult);
-
-      if (progressDetails.isCompleted) {
-        return this.randomCompletedMessage();
-      }
-
-      return `${progressDetails.formattedTotalRemainingTasks} ${this.$t(
-        'progress.remaining',
-        { unit: this.activeKeyResult.unit }
-      )}`;
     },
 
     breadcrumbs() {
@@ -312,13 +298,6 @@ export default {
     openValueModal(record) {
       this.showValueModal = true;
       this.chosenProgressValue = record;
-    },
-
-    randomCompletedMessage() {
-      const messages = Object.values(this.$t('progress.completedMessages'));
-      const randomIndex = getRandomInt(messages.length);
-
-      return messages[randomIndex];
     },
   },
 };

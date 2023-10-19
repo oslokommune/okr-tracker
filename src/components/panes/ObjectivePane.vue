@@ -70,6 +70,7 @@
         class="objective-pane__progression"
         :title="$t('objective.progressionTitle')"
         :progression="activeObjective.progression"
+        :show-min-max-indicators="true"
       />
     </div>
 
