@@ -1,6 +1,12 @@
 <template>
-  <page-layout breakpoint="tablet-big" class="integrations">
-    <h1 class="pkt-txt-24-medium mb-size-24">{{ $t('general.integrations') }}</h1>
+  <page-layout breakpoint="tablet-big" class="integrations-page">
+    <header class="integrations-page__header mb-size-24">
+      <h1 class="pkt-txt-24-medium">{{ $t('general.integrations') }}</h1>
+      <router-link :to="{ name: 'Api' }">
+        {{ $t('general.api') }}
+        <pkt-icon name="chevron-right" />
+      </router-link>
+    </header>
 
     <i18n path="integration.info" tag="p" class="mb-size-24">
       <template #clientIdHeader>
@@ -22,7 +28,14 @@
 
     <template v-else-if="apiClients.length">
       <div class="mb-size-32">
-        <pkt-button skin="secondary" :disabled="loading" @onClick="create">
+        <pkt-button
+          skin="primary"
+          size="small"
+          variant="icon-left"
+          icon-name="plus-sign"
+          :disabled="loading"
+          @onClick="create"
+        >
           {{ $t('integration.action.add') }}
         </pkt-button>
       </div>
@@ -211,3 +224,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.integrations-page {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+}
+</style>
