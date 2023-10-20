@@ -34,16 +34,16 @@
       </div>
     </section>
 
-    <!--
-    <h2 class="pkt-txt-30">{{ $t('about.members') }}</h2>
-    <role-members
-      v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
-      :key="role"
-      :role="role"
-      :members-with-role="teamMembers[role]"
-      @openModal="openProfileModal"
-    />
-    -->
+    <template v-if="hasEditRights || isMemberOfOrganization">
+      <h2 class="pkt-txt-30">{{ $t('about.members') }}</h2>
+      <role-members
+        v-for="role in sortByDisplayOrder(Object.keys(teamMembers))"
+        :key="role"
+        :role="role"
+        :members-with-role="teamMembers[role]"
+        @openModal="openProfileModal"
+      />
+    </template>
 
     <item-drawer
       :visible="hasEditRights && showItemDrawer"
@@ -74,6 +74,7 @@ import HTMLOutput from '@/components/HTMLOutput.vue';
 import i18n from '@/locale/i18n';
 import ItemDrawer from '@/components/drawers/EditItemDrawer.vue';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
+import RoleMembers from '@/components/RoleMembers.vue';
 
 export default {
   name: 'ItemAbout',
@@ -83,6 +84,7 @@ export default {
     PktButton,
     ItemDrawer,
     ProfileModal,
+    RoleMembers,
   },
 
   data: () => ({
@@ -92,8 +94,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['hasEditRights']),
-    ...mapState(['activeItem', 'departments', 'products']),
+    ...mapGetters(['hasEditRights', 'tree']),
+    ...mapState(['activeItem', 'departments', 'products', 'user']),
 
     teamMembers() {
       const members = {};
@@ -158,6 +160,33 @@ export default {
 
       return null;
     },
+
+    /**
+     * Return `true` if the current user is a member of any item in the active
+     * item's organization.
+     */
+    isMemberOfOrganization() {
+      const currentOrgId = this.activeItem.organization?.id || this.activeItem.id;
+      const org = this.tree.find((o) => o.id === currentOrgId);
+
+      if (org.team.map(({ id }) => id).includes(this.user.id)) {
+        return true;
+      }
+
+      for (const dep of org.children) {
+        if (dep.team.map(({ id }) => id).includes(this.user.id)) {
+          return true;
+        }
+
+        for (const prod of dep.children) {
+          if (prod.team.map(({ id }) => id).includes(this.user.id)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    },
   },
 
   watch: {
@@ -202,10 +231,6 @@ section {
 
   .item-info__box:first-of-type h3 {
     margin-top: 1.5rem;
-  }
-
-  &:last-of-type {
-    margin-bottom: 1.5rem;
   }
 }
 
