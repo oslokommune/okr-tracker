@@ -22,7 +22,7 @@
         :style="secondaryValueStyle"
       ></div>
       <div
-        v-if="showMinMaxIndicators && progression > 0.05"
+        v-if="showMinMaxIndicators && progression > 0.1"
         class="progress-bar__label progress-bar__label--min"
       >
         {{ percentFormatted(0) }}
@@ -46,7 +46,7 @@
         </template>
       </div>
       <div
-        v-if="showMinMaxIndicators && progression < 0.95"
+        v-if="showMinMaxIndicators && progression < 0.9"
         class="progress-bar__label progress-bar__label--max"
       >
         {{ percentFormatted(1) }}
