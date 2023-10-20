@@ -139,7 +139,6 @@ export default {
   &__bar {
     position: relative;
     height: 1rem;
-    margin-top: 0.5rem;
     margin-bottom: 1.5rem;
     background-color: var(--progress-bar-bg);
 

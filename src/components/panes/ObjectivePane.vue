@@ -67,7 +67,7 @@
       </div>
 
       <div class="objective-pane__progression">
-        <h4 class="pkt-txt-14-medium">
+        <h4 class="pkt-txt-14-medium mb-size-8">
           {{ $t('objective.progressionTitle') }}
         </h4>
         <progress-bar
