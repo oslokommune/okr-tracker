@@ -15,69 +15,11 @@
       {{ $t('general.objective') }}
     </h1>
 
-    <div class="objective-pane__details">
-      <div class="objective-pane__header">
-        <h2 class="pkt-txt-18-medium">{{ activeObjective.name }}</h2>
-
-        <pkt-button
-          v-if="hasEditRights"
-          v-tooltip="$t('btn.updateObjective')"
-          skin="tertiary"
-          variant="icon-only"
-          size="small"
-          icon-name="edit"
-          @onClick="$emit('edit-objective')"
-        />
-      </div>
-
-      <HTML-output
-        v-if="activeObjective.description"
-        class="objective-pane__description"
-        :html="activeObjective.description"
-      />
-
-      <div class="objective-pane__members">
-        <div>
-          <h4 class="pkt-txt-14-medium">{{ $t('objective.owner') }}</h4>
-          <span class="pkt-txt-14">{{ activeObjective.parent.name }}</span>
-        </div>
-
-        <div class="objective-pane__contributors">
-          <h4 class="pkt-txt-14-medium">{{ $t('objective.contributors') }}</h4>
-          <ul>
-            <li v-for="c in contributors" :key="c.id" class="objective-pane__contributor">
-              <span class="pkt-txt-14">{{ c.name }}</span>
-              <span
-                class="objective-pane__contributor-tag"
-                :class="[
-                  'objective-link-card__tag',
-                  'pkt-txt-12-bold',
-                  `objective-link-card__tag--${contributorTagMode(c.name)}`,
-                ]"
-                :style="{ background: contributorTagColor(c.name) }"
-              ></span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div v-if="period" class="mt-size-16">
-        <div class="pkt-txt-14-medium">{{ $t('objective.period') }}</div>
-        <div class="pkt-txt-14">{{ periodDates(period) }}</div>
-      </div>
-
-      <div class="objective-pane__progression">
-        <h4 class="pkt-txt-14-medium mb-size-8">
-          {{ $t('objective.progressionTitle') }}
-        </h4>
-        <progress-bar
-          :progression="activeObjective.progression"
-          :secondary-progression="periodProgression"
-          :secondary-value-label="$t('general.today')"
-          :show-min-max-indicators="true"
-        />
-      </div>
-    </div>
+    <objective-details-card
+      :objective="activeObjective"
+      :key-results="keyResults"
+      @edit-objective="$emit('edit-objective')"
+    />
 
     <div class="objective-pane__key-results">
       <div class="objective-pane__key-results-header">
@@ -150,24 +92,19 @@
 </template>
 
 <script>
-import { format } from 'd3-format';
 import { mapGetters, mapState } from 'vuex';
 import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import draggable from 'vuedraggable';
-import { startOfDay } from 'date-fns';
-import { compareKeyResults, contributorTagColor, contributorTagMode } from '@/util/okr';
-import { dateLong, periodDates, uniqueBy } from '@/util';
+import { compareKeyResults } from '@/util/okr';
 import { db } from '@/config/firebaseConfig';
-import i18n from '@/locale/i18n';
 import KeyResult from '@/db/KeyResult';
-import ProgressBar from '@/components/ProgressBar.vue';
+import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import EmptyState from '@/components/EmptyState.vue';
 import KeyResultLinkCard from '@/components/KeyResultLinkCard.vue';
-import HTMLOutput from '@/components/HTMLOutput.vue';
 
 export default {
   name: 'ObjectivePane',
@@ -176,12 +113,11 @@ export default {
     draggable,
     PaneWrapper,
     EmptyState,
+    ObjectiveDetailsCard,
     KeyResultLinkCard,
-    HTMLOutput,
     LoadingSmall,
     PktBreadcrumbs,
     PktButton,
-    ProgressBar,
     WidgetWeights,
     WidgetObjectiveDetails,
   },
@@ -195,40 +131,6 @@ export default {
     ...mapState(['activeItem']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
-
-    period() {
-      if (this.activeObjective.startDate && this.activeObjective.endDate) {
-        return {
-          startDate: this.activeObjective.startDate.toDate(),
-          endDate: this.activeObjective.endDate.toDate(),
-        };
-      }
-
-      if (this.activeObjective.period.startDate && this.activeObjective.period.endDate) {
-        return {
-          startDate: this.activeObjective.period.startDate.toDate(),
-          endDate: this.activeObjective.period.endDate.toDate(),
-        };
-      }
-
-      return null;
-    },
-
-    periodProgression() {
-      if (!this.period) {
-        return null;
-      }
-
-      const start = this.period.startDate.getTime();
-      const end = this.period.endDate.getTime();
-      const now = startOfDay(new Date()).getTime();
-
-      if (now < start || now > end) {
-        return null;
-      }
-
-      return (now - start) / (end - start);
-    },
 
     breadcrumbs() {
       return [
@@ -248,13 +150,6 @@ export default {
           }
         });
       },
-    },
-
-    contributors() {
-      return uniqueBy(
-        this.keyResults.map((kr) => kr.parent).filter((item) => item.name),
-        'id'
-      ).sort((a, b) => a.name.localeCompare(b.name, i18n.locale));
     },
   },
 
@@ -277,17 +172,6 @@ export default {
       },
     },
   },
-
-  methods: {
-    contributorTagColor,
-    contributorTagMode,
-    dateLong,
-    periodDates,
-
-    percent(value) {
-      return format('.0%')(value);
-    },
-  },
 };
 </script>
 
@@ -302,59 +186,6 @@ export default {
     @include bp('laptop-up') {
       margin-top: 2rem;
     }
-  }
-
-  &__details {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: var(--color-white);
-    border-left: 0.125rem solid var(--color-blue);
-  }
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    text-wrap: balance;
-
-    .pkt-btn {
-      margin: -0.5rem -0.5rem 0 0;
-    }
-  }
-
-  &__members {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-
-    & h4 {
-      margin-bottom: 0.25rem;
-    }
-  }
-
-  &__contributors {
-    margin-right: calc(2.5rem + 2px);
-  }
-
-  &__contributor {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.25rem;
-  }
-
-  &__contributor-tag {
-    display: block;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-  }
-
-  &__progression {
-    margin-top: 1rem;
   }
 
   &__key-results {
