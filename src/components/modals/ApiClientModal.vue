@@ -1,7 +1,7 @@
 <template>
   <modal-wrapper @close="close">
     <template #header>
-      {{ $t('integration.action.edit') }}
+      {{ $t(`integration.action.${client ? 'edit' : 'add'}`) }}
     </template>
 
     <form-section :hide-errors="true">
@@ -45,7 +45,8 @@ export default {
   props: {
     client: {
       type: Object,
-      required: true,
+      required: false,
+      default: null,
     },
   },
 
@@ -58,8 +59,13 @@ export default {
     client: {
       immediate: true,
       async handler(client) {
-        this.name = client.name;
-        this.description = client.description;
+        if (client) {
+          this.name = client.name;
+          this.description = client.description;
+        } else {
+          this.name = this.$t('integration.placeholderTitle');
+          this.description = '';
+        }
       },
     },
   },

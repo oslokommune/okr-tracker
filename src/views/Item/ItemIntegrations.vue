@@ -34,7 +34,7 @@
           variant="icon-left"
           icon-name="plus-sign"
           :disabled="loading"
-          @onClick="create"
+          @onClick="openClientModal(null)"
         >
           {{ $t('integration.action.add') }}
         </pkt-button>
@@ -52,13 +52,6 @@
         @rotate="rotate"
         @delete="archive"
       />
-
-      <api-client-modal
-        v-if="showClientModal && chosenClient"
-        :client="chosenClient"
-        @save="update"
-        @close="closeClientModal"
-      />
     </template>
 
     <empty-state
@@ -71,12 +64,19 @@
           skin="primary"
           variant="icon-left"
           icon-name="plus-sign"
-          @onClick="create"
+          @onClick="openClientModal(null)"
         >
           {{ $t('integration.action.add') }}
         </pkt-button>
       </div>
     </empty-state>
+
+    <api-client-modal
+      v-if="showClientModal"
+      :client="chosenClient"
+      @save="saveClientMetadata"
+      @close="closeClientModal"
+    />
   </page-layout>
 </template>
 
@@ -136,13 +136,22 @@ export default {
   },
 
   methods: {
-    async create() {
+    async saveClientMetadata(client, data) {
+      if (client) {
+        await this.update(client, data);
+      } else {
+        await this.create(data);
+      }
+    },
+
+    async create({ name, description }) {
       try {
         this.loading = true;
 
         const clientRef = await ApiClient.create({
           parent: this.activeItemRef,
-          name: this.$t('integration.placeholderTitle'),
+          name,
+          description,
         });
 
         try {
