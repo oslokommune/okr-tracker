@@ -651,19 +651,6 @@
       "storyteller": "Historieforteller"
     }
   },
-  "progress": {
-    "title": "Progresjon {progress}",
-    "done": "fullført",
-    "remaining": "{unit} gjenstår",
-    "remainingOf": "av {progress}",
-    "complete": "{progress} % fullført",
-    "completedMessages": {
-      "1": "Nå er dere gode!",
-      "2": "Dødsbra jobba, folkens!",
-      "3": "Wohoo! 100 %",
-      "4": "Nice, dere klarte det!"
-    }
-  },
   "dashboard": {
     "problemDescription": "Problembeskrivelse",
     "targetAudience": "Målgruppe",

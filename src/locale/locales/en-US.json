@@ -651,19 +651,6 @@
       "storyteller": "Storyteller"
     }
   },
-  "progress": {
-    "title": "Progress {progress}",
-    "done": "done",
-    "remaining": "{unit} remaining",
-    "remainingOf": "of {progress}",
-    "complete": "{progress}% complete",
-    "completedMessages": {
-      "1": "You guys are nailing it!",
-      "2": "Well done, guys!",
-      "3": "Wohoo! 100%",
-      "4": "You did it! Awesome!"
-    }
-  },
   "dashboard": {
     "problemDescription": "Problem description",
     "targetAudience": "Target audience",
