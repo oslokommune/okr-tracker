@@ -13,8 +13,6 @@ export { default as tableOfContent } from './tableOfContent';
 export { default as toastArchiveAndRevert } from './toastUtils';
 export { default as validateEmail } from './validateEmail';
 
-export const getRandomInt = (max) => Math.floor(Math.random() * max);
-
 /**
  * Return an array of all members of `arr` that are unique with respect to the
  * attribute `key`.

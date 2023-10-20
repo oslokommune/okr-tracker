@@ -1,29 +1,56 @@
 <template>
   <div :class="['progress-bar', skinClass, { 'progress-bar--compact': compact }]">
-    <h4 v-if="title" class="pkt-txt-14-medium">{{ title }}</h4>
-    <div class="progress-bar__bar">
+    <div
+      :class="[
+        'progress-bar__bar',
+        { 'progress-bar__bar--secondary-val': secondaryProgression !== null },
+        { 'progress-bar__bar--min-indicator': showMinMaxIndicators && progression > 0 },
+        { 'progress-bar__bar--max-indicator': showMinMaxIndicators && progression < 1 },
+      ]"
+    >
       <div
-        :class="[
-          'progress-bar__value',
-          { 'progress-bar__value--indicator': progression > 0 && progression < 1 },
-        ]"
-        :style="progressValueStyle"
+        class="progress-bar__value progress-bar__value--primary"
+        :style="valueStyle"
         role="progressbar"
         aria-valuemin="0"
         aria-valuemax="100"
-        :aria-valuenow="percent"
+        :aria-valuenow="percent(progression)"
       ></div>
-      <span class="progress-bar__label" :style="progressLabelStyle">
-        {{ formattedPercent }}
-      </span>
-    </div>
-    <div v-if="leftLabel || rightLabel" class="progress-bar__sub-labels">
-      <span v-if="leftLabel" class="progress-bar__label">
-        {{ leftLabel }}
-      </span>
-      <span v-if="rightLabel" class="progress-bar__label progress-bar__label--right">
-        {{ rightLabel }}
-      </span>
+      <div
+        v-if="secondaryProgression !== null"
+        class="progress-bar__value progress-bar__value--secondary"
+        :style="secondaryValueStyle"
+      ></div>
+      <div
+        v-if="showMinMaxIndicators && progression > 0.1"
+        class="progress-bar__label progress-bar__label--min"
+      >
+        {{ percentFormatted(0) }}
+      </div>
+      <div
+        class="progress-bar__label progress-bar__label--val"
+        :style="progressLabelStyle(progression)"
+      >
+        {{ percentFormatted(progression) }}
+      </div>
+      <div
+        v-if="secondaryProgression !== null"
+        class="progress-bar__label progress-bar__label--secondary-val"
+        :style="progressLabelStyle(secondaryProgression)"
+      >
+        <template v-if="secondaryValueLabel">
+          {{ secondaryValueLabel }}
+        </template>
+        <template v-else>
+          {{ percentFormatted(secondaryProgression) }}
+        </template>
+      </div>
+      <div
+        v-if="showMinMaxIndicators && progression < 0.9"
+        class="progress-bar__label progress-bar__label--max"
+      >
+        {{ percentFormatted(1) }}
+      </div>
     </div>
   </div>
 </template>
@@ -35,26 +62,26 @@ export default {
   name: 'ProgressBar',
 
   props: {
-    title: {
-      type: String,
-      default: null,
-    },
     progression: {
       type: Number,
       default: 0,
+    },
+    secondaryProgression: {
+      type: Number,
+      default: null,
+    },
+    secondaryValueLabel: {
+      type: String,
+      default: null,
     },
     skin: {
       type: String,
       default: 'blue',
       validator: (value) => ['blue', 'yellow', 'green'].includes(value),
     },
-    leftLabel: {
-      type: String,
-      default: null,
-    },
-    rightLabel: {
-      type: String,
-      default: null,
+    showMinMaxIndicators: {
+      type: Boolean,
+      default: false,
     },
     compact: {
       type: Boolean,
@@ -63,21 +90,12 @@ export default {
   },
 
   computed: {
-    formattedPercent() {
-      return format('.0%')(this.progression);
+    valueStyle() {
+      return `width: ${this.percent(this.progression)}%`;
     },
 
-    percent() {
-      const percent = this.progression * 100;
-      return percent > 100 ? 100 : percent;
-    },
-
-    progressLabelStyle() {
-      return `left: max(-0.2rem, min(calc(100% - 2.25rem), calc(${this.percent}% - 1rem)))`;
-    },
-
-    progressValueStyle() {
-      return `width: ${this.percent}%`;
+    secondaryValueStyle() {
+      return `width: ${this.percent(this.secondaryProgression)}%`;
     },
 
     skinClass() {
@@ -85,6 +103,23 @@ export default {
         return 'progress-bar--green';
       }
       return `progress-bar--${this.skin}`;
+    },
+  },
+
+  methods: {
+    percent(progression) {
+      const percent = progression * 100;
+      return percent > 100 ? 100 : percent;
+    },
+
+    percentFormatted(progression) {
+      return format('.0%')(progression);
+    },
+
+    progressLabelStyle(progression) {
+      return `left: max(-2ch, min(calc(100% - 4ch), calc(${this.percent(
+        progression
+      )}% - 2.5ch)))`;
     },
   },
 };
@@ -101,48 +136,77 @@ export default {
 
   width: 100%;
 
-  h4 + &__bar {
-    margin-top: 0.5rem;
-  }
-
   &__bar {
     position: relative;
-    margin-bottom: 1rem;
+    height: 1rem;
+    margin-bottom: 1.5rem;
     background-color: var(--progress-bar-bg);
 
-    > span {
-      position: absolute;
-      bottom: -1.25rem;
-      width: 2.1rem;
-      text-align: center;
+    &--secondary-val {
+      margin-top: 1.5rem;
+    }
+    &--min-indicator {
+      border-left: 1px solid var(--color-grayscale-50);
+    }
+    &--max-indicator {
+      border-right: 1px solid var(--color-grayscale-50);
     }
   }
 
   &__value {
-    height: 1rem;
-    background-color: var(--progress-bar-value);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: inherit;
 
-    &--indicator {
+    &--primary {
+      background-color: var(--progress-bar-value);
       border-right: 1px solid var(--progress-bar-value-indicator);
+    }
+
+    &--secondary {
+      border-right: 1px dashed var(--progress-bar-value-indicator);
     }
   }
 
   &__label {
+    position: absolute;
+    bottom: -1.5rem;
+    display: none;
+    width: 5ch;
+    text-align: center;
     @include get-text('pkt-txt-12-medium');
-  }
 
-  &__sub-labels {
-    display: flex;
-    padding: 0.15rem 0.25rem;
+    @include bp('phablet-up') {
+      display: block;
+    }
 
-    .progress-bar__label--right {
-      margin-left: auto;
+    &--val,
+    &--secondary-val {
+      display: block;
+      color: var(--progress-bar-value-indicator);
+    }
+    &--secondary-val {
+      top: -1.5rem;
+      bottom: auto;
+    }
+    &--min {
+      left: -0.25rem;
+      text-align: left;
+    }
+    &--max {
+      right: -0.25rem;
+      text-align: right;
     }
   }
 
   &--compact {
-    .progress-bar__value {
+    .progress-bar__bar {
       height: 0.5rem;
+    }
+
+    .progress-bar__value {
+      border-right: 0;
     }
   }
 

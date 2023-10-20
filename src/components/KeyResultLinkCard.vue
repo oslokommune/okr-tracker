@@ -94,7 +94,7 @@ export default {
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     height: 100%;
     padding: 1rem;
   }

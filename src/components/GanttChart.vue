@@ -700,7 +700,7 @@ export default {
 
   position: relative;
   z-index: 1;
-  height: 9.5rem;
+  height: 10rem;
   overflow: hidden;
 
   ::v-deep &__inner {

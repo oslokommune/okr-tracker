@@ -5,10 +5,12 @@
     closable
     @close="close"
   >
+    <h4 class="pkt-txt-14-medium">
+      {{ $t('workbench.progressionTitle') }}
+    </h4>
     <progress-bar
       v-if="progression >= 0"
       class="workbench-pane__progression"
-      :title="$t('workbench.progressionTitle')"
       :progression="progression"
     />
 
