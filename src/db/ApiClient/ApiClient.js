@@ -57,7 +57,16 @@ const createSecret = async (clientRef) => {
   }
   try {
     const secret = crypto.randomUUID();
-    await createDocument(clientRef.collection('secrets'), { secret });
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode(secret);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashedSecret = hashArray
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+    await createDocument(clientRef.collection('secrets'), {
+      secret: hashedSecret,
+    });
     return secret;
   } catch (error) {
     throw new Error(`Could not create secret for client ${clientRef.id}`);

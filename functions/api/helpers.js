@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { endOfDay, startOfDay, setHours, isWithinInterval, sub } from 'date-fns';
 
@@ -257,7 +258,9 @@ export async function checkApiAuth(parentRef, req, res) {
       .get()
       .then((snapshot) => (!snapshot.empty ? snapshot.docs[0].data() : null));
 
-    if (!apiClientSecret || apiClientSecret.secret !== clientSecret) {
+    const hashedSecret = crypto.createHash('sha256').update(clientSecret).digest('hex');
+
+    if (!apiClientSecret || apiClientSecret.secret !== hashedSecret) {
       res.status(401).json({
         message:
           `Invalid client secret provided for API client \`${clientId}\`. ` +
