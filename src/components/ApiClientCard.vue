@@ -111,9 +111,9 @@
         <pkt-alert v-if="visibleSecret" skin="warning" class="mb-size-16">
           <i18n path="integration.warning.secret" tag="p">
             <template #closeLink>
-              <a href="#" @click="$emit('hide-secret')">
-                {{ $t('integration.warning.secretCloseText') }}
-              </a>
+              <a href="#" @click="$emit('hide-secret')">{{
+                $t('integration.warning.secretCloseText')
+              }}</a>
             </template>
           </i18n>
         </pkt-alert>

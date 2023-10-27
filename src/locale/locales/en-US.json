@@ -666,7 +666,7 @@
     }
   },
   "integration": {
-    "info": "Our API offers endpoints to automate updating of key results and measurements. In order to make use of the API, an API client must be created. For each client, an unique ID and secret is generated which must be added as request headers ({clientIdHeader}, {clientSecretHeader}) to each API call. This in addition to a separate API key ({apiKeyHeader}). It is recommended to create a separate client for each application that integrates with the API. This makes it easier to keep track of each application and secrets in use.",
+    "info": "Our API offers endpoints to automate updating of key results and measurements. In order to make use of the API, an API client must be created. For each client, a unique ID and secret is generated which must be added as request headers ({clientIdHeader}, {clientSecretHeader}) to each API call. This in addition to a separate API key ({apiKeyHeader}). It is recommended to create a separate client for each application that integrates with the API. This makes it easier to keep track of each application and secrets in use.",
     "placeholderTitle": "New client",
     "clientId": "Client ID",
     "clientSecret": "Secret",
@@ -703,7 +703,7 @@
       "secretCloseText": "I'm done",
       "delete": "When deleting, all running applications which uses this client will stop working.",
       "rotate": "When rotating, all running applications which uses the old secret will stop working.",
-      "deprecation": "It is no longer possible to add/edit the API secret here. Please visit the 'integrations' tab in the menu to create a new API client. The old secret wil still work for the time being:"
+      "deprecation": "It is no longer possible to add/edit the API secret here. Please visit the 'integrations' tab in the menu to create a new API client. The old secret will still work for the time being:"
     },
     "error": {
       "loading": "Could not fetch clients: {error}."

@@ -680,8 +680,8 @@
     "tag": {
       "created": "Opprettet {when} av {name}",
       "edited": "Sist endret {when} av {name}",
-      "lastRotated": "Sist rotert {when}",
-      "lastActivity": "Sist aktiv {when}",
+      "lastRotated": "Sist rotert for {when}",
+      "lastActivity": "Sist aktiv for {when}",
       "noActivity": "Ingen aktivitet registrert enda"
     },
     "empty": {
