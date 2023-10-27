@@ -33,7 +33,7 @@
       </div>
 
       <div class="api-client-card__body">
-        <div class="api-client-card__credentials">
+        <div class="api-client-card__credentials mb-size-16">
           <div class="api-client-card__credential">
             <label :for="`${client.id}_clientId`">
               <pkt-icon name="cogwheel" /> {{ $t('integration.clientId') }}
@@ -108,7 +108,7 @@
           </div>
         </div>
 
-        <pkt-alert v-if="visibleSecret" skin="warning">
+        <pkt-alert v-if="visibleSecret" skin="warning" class="mb-size-16">
           <i18n path="integration.warning.secret" tag="p">
             <template #closeLink>
               <a href="#" @click="$emit('hide-secret')">
@@ -234,11 +234,6 @@ export default {
   }
 
   &__body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    overflow: auto;
-
     @include bp('tablet-up') {
       padding-right: 2.5rem;
     }
@@ -285,7 +280,15 @@ export default {
       background-color: transparent;
       border: 0;
       outline: 0;
-      @include get-text('pkt-txt-18-medium');
+      @include get-text('pkt-txt-14-medium');
+
+      @include bp('phablet-up') {
+        @include get-text('pkt-txt-16-medium');
+      }
+
+      @include bp('tablet-up') {
+        @include get-text('pkt-txt-18-medium');
+      }
     }
 
     button:hover {
@@ -295,7 +298,7 @@ export default {
   }
 
   &__description {
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 1rem 0;
   }
 
   &__tags {
