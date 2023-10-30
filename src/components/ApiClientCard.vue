@@ -3,7 +3,7 @@
     <pkt-icon name="crane" class="api-client-card__icon pkt-show-tablet-up" />
 
     <div class="api-client-card__content">
-      <div class="api-client-card__title">
+      <header class="api-client-card__title">
         <span class="pkt-txt-18-medium">{{ client.name }}</span>
         <div class="api-client-card__actions">
           <pkt-button
@@ -30,7 +30,7 @@
             @click="$emit('delete', client)"
           />
         </div>
-      </div>
+      </header>
 
       <div class="api-client-card__body">
         <div class="api-client-card__credentials mb-size-16">
