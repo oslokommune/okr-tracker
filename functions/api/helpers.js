@@ -245,7 +245,7 @@ export async function checkApiAuth(parentRef, req, res) {
       res.status(401).json({
         message:
           `No API client \`${clientId}\` exists for '${parentName}'. Please ` +
-          'create one using the OKR Tracker admin interface.',
+          'create one in the OKR Tracker integrations admin.',
       });
       return false;
     }
@@ -264,7 +264,7 @@ export async function checkApiAuth(parentRef, req, res) {
       res.status(401).json({
         message:
           `Invalid client secret provided for API client \`${clientId}\`. ` +
-          'Check the OKR Tracker admin interface for how to rotate the secret.',
+          'Check the OKR Tracker integrations admin for how to rotate the secret.',
       });
       return false;
     }
@@ -277,7 +277,7 @@ export async function checkApiAuth(parentRef, req, res) {
     res.status(401).json({
       message:
         `'${parentData.name}' is not set up for API usage. Please set ` +
-        'a secret using the OKR Tracker admin interface.',
+        'a secret through the OKR Tracker integrations admin.',
     });
     return false;
   }
