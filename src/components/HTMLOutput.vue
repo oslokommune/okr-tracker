@@ -1,5 +1,5 @@
 <template>
-  <div v-html="sanitizedHtml" />
+  <div class="md" v-html="sanitizedHtml" />
 </template>
 
 <script>
