@@ -224,12 +224,27 @@ export default {
     },
 
     /**
+     * Return `true` if the current objective has any foreign contributors.
+     */
+    hasForeignContributors() {
+      return this.keyResults.some((kr) => kr.parent.id !== this.objective.parent.id);
+    },
+
+    /**
+     * Return `true` if the current objective has any key results belonging to
+     * the objective owner itself.
+     */
+    hasSelfContributor() {
+      return this.keyResults.some((kr) => kr.parent.id === this.objective.parent.id);
+    },
+
+    /**
      * Return `true` if the user should be able to lift current objective.
      */
     canLift() {
       return (
         (this.objective?.parent.department || this.objective?.parent.organization) &&
-        this.keyResults.every((kr) => kr.parent.id === this.objective.parent.id)
+        !this.hasForeignContributors
       );
     },
 
@@ -341,7 +356,9 @@ export default {
           }
           if (this.hasNewOwner) {
             data.parent = this.parentRef;
-            this.setActiveObjective(null);
+            if (!this.hasSelfContributor) {
+              this.setActiveObjective(null);
+            }
             this.lifted = true;
           }
           await Objective.update(this.thisObjective.id, data);
