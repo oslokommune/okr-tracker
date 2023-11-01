@@ -4,6 +4,9 @@
       <template v-if="!isDone">
         {{ $t(editMode ? 'admin.objective.change' : 'admin.objective.new') }}
       </template>
+      <template v-else-if="lifted">
+        {{ $t('objective.moved') }}
+      </template>
       <template v-else-if="isSuccess">
         {{ $t(editMode ? 'objective.updated' : 'admin.objective.created') }}
       </template>
@@ -105,7 +108,7 @@
             {{ $t('btn.close') }}
           </pkt-button>
           <pkt-button
-            v-if="thisObjective.id"
+            v-if="thisObjective.id && !lifted"
             skin="secondary"
             @onClick="$emit('add-key-result')"
           >
@@ -135,7 +138,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { isEqual } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { formattedPeriod } from '@/util/okr';
@@ -199,6 +202,7 @@ export default {
     parentRef: null,
     parentName: null,
     keyResults: [],
+    lifted: false,
   }),
 
   computed: {
@@ -254,6 +258,7 @@ export default {
       async handler(visible) {
         this.thisObjective = null;
         this.periodRange = null;
+        this.lifted = false;
         if (visible) {
           this.$refs.drawer.reset();
         }
@@ -294,6 +299,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('okrs', ['setActiveObjective']),
+
     formattedPeriod,
 
     getCurrentDateRange() {
@@ -334,9 +341,11 @@ export default {
           }
           if (this.hasNewOwner) {
             data.parent = this.parentRef;
+            this.setActiveObjective(null);
+            this.lifted = true;
           }
           await Objective.update(this.thisObjective.id, data);
-          this.$emit('update', this.thisObjective);
+          await this.$emit('update', this.thisObjective);
         } else {
           const { id } = await Objective.create({
             name,

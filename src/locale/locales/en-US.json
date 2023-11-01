@@ -402,7 +402,8 @@
     "editedBy": "Changed by",
     "created": "Created",
     "edited": "Changed",
-    "updated": "Objective was changed!"
+    "updated": "The objective was changed!",
+    "moved": "The objective was moved!"
   },
   "period": {
     "choosePeriod": "Choose period",

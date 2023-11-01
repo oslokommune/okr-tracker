@@ -402,7 +402,8 @@
     "editedBy": "Endret av",
     "created": "Opprettet",
     "edited": "Sist endret",
-    "updated": "Målet ble endret!"
+    "updated": "Målet ble endret!",
+    "moved": "Målet ble flyttet!"
   },
   "period": {
     "choosePeriod": "Velg periode",
