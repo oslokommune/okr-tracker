@@ -63,7 +63,7 @@
           :select-options="ownerOptions"
           :select-reduce="(option) => option.value"
           select-label="label"
-          label="Målansvarlig"
+          :label="$t('admin.objective.responsible')"
           rules="required"
         />
 
