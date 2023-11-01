@@ -113,6 +113,18 @@ service cloud.firestore {
     }
 
     //
+    // Return true if the current user is a member of `document.parent`
+    // *before* performing the action.
+    //
+    function isMemberOfParentBefore(document, type) {
+      let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
+      let doc = get(/databases/$(database)/documents/$(type)/$(document));
+      let parentDoc = get(doc.data.parent);
+      let userIsMemberOfParent = userRef in parentDoc.data.team;
+      return userIsMemberOfParent;
+    }
+
+    //
     // Return true if the current user is a member of the parent of the
     // document's objective *before* performing the action.
     //
@@ -203,7 +215,7 @@ service cloud.firestore {
     match /objectives/{document} {
       allow read: if isSignedIn();
       allow create: if isSuperAdmin() || isMemberOfParent(document, 'objectives') || isAdminOfParent(document, 'objectives');
-      allow update: if isSuperAdmin() || isMemberOfParent(document, 'objectives') || isAdminOfParent(document, 'objectives');
+      allow update: if isSuperAdmin() || isMemberOfParentBefore(document, 'objectives') || isAdminOfParent(document, 'objectives');
       allow delete: if isSuperAdmin();
     }
 
