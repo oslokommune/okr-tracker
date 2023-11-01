@@ -198,6 +198,7 @@ export default {
     owner: null,
     parentRef: null,
     parentName: null,
+    keyResults: [],
   }),
 
   computed: {
@@ -222,13 +223,16 @@ export default {
      * Return `true` if the user should be able to lift current objective.
      */
     canLift() {
-      return this.objective?.parent.department || this.objective?.parent.organization;
+      return (
+        (this.objective?.parent.department || this.objective?.parent.organization) &&
+        this.keyResults.every((kr) => kr.parent.id === this.objective.parent.id)
+      );
     },
 
     ownerOptions() {
       return [
         { label: this.objective.parent.name, value: this.thisObjective.parent.path },
-        { label: this.parentName, value: this.parentRef.path },
+        { label: this.parentName, value: this.parentRef?.path },
       ];
     },
 
@@ -271,6 +275,13 @@ export default {
             this.owner = this.thisObjective.parent.path;
             this.loading = false;
           });
+
+        const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
+        const keyResults = await db
+          .collection('keyResults')
+          .where('archived', '==', false)
+          .where('objective', '==', objectiveRef);
+        await this.$bind('keyResults', keyResults);
 
         if (this.canLift) {
           this.parentRef = await db.doc(
