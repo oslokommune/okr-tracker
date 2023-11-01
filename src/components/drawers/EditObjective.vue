@@ -104,7 +104,18 @@
           </pkt-button>
         </template>
         <template v-else-if="!objective">
-          <pkt-button skin="tertiary" @onClick="close">
+          <router-link
+            v-if="lifted && !hasSelfContributor"
+            :to="{
+              name: 'ObjectiveHome',
+              params: { objectiveId: thisObjective.id, slug: parentSlug },
+            }"
+            class="pkt-link pkt-txt-18-medium"
+          >
+            <pkt-icon class="pkt-link__icon" name="chevron-right" />
+            {{ $t('admin.objective.goTo') }}
+          </router-link>
+          <pkt-button v-else skin="tertiary" @onClick="close">
             {{ $t('btn.close') }}
           </pkt-button>
           <pkt-button
@@ -201,6 +212,7 @@ export default {
     owner: null,
     parentRef: null,
     parentName: null,
+    parentSlug: null,
     keyResults: [],
     lifted: false,
   }),
@@ -307,7 +319,9 @@ export default {
           this.parentRef = await db.doc(
             this.objective.parent.department || this.objective.parent.organization
           );
-          this.parentName = (await this.parentRef.get()).data().name;
+          const parentData = (await this.parentRef.get()).data();
+          this.parentName = parentData.name;
+          this.parentSlug = parentData.slug;
         }
       },
     },
