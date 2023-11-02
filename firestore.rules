@@ -217,23 +217,7 @@ service cloud.firestore {
     }
 
     match /apiClients/{document} {
-      function isAdminOfQueriedParent() {
-        let userDoc = getUserDoc();
-        let userIsAdmin = isAdmin();
-        let parentDoc = getAfter(resource.data.parent);
-        let hasOrgDocumentInParent = 'organization' in parentDoc.data;
-        let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgDocumentInParent && getAfter(parentDoc.data.organization).id in userDoc.data.admin;
-        let isAdminOfParent = userIsAdmin && !isAdminFromOrgOfProdOrDep && parentDoc.data.id in userDoc.data.admin;
-        return isSignedIn() && (isAdminFromOrgOfProdOrDep || isAdminOfParent);
-      }
-      function isMemberOfQueriedParent() {
-        let userRef = /databases/$(database)/documents/users/$(request.auth.token.email);
-        let parentDoc = getAfter(resource.data.parent);
-        let userIsMemberOfParent = userRef in parentDoc.data.team;
-        return isSignedIn() && userIsMemberOfParent;
-      }
-
-      allow read: if isSuperAdmin() || isMemberOfQueriedParent() || isAdminOfQueriedParent();
+      allow read: if isSignedIn();
       allow write: if isSuperAdmin() || isMemberOfParent(document, 'apiClients') || isAdminOfParent(document, 'apiClients');
 
       match /secrets/{key} {
