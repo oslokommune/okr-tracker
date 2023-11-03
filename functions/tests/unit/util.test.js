@@ -1,4 +1,4 @@
-import sheetIdFromUrl from '../../functions/util/util';
+import sheetIdFromUrl from '../../util/util';
 
 describe('Function utils', () => {
   test('gets the Google Sheet ID from a URL', () => {
