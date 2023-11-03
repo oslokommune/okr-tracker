@@ -188,6 +188,7 @@
     "keyResults": "Key results",
     "success": "Success",
     "objective": "Objective",
+    "objectiveBy": "Objective by {owner}",
     "selectObjectivesInPeriod": "Select all objectives in this period",
     "noObjectivesInPeriod": "No objectives in this period",
     "keyResult": "Key result",

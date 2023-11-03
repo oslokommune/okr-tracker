@@ -1,68 +1,25 @@
 const CONTRIBUTOR_TAG_COLORS = [
-  {
-    name: 'color-beige-dark',
-    mode: 'dark',
-  },
-  {
-    name: 'color-beige-light',
-    mode: 'light',
-  },
-  {
-    name: 'color-blue-40',
-    mode: 'dark',
-  },
-  {
-    name: 'color-blue-dark',
-    mode: 'dark',
-  },
-  {
-    name: 'color-blue-dark-15',
-    mode: 'dark',
-  },
-  {
-    name: 'color-blue-dark-40',
-    mode: 'dark',
-  },
-  {
-    name: 'color-blue-light',
-    mode: 'light',
-  },
-  {
-    name: 'color-focus',
-    mode: 'light',
-  },
-  {
-    name: 'color-green-40',
-    mode: 'dark',
-  },
-  {
-    name: 'color-green-dark',
-    mode: 'dark',
-  },
-  {
-    name: 'color-green-dark-15',
-    mode: 'light',
-  },
-  {
-    name: 'color-red-100',
-    mode: 'dark',
-  },
-  {
-    name: 'color-red-20',
-    mode: 'light',
-  },
-  {
-    name: 'color-yellow',
-    mode: 'dark',
-  },
-  {
-    name: 'color-yellow-50',
-    mode: 'light',
-  },
-  {
-    name: 'color-yellow-80',
-    mode: 'dark',
-  },
+  'color-disabled',
+  'color-green-dark',
+  'color-hover',
+  'color-blue',
+  'color-beige-dark',
+  'color-blue-dark-40',
+  'color-blue-light',
+  'color-yellow-80',
+  'color-red-20',
+  'color-focus',
+  'color-green-dark-15',
+  'color-yellow',
+  'color-red-100',
+  'color-blue-40',
+  'color-focus',
+  'color-green-40',
+  'color-blue-dark',
+  'color-blue-dark-15',
+  'color-yellow-50',
+  'color-green',
+  'color-red',
 ];
 
 export default CONTRIBUTOR_TAG_COLORS;

@@ -15,37 +15,27 @@
           <span class="key-result-link-card__title pkt-txt-14">
             {{ title }}
           </span>
-
-          <div class="key-result-link-card__tags">
-            <div
-              v-tooltip="owner"
-              :class="[
-                'key-result-link-card__tag',
-                'pkt-txt-12-bold',
-                `key-result-link-card__tag--${contributorTagMode(owner)}`,
-              ]"
-              :style="{ background: contributorTagColor(owner) }"
-            >
-              <span>{{ owner[0] }}</span>
-            </div>
-          </div>
         </div>
 
-        <progress-bar :progression="progression" compact />
+        <div>
+          <progress-bar :progression="progression" compact />
+          <item-tag v-if="owner" :item="owner" class="pkt-txt-12-light" />
+        </div>
       </div>
     </a>
   </router-link>
 </template>
 
 <script>
-import { contributorTagColor, contributorTagMode } from '@/util/okr';
 import ProgressBar from '@/components/ProgressBar.vue';
+import ItemTag from '@/components/ItemTag.vue';
 
 export default {
   name: 'KeyResultLinkCard',
 
   components: {
     ProgressBar,
+    ItemTag,
   },
 
   props: {
@@ -62,18 +52,14 @@ export default {
       required: true,
     },
     owner: {
-      type: String,
-      required: true,
+      type: Object,
+      required: false,
+      default: null,
     },
     active: {
       type: Boolean,
       default: false,
     },
-  },
-
-  methods: {
-    contributorTagColor,
-    contributorTagMode,
   },
 };
 </script>
@@ -109,32 +95,15 @@ export default {
     justify-content: space-between;
   }
 
+  .item-tag {
+    display: flex;
+    justify-content: end;
+  }
+
   &--active {
     color: var(--color-hover);
     background-color: var(--color-blue-5);
     border: 2px solid var(--color-hover);
   }
-}
-
-.key-result-link-card__tags {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.key-result-link-card__tag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-}
-
-.key-result-link-card__tag--light {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.key-result-link-card__tag--dark {
-  color: var(--color-white);
 }
 </style>

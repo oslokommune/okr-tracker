@@ -723,7 +723,7 @@ export default {
     }
   }
 
-  ::v-deep &__title {
+  ::v-deep &__name {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
