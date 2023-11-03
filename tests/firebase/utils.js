@@ -15,11 +15,19 @@ export async function expectPermissionDenied(promise) {
   expect(errorResult.code).toBe('permission-denied' || 'PERMISSION_DENIED');
 }
 
+export async function expectAddSucceeds(promise) {
+  const successResult = await assertSucceeds(promise);
+  expect(successResult).not.toBeUndefined();
+  return successResult;
+}
+
 export async function expectUpdateSucceeds(promise) {
   const successResult = await assertSucceeds(promise);
   expect(successResult).toBeUndefined();
 }
 
 export async function expectGetSucceeds(promise) {
-  expect(assertSucceeds(promise)).not.toBeUndefined();
+  const successResult = await assertSucceeds(promise);
+  expect(successResult).not.toBeUndefined();
+  return successResult;
 }
