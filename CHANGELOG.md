@@ -14,6 +14,11 @@ All notable changes to this project will be documented in this file. The format 
 - New key results are now given a start value of 0, a target value of 100, and
   percentage as unit of measurement by default.
 
+### Fixed
+
+- Fixed Markdown rendering of descriptions on objective, key result, and
+  measurement detail pages.
+
 ### Security
 
 - More security headers are now set: `Content-Security-Policy`,
