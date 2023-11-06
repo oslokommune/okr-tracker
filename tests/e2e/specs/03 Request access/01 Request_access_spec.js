@@ -5,7 +5,10 @@ describe('Request access', () => {
     cy.visit('/').wait(2000);
 
     cy.get('body').then(($body) => {
-      if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VITE_TESTUSER_USER'))) {
+      if (
+        $body.text().includes('Test Admin') ||
+        $body.text().includes(Cypress.env('VITE_TESTUSER_USER'))
+      ) {
         cy.signOut();
       }
     });
@@ -48,7 +51,10 @@ describe('Request access', () => {
         cy.get('[data-cy="request-accept"]').click();
       });
 
-    cy.get('.toasted').should('contain', i18n.t('toaster.request.accepted', { user: 'acceptme@internet.com' }));
+    cy.get('.toasted').should(
+      'contain',
+      i18n.t('toaster.request.accepted', { user: 'acceptme@internet.com' })
+    );
 
     cy.get('.access-requests__item')
       .eq(0)
@@ -57,6 +63,9 @@ describe('Request access', () => {
         cy.get('[data-cy="request-reject"]').click();
       });
 
-    cy.get('.toasted').should('contain', i18n.t('toaster.request.rejected', { user: 'rejectme@internet.com' }));
+    cy.get('.toasted').should(
+      'contain',
+      i18n.t('toaster.request.rejected', { user: 'rejectme@internet.com' })
+    );
   });
 });

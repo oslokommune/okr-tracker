@@ -6,7 +6,11 @@ import { testObjective, testPeriod } from '../config';
 Cypress.Commands.add('createObjective', () => {
   cy.get('[data-cy="add_objective"]').click().wait(500);
 
-  cy.get('[data-cy="period_selector"]').click().type(testPeriod.name).get('.vs__dropdown-menu > li').click();
+  cy.get('[data-cy="period_selector"]')
+    .click()
+    .type(testPeriod.name)
+    .get('.vs__dropdown-menu > li')
+    .click();
 
   cy.get('[data-cy="objective_title_field"]').clear().type(testObjective.name);
 

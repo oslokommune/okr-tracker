@@ -12,9 +12,7 @@ describe('Verifies restrictions for test user', () => {
   });
 
   it('Logs in as test user', () => {
-    cy.get('input[type="password"]').type(
-      Cypress.env('VITE_TESTUSER_PASSWORD')
-    );
+    cy.get('input[type="password"]').type(Cypress.env('VITE_TESTUSER_PASSWORD'));
     cy.get('form').submit();
     cy.wait(1000);
 
@@ -60,10 +58,7 @@ describe('Verifies restrictions for test user', () => {
   it('Allows test user to edit Product One', () => {
     cy.get('[data-cy="edit_object_link"]').click().wait(500);
 
-    cy.get('[data-cy="product_name_field"]').should(
-      'have.value',
-      testProducts[0].name
-    );
+    cy.get('[data-cy="product_name_field"]').should('have.value', testProducts[0].name);
 
     cy.get('[data-cy="product_mission_statement_field"]')
       .clear()

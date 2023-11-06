@@ -36,7 +36,9 @@ describe('Create objectives', () => {
         if (!$body.text().includes(testPeriod.name)) {
           cy.log('Period exists');
         } else {
-          cy.visit(`/product/${testProducts[0].slug}/edit/objectives-key-results`).wait(1000);
+          cy.visit(`/product/${testProducts[0].slug}/edit/objectives-key-results`).wait(
+            1000
+          );
           cy.createPeriod();
         }
       });
@@ -48,7 +50,9 @@ describe('Create objectives', () => {
         if (!$body.text().includes(testPeriod.name)) {
           cy.log('Period exists');
         } else {
-          cy.visit(`/product/${testProducts[1].slug}/edit/objectives-key-results`).wait(1000);
+          cy.visit(`/product/${testProducts[1].slug}/edit/objectives-key-results`).wait(
+            1000
+          );
           cy.createPeriod();
         }
       });

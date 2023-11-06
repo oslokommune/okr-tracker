@@ -3,7 +3,10 @@ describe('Test Admin Login', () => {
     cy.visit('/').wait(2000);
 
     cy.get('body').then(($body) => {
-      if ($body.text().includes('Test Admin') || $body.text().includes(Cypress.env('VITE_TESTUSER_USER'))) {
+      if (
+        $body.text().includes('Test Admin') ||
+        $body.text().includes(Cypress.env('VITE_TESTUSER_USER'))
+      ) {
         cy.signOut();
       }
     });

@@ -16,7 +16,10 @@ describe('Create department', () => {
 
     cy.get('.title-1').should('contain', testOrganization.name);
     cy.get('.team__list').should('be.empty');
-    cy.get('[data-cy="mission_statement"]').should('contain', testOrganization.mission_statement);
+    cy.get('[data-cy="mission_statement"]').should(
+      'contain',
+      testOrganization.mission_statement
+    );
     cy.get('[data-cy="objectives_list"] .title').should('contain', '(0)');
   });
 });
@@ -45,7 +48,9 @@ describe('Create data for organization', () => {
 
     cy.get('[data-cy="objective_name_field"]').clear().type(testObjective.name);
 
-    cy.get('[data-cy="objective_description_field"]').clear().type(testObjective.description);
+    cy.get('[data-cy="objective_description_field"]')
+      .clear()
+      .type(testObjective.description);
 
     cy.get('[data-cy="save_objective_button"]').click();
   });
@@ -55,11 +60,17 @@ describe('Create data for organization', () => {
 
     cy.get('[data-cy="keyResult_name_field"]').clear().type(testKeyResult.name);
 
-    cy.get('[data-cy="keyResult_longdescription_field"]').clear().type(testKeyResult.longDescription);
+    cy.get('[data-cy="keyResult_longdescription_field"]')
+      .clear()
+      .type(testKeyResult.longDescription);
 
-    cy.get('[data-cy="keyResult_startvalue_field"]').clear().type(testKeyResult.startValue);
+    cy.get('[data-cy="keyResult_startvalue_field"]')
+      .clear()
+      .type(testKeyResult.startValue);
 
-    cy.get('[data-cy="keyResult_targetvalue_field"]').clear().type(testKeyResult.targetValue);
+    cy.get('[data-cy="keyResult_targetvalue_field"]')
+      .clear()
+      .type(testKeyResult.targetValue);
 
     cy.get('[data-cy="keyResult_unit_field"]').clear().type(testKeyResult.unit);
 

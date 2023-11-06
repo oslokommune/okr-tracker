@@ -13,7 +13,9 @@ Cypress.Commands.add('createProduct', (productIndex) => {
 
   cy.get('[data-cy="product_name_field"]').clear().type(testProducts[productIndex].name);
 
-  cy.get('[data-cy="product_mission_statement_field"]').clear().type(testProducts[productIndex].mission_statement);
+  cy.get('[data-cy="product_mission_statement_field"]')
+    .clear()
+    .type(testProducts[productIndex].mission_statement);
 
   cy.get('[data-cy="save_product_button"]').click();
 });
