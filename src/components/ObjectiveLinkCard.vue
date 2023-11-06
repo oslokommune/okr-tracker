@@ -46,13 +46,7 @@
         <div class="objective-link-card__footer">
           <progress-bar :progression="objective.progression" compact />
 
-          <div
-            :class="[
-              'objective-link-card__tags',
-              { 'objective-link-card__tags--empty': !contributors.length },
-              'pkt-txt-12-light',
-            ]"
-          >
+          <div class="objective-link-card__tags pkt-txt-12-light">
             <template v-if="externalContributors.length">
               <template v-if="hasOwnKeyResult">
                 <item-tag :item="activeItem" />
@@ -226,8 +220,8 @@ export default {
     display: flex;
     gap: 0.25rem;
     align-items: center;
-    color: var(--color-grayscale-50);
-    --fg-color: var(--color-grayscale-50);
+    color: var(--color-grayscale-60);
+    --fg-color: var(--color-grayscale-60);
     line-height: 0.75rem;
   }
 
@@ -269,11 +263,6 @@ export default {
       min-width: auto;
       min-height: auto;
     }
-  }
-
-  &--empty {
-    color: var(--color-grayscale-50);
-    font-style: italic;
   }
 }
 </style>

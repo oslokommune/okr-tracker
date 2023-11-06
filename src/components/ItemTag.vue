@@ -1,6 +1,9 @@
 <template>
   <span class="item-tag">
-    <span :style="{ background: contributorTagColor(item.name) }"></span>
+    <span
+      class="item-tag__bullet"
+      :style="{ background: contributorTagColor(item.name) }"
+    ></span>
     <span>{{ item.name }}</span>
   </span>
 </template>
@@ -31,7 +34,7 @@ export default {
   align-items: center;
   white-space: nowrap;
 
-  span:first-of-type {
+  &__bullet {
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
