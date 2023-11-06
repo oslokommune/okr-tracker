@@ -14,8 +14,8 @@
     "deploy": ". ./.env.production && sed -i -e \"s|<host>|$VITE_API_GATEWAY_URL|g\" public/openapi.yaml && npm run build && sed -i -e \"s|$VITE_API_GATEWAY_URL|<host>|g\" public/openapi.yaml && firebase deploy --project=production",
     "deploy:test": "npm run build:test && firebase deploy --project=development",
     "deploy:feature_branch": "npm run build && firebase hosting:channel:deploy --project=production $npm_config_name",
-    "lint": "eslint ./src ./functions ./extras --ext .js,.vue,.gs",
-    "lint:fix": "eslint ./src ./functions ./extras --ext .js,.vue,.gs --fix",
+    "lint": "eslint ./src ./functions ./extras ./tests --ext .js,.vue,.gs",
+    "lint:fix": "eslint ./src ./functions ./extras ./tests --ext .js,.vue,.gs --fix",
     "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
     "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
     "export_mock_data": "firebase emulators:export ./mock_data"
