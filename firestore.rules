@@ -65,6 +65,29 @@ service cloud.firestore {
       return isSignedIn() && (isAdminFromOrgOfProdOrDep || isAdminOfParent);
     }
 
+    //
+    // Return true if the current user is an admin of the parent of the
+    // document's objective.
+    //
+    function isAdminOfObjectiveParent(document, type) {
+      let userDoc = getUserDoc();
+      let userIsAdmin = isAdmin();
+      let doc = getAfter(/databases/$(database)/documents/$(type)/$(document));
+      let objectiveDoc = getAfter(doc.data.objective);
+      let parentDoc = getAfter(objectiveDoc.data.parent);
+
+      // Check whether the parent of the document the user tries to access has
+      // an organization – this means that it is a product or department.
+      let hasOrgDocumentInParent = 'organization' in parentDoc.data;
+      let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgDocumentInParent && getAfter(parentDoc.data.organization).id in userDoc.data.admin;
+
+      // Check whether the user has access to the parent, which is an
+      // organization (given that the first check is false).
+      let isAdminOfParent = userIsAdmin && !isAdminFromOrgOfProdOrDep && parentDoc.id in userDoc.data.admin;
+
+      return isSignedIn() && (isAdminFromOrgOfProdOrDep || isAdminOfParent);
+    }
+
     // Is user signed in
     function isSignedIn() {
       // TODO: Must be a verified (whitelisted) user
@@ -187,8 +210,8 @@ service cloud.firestore {
     // TODO: Should also allow create/delete by organization admins.
     match /objectiveContributors/{document} {
       allow read: if isSignedIn();
-      allow create: if isSuperAdmin() || isMemberOfObjectiveParentAfter(document, 'objectiveContributors');
-      allow delete: if isSuperAdmin() || isMemberOfObjectiveParentBefore(document, 'objectiveContributors');
+      allow create: if isSuperAdmin() || isMemberOfObjectiveParentAfter(document, 'objectiveContributors') || isAdminOfObjectiveParent(document, 'objectiveContributors');
+      allow delete: if isSuperAdmin() || isMemberOfObjectiveParentBefore(document, 'objectiveContributors') || isAdminOfObjectiveParent(document, 'objectiveContributors');
     }
 
     match /periods/{document} {
