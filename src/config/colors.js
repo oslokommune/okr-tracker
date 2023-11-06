@@ -1,6 +1,5 @@
 const CONTRIBUTOR_TAG_COLORS = [
   'color-disabled',
-  'color-green-dark',
   'color-hover',
   'color-blue',
   'color-beige-dark',
@@ -11,11 +10,8 @@ const CONTRIBUTOR_TAG_COLORS = [
   'color-focus',
   'color-green-dark-15',
   'color-yellow',
-  'color-red-100',
-  'color-blue-40',
   'color-focus',
   'color-green-40',
-  'color-blue-dark',
   'color-blue-dark-15',
   'color-yellow-50',
   'color-green',
