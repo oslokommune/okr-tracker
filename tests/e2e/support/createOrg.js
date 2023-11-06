@@ -9,7 +9,9 @@ Cypress.Commands.add('createTestOrg', () => {
 
   cy.get('[data-cy="org-name"]').clear().type(testOrganization.name);
 
-  cy.get('[data-cy="org-missionStatement"]').clear().type(testOrganization.mission_statement);
+  cy.get('[data-cy="org-missionStatement"]')
+    .clear()
+    .type(testOrganization.mission_statement);
 
   cy.get('[data-cy="btn-createOrg"]').click();
 

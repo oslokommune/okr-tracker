@@ -9,7 +9,10 @@ Cypress.Commands.add('deleteProduct', (productIndex) => {
 
   cy.get('.miller__col__item').contains(testDepartment.name).click().wait(500);
 
-  cy.get('.miller__col__item').contains(testProducts[productIndex].name).click().wait(500);
+  cy.get('.miller__col__item')
+    .contains(testProducts[productIndex].name)
+    .click()
+    .wait(500);
 
   cy.get('[data-cy="delete_product_button"]').click().wait(100);
 
@@ -17,7 +20,10 @@ Cypress.Commands.add('deleteProduct', (productIndex) => {
 
   cy.get('.miller__col__item').contains(testDepartment.name).click().wait(750);
 
-  cy.get('.miller__col__item').contains(testProducts[productIndex].name).click().wait(750);
+  cy.get('.miller__col__item')
+    .contains(testProducts[productIndex].name)
+    .click()
+    .wait(750);
 
   cy.get('[data-cy="permanently-delete-object"]').click();
 });
