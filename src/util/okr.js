@@ -49,14 +49,5 @@ export function compareKeyResults(a, b) {
  */
 export function contributorTagColor(name) {
   const c = CONTRIBUTOR_TAG_COLORS[simpleHash(name) % CONTRIBUTOR_TAG_COLORS.length];
-  return `var(--${c.name})`;
-}
-
-/**
- * Return the color mode to use for the contributor tag of the
- * organization/department/product called `name`.
- */
-export function contributorTagMode(name) {
-  const c = CONTRIBUTOR_TAG_COLORS[simpleHash(name) % CONTRIBUTOR_TAG_COLORS.length];
-  return c.mode;
+  return `var(--${c})`;
 }

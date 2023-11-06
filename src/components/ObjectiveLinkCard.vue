@@ -17,55 +17,58 @@
     >
       <div class="objective-link-card__inner">
         <div class="objective-link-card__heading">
-          <input
-            v-if="checkable"
-            type="checkbox"
-            class="pkt-form-check-input"
-            :checked="checked"
-            @click.stop="$emit('toggle', $event.target.checked)"
-          />
-          <pkt-tag
-            v-if="objectiveOwner"
-            text-style="normal-text"
-            skin="yellow"
-            size="small"
-            class="objective-link-card__owner"
-          >
-            {{ objectiveOwner.name }}
-          </pkt-tag>
-
-          <ul class="objective-link-card__tags">
-            <li
-              v-for="c in contributors"
-              :key="c.id"
-              v-tooltip="c.name"
-              :class="[
-                'objective-link-card__tag',
-                'pkt-txt-12-bold',
-                `objective-link-card__tag--${contributorTagMode(c.name)}`,
-              ]"
-              :style="{ background: contributorTagColor(c.name) }"
-            >
-              <span>{{ c.name[0] }}</span>
-            </li>
-          </ul>
+          <div v-if="checkable" class="pkt-input-check">
+            <div class="pkt-input-check__input">
+              <input
+                type="checkbox"
+                class="pkt-input-check__input-checkbox"
+                :checked="checked"
+                @click.stop="$emit('toggle', $event.target.checked)"
+              />
+            </div>
+          </div>
+          <div class="objective-link-card__title pkt-txt-12">
+            <pkt-icon name="bullseye" />
+            <span v-if="objectiveOwner">
+              {{
+                $t(isInheritedObjective ? 'general.objectiveBy' : 'general.objective', {
+                  owner: objectiveOwner.name,
+                })
+              }}
+            </span>
+          </div>
         </div>
 
-        <span class="objective-link-card__title pkt-txt-14">
+        <span class="objective-link-card__name pkt-txt-14">
           {{ objective.name }}
         </span>
 
-        <progress-bar :progression="objective.progression" />
+        <div class="objective-link-card__footer">
+          <progress-bar :progression="objective.progression" compact />
+
+          <div class="objective-link-card__tags pkt-txt-12-light">
+            <template v-if="externalContributors.length">
+              <template v-if="hasOwnKeyResult">
+                <item-tag :item="activeItem" />
+                <pkt-icon
+                  v-if="hasOwnKeyResult && externalContributors.length"
+                  name="plus-sign"
+                />
+              </template>
+              <item-tag v-for="c in externalContributors" :key="c.id" :item="c" />
+            </template>
+          </div>
+        </div>
       </div>
     </a>
   </router-link>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import getActiveItemType from '@/util/getActiveItemType';
-import { PktTag } from '@oslokommune/punkt-vue2';
 import ProgressBar from '@/components/ProgressBar.vue';
-import { contributorTagColor, contributorTagMode } from '@/util/okr';
+import ItemTag from '@/components/ItemTag.vue';
 import { db } from '@/config/firebaseConfig';
 import { uniqueBy } from '@/util';
 
@@ -74,7 +77,7 @@ export default {
 
   components: {
     ProgressBar,
-    PktTag,
+    ItemTag,
   },
 
   props: {
@@ -106,6 +109,8 @@ export default {
   }),
 
   computed: {
+    ...mapState(['activeItem']),
+
     /**
      * Return a list of unique contributors to the key results in
      * `this.keyResults`.
@@ -115,6 +120,29 @@ export default {
         this.keyResults.map((kr) => kr.parent).filter((item) => item.name),
         'id'
       );
+    },
+
+    /**
+     * Return a list of contributors that does not include the current item.
+     */
+    externalContributors() {
+      return this.contributors.filter(({ id }) => id !== this.activeItem.id);
+    },
+
+    /**
+     * Return `true` if the current objective has another parent than
+     * `this.activeItem`.
+     */
+    isInheritedObjective() {
+      return this.objectiveOwner && this.objectiveOwner.id !== this.activeItem.id;
+    },
+
+    /**
+     * Return true if `this.activeItem` has own key result attached to this
+     * objective.
+     */
+    hasOwnKeyResult() {
+      return this.contributors.map((c) => c.id).includes(this.activeItem.id);
     },
   },
 
@@ -143,9 +171,6 @@ export default {
   },
 
   methods: {
-    contributorTagColor,
-    contributorTagMode,
-
     async activate(event, rootHandler) {
       if (this.beforeNavigate) {
         await this.beforeNavigate(event);
@@ -175,19 +200,40 @@ export default {
     flex-direction: column;
     gap: 0.5rem;
     height: 100%;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
   }
 
   &__heading {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    justify-content: space-between;
+    height: 1.25rem;
     white-space: nowrap;
+
+    .pkt-input-check__input-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
   }
 
   &__title {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    color: var(--color-grayscale-60);
+    --fg-color: var(--color-grayscale-60);
+    line-height: 0.75rem;
+  }
+
+  &__name {
     text-wrap: balance;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    white-space: nowrap;
   }
 
   &--active,
@@ -202,25 +248,21 @@ export default {
 
 .objective-link-card__tags {
   display: flex;
-  flex: 1 0 auto;
-  gap: 0.25rem;
-  justify-content: flex-end;
-}
+  gap: 0.75rem;
+  height: 0.75rem;
+  margin-left: auto;
+  line-height: 0.75rem;
 
-.objective-link-card__tag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-}
+  .pkt-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+    --fg-color: var(--color-grayscale-60);
 
-.objective-link-card__tag--light {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.objective-link-card__tag--dark {
-  color: var(--color-white);
+    &,
+    ::v-deep > svg {
+      min-width: auto;
+      min-height: auto;
+    }
+  }
 }
 </style>

@@ -23,7 +23,7 @@
     <div class="objective-details__tiles pkt-grid">
       <div class="pkt-cell pkt-cell--span12 pkt-cell--span5-tablet-up">
         <h4>{{ $t('objective.owner') }}</h4>
-        {{ objective.parent.name }}
+        <item-tag v-if="objective.parent?.name" :item="objective.parent" />
       </div>
 
       <div
@@ -31,7 +31,7 @@
         class="pkt-cell pkt-cell--span12 pkt-cell--span7-tablet-up"
       >
         <h4>{{ $t('objective.contributors') }}</h4>
-        {{ contributors.map((c) => c.name).join(', ') }}
+        <item-tag v-for="c in contributors" :key="c.id" :item="c" />
       </div>
 
       <div
@@ -65,6 +65,7 @@ import { startOfDay } from 'date-fns';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { periodDates, uniqueBy } from '@/util';
 import i18n from '@/locale/i18n';
+import ItemTag from '@/components/ItemTag.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 
@@ -74,6 +75,7 @@ export default {
   components: {
     HTMLOutput,
     PktButton,
+    ItemTag,
     ProgressBar,
   },
 
@@ -181,6 +183,10 @@ export default {
     h4 {
       @include get-text('pkt-txt-14-medium');
       margin-bottom: 0.25rem;
+    }
+
+    .item-tag:not(:last-child) {
+      margin-right: 1rem;
     }
   }
 
