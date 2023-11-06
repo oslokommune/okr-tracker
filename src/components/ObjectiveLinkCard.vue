@@ -239,7 +239,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    text-wrap: nowrap;
+    white-space: nowrap;
   }
 
   &--active,

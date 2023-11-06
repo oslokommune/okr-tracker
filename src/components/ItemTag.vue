@@ -29,7 +29,7 @@ export default {
   display: inline-flex;
   gap: 0.25rem;
   align-items: center;
-  text-wrap: nowrap;
+  white-space: nowrap;
 
   span:first-of-type {
     width: 0.5rem;
