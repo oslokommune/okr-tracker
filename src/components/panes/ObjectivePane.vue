@@ -151,6 +151,28 @@ export default {
         });
       },
     },
+
+    isMemberOfChild() {
+      const { department, organization, id: parentId } = this.activeObjective.parent;
+
+      if (!organization && !department) {
+        return this.departments.some(
+          (dep) =>
+            dep.organization.id === parentId &&
+            dep.team.map(({ id }) => id).includes(this.user.id)
+        );
+      }
+
+      if (organization && !department) {
+        return this.products.some(
+          (product) =>
+            product.department.id === parentId &&
+            product.team.map(({ id }) => id).includes(this.user.id)
+        );
+      }
+
+      return false;
+    },
   },
 
   watch: {
@@ -170,32 +192,6 @@ export default {
         await this.$bind('keyResults', keyResults);
         this.loadingKeyResults = false;
       },
-    },
-  },
-
-  methods: {
-    isMemberOfChild() {
-      const { department, organization, id: parentId } = this.activeObjective.parent;
-
-      if (!organization && !department) {
-        const departmentsWithUser = this.departments.filter(
-          (dep) =>
-            dep.organization.id === parentId &&
-            dep.team.map(({ id }) => id).includes(this.user.id)
-        );
-        return departmentsWithUser.length > 0;
-      }
-
-      if (organization && !department) {
-        const productsWithUser = this.products.filter(
-          (product) =>
-            product.department.id === parentId &&
-            product.team.map(({ id }) => id).includes(this.user.id)
-        );
-        return productsWithUser.length > 0;
-      }
-
-      return false;
     },
   },
 };
