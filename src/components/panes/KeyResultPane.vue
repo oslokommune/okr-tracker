@@ -22,7 +22,7 @@
         <h2 class="pkt-txt-18-medium">{{ activeKeyResult.name }}</h2>
 
         <pkt-button
-          v-if="hasEditRights"
+          v-if="canEdit"
           v-tooltip="$t('btn.updateKeyResult')"
           skin="tertiary"
           size="small"
@@ -41,7 +41,7 @@
       <div class="key-result-pane__progression">
         <h4 class="pkt-txt-14-medium">{{ $t('keyResult.progression') }}</h4>
         <pkt-button
-          v-if="hasEditRights"
+          v-if="canEdit"
           :text="$t('widget.history.value')"
           skin="primary"
           size="small"
@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
@@ -158,9 +158,28 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'activePeriod']),
+    ...mapState(['activeItem', 'activePeriod', 'user']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
-    ...mapGetters(['hasEditRights']),
+
+    isAdminOfCurrentOrganization() {
+      return this.user.admin?.includes(
+        this.activeItem.organization
+          ? this.activeItem.organization.id
+          : this.activeItem.id
+      );
+    },
+
+    isMemberOfKeyResultParent() {
+      return this.activeKeyResult.parent.team?.includes(`users/${this.user.id}`);
+    },
+
+    canEdit() {
+      return (
+        this.user.superAdmin ||
+        this.isAdminOfCurrentOrganization ||
+        this.isMemberOfKeyResultParent
+      );
+    },
 
     startDate() {
       return this.activeKeyResult.objective.startDate || this.activePeriod.startDate;

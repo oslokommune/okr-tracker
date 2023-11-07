@@ -402,7 +402,8 @@
     "editedBy": "Changed by",
     "created": "Created",
     "edited": "Changed",
-    "updated": "Objective was changed!"
+    "updated": "The objective was changed!",
+    "moved": "The objective was moved!"
   },
   "period": {
     "choosePeriod": "Choose period",
@@ -442,7 +443,11 @@
       "updated": "Objective was updated!",
       "change": "Edit objective",
       "delete": "Delete objective",
-      "useLastPeriod": "Set to last used period:"
+      "useLastPeriod": "Set to last used period:",
+      "liftWarning1": "With this the objective will move from {curOwner} to {newOwner} and can't be moved back.",
+      "liftWarning2": "You will no longer be able to edit the objective since you aren't a member of {newOwner}, but you will still be able to add key results to the objective.",
+      "goTo": "Go to the objective",
+      "responsible": "Responsible"
     },
     "keyResult": {
       "new": "New key result",
