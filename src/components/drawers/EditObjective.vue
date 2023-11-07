@@ -372,6 +372,7 @@ export default {
             data.parent = this.parentRef;
             if (!this.hasSelfContributor) {
               this.setActiveObjective(null);
+              this.$router.replace({ name: 'ItemHome' });
             }
             this.lifted = true;
           }
