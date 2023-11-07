@@ -4,7 +4,7 @@
       <h2>{{ objective.name }}</h2>
 
       <pkt-button
-        v-if="!compact && hasEditRights"
+        v-if="!compact && canEdit"
         v-tooltip="$t('btn.updateObjective')"
         skin="tertiary"
         variant="icon-only"
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import { startOfDay } from 'date-fns';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { periodDates, uniqueBy } from '@/util';
@@ -97,7 +97,27 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['hasEditRights']),
+    ...mapState(['activeItem', 'user']),
+
+    isAdminOfCurrentOrganization() {
+      return this.user.admin?.includes(
+        this.activeItem.organization
+          ? this.activeItem.organization.id
+          : this.activeItem.id
+      );
+    },
+
+    isMemberOfObjectiveParent() {
+      return this.objective.parent.team?.includes(`users/${this.user.id}`);
+    },
+
+    canEdit() {
+      return (
+        this.user.superAdmin ||
+        this.isAdminOfCurrentOrganization ||
+        this.isMemberOfObjectiveParent
+      );
+    },
 
     period() {
       if (this.objective.startDate && this.objective.endDate) {
