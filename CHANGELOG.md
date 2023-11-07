@@ -13,6 +13,11 @@ All notable changes to this project will be documented in this file. The format 
 
 - New key results are now given a start value of 0, a target value of 100, and
   percentage as unit of measurement by default.
+- The API authorization mechanism has been reworked. The API now accepts a pair
+  of `okr-client-id` and `okr-client-secret` headers to authorize clients.
+  The interface for managing client credentials can be found in the item
+  navigation bar. The existing `okr-team-secret` header is considered deprecated
+  and will continue to work for existing clients until migrated.
 
 ### Fixed
 

@@ -121,7 +121,6 @@
     "organization": "Organisasjon",
     "date": "Dato",
     "password": "Passord",
-    "secret": "API Hemmelighet",
     "comment": "Kommentar",
     "format": "Visning",
     "timestamp": "Timestamp",
@@ -196,7 +195,8 @@
     "frontPage": "Forside",
     "signIn": "Vennligst logg inn",
     "orgs": "Virksomheter",
-    "api": "API",
+    "api": "API-dokumentasjon",
+    "integrations": "Integrasjoner",
     "resultIndicator": "Resultatindikator",
     "keyFigures": "Nøkkeltall",
     "otherMeasurements": "Andre målinger",
@@ -212,7 +212,7 @@
     "step": "Steg {step} av {steps}",
     "or": "eller",
     "shortcuts": "Snarveier",
-    "error": "Feil"
+    "unknown": "ukjent"
   },
   "home": {
     "welcome": "Velkommen til {appName}!",
@@ -449,8 +449,6 @@
       "change": "Rediger måling",
       "delete": "Slett måling"
     },
-    "apiSecret": "Hvis du har tenkt til å bruke API-et for å oppdatere nøkkelresultater og/eller målinger, så trenger du å skrive inn en streng her som legges inn i headeren til kallet (okr-team-secret)",
-    "apiDocs": "API-dokumentasjon",
     "department": {
       "picture": "Bilde",
       "create": "Opprett nytt produktområde",
@@ -665,6 +663,50 @@
     "downloadOptions": {
       "png": "Last ned graf som bilde (.png)",
       "csv": "Last ned rådata (.csv)"
+    }
+  },
+  "integration": {
+    "info": "Vårt API tilbyr funksjonalitet for blant annet å oppdatere nøkkelresultater og/eller målinger maskinelt. For å ta i bruk API-et må man opprette en klient. For hver klient genereres en klient-ID og en hemmelighet som legges inn i headeren til kallet ({clientIdHeader}, {clientSecretHeader}). Dette kommer i tillegg til en egen API-nøkkel ({apiKeyHeader}). Det anbefales å opprette en separat klient for hver enkelt applikasjon man kobler på API-et. Dette gjør det blant annet enklere å holde styr på hvilke hemmeligheter som er i bruk.",
+    "placeholderTitle": "Ny klient",
+    "clientId": "Klient ID",
+    "clientSecret": "Hemmelighet",
+    "action": {
+      "add": "Legg til klient",
+      "edit": "Rediger klient",
+      "delete": "Slett klient",
+      "rotate": "Roter hemmelighet",
+      "confirmRotate": "Bekreft rotering"
+    },
+    "tag": {
+      "created": "Opprettet {when} av {name}",
+      "edited": "Sist endret {when} av {name}",
+      "lastRotated": "Sist rotert for {when}",
+      "lastActivity": "Sist aktiv for {when}",
+      "noActivity": "Ingen aktivitet registrert enda"
+    },
+    "empty": {
+      "heading": "Ingen klienter",
+      "body": "Legg til en eller flere klienter her for å ta i bruk API-et. Dette gjør det enkelt å oppdatere nøkkelresultater og/eller målinger maskinelt."
+    },
+    "toast": {
+      "add": "Opprettet ny klient",
+      "addError": "Kunne ikke opprette ny klient",
+      "update": "Klienten ble endret",
+      "updateError": "Kunne ikke endre klienten",
+      "delete": "Klienten ble slettet",
+      "deleteError": "Kunne ikke slette klient",
+      "rotate": "Hemmeligheten ble rotert",
+      "rotateError": "Kunne ikke rotere hemmelighet"
+    },
+    "warning": {
+      "secret": "Hemmeligheten over må kopieres og oppbevares et trygt sted. Den vises kun denne ene gangen. Den er grei, {closeLink}!",
+      "secretCloseText": "jeg er ferdig",
+      "delete": "Ved sletting vil alle kjørende applikasjoner som benytter denne klienten slutte å fungere.",
+      "rotate": "Ved rotering vil alle kjørende applikasjoner som benytter gammel hemmelighet slutte å fungere.",
+      "deprecation": "Det er ikke lenger mulig å legge til eller endre API-hemmelighet her. Besøk fanen 'integrasjoner' i toppmenyen for å opprette en API-klient. Den gamle hemmeligheten fungerer enn så lenge:"
+    },
+    "error": {
+      "loading": "Kunne ikke hente ut klienter: {error}."
     }
   },
   "languages": {

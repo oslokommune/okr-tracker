@@ -121,7 +121,6 @@
     "organization": "Organization",
     "date": "Date",
     "password": "Password",
-    "secret": "API Secret",
     "comment": "Comment",
     "format": "Display",
     "timestamp": "Timestamp",
@@ -196,7 +195,8 @@
     "frontPage": "Front page",
     "signIn": "Please sign in",
     "orgs": "Organizations",
-    "api": "API",
+    "api": "API documentation",
+    "integrations": "Integrations",
     "resultIndicator": "Result indicator",
     "keyFigures": "Key figures",
     "otherMeasurements": "Other measurements",
@@ -212,7 +212,7 @@
     "step": "Step {step} of {steps}",
     "or": "or",
     "shortcuts": "Shortcuts",
-    "error": "Error"
+    "unknown": "unknown"
   },
   "home": {
     "welcome": "Welcome to {appName}!",
@@ -449,8 +449,6 @@
       "change": "Edit measurement",
       "delete": "Delete measurement"
     },
-    "apiSecret": "If you are using the API to update key results and/or measurements, you need to write an API Secret UUID here for the API call header (okr-team-secret)",
-    "apiDocs": "API documentation",
     "department": {
       "picture": "Image",
       "create": "Create new department",
@@ -665,6 +663,50 @@
     "downloadOptions": {
       "png": "Download graph as image (.png)",
       "csv": "Download raw data (.csv)"
+    }
+  },
+  "integration": {
+    "info": "Our API offers endpoints to automate updating of key results and measurements. In order to make use of the API, an API client must be created. For each client, a unique ID and secret is generated which must be added as request headers ({clientIdHeader}, {clientSecretHeader}) to each API call. This in addition to a separate API key ({apiKeyHeader}). It is recommended to create a separate client for each application that integrates with the API. This makes it easier to keep track of each application and secrets in use.",
+    "placeholderTitle": "New client",
+    "clientId": "Client ID",
+    "clientSecret": "Secret",
+    "action": {
+      "add": "Create new client",
+      "edit": "Edit client",
+      "delete": "Delete client",
+      "rotate": "Rotate secret",
+      "confirmRotate": "Confirm rotate"
+    },
+    "tag": {
+      "created": "Created {when} by {name}",
+      "edited": "Last edited {when} by {name}",
+      "lastRotated": "Last rotated {when}",
+      "lastActivity": "Last active {when}",
+      "noActivity": "No activity seen yet"
+    },
+    "empty": {
+      "heading": "No clients",
+      "body": "Add one or more clients here in order to make use of our API. This makes it easy to automate updating of key results and/or measurements."
+    },
+    "toast": {
+      "add": "New client created",
+      "addError": "Could not create new client",
+      "update": "The client was updated",
+      "updateError": "Could not update the client",
+      "delete": "The client was deleted",
+      "deleteError": "Could not delete the client",
+      "rotate": "The secret was rotated",
+      "rotateError": "Could not rotate the secret"
+    },
+    "warning": {
+      "secret": "The secret above must be copied and stored in a safe location. It's only shown this one time. It's OK, {closeLink}!",
+      "secretCloseText": "I'm done",
+      "delete": "When deleting, all running applications which uses this client will stop working.",
+      "rotate": "When rotating, all running applications which uses the old secret will stop working.",
+      "deprecation": "It is no longer possible to add/edit the API secret here. Please visit the 'integrations' tab in the menu to create a new API client. The old secret will still work for the time being:"
+    },
+    "error": {
+      "loading": "Could not fetch clients: {error}."
     }
   },
   "languages": {

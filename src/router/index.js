@@ -112,6 +112,12 @@ const routes = [
         component: ItemAbout,
       },
       {
+        path: 'integrations',
+        name: 'ItemIntegrations',
+        component: () => import('@/views/Item/ItemIntegrations.vue'),
+        beforeEnter: routerGuards.itemIntegrations,
+      },
+      {
         path: 'k/:keyResultId',
         name: 'KeyResultHome',
         component: KeyResultHome,

@@ -1,5 +1,5 @@
 <template>
-  <v-popover offset="0" placement="top">
+  <v-popover ref="popover" offset="0" placement="top" :disabled="disabled">
     <pkt-button
       type="button"
       skin="tertiary"
@@ -10,8 +10,17 @@
       :disabled="disabled"
     />
 
-    <template slot="popover">
-      <pkt-button type="button" :text="confirmLabel" @onClick="$emit('click', $event)" />
+    <template v-if="!disabled" slot="popover">
+      <div data-mode="dark">
+        <p v-if="confirmText" class="mb-size-16">{{ confirmText }}</p>
+        <pkt-button
+          type="button"
+          skin="secondary"
+          :text="confirmLabel"
+          :size="size"
+          @onClick="confirm"
+        />
+      </div>
     </template>
   </v-popover>
 </template>
@@ -45,6 +54,11 @@ export default {
         return this.$t('btn.confirmDelete');
       },
     },
+    confirmText: {
+      type: String,
+      required: false,
+      default: null,
+    },
     size: {
       type: String,
       required: false,
@@ -59,6 +73,18 @@ export default {
       type: String,
       required: false,
       default: 'trash-can',
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+
+  methods: {
+    confirm(e) {
+      this.$emit('click', e);
+      this.$refs.popover.hide();
     },
   },
 };

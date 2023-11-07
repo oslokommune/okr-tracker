@@ -2,37 +2,30 @@ import express from 'express';
 import validator from 'express-validator';
 
 import { getFirestore } from 'firebase-admin/firestore';
+import { checkApiAuth } from '../helpers.js';
 import {
   commentValidator,
   idValidator,
   progressValidator,
-  teamSecretValidator,
+  clientSecretValidator,
 } from '../validators.js';
+import validateRules from '../validateRules.js';
 
-const { param, matchedData, validationResult } = validator;
+const { param, matchedData } = validator;
 const router = express.Router();
 
 router.post(
   '/:id',
-  teamSecretValidator,
+  clientSecretValidator,
   idValidator,
   progressValidator,
   commentValidator,
+  validateRules,
   async (req, res) => {
-    const result = validationResult(req);
-
-    if (!result.isEmpty()) {
-      res.status(400).json({
-        message: 'Invalid request data',
-        errors: result.mapped(),
-      });
-      return;
-    }
-
-    const { 'okr-team-secret': teamSecret, id, progress, comment } = matchedData(req);
+    const { id, progress, comment } = req.matchedData;
 
     const db = getFirestore();
-    const collection = await db.collection('keyResults');
+    const collection = db.collection('keyResults');
     let keyRes;
 
     try {
@@ -47,19 +40,7 @@ router.post(
 
       const { parent } = keyRes.data();
 
-      const parentData = await parent.get().then((snapshot) => snapshot.data());
-
-      if (!parentData.secret) {
-        res
-          .status(401)
-          .send(
-            `'${parentData.name}' is not set up for API usage. Please set ` +
-              'a secret using the OKR Tracker admin interface.'
-          );
-        return;
-      }
-      if (parentData.secret !== teamSecret) {
-        res.status(401).send('Wrong okr-team-secret');
+      if (!(await checkApiAuth(parent, req, res))) {
         return;
       }
 
