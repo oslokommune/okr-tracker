@@ -25,7 +25,7 @@
       <div class="objective-pane__key-results-header">
         <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
         <pkt-button
-          v-if="hasEditRights"
+          v-if="hasEditRights || isMemberOfChild()"
           :text="$t('general.keyResult')"
           skin="primary"
           size="small"
@@ -128,7 +128,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem']),
+    ...mapState(['activeItem', 'user', 'departments', 'products']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
 
@@ -150,6 +150,28 @@ export default {
           }
         });
       },
+    },
+
+    isMemberOfChild() {
+      const { department, organization, id: parentId } = this.activeObjective.parent;
+
+      if (!organization && !department) {
+        return this.departments.some(
+          (dep) =>
+            dep.organization.id === parentId &&
+            dep.team.map(({ id }) => id).includes(this.user.id)
+        );
+      }
+
+      if (organization && !department) {
+        return this.products.some(
+          (product) =>
+            product.department.id === parentId &&
+            product.team.map(({ id }) => id).includes(this.user.id)
+        );
+      }
+
+      return false;
     },
   },
 

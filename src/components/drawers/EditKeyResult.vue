@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import ObjectiveContributors from '@/db/ObjectiveContributors';
@@ -225,7 +225,9 @@ export default {
       'organizations',
       'departments',
       'products',
+      'user',
     ]),
+    ...mapGetters(['hasEditRights']),
     thisLevel() {
       if (isOrganization(this.activeItem)) {
         return this.organizations.find((o) => o.id === this.activeItem.id);
@@ -254,13 +256,29 @@ export default {
         name: this.activeItem.name,
       };
     },
+    isAdmin() {
+      const { organization } = this.activeItem;
+      const isAdminOfOrganization = organization
+        ? this.user.admin?.includes(organization.id)
+        : this.user.admin?.includes(this.activeItem.id);
+      return isAdminOfOrganization || this.user.superAdmin;
+    },
     ownerOptions() {
-      const childrenOptions = this.children.map((child) => ({
-        value: child.path,
-        name: child.name,
-      }));
+      const options = [];
 
-      return [this.thisLevelOption, ...childrenOptions];
+      if (this.hasEditRights) {
+        options.push(this.thisLevelOption);
+      }
+
+      this.children
+        .filter((child) => this.memberOfLevel(child) || this.isAdmin)
+        .map((child) => ({
+          value: child.path,
+          name: child.name,
+        }))
+        .forEach((child) => options.push(child));
+
+      return options;
     },
     editMode() {
       return !!this.thisKeyResult?.id;
@@ -300,12 +318,12 @@ export default {
           });
       },
     },
-    thisLevel: {
+    ownerOptions: {
       immediate: true,
       async handler() {
-        // Set currentLevel as default option for key result owner
-        if (!this.keyResult?.id) {
-          this.contributor = this.thisLevelOption;
+        // Set default option
+        if (!this.keyResult?.id && this.ownerOptions?.length === 1) {
+          this.contributor = this.ownerOptions[0];
         }
       },
     },
@@ -314,6 +332,10 @@ export default {
   methods: {
     isDepartment,
     isOrganization,
+
+    memberOfLevel(level) {
+      return level.team.map(({ id }) => id).includes(this.user.id);
+    },
 
     async save() {
       const { pageIndex, next } = this.$refs.drawer;
