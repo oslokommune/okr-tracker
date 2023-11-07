@@ -4,7 +4,7 @@
     <div class="role-group__members-list">
       <span v-for="member in membersWithRole" :key="member.id" class="role-group__member">
         <pkt-button size="small" skin="tertiary" @onClick="openProfileModal(member.id)">
-          {{ member.displayName || firstPartOfEmail(member.id) }}
+          {{ displayName(member) }}
         </pkt-button>
       </span>
     </div>
@@ -33,8 +33,8 @@ export default {
   },
 
   methods: {
-    firstPartOfEmail(email) {
-      return email.replace(/@.*/, '');
+    displayName(member) {
+      return member.displayName || member.id?.replace(/@.*/, '') || '';
     },
 
     openProfileModal(profileId) {
