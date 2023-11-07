@@ -95,6 +95,7 @@ import {
   startOfDay,
   startOfMonth,
 } from 'date-fns';
+import { useLocalStorage } from '@vueuse/core';
 import { dateLongCompact } from '@/util';
 import paneEvents from '@/components/layout/paneEvents';
 import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
@@ -122,10 +123,15 @@ export default {
     },
   },
 
+  setup() {
+    const minPPD = 3;
+    const defaultPPD = 4;
+    const localPPD = useLocalStorage('okr-timeline-ppd', defaultPPD);
+    return { defaultPPD, minPPD, localPPD };
+  },
+
   data() {
     return {
-      PPD: 4, // Pixels per day
-      minPPD: 3,
       lineWidth: '0.25rem',
       endPadding: 75, // Padding in pixels before/after the first/last months
       now: new Date(),
@@ -138,6 +144,16 @@ export default {
   computed: {
     ...mapState('okrs', ['activeObjective']),
     ...mapGetters('okrs', ['workbenchObjectives']),
+
+    PPD: {
+      get() {
+        const ppd = parseFloat(this.localPPD) || this.defaultPPD;
+        return Math.max(this.minPPD, ppd);
+      },
+      set(ppd) {
+        this.localPPD = ppd;
+      },
+    },
 
     minDate() {
       return min([
