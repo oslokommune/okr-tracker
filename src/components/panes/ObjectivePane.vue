@@ -72,7 +72,7 @@
           }"
           :title="keyResult.name"
           :progression="keyResult.progression"
-          :owner="keyResult.parent?.name ? keyResult.parent.name : ''"
+          :owner="keyResult.parent?.name ? keyResult.parent : null"
           :active="activeKeyResult && activeKeyResult.id === keyResult.id"
         />
       </div>
