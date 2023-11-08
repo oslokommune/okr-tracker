@@ -8,6 +8,7 @@ import { isDepartment, isProduct } from '@/util/getActiveItemType';
 import defaultPreferences from '@/db/User/defaultPreferences';
 import moduleActions from './actions';
 import okrsModule from './modules/okrs';
+import kpisModule from './modules/kpis';
 
 Vue.use(Vuex);
 
@@ -274,6 +275,7 @@ export const mutations = {
 export default new Vuex.Store({
   modules: {
     okrs: okrsModule,
+    kpis: kpisModule,
   },
   state: {
     user: null,
@@ -287,8 +289,6 @@ export default new Vuex.Store({
     periods: [],
     objectives: [],
     objectiveContributors: [],
-    kpis: [],
-    subKpis: [],
     loginError: null,
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),

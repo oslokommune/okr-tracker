@@ -102,7 +102,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'kpis', 'subKpis', 'selectedPeriod']),
+    ...mapState(['activeItem', 'selectedPeriod']),
+    ...mapState('kpis', ['kpis', 'subKpis']),
     ...mapGetters(['hasEditRights']),
 
     kpiGroups() {
