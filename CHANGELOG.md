@@ -22,6 +22,11 @@ All notable changes to this project will be documented in this file. The format 
   percentage as unit of measurement by default.
 - Objectives can now be "lifted" from a product or department to the level above
   (to a department or organization, respectively).
+- The API authorization mechanism has been reworked. The API now accepts a pair
+  of `okr-client-id` and `okr-client-secret` headers to authorize clients.
+  The interface for managing client credentials can be found in the item
+  navigation bar. The existing `okr-team-secret` header is considered deprecated
+  and will continue to work for existing clients until migrated.
 
 ### Fixed
 

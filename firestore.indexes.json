@@ -1,6 +1,24 @@
 {
   "indexes": [
     {
+      "collectionGroup": "apiClients",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "parent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "audit",
       "queryScope": "COLLECTION",
       "fields": [
@@ -299,6 +317,20 @@
         {
           "fieldPath": "objective",
           "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "secrets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "order": "DESCENDING"
         }
       ]
     }

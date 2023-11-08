@@ -120,6 +120,12 @@ const routes = [
         name: 'ItemAbout',
         component: ItemAbout,
       },
+      {
+        path: 'integrations',
+        name: 'ItemIntegrations',
+        component: () => import('@/views/Item/ItemIntegrations.vue'),
+        beforeEnter: routerGuards.itemIntegrations,
+      },
       /*
        * Redirect old paths for objective and key result details.
        */

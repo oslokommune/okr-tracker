@@ -21,7 +21,7 @@ x-google-backend:
   path_translation: APPEND_PATH_TO_ADDRESS
   protocol: h2
 security:
-  - api_key: []
+  - apiKey: []
 
 paths:
   /kpi:
@@ -60,7 +60,9 @@ paths:
       summary: Post KPI progression.
       operationId: postKPI
       security:
-        - api_key: []
+        - apiKey: []
+          apiClientId: []
+          apiClientSecret: []
       parameters:
         - name: id
           in: path
@@ -81,10 +83,6 @@ paths:
             example:
               progress: 123
               comment: A fine measurement
-        - name: okr-team-secret
-          in: header
-          description: Identify yourself with the secret you chose in your Team's settings
-          type: string
       responses:
         '200':
           description: A successful response
@@ -131,13 +129,13 @@ paths:
         required: true
         type: string
         format: date
-      - name: okr-team-secret
-        in: header
-        description: Identify yourself with the secret you chose in your Team's settings
-        type: string
     put:
       summary: Create or update KPI progression value.
       operationId: updateKPIProgressionValue
+      security:
+        - apiKey: []
+          apiClientId: []
+          apiClientSecret: []
       parameters:
         - name: value
           in: body
@@ -170,6 +168,10 @@ paths:
     delete:
       summary: Delete KPI progression value.
       operationId: deleteKPIProgressionValue
+      security:
+        - apiKey: []
+          apiClientId: []
+          apiClientSecret: []
       responses:
         200:
           description: A successful response
@@ -188,8 +190,6 @@ paths:
     get:
       summary: Get key result.
       operationId: getKeyRes
-      security:
-        - api_key: []
       parameters:
         - name: id
           in: path
@@ -209,7 +209,9 @@ paths:
       summary: Post key result progression.
       operationId: postKeyRes
       security:
-        - api_key: []
+        - apiKey: []
+          apiClientId: []
+          apiClientSecret: []
       parameters:
         - name: id
           in: path
@@ -262,7 +264,8 @@ paths:
       summary: Update user details.
       operationId: patchUser
       security:
-        - api_key: []
+        - apiKey: []
+          okrAdminSecret: []
       parameters:
         - name: id
           in: path
@@ -283,10 +286,6 @@ paths:
             example:
               displayName: Foo Bar
               position: director
-        - name: okr-admin-secret
-          in: header
-          description: OKR Tracker admin secret value
-          type: string
       responses:
         '200':
           description: A successful response
@@ -303,10 +302,24 @@ paths:
           $ref: '#/responses/Unavailable'
 
 securityDefinitions:
-  api_key:
-    type: "apiKey"
-    name: "x-api-key"
-    in: "header"
+  apiKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+  apiClientId:
+    type: apiKey
+    name: okr-client-id
+    in: header
+    description: Identify yourself with the identifier of your API client
+  apiClientSecret:
+    type: apiKey
+    name: okr-client-secret
+    in: header
+    description: Identify yourself with the secret of your API client
+  okrAdminSecret:
+    type: apiKey
+    name: okr-admin-secret
+    in: header
 
 definitions:
   Keyres:

@@ -91,15 +91,15 @@
             </v-select>
           </div>
 
-          <form-component
-            v-model="thisItem.secret"
-            input-type="input"
-            name="secret"
-            :disabled="thisItem?.archived"
-            :label="$t('fields.secret')"
-          >
-            <template #help><span v-html="$t('admin.apiSecret')" /></template>
-          </form-component>
+          <pkt-alert v-if="thisItem.secret" skin="warning" class="mb-size-32">
+            {{ $t('integration.warning.deprecation') }}
+            <input
+              class="pkt-form-input mt-size-16"
+              :value="thisItem.secret"
+              :disabled="true"
+              :readonly="true"
+            />
+          </pkt-alert>
         </template>
 
         <template v-if="!thisItem?.archived" #actions="{ handleSubmit, submitDisabled }">
@@ -259,7 +259,7 @@ export default {
 
         try {
           const { id: itemId } = this.item;
-          const { name, missionStatement, targetAudience, secret } = this.thisItem;
+          const { name, missionStatement, targetAudience } = this.thisItem;
 
           const team = this.thisItem.team.map((user) =>
             db.collection('users').doc(user.id)
@@ -270,7 +270,6 @@ export default {
             team,
             missionStatement,
             targetAudience: targetAudience === undefined ? '' : targetAudience,
-            secret: secret === undefined ? '' : secret,
           };
 
           if (this.type === 'organization') {
