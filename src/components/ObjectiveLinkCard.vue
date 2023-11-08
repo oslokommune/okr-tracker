@@ -27,15 +27,22 @@
               />
             </div>
           </div>
-          <div class="objective-link-card__title pkt-txt-12">
-            <pkt-icon name="bullseye" />
-            <span v-if="objectiveOwner">
-              {{
-                $t(isInheritedObjective ? 'general.objectiveBy' : 'general.objective', {
-                  owner: objectiveOwner.name,
-                })
-              }}
-            </span>
+          <div class="objective-link-card__title">
+            <pkt-tag
+              :skin="
+                isExactActive || active || isInheritedObjective ? 'blue-light' : 'grey'
+              "
+              size="small"
+              text-style="normal-text"
+              icon-name="bullseye"
+            >
+              <template v-if="isInheritedObjective">
+                {{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}
+              </template>
+              <template v-else>
+                {{ $t('general.objective') }}
+              </template>
+            </pkt-tag>
           </div>
         </div>
 
@@ -48,13 +55,7 @@
 
           <div class="objective-link-card__tags pkt-txt-12-light">
             <template v-if="externalContributors.length">
-              <template v-if="hasOwnKeyResult">
-                <item-tag :item="activeItem" />
-                <pkt-icon
-                  v-if="hasOwnKeyResult && externalContributors.length"
-                  name="plus-sign"
-                />
-              </template>
+              <item-tag v-if="hasOwnKeyResult" :item="activeItem" />
               <item-tag v-for="c in externalContributors" :key="c.id" :item="c" />
             </template>
           </div>
@@ -66,6 +67,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { PktTag } from '@oslokommune/punkt-vue2';
 import getActiveItemType from '@/util/getActiveItemType';
 import ProgressBar from '@/components/ProgressBar.vue';
 import ItemTag from '@/components/ItemTag.vue';
@@ -76,6 +78,7 @@ export default {
   name: 'ObjectiveLinkCard',
 
   components: {
+    PktTag,
     ProgressBar,
     ItemTag,
   },
@@ -221,8 +224,16 @@ export default {
     gap: 0.25rem;
     align-items: center;
     color: var(--color-grayscale-60);
-    --fg-color: var(--color-grayscale-60);
     line-height: 0.75rem;
+    --fg-color: var(--color-grayscale-60);
+
+    ::v-deep .pkt-tag {
+      font-size: 0.75rem;
+
+      &__icon {
+        margin-right: 0.25rem;
+      }
+    }
   }
 
   &__name {
