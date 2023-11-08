@@ -449,7 +449,7 @@
       "liftWarning1": "Målet vil med dette flyttes fra {curOwner} til {newOwner} og kan ikke flyttes tilbake.",
       "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}, men du vil fortsatt kunne legge nøkkelresultater til målet.",
       "goTo": "Gå til målet",
-      "responsible": "Målansvarlig"
+      "responsible": "Ansvarlig for målet"
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",
