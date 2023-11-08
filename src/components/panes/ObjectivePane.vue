@@ -25,7 +25,7 @@
       <div class="objective-pane__key-results-header">
         <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
         <pkt-button
-          v-if="hasEditRights || isMemberOfChild()"
+          v-if="hasEditRights || isMemberOfChild"
           :text="$t('general.keyResult')"
           skin="primary"
           size="small"
