@@ -1,5 +1,14 @@
 <template>
-  <pane-wrapper :title="$t('general.OKRsLong')" class="timeline-pane">
+  <pane-wrapper class="timeline-pane">
+    <template #title>
+      <h1 class="pkt-txt-18-medium pkt-hide-desktop-up">
+        {{ $t('general.OKRsLong') }}
+      </h1>
+      <h1 class="pkt-txt-18-medium pkt-show-desktop-up">
+        {{ $t('general.OKRsLonger', { name: activeItem.name }) }}
+      </h1>
+    </template>
+
     <template #actions>
       <pkt-button
         v-if="hasEditRights"
@@ -36,7 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['dataLoading', 'selectedPeriod']),
+    ...mapState(['activeItem', 'dataLoading', 'selectedPeriod']),
     ...mapGetters(['objectivesWithID', 'hasEditRights']),
   },
 };

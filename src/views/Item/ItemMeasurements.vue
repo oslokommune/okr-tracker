@@ -1,7 +1,12 @@
 <template>
   <div class="measurements-page">
     <div v-if="allKpis.length" class="measurements-page__header">
-      <h1 class="pkt-txt-18-medium">{{ $t('kpi.heading') }}</h1>
+      <h1 class="pkt-txt-18-medium pkt-hide-tablet-up">
+        {{ $t('general.KPIs') }}
+      </h1>
+      <h1 class="pkt-txt-18-medium pkt-show-tablet-up">
+        {{ $t('general.KPIsLong', { name: activeItem.name }) }}
+      </h1>
     </div>
 
     <div v-if="hasEditRights" class="measurements-page__actions">
@@ -97,7 +102,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
+    ...mapState(['activeItem', 'kpis', 'subKpis', 'selectedPeriod']),
     ...mapGetters(['hasEditRights']),
 
     kpiGroups() {

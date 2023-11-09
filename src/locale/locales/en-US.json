@@ -72,7 +72,6 @@
         "description": "The measurement is considered especially important as an indicator of achievement. If the measurement is registered for a product, it is also displayed as a result indicator for the parent department."
       }
     },
-    "heading": "Measurements",
     "itemRowError": "error",
     "help": {
       "updates": "Measurements can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating measurements {readMoreLink} (in Norwegian).",
@@ -167,7 +166,9 @@
     "general": "General",
     "OKRs": "OKRs",
     "OKRsLong": "Objectives and Key results",
+    "OKRsLonger": "Objectives and Key results for {name}",
     "KPIs": "Measurements",
+    "KPIsLong": "Measurements for {name}",
     "project": "OKR",
     "loading": "Loading ...",
     "owner": "City of Oslo",

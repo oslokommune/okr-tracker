@@ -72,7 +72,6 @@
         "description": "Målingen anses som en vesentlig indikator for måloppnåelse og fremheves særskilt. Dersom målingen registreres for et produkt, vises den også som del av produktområdets resultatindikatorer. Kan for eksempel være tillknyttet et tildelingsbrev eller andre styringsinstrumenter."
       }
     },
-    "heading": "Målinger",
     "itemRowError": "feil",
     "help": {
       "updates": "Målinger kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av målinger {readMoreLink}.",
@@ -167,7 +166,9 @@
     "general": "Generelt",
     "OKRs": "OKR-er",
     "OKRsLong": "Mål og nøkkelresultater",
+    "OKRsLonger": "Mål og nøkkelresultater for {name}",
     "KPIs": "Målinger",
+    "KPIsLong": "Målinger for {name}",
     "project": "OKR",
     "loading": "Laster ...",
     "owner": "Oslo kommune",
@@ -448,7 +449,7 @@
       "liftWarning1": "Målet vil med dette flyttes fra {curOwner} til {newOwner} og kan ikke flyttes tilbake.",
       "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}, men du vil fortsatt kunne legge nøkkelresultater til målet.",
       "goTo": "Gå til målet",
-      "responsible": "Målansvarlig"
+      "responsible": "Ansvarlig for målet"
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",

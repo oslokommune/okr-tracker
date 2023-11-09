@@ -14,8 +14,10 @@
     </div>
 
     <div class="pane__inner">
-      <div v-if="title" class="pane__header">
-        <h1 class="pkt-txt-18-medium">{{ title }}</h1>
+      <div v-if="title || $slots.title" class="pane__header">
+        <slot name="title">
+          <h1 class="pkt-txt-18-medium">{{ title }}</h1>
+        </slot>
       </div>
 
       <div class="pane__body">
