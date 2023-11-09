@@ -36,31 +36,37 @@ export default {
   },
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState('okrs', { okrPeriod: 'selectedPeriod' }),
+    ...mapState('kpis', { kpiPeriod: 'selectedPeriod' }),
 
     period: {
       get() {
-        return this.selectedPeriod;
+        return this.isMeasurementsRoute ? this.kpiPeriod : this.okrPeriod;
       },
       set(value) {
-        this.setSelectedPeriod(value);
+        const setSelectedPeriod = this.isMeasurementsRoute
+          ? this.setKpiPeriod
+          : this.setOkrPeriod;
+        setSelectedPeriod(value);
       },
     },
 
     periodLabel() {
-      if (this.selectedPeriod) {
-        return this.selectedPeriod.label;
-      }
-      return this.$t('period.choosePeriod');
+      return this.period ? this.period.label : this.$t('period.choosePeriod');
     },
 
     _predefinedPeriods() {
       return Object.values(getPeriods());
     },
+
+    isMeasurementsRoute() {
+      return this.$route.name === 'ItemMeasurements';
+    },
   },
 
   methods: {
-    ...mapActions(['setSelectedPeriod']),
+    ...mapActions('okrs', { setOkrPeriod: 'setSelectedPeriod' }),
+    ...mapActions('kpis', { setKpiPeriod: 'setSelectedPeriod' }),
   },
 };
 </script>

@@ -110,7 +110,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState('kpis', ['selectedPeriod']),
     ...mapGetters(['hasEditRights']),
 
     progress() {

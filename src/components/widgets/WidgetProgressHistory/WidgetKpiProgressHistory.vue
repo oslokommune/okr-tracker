@@ -86,7 +86,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState('kpis', ['selectedPeriod']),
 
     historyRecords() {
       return filterDuplicatedProgressValues(this.progressCollection);

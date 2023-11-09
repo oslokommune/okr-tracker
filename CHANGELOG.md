@@ -27,6 +27,8 @@ All notable changes to this project will be documented in this file. The format 
   The interface for managing client credentials can be found in the item
   navigation bar. The existing `okr-team-secret` header is considered deprecated
   and will continue to work for existing clients until migrated.
+- The period selected for the OKR and measurement views are no longer
+  synchronized and can be adjusted individually.
 
 ### Fixed
 

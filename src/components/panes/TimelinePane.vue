@@ -45,7 +45,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['activeItem', 'dataLoading', 'selectedPeriod']),
+    ...mapState(['activeItem', 'dataLoading']),
+    ...mapState('okrs', ['selectedPeriod']),
     ...mapGetters(['objectivesWithID', 'hasEditRights']),
   },
 };

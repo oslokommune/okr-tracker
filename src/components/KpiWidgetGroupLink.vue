@@ -36,7 +36,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState('kpis', ['selectedPeriod']),
   },
 };
 </script>

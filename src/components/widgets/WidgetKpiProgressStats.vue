@@ -72,7 +72,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState('kpis', ['selectedPeriod']),
 
     formattedKpiValue() {
       return this.latestProgressRecord
