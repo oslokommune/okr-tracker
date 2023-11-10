@@ -65,7 +65,7 @@ describe('Test Firestore rules', () => {
         name: 'Product X1',
         team: [users.doc('user3@example.com')],
         organization: organizations.doc('organization-x'),
-        department: organizations.doc('department-x'),
+        department: departments.doc('department-x1'),
       });
 
       await objectives.doc('department-x1-objective-1').set({
@@ -75,6 +75,10 @@ describe('Test Firestore rules', () => {
       await objectives.doc('department-y1-objective-1').set({
         name: 'Department Y1 - Objective 1',
         parent: departments.doc('department-y1'),
+      });
+      await objectives.doc('product-x1-objective-1').set({
+        name: 'Product X1 - Objective 1',
+        parent: products.doc('product-x1'),
       });
 
       await objectiveContributors.doc('objective-contributor-1').set({
@@ -216,6 +220,21 @@ describe('Test Firestore rules', () => {
         objectiveContributors.add({
           objective: objectives.doc('department-x1-objective-1'),
           item: departments.doc('department-x1'),
+        })
+      );
+    });
+  });
+
+  test("users can create objective contributors for objectives on their item's parent item", async () => {
+    await withAuthenticatedUser(testEnv, 'user3@example.com', async (db) => {
+      const objectiveContributors = db.collection('objectiveContributors');
+      const products = db.collection('products');
+      const objectives = db.collection('objectives');
+
+      await expectAddSucceeds(
+        objectiveContributors.add({
+          objective: objectives.doc('department-x1-objective-1'),
+          item: products.doc('product-x1'),
         })
       );
     });
