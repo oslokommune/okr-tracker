@@ -536,10 +536,14 @@ export default {
       const objectiveElQuery = document.querySelectorAll(`[data-id="${objective.id}"]`);
 
       if (objectiveElQuery.length) {
-        objectiveElQuery[0].scrollIntoView({
-          block: 'center',
-          inline: 'center',
-          behavior: 'smooth',
+        // Delay `scrollIntoView` until the next event cycle. This seems to be
+        // necessary when `behavior` is set to `smooth` in Chrome.
+        setTimeout(() => {
+          objectiveElQuery[0].scrollIntoView({
+            block: 'center',
+            inline: 'center',
+            behavior: 'smooth',
+          });
         });
       }
     },
