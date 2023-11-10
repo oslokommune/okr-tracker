@@ -86,7 +86,7 @@ export const storeGetters = {
       ? user.admin && user.admin.includes(organization.id)
       : user.admin && user.admin.includes(activeItem.id);
 
-    if ((user && user.superAdmin) || isAdminOfOrganization) {
+    if (user.superAdmin || isAdminOfOrganization) {
       return true;
     }
 
