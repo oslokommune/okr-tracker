@@ -78,7 +78,7 @@ describe('Test Firestore rules', () => {
       });
       await objectives.doc('product-x1-objective-1').set({
         name: 'Product X1 - Objective 1',
-        parent: departments.doc('product-x1'),
+        parent: products.doc('product-x1'),
       });
 
       await objectiveContributors.doc('objective-contributor-1').set({
