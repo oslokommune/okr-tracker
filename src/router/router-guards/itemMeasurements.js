@@ -29,7 +29,6 @@ export default async function itemMeasurements(to, from, next) {
         label: periodDates({ startDate, endDate }),
       });
     }
-    await store.dispatch('set_sub_kpis', activeItem.id);
     return next();
   } catch (error) {
     console.error(error);

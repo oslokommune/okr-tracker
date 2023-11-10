@@ -32,6 +32,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed Markdown rendering of descriptions on objective, key result, and
   measurement detail pages.
+- Product result indicators and key figures are now correctly included as part
+  of parent measurements when switching between items.
 
 ### Security
 
