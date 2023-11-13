@@ -536,10 +536,14 @@ export default {
       const objectiveElQuery = document.querySelectorAll(`[data-id="${objective.id}"]`);
 
       if (objectiveElQuery.length) {
-        objectiveElQuery[0].scrollIntoView({
-          block: 'center',
-          inline: 'center',
-          behavior: 'smooth',
+        // Delay `scrollIntoView` until the next event cycle. This seems to be
+        // necessary when `behavior` is set to `smooth` in Chrome.
+        setTimeout(() => {
+          objectiveElQuery[0].scrollIntoView({
+            block: 'center',
+            inline: 'center',
+            behavior: 'smooth',
+          });
         });
       }
     },
@@ -554,11 +558,17 @@ export default {
 
       this.periodObjectives.map((o) => o.id).forEach(this.addWorkbenchObjective);
 
-      // Set first workbench objective as active
-      await this.$router.replace({
-        name: 'ObjectiveHome',
-        params: { objectiveId: this.periodObjectives[0].id },
-      });
+      // Replace any currently active objective with first from workbench if it
+      // is not part of the selection.
+      if (
+        this.activeObjective &&
+        !this.periodObjectives.find((o) => o.id === this.activeObjective.id)
+      ) {
+        await this.$router.replace({
+          name: 'ObjectiveHome',
+          params: { objectiveId: this.periodObjectives[0].id },
+        });
+      }
 
       this.$nextTick(() => {
         if (this.$refs.period) {
