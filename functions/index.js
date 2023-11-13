@@ -79,7 +79,6 @@ export { KPIDelete as auditKPIDelete } from './audit/index.js';
  */
 export { handleKeyResultProgress } from './progress/index.js';
 export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
-export { handleKeyResultProgressOnObjectiveUpdate } from './progress/index.js';
 
 // // Express servers run via Cloud Functions
 export { api, internal };
