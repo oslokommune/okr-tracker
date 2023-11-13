@@ -14,8 +14,8 @@ import statusRoutes from './routes/status.js';
 import userRoutes from './routes/user.js';
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // max 100 requests per window
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 1000, // max 1000 requests per window
   message: 'Too many requests, please try again later.',
 });
 
