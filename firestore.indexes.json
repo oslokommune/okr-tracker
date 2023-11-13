@@ -303,6 +303,24 @@
       ]
     },
     {
+      "collectionGroup": "objectiveContributors",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archived",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "item",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "objective",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "secrets",
       "queryScope": "COLLECTION",
       "fields": [
@@ -498,6 +516,29 @@
         },
         {
           "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "objectiveContributors",
+      "fieldPath": "auto",
+      "ttl": false,
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
           "queryScope": "COLLECTION_GROUP"
         }
       ]

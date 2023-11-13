@@ -13,10 +13,8 @@ import ItemAbout from '@/views/Item/ItemAbout.vue';
 import ItemMeasurements from '@/views/Item/ItemMeasurements.vue';
 import ItemOKRs from '@/views/Item/ItemOKRs.vue';
 import ItemWrapper from '@/views/Item/ItemWrapper.vue';
-import KeyResultHome from '@/views/KeyResultHome.vue';
 import Login from '@/views/Login.vue';
 import NotFound from '@/views/NotFound.vue';
-import ObjectiveHome from '@/views/ObjectiveHome.vue';
 import RequestAccess from '@/views/RequestAccess.vue';
 
 import * as routerGuards from './router-guards';
@@ -99,6 +97,17 @@ const routes = [
         component: ItemOKRs,
         beforeEnter: routerGuards.itemOKRs,
         beforeRouteUpdate: routerGuards.itemOKRs,
+        children: [
+          {
+            path: 'o/:objectiveId',
+            name: 'ObjectiveHome',
+          },
+          {
+            path: 'o/:objectiveId/k/:keyResultId',
+            name: 'KeyResultHome',
+            beforeEnter: routerGuards.keyResultHome,
+          },
+        ],
       },
       {
         path: 'measurements/:kpiId?',
@@ -117,17 +126,16 @@ const routes = [
         component: () => import('@/views/Item/ItemIntegrations.vue'),
         beforeEnter: routerGuards.itemIntegrations,
       },
-      {
-        path: 'k/:keyResultId',
-        name: 'KeyResultHome',
-        component: KeyResultHome,
-        beforeEnter: routerGuards.keyResultHome,
-      },
+      /*
+       * Redirect old paths for objective and key result details.
+       */
       {
         path: 'o/:objectiveId',
-        name: 'ObjectiveHome',
-        component: ObjectiveHome,
-        beforeEnter: routerGuards.objectiveHome,
+        redirect: (to) => ({ name: 'ObjectiveHome', params: to.params }),
+      },
+      {
+        path: 'k/:keyResultId',
+        redirect: (to) => ({ name: 'KeyResultHome', params: to.params }),
       },
       /*
        * Aliases for `measurements` -- redirect from the old `dashboard` and

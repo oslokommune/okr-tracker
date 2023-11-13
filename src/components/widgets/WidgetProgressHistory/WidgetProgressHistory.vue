@@ -1,5 +1,6 @@
 <template>
-  <widget :title="$t('widget.history.title')">
+  <widget :title="title ? title : $t('widget.history.title')">
+    <template #title-actions><slot name="title-actions" /></template>
     <progress-history-table
       :history-records="historyRecords"
       :is-loading="isLoading"
@@ -42,6 +43,11 @@ export default {
   },
 
   props: {
+    title: {
+      type: String,
+      required: false,
+      default: null,
+    },
     isLoading: {
       type: Boolean,
       required: true,

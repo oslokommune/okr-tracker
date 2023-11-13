@@ -45,6 +45,7 @@
       </div>
 
       <template #actions="{ handleSubmit, submitDisabled }">
+        <btn-delete v-if="record" :disabled="loading" @click="deleteRecord" />
         <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(save)" />
       </template>
     </form-section>
@@ -52,7 +53,7 @@
 </template>
 
 <script>
-import { FormSection, BtnSave } from '@/components/generic/form';
+import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
 import ModalWrapper from './ModalWrapper.vue';
 
 export default {
@@ -61,6 +62,7 @@ export default {
   components: {
     ModalWrapper,
     FormSection,
+    BtnDelete,
     BtnSave,
   },
 
@@ -131,6 +133,10 @@ export default {
     async updateRecord() {
       this.loading = true;
       this.$emit('update-record', this.record.id, this.formattedData, this.close);
+    },
+    async deleteRecord() {
+      this.loading = true;
+      this.$emit('delete-record', this.record.id, this.close);
     },
     close() {
       this.loading = false;

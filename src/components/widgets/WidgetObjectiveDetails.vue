@@ -1,5 +1,5 @@
 <template>
-  <widget v-if="activeObjective" :title="$t('general.details')" size="small">
+  <widget v-if="activeObjective" :title="$t('general.details')" size="small" collapsable>
     <div class="details">
       <div v-if="formattedPeriod(activeObjective)" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
@@ -70,7 +70,7 @@
 <script>
 import { mapState } from 'vuex';
 import { dateLong } from '@/util';
-import formattedPeriod from '@/util/okr';
+import { formattedPeriod } from '@/util/okr';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
 import Widget from './WidgetWrapper.vue';
 
@@ -88,7 +88,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeObjective']),
+    ...mapState('okrs', ['activeObjective']),
     createdBy() {
       return (
         this.activeObjective.createdBy.displayName || this.activeObjective.createdBy.id

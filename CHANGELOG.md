@@ -11,8 +11,17 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
+- Detail views for both objectives and key results are now shown as panes in the
+  OKR timeline view. The number of simultaneously visible panes depends on the
+  viewport size (and is otherwise stacked). Clicking objectives in the timeline
+  now toggles the detail pane rather than adding objectives to a list. To group
+  objectives in a list (and see combined progression), the meta key must now be
+  pressed while selecting one or more objectives.
+- Key results can now be rearranged by drag and drop.
 - New key results are now given a start value of 0, a target value of 100, and
   percentage as unit of measurement by default.
+- Objectives can now be "lifted" from a product or department to the level above
+  (to a department or organization, respectively).
 - The API authorization mechanism has been reworked. The API now accepts a pair
   of `okr-client-id` and `okr-client-secret` headers to authorize clients.
   The interface for managing client credentials can be found in the item
@@ -23,6 +32,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed Markdown rendering of descriptions on objective, key result, and
   measurement detail pages.
+- Product result indicators and key figures are now correctly included as part
+  of parent measurements when switching between items.
 
 ### Security
 

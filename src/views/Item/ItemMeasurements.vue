@@ -1,17 +1,23 @@
 <template>
   <div class="measurements-page">
     <div v-if="allKpis.length" class="measurements-page__header">
-      <h1 class="pkt-txt-24-medium">{{ $t('kpi.heading') }}</h1>
+      <h1 class="pkt-txt-18-medium pkt-hide-tablet-up">
+        {{ $t('general.KPIs') }}
+      </h1>
+      <h1 class="pkt-txt-18-medium pkt-show-tablet-up">
+        {{ $t('general.KPIsLong', { name: activeItem.name }) }}
+      </h1>
+    </div>
 
-      <div v-if="hasEditRights" data-mode="dark">
-        <pkt-button
-          :text="$t('admin.measurement.new')"
-          skin="primary"
-          variant="icon-left"
-          icon-name="plus-sign"
-          @onClick="openKpiDrawer(false)"
-        />
-      </div>
+    <div v-if="hasEditRights" class="measurements-page__actions">
+      <pkt-button
+        :text="$t('admin.measurement.new')"
+        skin="primary"
+        size="small"
+        variant="icon-left"
+        icon-name="plus-sign"
+        @onClick="openKpiDrawer(false)"
+      />
     </div>
 
     <page-layout
@@ -96,7 +102,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['kpis', 'subKpis', 'selectedPeriod']),
+    ...mapState(['activeItem', 'selectedPeriod']),
+    ...mapState('kpis', ['kpis', 'subKpis']),
     ...mapGetters(['hasEditRights']),
 
     kpiGroups() {
@@ -201,16 +208,21 @@ export default {
 
 <style lang="scss" scoped>
 .measurements-page {
+  position: relative;
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
 
   &__header {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
     padding: 1.5rem;
+  }
+
+  &__actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
   }
 
   ::v-deep .page__container {

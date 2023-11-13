@@ -73,12 +73,18 @@ export default {
   },
 
   data: () => ({
-    show: true,
+    isCollapsed: false,
   }),
+
+  computed: {
+    show() {
+      return !this.collapsable || this.isCollapsed;
+    },
+  },
 
   methods: {
     toggle() {
-      this.show = !this.show;
+      this.isCollapsed = !this.isCollapsed;
     },
   },
 };

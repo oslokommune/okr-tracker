@@ -12,6 +12,18 @@ const create = async (itemRef, objectiveRef) => {
     throw new Error(`Cannot find objcetive with ID ${objectiveRef.id}`);
   }
 
+  const contributors = await db
+    .collection('objectiveContributors')
+    .where('objective', '==', objectiveRef)
+    .where('item', '==', itemRef)
+    .get()
+    .then((snapshot) => snapshot.docs.map((doc) => doc.ref));
+
+  // Avoid creating duplicates
+  if (contributors.length > 0) {
+    return contributors[0];
+  }
+
   const data = { item: itemRef, objective: objectiveRef };
 
   validateCreateProps(props, data);

@@ -72,7 +72,6 @@
         "description": "Målingen anses som en vesentlig indikator for måloppnåelse og fremheves særskilt. Dersom målingen registreres for et produkt, vises den også som del av produktområdets resultatindikatorer. Kan for eksempel være tillknyttet et tildelingsbrev eller andre styringsinstrumenter."
       }
     },
-    "heading": "Målinger",
     "itemRowError": "feil",
     "help": {
       "updates": "Målinger kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av målinger {readMoreLink}.",
@@ -167,7 +166,9 @@
     "general": "Generelt",
     "OKRs": "OKR-er",
     "OKRsLong": "Mål og nøkkelresultater",
+    "OKRsLonger": "Mål og nøkkelresultater for {name}",
     "KPIs": "Målinger",
+    "KPIsLong": "Målinger for {name}",
     "project": "OKR",
     "loading": "Laster ...",
     "owner": "Oslo kommune",
@@ -187,7 +188,7 @@
     "keyResults": "Nøkkelresultater",
     "success": "Suksess",
     "objective": "Mål",
-    "selectedObjectives": "Valgte mål",
+    "objectiveBy": "Mål via {owner}",
     "selectObjectivesInPeriod": "Velg alle mål i denne perioden",
     "noObjectivesInPeriod": "Ingen mål i denne perioden",
     "keyResult": "Nøkkelresultat",
@@ -212,6 +213,8 @@
     "step": "Steg {step} av {steps}",
     "or": "eller",
     "shortcuts": "Snarveier",
+    "graph": "Graf",
+    "error": "Feil",
     "unknown": "ukjent"
   },
   "home": {
@@ -347,10 +350,12 @@
     "description": "Beskrivelse",
     "startValue": "Startverdi",
     "targetValue": "Målverdi",
+    "progression": "Progresjon for nøkkelresultatet:",
     "unit": "Måleenhet",
     "defaultUnit": "prosent",
     "newValue": "Ny verdi",
     "editValue": "Endre verdi",
+    "registeredValues": "Registrerte verdier",
     "automation": {
       "header": "Automatisk registrering av progresjon (Google Sheets)",
       "googleSheetUrl": "Google Sheets URL",
@@ -388,8 +393,10 @@
     "edit": "Rediger nøkkelresultat"
   },
   "objective": {
-    "period": "Periode",
-    "progression": "Progresjon",
+    "period": "Arbeidsperiode",
+    "progressionTitle": "Prosentvis fremdrift for målet:",
+    "owner": "Ansvarlig",
+    "contributors": "Bidragsytere",
     "weight": "Vekt",
     "change": "Endre mål",
     "add": "Legg til mål",
@@ -397,7 +404,8 @@
     "editedBy": "Endret av",
     "created": "Opprettet",
     "edited": "Sist endret",
-    "updated": "Målet ble endret!"
+    "updated": "Målet ble endret!",
+    "moved": "Målet ble flyttet!"
   },
   "period": {
     "choosePeriod": "Velg periode",
@@ -407,6 +415,10 @@
     "all": "Alt",
     "thisQuarter": "Dette kvartalet",
     "previousQuarter": "Forrige kvartal"
+  },
+  "workbench": {
+    "selectedObjectives": "Valgte mål",
+    "progressionTitle": "Samlet progresjon for valgte mål i listen:"
   },
   "tooltip": {
     "openMenu": "Åpne meny",
@@ -433,7 +445,11 @@
       "updated": "Målet ble endret!",
       "change": "Rediger mål",
       "delete": "Slett mål",
-      "useLastPeriod": "Sett til sist brukte periode:"
+      "useLastPeriod": "Sett til sist brukte periode:",
+      "liftWarning1": "Målet vil med dette flyttes fra {curOwner} til {newOwner} og kan ikke flyttes tilbake.",
+      "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}, men du vil fortsatt kunne legge nøkkelresultater til målet.",
+      "goTo": "Gå til målet",
+      "responsible": "Ansvarlig for målet"
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",
@@ -639,19 +655,6 @@
       "contentProducer": "Innholdsprodusent",
       "other": "Annet",
       "storyteller": "Historieforteller"
-    }
-  },
-  "progress": {
-    "title": "Progresjon {progress}",
-    "done": "fullført",
-    "remaining": "{unit} gjenstår",
-    "remainingOf": "av {progress}",
-    "complete": "{progress} % fullført",
-    "completedMessages": {
-      "1": "Nå er dere gode!",
-      "2": "Dødsbra jobba, folkens!",
-      "3": "Wohoo! 100 %",
-      "4": "Nice, dere klarte det!"
     }
   },
   "dashboard": {

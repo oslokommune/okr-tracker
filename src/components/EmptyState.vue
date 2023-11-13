@@ -78,10 +78,10 @@ $-empty-state-skins: (
     gap: 1rem;
     justify-content: center;
     max-width: map.get(variables.$breakpoints, 'phablet');
-    height: 100%;
     margin-right: auto;
     margin-left: auto;
     padding: 2rem 1.5rem;
+    text-align: center;
 
     @include bp('tablet-up') {
       gap: 1.5rem;

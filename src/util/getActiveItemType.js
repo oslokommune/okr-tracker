@@ -23,3 +23,7 @@ export function isOrganization(item) {
 export function isDepartment(item) {
   return getActiveItemType(item) === 'department';
 }
+
+export function isProduct(item) {
+  return getActiveItemType(item) === 'product';
+}

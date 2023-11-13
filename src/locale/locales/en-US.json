@@ -72,7 +72,6 @@
         "description": "The measurement is considered especially important as an indicator of achievement. If the measurement is registered for a product, it is also displayed as a result indicator for the parent department."
       }
     },
-    "heading": "Measurements",
     "itemRowError": "error",
     "help": {
       "updates": "Measurements can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating measurements {readMoreLink} (in Norwegian).",
@@ -167,7 +166,9 @@
     "general": "General",
     "OKRs": "OKRs",
     "OKRsLong": "Objectives and Key results",
+    "OKRsLonger": "Objectives and Key results for {name}",
     "KPIs": "Measurements",
+    "KPIsLong": "Measurements for {name}",
     "project": "OKR",
     "loading": "Loading ...",
     "owner": "City of Oslo",
@@ -187,7 +188,7 @@
     "keyResults": "Key results",
     "success": "Success",
     "objective": "Objective",
-    "selectedObjectives": "Selected objectives",
+    "objectiveBy": "Objective by {owner}",
     "selectObjectivesInPeriod": "Select all objectives in this period",
     "noObjectivesInPeriod": "No objectives in this period",
     "keyResult": "Key result",
@@ -212,6 +213,8 @@
     "step": "Step {step} of {steps}",
     "or": "or",
     "shortcuts": "Shortcuts",
+    "graph": "Graph",
+    "error": "Error",
     "unknown": "unknown"
   },
   "home": {
@@ -347,10 +350,12 @@
     "description": "Description",
     "startValue": "Start value",
     "targetValue": "Target value",
+    "progression": "Key result progression:",
     "unit": "Unit of measurement",
     "defaultUnit": "percent",
     "newValue": "New value",
     "editValue": "Edit value",
+    "registeredValues": "Registered values",
     "automation": {
       "header": "Automatic progress registration (Google Sheets)",
       "googleSheetUrl": "Google Sheets URL",
@@ -389,7 +394,9 @@
   },
   "objective": {
     "period": "Period",
-    "progression": "Progress",
+    "progressionTitle": "Objective progression:",
+    "owner": "Owner",
+    "contributors": "Contributors",
     "weight": "Weight",
     "change": "Change objective",
     "add": "Add objective",
@@ -397,7 +404,8 @@
     "editedBy": "Changed by",
     "created": "Created",
     "edited": "Changed",
-    "updated": "Objective was changed!"
+    "updated": "The objective was changed!",
+    "moved": "The objective was moved!"
   },
   "period": {
     "choosePeriod": "Choose period",
@@ -407,6 +415,10 @@
     "all": "Everything",
     "thisQuarter": "This quarter",
     "previousQuarter": "Previous quarter"
+  },
+  "workbench": {
+    "selectedObjectives": "Selected objectives",
+    "progressionTitle": "Overall progression based on selected objectives:"
   },
   "tooltip": {
     "openMenu": "Open menu",
@@ -433,7 +445,11 @@
       "updated": "Objective was updated!",
       "change": "Edit objective",
       "delete": "Delete objective",
-      "useLastPeriod": "Set to last used period:"
+      "useLastPeriod": "Set to last used period:",
+      "liftWarning1": "With this the objective will move from {curOwner} to {newOwner} and can't be moved back.",
+      "liftWarning2": "You will no longer be able to edit the objective since you aren't a member of {newOwner}, but you will still be able to add key results to the objective.",
+      "goTo": "Go to the objective",
+      "responsible": "Responsible"
     },
     "keyResult": {
       "new": "New key result",
@@ -639,19 +655,6 @@
       "contentProducer": "Content producer",
       "other": "Other",
       "storyteller": "Storyteller"
-    }
-  },
-  "progress": {
-    "title": "Progress {progress}",
-    "done": "done",
-    "remaining": "{unit} remaining",
-    "remainingOf": "of {progress}",
-    "complete": "{progress}% complete",
-    "completedMessages": {
-      "1": "You guys are nailing it!",
-      "2": "Well done, guys!",
-      "3": "Wohoo! 100%",
-      "4": "You did it! Awesome!"
     }
   },
   "dashboard": {

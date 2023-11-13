@@ -4,8 +4,11 @@ import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
 import { sortByLocale } from '@/store/actions/actionUtils';
 
+import { isDepartment, isProduct } from '@/util/getActiveItemType';
 import defaultPreferences from '@/db/User/defaultPreferences';
 import moduleActions from './actions';
+import okrsModule from './modules/okrs';
+import kpisModule from './modules/kpis';
 
 Vue.use(Vuex);
 
@@ -65,6 +68,42 @@ export const storeGetters = {
       return false;
     }
     return activeItem.team.map(({ id }) => id).includes(user.id);
+  },
+
+  /**
+   * Return `true` if the current user is an admin of the active item or a
+   * member of its parent item.
+   */
+  hasParentEditRights: (state) => {
+    const { user, activeItem } = state;
+
+    if (!user || !activeItem) {
+      return false;
+    }
+
+    const { organization } = activeItem;
+
+    const isAdminOfOrganization = organization
+      ? user.admin && user.admin.includes(organization.id)
+      : user.admin && user.admin.includes(activeItem.id);
+
+    if (user.superAdmin || isAdminOfOrganization) {
+      return true;
+    }
+
+    if (isProduct(activeItem) && activeItem.department.team) {
+      return activeItem.department.team
+        .map((userDoc) => userDoc.split('/')[1])
+        .includes(user.id);
+    }
+
+    if (isDepartment(activeItem) && activeItem.organization.team) {
+      return activeItem.organization.team
+        .map((userDoc) => userDoc.split('/')[1])
+        .includes(user.id);
+    }
+
+    return false;
   },
 
   sidebarGroups: (state) => {
@@ -130,28 +169,23 @@ export const storeGetters = {
    * `state.objectiveContributors` enriched with ID.
    */
   objectivesWithID: (state) => {
+    const objectiveIDs = state.objectives.map((o) => o.id);
     const externalObjectives = state.objectiveContributors
-      .filter((oc) => typeof oc.objective !== 'string')
+      .filter((oc) => {
+        return (
+          typeof oc.objective !== 'string' &&
+          // Filter out archived objectives ...
+          !oc.objective.archived &&
+          // ... and those that aren't external.
+          !objectiveIDs.includes(oc.objective.id)
+        );
+      })
       .map((oc) => oc.objective);
 
     return state.objectives.concat(externalObjectives).map((o) => ({
       ...o,
       id: o.id,
     }));
-  },
-
-  /**
-   * Return selected objectives for `state.activeItem`.
-   */
-  selectedObjectives: (state, getters) => {
-    if (!state.activeItem || !state.selectedObjectives) {
-      return [];
-    }
-    const objectiveIds = state.selectedObjectives[state.activeItem.id] || [];
-    if (!objectiveIds.length) {
-      return [];
-    }
-    return getters.objectivesWithID.filter((o) => objectiveIds.includes(o.id));
   },
 };
 
@@ -184,15 +218,6 @@ export const actions = {
   setSelectedPeriod: async ({ commit }, payload) => {
     commit('SET_SELECTED_PERIOD', payload);
     return true;
-  },
-
-  setSelectedObjective: async ({ commit, state }, objective) => {
-    if (state.activeItem) {
-      commit('SET_SELECTED_OBJECTIVE', {
-        itemId: state.activeItem.id,
-        objectiveId: objective?.id,
-      });
-    }
   },
 
   setActiveOrganization: async ({ commit, dispatch, state }, orgId) => {
@@ -239,26 +264,6 @@ export const mutations = {
     state.selectedPeriod = payload;
   },
 
-  SET_SELECTED_OBJECTIVE(state, { itemId, objectiveId }) {
-    if (Object.hasOwnProperty.call(state.selectedObjectives, itemId)) {
-      const objectives = state.selectedObjectives[itemId];
-
-      if (objectiveId && objectives.includes(objectiveId)) {
-        Vue.set(
-          state.selectedObjectives,
-          itemId,
-          objectives.filter((id) => id !== objectiveId)
-        );
-      } else if (objectiveId) {
-        objectives.push(objectiveId);
-      } else {
-        Vue.delete(state.selectedObjectives, itemId);
-      }
-    } else {
-      Vue.set(state.selectedObjectives, itemId, [objectiveId]);
-    }
-  },
-
   SET_HOME_ORGANIZATION(state, orgSlug) {
     if (!state.user.preferences) {
       state.user.preferences = defaultPreferences;
@@ -268,6 +273,10 @@ export const mutations = {
 };
 
 export default new Vuex.Store({
+  modules: {
+    okrs: okrsModule,
+    kpis: kpisModule,
+  },
   state: {
     user: null,
     users: [],
@@ -276,21 +285,16 @@ export default new Vuex.Store({
     products: [],
     activeItem: null,
     activeItemRef: null,
-    activeKeyResult: null,
     activePeriod: null,
-    activeObjective: null,
     periods: [],
     objectives: [],
     objectiveContributors: [],
-    kpis: [],
-    subKpis: [],
     loginError: null,
     loading: false,
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
     selectedPeriod: null,
-    selectedObjectives: {},
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},

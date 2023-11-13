@@ -15,8 +15,8 @@ const LEGEND_LABEL_SPACING = 10;
 const Tooltip = Vue.extend(IndicatorTooltip);
 
 export const GRAPH_COLORS = {
-  valueLine: 'var(--color-blue-light)',
-  targetLine: 'var(--color-green)',
+  valueLine: 'var(--graph-value-line, var(--color-blue-light))',
+  targetLine: 'var(--graph-target-line, var(--color-green))',
 };
 
 export function initSvg(svg) {

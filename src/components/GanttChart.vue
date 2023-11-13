@@ -2,14 +2,19 @@
   <div class="gantt">
     <div class="gantt__inner">
       <div class="month-wrapper" @mousedown="startDrag">
-        <div v-if="!loading" ref="today" class="today" :style="todayStyle()">
+        <div
+          v-if="!loading"
+          ref="today"
+          class="today pkt-txt-14-medium"
+          :style="todayStyle()"
+        >
           {{ $t('general.today') }}
         </div>
         <div class="months">
           <div
             v-for="m in months"
             :key="m.valueOf()"
-            class="month"
+            class="month pkt-txt-12-medium"
             :style="`width: ${getDaysInMonth(m) * PPD}px`"
           >
             <span v-if="!loading">{{ dateLongCompact(m) }}</span>
@@ -49,28 +54,26 @@
               { 'sep__period--clickable': periodObjectives.length },
             ]"
             :style="periodStyle()"
-            @click="selectPeriodObjectives"
+            @click="periodObjectivesToWorkbench"
           ></div>
         </div>
       </div>
       <template v-if="!loading">
         <div v-if="period.startDate" class="period" :style="periodStyle()"></div>
         <div v-for="group in groupedObjectives" :key="group.i" class="objective-row">
-          <objective-row
+          <objective-link-card
             v-for="o in group.objectives"
             :key="o.objective.id"
             :objective="o.objective"
-            :compact="true"
+            :tabindex="o.tabindex"
             :style="objectiveStyle(o)"
-            :is-link="false"
-            :class="[
-              {
-                'objective--selected': selectedObjectives
-                  .map((o) => o.id)
-                  .includes(o.objective.id),
-              },
-            ]"
-            @click="selectObjective($event, o)"
+            :checkable="workbenchObjectives.length > 0"
+            :checked="workbenchObjectives.map((o) => o.id).includes(o.objective.id)"
+            :active="activeObjective && activeObjective.id === o.objective.id"
+            :data-id="o.objective.id"
+            :before-navigate="beforeObjectiveNavigate(o.objective)"
+            @toggle="toggleObjective($event, o.objective)"
+            @hook:mounted="onObjectiveMounted(o.objective)"
           />
         </div>
       </template>
@@ -80,7 +83,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import {
   addMonths,
   differenceInDays,
@@ -92,14 +95,16 @@ import {
   startOfDay,
   startOfMonth,
 } from 'date-fns';
+import { useLocalStorage } from '@vueuse/core';
 import { dateLongCompact } from '@/util';
-import ObjectiveRow from '@/components/ObjectiveRow.vue';
+import paneEvents from '@/components/layout/paneEvents';
+import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 
 export default {
   name: 'GanttChart',
 
   components: {
-    ObjectiveRow,
+    ObjectiveLinkCard,
   },
 
   props: {
@@ -118,10 +123,15 @@ export default {
     },
   },
 
+  setup() {
+    const minPPD = 3;
+    const defaultPPD = 4;
+    const localPPD = useLocalStorage('okr-timeline-ppd', defaultPPD);
+    return { defaultPPD, minPPD, localPPD };
+  },
+
   data() {
     return {
-      PPD: 6, // Pixels per day
-      minPPD: 4,
       lineWidth: '0.25rem',
       endPadding: 75, // Padding in pixels before/after the first/last months
       now: new Date(),
@@ -132,7 +142,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['selectedObjectives']),
+    ...mapState('okrs', ['activeObjective']),
+    ...mapGetters('okrs', ['workbenchObjectives']),
+
+    PPD: {
+      get() {
+        const ppd = parseFloat(this.localPPD) || this.defaultPPD;
+        return Math.max(this.minPPD, ppd);
+      },
+      set(ppd) {
+        this.localPPD = ppd;
+      },
+    },
 
     minDate() {
       return min([
@@ -199,9 +220,11 @@ export default {
      * the timeline view.
      */
     groupedObjectives() {
-      return this.orderedObjectives.reduce((rows, o) => {
-        return this.placeObjective(o, rows);
-      }, []);
+      return this.orderedObjectives
+        .map((o, i) => ({ tabindex: i + 1, objective: o }))
+        .reduce((rows, o) => {
+          return this.placeObjective(o, rows);
+        }, []);
     },
 
     /**
@@ -250,7 +273,7 @@ export default {
 
     loading: {
       async handler() {
-        if (!this.loading) {
+        if (!this.loading && !this.activeObjective) {
           this.$nextTick(() => {
             const ref = this.$refs.period || this.$refs.today;
             ref.scrollIntoView({ inline: 'center', behavior: 'instant' });
@@ -258,10 +281,26 @@ export default {
         }
       },
     },
+
+    activeObjective: {
+      handler: 'scrollToObjective',
+    },
+  },
+
+  mounted() {
+    paneEvents.$on('pane-enter', () => {
+      if (this.activeObjective) {
+        this.scrollToObjective(this.activeObjective);
+      }
+    });
   },
 
   methods: {
-    ...mapActions(['setSelectedObjective']),
+    ...mapActions('okrs', [
+      'addWorkbenchObjective',
+      'removeWorkbenchObjective',
+      'clearWorkbenchObjectives',
+    ]),
 
     /*
      * Return the end date of the last goal in `row`.
@@ -282,8 +321,10 @@ export default {
     placeObjective(o, rows) {
       let i = 0;
 
+      const { objective } = o;
+
       while (i < rows.length) {
-        if (this.rowEndDate(rows[i]) <= this.startDate(o)) {
+        if (this.rowEndDate(rows[i]) <= this.startDate(objective)) {
           break;
         }
         i += 1;
@@ -291,14 +332,14 @@ export default {
 
       if (rows[i]) {
         rows[i].objectives.push({
-          objective: o,
+          ...o,
           /*
            * `dayDiff` is the number of days between this objective and the one
            * before it on the same row. This is used to compute the amount of
            * margin later.
            */
           dayDiff: differenceInDays(
-            endOfDay(this.startDate(o).toDate()),
+            endOfDay(this.startDate(objective).toDate()),
             startOfDay(this.rowEndDate(rows[i]).toDate())
           ),
         });
@@ -307,7 +348,7 @@ export default {
          * `dayDiff: null` means that the objective is the first one in its
          * row.
          */
-        rows[i] = { i, objectives: [{ objective: o, dayDiff: null }] };
+        rows[i] = { i, objectives: [{ ...o, dayDiff: null }] };
       }
 
       return rows;
@@ -400,21 +441,134 @@ export default {
       window.removeEventListener('mouseup', this.stopDrag);
     },
 
-    selectObjective(e, o) {
-      this.setSelectedObjective(o.objective);
-      this.$nextTick(() => {
-        e.currentTarget.scrollIntoView({
-          block: 'center',
-          inline: 'start',
-          behavior: 'smooth',
+    async selectObjective(objective) {
+      if (
+        !this.workbenchObjectives.length &&
+        this.activeObjective &&
+        objective.id !== this.activeObjective.id
+      ) {
+        // Close currently active objective if next objective is selected for
+        // the workbench
+        const activeObjectiveId = this.activeObjective.id;
+        this.$router.push({ name: 'ItemHome' });
+
+        // Add both objectives to the workbench using `setTimeout` to give the
+        // browser a chance to "catch up" while toggling panes
+        setTimeout(async () => {
+          await Promise.all(
+            [activeObjectiveId, objective.id].map(this.addWorkbenchObjective)
+          );
+          this.scrollToObjective(objective);
         });
-      });
+        return;
+      }
+
+      // Add selected objective to workbench
+      await this.addWorkbenchObjective(objective.id);
+      this.scrollToObjective(objective);
     },
 
-    selectPeriodObjectives() {
-      this.periodObjectives
-        .filter((po) => !this.selectedObjectives.map((o) => o.id).includes(po.id))
-        .forEach(this.setSelectedObjective);
+    async unselectObjective(objective) {
+      // Remove objective from workbench
+      await this.removeWorkbenchObjective(objective.id);
+
+      // Set next workbench objective as active if available
+      if (this.activeObjective && this.activeObjective.id === objective.id) {
+        if (this.workbenchObjectives.length) {
+          this.$router.replace({
+            name: 'ObjectiveHome',
+            params: { objectiveId: this.workbenchObjectives[0].id },
+          });
+        } else {
+          this.$router.push({ name: 'ItemHome' });
+        }
+      }
+    },
+
+    beforeObjectiveNavigate(objective) {
+      return async (event) => {
+        const modifierKey = event.metaKey || event.altKey;
+
+        if (!modifierKey && !this.workbenchObjectives.length) {
+          return;
+        }
+
+        // Prevent default link navigation when selecting/unselecting
+        // objectives for the workbench
+        event.preventDefault();
+
+        if (!this.workbenchObjectives.find((o) => o.id === objective.id)) {
+          await this.selectObjective(objective);
+
+          // Replace any active objective with the one newly selected
+          if (this.activeObjective && objective.id !== this.activeObjective.id) {
+            await this.$router.replace({
+              name: 'ObjectiveHome',
+              params: { objectiveId: objective.id },
+            });
+          }
+        } else {
+          await this.unselectObjective(objective);
+        }
+      };
+    },
+
+    async toggleObjective(checked, objective) {
+      if (checked) {
+        await this.selectObjective(objective);
+      } else {
+        await this.unselectObjective(objective);
+      }
+    },
+
+    onObjectiveMounted(objective) {
+      // Scroll to active objective when first mounted in the timeline.
+      if (objective.id === this.activeObjective?.id) {
+        this.scrollToObjective(objective);
+      }
+    },
+
+    scrollToObjective(objective) {
+      if (!objective) {
+        return;
+      }
+
+      const objectiveElQuery = document.querySelectorAll(`[data-id="${objective.id}"]`);
+
+      if (objectiveElQuery.length) {
+        // Delay `scrollIntoView` until the next event cycle. This seems to be
+        // necessary when `behavior` is set to `smooth` in Chrome.
+        setTimeout(() => {
+          objectiveElQuery[0].scrollIntoView({
+            block: 'center',
+            inline: 'center',
+            behavior: 'smooth',
+          });
+        });
+      }
+    },
+
+    async periodObjectivesToWorkbench() {
+      // Reset and add all objectives within current period to the workbench
+      await this.clearWorkbenchObjectives();
+
+      if (!this.periodObjectives.length) {
+        return;
+      }
+
+      this.periodObjectives.map((o) => o.id).forEach(this.addWorkbenchObjective);
+
+      // Replace any currently active objective with first from workbench if it
+      // is not part of the selection.
+      if (
+        this.activeObjective &&
+        !this.periodObjectives.find((o) => o.id === this.activeObjective.id)
+      ) {
+        await this.$router.replace({
+          name: 'ObjectiveHome',
+          params: { objectiveId: this.periodObjectives[0].id },
+        });
+      }
 
       this.$nextTick(() => {
         if (this.$refs.period) {
@@ -467,9 +621,7 @@ export default {
 
 .months {
   display: inline-flex;
-  margin-bottom: 0.5rem;
   margin-left: var(--end-padding);
-  font-weight: 500;
 }
 
 .month {
@@ -509,7 +661,7 @@ export default {
 
 .sep {
   height: var(--sep-height);
-  background: var(--color-grayscale-10);
+  background: rgba(42, 40, 89, 0.25); // blue-dark, 25%;
   border-top: var(--sep-border-width) solid var(--color-primary);
 
   .sep__period {
@@ -533,7 +685,6 @@ export default {
   display: inline-block;
   height: 1.5rem;
   color: var(--color-active);
-  font-weight: 500;
 
   &::after {
     position: absolute;
@@ -561,13 +712,7 @@ export default {
   position: absolute;
   top: var(--period-offset-top);
   height: calc(100% - var(--period-offset-top));
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--color-blue-dark-10),
-    var(--color-blue-dark-10) 4px,
-    var(--color-gray-light) 4px,
-    var(--color-gray-light) 8px
-  );
+  background-color: rgba(42, 40, 89, 0.15); // blue-dark, 15%
 }
 
 .objective-row {
@@ -576,14 +721,44 @@ export default {
   margin: 1rem 0;
 }
 
-.objective {
+.objective-link-card {
+  --card-bg-color: var(--color-white);
+
   position: relative;
   z-index: 1;
-  background: var(--color-white);
-  border: 2px solid var(--color-border);
+  height: 10rem;
+  overflow: hidden;
 
-  &--selected {
-    outline: 2px solid var(--color-hover);
+  ::v-deep &__inner {
+    justify-content: space-between;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      width: 1rem;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--card-bg-color) 75%,
+        var(--card-bg-color) 100%
+      );
+      content: '';
+    }
+  }
+
+  ::v-deep &__name {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+  }
+
+  &--active {
+    --card-bg-color: var(--color-blue-5);
   }
 }
 

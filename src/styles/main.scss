@@ -106,7 +106,15 @@ body.using-mouse :not([class^='pkt-'], [class*=' pkt-']):focus {
 
 :root {
   // Colors that are going to be added in Punkt soon.
+  --color-blue-40: #336084;
+  --color-blue-dark-15: #b8ccd9;
   --color-blue-dark-40: #4b5283;
+  --color-green-40: #207354;
+  --color-green-dark-15: #b8d9d4;
+  --color-red-100: #4d0800;
+  --color-red-20: #fad0cb;
+  --color-yellow-70: #966a1c;
+  --color-yellow-80: #774c01;
 
   // Colors in RGB value - add more if needed. SCSS rgba() function
   // can read hex numbers with CSS Variables.
