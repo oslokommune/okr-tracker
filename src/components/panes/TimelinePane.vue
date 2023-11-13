@@ -1,10 +1,10 @@
 <template>
   <pane-wrapper class="timeline-pane">
     <template #title>
-      <h1 class="pkt-txt-18-medium pkt-hide-desktop-up">
+      <h1 class="pkt-txt-18-medium pkt-hide-tablet-big-up">
         {{ $t('general.OKRsLong') }}
       </h1>
-      <h1 class="pkt-txt-18-medium pkt-show-desktop-up">
+      <h1 class="pkt-txt-18-medium pkt-show-tablet-big-up">
         {{ $t('general.OKRsLonger', { name: activeItem.name }) }}
       </h1>
     </template>
