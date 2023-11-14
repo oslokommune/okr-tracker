@@ -161,6 +161,7 @@ import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 import PeriodShortcut from '@/components/period/PeriodShortcut.vue';
+import syncObjectiveContributors from '@/util/objectiveContributors';
 
 export default {
   name: 'EditObjective',
@@ -331,6 +332,7 @@ export default {
     ...mapActions('okrs', ['setActiveObjective']),
 
     formattedPeriod,
+    syncObjectiveContributors,
 
     getCurrentDateRange() {
       if (this.thisObjective.startDate && this.thisObjective.endDate) {
@@ -368,7 +370,8 @@ export default {
           } else {
             data.period = period;
           }
-          if (this.hasNewOwner) {
+          const hasNewOwner = this.hasNewOwner;
+          if (hasNewOwner) {
             data.parent = this.parentRef;
             if (!this.hasSelfContributor) {
               this.setActiveObjective(null);
@@ -377,6 +380,9 @@ export default {
             this.lifted = true;
           }
           await Objective.update(this.thisObjective.id, data);
+          if (hasNewOwner) {
+            await syncObjectiveContributors(this.thisObjective.id);
+          }
           await this.$emit('update', this.thisObjective);
         } else {
           const { id } = await Objective.create({
