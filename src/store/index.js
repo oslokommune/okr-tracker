@@ -215,11 +215,6 @@ export const actions = {
     return true;
   },
 
-  setSelectedPeriod: async ({ commit }, payload) => {
-    commit('SET_SELECTED_PERIOD', payload);
-    return true;
-  },
-
   setActiveOrganization: async ({ commit, dispatch, state }, orgId) => {
     const orgSlug = orgId
       ? state.organizations.find((org) => org.id === orgId)?.slug || null
@@ -260,10 +255,6 @@ export const mutations = {
     state[`${payload.type}Unsubscribe`] = payload.unsubscribe;
   },
 
-  SET_SELECTED_PERIOD(state, payload) {
-    state.selectedPeriod = payload;
-  },
-
   SET_HOME_ORGANIZATION(state, orgSlug) {
     if (!state.user.preferences) {
       state.user.preferences = defaultPreferences;
@@ -294,7 +285,6 @@ export default new Vuex.Store({
     providers: import.meta.env.VITE_LOGIN_PROVIDERS.split('-'),
     loginLoading: false,
     dataLoading: false,
-    selectedPeriod: null,
     organizationsUnsubscribe: () => {},
     departmentsUnsubscribe: () => {},
     productsUnsubscribe: () => {},

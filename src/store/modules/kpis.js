@@ -6,11 +6,23 @@ export default {
   namespaced: true,
 
   state: () => ({
+    selectedPeriod: null,
     kpis: [],
     subKpis: [],
   }),
 
+  mutations: {
+    SET_SELECTED_PERIOD(state, payload) {
+      state.selectedPeriod = payload;
+    },
+  },
+
   actions: {
+    setSelectedPeriod: async ({ commit }, payload) => {
+      commit('SET_SELECTED_PERIOD', payload);
+      return true;
+    },
+
     setKpis: firestoreAction(
       async ({ bindFirestoreRef, unbindFirestoreRef, dispatch, rootState }) => {
         const { activeItem, activeItemRef } = rootState;

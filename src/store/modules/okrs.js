@@ -6,12 +6,17 @@ export default {
   namespaced: true,
 
   state: () => ({
+    selectedPeriod: null,
     activeObjective: null,
     activeKeyResult: null,
     workbenchObjectives: {},
   }),
 
   mutations: {
+    SET_SELECTED_PERIOD(state, payload) {
+      state.selectedPeriod = payload;
+    },
+
     ADD_WORKBENCH_OBJECTIVE(state, { itemId, objectiveId }) {
       if (Object.hasOwnProperty.call(state.workbenchObjectives, itemId)) {
         const objectives = state.workbenchObjectives[itemId];
@@ -44,6 +49,11 @@ export default {
   },
 
   actions: {
+    setSelectedPeriod: async ({ commit }, payload) => {
+      commit('SET_SELECTED_PERIOD', payload);
+      return true;
+    },
+
     setActiveObjective: firestoreAction(
       ({ bindFirestoreRef, unbindFirestoreRef, rootGetters }, objectiveId) => {
         if (!objectiveId) {

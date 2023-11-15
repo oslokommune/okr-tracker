@@ -29,7 +29,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['selectedPeriod']),
+    ...mapState('kpis', ['selectedPeriod']),
 
     views() {
       const { name, query } = this.$route;

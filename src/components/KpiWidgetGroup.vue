@@ -85,7 +85,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['activeItem', 'selectedPeriod']),
+    ...mapState(['activeItem']),
+    ...mapState('kpis', ['selectedPeriod']),
     ...mapGetters(['hasEditRights']),
 
     itemSlug() {

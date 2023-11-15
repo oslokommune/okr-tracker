@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { dateLongCompact } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 
@@ -56,8 +55,6 @@ export default {
   },
 
   computed: {
-    ...mapState(['selectedPeriod']),
-
     periodTrend() {
       if (this.firstProgressRecord && this.latestProgressRecord) {
         const diff = this.latestProgressRecord.value - this.firstProgressRecord.value;
