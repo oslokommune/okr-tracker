@@ -40,6 +40,7 @@
             v-model="contributor"
             name="owner"
             input-type="select"
+            :disabled="thisKeyResult?.archived"
             :select-options="ownerOptions"
             :label="$t('fields.owner')"
             rules="required"
@@ -89,28 +90,25 @@
           </form-component>
         </template>
 
-        <template
-          v-if="!thisKeyResult?.archived"
-          #actions="{ handleSubmit, submitDisabled }"
-        >
+        <template #actions="{ handleSubmit, submitDisabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
-            :disabled="loading"
+            :disabled="loading || thisKeyResult?.archived"
             @onClick="close"
           />
           <pkt-button
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
-            :disabled="loading"
+            :disabled="loading || thisKeyResult?.archived"
             @onClick="prev"
           />
 
           <btn-save
             :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="submitDisabled || loading"
+            :disabled="submitDisabled || loading || thisKeyResult?.archived"
             variant="label-only"
             @click="handleSubmit(save)"
           />
@@ -391,6 +389,7 @@ export default {
         await syncObjectiveContributors(this.objective.id);
         this.thisKeyResult.archived = true;
         this.$emit('archive', this.thisKeyResult);
+        this.$refs.drawer.reset();
       } catch (error) {
         this.$toasted.error(
           this.$t('toaster.error.archive', { document: this.thisKeyResult.name })
