@@ -189,10 +189,10 @@ export default {
       return false;
     },
 
-    /*
-        Returns `true` if `this.activeObjective` is to be considered a "ghost"
-        objective.
-    */
+    /**
+     * Returns `true` if `this.activeObjective` is to be considered a "ghost"
+     * objective.
+     */
     isGhost() {
       return !this.objectivesWithID.find((o) => o.id === this.activeObjective.id);
     },

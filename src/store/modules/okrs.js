@@ -156,7 +156,7 @@ export default {
 
     /**
      * Return objectives to be displayed in the objective timeline.
-     * */
+     */
     timelineObjectives: (state, getters) => {
       const objectives = [...getters.objectivesWithID];
 
