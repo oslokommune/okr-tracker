@@ -22,7 +22,7 @@
     </template>
 
     <gantt-chart
-      :objectives="objectivesWithID"
+      :objectives="timelineObjectives"
       :period="selectedPeriod"
       :loading="dataLoading"
     />
@@ -47,7 +47,8 @@ export default {
   computed: {
     ...mapState(['activeItem', 'dataLoading']),
     ...mapState('okrs', ['selectedPeriod']),
-    ...mapGetters(['objectivesWithID', 'hasEditRights']),
+    ...mapGetters(['hasEditRights']),
+    ...mapGetters('okrs', ['timelineObjectives']),
   },
 };
 </script>

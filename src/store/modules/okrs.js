@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
+import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 
 export default {
   namespaced: true,
@@ -55,13 +56,36 @@ export default {
     },
 
     setActiveObjective: firestoreAction(
-      ({ bindFirestoreRef, unbindFirestoreRef, rootGetters }, objectiveId) => {
-        if (!objectiveId) {
+      async (
+        { bindFirestoreRef, unbindFirestoreRef, rootState, getters },
+        objectiveId
+      ) => {
+        if (!objectiveId || !rootState.activeItem) {
           return unbindFirestoreRef('activeObjective');
         }
 
-        if (!rootGetters.objectivesWithID.find((o) => o.id === objectiveId)) {
-          return unbindFirestoreRef('activeObjective');
+        if (!getters.objectivesWithID.find((o) => o.id === objectiveId)) {
+          // Allow setting any direct parent objective as an active objective
+          const { activeItem } = rootState;
+
+          if (!activeItem || isOrganization(activeItem)) {
+            return unbindFirestoreRef('activeObjective');
+          }
+
+          const parentItemRef = isDepartment(activeItem)
+            ? db.collection('organizations').doc(activeItem.organization.id)
+            : db.collection('departments').doc(activeItem.department.id);
+
+          const parentObjectives = await db
+            .collection('objectives')
+            .where('parent', '==', parentItemRef)
+            .where('archived', '==', false)
+            .get()
+            .then((snapshot) => snapshot.docs.map((doc) => doc.id));
+
+          if (!parentObjectives.includes(objectiveId)) {
+            return unbindFirestoreRef('activeObjective');
+          }
         }
 
         return bindFirestoreRef(
@@ -107,9 +131,54 @@ export default {
 
   getters: {
     /**
+     * Return `rootState.objectives` and external objectives from
+     * `rootState.objectiveContributors` enriched with ID.
+     */
+    objectivesWithID: (state, getters, rootState) => {
+      const objectiveIDs = rootState.objectives.map((o) => o.id);
+      const externalObjectives = rootState.objectiveContributors
+        .filter((oc) => {
+          return (
+            typeof oc.objective !== 'string' &&
+            // Filter out archived objectives ...
+            !oc.objective.archived &&
+            // ... and those that aren't external.
+            !objectiveIDs.includes(oc.objective.id)
+          );
+        })
+        .map((oc) => oc.objective);
+
+      return rootState.objectives.concat(externalObjectives).map((o) => ({
+        ...o,
+        id: o.id,
+      }));
+    },
+
+    /**
+     * Return objectives to be displayed in the objective timeline.
+     * */
+    timelineObjectives: (state, getters) => {
+      const objectives = [...getters.objectivesWithID];
+
+      // Include any currently active objective as a "ghost" until dismissed.
+      if (
+        state.activeObjective &&
+        !objectives.find((o) => o.id === state.activeObjective.id)
+      ) {
+        objectives.push(state.activeObjective);
+      }
+
+      // Return only objectives with a known (resolved) period, either dynamic
+      // or old-style.
+      return objectives.filter(
+        (o) => (o.startDate && o.endDate) || (o.period && typeof o.period !== 'string')
+      );
+    },
+
+    /**
      * Return objectives currently in the workbench for `rootState.activeItem`.
      */
-    workbenchObjectives: (state, getters, rootState, rootGetters) => {
+    workbenchObjectives: (state, getters, rootState) => {
       if (!rootState.activeItem || !state.workbenchObjectives) {
         return [];
       }
@@ -117,7 +186,7 @@ export default {
       if (!objectiveIds.length) {
         return [];
       }
-      return rootGetters.objectivesWithID.filter((o) => objectiveIds.includes(o.id));
+      return getters.objectivesWithID.filter((o) => objectiveIds.includes(o.id));
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="okr-panes">
-    <pane-layout v-if="!notFoundState && (objectivesWithID.length || dataLoading)">
+    <pane-layout v-if="!notFoundState && (timelineObjectives.length || dataLoading)">
       <!-- Timeline -->
       <timeline-pane @add-objective="openObjectiveDrawer(false)" />
 
@@ -128,8 +128,12 @@ export default {
   computed: {
     ...mapState(['activeItem', 'dataLoading']),
     ...mapState('okrs', ['selectedPeriod', 'activeObjective', 'activeKeyResult']),
-    ...mapGetters(['objectivesWithID', 'hasEditRights']),
-    ...mapGetters('okrs', ['workbenchObjectives']),
+    ...mapGetters(['hasEditRights']),
+    ...mapGetters('okrs', [
+      'objectivesWithID',
+      'timelineObjectives',
+      'workbenchObjectives',
+    ]),
 
     newestObjective() {
       if (!this.objectivesWithID.length) {

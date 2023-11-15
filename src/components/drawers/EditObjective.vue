@@ -104,22 +104,11 @@
           </pkt-button>
         </template>
         <template v-else-if="!objective">
-          <router-link
-            v-if="lifted && !hasSelfContributor"
-            :to="{
-              name: 'ObjectiveHome',
-              params: { objectiveId: thisObjective.id, slug: parentSlug },
-            }"
-            class="pkt-link pkt-txt-18-medium"
-          >
-            <pkt-icon class="pkt-link__icon" name="chevron-right" />
-            {{ $t('admin.objective.goTo') }}
-          </router-link>
-          <pkt-button v-else skin="tertiary" @onClick="close">
+          <pkt-button skin="tertiary" @onClick="close">
             {{ $t('btn.close') }}
           </pkt-button>
           <pkt-button
-            v-if="thisObjective.id && !lifted"
+            v-if="thisObjective.id"
             skin="secondary"
             @onClick="$emit('add-key-result')"
           >
@@ -244,14 +233,6 @@ export default {
     },
 
     /**
-     * Return `true` if the current objective has any key results belonging to
-     * the objective owner itself.
-     */
-    hasSelfContributor() {
-      return this.keyResults.some((kr) => kr.parent.id === this.objective.parent.id);
-    },
-
-    /**
      * Return `true` if the user should be able to lift current objective.
      */
     canLift() {
@@ -373,10 +354,6 @@ export default {
           const hasNewOwner = this.hasNewOwner;
           if (hasNewOwner) {
             data.parent = this.parentRef;
-            if (!this.hasSelfContributor) {
-              this.setActiveObjective(null);
-              this.$router.replace({ name: 'ItemHome' });
-            }
             this.lifted = true;
           }
           await Objective.update(this.thisObjective.id, data);

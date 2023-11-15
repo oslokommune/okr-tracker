@@ -10,6 +10,7 @@
         {
           'objective-link-card--active': isExactActive || active,
           'objective-link-card--checked': checked,
+          'objective-link-card--dimmed': dimmed,
         },
       ]"
       :href="href"
@@ -89,6 +90,10 @@ export default {
       required: true,
     },
     active: {
+      type: Boolean,
+      default: false,
+    },
+    dimmed: {
       type: Boolean,
       default: false,
     },
@@ -254,6 +259,13 @@ export default {
   }
   &--active {
     background-color: var(--color-blue-5);
+  }
+  &--dimmed {
+    border-style: dashed;
+    opacity: 0.95;
+    > * {
+      opacity: 0.75;
+    }
   }
 }
 

@@ -15,6 +15,19 @@
       {{ $t('general.objective') }}
     </h1>
 
+    <pkt-alert v-if="isGhost" skin="warning">
+      <i18n path="objective.movedWarning" tag="p">
+        <template #activeItem>
+          {{ activeItem.name }}
+        </template>
+        <template #ownerLink>
+          <router-link v-if="activeObjective.parent?.slug" :to="liftedObjectiveRoute">{{
+            activeObjective.parent.name
+          }}</router-link>
+        </template>
+      </i18n>
+    </pkt-alert>
+
     <objective-details-card
       :objective="activeObjective"
       :key-results="keyResults"
@@ -93,7 +106,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import draggable from 'vuedraggable';
 import { compareKeyResults } from '@/util/okr';
 import { db } from '@/config/firebaseConfig';
@@ -116,6 +129,7 @@ export default {
     ObjectiveDetailsCard,
     KeyResultLinkCard,
     LoadingSmall,
+    PktAlert,
     PktBreadcrumbs,
     PktButton,
     WidgetWeights,
@@ -131,6 +145,7 @@ export default {
     ...mapState(['activeItem', 'user', 'departments', 'products']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
     ...mapGetters(['hasEditRights']),
+    ...mapGetters('okrs', ['objectivesWithID']),
 
     breadcrumbs() {
       return [
@@ -172,6 +187,24 @@ export default {
       }
 
       return false;
+    },
+
+    /*
+        Returns `true` if `this.activeObjective` is to be considered a "ghost"
+        objective.
+    */
+    isGhost() {
+      return !this.objectivesWithID.find((o) => o.id === this.activeObjective.id);
+    },
+
+    liftedObjectiveRoute() {
+      return {
+        name: 'ObjectiveHome',
+        params: {
+          objectiveId: this.activeObjective.id,
+          slug: this.activeObjective.parent.slug,
+        },
+      };
     },
   },
 

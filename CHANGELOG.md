@@ -29,6 +29,9 @@ All notable changes to this project will be documented in this file. The format 
   and will continue to work for existing clients until migrated.
 - The period selected for the OKR and measurement views are no longer
   synchronized and can be adjusted individually.
+- Any active objective that has been lifted to the parent item, whilst not
+  having any contributing key results from the current level, is now kept
+  visible in the timeline until manually closed.
 
 ### Fixed
 
