@@ -7,11 +7,13 @@
       $router.push({ name: 'ObjectiveHome', params: { objectiveId: activeObjective.id } })
     "
   >
-    <pkt-breadcrumbs
-      class="pkt-hide-laptop-up"
-      navigation-type="router"
-      :breadcrumbs="breadcrumbs"
-    />
+    <template #title>
+      <pkt-breadcrumbs
+        class="pkt-hide-laptop-up"
+        navigation-type="router"
+        :breadcrumbs="breadcrumbs"
+      />
+    </template>
 
     <h1 class="key-result-pane__title pkt-txt-18-medium">
       {{ $t('general.keyResult') }}
@@ -328,12 +330,6 @@ export default {
 .key-result-pane {
   background-color: var(--color-gray);
 
-  &__title {
-    @include bp('laptop-up') {
-      margin-top: 2rem;
-    }
-  }
-
   &__details {
     display: flex;
     flex-direction: column;
@@ -388,11 +384,15 @@ export default {
   border: 0;
 }
 
-::v-deep .pkt-breadcrumbs--mobile {
-  width: 100%;
+::v-deep .pkt-breadcrumbs {
+  display: flex;
 
-  .pkt-breadcrumbs__text {
-    white-space: nowrap;
+  &--mobile {
+    width: 100%;
+
+    .pkt-breadcrumbs__text {
+      white-space: nowrap;
+    }
   }
 }
 </style>

@@ -62,12 +62,14 @@ export default {
 
   ::v-deep .pane__inner {
     height: 100%;
-    padding: 0;
   }
 
   ::v-deep .pane__header {
-    padding: 1.5rem;
-    padding-bottom: 0;
+    padding: 1rem 1rem 0.625rem 1.5rem;
+  }
+
+  ::v-deep .pane__title {
+    padding: 0;
   }
 
   ::v-deep .pane__body {
