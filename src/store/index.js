@@ -163,30 +163,6 @@ export const storeGetters = {
     }
     return organizations.find((org) => org.slug === organizationSlug) || null;
   },
-
-  /**
-   * Return `state.objectives` and external objectives from
-   * `state.objectiveContributors` enriched with ID.
-   */
-  objectivesWithID: (state) => {
-    const objectiveIDs = state.objectives.map((o) => o.id);
-    const externalObjectives = state.objectiveContributors
-      .filter((oc) => {
-        return (
-          typeof oc.objective !== 'string' &&
-          // Filter out archived objectives ...
-          !oc.objective.archived &&
-          // ... and those that aren't external.
-          !objectiveIDs.includes(oc.objective.id)
-        );
-      })
-      .map((oc) => oc.objective);
-
-    return state.objectives.concat(externalObjectives).map((o) => ({
-      ...o,
-      id: o.id,
-    }));
-  },
 };
 
 export const actions = {

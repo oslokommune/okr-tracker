@@ -405,7 +405,8 @@
     "created": "Opprettet",
     "edited": "Sist endret",
     "updated": "Målet ble endret!",
-    "moved": "Målet ble flyttet!"
+    "moved": "Målet ble flyttet!",
+    "movedWarning": "{activeItem} har for øyeblikket ingen nøkkelresultater registrert på dette målet. Når målet lukkes, vil det ikke lenger vises på denne tidslinjen. Du kan koble dere på som bidragsyter ved å legge til et nøkkelresultat nå, eller på et senere tidspunkt via {ownerLink}."
   },
   "period": {
     "choosePeriod": "Velg periode",
@@ -448,7 +449,6 @@
       "useLastPeriod": "Sett til sist brukte periode:",
       "liftWarning1": "Målet vil med dette flyttes fra {curOwner} til {newOwner} og kan ikke flyttes tilbake.",
       "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}, men du vil fortsatt kunne legge nøkkelresultater til målet.",
-      "goTo": "Gå til målet",
       "responsible": "Ansvarlig for målet"
     },
     "keyResult": {

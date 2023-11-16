@@ -10,6 +10,7 @@
         {
           'objective-link-card--active': isExactActive || active,
           'objective-link-card--checked': checked,
+          'objective-link-card--dimmed': dimmed,
         },
       ]"
       :href="href"
@@ -92,6 +93,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    dimmed: {
+      type: Boolean,
+      default: false,
+    },
     checked: {
       type: Boolean,
       default: false,
@@ -149,6 +154,15 @@ export default {
     },
   },
 
+  watch: {
+    objective() {
+      // Rebind objective owner when necessary
+      if (this.objectiveOwner && this.objectiveOwner.id !== this.objective.parent.id) {
+        this.bindObjectiveOwner();
+      }
+    },
+  },
+
   async created() {
     if (this.objective === null) {
       return;
@@ -162,15 +176,7 @@ export default {
       .orderBy('name');
     this.$bind('keyResults', keyResults);
 
-    if (typeof this.objective.parent === 'string') {
-      this.$bind('objectiveOwner', db.doc(this.objective.parent));
-    } else {
-      const parentType = getActiveItemType(this.objective.parent);
-      this.$bind(
-        'objectiveOwner',
-        db.collection(`${parentType}s`).doc(this.objective.parent.id)
-      );
-    }
+    this.bindObjectiveOwner();
   },
 
   methods: {
@@ -180,6 +186,18 @@ export default {
       }
 
       await rootHandler(event);
+    },
+
+    bindObjectiveOwner() {
+      if (typeof this.objective.parent === 'string') {
+        this.$bind('objectiveOwner', db.doc(this.objective.parent));
+      } else {
+        const parentType = getActiveItemType(this.objective.parent);
+        this.$bind(
+          'objectiveOwner',
+          db.collection(`${parentType}s`).doc(this.objective.parent.id)
+        );
+      }
     },
   },
 };
@@ -254,6 +272,13 @@ export default {
   }
   &--active {
     background-color: var(--color-blue-5);
+  }
+  &--dimmed {
+    border-style: dashed;
+    opacity: 0.95;
+    > * {
+      opacity: 0.75;
+    }
   }
 }
 

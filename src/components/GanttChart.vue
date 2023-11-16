@@ -67,8 +67,9 @@
             :objective="o.objective"
             :tabindex="o.tabindex"
             :style="objectiveStyle(o)"
-            :checkable="workbenchObjectives.length > 0"
+            :checkable="!isGhostObjective(o.objective) && workbenchObjectives.length > 0"
             :checked="workbenchObjectives.map((o) => o.id).includes(o.objective.id)"
+            :dimmed="isGhostObjective(o.objective)"
             :active="activeObjective && activeObjective.id === o.objective.id"
             :data-id="o.objective.id"
             :before-navigate="beforeObjectiveNavigate(o.objective)"
@@ -143,7 +144,7 @@ export default {
 
   computed: {
     ...mapState('okrs', ['activeObjective']),
-    ...mapGetters('okrs', ['workbenchObjectives']),
+    ...mapGetters('okrs', ['objectivesWithID', 'workbenchObjectives']),
 
     PPD: {
       get() {
@@ -156,16 +157,13 @@ export default {
     },
 
     minDate() {
-      return min([
-        this.now,
-        ...this.temporalObjectives.map((o) => this.startDate(o).toDate()),
-      ]);
+      return min([this.now, ...this.objectives.map((o) => this.startDate(o).toDate())]);
     },
 
     maxDate() {
       const date = max([
         this.now,
-        ...this.temporalObjectives.map((o) => this.endDate(o).toDate()),
+        ...this.objectives.map((o) => this.endDate(o).toDate()),
       ]);
       return addMonths(date, 1);
     },
@@ -180,23 +178,9 @@ export default {
         : eachMonthOfInterval({ start: this.minDate, end: this.maxDate });
     },
 
-    /**
-     * Return only objectives with a known (resolved) period, either dynamic or
-     * old-style.
-     *
-     * TODO: This filter is a TEMPORARY FIX, should ideally not be necessary,
-     * and should hopefully be fixed with a review and refactor of store data
-     * fetching/use.
-     */
-    temporalObjectives() {
-      return this.objectives.filter(
-        (o) => (o.startDate && o.endDate) || (o.period && typeof o.period !== 'string')
-      );
-    },
-
     orderedObjectives() {
       return (
-        this.temporalObjectives
+        this.objectives
           .slice()
           /*
            * Sort first by shortest objectives first. This is so that they
@@ -575,6 +559,10 @@ export default {
           this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
         }
       });
+    },
+
+    isGhostObjective(objective) {
+      return !this.objectivesWithID.find((o) => o.id === objective.id);
     },
 
     addMonths,
