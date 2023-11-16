@@ -1,13 +1,18 @@
 import Vue from 'vue';
+import { useLocalStorage } from '@vueuse/core';
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
+import { DEFAULT_OKR_PERIOD, getPeriods } from '@/config/periods';
+import { PeriodSerializer } from '@/util/period';
 import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 
 export default {
   namespaced: true,
 
   state: () => ({
-    selectedPeriod: null,
+    selectedPeriod: useLocalStorage('okr-period', getPeriods()[DEFAULT_OKR_PERIOD], {
+      serializer: PeriodSerializer,
+    }),
     activeObjective: null,
     activeKeyResult: null,
     workbenchObjectives: {},

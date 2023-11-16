@@ -12,6 +12,7 @@ export { default as findSlugAndRedirect } from './findSlugAndRedirect';
 export { default as tableOfContent } from './tableOfContent';
 export { default as toastArchiveAndRevert } from './toastUtils';
 export { default as validateEmail } from './validateEmail';
+export { default as periodObjectFromDates } from './period';
 
 /**
  * Return an array of all members of `arr` that are unique with respect to the

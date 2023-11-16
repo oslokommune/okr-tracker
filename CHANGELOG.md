@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - The team member listing on the about page has been reintroduced, but is now
   only visible to members of the same organization.
+- The selected period for OKRs and KPIs is now remembered between visits.
 
 ### Changed
 

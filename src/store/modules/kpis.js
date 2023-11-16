@@ -1,12 +1,17 @@
+import { useLocalStorage } from '@vueuse/core';
 import { firestoreAction } from 'vuexfire';
 import { db } from '@/config/firebaseConfig';
+import { DEFAULT_KPI_PERIOD, getPeriods } from '@/config/periods';
+import { PeriodSerializer } from '@/util/period';
 import { isDepartment } from '@/util/getActiveItemType';
 
 export default {
   namespaced: true,
 
   state: () => ({
-    selectedPeriod: null,
+    selectedPeriod: useLocalStorage('kpi-period', getPeriods()[DEFAULT_KPI_PERIOD], {
+      serializer: PeriodSerializer,
+    }),
     kpis: [],
     subKpis: [],
   }),
