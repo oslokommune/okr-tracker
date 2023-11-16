@@ -211,6 +211,7 @@ export default {
     pageCount: 2,
     loading: false,
     contributor: null,
+    objectiveOwner: null,
   }),
 
   computed: {
@@ -224,23 +225,29 @@ export default {
     ]),
     ...mapGetters(['hasEditRights']),
     thisLevel() {
-      if (isOrganization(this.activeItem)) {
-        return this.organizations.find((o) => o.id === this.activeItem.id);
+      if (!this.objectiveOwner) {
+        return [];
       }
-      if (isDepartment(this.activeItem)) {
-        return this.departments.find((d) => d.id === this.activeItem.id);
+      if (isOrganization(this.objectiveOwner)) {
+        return this.organizations.find((o) => o.id === this.objectiveOwner.id);
       }
-      return this.products.find((p) => p.id === this.activeItem.id);
+      if (isDepartment(this.objectiveOwner)) {
+        return this.departments.find((d) => d.id === this.objectiveOwner.id);
+      }
+      return this.products.find((p) => p.id === this.objectiveOwner.id);
     },
     children() {
-      if (isOrganization(this.activeItem)) {
+      if (!this.objectiveOwner) {
+        return [];
+      }
+      if (isOrganization(this.objectiveOwner)) {
         return this.departments.filter(
-          (department) => department.organization.id === this.activeItem.id
+          (department) => department.organization.id === this.objectiveOwner.id
         );
       }
-      if (isDepartment(this.activeItem)) {
+      if (isDepartment(this.objectiveOwner)) {
         return this.products.filter(
-          (product) => product.department.id === this.activeItem.id
+          (product) => product.department.id === this.objectiveOwner.id
         );
       }
       return [];
@@ -248,7 +255,7 @@ export default {
     thisLevelOption() {
       return {
         value: this.thisLevel.path,
-        name: this.activeItem.name,
+        name: this.thisLevel.name,
       };
     },
     isAdmin() {
@@ -261,7 +268,7 @@ export default {
     ownerOptions() {
       const options = [];
 
-      if (this.hasEditRights) {
+      if (this.memberOfLevel(this.objectiveOwner) || this.isAdmin) {
         options.push(this.thisLevelOption);
       }
 
@@ -313,6 +320,13 @@ export default {
           });
       },
     },
+    objective: {
+      immediate: true,
+      async handler(objective) {
+        const parentRef = db.doc(await objective.parent);
+        this.$bind('objectiveOwner', parentRef);
+      },
+    },
     ownerOptions: {
       immediate: true,
       async handler() {
@@ -330,7 +344,7 @@ export default {
     syncObjectiveContributors,
 
     memberOfLevel(level) {
-      return level.team.map(({ id }) => id).includes(this.user.id);
+      return level?.team.map(({ id }) => id).includes(this.user.id);
     },
 
     async save() {
