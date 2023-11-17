@@ -5,11 +5,13 @@
     closable
     @close="$router.push({ name: 'ItemHome' })"
   >
-    <pkt-breadcrumbs
-      class="pkt-hide-laptop-up"
-      navigation-type="router"
-      :breadcrumbs="breadcrumbs"
-    />
+    <template #title>
+      <pkt-breadcrumbs
+        class="pkt-hide-laptop-up"
+        navigation-type="router"
+        :breadcrumbs="breadcrumbs"
+      />
+    </template>
 
     <h1 class="objective-pane__title pkt-txt-18-medium">
       {{ $t('general.objective') }}
@@ -237,12 +239,6 @@ export default {
 .objective-pane {
   background-color: var(--color-gray-light);
 
-  &__title {
-    @include bp('laptop-up') {
-      margin-top: 2rem;
-    }
-  }
-
   &__key-results {
     margin-top: 3rem;
 
@@ -320,11 +316,15 @@ export default {
   background-color: transparent;
 }
 
-::v-deep .pkt-breadcrumbs--mobile {
-  width: 100%;
+::v-deep .pkt-breadcrumbs {
+  display: flex;
 
-  .pkt-breadcrumbs__text {
-    white-space: nowrap;
+  &--mobile {
+    width: 100%;
+
+    .pkt-breadcrumbs__text {
+      white-space: nowrap;
+    }
   }
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <pane-wrapper class="timeline-pane">
     <template #title>
-      <h1 class="pkt-txt-18-medium pkt-hide-desktop-up">
+      <h1 class="pkt-txt-18-medium pkt-hide-tablet-big-up">
         {{ $t('general.OKRsLong') }}
       </h1>
-      <h1 class="pkt-txt-18-medium pkt-show-desktop-up">
+      <h1 class="pkt-txt-18-medium pkt-show-tablet-big-up">
         {{ $t('general.OKRsLonger', { name: activeItem.name }) }}
       </h1>
     </template>
@@ -62,12 +62,14 @@ export default {
 
   ::v-deep .pane__inner {
     height: 100%;
-    padding: 0;
   }
 
   ::v-deep .pane__header {
-    padding: 1.5rem;
-    padding-bottom: 0;
+    padding: 1rem 1rem 0.625rem 1.4375rem;
+  }
+
+  ::v-deep .pane__title {
+    padding: 1px 0 0;
   }
 
   ::v-deep .pane__body {

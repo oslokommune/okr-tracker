@@ -1,23 +1,25 @@
 <template>
   <div class="pane">
-    <div class="pane__actions">
-      <slot name="actions" />
-      <pkt-button
-        v-if="closable"
-        v-tooltip="$t('btn.close')"
-        variant="icon-only"
-        skin="tertiary"
-        size="medium"
-        icon-name="close"
-        @onClick="$emit('close')"
-      />
-    </div>
-
     <div class="pane__inner">
-      <div v-if="title || $slots.title" class="pane__header">
-        <slot name="title">
-          <h1 class="pkt-txt-18-medium">{{ title }}</h1>
-        </slot>
+      <div class="pane__header">
+        <div v-if="title || $slots.title" class="pane__title">
+          <slot name="title">
+            <h1 class="pkt-txt-18-medium">{{ title }}</h1>
+          </slot>
+        </div>
+
+        <div class="pane__actions">
+          <slot name="actions" />
+          <pkt-button
+            v-if="closable"
+            v-tooltip="$t('btn.close')"
+            variant="icon-only"
+            skin="tertiary"
+            size="medium"
+            icon-name="close"
+            @onClick="$emit('close')"
+          />
+        </div>
       </div>
 
       <div class="pane__body">
@@ -52,35 +54,40 @@ export default {
 
 <style lang="scss" scoped>
 .pane {
-  position: relative;
-
-  &__actions {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    display: flex;
-    gap: 0.5rem;
-  }
-
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     height: 0;
-    padding: 1.5rem 2.5rem;
   }
 
   &__header {
     display: flex;
+    gap: 0.5rem;
     align-items: center;
-    justify-content: space-between;
+    padding: 0.5rem;
+
+    @include bp('laptop-up') {
+      padding-bottom: 0;
+    }
+  }
+
+  &__title {
+    min-width: 0;
+    padding: 1rem 0 1rem 2rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+    white-space: nowrap;
   }
 
   &__body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-bottom: 3rem;
+    padding: 0 2.5rem 3rem;
   }
 }
 </style>
