@@ -28,7 +28,7 @@
 
 <script>
 import { endOfDay, startOfDay } from 'date-fns';
-import { periodDates } from '@/util';
+import { periodObjectFromDates } from '@/util';
 import PeriodShortcut from './PeriodShortcut.vue';
 
 export default {
@@ -111,11 +111,7 @@ export default {
         }
       }
 
-      this.$emit('input', {
-        startDate: selectedStart,
-        endDate: selectedEnd,
-        label: periodDates({ startDate: selectedStart, endDate: selectedEnd }),
-      });
+      this.$emit('input', periodObjectFromDates(selectedStart, selectedEnd));
     },
   },
 };

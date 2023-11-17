@@ -1,22 +1,24 @@
 import {
   endOfDay,
-  getQuarter,
-  subQuarters,
-  startOfQuarter,
   endOfQuarter,
+  getQuarter,
+  startOfDay,
+  startOfQuarter,
+  subQuarters,
 } from 'date-fns';
 import i18n from '@/locale/i18n';
 
 export const DEFAULT_OKR_PERIOD = 'quarter';
 export const DEFAULT_KPI_PERIOD = 'all';
+export const FALLBACK_PERIOD = 'all';
 
 export function getPeriods() {
-  const currentDate = new Date();
+  const currentDate = startOfDay(new Date());
   const endDate = endOfDay(currentDate);
   const currentYear = currentDate.getFullYear();
   const currentQuarter = getQuarter(currentDate);
   const prevQuarterDate = subQuarters(currentDate, 1);
-  const sixMonthsBack = new Date();
+  const sixMonthsBack = startOfDay(new Date());
   sixMonthsBack.setMonth(sixMonthsBack.getMonth() - 6);
 
   return {
