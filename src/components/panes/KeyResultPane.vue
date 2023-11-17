@@ -69,6 +69,7 @@
       <key-result-values-list
         v-else-if="progress.length"
         :progress="progress"
+        :can-edit="canEdit"
         class="key-result-pane__table"
         @edit-value="openValueModal"
         @delete-value="(record) => deleteHistoryRecord(record.id)"
@@ -113,7 +114,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
@@ -162,14 +163,7 @@ export default {
   computed: {
     ...mapState(['activeItem', 'activePeriod', 'user']),
     ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
-
-    isAdminOfCurrentOrganization() {
-      return this.user.admin?.includes(
-        this.activeItem.organization
-          ? this.activeItem.organization.id
-          : this.activeItem.id
-      );
-    },
+    ...mapGetters(['isAdminOfCurrentOrganization']),
 
     isMemberOfKeyResultParent() {
       return this.activeKeyResult.parent.team?.includes(`users/${this.user.id}`);

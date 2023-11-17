@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { startOfDay } from 'date-fns';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { periodDates, uniqueBy } from '@/util';
@@ -98,14 +98,7 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'user']),
-
-    isAdminOfCurrentOrganization() {
-      return this.user.admin?.includes(
-        this.activeItem.organization
-          ? this.activeItem.organization.id
-          : this.activeItem.id
-      );
-    },
+    ...mapGetters(['isAdminOfCurrentOrganization']),
 
     isMemberOfObjectiveParent() {
       return this.objective.parent.team?.includes(`users/${this.user.id}`);
