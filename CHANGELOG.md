@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file. The format 
   of parent measurements when switching between items.
 - The edit button for key result values is now only visible to users with the
   appropriate permissions.
+- Fixed overlapping dates on the x-axis of some line plots on small screens.
 
 ### Security
 
