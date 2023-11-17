@@ -65,11 +65,11 @@ export default {
   }
 
   ::v-deep .pane__header {
-    padding: 1rem 1rem 0.625rem 1.5rem;
+    padding: 1rem 1rem 0.625rem 1.4375rem;
   }
 
   ::v-deep .pane__title {
-    padding: 0;
+    padding: 1px 0 0;
   }
 
   ::v-deep .pane__body {
