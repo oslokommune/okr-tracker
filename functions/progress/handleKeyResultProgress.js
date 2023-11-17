@@ -71,7 +71,7 @@ export const updateObjectiveProgression = async (objectiveRef, db) => {
   }
 };
 
-export const updatePeriodProgression = async (periodRef) => {
+const updatePeriodProgression = async (periodRef) => {
   // Finds all progressions for related objectives and updates the period's progression
 
   const db = getFirestore();
