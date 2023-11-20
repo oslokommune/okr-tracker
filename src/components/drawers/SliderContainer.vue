@@ -1,10 +1,10 @@
 <template>
   <div>
     <transition name="fade" mode="out-in">
-      <div v-if="visible" class="overlay" @click.self="$emit('click-outside')"></div>
+      <div v-if="isVisible" class="overlay" @click.self="clickOutside"></div>
     </transition>
-    <transition name="slide" @after-leave="$emit('hidden')">
-      <aside v-if="visible" class="sliderContainer">
+    <transition name="slide" @after-leave="$emit('close')">
+      <aside v-if="isVisible" class="sliderContainer">
         <div class="sliderContainer__closeButtonContainer">
           <pkt-button
             skin="tertiary"
@@ -48,11 +48,36 @@ export default {
       required: true,
       default: false,
     },
+
+    allowClickOutside: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+  },
+
+  data: () => ({
+    isVisible: false,
+  }),
+
+  watch: {
+    visible: {
+      immediate: true,
+      handler() {
+        this.isVisible = this.visible;
+      },
+    },
   },
 
   methods: {
-    close(e) {
-      this.$emit('close', e);
+    clickOutside() {
+      if (this.allowClickOutside) {
+        this.close();
+      }
+    },
+
+    close() {
+      this.isVisible = false;
     },
   },
 };

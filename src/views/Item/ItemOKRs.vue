@@ -48,7 +48,7 @@
     </empty-page>
 
     <objective-drawer
-      :visible="showObjectiveDrawer"
+      v-if="showObjectiveDrawer"
       :objective="drawerEditMode ? activeObjective : null"
       :newest-objective="newestObjective"
       @create="objectiveCreated"
@@ -64,8 +64,7 @@
     />
 
     <key-result-drawer
-      v-if="activeObjective"
-      :visible="showKeyResultDrawer"
+      v-if="activeObjective && showKeyResultDrawer"
       :objective="activeObjective"
       :key-result="drawerEditMode ? activeKeyResult : null"
       @archive="

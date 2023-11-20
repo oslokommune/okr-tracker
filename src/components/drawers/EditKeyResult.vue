@@ -1,9 +1,9 @@
 <template>
   <paged-drawer-wrapper
     ref="drawer"
-    :visible="visible && !!thisKeyResult"
+    :visible="!!thisKeyResult"
     :page-count="pageCount"
-    @close="close"
+    @close="$emit('close')"
   >
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
@@ -164,7 +164,10 @@ import { mapState, mapGetters } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { db } from '@/config/firebaseConfig';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
-import { isDepartment, isOrganization } from '@/util/getActiveItemType';
+import getActiveItemType, {
+  isDepartment,
+  isOrganization,
+} from '@/util/getActiveItemType';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import KeyResult from '@/db/KeyResult';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -183,12 +186,6 @@ export default {
   },
 
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
     objective: {
       type: Object,
       required: true,
@@ -224,18 +221,7 @@ export default {
       'user',
     ]),
     ...mapGetters(['hasEditRights']),
-    thisLevel() {
-      if (!this.objectiveOwner) {
-        return [];
-      }
-      if (isOrganization(this.objectiveOwner)) {
-        return this.organizations.find((o) => o.id === this.objectiveOwner.id);
-      }
-      if (isDepartment(this.objectiveOwner)) {
-        return this.departments.find((d) => d.id === this.objectiveOwner.id);
-      }
-      return this.products.find((p) => p.id === this.objectiveOwner.id);
-    },
+
     children() {
       if (!this.objectiveOwner) {
         return [];
@@ -252,12 +238,7 @@ export default {
       }
       return [];
     },
-    thisLevelOption() {
-      return {
-        value: this.thisLevel.path,
-        name: this.thisLevel.name,
-      };
-    },
+
     isAdmin() {
       const { organization } = this.activeItem;
       const isAdminOfOrganization = organization
@@ -265,11 +246,18 @@ export default {
         : this.user.admin?.includes(this.activeItem.id);
       return isAdminOfOrganization || this.user.superAdmin;
     },
+
     ownerOptions() {
       const options = [];
 
-      if (this.memberOfLevel(this.objectiveOwner) || this.isAdmin) {
-        options.push(this.thisLevelOption);
+      if (
+        this.objectiveOwner &&
+        (this.memberOfLevel(this.objectiveOwner) || this.isAdmin)
+      ) {
+        const { id, name } = this.objectiveOwner;
+        const parentType = getActiveItemType(this.objective.parent);
+        const path = `${parentType}s/${id}`;
+        options.push({ value: path, name });
       }
 
       this.children
@@ -282,60 +270,45 @@ export default {
 
       return options;
     },
+
     editMode() {
       return !!this.thisKeyResult?.id;
     },
   },
 
-  watch: {
-    visible: {
-      immediate: true,
-      async handler(visible) {
-        this.thisKeyResult = null;
-        if (visible) {
-          this.$refs.drawer.reset();
-        }
+  async mounted() {
+    this.keyResultDefaults.unit = this.$t('keyResult.defaultUnit');
+    this.loading = true;
 
-        this.keyResultDefaults.unit = this.$t('keyResult.defaultUnit');
+    const parentType = getActiveItemType(this.objective.parent);
+    await this.$bind(
+      'objectiveOwner',
+      db.collection(`${parentType}s`).doc(this.objective.parent.id)
+    );
 
-        if (!this.keyResult) {
-          this.thisKeyResult = { ...this.keyResultDefaults };
-          return;
-        }
+    if (!this.keyResult) {
+      this.thisKeyResult = { ...this.keyResultDefaults };
+      this.contributor =
+        this.ownerOptions.find((o) => o.name === this.activeItem.name) ||
+        this.ownerOptions[0];
+      this.loading = false;
+      return;
+    }
 
-        this.loading = true;
-        db.collection('keyResults')
-          .doc(this.keyResult.id)
-          .get()
-          .then((snapshot) => {
-            this.thisKeyResult = {
-              ...this.keyResultDefaults,
-              ...snapshot.data(),
-            };
-            this.thisKeyResult.id = this.keyResult.id;
-            this.contributor = this.ownerOptions.find(
-              (o) => o.name === this.keyResult.parent.name
-            );
-            this.loading = false;
-          });
-      },
-    },
-    objective: {
-      immediate: true,
-      async handler(objective) {
-        const parentRef = db.doc(await objective.parent);
-        this.$bind('objectiveOwner', parentRef);
-      },
-    },
-    ownerOptions: {
-      immediate: true,
-      async handler() {
-        // Set default option
-        if (!this.keyResult?.id && this.ownerOptions?.length === 1) {
-          this.contributor = this.ownerOptions[0];
-        }
-      },
-    },
+    db.collection('keyResults')
+      .doc(this.keyResult.id)
+      .get()
+      .then((snapshot) => {
+        this.thisKeyResult = {
+          ...this.keyResultDefaults,
+          ...snapshot.data(),
+        };
+        this.thisKeyResult.id = this.keyResult.id;
+        this.contributor = this.ownerOptions.find(
+          (o) => o.name === this.keyResult.parent.name
+        );
+        this.loading = false;
+      });
   },
 
   methods: {
@@ -425,8 +398,8 @@ export default {
       }
     },
 
-    close(e) {
-      this.$emit('close', e);
+    close() {
+      this.thisKeyResult = null;
     },
   },
 };

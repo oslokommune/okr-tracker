@@ -6,9 +6,8 @@
       { 'paged-drawer--done': isDone },
       skin ? `paged-drawer--${skin}` : null,
     ]"
+    :allow-click-outside="isDone"
     @close="$emit('close')"
-    @hidden="reset"
-    @click-outside="clickOutside"
   >
     <template #header>
       <span
@@ -112,12 +111,6 @@ export default {
       this.isDone = false;
       this.skin = null;
       this.pageIndex = 1;
-    },
-
-    clickOutside(e) {
-      if (this.isDone) {
-        this.$emit('close', e);
-      }
     },
   },
 };

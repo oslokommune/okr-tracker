@@ -1,7 +1,7 @@
 <template>
   <paged-drawer-wrapper
     ref="drawer"
-    :visible="visible"
+    :visible="!!thisKpi"
     :page-count="pageCount"
     @close="$emit('close')"
   >
@@ -173,24 +173,24 @@
           </toggle-button>
         </template>
 
-        <template v-if="!thisKpi?.archived" #actions="{ handleSubmit }">
+        <template #actions="{ handleSubmit, submitDisabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
-            :disabled="loading"
-            @onClick="$emit('close')"
+            :disabled="loading || thisKpi?.archived"
+            @onClick="thisKpi = null"
           />
           <pkt-button
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
-            :disabled="loading"
+            :disabled="loading || thisKpi?.archived"
             @onClick="prev"
           />
           <btn-save
             :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="loading"
+            :disabled="submitDisabled || loading || thisKpi?.archived"
             variant="label-only"
             @click="handleSubmit(save)"
           />
@@ -250,12 +250,6 @@ export default {
   },
 
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
     kpi: {
       type: Object,
       required: false,
@@ -287,41 +281,28 @@ export default {
     },
   },
 
-  watch: {
-    visible: {
-      immediate: true,
-      async handler(visible) {
-        this.thisKpi = null;
+  mounted() {
+    if (!this.kpi) {
+      this.thisKpi = {
+        name: '',
+        description: '',
+        format: 'integer',
+        startValue: 'zero',
+        preferredTrend: 'increase',
+        kpiType: 'plain',
+        updateFrequency: 'daily',
+        sheetUrl: '',
+        sheetName: '',
+        sheetCell: '',
+        api: true,
+        auto: false,
+      };
+      return;
+    }
 
-        if (!visible) {
-          return;
-        }
-
-        this.$refs.drawer.reset();
-
-        if (!this.kpi) {
-          this.thisKpi = {
-            name: '',
-            description: '',
-            format: 'integer',
-            startValue: 'zero',
-            preferredTrend: 'increase',
-            kpiType: 'plain',
-            updateFrequency: 'daily',
-            sheetUrl: '',
-            sheetName: '',
-            sheetCell: '',
-            api: true,
-            auto: false,
-          };
-          return;
-        }
-
-        this.loading = true;
-        this.thisKpi = this.kpi ? { id: this.kpi.id, ...this.kpi } : {};
-        this.loading = false;
-      },
-    },
+    this.loading = true;
+    this.thisKpi = this.kpi ? { id: this.kpi.id, ...this.kpi } : {};
+    this.loading = false;
   },
 
   methods: {

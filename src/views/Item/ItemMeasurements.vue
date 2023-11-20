@@ -65,7 +65,7 @@
     </empty-page>
 
     <kpi-drawer
-      :visible="hasEditRights && showKpiDrawer"
+      v-if="hasEditRights && showKpiDrawer"
       :kpi="drawerEditMode ? activeKpi : null"
       @create="kpiCreated"
       @close="showKpiDrawer = false"

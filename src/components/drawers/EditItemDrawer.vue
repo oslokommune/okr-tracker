@@ -1,7 +1,7 @@
 <template>
   <paged-drawer-wrapper
     ref="drawer"
-    :visible="visible"
+    :visible="!!thisItem"
     :page-count="pageCount"
     @close="$emit('close')"
   >
@@ -102,25 +102,25 @@
           </pkt-alert>
         </template>
 
-        <template v-if="!thisItem?.archived" #actions="{ handleSubmit, submitDisabled }">
+        <template #actions="{ handleSubmit, submitDisabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
-            :disabled="loading"
-            @onClick="$emit('close')"
+            :disabled="loading || thisItem?.archived"
+            @onClick="thisItem = null"
           />
           <pkt-button
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
-            :disabled="loading"
+            :disabled="loading || thisItem?.archived"
             @onClick="prev"
           />
 
           <btn-save
             :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="submitDisabled || loading"
+            :disabled="submitDisabled || loading || thisItem?.archived"
             variant="label-only"
             @click="handleSubmit(save)"
           />
@@ -178,12 +178,6 @@ export default {
   },
 
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
     item: {
       type: Object,
       required: true,
@@ -214,21 +208,6 @@ export default {
   },
 
   watch: {
-    visible: {
-      immediate: true,
-      async handler(visible) {
-        if (visible) {
-          this.$refs.drawer.reset();
-          this.redirectTimer = null;
-          this.redirectCounter = 3;
-        }
-
-        this.loading = true;
-        this.thisItem = { ...this.item };
-        this.loading = false;
-      },
-    },
-
     item(item, prevItem) {
       // Watch for slug changes and redirect if needed.
       if (item.id === prevItem.id && item.slug !== prevItem.slug && !this.redirectTimer) {
@@ -246,6 +225,10 @@ export default {
         }, 1000);
       }
     },
+  },
+
+  mounted() {
+    this.thisItem = { ...this.item };
   },
 
   methods: {
@@ -310,6 +293,7 @@ export default {
       try {
         await this.getObjectType().archive(this.item.id);
         this.thisItem.archived = true;
+        this.$refs.drawer.reset();
       } catch (error) {
         this.$toasted.error(
           this.$t('toaster.error.archive', { document: this.item.name })
