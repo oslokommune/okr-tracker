@@ -22,11 +22,11 @@
             </div>
           </td>
           <td>
-            <p v-if="record.comment" :class="{ 'mr-size-40': hasEditRights }">
+            <p v-if="record.comment" :class="{ 'mr-size-40': canEdit }">
               {{ record.comment }}
             </p>
             <pkt-button
-              v-if="hasEditRights"
+              v-if="canEdit"
               v-tooltip="$t('tooltip.editProgress')"
               size="small"
               skin="tertiary"
@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -59,10 +58,12 @@ export default {
       type: Array,
       required: true,
     },
-  },
 
-  computed: {
-    ...mapGetters(['hasEditRights']),
+    canEdit: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   methods: {

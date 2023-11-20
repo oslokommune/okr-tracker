@@ -40,6 +40,8 @@ All notable changes to this project will be documented in this file. The format 
   measurement detail pages.
 - Product result indicators and key figures are now correctly included as part
   of parent measurements when switching between items.
+- The edit button for key result values is now only visible to users with the
+  appropriate permissions.
 
 ### Security
 

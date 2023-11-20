@@ -49,24 +49,43 @@ export const storeGetters = {
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 
-  hasEditRights: (state) => {
-    // Returns `true` if user has `admin: true` or if user is member of `activeItem`
+  /**
+   * Returns `true` if the current user is an admin of the parent organization
+   * of `activeItem`.
+   */
+  isAdminOfCurrentOrganization: (state) => {
     const { user, activeItem } = state;
-    const { organization } = activeItem;
 
-    const isAdminOfOrganization = organization
-      ? user.admin && user.admin.includes(organization.id)
-      : user.admin && user.admin.includes(activeItem.id);
-
-    if (user && user.superAdmin) {
-      return true;
-    }
-    if (isAdminOfOrganization) {
-      return true;
-    }
-    if (!user || !activeItem || !activeItem.team) {
+    if (!user || !activeItem) {
       return false;
     }
+
+    return (
+      user.admin?.includes(
+        activeItem.organization ? activeItem.organization.id : activeItem.id
+      ) || false
+    );
+  },
+
+  /**
+   * Returns `true` if the current user has admin rights or is member of
+   * `activeItem`.
+   */
+  hasEditRights: (state, getters) => {
+    const { user, activeItem } = state;
+
+    if (!user || !activeItem) {
+      return false;
+    }
+
+    if (user.superAdmin || getters.isAdminOfCurrentOrganization) {
+      return true;
+    }
+
+    if (!activeItem.team) {
+      return false;
+    }
+
     return activeItem.team.map(({ id }) => id).includes(user.id);
   },
 
@@ -74,20 +93,14 @@ export const storeGetters = {
    * Return `true` if the current user is an admin of the active item or a
    * member of its parent item.
    */
-  hasParentEditRights: (state) => {
+  hasParentEditRights: (state, getters) => {
     const { user, activeItem } = state;
 
     if (!user || !activeItem) {
       return false;
     }
 
-    const { organization } = activeItem;
-
-    const isAdminOfOrganization = organization
-      ? user.admin && user.admin.includes(organization.id)
-      : user.admin && user.admin.includes(activeItem.id);
-
-    if (user.superAdmin || isAdminOfOrganization) {
+    if (user.superAdmin || getters.isAdminOfCurrentOrganization) {
       return true;
     }
 
