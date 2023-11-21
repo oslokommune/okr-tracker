@@ -28,7 +28,7 @@
           :label="$t('admin.product.parentDepartment')"
           select-label="name"
           rules="required"
-          :select-options="departments"
+          :select-options="departmentOptions"
         />
 
         <div class="pkt-form-group">
@@ -82,7 +82,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['departments', 'users']),
+    ...mapState(['departments', 'users', 'user']),
+
+    departmentOptions() {
+      return this.user.superAdmin
+        ? this.departments
+        : this.departments.filter((d) => this.user.admin.includes(d.organization.id));
+    },
   },
 
   methods: {
