@@ -34,7 +34,7 @@ service cloud.firestore {
       let isAdminFromOrgOfProdOrDep = userIsAdmin && hasOrgProperty && getAfter(request.resource.data.organization).id in userDoc.data.admin;
 
       // Check if the user has access to the document which is an organization (given that the first check is false)
-      let isAdminOfOrg = userIsAdmin && request.resource.data.id in userDoc.data.admin;
+      let isAdminOfOrg = userIsAdmin && request.resource.id in userDoc.data.admin;
 
       return isSignedIn() && (isAdminOfOrg || isAdminFromOrgOfProdOrDep);
     }

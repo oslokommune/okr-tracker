@@ -45,6 +45,8 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed overlapping dates on the x-axis of some line plots on small screens.
 - Organizations, departments, and products in the admin panel are now filtered
   based on the admin level of the current user.
+- Organization admins should now be allowed to edit own organizations including
+  child departments and products.
 
 ### Security
 
