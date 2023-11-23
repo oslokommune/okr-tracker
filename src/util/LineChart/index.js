@@ -183,7 +183,7 @@ export default class LineChart {
       .call(
         axisBottom(this.x)
           .tickFormat((d) => formatDate(d, daysBetween))
-          .ticks(Math.min(Math.ceil(daysBetween) || 1, 6))
+          .ticks(Math.min(Math.ceil(daysBetween) || 1, 5))
       )
       .call(styleAxisX);
 
