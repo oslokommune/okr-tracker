@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- Fixed a bug that made organization admins unable to add new users.
 - Improved error reporting from backup and restore Cloud Functions.
 
 ### Security
