@@ -47,7 +47,7 @@
     <div class="user-menu-dropdown__footer">
       <template v-for="link in links">
         <pkt-button
-          v-if="link.show !== undefined ? link.show : true"
+          v-if="link.show"
           :key="`link_${link.key}`"
           size="small"
           skin="tertiary"
@@ -66,8 +66,9 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
-import User from '@/db/User';
 import { PktButton } from '@oslokommune/punkt-vue2';
+import isAdmin from '@/util/user';
+import User from '@/db/User';
 import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 
 export default {
@@ -117,19 +118,21 @@ export default {
           text: this.$t('general.admin'),
           icon: 'cogwheel',
           route: { name: 'Admin' },
-          show: !!this.user?.admin,
+          show: isAdmin(this.user),
         },
         {
           key: 'api',
           text: this.$t('general.api'),
           icon: 'document-code',
           route: { name: 'Api' },
+          show: true,
         },
         {
           key: 'help',
           text: this.$t('general.help'),
           icon: 'question',
           route: { name: 'Help' },
+          show: true,
         },
       ];
     },

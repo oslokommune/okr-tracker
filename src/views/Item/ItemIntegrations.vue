@@ -111,7 +111,7 @@ export default {
 
   computed: {
     ...mapState(['activeItem', 'activeItemRef']),
-    ...mapGetters(['isAdmin', 'hasEditRights']),
+    ...mapGetters(['hasEditRights']),
   },
 
   watch: {

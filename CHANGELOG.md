@@ -53,6 +53,7 @@ All notable changes to this project will be documented in this file. The format 
   based on the admin level of the current user.
 - Organization admins should now be allowed to edit own organizations including
   child departments and products.
+- The link to the admin page is no longer visible to non-admin users.
 
 ### Security
 
