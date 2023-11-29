@@ -2,10 +2,6 @@ import { getFirestore } from 'firebase-admin/firestore';
 import functions from 'firebase-functions';
 import config from '../config.js';
 
-import { checkIfRelevantToPushToSlack } from './helpers.js';
-
-const isSlackActive = JSON.parse(functions.config().slack.active) || false;
-
 const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }) =>
   functions
     .runWith(config.runtimeOpts)
@@ -53,10 +49,6 @@ const auditOnUpdateGenerator = ({ docPath, fields, collectionRef, documentType }
         user: user || 'system',
         diff,
       };
-
-      if (auditData.event.includes('Updated') && isSlackActive) {
-        await checkIfRelevantToPushToSlack(documentType, auditData);
-      }
 
       return db.collection('audit').add(auditData);
     });

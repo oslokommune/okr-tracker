@@ -27,9 +27,6 @@
   - [Automated Backup with Cloud Functions](#automated-backup-with-cloud-functions)
     - [Requirements for automated backups](#requirements-for-automated-backups)
     - [Automated Restore with Cloud Functions](#automated-restore-with-cloud-functions)
-  - [Slack Integration](#slack-integration)
-    - [Set up](#set-up)
-    - [Push audit log to slack channels](#push-audit-log-to-slack-channels)
   - [Supported providers](#supported-providers)
     - [Microsoft integration](#microsoft-integration)
     - [Google integration](#google-integration)
@@ -81,10 +78,6 @@ This key is used for fetching data from Google Sheets (for automatically updatin
 firebase functions:config:set
   service_account="<service account private key json-file>"
   storage.bucket="<your-storage-bucket-name>"
-  slack.active=false
-  slack.webhook="YOUR SLACK WEBHOOK HERE" (required if slack.active === true)
-  slack.token="YOUR SLACK OAUTH TOKEN HERE" (required if slack.active === true)
-  slack.host_url="HOST URL" (required if slack.active === true)
   sheets.impersonator="email-address" (optional)
 ```
 
@@ -101,14 +94,6 @@ firebase functions:config:set service_account="${cat origo-okr-tracker-private-k
 ```
 
 **Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
-
-We have Slack integrations. You can read about how to use the slack integration in the [slack section](#slack-integration).
-
-If you want to activate them, then you would need to add it to the Firebase functions config. If you do not want to use the slack integrations, then you don't need to do anything.
-
-```
-firebase functions:config:set slack.active=true
-```
 
 #### Enable Google Auth in Firebase
 
@@ -410,60 +395,6 @@ Gif of the process:
 ![Gif of the process src: thecloudfunction-blog](./documentation/recovery.gif)
 
 Src/Citation: [The cloud function blog](https://thecloudfunction.com/blog/firebase-cloud-functions-recovery-backups/)
-
-## Slack Integration
-
-We have a slack integration that is connected with a couple of cloud functions.
-
-There are two cloud functions that integrate with slack
-
-1. `handleSlackRequest` - users requesting access - slack app posts to a channel that someone wants access
-2. `handleSlackInteractive` - button actions from channel - user presses accept/reject/ignore and slack app posts to a cloud function that gives access to a user or rejects it
-
-For these cloud functions to work you need to add a webhook url from a slack app.
-
-### Set up
-
-Firebase steps:
-
-1. Open your gcloud console and go to IAM section
-2. Give your Firebase account `Pub/Sub subscriber` role
-
-Slack steps:
-
-1. Go to slack application page and create a new app or go to your existing app
-2. Activate `Incoming Webhooks` and create a new Webhook URL
-3. Activate `Interactivity and Shortcuts` and add a new request URL which points to your Cloud Function
-
-Copy the webhook URL and inject it into Firebase as an environment variable:
-
-```bash
-firebase functions:config:set slack.webhook="YOUR SLACK WEBHOOK HERE"
-
-Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/slackNotificationInteractiveOnRequest
-```
-
-### Push audit log to slack channels
-
-We have added an integration with Slack, where a Slack user can subscribe to updates for an Organization, Department or Product.
-
-If you have already set up a Slack integration from the previous point with Slack request and Slack interactive, you can go to the Slack commands site and add a new Slack command. We use `/okr` as a Slack command. Find you app [here](https://api.slack.com/apps)
-
-The slash command requires a couple of variables:
-
-```
-Command: /okr
-Request URL: https://<region>-<firebase-instance>.cloudfunctions.net/okrSlackBot
-Short Description: Subscribe to Org/Dep/Product
-Usage Hint: subscribe [org/dep/prod] slug
-```
-
-Firebase needs a couple of new configs as well. These are `slack.token` and `host_url`. The `host_url` is the URL of you okr-tracker site, for us, it is `https://okr.oslo.systems`, and the token is an OAuth token from you Slack App settings page, under the sub-page `OAuth & Permissions`, it is a Bot User OAuth Token.
-
-```
-firebase functions:config:set slack.token="YOUR SLACK OAUTH TOKEN HERE"
-firebase functions:config:set slack.host_url="HOST URL"
-```
 
 ## Supported providers
 
