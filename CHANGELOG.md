@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file. The format 
 - Any active objective that has been lifted to the parent item, whilst not
   having any contributing key results from the current level, is now kept
   visible in the timeline until manually closed.
+- The default OKR period is now "all". Objectives outside a set period are now
+  dimmed.
 
 ### Fixed
 

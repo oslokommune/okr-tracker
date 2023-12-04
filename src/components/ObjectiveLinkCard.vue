@@ -10,6 +10,7 @@
         {
           'objective-link-card--active': isExactActive || active,
           'objective-link-card--checked': checked,
+          'objective-link-card--dashed': dashed,
           'objective-link-card--dimmed': dimmed,
         },
       ]"
@@ -90,6 +91,10 @@ export default {
       required: true,
     },
     active: {
+      type: Boolean,
+      default: false,
+    },
+    dashed: {
       type: Boolean,
       default: false,
     },
@@ -273,12 +278,11 @@ export default {
   &--active {
     background-color: var(--color-blue-5);
   }
-  &--dimmed {
+  &--dashed {
     border-style: dashed;
-    opacity: 0.95;
-    > * {
-      opacity: 0.75;
-    }
+  }
+  &--dimmed {
+    opacity: 0.65;
   }
 }
 

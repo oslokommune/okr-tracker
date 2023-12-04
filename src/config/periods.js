@@ -8,7 +8,7 @@ import {
 } from 'date-fns';
 import i18n from '@/locale/i18n';
 
-export const DEFAULT_OKR_PERIOD = 'quarter';
+export const DEFAULT_OKR_PERIOD = 'all';
 export const DEFAULT_KPI_PERIOD = 'all';
 export const FALLBACK_PERIOD = 'all';
 

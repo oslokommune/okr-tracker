@@ -68,9 +68,14 @@
             :tabindex="o.tabindex"
             :style="objectiveStyle(o)"
             :checkable="!isGhostObjective(o.objective) && workbenchObjectives.length > 0"
-            :checked="workbenchObjectives.map((o) => o.id).includes(o.objective.id)"
-            :dimmed="isGhostObjective(o.objective)"
-            :active="activeObjective && activeObjective.id === o.objective.id"
+            :checked="isChecked(o.objective)"
+            :dashed="isGhostObjective(o.objective)"
+            :dimmed="
+              !inCurrentPeriod(o.objective) &&
+              !isActive(o.objective) &&
+              !isChecked(o.objective)
+            "
+            :active="isActive(o.objective)"
             :data-id="o.objective.id"
             :before-navigate="beforeObjectiveNavigate(o.objective)"
             @toggle="toggleObjective($event, o.objective)"
@@ -215,32 +220,7 @@ export default {
      * Return objectives within current `period`.
      */
     periodObjectives() {
-      if (this.period && this.period.key !== 'all') {
-        return this.objectives.filter((objective) => {
-          const { startDate, endDate } = this.period;
-
-          if (objective.startDate && objective.endDate) {
-            return (
-              objective.endDate.toDate() >= startDate &&
-              objective.startDate.toDate() <= endDate
-            );
-          }
-
-          /*
-           * Fall back to checking the old-style `period` reference to retain backwards
-           * compatibility.
-           */
-          if (objective.period.endDate && objective.period.startDate) {
-            return (
-              objective.period.endDate.toDate() >= startDate &&
-              objective.period.startDate.toDate() <= endDate
-            );
-          }
-
-          return false;
-        });
-      }
-      return [];
+      return this.objectives.filter(this.inCurrentPeriod);
     },
   },
 
@@ -559,6 +539,46 @@ export default {
           this.$refs.period.scrollIntoView({ inline: 'center', behavior: 'smooth' });
         }
       });
+    },
+
+    /**
+     * Return true if `objective` is within the current period (either partly
+     * or fully).
+     */
+    inCurrentPeriod(objective) {
+      if (!this.period || this.period.keys === 'all') {
+        return true;
+      }
+
+      const { startDate, endDate } = this.period;
+
+      if (objective.startDate && objective.endDate) {
+        return (
+          objective.endDate.toDate() >= startDate &&
+          objective.startDate.toDate() <= endDate
+        );
+      }
+
+      /*
+       * Fall back to checking the old-style `period` reference to retain
+       * backwards compatibility.
+       */
+      if (objective.period?.endDate && objective.period?.startDate) {
+        return (
+          objective.period.endDate.toDate() >= startDate &&
+          objective.period.startDate.toDate() <= endDate
+        );
+      }
+
+      return false;
+    },
+
+    isActive(objective) {
+      return this.activeObjective && this.activeObjective.id === objective.id;
+    },
+
+    isChecked(objective) {
+      return this.workbenchObjectives.map((o) => o.id).includes(objective.id);
     },
 
     isGhostObjective(objective) {
