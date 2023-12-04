@@ -2,18 +2,11 @@
 /* eslint-disable import/no-mutable-exports */
 import { initializeApp, cert } from 'firebase-admin/app';
 import functions from 'firebase-functions';
-import okrTrackerSlackBot from './slackbot/index.js';
 import handleKpiProgress from './kpi/progress/index.js';
 import handleKpiGoals from './kpi/goals/index.js';
 
-import {
-  slackNotificationOnUserRequest,
-  slackNotificationInteractiveOnRequest,
-} from './requestAccess/index.js';
 import api from './api/index.js';
 import internal from './backend/index.js';
-
-const isSlackActive = JSON.parse(functions.config().slack.active) || false;
 
 // Initialize the app to get everything started
 initializeApp({
@@ -82,13 +75,3 @@ export { handleKeyResultProgressOnKeyResultUpdate } from './progress/index.js';
 
 // // Express servers run via Cloud Functions
 export { api, internal };
-
-// OKR-Tracker slackbot - Need to export empty functions before adding real functions because some users of the okr tracker may not want these functions to begin with
-export let okrSlackBot = {};
-export let slackNotificationUserRequest = {};
-export let slackNotificationInteractiveRequest = {};
-if (isSlackActive) {
-  okrSlackBot = okrTrackerSlackBot;
-  slackNotificationUserRequest = slackNotificationOnUserRequest;
-  slackNotificationInteractiveRequest = slackNotificationInteractiveOnRequest;
-}

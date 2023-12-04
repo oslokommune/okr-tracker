@@ -36,6 +36,10 @@ All notable changes to this project will be documented in this file. The format 
 - The default OKR period is now "all". Objectives outside a set period are now
   dimmed.
 
+### Removed
+
+- The Slack integration has been removed.
+
 ### Fixed
 
 - Fixed Markdown rendering of descriptions on objective, key result, and

@@ -85,7 +85,6 @@ export default {
         missionStatement: missionStatement.trim(),
         archived: false,
         team: team.map(({ id }) => db.collection('users').doc(id)),
-        slack: [],
       };
 
       this.loading = true;
