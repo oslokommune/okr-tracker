@@ -41,6 +41,9 @@ describe('Test Firestore rules', () => {
         .doc('superadmin@example.com')
         .set({ name: 'Super Admin', superAdmin: true });
       await users
+        .doc('orgadmin@example.com')
+        .set({ name: 'Org Y Admin', admin: ['organization-y'] });
+      await users
         .doc('user@example.com')
         .set({ name: 'User', admin: ['organization-x'] });
       await users.doc('user2@example.com').set({ name: 'User 2' });
@@ -66,6 +69,11 @@ describe('Test Firestore rules', () => {
         team: [users.doc('user3@example.com')],
         organization: organizations.doc('organization-x'),
         department: departments.doc('department-x1'),
+      });
+      await products.doc('product-y1').set({
+        name: 'Product Y1',
+        organization: organizations.doc('organization-y'),
+        department: departments.doc('department-y1'),
       });
 
       await objectives.doc('department-x1-objective-1').set({
@@ -156,6 +164,48 @@ describe('Test Firestore rules', () => {
     await withAuthenticatedUser(testEnv, 'user@example.com', async (db) => {
       const organizations = db.collection('organizations');
       await expectPermissionDenied(organizations.add({ foo: 'bar' }));
+    });
+  });
+
+  test('users cannot update organizations', async () => {
+    await withAuthenticatedUser(testEnv, 'user2@example.com', async (db) => {
+      const organization = db.collection('organizations').doc('organization-x');
+      await expectPermissionDenied(organization.update({ name: 'Org X' }));
+    });
+  });
+
+  test('users cannot delete organizations', async () => {
+    await withAuthenticatedUser(testEnv, 'user@example.com', async (db) => {
+      const organization = db.collection('organizations').doc('organization-x');
+      await expectPermissionDenied(organization.delete());
+    });
+  });
+
+  test('organization admin can update own organization', async () => {
+    await withAuthenticatedUser(testEnv, 'orgadmin@example.com', async (db) => {
+      const organizationX = db.collection('organizations').doc('organization-x');
+      const organizationY = db.collection('organizations').doc('organization-y');
+      await expectPermissionDenied(organizationX.update({ name: 'Org X' }));
+      await expectUpdateSucceeds(organizationY.update({ name: 'Org Y' }));
+      expect((await organizationX.get()).data().name).toBe('Organization X');
+      expect((await organizationY.get()).data().name).toBe('Org Y');
+    });
+  });
+
+  test('organization admin can update own child departments and products', async () => {
+    await withAuthenticatedUser(testEnv, 'orgadmin@example.com', async (db) => {
+      const departmentX1 = db.collection('departments').doc('department-x1');
+      const departmentY1 = db.collection('departments').doc('department-y1');
+      const productX1 = db.collection('products').doc('product-x1');
+      const productY1 = db.collection('products').doc('product-y1');
+      await expectPermissionDenied(departmentX1.update({ name: 'Dep X1' }));
+      await expectUpdateSucceeds(departmentY1.update({ name: 'Dep Y1' }));
+      await expectPermissionDenied(productX1.update({ name: 'Prod X1' }));
+      await expectUpdateSucceeds(productY1.update({ name: 'Prod Y1' }));
+      expect((await departmentX1.get()).data().name).toBe('Department X1');
+      expect((await departmentY1.get()).data().name).toBe('Dep Y1');
+      expect((await productX1.get()).data().name).toBe('Product X1');
+      expect((await productY1.get()).data().name).toBe('Prod Y1');
     });
   });
 
