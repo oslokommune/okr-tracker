@@ -171,37 +171,22 @@ export default {
   },
 
   watch: {
-    showArchived: {
+    user: {
       immediate: true,
-      handler() {
-        this.$bind(
-          'organizations',
-          db
-            .collection('organizations')
-            .where('archived', 'in', [false, this.showArchived])
-            .orderBy('slug')
-        );
-        this.$bind(
-          'departments',
-          db
-            .collection('departments')
-            .where('archived', 'in', [false, this.showArchived])
-            .orderBy('slug')
-        );
-        this.$bind(
-          'products',
-          db
-            .collection('products')
-            .where('archived', 'in', [false, this.showArchived])
-            .orderBy('slug')
-        );
-      },
+      handler: 'bindItems',
+    },
+
+    showArchived: {
+      immediate: false,
+      handler: 'bindItems',
     },
 
     organizations: {
       immediate: true,
       handler() {
-        this.filteredOrgs = this.organizations;
+        this.filteredOrgs = this.user.superAdmin
+          ? this.organizations
+          : this.organizations.filter((o) => this.user.admin.includes(o.id));
         this.fuseOrgs = new Fuse(this.filteredOrgs, fuseSettings);
       },
     },
@@ -209,7 +194,9 @@ export default {
     departments: {
       immediate: true,
       handler() {
-        this.filteredDeps = this.departments;
+        this.filteredDeps = this.user.superAdmin
+          ? this.departments
+          : this.departments.filter((d) => this.user.admin.includes(d.organization.id));
         this.fuseDeps = new Fuse(this.filteredDeps, fuseSettings);
       },
     },
@@ -217,7 +204,9 @@ export default {
     products: {
       immediate: true,
       handler() {
-        this.filteredProds = this.products;
+        this.filteredProds = this.user.superAdmin
+          ? this.products
+          : this.products.filter((p) => this.user.admin.includes(p.organization.id));
         this.fuseProds = new Fuse(this.filteredProds, fuseSettings);
       },
     },
@@ -248,6 +237,19 @@ export default {
   },
 
   methods: {
+    bindItems() {
+      for (const collection of ['organizations', 'departments', 'products']) {
+        this.$bind(
+          collection,
+          db
+            .collection(collection)
+            .where('archived', 'in', [false, this.showArchived])
+            .orderBy('slug'),
+          { wait: true }
+        );
+      }
+    },
+
     itemLink(slug) {
       return {
         name: 'ItemAbout',

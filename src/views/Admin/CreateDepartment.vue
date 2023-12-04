@@ -30,7 +30,7 @@
           :label="$t('admin.department.parentOrganisation')"
           select-label="name"
           rules="required"
-          :select-options="organizations"
+          :select-options="organizationOptions"
           data-cy="dep-parentOrg"
         />
 
@@ -86,7 +86,13 @@ export default {
   }),
 
   computed: {
-    ...mapState(['organizations', 'users']),
+    ...mapState(['organizations', 'users', 'user']),
+
+    organizationOptions() {
+      return this.user.superAdmin
+        ? this.organizations
+        : this.organizations.filter((o) => this.user.admin.includes(o.id));
+    },
   },
 
   methods: {

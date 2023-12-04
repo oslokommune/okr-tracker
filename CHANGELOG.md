@@ -43,6 +43,8 @@ All notable changes to this project will be documented in this file. The format 
 - The edit button for key result values is now only visible to users with the
   appropriate permissions.
 - Fixed overlapping dates on the x-axis of some line plots on small screens.
+- Organizations, departments, and products in the admin panel are now filtered
+  based on the admin level of the current user.
 
 ### Security
 
