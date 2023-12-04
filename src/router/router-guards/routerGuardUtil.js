@@ -1,5 +1,6 @@
 import { db } from '@/config/firebaseConfig';
 import { firestoreEncode } from '@/util/firebaseUtil';
+import isAdmin from '@/util/user';
 import store from '@/store';
 
 const getSlugRef = async (slug) => {
@@ -15,10 +16,7 @@ const getSlugRef = async (slug) => {
     .then((snap) => snap.data())
     .catch(() => null);
 
-  return !refData ||
-    (refData.archived && (!store.state.user.admin || !store.state.user.superAdmin))
-    ? null
-    : reference;
+  return !refData || (refData.archived && !isAdmin(store.state.user)) ? null : reference;
 };
 
 export default getSlugRef;

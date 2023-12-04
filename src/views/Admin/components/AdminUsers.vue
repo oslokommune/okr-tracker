@@ -62,6 +62,7 @@
 import { mapState } from 'vuex';
 import Fuse from 'fuse.js';
 import { PktButton } from '@oslokommune/punkt-vue2';
+import isAdmin from '@/util/user';
 import AddUsers from './AddUsers.vue';
 import EditUser from './EditUser.vue';
 
@@ -121,11 +122,7 @@ export default {
     },
   },
 
-  methods: {
-    isAdmin(user) {
-      return user.admin?.length > 0 || user.superAdmin;
-    },
-  },
+  methods: { isAdmin },
 };
 </script>
 
