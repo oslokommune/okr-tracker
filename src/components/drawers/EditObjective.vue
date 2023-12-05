@@ -4,9 +4,6 @@
       <template v-if="!isDone">
         {{ $t(editMode ? 'admin.objective.change' : 'admin.objective.new') }}
       </template>
-      <template v-else-if="lifted">
-        {{ $t('objective.moved') }}
-      </template>
       <template v-else-if="isSuccess">
         {{ $t(editMode ? 'objective.updated' : 'admin.objective.created') }}
       </template>
@@ -55,31 +52,33 @@
           @click="useSuggestedPeriod"
         />
 
-        <form-component
-          v-if="canLift"
-          v-model="owner"
-          name="owner"
-          input-type="select"
-          :select-options="ownerOptions"
-          :select-reduce="(option) => option.value"
-          select-label="label"
-          :label="$t('admin.objective.responsible')"
-          rules="required"
-        />
-
-        <pkt-alert v-if="hasNewOwner" skin="warning">
-          <p>
-            {{
-              $t('admin.objective.liftWarning1', {
-                curOwner: objective.parent.name,
-                newOwner: parentName,
-              })
-            }}
-          </p>
-          <p v-if="!hasParentEditRights">
-            {{ $t('admin.objective.liftWarning2', { newOwner: parentName }) }}
-          </p>
-        </pkt-alert>
+        <div class="owner-select">
+          <label for="owner" class="pkt-form-label">
+            {{ $t('admin.objective.level.label') }}
+          </label>
+          <div class="pkt-form-help">{{ displayLevelHelp }}</div>
+          <form-component
+            v-if="canLift"
+            v-model="owner"
+            name="owner"
+            input-type="select"
+            :select-options="ownerOptions"
+            :select-reduce="(option) => option.value"
+            select-label="label"
+            :disabled="!canLift || thisObjective?.archived"
+            rules="required"
+          />
+          <pkt-alert v-if="hasNewOwner" skin="info">
+            <p>{{ $t('admin.objective.level.liftWarning1') }}</p>
+            <p v-if="!hasParentEditRights">
+              {{
+                $t('admin.objective.level.liftWarning2', {
+                  newOwner: potentionalOwner.name,
+                })
+              }}
+            </p>
+          </pkt-alert>
+        </div>
 
         <template #actions="{ handleSubmit, submitDisabled }">
           <btn-cancel :disabled="loading" @click="close" />
@@ -139,6 +138,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import { isEqual } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import { formattedPeriod } from '@/util/okr';
+import getActiveItemType from '@/util/getActiveItemType';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
@@ -191,15 +191,13 @@ export default {
     periodRange: null,
     loading: false,
     owner: null,
-    parentRef: null,
-    parentName: null,
-    parentSlug: null,
+    currentOwner: null,
+    potentionalOwner: null,
     keyResults: [],
-    lifted: false,
   }),
 
   computed: {
-    ...mapState(['activeItemRef']),
+    ...mapState(['activeItem', 'activeItemRef']),
     ...mapGetters(['hasParentEditRights']),
 
     editMode() {
@@ -224,37 +222,83 @@ export default {
     },
 
     /**
+     * Return array with names of current foreign contributors.
+     */
+    foreignContributors() {
+      return [
+        ...new Set(
+          this.keyResults
+            .filter((kr) => kr.parent.id !== this.objective.parent.id)
+            .map((kr) => kr.parent.name)
+        ),
+      ];
+    },
+
+    /**
      * Return `true` if the user should be able to lift current objective.
      */
     canLift() {
-      return (
-        (this.objective?.parent.department || this.objective?.parent.organization) &&
-        !this.hasForeignContributors
-      );
+      return this.potentionalOwner && !this.hasForeignContributors;
     },
 
     ownerOptions() {
-      return [
-        { label: this.objective.parent.name, value: this.thisObjective.parent.path },
-        { label: this.parentName, value: this.parentRef?.path },
-      ];
+      return this.currentOwner && this.potentionalOwner
+        ? [
+            {
+              label: this.currentOwner.name,
+              value: this.currentOwner.ref.path,
+            },
+            {
+              label: this.potentionalOwner.name,
+              value: this.potentionalOwner.ref.path,
+            },
+          ]
+        : [];
+    },
+
+    displayLevelHelp() {
+      if (this.owner === this.potentionalOwner?.ref.path) {
+        return this.$t('admin.objective.level.helpLift', {
+          owner: this.currentOwner.name,
+          newOwner: this.potentionalOwner.name,
+        });
+      }
+
+      if (this.hasForeignContributors) {
+        return this.$t('admin.objective.level.helpForeign', {
+          owner: this.currentOwner.name,
+          contributors: this.foreignContributors.join(', '),
+        });
+      }
+
+      return this.$t('admin.objective.level.help', {
+        owner: this.currentOwner.name,
+      });
     },
 
     /**
      * Return `true` if a new owner has been chosen for the current objective.
      */
     hasNewOwner() {
-      return (
-        this.owner &&
-        this.objective &&
-        this.owner.split('/')[1] !== this.objective.parent.id
-      );
+      return this.currentOwner && this.currentOwner.ref.path !== this.owner;
     },
   },
 
   async mounted() {
     if (!this.objective) {
       this.thisObjective = {};
+      this.owner = this.activeItemRef.path;
+      this.currentOwner = {
+        ref: this.activeItemRef,
+        name: this.activeItem.name,
+      };
+      const parent = this.activeItem.department || this.activeItem.organization;
+      if (parent) {
+        this.potentionalOwner = {
+          ref: db.doc(`${getActiveItemType(parent)}s/${parent.id}`),
+          name: parent.name,
+        };
+      }
       return;
     }
 
@@ -265,7 +309,11 @@ export default {
         this.thisObjective = snapshot.data();
         this.thisObjective.id = this.objective.id;
         this.periodRange = this.getCurrentDateRange();
-        this.owner = this.thisObjective.parent.path;
+        this.currentOwner = {
+          ref: this.thisObjective.parent,
+          name: this.objective.parent.name,
+        };
+        this.owner = this.currentOwner.ref.path;
         this.loading = false;
       });
 
@@ -276,13 +324,14 @@ export default {
       .where('objective', '==', objectiveRef);
     await this.$bind('keyResults', keyResults);
 
-    if (this.canLift) {
-      this.parentRef = await db.doc(
-        this.objective.parent.department || this.objective.parent.organization
-      );
-      const parentData = (await this.parentRef.get()).data();
-      this.parentName = parentData.name;
-      this.parentSlug = parentData.slug;
+    const parent = this.objective.parent.department || this.objective.parent.organization;
+    if (parent) {
+      const parentRef = db.doc(parent);
+      const parentData = (await parentRef.get()).data();
+      this.potentionalOwner = {
+        ref: parentRef,
+        name: parentData.name,
+      };
     }
   },
 
@@ -312,7 +361,13 @@ export default {
         const { name, description, weight, period } = this.thisObjective;
         const [start, end] = this.periodRange;
 
+        const targetParentRef =
+          this.owner === this.potentionalOwner.ref.path
+            ? this.potentionalOwner.ref
+            : this.currentOwner.ref;
+
         if (this.thisObjective?.id) {
+          // Update objective
           const data = {
             name,
             description: description || '',
@@ -328,17 +383,15 @@ export default {
           } else {
             data.period = period;
           }
-          const hasNewOwner = this.hasNewOwner;
-          if (hasNewOwner) {
-            data.parent = this.parentRef;
-            this.lifted = true;
-          }
+
+          data.parent = targetParentRef;
           await Objective.update(this.thisObjective.id, data);
-          if (hasNewOwner) {
+          if (this.hasNewOwner) {
             await syncObjectiveContributors(this.thisObjective.id);
           }
-          await this.$emit('update', this.thisObjective);
+          this.$emit('update', this.thisObjective);
         } else {
+          // Create new objective
           const { id } = await Objective.create({
             name,
             description: description || '',
@@ -347,9 +400,16 @@ export default {
             startDate: start,
             endDate: end,
           });
+
+          if (this.hasNewOwner) {
+            await Objective.update(id, { parent: targetParentRef });
+            await syncObjectiveContributors(id);
+          }
+
           this.thisObjective.id = id;
           this.$emit('create', this.thisObjective);
         }
+
         this.$refs.drawer.next();
       } catch (error) {
         this.$refs.drawer.next(false);
@@ -403,7 +463,18 @@ export default {
   margin: -0.75rem 0 1rem 0;
 }
 
-.pkt-alert {
-  margin: 1.5rem 0;
+.owner-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+
+  .pkt-form-help {
+    white-space: pre-line;
+  }
+
+  ::v-deep .pkt-form-group {
+    margin-bottom: 0;
+  }
 }
 </style>

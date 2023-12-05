@@ -6,8 +6,8 @@
         'pkt-form-group--error': errors.length,
       }"
     >
-      <label class="pkt-form-label" :for="name">
-        {{ label || name }}
+      <label v-if="label" class="pkt-form-label" :for="name">
+        {{ label }}
         <span v-if="isOptionalField && !disabled && !readonly" class="pkt-badge">
           {{ $t('validation.optional') }}
         </span>
