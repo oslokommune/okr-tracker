@@ -126,7 +126,6 @@
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
     "language": "Språk",
-    "owner": "Ansvarlig team",
     "kpiType": "Type"
   },
   "validation": {
@@ -461,7 +460,11 @@
       "created": "Nøkkelresultatet ble opprettet!",
       "updated": "Nøkkelresultatet ble endret!",
       "change": "Rediger nøkkelresultat",
-      "delete": "Slett nøkkelresultat"
+      "delete": "Slett nøkkelresultat",
+      "owner": {
+        "label": "Ansvarlig team",
+        "help": "Teamet som er ansvarlig for å føgle opp dette nøkkelresultatet."
+      }
     },
     "measurement": {
       "new": "Legg til måling",

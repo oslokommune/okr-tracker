@@ -126,7 +126,6 @@
     "preferredTrend": "Trend",
     "updateFrequency": "Update frequency",
     "language": "Language",
-    "owner": "Responsible team",
     "kpiType": "Type"
   },
   "validation": {
@@ -461,7 +460,11 @@
       "created": "Key result was created!",
       "updated": "Key result was updated!",
       "change": "Edit key result",
-      "delete": "Delete key result"
+      "delete": "Delete key result",
+      "owner": {
+        "label": "Responsible team",
+        "help": "The team responsible for following up on this key result."
+      }
     },
     "measurement": {
       "new": "New measurement",
