@@ -46,10 +46,9 @@
     </template>
 
     <item-drawer
-      :visible="hasEditRights && showItemDrawer"
+      v-if="hasEditRights && showItemDrawer"
       :item="activeItem"
       @close="showItemDrawer = false"
-      @hook:mounted="showItemDrawer = String($route.query.edit).toLowerCase() === 'true'"
     />
 
     <profile-modal
@@ -195,6 +194,10 @@ export default {
         this.$router.replace({ query: null });
       }
     },
+  },
+
+  mounted() {
+    this.showItemDrawer = String(this.$route.query.edit).toLowerCase() === 'true';
   },
 
   methods: {

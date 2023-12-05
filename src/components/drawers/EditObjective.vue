@@ -1,5 +1,5 @@
 <template>
-  <paged-drawer-wrapper ref="drawer" :visible="visible && !!thisObjective" @close="close">
+  <paged-drawer-wrapper ref="drawer" :visible="!!thisObjective" @close="$emit('close')">
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
         {{ $t(editMode ? 'admin.objective.change' : 'admin.objective.new') }}
@@ -81,15 +81,12 @@
           </p>
         </pkt-alert>
 
-        <template
-          v-if="!thisObjective?.archived"
-          #actions="{ handleSubmit, submitDisabled }"
-        >
+        <template #actions="{ handleSubmit, submitDisabled }">
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
             :label="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
-            :disabled="submitDisabled || loading"
+            :disabled="submitDisabled || loading || thisObjective?.archived"
             @click="handleSubmit(save)"
           />
         </template>
@@ -168,12 +165,6 @@ export default {
   },
 
   props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
     objective: {
       type: Object,
       required: false,
@@ -261,52 +252,38 @@ export default {
     },
   },
 
-  watch: {
-    visible: {
-      immediate: true,
-      async handler(visible) {
-        this.thisObjective = null;
-        this.periodRange = null;
-        this.lifted = false;
-        if (visible) {
-          this.$refs.drawer.reset();
-        }
+  async mounted() {
+    if (!this.objective) {
+      this.thisObjective = {};
+      return;
+    }
 
-        if (!this.objective) {
-          this.thisObjective = {};
-          this.periodRange = null;
-          return;
-        }
+    db.collection('objectives')
+      .doc(this.objective.id)
+      .get()
+      .then((snapshot) => {
+        this.thisObjective = snapshot.data();
+        this.thisObjective.id = this.objective.id;
+        this.periodRange = this.getCurrentDateRange();
+        this.owner = this.thisObjective.parent.path;
+        this.loading = false;
+      });
 
-        this.loading = true;
-        db.collection('objectives')
-          .doc(this.objective.id)
-          .get()
-          .then((snapshot) => {
-            this.thisObjective = snapshot.data();
-            this.thisObjective.id = this.objective.id;
-            this.periodRange = this.getCurrentDateRange();
-            this.owner = this.thisObjective.parent.path;
-            this.loading = false;
-          });
+    const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
+    const keyResults = await db
+      .collection('keyResults')
+      .where('archived', '==', false)
+      .where('objective', '==', objectiveRef);
+    await this.$bind('keyResults', keyResults);
 
-        const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
-        const keyResults = await db
-          .collection('keyResults')
-          .where('archived', '==', false)
-          .where('objective', '==', objectiveRef);
-        await this.$bind('keyResults', keyResults);
-
-        if (this.canLift) {
-          this.parentRef = await db.doc(
-            this.objective.parent.department || this.objective.parent.organization
-          );
-          const parentData = (await this.parentRef.get()).data();
-          this.parentName = parentData.name;
-          this.parentSlug = parentData.slug;
-        }
-      },
-    },
+    if (this.canLift) {
+      this.parentRef = await db.doc(
+        this.objective.parent.department || this.objective.parent.organization
+      );
+      const parentData = (await this.parentRef.get()).data();
+      this.parentName = parentData.name;
+      this.parentSlug = parentData.slug;
+    }
   },
 
   methods: {
@@ -407,8 +384,8 @@ export default {
       }
     },
 
-    close(e) {
-      this.$emit('close', e);
+    close() {
+      this.thisObjective = null;
     },
 
     async useSuggestedPeriod() {
