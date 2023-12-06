@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [4.0.0] 2023-12-06
+
 ### Added
 
 - The team member listing on the about page has been reintroduced, but is now
@@ -24,17 +26,19 @@ All notable changes to this project will be documented in this file. The format 
 - Objectives can now be "lifted" from a product or department to the level above
   (to a department or organization, respectively).
 - The API authorization mechanism has been reworked. The API now accepts a pair
-  of `okr-client-id` and `okr-client-secret` headers to authorize clients.
-  The interface for managing client credentials can be found in the item
-  navigation bar. The existing `okr-team-secret` header is considered deprecated
-  and will continue to work for existing clients until migrated.
+  of `okr-client-id` and `okr-client-secret` headers to authorize clients. The
+  interface for managing client credentials can be found in the item navigation
+  bar.
 - The period selected for the OKR and measurement views are no longer
   synchronized and can be adjusted individually.
-- Any active objective that has been lifted to the parent item, whilst not
-  having any contributing key results from the current level, is now kept
-  visible in the timeline until manually closed.
 - The default OKR period is now "all". Objectives outside a set period are now
   dimmed.
+
+### Deprecated
+
+- The `okr-team-secret` header is deprecated and users should migrate to the new
+  `okr-client-id` and `okr-client-secret` headers as described above. Existing
+  `okr-team-secret` values will continue to work until they've been migrated.
 
 ### Removed
 
