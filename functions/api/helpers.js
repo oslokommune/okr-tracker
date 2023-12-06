@@ -150,6 +150,7 @@ export async function buildKpiResponse(kpiSnapshot) {
     });
 
   return {
+    id: kpiSnapshot.id,
     currentValue,
     name,
     type,

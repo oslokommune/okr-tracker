@@ -28,13 +28,35 @@ paths:
     get:
       summary: Get KPIs.
       operationId: getKPIs
+      description: >
+        This endpoint employs cursor pagination for improved response handling
+        for both the server and the client. The cursor token needed for
+        subsequent requests is included in the response until all data is
+        exhausted.
+      parameters:
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          default: 50
+          description: The number of results per page (1 - 50)
+        - name: cursor
+          in: query
+          type: string
+          required: false
+          default: null
+          description: Pagination cursor
+        - name: order
+          in: query
+          type: string
+          required: false
+          default: asc
+          description: Sort order based on creation date
       responses:
         200:
-          description: A successful response
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Kpi'
+          $ref: '#/responses/PaginatedKpis'
+        400:
+          $ref: '#/responses/BadRequest'
         500:
           $ref: '#/responses/Unavailable'
   /kpi/{id}:
@@ -418,8 +440,34 @@ definitions:
                 type: integer
               unknown:
                 type: integer
+  Pagination:
+    properties:
+      limit:
+        type: integer
+        example: 25
+      order:
+        type: string
+        example: asc
+      results_count:
+        type: integer
+        example: 25
+      cursor:
+        type: string
+      next_cursor:
+        type: string
 
 responses:
+  PaginatedKpis:
+    description: Paginated KPI list
+    schema:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/definitions/Pagination'
+        results:
+          type: array
+          items:
+            $ref: '#/definitions/Kpi'
   NotFound:
     description: Resource not found
     schema:
@@ -445,6 +493,8 @@ responses:
     description: A bad request
     schema:
       type: object
+      required:
+        - message
       properties:
         errors:
           type: object

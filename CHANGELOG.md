@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file. The format 
 - "Lifting" objectives are now also allowed during the creation flow, not only
   when edited.
 
+### Breaking changes
+
+- The API endpoint for listing KPIs (measurements) now uses cursor-based
+  pagination to alleviate scalability issues in the previous implementation.
+
 ## [4.0.0] 2023-12-06
 
 ### Added

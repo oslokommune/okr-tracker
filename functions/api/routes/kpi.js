@@ -17,6 +17,9 @@ import {
   progressValidator,
   clientSecretValidator,
   valueValidator,
+  limitValidator,
+  cursorValidator,
+  orderValidator,
 } from '../validators.js';
 import validateRules from '../validateRules.js';
 
@@ -63,32 +66,66 @@ router.post(
   }
 );
 
-router.get('/', async (req, res) => {
-  const db = getFirestore();
+router.get(
+  '/',
+  limitValidator,
+  cursorValidator,
+  orderValidator,
+  validateRules,
+  async (req, res) => {
+    const { limit, cursor, order } = req.matchedData;
+    const documentLimit = limit || 50;
+    const documentOrder = order || 'asc';
+    const db = getFirestore();
 
-  try {
-    const kpiQuerySnapshot = await db
-      .collection('kpis')
-      .where('archived', '==', false)
-      .get();
+    try {
+      let kpiQuery = db
+        .collection('kpis')
+        .where('archived', '==', false)
+        .orderBy('created', documentOrder)
+        .limit(documentLimit);
 
-    const kpis = [];
-
-    for await (const kpiSnapshot of kpiQuerySnapshot.docs) {
-      const parentRef = kpiSnapshot.data().parent;
-
-      if (parentRef && !(await isArchived(parentRef))) {
-        const kpiData = await buildKpiResponse(kpiSnapshot);
-        kpis.push(kpiData);
+      if (cursor) {
+        const startAfterDoc = await db.doc(`kpis/${cursor}`).get();
+        if (!startAfterDoc.exists) {
+          res.status(400).json({
+            message: `Could not find document with ID: ${cursor}`,
+          });
+          return;
+        }
+        kpiQuery = kpiQuery.startAfter(startAfterDoc);
       }
-    }
 
-    res.json(kpis);
-  } catch (e) {
-    console.error('ERROR: ', e.message);
-    res.status(500).send('Could not get list of KPIs');
+      const querySnapshot = await kpiQuery.get();
+      const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+      const kpis = [];
+
+      for await (const kpiSnapshot of querySnapshot.docs) {
+        const parentRef = kpiSnapshot.data().parent;
+
+        if (parentRef && !(await isArchived(parentRef))) {
+          const kpiData = await buildKpiResponse(kpiSnapshot);
+          kpis.push(kpiData);
+        }
+      }
+
+      res.json({
+        pagination: {
+          limit: documentLimit,
+          order: documentOrder,
+          results_count: querySnapshot.size,
+          cursor: cursor || null,
+          next_cursor:
+            querySnapshot.size >= documentLimit ? lastVisible?.id || null : null,
+        },
+        results: kpis,
+      });
+    } catch (e) {
+      console.error('ERROR: ', e.message);
+      res.status(500).json({ message: 'Could not get list of KPIs' });
+    }
   }
-});
+);
 
 router.get('/:id', idValidator, async (req, res) => {
   const sanitized = matchedData(req);
