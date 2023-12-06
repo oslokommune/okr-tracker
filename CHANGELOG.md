@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - The API endpoint for listing KPIs (measurements) now uses cursor-based
   pagination to alleviate scalability issues in the previous implementation.
+- The status API endpoint providing certain global KPI metrics was broken and
+  have been removed.
 
 ## [4.0.0] 2023-12-06
 

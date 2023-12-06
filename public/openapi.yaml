@@ -270,17 +270,6 @@ paths:
           $ref: '#/responses/NotFound'
         500:
           $ref: '#/responses/Unavailable'
-  /status:
-    get:
-      summary: Get OKR Tracker metrics.
-      operationId: getStatus
-      responses:
-        200:
-          description: A successful response
-          schema:
-            $ref: '#/definitions/TrackerMetrics'
-        500:
-          $ref: '#/responses/Unavailable'
   /user/{id}:
     patch:
       summary: Update user details.
@@ -426,20 +415,6 @@ definitions:
         format: date-time
       editedBy:
         type: string
-  TrackerMetrics:
-    properties:
-      kpis:
-        type: object
-        properties:
-          total:
-            type: integer
-          state:
-            type: object
-            properties:
-              stale:
-                type: integer
-              unknown:
-                type: integer
   Pagination:
     properties:
       limit:

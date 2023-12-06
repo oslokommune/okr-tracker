@@ -10,7 +10,6 @@ import config from '../config.js';
 // Routes
 import keyResRoutes from './routes/keyres.js';
 import kpiRoutes from './routes/kpi.js';
-import statusRoutes from './routes/status.js';
 import userRoutes from './routes/user.js';
 
 const apiLimiter = rateLimit({
@@ -28,7 +27,6 @@ app.use(morgan('combined'));
 
 app.use('/keyres', keyResRoutes);
 app.use('/kpi', kpiRoutes);
-app.use('/status', statusRoutes);
 app.use('/user', userRoutes);
 
 const api = functions
