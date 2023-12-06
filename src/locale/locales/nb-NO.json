@@ -187,7 +187,7 @@
     "keyResults": "Nøkkelresultater",
     "success": "Suksess",
     "objective": "Mål",
-    "objectiveBy": "Mål via {owner}",
+    "objectiveBy": "Mål delt med {owner}",
     "selectObjectivesInPeriod": "Velg alle mål i denne perioden",
     "noObjectivesInPeriod": "Ingen mål i denne perioden",
     "keyResult": "Nøkkelresultat",
