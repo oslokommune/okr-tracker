@@ -404,7 +404,6 @@
     "created": "Opprettet",
     "edited": "Sist endret",
     "updated": "Målet ble endret!",
-    "moved": "Målet ble flyttet!",
     "movedWarning": "{activeItem} har for øyeblikket ingen nøkkelresultater registrert på dette målet. Når målet lukkes, vil det ikke lenger vises på denne tidslinjen. Du kan koble dere på som bidragsyter ved å legge til et nøkkelresultat nå, eller på et senere tidspunkt via {ownerLink}."
   },
   "period": {

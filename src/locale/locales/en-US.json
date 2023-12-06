@@ -404,7 +404,6 @@
     "created": "Created",
     "edited": "Changed",
     "updated": "The objective was changed!",
-    "moved": "The objective was moved!",
     "movedWarning": "{activeItem} does not currently have any key results attached to this objective. When this objective is closed, it will also be hidden from this timeline. You can add a new key result now, and become a contributor, or later through {ownerLink}."
   },
   "period": {
