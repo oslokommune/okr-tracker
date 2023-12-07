@@ -40,11 +40,15 @@
             v-model="contributor"
             name="owner"
             input-type="select"
-            :disabled="thisKeyResult?.archived"
+            :disabled="ownerOptions.length === 1 || thisKeyResult?.archived"
             :select-options="ownerOptions"
-            :label="$t('fields.owner')"
+            :label="$t('admin.keyResult.owner.label')"
             rules="required"
-          />
+          >
+            <template #help>
+              {{ $t('admin.keyResult.owner.help') }}
+            </template>
+          </form-component>
         </template>
 
         <template v-else-if="pageIndex === 2">

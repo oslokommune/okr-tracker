@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- "Lifting" objectives are now also allowed during the creation flow, not only
+  when edited.
+
 ## [4.0.0] 2023-12-06
 
 ### Added

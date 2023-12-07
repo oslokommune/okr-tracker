@@ -126,7 +126,6 @@
     "preferredTrend": "Trend",
     "updateFrequency": "Update frequency",
     "language": "Language",
-    "owner": "Responsible team",
     "kpiType": "Type"
   },
   "validation": {
@@ -405,7 +404,6 @@
     "created": "Created",
     "edited": "Changed",
     "updated": "The objective was changed!",
-    "moved": "The objective was moved!",
     "movedWarning": "{activeItem} does not currently have any key results attached to this objective. When this objective is closed, it will also be hidden from this timeline. You can add a new key result now, and become a contributor, or later through {ownerLink}."
   },
   "period": {
@@ -447,16 +445,25 @@
       "change": "Edit objective",
       "delete": "Delete objective",
       "useLastPeriod": "Set to last used period:",
-      "liftWarning1": "With this the objective will move from {curOwner} to {newOwner} and can't be moved back.",
-      "liftWarning2": "You will no longer be able to edit the objective since you aren't a member of {newOwner}, but you will still be able to add key results to the objective.",
-      "responsible": "Responsible"
+      "level": {
+        "label": "Display level",
+        "help": "The objective will be displayed on the timeline of {owner} (default).",
+        "helpLift": "The objective will be displayed on the timeline of both {newOwner} and {owner}. It will remain on the latter's timeline as long as at least one key result from {owner} is retained.\n\nMembers in {owner} will no longer be able to edit this objective, except for adding or removing their own key results.",
+        "helpForeign": "The objective is displayed on the timeline of {owner} and the timelines of the following contributors: {contributors}. The display level cannot be changed for objectives with external contributors.",
+        "liftWarning1": "This change cannot be reverted.",
+        "liftWarning2": "You will no longer be able to edit the objective since you aren't a member of {newOwner}, but you will still be able to add key results to the objective."
+      }
     },
     "keyResult": {
       "new": "New key result",
       "created": "Key result was created!",
       "updated": "Key result was updated!",
       "change": "Edit key result",
-      "delete": "Delete key result"
+      "delete": "Delete key result",
+      "owner": {
+        "label": "Responsible team",
+        "help": "The team responsible for following up on this key result."
+      }
     },
     "measurement": {
       "new": "New measurement",

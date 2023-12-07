@@ -126,7 +126,6 @@
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
     "language": "Språk",
-    "owner": "Ansvarlig team",
     "kpiType": "Type"
   },
   "validation": {
@@ -188,7 +187,7 @@
     "keyResults": "Nøkkelresultater",
     "success": "Suksess",
     "objective": "Mål",
-    "objectiveBy": "Mål via {owner}",
+    "objectiveBy": "Mål delt med {owner}",
     "selectObjectivesInPeriod": "Velg alle mål i denne perioden",
     "noObjectivesInPeriod": "Ingen mål i denne perioden",
     "keyResult": "Nøkkelresultat",
@@ -405,7 +404,6 @@
     "created": "Opprettet",
     "edited": "Sist endret",
     "updated": "Målet ble endret!",
-    "moved": "Målet ble flyttet!",
     "movedWarning": "{activeItem} har for øyeblikket ingen nøkkelresultater registrert på dette målet. Når målet lukkes, vil det ikke lenger vises på denne tidslinjen. Du kan koble dere på som bidragsyter ved å legge til et nøkkelresultat nå, eller på et senere tidspunkt via {ownerLink}."
   },
   "period": {
@@ -447,16 +445,25 @@
       "change": "Rediger mål",
       "delete": "Slett mål",
       "useLastPeriod": "Sett til sist brukte periode:",
-      "liftWarning1": "Målet vil med dette flyttes fra {curOwner} til {newOwner} og kan ikke flyttes tilbake.",
-      "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}, men du vil fortsatt kunne legge nøkkelresultater til målet.",
-      "responsible": "Ansvarlig for målet"
+      "level": {
+        "label": "Visningsnivå",
+        "help": "Målet vises kun på tidslinjen til {owner} (standard).",
+        "helpLift": "Målet vises både på tidslinjen til {newOwner} og {owner}. Målet beholdes i sistnevntes tidslinje så lenge minst ett nøkkelresultat fra {owner} forblir tilkoblet målet.\n\nDet vil ikke lenger være mulig for medlemmer i {owner} å redigere målet, utover å legge til eller fjerne egne nøkkelresultater.",
+        "helpForeign": "Målet vises på tidslinjen til {owner}, samt tidslinjen til følgende bidragsytere: {contributors}. Visningsnivå kan ikke endres for mål som har eksterne bidragsytere.",
+        "liftWarning1": "Endring av visningsnivå kan ikke reverseres.",
+        "liftWarning2": "Du vil ikke lenger kunne redigere målet siden du ikke er medlem i {newOwner}, men du vil fortsatt kunne legge nøkkelresultater til målet."
+      }
     },
     "keyResult": {
       "new": "Nytt nøkkelresultat",
       "created": "Nøkkelresultatet ble opprettet!",
       "updated": "Nøkkelresultatet ble endret!",
       "change": "Rediger nøkkelresultat",
-      "delete": "Slett nøkkelresultat"
+      "delete": "Slett nøkkelresultat",
+      "owner": {
+        "label": "Ansvarlig team",
+        "help": "Teamet som er ansvarlig for å føgle opp dette nøkkelresultatet."
+      }
     },
     "measurement": {
       "new": "Legg til måling",
