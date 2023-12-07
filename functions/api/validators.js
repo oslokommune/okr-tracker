@@ -1,6 +1,6 @@
 import validator from 'express-validator';
 
-const { body, header, param, oneOf } = validator;
+const { body, header, param, oneOf, query } = validator;
 
 // Allow usage of the `okr-team-secret` header for now, until
 // all existing clients are migrated.
@@ -63,3 +63,22 @@ export const commentValidator = body('comment').trim().escape();
 export const displayNameValidator = body('displayName').trim().escape();
 
 export const positionValidator = body('position').trim().escape();
+
+export const limitValidator = query('limit')
+  .optional()
+  .trim()
+  .isInt({ min: 1, max: 50 })
+  .toInt()
+  .withMessage('Must be an integer between 1 and 50');
+
+export const cursorValidator = query('cursor')
+  .optional()
+  .trim()
+  .escape()
+  .matches(/^[A-Za-z0-9]{20}$/);
+
+export const orderValidator = query('order')
+  .optional()
+  .trim()
+  .isIn(['asc', 'desc'])
+  .withMessage('Must be either `asc` or `desc`');
