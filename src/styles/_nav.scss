@@ -1,4 +1,5 @@
 @use "sass:selector";
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
 $-module-name: 'nav';
 $-base-height: 3rem;
@@ -10,17 +11,21 @@ $-border-color: var(--color-grayscale-10);
 @mixin -menu-item {
   position: relative;
   height: 100%;
+  font-size: 0.75em;
   background-color: inherit;
+
+  @include bp('phablet-up') {
+    font-size: 1em;
+  }
 
   &__inner {
     display: flex;
     gap: 0.5em;
     align-items: center;
     height: 100%;
-    padding: 0 1rem;
+    padding: 0 1em;
     color: var(--color-blue-dark);
     font-weight: 400;
-    font-size: 1em;
   }
 }
 
