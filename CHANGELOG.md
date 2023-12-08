@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file. The format 
 - "Lifting" objectives are now also allowed during the creation flow, not only
   when edited.
 
+### Fixed
+
+- Fixed disappearing navigation header for mobile users.
+
 ### Breaking changes
 
 - The API endpoint for listing KPIs (measurements) now uses cursor-based
