@@ -73,7 +73,15 @@ export default {
 
   &__title {
     min-width: 0;
-    padding: 1rem 0 1rem 2rem;
+    padding: 1rem 0;
+
+    @include bp('phablet-up') {
+      padding-left: 1rem;
+    }
+
+    @include bp('tablet-up') {
+      padding-left: 2rem;
+    }
   }
 
   &__actions {
@@ -87,7 +95,17 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 0 2.5rem 3rem;
+    padding: 0 1rem 3rem;
+
+    @include bp('phablet-up') {
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    @include bp('tablet-up') {
+      padding-right: 2.5rem;
+      padding-left: 2.5rem;
+    }
   }
 }
 </style>

@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file. The format 
 - "Lifting" objectives are now also allowed during the creation flow, not only
   when edited.
 
+### Changed
+
+- Enhanced the responsiveness of OKR pane views for a better user experience.
+
 ### Fixed
 
 - Fixed disappearing navigation header for mobile users.
