@@ -1,7 +1,10 @@
 <template>
   <div class="measurements-page">
     <div v-if="allKpis.length" class="measurements-page__header">
-      <h1 class="pkt-txt-18-medium pkt-hide-tablet-up">
+      <h1 class="pkt-txt-16-medium pkt-hide-phablet-up">
+        {{ $t('general.KPIs') }}
+      </h1>
+      <h1 class="pkt-txt-18-medium pkt-show-phablet-up pkt-hide-tablet-up">
         {{ $t('general.KPIs') }}
       </h1>
       <h1 class="pkt-txt-18-medium pkt-show-tablet-up">
@@ -214,7 +217,11 @@ export default {
   flex-direction: column;
 
   &__header {
-    padding: 1.5rem;
+    padding: 0 1.5rem;
+
+    h1 {
+      line-height: 4.25rem;
+    }
   }
 
   &__actions {
