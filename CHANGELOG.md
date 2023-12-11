@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file. The format 
 - The status API endpoint providing certain global KPI metrics was broken and
   have been removed.
 
+### Security
+
+- Updated dependencies.
+
 ## [4.0.0] 2023-12-06
 
 ### Added
