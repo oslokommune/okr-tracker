@@ -15,6 +15,7 @@
           <span class="key-result-link-card__title pkt-txt-14">
             {{ title }}
           </span>
+          <pkt-icon v-if="draggable" class="drag-icon" name="drag" />
         </div>
 
         <div>
@@ -56,6 +57,10 @@ export default {
       required: false,
       default: null,
     },
+    draggable: {
+      type: Boolean,
+      default: false,
+    },
     active: {
       type: Boolean,
       default: false,
@@ -93,6 +98,16 @@ export default {
     display: flex;
     gap: 0.5rem;
     justify-content: space-between;
+  }
+
+  .drag-icon {
+    --fg-color: var(--color-grayscale-30);
+    cursor: move;
+
+    ::v-deep svg {
+      height: 0.875rem;
+      min-height: 0.875rem;
+    }
   }
 
   .item-tag {

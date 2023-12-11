@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - Enhanced the responsiveness of OKR pane views for a better user experience.
+- Drag and drop ordering of measurements and key results are now triggered by
+  using a specific handle (the "drag icon"). This prevents accidental dragging,
+  especially on mobile devices.
 
 ### Fixed
 

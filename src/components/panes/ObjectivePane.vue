@@ -60,6 +60,7 @@
         v-model="orderedKeyResults"
         class="objective-pane__key-results-list"
         animation="300"
+        handle=".drag-icon"
       >
         <transition-group>
           <key-result-link-card
@@ -72,6 +73,7 @@
             :title="keyResult.name"
             :progression="keyResult.progression"
             :owner="keyResult.parent?.name ? keyResult.parent : null"
+            :draggable="true"
             :active="activeKeyResult && activeKeyResult.id === keyResult.id"
           />
         </transition-group>
