@@ -170,6 +170,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 .site-navigation {
   display: flex;
   flex-direction: column;
@@ -186,7 +189,10 @@ export default {
 
   &__toolbar {
     justify-content: space-between;
-    font-size: 0.875rem;
+
+    @include bp('phablet-up') {
+      @include get-text('pkt-txt-14');
+    }
   }
 }
 

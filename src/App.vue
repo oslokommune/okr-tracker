@@ -49,9 +49,3 @@ document.body.addEventListener('keydown', () => {
  */
 window.noZensmooth = true;
 </script>
-
-<style lang="scss" scoped>
-.app {
-  min-height: 100vh;
-}
-</style>

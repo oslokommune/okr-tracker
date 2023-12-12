@@ -36,7 +36,7 @@ export default {
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 }
 
 .router-view-wrapper {
