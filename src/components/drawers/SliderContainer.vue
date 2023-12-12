@@ -84,6 +84,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
 .sliderContainer {
   position: fixed;
   top: 0;
@@ -91,14 +93,22 @@ export default {
   z-index: 200;
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 4rem);
+  width: 100vw;
   max-width: 37.5rem;
   height: 100vh;
   background-color: var(--color-white);
 
+  @include bp('phablet-up') {
+    width: calc(100vw - 4rem);
+  }
+
   &__closeButtonContainer {
-    margin: 1rem;
+    margin: 0.5rem;
     text-align: right;
+
+    @include bp('phablet-up') {
+      margin: 1rem 1rem 0;
+    }
 
     svg {
       --fg-color: var(--color-primary);
@@ -111,9 +121,13 @@ export default {
     flex-direction: column;
     gap: 1.5rem;
     height: 100%;
-    padding: 2.5rem;
+    padding: 1.5rem;
     padding-top: 0;
     overflow-y: auto;
+
+    @include bp('phablet-up') {
+      padding: 2.5rem;
+    }
   }
 
   &__footer {

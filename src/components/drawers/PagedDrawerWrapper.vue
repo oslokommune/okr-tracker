@@ -16,7 +16,7 @@
       >
         {{ $t('general.step', { step: pageIndex, steps: pageCount }) }}
       </span>
-      <h1 class="pkt-txt-30-medium">
+      <h1 class="paged-drawer__title">
         <slot name="title" v-bind="slotProps" />
       </h1>
     </template>
@@ -117,6 +117,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 .paged-drawer {
   &--done {
     ::v-deep .sliderContainer__footer {
@@ -131,6 +134,14 @@ export default {
   &--done#{&}--error {
     ::v-deep .sliderContainer {
       background-color: var(--color-red-30);
+    }
+  }
+
+  &__title {
+    @include get-text('pkt-txt-22-medium');
+
+    @include bp('phablet-up') {
+      @include get-text('pkt-txt-30-medium');
     }
   }
 
