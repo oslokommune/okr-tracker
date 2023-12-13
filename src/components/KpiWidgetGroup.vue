@@ -24,7 +24,12 @@
         </pkt-button>
       </template>
     </div>
-    <draggable v-if="hasEditRights" v-model="orderedKpis" animation="300">
+    <draggable
+      v-if="hasEditRights"
+      v-model="orderedKpis"
+      animation="300"
+      handle=".drag-icon"
+    >
       <transition-group class="kpi-widget-group__kpis">
         <kpi-widget-group-link
           v-for="kpi in orderedKpis"

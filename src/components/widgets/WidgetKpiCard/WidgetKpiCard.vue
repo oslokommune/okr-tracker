@@ -170,6 +170,7 @@ export default {
 
   .drag-icon {
     --fg-color: var(--color-grayscale-30);
+    cursor: move;
 
     ::v-deep svg {
       height: 0.875rem;
