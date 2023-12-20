@@ -170,7 +170,7 @@ export default {
   gap: 1.5rem;
   padding: 1.5rem;
   background-color: var(--color-white);
-  border-left: 0.125rem solid var(--color-blue);
+  border-left: 0.25rem solid var(--color-blue-dark);
 
   &__header {
     display: flex;
