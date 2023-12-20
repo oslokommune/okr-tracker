@@ -7,15 +7,17 @@
           skin="primary"
           variant="icon-left"
           icon-name="plus-sign"
+          :aria-label="$t('kpi.newValue')"
           @onClick="$emit('add-value')"
         >
-          {{ $t('kpi.newValue') }}
+          {{ $t('kpi.value') }}
         </pkt-button>
         <pkt-button
           size="small"
           skin="tertiary"
           variant="icon-left"
           icon-name="bullseye"
+          :aria-label="$t('kpi.goals.set')"
           @onClick="$emit('set-goals')"
         >
           {{ $t('kpi.goals.set') }}
@@ -28,6 +30,7 @@
         skin="tertiary"
         variant="icon-left"
         icon-name="download"
+        :aria-label="$t('dashboard.downloadOptions.png')"
         @onClick="download"
       >
         {{ $t('btn.download') }}

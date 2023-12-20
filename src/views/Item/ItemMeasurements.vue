@@ -14,7 +14,8 @@
 
     <div v-if="hasEditRights" class="measurements-page__actions">
       <pkt-button
-        :text="$t('admin.measurement.new')"
+        :text="$t('general.KPI')"
+        :aria-label="$t('admin.measurement.new')"
         skin="primary"
         size="small"
         variant="icon-left"
