@@ -6,11 +6,13 @@
       { 'nav-menu-item--dropdown': dropdown },
       { 'nav-menu-item--open': isOpen },
     ]"
+    role="none"
   >
     <router-link
       v-if="route"
       v-slot="{ href, navigate, isExactActive }"
       :to="route"
+      :role="role"
       custom
     >
       <a
@@ -20,6 +22,7 @@
           { 'nav-menu-item__inner--icon-only': icon && !text },
           { 'nav-menu-item__inner--active': active || isExactActive },
         ]"
+        v-bind="ariaAttrs"
         @click="activate($event, navigate)"
       >
         <slot name="text">
@@ -35,7 +38,11 @@
           'nav-menu-item__inner',
           { 'nav-menu-item__inner--active': active || isOpen },
         ]"
+        :role="role"
         tabindex="0"
+        :aria-haspopup="dropdown"
+        :aria-expanded="isOpen"
+        v-bind="ariaAttrs"
         @click="activate"
         @keyup.enter="activate"
       >
@@ -92,11 +99,29 @@ export default {
       required: false,
       default: false,
     },
+    role: {
+      type: String,
+      required: false,
+      default: 'menuitem',
+    },
+    aria: {
+      type: Object,
+      required: false,
+      default: null,
+    },
   },
 
   data: () => ({
     isOpen: false,
   }),
+
+  computed: {
+    ariaAttrs() {
+      return this.aria
+        ? Object.fromEntries(Object.entries(this.aria).map(([k, v]) => [`aria-${k}`, v]))
+        : null;
+    },
+  },
 
   watch: {
     isOpen() {

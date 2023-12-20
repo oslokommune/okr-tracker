@@ -6,6 +6,7 @@
       { 'nav-menu--tabs': tabs },
       { 'nav-menu--toggles': toggles },
     ]"
+    role="menu"
   >
     <slot />
   </ul>

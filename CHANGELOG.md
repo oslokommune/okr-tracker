@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fixed disappearing navigation header for mobile users.
+- Added missing aria roles and attributes for navbar components.
 
 ### Breaking changes
 

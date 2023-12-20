@@ -8,6 +8,11 @@
       v-for="view in views"
       :key="view.key"
       v-tooltip="$t('tooltip.changeView', { view: view.name })"
+      :aria="{
+        label: $t('tooltip.changeView', { view: view.name }),
+        checked: view.active,
+      }"
+      role="menuitemradio"
       v-bind="view"
     />
   </nav-menu>
