@@ -55,7 +55,7 @@
 
         <template #actions="{ handleSubmit, submitDisabled }">
           <btn-save
-            :label="$t('btn.create')"
+            :text="$t('btn.create')"
             :disabled="submitDisabled || loading"
             data-cy="btn-createDep"
             @click="handleSubmit(save)"

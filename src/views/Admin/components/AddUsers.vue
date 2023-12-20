@@ -14,7 +14,7 @@
       <template #actions="{ handleSubmit, submitDisabled }">
         <btn-save
           :disabled="submitDisabled || loading"
-          :label="$t('admin.users.registerUsersButton')"
+          :text="$t('admin.users.registerUsersButton')"
           @click="handleSubmit(save)"
         />
       </template>

@@ -1,23 +1,21 @@
 <template>
-  <v-popover ref="popover" offset="0" placement="top" :disabled="disabled">
+  <v-popover ref="popover" offset="0" placement="top" :disabled="$attrs?.disabled">
     <pkt-button
-      type="button"
+      v-bind="$attrs"
       skin="tertiary"
-      :size="size"
-      :text="label"
+      :text="text"
       :variant="variant"
-      :icon-name="icon"
-      :disabled="disabled"
+      :icon-name="iconName"
     />
 
-    <template v-if="!disabled" slot="popover">
+    <template v-if="!$attrs?.disabled" slot="popover">
       <div data-mode="dark">
-        <p v-if="confirmText" class="mb-size-16">{{ confirmText }}</p>
+        <p v-if="confirmHelp" class="mb-size-16">{{ confirmHelp }}</p>
         <pkt-button
           type="button"
           skin="secondary"
-          :text="confirmLabel"
-          :size="size"
+          :size="$attrs?.size || 'medium'"
+          :text="confirmText"
           @onClick="confirm"
         />
       </div>
@@ -37,47 +35,37 @@ export default {
     VPopover,
   },
 
-  extends: PktButton,
+  inheritAttrs: false,
 
   props: {
-    label: {
+    text: {
       type: String,
       required: false,
       default() {
         return this.$t('btn.delete');
       },
     },
-    confirmLabel: {
+    confirmText: {
       type: String,
       required: false,
       default() {
         return this.$t('btn.confirmDelete');
       },
     },
-    confirmText: {
+    confirmHelp: {
       type: String,
       required: false,
       default: null,
-    },
-    size: {
-      type: String,
-      required: false,
-      default: 'medium',
     },
     variant: {
       type: String,
       required: false,
       default: 'icon-left',
     },
-    icon: {
+    iconName: {
       type: String,
       required: false,
       default: 'trash-can',
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
   },
 

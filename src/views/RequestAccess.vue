@@ -22,7 +22,7 @@
           <btn-save
             variant="label-only"
             :disabled="submitDisabled || loading"
-            :label="$t('login.requestButton')"
+            :text="$t('login.requestButton')"
             @click="handleSubmit(send)"
           />
         </template>
