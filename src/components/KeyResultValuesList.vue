@@ -109,7 +109,7 @@ export default {
 
     &:nth-child(1) {
       text-wrap: nowrap;
-      border-left: 0.125rem solid var(--color-blue-dark);
+      border-left: 0.25rem solid var(--color-blue-dark);
     }
 
     &:nth-child(2) {
