@@ -24,7 +24,7 @@
               content: $t('integration.action.delete'),
             }"
             size="small"
-            :confirm-text="$t('integration.warning.delete')"
+            :confirm-help="$t('integration.warning.delete')"
             variant="icon-only"
             :disabled="loading"
             @click="$emit('delete', client)"
@@ -97,10 +97,10 @@
                   content: $t('integration.action.rotate'),
                 }"
                 size="small"
-                :confirm-label="$t('integration.action.confirmRotate')"
-                :confirm-text="$t('integration.warning.rotate')"
+                :confirm-text="$t('integration.action.confirmRotate')"
+                :confirm-help="$t('integration.warning.rotate')"
                 variant="icon-only"
-                icon="arrow-circle"
+                icon-name="arrow-circle"
                 :disabled="loading"
                 @click="$emit('rotate', client)"
               />

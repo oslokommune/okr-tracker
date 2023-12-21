@@ -119,7 +119,7 @@
           />
 
           <btn-save
-            :label="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
+            :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
             :disabled="submitDisabled || loading || thisItem?.archived"
             variant="label-only"
             @click="handleSubmit(save)"
@@ -144,7 +144,7 @@
         <div v-else class="button-row">
           <btn-delete
             :disabled="loading"
-            :label="$t('admin.item.delete', { name: item.name })"
+            :text="$t('admin.item.delete', { name: item.name })"
             @click="archive"
           />
         </div>

@@ -1,10 +1,5 @@
 <template>
-  <pkt-button
-    :text="label"
-    :skin="skin"
-    type="button"
-    @onClick="$emit('click', $event)"
-  />
+  <pkt-button v-bind="$attrs" :text="text" :skin="skin" type="button" v-on="$listeners" />
 </template>
 <script>
 import { PktButton } from '@oslokommune/punkt-vue2';
@@ -15,10 +10,9 @@ export default {
   components: {
     PktButton,
   },
-  extends: PktButton,
 
   props: {
-    label: {
+    text: {
       type: String,
       required: false,
       default() {

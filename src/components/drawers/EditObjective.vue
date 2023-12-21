@@ -83,7 +83,7 @@
         <template #actions="{ handleSubmit, submitDisabled }">
           <btn-cancel :disabled="loading" @click="close" />
           <btn-save
-            :label="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
+            :text="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
             :disabled="submitDisabled || loading || thisObjective?.archived"
             @click="handleSubmit(save)"
@@ -124,7 +124,7 @@
         <div v-else class="button-row">
           <btn-delete
             :disabled="loading"
-            :label="$t('admin.objective.delete')"
+            :text="$t('admin.objective.delete')"
             @click="archive"
           />
         </div>
