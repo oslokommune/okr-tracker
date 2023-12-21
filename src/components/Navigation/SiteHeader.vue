@@ -1,9 +1,9 @@
 <template>
   <header class="site-navigation">
-    <nav class="nav-bar site-navigation__menubar">
+    <nav class="nav-bar site-navigation__menubar" role="menubar">
       <!-- Site menu -->
       <nav-menu class="site-menu">
-        <nav-menu-item dropdown>
+        <nav-menu-item :aria="{ label: siteMenuLabel }" dropdown>
           <template #text>
             <pkt-icon class="nav-menu-item__icon" name="bullseye" />
             <span class="pkt-show-tablet-up">{{ siteMenuLabel }}</span>
@@ -23,6 +23,7 @@
           :class="['item-menu__item', `item-menu__item--${itemMenuTab.pull || 'left'}`]"
           :route="itemMenuTab.route"
           :active="itemMenuTab.active"
+          :aria="{ label: itemMenuTab.label || itemMenuTab.tooltip }"
         >
           <template #text>
             <pkt-icon
@@ -42,13 +43,20 @@
 
       <!-- User menu -->
       <nav-menu class="user-menu">
-        <nav-menu-item v-if="user" ref="userMenu" v-slot="{ close }" icon="user" dropdown>
+        <nav-menu-item
+          v-if="user"
+          ref="userMenu"
+          v-slot="{ close }"
+          :aria="{ label: $t('user.myProfile') }"
+          icon="user"
+          dropdown
+        >
           <user-menu-dropdown :id="user.id" :handle-navigation="close" />
         </nav-menu-item>
       </nav-menu>
     </nav>
 
-    <nav v-if="showToolbar" class="nav-bar site-navigation__toolbar">
+    <nav v-if="showToolbar" class="nav-bar site-navigation__toolbar" role="menubar">
       <period-selector-menu />
       <view-toggle />
     </nav>
