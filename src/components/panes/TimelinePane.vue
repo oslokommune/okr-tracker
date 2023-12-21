@@ -15,7 +15,8 @@
     <template #actions>
       <pkt-button
         v-if="hasEditRights"
-        :text="$t('btn.createObjective')"
+        :text="$t('general.objective')"
+        :aria-label="$t('btn.createObjective')"
         skin="primary"
         size="small"
         variant="icon-left"

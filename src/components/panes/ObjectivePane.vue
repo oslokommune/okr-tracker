@@ -42,6 +42,7 @@
         <pkt-button
           v-if="hasEditRights || isMemberOfChild"
           :text="$t('general.keyResult')"
+          :aria-label="$t('btn.addKeyResult')"
           skin="primary"
           size="small"
           variant="icon-left"
