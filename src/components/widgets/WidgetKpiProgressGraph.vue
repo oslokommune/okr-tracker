@@ -70,7 +70,6 @@ import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
 import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import LineChart from '@/components/generic/LineChart.vue';
 import html2canvas from 'html2canvas';
-import EmptyState from '@/components/EmptyState.vue';
 import WidgetWrapper from './WidgetWrapper.vue';
 
 const { Timestamp } = firebase.firestore;
@@ -83,7 +82,6 @@ export default {
     PeriodTrendTag,
     PktButton,
     LineChart,
-    EmptyState,
   },
 
   props: {
