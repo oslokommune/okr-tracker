@@ -103,30 +103,3 @@
     text-align: center;
   }
 }
-
-/* Tippy */
-.tippy-box[data-theme~='ok'] {
-  color: var(--color-white);
-  background-color: var(--color-blue-dark);
-  border-radius: 0;
-
-  &[data-placement^='top'] > .tippy-arrow::before {
-    border-top-color: var(--color-blue-dark);
-  }
-
-  &[data-placement^='bottom'] > .tippy-arrow::before {
-    border-bottom-color: var(--color-blue-dark);
-  }
-
-  &[data-placement^='left'] > .tippy-arrow::before {
-    border-left-color: var(--color-blue-dark);
-  }
-
-  &[data-placement^='right'] > .tippy-arrow::before {
-    border-right-color: var(--color-blue-dark);
-  }
-
-  .tippy-content {
-    padding: 0.5rem 1rem;
-  }
-}
