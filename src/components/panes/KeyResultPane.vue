@@ -53,7 +53,13 @@
         />
       </div>
 
-      <svg ref="graph" class="key-result-pane__graph"></svg>
+      <line-chart
+        v-if="objectiveIsResolved"
+        class="key-result-pane__graph"
+        :series="chartSeries"
+        v-bind="chartOptions"
+        @click="valueSelect"
+      />
 
       <progress-bar :progression="progression" :show-min-max-indicators="true" />
     </div>
@@ -115,15 +121,15 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { format } from 'd3-format';
 import { max, min } from 'd3-array';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
-import LineChart from '@/util/LineChart';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
+import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
 import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
+import LineChart from '@/components/generic/LineChart.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
 import KeyResultValuesList from '@/components/KeyResultValuesList.vue';
@@ -141,6 +147,7 @@ export default {
     PktButton,
     PktBreadcrumbs,
     PaneWrapper,
+    LineChart,
     // WidgetKeyResultNotes,
     WidgetKeyResultDetails,
     KeyResultValuesList,
@@ -190,6 +197,41 @@ export default {
       return progressDetails.percentageCompleted / 100;
     },
 
+    orderedProgress() {
+      return [...this.progress].sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+    },
+
+    chartSeries() {
+      const { startValue } = this.activeKeyResult;
+      return [
+        {
+          ...DEFAULT_SERIES_OPTIONS,
+          data: this.progress.length
+            ? [
+                [this.startDate.toDate().toISOString(), startValue],
+                ...this.orderedProgress.map((r) => [
+                  r.timestamp.toDate().toISOString(),
+                  r.value,
+                  r.comment,
+                ]),
+              ]
+            : [],
+          color: getComputedStyleVariable('--color-blue-light'),
+          areaStyle: { opacity: 0.25 },
+        },
+      ];
+    },
+
+    chartOptions() {
+      const xMin = this.startDate.toDate();
+      const xMax = this.endDate.toDate();
+      const { startValue, targetValue } = this.activeKeyResult;
+      const progressValues = this.progress.map((record) => record.value);
+      const yMin = min(progressValues) > startValue ? startValue : null;
+      const yMax = max(progressValues) < targetValue ? targetValue : null;
+      return { xMin, xMax, yMin, yMax };
+    },
+
     breadcrumbs() {
       return [
         { text: this.activeItem.name, href: { name: 'ItemHome' } },
@@ -225,42 +267,12 @@ export default {
             .orderBy('timestamp', 'desc')
         );
         this.isLoading = false;
-        this.renderGraph();
       },
-    },
-
-    progress() {
-      this.renderGraph();
     },
   },
 
   methods: {
-    format,
-
     ...mapActions('okrs', ['setActiveKeyResult']),
-
-    percent(value) {
-      return format('.0%')(value);
-    },
-
-    renderGraph() {
-      if (!this.graph) {
-        this.graph = new LineChart(this.$refs.graph, {
-          height: 350,
-          tooltips: true,
-        });
-      }
-      const { startValue, targetValue } = this.activeKeyResult;
-      const progressValues = this.progress.map((record) => record.value);
-      this.graph.render({
-        startValue: min(progressValues) > startValue ? startValue : null,
-        targetValue: max(progressValues) < targetValue ? targetValue : null,
-        startDate: this.startDate.toDate(),
-        endDate: this.endDate.toDate(),
-        progress: this.progress,
-        initialValue: startValue,
-      });
-    },
 
     async updateHistoryRecord(id, data, modalCloseHandler) {
       try {
@@ -310,9 +322,19 @@ export default {
       }
     },
 
+    valueSelect(e) {
+      if (e?.dataIndex > 0) {
+        this.openValueModal(this.orderedProgress[e.dataIndex - 1]);
+      }
+    },
+
     openValueModal(record) {
       this.showValueModal = true;
       this.chosenProgressValue = record;
+    },
+
+    objectiveIsResolved() {
+      return typeof this.activeKeyResult.objective !== 'string';
     },
   },
 };
@@ -348,6 +370,10 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin-top: 0.5rem;
+  }
+
+  &__graph {
+    height: 250px;
   }
 
   &__values {

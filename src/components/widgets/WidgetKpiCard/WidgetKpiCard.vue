@@ -21,12 +21,17 @@
         </span>
       </div>
 
-      <div class="kpi-card-widget__graph">
-        <mini-graph
+      <div
+        :class="[
+          'kpi-card-widget__graph',
+          { 'kpi-card-widget__graph--compact': compact },
+        ]"
+      >
+        <line-chart
           v-if="progress.length > 1"
-          :kpi-data="progress"
-          :start-value="kpi.startValue"
-          :compact="compact"
+          :series="chartSeries"
+          v-bind="chartOptions"
+          sparkline
         />
         <span v-else-if="progress.length === 1" class="no-data pkt-txt-12">{{
           $t('kpi.noGraph')
@@ -44,9 +49,10 @@ import {
   getCachedKPIProgress,
   getKPIProgressQuery,
 } from '@/util/kpiHelpers';
+import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
+import LineChart from '@/components/generic/LineChart.vue';
 import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
-import MiniGraph from './MiniGraph.vue';
 
 export default {
   name: 'WidgetKpiCard',
@@ -54,7 +60,7 @@ export default {
   components: {
     Widget: WidgetWrapper,
     PeriodTrendTag,
-    MiniGraph,
+    LineChart,
   },
 
   props: {
@@ -72,11 +78,10 @@ export default {
   data: () => ({
     progressCollection: [],
     isProgressLoading: false,
-    order: null,
-    isReordering: false,
   }),
 
   computed: {
+    ...mapState(['activeItemRef']),
     ...mapState('kpis', ['selectedPeriod']),
     ...mapGetters(['hasEditRights']),
 
@@ -91,12 +96,37 @@ export default {
     latestProgressRecord() {
       return this.progress.length ? this.progress[0] : null;
     },
+
+    chartSeries() {
+      return [
+        {
+          ...DEFAULT_SERIES_OPTIONS,
+          name: this.$t('kpi.progress'),
+          data: this.progress.map((r) => [
+            r.timestamp.toDate().toISOString(),
+            r.value,
+            r.comment,
+          ]),
+          color: getComputedStyleVariable('--color-blue-light'),
+          showSymbol: false,
+          areaStyle: { opacity: 0.25 },
+          lineStyle: { width: 2 },
+        },
+      ];
+    },
+
+    chartOptions() {
+      return {
+        yMin: this.kpi.startValue === 'min' ? null : 0,
+        valueFormatter: (val) => formatKPIValue(this.kpi, val),
+      };
+    },
   },
 
   watch: {
-    kpi: {
+    'kpi.progress': {
       immediate: true,
-      handler: 'onKPIUpdate',
+      handler: 'setProgress',
     },
     selectedPeriod: {
       immediate: false,
@@ -106,20 +136,6 @@ export default {
 
   methods: {
     formatKPIValue,
-
-    async onKPIUpdate(kpi) {
-      if (this.order === null) {
-        this.order = kpi.order;
-      }
-      if (this.order !== kpi.order) {
-        this.order = kpi.order;
-        this.isReordering = true;
-      } else if (this.isReordering) {
-        this.isReordering = false;
-      } else {
-        this.setProgress();
-      }
-    },
 
     async setProgress() {
       this.isProgressLoading = true;
@@ -198,6 +214,7 @@ export default {
       flex-basis: 20%;
       flex-shrink: 0;
       min-width: auto;
+      height: 5rem;
     }
   }
 
@@ -217,6 +234,7 @@ export default {
     @include bp('laptop-up') {
       .kpi-card-widget__graph {
         display: flex;
+        height: 2.5rem;
       }
       .kpi-card-widget__inner {
         min-height: 2.25rem;
