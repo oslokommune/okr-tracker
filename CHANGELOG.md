@@ -17,6 +17,9 @@ All notable changes to this project will be documented in this file. The format 
 - Drag and drop ordering of measurements and key results are now triggered by
   using a specific handle (the "drag icon"). This prevents accidental dragging,
   especially on mobile devices.
+- Replaced D3.js with a more high-level charting and visualization library.
+  This change is aimed at improving future maintainability, streamlining chart
+  creation, and enhancing the overall visualization experience.
 
 ### Fixed
 
