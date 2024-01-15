@@ -4,10 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [4.1.0] 2024-01-15
+
 ### Added
 
 - "Lifting" objectives are now also allowed during the creation flow, not only
   when edited.
+
+### Breaking changes
+
+- The API endpoint for listing KPIs (measurements) now uses cursor-based
+  pagination to alleviate scalability issues in the previous implementation.
+- The status API endpoint providing certain global KPI metrics was broken and
+  have been removed.
 
 ### Changed
 
@@ -24,14 +33,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fixed disappearing navigation header for mobile users.
-- Added missing aria roles and attributes for navbar components.
-
-### Breaking changes
-
-- The API endpoint for listing KPIs (measurements) now uses cursor-based
-  pagination to alleviate scalability issues in the previous implementation.
-- The status API endpoint providing certain global KPI metrics was broken and
-  have been removed.
+- Added missing ARIA roles and attributes for navbar components.
 
 ### Security
 
