@@ -362,7 +362,7 @@ export default {
         const [start, end] = this.periodRange;
 
         const targetParentRef =
-          this.owner === this.potentionalOwner.ref.path
+          this.canLift && this.owner === this.potentionalOwner.ref.path
             ? this.potentionalOwner.ref
             : this.currentOwner.ref;
 
