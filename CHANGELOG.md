@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Fixed a bug making it impossible to create or update organization level
+  objectives.
+
 ## [4.1.0] 2024-01-15
 
 ### Added
