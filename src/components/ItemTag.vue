@@ -1,9 +1,6 @@
 <template>
   <span class="item-tag">
-    <span
-      class="item-tag__bullet"
-      :style="{ background: contributorTagColor(item.name) }"
-    ></span>
+    <span class="item-tag__bullet" :style="bulletStyle"></span>
     <span>{{ item.name }}</span>
   </span>
 </template>
@@ -18,6 +15,14 @@ export default {
     item: {
       type: Object,
       required: true,
+    },
+  },
+
+  computed: {
+    bulletStyle() {
+      return {
+        background: this.item?.color || contributorTagColor(this.item.name),
+      };
     },
   },
 
