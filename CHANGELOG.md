@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [4.1.1] 2024-02-09
+
 ### Fixed
 
 - Fixed a bug making it impossible to create or update organization level
