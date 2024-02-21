@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Security
+
+- Updated dependencies.
+
 ## [4.1.1] 2024-02-09
 
 ### Fixed
