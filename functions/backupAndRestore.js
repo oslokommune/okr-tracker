@@ -45,10 +45,6 @@ async function restoreBackup() {
     .then(() => {
       console.log(`Backup restored from folder ${backupRoute}`);
       return Promise.resolve();
-    })
-    .catch(async (error) => {
-      console.error('Error message: ', error.message);
-      return Promise.reject(new Error({ message: error.message }));
     });
 }
 
@@ -78,9 +74,5 @@ async function generateBackup() {
     .then(() => {
       console.log(`Backup saved to folder on ${backupRoute}`);
       return Promise.resolve();
-    })
-    .catch(async (error) => {
-      console.error('Error message: ', error.message);
-      return Promise.reject(new Error({ message: error.message }));
     });
 }
