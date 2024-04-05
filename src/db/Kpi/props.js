@@ -19,20 +19,4 @@ export default {
     type: 'reference',
     required: true,
   },
-  sheetId: {
-    type: 'string',
-    required: false,
-  },
-  sheetUrl: {
-    type: 'string',
-    required: false,
-  },
-  sheetCell: {
-    type: 'string',
-    required: true,
-  },
-  sheetName: {
-    type: 'string',
-    required: true,
-  },
 };

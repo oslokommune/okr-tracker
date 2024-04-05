@@ -19,20 +19,6 @@
       :html="kpi.description"
     />
 
-    <pkt-alert
-      v-if="hasEditRights && kpi.error && kpi.auto"
-      skin="error"
-      :close-alert="true"
-      class="mb-size-16"
-    >
-      {{ $t('kpi.automation.error') }}
-      <i18n path="kpi.automation.reviewSettings">
-        <a href="#" @click="$emit('edit-kpi')">{{
-          $t('kpi.automation.automationLink')
-        }}</a>
-      </i18n>
-    </pkt-alert>
-
     <widget-kpi-progress-graph
       :kpi="kpi"
       :progress="progress"
@@ -67,7 +53,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue2';
 import {
   filterDuplicatedProgressValues,
   getCachedKPIProgress,
@@ -85,7 +71,6 @@ export default {
   name: 'KpiDetails',
 
   components: {
-    PktAlert,
     PktButton,
     ProgressModal,
     HTMLOutput,

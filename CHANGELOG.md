@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Removed
+
+- The Google Sheets integration has been completely removed, both for key
+  results and measurements. Please refer to our API documentation for
+  instructions on how to update progression programmatically, e.g. by using
+  Google Apps Script for Google Sheets.
+
 ### Fixed
 
 - Fixed a bug that made organization admins unable to add new users.

@@ -18,17 +18,7 @@ initializeApp({
 //  */
 export { automatedBackups } from './backupAndRestore.js';
 export { automatedRestore } from './backupAndRestore.js';
-/**
- * Scheduled function that automatically updates the progress for all key results
- * with the `auto` property set to true, getting the data from the provided
- * google sheets details.
- */
-export { fetchAutomatedKeyResOnSchedule } from './automatedKeyResults.js';
-export { triggerScheduledFunction } from './automatedKeyResults.js';
 
-export { fetchKpiDataOnCreate } from './kpi/index.js';
-export { fetchKpiDataOnSchedule } from './kpi/index.js';
-export { fetchKpiDataTrigger } from './kpi/index.js';
 export { handleKpiProgress };
 export { handleKpiGoals };
 
