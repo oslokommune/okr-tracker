@@ -9,27 +9,20 @@ export const getAllUserIds = () =>
 export const getUserFromId = (id) => collectionReference.doc(id).get();
 
 export const create = async (user) => {
-  try {
-    if (!user.email) {
-      throw new Error('Invalid email');
-    }
-
-    const { exists } = await collectionReference.doc(user.id).get();
-    if (exists) {
-      throw new Error(`User ${user.id} already exists!`);
-    }
-
-    await collectionReference.doc(user.id).set({
-      ...user,
-      superAdmin: false,
-      admin: [],
-      preferences,
-    });
-
-    return true;
-  } catch (error) {
-    throw new Error(`Could not add user ${user.id}`);
+  if (!user.email) {
+    throw new Error('Invalid email');
   }
+
+  const { exists } = await collectionReference.doc(user.id).get();
+  if (exists) {
+    throw new Error(`User ${user.id} already exists!`);
+  }
+
+  await collectionReference.doc(user.id).set({
+    ...user,
+    admin: [],
+    preferences,
+  });
 };
 
 export const remove = async (user) => {
@@ -66,9 +59,7 @@ export const addUsers = async (userList) => {
   if (!userList || !userList.length) {
     throw new Error('Invalid data');
   }
-  const promises = userList
-    .map((email) => ({ id: email, email, superAdmin: false, admin: [] }))
-    .map(create);
+  const promises = userList.map((email) => ({ id: email, email })).map(create);
 
   try {
     return Promise.all(promises);
