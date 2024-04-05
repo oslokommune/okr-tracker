@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Fixed
+
+- Improved error reporting from backup and restore Cloud Functions.
+
 ### Security
 
 - Updated dependencies.
