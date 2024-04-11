@@ -19,7 +19,6 @@
   - [Create Google Cloud API Gateway](#create-google-cloud-api-gateway)
   - [Build and deploy](#build-and-deploy)
   - [Lint and fix](#lint-and-fix)
-  - [Google Sheets integration](#google-sheets-integration)
   - [Import production data from Cloud Firestore to local Firestore](#import-production-data-from-cloud-firestore-to-local-firestore)
     - [Requirements](#requirements)
     - [Export production data](#export-production-data)
@@ -72,13 +71,10 @@ Follow this guide to set up a new clean instance of the OKR-tracker. Please read
   - From the **Project Overview**, select **Service accounts**
   - Click **Generate new private key**
 
-This key is used for fetching data from Google Sheets (for automatically updating key results). In order to fetch data from Google Sheets, you must set up environment variables for Firebase Functions:
-
 ```bash
 firebase functions:config:set
   service_account="<service account private key json-file>"
   storage.bucket="<your-storage-bucket-name>"
-  sheets.impersonator="email-address" (optional)
 ```
 
 Cat the whole service account private key json file into the environment key `service_account`.
@@ -124,7 +120,6 @@ Get your Firebase SDK snippet from your [Firebase Console](https://console.fireb
 | `VITE_STORAGE_BUCKET`         | _from SDK snippet_                                                                                         |
 | `VITE_MESSAGING_SENDER_ID`    | _from SDK snippet_                                                                                         |
 | `VITE_APP_ID`                 | _from SDK snippet_                                                                                         |
-| `VITE_SHEETS_SERVICE_ACCOUNT` | \<service account email\>                                                                                  |
 | `VITE_I18N_LOCALE`            | `nb-NO OR en-US`                                                                                           |
 | `VITE_REGION`                 | `europe-west2`                                                                                             |
 | `VITE_LOGIN_PROVIDERS`        | login providers allowed separated with hyphen - only implemented google, email. Ex: `google-email`         |
@@ -275,12 +270,6 @@ npm run lint:fix        # Fix lint issues
 npm run lint:style      # Run style linter
 npm run lint:style:fix  # Fix lint issues found in styles
 ```
-
-## Google Sheets integration
-
-If you want to use Google Sheets API for automatic key results or automatic KPIs, you will need to enable the Google Sheets API in Google Cloud Console.
-
-If you are using Team Drives with domain-policy (only specific domains have access) then you need to turn on domain-wide delegation on your service accounts and then give that service account access through G Suite Admin. Read more about it [here](https://developers.google.com/identity/protocols/oauth2/service-account#delegatingauthority)
 
 ## Import production data from Cloud Firestore to local Firestore
 

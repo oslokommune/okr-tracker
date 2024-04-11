@@ -73,19 +73,9 @@
         "description": "Målingen anses som en vesentlig indikator for måloppnåelse og fremheves særskilt. Dersom målingen registreres for et produkt, vises den også som del av produktområdets resultatindikatorer. Kan for eksempel være tillknyttet et tildelingsbrev eller andre styringsinstrumenter."
       }
     },
-    "itemRowError": "feil",
     "help": {
-      "updates": "Målinger kan både oppdateres manuelt via OKR-trackeren og automatisk via av en Google Sheets- eller API-integrasjon. Merk at det kun er mulig å registrere ett målepunkt per døgn. Les mer om opprettelse og oppdatering av målinger {readMoreLink}.",
-      "readMoreHere": "her",
       "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor.",
       "resultIndicatorWarning": "Resultatindikatorer regnes som indikatorer på virksomhetens effekt og måloppnåelse, og bør derfor være avklart med virksomhetens ledelse før opprettelse."
-    },
-    "automation": {
-      "title": "Automatisert progresjon",
-      "error": "En feil har oppstått under oppdatering av progresjon for denne målingen.",
-      "radio": "Hente måleverdier automatisk fra et regneark (Google Sheets)?",
-      "reviewSettings": "Vennligst kontroller {0}.",
-      "automationLink": "innstillingene for automatisert progresjon"
     },
     "goals": {
       "goal": "Mål",
@@ -105,9 +95,6 @@
     "name": "Navn",
     "missionStatement": "Oppdragsbeskrivelse",
     "weight": "Vekt",
-    "sheetUrl": "Google Sheets URL",
-    "sheetTab": "Fane",
-    "sheetCell": "Celle",
     "displayName": "Visningsnavn",
     "period": "Periode",
     "description": "Beskrivelse",
@@ -355,17 +342,6 @@
     "newValue": "Ny verdi",
     "editValue": "Endre verdi",
     "registeredValues": "Registrerte verdier",
-    "automation": {
-      "header": "Automatisk registrering av progresjon (Google Sheets)",
-      "googleSheetUrl": "Google Sheets URL",
-      "googleSheetUrlHelp": "Den fulle nettadressen til Google Sheets-regnearket",
-      "sheetsTab": "Fane",
-      "sheetsTabPlaceholder": "Ark 1",
-      "sheetsTabHelp": "Navnet på arkfanen i Google Sheets",
-      "sheetsCell": "Celle",
-      "sheetsCellHelp": "For eksempel «A12»",
-      "testConnection": "Lagre og test kobling"
-    },
     "registerProgression": {
       "value": "Verdi"
     },
@@ -379,14 +355,6 @@
       "label": "Vekt",
       "help": "I utregningen av samlet progresjon for et mål vektes i utgangspunktet progresjonen for hvert nøkkelresultat likt (1). Det er imidlertid mulig å overstyre dette for hvert enkelt nøkkelresultat ved å endre tallverdien under."
     },
-    "automatic": "Oppdateres automatisk",
-    "autoHelpText": "Verdien til dette nøkkelresultatet oppdateres automatisk fra et Google Sheets-dokument.",
-    "autoError": "Feil i henting av data fra Google Sheets:",
-    "api": {
-      "radio": "Oppdatere via API?",
-      "tooltip": "Skru på denne hvis du har planer om å oppdatere nøkkelresultatet selv via OKR-tracker sitt API - du kan fortsatt oppdatere manuelt også"
-    },
-    "apiAndKeyRes": "Vi anbefaler ikke å skru på begge samtidig. Dette kan forårsake problemer med progresjonen til ditt nøkkelresultat",
     "created": "Nøkkelresultatet ble opprettet!",
     "updated": "Nøkkelresultatet ble endret!",
     "edit": "Rediger nøkkelresultat"
@@ -572,13 +540,6 @@
       "product": "Dette produktet er arkivert og ikke lenger synlig."
     },
     "restoreText": "Savner du det, er det bare å gjenopprette det."
-  },
-  "sheets": {
-    "infoText": "Merk! Følgende adresse må gis lesetilgang til Google Sheets-dokumentet:",
-    "400": "Klarte ikke å lese ut data. Er navnet på Google Sheets-fanen riktig?",
-    "403": "Systemet har ikke tilgang til å lese Google Sheets-dokumentet.",
-    "404": "Fant ikke Google Sheets-dokumentet. Feil URL?",
-    "noDataInCell": "Celle {cell} er tom."
   },
   "widget": {
     "progression": {

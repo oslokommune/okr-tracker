@@ -16,21 +16,6 @@
     </template>
 
     <template #page="{ pageIndex, prev }">
-      <pkt-alert
-        v-if="errorMessage"
-        :title="$t('kpi.automation.error')"
-        skin="error"
-        class="mb-size-32"
-        @click="$refs.drawer.goToPage(4)"
-      >
-        {{ errorMessage }}
-        <i18n v-if="$refs.drawer.pageIndex !== 4" path="kpi.automation.reviewSettings">
-          <a href="#" @click="$refs.drawer.goToPage(4)">{{
-            $t('kpi.automation.automationLink')
-          }}</a>
-        </i18n>
-      </pkt-alert>
-
       <form-section :hide-errors="true">
         <template v-if="pageIndex === 1">
           <form-component
@@ -138,41 +123,6 @@
           </form-component>
         </template>
 
-        <template v-else-if="pageIndex === 4">
-          <span class="pkt-form-label mb-size-8">{{ $t('kpi.automation.title') }}</span>
-
-          <i18n path="kpi.help.updates" tag="p" class="mb-size-32">
-            <template #readMoreLink>
-              <router-link :to="{ name: 'Help', hash: '#målinger' }" target="_blank">
-                {{ $t('kpi.help.readMoreHere') }}
-              </router-link>
-            </template>
-          </i18n>
-
-          <toggle-button
-            v-model="thisKpi.auto"
-            name="auto"
-            :label="$t('kpi.automation.radio')"
-          >
-            <p>{{ $t('sheets.infoText') }}</p>
-
-            <form-component
-              input-type="input"
-              type="text"
-              :readonly="true"
-              :copy-button="true"
-              :value="serviceAccountAddress"
-            />
-
-            <google-sheets-form-group
-              :sheet-id="thisKpi.sheetId"
-              :sheet-url.sync="thisKpi.sheetUrl"
-              :sheet-name.sync="thisKpi.sheetName"
-              :sheet-cell.sync="thisKpi.sheetCell"
-            />
-          </toggle-button>
-        </template>
-
         <template #actions="{ handleSubmit, submitDisabled }">
           <pkt-button
             v-if="pageIndex === 1"
@@ -220,7 +170,6 @@
 <script>
 import { mapState } from 'vuex';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
-import { functions } from '@/config/firebaseConfig';
 import {
   kpiFormats,
   kpiStartValues,
@@ -228,9 +177,8 @@ import {
   kpiTrendOptions,
   kpiUpdateFrequencies,
 } from '@/util/kpiHelpers';
-import { FormSection, ToggleButton, BtnSave, BtnDelete } from '@/components/generic/form';
+import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import GoogleSheetsFormGroup from '@/components/forms/partials/GoogleSheetsFormGroup.vue';
 import Kpi from '@/db/Kpi';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 
@@ -243,8 +191,6 @@ export default {
     PktButton,
     PagedDrawerWrapper,
     FormSection,
-    GoogleSheetsFormGroup,
-    ToggleButton,
     BtnSave,
     BtnDelete,
   },
@@ -259,14 +205,13 @@ export default {
 
   data: () => ({
     thisKpi: null,
-    pageCount: 4,
+    pageCount: 3,
     loading: false,
     formats: kpiFormats(),
     startValues: kpiStartValues(),
     trendOptions: kpiTrendOptions(),
     kpiTypes: kpiTypes(),
     updateFrequencies: kpiUpdateFrequencies(),
-    serviceAccountAddress: import.meta.env.VITE_SHEETS_SERVICE_ACCOUNT,
   }),
 
   computed: {
@@ -274,10 +219,6 @@ export default {
 
     editMode() {
       return !!this.thisKpi?.id;
-    },
-
-    errorMessage() {
-      return this.kpi?.error && this.kpi.auto ? this.showError(this.kpi.error) : null;
     },
   },
 
@@ -291,11 +232,7 @@ export default {
         preferredTrend: 'increase',
         kpiType: 'plain',
         updateFrequency: 'daily',
-        sheetUrl: '',
-        sheetName: '',
-        sheetCell: '',
         api: true,
-        auto: false,
       };
       return;
     }
@@ -316,45 +253,27 @@ export default {
 
         try {
           const {
-            auto,
             description,
             format,
             kpiType,
             name,
             preferredTrend,
-            sheetCell,
-            sheetId,
-            sheetName,
-            sheetUrl,
             startValue,
             updateFrequency,
           } = this.thisKpi;
 
-          // For backwards compatibility, check for any previously configured sheet
-          // details if the `auto` property doesn't exist on the model.
-          const sheetsConfigured = Boolean(
-            (sheetId || sheetUrl) && sheetName && sheetCell
-          );
-
           const data = {
-            auto: auto || (auto === undefined && sheetsConfigured),
             description,
             format,
             kpiType,
             name,
             preferredTrend,
-            sheetCell,
-            sheetName,
-            sheetUrl: sheetUrl || '',
             startValue: startValue || 'zero',
             updateFrequency,
           };
 
           if (this.thisKpi?.id) {
             await Kpi.update(this.thisKpi.id, data);
-            if (this.thisKpi.auto) {
-              this.testConnection();
-            }
           } else {
             const { id } = await Kpi.create({
               ...data,
@@ -399,25 +318,6 @@ export default {
         );
       } finally {
         this.loading = false;
-      }
-    },
-
-    showError(msg) {
-      if (['400', '403', '404'].includes(msg)) {
-        return this.$t(`sheets.${msg}`);
-      }
-      if (msg.includes('Cannot find data in cell')) {
-        const cell = msg.split('cell ')[1];
-        return this.$t('sheets.noDataInCell', { cell });
-      }
-      return msg;
-    },
-
-    async testConnection() {
-      try {
-        await functions.httpsCallable('fetchKpiDataTrigger')(this.kpi.id);
-      } catch (error) {
-        throw new Error(error.message);
       }
     },
   },

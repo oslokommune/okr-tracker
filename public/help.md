@@ -224,14 +224,8 @@ Nøkkelresultater er det du _måler_ for et spesifikt [mål](#mål).
 Kun administratorer og teammedlemmer har rettigheter til å registrere progresjon
 for et nøkkelresultat.
 
-Det finnes flere måter å registrere progresjon for et nøkkelresultat på:
-
-- Ved å bytte til `Detaljer`-visning på organisasjonen/produktområdet/produktet
-  og klikke på fremdriftsvisningen der.
-- Direkte inne på detaljsiden for et nøkkelresultatsiden.
-- Via API-et. Instruksjoner for dette finner du når du redigerer eller oppretter
-  et nøkkelresultat.
-- Ved å sette opp en [Google Sheets-integrasjon](#google-sheets-integrasjon).
+Progresjon registreres via detaljsiden for et nøkkelresultat. Man kan også
+registrere progresjon ved bruk av API-et.
 
 ### Slette eller endre progresjon for et nøkkelresultat
 
@@ -268,39 +262,12 @@ progresjonen satt til 100 %.
 - Velg «Målinger».
 - Klikk «Legg til måling».
 - Fyll ut detaljene i skjemaet og klikk «Lagre».
-- (Valgfritt) Sett opp [Google Sheets-integrasjon](#google-sheets-integrasjon).
 
 ### Oppdatere måleverdier
 
-Måleverdiene kan oppdateres på tre ulike måter:
+Måleverdiene kan oppdateres på to ulike måter:
 
 1. Direkte i OKR-trackeren ved å benytte knappen «Legg til målepunkt».
 
 2. Via API-et. Instruksjoner for dette finner du når du redigerer eller
    oppretter en ny måling.
-
-3. Ved å knytte målingen til et Google Sheets-dokument vil verdier fra
-   dokumentet lastes inn automatisk i OKR-trackeren to ganger daglig. Google
-   Sheets-dokumentet må deles med OKR-trackerens _service account_. Adressen til
-   denne finner du når du redigerer eller oppretter en ny måling.
-
----
-
-## Google Sheets-integrasjon
-
-Med hjelp av Google Sheets kan du konfigurere automatisk oppdatering av
-progresjon for nøkkelresultater og målinger.
-
-Progresjonen for det «automatiske» nøkkelresultatet eller målingen vil bli
-oppdatert to ganger om dagen med verdien i den _cellen_ som er definert.
-
-| Felt              | Beskrivelse                                                |
-|-------------------|------------------------------------------------------------|
-| Google Sheets URL | Den fullstendige nettadressen til Google Sheets-dokumentet |
-| Fane              | Navnet på fanen hvor cellen ligger                         |
-| Celle             | Navnet på cellen (for eksempel «A1»)                       |
-
-Dokumentet må deles med OKR-trackeren via applikasjonens _service account_.
-
-Trykk til slutt på «Lagre» og vent til du får grønn «OK» for bekreftelse på
-gyldig kobling.

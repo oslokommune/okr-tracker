@@ -73,19 +73,9 @@
         "description": "The measurement is considered especially important as an indicator of achievement. If the measurement is registered for a product, it is also displayed as a result indicator for the parent department."
       }
     },
-    "itemRowError": "error",
     "help": {
-      "updates": "Measurements can be updated both manually through the OKR Tracker and automatically using a Google Sheets- or API-integration. Note that it is only possible to register a single value within a day. Read more about creating and updating measurements {readMoreLink} (in Norwegian).",
-      "readMoreHere": "here",
       "apiProgress": "New measurements can be registered with {apiLink} calls, for instance by using curl as shown below.",
       "resultIndicatorWarning": "Result indicators are considered indicators of the organization's effect and target achievement, and should therefore be clarified with the organization's management before creation."
-    },
-    "automation": {
-      "title": "Automated progression",
-      "error": "An error has occurred while updating progression for this measurement.",
-      "radio": "Fetch values automatically from a spreadsheet (Google Sheets)?",
-      "reviewSettings": "Please review {0}.",
-      "automationLink": "the settings for automated progression"
     },
     "goals": {
       "goal": "Goal",
@@ -105,9 +95,6 @@
     "name": "Name",
     "missionStatement": "Mission statement",
     "weight": "Weight",
-    "sheetUrl": "Google Sheets URL",
-    "sheetTab": "Tab",
-    "sheetCell": "Cell",
     "displayName": "Display name",
     "period": "Period",
     "description": "Description",
@@ -355,17 +342,6 @@
     "newValue": "New value",
     "editValue": "Edit value",
     "registeredValues": "Registered values",
-    "automation": {
-      "header": "Automatic progress registration (Google Sheets)",
-      "googleSheetUrl": "Google Sheets URL",
-      "googleSheetUrlHelp": "The complete Google Sheets URL",
-      "sheetsTab": "Tab",
-      "sheetsTabPlaceholder": "Sheet1",
-      "sheetsTabHelp": "The tab name in Google Sheets",
-      "sheetsCell": "Cell",
-      "sheetsCellHelp": "E.g. «A12»",
-      "testConnection": "Save and test connection"
-    },
     "registerProgression": {
       "value": "Value"
     },
@@ -379,14 +355,6 @@
       "label": "Weight",
       "help": "Progression for each key result is by default weighted equally (1) when calculating the overall progression for an objective. It is possible to override this for each key result individually by changing the value below."
     },
-    "automatic": "Automatic",
-    "autoHelpText": "The value for this key result gets updated automatically from Google Sheets.",
-    "autoError": "Issue fetching data from Google Sheets:",
-    "api": {
-      "radio": "Update via API?",
-      "tooltip": "Toggle this if you have plans to update your Key Results yourself via the OKR-tracker API - you can still update manually as well"
-    },
-    "apiAndKeyRes": "We do not recommend toggling both at the same time. This may create problem your Key Result progression",
     "created": "The key result was created!",
     "updated": "The key result was updated!",
     "edit": "Edit key result"
@@ -572,13 +540,6 @@
       "product": "This product is archived and no longer visible."
     },
     "restoreText": "If you miss it, just restore it."
-  },
-  "sheets": {
-    "infoText": "Note! The following address must be given read access to the Google Sheets document:",
-    "400": "Couldn't read any data. Is the Google Sheets tab name correct?",
-    "403": "The system doesn't have read access to the Google Sheets document.",
-    "404": "Could not find the Google Sheets document. Wrong URL?",
-    "noDataInCell": "Cell {cell} is empty."
   },
   "widget": {
     "progression": {

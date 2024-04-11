@@ -1,4 +1,3 @@
-import firebase from 'firebase/compat/app';
 import { db } from '@/config/firebaseConfig';
 import props from './props';
 import {
@@ -19,12 +18,6 @@ const create = (data) => {
 
 const update = (id, data) => {
   validateUpdateProps(props, data);
-  if (!data.auto) {
-    // Ensure that Google Sheets sync state is reset if disabled.
-    const { FieldValue } = firebase.firestore;
-    data.error = FieldValue.delete();
-    data.valid = true;
-  }
   return updateDocument(collection.doc(id), data);
 };
 

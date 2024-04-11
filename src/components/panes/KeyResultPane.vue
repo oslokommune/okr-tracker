@@ -90,14 +90,6 @@
       />
     </div>
 
-    <pkt-alert v-if="activeKeyResult.auto" skin="info">
-      {{ $t('keyResult.autoHelpText') }}
-    </pkt-alert>
-
-    <pkt-alert v-if="activeKeyResult.auto && activeKeyResult.error" skin="error">
-      {{ $t('keyResult.autoError') }} {{ activeKeyResult.error }}
-    </pkt-alert>
-
     <div class="key-result-pane__widgets">
       <!--
         Hide notes widget for now. This one needs work separately. We give the
@@ -127,7 +119,7 @@ import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
-import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
+import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LineChart from '@/components/generic/LineChart.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
@@ -143,7 +135,6 @@ export default {
   name: 'KeyResultPane',
 
   components: {
-    PktAlert,
     PktButton,
     PktBreadcrumbs,
     PaneWrapper,
