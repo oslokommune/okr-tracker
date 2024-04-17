@@ -32,7 +32,7 @@
     "date-fns": "^2.29.0",
     "dompurify": "^3.0.2",
     "echarts": "^5.4.3",
-    "firebase": "^9.23.0",
+    "firebase": "^10.11.0",
     "flatpickr": "^4.6.9",
     "focus-trap": "^7.0.0",
     "fuse.js": "^6.5.3",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "7.16.5",
     "@babel/preset-env": "^7.16.5",
-    "@firebase/rules-unit-testing": "^2.0.7",
+    "@firebase/rules-unit-testing": "^3.0.2",
     "@oslokommune/punkt-css": "^9.2.6",
     "@vitejs/plugin-vue2": "^2.2.0",
     "env-cmd": "^10.1.0",
