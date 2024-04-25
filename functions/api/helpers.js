@@ -3,24 +3,40 @@ import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { endOfDay, startOfDay, setHours, isWithinInterval, sub } from 'date-fns';
 
 /**
+ * Return resolved document by reference.
+ *
+ * `documentRef` is the Firestore reference to resolve.
+ */
+export async function getDocumentDataByRef(documentRef) {
+  if (typeof documentRef.get === 'function') {
+    return documentRef.get().then((snapshot) => {
+      return snapshot.exists ? snapshot.data() : null;
+    });
+  }
+  return null;
+}
+
+/**
  * Return a user's display name. If the referenced Firestore reference
  * does not exist, attempt to extract reference suffix (email).
  *
  * `userRef` is the Firestore reference to resolve.
  */
 export async function getUserDisplayName(userRef) {
-  if (typeof userRef.get === 'function') {
-    return userRef.get().then((snapshot) => {
-      if (!snapshot.exists) {
-        return userRef.path.split('users/')[1];
-      }
-      const userData = snapshot.data();
-      return userData.displayName;
-    });
+  const userData = await getDocumentDataByRef(userRef);
+
+  if (userData?.displayName) {
+    return userData.displayName;
   }
+
+  if (typeof userRef.get === 'function') {
+    return userRef.path.split('users/')[1];
+  }
+
   if (typeof userRef === 'string') {
     return userRef.split('users/')[1];
   }
+
   return null;
 }
 
@@ -132,6 +148,8 @@ export async function buildKpiResponse(kpiSnapshot) {
     edited,
     editedBy,
     name,
+    description,
+    parent,
     type,
     updateFrequency,
   } = kpiSnapshot.data();
@@ -149,11 +167,21 @@ export async function buildKpiResponse(kpiSnapshot) {
       return { value, timestamp: timestamp.toDate() };
     });
 
+  const parentData = await getDocumentDataByRef(parent);
+  const parentOut = parentData
+    ? {
+        slug: parentData.slug,
+        name: parentData.name,
+      }
+    : null;
+
   return {
     id: kpiSnapshot.id,
     currentValue,
     name,
+    description,
     type,
+    parent: parentOut,
     lastUpdated: latestMeasurement || null,
     updateFrequency: updateFrequency || null,
     isStale: isKPIStale(updateFrequency, latestMeasurement),

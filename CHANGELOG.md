@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- The API endpoints for listing and fetching KPI details now include KPI
+  description and parent information.
+
 ### Removed
 
 - The Google Sheets integration has been completely removed, both for key

@@ -365,12 +365,23 @@ definitions:
             type: string
   Kpi:
     properties:
+      id:
+        type: string
       currentValue:
         type: number
       name:
         type: string
+      description:
+        type: string
       type:
         type: string
+      parent:
+        type: object
+        properties:
+          slug:
+            type: string
+          name:
+            type: string
       created:
         type: string
         format: date-time
