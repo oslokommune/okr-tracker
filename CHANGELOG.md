@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file. The format 
 - The API endpoints for listing and fetching KPI details now include KPI
   description and parent information.
 
+### Changed
+
+- Upgraded to Firebase 10.
+
 ### Removed
 
 - The Google Sheets integration has been completely removed, both for key
