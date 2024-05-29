@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [4.2.0] 2024-05-29
+
 ### Added
 
 - The API endpoints for listing and fetching KPI details now include KPI
