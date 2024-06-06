@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- Node.js 20 is now the default runtime for all Cloud Functions and when running
+  the app locally.
+
+### Removed
+
+- Dropped support for Node.js 18 and below.
+
 ### Security
 
 - Updated dependencies.

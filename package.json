@@ -19,7 +19,7 @@
     "export_mock_data": "firebase emulators:export ./mock_data"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "dependencies": {
     "@oslokommune/punkt-vue2": "^9.2.6",
