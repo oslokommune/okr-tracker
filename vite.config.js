@@ -1,10 +1,20 @@
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue2';
+import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { version } from './package.json';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          compatConfig: {
+            MODE: 2,
+          },
+        },
+      },
+    }),
+  ],
   base: '/',
   publicDir: 'public',
   server: {
@@ -17,9 +27,17 @@ export default defineConfig({
   resolve: {
     alias: [
       {
+        find: 'vue',
+        replacement: '@vue/compat',
+      },
+      {
         find: '@',
         replacement: path.resolve(__dirname, 'src'),
       },
+      {
+        find: '@oslokommune/punkt-vue2',
+        replacement: '@oslokommune/punkt-vue',
+      }
     ],
   },
   css: {
