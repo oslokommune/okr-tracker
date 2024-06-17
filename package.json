@@ -2,6 +2,7 @@
   "name": "okr-tracker",
   "version": "4.2.2",
   "private": true,
+  "type": "module",
   "scripts": {
     "test:unit": "NODE_ENV=test jest --testPathIgnorePatterns tests/firebase",
     "test:unit:firestore": "firebase emulators:exec --only firestore 'jest tests/firebase/firestore.test.js'",
@@ -61,7 +62,7 @@
     "@babel/preset-env": "^7.16.5",
     "@firebase/rules-unit-testing": "^3.0.2",
     "@oslokommune/punkt-css": "^9.2.6",
-    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vitejs/plugin-vue2": "^2.3.1",
     "env-cmd": "^10.1.0",
     "esbuild": "^0.15.14",
     "eslint": "^8.44.0",
@@ -83,7 +84,7 @@
     "stylelint-config-recommended-vue": "^1.4.0",
     "stylelint-order": "^6.0.3",
     "stylelint-scss": "^5.0.1",
-    "vite": "^4.5.5"
+    "vite": "^5.3.1"
   },
   "resolutions": {
     "postcss": "8.3.11"

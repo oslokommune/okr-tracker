@@ -11,6 +11,7 @@ export default defineConfig({
     port: 8080,
   },
   define: {
+    // eslint-disable-next-line prettier/prettier
     '__APP_VERSION__': JSON.stringify(version),
   },
   resolve: {
@@ -29,6 +30,7 @@ export default defineConfig({
         `,
       },
     },
+    postcss: {},
   },
   build: {
     outDir: 'docs',
