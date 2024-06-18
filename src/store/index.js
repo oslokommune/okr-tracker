@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
 import { sortByLocale } from '@/store/actions/actionUtils';
@@ -10,7 +10,6 @@ import moduleActions from './actions';
 import okrsModule from './modules/okrs';
 import kpisModule from './modules/kpis';
 
-Vue.use(Vuex);
 
 export const storeGetters = {
   tree: (state) => {
@@ -236,7 +235,7 @@ export const mutations = {
   },
 };
 
-export default new Vuex.Store({
+const store = createStore({
   modules: {
     okrs: okrsModule,
     kpis: kpisModule,
@@ -265,4 +264,6 @@ export default new Vuex.Store({
   getters: storeGetters,
   mutations,
   actions,
-});
+})
+
+export default store;

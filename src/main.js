@@ -45,10 +45,11 @@ configureFormValidation();
 function createTrackerApp() {
   const app = createApp({
     router,
-    store,
     i18n,
     ...App
   });
+
+  app.use(store);
 
   // Use plugins
   app.use(Toasted, {
