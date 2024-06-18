@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue, { createApp } from 'vue';
 import VueSelect from 'vue-select';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
@@ -25,19 +25,6 @@ import 'flatpickr/dist/flatpickr.css';
 
 import './styles/main.scss';
 
-// Use plugins
-Vue.use(Toasted, {
-  position: 'bottom-right',
-  className: 'toast',
-  duration: 3500,
-});
-Vue.use(VTooltip, {
-  defaultHtml: false,
-});
-Vue.use(VueMeta);
-Vue.use(firestorePlugin);
-Vue.use(VueFlatPickr);
-
 VueSelect.props.components.default = () => ({
   Deselect: {
     render: (createElement) => {
@@ -51,20 +38,42 @@ VueSelect.props.components.default = () => ({
   },
 });
 
-// Global components
-Vue.component('PageLayout', PageLayout);
-Vue.component('VSelect', VueSelect);
-Vue.component('ValidationProvider', ValidationProvider);
-Vue.component('ValidationObserver', ValidationObserver);
-Vue.component('FormComponent', FormComponent);
-Vue.component('VSpinner', Spinner);
-Vue.component('PktIcon', PktIcon);
-
 // Configure VeeValidate for form validation.
 // https://vee-validate.logaretm.com/v3/
 configureFormValidation();
 
-Vue.config.productionTip = false;
+function createTrackerApp() {
+  const app = createApp({
+    router,
+    store,
+    i18n,
+    ...App
+  });
+
+  // Use plugins
+  app.use(Toasted, {
+    position: 'bottom-right',
+    className: 'toast',
+    duration: 3500,
+  });
+  app.use(VTooltip, {
+    defaultHtml: false,
+  });
+  app.use(VueMeta);
+  app.use(firestorePlugin);
+  app.use(VueFlatPickr);
+
+  // Global components
+  app.component('PageLayout', PageLayout);
+  app.component('VSelect', VueSelect);
+  app.component('ValidationProvider', ValidationProvider);
+  app.component('ValidationObserver', ValidationObserver);
+  app.component('FormComponent', FormComponent);
+  app.component('VSpinner', Spinner);
+  app.component('PktIcon', PktIcon);
+
+  return app
+}
 
 let app;
 
@@ -107,13 +116,8 @@ auth.onAuthStateChanged(async (user) => {
   }
 
   if (!app) {
-    app = new Vue({
-      el: '#app',
-      router,
-      store,
-      i18n,
-      render: (h) => h(App),
-    });
+    app = createTrackerApp();
+    app.mount('#app');
 
     router.beforeEach((to, from, next) => {
       store.dispatch('setLoading', true);
