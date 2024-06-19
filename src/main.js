@@ -44,11 +44,11 @@ configureFormValidation();
 
 function createTrackerApp() {
   const app = createApp({
-    router,
     i18n,
     ...App
   });
 
+  app.use(router);
   app.use(store);
 
   // Use plugins
@@ -84,11 +84,11 @@ auth.onAuthStateChanged(async (user) => {
 
     await store.dispatch('init_state');
 
-    if (router.currentRoute.query.redirectFrom) {
-      await router.push({ path: router.currentRoute.query.redirectFrom });
+    if (router.currentRoute.value.query.redirectFrom) {
+      await router.push({ path: router.currentRoute.value.query.redirectFrom });
     } else if (
-      router.currentRoute.name === 'Login' &&
-      !router.currentRoute.query.redirectFrom
+      router.currentRoute.value.name === 'Login' &&
+      !router.currentRoute.value.query.redirectFrom
     ) {
       await router.push({
         name: 'Home',
@@ -102,16 +102,16 @@ auth.onAuthStateChanged(async (user) => {
     await store.dispatch('reset_state');
     await auth.signOut();
 
-    if (!router.currentRoute.name && router.history.getCurrentLocation() !== '/') {
-      await router.push(router.history.getCurrentLocation()).catch(() => {
+    if (!router.currentRoute.value.name && router.options.history.location !== '/') {
+      await router.push(router.options.history.location).catch(() => {
         if (document.querySelector('#spinner')) {
           document.querySelector('#spinner').remove();
         }
       });
-    } else if (!router.currentRoute.query.redirectFrom) {
+    } else if (!router.currentRoute.value.query.redirectFrom) {
       await router.push({
         name: 'Login',
-        query: { redirectFrom: router.currentRoute.fullPath },
+        query: { redirectFrom: router.currentRoute.value.fullPath },
       });
     }
   }

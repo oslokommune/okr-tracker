@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import Admin from '@/views/Admin/Admin.vue';
 import AdminWrapper from '@/views/Admin/AdminWrapper.vue';
@@ -18,8 +17,6 @@ import NotFound from '@/views/NotFound.vue';
 import RequestAccess from '@/views/RequestAccess.vue';
 
 import * as routerGuards from './router-guards';
-
-Vue.use(Router);
 
 const routes = [
   {
@@ -154,15 +151,14 @@ const routes = [
     ],
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
   },
 ];
 
-const router = new Router({
-  mode: 'history',
-  base: import.meta.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
