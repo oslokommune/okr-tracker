@@ -71,7 +71,7 @@ export default {
     this.$nextTick(this.createFocusTrap);
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.focusTrap) {
       this.focusTrap.deactivate();
       this.focusTrap = null;

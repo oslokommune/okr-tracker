@@ -159,7 +159,7 @@ export default {
     await this.setData();
   },
 
-  async beforeDestroy() {
+  async beforeUnmount() {
     await this.setActiveObjective(null);
     await this.setActiveKeyResult(null);
   },
