@@ -137,14 +137,14 @@ export const storeGetters = {
     };
 
     return [
-      { name: i18n.t('general.organizations'), items: organizations, icon: 'industry' },
+      { name: i18n.global.t('general.organizations'), items: organizations, icon: 'industry' },
       {
-        name: i18n.t('general.departments'),
+        name: i18n.global.t('general.departments'),
         items: departments.filter(filterDepartments),
         icon: 'cubes',
       },
       {
-        name: i18n.t('general.products'),
+        name: i18n.global.t('general.products'),
         items: products.filter(filterProducts),
         icon: 'cube',
       },

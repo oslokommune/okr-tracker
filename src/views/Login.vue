@@ -103,7 +103,7 @@ export default {
 
   metaInfo() {
     return {
-      title: ` ${i18n.t('general.project')} | ${i18n.t('general.owner')}`,
+      title: ` ${i18n.global.t('general.project')} | ${i18n.global.t('general.owner')}`,
     };
   },
 

@@ -26,6 +26,7 @@
 <script>
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { VPopover } from 'v-tooltip';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'BtnDelete',
@@ -41,16 +42,12 @@ export default {
     text: {
       type: String,
       required: false,
-      default() {
-        return this.$t('btn.delete');
-      },
+      default: i18n.global.t('btn.delete'),
     },
     confirmText: {
       type: String,
       required: false,
-      default() {
-        return this.$t('btn.confirmDelete');
-      },
+      default: i18n.global.t('btn.confirmDelete'),
     },
     confirmHelp: {
       type: String,

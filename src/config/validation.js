@@ -24,9 +24,9 @@ export default function configureFormValidation() {
   // https://vee-validate.logaretm.com/v3/guide/localization.html#using-other-i18n-libraries
   configure({
     defaultMessage: (field, values) => {
-      values._field_ = i18n.t(`fields.${field}`);
+      values._field_ = i18n.global.t(`fields.${field}`);
 
-      return i18n.t(`validation.${values._rule_}`, values);
+      return i18n.global.t(`validation.${values._rule_}`, values);
     },
   });
 

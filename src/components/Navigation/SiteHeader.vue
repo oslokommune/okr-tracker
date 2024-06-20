@@ -91,15 +91,15 @@ export default {
     ...mapState(['activeItem', 'activeKeyResult', 'activeObjective', 'user']),
 
     siteMenuLabel() {
-      const defaultLabel = i18n.t('general.appName') || 'OKR Tracker';
+      const defaultLabel = i18n.global.t('general.appName') || 'OKR Tracker';
       const parts = this.$route.matched.map(({ name }) => name);
 
       if (parts.includes('Help')) {
-        return `${defaultLabel}: ${i18n.t('general.help')}`;
+        return `${defaultLabel}: ${i18n.global.t('general.help')}`;
       }
 
       if (parts.includes('Api')) {
-        return `${defaultLabel}: ${i18n.t('general.api')}`;
+        return `${defaultLabel}: ${i18n.global.t('general.api')}`;
       }
 
       if (

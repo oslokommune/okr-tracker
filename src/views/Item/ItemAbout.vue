@@ -151,10 +151,10 @@ export default {
      */
     childrenTitle() {
       if (isOrganization(this.activeItem)) {
-        return i18n.t('about.organizationChildren');
+        return i18n.global.t('about.organizationChildren');
       }
       if (isDepartment(this.activeItem)) {
-        return i18n.t('about.departmentChildren');
+        return i18n.global.t('about.departmentChildren');
       }
 
       return null;

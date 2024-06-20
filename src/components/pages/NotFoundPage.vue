@@ -22,12 +22,12 @@ export default {
     heading: {
       type: String,
       required: false,
-      default: i18n.t('notFound.title'),
+      default: i18n.global.t('notFound.title'),
     },
     body: {
       type: String,
       required: false,
-      default: i18n.t('notFound.body'),
+      default: i18n.global.t('notFound.body'),
     },
     backTo: {
       type: String,
@@ -37,7 +37,7 @@ export default {
     backText: {
       type: String,
       required: false,
-      default: i18n.t('notFound.linkText'),
+      default: i18n.global.t('notFound.linkText'),
     },
   },
 };

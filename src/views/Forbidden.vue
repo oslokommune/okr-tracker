@@ -19,7 +19,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${i18n.t('403.title')} | ${i18n.t('general.project')}`,
+      title: `${i18n.global.t('403.title')} | ${i18n.global.t('general.project')}`,
     };
   },
 };

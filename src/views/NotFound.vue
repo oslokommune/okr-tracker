@@ -14,7 +14,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${i18n.t('notFound.title')} | ${i18n.t('general.project')}`,
+      title: `${i18n.global.t('notFound.title')} | ${i18n.global.t('general.project')}`,
     };
   },
 };

@@ -43,13 +43,11 @@ VueSelect.props.components.default = () => ({
 configureFormValidation();
 
 function createTrackerApp() {
-  const app = createApp({
-    i18n,
-    ...App
-  });
+  const app = createApp(App);
 
   app.use(router);
   app.use(store);
+  app.use(i18n);
 
   // Use plugins
   app.use(Toasted, {

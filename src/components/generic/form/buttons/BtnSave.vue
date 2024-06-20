@@ -11,6 +11,7 @@
 
 <script>
 import { PktButton } from '@oslokommune/punkt-vue2';
+import i18n from '@/locale/i18n';
 
 export default {
   name: 'BtnSave',
@@ -23,9 +24,7 @@ export default {
     text: {
       type: String,
       required: false,
-      default() {
-        return this.$t('btn.save');
-      },
+      default: i18n.global.t('btn.save'),
     },
     variant: {
       type: String,

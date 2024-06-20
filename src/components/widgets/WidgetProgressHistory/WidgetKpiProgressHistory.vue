@@ -162,9 +162,9 @@ export default {
 
           const content = [
             csvFormatRow([
-              i18n.t('fields.date'),
-              i18n.t('fields.value'),
-              i18n.t('fields.comment'),
+              i18n.global.t('fields.date'),
+              i18n.global.t('fields.value'),
+              i18n.global.t('fields.comment'),
             ]),
             csvFormatBody(
               progressRecords.map((d) => [

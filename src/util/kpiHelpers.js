@@ -9,11 +9,11 @@ export function kpiFormats() {
   return [
     {
       id: 'integer',
-      label: i18n.t('kpi.formats.integer'),
+      label: i18n.global.t('kpi.formats.integer'),
     },
     {
       id: 'percentage',
-      label: i18n.t('kpi.formats.percentage'),
+      label: i18n.global.t('kpi.formats.percentage'),
     },
   ];
 }
@@ -25,11 +25,11 @@ export function kpiStartValues() {
   return [
     {
       id: 'zero',
-      label: i18n.t('kpi.startValues.zero'),
+      label: i18n.global.t('kpi.startValues.zero'),
     },
     {
       id: 'min',
-      label: i18n.t('kpi.startValues.min'),
+      label: i18n.global.t('kpi.startValues.min'),
     },
   ];
 }
@@ -41,15 +41,15 @@ export function kpiTrendOptions() {
   return [
     {
       id: 'increase',
-      label: i18n.t('kpi.trendOptions.increase'),
+      label: i18n.global.t('kpi.trendOptions.increase'),
     },
     {
       id: 'decrease',
-      label: i18n.t('kpi.trendOptions.decrease'),
+      label: i18n.global.t('kpi.trendOptions.decrease'),
     },
     {
       id: 'neutral',
-      label: i18n.t('kpi.trendOptions.neutral'),
+      label: i18n.global.t('kpi.trendOptions.neutral'),
     },
   ];
 }
@@ -61,18 +61,18 @@ export function kpiTypes() {
   return [
     {
       id: 'plain',
-      label: i18n.t('kpi.types.plain.label'),
-      description: i18n.t('kpi.types.plain.description'),
+      label: i18n.global.t('kpi.types.plain.label'),
+      description: i18n.global.t('kpi.types.plain.description'),
     },
     {
       id: 'keyfig',
-      label: i18n.t('kpi.types.keyFigure.label'),
-      description: i18n.t('kpi.types.keyFigure.description'),
+      label: i18n.global.t('kpi.types.keyFigure.label'),
+      description: i18n.global.t('kpi.types.keyFigure.description'),
     },
     {
       id: 'ri',
-      label: i18n.t('kpi.types.resultIndicator.label'),
-      description: i18n.t('kpi.types.resultIndicator.description'),
+      label: i18n.global.t('kpi.types.resultIndicator.label'),
+      description: i18n.global.t('kpi.types.resultIndicator.description'),
     },
   ];
 }
@@ -87,7 +87,7 @@ export function kpiUpdateFrequencies() {
   return ['daily', 'weekly', 'monthly', 'quarterly', 'annual', 'irregular'].map(
     (frequency) => ({
       id: frequency,
-      label: i18n.t(`kpi.updateFrequency.frequencies.${frequency}`),
+      label: i18n.global.t(`kpi.updateFrequency.frequencies.${frequency}`),
     })
   );
 }

@@ -4,7 +4,7 @@ import i18n from '@/locale/i18n';
 export const showToastMessage = (opts) => {
   const { msg, msgVars, type, toastOpts } = opts;
 
-  const toastMsg = i18n.t(msg, msgVars) || msg;
+  const toastMsg = i18n.global.t(msg, msgVars) || msg;
 
   Vue.toasted.show(toastMsg, { type, ...toastOpts });
 };
@@ -16,11 +16,11 @@ export default function toastArchiveAndRevert(obj) {
     duration: 4000,
     action: [
       {
-        text: i18n.t('toaster.action.regret'),
+        text: i18n.global.t('toaster.action.regret'),
         onClick: callback,
       },
       {
-        text: i18n.t('btn.close'),
+        text: i18n.global.t('btn.close'),
         onClick: (e, toastObject) => {
           toastObject.goAway(0);
         },
