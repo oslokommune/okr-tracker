@@ -31,7 +31,7 @@ export default {
           objectives.push(objectiveId);
         }
       } else {
-        Vue.set(state.workbenchObjectives, itemId, [objectiveId]);
+        state.workbenchObjectives[itemId] = [objectiveId];
       }
     },
 
@@ -40,11 +40,7 @@ export default {
         const objectives = state.workbenchObjectives[itemId];
 
         if (objectiveId && objectives.includes(objectiveId)) {
-          Vue.set(
-            state.workbenchObjectives,
-            itemId,
-            objectives.filter((id) => id !== objectiveId)
-          );
+          state.workbenchObjectives[itemId] = objectives.filter((id) => id !== objectiveId);
         }
       }
     },

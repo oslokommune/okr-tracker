@@ -220,7 +220,7 @@ export const mutations = {
   },
 
   SET_COLLECTION(state, payload) {
-    Vue.set(state, payload.type, [...payload.data]);
+    state[payload.type] = [...payload.data];
   },
 
   SET_UNSUBSCRIBE_COLLECTION(state, payload) {
