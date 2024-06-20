@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import i18n from '@/locale/i18n';
 import EmptyPage from '@/components/pages/EmptyPage.vue';
 
 export default {
@@ -17,9 +16,9 @@ export default {
     EmptyPage,
   },
 
-  metaInfo() {
+  head() {
     return {
-      title: `${i18n.global.t('403.title')} | ${i18n.global.t('general.project')}`,
+      title: `${this.$t('403.title')} | ${this.$t('general.project')}`,
     };
   },
 };

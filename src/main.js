@@ -1,8 +1,8 @@
-import Vue, { createApp } from 'vue';
+import { createApp } from 'vue';
 import VueSelect from 'vue-select';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
-import VueMeta from 'vue-meta';
+import { VueHeadMixin, createHead } from '@unhead/vue';
 import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { firestorePlugin } from 'vuefire';
@@ -50,6 +50,10 @@ function createTrackerApp() {
   app.use(i18n);
 
   // Use plugins
+  const head = createHead();
+  app.mixin(VueHeadMixin);
+  app.use(head);
+
   app.use(Toasted, {
     position: 'bottom-right',
     className: 'toast',
@@ -58,7 +62,6 @@ function createTrackerApp() {
   app.use(VTooltip, {
     defaultHtml: false,
   });
-  app.use(VueMeta);
   app.use(firestorePlugin);
   app.use(VueFlatPickr);
 

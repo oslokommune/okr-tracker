@@ -84,7 +84,6 @@
 import { mapState, mapActions } from 'vuex';
 import { PktButton } from '@oslokommune/punkt-vue2';
 import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
-import i18n from '@/locale/i18n';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 
 export default {
@@ -101,9 +100,9 @@ export default {
     showForm: false,
   }),
 
-  metaInfo() {
+  head() {
     return {
-      title: ` ${i18n.global.t('general.project')} | ${i18n.global.t('general.owner')}`,
+      title: ` ${this.$t('general.project')} | ${this.$t('general.owner')}`,
     };
   },
 

@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import i18n from '@/locale/i18n';
 import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
 export default {
@@ -12,9 +11,9 @@ export default {
     NotFoundPage,
   },
 
-  metaInfo() {
+  head() {
     return {
-      title: `${i18n.global.t('notFound.title')} | ${i18n.global.t('general.project')}`,
+      title: `${this.$t('notFound.title')} | ${this.$t('general.project')}`,
     };
   },
 };

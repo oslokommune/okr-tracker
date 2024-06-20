@@ -33,7 +33,6 @@
 import { marked } from 'marked';
 import dompurify from 'dompurify';
 import { tableOfContent as toc } from '@/util';
-import i18n from '@/locale/i18n';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 
 marked.setOptions({
@@ -52,9 +51,9 @@ export default {
     toc: [],
   }),
 
-  metaInfo() {
+  head() {
     return {
-      title: `${i18n.global.t('general.help')} | ${i18n.global.t('general.project')}`,
+      title: `${this.$t('general.help')} | ${this.$t('general.project')}`,
     };
   },
 
