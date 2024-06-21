@@ -48,8 +48,8 @@
 
       <line-chart
         class="progress-graph"
-        :series="chartSeries"
         v-bind="chartOptions"
+        :series="chartSeries"
         show-legend
       />
     </div>

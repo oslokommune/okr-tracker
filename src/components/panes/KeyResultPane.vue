@@ -56,8 +56,8 @@
       <line-chart
         v-if="objectiveIsResolved"
         class="key-result-pane__graph"
-        :series="chartSeries"
         v-bind="chartOptions"
+        :series="chartSeries"
         @click="valueSelect"
       />
 

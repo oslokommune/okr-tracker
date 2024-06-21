@@ -16,13 +16,13 @@
       custom
     >
       <a
+        v-bind="ariaAttrs"
         :href="href"
         :class="[
           'nav-menu-item__inner',
           { 'nav-menu-item__inner--icon-only': icon && !text },
           { 'nav-menu-item__inner--active': active || isExactActive },
         ]"
-        v-bind="ariaAttrs"
         @click="activate($event, navigate)"
       >
         <slot name="text">

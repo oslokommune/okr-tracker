@@ -35,8 +35,8 @@
         <template v-for="(group, index) in kpiGroups">
           <kpi-widget-group
             v-if="group.kpis.length > 0"
-            :key="`kpi-group-${index}`"
             v-bind="group"
+            :key="`kpi-group-${index}`"
             :compact="showKpiDetails"
           />
         </template>

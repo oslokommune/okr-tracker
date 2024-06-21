@@ -16,8 +16,8 @@
       <div class="period-selector__options">
         <period-shortcut
           v-for="rangeOption in options"
-          :key="rangeOption.key"
           v-bind="rangeOption"
+          :key="rangeOption.key"
           :active="value && rangeOption.key === value.key"
           @click="$emit('input', rangeOption)"
         />

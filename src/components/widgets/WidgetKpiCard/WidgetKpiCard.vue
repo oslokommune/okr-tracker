@@ -29,8 +29,8 @@
       >
         <line-chart
           v-if="progress.length > 1"
-          :series="chartSeries"
           v-bind="chartOptions"
+          :series="chartSeries"
           sparkline
         />
         <span v-else-if="progress.length === 1" class="no-data pkt-txt-12">{{

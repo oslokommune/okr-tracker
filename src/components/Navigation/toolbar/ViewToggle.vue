@@ -6,14 +6,14 @@
     </nav-menu-text>
     <nav-menu-item
       v-for="view in views"
-      :key="view.key"
+      v-bind="view"
       v-tooltip="$t('tooltip.changeView', { view: view.name })"
+      :key="view.key"
       :aria="{
         label: $t('tooltip.changeView', { view: view.name }),
         checked: view.active,
       }"
       role="menuitemradio"
-      v-bind="view"
     />
   </nav-menu>
 </template>
@@ -38,6 +38,7 @@ export default {
 
     views() {
       const { name, query } = this.$route;
+      console.log(name, query?.view);
 
       // TODO: Add view toggles for `ItemHome` route, replacing the `ActionBar`
       // component. This includes some extra logic that ideally should work the
