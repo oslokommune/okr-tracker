@@ -166,21 +166,10 @@ export default {
     }
   }
 
-  ::v-deep &__comment-group {
-    flex-grow: 1;
-
-    .pkt-form-group {
-      height: calc(100% - 2rem);
-    }
-    .form-input__wrapper {
-      height: 100%;
-    }
-  }
-
-  ::v-deep input[name='value'] {
+  :deep(input[name='value']) {
     font-size: 1.5rem;
   }
-  ::v-deep textarea[name='comment'] {
+  :deep(textarea[name='comment']) {
     resize: vertical;
   }
   input[name='datetime'] {
@@ -188,11 +177,22 @@ export default {
   }
 }
 
+:deep(.progress-form__comment-group) {
+  flex-grow: 1;
+
+  .pkt-form-group {
+    height: calc(100% - 2rem);
+  }
+  .form-input__wrapper {
+    height: 100%;
+  }
+}
+
 .pkt-alert {
   margin-bottom: 1.5rem;
 }
 
-::v-deep .flatpickr-calendar {
+:deep(.flatpickr-calendar) {
   border: 2px solid var(--color-blue-dark);
   border-radius: 0;
   -webkit-box-shadow: none;

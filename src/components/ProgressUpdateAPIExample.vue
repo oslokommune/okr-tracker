@@ -57,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-::v-deep textarea {
+:deep(textarea) {
   @include get-text('pkt-txt-14');
   margin: 0;
 }

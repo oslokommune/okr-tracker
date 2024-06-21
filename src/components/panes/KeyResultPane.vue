@@ -378,7 +378,7 @@ export default {
   &__widgets {
     margin-top: 3rem;
 
-    ::v-deep .widget__header {
+    :deep(.widget__header) {
       h3 {
         @include get-text('pkt-txt-16');
       }
@@ -390,15 +390,15 @@ export default {
   background-color: transparent;
 }
 
-::v-deep .widget {
+:deep(.widget) {
   padding: 0;
   border: 0;
 }
 
-::v-deep .pkt-breadcrumbs {
+.pkt-breadcrumbs {
   display: flex;
 
-  &--mobile {
+  :deep(.pkt-breadcrumbs--mobile) {
     width: 100%;
 
     .pkt-breadcrumbs__text {

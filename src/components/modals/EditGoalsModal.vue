@@ -276,7 +276,7 @@ export default {
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-::v-deep .modal {
+:deep(.modal) {
   overflow-y: visible;
 }
 

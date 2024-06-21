@@ -180,7 +180,7 @@ export default {
     max-width: 50%;
   }
 
-  ::v-deep .widget__header {
+  :deep(.widget__header) {
     align-items: flex-start;
   }
 
@@ -188,7 +188,7 @@ export default {
     --fg-color: var(--color-grayscale-30);
     cursor: move;
 
-    ::v-deep svg {
+    :deep(svg) {
       height: 0.875rem;
       min-height: 0.875rem;
     }

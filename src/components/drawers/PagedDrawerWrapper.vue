@@ -122,17 +122,17 @@ export default {
 
 .paged-drawer {
   &--done {
-    ::v-deep .sliderContainer__footer {
+    :deep(.sliderContainer__footer) {
       margin: auto -2.5rem -2.5rem;
     }
   }
   &--done#{&}--success {
-    ::v-deep .sliderContainer {
+    :deep(.sliderContainer) {
       background-color: var(--color-green-light);
     }
   }
   &--done#{&}--error {
-    ::v-deep .sliderContainer {
+    :deep(.sliderContainer) {
       background-color: var(--color-red-30);
     }
   }

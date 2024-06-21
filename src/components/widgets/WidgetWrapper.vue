@@ -115,7 +115,7 @@ export default {
       display: flex;
       gap: 0.5rem;
 
-      ::v-deep .separator {
+      :deep(.separator) {
         border-left: 1px solid var(--color-border);
       }
     }

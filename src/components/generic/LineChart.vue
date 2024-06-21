@@ -226,7 +226,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .echarts-tooltip {
+:deep(.echarts-tooltip) {
   // https://github.com/apache/echarts/issues/15831
   padding: 0 !important;
   border: 0 !important;

@@ -83,7 +83,7 @@ export default {
       min-width: 10rem;
     }
 
-    ::v-deep .period-selector__options button {
+    :deep(.period-selector__options button) {
       min-height: 4rem;
 
       @media screen and (min-width: 0rem) and (max-width: 28rem) {
@@ -93,7 +93,7 @@ export default {
   }
 
   &__label {
-    ::v-deep .nav-menu-text__inner {
+    :deep(.nav-menu-text__inner) {
       padding-right: 0;
     }
   }

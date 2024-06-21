@@ -161,7 +161,7 @@ export default {
 .page {
   background-color: var(--color-blue-light);
 
-  ::v-deep .page__container {
+  :deep(.page__container) {
     // Use same padding for the container as Punkt grid gap.
     // https://github.com/oslokommune/punkt/blob/main/packages/css/src/scss/base/_grid.scss
     padding: 1rem;
@@ -211,7 +211,7 @@ export default {
   }
 
   &__departments {
-    ::v-deep .pkt-linkcard {
+    :deep(.pkt-linkcard) {
       height: 100%;
     }
   }
@@ -247,27 +247,26 @@ export default {
   }
 }
 
-::v-deep .pkt-linkcard {
-  width: 100%;
+:deep(.pkt-linkcard) {
   padding: map.get(variables.$spacing, 'size-16');
   background-color: var(--color-white);
+}
 
-  &__title {
-    @include get-text('pkt-txt-18-medium');
-    margin-bottom: 0;
+:deep(.pkt-linkcard__title) {
+  @include get-text('pkt-txt-18-medium');
+  margin-bottom: 0;
 
-    @include bp('laptop-up') {
-      @include get-text('pkt-txt-20-medium');
-    }
+  @include bp('laptop-up') {
+    @include get-text('pkt-txt-20-medium');
   }
+}
 
-  &__text:not(:empty) {
-    margin-top: 0.5rem;
-  }
+:deep(.pkt-linkcard__text:not(:empty)) {
+  margin-top: 0.5rem;
+}
 
-  .pkt-link__icon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
+:deep(.pkt-link__icon) {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 </style>

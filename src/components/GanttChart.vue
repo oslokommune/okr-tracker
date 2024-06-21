@@ -736,38 +736,38 @@ export default {
   z-index: 1;
   height: 10rem;
   overflow: hidden;
-
-  ::v-deep &__inner {
-    justify-content: space-between;
-
-    &::before {
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 1;
-      width: 1rem;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        var(--card-bg-color) 75%,
-        var(--card-bg-color) 100%
-      );
-      content: '';
-    }
-  }
-
-  ::v-deep &__name {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-  }
-
+  
   &--active {
     --card-bg-color: var(--color-blue-5);
   }
+}
+
+:deep(.objective-link-card__inner) {
+  justify-content: space-between;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 1rem;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--card-bg-color) 75%,
+      var(--card-bg-color) 100%
+    );
+    content: '';
+  }
+}
+
+:deep(.objective-link-card__name) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
 }
 
 @keyframes loading {

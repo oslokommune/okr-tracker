@@ -61,7 +61,7 @@
           @input="$emit('select', $event)"
         >
           <template #search="{ attributes, events }">
-            <input :id="name" v-bind="attributes" class="vs__search" v-on="events" />
+            <input v-bind="attributes" :id="name" class="vs__search" v-on="events" />
           </template>
           <template #option="option">
             {{ option[selectLabel] }}
@@ -291,7 +291,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .v-select {
+:deep(.v-select) {
   flex-grow: 1;
 }
 </style>

@@ -89,7 +89,7 @@ main {
   margin-top: 0;
 }
 
-::v-deep code {
+:deep(code) {
   @include get-text('pkt-txt-14');
   padding: 0 0.3em;
   font-family: 'Monaco', monospace;

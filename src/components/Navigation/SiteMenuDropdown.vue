@@ -113,7 +113,7 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     max-height: $-dropdown-max-height;
   }
 
-  ::v-deep .pkt-btn {
+  :deep(.pkt-btn) {
     width: 100%;
     font-size: inherit;
   }

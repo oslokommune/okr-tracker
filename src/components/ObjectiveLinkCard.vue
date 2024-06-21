@@ -250,12 +250,11 @@ export default {
     line-height: 0.75rem;
     --fg-color: var(--color-grayscale-60);
 
-    ::v-deep .pkt-tag {
+    :deep(.pkt-tag) {
       font-size: 0.75rem;
-
-      &__icon {
-        margin-right: 0.25rem;
-      }
+    }
+    :deep(.pkt-tag__icon) {
+      margin-right: 0.25rem;
     }
   }
 
@@ -292,17 +291,5 @@ export default {
   height: 0.75rem;
   margin-left: auto;
   line-height: 0.75rem;
-
-  .pkt-icon {
-    width: 0.75rem;
-    height: 0.75rem;
-    --fg-color: var(--color-grayscale-60);
-
-    &,
-    ::v-deep > svg {
-      min-width: auto;
-      min-height: auto;
-    }
-  }
 }
 </style>

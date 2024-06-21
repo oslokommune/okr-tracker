@@ -233,7 +233,7 @@ export default {
     gap: 0.5rem;
   }
 
-  ::v-deep .page__container {
+  :deep(.page__container) {
     padding-top: 0.5rem;
   }
 }

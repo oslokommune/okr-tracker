@@ -59,15 +59,15 @@ export default {
 
 <style lang="scss" scoped>
 .timeline-pane {
-  ::v-deep .pane__inner {
+  :deep(.pane__inner) {
     height: 100%;
   }
 
-  ::v-deep .pane__header {
+  :deep(.pane__header) {
     padding: 0 1rem 0 1.4375rem;
   }
 
-  ::v-deep .pane__title {
+  :deep(.pane__title) {
     padding: 0;
 
     h1 {
@@ -76,11 +76,11 @@ export default {
     }
   }
 
-  ::v-deep .pane__actions {
+  :deep(.pane__actions) {
     margin-top: 0.4rem;
   }
 
-  ::v-deep .pane__body {
+  :deep(.pane__body) {
     flex: 1 0 auto;
     height: 0;
     padding: 0;

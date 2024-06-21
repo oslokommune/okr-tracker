@@ -136,27 +136,20 @@ export default {
     margin-top: 0.5rem;
   }
 
-  ::v-deep .flatpickr {
-    &-calendar {
-      top: 0;
-      margin: 0 auto;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
+  :deep(.flatpickr-calendar) {
+    top: 0;
+    margin: 0 auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
 
-      &::before,
-      &::after {
-        // Hide flatpickr arrow
-        display: none;
-      }
-
-      svg {
-        vertical-align: baseline;
-      }
-    }
-    &-input {
-      display: none;
+    svg {
+      vertical-align: baseline;
     }
   }
+}
+
+:deep(.flatpickr-input) {
+  display: none;
 }
 </style>

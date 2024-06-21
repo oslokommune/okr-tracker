@@ -205,7 +205,7 @@ export default {
 }
 
 .site-menu {
-  ::v-deep .nav-menu-item__inner {
+  :deep(.nav-menu-item__inner) {
     font-weight: 500;
   }
 }
@@ -221,7 +221,7 @@ export default {
 .user-menu {
   margin-left: auto;
 
-  ::v-deep .nav-menu-item__content {
+  :deep(.nav-menu-item__content) {
     right: 0;
   }
 }

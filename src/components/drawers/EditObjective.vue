@@ -473,7 +473,7 @@ export default {
     white-space: pre-line;
   }
 
-  ::v-deep .pkt-form-group {
+  :deep(.pkt-form-group) {
     margin-bottom: 0;
   }
 }
