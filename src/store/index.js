@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { createStore } from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
 import i18n from '@/locale/i18n';
@@ -9,7 +8,6 @@ import defaultPreferences from '@/db/User/defaultPreferences';
 import moduleActions from './actions';
 import okrsModule from './modules/okrs';
 import kpisModule from './modules/kpis';
-
 
 export const storeGetters = {
   tree: (state) => {
@@ -137,7 +135,11 @@ export const storeGetters = {
     };
 
     return [
-      { name: i18n.global.t('general.organizations'), items: organizations, icon: 'industry' },
+      {
+        name: i18n.global.t('general.organizations'),
+        items: organizations,
+        icon: 'industry',
+      },
       {
         name: i18n.global.t('general.departments'),
         items: departments.filter(filterDepartments),
@@ -264,6 +266,6 @@ const store = createStore({
   getters: storeGetters,
   mutations,
   actions,
-})
+});
 
 export default store;

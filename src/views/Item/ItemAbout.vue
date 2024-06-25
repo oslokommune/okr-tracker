@@ -41,7 +41,7 @@
         :key="role"
         :role="role"
         :members-with-role="teamMembers[role]"
-        @openModal="openProfileModal"
+        @open-modal="openProfileModal"
       />
     </template>
 

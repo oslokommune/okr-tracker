@@ -14,7 +14,7 @@ module.exports = {
     Use the recommended rule preset for `eslint-plugin-vue`.
     https://eslint.vuejs.org/rules/
     */
-    'plugin:vue/recommended',
+    'plugin:vue/vue3-recommended',
     /*
     Use as the last extension in order to override conflicting ESLint rules.
     https://github.com/prettier/eslint-plugin-prettier
@@ -44,6 +44,8 @@ module.exports = {
     'no-use-before-define': 'off',
     // TODO: Re-enable and lint this rule separately.
     'vue/multi-word-component-names': 'off',
+    'vue/v-on-event-hyphenation': ['warn', 'always', { ignore: ['onClick'] }],
+    'vue/require-explicit-emits': 'off',
     'func-names': 'off',
     'no-restricted-syntax': 'off',
     'import/extensions': [0, 'never'],

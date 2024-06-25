@@ -40,7 +40,9 @@ export default {
         const objectives = state.workbenchObjectives[itemId];
 
         if (objectiveId && objectives.includes(objectiveId)) {
-          state.workbenchObjectives[itemId] = objectives.filter((id) => id !== objectiveId);
+          state.workbenchObjectives[itemId] = objectives.filter(
+            (id) => id !== objectiveId
+          );
         }
       }
     },

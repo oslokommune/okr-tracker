@@ -74,7 +74,7 @@ function createTrackerApp() {
   app.component('VSpinner', Spinner);
   app.component('PktIcon', PktIcon);
 
-  return app
+  return app;
 }
 
 let app;
