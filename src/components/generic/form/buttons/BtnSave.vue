@@ -5,12 +5,12 @@
     :text="text"
     :variant="variant"
     icon-name="save"
-    v-on="$listeners"
+    @onClick="$emit('click', $event)"
   />
 </template>
 
 <script>
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import i18n from '@/locale/i18n';
 
 export default {

@@ -111,7 +111,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
 import draggable from 'vuedraggable';
 import { compareKeyResults } from '@/util/okr';
 import { db } from '@/config/firebaseConfig';

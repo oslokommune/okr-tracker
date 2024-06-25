@@ -35,7 +35,7 @@
 <script>
 import { mapState } from 'vuex';
 import { marked } from 'marked';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import dompurify from 'dompurify';
 import { BtnSave } from '@/components/generic/form';
 import KeyResult from '@/db/KeyResult';

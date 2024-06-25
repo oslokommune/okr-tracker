@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import { db } from '@/config/firebaseConfig';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';

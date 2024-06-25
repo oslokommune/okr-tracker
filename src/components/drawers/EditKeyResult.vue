@@ -165,7 +165,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { db } from '@/config/firebaseConfig';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import getActiveItemType, {

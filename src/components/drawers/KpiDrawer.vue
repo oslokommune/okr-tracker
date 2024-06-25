@@ -169,7 +169,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import {
   kpiFormats,
   kpiStartValues,

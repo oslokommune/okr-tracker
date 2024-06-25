@@ -61,7 +61,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { isDepartment, isOrganization } from '@/util/getActiveItemType';
 import {
   possibleDevelopers,

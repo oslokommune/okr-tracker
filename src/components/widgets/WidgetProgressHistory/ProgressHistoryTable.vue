@@ -56,7 +56,7 @@
                 variant="icon-only"
                 icon-name="feedback"
               />
-              <template slot="popover">
+              <template #popover>
                 {{ record.comment }}
               </template>
             </v-popover>
@@ -115,7 +115,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { BtnDelete } from '@/components/generic/form/buttons';
 import EmptyState from '@/components/EmptyState.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';

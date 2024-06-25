@@ -122,7 +122,7 @@
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
             :disabled="submitDisabled || loading || thisItem?.archived"
             variant="label-only"
-            @click="handleSubmit(save)"
+            @onClick="handleSubmit(save)"
           />
         </template>
       </form-section>
@@ -159,7 +159,7 @@ import Organization from '@/db/Organization';
 import Department from '@/db/Department';
 import Product from '@/db/Product';
 import { db } from '@/config/firebaseConfig';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';

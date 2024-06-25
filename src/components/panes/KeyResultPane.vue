@@ -119,7 +119,7 @@ import KeyResult from '@/db/KeyResult';
 import Progress from '@/db/Progress';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
-import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
+import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LineChart from '@/components/generic/LineChart.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';

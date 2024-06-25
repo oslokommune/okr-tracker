@@ -37,7 +37,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 import ProgressBar from '@/components/ProgressBar.vue';

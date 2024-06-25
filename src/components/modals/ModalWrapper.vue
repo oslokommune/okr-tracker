@@ -33,7 +33,7 @@
 <script>
 import { focusable } from 'tabbable';
 import * as focusTrap from 'focus-trap';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'ModalWrapper',

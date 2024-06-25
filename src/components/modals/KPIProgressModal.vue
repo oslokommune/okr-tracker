@@ -84,7 +84,7 @@
 
 <script>
 import { endOfDay } from 'date-fns';
-import { PktAlert } from '@oslokommune/punkt-vue2';
+import { PktAlert } from '@oslokommune/punkt-vue';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import Progress from '@/db/Kpi/Progress';

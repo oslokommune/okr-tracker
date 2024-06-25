@@ -142,7 +142,7 @@ import getActiveItemType from '@/util/getActiveItemType';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
 import locale from 'flatpickr/dist/l10n/no';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';

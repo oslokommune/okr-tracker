@@ -53,7 +53,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import {
   filterDuplicatedProgressValues,
   getCachedKPIProgress,

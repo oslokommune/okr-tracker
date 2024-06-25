@@ -34,10 +34,6 @@ export default defineConfig({
         find: '@',
         replacement: path.resolve(__dirname, 'src'),
       },
-      {
-        find: '@oslokommune/punkt-vue2',
-        replacement: '@oslokommune/punkt-vue',
-      }
     ],
   },
   css: {

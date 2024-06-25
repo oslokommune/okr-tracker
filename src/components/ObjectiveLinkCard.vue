@@ -69,7 +69,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { PktTag } from '@oslokommune/punkt-vue2';
+import { PktTag } from '@oslokommune/punkt-vue';
 import getActiveItemType from '@/util/getActiveItemType';
 import ProgressBar from '@/components/ProgressBar.vue';
 import ItemTag from '@/components/ItemTag.vue';

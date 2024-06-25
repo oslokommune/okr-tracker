@@ -61,7 +61,7 @@
 <script>
 import { mapState } from 'vuex';
 import Fuse from 'fuse.js';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import isAdmin from '@/util/user';
 import AddUsers from './AddUsers.vue';
 import EditUser from './EditUser.vue';

@@ -62,7 +62,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { startOfDay } from 'date-fns';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { periodDates, uniqueBy } from '@/util';
 import i18n from '@/locale/i18n';
 import ItemTag from '@/components/ItemTag.vue';

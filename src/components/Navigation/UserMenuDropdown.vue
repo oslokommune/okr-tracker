@@ -29,7 +29,7 @@
       <div class="user-profile-form">
         <h2 class="title-2">{{ $t('user.profile') }}</h2>
 
-        <user-profile-form :user="user" :loading="loading" @save="save" />
+        <!-- <user-profile-form :user="user" :loading="loading" @save="save" /> -->
       </div>
 
       <div class="user-products">
@@ -66,17 +66,17 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { db, auth } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import isAdmin from '@/util/user';
 import User from '@/db/User';
-import UserProfileForm from '@/components/forms/UserProfileForm.vue';
+// import UserProfileForm from '@/components/forms/UserProfileForm.vue';
 
 export default {
   name: 'UserMenuDropdown',
 
   components: {
     PktButton,
-    UserProfileForm,
+    // UserProfileForm,
   },
 
   props: {

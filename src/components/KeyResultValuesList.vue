@@ -44,7 +44,7 @@
 <script>
 import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'KeyResultValuesList',

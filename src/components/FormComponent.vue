@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'FormComponent',

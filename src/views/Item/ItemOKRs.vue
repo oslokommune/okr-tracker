@@ -87,7 +87,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import { firestoreEncode } from '@/util/firebaseUtil';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import routerGuard from '@/router/router-guards/itemOKRs';
 import PaneLayout from '@/components/layout/PaneLayout.vue';
 import TimelinePane from '@/components/panes/TimelinePane.vue';

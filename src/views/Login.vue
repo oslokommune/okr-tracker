@@ -82,7 +82,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 

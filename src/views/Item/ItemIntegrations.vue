@@ -83,14 +83,14 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import ApiClient from '@/db/ApiClient';
 
 export default {
   name: 'ItemIntegrations',
 
   components: {
-    PktAlert: () => import('@oslokommune/punkt-vue2').then(({ PktAlert }) => PktAlert),
+    PktAlert: () => import('@oslokommune/punkt-vue').then(({ PktAlert }) => PktAlert),
     EmptyState: () => import('@/components/EmptyState.vue'),
     LoadingSmall: () => import('@/components/LoadingSmall.vue'),
     ApiClientCard: () => import('@/components/ApiClientCard.vue'),

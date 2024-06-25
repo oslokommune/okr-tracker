@@ -35,7 +35,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import GanttChart from '@/components/GanttChart.vue';
 

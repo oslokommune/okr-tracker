@@ -79,7 +79,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import EmptyPage from '@/components/pages/EmptyPage.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
 import KpiDrawer from '@/components/drawers/KpiDrawer.vue';

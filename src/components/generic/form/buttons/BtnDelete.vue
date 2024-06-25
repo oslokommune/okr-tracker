@@ -8,7 +8,7 @@
       :icon-name="iconName"
     />
 
-    <template v-if="!$attrs?.disabled" slot="popover">
+    <template v-if="!$attrs?.disabled" #popover>
       <div data-mode="dark">
         <p v-if="confirmHelp" class="mb-size-16">{{ confirmHelp }}</p>
         <pkt-button
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { VPopover } from 'v-tooltip';
 import i18n from '@/locale/i18n';
 

@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import { BtnDelete } from '@/components/generic/form';
 import ApiClientTag from '@/components/ApiClientTag.vue';
 

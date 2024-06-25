@@ -23,7 +23,7 @@
     "node": "20"
   },
   "dependencies": {
-    "@oslokommune/punkt-vue": "^11.13.13",
+    "@oslokommune/punkt-vue": "^11.13.14",
     "@unhead/vue": "^1.9.14",
     "@vue/compat": "^3.4.29",
     "@vueuse/core": "^10.11.0",
@@ -62,7 +62,7 @@
     "@babel/eslint-parser": "7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@firebase/rules-unit-testing": "^3.0.2",
-    "@oslokommune/punkt-css": "^9.2.6",
+    "@oslokommune/punkt-css": "^11.13.14",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/compiler-sfc": "^3.4.29",
     "env-cmd": "^10.1.0",

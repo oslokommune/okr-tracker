@@ -6,7 +6,7 @@
       skin="tertiary"
       variant="icon-right"
       :icon-name="isCollapsed ? 'chevron-thin-up' : 'chevron-thin-down'"
-      @click.native.stop="isCollapsed = !isCollapsed"
+      @onClick="isCollapsed = !isCollapsed"
     >
       {{ $t('general.orgs') }}
     </pkt-button>
@@ -36,7 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'OrganizationSelector',

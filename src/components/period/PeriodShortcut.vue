@@ -13,7 +13,7 @@
 
 <script>
 import { formattedPeriod } from '@/util/okr';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'PeriodShortcut',

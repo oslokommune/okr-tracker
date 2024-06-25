@@ -81,7 +81,7 @@
 
 <script>
 import { endOfDay, endOfYear, startOfYear } from 'date-fns';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';

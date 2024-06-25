@@ -46,7 +46,7 @@
 <script>
 import { csvFormatBody, csvFormatRow } from 'd3-dsv';
 import { mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import i18n from '@/locale/i18n';
 import { dateShort } from '@/util';
 import {

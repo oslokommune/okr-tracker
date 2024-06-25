@@ -54,7 +54,7 @@ import draggable from 'vuedraggable';
 import html2canvas from 'html2canvas';
 import { mapGetters, mapState } from 'vuex';
 import { periodDates } from '@/util';
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import downloadFile from '@/util/downloadFile';
 import Kpi from '@/db/Kpi';
 import KpiWidgetGroupLink from '@/components/KpiWidgetGroupLink.vue';

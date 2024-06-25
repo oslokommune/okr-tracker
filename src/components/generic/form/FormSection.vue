@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { PktAlert } from '@oslokommune/punkt-vue2';
+import { PktAlert } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'FormSection',

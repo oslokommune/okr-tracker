@@ -115,7 +115,7 @@
 <script>
 import i18n from '@/locale/i18n';
 import { mapGetters, mapState, mapActions } from 'vuex';
-import { PktButton, PktLinkcard } from '@oslokommune/punkt-vue2';
+import { PktButton, PktLinkcard } from '@oslokommune/punkt-vue';
 import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 
 export default {

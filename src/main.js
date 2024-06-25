@@ -7,7 +7,7 @@ import VueFlatPickr from 'vue-flatpickr-component';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { firestorePlugin } from 'vuefire';
 
-import { PktIcon } from '@oslokommune/punkt-vue2';
+import { PktIcon } from '@oslokommune/punkt-vue';
 
 import App from '@/App.vue';
 import router from '@/router';

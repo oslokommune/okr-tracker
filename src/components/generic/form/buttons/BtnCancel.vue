@@ -1,8 +1,14 @@
 <template>
-  <pkt-button v-bind="$attrs" :text="text" :skin="skin" type="button" v-on="$listeners" />
+  <pkt-button
+    v-bind="$attrs"
+    :text="text"
+    :skin="skin"
+    type="button"
+    @onClick="$emit('click', $event)"
+  />
 </template>
 <script>
-import { PktButton } from '@oslokommune/punkt-vue2';
+import { PktButton } from '@oslokommune/punkt-vue';
 import i18n from '@/locale/i18n';
 
 export default {
