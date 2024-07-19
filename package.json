@@ -1,6 +1,6 @@
 {
   "name": "okr-tracker",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "private": true,
   "scripts": {
     "test:unit": "NODE_ENV=test jest --testPathIgnorePatterns tests/firebase",
