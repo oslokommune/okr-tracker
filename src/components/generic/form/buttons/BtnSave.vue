@@ -5,7 +5,7 @@
     :text="text"
     :variant="variant"
     icon-name="save"
-    @onClick="$emit('click', $event)"
+    @on-click="$emit('onClick', $event)"
   />
 </template>
 

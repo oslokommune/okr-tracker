@@ -1,196 +1,130 @@
 <template>
-  <validation-provider v-slot="{ errors }" :rules="rules" :name="name || label">
-    <div
-      :class="{
-        'pkt-form-group': true,
-        'pkt-form-group--error': errors.length,
-      }"
+  <div
+    :class="['form-component', { 'form-component--copiable': copyButton }, $attrs.class]"
+  >
+    <component
+      :is="component.type"
+      v-bind="component.props"
+      :id="name"
+      v-model="innerValue"
+      :label="label"
+      :name="name"
+      :optional-tag="showOptionalTag && !isRequired"
+      :has-error="formIsValidated && !!errorMessage"
+      :error-message="errorMessage"
+      :fullwidth="fullwidth"
     >
-      <label v-if="label" class="pkt-form-label" :for="name">
-        {{ label }}
-        <span v-if="isOptionalField && !disabled && !readonly" class="pkt-badge">
-          {{ $t('validation.optional') }}
-        </span>
-      </label>
+      <slot />
+    </component>
 
-      <div v-if="$slots.help" class="pkt-form-help">
-        <slot name="help"></slot>
-      </div>
-
-      <div
-        :class="['form-input__wrapper', { 'form-input__wrapper--copiable': copyButton }]"
-      >
-        <input
-          v-if="inputType === 'input'"
-          :id="name"
-          v-model="innerValue"
-          :type="type"
-          :name="name"
-          :disabled="disabled"
-          :readonly="readonly"
-          :placeholder="placeholder"
-          class="pkt-form-input"
-          :data-cy="dataCy"
-          step="any"
-        />
-
-        <textarea
-          v-if="inputType === 'textarea'"
-          :id="name"
-          v-model="innerValue"
-          :disabled="disabled"
-          :name="name"
-          :readonly="readonly"
-          :placeholder="placeholder"
-          class="pkt-form-textarea"
-          :rows="rows"
-          :data-cy="dataCy"
-        />
-
-        <v-select
-          v-if="inputType === 'select'"
-          v-model="innerValue"
-          :name="name"
-          :label="selectLabel"
-          :options="selectOptions"
-          :clearable="selectClearable"
-          :reduce="selectReduce"
-          :disabled="disabled"
-          :data-cy="dataCy"
-          :append-to-body="true"
-          @input="$emit('select', $event)"
-        >
-          <template #search="{ attributes, events }">
-            <input v-bind="attributes" :id="name" class="vs__search" v-on="events" />
-          </template>
-          <template #option="option">
-            {{ option[selectLabel] }}
-            <span v-if="option.period && option.period.name">
-              ({{ option.period.name }})
-            </span>
-          </template>
-        </v-select>
-
-        <flat-pickr
-          v-if="inputType === 'date'"
-          :id="name"
-          ref="datePicker"
-          :value="value"
-          :config="datePickerConfig"
-          :disabled="disabled"
-          class="pkt-form-input flatpickr-input"
-          :placeholder="placeholder"
-          :name="name"
-          @on-close="updateDatePickerValue"
-        />
-
-        <pkt-button
-          v-if="copyButton"
-          v-tooltip="$t('tooltip.copyToClipboard')"
-          skin="tertiary"
-          variant="icon-only"
-          icon-name="copy"
-          class="form-input__copy-button"
-          @onClick="copyFieldText"
-        />
-      </div>
-
-      <div v-if="$slots.sub" class="pkt-form-help">
-        <slot name="sub"></slot>
-      </div>
-
-      <pkt-alert v-if="errors[0]" skin="error">{{ errors[0] }}</pkt-alert>
+    <div v-if="previewValue" class="form-component__preview pkt-txt-14-medium mt-size-8">
+      {{ $t('general.displayedAs') }}
+      {{ previewValue }}
     </div>
-  </validation-provider>
+
+    <PktButton
+      v-if="copyButton"
+      v-tooltip.left="$t('tooltip.copyToClipboard')"
+      skin="tertiary"
+      variant="icon-only"
+      icon-name="copy"
+      class="form-component__copy-button"
+      @on-click="copyFieldText"
+    />
+  </div>
 </template>
 
 <script>
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { useField } from 'vee-validate';
+import {
+  PktButton,
+  PktCheckbox,
+  PktSelect,
+  PktTextarea,
+  PktTextinput,
+} from '@oslokommune/punkt-vue';
+import CustomSelect from '@/components/generic/form/CustomSelect.vue';
+import DatePicker from '@/components/generic/form/DatePicker.vue';
+import RadioGroup from '@/components/generic/form/RadioGroup.vue';
+
+PktSelect.compatConfig = { MODE: 3 };
+PktTextinput.compatConfig = { MODE: 3 };
+PktTextarea.compatConfig = { MODE: 3 };
+PktCheckbox.compatConfig = { MODE: 3 };
 
 export default {
-  name: 'FormComponent',
+  compatConfig: { MODE: 3 },
 
   components: {
-    PktAlert,
     PktButton,
+    PktCheckbox,
+    PktSelect,
+    PktTextarea,
+    PktTextinput,
+    DatePicker,
+    CustomSelect,
   },
 
-  props: {
-    hasPrimaryBackground: {
-      type: Boolean,
-      required: false,
+  inject: {
+    formIsValidated: {
       default: false,
     },
-    name: {
+  },
+
+  inheritAttrs: false,
+
+  props: {
+    modelValue: {
+      type: [Number, Date, String, Boolean, Array, Object],
+      required: false,
+      default: null,
+    },
+    inputType: {
       type: String,
       required: false,
-      default: '',
-    },
-    label: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    rules: {
-      type: [Object, String],
-      required: false,
-      default: '',
+      default: 'input',
+      validator: (value) =>
+        [
+          'input',
+          'textarea',
+          'select',
+          'custom-select',
+          'radio-group',
+          'date',
+          'switch',
+        ].includes(value),
     },
     type: {
       type: String,
       required: false,
       default: 'text',
-      validator(value) {
-        return ['url', 'text', 'password', 'tel', 'search', 'number', 'email'].includes(
-          value
-        );
-      },
+      validator: (value) =>
+        ['url', 'text', 'password', 'tel', 'search', 'number', 'email'].includes(value),
     },
-    value: {
-      type: null,
-      required: false,
-      default: '',
-    },
-    inputType: {
+    name: {
       type: String,
       required: true,
     },
-    selectOptions: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
-    selectLabel: {
+    label: {
       type: String,
-      required: false,
-      default: 'name',
+      required: true,
     },
-    selectReduce: {
-      type: Function,
-      required: false,
-      default: (option) => option,
-    },
-    selectClearable: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    datePickerConfig: {
-      type: Object,
+    rules: {
+      type: String,
       required: false,
       default: null,
     },
-    disabled: {
+    showOptionalTag: {
       type: Boolean,
       required: false,
-      default: false,
+      default: true,
     },
-    readonly: {
+    fullwidth: {
       type: Boolean,
       required: false,
-      default: false,
+      default: true,
     },
-    placeholder: {
+    previewValue: {
       type: String,
       required: false,
       default: null,
@@ -200,84 +134,100 @@ export default {
       required: false,
       default: false,
     },
-    dataCy: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    rows: {
-      type: Number,
-      required: false,
-      default: 4,
-    },
   },
 
-  data: () => ({
-    innerValue: '',
-  }),
+  emits: ['update:modelValue'],
+
+  setup(props) {
+    const {
+      value: fieldValue,
+      errorMessage,
+      handleChange: changeHandler,
+    } = useField(props.name, props.rules, {
+      syncVModel: true,
+    });
+
+    const handleChange = (value) => {
+      if (value && props.type === 'number') {
+        value = parseFloat(value);
+      } else if (typeof value === 'string') {
+        value = value.trim();
+      }
+      return changeHandler(value);
+    };
+
+    return { fieldValue, errorMessage, handleChange };
+  },
 
   computed: {
-    isOptionalField() {
-      if (typeof this.rules === 'object') {
-        return !Object.keys(this.rules).includes('required');
-      }
-      return !this.rules.includes('required');
-    },
-  },
+    innerValue: {
+      get() {
+        let value = this.fieldValue;
 
-  watch: {
-    innerValue(value) {
-      this.$emit('input', value);
+        if (value === null || value === undefined) {
+          value = this.$attrs.value;
+        }
+
+        // Punkt inputs only accepts `String` as type for `modelValue`.
+        if (
+          value !== null &&
+          value !== undefined &&
+          ['PktSelect', 'PktTextinput', 'PktTextarea'].includes(this.component.type.name)
+        ) {
+          value = String(value);
+        }
+
+        return value;
+      },
+      set(value) {
+        this.handleChange(value);
+      },
     },
 
-    value(val) {
+    component() {
+      const { class: _, ...props } = this.$attrs;
+      const component = { type: PktTextinput, props };
+
       if (this.inputType === 'date') {
-        this.updateDatePickerValue(val);
-        return;
+        component.type = DatePicker;
+      } else if (this.inputType === 'textarea') {
+        component.type = PktTextarea;
+      } else if (this.inputType === 'switch') {
+        component.type = PktCheckbox;
+        component.props = {
+          isSwitch: true,
+          ...component.props,
+        };
+      } else if (this.inputType === 'select') {
+        component.type = PktSelect;
+      } else if (this.inputType === 'custom-select') {
+        component.type = CustomSelect;
+      } else if (this.inputType === 'radio-group') {
+        component.type = RadioGroup;
+      } else {
+        component.props = {
+          type: this.type,
+          ...component.props,
+        };
       }
-      if (val !== this.innerValue) {
-        this.innerValue = val;
-      }
+
+      return component;
     },
-  },
 
-  created() {
-    if (this.value !== undefined) {
-      this.innerValue = this.value;
-    }
-  },
-
-  mounted() {
-    if (this.inputType === 'date' && this.name && this.datePickerConfig?.altInput) {
-      // Attach a custom event handler to the date picker label when `altInput`
-      // is used. This in order to focus the alternative input when the label
-      // is clicked (as the `id` attribute is attached to a hidden element).
-      const datePickerInstance = this.$refs.datePicker;
-      const labelEl = document.querySelector(
-        `label[for='${datePickerInstance.$attrs.id}']`
-      );
-      if (labelEl) {
-        labelEl.addEventListener('click', () => {
-          datePickerInstance.fpInput().focus();
-        });
+    isRequired() {
+      if (this.rules) {
+        if (typeof this.rules === 'string') {
+          return this.rules.split('|').includes('required');
+        }
+        if (typeof this.rules === 'object' && this.rules?.required === true) {
+          return true;
+        }
       }
-    }
+      return false;
+    },
   },
 
   methods: {
-    updateDatePickerValue(dates) {
-      if (!dates) {
-        this.innerValue = null;
-      } else {
-        const datePickerInstance = this.$refs.datePicker.fp;
-        if (datePickerInstance.config.mode === 'range') {
-          this.innerValue = dates.length === 2 ? dates : null;
-        } else {
-          this.innerValue = dates[0];
-        }
-      }
-    },
-
     copyFieldText() {
       const inputElement = this.$el.querySelector(this.inputType);
       if (inputElement) {
@@ -291,7 +241,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.v-select) {
-  flex-grow: 1;
+.form-component {
+  &--copiable {
+    position: relative;
+
+    :deep(.pkt-input) {
+      padding-right: 3.25rem;
+    }
+  }
+
+  &__copy-button {
+    position: absolute;
+    top: 2.5rem;
+    right: 0.25rem;
+  }
+
+  &__preview {
+    color: var(--color-grayscale-60);
+  }
+
+  :deep(.pkt-input:is(textarea)[rows]) {
+    // Override `min-height` for textarea inputs with specified `rows` attribute.
+    min-height: 3rem;
+  }
 }
 </style>

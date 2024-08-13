@@ -1,42 +1,21 @@
-import { extend, configure, setInteractionMode } from 'vee-validate';
-import {
-  email,
-  max,
-  min,
-  min_value as minValue,
-  numeric,
-  required,
-} from 'vee-validate/dist/rules';
+import { defineRule, configure } from 'vee-validate';
+import { email, max, min, min_value as minValue, required } from '@vee-validate/rules';
 import i18n from '@/locale/i18n';
 
 export default function configureFormValidation() {
-  // Set custom interaction mode for VeeValidate - a combination of 'passive' and
-  // 'eager' (default: 'aggressive').
-  // https://vee-validate.logaretm.com/v3/guide/interaction-and-ux.html#interaction-modes
-  // https://github.com/logaretm/vee-validate/blob/v3/src/modes.ts
-  setInteractionMode('custom', ({ errors }) => {
-    return {
-      on: errors.length ? ['input', 'change'] : [],
-    };
-  });
+  // https://vee-validate.logaretm.com/v4/guide/global-validators
+  defineRule('required', required);
+  defineRule('email', email);
+  defineRule('min', min);
+  defineRule('min_value', minValue);
+  defineRule('max', max);
+  defineRule('positiveNotZero', (value) => value > 0);
 
-  // https://vee-validate.logaretm.com/v3/configuration.html#configuration
-  // https://vee-validate.logaretm.com/v3/guide/localization.html#using-other-i18n-libraries
+  // https://vee-validate.logaretm.com/v4/guide/i18n/
   configure({
-    defaultMessage: (field, values) => {
-      values._field_ = i18n.global.t(`fields.${field}`);
-
-      return i18n.global.t(`validation.${values._rule_}`, values);
+    generateMessage: ({ rule }) => {
+      const message = i18n.global.t(`validation.${rule.name}`, rule.params);
+      return `${message}.`;
     },
   });
-
-  // https://vee-validate.logaretm.com/v3/api/extend.html#extend
-  extend('required', required);
-  extend('email', email);
-  extend('numeric', numeric);
-  extend('min', min);
-  extend('min_value', minValue);
-  extend('max', max);
-  extend('decimal', (num) => typeof num === 'number');
-  extend('positiveNotZero', (num) => typeof num === 'number' && num > 0);
 }

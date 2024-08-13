@@ -11,11 +11,11 @@
         :label="$t('admin.users.registerUsersText')"
         class="add-users__input"
       />
-      <template #actions="{ handleSubmit, submitDisabled }">
+      <template #actions="{ submit, disabled }">
         <btn-save
-          :disabled="submitDisabled || loading"
+          :disabled="disabled || loading"
           :text="$t('admin.users.registerUsersButton')"
-          @click="handleSubmit(save)"
+          @on-click="submit(save)"
         />
       </template>
     </form-section>
@@ -23,9 +23,9 @@
 </template>
 
 <script>
+import { email } from '@vee-validate/rules';
 import User from '@/db/User';
 import { BtnSave, FormSection } from '@/components/generic/form';
-import { validateEmail } from '@/util';
 
 export default {
   name: 'AddUsers',
@@ -43,7 +43,7 @@ export default {
   methods: {
     async save() {
       this.loading = true;
-      const list = this.emails.trim().split('\n').filter(Boolean).filter(validateEmail);
+      const list = this.emails.trim().split('\n').filter(Boolean).filter(email);
 
       if (!list.length) {
         this.$toasted.error(this.$t('toaster.error.email'));

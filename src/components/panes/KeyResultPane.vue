@@ -30,7 +30,7 @@
           size="small"
           variant="icon-only"
           icon-name="edit"
-          @onClick="$emit('edit-key-result')"
+          @on-click="$emit('edit-key-result')"
         />
       </div>
 
@@ -49,7 +49,7 @@
           size="small"
           variant="icon-left"
           icon-name="plus-sign"
-          @onClick="openValueModal(null)"
+          @on-click="openValueModal(null)"
         />
       </div>
 
@@ -126,7 +126,7 @@ import LineChart from '@/components/generic/LineChart.vue';
 import WidgetKeyResultDetails from '@/components/widgets/WidgetKeyResultDetails.vue';
 import KeyResultValuesList from '@/components/KeyResultValuesList.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
-import ProgressModal from '@/components/modals/ProgressModal.vue';
+import ProgressModal from '@/components/modals/ProgressModal/ProgressModal.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import LoadingSmall from '@/components/LoadingSmall.vue';
 import EmptyState from '@/components/EmptyState.vue';

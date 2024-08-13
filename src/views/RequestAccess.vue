@@ -1,47 +1,45 @@
 <template>
   <page-layout breakpoint="phablet">
-    <div class="card">
-      <div class="back">
-        <router-link :to="{ name: 'Login' }">
-          {{ $t('login.backToLogin') }}
-        </router-link>
-      </div>
-      <h2 class="title-1">{{ $t('login.requestAccess') }}</h2>
+    <RouterLink v-slot="{ href }" :to="{ name: 'Login' }" custom>
+      <PktBackLink :href="href" :text="$t('login.backToLogin')" />
+    </RouterLink>
 
-      <form-section>
-        <form-component
-          v-model="email"
-          input-type="input"
-          name="email"
-          :label="$t('login.email')"
-          rules="required"
-          type="email"
+    <h1 class="title-1">{{ $t('login.requestAccess') }}</h1>
+
+    <form-section>
+      <form-component
+        v-model="email"
+        input-type="input"
+        name="email"
+        :label="$t('login.email')"
+        rules="required|email"
+        type="email"
+      />
+
+      <template #actions="{ submit, reset, disabled }">
+        <btn-save
+          variant="label-only"
+          :disabled="disabled || loading"
+          :text="$t('login.requestButton')"
+          @on-click="submit(() => send(reset))"
         />
-
-        <template #actions="{ handleSubmit, submitDisabled }">
-          <btn-save
-            variant="label-only"
-            :disabled="submitDisabled || loading"
-            :text="$t('login.requestButton')"
-            @click="handleSubmit(send)"
-          />
-        </template>
-      </form-section>
-    </div>
+      </template>
+    </form-section>
   </page-layout>
 </template>
 
 <script>
 import { mapMutations } from 'vuex';
+import { PktBackLink } from '@oslokommune/punkt-vue';
 import api from '@/util/api';
 import { showToastMessage } from '@/util/toastUtils';
-import { FormSection, BtnSave } from '@/components/generic/form';
+import { BtnSave } from '@/components/generic/form';
 
 export default {
   name: 'RequestAccess',
 
   components: {
-    FormSection,
+    PktBackLink,
     BtnSave,
   },
 
@@ -56,7 +54,8 @@ export default {
 
   methods: {
     ...mapMutations(['SET_LOGIN_ERROR']),
-    async send() {
+
+    async send(resetForm) {
       this.loading = true;
       try {
         const { message } = await api(`/accessRequests/create`, {
@@ -84,7 +83,7 @@ export default {
         });
       }
 
-      this.email = '';
+      resetForm();
       this.loading = false;
     },
   },
@@ -92,7 +91,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.back {
-  margin-bottom: 1.5rem;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
+@include bp('tablet-up') {
+  :deep(.page__main) {
+    padding: 1.5rem;
+    background: var(--color-gray-light);
+  }
 }
 </style>

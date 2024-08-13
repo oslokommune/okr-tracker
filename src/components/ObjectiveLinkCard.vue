@@ -19,16 +19,13 @@
     >
       <div class="objective-link-card__inner">
         <div class="objective-link-card__heading">
-          <div v-if="checkable" class="pkt-input-check">
-            <div class="pkt-input-check__input">
-              <input
-                type="checkbox"
-                class="pkt-input-check__input-checkbox"
-                :checked="checked"
-                @click.stop="$emit('toggle', $event.target.checked)"
-              />
-            </div>
-          </div>
+          <PktCheckbox
+            v-if="checkable"
+            :id="`check_${objective.id}`"
+            class="objective-link-card__checkbox"
+            :default-checked="checked"
+            @click.stop="$emit('toggle', $event.target.checked)"
+          />
           <div class="objective-link-card__title">
             <pkt-tag
               :skin="
@@ -69,18 +66,21 @@
 
 <script>
 import { mapState } from 'vuex';
-import { PktTag } from '@oslokommune/punkt-vue';
+import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';
 import getActiveItemType from '@/util/getActiveItemType';
 import ProgressBar from '@/components/ProgressBar.vue';
 import ItemTag from '@/components/ItemTag.vue';
 import { db } from '@/config/firebaseConfig';
 import { uniqueBy } from '@/util';
 
+PktCheckbox.compatConfig = { MODE: 3 };
+
 export default {
   name: 'ObjectiveLinkCard',
 
   components: {
     PktTag,
+    PktCheckbox,
     ProgressBar,
     ItemTag,
   },
@@ -236,7 +236,7 @@ export default {
     height: 1.25rem;
     white-space: nowrap;
 
-    .pkt-input-check__input-checkbox {
+    :deep(.pkt-input-check__input-checkbox) {
       width: 1.25rem;
       height: 1.25rem;
     }

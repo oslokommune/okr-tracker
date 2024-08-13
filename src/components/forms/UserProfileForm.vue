@@ -2,7 +2,6 @@
   <form-section>
     <form-component
       v-model="localUser.displayName"
-      input-type="input"
       name="name"
       :label="$t('fields.name')"
       rules="required"
@@ -10,30 +9,33 @@
 
     <form-component
       v-model="localUser.position"
-      input-type="select"
+      input-type="custom-select"
       name="position"
       :label="$t('user.position.title')"
       rules="required"
-      select-label="label"
-      :select-options="positionOptions"
-      :select-reduce="(option) => option.position"
-      type="text"
+      value-prop="position"
+      label-prop="label"
+      :options="positionOptions"
+      append-to-body
     />
 
     <form-component
       v-model="localUser.preferences.lang"
-      input-type="select"
+      input-type="custom-select"
       name="language"
       :label="$t('user.language')"
       rules="required"
-      select-label="label"
-      :select-options="languageOptions"
-      :select-reduce="(option) => option.language"
-      type="text"
+      value-prop="language"
+      label-prop="label"
+      :options="languageOptions"
+      append-to-body
     />
 
-    <template #actions="{ handleSubmit, submitDisabled }">
-      <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(submitForm)" />
+    <template #actions="{ submit, disabled }">
+      <btn-save
+        :disabled="disabled || loading"
+        @on-click="submit(() => $emit('save', localUser))"
+      />
     </template>
   </form-section>
 </template>
@@ -44,6 +46,8 @@ import { jobPositions } from '@/config/jobPositions';
 
 export default {
   name: 'UserProfileForm',
+
+  compatConfig: { MODE: 3 },
 
   components: {
     FormSection,
@@ -93,12 +97,6 @@ export default {
           this.localUser = { ...this.user, id: this.user.id };
         }
       },
-    },
-  },
-
-  methods: {
-    submitForm() {
-      this.$emit('save', this.localUser);
     },
   },
 };

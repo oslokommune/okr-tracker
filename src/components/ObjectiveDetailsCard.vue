@@ -10,7 +10,7 @@
         variant="icon-only"
         size="small"
         icon-name="edit"
-        @onClick="$emit('edit-objective')"
+        @on-click="$emit('edit-objective')"
       />
     </div>
 

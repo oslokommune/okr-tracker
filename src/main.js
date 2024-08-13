@@ -1,10 +1,7 @@
 import { createApp } from 'vue';
-import VueSelect from 'vue-select';
 import Toasted from 'vue-toasted';
 import VTooltip from 'v-tooltip';
 import { VueHeadMixin, createHead } from '@unhead/vue';
-import VueFlatPickr from 'vue-flatpickr-component';
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { firestorePlugin } from 'vuefire';
 
 import { PktIcon } from '@oslokommune/punkt-vue';
@@ -15,32 +12,12 @@ import store from '@/store';
 import i18n from '@/locale/i18n';
 import Spinner from '@/components/VSpinner.vue';
 import PageLayout from '@/components/layout/PageLayout.vue';
+import FormSection from '@/components/generic/form/FormSection.vue';
 import FormComponent from '@/components/FormComponent.vue';
-
 import { auth } from './config/firebaseConfig';
 import configureFormValidation from './config/validation';
 
-// import plugin styles
-import 'flatpickr/dist/flatpickr.css';
-
 import './styles/main.scss';
-
-VueSelect.props.components.default = () => ({
-  Deselect: {
-    render: (createElement) => {
-      return createElement(PktIcon, { props: { name: 'close' } });
-    },
-  },
-  OpenIndicator: {
-    render: (createElement) => {
-      return createElement(PktIcon, { props: { name: 'chevron-thin-down' } });
-    },
-  },
-});
-
-// Configure VeeValidate for form validation.
-// https://vee-validate.logaretm.com/v3/
-configureFormValidation();
 
 function createTrackerApp() {
   const app = createApp(App);
@@ -54,6 +31,7 @@ function createTrackerApp() {
   app.mixin(VueHeadMixin);
   app.use(head);
 
+  // TODO: Replace - not compatible with Vue 3
   app.use(Toasted, {
     position: 'bottom-right',
     className: 'toast',
@@ -63,13 +41,14 @@ function createTrackerApp() {
     defaultHtml: false,
   });
   app.use(firestorePlugin);
-  app.use(VueFlatPickr);
+
+  // Configure VeeValidate for form validation.
+  // https://vee-validate.logaretm.com/v4/guide/global-validators/
+  configureFormValidation();
 
   // Global components
   app.component('PageLayout', PageLayout);
-  app.component('VSelect', VueSelect);
-  app.component('ValidationProvider', ValidationProvider);
-  app.component('ValidationObserver', ValidationObserver);
+  app.component('FormSection', FormSection);
   app.component('FormComponent', FormComponent);
   app.component('VSpinner', Spinner);
   app.component('PktIcon', PktIcon);

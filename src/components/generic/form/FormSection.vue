@@ -1,70 +1,69 @@
 <template>
-  <validation-observer
-    v-slot="{ errors, valid, validated }"
-    ref="form"
-    tag="form"
-    class="pkt-form"
-  >
+  <form ref="form" class="form">
     <slot />
-
-    <pkt-alert
-      v-if="errorSummary && validated && !valid"
-      skin="error"
-      class="form-errors"
-      :title="$t('general.formErrors')"
-    >
-      <ul v-if="errors" class="form-errors__list">
-        <template v-for="(fieldErrors, fieldName) in errors">
-          <li v-if="fieldErrors.length" :key="fieldName">
-            <span>{{ $t('fields.' + fieldName) }}</span>
-            <span>{{ fieldErrors[0] }}</span>
-          </li>
-        </template>
-      </ul>
-    </pkt-alert>
 
     <div class="button-row">
       <slot
         name="actions"
-        :handle-submit="submitAndReset"
-        :submit-disabled="validated && !valid"
+        :submit="submit"
+        :reset="reset"
+        :disabled="isValidated && !meta.valid"
         :errors="errors"
       />
     </div>
-  </validation-observer>
+  </form>
 </template>
 
 <script>
-import { PktAlert } from '@oslokommune/punkt-vue';
+import { computed } from 'vue';
+import { useForm } from 'vee-validate';
 
 export default {
-  name: 'FormSection',
+  compatConfig: { MODE: 3 },
 
-  components: {
-    PktAlert,
+  provide() {
+    return {
+      formIsValidated: computed(() => this.isValidated),
+    };
   },
 
-  props: {
-    errorSummary: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+  setup() {
+    const { values, errors, meta, validate, resetForm } = useForm();
+    return { values, errors, meta, validate, resetForm };
   },
+
+  data: () => ({
+    isValidated: false,
+  }),
 
   methods: {
-    async submitAndReset(handler) {
-      const { validate } = this.$refs.form;
-      const isValid = await validate();
+    async submit(handler) {
+      const { valid } = await this.validate();
+      this.isValidated = true;
 
-      if (!isValid || !handler) {
+      if (!valid || !handler) {
         return undefined;
       }
 
-      const result = handler();
-      this.$refs.form.reset();
-      return result;
+      return handler(this.values);
+    },
+
+    reset() {
+      this.isValidated = false;
+      this.resetForm();
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.button-row {
+  margin-top: 1rem;
+}
+</style>

@@ -20,15 +20,17 @@
           :rows="2"
           :label="$t('fields.name')"
           rules="required"
+          fullwidth
         />
 
         <form-component
           v-model="thisObjective.description"
           input-type="textarea"
+          name="description"
           :disabled="thisObjective?.archived"
           :rows="2"
-          name="description"
           :label="$t('fields.description')"
+          fullwidth
         />
 
         <form-component
@@ -38,8 +40,9 @@
           :disabled="thisObjective?.archived"
           :label="$t('fields.period')"
           :placeholder="$t('general.selectRange')"
-          :date-picker-config="flatPickerConfig"
+          :date-picker-config="{ mode: 'range' }"
           rules="required"
+          fullwidth
         />
 
         <period-shortcut
@@ -52,41 +55,37 @@
           @click="useSuggestedPeriod"
         />
 
-        <div class="owner-select">
-          <label for="owner" class="pkt-form-label">
-            {{ $t('admin.objective.level.label') }}
-          </label>
-          <div class="pkt-form-help">{{ displayLevelHelp }}</div>
-          <form-component
-            v-if="canLift"
-            v-model="owner"
-            name="owner"
-            input-type="select"
-            :select-options="ownerOptions"
-            :select-reduce="(option) => option.value"
-            select-label="label"
-            :disabled="!canLift || thisObjective?.archived"
-            rules="required"
-          />
-          <pkt-alert v-if="hasNewOwner" skin="info">
-            <p>{{ $t('admin.objective.level.liftWarning1') }}</p>
-            <p v-if="!hasParentEditRights">
-              {{
-                $t('admin.objective.level.liftWarning2', {
-                  newOwner: potentionalOwner.name,
-                })
-              }}
-            </p>
-          </pkt-alert>
-        </div>
+        <form-component
+          v-if="canLift"
+          v-model="owner"
+          name="owner"
+          input-type="custom-select"
+          :label="$t('admin.objective.level.label')"
+          :helptext="displayLevelHelp"
+          :options="ownerOptions"
+          :disabled="!canLift || thisObjective?.archived"
+          rules="required"
+          fullwidth
+        />
 
-        <template #actions="{ handleSubmit, submitDisabled }">
-          <btn-cancel :disabled="loading" @click="close" />
+        <pkt-alert v-if="hasNewOwner" skin="info">
+          <p>{{ $t('admin.objective.level.liftWarning1') }}</p>
+          <p v-if="!hasParentEditRights">
+            {{
+              $t('admin.objective.level.liftWarning2', {
+                newOwner: potentionalOwner.name,
+              })
+            }}
+          </p>
+        </pkt-alert>
+
+        <template #actions="{ submit, disabled }">
+          <btn-cancel :disabled="loading" @on-click="close" />
           <btn-save
             :text="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
-            :disabled="submitDisabled || loading || thisObjective?.archived"
-            @click="handleSubmit(save)"
+            :disabled="disabled || loading || thisObjective?.archived"
+            @on-click="submit(save)"
           />
         </template>
       </form-section>
@@ -125,7 +124,7 @@
           <btn-delete
             :disabled="loading"
             :text="$t('admin.objective.delete')"
-            @click="archive"
+            @on-click="archive"
           />
         </div>
       </template>
@@ -141,7 +140,6 @@ import { formattedPeriod } from '@/util/okr';
 import getActiveItemType from '@/util/getActiveItemType';
 import Objective from '@/db/Objective';
 import firebase from 'firebase/compat/app';
-import locale from 'flatpickr/dist/l10n/no';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
@@ -180,14 +178,6 @@ export default {
 
   data: () => ({
     thisObjective: null,
-    flatPickerConfig: {
-      altFormat: 'j M Y',
-      altInput: true,
-      minDate: null,
-      mode: 'range',
-      maxDate: null,
-      locale: locale.no,
-    },
     periodRange: null,
     loading: false,
     owner: null,
@@ -460,21 +450,7 @@ export default {
 
 <style lang="scss" scoped>
 .period-suggestion {
+  align-self: flex-start;
   margin: -0.75rem 0 1rem 0;
-}
-
-.owner-select {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 3rem;
-
-  .pkt-form-help {
-    white-space: pre-line;
-  }
-
-  :deep(.pkt-form-group) {
-    margin-bottom: 0;
-  }
 }
 </style>

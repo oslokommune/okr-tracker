@@ -74,7 +74,8 @@
       }
     },
     "help": {
-      "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor.",
+      "apiHelpTitle": "Hvordan kan jeg registrere målepunkt maskinelt via API?",
+      "apiProgress": "Nye målepunkt kan også registreres via API-kall, for eksempel ved bruk av curl som vist nedenfor. Les mer i vår {apiLink}.",
       "resultIndicatorWarning": "Resultatindikatorer regnes som indikatorer på virksomhetens effekt og måloppnåelse, og bør derfor være avklart med virksomhetens ledelse før opprettelse."
     },
     "goals": {
@@ -114,34 +115,35 @@
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
     "language": "Språk",
-    "kpiType": "Type"
+    "kpiType": "Type",
+    "example": "Eksempel"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
     "alpha_dash": "Kan bare inneholde alfanumeriske tegn, samt bindestrek og understrek",
     "alpha_num": "Kan bare inneholde alfanumeriske tegn",
     "alpha_spaces": "Kan bare inneholde alfanumeriske tegn og mellomrom",
-    "between": "Må være imellom {min} og {max}",
+    "between": "Må være imellom {0} og {1}",
     "confirmed": "Kan ikke bekreftes",
-    "digits": "Må være numerisk og inneholde nøyaktig {length} siffer",
-    "dimensions": "Må være {width} ganger {height} piksler",
+    "digits": "Må være numerisk og inneholde nøyaktig {0} siffer",
+    "dimensions": "Må være {0} ganger {1} piksler",
     "email": "Må være en gyldig e-postadresse",
     "excluded": "Må være en gyldig verdi",
     "ext": "Må være en gyldig fil",
     "image": "Må være et bilde",
     "integer": "Må være et heltall",
-    "length": "Må være {length} langt",
+    "length": "Må være {0} langt",
     "oneOf": "Må være en gyldig verdi",
-    "max": "Kan ikke være lengre enn {length} tegn",
-    "max_value": "Må være {max} eller mindre",
+    "max": "Kan ikke være lengre enn {0} tegn",
+    "max_value": "Må være {0} eller mindre",
     "mimes": "Må ha en gyldig filtype",
-    "min": "Må være minst {length} tegn",
-    "min_value": "Må være {min} eller mer",
+    "min": "Må være minst {0} tegn",
+    "min_value": "Må være {0} eller mer",
     "numeric": "Kan bare inneholde nummer",
     "regex": "Formatering er ugyldig",
     "required": "Må fylles ut",
     "required_if": "Må fylles ut",
-    "size": "Må være mindre enn {size}KB",
+    "size": "Må være mindre enn {0}KB",
     "double": "Må være en gyldig desimal",
     "positiveNotZero": "Ugyldig verdi",
     "decimal": "Må være tall",
@@ -201,7 +203,8 @@
     "shortcuts": "Snarveier",
     "graph": "Graf",
     "error": "Feil",
-    "unknown": "ukjent"
+    "unknown": "ukjent",
+    "noResults": "Ingen treff"
   },
   "home": {
     "welcome": "Velkommen til {appName}!",

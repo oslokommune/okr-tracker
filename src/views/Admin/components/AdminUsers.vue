@@ -6,7 +6,7 @@
       <div class="search">
         <input
           v-model="query"
-          class="pkt-form-input"
+          class="pkt-input pkt-input--fullwidth"
           type="text"
           :placeholder="$t('admin.users.search', { count: users.length })"
         />

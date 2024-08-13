@@ -11,38 +11,33 @@
       {{ $t('general.orgs') }}
     </pkt-button>
 
-    <div v-if="isCollapsed">
-      <div
+    <div v-if="isCollapsed" class="organization-selector__options">
+      <PktRadiobutton
         v-for="org in organizations"
+        :id="org.id"
         :key="org.id"
-        class="pkt-form-group pkt-form-group--row organization-selector__item"
-      >
-        <input
-          :id="org.id"
-          type="radio"
-          class="pkt-form-check-input pkt-form-check-input--tile"
-          name="radio-group"
-          :value="org.id"
-          :checked="org.id === orgId"
-          @change="onChange"
-        />
-        <label class="pkt-form-label pkt-txt-14" :for="org.id">
-          {{ org.name }}
-        </label>
-      </div>
+        name="radio-group"
+        class="organization-selector__item"
+        :label="org.name"
+        :value="org.id"
+        :checked="org.id === orgId"
+        has-tile
+        @on-change="$emit('select', org.id)"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue';
+import { PktButton, PktRadiobutton } from '@oslokommune/punkt-vue';
 
 export default {
   name: 'OrganizationSelector',
 
   components: {
     PktButton,
+    PktRadiobutton,
   },
 
   props: {
@@ -59,12 +54,6 @@ export default {
   computed: {
     ...mapState(['organizations']),
   },
-
-  methods: {
-    onChange(e) {
-      this.$emit('select', e.target.value);
-    },
-  },
 };
 </script>
 
@@ -74,18 +63,23 @@ export default {
     justify-content: space-between;
   }
 
-  > div {
-    padding-bottom: 1rem;
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
   }
 
   &__item {
-    gap: 0.25rem;
-    align-items: center;
-    margin: 0.6875rem 1.25rem;
-
-    .pkt-form-check-input {
+    // Shrink radio button tiles somewhat.
+    :deep(.pkt-input-check__input-checkbox) {
       width: 1rem;
       height: 1rem;
+      margin: 0.75rem 0 0.75rem 0.75rem;
+    }
+    :deep(.pkt-input-check__input-label) {
+      padding: 0.75rem 0.75rem 0.75rem 0;
+      line-height: 1rem;
     }
   }
 

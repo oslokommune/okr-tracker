@@ -24,39 +24,33 @@
         type="text"
       />
 
-      <toggle-button
+      <form-component
+        v-model="thisUser.admin"
+        input-type="custom-select"
+        select-mode="tags"
+        name="admin"
+        :disabled="!user.superAdmin"
+        :label="$t('general.admin')"
+        value-prop="id"
+        label-prop="name"
+        :store-object="true"
+        :options="organizations.map(({ id, name }) => ({ id, name }))"
+      />
+
+      <form-component
         v-model="thisUser.superAdmin"
+        input-type="switch"
         name="superadmin"
         :label="$t('general.superAdmin')"
         :disabled="user.email === selectedUser.email || !user.superAdmin"
       />
 
-      <div class="pkt-form-group">
-        <span class="pkt-form-label" for="admin">
-          {{ $t('general.admin') }}
-          <span class="pkt-badge">{{ $t('validation.optional') }}</span>
-        </span>
-        <v-select
-          id="admin"
-          v-model="thisUser.admin"
-          multiple
-          :options="organizations"
-          :get-option-label="(option) => option.name"
-          :disabled="!user.superAdmin"
-        >
-        </v-select>
-      </div>
-
-      <template #actions="{ handleSubmit, submitDisabled }">
+      <template #actions="{ submit, disabled }">
         <btn-delete
           :disabled="user.email === selectedUser.email || loading"
-          @click="remove(selectedUser)"
+          @on-click="remove(selectedUser)"
         />
-        <btn-save
-          :disabled="submitDisabled || loading"
-          data-cy="btn-createOrg"
-          @click="handleSubmit(save)"
-        />
+        <btn-save :disabled="disabled || loading" @on-click="submit(save)" />
       </template>
     </form-section>
   </div>
@@ -65,12 +59,12 @@
 <script>
 import { mapState } from 'vuex';
 import User from '@/db/User';
-import { db } from '@/config/firebaseConfig';
-import { FormSection, BtnSave, BtnDelete, ToggleButton } from '@/components/generic/form';
+import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
 
 export default {
   name: 'EditUser',
-  components: { FormSection, BtnSave, BtnDelete, ToggleButton },
+
+  components: { FormSection, BtnSave, BtnDelete },
 
   props: {
     selectedUser: {
@@ -92,22 +86,18 @@ export default {
     selectedUser: {
       immediate: true,
       async handler() {
-        this.image = null;
         this.thisUser = {
           ...this.selectedUser,
           superAdmin: this.selectedUser.superAdmin || false,
         };
 
-        if (this.selectedUser.admin?.length > 0) {
-          const orgs = [];
-          this.selectedUser.admin.forEach((org) =>
-            orgs.push(db.collection('organizations').doc(org).get())
-          );
-          const dataArr = await Promise.all(orgs);
-          this.thisUser.admin = dataArr.map((org) => ({
-            ...org.data(),
-            id: org.id,
-          }));
+        if (this.selectedUser.admin?.length) {
+          this.thisUser.admin = this.selectedUser.admin
+            .filter((id) => this.organizations.map((o) => o.id).includes(id))
+            .map((id) => ({
+              id,
+              name: this.organizations.find((o) => o.id === id).name,
+            }));
         }
       },
     },

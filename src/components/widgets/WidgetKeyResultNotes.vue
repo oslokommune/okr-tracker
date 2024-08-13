@@ -18,13 +18,13 @@
       </div>
 
       <div v-if="editNotes" class="notes__btn">
-        <btn-save :disabled="!dirty || loading" @click="saveNotes" />
-        <pkt-button skin="tertiary" @onClick="closeNotes">
+        <btn-save :disabled="!dirty || loading" @on-click="saveNotes" />
+        <pkt-button skin="tertiary" @on-click="closeNotes">
           {{ $t('btn.close') }}
         </pkt-button>
       </div>
       <div v-else>
-        <pkt-button skin="secondary" @onClick="editNotes = !editNotes">
+        <pkt-button skin="secondary" @on-click="editNotes = !editNotes">
           {{ $t('btn.editNotes') }}
         </pkt-button>
       </div>

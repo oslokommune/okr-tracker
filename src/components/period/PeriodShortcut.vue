@@ -1,6 +1,6 @@
 <template>
   <pkt-button
-    :class="['period-shortcut', { 'pkt-btn--active': active }]"
+    :class="['period-shortcut', { 'period-shortcut--active': active }]"
     skin="secondary"
     @onClick="$emit('click', $event)"
   >
@@ -55,15 +55,16 @@ export default {
 
 <style lang="scss" scoped>
 .period-shortcut {
-  --btn-link-bc: var(--color-gray);
-  --btn-link-bg: var(--color-gray);
-  --btn-focus-bg: var(--color-gray);
-  --btn-active-bg: var(--color-blue-light);
-  --btn-active-bc: var(--color-blue-light);
-  --btn-active-txt: var(--color-blue-dark);
+  --pkt-color-button-background-normal: var(--color-gray);
+  --pkt-color-button-border-normal: var(--color-gray);
 
   height: auto;
   padding: 0.5rem 1rem;
   white-space: nowrap;
+
+  &--active {
+    --pkt-color-button-background-normal: var(--color-blue-light);
+    --pkt-color-button-border-normal: var(--color-blue-light);
+  }
 }
 </style>

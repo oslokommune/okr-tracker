@@ -16,7 +16,7 @@
     </template>
 
     <template #page="{ pageIndex, prev }">
-      <form-section :hide-errors="true">
+      <form-section>
         <template v-if="pageIndex === 1">
           <form-component
             v-model="thisKpi.name"
@@ -25,6 +25,7 @@
             :label="$t('fields.name')"
             :disabled="thisKpi?.archived"
             rules="required"
+            :fullwidth="true"
           />
 
           <form-component
@@ -34,115 +35,100 @@
             name="description"
             :disabled="thisKpi?.archived"
             :label="$t('fields.description')"
+            :fullwidth="true"
           />
         </template>
 
         <template v-else-if="pageIndex === 2">
-          <validation-provider rules="required" name="kpiType">
-            <div class="pkt-form-group">
-              <span class="pkt-form-label">{{ $t('fields.kpitype') }}</span>
-              <div
-                v-for="{ id, label, description } in kpiTypes"
-                :key="id"
-                class="pkt-form-group pkt-form-group--row"
-              >
-                <input
-                  :id="id"
-                  v-model="thisKpi.kpiType"
-                  type="radio"
-                  class="pkt-form-check-input pkt-form-check-input--tile"
-                  name="radio-group"
-                  :value="id"
-                />
-                <label class="pkt-form-label" :for="id">
-                  {{ label }}
-                  <span class="description">
-                    {{ description }}
-                  </span>
-                </label>
-              </div>
+          <form-component
+            v-model="thisKpi.kpiType"
+            input-type="radio-group"
+            name="kpiType"
+            :label="$t('fields.kpitype')"
+            rules="required"
+            :fullwidth="true"
+            :options="
+              kpiTypes.map(({ id, label, description }) => ({
+                id,
+                label,
+                helptext: description,
+              }))
+            "
+          />
 
-              <pkt-alert v-if="thisKpi.kpiType === 'ri'">
-                {{ $t('kpi.help.resultIndicatorWarning') }}
-              </pkt-alert>
-            </div>
-          </validation-provider>
+          <pkt-alert v-if="thisKpi.kpiType === 'ri'">
+            {{ $t('kpi.help.resultIndicatorWarning') }}
+          </pkt-alert>
         </template>
 
         <template v-else-if="pageIndex === 3">
           <form-component
             v-model="thisKpi.format"
-            input-type="select"
+            input-type="custom-select"
             name="format"
             :label="$t('kpi.format')"
             rules="required"
             select-label="label"
-            :select-options="formats"
-            :select-reduce="(option) => option.id"
-            type="text"
+            :options="formats"
+            value-prop="id"
+            fullwidth
           />
 
           <form-component
             v-model="thisKpi.startValue"
-            input-type="select"
+            input-type="custom-select"
             name="startValue"
             :label="$t('kpi.startValue')"
             rules="required"
-            select-label="label"
-            :select-options="startValues"
-            :select-reduce="(option) => option.id"
-            type="text"
+            :options="startValues"
+            value-prop="id"
+            fullwidth
           />
 
           <form-component
             v-model="thisKpi.preferredTrend"
-            input-type="select"
+            input-type="custom-select"
             name="preferredTrend"
             :label="$t('kpi.preferredTrend')"
             rules="required"
-            select-label="label"
-            :select-options="trendOptions"
-            :select-reduce="(option) => option.id"
-            type="text"
+            :options="trendOptions"
+            value-prop="id"
+            fullwidth
           />
 
           <form-component
             v-model="thisKpi.updateFrequency"
-            input-type="select"
+            input-type="custom-select"
             name="updateFrequency"
             :label="$t('kpi.updateFrequency.label')"
             rules="required"
-            select-label="label"
-            :select-options="updateFrequencies"
-            :select-reduce="(option) => option.id"
-            type="text"
-          >
-            <template #help>
-              {{ $t('kpi.updateFrequency.help') }}
-            </template>
-          </form-component>
+            :options="updateFrequencies"
+            value-prop="id"
+            :helptext="$t('kpi.updateFrequency.help')"
+            fullwidth
+          />
         </template>
 
-        <template #actions="{ handleSubmit, submitDisabled }">
+        <template #actions="{ submit, disabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
             :disabled="loading || thisKpi?.archived"
-            @onClick="thisKpi = null"
+            @on-click="thisKpi = null"
           />
           <pkt-button
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
             :disabled="loading || thisKpi?.archived"
-            @onClick="prev"
+            @on-click="prev"
           />
           <btn-save
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="submitDisabled || loading || thisKpi?.archived"
+            :disabled="disabled || loading || thisKpi?.archived"
             variant="label-only"
-            @click="handleSubmit(save)"
+            @on-click="submit(save)"
           />
         </template>
       </form-section>
@@ -159,7 +145,7 @@
           <btn-delete
             :disabled="loading"
             :text="$t('admin.measurement.delete')"
-            @click="archive"
+            @on-click="archive"
           />
         </div>
       </template>

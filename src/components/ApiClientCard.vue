@@ -16,7 +16,7 @@
             variant="icon-only"
             icon-name="edit"
             :disabled="loading"
-            @onClick="$emit('edit', client)"
+            @on-click="$emit('edit', client)"
           />
           <btn-delete
             v-tooltip="{
@@ -27,7 +27,7 @@
             :confirm-help="$t('integration.warning.delete')"
             variant="icon-only"
             :disabled="loading"
-            @click="$emit('delete', client)"
+            @on-click="$emit('delete', client)"
           />
         </div>
       </header>
@@ -54,7 +54,7 @@
                 skin="tertiary"
                 variant="icon-only"
                 icon-name="copy"
-                @onClick="copyCredential(`${client.id}_clientId`)"
+                @on-click="copyCredential(`${client.id}_clientId`)"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@
                 skin="tertiary"
                 variant="icon-only"
                 icon-name="copy"
-                @onClick="copyCredential(`${client.id}_clientSecret`)"
+                @on-click="copyCredential(`${client.id}_clientSecret`)"
               />
               <btn-delete
                 v-else
@@ -102,20 +102,20 @@
                 variant="icon-only"
                 icon-name="arrow-circle"
                 :disabled="loading"
-                @click="$emit('rotate', client)"
+                @on-click="$emit('rotate', client)"
               />
             </div>
           </div>
         </div>
 
         <pkt-alert v-if="visibleSecret" skin="warning" class="mb-size-16">
-          <i18n path="integration.warning.secret" tag="p">
+          <i18n-t keypath="integration.warning.secret" tag="p">
             <template #closeLink>
               <a href="#" @click="$emit('hide-secret')">{{
                 $t('integration.warning.secretCloseText')
               }}</a>
             </template>
-          </i18n>
+          </i18n-t>
         </pkt-alert>
 
         <div v-if="client.description" class="api-client-card__description">

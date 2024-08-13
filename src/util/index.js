@@ -11,7 +11,6 @@ export { numberLocale } from './format';
 export { default as findSlugAndRedirect } from './findSlugAndRedirect';
 export { default as tableOfContent } from './tableOfContent';
 export { default as toastArchiveAndRevert } from './toastUtils';
-export { default as validateEmail } from './validateEmail';
 export { default as periodObjectFromDates } from './period';
 
 /**

@@ -11,7 +11,6 @@
           rules="required"
           :label="$t('fields.name')"
           type="text"
-          data-cy="org-name"
         />
 
         <form-component
@@ -20,34 +19,26 @@
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
-          data-cy="org-missionStatement"
         />
 
-        <div class="pkt-form-group">
-          <span class="pkt-form-label" for="teamMembers">
-            {{ $t('general.teamMembers') }}
-            <span class="pkt-badge">{{ $t('validation.optional') }}</span>
-          </span>
-          <v-select
-            id="teamMembers"
-            v-model="team"
-            multiple
-            :options="users"
-            :get-option-label="(option) => option.displayName || option.id"
-          >
-            <template #option="option">
-              {{ option.displayName || option.id }}
-              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-            </template>
-          </v-select>
-        </div>
+        <form-component
+          v-model="team"
+          input-type="custom-select"
+          select-mode="tags"
+          name="team"
+          :label="$t('general.teamMembers')"
+          value-prop="id"
+          :tag-label="(o) => o.displayName || o.id"
+          :option-label="(o) => (o.displayName ? `${o.displayName} (${o.id})` : o.id)"
+          :store-object="true"
+          :options="users"
+        />
 
-        <template #actions="{ handleSubmit, submitDisabled }">
+        <template #actions="{ submit, disabled }">
           <btn-save
             :text="$t('btn.create')"
-            :disabled="submitDisabled || loading"
-            data-cy="btn-createOrg"
-            @click="handleSubmit(save)"
+            :disabled="disabled || loading"
+            @on-click="submit(save)"
           />
         </template>
       </form-section>

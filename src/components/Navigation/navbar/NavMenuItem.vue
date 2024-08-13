@@ -1,6 +1,6 @@
 <template>
   <li
-    v-click-outside="close"
+    v-click-outside="clickOutsideConfig"
     :class="[
       'nav-menu-item',
       { 'nav-menu-item--dropdown': dropdown },
@@ -12,11 +12,11 @@
       v-if="route"
       v-slot="{ href, navigate, isExactActive }"
       :to="route"
-      :role="role"
       custom
     >
       <a
         v-bind="ariaAttrs"
+        :role="role"
         :href="href"
         :class="[
           'nav-menu-item__inner',
@@ -116,6 +116,13 @@ export default {
   }),
 
   computed: {
+    clickOutsideConfig() {
+      return {
+        handler: this.close,
+        middleware: (e) => !e.target.classList.contains('ignore-click-outside'),
+      };
+    },
+
     ariaAttrs() {
       return this.aria
         ? Object.fromEntries(Object.entries(this.aria).map(([k, v]) => [`aria-${k}`, v]))

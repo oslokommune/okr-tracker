@@ -8,7 +8,7 @@
       </router-link>
     </header>
 
-    <i18n path="integration.info" tag="p" class="mb-size-24">
+    <i18n-t keypath="integration.info" tag="p" class="mb-size-24">
       <template #clientIdHeader>
         <code>okr-client-id</code>
       </template>
@@ -18,7 +18,7 @@
       <template #apiKeyHeader>
         <code>x-api-key</code>
       </template>
-    </i18n>
+    </i18n-t>
 
     <div v-if="dataLoading"><loading-small /> {{ $t('general.loading') }}</div>
 
@@ -34,7 +34,7 @@
           variant="icon-left"
           icon-name="plus-sign"
           :disabled="loading"
-          @onClick="openClientModal(null)"
+          @on-click="openClientModal(null)"
         >
           {{ $t('integration.action.add') }}
         </pkt-button>
@@ -64,7 +64,7 @@
           skin="primary"
           variant="icon-left"
           icon-name="plus-sign"
-          @onClick="openClientModal(null)"
+          @on-click="openClientModal(null)"
         >
           {{ $t('integration.action.add') }}
         </pkt-button>

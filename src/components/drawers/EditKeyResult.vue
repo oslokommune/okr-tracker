@@ -26,6 +26,7 @@
             :rows="2"
             :label="$t('fields.name')"
             rules="required"
+            :fullwidth="true"
           />
           <form-component
             v-model="thisKeyResult.description"
@@ -34,16 +35,20 @@
             :disabled="thisKeyResult?.archived"
             :rows="2"
             :label="$t('fields.description')"
+            :fullwidth="true"
           />
           <form-component
             v-if="isOrganization || isDepartment"
             v-model="contributor"
+            input-type="custom-select"
             name="owner"
-            input-type="select"
             :disabled="ownerOptions.length === 1 || thisKeyResult?.archived"
-            :select-options="ownerOptions"
+            :options="ownerOptions"
             :label="$t('admin.keyResult.owner.label')"
+            label-prop="name"
+            :store-object="true"
             rules="required"
+            :fullwidth="true"
           >
             <template #help>
               {{ $t('admin.keyResult.owner.help') }}
@@ -58,63 +63,66 @@
             name="unit"
             :label="$t('keyResult.unit')"
             rules="required|max:25"
+            :fullwidth="true"
           />
 
           <div class="pkt-grid">
             <form-component
-              v-model.number="thisKeyResult.startValue"
+              v-model="thisKeyResult.startValue"
               input-type="input"
               name="startValue"
               :label="$t('keyResult.startValue')"
               rules="required"
               type="number"
               class="pkt-cell pkt-cell--span6"
+              :fullwidth="true"
             />
 
             <form-component
-              v-model.number="thisKeyResult.targetValue"
+              v-model="thisKeyResult.targetValue"
               input-type="input"
               name="targetValue"
               :label="$t('keyResult.targetValue')"
               rules="required"
               type="number"
               class="pkt-cell pkt-cell--span6"
+              :fullwidth="true"
             />
           </div>
 
           <form-component
-            v-model.number="thisKeyResult.weight"
+            v-model="thisKeyResult.weight"
             input-type="input"
             name="weight"
             :label="$t('keyResult.weight.label')"
-            rules="required|decimal|positiveNotZero"
+            :helptext="$t('keyResult.weight.help')"
+            rules="required|positiveNotZero"
             type="number"
-          >
-            <template #help><span v-html="$t('keyResult.weight.help')" /></template>
-          </form-component>
+            :fullwidth="true"
+          />
         </template>
 
-        <template #actions="{ handleSubmit, submitDisabled }">
+        <template #actions="{ submit, disabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
             :disabled="loading || thisKeyResult?.archived"
-            @onClick="close"
+            @on-click="close"
           />
           <pkt-button
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
             :disabled="loading || thisKeyResult?.archived"
-            @onClick="prev"
+            @on-click="prev"
           />
 
           <btn-save
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="submitDisabled || loading || thisKeyResult?.archived"
+            :disabled="disabled || loading || thisKeyResult?.archived"
             variant="label-only"
-            @click="handleSubmit(save)"
+            @on-click="submit(save)"
           />
         </template>
       </form-section>
@@ -155,7 +163,7 @@
           <btn-delete
             :disabled="loading"
             :text="$t('admin.keyResult.delete')"
-            @click="archive"
+            @on-click="archive"
           />
         </div>
       </template>

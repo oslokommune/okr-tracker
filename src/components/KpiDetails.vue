@@ -9,7 +9,7 @@
         variant="icon-only"
         size="medium"
         icon-name="edit"
-        @onClick="$emit('edit-kpi')"
+        @on-click="$emit('edit-kpi')"
       />
     </header>
 
@@ -31,15 +31,17 @@
 
     <widget-kpi-progress-history
       :kpi="kpi"
-      @update-record="updateProgressRecord"
+      @edit-record="openValueModal"
       @delete-record="deleteProgressRecord"
     />
 
     <progress-modal
       v-if="hasEditRights && showValueModal"
       :kpi="kpi"
+      :record="chosenProgressValue"
       @create-record="createProgressRecord"
-      @close="showValueModal = false"
+      @update-record="updateProgressRecord"
+      @close="closeValueModal"
     />
 
     <edit-goals-modal
@@ -62,7 +64,7 @@ import {
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import Progress from '@/db/Kpi/Progress';
-import ProgressModal from '@/components/modals/KPIProgressModal.vue';
+import ProgressModal from '@/components/modals/ProgressModal/KPIProgressModal.vue';
 import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
 import WidgetKpiProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetKpiProgressHistory.vue';
 import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
@@ -91,6 +93,7 @@ export default {
     progressCollection: [],
     goals: [],
     showValueModal: false,
+    chosenProgressValue: null,
     showEditGoalsModal: false,
   }),
 
@@ -136,6 +139,16 @@ export default {
           .where('archived', '==', false)
           .orderBy('toDate', 'desc')
       );
+    },
+
+    openValueModal(record) {
+      this.showValueModal = true;
+      this.chosenProgressValue = record;
+    },
+
+    closeValueModal() {
+      this.showValueModal = false;
+      this.chosenProgressRecord = null;
     },
 
     async createProgressRecord(data, modalCloseHandler) {

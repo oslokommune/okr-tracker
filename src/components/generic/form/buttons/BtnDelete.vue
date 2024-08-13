@@ -16,7 +16,7 @@
           skin="secondary"
           :size="$attrs?.size || 'medium'"
           :text="confirmText"
-          @onClick="confirm"
+          @on-click="confirm"
         />
       </div>
     </template>
@@ -68,7 +68,7 @@ export default {
 
   methods: {
     confirm(e) {
-      this.$emit('click', e);
+      this.$emit('onClick', e);
       this.$refs.popover.hide();
     },
   },

@@ -23,38 +23,34 @@
 
         <form-component
           v-model="department"
-          input-type="select"
+          input-type="custom-select"
           name="department"
           :label="$t('admin.product.parentDepartment')"
-          select-label="name"
+          value-prop="id"
+          label-prop="name"
+          :store-object="true"
           rules="required"
-          :select-options="departmentOptions"
+          :options="departmentOptions"
         />
 
-        <div class="pkt-form-group">
-          <span class="pkt-form-label" for="teamMembers">
-            {{ $t('general.teamMembers') }}
-            <span class="pkt-badge">{{ $t('validation.optional') }}</span>
-          </span>
-          <v-select
-            id="teamMembers"
-            v-model="team"
-            multiple
-            :options="users"
-            :get-option-label="(option) => option.displayName || option.id"
-          >
-            <template #option="option">
-              {{ option.displayName || option.id }}
-              <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-            </template>
-          </v-select>
-        </div>
+        <form-component
+          v-model="team"
+          input-type="custom-select"
+          select-mode="tags"
+          name="team"
+          :label="$t('general.teamMembers')"
+          value-prop="id"
+          :tag-label="(o) => o.displayName || o.id"
+          :option-label="(o) => (o.displayName ? `${o.displayName} (${o.id})` : o.id)"
+          :store-object="true"
+          :options="users"
+        />
 
-        <template #actions="{ handleSubmit, submitDisabled }">
+        <template #actions="{ submit, disabled }">
           <btn-save
             :text="$t('btn.create')"
-            :disabled="submitDisabled || loading"
-            @click="handleSubmit(save)"
+            :disabled="disabled || loading"
+            @on-click="submit(save)"
           />
         </template>
       </form-section>
@@ -85,9 +81,15 @@ export default {
     ...mapState(['departments', 'users', 'user']),
 
     departmentOptions() {
-      return this.user.superAdmin
+      const departments = this.user.superAdmin
         ? this.departments
         : this.departments.filter((d) => this.user.admin.includes(d.organization.id));
+
+      return departments.map(({ id, organization, name }) => ({
+        id,
+        organization_id: organization.id,
+        name,
+      }));
     },
   },
 
@@ -99,7 +101,7 @@ export default {
         name: name.trim(),
         missionStatement: missionStatement.trim(),
         department: db.collection('departments').doc(department.id),
-        organization: db.collection('organizations').doc(department.organization.id),
+        organization: db.collection('organizations').doc(department.organization_id),
         team: team.map(({ id }) => db.collection('users').doc(id)),
         archived: false,
       };

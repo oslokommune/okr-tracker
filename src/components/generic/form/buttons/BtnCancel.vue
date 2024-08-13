@@ -4,7 +4,7 @@
     :text="text"
     :skin="skin"
     type="button"
-    @onClick="$emit('click', $event)"
+    @on-click="$emit('onClick', $event)"
   />
 </template>
 <script>

@@ -52,49 +52,49 @@
           <form-component
             v-if="type === 'department'"
             v-model="thisItem.organization"
-            input-type="select"
+            input-type="custom-select"
             name="parent"
             :disabled="thisItem?.archived"
             :label="$t('admin.department.parentOrganisation')"
             rules="required"
-            :select-options="organizations"
+            value-prop="id"
+            label-prop="name"
+            :store-object="true"
+            :options="organizations.map(({ id, name }) => ({ id, name }))"
           />
 
           <form-component
             v-else-if="type === 'product'"
             v-model="thisItem.department"
-            input-type="select"
+            input-type="custom-select"
             name="parent"
             :disabled="thisItem?.archived"
-            :label="$t('admin.product.parentDepartment')"
+            :label="$t('admin.department.parentDepartment')"
             rules="required"
-            :select-options="departments"
+            value-prop="id"
+            label-prop="name"
+            :store-object="true"
+            :options="departments.map(({ id, name }) => ({ id, name }))"
           />
 
-          <div class="pkt-form-group">
-            <span class="pkt-form-label" for="teamMembers">
-              {{ $t('general.teamMembers') }}
-              <span class="pkt-badge">{{ $t('validation.optional') }}</span>
-            </span>
-            <v-select
-              id="teamMembers"
-              v-model="thisItem.team"
-              multiple
-              :disabled="thisItem?.archived"
-              :options="users"
-              :get-option-label="(option) => option.displayName || option.id"
-            >
-              <template #option="option">
-                {{ option.displayName || option.id }}
-                <span v-if="option.displayName !== option.id">({{ option.id }})</span>
-              </template>
-            </v-select>
-          </div>
+          <form-component
+            v-model="thisItem.team"
+            input-type="custom-select"
+            select-mode="tags"
+            name="team"
+            :disabled="thisItem?.archived"
+            :label="$t('general.teamMembers')"
+            value-prop="id"
+            :tag-label="(o) => o.displayName || o.id"
+            :option-label="(o) => (o.displayName ? `${o.displayName} (${o.id})` : o.id)"
+            :store-object="true"
+            :options="users"
+          />
 
           <pkt-alert v-if="thisItem.secret" skin="warning" class="mb-size-32">
             {{ $t('integration.warning.deprecation') }}
             <input
-              class="pkt-form-input mt-size-16"
+              class="pkt-input mt-size-16"
               :value="thisItem.secret"
               :disabled="true"
               :readonly="true"
@@ -102,27 +102,26 @@
           </pkt-alert>
         </template>
 
-        <template #actions="{ handleSubmit, submitDisabled }">
+        <template #actions="{ submit, disabled }">
           <pkt-button
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
             :disabled="loading || thisItem?.archived"
-            @onClick="thisItem = null"
+            @on-click="thisItem = null"
           />
           <pkt-button
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
             :disabled="loading || thisItem?.archived"
-            @onClick="prev"
+            @on-click="prev"
           />
-
           <btn-save
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="submitDisabled || loading || thisItem?.archived"
+            :disabled="disabled || loading || thisItem?.archived"
             variant="label-only"
-            @onClick="handleSubmit(save)"
+            @on-click="submit(save)"
           />
         </template>
       </form-section>
@@ -145,7 +144,7 @@
           <btn-delete
             :disabled="loading"
             :text="$t('admin.item.delete', { name: item.name })"
-            @click="archive"
+            @on-click="archive"
           />
         </div>
       </template>

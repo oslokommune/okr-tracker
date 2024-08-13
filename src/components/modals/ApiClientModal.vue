@@ -4,7 +4,7 @@
       {{ $t(`integration.action.${client ? 'edit' : 'add'}`) }}
     </template>
 
-    <form-section :hide-errors="true">
+    <form-section>
       <form-component
         v-model="name"
         input-type="input"
@@ -22,8 +22,8 @@
         :label="$t('fields.description')"
       />
 
-      <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-save :disabled="submitDisabled" @click="handleSubmit(save)" />
+      <template #actions="{ submit, disabled }">
+        <btn-save :disabled="disabled" @on-click="submit(save)" />
       </template>
     </form-section>
   </modal-wrapper>

@@ -7,7 +7,7 @@
           <div v-if="organizations.length > 10" class="search">
             <input
               v-model="queryOrgs"
-              class="pkt-form-input"
+              class="pkt-input pkt-input--fullwidth"
               type="text"
               :placeholder="
                 $t('admin.organization.search', { count: organizations.length })
@@ -49,7 +49,7 @@
           <div v-if="departments.length > 10" class="search">
             <input
               v-model="queryDeps"
-              class="pkt-form-input"
+              class="pkt-input pkt-input--fullwidth"
               type="text"
               :placeholder="$t('admin.department.search', { count: departments.length })"
             />
@@ -84,7 +84,7 @@
           <div v-if="products.length > 10" class="search">
             <input
               v-model="queryProds"
-              class="pkt-form-input"
+              class="pkt-input pkt-input--fullwidth"
               type="text"
               :placeholder="$t('admin.product.search', { count: products.length })"
             />
@@ -114,16 +114,13 @@
       </div>
     </div>
 
-    <div class="actions pkt-form-group pkt-form-group--row">
-      <input
+    <div class="actions">
+      <PktCheckbox
         id="showArchived"
         v-model="showArchived"
-        type="checkbox"
-        class="pkt-form-check-input"
+        is-switch
+        :label="$t('admin.objects.showArchived')"
       />
-      <label class="pkt-form-label" for="showArchived">
-        {{ $t('admin.objects.showArchived') }}
-      </label>
     </div>
   </div>
 </template>
@@ -132,6 +129,9 @@
 import Fuse from 'fuse.js';
 import { mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
+import { PktCheckbox } from '@oslokommune/punkt-vue';
+
+PktCheckbox.compatConfig = { MODE: 3 };
 
 const fuseSettings = {
   threshold: 0.5,
@@ -149,6 +149,10 @@ const fuseSettings = {
 
 export default {
   name: 'AdminItems',
+
+  components: {
+    PktCheckbox,
+  },
 
   data: () => ({
     showArchived: false,

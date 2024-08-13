@@ -13,7 +13,6 @@
 @use 'forms';
 @use 'markdown';
 @use 'titles';
-@use 'vSelect';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);

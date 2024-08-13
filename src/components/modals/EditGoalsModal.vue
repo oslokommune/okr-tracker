@@ -48,7 +48,7 @@
             :label="$t('fields.period')"
             :placeholder="$t('general.selectRange')"
             rules="required"
-            :date-picker-config="flatPickrConfig"
+            :date-picker-config="{ mode: 'range' }"
           />
 
           <form-component
@@ -58,18 +58,14 @@
             :label="$t('fields.value')"
             type="number"
             rules="required"
-          >
-            <template #sub>
-              <span v-if="value" class="display-as pkt-txt-14-medium">
-                {{ $t('general.displayedAs') }}
-                {{ formatKPIValue(kpi, typePercentage ? value / 100 : value) }}
-              </span>
-            </template>
-          </form-component>
+            :preview-value="
+              value ? formatKPIValue(kpi, typePercentage ? value / 100 : value) : null
+            "
+          />
 
-          <template #actions="{ handleSubmit, submitDisabled }">
-            <btn-delete @click="archive" />
-            <btn-save :disabled="submitDisabled" @click="handleSubmit(update)" />
+          <template #actions="{ submit, disabled }">
+            <btn-delete @on-click="archive" />
+            <btn-save :disabled="disabled" @on-click="submit(update)" />
           </template>
         </form-section>
       </div>
@@ -108,13 +104,6 @@ export default {
   },
 
   data: () => ({
-    flatPickrConfig: {
-      altFormat: 'j M Y',
-      minDate: null,
-      mode: 'range',
-      maxDate: null,
-      static: true,
-    },
     goals: [],
     activeGoalId: null,
     name: null,
@@ -288,10 +277,6 @@ export default {
   @include bp('phablet-up') {
     flex-direction: row;
     gap: 1.5rem;
-  }
-
-  .display-as {
-    color: var(--color-grayscale-60);
   }
 
   &__left {
