@@ -81,21 +81,24 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue';
 import { mapGetters, mapState } from 'vuex';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import ApiClient from '@/db/ApiClient';
 
 export default {
   name: 'ItemIntegrations',
 
   components: {
-    PktAlert: () => import('@oslokommune/punkt-vue').then(({ PktAlert }) => PktAlert),
-    EmptyState: () => import('@/components/EmptyState.vue'),
-    LoadingSmall: () => import('@/components/LoadingSmall.vue'),
-    ApiClientCard: () => import('@/components/ApiClientCard.vue'),
-    ApiClientModal: () => import('@/components/modals/ApiClientModal.vue'),
+    PktAlert,
     PktButton,
+    EmptyState: defineAsyncComponent(() => import('@/components/EmptyState.vue')),
+    LoadingSmall: defineAsyncComponent(() => import('@/components/LoadingSmall.vue')),
+    ApiClientCard: defineAsyncComponent(() => import('@/components/ApiClientCard.vue')),
+    ApiClientModal: defineAsyncComponent(() =>
+      import('@/components/modals/ApiClientModal.vue')
+    ),
   },
 
   data: () => ({
