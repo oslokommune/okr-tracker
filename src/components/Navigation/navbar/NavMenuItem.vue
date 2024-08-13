@@ -1,6 +1,6 @@
 <template>
   <li
-    v-click-outside="clickOutsideConfig"
+    ref="clickOutsideTarget"
     :class="[
       'nav-menu-item',
       { 'nav-menu-item--dropdown': dropdown },
@@ -65,14 +65,11 @@
 </template>
 
 <script>
-import vClickOutside from 'v-click-outside';
+import { ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 
 export default {
   name: 'NavMenuItem',
-
-  directives: {
-    clickOutside: vClickOutside.directive,
-  },
 
   props: {
     dropdown: {
@@ -111,18 +108,22 @@ export default {
     },
   },
 
-  data: () => ({
-    isOpen: false,
-  }),
+  setup() {
+    const isOpen = ref(false);
+    const clickOutsideTarget = ref(null);
+
+    function close() {
+      isOpen.value = false;
+    }
+
+    onClickOutside(clickOutsideTarget, close, {
+      ignore: ['.ignore-click-outside'],
+    });
+
+    return { isOpen, close, clickOutsideTarget };
+  },
 
   computed: {
-    clickOutsideConfig() {
-      return {
-        handler: this.close,
-        middleware: (e) => !e.target.classList.contains('ignore-click-outside'),
-      };
-    },
-
     ariaAttrs() {
       return this.aria
         ? Object.fromEntries(Object.entries(this.aria).map(([k, v]) => [`aria-${k}`, v]))
@@ -147,10 +148,6 @@ export default {
         return;
       }
       this.$emit('click', e);
-    },
-
-    close() {
-      this.isOpen = false;
     },
   },
 };
