@@ -55,8 +55,8 @@ export default {
       border-color: var(--color-white);
     }
 
-    ::v-deep .widget__header h3,
-    ::v-deep .period-trend-tag__value {
+    :deep(.widget__header h3),
+    :deep(.period-trend-tag__value) {
       color: var(--color-hover);
     }
   }
@@ -66,20 +66,18 @@ export default {
       background: var(--color-gray-light);
       border-color: var(--color-gray);
 
-      ::v-deep {
-        .widget__header h3,
-        .period-trend-tag__value {
-          color: var(--color-hover);
-        }
+      :deep(.widget__header h3),
+      :deep(.period-trend-tag__value) {
+        color: var(--color-hover);
+      }
 
-        .period-trend-tag__trend {
-          &:before {
-            border-left-color: var(--color-gray-light);
-          }
-          &:after {
-            border-top-color: var(--color-gray-light);
-            border-bottom-color: var(--color-gray-light);
-          }
+      :deep(.period-trend-tag__trend) {
+        &:before {
+          border-left-color: var(--color-gray-light);
+        }
+        &:after {
+          border-top-color: var(--color-gray-light);
+          border-bottom-color: var(--color-gray-light);
         }
       }
     }

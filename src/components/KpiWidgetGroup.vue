@@ -24,21 +24,21 @@
         </pkt-button>
       </template>
     </div>
-    <draggable
+
+    <SortableList
       v-if="hasEditRights"
       v-model="orderedKpis"
-      animation="300"
+      class="kpi-widget-group__kpis"
       handle=".drag-icon"
     >
-      <transition-group class="kpi-widget-group__kpis">
-        <kpi-widget-group-link
-          v-for="kpi in orderedKpis"
-          :key="kpi.id"
-          :kpi="kpi"
-          :compact="compact"
-        />
-      </transition-group>
-    </draggable>
+      <kpi-widget-group-link
+        v-for="kpi in orderedKpis"
+        :key="kpi.id"
+        :kpi="kpi"
+        :compact="compact"
+      />
+    </SortableList>
+
     <kpi-widget-group-link
       v-for="kpi in orderedKpis"
       v-else
@@ -50,23 +50,23 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable';
 import html2canvas from 'html2canvas';
 import { mapGetters, mapState } from 'vuex';
 import { periodDates } from '@/util';
 import { PktButton } from '@oslokommune/punkt-vue';
 import downloadFile from '@/util/downloadFile';
+import { compareKPIs } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
 import KpiWidgetGroupLink from '@/components/KpiWidgetGroupLink.vue';
-import { compareKPIs } from '@/util/kpiHelpers';
+import SortableList from '@/components/SortableList.vue';
 
 export default {
   name: 'KpiWidgetGroup',
 
   components: {
-    draggable,
-    KpiWidgetGroupLink,
     PktButton,
+    SortableList,
+    KpiWidgetGroupLink,
   },
 
   props: {
@@ -183,18 +183,20 @@ export default {
   }
 }
 
-::v-deep .kpi-widget-group-link.sortable-ghost * {
-  color: var(--color-grayscale-10) !important;
-  background: var(--color-grayscale-10) !important;
-  border-color: var(--color-grayscale-10) !important;
-  fill: var(--color-grayscale-10);
-  stroke: var(--color-grayscale-10);
+:deep(.kpi-widget-group-link.sortable-ghost) {
+  border-color: transparent;
 
-  & .period-trend-tag__trend {
-    &::after,
-    &::before {
-      border-color: var(--color-grayscale-10);
-    }
+  * {
+    color: var(--color-grayscale-10) !important;
+    background: var(--color-grayscale-10) !important;
+    border-color: var(--color-grayscale-10) !important;
+    fill: var(--color-grayscale-10);
+    stroke: var(--color-grayscale-10);
+  }
+
+  .period-trend-tag__trend::before,
+  .period-trend-tag__trend::after {
+    border-color: var(--color-grayscale-10) !important;
   }
 }
 </style>

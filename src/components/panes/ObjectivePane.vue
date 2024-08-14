@@ -18,7 +18,7 @@
     </h1>
 
     <pkt-alert v-if="isGhost" skin="warning">
-      <i18n path="objective.movedWarning" tag="p">
+      <i18n-t keypath="objective.movedWarning" tag="p">
         <template #activeItem>
           {{ activeItem.name }}
         </template>
@@ -27,7 +27,7 @@
             activeObjective.parent.name
           }}</router-link>
         </template>
-      </i18n>
+      </i18n-t>
     </pkt-alert>
 
     <objective-details-card
@@ -56,29 +56,26 @@
         {{ $t('general.loading') }}
       </div>
 
-      <draggable
+      <SortableList
         v-else-if="hasEditRights && keyResults.length"
         v-model="orderedKeyResults"
         class="objective-pane__key-results-list"
-        animation="300"
         handle=".drag-icon"
       >
-        <transition-group>
-          <key-result-link-card
-            v-for="keyResult in orderedKeyResults"
-            :key="keyResult.id"
-            :route="{
-              name: 'KeyResultHome',
-              params: { objectiveId: activeObjective.id, keyResultId: keyResult.id },
-            }"
-            :title="keyResult.name"
-            :progression="keyResult.progression"
-            :owner="keyResult.parent?.name ? keyResult.parent : null"
-            :draggable="true"
-            :active="activeKeyResult && activeKeyResult.id === keyResult.id"
-          />
-        </transition-group>
-      </draggable>
+        <key-result-link-card
+          v-for="keyResult in orderedKeyResults"
+          :key="keyResult.id"
+          :route="{
+            name: 'KeyResultHome',
+            params: { objectiveId: activeObjective.id, keyResultId: keyResult.id },
+          }"
+          :title="keyResult.name"
+          :progression="keyResult.progression"
+          :owner="keyResult.parent?.name ? keyResult.parent : null"
+          :draggable="true"
+          :active="activeKeyResult && activeKeyResult.id === keyResult.id"
+        />
+      </SortableList>
 
       <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
         <key-result-link-card
@@ -112,7 +109,6 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
-import draggable from 'vuedraggable';
 import { compareKeyResults } from '@/util/okr';
 import { db } from '@/config/firebaseConfig';
 import KeyResult from '@/db/KeyResult';
@@ -122,16 +118,21 @@ import LoadingSmall from '@/components/LoadingSmall.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
 import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
 import EmptyState from '@/components/EmptyState.vue';
+import SortableList from '@/components/SortableList.vue';
 import KeyResultLinkCard from '@/components/KeyResultLinkCard.vue';
+
+SortableList.compatConfig = { MODE: 3 };
 
 export default {
   name: 'ObjectivePane',
 
+  compatConfig: { MODE: 3 },
+
   components: {
-    draggable,
     PaneWrapper,
     EmptyState,
     ObjectiveDetailsCard,
+    SortableList,
     KeyResultLinkCard,
     LoadingSmall,
     PktAlert,
@@ -259,7 +260,7 @@ export default {
         margin: 0 1.5rem 0 2rem;
       }
 
-      & .key-result-link-card {
+      & :deep(.key-result-link-card) {
         position: relative;
         margin-top: 1rem;
 
@@ -288,14 +289,19 @@ export default {
         }
       }
 
-      ::v-deep & .sortable-ghost {
-        background: var(--color-grayscale-10);
+      & :deep(.sortable-drag) {
+        &::before,
+        &::after {
+          border-color: transparent;
+        }
+      }
+
+      & :deep(.sortable-ghost) {
+        background-color: var(--color-grayscale-10);
         border-color: var(--color-grayscale-10);
 
         & .key-result-link-card__inner * {
-          color: var(--color-grayscale-10);
-          background: var(--color-grayscale-10) !important;
-          border-color: var(--color-grayscale-10);
+          visibility: hidden;
         }
       }
     }
@@ -304,7 +310,7 @@ export default {
   &__widgets {
     margin-top: 2rem;
 
-    ::v-deep .widget {
+    :deep(.widget) {
       padding: 0;
       border: 0;
 
@@ -319,10 +325,10 @@ export default {
   background-color: transparent;
 }
 
-::v-deep .pkt-breadcrumbs {
+.pkt-breadcrumbs {
   display: flex;
 
-  &--mobile {
+  :deep(.pkt-breadcrumbs--mobile) {
     width: 100%;
 
     .pkt-breadcrumbs__text {
