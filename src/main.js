@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import Toasted from 'vue-toasted';
-import VTooltip from 'v-tooltip';
+import VueTippy from 'vue-tippy';
 import { VueHeadMixin, createHead } from '@unhead/vue';
 import { firestorePlugin } from 'vuefire';
 
@@ -37,9 +37,15 @@ function createTrackerApp() {
     className: 'toast',
     duration: 3500,
   });
-  app.use(VTooltip, {
-    defaultHtml: false,
+  app.use(VueTippy, {
+    directive: 'tooltip',
+    component: 'Tooltip',
+    defaultProps: {
+      maxWidth: 250,
+      allowHTML: false,
+    },
   });
+
   app.use(firestorePlugin);
 
   // Configure VeeValidate for form validation.

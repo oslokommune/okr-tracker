@@ -7,10 +7,7 @@
         <span class="pkt-txt-18-medium">{{ client.name }}</span>
         <div class="api-client-card__actions">
           <pkt-button
-            v-tooltip="{
-              hideOnTargetClick: true,
-              content: $t('integration.action.edit'),
-            }"
+            v-tooltip="$t('integration.action.edit')"
             size="small"
             skin="tertiary"
             variant="icon-only"
@@ -19,10 +16,7 @@
             @on-click="$emit('edit', client)"
           />
           <btn-delete
-            v-tooltip="{
-              hideOnTargetClick: true,
-              content: $t('integration.action.delete'),
-            }"
+            v-tooltip="$t('integration.action.delete')"
             size="small"
             :confirm-help="$t('integration.warning.delete')"
             variant="icon-only"
@@ -46,10 +40,7 @@
                 :readonly="true"
               />
               <pkt-button
-                v-tooltip="{
-                  hideOnTargetClick: true,
-                  content: $t('tooltip.copyToClipboard'),
-                }"
+                v-tooltip="$t('tooltip.copyToClipboard')"
                 size="small"
                 skin="tertiary"
                 variant="icon-only"
@@ -80,10 +71,7 @@
               />
               <pkt-button
                 v-if="visibleSecret"
-                v-tooltip="{
-                  hideOnTargetClick: true,
-                  content: $t('tooltip.copyToClipboard'),
-                }"
+                v-tooltip="$t('tooltip.copyToClipboard')"
                 size="small"
                 skin="tertiary"
                 variant="icon-only"
@@ -92,10 +80,7 @@
               />
               <btn-delete
                 v-else
-                v-tooltip="{
-                  hideOnTargetClick: true,
-                  content: $t('integration.action.rotate'),
-                }"
+                v-tooltip="$t('integration.action.rotate')"
                 size="small"
                 :confirm-text="$t('integration.action.confirmRotate')"
                 :confirm-help="$t('integration.warning.rotate')"

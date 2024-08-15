@@ -19,7 +19,7 @@
               skin="tertiary"
               variant="icon-only"
               :icon-name="showComments ? 'close' : 'eye'"
-              @onClick="showComments = !showComments"
+              @on-click="showComments = !showComments"
             />
           </th>
           <th v-if="hasEditRights" style="width: 1rem">
@@ -47,19 +47,21 @@
             <span v-if="record.comment && showComments" class="record__comment">
               {{ record.comment }}
             </span>
-            <v-popover v-if="record.comment && !showComments" placement="top">
-              <pkt-button
-                v-tooltip="$t('widget.history.showComment')"
-                class="record__comment-icon"
-                size="small"
-                skin="tertiary"
-                variant="icon-only"
-                icon-name="feedback"
-              />
-              <template #popover>
+            <Tooltip v-if="record.comment && !showComments" placement="top">
+              <template #default>
+                <pkt-button
+                  v-tooltip="$t('widget.history.showComment')"
+                  class="record__comment-icon"
+                  size="small"
+                  skin="tertiary"
+                  variant="icon-only"
+                  icon-name="feedback"
+                />
+              </template>
+              <template #content>
                 {{ record.comment }}
               </template>
-            </v-popover>
+            </Tooltip>
           </td>
           <td v-if="hasEditRights">
             <div class="record__actions">
@@ -69,13 +71,13 @@
                 skin="tertiary"
                 variant="icon-only"
                 icon-name="edit"
-                @onClick="$emit('edit-record', record)"
+                @on-click="$emit('edit-record', record)"
               />
               <btn-delete
                 v-tooltip="$t('tooltip.deleteProgress')"
                 size="small"
                 variant="icon-only"
-                @click="$emit('delete-record', record)"
+                @on-click="$emit('delete-record', record)"
               />
             </div>
           </td>
@@ -99,7 +101,7 @@
       <pkt-button
         v-if="!isLoading && isLimited"
         skin="secondary"
-        @onClick="$emit('load-more')"
+        @on-click="$emit('load-more')"
       >
         {{ $t('btn.showMore') }}
       </pkt-button>

@@ -1,105 +1,87 @@
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-.tooltip {
-  z-index: 10000;
-  display: block !important;
-  pointer-events: none;
-
-  .tooltip-inner {
-    @include get-text('pkt-txt-14-medium');
-    max-width: 14rem;
-    padding: 1em;
-    color: var(--color-text-secondary);
-    background: var(--color-primary);
-  }
-
-  .tooltip-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    margin: 8px;
-    border-color: var(--color-primary);
-    border-style: solid;
-  }
-
-  &[x-placement^='top'] {
-    margin-bottom: 8px;
-
-    .tooltip-arrow {
-      bottom: -8px;
-      left: calc(50% - 8px);
-      margin-top: 0;
-      margin-bottom: 0;
-      border-width: 8px 8px 0 8px;
-      border-right-color: transparent !important;
-      border-bottom-color: transparent !important;
-      border-left-color: transparent !important;
-    }
-  }
-
-  &[x-placement^='bottom'] {
-    margin-top: 8px;
-
-    .tooltip-arrow {
-      top: -8px;
-      left: calc(50% - 8px);
-      margin-top: 0;
-      margin-bottom: 0;
-      border-width: 0 8px 8px 8px;
-      border-top-color: transparent !important;
-      border-right-color: transparent !important;
-      border-left-color: transparent !important;
-    }
-  }
-
-  &[x-placement^='right'] {
-    margin-left: 8px;
-
-    .tooltip-arrow {
-      top: calc(50% - 8px);
-      left: -8px;
-      margin-right: 0;
-      margin-left: 0;
-      border-width: 8px 8px 8px 0;
-      border-top-color: transparent !important;
-      border-bottom-color: transparent !important;
-      border-left-color: transparent !important;
-    }
-  }
-
-  &[x-placement^='left'] {
-    margin-right: 8px;
-
-    .tooltip-arrow {
-      top: calc(50% - 8px);
-      right: -8px;
-      margin-right: 0;
-      margin-left: 0;
-      border-width: 8px 0 8px 8px;
-      border-top-color: transparent !important;
-      border-right-color: transparent !important;
-      border-bottom-color: transparent !important;
-    }
-  }
-
-  &[aria-hidden='true'] {
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.15s, visibility 0.15s;
-  }
-
-  &[aria-hidden='false'] {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.15s;
-  }
+.tippy-box[data-animation=fade][data-state=hidden] {
+  opacity: 0
 }
 
-.tooltip.popover {
-  pointer-events: all;
+[data-tippy-root] {
+  max-width: calc(100vw - 10px)
+}
 
-  .tooltip-inner {
-    font-size: 1rem !important;
-    text-align: center;
-  }
+.tippy-box {
+  @include get-text('pkt-txt-14-medium');
+  position: relative;
+  padding: 0.5rem 1rem;
+  color: var(--color-text-secondary);
+  background: var(--color-primary);
+  transition-property: transform, visibility, opacity;
+}
+
+.tippy-box[data-placement^=top]>.tippy-arrow {
+  bottom: 0
+}
+
+.tippy-box[data-placement^=top]>.tippy-arrow:before {
+  bottom: -7px;
+  left: 0;
+  border-width: 8px 8px 0;
+  border-top-color: initial;
+  transform-origin: center top
+}
+
+.tippy-box[data-placement^=bottom]>.tippy-arrow {
+  top: 0
+}
+
+.tippy-box[data-placement^=bottom]>.tippy-arrow:before {
+  top: -7px;
+  left: 0;
+  border-width: 0 8px 8px;
+  border-bottom-color: initial;
+  transform-origin: center bottom
+}
+
+.tippy-box[data-placement^=left]>.tippy-arrow {
+  right: 0
+}
+
+.tippy-box[data-placement^=left]>.tippy-arrow:before {
+  right: -7px;
+  border-width: 8px 0 8px 8px;
+  border-left-color: initial;
+  transform-origin: center left
+}
+
+.tippy-box[data-placement^=right]>.tippy-arrow {
+  left: 0
+}
+
+.tippy-box[data-placement^=right]>.tippy-arrow:before {
+  left: -7px;
+  border-width: 8px 8px 8px 0;
+  border-right-color: initial;
+  transform-origin: center right
+}
+
+.tippy-box[data-inertia][data-state=visible] {
+  transition-timing-function: cubic-bezier(.54, 1.5, .38, 1.11)
+}
+
+.tippy-arrow {
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary);
+}
+
+.tippy-arrow:before {
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+  content: ""
+}
+
+.tippy-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
 }
