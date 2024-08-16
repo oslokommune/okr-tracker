@@ -47,7 +47,7 @@
               content: periodObjectives.length
                 ? $t('general.selectObjectivesInPeriod')
                 : $t('general.noObjectivesInPeriod'),
-              delay: { show: 750 },
+              delay: 750,
             }"
             :class="[
               'sep__period',
@@ -79,7 +79,7 @@
             :data-id="o.objective.id"
             :before-navigate="beforeObjectiveNavigate(o.objective)"
             @toggle="toggleObjective($event, o.objective)"
-            @hook:mounted="onObjectiveMounted(o.objective)"
+            @vue:mounted="onObjectiveMounted(o.objective)"
           />
         </div>
       </template>
@@ -103,7 +103,6 @@ import {
 } from 'date-fns';
 import { useLocalStorage } from '@vueuse/core';
 import { dateLongCompact } from '@/util';
-import paneEvents from '@/components/layout/paneEvents';
 import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 
 export default {
@@ -249,14 +248,6 @@ export default {
     activeObjective: {
       handler: 'scrollToObjective',
     },
-  },
-
-  mounted() {
-    paneEvents.$on('pane-enter', () => {
-      if (this.activeObjective) {
-        this.scrollToObjective(this.activeObjective);
-      }
-    });
   },
 
   methods: {
@@ -736,7 +727,7 @@ export default {
   z-index: 1;
   height: 10rem;
   overflow: hidden;
-  
+
   &--active {
     --card-bg-color: var(--color-blue-5);
   }
