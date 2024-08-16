@@ -291,7 +291,7 @@
     "delete": {
       "user": "Slettet bruker {user}",
       "permanently": "Slettet dokumentet permanent",
-      "object": "Arkiverte «{name}»",
+      "object": "Arkiverte «{name}». Klikk her for å gjenopprette!",
       "progress": "Slettet målepunkt"
     },
     "update": {

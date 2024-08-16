@@ -35,7 +35,6 @@
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
 import { db } from '@/config/firebaseConfig';
 import api from '@/util/api';
-import { showToastMessage } from '@/util/toastUtils';
 // eslint-disable-next-line import/no-relative-packages
 import AccessRequestCollection from '../../../../functions/backend/utils/collectionUtils/AccessRequestCollection.js';
 
@@ -59,25 +58,21 @@ export default {
   },
 
   methods: {
-    showToastMessage(message, accessRequest, toastType) {
-      showToastMessage({
-        msg: message,
-        msgVars: { user: accessRequest.email },
-        type: toastType,
-      });
-    },
     async handleAccessRequest(method, path, accessRequest) {
       this.isProcessingAccessRequest = true;
 
       try {
         const { message } = await api(path, { method });
-        this.showToastMessage(message, accessRequest, 'success');
+        this.$toasted.success(this.$t(message, { user: accessRequest.email }) || message);
       } catch (error) {
-        this.showToastMessage(error.message, accessRequest, 'error');
+        this.$toasted.success(
+          this.$t(error.message, { user: accessRequest.email }) || error.message
+        );
       }
 
       this.isProcessingAccessRequest = false;
     },
+
     acceptRequest(accessRequest) {
       this.handleAccessRequest(
         'post',

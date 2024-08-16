@@ -291,7 +291,7 @@
     "delete": {
       "user": "Deleted user {user}",
       "permanently": "Deleted permanently",
-      "object": "Archived «{name}»",
+      "object": "Archived «{name}». Click here to restore!",
       "progress": "Deleted value"
     },
     "update": {

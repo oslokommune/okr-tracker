@@ -32,7 +32,6 @@
 import { mapMutations } from 'vuex';
 import { PktBackLink } from '@oslokommune/punkt-vue';
 import api from '@/util/api';
-import { showToastMessage } from '@/util/toastUtils';
 import { BtnSave } from '@/components/generic/form';
 
 export default {
@@ -64,23 +63,14 @@ export default {
             email: this.email,
           },
         });
-
-        showToastMessage({
-          msg: message,
-          msgVars: { user: this.email },
-          type: 'success',
-        });
+        this.$toasted.success(this.$t(message, { user: this.email }));
 
         await this.$router.push({
           name: 'Login',
           query: { redirectFrom: '/' },
         });
       } catch (error) {
-        showToastMessage({
-          msg: error.message,
-          msgVars: { user: this.email },
-          type: 'error',
-        });
+        this.$toasted.error(this.$t(error.message, { user: this.email }));
       }
 
       resetForm();

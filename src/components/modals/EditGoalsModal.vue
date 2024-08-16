@@ -81,7 +81,6 @@ import { PktButton } from '@oslokommune/punkt-vue';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
-import { toastArchiveAndRevert } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import ModalWrapper from './ModalWrapper.vue';
 
@@ -229,10 +228,15 @@ export default {
       try {
         await Goal.archive(this.kpi.id, this.activeGoalId);
         const restoreCallback = this.restore.bind(this, this.kpi.id, this.activeGoalId);
-        toastArchiveAndRevert({
-          name: this.name || this.$t('kpi.goals.the'),
-          callback: restoreCallback,
-        });
+
+        this.$toasted.success(
+          this.$t('toaster.delete.object', {
+            name: this.name || this.$t('kpi.goals.the'),
+          }),
+          {
+            onClick: restoreCallback,
+          }
+        );
       } catch {
         this.$toasted.error(
           this.$t('toaster.error.archive', {

@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
-import Toasted from 'vue-toasted';
-import VueTippy from 'vue-tippy';
 import { VueHeadMixin, createHead } from '@unhead/vue';
 import { firestorePlugin } from 'vuefire';
+import VueTippy from 'vue-tippy';
+import ToastPlugin from 'vue-toast-notification';
 
 import { PktIcon } from '@oslokommune/punkt-vue';
 
@@ -25,18 +25,16 @@ function createTrackerApp() {
   app.use(router);
   app.use(store);
   app.use(i18n);
+  app.use(firestorePlugin);
 
-  // Use plugins
+  // Unhead
+  // https://github.com/unjs/unhead
   const head = createHead();
   app.mixin(VueHeadMixin);
   app.use(head);
 
-  // TODO: Replace - not compatible with Vue 3
-  app.use(Toasted, {
-    position: 'bottom-right',
-    className: 'toast',
-    duration: 3500,
-  });
+  // VueTippy
+  // https://vue-tippy.netlify.app/
   app.use(VueTippy, {
     directive: 'tooltip',
     component: 'Tooltip',
@@ -46,7 +44,15 @@ function createTrackerApp() {
     },
   });
 
-  app.use(firestorePlugin);
+  // Vue Toast Notification
+  // https://github.com/ankurk91/vue-toast-notification
+  // Note: Aliased to global property `$toasted` for backwards compatibility.
+  app.use(ToastPlugin, {
+    duration: 3500,
+  });
+  const toasted = app.config.globalProperties.$toast;
+  toasted.show = toasted.success;
+  app.config.globalProperties.$toasted = toasted;
 
   // Configure VeeValidate for form validation.
   // https://vee-validate.logaretm.com/v4/guide/global-validators/
