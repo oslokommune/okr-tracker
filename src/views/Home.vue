@@ -27,17 +27,18 @@
           </div>
 
           <div v-if="organizations.length" class="home-page__organizations">
-            <pkt-linkcard
+            <button
               v-for="organization in sortItemsByName(organizations)"
               :key="organization.id"
-              href="#"
-              :title="organization.name"
-              skin="normal"
-              icon-name="organization"
-              @click.native="setActiveOrganization(organization.id)"
+              class="pkt-linkcard pkt-link pkt-linkcard--normal"
+              @click="setActiveOrganization(organization.id)"
             >
-              {{ organization.missionStatement }}
-            </pkt-linkcard>
+              <PktIcon class="pkt-link__icon" name="organization" />
+              <div class="pkt-linkcard__content">
+                <div class="pkt-linkcard__title">{{ organization.name }}</div>
+                <div class="pkt-linkcard__text">{{ organization.missionStatement }}</div>
+              </div>
+            </button>
           </div>
         </template>
 
@@ -208,6 +209,20 @@ export default {
     flex-direction: column;
     gap: 1rem;
     width: 100%;
+
+    button {
+      &:hover,
+      &:active,
+      &:focus {
+        color: var(--pkt-color-text-action-active);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 0.125rem var(--pkt-color-text-action-active),
+          0px 0px 0px 0.375rem var(--pkt-color-border-states-focus);
+      }
+    }
   }
 
   &__departments {

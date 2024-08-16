@@ -14,7 +14,7 @@
               'organization-tree__link--active': organization.slug === $route.params.slug,
             },
           ]"
-          @click.native="$emit('selection')"
+          @click="$emit('selection')"
         >
           {{ org.name }}
         </router-link>
@@ -31,7 +31,7 @@
                 'organization-tree__link',
                 { 'organization-tree__link--active': dept.slug === $route.params.slug },
               ]"
-              @click.native="$emit('selection')"
+              @click="$emit('selection')"
             >
               {{ dept.name }}
             </router-link>
@@ -50,7 +50,7 @@
                       'organization-tree__link--active': prod.slug === $route.params.slug,
                     },
                   ]"
-                  @click.native="$emit('selection')"
+                  @click="$emit('selection')"
                 >
                   {{ prod.name }}
                 </router-link>
@@ -76,6 +76,8 @@ export default {
       default: null,
     },
   },
+
+  emits: ['selection'],
 
   computed: {
     ...mapState(['organizations', 'user']),

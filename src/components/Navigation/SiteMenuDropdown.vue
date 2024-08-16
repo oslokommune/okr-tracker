@@ -7,7 +7,7 @@
           'site-menu-dropdown__link',
           { 'site-menu-dropdown__link--active': $route.name === 'Home' },
         ]"
-        @click.native="handleNavigation"
+        @click="handleNavigation"
       >
         {{ $t('general.frontPage') }}
       </router-link>
