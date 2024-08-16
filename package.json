@@ -26,7 +26,6 @@
     "@oslokommune/punkt-vue": "^11.13.14",
     "@unhead/vue": "^1.9.14",
     "@vee-validate/rules": "^4.13.2",
-    "@vue/compat": "^3.4.29",
     "@vueform/multiselect": "^2.6.9",
     "@vueuse/core": "^10.11.0",
     "@vueuse/integrations": "^10.11.1",
@@ -55,7 +54,7 @@
     "vue-router": "^4.3.3",
     "vue-tippy": "^6.4.4",
     "vue-toast-notification": "^3.1.2",
-    "vuefire": "^2.2.5",
+    "vuefire": "^3.1.24",
     "vuex": "^4.1.0",
     "vuexfire": "^3.2.5"
   },

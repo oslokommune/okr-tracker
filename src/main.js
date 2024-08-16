@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { VueHeadMixin, createHead } from '@unhead/vue';
-import { firestorePlugin } from 'vuefire';
+import { VueFire, VueFireFirestoreOptionsAPI } from 'vuefire';
 import VueTippy from 'vue-tippy';
 import ToastPlugin from 'vue-toast-notification';
 
@@ -25,7 +25,20 @@ function createTrackerApp() {
   app.use(router);
   app.use(store);
   app.use(i18n);
-  app.use(firestorePlugin);
+
+  // VueFire
+  app.use(VueFire, {
+    modules: [
+      VueFireFirestoreOptionsAPI({
+        // Keep same behavior as VueFire 2.x for now.
+        reset: true,
+        wait: false,
+      }),
+    ],
+  });
+  // TODO: Remove temporary aliasing of `$firestoreBind` to `$bind` (for
+  // backwards compatibility).
+  app.config.globalProperties.$bind = app.config.globalProperties.$firestoreBind;
 
   // Unhead
   // https://github.com/unjs/unhead

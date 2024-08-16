@@ -4,17 +4,7 @@ import path from 'path';
 import { version } from './package.json';
 
 export default defineConfig({
-  plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          compatConfig: {
-            MODE: 3,
-          },
-        },
-      },
-    }),
-  ],
+  plugins: [vue()],
   base: '/',
   publicDir: 'public',
   server: {
@@ -26,10 +16,6 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      {
-        find: 'vue',
-        replacement: '@vue/compat',
-      },
       {
         find: '@',
         replacement: path.resolve(__dirname, 'src'),
