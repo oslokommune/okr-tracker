@@ -271,7 +271,8 @@
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "providerError": "Klarte ikke å logge inn. Kontakt systemadministrator hvis feilen vedvarer.",
       "wrongPassword": "Passordet er feil.",
-      "userNotFound": "Kunne ikke finne bruker"
+      "userNotFound": "Kunne ikke finne bruker.",
+      "userAbort": "Forespørselen ble avbrutt. Prøv igjen."
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },
@@ -444,18 +445,15 @@
       "delete": "Slett måling"
     },
     "department": {
-      "picture": "Bilde",
       "create": "Opprett nytt produktområde",
       "parentOrganisation": "Tilhører organisasjon",
-      "search": "Søk {count} organisasjoner"
-    },
-    "organization": {
-      "picture": "Bilde",
-      "create": "Opprett ny organisasjon",
       "search": "Søk {count} produktområder"
     },
+    "organization": {
+      "create": "Opprett ny organisasjon",
+      "search": "Søk {count} organisasjoner"
+    },
     "product": {
-      "picture": "Bilde",
       "create": "Opprett nytt produkt",
       "parentDepartment": "Tilhører produktområde",
       "search": "Søk {count} produkter"

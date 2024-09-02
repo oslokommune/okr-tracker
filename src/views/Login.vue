@@ -1,22 +1,73 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { useHead } from 'unhead';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
+import { useAuthStore } from '@/store/auth';
+import { BtnSave } from '@/components/generic/form';
+import LoadingSmall from '@/components/LoadingSmall.vue';
+
+const i18n = useI18n();
+
+useHead({
+  title: `${i18n.t('login.login')} | ${i18n.t('general.project')}`,
+});
+
+const authStore = useAuthStore();
+const { isAuthenticating, authenticationProviders, authenticationError } =
+  storeToRefs(authStore);
+const { signInWithProvider, signInWithEmail } = authStore;
+
+const showForm = ref(false);
+
+const authenticationErrorMessage = computed(() => {
+  switch (authenticationError.value) {
+    case 1:
+      return i18n.t('login.error.notRegistered');
+    case 2:
+      return i18n.t('login.error.providerError');
+    case 3:
+      return i18n.t('login.error.wrongPassword');
+    case 4:
+      return i18n.t('login.error.userNotFound');
+    case 5:
+      return i18n.t('login.error.userAbort');
+    default:
+      return null;
+  }
+});
+
+async function loginWithProvider(provider) {
+  showForm.value = false;
+  await signInWithProvider(provider);
+}
+</script>
+
 <template>
   <page-layout breakpoint="phablet">
     <h1 class="title-1">{{ $t('login.login') }}</h1>
 
-    <div v-if="loginLoading && loginError === null">
+    <div v-if="isAuthenticating && authenticationError === null">
       <LoadingSmall /> {{ $t('login.loading') }}
     </div>
 
-    <PktAlert v-else-if="loginError" skin="error">
-      {{ loginErrorMessage }}
+    <PktAlert
+      v-else-if="authenticationError"
+      skin="error"
+      :close-alert="true"
+      class="mb-size-32"
+    >
+      {{ authenticationErrorMessage }}
 
-      <RouterLink v-if="loginError === 1" :to="{ name: 'request-access' }">
+      <RouterLink v-if="authenticationError === 1" :to="{ name: 'request-access' }">
         {{ $t('login.requestAccess') }}
       </RouterLink>
     </PktAlert>
 
     <FormSection v-if="showForm" class="login__form">
       <FormComponent
-        v-model="email"
         input-type="input"
         name="email"
         :label="$t('login.email')"
@@ -25,7 +76,6 @@
       />
 
       <FormComponent
-        v-model="password"
         input-type="input"
         name="password"
         :label="$t('login.password')"
@@ -36,24 +86,30 @@
       <template #actions="{ submit, disabled }">
         <BtnSave
           variant="label-only"
-          :disabled="disabled || loginLoading"
+          :disabled="disabled || isAuthenticating"
           :text="$t('login.login')"
-          @on-click="submit(loginWithEmail)"
+          @on-click="submit(({ email, password }) => signInWithEmail(email, password))"
         />
       </template>
     </FormSection>
 
-    <div v-if="!loginLoading || loginError !== null" class="login__footer">
-      <PktButton v-if="providers.includes('microsoft')" @onClick="loginWithMicrosoft">
+    <div v-if="!isAuthenticating || authenticationError !== null" class="login__footer">
+      <PktButton
+        v-if="authenticationProviders.includes('microsoft')"
+        @on-click="loginWithProvider(loginProviderMS)"
+      >
         {{ $t('login.microsoft') }}
       </PktButton>
 
-      <PktButton v-if="providers.includes('google')" @onClick="loginWithGoogle">
+      <PktButton
+        v-if="authenticationProviders.includes('google')"
+        @on-click="loginWithProvider(loginProviderGoogle)"
+      >
         {{ $t('login.google') }}
       </PktButton>
 
       <PktButton
-        v-if="providers.includes('email')"
+        v-if="authenticationProviders.includes('email')"
         skin="secondary"
         @on-click="showForm = true"
       >
@@ -68,111 +124,6 @@
     </div>
   </page-layout>
 </template>
-
-<script>
-import { mapState, mapActions } from 'vuex';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
-import { auth, loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
-import { BtnSave } from '@/components/generic/form';
-import LoadingSmall from '@/components/LoadingSmall.vue';
-
-export default {
-  name: 'Login',
-
-  components: {
-    PktAlert,
-    PktButton,
-    BtnSave,
-    LoadingSmall,
-  },
-
-  data: () => ({
-    email: '',
-    password: '',
-    showForm: false,
-  }),
-
-  head() {
-    return {
-      title: ` ${this.$t('general.project')} | ${this.$t('general.owner')}`,
-    };
-  },
-
-  computed: {
-    ...mapState(['user', 'loginError', 'providers', 'loginLoading']),
-
-    loginErrorMessage() {
-      if (this.loginError === 1) {
-        return this.$t('login.error.notRegistered');
-      }
-      if (this.loginError === 2) {
-        return this.$t('login.error.providerError');
-      }
-      if (this.loginError === 3) {
-        return this.$t('login.error.wrongPassword');
-      }
-      if (this.loginError === 4) {
-        return this.$t('login.error.userNotFound');
-      }
-      return null;
-    },
-  },
-
-  methods: {
-    ...mapActions(['setLoginLoading', 'setLoginError']),
-
-    async loginWithMicrosoft() {
-      this.showForm = false;
-      await this.setLoginLoading(true);
-      await this.setLoginError(null);
-
-      try {
-        const { user } = await auth.signInWithPopup(loginProviderMS);
-        this.$toasted.show(
-          this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' })
-        );
-      } catch (e) {
-        console.log(e);
-        await this.setLoginError(2);
-      }
-      await this.setLoginLoading(false);
-    },
-
-    async loginWithGoogle() {
-      this.showForm = false;
-      await this.setLoginLoading(true);
-      await this.setLoginError(null);
-
-      try {
-        const { user } = await auth.signInWithPopup(loginProviderGoogle);
-        this.$toasted.show(
-          this.$t('toaster.welcome', { user: user.displayName ? user.displayName : '' })
-        );
-      } catch (e) {
-        await this.setLoginError(2);
-      }
-      await this.setLoginLoading(false);
-    },
-
-    async loginWithEmail() {
-      await this.setLoginLoading(true);
-      await this.setLoginError(null);
-
-      try {
-        await auth.signInWithEmailAndPassword(this.email, this.password);
-      } catch (err) {
-        console.log(err);
-        await this.setLoginLoading(false);
-        if (err.code === 'auth/wrong-password') {
-          await this.setLoginError(3);
-        } else if (err.code === 'auth/user-not-found') {
-          await this.setLoginError(4);
-        }
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;

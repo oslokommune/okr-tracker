@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+import { storeToRefs } from 'pinia';
+import { getCurrentUser } from 'vuefire';
+import { useAuthStore } from '@/store/auth';
 import Admin from '@/views/Admin/Admin.vue';
 import AdminWrapper from '@/views/Admin/AdminWrapper.vue';
 import CreateDepartment from '@/views/Admin/CreateDepartment.vue';
@@ -23,7 +25,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    beforeEnter: routerGuards.home,
   },
   {
     path: '/api',
@@ -34,22 +35,23 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    beforeEnter: routerGuards.login,
+    meta: { requiresAuth: false },
   },
   {
     path: '/request-access',
     name: 'request-access',
     component: RequestAccess,
-    beforeEnter: routerGuards.requestAccess,
+    meta: { requiresAuth: false },
   },
   {
     path: '/403',
     name: 'Forbidden',
     component: Forbidden,
+    meta: { requiresAuth: false },
   },
   {
     path: '/admin',
-    beforeEnter: routerGuards.admin,
+    meta: { requiresAdmin: true },
     component: AdminWrapper,
     children: [
       {
@@ -78,6 +80,7 @@ const routes = [
     path: '/help',
     name: 'Help',
     component: Help,
+    meta: { requiresAuth: false },
   },
   {
     path: '/:slug',
@@ -98,6 +101,7 @@ const routes = [
           {
             path: 'o/:objectiveId',
             name: 'ObjectiveHome',
+            // component: ItemOKRs,
           },
           {
             path: 'o/:objectiveId/k/:keyResultId',
@@ -154,12 +158,48 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
+    meta: { requiresAuth: false },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore();
+  const requiresAdmin = to.matched.some((r) => r.meta.requiresAdmin === true);
+  const requiresAuth =
+    requiresAdmin || to.matched.some((r) => r.meta.requiresAuth !== false);
+
+  await getCurrentUser();
+
+  const { userPromise, isLoggedIn, isAdmin } = storeToRefs(authStore);
+
+  // Ensure that the user is fully loaded.
+  await userPromise.value;
+
+  if (to.name === 'Login') {
+    if (isLoggedIn.value) {
+      const { redirectFrom } = to.query;
+      next(redirectFrom ? { path: redirectFrom } : { name: 'Home' });
+    } else {
+      next();
+    }
+  } else if (requiresAuth) {
+    if (isLoggedIn.value) {
+      if (requiresAdmin && !isAdmin.value) {
+        next({ name: 'Home' });
+      } else {
+        next();
+      }
+    } else {
+      next({ name: 'Login', query: { redirectFrom: to.fullPath } });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

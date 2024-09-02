@@ -8,13 +8,6 @@ const { state } = store;
  * and their sub-pages.
  */
 export default async function itemCommon(to, from, next) {
-  if (!state.user) {
-    return next({
-      name: 'Login',
-      query: { redirectFrom: to.fullPath },
-    });
-  }
-
   const { activeItem } = state;
   const { slug } = to.params;
   const slugRef = await getSlugRef(slug);

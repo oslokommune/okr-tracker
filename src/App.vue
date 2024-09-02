@@ -1,38 +1,14 @@
+<script setup>
+import AppLayout from './components/AppLayout.vue';
+</script>
+
 <template>
   <div class="app">
-    <app-layout />
+    <AppLayout />
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { auth } from '@/config/firebaseConfig';
-
-import AppLayout from './components/AppLayout.vue';
-
-export default {
-  name: 'App',
-
-  components: {
-    AppLayout,
-  },
-
-  computed: {
-    isDev() {
-      return import.meta.env.NODE_ENV !== 'production';
-    },
-  },
-
-  methods: {
-    ...mapActions(['reset_state']),
-
-    async signOut() {
-      await auth.signOut();
-      await this.reset_state();
-    },
-  },
-};
-
 // Using a class on body to determine how to style focus states
 document.body.addEventListener('mousedown', () => {
   document.body.classList.add('using-mouse');

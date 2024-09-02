@@ -271,7 +271,8 @@
       "notRegistered": "Your account is not registered",
       "providerError": "Could not sign in. Please contact system administrator if the error persists.",
       "wrongPassword": "Wrong password.",
-      "userNotFound": "Could not find user."
+      "userNotFound": "Could not find user.",
+      "userAbort": "Login request aborted. Please try again."
     },
     "loginWithUsername": "Sign in with username"
   },
@@ -444,18 +445,15 @@
       "delete": "Delete measurement"
     },
     "department": {
-      "picture": "Image",
       "create": "Create new department",
       "parentOrganisation": "Related organization",
-      "search": "Search {count} organizations"
-    },
-    "organization": {
-      "picture": "Image",
-      "create": "Create new organization",
       "search": "Search {count} departments"
     },
+    "organization": {
+      "create": "Create new organization",
+      "search": "Search {count} organizations"
+    },
     "product": {
-      "picture": "Image",
       "create": "Create new product",
       "parentDepartment": "Related department",
       "search": "Search {count} products"

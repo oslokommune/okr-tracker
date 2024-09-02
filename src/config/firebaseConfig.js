@@ -25,7 +25,7 @@ const config = {
   appId: import.meta.env.VITE_APP_ID,
 };
 
-firebase.initializeApp(config);
+const firebaseApp = firebase.initializeApp(config);
 
 // firebase utils
 const db = firebase.firestore();
@@ -52,6 +52,7 @@ if (import.meta.env.MODE === 'development') {
 }
 
 export {
+  firebaseApp,
   db,
   auth,
   loginProviderGoogle,

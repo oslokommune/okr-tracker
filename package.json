@@ -43,6 +43,7 @@
     "fuse.js": "^6.5.3",
     "html2canvas": "^1.4.1",
     "marked": "^4.3.0",
+    "pinia": "^2.2.2",
     "sortablejs": "^1.15.2",
     "swagger-ui-dist": "^4.17.0",
     "tabbable": "^6.0.0",

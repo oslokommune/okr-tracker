@@ -20,6 +20,7 @@ const DEFAULT_LOCALE = import.meta.env.VITE_I18N_LOCALE || 'en-US';
 const FALLBACK_LOCALE = import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en-US';
 
 const i18n = createI18n({
+  legacy: false,
   locale: DEFAULT_LOCALE,
   fallbackLocale: FALLBACK_LOCALE,
   messages: {
@@ -35,7 +36,7 @@ export function setLanguage(lang) {
     return;
   }
 
-  i18n.global.locale = lang;
+  i18n.global.locale.value = lang;
   flatpickr.localize(LOCALES[lang].flatpickr);
   setDateFnsOptions({ locale: LOCALES[lang].datefns });
 
