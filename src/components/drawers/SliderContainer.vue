@@ -1,16 +1,58 @@
+<script setup>
+import { ref, watch } from 'vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
+  allowClickOutside: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+});
+
+const isVisible = ref(false);
+
+watch(
+  () => props.visible,
+  () => {
+    isVisible.value = props.visible;
+  },
+  { immediate: true }
+);
+
+function close() {
+  isVisible.value = false;
+}
+
+function clickOutside() {
+  if (props.allowClickOutside) {
+    close();
+  }
+}
+
+defineExpose({ close });
+</script>
+
 <template>
   <div>
-    <transition name="fade" mode="out-in">
+    <Transition name="fade" mode="out-in">
       <div v-if="isVisible" class="overlay" @click.self="clickOutside"></div>
-    </transition>
-    <transition name="slide" @after-leave="$emit('close')">
+    </Transition>
+
+    <Transition name="slide" mode="out-in" @after-leave="$emit('close')">
       <aside v-if="isVisible" class="sliderContainer">
         <div class="sliderContainer__closeButtonContainer">
-          <pkt-button
+          <PktButton
             skin="tertiary"
             variant="icon-only"
             icon-name="close"
-            @onClick="close"
+            @on-click="close"
           />
         </div>
 
@@ -28,60 +70,9 @@
           </footer>
         </div>
       </aside>
-    </transition>
+    </Transition>
   </div>
 </template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue';
-
-export default {
-  name: 'SliderContainer',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
-    allowClickOutside: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-  },
-
-  data: () => ({
-    isVisible: false,
-  }),
-
-  watch: {
-    visible: {
-      immediate: true,
-      handler() {
-        this.isVisible = this.visible;
-      },
-    },
-  },
-
-  methods: {
-    clickOutside() {
-      if (this.allowClickOutside) {
-        this.close();
-      }
-    },
-
-    close() {
-      this.isVisible = false;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
@@ -141,7 +132,7 @@ export default {
     transition: opacity 0.25s ease-out;
   }
 
-  &-enter,
+  &-enter-from,
   &-leave-to {
     opacity: 0;
   }
@@ -153,7 +144,7 @@ export default {
     transition: right 0.25s ease-in-out;
   }
 
-  &-enter,
+  &-enter-from,
   &-leave-to {
     right: -504px;
   }
