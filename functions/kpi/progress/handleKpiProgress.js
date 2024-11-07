@@ -30,7 +30,11 @@ export default async function updateKpiProgress(change, { params }) {
     progressCollection.map((p) => [
       p.timestamp.toDate().toISOString().slice(0, 10),
       parseFloat(p.value.toFixed(4)),
-      p.comment || '',
+      /*
+       * Crop the comment to avoid bloating the cache as Firestore has a limit
+       * of 1 MB per document.
+       */
+      p.comment ? p.comment.substring(0, 500) : '',
     ])
   );
 
