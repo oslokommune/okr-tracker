@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - Dropped support for Node.js 18 and below.
 
+### Fixed
+
+- Fixed plotting of measurements with very long comments.
+
 ### Security
 
 - Updated dependencies.
