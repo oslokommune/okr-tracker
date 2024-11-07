@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+## [4.2.2] 2024-11-07
+
 ### Changed
 
 - Node.js 20 is now the default runtime for all Cloud Functions and when running
