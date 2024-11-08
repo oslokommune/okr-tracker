@@ -1,6 +1,6 @@
 import i18n from '@/locale/i18n';
 import { numberLocale } from '@/util';
-import { db } from '@/config/firebaseConfig';
+import { where, limit } from 'firebase/firestore';
 
 /**
  * Return a list of available KPI data display formats.
@@ -180,24 +180,28 @@ export function getCachedKPIProgress(kpi, startDate, endDate) {
 }
 
 /**
- * Return KPI progress collection query.
+ * Return KPI progress collection query constraints.
  *
- * `kpi` is the KPI document to build a collection query for.
  * `startDate` is the start date to filter by (inclusive).
  * `endDate` is the end date to filter by (inclusive).
+ * `limit` is the max number of records to return.
  */
-export function getKPIProgressQuery(kpi, startDate, endDate) {
-  let query = db.collection(`kpis/${kpi.id}/progress`);
+export function getKPIProgressConstraints(startDate, endDate, recordLimit) {
+  const queryConstraints = [];
 
   if (startDate) {
-    query = query.where('timestamp', '>=', startDate);
+    queryConstraints.push(where('timestamp', '>=', startDate));
   }
 
   if (endDate) {
-    query = query.where('timestamp', '<=', endDate);
+    queryConstraints.push(where('timestamp', '<=', endDate));
   }
 
-  return query.orderBy('timestamp', 'desc');
+  if (recordLimit) {
+    queryConstraints.push(limit(recordLimit));
+  }
+
+  return queryConstraints;
 }
 
 /**

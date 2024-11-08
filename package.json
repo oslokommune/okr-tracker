@@ -27,8 +27,8 @@
     "@unhead/vue": "^1.9.14",
     "@vee-validate/rules": "^4.13.2",
     "@vueform/multiselect": "^2.6.9",
-    "@vueuse/core": "^10.11.0",
-    "@vueuse/integrations": "^10.11.1",
+    "@vueuse/core": "^11.0.3",
+    "@vueuse/integrations": "^11.0.3",
     "d3-array": "^3.1.1",
     "d3-dsv": "^3.0.1",
     "d3-format": "^3.1.0",
@@ -40,7 +40,7 @@
     "firebase": "^10.11.0",
     "flatpickr": "^4.6.13",
     "focus-trap": "^7.0.0",
-    "fuse.js": "^6.5.3",
+    "fuse.js": "^7.0.0",
     "html2canvas": "^1.4.1",
     "marked": "^4.3.0",
     "pinia": "^2.2.2",
@@ -55,9 +55,7 @@
     "vue-router": "^4.3.3",
     "vue-tippy": "^6.4.4",
     "vue-toast-notification": "^3.1.2",
-    "vuefire": "^3.1.24",
-    "vuex": "^4.1.0",
-    "vuexfire": "^3.2.5"
+    "vuefire": "^3.1.24"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.16.5",

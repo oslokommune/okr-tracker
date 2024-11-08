@@ -1,7 +1,7 @@
 import { computed, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { useCollection } from 'vuefire';
 import { useI18n } from 'vue-i18n';
+import { useCollection } from 'vuefire';
 import { collection, query, where } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import { setLanguage } from '@/locale/i18n';
@@ -13,10 +13,19 @@ export const useTrackerStore = defineStore('tracker', () => {
   const authStore = useAuthStore();
 
   // App
-  const appOwner = computed(() => import.meta.env.VITE_ORGANIZATION);
-  const appVersion = computed(() => __APP_VERSION__); // eslint-disable-line no-undef
+  const owner = computed(() => import.meta.env.VITE_ORGANIZATION);
+  const version = computed(() => __APP_VERSION__); // eslint-disable-line no-undef
 
-  const language = computed(() => authStore.language || i18n.locale.value);
+  // Language
+  const language = computed(() => {
+    if (
+      authStore.language &&
+      Object.keys(i18n.messages.value).includes(authStore.language)
+    ) {
+      return authStore.language;
+    }
+    return i18n.locale.value;
+  });
 
   watch(
     language,
@@ -28,35 +37,32 @@ export const useTrackerStore = defineStore('tracker', () => {
     { immediate: true }
   );
 
-  // Items (organizations, departments and products)
-  const itemQuery = (collectionName) =>
-    query(collection(db, collectionName), where('archived', '==', false));
-
+  // Organizations
   const organizations = useCollection(
-    computed(() => authStore.isLoggedIn && itemQuery('organizations'))
+    computed(
+      () =>
+        authStore.isLoggedIn &&
+        query(collection(db, 'organizations'), where('archived', '==', false))
+    ),
+    { ssrKey: 'organizations', wait: true, maxRefDepth: 1 }
   );
 
-  const departments = useCollection(
-    computed(() => authStore.isLoggedIn && itemQuery('departments'))
-  );
-
-  const products = useCollection(
-    computed(() => authStore.isLoggedIn && itemQuery('products'))
-  );
-
-  // Users
-  const users = useCollection(
-    computed(() => authStore.isLoggedIn && collection(db, 'users'))
-  );
+  // Home organization
+  const homeOrganization = computed({
+    get() {
+      return organizations.value.find((o) => o.slug === authStore.home);
+    },
+    set(slug) {
+      authStore.home = organizations.value.find((o) => o.slug === slug)?.slug;
+    },
+  });
 
   return {
-    appOwner,
-    appVersion,
+    owner,
+    version,
     language,
     organizations,
-    departments,
-    products,
-    users,
+    homeOrganization,
   };
 });
 

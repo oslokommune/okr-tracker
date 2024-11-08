@@ -6,15 +6,13 @@ import {
   VueFireAuthOptionsFromAuth,
   VueFireFirestoreOptionsAPI,
   globalFirestoreOptions,
+  firestoreDefaultConverter,
 } from 'vuefire';
 import VueTippy from 'vue-tippy';
 import ToastPlugin from 'vue-toast-notification';
-
 import { PktIcon } from '@oslokommune/punkt-vue';
-
 import App from '@/App.vue';
 import router from '@/router';
-import store from '@/store';
 import i18n from '@/locale/i18n';
 import Spinner from '@/components/VSpinner.vue';
 import PageLayout from '@/components/layout/PageLayout.vue';
@@ -30,7 +28,6 @@ const pinia = createPinia();
 
 app.use(pinia);
 app.use(router);
-app.use(store);
 app.use(i18n);
 
 // VueFire
@@ -53,9 +50,20 @@ app.use(VueFire, {
 });
 // https://vuefire.vuejs.org/guide/global-options.html
 globalFirestoreOptions.reset = true;
-// TODO: Remove temporary aliasing of `$firestoreBind` to `$bind` (for
-// backwards compatibility).
-app.config.globalProperties.$bind = app.config.globalProperties.$firestoreBind;
+globalFirestoreOptions.converter = {
+  toFirestore: firestoreDefaultConverter.toFirestore,
+  fromFirestore: (snapshot, options) => {
+    const data = firestoreDefaultConverter.fromFirestore(snapshot, options);
+    if (!data) {
+      return null;
+    }
+    Object.defineProperty(data, 'path', {
+      value: snapshot.ref.path,
+      writable: false,
+    });
+    return data;
+  },
+};
 
 // Unhead
 // https://github.com/unjs/unhead
