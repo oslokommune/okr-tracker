@@ -1,26 +1,72 @@
+<script setup>
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+import { useTrackerStore } from '@/store/tracker';
+import { useAuthStore } from '@/store/auth';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
+import { NavMenu, NavMenuItem, NavMenuSeparator } from '@/components/Navigation/navbar';
+import OrganizationCard from './header/OrganizationCard.vue';
+
+const route = useRoute();
+
+const { version } = storeToRefs(useTrackerStore());
+const { user } = storeToRefs(useAuthStore());
+const { organization, organizationTree } = storeToRefs(useActiveOrganizationStore());
+
+function getItemRoute(slug) {
+  const { name: currentRouteName, query: currentQuery } = route;
+  const name = ['ItemMeasurements', 'ItemAbout'].includes(currentRouteName)
+    ? currentRouteName
+    : 'ItemHome';
+  const query = currentQuery?.view ? { view: currentQuery.view } : null;
+  return { name, params: { slug }, query };
+}
+</script>
+
 <template>
   <aside class="site-menu-dropdown">
     <nav class="site-menu-dropdown__body">
-      <router-link
-        :to="{ name: 'Home' }"
-        :class="[
-          'site-menu-dropdown__link',
-          { 'site-menu-dropdown__link--active': $route.name === 'Home' },
-        ]"
-        @click="handleNavigation"
-      >
-        {{ $t('general.frontPage') }}
-      </router-link>
-
-      <template v-if="user">
-        <hr class="pkt-hr" />
-
-        <organization-selector :org-id="orgId" @select="setActiveOrganization" />
-
-        <hr class="pkt-hr" />
-
-        <organization-tree :org-id="orgId" @selection="handleNavigation" />
+      <template v-if="user && organization">
+        <OrganizationCard inline />
+        <NavMenuSeparator />
       </template>
+
+      <NavMenu vertical>
+        <NavMenuItem
+          icon="home"
+          :text="$t('general.frontPage')"
+          :route="{ name: 'Home' }"
+        />
+
+        <template v-if="user && organization">
+          <NavMenuSeparator />
+          <NavMenuItem
+            icon="organization"
+            :text="organization.name"
+            :route="getItemRoute(organization.slug)"
+          />
+          <template v-if="organizationTree && organizationTree.children.length">
+            <template v-for="dept in organizationTree.children" :key="dept.id">
+              <NavMenuItem
+                icon="district"
+                :text="dept.name"
+                :route="getItemRoute(dept.slug)"
+                class="level-2"
+              />
+              <template v-if="dept.children.length">
+                <NavMenuItem
+                  v-for="prod in dept.children"
+                  :key="prod.id"
+                  icon="house-heart"
+                  :text="prod.name"
+                  :route="getItemRoute(prod.slug)"
+                  class="level-3"
+                />
+              </template>
+            </template>
+          </template>
+        </template>
+      </NavMenu>
     </nav>
 
     <div class="site-menu-dropdown__footer pkt-txt-12-medium">
@@ -28,69 +74,10 @@
         alt="Oslo kommune logo"
         src="@oslokommune/punkt-assets/dist/logos/oslologo.svg"
       />
-      <span>v{{ appVersion }}</span>
+      <span>v{{ version }}</span>
     </div>
   </aside>
 </template>
-
-<script>
-import { mapActions, mapGetters, mapState } from 'vuex';
-import OrganizationSelector from './header/OrganizationSelector.vue';
-import OrganizationTree from './header/OrganizationTree.vue';
-
-export default {
-  name: 'SiteMenuDropdown',
-
-  components: {
-    OrganizationSelector,
-    OrganizationTree,
-  },
-
-  props: {
-    handleNavigation: {
-      type: Function,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    appVersion: __APP_VERSION__, // eslint-disable-line no-undef
-  }),
-
-  computed: {
-    ...mapState(['user']),
-    ...mapGetters(['tree', 'activeOrganization']),
-
-    defaultOrgId() {
-      for (const org of this.tree) {
-        if (!!org.team && org.team.find(({ id }) => id === this.user.id)) {
-          return org.id;
-        }
-        for (const dep of org.children) {
-          if (!!dep.team && dep.team.find(({ id }) => id === this.user.id)) {
-            return dep.organization.id;
-          }
-          for (const prod of dep.children) {
-            if (!!prod.team && prod.team.find(({ id }) => id === this.user.id)) {
-              return prod.organization.id;
-            }
-          }
-        }
-      }
-
-      return null;
-    },
-
-    orgId() {
-      return this.activeOrganization?.id || this.defaultOrgId;
-    },
-  },
-
-  methods: {
-    ...mapActions(['setActiveOrganization']),
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
@@ -104,7 +91,6 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   gap: 0.25rem;
   width: 100vw;
   height: $-dropdown-max-height;
-  padding: 1rem;
   line-height: 2;
 
   @include bp('phablet-up') {
@@ -113,29 +99,8 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     max-height: $-dropdown-max-height;
   }
 
-  :deep(.pkt-btn) {
-    width: 100%;
-    font-size: inherit;
-  }
-
-  hr.pkt-hr {
-    margin: 0.5rem 0;
-  }
-
-  &__link {
-    padding-left: 1rem;
-    color: var(--color-blue-dark);
-    text-decoration: none;
-
-    &--active,
-    &:active,
-    &:hover {
-      color: var(--color-hover);
-      text-decoration: underline;
-    }
-  }
-
   &__body {
+    padding: 1rem;
     overflow-y: auto;
   }
 
@@ -145,12 +110,19 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     align-items: center;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: 1rem;
+    padding: 1rem;
     opacity: 0.25;
 
     img {
       height: 1.5rem;
     }
   }
+}
+
+.level-2 {
+  margin-left: 0.5rem;
+}
+.level-3 {
+  margin-left: 1rem;
 }
 </style>

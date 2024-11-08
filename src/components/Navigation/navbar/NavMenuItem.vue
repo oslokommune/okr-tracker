@@ -1,56 +1,100 @@
+<script setup>
+import { provide, ref } from 'vue';
+import { useMenuItem } from './menuItem.js';
+
+const props = defineProps({
+  dropdown: {
+    type: Boolean,
+    default: false,
+  },
+  icon: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  text: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  route: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  active: {
+    type: Boolean,
+    required: false,
+    default: null,
+  },
+  role: {
+    type: String,
+    required: false,
+    default: 'menuitem',
+  },
+  aria: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['click']);
+const menuItem = ref(null);
+const { attrs, listeners, close, isOpen } = useMenuItem(props, menuItem, emit);
+
+provide('closeNavMenuDropdown', close);
+</script>
+
 <template>
   <li
-    ref="clickOutsideTarget"
+    ref="menuItem"
     :class="[
       'nav-menu-item',
       { 'nav-menu-item--dropdown': dropdown },
       { 'nav-menu-item--open': isOpen },
     ]"
-    role="none"
+    role="presentation"
   >
-    <router-link
+    <RouterLink
       v-if="route"
       v-slot="{ href, navigate, isExactActive }"
       :to="route"
       custom
     >
       <a
-        v-bind="ariaAttrs"
-        :role="role"
+        v-bind="attrs"
         :href="href"
         :class="[
           'nav-menu-item__inner',
           { 'nav-menu-item__inner--icon-only': icon && !text },
-          { 'nav-menu-item__inner--active': active || isExactActive },
+          { 'nav-menu-item__inner--active': active === null ? isExactActive : active },
         ]"
-        @click="activate($event, navigate)"
+        @keyup.space.capture.stop="(e) => listeners.click(e, navigate)"
+        @click.capture.stop="(e) => listeners.click(e, navigate)"
+        v-on="listeners"
       >
         <slot name="text">
-          <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
+          <PktIcon v-if="icon" class="nav-menu-item__icon" :name="icon" />
           <span v-if="text" class="nav-menu-item__text">{{ text }}</span>
         </slot>
       </a>
-    </router-link>
+    </RouterLink>
 
     <template v-else>
       <div
+        v-bind="attrs"
         :class="[
           'nav-menu-item__inner',
           { 'nav-menu-item__inner--active': active || isOpen },
         ]"
-        :role="role"
-        tabindex="0"
-        :aria-haspopup="dropdown"
-        :aria-expanded="isOpen"
-        v-bind="ariaAttrs"
-        @click="activate"
-        @keyup.enter="activate"
+        v-on="listeners"
       >
         <slot name="text">
-          <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
+          <PktIcon v-if="icon" class="nav-menu-item__icon" :name="icon" />
           <span v-if="text" class="nav-menu-item__text">{{ text }}</span>
         </slot>
-        <pkt-icon
+        <PktIcon
           v-if="dropdown"
           class="nav-menu-item__toggle"
           :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'"
@@ -63,92 +107,3 @@
     </template>
   </li>
 </template>
-
-<script>
-import { ref } from 'vue';
-import { onClickOutside } from '@vueuse/core';
-
-export default {
-  name: 'NavMenuItem',
-
-  props: {
-    dropdown: {
-      type: Boolean,
-      default: false,
-    },
-    icon: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    text: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    route: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-    active: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    role: {
-      type: String,
-      required: false,
-      default: 'menuitem',
-    },
-    aria: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-  },
-
-  setup() {
-    const isOpen = ref(false);
-    const clickOutsideTarget = ref(null);
-
-    function close() {
-      isOpen.value = false;
-    }
-
-    onClickOutside(clickOutsideTarget, close, {
-      ignore: ['.ignore-click-outside'],
-    });
-
-    return { isOpen, close, clickOutsideTarget };
-  },
-
-  computed: {
-    ariaAttrs() {
-      return this.aria
-        ? Object.fromEntries(Object.entries(this.aria).map(([k, v]) => [`aria-${k}`, v]))
-        : null;
-    },
-  },
-
-  watch: {
-    isOpen() {
-      this.$emit('open');
-    },
-  },
-
-  methods: {
-    activate(e, routeHandler) {
-      if (this.dropdown) {
-        this.isOpen = !this.isOpen;
-        return;
-      }
-      if (routeHandler) {
-        routeHandler(e);
-        return;
-      }
-      this.$emit('click', e);
-    },
-  },
-};
-</script>

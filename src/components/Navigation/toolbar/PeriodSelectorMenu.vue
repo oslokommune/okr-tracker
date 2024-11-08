@@ -1,75 +1,58 @@
+<script setup>
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useKpisStore } from '@/store/kpis';
+import { useOkrsStore } from '@/store/okrs';
+import { getPeriods } from '@/config/periods';
+import PeriodSelector from '@/components/period/PeriodSelector.vue';
+import { NavMenu, NavMenuItem, NavMenuText } from '../navbar';
+
+const route = useRoute();
+const i18n = useI18n();
+
+const { period: kpiPeriod } = storeToRefs(useKpisStore());
+const { period: okrPeriod } = storeToRefs(useOkrsStore());
+
+const predefinedPeriods = computed(() => Object.values(getPeriods()));
+
+const period = computed({
+  get() {
+    return route.name === 'ItemMeasurements' ? kpiPeriod.value : okrPeriod.value;
+  },
+  set(selectedPeriod) {
+    if (route.name === 'ItemMeasurements') {
+      kpiPeriod.value = selectedPeriod;
+    } else {
+      okrPeriod.value = selectedPeriod;
+    }
+  },
+});
+
+const periodLabel = computed(() =>
+  period.value ? period.value.label : i18n.t('period.choosePeriod')
+);
+</script>
+
 <template>
-  <nav-menu class="period-selector-menu">
-    <nav-menu-text
+  <NavMenu class="period-selector-menu">
+    <NavMenuText
       :text="`${$t('general.period')}:`"
       strong
       class="period-selector-menu__label pkt-show-tablet-up"
     />
-    <nav-menu-item v-slot="{ close }" :text="periodLabel" dropdown>
-      <period-selector
+    <NavMenuItem v-slot="{ close }" :text="periodLabel" dropdown>
+      <PeriodSelector
         v-model="period"
-        :options="_predefinedPeriods"
+        :period-shortcuts="predefinedPeriods"
         :max-months="3"
         class="period-selector-menu__dropdown"
-        @input="close"
+        @select="close"
       />
-    </nav-menu-item>
-  </nav-menu>
+    </NavMenuItem>
+  </NavMenu>
 </template>
-
-<script>
-import { mapState, mapActions } from 'vuex';
-import { getPeriods } from '@/config/periods';
-import NavMenu from '@/components/Navigation/navbar/NavMenu.vue';
-import NavMenuItem from '@/components/Navigation/navbar/NavMenuItem.vue';
-import NavMenuText from '@/components/Navigation/navbar/NavMenuText.vue';
-import PeriodSelector from '@/components/period/PeriodSelector.vue';
-
-export default {
-  name: 'PeriodSelectorMenu',
-
-  components: {
-    NavMenu,
-    NavMenuItem,
-    NavMenuText,
-    PeriodSelector,
-  },
-
-  computed: {
-    ...mapState('okrs', { okrPeriod: 'selectedPeriod' }),
-    ...mapState('kpis', { kpiPeriod: 'selectedPeriod' }),
-
-    period: {
-      get() {
-        return this.isMeasurementsRoute ? this.kpiPeriod : this.okrPeriod;
-      },
-      set(value) {
-        const setSelectedPeriod = this.isMeasurementsRoute
-          ? this.setKpiPeriod
-          : this.setOkrPeriod;
-        setSelectedPeriod(value);
-      },
-    },
-
-    periodLabel() {
-      return this.period ? this.period.label : this.$t('period.choosePeriod');
-    },
-
-    _predefinedPeriods() {
-      return Object.values(getPeriods());
-    },
-
-    isMeasurementsRoute() {
-      return this.$route.name === 'ItemMeasurements';
-    },
-  },
-
-  methods: {
-    ...mapActions('okrs', { setOkrPeriod: 'setSelectedPeriod' }),
-    ...mapActions('kpis', { setKpiPeriod: 'setSelectedPeriod' }),
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
