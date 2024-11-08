@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import { DocumentReference } from 'firebase/firestore';
 import 'firebase/compat/firestore';
 
 /* eslint-disable valid-typeof */
@@ -13,7 +13,7 @@ export default function validateCreateProps(props, data) {
     if (Object.hasOwnProperty.call(data, prop)) {
       // ... check that the referenced document exists
       if (type === 'reference') {
-        if (!(data[prop] instanceof firebase.firestore.DocumentReference)) {
+        if (!(data[prop] instanceof DocumentReference)) {
           throw new TypeError(`${prop} is not a valid reference`);
         }
       } else if (type === 'array') {

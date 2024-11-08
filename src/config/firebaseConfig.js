@@ -39,7 +39,6 @@ loginProviderMS.setCustomParameters({
 const storage = firebase.storage();
 const auth = firebase.auth();
 const functions = firebase.app().functions(import.meta.env.VITE_REGION);
-const { serverTimestamp, arrayRemove, arrayUnion } = firebase.firestore.FieldValue;
 
 if (import.meta.env.MODE === 'development') {
   db.settings(firestoreEmulator);
@@ -58,8 +57,5 @@ export {
   loginProviderGoogle,
   storage,
   functions,
-  serverTimestamp,
-  arrayRemove,
-  arrayUnion,
   loginProviderMS,
 };

@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import { deleteField, DocumentReference } from 'firebase/firestore';
 import 'firebase/compat/firestore';
 
 /* eslint-disable valid-typeof */
@@ -9,8 +9,8 @@ export default function validateUpdateProps(props, data) {
       // ... check that the referenced document exists
       if (type === 'reference') {
         if (
-          !(data[prop] instanceof firebase.firestore.DocumentReference) &&
-          !data[prop].isEqual(firebase.firestore.FieldValue.delete())
+          !(data[prop] instanceof DocumentReference) &&
+          !data[prop].isEqual(deleteField())
         ) {
           throw new TypeError(`${prop} is not a valid reference`);
         }

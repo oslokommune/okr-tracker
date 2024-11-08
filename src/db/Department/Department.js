@@ -1,3 +1,4 @@
+import { collection, doc } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import props from './props';
 import {
@@ -7,19 +8,17 @@ import {
   updateDocument,
 } from '../common';
 
-const collection = db.collection('departments');
-
 const create = (data) => {
   if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
 
-  return createDocument(collection, data);
+  return createDocument(collection(db, 'departments'), data);
 };
 
 const update = async (id, data) => {
   validateUpdateProps(props, data);
-  return updateDocument(collection.doc(id), data);
+  return updateDocument(doc(db, 'departments', id), data);
 };
 
 const archive = (id) => update(id, { archived: true });

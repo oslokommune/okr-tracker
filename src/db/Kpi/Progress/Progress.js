@@ -1,5 +1,13 @@
 import { isSameDay, startOfDay, setHours, isFuture } from 'date-fns';
-import { db, auth, serverTimestamp } from '@/config/firebaseConfig';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  serverTimestamp,
+} from 'firebase/firestore';
+import { db, auth } from '@/config/firebaseConfig';
 import props from './props';
 import { validateCreateProps } from '../../common';
 import {
@@ -10,13 +18,11 @@ import {
 } from './helpers.js';
 
 const get = async (kpiId, date) => {
-  const kpiRef = await getKpiDocumentRef(kpiId);
-
   try {
-    return queryValuesByDate(kpiRef, date)
-      .limit(1)
-      .get()
-      .then((snapshot) => (!snapshot.empty ? snapshot.docs[0] : null));
+    const kpiRef = await getKpiDocumentRef(kpiId);
+    return await getDocs(queryValuesByDate(kpiRef, date, 1)).then((snapshot) =>
+      !snapshot.empty ? snapshot.docs[0] : null
+    );
   } catch (error) {
     throw new Error(error);
   }
@@ -30,11 +36,12 @@ const update = async (kpiId, data, progressValueId) => {
   }
 
   const kpiRef = await getKpiDocumentRef(kpiId);
-  const progressCollectionRef = kpiRef.collection('progress');
-  const progressValueRef =
-    progressValueId !== undefined ? progressCollectionRef.doc(progressValueId) : null;
+  const progressCollectionRef = collection(kpiRef, 'progress');
+  const progressValueRef = progressValueId
+    ? doc(progressCollectionRef, progressValueId)
+    : null;
 
-  if (progressValueRef && (await progressValueRef.get().then(({ exists }) => !exists))) {
+  if (progressValueRef && !(await getDoc(progressValueRef)).exists()) {
     throw new Error(`Cannot find progress value with ID ${progressValueId}`);
   }
 
@@ -42,42 +49,38 @@ const update = async (kpiId, data, progressValueId) => {
     ...data,
     timestamp: setHours(startOfDay(data.timestamp), 12),
     created: serverTimestamp(),
-    createdBy: db.collection('users').doc(auth.currentUser.email),
+    createdBy: doc(db, 'users', auth.currentUser.email),
   };
 
   try {
     // Clean existing progress values for both original (if provided) and
     // the chosen target date. If any values exists, keep `created`/`createdBy`
     // for the new entry from latest document found for target date.
-
     if (progressValueRef) {
-      progressValueRef.get().then((doc) => {
-        const measurementDate = doc.data().timestamp.toDate();
+      getDoc(progressValueRef).then((snapshot) => {
+        const measurementDate = snapshot.data().timestamp.toDate();
         if (!isSameDay(data.timestamp, measurementDate)) {
-          queryValuesByDate(kpiRef, measurementDate)
-            .get()
-            .then((snapshot) => batchDeleteSnapshot(snapshot));
+          getDocs(queryValuesByDate(kpiRef, measurementDate)).then(batchDeleteSnapshot);
         }
       });
     }
 
-    const valuesSnapshot = await queryValuesByDate(kpiRef, data.timestamp).get();
+    const valuesSnapshot = await getDocs(queryValuesByDate(kpiRef, data.timestamp));
 
     if (!valuesSnapshot.empty) {
       const { created, createdBy } = valuesSnapshot.docs[0].data();
-
       data = {
         ...data,
         created: created || null,
         createdBy: createdBy || null,
         edited: serverTimestamp(),
-        editedBy: db.collection('users').doc(auth.currentUser.email),
+        editedBy: doc(db, 'users', auth.currentUser.email),
       };
 
       await batchDeleteSnapshot(valuesSnapshot);
     }
 
-    const ref = await progressCollectionRef.add(data);
+    const ref = await addDoc(progressCollectionRef, data);
     await refreshKPILatestValue(kpiRef);
     return ref;
   } catch (error) {
@@ -87,27 +90,24 @@ const update = async (kpiId, data, progressValueId) => {
 
 const remove = async (kpiId, progressValueId) => {
   const kpiRef = await getKpiDocumentRef(kpiId);
-  const progressCollectionRef = kpiRef.collection('progress');
-  const progressValueRef = progressCollectionRef.doc(progressValueId);
+  const progressValueRef = doc(kpiRef, 'progress', progressValueId);
 
   try {
     // Delete all progression values registered for date
-    await progressValueRef.get().then((doc) => {
-      if (!doc.exists) {
-        throw new Error(`Cannot find progress value with ID ${progressValueId}`);
-      }
+    const valueSnapshot = await getDoc(progressValueRef);
 
-      queryValuesByDate(kpiRef, doc.data().timestamp.toDate())
-        .get()
-        .then((snapshot) => {
-          batchDeleteSnapshot(snapshot);
-          refreshKPILatestValue(kpiRef);
-        });
-    });
-  } catch {
-    throw new Error(
-      `Cannot remove progress (${progressValueId}) from ${progressCollectionRef.id} for ${kpiId}`
+    if (!valueSnapshot.exists) {
+      throw new Error(`Cannot find progress value with ID ${progressValueId}`);
+    }
+
+    const querySnapshot = await getDocs(
+      queryValuesByDate(kpiRef, valueSnapshot.data().timestamp.toDate())
     );
+
+    await batchDeleteSnapshot(querySnapshot);
+    await refreshKPILatestValue(kpiRef);
+  } catch {
+    throw new Error(`Cannot remove progress value ${progressValueId} from KPI ${kpiId}`);
   }
 };
 

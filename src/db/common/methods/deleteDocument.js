@@ -1,3 +1,4 @@
+import { deleteDoc } from 'firebase/firestore';
 import metadata from '../util/metadata';
 
 /**
@@ -12,7 +13,7 @@ export default async function deleteDocument(update, document) {
   const { id, path } = document;
   try {
     await update(id, metadata.edited());
-    await document.delete();
+    await deleteDoc(document);
     return true;
   } catch ({ message }) {
     throw new Error(`Could not delete ${path}: ${message}`);

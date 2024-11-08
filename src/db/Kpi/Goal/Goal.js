@@ -1,3 +1,4 @@
+import { collection, doc } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import props from './props';
 import {
@@ -12,34 +13,20 @@ async function create(kpiId, data) {
     throw new Error('Invalid data');
   }
 
-  const { ref } = await db.collection('kpis').doc(kpiId).get();
-
-  return createDocument(ref.collection('goals'), data);
-}
-
-async function get(kpiId, goalId) {
-  const { ref } = await db.collection('kpis').doc(kpiId).get();
-  return ref.collection('goals').doc(goalId);
+  return createDocument(collection(db, 'kpis', kpiId, 'goals'), data);
 }
 
 async function update(kpiId, goalId, data) {
   validateUpdateProps(props, data);
-
-  const goal = await get(kpiId, goalId);
-
-  return updateDocument(goal, data);
+  return updateDocument(doc(db, 'kpis', kpiId, 'goals', goalId), data);
 }
 
 async function archive(kpiId, goalId) {
-  const goal = await get(kpiId, goalId);
-
-  return updateDocument(goal, { archived: true });
+  return update(kpiId, goalId, { archived: true });
 }
 
 async function restore(kpiId, goalId) {
-  const goal = await get(kpiId, goalId);
-
-  return updateDocument(goal, { archived: false });
+  return update(kpiId, goalId, { archived: false });
 }
 
 export default { create, update, archive, restore };

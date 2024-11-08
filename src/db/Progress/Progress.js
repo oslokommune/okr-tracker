@@ -1,4 +1,10 @@
-import firebase from 'firebase/compat/app';
+import {
+  collection,
+  CollectionReference,
+  deleteDoc,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
 import props from './props';
 import {
   createDocument,
@@ -6,8 +12,6 @@ import {
   validateCreateProps,
   validateUpdateProps,
 } from '../common';
-
-const { CollectionReference } = firebase.firestore;
 
 function checkReferences(collectionRef, parentId) {
   if (!(collectionRef instanceof CollectionReference)) {
@@ -25,9 +29,9 @@ const create = async (collectionRef, parentId, data) => {
   checkReferences(collectionRef, parentId);
 
   try {
-    const parentRef = collectionRef.doc(parentId);
+    const parentRef = doc(collectionRef, parentId);
 
-    if (await parentRef.get().then(({ exists }) => !exists)) {
+    if (!(await getDoc(parentRef)).exists()) {
       throw new Error(`Cannot find parent with ID ${parentId}`);
     }
 
@@ -39,7 +43,7 @@ const create = async (collectionRef, parentId, data) => {
       throw new Error('Timestamp cannot be set in the future');
     }
 
-    return createDocument(parentRef.collection('progress'), data);
+    return createDocument(collection(parentRef, 'progress'), data);
   } catch (error) {
     throw new Error(error);
   }
@@ -53,14 +57,14 @@ const update = async (collectionRef, parentId, progressId, data) => {
     throw new Error('Timestamp cannot be set in the future');
   }
 
-  return updateDocument(collectionRef.doc(`${parentId}/progress/${progressId}`), data);
+  return updateDocument(doc(collectionRef, parentId, 'progress', progressId), data);
 };
 
 const remove = async (collectionRef, parentId, progressId) => {
   checkReferences(collectionRef, parentId);
 
   try {
-    return collectionRef.doc(`${parentId}/progress/${progressId}`).delete();
+    return deleteDoc(doc(collectionRef, parentId, 'progress', progressId));
   } catch {
     throw new Error(
       `Cannot remove progress (${progressId}) from ${collectionRef.id} ${parentId}`

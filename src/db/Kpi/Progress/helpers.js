@@ -1,8 +1,18 @@
-import firebase from 'firebase/compat/app';
+import {
+  doc,
+  collection,
+  deleteField,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+  writeBatch,
+} from 'firebase/firestore';
 import { endOfDay, startOfDay } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
-
-const { FieldValue } = firebase.firestore;
 
 /**
  * Get KPI document reference from ID.
@@ -17,9 +27,9 @@ export async function getKpiDocumentRef(kpiId) {
     throw new Error('KPI ID must be a string');
   }
 
-  const kpiRef = await db.collection('kpis').doc(kpiId);
+  const kpiRef = doc(db, 'kpis', kpiId);
 
-  if (await kpiRef.get().then(({ exists }) => !exists)) {
+  if (!(await getDoc(kpiRef)).exists()) {
     throw new Error(`Cannot find KPI with ID ${kpiId}`);
   }
 
@@ -31,24 +41,35 @@ export async function getKpiDocumentRef(kpiId) {
  *
  * `kpiRef` is the parent KPI to get progression values for.
  * `date` is the date to filter values for.
+ * `lim` is the number of documents retrieved (optional).
  */
-export function queryValuesByDate(kpiRef, date) {
-  return kpiRef
-    .collection('progress')
-    .orderBy('timestamp', 'desc')
-    .where('timestamp', '>=', startOfDay(date))
-    .where('timestamp', '<=', endOfDay(date));
+export function queryValuesByDate(kpiRef, date, lim) {
+  const filters = [
+    orderBy('timestamp', 'desc'),
+    where('timestamp', '>=', startOfDay(date)),
+    where('timestamp', '<=', endOfDay(date)),
+  ];
+
+  if (lim) {
+    filters.push(limit(lim));
+  }
+
+  return query(collection(kpiRef, 'progress'), ...filters);
 }
 
-export async function batchDeleteSnapshot(snapshot) {
-  if (snapshot.empty) {
-    return;
+/**
+ * Use batched writes to delete all documents in given query snapshot.
+ *
+ * `querySnapshot` is the query snapshot that determines which documents to delete.
+ */
+export async function batchDeleteSnapshot(querySnapshot) {
+  if (!querySnapshot.empty) {
+    const batch = writeBatch(db);
+    querySnapshot.forEach((docRef) => {
+      batch.delete(docRef.ref);
+    });
+    await batch.commit();
   }
-  const batch = db.batch();
-  snapshot.forEach((doc) => {
-    batch.delete(doc.ref);
-  });
-  await batch.commit();
 }
 
 /**
@@ -58,23 +79,20 @@ export async function batchDeleteSnapshot(snapshot) {
  * `kpiRef` is the Firestore reference to update.
  */
 export async function refreshKPILatestValue(kpiRef) {
-  const latestValueData = await kpiRef
-    .collection('progress')
-    .orderBy('timestamp', 'desc')
-    .limit(1)
-    .get()
-    .then((snapshot) => (!snapshot.empty ? snapshot.docs[0].data() : null));
+  const latestValueData = await getDocs(
+    query(collection(kpiRef, 'progress'), orderBy('timestamp', 'desc'), limit(1))
+  ).then((snapshot) => (!snapshot.empty ? snapshot.docs[0].data() : null));
 
   if (latestValueData) {
-    await kpiRef.update({
-      error: FieldValue.delete(),
+    await updateDoc(kpiRef, {
+      error: deleteField(),
       currentValue: latestValueData.value,
       valid: true,
     });
   } else {
-    await kpiRef.update({
-      error: FieldValue.delete(),
-      currentValue: FieldValue.delete(),
+    await updateDoc(kpiRef, {
+      error: deleteField(),
+      currentValue: deleteField(),
       valid: true,
     });
   }

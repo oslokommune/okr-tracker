@@ -1,23 +1,25 @@
+import { collection, deleteDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import props from './props';
 import { createDocument, validateCreateProps } from '../common';
 
-const collection = db.collection('objectiveContributors');
+const objectiveContributorsCollection = collection(db, 'objectiveContributors');
 
 const create = async (itemRef, objectiveRef) => {
-  if (await itemRef.get().then(({ exists }) => !exists)) {
+  if (!(await getDoc(itemRef)).exists()) {
     throw new Error(`Cannot find item with ID ${itemRef.id}`);
   }
-  if (await objectiveRef.get().then(({ exists }) => !exists)) {
+  if (!(await getDoc(objectiveRef)).exists()) {
     throw new Error(`Cannot find objcetive with ID ${objectiveRef.id}`);
   }
 
-  const contributors = await db
-    .collection('objectiveContributors')
-    .where('objective', '==', objectiveRef)
-    .where('item', '==', itemRef)
-    .get()
-    .then((snapshot) => snapshot.docs.map((doc) => doc.ref));
+  const contributors = await getDocs(
+    query(
+      objectiveContributorsCollection,
+      where('objective', '==', objectiveRef),
+      where('item', '==', itemRef)
+    )
+  ).then((snapshot) => snapshot.docs.map((document) => document.ref));
 
   // Avoid creating duplicates
   if (contributors.length > 0) {
@@ -28,22 +30,24 @@ const create = async (itemRef, objectiveRef) => {
 
   validateCreateProps(props, data);
 
-  return createDocument(collection, data);
+  return createDocument(objectiveContributorsCollection, data);
 };
 
 const remove = async (itemRef, objectiveRef) => {
-  collection
-    .where('item', '==', itemRef)
-    .where('objective', '==', objectiveRef)
-    .get()
-    .then((snapshot) => {
-      if (snapshot.docs.length < 1) {
-        throw new Error(
-          `ObjectiveContributors for item ${itemRef.id} and objective ${objectiveRef.id} not found; cannot delete`
-        );
-      }
-      snapshot.forEach((doc) => doc.ref.delete());
-    });
+  await getDocs(
+    query(
+      objectiveContributorsCollection,
+      where('item', '==', itemRef),
+      where('objective', '==', objectiveRef)
+    )
+  ).then((snapshot) => {
+    if (snapshot.docs.length < 1) {
+      throw new Error(
+        `ObjectiveContributors for item ${itemRef.id} and objective ${objectiveRef.id} not found; cannot delete`
+      );
+    }
+    snapshot.forEach((doc) => deleteDoc(doc.ref));
+  });
 };
 
 export default { create, remove };
