@@ -7,7 +7,6 @@ import AdminWrapper from '@/views/Admin/AdminWrapper.vue';
 import CreateDepartment from '@/views/Admin/CreateDepartment.vue';
 import CreateOrganization from '@/views/Admin/CreateOrganization.vue';
 import CreateProduct from '@/views/Admin/CreateProduct.vue';
-import Forbidden from '@/views/Forbidden.vue';
 import Help from '@/views/Help.vue';
 import Home from '@/views/Home.vue';
 import ItemAbout from '@/views/Item/ItemAbout.vue';
@@ -17,8 +16,6 @@ import ItemWrapper from '@/views/Item/ItemWrapper.vue';
 import Login from '@/views/Login.vue';
 import NotFound from '@/views/NotFound.vue';
 import RequestAccess from '@/views/RequestAccess.vue';
-
-import * as routerGuards from './router-guards';
 
 const routes = [
   {
@@ -39,14 +36,8 @@ const routes = [
   },
   {
     path: '/request-access',
-    name: 'request-access',
+    name: 'RequestAccess',
     component: RequestAccess,
-    meta: { requiresAuth: false },
-  },
-  {
-    path: '/403',
-    name: 'Forbidden',
-    component: Forbidden,
     meta: { requiresAuth: false },
   },
   {
@@ -85,7 +76,6 @@ const routes = [
   {
     path: '/:slug',
     component: ItemWrapper,
-    beforeEnter: routerGuards.itemCommon,
     children: [
       {
         path: '',
@@ -95,18 +85,16 @@ const routes = [
         path: 'okr',
         name: 'ItemHome',
         component: ItemOKRs,
-        beforeEnter: routerGuards.itemOKRs,
-        beforeRouteUpdate: routerGuards.itemOKRs,
         children: [
           {
             path: 'o/:objectiveId',
             name: 'ObjectiveHome',
-            // component: ItemOKRs,
+            component: ItemOKRs,
           },
           {
             path: 'o/:objectiveId/k/:keyResultId',
             name: 'KeyResultHome',
-            beforeEnter: routerGuards.keyResultHome,
+            component: ItemOKRs,
           },
         ],
       },
@@ -114,7 +102,6 @@ const routes = [
         path: 'measurements/:kpiId?',
         name: 'ItemMeasurements',
         component: ItemMeasurements,
-        beforeEnter: routerGuards.itemMeasurements,
       },
       {
         path: 'about',
@@ -125,7 +112,6 @@ const routes = [
         path: 'integrations',
         name: 'ItemIntegrations',
         component: () => import('@/views/Item/ItemIntegrations.vue'),
-        beforeEnter: routerGuards.itemIntegrations,
       },
       /*
        * Redirect old paths for objective and key result details.
@@ -177,7 +163,7 @@ router.beforeEach(async (to, from, next) => {
 
   const { userPromise, isLoggedIn, isAdmin } = storeToRefs(authStore);
 
-  // Ensure that the user is fully loaded.
+  // Ensure that the user is fully loaded
   await userPromise.value;
 
   if (to.name === 'Login') {
