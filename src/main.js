@@ -14,7 +14,6 @@ import { PktIcon } from '@oslokommune/punkt-vue';
 import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/locale/i18n';
-import Spinner from '@/components/VSpinner.vue';
 import PageLayout from '@/components/layout/PageLayout.vue';
 import FormSection from '@/components/generic/form/FormSection.vue';
 import FormComponent from '@/components/FormComponent.vue';
@@ -100,7 +99,6 @@ configureFormValidation();
 app.component('PageLayout', PageLayout);
 app.component('FormSection', FormSection);
 app.component('FormComponent', FormComponent);
-app.component('VSpinner', Spinner);
 app.component('PktIcon', PktIcon);
 
 app.mount('#app');
