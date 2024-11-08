@@ -1,24 +1,21 @@
-<template>
-  <page-layout breakpoint="tablet-big">
-    <div id="swagger-ui"></div>
-  </page-layout>
-</template>
-
-<script>
+<script setup>
+import { onMounted } from 'vue';
 import { SwaggerUIBundle } from 'swagger-ui-dist';
 import 'swagger-ui-dist/swagger-ui.css';
 
-export default {
-  name: 'Api',
-
-  mounted() {
-    SwaggerUIBundle({
-      url: './openapi.yaml',
-      dom_id: '#swagger-ui',
-    });
-  },
-};
+onMounted(() => {
+  SwaggerUIBundle({
+    url: './openapi.yaml',
+    dom_id: '#swagger-ui',
+  });
+});
 </script>
+
+<template>
+  <PageLayout breakpoint="tablet-big">
+    <div id="swagger-ui"></div>
+  </PageLayout>
+</template>
 
 <style lang="scss">
 pre > code {

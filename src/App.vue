@@ -1,14 +1,25 @@
 <script setup>
+import { watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useTrackerStore } from '@/store/tracker';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import AppLayout from './components/AppLayout.vue';
-</script>
 
-<template>
-  <div class="app">
-    <AppLayout />
-  </div>
-</template>
+const { homeOrganization } = storeToRefs(useTrackerStore());
+const activeOrganizationStore = useActiveOrganizationStore();
+const { organization } = storeToRefs(activeOrganizationStore);
 
-<script>
+watch(
+  homeOrganization,
+  () => {
+    // Set active organization to home organization if not otherwise set
+    if (homeOrganization.value && !organization.value) {
+      activeOrganizationStore.setOrganization(homeOrganization.value.id);
+    }
+  },
+  { immediate: true }
+);
+
 // Using a class on body to determine how to style focus states
 document.body.addEventListener('mousedown', () => {
   document.body.classList.add('using-mouse');
@@ -25,3 +36,9 @@ document.body.addEventListener('keydown', () => {
  */
 window.noZensmooth = true;
 </script>
+
+<template>
+  <div class="app">
+    <AppLayout />
+  </div>
+</template>

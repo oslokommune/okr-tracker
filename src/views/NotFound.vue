@@ -1,20 +1,11 @@
-<template>
-  <not-found-page back-to="Home" />
-</template>
-
-<script>
+<script setup>
+import { useTitle } from '@vueuse/core';
 import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
-export default {
-  name: 'NotFound',
-  components: {
-    NotFoundPage,
-  },
-
-  head() {
-    return {
-      title: `${this.$t('notFound.title')} | ${this.$t('general.project')}`,
-    };
-  },
-};
+const title = useTitle();
+title.value = 'Not Found';
 </script>
+
+<template>
+  <NotFoundPage :back-to="{ name: 'Home' }" />
+</template>

@@ -1,50 +1,41 @@
-<template>
-  <page-layout breakpoint="phablet" :class="['empty-page', `empty-page--${skin}`]">
-    <template #default>
-      <empty-state v-bind="$props" :show-graphic="false">
-        <slot />
-      </empty-state>
-    </template>
-
-    <template #footer>
-      <buildings-graphic :skin="skin" class="empty-page__graphic" />
-    </template>
-  </page-layout>
-</template>
-
-<script>
+<script setup>
 import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 import EmptyState from '@/components/EmptyState.vue';
 
-export default {
-  name: 'EmptyPage',
-
-  components: {
-    BuildingsGraphic,
-    EmptyState,
+defineProps({
+  heading: {
+    type: String,
+    required: false,
+    default: null,
   },
 
-  props: {
-    heading: {
-      type: String,
-      required: false,
-      default: null,
-    },
-
-    body: {
-      type: String,
-      required: false,
-      default: null,
-    },
-
-    skin: {
-      type: String,
-      default: 'info',
-      validator: (value) => ['info', 'success', 'warning', 'error'].includes(value),
-    },
+  body: {
+    type: String,
+    required: false,
+    default: null,
   },
-};
+
+  skin: {
+    type: String,
+    default: 'info',
+    validator: (value) => ['info', 'success', 'warning', 'error', 'dim'].includes(value),
+  },
+});
 </script>
+
+<template>
+  <PageLayout breakpoint="phablet" :class="['empty-page', `empty-page--${skin}`]">
+    <template #default>
+      <EmptyState v-bind="$props" :show-graphic="false">
+        <slot />
+      </EmptyState>
+    </template>
+
+    <template #footer>
+      <BuildingsGraphic :skin="skin" class="empty-page__graphic" />
+    </template>
+  </PageLayout>
+</template>
 
 <style lang="scss" scoped>
 $-empty-page-skins: (
