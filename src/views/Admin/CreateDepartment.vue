@@ -1,11 +1,65 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { doc } from 'firebase/firestore';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import Department from '@/db/Department';
+import { db } from '@/config/firebaseConfig';
+import { findSlugAndRedirect } from '@/util';
+import { useAuthStore } from '@/store/auth';
+import { useAdminStore } from '@/store/admin';
+import { PktBreadcrumbs } from '@oslokommune/punkt-vue';
+import { BtnSave } from '@/components/generic/form';
+
+const toast = useToast();
+const i18n = useI18n();
+
+const { user, isSuperAdmin } = storeToRefs(useAuthStore());
+const { organizations, users } = storeToRefs(useAdminStore());
+const loading = ref(false);
+
+const breadcrumbs = computed(() => [
+  { text: i18n.t('general.admin'), href: { name: 'Admin' } },
+  { text: i18n.t('admin.department.create') },
+]);
+
+const organizationOptions = computed(() =>
+  organizations.value
+    .filter((o) => isSuperAdmin.value || user.value.admin.includes(o.id))
+    .map(({ id, name }) => ({ id, name }))
+);
+
+async function save(values) {
+  loading.value = true;
+  try {
+    const { name, missionStatement, organization, team } = values;
+    const depRef = await Department.create({
+      name,
+      missionStatement,
+      organization: doc(db, 'organizations', organization.id),
+      archived: false,
+      team: team?.map(({ id }) => doc(db, 'users', id)) || [],
+    });
+    await findSlugAndRedirect(depRef);
+    toast.success(i18n.t('toaster.add.department'));
+  } catch {
+    toast.error(i18n.t('toaster.error.department'));
+    loading.value = false;
+  }
+}
+</script>
+
 <template>
-  <page-layout breakpoint="tablet">
+  <PageLayout breakpoint="tablet">
+    <template #header>
+      <PktBreadcrumbs navigation-type="router" :breadcrumbs="breadcrumbs" />
+    </template>
+
     <div class="card">
       <h1 class="title-1">{{ $t('admin.department.create') }}</h1>
-
-      <form-section>
-        <form-component
-          v-model="name"
+      <FormSection>
+        <FormComponent
           input-type="input"
           name="name"
           :label="$t('fields.name')"
@@ -13,16 +67,14 @@
           type="text"
         />
 
-        <form-component
-          v-model="missionStatement"
+        <FormComponent
           input-type="textarea"
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
         />
 
-        <form-component
-          v-model="organization"
+        <FormComponent
           input-type="custom-select"
           name="organization"
           :label="$t('admin.department.parentOrganisation')"
@@ -33,8 +85,7 @@
           :options="organizationOptions"
         />
 
-        <form-component
-          v-model="team"
+        <FormComponent
           input-type="custom-select"
           select-mode="tags"
           name="team"
@@ -47,74 +98,13 @@
         />
 
         <template #actions="{ submit, disabled }">
-          <btn-save
+          <BtnSave
             :text="$t('btn.create')"
             :disabled="disabled || loading"
             @on-click="submit(save)"
           />
         </template>
-      </form-section>
+      </FormSection>
     </div>
-  </page-layout>
+  </PageLayout>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
-import Department from '@/db/Department';
-import { findSlugAndRedirect } from '@/util';
-import { FormSection, BtnSave } from '@/components/generic/form';
-
-export default {
-  name: 'CreateDepartment',
-  components: { FormSection, BtnSave },
-
-  data: () => ({
-    name: '',
-    missionStatement: '',
-    organization: null,
-    loading: false,
-    team: [],
-  }),
-
-  computed: {
-    ...mapState(['organizations', 'users', 'user']),
-
-    organizationOptions() {
-      const organizations = this.user.superAdmin
-        ? this.organizations
-        : this.organizations.filter((o) => this.user.admin.includes(o.id));
-
-      return organizations.map(({ id, name }) => ({ id, name }));
-    },
-  },
-
-  methods: {
-    async save() {
-      const { name, missionStatement, organization, team } = this;
-      const data = {
-        name: name.trim(),
-        missionStatement: missionStatement.trim(),
-        organization: db.collection('organizations').doc(organization.id),
-        archived: false,
-        team: team.map(({ id }) => db.collection('users').doc(id)),
-      };
-
-      this.loading = true;
-
-      try {
-        const depRef = await Department.create(data);
-
-        await findSlugAndRedirect(depRef);
-
-        this.$toasted.show(this.$t('toaster.add.department'));
-      } catch (error) {
-        this.$toasted.error(this.$t('toaster.error.department'));
-        throw new Error(error);
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-};
-</script>

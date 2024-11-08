@@ -1,3 +1,42 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { useCollection } from 'vuefire';
+import { collection, query } from 'firebase/firestore';
+import { useFuse } from '@vueuse/integrations/useFuse';
+import { db } from '@/config/firebaseConfig';
+import { PktButton } from '@oslokommune/punkt-vue';
+import isAdmin from '@/util/user';
+import AddUsers from './AddUsers.vue';
+import EditUser from './EditUser.vue';
+
+const users = useCollection(computed(() => query(collection(db, 'users'))));
+
+const userQuery = ref('');
+const selectedUser = ref(null);
+const viewAddUsers = ref(false);
+
+const { results: searchResults } = useFuse(userQuery, users, {
+  fuseOptions: {
+    threshold: 0.5,
+    keys: [
+      {
+        name: 'id',
+        weight: 0.25,
+      },
+      {
+        name: 'email',
+        weight: 0.25,
+      },
+      {
+        name: 'displayName',
+        weight: 0.5,
+      },
+    ],
+  },
+  matchAllWhenSearchEmpty: true,
+});
+</script>
+
 <template>
   <div>
     <h2 class="title-2">{{ $t('admin.users.users') }}</h2>
@@ -5,7 +44,7 @@
     <div v-if="!selectedUser && !viewAddUsers" class="users">
       <div class="search">
         <input
-          v-model="query"
+          v-model="userQuery"
           class="pkt-input pkt-input--fullwidth"
           type="text"
           :placeholder="$t('admin.users.search', { count: users.length })"
@@ -14,117 +53,56 @@
 
       <div class="users__list">
         <button
-          v-for="user in filteredUsers"
+          v-for="{ item: user } in searchResults"
           :key="user.id"
           class="users__list-item pkt-txt-14-medium"
           @click="selectedUser = user"
         >
-          <pkt-icon class="icon" :name="isAdmin(user) ? 'cogwheel' : 'user'" />
+          <PktIcon class="icon" :name="isAdmin(user) ? 'cogwheel' : 'user'" />
           <span class="users__list-item-name">
             {{ user.displayName || user.id }}
           </span>
-          <pkt-icon class="icon" name="chevron-right" />
+          <PktIcon class="icon" name="chevron-right" />
         </button>
       </div>
+
       <div class="users__footer">
-        <pkt-button skin="secondary" @onClick="viewAddUsers = true">
+        <PktButton
+          skin="secondary"
+          icon-name="plus-sign"
+          variant="icon-left"
+          @on-click="viewAddUsers = true"
+        >
           {{ $t('admin.users.addUsers') }}
-        </pkt-button>
+        </PktButton>
       </div>
     </div>
 
-    <edit-user
+    <EditUser
       v-if="selectedUser && !viewAddUsers"
-      :selected-user="selectedUser"
+      :user-id="selectedUser.id"
       @close="selectedUser = null"
     >
       <template #back>
         <div>
-          <pkt-button skin="secondary" @onClick="selectedUser = null">
+          <PktButton skin="secondary" @on-click="selectedUser = null">
             {{ $t('admin.users.backToUsers') }}
-          </pkt-button>
+          </PktButton>
         </div>
       </template>
-    </edit-user>
-    <add-users v-if="viewAddUsers" @close="viewAddUsers = false">
+    </EditUser>
+
+    <AddUsers v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
         <div>
-          <pkt-button skin="secondary" @onClick="viewAddUsers = false">
+          <PktButton skin="secondary" @on-click="viewAddUsers = false">
             {{ $t('admin.users.backToUsers') }}
-          </pkt-button>
+          </PktButton>
         </div>
       </template>
-    </add-users>
+    </AddUsers>
   </div>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import Fuse from 'fuse.js';
-import { PktButton } from '@oslokommune/punkt-vue';
-import isAdmin from '@/util/user';
-import AddUsers from './AddUsers.vue';
-import EditUser from './EditUser.vue';
-
-const fuseSettings = {
-  threshold: 0.5,
-  keys: [
-    {
-      name: 'id',
-      weight: 0.25,
-    },
-    {
-      name: 'email',
-      weight: 0.25,
-    },
-    {
-      name: 'displayName',
-      weight: 0.5,
-    },
-  ],
-};
-
-export default {
-  name: 'AdminUsers',
-
-  components: {
-    EditUser,
-    AddUsers,
-    PktButton,
-  },
-
-  data: () => ({
-    query: '',
-    selectedUser: null,
-    viewAddUsers: false,
-    filteredUsers: [],
-    fuse: null,
-  }),
-
-  computed: {
-    ...mapState(['users']),
-  },
-
-  watch: {
-    users: {
-      immediate: true,
-      handler() {
-        this.filteredUsers = this.users;
-        this.fuse = new Fuse(this.filteredUsers, fuseSettings);
-      },
-    },
-    query(str) {
-      if (str.length < 1) {
-        this.filteredUsers = this.users;
-      } else {
-        this.filteredUsers = this.fuse.search(str).map(({ item }) => item);
-      }
-    },
-  },
-
-  methods: { isAdmin },
-};
-</script>
 
 <style lang="scss" scoped>
 .users,

@@ -1,12 +1,97 @@
+<script setup>
+import { computed, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { useAuthStore } from '@/store/auth';
+import { useTrackerStore } from '@/store/tracker';
+import { useTrackerUser } from '@/composables/user';
+import User from '@/db/User';
+import { BtnSave, BtnDelete } from '@/components/generic/form';
+
+const toast = useToast();
+const i18n = useI18n();
+
+const props = defineProps({
+  userId: {
+    type: String,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['close']);
+
+const { organizations } = storeToRefs(useTrackerStore());
+const { user: currentUser, isSuperAdmin } = storeToRefs(useAuthStore());
+const { user } = useTrackerUser(props.userId);
+const isCurrentUser = computed(
+  () => user.value && currentUser.value && user.value.id === currentUser.value.id
+);
+const formData = ref(null);
+const isLoading = ref(false);
+
+watch(
+  user,
+  () => {
+    if (user.value) {
+      const { id, displayName, admin, superAdmin } = user.value;
+
+      formData.value = {
+        id,
+        displayName,
+        admin:
+          admin && admin.length
+            ? admin
+                .filter((oid) => organizations.value.map((o) => o.id).includes(oid))
+                .map((oid) => ({
+                  id: oid,
+                  name: organizations.value.find((o) => o.id === oid).name,
+                }))
+            : [],
+        superAdmin: superAdmin || false,
+      };
+    }
+  },
+  { immediate: true }
+);
+
+async function update() {
+  isLoading.value = true;
+  try {
+    await User.update(user.value, {
+      ...formData.value,
+      admin: formData.value.admin.map((org) => org.id),
+    });
+    toast.success(i18n.t('toaster.savedChanges'));
+  } catch {
+    toast.error(i18n.t('toaster.error.save'));
+  }
+  isLoading.value = false;
+}
+
+async function remove() {
+  isLoading.value = true;
+  const { displayName } = user.value;
+  try {
+    await User.remove(user.value);
+    toast.success(i18n.t('toaster.delete.user', { user: displayName }));
+    emit('close');
+  } catch {
+    toast.error(i18n.t('toaster.error.user', { user: displayName }));
+  }
+  isLoading.value = false;
+}
+</script>
+
 <template>
-  <div v-if="thisUser" class="selected-user">
+  <div class="p-size-16">
     <slot name="back"></slot>
 
-    <h2 class="title-2">{{ $t('admin.users.edit') }}</h2>
+    <h2 class="title-2 mt-size-24">{{ $t('admin.users.edit') }}</h2>
 
-    <form-section>
-      <form-component
-        v-model="thisUser.id"
+    <FormSection v-if="user">
+      <FormComponent
+        v-model="formData.id"
         input-type="input"
         name="id"
         :label="$t('fields.email')"
@@ -15,21 +100,21 @@
         :disabled="true"
       />
 
-      <form-component
-        v-model="thisUser.displayName"
+      <FormComponent
+        v-model="formData.displayName"
         input-type="input"
-        name="name"
+        name="displayName"
         :label="$t('fields.displayName')"
         rules="required"
         type="text"
       />
 
-      <form-component
-        v-model="thisUser.admin"
+      <FormComponent
+        v-model="formData.admin"
         input-type="custom-select"
         select-mode="tags"
         name="admin"
-        :disabled="!user.superAdmin"
+        :disabled="!isSuperAdmin"
         :label="$t('general.admin')"
         value-prop="id"
         label-prop="name"
@@ -37,111 +122,18 @@
         :options="organizations.map(({ id, name }) => ({ id, name }))"
       />
 
-      <form-component
-        v-model="thisUser.superAdmin"
+      <FormComponent
+        v-model="formData.superAdmin"
         input-type="switch"
         name="superadmin"
         :label="$t('general.superAdmin')"
-        :disabled="user.email === selectedUser.email || !user.superAdmin"
+        :disabled="isCurrentUser || !isSuperAdmin"
       />
 
       <template #actions="{ submit, disabled }">
-        <btn-delete
-          :disabled="user.email === selectedUser.email || loading"
-          @on-click="remove(selectedUser)"
-        />
-        <btn-save :disabled="disabled || loading" @on-click="submit(save)" />
+        <BtnDelete :disabled="isCurrentUser || isLoading" @on-click="remove" />
+        <BtnSave :disabled="disabled || isLoading" @on-click="submit(update)" />
       </template>
-    </form-section>
+    </FormSection>
   </div>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import User from '@/db/User';
-import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
-
-export default {
-  name: 'EditUser',
-
-  components: { FormSection, BtnSave, BtnDelete },
-
-  props: {
-    selectedUser: {
-      required: true,
-      type: Object,
-    },
-  },
-
-  data: () => ({
-    thisUser: null,
-    loading: false,
-  }),
-
-  computed: {
-    ...mapState(['user', 'organizations', 'users']),
-  },
-
-  watch: {
-    selectedUser: {
-      immediate: true,
-      async handler() {
-        this.thisUser = {
-          ...this.selectedUser,
-          superAdmin: this.selectedUser.superAdmin || false,
-        };
-
-        if (this.selectedUser.admin?.length) {
-          this.thisUser.admin = this.selectedUser.admin
-            .filter((id) => this.organizations.map((o) => o.id).includes(id))
-            .map((id) => ({
-              id,
-              name: this.organizations.find((o) => o.id === id).name,
-            }));
-        }
-      },
-    },
-  },
-
-  methods: {
-    async remove(user) {
-      this.loading = true;
-      try {
-        await User.remove(user);
-        this.$toasted.show(this.$t('toaster.delete.user', { user: user.displayName }));
-        this.$emit('close');
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.user', { user: user.displayName }));
-      }
-      this.loading = false;
-    },
-
-    async save() {
-      this.loading = true;
-      try {
-        const saveUser = { ...this.thisUser };
-        if (this.thisUser.admin?.length > 0) {
-          saveUser.admin = saveUser.admin.map((org) => org.id);
-        }
-        await User.update(saveUser);
-        this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch (e) {
-        console.log(e);
-        this.$toasted.error(this.$t('toaster.error.save'));
-      }
-
-      this.loading = false;
-    },
-  },
-};
-</script>
-
-<style lang="scss" scoped>
-.selected-user {
-  padding: 1rem;
-
-  > h2.title-2 {
-    margin-top: 1.5rem;
-  }
-}
-</style>

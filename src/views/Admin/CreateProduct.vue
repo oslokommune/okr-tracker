@@ -1,11 +1,67 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { doc } from 'firebase/firestore';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import Product from '@/db/Product';
+import { db } from '@/config/firebaseConfig';
+import { useAuthStore } from '@/store/auth';
+import { useAdminStore } from '@/store/admin';
+import { findSlugAndRedirect } from '@/util';
+import { PktBreadcrumbs } from '@oslokommune/punkt-vue';
+import { BtnSave } from '@/components/generic/form';
+
+const toast = useToast();
+const i18n = useI18n();
+
+const { user, isSuperAdmin } = storeToRefs(useAuthStore());
+const { users, departments } = storeToRefs(useAdminStore());
+const loading = ref(false);
+
+const breadcrumbs = computed(() => [
+  { text: i18n.t('general.admin'), href: { name: 'Admin' } },
+  { text: i18n.t('admin.product.create') },
+]);
+
+const departmentOptions = computed(() =>
+  departments.value
+    .filter((o) => isSuperAdmin.value || user.value.admin.includes(o.id))
+    .map(({ id, name, organization }) => ({ id, name, organization_id: organization.id }))
+);
+
+async function save(values) {
+  loading.value = true;
+  try {
+    const { name, missionStatement, department, team } = values;
+    const productRef = await Product.create({
+      name,
+      missionStatement,
+      department: doc(db, 'departments', department.id),
+      organization: doc(db, 'organizations', department.organization_id),
+      archived: false,
+      team: team?.map(({ id }) => doc(db, 'users', id)) || [],
+    });
+    await findSlugAndRedirect(productRef);
+    toast.success(i18n.t('toaster.add.product'));
+  } catch {
+    toast.error(i18n.t('toaster.error.product'));
+    loading.value = false;
+  }
+}
+</script>
+
 <template>
-  <page-layout breakpoint="tablet">
+  <PageLayout breakpoint="tablet">
+    <template #header>
+      <PktBreadcrumbs navigation-type="router" :breadcrumbs="breadcrumbs" />
+    </template>
+
     <div class="card">
       <h1 class="title-1">{{ $t('admin.product.create') }}</h1>
 
-      <form-section>
-        <form-component
-          v-model="name"
+      <FormSection>
+        <FormComponent
           input-type="input"
           name="name"
           :label="$t('fields.name')"
@@ -13,16 +69,14 @@
           type="text"
         />
 
-        <form-component
-          v-model="missionStatement"
+        <FormComponent
           input-type="textarea"
           name="missionStatement"
           :label="$t('fields.missionStatement')"
           rules="required"
         />
 
-        <form-component
-          v-model="department"
+        <FormComponent
           input-type="custom-select"
           name="department"
           :label="$t('admin.product.parentDepartment')"
@@ -33,8 +87,7 @@
           :options="departmentOptions"
         />
 
-        <form-component
-          v-model="team"
+        <FormComponent
           input-type="custom-select"
           select-mode="tags"
           name="team"
@@ -47,77 +100,13 @@
         />
 
         <template #actions="{ submit, disabled }">
-          <btn-save
+          <BtnSave
             :text="$t('btn.create')"
             :disabled="disabled || loading"
             @on-click="submit(save)"
           />
         </template>
-      </form-section>
+      </FormSection>
     </div>
-  </page-layout>
+  </PageLayout>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
-import Product from '@/db/Product';
-import { findSlugAndRedirect } from '@/util';
-import { FormSection, BtnSave } from '@/components/generic/form';
-
-export default {
-  name: 'CreateProduct',
-  components: { FormSection, BtnSave },
-
-  data: () => ({
-    name: '',
-    missionStatement: '',
-    department: null,
-    team: [],
-    loading: false,
-  }),
-
-  computed: {
-    ...mapState(['departments', 'users', 'user']),
-
-    departmentOptions() {
-      const departments = this.user.superAdmin
-        ? this.departments
-        : this.departments.filter((d) => this.user.admin.includes(d.organization.id));
-
-      return departments.map(({ id, organization, name }) => ({
-        id,
-        organization_id: organization.id,
-        name,
-      }));
-    },
-  },
-
-  methods: {
-    async save() {
-      this.loading = true;
-      const { name, missionStatement, department, team } = this;
-      const data = {
-        name: name.trim(),
-        missionStatement: missionStatement.trim(),
-        department: db.collection('departments').doc(department.id),
-        organization: db.collection('organizations').doc(department.organization_id),
-        team: team.map(({ id }) => db.collection('users').doc(id)),
-        archived: false,
-      };
-
-      try {
-        const productRef = await Product.create(data);
-
-        await findSlugAndRedirect(productRef);
-
-        this.$toasted.show(this.$t('toaster.add.product'));
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.product'));
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-};
-</script>
