@@ -16,7 +16,7 @@ import router from '@/router';
 import i18n from '@/locale/i18n';
 import PageLayout from '@/components/layout/PageLayout.vue';
 import FormSection from '@/components/generic/form/FormSection.vue';
-import FormComponent from '@/components/FormComponent.vue';
+import FormComponent from '@/components/generic/form/FormComponent.vue';
 import { firebaseApp, auth } from './config/firebaseConfig';
 import configureFormValidation from './config/validation';
 
