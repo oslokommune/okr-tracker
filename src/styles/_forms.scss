@@ -26,31 +26,32 @@
   --pkt-color-text-placeholder: var(--pkt-color-grays-gray-600);
 
   --ms-font-size: 1.125rem;
-  --ms-line-height: 1.75rem;
-  --ms-px: 0;
-  --ms-py: 0;
+  --ms-px: 1rem;
+  --ms-py: 0.477rem;
 
   --ms-bg: var(--pkt-color-input-background-normal);
   --ms-border-color: var(--pkt-color-input-border-normal);
   --ms-border-width: 2px;
   --ms-border-color-active: var(--pkt-color-input-border-active);
-  --ms-radius: 0;
   --ms-ring-width: 2px;
   --ms-ring-color: var(--pkt-color-input-border-active);
+  --ms-radius: 0;
   --ms-placeholder-color: var(--pkt-color-text-placeholder);
 
-  --ms-tag-mx: 0;
-  --ms-tag-my: 0;
+  --ms-tag-radius: 
+  --ms-empty-color: red;
 
-  min-height: 3rem;
-  margin: 0;
-  padding: 0.5rem 1rem;
   cursor: default;
 
   &.is-disabled {
     --ms-bg-disabled: var(--pkt-color-surface-default-gray);
     --fg-color: var(--pkt-color-border-states-disabled);
     border-color: var(--pkt-color-border-states-disabled);
+
+    .pkt-tag {
+      color: var(--pkt-color-grays-gray-500);
+      background-color: var(--pkt-color-grays-gray-100);
+    }
   }
 
   &:not(.is-disabled):hover {
@@ -59,33 +60,37 @@
 
   &-wrapper {
     font-weight: 300;
-    cursor: default;
+    cursor: inherit;
   }
 
   &-tags-search,
   &-search {
-    padding: 0;
     font-weight: inherit;
     line-height: inherit;
     outline: none !important;
   }
 
   &-search {
-    width: calc(100% - 1.5rem);
+    width: calc(100% - 5rem);
+  }
+
+  &-tags-search-wrapper {
+    margin: 0 0.5rem;
+  }
+
+  &-tags-search {
+    height: 2.75rem;
+    margin-top: -0.5rem;
   }
 
   &-tags {
-    gap: 0.5rem;
     margin: 0;
-    padding: 0;
 
     > span:not(.multiselect-tags-search-copy) {
       line-height: 0;
     }
 
     .pkt-tag {
-      margin-left: 0;
-
       > span {
         margin-left: 0.5rem;
         cursor: pointer;
@@ -98,7 +103,6 @@
   }
     
   &-dropdown {
-    --ms-dropdown-border-color: #d1d5db;
     --ms-dropdown-border-width: 1px;
     --ms-dropdown-radius: 0;
 
@@ -108,7 +112,7 @@
     --ms-option-bg-selected: var(--pkt-color-background-subtle);
     --ms-option-bg-selected-pointed: var(--pkt-color-background-subtle);
     --ms-option-color-pointed: var(--color-active);
-    --ms-option-color-selected: var(--color-active);
+    --ms-option-color-selected: var(--pkt-color-text-body-default);
     --ms-option-color-selected-pointed: var(--color-active);
 
     box-shadow: 0px 5px 30px -10px rgba(0, 0, 0, 0.2);
@@ -118,17 +122,9 @@
     font-weight: 300;
   }
 
-  &-option {
-    &.is-pointed {
-      text-decoration-line: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.3em;
-    }
-  }
-
   &__toggle,
   &__clear {
-    margin-right: -0.25rem;
+    margin-right: 1rem;
     line-height: 0;
     
     svg {

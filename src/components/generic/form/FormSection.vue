@@ -1,6 +1,47 @@
+<script setup>
+import { computed, defineExpose, provide, ref } from 'vue';
+import { useForm } from 'vee-validate';
+
+const props = defineProps({
+  keepValues: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+});
+
+const { values, errors, meta, validate, resetForm } = useForm({
+  // Keep values from unmounted fields (e.g. when conditionally
+  // rendered in multi-step forms).
+  keepValuesOnUnmount: props.keepValues,
+});
+const isValidated = ref(false);
+const formIsValidated = computed(() => isValidated.value);
+
+provide('formIsValidated', formIsValidated);
+
+async function submit(handler) {
+  const { valid } = await validate();
+  isValidated.value = true;
+
+  if (!valid || !handler) {
+    return undefined;
+  }
+
+  return handler(values);
+}
+
+function reset() {
+  isValidated.value = false;
+  resetForm();
+}
+
+defineExpose({ reset });
+</script>
+
 <template>
-  <form ref="form" class="form">
-    <slot />
+  <form class="form">
+    <slot name="default" :values="values" />
 
     <div class="button-row">
       <slot
@@ -13,48 +54,6 @@
     </div>
   </form>
 </template>
-
-<script>
-import { computed } from 'vue';
-import { useForm } from 'vee-validate';
-
-export default {
-  compatConfig: { MODE: 3 },
-
-  provide() {
-    return {
-      formIsValidated: computed(() => this.isValidated),
-    };
-  },
-
-  setup() {
-    const { values, errors, meta, validate, resetForm } = useForm();
-    return { values, errors, meta, validate, resetForm };
-  },
-
-  data: () => ({
-    isValidated: false,
-  }),
-
-  methods: {
-    async submit(handler) {
-      const { valid } = await this.validate();
-      this.isValidated = true;
-
-      if (!valid || !handler) {
-        return undefined;
-      }
-
-      return handler(this.values);
-    },
-
-    reset() {
-      this.isValidated = false;
-      this.resetForm();
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .form {

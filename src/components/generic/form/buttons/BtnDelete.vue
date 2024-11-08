@@ -1,3 +1,49 @@
+<script setup>
+import { defineOptions, ref } from 'vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import i18n from '@/locale/i18n';
+
+defineProps({
+  text: {
+    type: String,
+    required: false,
+    default: i18n.global.t('btn.delete'),
+  },
+  confirmText: {
+    type: String,
+    required: false,
+    default: i18n.global.t('btn.confirmDelete'),
+  },
+  confirmHelp: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  variant: {
+    type: String,
+    required: false,
+    default: 'icon-left',
+  },
+  iconName: {
+    type: String,
+    required: false,
+    default: 'trash-can',
+  },
+});
+
+defineOptions({
+  inheritAttrs: false,
+});
+
+const emit = defineEmits(['onClick']);
+const popover = ref(null);
+
+function confirm(e) {
+  emit('onClick', e);
+  popover.value.hide();
+}
+</script>
+
 <template>
   <Tooltip ref="popover" interactive trigger="click" placement="top">
     <template #default>
@@ -10,7 +56,7 @@
       />
     </template>
 
-    <template v-if="!$attrs?.disabled" #content>
+    <template #content>
       <div data-mode="dark">
         <p v-if="confirmHelp">{{ confirmHelp }}</p>
         <pkt-button
@@ -25,55 +71,3 @@
     </template>
   </Tooltip>
 </template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue';
-import i18n from '@/locale/i18n';
-
-export default {
-  name: 'BtnDelete',
-
-  components: {
-    PktButton,
-  },
-
-  inheritAttrs: false,
-
-  props: {
-    text: {
-      type: String,
-      required: false,
-      default: i18n.global.t('btn.delete'),
-    },
-    confirmText: {
-      type: String,
-      required: false,
-      default: i18n.global.t('btn.confirmDelete'),
-    },
-    confirmHelp: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    variant: {
-      type: String,
-      required: false,
-      default: 'icon-left',
-    },
-    iconName: {
-      type: String,
-      required: false,
-      default: 'trash-can',
-    },
-  },
-
-  emits: ['onClick'],
-
-  methods: {
-    confirm(e) {
-      this.$emit('onClick', e);
-      this.$refs.popover.hide();
-    },
-  },
-};
-</script>

@@ -1,3 +1,21 @@
+<script setup>
+import { PktButton } from '@oslokommune/punkt-vue';
+import i18n from '@/locale/i18n';
+
+defineProps({
+  text: {
+    type: String,
+    required: false,
+    default: i18n.global.t('btn.save'),
+  },
+  variant: {
+    type: String,
+    required: false,
+    default: 'icon-left',
+  },
+});
+</script>
+
 <template>
   <pkt-button
     v-bind="$attrs"
@@ -5,32 +23,5 @@
     :text="text"
     :variant="variant"
     icon-name="save"
-    @on-click="$emit('onClick', $event)"
   />
 </template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue';
-import i18n from '@/locale/i18n';
-
-export default {
-  name: 'BtnSave',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    text: {
-      type: String,
-      required: false,
-      default: i18n.global.t('btn.save'),
-    },
-    variant: {
-      type: String,
-      required: false,
-      default: 'icon-left',
-    },
-  },
-};
-</script>

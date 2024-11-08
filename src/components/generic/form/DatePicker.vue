@@ -1,3 +1,91 @@
+<script setup>
+import { computed, defineOptions, onMounted, ref, watch } from 'vue';
+import FlatPickr from 'vue-flatpickr-component';
+import { PktInputWrapper } from '@oslokommune/punkt-vue';
+import 'flatpickr/dist/flatpickr.css';
+
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps({
+  modelValue: {
+    type: [String, Array, Date],
+    required: false,
+    default: null,
+  },
+  datePickerConfig: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  optionalTag: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  hasError: {
+    type: Boolean,
+    required: false,
+  },
+  errorMessage: {
+    type: String,
+    required: false,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const datePicker = ref(null);
+const flatPickrValue = ref(null);
+const defaultConfig = {
+  mode: 'single',
+  dateFormat: 'j M Y',
+  allowInput: true,
+};
+
+const flatPickrInstance = computed(() => datePicker.value?.fp);
+const config = computed(() => ({ ...defaultConfig, ...props.datePickerConfig }));
+const isRangeMode = computed(() => config.value.mode === 'range');
+
+watch(() => props.modelValue, setValue);
+onMounted(() => setValue(props.modelValue));
+
+function setValue(value) {
+  const currentValue = flatPickrInstance.value.selectedDates;
+  value = value instanceof Array ? value : [value];
+
+  if (JSON.stringify(value) !== JSON.stringify(currentValue)) {
+    flatPickrInstance.value.setDate(value, true);
+  }
+}
+
+function onChange(dates) {
+  let value = null;
+
+  if (dates.length) {
+    if (isRangeMode.value) {
+      value = dates;
+    } else {
+      value = dates[0];
+    }
+  }
+
+  if (isRangeMode.value && value && value.length === 1) {
+    return;
+  }
+
+  emit('update:modelValue', value);
+}
+
+function onClose(dates) {
+  if (isRangeMode.value && dates.length === 1) {
+    setValue(props.modelValue);
+  }
+}
+</script>
+
 <template>
   <PktInputWrapper
     :for-id="$attrs.id"
@@ -31,118 +119,6 @@
     </div>
   </PktInputWrapper>
 </template>
-
-<script>
-import FlatPickr from 'vue-flatpickr-component';
-import { PktInputWrapper } from '@oslokommune/punkt-vue';
-import 'flatpickr/dist/flatpickr.css';
-
-FlatPickr.compatConfig = { MODE: 3 };
-
-export default {
-  compatConfig: { MODE: 3 },
-
-  components: {
-    PktInputWrapper,
-    FlatPickr,
-  },
-
-  inheritAttrs: false,
-
-  props: {
-    modelValue: {
-      type: [String, Array, Date],
-      required: false,
-      default: null,
-    },
-    datePickerConfig: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-    optionalTag: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    hasError: {
-      type: Boolean,
-      required: false,
-    },
-    errorMessage: {
-      type: String,
-      required: false,
-      default: null,
-    },
-  },
-
-  emits: ['update:modelValue'],
-
-  data: () => ({
-    flatPickrValue: null,
-    defaultConfig: {
-      mode: 'single',
-      dateFormat: 'j M Y',
-      allowInput: true,
-    },
-  }),
-
-  computed: {
-    flatPickrInstance() {
-      return this.$refs.datePicker?.fp;
-    },
-
-    config() {
-      return { ...this.defaultConfig, ...this.datePickerConfig };
-    },
-  },
-
-  watch: {
-    modelValue: {
-      handler: 'setValue',
-    },
-  },
-
-  mounted() {
-    this.setValue(this.modelValue);
-  },
-
-  methods: {
-    setValue(value) {
-      const currentValue = this.flatPickrInstance.selectedDates;
-      const val = value instanceof Array ? value : [value];
-
-      if (JSON.stringify(val) !== JSON.stringify(currentValue)) {
-        this.flatPickrInstance.setDate(val, true);
-      }
-    },
-
-    onChange(dates) {
-      let value = null;
-
-      if (dates.length) {
-        if (this.config.mode === 'range') {
-          value = dates;
-        } else {
-          value = dates[0];
-        }
-      }
-
-      if (this.config.mode === 'range' && value && value.length === 1) {
-        return;
-      }
-
-      this.$emit('update:modelValue', value);
-    },
-
-    onClose(dates) {
-      if (this.config.mode === 'range' && dates.length === 1) {
-        this.setValue(this.modelValue);
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .datepicker--inline {
