@@ -2,12 +2,12 @@
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { useHead } from 'unhead';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { useHead } from '@unhead/vue';
+import { PktAlert, PktButton, PktLoader } from '@oslokommune/punkt-vue';
 import { loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import { useAuthStore } from '@/store/auth';
 import { BtnSave } from '@/components/generic/form';
-import LoadingSmall from '@/components/LoadingSmall.vue';
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 
 const i18n = useI18n();
 
@@ -46,11 +46,11 @@ async function loginWithProvider(provider) {
 </script>
 
 <template>
-  <page-layout breakpoint="phablet">
+  <PageLayout breakpoint="phablet">
     <h1 class="title-1">{{ $t('login.login') }}</h1>
 
-    <div v-if="isAuthenticating && authenticationError === null">
-      <LoadingSmall /> {{ $t('login.loading') }}
+    <div v-if="isAuthenticating && authenticationError === null" class="login__loading">
+      <PktLoader :message="$t('login.loading')" size="large" variant="blue" inline />
     </div>
 
     <PktAlert
@@ -61,7 +61,7 @@ async function loginWithProvider(provider) {
     >
       {{ authenticationErrorMessage }}
 
-      <RouterLink v-if="authenticationError === 1" :to="{ name: 'request-access' }">
+      <RouterLink v-if="authenticationError === 1" :to="{ name: 'RequestAccess' }">
         {{ $t('login.requestAccess') }}
       </RouterLink>
     </PktAlert>
@@ -93,9 +93,13 @@ async function loginWithProvider(provider) {
       </template>
     </FormSection>
 
-    <div v-if="!isAuthenticating || authenticationError !== null" class="login__footer">
+    <div
+      v-if="!isAuthenticating || authenticationError !== null"
+      class="login__providers"
+    >
       <PktButton
         v-if="authenticationProviders.includes('microsoft')"
+        size="small"
         @on-click="loginWithProvider(loginProviderMS)"
       >
         {{ $t('login.microsoft') }}
@@ -103,6 +107,7 @@ async function loginWithProvider(provider) {
 
       <PktButton
         v-if="authenticationProviders.includes('google')"
+        size="small"
         @on-click="loginWithProvider(loginProviderGoogle)"
       >
         {{ $t('login.google') }}
@@ -110,28 +115,39 @@ async function loginWithProvider(provider) {
 
       <PktButton
         v-if="authenticationProviders.includes('email')"
+        size="small"
         skin="secondary"
         @on-click="showForm = true"
       >
         {{ $t('login.loginWithUsername') }}
       </PktButton>
 
-      <RouterLink :to="{ name: 'request-access' }">
-        <PktButton skin="secondary">
+      <div class="login__sep">{{ $t('general.or') }}</div>
+
+      <RouterLink :to="{ name: 'RequestAccess' }">
+        <PktButton skin="secondary" size="small">
           {{ $t('login.requestAccess') }}
         </PktButton>
       </RouterLink>
     </div>
-  </page-layout>
+
+    <template #footer>
+      <BuildingsGraphic skin="dim" />
+    </template>
+  </PageLayout>
 </template>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-@include bp('tablet-up') {
-  :deep(.page__main) {
-    padding: 1.5rem;
-    background: var(--color-gray-light);
+.page {
+  background-color: var(--pkt-color-background-subtle);
+
+  @include bp('tablet-up') {
+    :deep(.page__main) {
+      padding: 1.5rem;
+      background: var(--pkt-color-background-default);
+    }
   }
 }
 
@@ -140,7 +156,7 @@ async function loginWithProvider(provider) {
   border-bottom: 2px solid var(--color-grayscale-10);
 }
 
-.login__footer {
+.login__providers {
   display: flex;
   flex-direction: column;
   gap: 0.5rem 0.5rem;
@@ -149,5 +165,16 @@ async function loginWithProvider(provider) {
   button {
     width: 100%;
   }
+}
+
+.login__sep {
+  padding: 0.5rem 0;
+  color: var(--pkt-color-grays-gray-500);
+  font-style: italic;
+  text-align: center;
+}
+
+.login__loading {
+  text-align: center;
 }
 </style>

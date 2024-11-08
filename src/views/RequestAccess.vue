@@ -1,14 +1,51 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import api from '@/util/api';
+import { PktAlert, PktBackLink } from '@oslokommune/punkt-vue';
+import { BtnSave } from '@/components/generic/form';
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
+
+const router = useRouter();
+const i18n = useI18n();
+const toast = useToast();
+
+const loading = ref(false);
+const errorMessage = ref(null);
+
+async function requestAccess({ email }, resetForm) {
+  loading.value = true;
+  try {
+    const { message } = await api(`/accessRequests/create`, {
+      method: 'post',
+      body: { email },
+    });
+    toast.success(i18n.t(message, { user: email }));
+    await router.push({ name: 'Login' });
+  } catch (error) {
+    toast.error(i18n.t(error.message, { user: email }));
+    resetForm();
+  }
+  loading.value = false;
+}
+</script>
+
 <template>
-  <page-layout breakpoint="phablet">
+  <PageLayout breakpoint="phablet">
     <RouterLink v-slot="{ href }" :to="{ name: 'Login' }" custom>
-      <PktBackLink :href="href" :text="$t('login.backToLogin')" />
+      <PktBackLink :href="href" :text="$t('login.backToLogin')" class="mb-size-22" />
     </RouterLink>
 
     <h1 class="title-1">{{ $t('login.requestAccess') }}</h1>
 
-    <form-section>
-      <form-component
-        v-model="email"
+    <PktAlert v-if="errorMessage" skin="error" class="mb-size-32">
+      {{ errorMessage }}
+    </PktAlert>
+
+    <FormSection>
+      <FormComponent
         input-type="input"
         name="email"
         :label="$t('login.email')"
@@ -17,76 +54,33 @@
       />
 
       <template #actions="{ submit, reset, disabled }">
-        <btn-save
+        <BtnSave
           variant="label-only"
           :disabled="disabled || loading"
           :text="$t('login.requestButton')"
-          @on-click="submit(() => send(reset))"
+          size="small"
+          @on-click="submit((values) => requestAccess(values, reset))"
         />
       </template>
-    </form-section>
-  </page-layout>
+    </FormSection>
+
+    <template #footer>
+      <BuildingsGraphic skin="dim" />
+    </template>
+  </PageLayout>
 </template>
-
-<script>
-import { mapMutations } from 'vuex';
-import { PktBackLink } from '@oslokommune/punkt-vue';
-import api from '@/util/api';
-import { BtnSave } from '@/components/generic/form';
-
-export default {
-  name: 'RequestAccess',
-
-  components: {
-    PktBackLink,
-    BtnSave,
-  },
-
-  data: () => ({
-    email: '',
-    loading: false,
-  }),
-
-  mounted() {
-    this.SET_LOGIN_ERROR(null);
-  },
-
-  methods: {
-    ...mapMutations(['SET_LOGIN_ERROR']),
-
-    async send(resetForm) {
-      this.loading = true;
-      try {
-        const { message } = await api(`/accessRequests/create`, {
-          method: 'post',
-          body: {
-            email: this.email,
-          },
-        });
-        this.$toasted.success(this.$t(message, { user: this.email }));
-
-        await this.$router.push({
-          name: 'Login',
-          query: { redirectFrom: '/' },
-        });
-      } catch (error) {
-        this.$toasted.error(this.$t(error.message, { user: this.email }));
-      }
-
-      resetForm();
-      this.loading = false;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
-@include bp('tablet-up') {
-  :deep(.page__main) {
-    padding: 1.5rem;
-    background: var(--color-gray-light);
+.page {
+  background-color: var(--pkt-color-background-subtle);
+
+  @include bp('tablet-up') {
+    :deep(.page__main) {
+      padding: 1.5rem;
+      background: var(--pkt-color-background-default);
+    }
   }
 }
 </style>
