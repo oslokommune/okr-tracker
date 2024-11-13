@@ -1,57 +1,48 @@
-<template>
-  <pkt-button
-    :class="['period-shortcut', { 'period-shortcut--active': active }]"
-    skin="secondary"
-    @onClick="$emit('click', $event)"
-  >
-    <div class="pkt-txt-14-medium">{{ label }}</div>
-    <div v-if="formattedPeriod" class="pkt-txt-14-light">
-      {{ formattedPeriod }}
-    </div>
-  </pkt-button>
-</template>
-
-<script>
+<script setup>
+import { computed } from 'vue';
 import { formattedPeriod } from '@/util/okr';
 import { PktButton } from '@oslokommune/punkt-vue';
 
-export default {
-  name: 'PeriodShortcut',
-
-  components: {
-    PktButton,
+const props = defineProps({
+  label: {
+    type: String,
+    required: true,
   },
-
-  props: {
-    label: {
-      type: String,
-      required: true,
-    },
-    startDate: {
-      type: [Date, Boolean],
-      required: false,
-      default: null,
-    },
-    endDate: {
-      type: [Date, Boolean],
-      required: false,
-      default: null,
-    },
-    active: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+  startDate: {
+    type: [Date, Boolean],
+    required: false,
+    default: null,
   },
-
-  computed: {
-    formattedPeriod() {
-      const { startDate, endDate } = this;
-      return formattedPeriod({ startDate, endDate });
-    },
+  endDate: {
+    type: [Date, Boolean],
+    required: false,
+    default: null,
   },
-};
+  active: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const period = computed(() => {
+  const { startDate, endDate } = props;
+  return formattedPeriod({ startDate, endDate });
+});
 </script>
+
+<template>
+  <PktButton
+    :class="['period-shortcut', { 'period-shortcut--active': active }]"
+    skin="secondary"
+    @on-click="$emit('click', $event)"
+  >
+    <div class="pkt-txt-14-medium">{{ label }}</div>
+    <div v-if="period" class="pkt-txt-14-light">
+      {{ period }}
+    </div>
+  </PktButton>
+</template>
 
 <style lang="scss" scoped>
 .period-shortcut {

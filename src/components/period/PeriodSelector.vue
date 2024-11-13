@@ -1,121 +1,108 @@
+<script setup>
+import { computed, onMounted, ref } from 'vue';
+import { endOfDay, startOfDay } from 'date-fns';
+import { periodObjectFromDates } from '@/util';
+import DatePicker from '@/components/generic/form/DatePicker.vue';
+import PeriodShortcut from './PeriodShortcut.vue';
+
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  periodShortcuts: {
+    type: Array,
+    required: false,
+    default: () => [],
+  },
+  maxMonths: {
+    type: Number,
+    required: false,
+    default: 1,
+  },
+});
+
+const emit = defineEmits(['update:modelValue', 'select']);
+
+const showMonths = ref(1);
+
+onMounted(() => {
+  const calculatedMonthLimit = Math.floor(window.innerWidth / 380);
+  if (calculatedMonthLimit === 0) {
+    showMonths.value = 1;
+    return;
+  }
+  showMonths.value =
+    props.maxMonths > calculatedMonthLimit ? calculatedMonthLimit : props.maxMonths;
+});
+
+const calendarConfig = computed(() => ({
+  inline: true,
+  mode: 'range',
+  minDate: null,
+  maxDate: null,
+  showMonths: showMonths.value,
+}));
+
+const range = computed({
+  get() {
+    if (!props.modelValue) {
+      return [];
+    }
+    const { startDate, endDate } = props.modelValue;
+    return startDate && endDate ? [startDate, endDate] : [];
+  },
+  set(value) {
+    let [selectedStart, selectedEnd] = value;
+    selectedStart = startOfDay(selectedStart);
+    selectedEnd = endOfDay(selectedEnd);
+
+    if (range.value) {
+      const [currentStart, currentEnd] = range.value;
+      if (
+        selectedStart.getTime() === startOfDay(currentStart).getTime() &&
+        selectedEnd.getTime() === endOfDay(currentEnd).getTime()
+      ) {
+        return;
+      }
+    }
+
+    select(periodObjectFromDates(selectedStart, selectedEnd));
+  },
+});
+
+function select(period) {
+  emit('update:modelValue', period);
+  emit('select', period);
+}
+</script>
+
 <template>
   <div class="period-selector">
-    <h2 class="pkt-txt-18-medium">{{ $t('period.choosePeriod') }}</h2>
-    <flat-pickr
-      :value="range"
-      :config="calendarConfig"
-      class="flatpickr-input"
-      name="date"
-      @on-change="(range) => setRange(range)"
+    <DatePicker
+      id="period"
+      v-model="range"
+      :label="$t('period.choosePeriod')"
+      :date-picker-config="calendarConfig"
     />
 
-    <div v-if="options && options.length">
+    <div v-if="periodShortcuts.length">
       <h3 class="pkt-txt-16-medium">
         {{ $t('general.shortcuts') }}
       </h3>
       <div class="period-selector__options">
-        <period-shortcut
-          v-for="rangeOption in options"
-          v-bind="rangeOption"
-          :key="rangeOption.key"
-          :active="value && rangeOption.key === value.key"
-          @click="$emit('input', rangeOption)"
+        <PeriodShortcut
+          v-for="period in periodShortcuts"
+          v-bind="period"
+          :key="period.key"
+          :active="modelValue?.key === period.key"
+          @click="select(period)"
         />
       </div>
     </div>
   </div>
 </template>
-
-<script>
-import { endOfDay, startOfDay } from 'date-fns';
-import { periodObjectFromDates } from '@/util';
-import PeriodShortcut from './PeriodShortcut.vue';
-
-export default {
-  name: 'PeriodSelector',
-
-  components: {
-    PeriodShortcut,
-  },
-
-  props: {
-    value: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-    options: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
-    maxMonths: {
-      type: Number,
-      required: false,
-      default: 1,
-    },
-  },
-
-  data: () => ({
-    showMonths: 1,
-  }),
-
-  computed: {
-    range() {
-      if (!this.value) {
-        return null;
-      }
-
-      const { startDate, endDate } = this.value;
-      return startDate && endDate ? [startDate, endDate] : null;
-    },
-
-    calendarConfig() {
-      return {
-        inline: true,
-        mode: 'range',
-        minDate: null,
-        maxDate: null,
-        showMonths: this.showMonths,
-      };
-    },
-  },
-
-  mounted() {
-    const calculatedMonthLimit = Math.floor(window.innerWidth / 380);
-    if (calculatedMonthLimit === 0) {
-      this.showMonths = 1;
-      return;
-    }
-    this.showMonths =
-      this.maxMonths > calculatedMonthLimit ? calculatedMonthLimit : this.maxMonths;
-  },
-
-  methods: {
-    setRange(range) {
-      if (range.length !== 2) {
-        return;
-      }
-
-      let [selectedStart, selectedEnd] = range;
-      selectedStart = startOfDay(selectedStart);
-      selectedEnd = endOfDay(selectedEnd);
-
-      if (this.range) {
-        const [currentStart, currentEnd] = this.range;
-        if (
-          selectedStart.getTime() === startOfDay(currentStart).getTime() &&
-          selectedEnd.getTime() === endOfDay(currentEnd).getTime()
-        ) {
-          return;
-        }
-      }
-
-      this.$emit('input', periodObjectFromDates(selectedStart, selectedEnd));
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .period-selector {
