@@ -17,5 +17,5 @@ defineProps({
 </script>
 
 <template>
-  <pkt-button v-bind="$attrs" :text="text" :skin="skin" type="button" />
+  <PktButton v-bind="$attrs" :text="text" :skin="skin" type="button" />
 </template>

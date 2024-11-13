@@ -44,6 +44,14 @@ module.exports = {
     'no-use-before-define': 'off',
     // TODO: Re-enable and lint this rule separately.
     'vue/multi-word-component-names': 'off',
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+      {
+        registeredComponentsOnly: true,
+        ignores: [],
+      },
+    ],
     'vue/v-on-event-hyphenation': ['warn', 'always', { ignore: ['onClick'] }],
     'vue/require-explicit-emits': 'off',
     'func-names': 'off',
