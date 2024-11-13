@@ -1,27 +1,101 @@
+<script setup>
+import { computed, nextTick, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import html2canvas from 'html2canvas';
+import { PktButton } from '@oslokommune/punkt-vue';
+import downloadFile from '@/util/downloadFile';
+import { periodDates } from '@/util';
+import { compareKPIs } from '@/util/kpiHelpers';
+import Kpi from '@/db/Kpi';
+import { useAuthStore } from '@/store/auth';
+import { useActiveItemStore } from '@/store/activeItem';
+import { useKpisStore } from '@/store/kpis';
+import KpiWidgetGroupLink from '@/components/KpiWidgetGroupLink.vue';
+import SortableList from '@/components/SortableList.vue';
+
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  kpis: {
+    type: Array,
+    required: true,
+  },
+  compact: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const { hasEditRights } = storeToRefs(useAuthStore());
+const { item } = storeToRefs(useActiveItemStore());
+const { period } = storeToRefs(useKpisStore());
+
+const widget = ref(null);
+const rendering = ref(false);
+
+const orderedKpis = computed({
+  get() {
+    return props.kpis.map((kpi) => kpi).sort(compareKPIs(item.value.id));
+  },
+  set(kpis) {
+    kpis.forEach((kpi, i) => {
+      const order = kpi.order ? kpi.order : {};
+
+      if (order[item.value.id] !== i) {
+        order[item.value.id] = i;
+        Kpi.update(kpi.id, { order });
+      }
+    });
+  },
+});
+
+const imageFilename = computed(() =>
+  [
+    item.value ? item.value.slug : '',
+    ...props.title.toLowerCase().split(' '),
+    new Date().toISOString().slice(0, 10),
+  ].join('-')
+);
+
+async function download() {
+  rendering.value = true;
+  await nextTick();
+  html2canvas(widget.value).then((canvas) => {
+    rendering.value = false;
+    canvas.toBlob((blob) => {
+      downloadFile(blob, imageFilename.value, '.png');
+    });
+  });
+}
+</script>
+
 <template>
-  <div :class="['kpi-widget-group', { 'kpi-widget-group--compact': compact }]">
+  <div
+    ref="widget"
+    :class="['kpi-widget-group', { 'kpi-widget-group--compact': compact }]"
+  >
     <div class="kpi-widget-group__title">
       <h2 class="pkt-txt-16">{{ title }}</h2>
       <template v-if="!compact">
-        <span
-          v-if="selectedPeriod.startDate && selectedPeriod.endDate"
-          class="pkt-txt-14"
-        >
-          {{ $t('general.period') }}: {{ periodDates(selectedPeriod) }}
+        <span v-if="period.startDate && period.endDate" class="pkt-txt-14">
+          {{ $t('general.period') }}: {{ periodDates(period) }}
         </span>
-        <span v-else class="pkt-txt-14"
-          >{{ $t('general.period') }}: {{ selectedPeriod.label }}
+        <span v-else class="pkt-txt-14">
+          {{ $t('general.period') }}: {{ period.label }}
         </span>
-        <pkt-button
+        <PktButton
           v-if="!rendering && kpis.length"
           size="small"
           skin="tertiary"
           variant="icon-left"
           icon-name="download"
-          @onClick="download($event)"
+          @on-click="download"
         >
           {{ $t('btn.download') }}
-        </pkt-button>
+        </PktButton>
       </template>
     </div>
 
@@ -31,120 +105,23 @@
       class="kpi-widget-group__kpis"
       handle=".drag-icon"
     >
-      <kpi-widget-group-link
-        v-for="kpi in orderedKpis"
-        :key="kpi.id"
-        :kpi="kpi"
+      <KpiWidgetGroupLink
+        v-for="{ id } in orderedKpis"
+        :key="id"
+        :kpi-id="id"
         :compact="compact"
       />
     </SortableList>
 
-    <kpi-widget-group-link
-      v-for="kpi in orderedKpis"
+    <KpiWidgetGroupLink
+      v-for="{ id } in orderedKpis"
       v-else
-      :key="kpi.id"
-      :kpi="kpi"
+      :key="id"
+      :kpi-id="id"
       :compact="compact"
     />
   </div>
 </template>
-
-<script>
-import html2canvas from 'html2canvas';
-import { mapGetters, mapState } from 'vuex';
-import { periodDates } from '@/util';
-import { PktButton } from '@oslokommune/punkt-vue';
-import downloadFile from '@/util/downloadFile';
-import { compareKPIs } from '@/util/kpiHelpers';
-import Kpi from '@/db/Kpi';
-import KpiWidgetGroupLink from '@/components/KpiWidgetGroupLink.vue';
-import SortableList from '@/components/SortableList.vue';
-
-export default {
-  name: 'KpiWidgetGroup',
-
-  components: {
-    PktButton,
-    SortableList,
-    KpiWidgetGroupLink,
-  },
-
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    kpis: {
-      type: Array,
-      required: true,
-    },
-    compact: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
-  data: () => ({
-    rendering: false,
-  }),
-
-  computed: {
-    ...mapState(['activeItem']),
-    ...mapState('kpis', ['selectedPeriod']),
-    ...mapGetters(['hasEditRights']),
-
-    itemSlug() {
-      if (this.kpis.length && this.kpis[0]?.parent?.slug) {
-        return this.kpis[0].parent.slug;
-      }
-
-      return null;
-    },
-
-    imageFilename() {
-      const now = new Date();
-      return [
-        this.itemSlug ? this.itemSlug : '',
-        ...this.title.toLowerCase().split(' '),
-        now.toISOString().slice(0, 10),
-      ].join('-');
-    },
-
-    orderedKpis: {
-      get() {
-        return this.kpis.map((kpi) => kpi).sort(compareKPIs(this.activeItem.id));
-      },
-      set(kpis) {
-        kpis.forEach((kpi, i) => {
-          const order = kpi.order ? kpi.order : {};
-
-          if (order[this.activeItem.id] !== i) {
-            order[this.activeItem.id] = i;
-            Kpi.update(kpi.id, { order });
-          }
-        });
-      },
-    },
-  },
-
-  methods: {
-    periodDates,
-
-    download() {
-      this.rendering = true;
-      this.$nextTick(() => {
-        html2canvas(this.$el).then((canvas) => {
-          this.rendering = false;
-          canvas.toBlob((blob) => {
-            downloadFile(blob, this.imageFilename, '.png');
-          });
-        });
-      });
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;

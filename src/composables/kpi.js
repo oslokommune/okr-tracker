@@ -74,7 +74,9 @@ export function useKpi(kpiId) {
    * Return cached (if available) or actual progress values.
    */
   const progress = computed(() =>
-    filterDuplicatedProgressValues(_cachedProgress.value || _progress.value)
+    filterDuplicatedProgressValues(
+      _cachedProgress.value.length ? _cachedProgress.value : _progress.value
+    )
   );
 
   // Goals

@@ -1,41 +1,23 @@
+<script setup>
+import { storeToRefs } from 'pinia';
+import { useActiveItemStore } from '@/store/activeItem';
+import { PktAlert, PktLoader } from '@oslokommune/punkt-vue';
+
+const { item, isLoading } = storeToRefs(useActiveItemStore());
+</script>
+
 <template>
-  <router-view v-if="activeItem" v-show="!loading"></router-view>
-  <not-found-page v-else back-to="Home" />
+  <PktLoader v-if="isLoading" size="large" :delay="500" inline />
+  <template v-else-if="!isLoading && item">
+    <PktAlert v-if="item.archived" skin="warning" compact>
+      {{ $t('archived.heading') }}
+    </PktAlert>
+    <RouterView />
+  </template>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-import { itemCommon as routerGuard } from '@/router/router-guards';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
-
-export default {
-  name: 'ItemWrapper',
-
-  components: {
-    NotFoundPage,
-  },
-
-  async beforeRouteUpdate(to, from, next) {
-    this.loading = true;
-    if (to.params.slug !== from.params.slug) {
-      await routerGuard(to, from, next);
-      this.loading = false;
-    } else {
-      this.loading = false;
-      next();
-    }
-  },
-
-  data: () => ({
-    loading: true,
-  }),
-
-  computed: {
-    ...mapState(['activeItem']),
-  },
-
-  mounted() {
-    this.loading = false;
-  },
-};
-</script>
+<style lang="scss" scoped>
+.pkt-loader--inline {
+  margin: auto auto;
+}
+</style>

@@ -1,6 +1,83 @@
+<script setup>
+import { computed, ref, watch, watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/store/auth';
+import { useActiveItemStore } from '@/store/activeItem';
+import { useKpisStore } from '@/store/kpis';
+import { useActiveKpiStore } from '@/store/activeKpi';
+import { PktButton } from '@oslokommune/punkt-vue';
+import EmptyPage from '@/components/pages/EmptyPage.vue';
+import KpiDetails from '@/components/KpiDetails.vue';
+import KpiDrawer from '@/components/drawers/KpiDrawer.vue';
+import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
+import NotFoundPage from '@/components/pages/NotFoundPage.vue';
+import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
+
+const router = useRouter();
+const route = useRoute();
+const i18n = useI18n();
+
+const { hasEditRights } = storeToRefs(useAuthStore());
+const { item } = storeToRefs(useActiveItemStore());
+const { kpis, isLoading } = storeToRefs(useKpisStore());
+const { kpiId, kpi, isLoading: kpiIsLoading } = storeToRefs(useActiveKpiStore());
+
+const page = ref(null);
+const hasInitialLoad = ref(false);
+const showKpiDetails = computed(
+  () => !!kpiId.value && route.query?.view !== 'list' && hasInitialLoad.value
+);
+const showKpiDrawer = ref(false);
+const drawerEditMode = ref(false);
+
+watchEffect(() => {
+  // Ensure that an initial KPI has started loading before showing details
+  if (kpiIsLoading.value && !hasInitialLoad.value) {
+    hasInitialLoad.value = true;
+  }
+});
+
+watch(route, () => {
+  page.value.scrollIntoView();
+});
+
+const kpiGroups = computed(() => {
+  return [
+    {
+      title: i18n.t('general.resultIndicator'),
+      kpis: kpis.value.filter(({ kpiType }) => kpiType === 'ri'),
+    },
+    {
+      title: i18n.t('general.keyFigures'),
+      kpis: kpis.value.filter(({ kpiType }) => kpiType === 'keyfig'),
+    },
+    {
+      title: i18n.t('general.otherMeasurements'),
+      kpis: kpis.value.filter(({ kpiType }) => !kpiType || kpiType === 'plain'),
+    },
+  ];
+});
+
+function openKpiDrawer(edit) {
+  drawerEditMode.value = edit;
+  showKpiDrawer.value = true;
+}
+
+function kpiCreated(newKpi) {
+  const { params, query } = router.currentRoute.value;
+  router.push({
+    name: 'ItemMeasurements',
+    params: { ...params, kpiId: newKpi.id },
+    query,
+  });
+}
+</script>
+
 <template>
-  <div class="measurements-page">
-    <div v-if="allKpis.length" class="measurements-page__header">
+  <div ref="page" class="measurements-page">
+    <div v-if="kpis.length" class="measurements-page__header">
       <h1 class="pkt-txt-16-medium pkt-hide-phablet-up">
         {{ $t('general.KPIs') }}
       </h1>
@@ -8,24 +85,24 @@
         {{ $t('general.KPIs') }}
       </h1>
       <h1 class="pkt-txt-18-medium pkt-show-tablet-up">
-        {{ $t('general.KPIsLong', { name: activeItem.name }) }}
+        {{ $t('general.KPIsLong', { name: item.name }) }}
       </h1>
     </div>
 
-    <div v-if="hasEditRights" class="measurements-page__actions">
-      <pkt-button
+    <div v-if="hasEditRights && kpis.length" class="measurements-page__actions">
+      <PktButton
         :text="$t('general.KPI')"
         :aria-label="$t('admin.measurement.new')"
         skin="primary"
         size="small"
         variant="icon-left"
         icon-name="plus-sign"
-        @onClick="openKpiDrawer(false)"
+        @on-click="openKpiDrawer(false)"
       />
     </div>
 
-    <page-layout
-      v-if="allKpis.length"
+    <PageLayout
+      v-if="kpis.length"
       :breakpoint="showKpiDetails ? 'desktop' : 'tablet-big'"
       sidebar-position="left"
       :sidebar-cols="showKpiDetails ? 3 : 12"
@@ -33,7 +110,7 @@
     >
       <template #sidebar>
         <template v-for="(group, index) in kpiGroups">
-          <kpi-widget-group
+          <KpiWidgetGroup
             v-if="group.kpis.length > 0"
             v-bind="group"
             :key="`kpi-group-${index}`"
@@ -43,172 +120,43 @@
       </template>
 
       <template v-if="showKpiDetails" #default>
-        <kpi-details v-if="activeKpi" :kpi="activeKpi" @edit-kpi="openKpiDrawer(true)" />
-        <not-found-page
-          v-else
-          :heading="$t('notFound.measurementHeading')"
-          :body="$t('notFound.measurementBody')"
-        />
+        <div class="measurements-page__details">
+          <FadeTransition>
+            <KpiDetails v-if="kpi" @edit-kpi="openKpiDrawer(true)" />
+            <NotFoundPage
+              v-else-if="!kpiIsLoading && !kpi"
+              :heading="$t('notFound.measurementHeading')"
+              :body="$t('notFound.measurementBody')"
+            />
+          </FadeTransition>
+        </div>
       </template>
-    </page-layout>
+    </PageLayout>
 
-    <empty-page
-      v-else
+    <EmptyPage
+      v-else-if="!isLoading"
       :heading="$t('empty.noKPIs.heading')"
       :body="$t(hasEditRights ? 'empty.noKPIs.adminBody' : 'empty.noKPIs.body')"
     >
       <div v-if="hasEditRights" data-mode="dark">
-        <pkt-button
+        <PktButton
           :text="$t('empty.noKPIs.buttonText')"
           skin="primary"
           variant="icon-left"
           icon-name="plus-sign"
-          @onClick="openKpiDrawer(false)"
+          @on-click="openKpiDrawer(false)"
         />
       </div>
-    </empty-page>
+    </EmptyPage>
 
-    <kpi-drawer
+    <KpiDrawer
       v-if="hasEditRights && showKpiDrawer"
-      :kpi="drawerEditMode ? activeKpi : null"
+      :kpi-id="drawerEditMode ? kpi.id : null"
       @create="kpiCreated"
       @close="showKpiDrawer = false"
     />
   </div>
 </template>
-
-<script>
-import { mapState, mapGetters } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue';
-import EmptyPage from '@/components/pages/EmptyPage.vue';
-import KpiDetails from '@/components/KpiDetails.vue';
-import KpiDrawer from '@/components/drawers/KpiDrawer.vue';
-import KpiWidgetGroup from '@/components/KpiWidgetGroup.vue';
-import NotFoundPage from '@/components/pages/NotFoundPage.vue';
-
-export default {
-  name: 'ItemMeasurements',
-
-  components: {
-    KpiWidgetGroup,
-    KpiDetails,
-    EmptyPage,
-    NotFoundPage,
-    PktButton,
-    KpiDrawer,
-  },
-
-  data: () => ({
-    showKpiDetails: true,
-    showKpiDrawer: false,
-    drawerEditMode: false,
-    activeKpiId: null,
-  }),
-
-  computed: {
-    ...mapState(['activeItem']),
-    ...mapState('kpis', ['selectedPeriod', 'kpis', 'subKpis']),
-    ...mapGetters(['hasEditRights']),
-
-    kpiGroups() {
-      return [
-        {
-          title: this.$t('general.resultIndicator'),
-          kpis: this.resultIndicators,
-        },
-        {
-          title: this.$t('general.keyFigures'),
-          kpis: this.keyFigures,
-        },
-        {
-          title: this.$t('general.otherMeasurements'),
-          kpis: this.otherKpis,
-        },
-      ];
-    },
-
-    resultIndicators() {
-      return [
-        ...this.kpis.filter((kpi) => kpi.kpiType === 'ri'),
-        ...this.subKpis.filter((kpi) => kpi.kpiType === 'ri'),
-      ];
-    },
-
-    keyFigures() {
-      return [
-        ...this.kpis.filter((kpi) => kpi.kpiType === 'keyfig'),
-        ...this.subKpis.filter((kpi) => kpi.kpiType === 'keyfig'),
-      ];
-    },
-
-    otherKpis() {
-      return this.kpis.filter((kpi) => kpi.kpiType === 'plain');
-    },
-
-    allKpis() {
-      return this.resultIndicators.concat(this.keyFigures, this.otherKpis);
-    },
-
-    activeKpi() {
-      return this.allKpis.find((k) => k.id === this.activeKpiId) || null;
-    },
-  },
-
-  watch: {
-    $route: {
-      immediate: true,
-      async handler({ params, query }) {
-        this.$nextTick(() => {
-          this.$el.parentElement.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        if (query.view === 'list') {
-          this.showKpiDetails = false;
-          return;
-        }
-
-        const { kpiId } = params;
-
-        if (!kpiId && this.allKpis.length) {
-          this.$router.replace({
-            params: { ...params, kpiId: this.allKpis[0].id },
-            query: { resultIndicatorPeriod: this.selectedPeriod?.key },
-          });
-        } else {
-          this.activeKpiId = this.allKpis.find((k) => k.id === kpiId) ? kpiId : null;
-        }
-
-        this.showKpiDetails = true;
-      },
-    },
-
-    selectedPeriod(period) {
-      const { view, resultIndicatorPeriod } = this.$route.query;
-      const targetView = view === 'list' ? 'list' : undefined;
-      if (resultIndicatorPeriod !== period.key) {
-        this.$router.replace({
-          query: { view: targetView, resultIndicatorPeriod: period.key },
-        });
-      }
-    },
-  },
-
-  methods: {
-    openKpiDrawer(edit) {
-      this.drawerEditMode = edit;
-      this.showKpiDrawer = true;
-    },
-    kpiCreated(kpi) {
-      const { params, query } = this.$route;
-      this.$router.push({
-        name: 'ItemMeasurements',
-        params: { ...params, kpiId: kpi.id },
-        query,
-      });
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .measurements-page {
@@ -233,8 +181,10 @@ export default {
     gap: 0.5rem;
   }
 
-  :deep(.page__container) {
-    padding-top: 0.5rem;
+  &__details {
+    @include bp('laptop-up') {
+      margin-left: 3rem;
+    }
   }
 }
 </style>
