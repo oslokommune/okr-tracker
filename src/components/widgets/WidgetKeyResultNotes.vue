@@ -1,123 +1,99 @@
-<template>
-  <widget :title="$t('keyResultsPage.notes.heading')" size="small" collapsable>
-    <div class="notes">
-      <div v-if="editNotes" class="notes--margin-bottom">
-        <label>
-          <textarea
-            v-model="thisKey.notes"
-            class="form__field"
-            rows="20"
-            @input="dirty = true"
-          />
-        </label>
-      </div>
-
-      <div v-else class="notes--margin-bottom">
-        <div v-if="md.length" class="notes__markdown md" v-html="md"></div>
-        <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
-      </div>
-
-      <div v-if="editNotes" class="notes__btn">
-        <btn-save :disabled="!dirty || loading" @on-click="saveNotes" />
-        <pkt-button skin="tertiary" @on-click="closeNotes">
-          {{ $t('btn.close') }}
-        </pkt-button>
-      </div>
-      <div v-else>
-        <pkt-button skin="secondary" @on-click="editNotes = !editNotes">
-          {{ $t('btn.editNotes') }}
-        </pkt-button>
-      </div>
-    </div>
-  </widget>
-</template>
-
-<script>
-import { mapState } from 'vuex';
-import { marked } from 'marked';
-import { PktButton } from '@oslokommune/punkt-vue';
-import dompurify from 'dompurify';
-import { BtnSave } from '@/components/generic/form';
+<script setup>
+import { computed, ref } from 'vue';
+import { useToast } from 'vue-toast-notification';
+import { useI18n } from 'vue-i18n';
 import KeyResult from '@/db/KeyResult';
-import Widget from './WidgetWrapper.vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import { BtnSave } from '@/components/generic/form';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
 
-marked.setOptions({
-  smartypants: true,
+const toast = useToast();
+const i18n = useI18n();
+
+const props = defineProps({
+  keyResult: {
+    type: Object,
+    required: true,
+  },
 });
 
-export default {
-  name: 'WidgetKeyResultNotes',
+const notes = computed(() => props.keyResult.notes);
 
-  components: {
-    BtnSave,
-    PktButton,
-    Widget,
-  },
+const editNotes = ref(false);
+const isLoading = ref(false);
 
-  data: () => ({
-    editNotes: false,
-    dirty: false,
-    loading: false,
-    thisKey: null,
-    md: '',
-  }),
+async function save(values) {
+  if (values.notes) {
+    isLoading.value = true;
 
-  computed: {
-    ...mapState('okrs', ['activeKeyResult']),
-  },
+    try {
+      await KeyResult.update(props.keyResult.id, { notes: values.notes });
+      toast.show(i18n.t('toaster.savedChanges'));
+    } catch {
+      toast.error(i18n.t('toaster.error.notes'));
+    }
 
-  watch: {
-    activeKeyResult: {
-      immediate: true,
-      handler(keyResult) {
-        this.thisKey = { ...keyResult, id: keyResult.id };
-        this.md = dompurify.sanitize(marked(keyResult.notes || ''));
-      },
-    },
-  },
-
-  methods: {
-    async saveNotes() {
-      this.loading = true;
-      const { notes, id } = this.thisKey;
-
-      try {
-        await KeyResult.update(id, { notes });
-        this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.notes'));
-      }
-
-      this.dirty = false;
-      this.editNotes = false;
-      this.loading = false;
-    },
-
-    closeNotes() {
-      this.editNotes = false;
-      this.thisKey.notes = this.activeKeyResult.notes;
-    },
-  },
-};
+    editNotes.value = false;
+    isLoading.value = false;
+  }
+}
 </script>
+
+<template>
+  <WidgetWrapper :title="$t('keyResultsPage.notes.heading')" size="small" collapsable>
+    <div class="notes">
+      <FormSection v-if="editNotes">
+        <FormComponent
+          input-type="textarea"
+          name="notes"
+          :value="notes"
+          :disabled="isLoading"
+          :rows="5"
+          :label="$t('keyResultsPage.notes.heading')"
+        />
+
+        <template #actions="{ submit, disabled }">
+          <BtnSave :disabled="isLoading || disabled" @on-click="submit(save)" />
+          <PktButton skin="tertiary" @on-click="editNotes = false">
+            {{ $t('btn.close') }}
+          </PktButton>
+        </template>
+      </FormSection>
+
+      <div v-else class="notes__empty">
+        <HTMLOutput v-if="notes" :html="notes" />
+        <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
+
+        <PktButton
+          v-tooltip="$t('btn.editNotes')"
+          size="small"
+          skin="tertiary"
+          variant="icon-only"
+          icon-name="edit"
+          @on-click="editNotes = !editNotes"
+        />
+      </div>
+    </div>
+  </WidgetWrapper>
+</template>
 
 <style lang="scss" scoped>
 .notes {
-  display: flex;
-  flex-direction: column;
-}
+  padding: 1rem;
+  background-color: var(--pkt-color-brand-neutrals-white);
 
-.notes--margin-bottom {
-  margin-bottom: 1rem;
-}
+  &__markdown {
+    flex: 1;
+  }
 
-.notes__markdown {
-  padding: 0.75rem 0.75rem 0.6rem 0;
-}
+  &__empty {
+    display: flex;
+    gap: 1rem;
 
-.notes__btn {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
+    .pkt-btn {
+      margin-left: auto;
+    }
+  }
 }
 </style>

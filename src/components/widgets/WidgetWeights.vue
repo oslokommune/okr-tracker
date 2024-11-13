@@ -1,84 +1,56 @@
+<script setup>
+import { watch } from 'vue';
+import { scaleLinear } from 'd3-scale';
+import { max } from 'd3-array';
+import WidgetWrapper from './WidgetWrapper.vue';
+
+const props = defineProps({
+  objective: {
+    type: Object,
+    required: true,
+  },
+  keyResults: {
+    type: Array,
+    required: true,
+  },
+});
+
+const scale = scaleLinear();
+
+watch(
+  props.keyResults,
+  (keyResults) => {
+    const maxValue = max([0, max(keyResults, ({ weight }) => weight)]);
+    scale.domain([0, maxValue]);
+  },
+  { immediate: true }
+);
+
+function getHeight(weight) {
+  return `${this.scale(weight) * 100}%`;
+}
+
+function getKeyResultRoute(id) {
+  return { name: 'KeyResultHome', params: { keyResultId: id } };
+}
+</script>
+
 <template>
-  <widget :title="$t('weight.heading')" size="small" collapsable>
+  <WidgetWrapper :title="$t('weight.heading')" size="small" collapsable>
     <div class="scales">
-      <router-link
+      <RouterLink
         v-for="{ id, weight, name } in keyResults"
         :key="id"
         v-tooltip.bottom="name"
-        :to="getToLink(id)"
+        :to="getKeyResultRoute(id)"
         class="bar"
         :style="{ height: getHeight(weight) }"
       >
         {{ weight }}
-      </router-link>
+      </RouterLink>
     </div>
-  </widget>
+  </WidgetWrapper>
 </template>
-
-<script>
-import { scaleLinear } from 'd3-scale';
-import { max } from 'd3-array';
-import { db } from '@/config/firebaseConfig';
-import Widget from './WidgetWrapper.vue';
-
-export default {
-  name: 'WidgetWeights',
-
-  components: {
-    Widget,
-  },
-
-  props: {
-    objective: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    chart: null,
-    scale: scaleLinear(),
-    keyResults: [],
-  }),
-
-  watch: {
-    keyResults: {
-      immediate: true,
-      handler(keyResults) {
-        const maxValue = max([0, max(keyResults, ({ weight }) => weight)]);
-        this.scale.domain([0, maxValue]);
-      },
-    },
-  },
-
-  async created() {
-    const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
-    const keyResults = await db
-      .collection('keyResults')
-      .where('archived', '==', false)
-      .where('objective', '==', objectiveRef)
-      .orderBy('name');
-
-    this.$bind('keyResults', keyResults);
-  },
-
-  mounted() {
-    if (this.$refs.svg) {
-      this.init();
-    }
-  },
-
-  methods: {
-    getHeight(weight) {
-      return `${this.scale(weight) * 100}%`;
-    },
-
-    getToLink(id) {
-      return { name: 'KeyResultHome', params: { keyResultId: id } };
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .scales {

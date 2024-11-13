@@ -1,3 +1,34 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+
+const props = defineProps({
+  title: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  collapsable: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  size: {
+    type: String,
+    required: false,
+    default: 'large',
+    validator: (value) => ['large', 'small'].includes(value),
+  },
+});
+
+const isCollapsed = ref(false);
+const show = computed(() => !props.collapsable || isCollapsed.value);
+
+function toggle() {
+  isCollapsed.value = !isCollapsed.value;
+}
+</script>
+
 <template>
   <section
     :class="[
@@ -22,7 +53,7 @@
         </div>
       </template>
 
-      <pkt-button
+      <PktButton
         v-if="collapsable"
         v-tooltip="show ? $t('btn.minimize') : $t('btn.expand')"
         class="widget__toggle"
@@ -42,53 +73,6 @@
     </footer>
   </section>
 </template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue';
-
-export default {
-  name: 'WidgetWrapper',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    title: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    collapsable: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    size: {
-      type: String,
-      required: false,
-      default: 'large',
-      validator: (value) => ['large', 'small'].includes(value),
-    },
-  },
-
-  data: () => ({
-    isCollapsed: false,
-  }),
-
-  computed: {
-    show() {
-      return !this.collapsable || this.isCollapsed;
-    },
-  },
-
-  methods: {
-    toggle() {
-      this.isCollapsed = !this.isCollapsed;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .widget {
@@ -114,8 +98,10 @@ export default {
     .widget__actions {
       display: flex;
       gap: 0.5rem;
+      align-items: center;
 
       :deep(.separator) {
+        height: 2rem;
         border-left: 1px solid var(--color-border);
       }
     }

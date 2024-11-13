@@ -1,3 +1,72 @@
+<script setup>
+import { computed } from 'vue';
+import { dateLongCompact } from '@/util';
+import { formatKPIValue } from '@/util/kpiHelpers';
+
+const props = defineProps({
+  kpi: {
+    type: Object,
+    required: true,
+  },
+  progress: {
+    type: Array,
+    required: true,
+  },
+  compact: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const firstProgressRecord = computed(() =>
+  props.progress.length ? props.progress[props.progress.length - 1] : null
+);
+const latestProgressRecord = computed(() =>
+  props.progress.length ? props.progress[0] : null
+);
+
+const periodTrend = computed(() => {
+  if (firstProgressRecord.value && latestProgressRecord.value) {
+    const diff = latestProgressRecord.value.value - firstProgressRecord.value.value;
+    return Math.round(diff * 100) / 100;
+  }
+  return null;
+});
+
+const trendClassModifier = computed(() => {
+  const preferredTrend = props.kpi?.preferredTrend;
+  if ([undefined, 'neutral'].includes(preferredTrend) || !periodTrend.value) {
+    return 'neutral';
+  }
+  const preferredTrendFulfilled =
+    (preferredTrend === 'increase' && periodTrend.value > 0) ||
+    (preferredTrend === 'decrease' && periodTrend.value < 0);
+  return preferredTrendFulfilled ? 'positive' : 'negative';
+});
+
+const periodTrendFormatted = computed(() => {
+  if (periodTrend.value !== null) {
+    const prefix = periodTrend.value > 0 ? '+' : '';
+    let formattedTrend = formatKPIValue(props.kpi, periodTrend.value);
+    /*
+     * The percentage sign is misleading when used to indicate a value
+     * difference like here, as the computed change is actually in
+     * percentage points/absolute value, and not in percentage change.
+     */
+    if (formattedTrend.endsWith('%')) {
+      formattedTrend = formattedTrend.slice(0, formattedTrend.length - 1);
+    }
+    return `${prefix + formattedTrend}`;
+  }
+  return '?';
+});
+
+function formatDate(date) {
+  return dateLongCompact(date instanceof Date ? date : date.toDate());
+}
+</script>
+
 <template>
   <div
     v-if="kpi && progress.length"
@@ -30,88 +99,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { dateLongCompact } from '@/util';
-import { formatKPIValue } from '@/util/kpiHelpers';
-
-export default {
-  name: 'PeriodTrendTag',
-
-  props: {
-    kpi: {
-      type: Object,
-      required: true,
-    },
-    progress: {
-      type: Array,
-      required: true,
-    },
-    compact: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
-  computed: {
-    periodTrend() {
-      if (this.firstProgressRecord && this.latestProgressRecord) {
-        const diff = this.latestProgressRecord.value - this.firstProgressRecord.value;
-        return Math.round(diff * 100) / 100;
-      }
-      return null;
-    },
-
-    periodTrendFormatted() {
-      if (this.periodTrend !== null) {
-        const prefix = this.periodTrend > 0 ? '+' : '';
-        let formattedTrend = formatKPIValue(this.kpi, this.periodTrend);
-        /*
-         * The percentage sign is misleading when used to indicate a value
-         * difference like here, as the computed change is actually in
-         * percentage points/absolute value, and not in percentage change.
-         */
-        if (formattedTrend.endsWith('%')) {
-          formattedTrend = formattedTrend.slice(0, formattedTrend.length - 1);
-        }
-        return `${prefix + formattedTrend}`;
-      }
-      return '?';
-    },
-
-    firstProgressRecord() {
-      return this.progress.length ? this.progress[this.progress.length - 1] : null;
-    },
-
-    latestProgressRecord() {
-      return this.progress.length ? this.progress[0] : null;
-    },
-
-    trendClassModifier() {
-      const preferredTrend = this.kpi?.preferredTrend;
-
-      if ([undefined, 'neutral'].includes(preferredTrend) || !this.periodTrend) {
-        return 'neutral';
-      }
-
-      const preferredTrendFulfilled =
-        (preferredTrend === 'increase' && this.periodTrend > 0) ||
-        (preferredTrend === 'decrease' && this.periodTrend < 0);
-
-      return preferredTrendFulfilled ? 'positive' : 'negative';
-    },
-  },
-
-  methods: {
-    formatKPIValue,
-
-    formatDate(date) {
-      return dateLongCompact(date instanceof Date ? date : date.toDate());
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
@@ -152,16 +139,14 @@ export default {
     color: var(--color-blue-dark);
     font-size: 0.75em;
     line-height: 2;
-    background: var(--color-blue-light);
+    background: var(--pkt-color-surface-default-light-blue);
 
     &--positive {
-      color: var(--color-success);
-      background: var(--color-green-light);
+      background: var(--pkt-color-surface-default-light-green);
     }
 
     &--negative {
-      color: #770d01; // TODO: når implementert i Punkt: var(--color-red-80);
-      background: #f9b3ab; // TODO: når implementert i Punkt: var(--color-red-30);
+      background: var(--pkt-color-surface-default-faded-red);
     }
 
     &:before,

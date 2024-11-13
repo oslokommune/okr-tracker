@@ -1,52 +1,70 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { dateLong } from '@/util';
+import { formattedPeriod } from '@/util/okr';
+import ProfileModal from '@/components/modals/ProfileModal.vue';
+import Widget from './WidgetWrapper.vue';
+
+const props = defineProps({
+  keyResult: {
+    type: Object,
+    required: true,
+  },
+});
+
+const objective = computed(() => props.keyResult.objective);
+const chosenProfileId = ref(null);
+const formatDate = (date) => dateLong(date.toDate());
+</script>
+
 <template>
-  <widget v-if="activeKeyResult" :title="$t('general.details')" size="small" collapsable>
+  <Widget :title="$t('general.details')" size="small" collapsable>
     <div class="details">
-      <div v-if="activeObjective" class="details__item">
+      <div v-if="objective" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.belongsTo') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
-            <router-link
+            <RouterLink
               :to="{
                 name: 'ObjectiveHome',
-                params: { objectiveId: activeObjective.id },
+                params: { objectiveId: objective.id },
               }"
             >
-              {{ activeObjective.name }}
-            </router-link>
+              {{ objective.name }}
+            </RouterLink>
           </div>
         </div>
       </div>
 
-      <div
-        v-if="activeObjective && formattedPeriod(activeObjective)"
-        class="details__item"
-      >
+      <div v-if="objective && formattedPeriod(objective)" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
         <div class="details__item-body">
           <div class="details__item-value">
-            {{ formattedPeriod(activeObjective) }}
+            {{ formattedPeriod(objective) }}
           </div>
         </div>
       </div>
 
-      <div v-if="activeKeyResult.created" class="details__item">
+      <div v-if="keyResult.created" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.created') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-value">{{ formatDate(activeKeyResult.created) }}</div>
+          <div class="details__item-value">{{ formatDate(keyResult.created) }}</div>
         </div>
       </div>
 
-      <div v-if="activeKeyResult.createdBy" class="details__item">
+      <div v-if="keyResult.createdBy" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.createdBy') }}</h3>
 
         <div class="details__item-body">
           <div class="details__item-value">
             <div class="details__item-value user">
               <a
-                v-if="activeKeyResult.createdBy.id"
-                @click="openProfileModal(activeKeyResult.createdBy.id)"
+                v-if="keyResult.createdBy.id"
+                @click="chosenProfileId = keyResult.createdBy.id"
               >
-                <span>{{ createdBy }}</span>
+                <span>
+                  {{ keyResult.createdBy.displayName || keyResult.createdBy.id }}
+                </span>
               </a>
               <span v-else>{{ activeKeyResult.createdBy }}</span>
             </div>
@@ -54,131 +72,62 @@
         </div>
       </div>
 
-      <div v-if="activeKeyResult.edited" class="details__item">
+      <div v-if="keyResult.edited" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.edited') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-value">{{ formatDate(activeKeyResult.edited) }}</div>
+          <div class="details__item-value">{{ formatDate(keyResult.edited) }}</div>
         </div>
       </div>
 
-      <div v-if="activeKeyResult.editedBy" class="details__item">
+      <div v-if="keyResult.editedBy" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
 
         <div class="details__item-body">
           <div class="details__item-value user">
             <a
-              v-if="activeKeyResult.editedBy.id"
-              @click="openProfileModal(activeKeyResult.editedBy.id)"
+              v-if="keyResult.editedBy.id"
+              @click="chosenProfileId = keyResult.editedBy.id"
             >
-              <span>{{ editedBy }}</span>
+              <span>
+                {{ keyResult.editedBy.displayName || keyResult.editedBy.id }}
+              </span>
             </a>
-            <span v-else>{{ activeKeyResult.editedBy }}</span>
+            <span v-else>{{ keyResult.editedBy }}</span>
           </div>
         </div>
       </div>
 
-      <div v-if="activeKeyResult.startValue !== undefined" class="details__item">
+      <div v-if="keyResult.startValue !== undefined" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.startValue') }}</h3>
         <div class="details__item-body">
           <span class="details__item-icon">#</span>
-          <div class="details__item-value">{{ activeKeyResult.startValue }}</div>
+          <div class="details__item-value">{{ keyResult.startValue }}</div>
         </div>
       </div>
 
-      <div v-if="activeKeyResult.targetValue !== undefined" class="details__item">
+      <div v-if="keyResult.targetValue !== undefined" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.targetValue') }}</h3>
         <div class="details__item-body">
           <span class="details__item-icon">#</span>
-          <div class="details__item-value">{{ activeKeyResult.targetValue }}</div>
+          <div class="details__item-value">{{ keyResult.targetValue }}</div>
         </div>
       </div>
 
-      <div v-if="activeKeyResult.unit" class="details__item">
+      <div v-if="keyResult.unit" class="details__item">
         <h3 class="title-3 details__item-heading">{{ $t('keyResult.unit') }}</h3>
         <div class="details__item-body">
-          <div class="details__item-value">{{ activeKeyResult.unit }}</div>
+          <div class="details__item-value">{{ keyResult.unit }}</div>
         </div>
       </div>
     </div>
 
-    <profile-modal
-      v-if="showProfileModal"
-      :id="chosenProfileId"
-      @close="closeProfileModal"
+    <ProfileModal
+      v-if="!!chosenProfileId"
+      :user-id="chosenProfileId"
+      @close="chosenProfileId = null"
     />
-  </widget>
+  </Widget>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
-import { dateLong } from '@/util';
-import { formattedPeriod } from '@/util/okr';
-import ProfileModal from '@/components/modals/ProfileModal.vue';
-import Widget from './WidgetWrapper.vue';
-
-export default {
-  name: 'WidgetKeyResultDetails',
-
-  components: {
-    Widget,
-    ProfileModal,
-  },
-
-  data: () => ({
-    progress: [],
-    showProfileModal: false,
-    chosenProfileId: null,
-  }),
-
-  computed: {
-    ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
-    createdBy() {
-      return (
-        this.activeKeyResult.createdBy.displayName || this.activeKeyResult.createdBy.id
-      );
-    },
-    editedBy() {
-      return (
-        this.activeKeyResult.editedBy.displayName || this.activeKeyResult.editedBy.id
-      );
-    },
-  },
-
-  watch: {
-    activeKeyResult: {
-      immediate: true,
-      async handler(keyResult) {
-        if (!keyResult) {
-          return;
-        }
-        await this.$bind(
-          'progress',
-          db.collection(`keyResults/${keyResult.id}/progress`)
-        );
-      },
-    },
-  },
-
-  methods: {
-    formattedPeriod,
-
-    formatDate(date) {
-      return dateLong(date.toDate());
-    },
-
-    openProfileModal(profileId) {
-      this.showProfileModal = true;
-      this.chosenProfileId = profileId;
-    },
-
-    closeProfileModal() {
-      this.showProfileModal = false;
-      this.chosenProfileId = null;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .user {

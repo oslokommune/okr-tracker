@@ -1,184 +1,266 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useCollection } from 'vuefire';
+import { useI18n } from 'vue-i18n';
+import { computedAsync, useLocalStorage } from '@vueuse/core';
+import { csvFormatBody, csvFormatRow } from 'd3-dsv';
+import {
+  collection,
+  query,
+  orderBy,
+  getDocs,
+  getCountFromServer,
+} from 'firebase/firestore';
+import { useAuthStore } from '@/store/auth';
+import { useActiveKpiStore } from '@/store/activeKpi';
+import { dateShort } from '@/util';
+import { db } from '@/config/firebaseConfig';
+import {
+  filterDuplicatedProgressValues,
+  formatKPIValue,
+  getKPIProgressConstraints,
+} from '@/util/kpiHelpers';
+import downloadFile from '@/util/downloadFile';
+import { PktButton, PktCheckbox, PktLoader } from '@oslokommune/punkt-vue';
+import EmptyState from '@/components/EmptyState.vue';
+import ProfileModal from '@/components/modals/ProfileModal.vue';
+import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
+import WidgetWrapper from '../WidgetWrapper.vue';
+import UserLink from './UserLink.vue';
+
+const i18n = useI18n();
+
+const { kpi, kpiRef, period } = storeToRefs(useActiveKpiStore());
+const { hasEditRights } = storeToRefs(useAuthStore());
+
+const showComments = useLocalStorage('true-kpi-progress-comments', true);
+const listLimit = ref(10);
+const chosenUserId = ref(null);
+const isExporting = ref(false);
+
+function getProgressSource(kpiPath, periodFilter, limitFilter) {
+  const { startDate, endDate } = periodFilter;
+  return query(
+    collection(db, kpiPath, 'progress'),
+    ...getKPIProgressConstraints(startDate, endDate, limitFilter),
+    orderBy('timestamp', 'desc')
+  );
+}
+
+const { data: _progress, pending: isLoading } = useCollection(
+  computed(
+    () =>
+      kpiRef.value && getProgressSource(kpiRef.value.path, period.value, listLimit.value)
+  ),
+  { ssrKey: `progress_${kpiRef.value.id}`, reset: false }
+);
+
+const progress = computed(
+  () => _progress.value && filterDuplicatedProgressValues(_progress.value)
+);
+
+const totalProgressCount = computedAsync(async () => {
+  // TODO: Duplicates gets counted here.
+  return getCountFromServer(getProgressSource(kpiRef.value.path, period.value)).then(
+    (snapshot) => snapshot.data().count
+  );
+}, null);
+const isFiltered = computed(() => period.value?.key !== 'all');
+const isLimited = computed(() => totalProgressCount.value > progress.value.length);
+
+async function download() {
+  isExporting.value = true;
+
+  getDocs(getProgressSource(kpiRef.value.path, period.value)).then((snapshot) => {
+    const progressRecords = filterDuplicatedProgressValues(
+      snapshot.docs.map((document) => document.data())
+    );
+
+    const content = [
+      csvFormatRow([
+        i18n.t('fields.date'),
+        i18n.t('fields.value'),
+        i18n.t('fields.comment'),
+      ]),
+      csvFormatBody(
+        progressRecords.map((d) => [
+          d.timestamp.toDate().toISOString().slice(0, 10),
+          d.value,
+          d.comment,
+        ])
+      ),
+    ].join('\n');
+
+    downloadFile(content, kpi.value.name, '.csv');
+  });
+
+  isExporting.value = false;
+}
+
+function toggleListLimit() {
+  listLimit.value = listLimit.value ? null : 10;
+}
+</script>
+
 <template>
-  <widget :title="$t('widget.history.title')">
-    <template v-if="historyRecords.length" #title-actions>
-      <pkt-button
+  <WidgetWrapper :title="$t('widget.history.title')" class="progress-history">
+    <template #title-actions>
+      <PktCheckbox
+        id="showComments"
+        v-model="showComments"
+        class="pkt-input-check--small"
+        is-switch
+        :label="$t('widget.history.showComments')"
+      />
+      <div class="separator"></div>
+      <PktButton
         v-tooltip="$t('dashboard.downloadOptions.csv')"
         size="small"
         skin="tertiary"
         variant="icon-left"
         icon-name="download"
-        :disabled="downloadInProgress"
-        @onClick="download"
+        :disabled="isLoading || isExporting"
+        @on-click="download"
       >
         {{ $t('btn.download') }}
-      </pkt-button>
+      </PktButton>
     </template>
 
-    <progress-history-table
-      :history-records="historyRecords"
-      :is-loading="isLoading"
-      :is-limited="isLimited"
-      :no-values-message="
-        isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')
-      "
-      @edit-record="openValueModal"
-      @delete-record="(record) => $emit('delete-record', record.id)"
-      @load-more="loadAllRecords"
-    >
-      <template #value-cell="{ record }">
-        {{ formatKPIValue(kpi, record.value) }}
-      </template>
-      <template #date-cell="{ record }">
-        {{ dateShort(record.timestamp.toDate()) }}
-      </template>
-    </progress-history-table>
+    <FadeTransition>
+      <div v-if="progress.length" class="progress-history__table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{{ $t('widget.history.date') }}</th>
+              <th>{{ $t('widget.history.value') }}</th>
+              <th>{{ $t('widget.history.changedBy') }}</th>
+              <th v-if="showComments">{{ $t('widget.history.comment') }}</th>
+              <th v-if="hasEditRights" style="width: 3rem"></th>
+            </tr>
+          </thead>
 
-    <edit-value-modal
-      v-if="showValueModal"
-      :record="chosenProgressRecord"
-      :kpi="kpi"
-      @close="closeValueModal"
-      @update-record="(id, data, close) => $emit('update-record', id, data, close)"
+          <TransitionGroup name="table" tag="tbody">
+            <tr v-for="record in progress" :key="record.id">
+              <td>{{ dateShort(record.timestamp.toDate()) }}</td>
+              <td>{{ formatKPIValue(kpi, record.value) }}</td>
+              <td>
+                <UserLink
+                  v-if="record.editedBy || record.createdBy"
+                  :user="record.editedBy || record.createdBy"
+                  @activate="chosenUserId = $event"
+                />
+              </td>
+              <td v-if="showComments" style="max-width: 200px; padding: 0.25rem 0.5rem">
+                <span v-if="record.comment" class="record__comment">
+                  {{ record.comment }}
+                </span>
+              </td>
+              <td v-if="hasEditRights">
+                <div class="record__actions">
+                  <PktButton
+                    v-tooltip.left="$t('tooltip.editProgress')"
+                    size="small"
+                    skin="tertiary"
+                    variant="icon-only"
+                    icon-name="edit"
+                    @on-click="$emit('edit-record', record)"
+                  />
+                </div>
+              </td>
+            </tr>
+          </TransitionGroup>
+        </table>
+      </div>
+
+      <EmptyState
+        v-else-if="!isLoading"
+        icon="history"
+        :heading="$t('widget.history.empty.heading')"
+        :body="isFiltered ? $t('empty.noKPIProgressInPeriod') : $t('empty.noKPIProgress')"
+      />
+    </FadeTransition>
+
+    <div v-if="isLoading" class="progress-history__loading">
+      <PktLoader
+        :message="$t('general.loading')"
+        size="large"
+        variant="blue"
+        :delay="500"
+        inline
+      />
+    </div>
+
+    <div class="progress-history__footer">
+      <PktButton
+        v-if="!isLoading && isLimited"
+        skin="secondary"
+        size="small"
+        @on-click="toggleListLimit"
+      >
+        {{ $t(listLimit ? 'btn.showMore' : 'btn.showLess') }}
+      </PktButton>
+    </div>
+
+    <ProfileModal
+      v-if="!!chosenUserId"
+      :user-id="chosenUserId"
+      @close="chosenUserId = null"
     />
-  </widget>
+  </WidgetWrapper>
 </template>
 
-<script>
-import { csvFormatBody, csvFormatRow } from 'd3-dsv';
-import { mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue';
-import i18n from '@/locale/i18n';
-import { dateShort } from '@/util';
-import {
-  filterDuplicatedProgressValues,
-  formatKPIValue,
-  getKPIProgressQuery,
-} from '@/util/kpiHelpers';
-import downloadFile from '@/util/downloadFile';
-import EditValueModal from '@/components/modals/KPIProgressModal.vue';
-import ProgressHistoryTable from './ProgressHistoryTable.vue';
-import WidgetWrapper from '../WidgetWrapper.vue';
+<style lang="scss" scoped>
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-export default {
-  name: 'WidgetKpiProgressHistory',
+.progress-history {
+  &__loading {
+    padding: 0.65rem 0;
+    text-align: center;
+  }
 
-  components: {
-    Widget: WidgetWrapper,
-    ProgressHistoryTable,
-    EditValueModal,
-    PktButton,
-  },
+  &__footer {
+    text-align: center;
+  }
+}
 
-  props: {
-    kpi: {
-      type: Object,
-      required: true,
-    },
-  },
+.record__comment {
+  white-space: pre-line;
+}
 
-  data: () => ({
-    progressCollection: [],
-    isLoading: false,
-    progressLimit: 10,
-    showValueModal: false,
-    chosenProgressRecord: null,
-    downloadInProgress: false,
-  }),
+.record__actions {
+  display: flex;
+}
 
-  computed: {
-    ...mapState('kpis', ['selectedPeriod']),
+td {
+  @include get-text('pkt-txt-14');
+  overflow-wrap: break-word;
+}
 
-    historyRecords() {
-      return filterDuplicatedProgressValues(this.progressCollection);
-    },
+.pkt-input-check--small {
+  :deep(.pkt-input-check__input) {
+    align-items: center;
+  }
 
-    isFiltered() {
-      return this.selectedPeriod?.key !== 'all';
-    },
+  :deep(input[type='checkbox'][role='switch']) {
+    width: 1.75rem;
+    height: calc(1rem + 2px);
 
-    isLimited() {
-      return this.progressLimit && this.progressCollection.length === this.progressLimit;
-    },
-  },
+    &:after {
+      width: 1rem;
+    }
+  }
+  :deep(label) {
+    @include get-text('pkt-txt-14');
+  }
+}
 
-  watch: {
-    selectedPeriod: {
-      immediate: true,
-      handler: 'setProgress',
-    },
-    kpi: {
-      immediate: true,
-      handler: 'setProgress',
-    },
-  },
-
-  methods: {
-    formatKPIValue,
-    dateShort,
-
-    async setProgress(options) {
-      this.isLoading = true;
-      const { startDate, endDate } = this.selectedPeriod;
-
-      let query = getKPIProgressQuery(this.kpi, startDate, endDate);
-      if (this.progressLimit) {
-        query = query.limit(this.progressLimit);
-      }
-      await this.$bind('progressCollection', query, options);
-
-      // For now assume that the resulting dataset is limited if the document
-      // count is equal to the query limit. This should be based on an actual
-      // count, but "cheap" count aggregation is only available in a preview
-      // release of the SDK and seemingly not for Web version 8.
-      //  https://firebase.blog/posts/2022/12/introducing-firestore-count-ttl-scale
-      //  https://firebase.google.com/docs/firestore/query-data/aggregation-queries
-      this.isLoading = false;
-    },
-
-    loadAllRecords() {
-      this.progressLimit = null;
-      this.setProgress({ reset: false, wait: true });
-    },
-
-    openValueModal(record) {
-      this.chosenProgressRecord = record;
-      this.showValueModal = true;
-    },
-
-    closeValueModal() {
-      this.showValueModal = false;
-      this.chosenProgressRecord = null;
-    },
-
-    download() {
-      const { startDate, endDate } = this.selectedPeriod;
-      this.downloadInProgress = true;
-      getKPIProgressQuery(this.kpi, startDate, endDate)
-        .get()
-        .then((snapshot) => {
-          const progressRecords = filterDuplicatedProgressValues(
-            snapshot.docs.map((doc) => doc.data())
-          );
-
-          const content = [
-            csvFormatRow([
-              i18n.global.t('fields.date'),
-              i18n.global.t('fields.value'),
-              i18n.global.t('fields.comment'),
-            ]),
-            csvFormatBody(
-              progressRecords.map((d) => [
-                d.timestamp.toDate().toISOString().slice(0, 10),
-                d.value,
-                d.comment,
-              ])
-            ),
-          ].join('\n');
-
-          downloadFile(content, this.kpi.name, '.csv');
-          this.downloadInProgress = false;
-        });
-    },
-  },
-};
-</script>
+.table-enter-active,
+.table-leave-active {
+  transition: all 0.25s ease-in-out;
+}
+.table-enter-from,
+.table-leave-to {
+  opacity: 0;
+}
+</style>
