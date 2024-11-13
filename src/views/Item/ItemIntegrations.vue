@@ -1,11 +1,161 @@
+<script setup>
+import { computed, ref, watchEffect } from 'vue';
+import { useCollection } from 'vuefire';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toast-notification';
+import { useI18n } from 'vue-i18n';
+import { collection, doc, orderBy, query, where } from 'firebase/firestore';
+import { useAuthStore } from '@/store/auth';
+import { useActiveItemStore } from '@/store/activeItem';
+import { db } from '@/config/firebaseConfig';
+import ApiClient from '@/db/ApiClient';
+import { PktAlert, PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import ApiClientCard from '@/components/ApiClientCard.vue';
+import ApiClientModal from '@/components/modals/ApiClientModal.vue';
+import EmptyState from '@/components/EmptyState.vue';
+import ListTransition from '@/components/generic/transitions/ListTransition.vue';
+
+const router = useRouter();
+const toast = useToast();
+const i18n = useI18n();
+
+const { hasEditRights } = storeToRefs(useAuthStore());
+const { itemRef } = storeToRefs(useActiveItemStore());
+
+watchEffect(async () => {
+  if (!hasEditRights.value) {
+    await router.replace({ name: 'ItemHome' });
+  }
+});
+
+const {
+  data: apiClients,
+  pending: clientsIsLoading,
+  error: clientsLoadError,
+} = useCollection(
+  computed(() => {
+    return (
+      itemRef.value &&
+      hasEditRights.value &&
+      query(
+        collection(db, 'apiClients'),
+        where('parent', '==', itemRef.value),
+        where('archived', '==', false),
+        orderBy('created', 'desc')
+      )
+    );
+  }),
+  { ssrKey: 'integrations' }
+);
+
+const isLoading = ref(false);
+const showClientModal = ref(false);
+const chosenClient = ref(null);
+const updatedClientId = ref(null);
+const updatedClientSecret = ref(null);
+
+function openClientModal(client) {
+  showClientModal.value = true;
+  chosenClient.value = client;
+}
+
+function closeClientModal() {
+  showClientModal.value = false;
+  chosenClient.value = null;
+}
+
+async function saveClientMetadata(client, data) {
+  if (client) {
+    await update(client, data);
+  } else {
+    await create(data);
+  }
+}
+
+async function create({ name, description }) {
+  try {
+    isLoading.value = true;
+    const clientRef = await ApiClient.create({
+      parent: itemRef.value,
+      name,
+      description,
+    });
+    try {
+      const secret = await ApiClient.createSecret(clientRef);
+      updatedClientId.value = clientRef.id;
+      updatedClientSecret.value = secret;
+    } catch (error) {
+      await ApiClient.remove(clientRef);
+      throw error;
+    }
+    toast.success(i18n.t('integration.toast.add'));
+  } catch (error) {
+    console.log(error);
+    toast.error(i18n.t('integration.toast.addError'));
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function update(client, data) {
+  try {
+    isLoading.value = true;
+    const clientRef = doc(ApiClient.apiClientsCollection, client.id);
+    await ApiClient.update(clientRef, data);
+    toast.success(i18n.t('integration.toast.update'));
+  } catch (error) {
+    console.log(error);
+    toast.error(i18n.t('integration.toast.updateError'));
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function archive(client) {
+  try {
+    isLoading.value = true;
+    const clientRef = doc(ApiClient.apiClientsCollection, client.id);
+    await ApiClient.archive(clientRef);
+    toast.success(i18n.t('integration.toast.delete'));
+  } catch (error) {
+    console.log(error);
+    toast.error(i18n.t('integration.toast.deleteError'));
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function rotate(client) {
+  try {
+    isLoading.value = true;
+    const clientRef = doc(ApiClient.apiClientsCollection, client.id);
+    const secret = await ApiClient.rotateSecret(clientRef);
+    updatedClientId.value = clientRef.id;
+    updatedClientSecret.value = secret;
+    toast.success(i18n.t('integration.toast.rotate'));
+  } catch (error) {
+    console.log(error);
+    toast.error(i18n.t('integration.toast.rotateError'));
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+function hideSecret() {
+  updatedClientId.value = null;
+  updatedClientSecret.value = null;
+}
+</script>
+
 <template>
-  <page-layout breakpoint="tablet-big" class="integrations-page">
+  <PageLayout breakpoint="tablet-big" class="integrations-page">
     <header class="integrations-page__header mb-size-24">
       <h1 class="pkt-txt-24-medium">{{ $t('general.integrations') }}</h1>
-      <router-link :to="{ name: 'Api' }">
+      <RouterLink :to="{ name: 'Api' }" target="_blank">
         {{ $t('general.api') }}
-        <pkt-icon name="chevron-right" />
-      </router-link>
+        <PktIcon name="chevron-right" />
+      </RouterLink>
     </header>
 
     <i18n-t keypath="integration.info" tag="p" class="mb-size-24">
@@ -20,222 +170,68 @@
       </template>
     </i18n-t>
 
-    <div v-if="dataLoading"><loading-small /> {{ $t('general.loading') }}</div>
+    <div v-if="clientsIsLoading" class="integrations-page__loading">
+      <PktLoader :message="$t('general.loading')" size="large" :delay="250" inline />
+    </div>
 
-    <pkt-alert v-if="dataLoadingError" skin="error">
-      {{ $t('integration.error.loading', { error: dataLoadingError }) }}
-    </pkt-alert>
+    <PktAlert v-if="clientsLoadError" skin="error">
+      {{ $t('integration.error.loading', { error: clientsLoadError.code }) }}
+    </PktAlert>
 
     <template v-else-if="apiClients.length">
       <div class="mb-size-32">
-        <pkt-button
+        <PktButton
           skin="primary"
           size="small"
           variant="icon-left"
           icon-name="plus-sign"
-          :disabled="loading"
-          @on-click="openClientModal(null)"
+          @click="openClientModal(null)"
         >
           {{ $t('integration.action.add') }}
-        </pkt-button>
+        </PktButton>
       </div>
 
-      <api-client-card
-        v-for="client in apiClients"
-        :key="client.id"
-        class="mb-size-24"
-        :client="client"
-        :loading="loading"
-        :visible-secret="client.id === updatedClientId ? updatedClientSecret : null"
-        @hide-secret="hideSecret"
-        @edit="openClientModal"
-        @rotate="rotate"
-        @delete="archive"
-      />
+      <ListTransition>
+        <ApiClientCard
+          v-for="client in apiClients"
+          :key="client.id"
+          class="mb-size-24"
+          :client="client"
+          :loading="isLoading"
+          :visible-secret="client.id === updatedClientId ? updatedClientSecret : null"
+          @hide-secret="hideSecret"
+          @edit="openClientModal"
+          @rotate="rotate"
+          @delete="archive"
+        />
+      </ListTransition>
     </template>
 
-    <empty-state
-      v-else
+    <EmptyState
+      v-else-if="!clientsIsLoading && !apiClients.length"
       :heading="$t('integration.empty.heading')"
       :body="$t('integration.empty.body')"
     >
       <div data-mode="dark">
-        <pkt-button
+        <PktButton
           skin="primary"
           variant="icon-left"
           icon-name="plus-sign"
-          @on-click="openClientModal(null)"
+          @click="openClientModal(null)"
         >
           {{ $t('integration.action.add') }}
-        </pkt-button>
+        </PktButton>
       </div>
-    </empty-state>
+    </EmptyState>
 
-    <api-client-modal
+    <ApiClientModal
       v-if="showClientModal"
       :client="chosenClient"
       @save="saveClientMetadata"
       @close="closeClientModal"
     />
-  </page-layout>
+  </PageLayout>
 </template>
-
-<script>
-import { defineAsyncComponent } from 'vue';
-import { mapGetters, mapState } from 'vuex';
-import { db } from '@/config/firebaseConfig';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
-import ApiClient from '@/db/ApiClient';
-
-export default {
-  name: 'ItemIntegrations',
-
-  components: {
-    PktAlert,
-    PktButton,
-    EmptyState: defineAsyncComponent(() => import('@/components/EmptyState.vue')),
-    LoadingSmall: defineAsyncComponent(() => import('@/components/LoadingSmall.vue')),
-    ApiClientCard: defineAsyncComponent(() => import('@/components/ApiClientCard.vue')),
-    ApiClientModal: defineAsyncComponent(() =>
-      import('@/components/modals/ApiClientModal.vue')
-    ),
-  },
-
-  data: () => ({
-    apiClients: [],
-    dataLoading: false,
-    dataLoadingError: null,
-    loading: false,
-    showClientModal: false,
-    chosenClient: null,
-    updatedClientId: null,
-    updatedClientSecret: null,
-  }),
-
-  computed: {
-    ...mapState(['activeItem', 'activeItemRef']),
-    ...mapGetters(['hasEditRights']),
-  },
-
-  watch: {
-    activeItemRef: {
-      immediate: true,
-      async handler(activeItemRef) {
-        this.dataLoading = true;
-        this.dataLoadingError = null;
-        await this.$bind(
-          'apiClients',
-          db
-            .collection('apiClients')
-            .where('parent', '==', activeItemRef)
-            .where('archived', '==', false)
-            .orderBy('created', 'desc')
-        ).catch((error) => {
-          this.dataLoadingError = error.code ? error.code : error;
-        });
-        this.dataLoading = false;
-      },
-    },
-  },
-
-  methods: {
-    async saveClientMetadata(client, data) {
-      if (client) {
-        await this.update(client, data);
-      } else {
-        await this.create(data);
-      }
-    },
-
-    async create({ name, description }) {
-      try {
-        this.loading = true;
-
-        const clientRef = await ApiClient.create({
-          parent: this.activeItemRef,
-          name,
-          description,
-        });
-
-        try {
-          const secret = await ApiClient.createSecret(clientRef);
-          this.updatedClientId = clientRef.id;
-          this.updatedClientSecret = secret;
-        } catch (error) {
-          await ApiClient.remove(clientRef);
-          throw error;
-        }
-
-        this.$toasted.show(this.$t('integration.toast.add'));
-      } catch (error) {
-        console.log(error);
-        this.$toasted.error(this.$t('integration.toast.addError'));
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async update(client, data) {
-      try {
-        this.loading = true;
-        const clientRef = ApiClient.collection.doc(client.id);
-        await ApiClient.update(clientRef, data);
-        this.$toasted.show(this.$t('integration.toast.update'));
-      } catch (error) {
-        console.log(error);
-        this.$toasted.error(this.$t('integration.toast.updateError'));
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async archive(client) {
-      try {
-        this.loading = true;
-        const clientRef = ApiClient.collection.doc(client.id);
-        await ApiClient.archive(clientRef);
-        this.$toasted.show(this.$t('integration.toast.delete'));
-      } catch (error) {
-        console.log(error);
-        this.$toasted.error(this.$t('integration.toast.deleteError'));
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async rotate(client) {
-      try {
-        this.loading = true;
-        const clientRef = ApiClient.collection.doc(client.id);
-        const secret = await ApiClient.rotateSecret(clientRef);
-        this.updatedClientId = clientRef.id;
-        this.updatedClientSecret = secret;
-        this.$toasted.show(this.$t('integration.toast.rotate'));
-      } catch (error) {
-        console.log(error);
-        this.$toasted.error(this.$t('integration.toast.rotateError'));
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    hideSecret() {
-      this.updatedClientId = null;
-      this.updatedClientSecret = null;
-    },
-
-    openClientModal(client) {
-      this.showClientModal = true;
-      this.chosenClient = client;
-    },
-
-    closeClientModal() {
-      this.showClientModal = false;
-      this.chosenClient = null;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .integrations-page {
@@ -249,6 +245,10 @@ export default {
       gap: 0.5rem;
       align-items: center;
     }
+  }
+
+  &__loading {
+    text-align: center;
   }
 }
 </style>
