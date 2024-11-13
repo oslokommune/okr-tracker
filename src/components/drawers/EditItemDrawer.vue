@@ -1,147 +1,265 @@
+<script setup>
+import { ref, computed, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import { useCollection } from 'vuefire';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { collection, doc } from 'firebase/firestore';
+import { useTrackerStore } from '@/store/tracker';
+import { useActiveItemStore } from '@/store/activeItem';
+import { Organization, Department, Product } from '@/db/models';
+import { db } from '@/config/firebaseConfig';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { BtnSave, BtnDelete } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+
+const router = useRouter();
+const i18n = useI18n();
+const toast = useToast();
+
+const { item, itemType, isOrganization, isDepartment, isProduct } = storeToRefs(
+  useActiveItemStore()
+);
+const { organizations, departments } = storeToRefs(useTrackerStore());
+
+const users = useCollection(collection(db, 'users'));
+
+const drawer = ref(null);
+const pageCount = ref(2);
+const loading = ref(false);
+
+const itemModel = computed(() => {
+  if (isOrganization.value) {
+    return Organization;
+  }
+  if (isDepartment.value) {
+    return Department;
+  }
+  return Product;
+});
+
+async function save(values) {
+  const { pageIndex, next } = drawer.value;
+
+  if (pageIndex < pageCount.value) {
+    next();
+    return;
+  }
+
+  loading.value = true;
+
+  try {
+    const { name, missionStatement, targetAudience, parent, team } = values;
+
+    const data = {
+      name,
+      missionStatement,
+      targetAudience: targetAudience || '',
+      team: team.map((user) => doc(db, 'users', user.id)),
+    };
+
+    if (isDepartment.value) {
+      data.organization = doc(db, 'organizations', parent.id);
+    } else if (isProduct.value) {
+      data.department = doc(db, 'departments', parent.id);
+    }
+
+    await itemModel.value.update(item.value.id, data);
+    next();
+  } catch {
+    next(false);
+    toast.error(i18n.t('toaster.error.save'));
+  }
+  loading.value = true;
+}
+
+watch(item, (updatedItem, prevItem) => {
+  // Watch for slug changes and redirect if needed
+  if (updatedItem.id === prevItem.id && updatedItem.slug !== prevItem.slug) {
+    const { name, params, query } = router.currentRoute.value;
+    router.replace({
+      name,
+      params: { ...params, slug: updatedItem.slug },
+      query,
+    });
+  }
+});
+
+async function archive() {
+  loading.value = true;
+  try {
+    await itemModel.value.archive(item.value.id);
+    drawer.value.reset();
+  } catch (error) {
+    toast.error(i18n.t('toaster.error.archive', { document: item.value.name }));
+  }
+  loading.value = false;
+}
+
+async function restore() {
+  loading.value = true;
+  try {
+    await itemModel.value.restore(item.value.id);
+  } catch {
+    toast.error(i18n.t('toaster.error.restore', { document: item.value.name }));
+  }
+  loading.value = false;
+}
+</script>
+
 <template>
-  <paged-drawer-wrapper
-    ref="drawer"
-    :visible="!!thisItem"
-    :page-count="pageCount"
-    @close="$emit('close')"
-  >
+  <PagedDrawerWrapper ref="drawer" :visible="!!drawer" :page-count="pageCount">
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
         {{ $t('admin.item.change', { name: item.name }) }}
       </template>
       <template v-else-if="isSuccess">
-        {{ $t('admin.item.updated', { name: thisItem.name }) }}
+        {{ $t('admin.item.updated', { name: item.name }) }}
       </template>
       <template v-else>{{ $t('toaster.error.save') }}</template>
     </template>
 
-    <template #page="{ pageIndex, prev }">
-      <form-section>
-        <template v-if="pageIndex === 1">
-          <form-component
-            v-model="thisItem.name"
-            input-type="input"
-            name="name"
-            :disabled="thisItem?.archived"
-            :label="$t('fields.name')"
-            rules="required"
-          />
-          <pkt-alert v-if="thisItem.name !== item.name" skin="info" class="mb-size-16">
-            {{ $t('admin.item.slugChangeInfo', { name: item.name }) }}
-          </pkt-alert>
-          <form-component
-            v-model="thisItem.missionStatement"
-            input-type="textarea"
-            name="missionStatement"
-            :disabled="thisItem?.archived"
-            :rows="5"
-            :label="$t('fields.missionStatement')"
-            rules="required"
-          />
-          <form-component
-            v-model="thisItem.targetAudience"
-            input-type="textarea"
-            name="targetAudience"
-            :disabled="thisItem?.archived"
-            :rows="4"
-            :label="$t('dashboard.targetAudience')"
-          />
-        </template>
-
-        <template v-else-if="pageIndex === 2">
-          <form-component
-            v-if="type === 'department'"
-            v-model="thisItem.organization"
-            input-type="custom-select"
-            name="parent"
-            :disabled="thisItem?.archived"
-            :label="$t('admin.department.parentOrganisation')"
-            rules="required"
-            value-prop="id"
-            label-prop="name"
-            :store-object="true"
-            :options="organizations.map(({ id, name }) => ({ id, name }))"
-          />
-
-          <form-component
-            v-else-if="type === 'product'"
-            v-model="thisItem.department"
-            input-type="custom-select"
-            name="parent"
-            :disabled="thisItem?.archived"
-            :label="$t('admin.department.parentDepartment')"
-            rules="required"
-            value-prop="id"
-            label-prop="name"
-            :store-object="true"
-            :options="departments.map(({ id, name }) => ({ id, name }))"
-          />
-
-          <form-component
-            v-model="thisItem.team"
-            input-type="custom-select"
-            select-mode="tags"
-            name="team"
-            :disabled="thisItem?.archived"
-            :label="$t('general.teamMembers')"
-            value-prop="id"
-            :tag-label="(o) => o.displayName || o.id"
-            :option-label="(o) => (o.displayName ? `${o.displayName} (${o.id})` : o.id)"
-            :store-object="true"
-            :options="users"
-          />
-
-          <pkt-alert v-if="thisItem.secret" skin="warning" class="mb-size-32">
-            {{ $t('integration.warning.deprecation') }}
-            <input
-              class="pkt-input mt-size-16"
-              :value="thisItem.secret"
-              :disabled="true"
-              :readonly="true"
+    <template #page="{ pageIndex, prev, cancel }">
+      <FormSection>
+        <template #default="{ values }">
+          <template v-if="pageIndex === 1">
+            <FormComponent
+              input-type="input"
+              name="name"
+              :value="item.name"
+              :disabled="item.archived"
+              :label="$t('fields.name')"
+              rules="required"
             />
-          </pkt-alert>
+
+            <PktAlert
+              v-if="values.name && values.name !== item.name"
+              skin="info"
+              :compact="true"
+            >
+              {{ $t('admin.item.slugChangeInfo', { name: item.name }) }}
+            </PktAlert>
+
+            <FormComponent
+              input-type="textarea"
+              name="missionStatement"
+              :value="item.missionStatement"
+              :disabled="item.archived"
+              :rows="5"
+              :label="$t('fields.missionStatement')"
+              rules="required"
+            />
+
+            <FormComponent
+              input-type="textarea"
+              name="targetAudience"
+              :value="item.targetAudience"
+              :disabled="item.archived"
+              :rows="4"
+              :label="$t('dashboard.targetAudience')"
+            />
+          </template>
+
+          <template v-else-if="pageIndex === 2">
+            <FormComponent
+              v-if="isDepartment"
+              input-type="custom-select"
+              name="parent"
+              :value="item.organization"
+              :disabled="item.archived"
+              :label="$t('admin.department.parentOrganisation')"
+              rules="required"
+              value-prop="id"
+              label-prop="name"
+              :store-object="true"
+              :options="organizations.map(({ id, name }) => ({ id, name }))"
+            />
+
+            <FormComponent
+              v-else-if="isProduct"
+              input-type="custom-select"
+              name="parent"
+              :value="item.department"
+              :disabled="item.archived"
+              :label="$t('admin.product.parentDepartment')"
+              rules="required"
+              value-prop="id"
+              label-prop="name"
+              :store-object="true"
+              :options="
+                departments
+                  .filter((d) => d.organization.id === item.organization.id)
+                  .map(({ id, name }) => ({ id, name }))
+              "
+            />
+
+            <FormComponent
+              :value="item.team"
+              input-type="custom-select"
+              select-mode="tags"
+              name="team"
+              :disabled="item.archived"
+              :label="$t('general.teamMembers')"
+              value-prop="id"
+              :tag-label="(o) => o.displayName || o.id"
+              :option-label="(o) => (o.displayName ? `${o.displayName} (${o.id})` : o.id)"
+              :store-object="true"
+              :options="users"
+            />
+
+            <PktAlert v-if="item.secret" skin="warning" class="mb-size-32">
+              <div class="mb-size-8">
+                {{ $t('integration.warning.deprecation') }}
+              </div>
+              <FormComponent
+                name="secret"
+                label="Secret"
+                :show-optional-tag="false"
+                :copy-button="true"
+                :value="item.secret"
+                :disabled="true"
+                :readonly="true"
+              />
+            </PktAlert>
+          </template>
         </template>
 
         <template #actions="{ submit, disabled }">
-          <pkt-button
+          <PktButton
             v-if="pageIndex === 1"
             :text="$t('btn.cancel')"
             skin="tertiary"
-            :disabled="loading || thisItem?.archived"
-            @on-click="thisItem = null"
+            :disabled="loading || item.archived"
+            @click="cancel"
           />
-          <pkt-button
+          <PktButton
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
-            :disabled="loading || thisItem?.archived"
-            @on-click="prev"
+            :disabled="loading || item.archived"
+            @click="prev"
           />
-          <btn-save
+          <BtnSave
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="disabled || loading || thisItem?.archived"
+            :disabled="disabled || loading || item.archived"
             variant="label-only"
-            @on-click="submit(save)"
+            @click="submit(save)"
           />
         </template>
-      </form-section>
-    </template>
-
-    <template #done>
-      <em v-if="redirectTimer">
-        {{ $t('admin.item.redirectInfo', { count: redirectCounter }) }}
-      </em>
+      </FormSection>
     </template>
 
     <template #footer="{ isDone }">
       <template v-if="!isDone">
-        <archived-restore
-          v-if="thisItem.archived"
+        <ArchivedRestore
+          v-if="item.archived"
           :restore="restore"
-          :object-type="type"
+          :object-type="itemType"
         />
         <div v-else class="button-row">
-          <btn-delete
+          <BtnDelete
             :disabled="loading"
             :text="$t('admin.item.delete', { name: item.name })"
             @on-click="archive"
@@ -149,182 +267,5 @@
         </div>
       </template>
     </template>
-  </paged-drawer-wrapper>
+  </PagedDrawerWrapper>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import Organization from '@/db/Organization';
-import Department from '@/db/Department';
-import Product from '@/db/Product';
-import { db } from '@/config/firebaseConfig';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
-import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
-
-export default {
-  name: 'EditItemDrawer',
-
-  components: {
-    ArchivedRestore,
-    PktAlert,
-    PktButton,
-    PagedDrawerWrapper,
-    FormSection,
-    BtnSave,
-    BtnDelete,
-  },
-
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    thisItem: null,
-    pageCount: 2,
-    loading: false,
-    redirectCounter: 3,
-    redirectTimer: null,
-  }),
-
-  computed: {
-    ...mapState(['organizations', 'departments', 'users']),
-
-    type() {
-      const { department, organization } = this.item;
-      if (organization && department) {
-        return 'product';
-      }
-      if (organization) {
-        return 'department';
-      }
-      return 'organization';
-    },
-  },
-
-  watch: {
-    item(item, prevItem) {
-      // Watch for slug changes and redirect if needed.
-      if (item.id === prevItem.id && item.slug !== prevItem.slug && !this.redirectTimer) {
-        this.redirectTimer = setInterval(() => {
-          this.redirectCounter -= 1;
-          if (this.redirectCounter === 0) {
-            clearInterval(this.redirectTimer);
-            const { name, params, query } = this.$route;
-            this.$router.replace({
-              name,
-              params: { ...params, slug: item.slug },
-              query,
-            });
-          }
-        }, 1000);
-      }
-    },
-  },
-
-  mounted() {
-    this.thisItem = { ...this.item };
-  },
-
-  methods: {
-    async save() {
-      const { pageIndex, next } = this.$refs.drawer;
-
-      if (pageIndex < this.pageCount) {
-        next();
-      } else {
-        this.loading = true;
-
-        try {
-          const { id: itemId } = this.item;
-          const { name, missionStatement, targetAudience } = this.thisItem;
-
-          const team = this.thisItem.team.map((user) =>
-            db.collection('users').doc(user.id)
-          );
-
-          const data = {
-            name,
-            team,
-            missionStatement,
-            targetAudience: targetAudience === undefined ? '' : targetAudience,
-          };
-
-          if (this.type === 'organization') {
-            await Organization.update(itemId, data);
-          } else if (this.type === 'department') {
-            const organization = await db
-              .collection('organizations')
-              .doc(this.thisItem.organization.id);
-
-            await Department.update(itemId, {
-              ...data,
-              organization,
-            });
-          } else {
-            const department = db
-              .collection('departments')
-              .doc(this.thisItem.department.id);
-
-            await Product.update(itemId, {
-              ...data,
-              department,
-            });
-          }
-
-          this.$refs.drawer.next();
-        } catch (error) {
-          this.$refs.drawer.next(false);
-          this.$toasted.error(this.$t('toaster.error.save'));
-        } finally {
-          this.loading = false;
-        }
-      }
-    },
-
-    async archive() {
-      this.loading = true;
-
-      try {
-        await this.getObjectType().archive(this.item.id);
-        this.thisItem.archived = true;
-        this.$refs.drawer.reset();
-      } catch (error) {
-        this.$toasted.error(
-          this.$t('toaster.error.archive', { document: this.item.name })
-        );
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async restore() {
-      try {
-        await this.getObjectType().restore(this.item.id);
-        this.thisItem.archived = false;
-      } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.restore', { document: this.thisKeyResult.id })
-        );
-      }
-    },
-
-    getObjectType() {
-      if (this.type === 'organization') {
-        return Organization;
-      }
-      if (this.type === 'department') {
-        return Department;
-      }
-      if (this.type === 'product') {
-        return Product;
-      }
-      throw new Error(`Unknown object type ${this.type}`);
-    },
-  },
-};
-</script>

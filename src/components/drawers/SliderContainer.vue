@@ -1,5 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, nextTick, watch } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { PktButton } from '@oslokommune/punkt-vue';
 
 const props = defineProps({
@@ -16,7 +17,22 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['open', 'close']);
+
+const container = ref(null);
+const content = ref(null);
+const header = ref(null);
+const footer = ref(null);
 const isVisible = ref(false);
+
+const { activate: activateFocusTrap, deactivate: deactivateFocusTrap } = useFocusTrap(
+  [content, footer, header, container],
+  {
+    allowOutsideClick: true,
+    initialFocus: true,
+    escapeDeactivates: false,
+  }
+);
 
 watch(
   () => props.visible,
@@ -26,8 +42,15 @@ watch(
   { immediate: true }
 );
 
+async function onEnter() {
+  await nextTick();
+  activateFocusTrap();
+  emit('open');
+}
+
 function close() {
   isVisible.value = false;
+  deactivateFocusTrap();
 }
 
 function clickOutside() {
@@ -40,12 +63,17 @@ defineExpose({ close });
 </script>
 
 <template>
-  <div>
+  <div ref="container">
     <Transition name="fade" mode="out-in">
       <div v-if="isVisible" class="overlay" @click.self="clickOutside"></div>
     </Transition>
 
-    <Transition name="slide" mode="out-in" @after-leave="$emit('close')">
+    <Transition
+      name="slide"
+      mode="out-in"
+      @after-enter="onEnter"
+      @after-leave="$emit('close')"
+    >
       <aside v-if="isVisible" class="sliderContainer">
         <div class="sliderContainer__closeButtonContainer">
           <PktButton
@@ -57,15 +85,15 @@ defineExpose({ close });
         </div>
 
         <div class="sliderContainer__inner">
-          <header v-if="$slots.header" class="sliderContainer__header">
+          <header v-if="$slots.header" ref="header" class="sliderContainer__header">
             <slot name="header" />
           </header>
 
-          <div class="sliderContainer__content">
+          <div ref="content" class="sliderContainer__content">
             <slot name="default" />
           </div>
 
-          <footer v-if="$slots.footer" class="sliderContainer__footer">
+          <footer v-if="$slots.footer" ref="footer" class="sliderContainer__footer">
             <slot name="footer" />
           </footer>
         </div>

@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
-import ClappingHands from '@/components/ClappingHands.vue';
+import ClappingHands from '@/components/graphics/ClappingHands.vue';
 import SliderContainer from '@/components/drawers/SliderContainer.vue';
 
 const props = defineProps({
@@ -9,7 +9,6 @@ const props = defineProps({
     required: true,
     default: false,
   },
-
   pageCount: {
     type: Number,
     required: false,
@@ -45,8 +44,12 @@ function reset() {
   pageIndex.value = 1;
 }
 
-function cancel() {
+function close() {
   container.value.close();
+}
+
+function cancel() {
+  close();
 }
 
 const slotProps = computed(() => ({
@@ -58,6 +61,7 @@ const slotProps = computed(() => ({
   prev,
   reset,
   cancel,
+  close,
 }));
 
 defineExpose({

@@ -1,51 +1,327 @@
+<script setup>
+import { computed, ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { doc, deleteField, getDoc } from 'firebase/firestore';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { isEqual } from 'date-fns';
+import { useAuthStore } from '@/store/auth';
+import { useActiveItemStore } from '@/store/activeItem';
+import { useObjective } from '@/composables/objective';
+import Objective from '@/db/Objective';
+import { db } from '@/config/firebaseConfig';
+import syncObjectiveContributors from '@/util/objectiveContributors';
+import { BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+import PeriodShortcut from '@/components/period/PeriodShortcut.vue';
+
+const i18n = useI18n();
+const toast = useToast();
+
+const props = defineProps({
+  objectiveId: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  newestObjective: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['create', 'update', 'archive', 'restore', 'add-key-result']);
+
+const { hasParentEditRights } = storeToRefs(useAuthStore());
+const { item, itemRef } = storeToRefs(useActiveItemStore());
+const { objective, objectiveRef, objectivePromise, keyResults } = useObjective(
+  props.objectiveId
+);
+const drawer = ref(null);
+const isLoading = ref(false);
+const isEditMode = computed(() => !!props.objectiveId);
+
+const currentOwner = ref(null);
+const potentionalOwner = ref(null);
+const foreignContributors = computed(() => {
+  // Return array with names of current foreign contributors
+  return [
+    ...new Set(
+      this.keyResults
+        .filter((kr) => kr.parent.id !== this.objective.parent.id)
+        .map((kr) => kr.parent.name)
+    ),
+  ];
+});
+const hasForeignContributors = computed(
+  // Return `true` if the current objective has any foreign contributors
+  () => keyResults.value.some((kr) => kr.parent.id !== objective.value.parent.id)
+);
+const isLiftable = computed(
+  // Return `true` if the user should be able to lift current objective
+  () => potentionalOwner.value && !hasForeignContributors.value
+);
+const isArchived = computed(
+  // Return `true` if the current objective is marked as archived
+  () => objective.value && objective.value.archived
+);
+
+const formData = ref({});
+const ownerOptions = computed(() => {
+  return currentOwner.value && potentionalOwner.value
+    ? [
+        {
+          label: currentOwner.value.name,
+          value: currentOwner.value.ref.path,
+        },
+        {
+          label: potentionalOwner.value.name,
+          value: potentionalOwner.value.ref.path,
+        },
+      ]
+    : [];
+});
+const hasNewOwner = computed(() => {
+  // Return `true` if a new owner has been chosen for the current objective
+  return currentOwner.value && currentOwner.value.ref.path !== formData.value.owner;
+});
+
+const displayLevelHelp = computed(() => {
+  if (formData.value.owner === potentionalOwner.value?.ref.path) {
+    return i18n.t('admin.objective.level.helpLift', {
+      owner: currentOwner.value.name,
+      newOwner: potentionalOwner.value.name,
+    });
+  }
+
+  if (hasForeignContributors.value) {
+    return i18n.t('admin.objective.level.helpForeign', {
+      owner: currentOwner.value.name,
+      contributors: foreignContributors.value.join(', '),
+    });
+  }
+
+  return i18n.t('admin.objective.level.help', {
+    owner: currentOwner.value.name,
+  });
+});
+
+onMounted(async () => {
+  await objectivePromise.value;
+
+  // New objective
+  if (!objective.value) {
+    formData.value = {
+      owner: itemRef.value.path,
+    };
+
+    currentOwner.value = {
+      ref: itemRef.value,
+      name: item.value.name,
+    };
+
+    const itemParent = item.value.department || item.value.organization;
+
+    if (itemParent) {
+      potentionalOwner.value = {
+        ref: doc(db, itemParent.path),
+        name: itemParent.name,
+      };
+    }
+
+    return;
+  }
+
+  // Existing objective
+  const { name, description, parent } = objective.value;
+
+  formData.value = {
+    name,
+    description,
+    period: getCurrentDateRange(objective.value),
+    owner: parent.path,
+  };
+
+  currentOwner.value = {
+    ref: doc(db, parent.path),
+    name: parent.name,
+  };
+
+  const ownerParent = parent.department || parent.organization;
+
+  if (ownerParent) {
+    const ownerParentRef = doc(db, ownerParent);
+    const ownerParentData = (await getDoc(ownerParentRef)).data();
+    potentionalOwner.value = {
+      ref: ownerParentRef,
+      name: ownerParentData.name,
+    };
+  }
+});
+
+function getCurrentDateRange(obj) {
+  if (obj.startDate && obj.endDate) {
+    return [obj.startDate.toDate(), obj.endDate.toDate()];
+  }
+  if (obj.period) {
+    return [obj.period.startDate.toDate(), obj.period.endDate.toDate()];
+  }
+  return null;
+}
+
+function useSuggestedPeriod() {
+  formData.value.period = [
+    props.newestObjective.startDate.toDate(),
+    props.newestObjective.endDate.toDate(),
+  ];
+}
+
+const isSuggestedPeriod = computed(
+  () =>
+    formData.value.period &&
+    props.newestObjective?.startDate &&
+    props.newestObjective?.endDate &&
+    isEqual(formData.value.period[0], props.newestObjective.startDate.toDate()) &&
+    isEqual(formData.value.period[1], props.newestObjective.endDate.toDate())
+);
+
+async function save() {
+  isLoading.value = true;
+  const { next } = drawer.value;
+
+  try {
+    const { name, description, weight, period, owner } = formData.value;
+    const [start, end] = period;
+
+    const targetParentRef =
+      isLiftable.value && owner === potentionalOwner.value.ref.path
+        ? potentionalOwner.value.ref
+        : currentOwner.value.ref;
+
+    if (objective.value) {
+      // Update existing objective
+      const data = {
+        name,
+        description: description || '',
+        weight: weight || 1,
+        parent: targetParentRef,
+      };
+
+      if (start && end) {
+        data.startDate = start;
+        data.endDate = end;
+        if (period) {
+          data.period = deleteField();
+        }
+      } else {
+        data.period = period;
+      }
+
+      await Objective.update(objective.value.id, data);
+
+      if (hasNewOwner.value) {
+        await syncObjectiveContributors(objective.value.id);
+      }
+
+      emit('update', objectiveRef.value);
+    } else {
+      // Create new objective
+      const createdObjectiveRef = await Objective.create({
+        name,
+        description: description || '',
+        weight: weight || 1,
+        parent: itemRef.value,
+        startDate: start,
+        endDate: end,
+      });
+
+      objectiveRef.value = createdObjectiveRef;
+
+      if (hasNewOwner.value) {
+        await Objective.update(createdObjectiveRef.id, { parent: targetParentRef });
+        await syncObjectiveContributors(createdObjectiveRef.id);
+      }
+
+      emit('create', objectiveRef.value);
+    }
+
+    next();
+  } catch {
+    next(false);
+    toast.error(i18n.t('toaster.error.save'));
+  }
+  isLoading.value = false;
+}
+
+async function archive() {
+  isLoading.value = true;
+  try {
+    await Objective.archive(objective.value.id);
+    emit('archive', objective.value.id);
+  } catch (error) {
+    toast.error(i18n.t('toaster.error.archive', { document: objective.value.name }));
+  }
+  isLoading.value = false;
+}
+
+async function restore() {
+  try {
+    await Objective.restore(objective.value.id);
+    emit('restore', objective.value.id);
+  } catch {
+    toast.error(i18n.t('toaster.error.restore', { document: objective.value.name }));
+  }
+}
+</script>
+
 <template>
-  <paged-drawer-wrapper ref="drawer" :visible="!!thisObjective" @close="$emit('close')">
+  <PagedDrawerWrapper ref="drawer" :visible="!!drawer">
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
-        {{ $t(editMode ? 'admin.objective.change' : 'admin.objective.new') }}
+        {{ $t(isEditMode ? 'admin.objective.change' : 'admin.objective.new') }}
       </template>
       <template v-else-if="isSuccess">
-        {{ $t(editMode ? 'objective.updated' : 'admin.objective.created') }}
+        {{ $t(isEditMode ? 'objective.updated' : 'admin.objective.created') }}
       </template>
       <template v-else>{{ $t('toaster.error.save') }}</template>
     </template>
 
-    <template #page>
-      <form-section>
-        <form-component
-          v-model="thisObjective.name"
+    <template #page="{ cancel }">
+      <FormSection>
+        <FormComponent
+          v-model="formData.name"
           input-type="textarea"
           name="name"
-          :disabled="thisObjective?.archived"
+          :disabled="isArchived"
           :rows="2"
           :label="$t('fields.name')"
           rules="required"
-          fullwidth
         />
 
-        <form-component
-          v-model="thisObjective.description"
+        <FormComponent
+          v-model="formData.description"
           input-type="textarea"
           name="description"
-          :disabled="thisObjective?.archived"
+          :disabled="isArchived"
           :rows="2"
           :label="$t('fields.description')"
-          fullwidth
         />
 
-        <form-component
-          v-model="periodRange"
+        <FormComponent
+          v-model="formData.period"
           input-type="date"
           name="period"
-          :disabled="thisObjective?.archived"
+          :disabled="isArchived"
           :label="$t('fields.period')"
           :placeholder="$t('general.selectRange')"
           :date-picker-config="{ mode: 'range' }"
           rules="required"
-          fullwidth
         />
 
-        <period-shortcut
+        <PeriodShortcut
           v-if="newestObjective?.startDate && newestObjective?.endDate"
           class="period-suggestion"
           :label="$t('admin.objective.useLastPeriod')"
@@ -55,20 +331,19 @@
           @click="useSuggestedPeriod"
         />
 
-        <form-component
-          v-if="canLift"
-          v-model="owner"
+        <FormComponent
+          v-if="isLiftable"
+          v-model="formData.owner"
           name="owner"
           input-type="custom-select"
           :label="$t('admin.objective.level.label')"
           :helptext="displayLevelHelp"
           :options="ownerOptions"
-          :disabled="!canLift || thisObjective?.archived"
+          :disabled="isArchived"
           rules="required"
-          fullwidth
         />
 
-        <pkt-alert v-if="hasNewOwner" skin="info">
+        <PktAlert v-if="hasNewOwner" skin="info">
           <p>{{ $t('admin.objective.level.liftWarning1') }}</p>
           <p v-if="!hasParentEditRights">
             {{
@@ -77,376 +352,56 @@
               })
             }}
           </p>
-        </pkt-alert>
+        </PktAlert>
 
         <template #actions="{ submit, disabled }">
-          <btn-cancel :disabled="loading" @on-click="close" />
-          <btn-save
-            :text="editMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
+          <BtnCancel :disabled="isLoading || isArchived" @on-click="cancel" />
+          <BtnSave
+            :text="isEditMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
-            :disabled="disabled || loading || thisObjective?.archived"
+            :disabled="disabled || isLoading || isArchived"
             @on-click="submit(save)"
           />
         </template>
-      </form-section>
+      </FormSection>
     </template>
 
-    <template #done="{ isSuccess, reset }">
+    <template #done="{ isSuccess, reset, close }">
       <div class="button-row button-row--left">
         <template v-if="!isSuccess">
-          <pkt-button skin="secondary" @onClick="reset">
+          <PktButton skin="secondary" @on-click="reset">
             {{ $t('btn.back') }}
-          </pkt-button>
+          </PktButton>
         </template>
-        <template v-else-if="!objective">
-          <pkt-button skin="tertiary" @onClick="close">
+        <template v-else-if="objective">
+          <PktButton skin="tertiary" @on-click="close">
             {{ $t('btn.close') }}
-          </pkt-button>
-          <pkt-button
-            v-if="thisObjective.id"
+          </PktButton>
+          <PktButton
+            v-if="objective.id"
             skin="secondary"
-            @onClick="$emit('add-key-result')"
+            @on-click="$emit('add-key-result')"
           >
             {{ $t('btn.createKeyResult') }}
-          </pkt-button>
+          </PktButton>
         </template>
       </div>
     </template>
 
     <template #footer="{ isDone }">
-      <template v-if="editMode && !isDone">
-        <archived-restore
-          v-if="thisObjective.archived"
-          :restore="restore"
-          object-type="objective"
-        />
+      <template v-if="isEditMode && !isDone">
+        <ArchivedRestore v-if="isArchived" :restore="restore" object-type="objective" />
         <div v-else class="button-row">
-          <btn-delete
-            :disabled="loading"
+          <BtnDelete
+            :disabled="isLoading"
             :text="$t('admin.objective.delete')"
             @on-click="archive"
           />
         </div>
       </template>
     </template>
-  </paged-drawer-wrapper>
+  </PagedDrawerWrapper>
 </template>
-
-<script>
-import { mapActions, mapGetters, mapState } from 'vuex';
-import { isEqual } from 'date-fns';
-import { db } from '@/config/firebaseConfig';
-import { formattedPeriod } from '@/util/okr';
-import getActiveItemType from '@/util/getActiveItemType';
-import Objective from '@/db/Objective';
-import firebase from 'firebase/compat/app';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
-import { FormSection, BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
-import PeriodShortcut from '@/components/period/PeriodShortcut.vue';
-import syncObjectiveContributors from '@/util/objectiveContributors';
-
-export default {
-  name: 'EditObjective',
-
-  components: {
-    ArchivedRestore,
-    PeriodShortcut,
-    PktAlert,
-    PktButton,
-    PagedDrawerWrapper,
-    FormSection,
-    BtnSave,
-    BtnDelete,
-    BtnCancel,
-  },
-
-  props: {
-    objective: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-
-    newestObjective: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-  },
-
-  data: () => ({
-    thisObjective: null,
-    periodRange: null,
-    loading: false,
-    owner: null,
-    currentOwner: null,
-    potentionalOwner: null,
-    keyResults: [],
-  }),
-
-  computed: {
-    ...mapState(['activeItem', 'activeItemRef']),
-    ...mapGetters(['hasParentEditRights']),
-
-    editMode() {
-      return !!this.thisObjective?.id;
-    },
-
-    isSuggestedPeriod() {
-      return (
-        this.periodRange &&
-        this.newestObjective?.startDate &&
-        this.newestObjective?.endDate &&
-        isEqual(this.periodRange[0], this.newestObjective.startDate.toDate()) &&
-        isEqual(this.periodRange[1], this.newestObjective.endDate.toDate())
-      );
-    },
-
-    /**
-     * Return `true` if the current objective has any foreign contributors.
-     */
-    hasForeignContributors() {
-      return this.keyResults.some((kr) => kr.parent.id !== this.objective.parent.id);
-    },
-
-    /**
-     * Return array with names of current foreign contributors.
-     */
-    foreignContributors() {
-      return [
-        ...new Set(
-          this.keyResults
-            .filter((kr) => kr.parent.id !== this.objective.parent.id)
-            .map((kr) => kr.parent.name)
-        ),
-      ];
-    },
-
-    /**
-     * Return `true` if the user should be able to lift current objective.
-     */
-    canLift() {
-      return this.potentionalOwner && !this.hasForeignContributors;
-    },
-
-    ownerOptions() {
-      return this.currentOwner && this.potentionalOwner
-        ? [
-            {
-              label: this.currentOwner.name,
-              value: this.currentOwner.ref.path,
-            },
-            {
-              label: this.potentionalOwner.name,
-              value: this.potentionalOwner.ref.path,
-            },
-          ]
-        : [];
-    },
-
-    displayLevelHelp() {
-      if (this.owner === this.potentionalOwner?.ref.path) {
-        return this.$t('admin.objective.level.helpLift', {
-          owner: this.currentOwner.name,
-          newOwner: this.potentionalOwner.name,
-        });
-      }
-
-      if (this.hasForeignContributors) {
-        return this.$t('admin.objective.level.helpForeign', {
-          owner: this.currentOwner.name,
-          contributors: this.foreignContributors.join(', '),
-        });
-      }
-
-      return this.$t('admin.objective.level.help', {
-        owner: this.currentOwner.name,
-      });
-    },
-
-    /**
-     * Return `true` if a new owner has been chosen for the current objective.
-     */
-    hasNewOwner() {
-      return this.currentOwner && this.currentOwner.ref.path !== this.owner;
-    },
-  },
-
-  async mounted() {
-    if (!this.objective) {
-      this.thisObjective = {};
-      this.owner = this.activeItemRef.path;
-      this.currentOwner = {
-        ref: this.activeItemRef,
-        name: this.activeItem.name,
-      };
-      const parent = this.activeItem.department || this.activeItem.organization;
-      if (parent) {
-        this.potentionalOwner = {
-          ref: db.doc(`${getActiveItemType(parent)}s/${parent.id}`),
-          name: parent.name,
-        };
-      }
-      return;
-    }
-
-    db.collection('objectives')
-      .doc(this.objective.id)
-      .get()
-      .then((snapshot) => {
-        this.thisObjective = snapshot.data();
-        this.thisObjective.id = this.objective.id;
-        this.periodRange = this.getCurrentDateRange();
-        this.currentOwner = {
-          ref: this.thisObjective.parent,
-          name: this.objective.parent.name,
-        };
-        this.owner = this.currentOwner.ref.path;
-        this.loading = false;
-      });
-
-    const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
-    const keyResults = await db
-      .collection('keyResults')
-      .where('archived', '==', false)
-      .where('objective', '==', objectiveRef);
-    await this.$bind('keyResults', keyResults);
-
-    const parent = this.objective.parent.department || this.objective.parent.organization;
-    if (parent) {
-      const parentRef = db.doc(parent);
-      const parentData = (await parentRef.get()).data();
-      this.potentionalOwner = {
-        ref: parentRef,
-        name: parentData.name,
-      };
-    }
-  },
-
-  methods: {
-    ...mapActions('okrs', ['setActiveObjective']),
-
-    formattedPeriod,
-    syncObjectiveContributors,
-
-    getCurrentDateRange() {
-      if (this.thisObjective.startDate && this.thisObjective.endDate) {
-        return [this.objective.startDate.toDate(), this.objective.endDate.toDate()];
-      }
-      if (this.thisObjective.period) {
-        return [
-          this.objective.period.startDate.toDate(),
-          this.objective.period.endDate.toDate(),
-        ];
-      }
-      return null;
-    },
-
-    async save() {
-      this.loading = true;
-
-      try {
-        const { name, description, weight, period } = this.thisObjective;
-        const [start, end] = this.periodRange;
-
-        const targetParentRef =
-          this.canLift && this.owner === this.potentionalOwner.ref.path
-            ? this.potentionalOwner.ref
-            : this.currentOwner.ref;
-
-        if (this.thisObjective?.id) {
-          // Update objective
-          const data = {
-            name,
-            description: description || '',
-            weight: weight || 1,
-          };
-          if (start && end) {
-            data.startDate = start;
-            data.endDate = end;
-            if (period) {
-              const { FieldValue } = firebase.firestore;
-              data.period = FieldValue.delete();
-            }
-          } else {
-            data.period = period;
-          }
-
-          data.parent = targetParentRef;
-          await Objective.update(this.thisObjective.id, data);
-          if (this.hasNewOwner) {
-            await syncObjectiveContributors(this.thisObjective.id);
-          }
-          this.$emit('update', this.thisObjective);
-        } else {
-          // Create new objective
-          const { id } = await Objective.create({
-            name,
-            description: description || '',
-            weight: weight || 1,
-            parent: this.activeItemRef,
-            startDate: start,
-            endDate: end,
-          });
-
-          if (this.hasNewOwner) {
-            await Objective.update(id, { parent: targetParentRef });
-            await syncObjectiveContributors(id);
-          }
-
-          this.thisObjective.id = id;
-          this.$emit('create', this.thisObjective);
-        }
-
-        this.$refs.drawer.next();
-      } catch (error) {
-        this.$refs.drawer.next(false);
-        this.$toasted.error(this.$t('toaster.error.save'));
-      }
-      this.loading = false;
-    },
-
-    async archive() {
-      this.loading = true;
-      try {
-        await Objective.archive(this.thisObjective.id);
-        this.thisObjective.archived = true;
-        this.$emit('archive', this.thisObjective);
-      } catch (error) {
-        this.$toasted.error(
-          this.$t('toaster.error.archive', { document: this.thisObjective.name })
-        );
-      }
-      this.loading = false;
-    },
-
-    async restore() {
-      try {
-        await Objective.restore(this.thisObjective.id);
-        this.thisObjective.archived = false;
-        this.$emit('restore', this.thisObjective);
-      } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.restore', { document: this.thisObjective.id })
-        );
-      }
-    },
-
-    close() {
-      this.thisObjective = null;
-    },
-
-    async useSuggestedPeriod() {
-      this.periodRange = [
-        this.newestObjective.startDate.toDate(),
-        this.newestObjective.endDate.toDate(),
-      ];
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .period-suggestion {

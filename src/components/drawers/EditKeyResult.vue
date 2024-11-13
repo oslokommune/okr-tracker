@@ -1,418 +1,318 @@
+<script setup>
+import { computed, onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { doc } from 'firebase/firestore';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { useAuthStore } from '@/store/auth';
+import { useActiveItemStore } from '@/store/activeItem';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
+import { useActiveObjectiveStore } from '@/store/activeObjective';
+import { useKeyResult } from '@/composables/keyResult';
+import KeyResult from '@/db/KeyResult';
+import { db } from '@/config/firebaseConfig';
+import { PktButton } from '@oslokommune/punkt-vue';
+import { BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
+import ArchivedRestore from '@/components/ArchivedRestore.vue';
+import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
+import syncObjectiveContributors from '@/util/objectiveContributors';
+
+const i18n = useI18n();
+const toast = useToast();
+
+const props = defineProps({
+  keyResultId: {
+    type: String,
+    required: false,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['create', 'update', 'archive', 'restore']);
+
+const { user, isAdminOfCurrentItemOrganization, isSuperAdmin } = storeToRefs(
+  useAuthStore()
+);
+const { organizationTree } = storeToRefs(useActiveOrganizationStore());
+const { item: activeItem } = storeToRefs(useActiveItemStore());
+const { objective: activeObjective, objectiveRef: activeObjectiveRef } = storeToRefs(
+  useActiveObjectiveStore()
+);
+const { keyResult, keyResultRef, keyResultPromise } = useKeyResult(props.keyResultId);
+
+const drawer = ref(null);
+const pageCount = ref(2);
+const isEditMode = computed(() => !!props.keyResultId);
+const isLoading = ref(false);
+const isArchived = computed(() => keyResult.value && keyResult.value.archived);
+
+const formData = ref({});
+const objectiveParent = computed(() => activeObjective.value.parent);
+
+const ownerOptions = computed(() => {
+  const options = [];
+
+  if (canSelectOwner(objectiveParent.value)) {
+    options.push({
+      label: objectiveParent.value.name,
+      value: objectiveParent.value.path,
+    });
+  }
+
+  let children = [];
+
+  if (objectiveParent.value.path.startsWith('organizations')) {
+    children = organizationTree.value.children;
+  } else if (objectiveParent.value.path.startsWith('departments')) {
+    children = organizationTree.value.children.find(
+      (d) => d.id === objectiveParent.value.id
+    )?.children;
+  }
+
+  children
+    .filter(canSelectOwner)
+    .map(({ name, path }) => ({ label: name, value: path }))
+    .forEach((option) => options.push(option));
+
+  return options;
+});
+
+onMounted(async () => {
+  formData.value = {
+    unit: i18n.t('keyResult.defaultUnit'),
+    parent: { label: activeItem.value.name, value: activeItem.value.path },
+    weight: 1,
+    startValue: 0,
+    targetValue: 100,
+  };
+
+  await keyResultPromise.value;
+
+  if (keyResult.value) {
+    const { name, description, parent } = keyResult.value;
+
+    formData.value.name = name;
+    formData.value.description = description;
+    formData.value.parent = {
+      label: parent.name,
+      value: parent.path,
+    };
+  }
+});
+
+function canSelectOwner(item) {
+  return (
+    item.team.map(({ id }) => id).includes(user.value.id) ||
+    isAdminOfCurrentItemOrganization.value ||
+    isSuperAdmin.value
+  );
+}
+
+async function save() {
+  const { pageIndex, next } = drawer.value;
+
+  if (pageIndex < pageCount.value) {
+    next();
+    return;
+  }
+
+  isLoading.value = true;
+
+  try {
+    const { name, description, unit, weight, startValue, targetValue, parent } =
+      formData.value;
+
+    const data = {
+      name,
+      description: description || '',
+      unit: unit || 1,
+      startValue,
+      targetValue,
+      weight: weight || 1,
+      parent: doc(db, parent.value),
+    };
+
+    if (keyResult.value) {
+      // Update existing key result
+      await KeyResult.update(keyResult.value.id, data);
+      emit('update', keyResultRef.value);
+    } else {
+      // Create new key result
+      const createdKeyResultRef = await KeyResult.create({
+        ...data,
+        objective: activeObjectiveRef.value,
+      });
+      keyResultRef.value = createdKeyResultRef;
+      emit('create', keyResultRef.value);
+    }
+
+    await syncObjectiveContributors(activeObjective.value.id);
+
+    next();
+  } catch (error) {
+    next(false);
+    toast.error(i18n.t('toaster.error.save'));
+  }
+
+  isLoading.value = false;
+}
+
+async function archive() {
+  isLoading.value = true;
+  try {
+    await KeyResult.archive(keyResult.value.id);
+    await syncObjectiveContributors(activeObjective.value.id);
+    emit('archive', keyResultRef.value);
+  } catch (error) {
+    toast.error(i18n.t('toaster.error.archive', { document: keyResult.value.name }));
+  }
+  isLoading.value = false;
+}
+
+async function restore() {
+  try {
+    await KeyResult.restore(keyResult.value.id);
+    await syncObjectiveContributors(activeObjective.value.id);
+    emit('restore', keyResult.value.id);
+  } catch {
+    toast.error(i18n.t('toaster.error.restore', { document: keyResult.value.name }));
+  }
+}
+</script>
+
 <template>
-  <paged-drawer-wrapper
-    ref="drawer"
-    :visible="!!thisKeyResult"
-    :page-count="pageCount"
-    @close="$emit('close')"
-  >
+  <PagedDrawerWrapper ref="drawer" :visible="!!drawer" :page-count="pageCount">
     <template #title="{ isDone, isSuccess }">
       <template v-if="!isDone">
-        {{ $t(editMode ? 'admin.keyResult.change' : 'admin.keyResult.new') }}
+        {{ $t(isEditMode ? 'admin.keyResult.change' : 'admin.keyResult.new') }}
       </template>
       <template v-else-if="isSuccess">
-        {{ $t(editMode ? 'keyResult.updated' : 'keyResult.created') }}
+        {{ $t(isEditMode ? 'keyResult.updated' : 'keyResult.created') }}
       </template>
       <template v-else>{{ $t('toaster.error.save') }}</template>
     </template>
 
-    <template #page="{ pageIndex, prev }">
-      <form-section>
+    <template #page="{ pageIndex, prev, cancel }">
+      <FormSection>
         <template v-if="pageIndex === 1">
-          <form-component
-            v-model="thisKeyResult.name"
+          <FormComponent
+            v-model="formData.name"
             input-type="textarea"
             name="name"
-            :disabled="thisKeyResult?.archived"
+            :disabled="isArchived"
             :rows="2"
             :label="$t('fields.name')"
             rules="required"
-            :fullwidth="true"
           />
-          <form-component
-            v-model="thisKeyResult.description"
+
+          <FormComponent
+            v-model="formData.description"
             input-type="textarea"
             name="description"
-            :disabled="thisKeyResult?.archived"
+            :disabled="isArchived"
             :rows="2"
             :label="$t('fields.description')"
-            :fullwidth="true"
           />
-          <form-component
-            v-if="isOrganization || isDepartment"
-            v-model="contributor"
+
+          <FormComponent
+            v-model="formData.parent"
             input-type="custom-select"
             name="owner"
-            :disabled="ownerOptions.length === 1 || thisKeyResult?.archived"
+            :disabled="ownerOptions.length === 1 || isArchived"
             :options="ownerOptions"
             :label="$t('admin.keyResult.owner.label')"
-            label-prop="name"
             :store-object="true"
+            :helptext="$t('admin.keyResult.owner.help')"
             rules="required"
-            :fullwidth="true"
-          >
-            <template #help>
-              {{ $t('admin.keyResult.owner.help') }}
-            </template>
-          </form-component>
+          />
         </template>
 
         <template v-else-if="pageIndex === 2">
-          <form-component
-            v-model="thisKeyResult.unit"
+          <FormComponent
+            v-model="formData.unit"
             input-type="input"
             name="unit"
             :label="$t('keyResult.unit')"
             rules="required|max:25"
-            :fullwidth="true"
           />
 
           <div class="pkt-grid">
-            <form-component
-              v-model="thisKeyResult.startValue"
+            <FormComponent
+              v-model="formData.startValue"
               input-type="input"
               name="startValue"
               :label="$t('keyResult.startValue')"
               rules="required"
               type="number"
               class="pkt-cell pkt-cell--span6"
-              :fullwidth="true"
             />
 
-            <form-component
-              v-model="thisKeyResult.targetValue"
+            <FormComponent
+              v-model="formData.targetValue"
               input-type="input"
               name="targetValue"
               :label="$t('keyResult.targetValue')"
               rules="required"
               type="number"
               class="pkt-cell pkt-cell--span6"
-              :fullwidth="true"
             />
           </div>
 
-          <form-component
-            v-model="thisKeyResult.weight"
+          <FormComponent
+            v-model="formData.weight"
             input-type="input"
             name="weight"
             :label="$t('keyResult.weight.label')"
             :helptext="$t('keyResult.weight.help')"
             rules="required|positiveNotZero"
             type="number"
-            :fullwidth="true"
           />
         </template>
 
         <template #actions="{ submit, disabled }">
-          <pkt-button
+          <BtnCancel
             v-if="pageIndex === 1"
-            :text="$t('btn.cancel')"
-            skin="tertiary"
-            :disabled="loading || thisKeyResult?.archived"
-            @on-click="close"
+            :disabled="isLoading || isArchived"
+            @on-click="cancel"
           />
-          <pkt-button
+          <PktButton
             v-else
             :text="$t('btn.back')"
             skin="tertiary"
-            :disabled="loading || thisKeyResult?.archived"
+            :disabled="isLoading || isArchived"
             @on-click="prev"
           />
-
-          <btn-save
+          <BtnSave
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
-            :disabled="disabled || loading || thisKeyResult?.archived"
+            :disabled="disabled || isLoading || isArchived"
             variant="label-only"
             @on-click="submit(save)"
           />
         </template>
-      </form-section>
+      </FormSection>
     </template>
 
     <template #done="{ isSuccess, reset }">
       <div class="button-row button-row--left">
         <template v-if="!isSuccess">
-          <pkt-button skin="secondary" @onClick="reset">
+          <PktButton skin="secondary" @on-click="reset">
             {{ $t('btn.back') }}
-          </pkt-button>
-        </template>
-        <template v-else-if="!thisKeyResult.id">
-          <pkt-button skin="tertiary" @onClick="close">
-            {{ $t('btn.close') }}
-          </pkt-button>
-          <pkt-button
-            skin="secondary"
-            @onClick="
-              thisKeyResult = { ...keyResultDefaults };
-              reset();
-            "
-          >
-            {{ $t('btn.createKeyResult') }}
-          </pkt-button>
+          </PktButton>
         </template>
       </div>
     </template>
 
     <template #footer="{ isDone }">
-      <template v-if="editMode && !isDone">
-        <archived-restore
-          v-if="thisKeyResult.archived"
-          :restore="restore"
-          object-type="keyResult"
-        />
+      <template v-if="isEditMode && !isDone">
+        <ArchivedRestore v-if="isArchived" :restore="restore" object-type="keyResult" />
         <div v-else class="button-row">
-          <btn-delete
-            :disabled="loading"
+          <BtnDelete
+            :disabled="isLoading"
             :text="$t('admin.keyResult.delete')"
             @on-click="archive"
           />
         </div>
       </template>
     </template>
-  </paged-drawer-wrapper>
+  </PagedDrawerWrapper>
 </template>
-
-<script>
-import { mapState, mapGetters } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue';
-import { db } from '@/config/firebaseConfig';
-import { FormSection, BtnSave, BtnDelete } from '@/components/generic/form';
-import getActiveItemType, {
-  isDepartment,
-  isOrganization,
-} from '@/util/getActiveItemType';
-import ArchivedRestore from '@/components/ArchivedRestore.vue';
-import KeyResult from '@/db/KeyResult';
-import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
-import syncObjectiveContributors from '@/util/objectiveContributors';
-
-export default {
-  name: 'EditKeyResult',
-
-  components: {
-    ArchivedRestore,
-    PktButton,
-    PagedDrawerWrapper,
-    FormSection,
-    BtnSave,
-    BtnDelete,
-  },
-
-  props: {
-    objective: {
-      type: Object,
-      required: true,
-    },
-
-    keyResult: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-  },
-
-  data: () => ({
-    thisKeyResult: null,
-    keyResultDefaults: {
-      weight: 1,
-      startValue: 0,
-      targetValue: 100,
-    },
-    pageCount: 2,
-    loading: false,
-    contributor: null,
-    objectiveOwner: null,
-  }),
-
-  computed: {
-    ...mapState([
-      'activeItem',
-      'activeItemRef',
-      'organizations',
-      'departments',
-      'products',
-      'user',
-    ]),
-    ...mapGetters(['hasEditRights']),
-
-    children() {
-      if (!this.objectiveOwner) {
-        return [];
-      }
-      if (isOrganization(this.objectiveOwner)) {
-        return this.departments.filter(
-          (department) => department.organization.id === this.objectiveOwner.id
-        );
-      }
-      if (isDepartment(this.objectiveOwner)) {
-        return this.products.filter(
-          (product) => product.department.id === this.objectiveOwner.id
-        );
-      }
-      return [];
-    },
-
-    isAdmin() {
-      const { organization } = this.activeItem;
-      const isAdminOfOrganization = organization
-        ? this.user.admin?.includes(organization.id)
-        : this.user.admin?.includes(this.activeItem.id);
-      return isAdminOfOrganization || this.user.superAdmin;
-    },
-
-    ownerOptions() {
-      const options = [];
-
-      if (
-        this.objectiveOwner &&
-        (this.memberOfLevel(this.objectiveOwner) || this.isAdmin)
-      ) {
-        const { id, name } = this.objectiveOwner;
-        const parentType = getActiveItemType(this.objective.parent);
-        const path = `${parentType}s/${id}`;
-        options.push({ value: path, name });
-      }
-
-      this.children
-        .filter((child) => this.memberOfLevel(child) || this.isAdmin)
-        .map((child) => ({
-          value: child.path,
-          name: child.name,
-        }))
-        .forEach((child) => options.push(child));
-
-      return options;
-    },
-
-    editMode() {
-      return !!this.thisKeyResult?.id;
-    },
-  },
-
-  async mounted() {
-    this.keyResultDefaults.unit = this.$t('keyResult.defaultUnit');
-    this.loading = true;
-
-    const parentType = getActiveItemType(this.objective.parent);
-    await this.$bind(
-      'objectiveOwner',
-      db.collection(`${parentType}s`).doc(this.objective.parent.id)
-    );
-
-    if (!this.keyResult) {
-      this.thisKeyResult = { ...this.keyResultDefaults };
-      this.contributor =
-        this.ownerOptions.find((o) => o.name === this.activeItem.name) ||
-        this.ownerOptions[0];
-      this.loading = false;
-      return;
-    }
-
-    db.collection('keyResults')
-      .doc(this.keyResult.id)
-      .get()
-      .then((snapshot) => {
-        this.thisKeyResult = {
-          ...this.keyResultDefaults,
-          ...snapshot.data(),
-        };
-        this.thisKeyResult.id = this.keyResult.id;
-        this.contributor = this.ownerOptions.find(
-          (o) => o.name === this.keyResult.parent.name
-        );
-        this.loading = false;
-      });
-  },
-
-  methods: {
-    isDepartment,
-    isOrganization,
-    syncObjectiveContributors,
-
-    memberOfLevel(level) {
-      return level?.team.map(({ id }) => id).includes(this.user.id);
-    },
-
-    async save() {
-      const { pageIndex, next } = this.$refs.drawer;
-
-      if (pageIndex < this.pageCount) {
-        next();
-      } else {
-        this.loading = true;
-
-        try {
-          const { name, description, unit, weight, startValue, targetValue } =
-            this.thisKeyResult;
-
-          const parent = db.doc(this.contributor.value);
-
-          const data = {
-            name,
-            description: description || '',
-            unit: unit || 1,
-            weight: weight || 1,
-            startValue,
-            targetValue,
-            parent,
-          };
-
-          if (this.thisKeyResult?.id) {
-            await KeyResult.update(this.thisKeyResult.id, data);
-            this.$emit('update', this.thisKeyResult);
-          } else {
-            const objectiveRef = db.collection('objectives').doc(this.objective.id);
-            const { id } = await KeyResult.create({
-              ...data,
-              objective: objectiveRef,
-            });
-            this.thisKeyResult.id = id;
-            this.thisKeyResult.objective = objectiveRef;
-            this.$emit('create', this.thisKeyResult);
-          }
-          await syncObjectiveContributors(this.objective.id);
-          this.$refs.drawer.next();
-        } catch (error) {
-          console.log(error);
-          this.$refs.drawer.next(false);
-          this.$toasted.error(this.$t('toaster.error.save'));
-        }
-
-        this.loading = false;
-      }
-    },
-
-    async archive() {
-      this.loading = true;
-      try {
-        await KeyResult.archive(this.thisKeyResult.id);
-        await syncObjectiveContributors(this.objective.id);
-        this.thisKeyResult.archived = true;
-        this.$emit('archive', this.thisKeyResult);
-        this.$refs.drawer.reset();
-      } catch (error) {
-        this.$toasted.error(
-          this.$t('toaster.error.archive', { document: this.thisKeyResult.name })
-        );
-      }
-      this.loading = false;
-    },
-
-    async restore() {
-      try {
-        await KeyResult.restore(this.thisKeyResult.id);
-        await syncObjectiveContributors(this.objective.id);
-        this.thisKeyResult.archived = false;
-        this.$emit('restore', this.thisKeyResult);
-      } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.restore', { document: this.thisKeyResult.id })
-        );
-      }
-    },
-
-    close() {
-      this.thisKeyResult = null;
-    },
-  },
-};
-</script>
