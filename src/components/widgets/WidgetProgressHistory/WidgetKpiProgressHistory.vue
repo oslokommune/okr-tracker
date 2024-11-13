@@ -26,15 +26,15 @@ import { PktButton, PktCheckbox, PktLoader } from '@oslokommune/punkt-vue';
 import EmptyState from '@/components/EmptyState.vue';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
 import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
+import UserLink from '@/components/UserLink.vue';
 import WidgetWrapper from '../WidgetWrapper.vue';
-import UserLink from './UserLink.vue';
 
 const i18n = useI18n();
 
 const { kpi, kpiRef, period } = storeToRefs(useActiveKpiStore());
 const { hasEditRights } = storeToRefs(useAuthStore());
 
-const showComments = useLocalStorage('true-kpi-progress-comments', true);
+const showComments = useLocalStorage('show-kpi-progress-comments', true);
 const listLimit = ref(10);
 const chosenUserId = ref(null);
 const isExporting = ref(false);
