@@ -7,8 +7,8 @@ import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
 import { useAuthStore } from '@/store/auth';
 import { useKpi } from '@/composables/kpi';
 import LineChart from '@/components/generic/LineChart.vue';
-import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
-import WidgetWrapper from '../WidgetWrapper.vue';
+import PeriodTrendTag from '@/components/PeriodTrendTag.vue';
+import WidgetWrapper from './WidgetWrapper.vue';
 
 const i18n = useI18n();
 

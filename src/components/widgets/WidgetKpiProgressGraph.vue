@@ -11,7 +11,7 @@ import { periodDates } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
 import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
-import PeriodTrendTag from '@/components/widgets/PeriodTrendTag.vue';
+import PeriodTrendTag from '@/components/PeriodTrendTag.vue';
 import LineChart from '@/components/generic/LineChart.vue';
 import html2canvas from 'html2canvas';
 import WidgetWrapper from './WidgetWrapper.vue';

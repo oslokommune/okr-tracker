@@ -27,7 +27,7 @@ import EmptyState from '@/components/EmptyState.vue';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
 import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
 import UserLink from '@/components/UserLink.vue';
-import WidgetWrapper from '../WidgetWrapper.vue';
+import WidgetWrapper from './WidgetWrapper.vue';
 
 const i18n = useI18n();
 
