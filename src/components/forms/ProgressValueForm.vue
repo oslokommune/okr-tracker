@@ -1,9 +1,71 @@
+<script setup>
+import { computed } from 'vue';
+import { BtnDelete, BtnSave } from '@/components/generic/form';
+
+const props = defineProps({
+  value: {
+    type: Number,
+    required: false,
+    default: null,
+  },
+  comment: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  timestamp: {
+    type: Date,
+    required: false,
+    default: () => new Date(),
+  },
+  loading: {
+    required: false,
+    type: Boolean,
+    default: false,
+  },
+  enableDelete: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  enableTime: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+  minDate: {
+    type: Date,
+    required: false,
+    default: null,
+  },
+  maxDate: {
+    type: Date,
+    required: false,
+    default: () => new Date(),
+  },
+  displayValue: {
+    type: String,
+    required: false,
+    default: null,
+  },
+});
+
+defineEmits(['update:value', 'update:comment', 'update:timestamp', 'submit', 'delete']);
+
+const datePickerConfig = computed(() => ({
+  inline: true,
+  enableTime: props.enableTime,
+  minDate: props.minDate,
+  maxDate: props.maxDate,
+}));
+</script>
+
 <template>
-  <form-section>
+  <FormSection>
     <div class="progress-form">
       <div class="progress-form__left">
         <div class="progress-form__value-group">
-          <form-component
+          <FormComponent
             input-type="input"
             type="number"
             name="value"
@@ -16,7 +78,7 @@
         </div>
 
         <div class="progress-form__comment-group">
-          <form-component
+          <FormComponent
             input-type="textarea"
             name="comment"
             :label="$t('widget.history.comment')"
@@ -28,7 +90,7 @@
       </div>
 
       <div class="progress-form__right">
-        <form-component
+        <FormComponent
           input-type="date"
           name="timestamp"
           :label="$t(enableTime ? 'widget.history.time' : 'widget.history.date')"
@@ -43,97 +105,18 @@
     <slot />
 
     <template #actions="{ submit, disabled }">
-      <btn-delete
+      <BtnDelete
         v-if="enableDelete"
         :disabled="disabled || loading"
         @on-click="$emit('delete')"
       />
-      <btn-save
+      <BtnSave
         :disabled="disabled || loading"
         @on-click="submit((values) => $emit('submit', values))"
       />
     </template>
-  </form-section>
+  </FormSection>
 </template>
-
-<script>
-import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
-
-export default {
-  name: 'ProgressValueForm',
-
-  compatConfig: {
-    MODE: 3,
-  },
-
-  components: {
-    FormSection,
-    BtnDelete,
-    BtnSave,
-  },
-
-  props: {
-    value: {
-      type: Number,
-      required: false,
-      default: null,
-    },
-    comment: {
-      type: String,
-      required: false,
-      default: '',
-    },
-    timestamp: {
-      type: Date,
-      required: false,
-      default: () => new Date(),
-    },
-    loading: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
-    enableDelete: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    enableTime: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    minDate: {
-      type: Date,
-      required: false,
-      default: null,
-    },
-    maxDate: {
-      type: Date,
-      required: false,
-      default: () => new Date(),
-    },
-    displayValue: {
-      type: String,
-      required: false,
-      default: null,
-    },
-  },
-
-  emits: ['update:value', 'update:comment', 'update:timestamp', 'submit', 'delete'],
-
-  computed: {
-    datePickerConfig() {
-      return {
-        inline: true,
-        enableTime: this.enableTime,
-        minDate: this.minDate,
-        maxDate: this.maxDate,
-      };
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .progress-form {

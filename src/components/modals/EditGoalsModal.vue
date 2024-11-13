@@ -1,5 +1,138 @@
+<script setup>
+import { computed, ref, watch } from 'vue';
+import { useCollection, useDocument } from 'vuefire';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { collection, doc, orderBy, query, where } from 'firebase/firestore';
+import { endOfYear, startOfYear } from 'date-fns';
+import { db } from '@/config/firebaseConfig';
+import Goal from '@/db/Kpi/Goal';
+import { periodDates } from '@/util';
+import { PktButton } from '@oslokommune/punkt-vue';
+import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
+import { formatKPIValue } from '@/util/kpiHelpers';
+import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
+import ModalWrapper from './ModalWrapper.vue';
+
+const i18n = useI18n();
+const toast = useToast();
+
+const props = defineProps({
+  kpi: {
+    type: Object,
+    required: true,
+  },
+});
+
+const kpiRef = computed(() => props.kpi && doc(db, 'kpis', props.kpi.id));
+
+const { data: goals, pending: goalsIsLoading } = useCollection(
+  computed(() => {
+    return (
+      kpiRef.value &&
+      query(
+        collection(kpiRef.value, 'goals'),
+        where('archived', '==', false),
+        orderBy('toDate', 'desc')
+      )
+    );
+  }),
+  { ssrKey: 'kpiGoals' }
+);
+
+const activeGoalId = ref(null);
+const { data: activeGoal, pending: goalIsLoading } = useDocument(
+  () => activeGoalId.value && doc(kpiRef.value, 'goals', activeGoalId.value)
+);
+
+const typePercentage = computed(() => props.kpi.format === 'percentage');
+const truncateFloat = (f) => parseFloat(f.toFixed(4));
+
+const form = ref(null);
+const formData = ref({});
+const isLoading = ref(false);
+const formIsDisabled = computed(() => isLoading.value || goalIsLoading.value);
+
+watch(activeGoal, (goal) => {
+  if (goal) {
+    formData.value = {
+      name: goal.name,
+      period: [goal.fromDate.toDate(), goal.toDate.toDate()],
+      value:
+        goal.value && typePercentage.value ? truncateFloat(goal.value * 100) : goal.value,
+    };
+  }
+  form.value.reset();
+});
+
+const formattedValue = computed(() => {
+  const { value } = formData.value;
+  return value
+    ? formatKPIValue(props.kpi, typePercentage.value ? value / 100 : value)
+    : null;
+});
+
+async function addGoal() {
+  const now = new Date();
+  const fromDate = startOfYear(now);
+  const toDate = endOfYear(now);
+
+  isLoading.value = true;
+  try {
+    const goalRef = await Goal.create(props.kpi.id, {
+      name: i18n.t('kpi.goals.new'),
+      fromDate,
+      toDate,
+      value: null,
+      archived: false,
+    });
+    activeGoalId.value = goalRef.id;
+  } catch {
+    toast.error(
+      i18n.t('toaster.error.restore', { document: i18n.t('kpi.goals.new').toLowerCase() })
+    );
+  }
+  isLoading.value = false;
+}
+
+async function update() {
+  isLoading.value = true;
+  try {
+    const { name, period, value } = formData.value;
+    await Goal.update(props.kpi.id, activeGoal.value.id, {
+      name,
+      fromDate: period[0],
+      toDate: period[1],
+      value: typePercentage.value ? value / 100 : value,
+    });
+    toast.success(i18n.t('toaster.savedChanges'));
+  } catch {
+    toast.error(i18n.t('toaster.error.save'));
+  }
+  isLoading.value = false;
+}
+
+async function archive() {
+  isLoading.value = true;
+  const { id, name } = activeGoal.value;
+  try {
+    await Goal.archive(props.kpi.id, id);
+    toast.success(i18n.t('toaster.delete.permanently', { name }));
+  } catch {
+    toast.error(
+      i18n.t('toaster.error.archive', {
+        document: name || i18n.t('kpi.goals.the'),
+      })
+    );
+  }
+
+  activeGoalId.value = goals.value.length ? goals.value[0].id : null;
+  isLoading.value = false;
+}
+</script>
+
 <template>
-  <modal-wrapper variant="wide" @close="close">
+  <ModalWrapper variant="wide" @close="$emit('close')">
     <template #header>
       {{ $t('kpi.goals.edit') }}
     </template>
@@ -8,266 +141,89 @@
 
     <div class="goal-form">
       <div class="goal-form__left">
-        <ul>
+        <ul class="goal-form__list">
           <li
             v-for="goal in goals"
             :key="goal.id"
-            :class="{ selected: goal.id === activeGoalId }"
-            @click="setActiveGoal(goal.id)"
+            :class="[
+              'goal-form__goal',
+              { 'goal-form__goal--selected': goal.id === activeGoalId },
+            ]"
+            @click="activeGoalId = goal.id"
           >
             <a href="#">
-              <span>{{ goal.name }}</span>
+              <div>{{ goal.name }}</div>
+              <div>
+                {{ periodDates({ startDate: goal.fromDate, endDate: goal.toDate }) }}
+              </div>
             </a>
           </li>
         </ul>
-        <pkt-button
+        <PktButton
           skin="tertiary"
           variant="icon-left"
           icon-name="plus-sign"
-          @onClick="addGoal(kpi)"
+          :disabled="goalsIsLoading || formIsDisabled"
+          @on-click="addGoal"
         >
           {{ $t('kpi.goals.new') }}
-        </pkt-button>
+        </PktButton>
       </div>
 
       <div class="goal-form__right">
-        <form-section v-if="activeGoalId">
-          <form-component
-            v-model="name"
-            input-type="input"
-            name="name"
-            :label="$t('fields.name')"
-            type="text"
-            rules="required"
-          />
+        <FadeTransition>
+          <FormSection v-if="goalIsLoading || activeGoal" ref="form">
+            <FormComponent
+              v-model="formData.name"
+              input-type="input"
+              name="name"
+              :label="$t('fields.name')"
+              :disabled="formIsDisabled"
+              type="text"
+              rules="required"
+            />
 
-          <form-component
-            v-model="period"
-            input-type="date"
-            name="period"
-            :label="$t('fields.period')"
-            :placeholder="$t('general.selectRange')"
-            rules="required"
-            :date-picker-config="{ mode: 'range' }"
-          />
+            <FormComponent
+              v-model="formData.period"
+              input-type="date"
+              name="period"
+              :label="$t('fields.period')"
+              :placeholder="$t('general.selectRange')"
+              :date-picker-config="{ mode: 'range' }"
+              :disabled="formIsDisabled"
+              rules="required"
+            />
 
-          <form-component
-            v-model="value"
-            input-type="input"
-            name="value"
-            :label="$t('fields.value')"
-            type="number"
-            rules="required"
-            :preview-value="
-              value ? formatKPIValue(kpi, typePercentage ? value / 100 : value) : null
-            "
-          />
+            <FormComponent
+              v-model="formData.value"
+              input-type="input"
+              name="value"
+              :label="$t('fields.value')"
+              :disabled="formIsDisabled"
+              type="number"
+              rules="required"
+              :preview-value="formattedValue"
+            />
 
-          <template #actions="{ submit, disabled }">
-            <btn-delete @on-click="archive" />
-            <btn-save :disabled="disabled" @on-click="submit(update)" />
-          </template>
-        </form-section>
+            <template #actions="{ submit, disabled }">
+              <BtnDelete :disabled="formIsDisabled" @on-click="archive" />
+              <BtnSave
+                :disabled="disabled || formIsDisabled"
+                @on-click="submit(update)"
+              />
+            </template>
+          </FormSection>
+        </FadeTransition>
       </div>
     </div>
 
     <template #footer></template>
-  </modal-wrapper>
+  </ModalWrapper>
 </template>
-
-<script>
-import { endOfDay, endOfYear, startOfYear } from 'date-fns';
-import { PktButton } from '@oslokommune/punkt-vue';
-import { db } from '@/config/firebaseConfig';
-import Goal from '@/db/Kpi/Goal';
-import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
-import { formatKPIValue } from '@/util/kpiHelpers';
-import ModalWrapper from './ModalWrapper.vue';
-
-export default {
-  name: 'ProgressModal',
-
-  components: {
-    ModalWrapper,
-    FormSection,
-    BtnDelete,
-    BtnSave,
-    PktButton,
-  },
-
-  props: {
-    kpi: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    goals: [],
-    activeGoalId: null,
-    name: null,
-    period: null,
-    fromDate: null,
-    toDate: null,
-    value: null,
-  }),
-
-  computed: {
-    typePercentage() {
-      return this.kpi.format === 'percentage';
-    },
-  },
-
-  watch: {
-    kpi: {
-      immediate: true,
-      handler() {
-        this.bindGoals().then(() => {
-          if (!this.activeGoalId && this.goals.length) {
-            this.setActiveGoal(this.goals[0].id);
-          }
-        });
-      },
-    },
-    period() {
-      if (this.period && this.period.length === 2) {
-        const [fromDate, toDate] = this.period;
-        this.fromDate = fromDate;
-        this.toDate = endOfDay(toDate);
-      } else {
-        this.fromDate = null;
-        this.toDate = null;
-      }
-    },
-  },
-
-  methods: {
-    formatKPIValue,
-
-    truncateFloat(f) {
-      return parseFloat(f.toFixed(4));
-    },
-
-    close() {
-      this.$emit('close');
-    },
-
-    async dateSelected(period) {
-      const [fromDate, toDate] = period;
-      this.fromDate = fromDate;
-      this.toDate = endOfDay(toDate);
-    },
-
-    async addGoal(kpi) {
-      const now = new Date();
-      const fromDate = startOfYear(now);
-      const toDate = endOfYear(now);
-
-      const goal = await Goal.create(kpi.id, {
-        name: this.$t('kpi.goals.new'),
-        fromDate,
-        toDate,
-        value: null,
-        archived: false,
-      });
-      this.fromDate = fromDate;
-      this.toDate = toDate;
-      await this.setActiveGoal(goal.id);
-    },
-
-    async bindGoals() {
-      const { ref } = await db.collection('kpis').doc(this.kpi.id).get();
-      return this.$bind(
-        'goals',
-        ref.collection('goals').where('archived', '==', false).orderBy('fromDate', 'desc')
-      );
-    },
-
-    async setActiveGoal(goalId) {
-      const { ref } = await db.collection('kpis').doc(this.kpi.id).get();
-      const activeGoal = await ref.collection('goals').doc(goalId).get();
-      this.activeGoalId = goalId;
-      this.name = activeGoal.get('name');
-      const fromDate = activeGoal.get('fromDate');
-      const toDate = activeGoal.get('toDate');
-      if (fromDate && toDate) {
-        this.period = [fromDate.toDate(), toDate.toDate()];
-        [this.fromDate, this.toDate] = this.period;
-      }
-      const val = activeGoal.get('value');
-      this.value = this.typePercentage ? this.truncateFloat(val * 100) : val;
-    },
-
-    async clearActiveGoal() {
-      this.activeGoalId = null;
-      this.activeGoal = null;
-      this.name = null;
-      this.period = null;
-      this.fromDate = null;
-      this.toDate = null;
-      this.value = null;
-    },
-
-    async update() {
-      try {
-        await Goal.update(this.kpi.id, this.activeGoalId, {
-          name: this.name,
-          fromDate: this.fromDate,
-          toDate: this.toDate,
-          value: this.typePercentage ? this.value / 100 : this.value,
-        });
-
-        this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch (error) {
-        console.log(error);
-        this.$toasted.error(this.$t('toaster.error.save'));
-      }
-    },
-
-    async archive() {
-      try {
-        await Goal.archive(this.kpi.id, this.activeGoalId);
-        const restoreCallback = this.restore.bind(this, this.kpi.id, this.activeGoalId);
-
-        this.$toasted.success(
-          this.$t('toaster.delete.object', {
-            name: this.name || this.$t('kpi.goals.the'),
-          }),
-          {
-            onClick: restoreCallback,
-          }
-        );
-      } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.archive', {
-            document: this.name || this.$t('kpi.goals.the'),
-          })
-        );
-      }
-      if (this.goals.length) {
-        await this.setActiveGoal(this.goals[0].id);
-      } else {
-        await this.clearActiveGoal();
-      }
-    },
-
-    async restore(kpiId, goalId) {
-      try {
-        await Goal.restore(kpiId, goalId);
-        this.$toasted.show(this.$t('toaster.restored'));
-      } catch {
-        this.$toasted.error(
-          this.$t('toaster.error.restore', { document: this.$t('kpi.goals.the') })
-        );
-      }
-      await this.setActiveGoal(goalId);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 :deep(.modal) {
   overflow-y: visible;
@@ -290,29 +246,6 @@ export default {
     height: 100%;
     border: 2px solid var(--color-border);
 
-    ul {
-      height: 19rem;
-      overflow-y: scroll;
-    }
-
-    li {
-      display: block;
-      padding: 0.5rem 0.75rem;
-      text-decoration: none;
-      border-bottom: 2px solid var(--color-border);
-      cursor: pointer;
-
-      &.selected {
-        font-weight: 500;
-        background: var(--color-gray-light);
-      }
-    }
-
-    a {
-      color: var(--color-text);
-      text-decoration: none;
-    }
-
     button {
       display: flex;
       justify-content: center;
@@ -328,8 +261,41 @@ export default {
 
   &__right {
     display: flex;
-    flex-basis: 45%;
+    flex-basis: 50%;
     flex-direction: column;
+  }
+
+  &__list {
+    height: 15rem;
+    overflow-y: scroll;
+
+    @include bp('phablet-up') {
+      height: 23rem;
+    }
+  }
+
+  &__goal {
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-border);
+    cursor: pointer;
+
+    &--selected {
+      background: var(--color-gray-light);
+    }
+
+    a {
+      color: var(--color-text);
+      text-decoration: none;
+
+      div:nth-child(1) {
+        @include get-text('pkt-txt-14-medium');
+      }
+      div:nth-child(2) {
+        @include get-text('pkt-txt-12');
+        color: var(--pkt-color-text-placeholder);
+      }
+    }
   }
 }
 </style>

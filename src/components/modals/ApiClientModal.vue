@@ -1,11 +1,49 @@
+<script setup>
+import { ref, watchEffect } from 'vue';
+import { BtnSave } from '@/components/generic/form';
+import ModalWrapper from './ModalWrapper.vue';
+
+const props = defineProps({
+  client: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['save', 'close']);
+
+const name = ref(null);
+const description = ref(null);
+
+watchEffect(() => {
+  if (props.client) {
+    name.value = props.client.name;
+    description.value = props.client.description;
+  }
+});
+
+function save() {
+  emit('save', props.client, {
+    name: name.value,
+    description: description.value || '',
+  });
+  close();
+}
+
+function close() {
+  emit('close');
+}
+</script>
+
 <template>
-  <modal-wrapper @close="close">
+  <ModalWrapper @close="close">
     <template #header>
       {{ $t(`integration.action.${client ? 'edit' : 'add'}`) }}
     </template>
 
-    <form-section>
-      <form-component
+    <FormSection>
+      <FormComponent
         v-model="name"
         input-type="input"
         name="name"
@@ -14,7 +52,7 @@
         rules="required"
       />
 
-      <form-component
+      <FormComponent
         v-model="description"
         input-type="textarea"
         name="description"
@@ -23,65 +61,8 @@
       />
 
       <template #actions="{ submit, disabled }">
-        <btn-save :disabled="disabled" @on-click="submit(save)" />
+        <BtnSave :disabled="disabled" @on-click="submit(save)" />
       </template>
-    </form-section>
-  </modal-wrapper>
+    </FormSection>
+  </ModalWrapper>
 </template>
-
-<script>
-import { FormSection, BtnSave } from '@/components/generic/form';
-import ModalWrapper from './ModalWrapper.vue';
-
-export default {
-  name: 'ApiClientModal',
-
-  components: {
-    ModalWrapper,
-    FormSection,
-    BtnSave,
-  },
-
-  props: {
-    client: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-  },
-
-  data: () => ({
-    name: null,
-    description: null,
-  }),
-
-  watch: {
-    client: {
-      immediate: true,
-      async handler(client) {
-        if (client) {
-          this.name = client.name;
-          this.description = client.description;
-        } else {
-          this.name = this.$t('integration.placeholderTitle');
-          this.description = '';
-        }
-      },
-    },
-  },
-
-  methods: {
-    save() {
-      this.$emit('save', this.client, {
-        name: this.name,
-        description: this.description,
-      });
-      this.close();
-    },
-
-    close() {
-      this.$emit('close');
-    },
-  },
-};
-</script>

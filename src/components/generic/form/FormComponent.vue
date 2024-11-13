@@ -98,8 +98,6 @@ const {
 function handleChange(value) {
   if (props.type === 'number') {
     value = value ? parseFloat(value) : null;
-  } else if (typeof value === 'string') {
-    value = value.trim();
   }
   return changeHandler(value);
 }

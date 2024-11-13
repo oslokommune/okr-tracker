@@ -1,11 +1,32 @@
+<script setup>
+import ProgressValueForm from '@/components/forms/ProgressValueForm.vue';
+import ModalWrapper from '../ModalWrapper.vue';
+import { useProgressModal } from './progressModal.js';
+
+const props = defineProps({
+  record: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['create-record', 'update-record', 'delete-record', 'close']);
+
+const { thisRecord, loading, saveRecord, deleteRecord, close } = useProgressModal(
+  props,
+  emit
+);
+</script>
+
 <template>
-  <modal-wrapper variant="wide" @close="close">
+  <ModalWrapper variant="wide" @close="close">
     <template #header>
       {{ $t(record ? 'keyResult.editValue' : 'keyResult.newValue') }}
     </template>
 
     <ProgressValueForm
-      v-model:value="thisRecord.value"
+      v-model:value.number="thisRecord.value"
       v-model:comment="thisRecord.comment"
       v-model:timestamp="thisRecord.timestamp"
       :loading="loading"
@@ -14,40 +35,5 @@
       @submit="saveRecord"
       @delete="deleteRecord"
     />
-  </modal-wrapper>
+  </ModalWrapper>
 </template>
-
-<script>
-import ProgressValueForm from '@/components/forms/ProgressValueForm.vue';
-import ModalWrapper from '../ModalWrapper.vue';
-import { useProgressModal } from './progressModal.js';
-
-export default {
-  name: 'ProgressModal',
-
-  compatConfig: { MODE: 3 },
-
-  components: {
-    ModalWrapper,
-    ProgressValueForm,
-  },
-
-  props: {
-    record: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-  },
-
-  emits: ['create-record', 'update-record', 'delete-record', 'close'],
-
-  setup(props, context) {
-    const { thisRecord, loading, saveRecord, deleteRecord, close } = useProgressModal(
-      props,
-      context
-    );
-    return { thisRecord, loading, saveRecord, deleteRecord, close };
-  },
-};
-</script>

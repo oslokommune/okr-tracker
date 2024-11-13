@@ -40,14 +40,14 @@ const popover = ref(null);
 
 function confirm(e) {
   emit('onClick', e);
-  popover.value.hide();
+  popover.value.destroy();
 }
 </script>
 
 <template>
   <Tooltip ref="popover" interactive trigger="click" placement="top">
     <template #default>
-      <pkt-button
+      <PktButton
         v-bind="$attrs"
         skin="tertiary"
         :text="text"
@@ -59,7 +59,7 @@ function confirm(e) {
     <template #content>
       <div data-mode="dark">
         <p v-if="confirmHelp">{{ confirmHelp }}</p>
-        <pkt-button
+        <PktButton
           type="button"
           skin="secondary"
           class="my-size-8"

@@ -1,6 +1,6 @@
 import { ref, toRef, watchEffect } from 'vue';
 
-export function useProgressModal(props, context) {
+export function useProgressModal(props, emit) {
   const record = toRef(props.record);
   const loading = ref(false);
   const thisRecord = ref({});
@@ -10,7 +10,7 @@ export function useProgressModal(props, context) {
       const { value, comment, timestamp } = record.value;
       thisRecord.value = {
         value,
-        comment,
+        comment: comment || '',
         timestamp: timestamp.toDate(),
       };
     } else {
@@ -26,22 +26,22 @@ export function useProgressModal(props, context) {
     loading.value = true;
 
     if (record.value) {
-      context.emit('update-record', record.value.id, thisRecord.value, close);
+      emit('update-record', record.value.id, thisRecord.value, close);
     } else {
-      context.emit('create-record', thisRecord.value, close);
+      emit('create-record', thisRecord.value, close);
     }
   }
 
   function deleteRecord() {
     if (record.value) {
       loading.value = true;
-      context.emit('delete-record', record.value.id, close);
+      emit('delete-record', record.value.id, close);
     }
   }
 
   function close(e) {
     loading.value = false;
-    context.emit('close', e);
+    emit('close', e);
   }
 
   return { thisRecord, loading, saveRecord, deleteRecord, close };

@@ -12,6 +12,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  noTitle: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 const { user: currentUser, isSuperAdmin } = storeToRefs(useAuthStore());
@@ -38,7 +43,7 @@ async function save(data) {
 <template>
   <div class="user-profile">
     <div>
-      <h2 class="title-2 mb-size-16">
+      <h2 v-if="!noTitle" class="title-2 mb-size-16">
         {{ $t('user.profile') }}
       </h2>
 

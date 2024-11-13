@@ -40,7 +40,7 @@ defineExpose({ reset });
 </script>
 
 <template>
-  <form class="form">
+  <form class="form" @submit="$event.preventDefault()">
     <slot name="default" :values="values" />
 
     <div class="button-row">
