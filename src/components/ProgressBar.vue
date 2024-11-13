@@ -1,3 +1,57 @@
+<script setup>
+import { computed } from 'vue';
+import { format } from 'd3-format';
+
+const props = defineProps({
+  progression: {
+    type: Number,
+    default: 0,
+  },
+  secondaryProgression: {
+    type: Number,
+    default: null,
+  },
+  secondaryValueLabel: {
+    type: String,
+    default: null,
+  },
+  skin: {
+    type: String,
+    default: 'blue',
+    validator: (value) => ['blue', 'yellow', 'green'].includes(value),
+  },
+  showMinMaxIndicators: {
+    type: Boolean,
+    default: false,
+  },
+  compact: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const valueStyle = computed(() => `width: ${percent(props.progression)}%`);
+const secondaryValueStyle = computed(
+  () => `width: ${percent(props.secondaryProgression)}%`
+);
+const skinClass = computed(() =>
+  props.progression >= 1 ? 'progress-bar--green' : `progress-bar--${props.skin}`
+);
+
+function percent(progression) {
+  const prc = progression * 100;
+  return prc > 100 ? 100 : prc;
+}
+
+function percentFormatted(progression) {
+  return format('.0%')(progression);
+}
+
+function progressLabelStyle(progression) {
+  return `left: max(-2ch, min(calc(100% - 4ch), calc(${percent(progression)}% - 2.5ch)))`;
+}
+</script>
+
 <template>
   <div :class="['progress-bar', skinClass, { 'progress-bar--compact': compact }]">
     <div
@@ -54,76 +108,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { format } from 'd3-format';
-
-export default {
-  name: 'ProgressBar',
-
-  props: {
-    progression: {
-      type: Number,
-      default: 0,
-    },
-    secondaryProgression: {
-      type: Number,
-      default: null,
-    },
-    secondaryValueLabel: {
-      type: String,
-      default: null,
-    },
-    skin: {
-      type: String,
-      default: 'blue',
-      validator: (value) => ['blue', 'yellow', 'green'].includes(value),
-    },
-    showMinMaxIndicators: {
-      type: Boolean,
-      default: false,
-    },
-    compact: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  computed: {
-    valueStyle() {
-      return `width: ${this.percent(this.progression)}%`;
-    },
-
-    secondaryValueStyle() {
-      return `width: ${this.percent(this.secondaryProgression)}%`;
-    },
-
-    skinClass() {
-      if (this.progression >= 1) {
-        return 'progress-bar--green';
-      }
-      return `progress-bar--${this.skin}`;
-    },
-  },
-
-  methods: {
-    percent(progression) {
-      const percent = progression * 100;
-      return percent > 100 ? 100 : percent;
-    },
-
-    percentFormatted(progression) {
-      return format('.0%')(progression);
-    },
-
-    progressLabelStyle(progression) {
-      return `left: max(-2ch, min(calc(100% - 4ch), calc(${this.percent(
-        progression
-      )}% - 2.5ch)))`;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;

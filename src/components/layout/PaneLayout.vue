@@ -1,5 +1,5 @@
 <template>
-  <div class="pane-layout">
+  <div v-if="$slots.default" class="pane-layout">
     <template v-for="(pane, i) in $slots.default()" :key="`pane${i}`">
       <Transition name="slide-fade">
         <component :is="pane" />
@@ -7,12 +7,6 @@
     </template>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'PaneLayout',
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;

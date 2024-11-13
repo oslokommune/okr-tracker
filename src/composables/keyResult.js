@@ -14,12 +14,12 @@ export function useKeyResult(keyResultId) {
 
   // Key result
   const _keyResultId = toRef(keyResultId);
+
   const keyResultRef = computed({
     get() {
       return (
         _keyResultId.value &&
         item.value &&
-        objective.value &&
         doc(db, 'keyResults', _keyResultId.value).withConverter({
           fromFirestore: (snapshot, options) => {
             const keyResult = globalFirestoreOptions.converter.fromFirestore(
@@ -28,7 +28,7 @@ export function useKeyResult(keyResultId) {
             );
 
             // Ensure that the key result belongs to the currently active objective
-            if (keyResult.objective.path !== objective.value.path) {
+            if (keyResult.objective.path !== objective.value?.path) {
               return null;
             }
 

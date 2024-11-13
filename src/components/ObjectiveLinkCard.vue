@@ -1,5 +1,70 @@
+<script setup>
+import { defineOptions } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useActiveItemStore } from '@/store/activeItem';
+import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';
+import { useObjective } from '@/composables/objective';
+import ProgressBar from '@/components/ProgressBar.vue';
+import ItemTag from '@/components/ItemTag.vue';
+
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps({
+  objectiveId: {
+    type: String,
+    required: true,
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  dashed: {
+    type: Boolean,
+    default: false,
+  },
+  dimmed: {
+    type: Boolean,
+    default: false,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
+  checkable: {
+    type: Boolean,
+    default: false,
+  },
+  beforeNavigate: {
+    type: Function,
+    default: null,
+  },
+});
+
+const { item } = storeToRefs(useActiveItemStore());
+const {
+  objective,
+  objectivePromise,
+  objectiveOwner,
+  externalContributors,
+  isInheritedObjective,
+  hasOwnKeyResult,
+} = useObjective(props.objectiveId);
+
+await objectivePromise.value;
+
+async function activate(event, rootHandler) {
+  if (props.beforeNavigate) {
+    await props.beforeNavigate(event);
+  }
+  await rootHandler(event);
+}
+</script>
+
 <template>
-  <router-link
+  <RouterLink
+    v-if="objective"
     v-slot="{ href, navigate, isExactActive }"
     :to="{ name: 'ObjectiveHome', params: { objectiveId: objective.id } }"
     custom
@@ -15,6 +80,7 @@
         },
       ]"
       :href="href"
+      v-bind="$attrs"
       @click="activate($event, navigate)"
     >
       <div class="objective-link-card__inner">
@@ -27,7 +93,7 @@
             @click.stop="$emit('toggle', $event.target.checked)"
           />
           <div class="objective-link-card__title">
-            <pkt-tag
+            <PktTag
               :skin="
                 isExactActive || active || isInheritedObjective ? 'blue-light' : 'grey'
               "
@@ -41,7 +107,7 @@
               <template v-else>
                 {{ $t('general.objective') }}
               </template>
-            </pkt-tag>
+            </PktTag>
           </div>
         </div>
 
@@ -50,163 +116,19 @@
         </span>
 
         <div class="objective-link-card__footer">
-          <progress-bar :progression="objective.progression" compact />
+          <ProgressBar :progression="objective.progression" compact />
 
           <div class="objective-link-card__tags pkt-txt-12-light">
             <template v-if="externalContributors.length">
-              <item-tag v-if="hasOwnKeyResult" :item="activeItem" />
-              <item-tag v-for="c in externalContributors" :key="c.id" :item="c" />
+              <ItemTag v-if="hasOwnKeyResult" :item="item" />
+              <ItemTag v-for="c in externalContributors" :key="c.id" :item="c" />
             </template>
           </div>
         </div>
       </div>
     </a>
-  </router-link>
+  </RouterLink>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';
-import getActiveItemType from '@/util/getActiveItemType';
-import ProgressBar from '@/components/ProgressBar.vue';
-import ItemTag from '@/components/ItemTag.vue';
-import { db } from '@/config/firebaseConfig';
-import { uniqueBy } from '@/util';
-
-PktCheckbox.compatConfig = { MODE: 3 };
-
-export default {
-  name: 'ObjectiveLinkCard',
-
-  components: {
-    PktTag,
-    PktCheckbox,
-    ProgressBar,
-    ItemTag,
-  },
-
-  props: {
-    objective: {
-      type: Object,
-      required: true,
-    },
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    dashed: {
-      type: Boolean,
-      default: false,
-    },
-    dimmed: {
-      type: Boolean,
-      default: false,
-    },
-    checked: {
-      type: Boolean,
-      default: false,
-    },
-    checkable: {
-      type: Boolean,
-      default: false,
-    },
-    beforeNavigate: {
-      type: Function,
-      default: null,
-    },
-  },
-
-  data: () => ({
-    keyResults: [],
-    objectiveOwner: null,
-  }),
-
-  computed: {
-    ...mapState(['activeItem']),
-
-    /**
-     * Return a list of unique contributors to the key results in
-     * `this.keyResults`.
-     */
-    contributors() {
-      return uniqueBy(
-        this.keyResults.map((kr) => kr.parent).filter((item) => item.name),
-        'id'
-      );
-    },
-
-    /**
-     * Return a list of contributors that does not include the current item.
-     */
-    externalContributors() {
-      return this.contributors.filter(({ id }) => id !== this.activeItem.id);
-    },
-
-    /**
-     * Return `true` if the current objective has another parent than
-     * `this.activeItem`.
-     */
-    isInheritedObjective() {
-      return this.objectiveOwner && this.objectiveOwner.id !== this.activeItem.id;
-    },
-
-    /**
-     * Return true if `this.activeItem` has own key result attached to this
-     * objective.
-     */
-    hasOwnKeyResult() {
-      return this.contributors.map((c) => c.id).includes(this.activeItem.id);
-    },
-  },
-
-  watch: {
-    objective() {
-      // Rebind objective owner when necessary
-      if (this.objectiveOwner && this.objectiveOwner.id !== this.objective.parent.id) {
-        this.bindObjectiveOwner();
-      }
-    },
-  },
-
-  async created() {
-    if (this.objective === null) {
-      return;
-    }
-
-    const objectiveRef = await db.doc(`objectives/${this.objective.id}`);
-    const keyResults = await db
-      .collection('keyResults')
-      .where('archived', '==', false)
-      .where('objective', '==', objectiveRef)
-      .orderBy('name');
-    this.$bind('keyResults', keyResults);
-
-    this.bindObjectiveOwner();
-  },
-
-  methods: {
-    async activate(event, rootHandler) {
-      if (this.beforeNavigate) {
-        await this.beforeNavigate(event);
-      }
-
-      await rootHandler(event);
-    },
-
-    bindObjectiveOwner() {
-      if (typeof this.objective.parent === 'string') {
-        this.$bind('objectiveOwner', db.doc(this.objective.parent));
-      } else {
-        const parentType = getActiveItemType(this.objective.parent);
-        this.$bind(
-          'objectiveOwner',
-          db.collection(`${parentType}s`).doc(this.objective.parent.id)
-        );
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .objective-link-card {
@@ -273,6 +195,7 @@ export default {
   &--checked {
     color: var(--color-hover);
     border: 2px solid var(--color-hover);
+    transition: all 0.15s ease-in;
   }
   &--active {
     background-color: var(--color-blue-5);
@@ -281,7 +204,11 @@ export default {
     border-style: dashed;
   }
   &--dimmed {
-    opacity: 0.65;
+    border-color: rgba(42, 40, 89, 0.15); // blue-dark, 15%;
+
+    > * {
+      opacity: 0.5;
+    }
   }
 }
 

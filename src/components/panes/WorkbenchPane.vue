@@ -1,98 +1,92 @@
+<script setup>
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import { useOkrsStore } from '@/store/okrs';
+import { useActiveObjectiveStore } from '@/store/activeObjective';
+import { PktButton } from '@oslokommune/punkt-vue';
+import PaneWrapper from '@/components/panes/PaneWrapper.vue';
+import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
+import ProgressBar from '@/components/ProgressBar.vue';
+import ListTransition from '@/components/generic/transitions/ListTransition.vue';
+
+const router = useRouter();
+
+const okrsStore = useOkrsStore();
+const { workbenchObjectives } = storeToRefs(okrsStore);
+const { objective: activeObjective } = storeToRefs(useActiveObjectiveStore());
+const { removeWorkbenchObjective, clearWorkbenchObjectives } = okrsStore;
+
+const progression = computed(() => {
+  const p = workbenchObjectives.value.map((o) => o.progression);
+  const sum = p.reduce((partialSum, a) => partialSum + a, 0);
+  return sum / workbenchObjectives.value.length;
+});
+
+function removeObjective(objectiveId) {
+  removeWorkbenchObjective(objectiveId);
+
+  // Set next objective as active or unset current if removed.
+  if (activeObjective.value?.id === objectiveId) {
+    if (workbenchObjectives.value.length) {
+      router.replace({
+        name: 'ObjectiveHome',
+        params: { objectiveId: workbenchObjectives.value[0].id },
+      });
+    } else {
+      router.push({ name: 'ItemHome' });
+    }
+  }
+}
+</script>
+
 <template>
-  <pane-wrapper
+  <PaneWrapper
     :title="`${$t('workbench.selectedObjectives')} (${workbenchObjectives.length})`"
     class="workbench-pane"
     closable
-    @close="close"
+    @close="clearWorkbenchObjectives"
   >
-    <h4 class="pkt-txt-14-medium">
-      {{ $t('workbench.progressionTitle') }}
-    </h4>
-    <progress-bar
-      v-if="progression >= 0"
-      class="workbench-pane__progression"
-      :progression="progression"
-    />
+    <div v-if="progression >= 0" class="workbench-pane__progression">
+      <h4 class="pkt-txt-16-medium">
+        {{ $t('workbench.progressionTitle') }}
+      </h4>
 
-    <div class="workbench-pane__objectives">
-      <div v-for="objective in workbenchObjectives" :key="objective.id" class="">
-        <objective-link-card
-          :objective="objective"
-          :active="activeObjective && objective.id === activeObjective.id"
-        />
+      <ProgressBar :progression="progression" />
+    </div>
 
-        <pkt-button
+    <ListTransition class="workbench-pane__objectives">
+      <div v-for="objective in workbenchObjectives" :key="objective.id">
+        <Suspense>
+          <ObjectiveLinkCard
+            :objective-id="objective.id"
+            :active="activeObjective && objective.id === activeObjective.id"
+          />
+        </Suspense>
+
+        <PktButton
           v-tooltip.bottom="$t('btn.remove')"
           class="workbench-pane__remove-button"
           size="small"
           variant="icon-only"
           icon-name="minus-circle"
           skin="tertiary"
-          @onClick="removeObjective(objective)"
+          @on-click="removeObjective(objective.id)"
         />
       </div>
-    </div>
-  </pane-wrapper>
+    </ListTransition>
+  </PaneWrapper>
 </template>
-
-<script>
-import { mapActions, mapGetters, mapState } from 'vuex';
-import { PktButton } from '@oslokommune/punkt-vue';
-import PaneWrapper from '@/components/panes/PaneWrapper.vue';
-import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
-import ProgressBar from '@/components/ProgressBar.vue';
-
-export default {
-  name: 'WorkbenchPane',
-
-  components: {
-    PaneWrapper,
-    ObjectiveLinkCard,
-    ProgressBar,
-    PktButton,
-  },
-
-  computed: {
-    ...mapState('okrs', ['activeObjective']),
-    ...mapGetters('okrs', ['workbenchObjectives']),
-
-    progression() {
-      const p = this.workbenchObjectives.map((o) => o.progression);
-      const sum = p.reduce((partialSum, a) => partialSum + a, 0);
-      return sum / this.workbenchObjectives.length;
-    },
-  },
-
-  methods: {
-    ...mapActions('okrs', ['removeWorkbenchObjective', 'clearWorkbenchObjectives']),
-
-    async removeObjective(objective) {
-      await this.removeWorkbenchObjective(objective.id);
-
-      // Set next objective as active or unset current if removed.
-      if (this.activeObjective && this.activeObjective.id === objective.id) {
-        if (this.workbenchObjectives.length) {
-          this.$router.replace({
-            name: 'ObjectiveHome',
-            params: { objectiveId: this.workbenchObjectives[0].id },
-          });
-        } else {
-          this.$router.push({ name: 'ItemHome' });
-        }
-      }
-    },
-
-    async close() {
-      await this.clearWorkbenchObjectives();
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .workbench-pane {
   &__progression {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background-color: var(--pkt-color-background-subtle);
   }
 
   &__objectives > div {

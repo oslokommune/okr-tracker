@@ -1,5 +1,38 @@
+<script setup>
+import ProgressBar from '@/components/ProgressBar.vue';
+import ItemTag from '@/components/ItemTag.vue';
+
+defineProps({
+  route: {
+    type: Object,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  progression: {
+    type: Number,
+    required: true,
+  },
+  owner: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  draggable: {
+    type: Boolean,
+    default: false,
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
+
 <template>
-  <router-link v-slot="{ href, navigate, isExactActive }" :to="route" custom>
+  <RouterLink v-slot="{ href, navigate, isExactActive }" :to="route" custom>
     <a
       :class="[
         'key-result-link-card',
@@ -8,6 +41,7 @@
         },
       ]"
       :href="href"
+      tabindex="0"
       @click="navigate($event)"
     >
       <div class="key-result-link-card__inner">
@@ -15,59 +49,17 @@
           <span class="key-result-link-card__title pkt-txt-14">
             {{ title }}
           </span>
-          <pkt-icon v-if="draggable" class="drag-icon" name="drag" />
+          <PktIcon v-if="draggable" class="drag-icon" name="drag" />
         </div>
 
         <div>
-          <progress-bar :progression="progression" compact />
-          <item-tag v-if="owner" :item="owner" class="pkt-txt-12-light" />
+          <ProgressBar :progression="progression" compact />
+          <ItemTag v-if="owner" :item="owner" class="pkt-txt-12-light" />
         </div>
       </div>
     </a>
-  </router-link>
+  </RouterLink>
 </template>
-
-<script>
-import ProgressBar from '@/components/ProgressBar.vue';
-import ItemTag from '@/components/ItemTag.vue';
-
-export default {
-  name: 'KeyResultLinkCard',
-
-  components: {
-    ProgressBar,
-    ItemTag,
-  },
-
-  props: {
-    route: {
-      type: Object,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    progression: {
-      type: Number,
-      required: true,
-    },
-    owner: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-    draggable: {
-      type: Boolean,
-      default: false,
-    },
-    active: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .key-result-link-card {

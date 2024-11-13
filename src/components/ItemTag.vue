@@ -1,36 +1,25 @@
+<script setup>
+import { computed } from 'vue';
+import { contributorTagColor } from '@/util/okr';
+
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
+  },
+});
+
+const bulletStyle = computed(() => ({
+  background: props.item?.color || contributorTagColor(props.item.name),
+}));
+</script>
+
 <template>
   <span class="item-tag">
     <span class="item-tag__bullet" :style="bulletStyle"></span>
     <span>{{ item.name }}</span>
   </span>
 </template>
-
-<script>
-import { contributorTagColor } from '@/util/okr';
-
-export default {
-  name: 'ItemTag',
-
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  computed: {
-    bulletStyle() {
-      return {
-        background: this.item?.color || contributorTagColor(this.item.name),
-      };
-    },
-  },
-
-  methods: {
-    contributorTagColor,
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .item-tag {

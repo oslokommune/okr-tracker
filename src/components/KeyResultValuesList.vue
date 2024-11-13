@@ -1,3 +1,33 @@
+<script setup>
+import { computed } from 'vue';
+import { dateTimeShort } from '@/util';
+import { formatValue } from '@/util/keyResultProgress';
+import { PktButton } from '@oslokommune/punkt-vue';
+import ListTransition from '@/components/generic/transitions/ListTransition.vue';
+
+const props = defineProps({
+  progress: {
+    type: Array,
+    required: true,
+  },
+
+  canEdit: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const orderedProgress = computed(() => {
+  return [...props.progress].sort((a, b) => (b.timestamp > a.timestamp ? 1 : -1));
+});
+
+function addedBy(record) {
+  const user = record.editedBy || record.createdBy;
+  return user ? user.displayName || user.id : null;
+}
+</script>
+
 <template>
   <div class="key-result-values-list">
     <table class="key-result-values-list__table">
@@ -8,8 +38,8 @@
           <th>{{ $t('widget.history.comment') }}</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="record in progress" :key="record.id">
+      <ListTransition tag="tbody">
+        <tr v-for="record in orderedProgress" :key="record.id">
           <td>
             {{ formatValue(record.value) }}
           </td>
@@ -25,58 +55,21 @@
             <p v-if="record.comment" :class="{ 'mr-size-40': canEdit }">
               {{ record.comment }}
             </p>
-            <pkt-button
+            <PktButton
               v-if="canEdit"
-              v-tooltip="$t('tooltip.editProgress')"
+              v-tooltip.left="$t('tooltip.editProgress')"
               size="small"
               skin="tertiary"
               variant="icon-only"
               icon-name="edit"
-              @onClick="$emit('edit-value', record)"
+              @on-click="$emit('edit-value', record)"
             />
           </td>
         </tr>
-      </tbody>
+      </ListTransition>
     </table>
   </div>
 </template>
-
-<script>
-import { dateTimeShort } from '@/util';
-import { formatValue } from '@/util/keyResultProgress';
-import { PktButton } from '@oslokommune/punkt-vue';
-
-export default {
-  name: 'KeyResultValuesList',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    progress: {
-      type: Array,
-      required: true,
-    },
-
-    canEdit: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
-  methods: {
-    formatValue,
-    dateTimeShort,
-
-    addedBy(record) {
-      const user = record.editedBy || record.createdBy;
-      return user ? user.displayName || user.id : null;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
