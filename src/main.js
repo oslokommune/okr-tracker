@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { VueHeadMixin, createHead } from '@unhead/vue';
+import { createHead } from '@unhead/vue';
 import {
   VueFire,
   VueFireAuthOptionsFromAuth,
@@ -67,7 +67,6 @@ globalFirestoreOptions.converter = {
 // Unhead
 // https://github.com/unjs/unhead
 const head = createHead();
-app.mixin(VueHeadMixin);
 app.use(head);
 
 // VueTippy

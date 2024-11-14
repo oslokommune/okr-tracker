@@ -1,13 +1,22 @@
 <script setup>
 import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useHead } from '@unhead/vue';
+import { useI18n } from 'vue-i18n';
 import { useTrackerStore } from '@/store/tracker';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import AppLayout from './components/AppLayout.vue';
 
-const { homeOrganization } = storeToRefs(useTrackerStore());
+const i18n = useI18n();
+
+const { homeOrganization, owner } = storeToRefs(useTrackerStore());
 const activeOrganizationStore = useActiveOrganizationStore();
 const { organization } = storeToRefs(activeOrganizationStore);
+
+useHead({
+  title: owner.value,
+  titleTemplate: (title) => `${title} | ${i18n.t('general.project')}`,
+});
 
 watch(
   homeOrganization,

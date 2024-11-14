@@ -1,6 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 import { useTrackerStore } from '@/store/tracker';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
@@ -12,6 +13,8 @@ const i18n = useI18n();
 const { owner, organizations } = storeToRefs(useTrackerStore());
 const activeOrganizationStore = useActiveOrganizationStore();
 const { organization, organizationTree } = storeToRefs(activeOrganizationStore);
+
+useHead({ title: () => organization.value?.name });
 
 function sortByLocale(arr) {
   return arr.sort((a, b) =>

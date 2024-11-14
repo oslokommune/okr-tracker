@@ -11,9 +11,7 @@ marked.setOptions({ smartypants: true });
 
 const i18n = useI18n();
 
-useHead({
-  title: `${i18n.t('general.help')} | ${i18n.t('general.project')}`,
-});
+useHead({ title: i18n.t('general.help') });
 
 const markdown = ref('');
 const toc = ref([]);
