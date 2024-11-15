@@ -53,8 +53,8 @@ function copyCredential(elementId) {
             @click="$emit('edit', client)"
           />
           <BtnDelete
-            v-tooltip="$t('integration.action.delete')"
             size="small"
+            :tooltip-text="$t('integration.action.delete')"
             :confirm-help="$t('integration.warning.delete')"
             variant="icon-only"
             :disabled="loading"
@@ -117,8 +117,8 @@ function copyCredential(elementId) {
               />
               <BtnDelete
                 v-else
-                v-tooltip="$t('integration.action.rotate')"
                 size="small"
+                :tooltip-text="$t('integration.action.rotate')"
                 :confirm-text="$t('integration.action.confirmRotate')"
                 :confirm-help="$t('integration.warning.rotate')"
                 variant="icon-only"
