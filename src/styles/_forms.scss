@@ -101,6 +101,10 @@
       }
     }
   }
+
+  @at-root .pkt-inputwrapper--error & {
+    border-color: var(--pkt-color-brand-red-1000);
+  }
     
   &-dropdown {
     --ms-dropdown-border-width: 1px;

@@ -18,7 +18,7 @@ const props = defineProps({
   skin: {
     type: String,
     default: 'blue',
-    validator: (value) => ['blue', 'yellow', 'green'].includes(value),
+    validator: (value) => ['blue', 'green'].includes(value),
   },
   showMinMaxIndicators: {
     type: Boolean,
@@ -197,11 +197,6 @@ function progressLabelStyle(progression) {
   &--green {
     --progress-bar-value: var(--color-green);
     --progress-bar-value-indicator: var(--color-green-dark);
-  }
-
-  &--yellow {
-    --progress-bar-value: var(--color-yellow);
-    --progress-bar-value-indicator: var(--color-yellow-70);
   }
 }
 </style>

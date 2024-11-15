@@ -115,6 +115,12 @@ $-border-color: var(--pkt-color-border-gray);
     color: var(--pkt-color-text-action-active) !important;
     background-color: var(--color-gray-light);
     cursor: pointer;
+    --fg-color: var(--pkt-color-text-action-active);
+  }
+
+  > div.#{$-module-name}-menu-item__inner:focus-visible {
+    box-shadow: 0px 0px 0px 0.125rem var(--pkt-color-text-action-active),
+      0px 0px 0px 0.375rem var(--pkt-color-border-states-focus);
   }
 
   &--dropdown {
