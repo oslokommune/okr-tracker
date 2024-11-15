@@ -1,9 +1,4 @@
 {
-  "403": {
-    "title": "Forbidden",
-    "body": "You do not have access to this page.",
-    "linkText": "Go back to the front page"
-  },
   "notFound": {
     "title": "Page not found",
     "body": "This page doesn't seem to exist.",
@@ -18,9 +13,10 @@
   },
   "kpi": {
     "currentValue": "Current value",
-    "latestValueTitle": "Latest value per {formattedDate}",
+    "latestValue": "Latest value",
     "progress": "Progress",
     "value": "Value",
+    "valueCount": "Value count",
     "newValue": "New value",
     "editValue": "Edit value",
     "description": "Description",
@@ -208,7 +204,9 @@
   },
   "home": {
     "welcome": "Welcome to {appName}!",
-    "changeOrganization": "Change organization"
+    "organization": "Organization",
+    "changeOrganization": "Change organization",
+    "myOrganization": "My organization"
   },
   "about": {
     "about": "About",
@@ -252,6 +250,7 @@
     "confirmDelete": "Confirm delete",
     "reset": "Reset",
     "showMore": "Show all",
+    "showLess": "Show less",
     "syncData": "Synchronize data",
     "moreDetails": "More details",
     "archiveObjective": "Archive objective",
@@ -266,7 +265,7 @@
     "google": "Sign in with Google",
     "email": "Email",
     "password": "Password",
-    "loading": "We are signing you in, please wait",
+    "loading": "We are signing you in, please wait...",
     "error": {
       "notRegistered": "Your account is not registered",
       "providerError": "Could not sign in. Please contact system administrator if the error persists.",
@@ -291,8 +290,8 @@
     },
     "delete": {
       "user": "Deleted user {user}",
-      "permanently": "Deleted permanently",
-      "object": "Archived «{name}». Click here to restore!",
+      "permanently": "Deleted «{name}»",
+      "object": "Archived «{name}»",
       "progress": "Deleted value"
     },
     "update": {
@@ -346,9 +345,6 @@
     "newValue": "New value",
     "editValue": "Edit value",
     "registeredValues": "Registered values",
-    "registerProgression": {
-      "value": "Value"
-    },
     "commentPlaceholder": "This is a comment...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
@@ -392,14 +388,9 @@
     "progressionTitle": "Overall progression based on selected objectives:"
   },
   "tooltip": {
-    "openMenu": "Open menu",
-    "keyResultValue": "Insert new value",
     "changeView": "View: {view}",
     "editProgress": "Edit value",
     "deleteProgress": "Delete value",
-    "isMember": "Member of team",
-    "emptyPeriod": "No active period",
-    "periodEnd": "You are not allowed to edit after a period has ended",
     "copyToClipboard": "Copy to the clipboard"
   },
   "admin": {
@@ -491,7 +482,6 @@
   },
   "view": {
     "details": "Details",
-    "timeline": "Timeline",
     "list": "List"
   },
   "keyResultsPage": {
@@ -525,10 +515,6 @@
     "noObjectives": {
       "heading": "No objectives here!",
       "body": "It looks like there are no objectives and key results here ..."
-    },
-    "noObjectivesInPeriod": {
-      "heading": "No objectives in selected period",
-      "body": "No objectives registered within the selected period."
     }
   },
   "archived": {
@@ -543,13 +529,6 @@
     "restoreText": "If you miss it, just restore it."
   },
   "widget": {
-    "progression": {
-      "period": "Progress for period",
-      "objective": "Progress for objective",
-      "done": "Completed",
-      "today": "Today",
-      "notStarted": "Not started"
-    },
     "history": {
       "title": "History",
       "value": "Value",
@@ -558,9 +537,7 @@
       "actions": "Actions",
       "time": "Time",
       "changedBy": "Last edited by",
-      "showComment": "View comment",
       "showComments": "Show comments",
-      "hideComments": "Hide comments",
       "empty": {
         "heading": "No history"
       },
@@ -639,7 +616,6 @@
   },
   "integration": {
     "info": "Our API offers endpoints to automate updating of key results and measurements. In order to make use of the API, an API client must be created. For each client, a unique ID and secret is generated which must be added as request headers ({clientIdHeader}, {clientSecretHeader}) to each API call. This in addition to a separate API key ({apiKeyHeader}). It is recommended to create a separate client for each application that integrates with the API. This makes it easier to keep track of each application and secrets in use.",
-    "placeholderTitle": "New client",
     "clientId": "Client ID",
     "clientSecret": "Secret",
     "action": {
