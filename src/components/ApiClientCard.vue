@@ -131,7 +131,7 @@ function copyCredential(elementId) {
         </div>
 
         <PktAlert v-if="visibleSecret" skin="warning" class="mb-size-16">
-          <i18n-t keypath="integration.warning.secret" tag="p">
+          <i18n-t keypath="integration.warning.secret" tag="p" scope="global">
             <template #closeLink>
               <a @click="$emit('hide-secret')">{{
                 $t('integration.warning.secretCloseText')

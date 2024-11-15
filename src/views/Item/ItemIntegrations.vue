@@ -158,7 +158,7 @@ function hideSecret() {
       </RouterLink>
     </header>
 
-    <i18n-t keypath="integration.info" tag="p" class="mb-size-24">
+    <i18n-t keypath="integration.info" tag="p" class="mb-size-24" scope="global">
       <template #clientIdHeader>
         <code>okr-client-id</code>
       </template>

@@ -119,7 +119,12 @@ async function checkExistingMeasurement(timestamp) {
     <template #footer>
       <PktAccordion :compact="true" skin="borderless">
         <PktAccordionItem id="api" :title="$t('kpi.help.apiHelpTitle')">
-          <i18n-t keypath="kpi.help.apiProgress" tag="p" class="mb-size-16">
+          <i18n-t
+            keypath="kpi.help.apiProgress"
+            tag="p"
+            class="mb-size-16"
+            scope="global"
+          >
             <template #apiLink>
               <RouterLink :to="{ name: 'Api' }" target="_blank">
                 <span>{{ $t('general.api') }}</span>
