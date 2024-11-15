@@ -14,7 +14,7 @@ const props = defineProps({
   },
   noTitle: {
     type: Boolean,
-    required: true,
+    required: false,
     default: false,
   },
 });
