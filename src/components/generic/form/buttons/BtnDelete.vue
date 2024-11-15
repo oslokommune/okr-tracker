@@ -97,7 +97,7 @@ function confirm(e, hide) {
       </template>
 
       <template #content="{ hide }">
-        <div ref="popoverContent" data-mode="dark" @keydown.esc="hide">
+        <div ref="popoverContent" data-mode="dark" @keydown.esc.stop="hide">
           <p v-if="confirmHelp">{{ confirmHelp }}</p>
           <PktButton
             type="button"
