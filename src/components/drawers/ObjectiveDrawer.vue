@@ -340,6 +340,7 @@ async function restore() {
           :helptext="displayLevelHelp"
           :options="ownerOptions"
           :disabled="isArchived"
+          :can-clear="false"
           rules="required"
         />
 

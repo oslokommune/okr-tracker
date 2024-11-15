@@ -223,6 +223,7 @@ async function restore() {
             :label="$t('admin.keyResult.owner.label')"
             :store-object="true"
             :helptext="$t('admin.keyResult.owner.help')"
+            :can-clear="false"
             rules="required"
           />
         </template>

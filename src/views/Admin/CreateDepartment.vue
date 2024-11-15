@@ -82,6 +82,7 @@ async function save(values) {
           label-prop="name"
           :store-object="true"
           rules="required"
+          :can-clear="false"
           :options="organizationOptions"
         />
 

@@ -193,6 +193,7 @@ async function restore() {
             rules="required"
             select-label="label"
             :options="formatOptions"
+            :can-clear="false"
             value-prop="id"
           />
 
@@ -203,6 +204,7 @@ async function restore() {
             :label="$t('kpi.startValue')"
             rules="required"
             :options="startValueOptions"
+            :can-clear="false"
             value-prop="id"
           />
 
@@ -213,6 +215,7 @@ async function restore() {
             :label="$t('kpi.preferredTrend')"
             rules="required"
             :options="trendOptions"
+            :can-clear="false"
             value-prop="id"
           />
 
@@ -223,6 +226,7 @@ async function restore() {
             :label="$t('kpi.updateFrequency.label')"
             rules="required"
             :options="updateFrequencyOptions"
+            :can-clear="false"
             value-prop="id"
             :helptext="$t('kpi.updateFrequency.help')"
           />

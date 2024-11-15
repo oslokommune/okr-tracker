@@ -175,6 +175,7 @@ async function restore() {
               label-prop="name"
               :store-object="true"
               :options="organizations.map(({ id, name }) => ({ id, name }))"
+              :can-clear="false"
             />
 
             <FormComponent

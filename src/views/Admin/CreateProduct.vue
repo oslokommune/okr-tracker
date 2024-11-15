@@ -85,6 +85,7 @@ async function save(values) {
           :store-object="true"
           rules="required"
           :options="departmentOptions"
+          :can-clear="false"
         />
 
         <FormComponent
