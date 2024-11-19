@@ -96,7 +96,7 @@ const remove = async (kpiId, progressValueId) => {
     // Delete all progression values registered for date
     const valueSnapshot = await getDoc(progressValueRef);
 
-    if (!valueSnapshot.exists) {
+    if (!valueSnapshot.exists()) {
       throw new Error(`Cannot find progress value with ID ${progressValueId}`);
     }
 
