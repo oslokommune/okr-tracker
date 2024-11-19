@@ -1,5 +1,4 @@
 <script setup>
-import { defineOptions } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useActiveItemStore } from '@/store/activeItem';
 import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';

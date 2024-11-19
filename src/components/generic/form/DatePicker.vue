@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineOptions, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import FlatPickr from 'vue-flatpickr-component';
 import { PktInputWrapper } from '@oslokommune/punkt-vue';
 import 'flatpickr/dist/flatpickr.css';

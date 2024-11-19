@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineOptions, inject, useAttrs, onMounted } from 'vue';
+import { computed, inject, useAttrs, onMounted } from 'vue';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';

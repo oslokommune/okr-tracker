@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineModel, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useMenuItem } from './menuItem.js';
 
 const props = defineProps({

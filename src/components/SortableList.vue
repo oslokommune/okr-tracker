@@ -1,5 +1,5 @@
 <script setup>
-import { defineModel, ref } from 'vue';
+import { ref } from 'vue';
 import { useSortable } from '@vueuse/integrations/useSortable';
 
 const props = defineProps({

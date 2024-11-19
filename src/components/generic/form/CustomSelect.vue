@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineOptions } from 'vue';
+import { computed } from 'vue';
 import Multiselect from '@vueform/multiselect';
 import { PktInputWrapper } from '@oslokommune/punkt-vue';
 

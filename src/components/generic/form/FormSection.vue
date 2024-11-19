@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineExpose, provide, ref } from 'vue';
+import { computed, provide, ref } from 'vue';
 import { useForm } from 'vee-validate';
 
 const props = defineProps({

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineOptions, nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { PktButton } from '@oslokommune/punkt-vue';
 import i18n from '@/locale/i18n';
