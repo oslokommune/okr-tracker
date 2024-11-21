@@ -52,7 +52,8 @@ const items = useCollection(
     query(
       collection(db, props.collection),
       where('archived', 'in', [false, props.includeArchived]),
-      orderBy('slug')
+      orderBy('archived', 'asc'),
+      orderBy('slug', 'asc')
     )
   ),
   { ssrKey: `items_${props.collection}` }
