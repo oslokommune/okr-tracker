@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia';
 import { useFuse } from '@vueuse/integrations/useFuse';
 import { db } from '@/config/firebaseConfig';
 import { useAuthStore } from '@/store/auth';
+import ArchivedItemModal from './ArchivedItemModal.vue';
 
 const props = defineProps({
   collection: {
@@ -70,6 +71,7 @@ const filteredItems = computed(() => {
   return items.value.filter((i) => user.value.admin.includes(i.organization.id));
 });
 
+const selectedItem = ref(null);
 const itemQuery = ref('');
 
 const { results: searchResults } = useFuse(itemQuery, filteredItems, {
@@ -114,11 +116,21 @@ const itemRoute = (slug) => ({
 
       <div class="col__body">
         <div v-for="{ item } in searchResults" :key="item.id" class="col__row">
-          <RouterLink class="col__link pkt-txt-16-medium" :to="itemRoute(item.slug)">
+          <RouterLink
+            v-if="!item.archived"
+            class="col__link pkt-txt-16-medium"
+            :to="itemRoute(item.slug)"
+          >
             <PktIcon class="icon" :name="templateConfig.itemIcon" />
             <span class="col__text">{{ item.name }}</span>
-            <PktIcon v-if="item.archived" class="icon" name="archive" />
+            <PktIcon class="icon" name="chevron-right" />
           </RouterLink>
+
+          <div v-else class="col__link pkt-txt-16-medium" @click="selectedItem = item">
+            <PktIcon class="icon" :name="templateConfig.itemIcon" />
+            <span class="col__text">{{ item.name }}</span>
+            <PktIcon class="icon" name="archive" />
+          </div>
         </div>
       </div>
 
@@ -132,6 +144,12 @@ const itemRoute = (slug) => ({
         </RouterLink>
       </div>
     </div>
+
+    <ArchivedItemModal
+      v-if="!!selectedItem"
+      :item="selectedItem"
+      @close="selectedItem = null"
+    />
   </div>
 </template>
 
@@ -173,6 +191,7 @@ const itemRoute = (slug) => ({
   color: var(--color-text);
   text-decoration: none;
   border-bottom: 2px solid var(--color-border);
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
