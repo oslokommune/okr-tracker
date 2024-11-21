@@ -8,6 +8,7 @@ import { useToast } from 'vue-toast-notification';
 import { collection, doc } from 'firebase/firestore';
 import { useTrackerStore } from '@/store/tracker';
 import { useActiveItemStore } from '@/store/activeItem';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { Organization, Department, Product } from '@/db/models';
 import { db } from '@/config/firebaseConfig';
 import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
@@ -22,7 +23,8 @@ const toast = useToast();
 const { item, itemType, isOrganization, isDepartment, isProduct } = storeToRefs(
   useActiveItemStore()
 );
-const { organizations, departments } = storeToRefs(useTrackerStore());
+const { organizations } = storeToRefs(useTrackerStore());
+const { departments } = storeToRefs(useActiveOrganizationStore());
 
 const users = useCollection(collection(db, 'users'));
 
@@ -189,11 +191,8 @@ async function restore() {
               value-prop="id"
               label-prop="name"
               :store-object="true"
-              :options="
-                departments
-                  .filter((d) => d.organization.id === item.organization.id)
-                  .map(({ id, name }) => ({ id, name }))
-              "
+              :options="departments.map(({ id, name }) => ({ id, name }))"
+              :can-clear="false"
             />
 
             <FormComponent
