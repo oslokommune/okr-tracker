@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { useLocalStorage } from '@vueuse/core';
 import { PktCheckbox } from '@oslokommune/punkt-vue';
 import ItemList from './ItemList.vue';
 
-const showArchived = ref(false);
+const showArchived = useLocalStorage('admin-show-archived-items', false);
 </script>
 
 <template>
