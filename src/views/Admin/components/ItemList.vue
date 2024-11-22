@@ -57,11 +57,18 @@ const items = useCollection(
   { ssrKey: `items_${props.collection}` }
 );
 
-const filteredItems = computed(() =>
-  isSuperAdmin.value
-    ? items.value
-    : items.value.filter((o) => user.value.admin.includes(o.id))
-);
+const filteredItems = computed(() => {
+  if (isSuperAdmin.value) {
+    // Return all items for super admins
+    return items.value;
+  }
+  if (props.collection === 'organizations') {
+    // Return organizations of which the user is an admin
+    return items.value.filter((i) => user.value.admin.includes(i.id));
+  }
+  // Return items where the user is an admin of the parent organization
+  return items.value.filter((i) => user.value.admin.includes(i.organization.id));
+});
 
 const itemQuery = ref('');
 
