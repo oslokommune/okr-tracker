@@ -19,6 +19,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['save']);
+
 const { user: currentUser, isSuperAdmin } = storeToRefs(useAuthStore());
 const { user, organizations, departments, products } = useTrackerUser(props.userId);
 const isCurrentUser = computed(
@@ -37,6 +39,7 @@ async function save(data) {
     preferences,
   });
   isLoading.value = false;
+  emit('save');
 }
 </script>
 
