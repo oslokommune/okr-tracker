@@ -2,11 +2,13 @@
 import { computed, nextTick, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import html2canvas from 'html2canvas';
+import { doc, writeBatch } from 'firebase/firestore';
+import { db } from '@/config/firebaseConfig';
+import metadata from '@/db/common/util/metadata';
 import { PktButton } from '@oslokommune/punkt-vue';
 import downloadFile from '@/util/downloadFile';
 import { periodDates } from '@/util';
 import { compareKPIs } from '@/util/kpiHelpers';
-import Kpi from '@/db/Kpi';
 import { useAuthStore } from '@/store/auth';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useKpisStore } from '@/store/kpis';
@@ -40,15 +42,19 @@ const orderedKpis = computed({
   get() {
     return props.kpis.map((kpi) => kpi).sort(compareKPIs(item.value.id));
   },
-  set(kpis) {
+  async set(kpis) {
+    const batch = writeBatch(db);
+
     kpis.forEach((kpi, i) => {
       const order = kpi.order ? kpi.order : {};
 
       if (order[item.value.id] !== i) {
         order[item.value.id] = i;
-        Kpi.update(kpi.id, { order });
+        batch.update(doc(db, kpi.path), { order, ...metadata.edited() });
       }
     });
+
+    await batch.commit();
   },
 });
 

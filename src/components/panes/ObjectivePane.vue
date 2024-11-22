@@ -1,6 +1,9 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { doc, writeBatch } from 'firebase/firestore';
+import { db } from '@/config/firebaseConfig';
+import metadata from '@/db/common/util/metadata';
 import { useAuthStore } from '@/store/auth';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { useActiveItemStore } from '@/store/activeItem';
@@ -8,7 +11,6 @@ import { useActiveObjectiveStore } from '@/store/activeObjective';
 import { useOkrsStore } from '@/store/okrs';
 import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
 import { compareKeyResults } from '@/util/okr';
-import KeyResult from '@/db/KeyResult';
 import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
@@ -56,12 +58,16 @@ const orderedKeyResults = computed({
   get() {
     return keyResults.value.map((kr) => kr).sort(compareKeyResults);
   },
-  set(keyResultList) {
+  async set(keyResultList) {
+    const batch = writeBatch(db);
+
     keyResultList.forEach((kr, i) => {
       if (kr.order !== i) {
-        KeyResult.update(kr.id, { order: i });
+        batch.update(doc(db, kr.path), { order: i, ...metadata.edited() });
       }
     });
+
+    await batch.commit();
   },
 });
 

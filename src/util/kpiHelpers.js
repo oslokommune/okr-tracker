@@ -223,8 +223,6 @@ export function filterDuplicatedProgressValues(progressCollection) {
   });
 }
 
-const _kpiOrder = ['ri', 'keyfig', 'plain'];
-
 /**
  * Return a function for comparing two KPIs for sorting.
  *
@@ -240,11 +238,7 @@ const _kpiOrder = ['ri', 'keyfig', 'plain'];
  */
 export function compareKPIs(itemId) {
   return (a, b) => {
-    // First sort by KPI type.
-    if (a.kpiType !== b.kpiType) {
-      return _kpiOrder.indexOf(a.kpiType) - _kpiOrder.indexOf(b.kpiType);
-    }
-    // Then sort by order only if both have one.
+    // Sort by order only if both have one.
     if ('order' in a && itemId in a.order && 'order' in b && itemId in b.order) {
       return a.order[itemId] - b.order[itemId];
     }
