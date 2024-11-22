@@ -79,8 +79,8 @@ export function useGanttChart(period, loading, objectives) {
      */
     if (objective.period?.endDate && objective.period?.startDate) {
       return (
-        objective.period.endDate.toDate() >= startDate &&
-        objective.period.startDate.toDate() <= endDate
+        objective.period.endDate.toDate() >= periodStart &&
+        objective.period.startDate.toDate() <= periodEnd
       );
     }
 
