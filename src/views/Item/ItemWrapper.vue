@@ -10,7 +10,8 @@ useHead({ title: () => item.value?.name });
 </script>
 
 <template>
-  <PktLoader v-if="isLoading" size="large" :delay="500" inline />
+  <PktLoader v-if="isLoading" size="large" class="spinner__wrapper" :delay="500" inline />
+
   <template v-else-if="!isLoading && item">
     <PktAlert v-if="item.archived" skin="warning" compact>
       {{ $t('archived.heading') }}
@@ -18,9 +19,3 @@ useHead({ title: () => item.value?.name });
     <RouterView />
   </template>
 </template>
-
-<style lang="scss" scoped>
-.pkt-loader--inline {
-  margin: auto auto;
-}
-</style>

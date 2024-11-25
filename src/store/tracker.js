@@ -1,4 +1,4 @@
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useCollection } from 'vuefire';
@@ -15,6 +15,7 @@ export const useTrackerStore = defineStore('tracker', () => {
   // App
   const owner = computed(() => import.meta.env.VITE_ORGANIZATION);
   const version = computed(() => __APP_VERSION__); // eslint-disable-line no-undef
+  const loading = ref(true);
 
   // Language
   const language = computed(() => {
@@ -60,6 +61,7 @@ export const useTrackerStore = defineStore('tracker', () => {
   return {
     owner,
     version,
+    loading,
     language,
     organizations,
     homeOrganization,
