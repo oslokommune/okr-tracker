@@ -3,12 +3,27 @@ import { nextTick, onMounted, ref } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { PktButton } from '@oslokommune/punkt-vue';
 
-defineProps({
+const props = defineProps({
+  title: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  icon: {
+    type: String,
+    required: false,
+    default: null,
+  },
   variant: {
     type: String,
     required: false,
     default: 'normal',
     validator: (value) => ['normal', 'wide'].includes(value),
+  },
+  initialFocus: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
 
@@ -23,7 +38,7 @@ const { activate: activateFocusTrap, deactivate: deactivateFocusTrap } = useFocu
   [modalContent, modal],
   {
     allowOutsideClick: true,
-    initialFocus: true,
+    initialFocus: props.initialFocus,
   }
 );
 
@@ -49,8 +64,9 @@ function close() {
       <div v-if="isOpen" ref="modalOverlay" class="overlay" @keydown.esc="close">
         <div ref="modal" :class="['modal', `modal--${variant}`]">
           <div class="modal__header">
+            <PktIcon v-if="icon" :name="icon" />
             <h1 class="pkt-txt-18-medium">
-              <slot name="header" />
+              <slot name="header">{{ title }}</slot>
             </h1>
             <PktButton
               ref="closeButton"
