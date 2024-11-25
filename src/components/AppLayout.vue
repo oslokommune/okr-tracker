@@ -1,13 +1,21 @@
 <script setup>
+import { watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useTrackerStore } from '@/store/tracker';
 import SiteHeader from './Navigation/SiteHeader.vue';
 
-if (document.querySelector('#spinner')) {
-  document.querySelector('#spinner').remove();
-}
+const { loading } = storeToRefs(useTrackerStore());
+
+watchEffect(() => {
+  // Remove initial app loader
+  if (!loading.value && document.querySelector('#spinner')) {
+    document.querySelector('#spinner').remove();
+  }
+});
 </script>
 
 <template>
-  <div class="app-wrapper">
+  <div v-if="!loading" class="app-wrapper">
     <SiteHeader />
 
     <div class="router-view-wrapper">

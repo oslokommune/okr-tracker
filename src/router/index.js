@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { getCurrentUser } from 'vuefire';
+import { useTrackerStore } from '@/store/tracker';
 import { useAuthStore } from '@/store/auth';
 import Admin from '@/views/Admin/Admin.vue';
 import AdminWrapper from '@/views/Admin/AdminWrapper.vue';
@@ -154,6 +155,9 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  const { loading } = storeToRefs(useTrackerStore());
+  loading.value = true;
+
   const authStore = useAuthStore();
   const requiresAdmin = to.matched.some((r) => r.meta.requiresAdmin === true);
   const requiresAuth =
@@ -186,6 +190,11 @@ router.beforeEach(async (to, from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach(() => {
+  const { loading } = storeToRefs(useTrackerStore());
+  loading.value = false;
 });
 
 export default router;
