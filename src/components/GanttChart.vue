@@ -76,6 +76,8 @@ function isGhostObjective(objective) {
 }
 
 function selectObjective(objective) {
+  // If the workspace is empty, and another objective is currently active,
+  // replace the objective pane with the workspace pane and add both objectives
   if (
     !workbenchObjectives.value.length &&
     activeObjective.value &&
@@ -83,15 +85,29 @@ function selectObjective(objective) {
   ) {
     // Close currently active objective if next objective is selected for
     // the workbench
+    const activeObjectiveId = activeObjective.value.id;
     router.push({ name: 'ItemHome' });
 
-    // Add both previously active and selected objectives to the workbench
-    [activeObjective.value.id, objective.id].map(addWorkbenchObjective);
+    // Add both objectives to the workbench using `setTimeout` to give the
+    // browser a chance to "catch up" while toggling panes
+    setTimeout(async () => {
+      await Promise.all([activeObjectiveId, objective.id].map(addWorkbenchObjective));
+      await scrollToObjective(objective);
+    });
     return;
   }
 
-  // Add selected objective to workbench
+  // Add selected objective to the workbench
   addWorkbenchObjective(objective.id);
+
+  if (activeObjective.value && objective.id !== activeObjective.value.id) {
+    // Replace any currently active objective with the one newly selected
+    router.replace({
+      name: 'ObjectiveHome',
+      params: { objectiveId: objective.id },
+    });
+  }
+
   scrollToObjective(objective);
 }
 
@@ -124,19 +140,10 @@ function beforeObjectiveNavigate(objective) {
     // objectives for the workbench
     event.preventDefault();
 
-    if (!workbenchObjectives.value.find((o) => o.id === objective.id)) {
-      selectObjective(objective);
-
-      // Replace any active objective with the one newly selected
-      if (activeObjective.value && objective.id !== activeObjective.value.id) {
-        await router.replace({
-          name: 'ObjectiveHome',
-          params: { objectiveId: objective.id },
-        });
-      }
-    } else {
-      unselectObjective(objective);
-    }
+    toggleObjective(
+      !workbenchObjectives.value.find((o) => o.id === objective.id),
+      objective
+    );
   };
 }
 
