@@ -294,7 +294,8 @@
       "progress": "Slettet målepunkt"
     },
     "update": {
-      "progress": "Oppdaterte målepunkt"
+      "progress": "Oppdaterte målepunkt",
+      "profile": "Brukerprofil oppdatert"
     },
     "action": {
       "regret": "Angre",

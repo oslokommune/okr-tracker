@@ -1,6 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useToast } from 'vue-toast-notification';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/auth';
 import { useTrackerUser } from '@/composables/user';
 import User from '@/db/User';
@@ -19,6 +21,11 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['save']);
+
+const i18n = useI18n();
+const toast = useToast();
+
 const { user: currentUser, isSuperAdmin } = storeToRefs(useAuthStore());
 const { user, organizations, departments, products } = useTrackerUser(props.userId);
 const isCurrentUser = computed(
@@ -28,14 +35,20 @@ const isLoading = ref(false);
 
 async function save(data) {
   isLoading.value = true;
-  const { displayName, position, lang } = data;
-  const preferences = user.value.preferences;
-  preferences.lang = lang;
-  await User.update(user.value, {
-    displayName,
-    position,
-    preferences,
-  });
+  try {
+    const { displayName, position, lang } = data;
+    const preferences = user.value.preferences;
+    preferences.lang = lang;
+    await User.update(user.value, {
+      displayName,
+      position,
+      preferences,
+    });
+    toast.success(i18n.t('toaster.update.profile'));
+    emit('save');
+  } catch (e) {
+    toast.error(i18n.t('toaster.error.save'));
+  }
   isLoading.value = false;
 }
 </script>
