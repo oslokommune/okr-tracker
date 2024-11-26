@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, START_LOCATION } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { getCurrentUser } from 'vuefire';
 import { useTrackerStore } from '@/store/tracker';
@@ -155,9 +155,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const { loading } = storeToRefs(useTrackerStore());
-  loading.value = true;
-
   const authStore = useAuthStore();
   const requiresAdmin = to.matched.some((r) => r.meta.requiresAdmin === true);
   const requiresAuth =
@@ -192,9 +189,12 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-router.afterEach(() => {
-  const { loading } = storeToRefs(useTrackerStore());
-  loading.value = false;
+router.afterEach((to, from) => {
+  // Initial navigation
+  if (from === START_LOCATION) {
+    const { loading } = storeToRefs(useTrackerStore());
+    loading.value = false;
+  }
 });
 
 export default router;
