@@ -76,7 +76,7 @@ function wrapNavigate(handler, event) {
     </div>
 
     <div class="user-menu-dropdown__body">
-      <UserProfile :user-id="user.id" />
+      <UserProfile :user-id="user.id" @save="closeParent" />
     </div>
 
     <div class="user-menu-dropdown__footer">

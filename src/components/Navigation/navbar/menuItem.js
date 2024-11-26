@@ -118,13 +118,18 @@ export function useMenuItem(props, element, emit) {
     await nextTick();
     isOpen.value = true;
     setTimeout(() => {
-      activateFocusTrap();
+      if (element.value) {
+        activateFocusTrap();
+      }
     }, 1000);
   }
 
   function close() {
     deactivateFocusTrap();
     isOpen.value = false;
+    if (closeParent) {
+      closeParent();
+    }
   }
 
   async function toggle() {

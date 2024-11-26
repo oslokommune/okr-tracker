@@ -295,7 +295,8 @@
       "progress": "Deleted value"
     },
     "update": {
-      "progress": "Updated value"
+      "progress": "Updated value",
+      "profile": "User profile updated"
     },
     "action": {
       "regret": "Undo",
