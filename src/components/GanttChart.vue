@@ -19,7 +19,8 @@ const { objective: activeObjective } = storeToRefs(useActiveObjectiveStore());
 const ganttObjectives = computed(() => {
   const timelineObjectives = [...objectives.value];
 
-  // Keep currently active objective as a "ghost" until dismissed after it's lifted
+  // Keep currently active objective as a "ghost" until dismissed after
+  // it's lifted or archived
   if (
     activeObjective.value &&
     !timelineObjectives.find((o) => o.id === activeObjective.value.id)
