@@ -8,7 +8,6 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
-import { useOkrsStore } from '@/store/okrs';
 import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
 import { compareKeyResults } from '@/util/okr';
 import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
@@ -23,14 +22,16 @@ import FadeTransition from '@/components/generic/transitions/FadeTransition.vue'
 const { user, hasEditRights } = storeToRefs(useAuthStore());
 const { organizationTree } = storeToRefs(useActiveOrganizationStore());
 const { item } = storeToRefs(useActiveItemStore());
-const { objectives } = storeToRefs(useOkrsStore());
 const {
   objective,
+  objectivePromise,
   isLoading: objectiveIsLoading,
   keyResults,
+  keyResultsIsLoading,
 } = storeToRefs(useActiveObjectiveStore());
 
 const pane = ref(null);
+const showLiftWarning = ref(false);
 const renderKeyResults = ref(false);
 const renderWidgets = ref(false);
 
@@ -45,6 +46,7 @@ watch(
     if (to?.id !== from?.id) {
       // Reset and scroll to the top of the pane when the currently active
       // objective changes.
+      showLiftWarning.value = false;
       renderKeyResults.value = false;
       renderWidgets.value = false;
       await nextTick();
@@ -52,6 +54,26 @@ watch(
     }
   },
   { immediate: true }
+);
+
+watch(
+  [objective, keyResults, keyResultsIsLoading],
+  async () => {
+    // Ensure that the objective is completely resovled
+    await objectivePromise.value;
+
+    // The objective is not owned by the currently active item (lifted)
+    const isExternal = objective.value.parent.id !== item.value.id;
+
+    if (!keyResultsIsLoading.value && isExternal) {
+      // Show the lifted object warning if no key results
+      // are owned by the currently active item
+      showLiftWarning.value = !keyResults.value.some(
+        (kr) => kr.parent.id === item.value.id
+      );
+    }
+  },
+  { deep: true }
 );
 
 const orderedKeyResults = computed({
@@ -69,12 +91,6 @@ const orderedKeyResults = computed({
 
     await batch.commit();
   },
-});
-
-const isOwnedByActiveItem = computed(() => {
-  // Return `true` if the objective owner is the currently active
-  const { id: parentId } = objective.value.parent;
-  return parentId === item.value.id;
 });
 
 const isMemberOfChild = computed(() => {
@@ -101,17 +117,6 @@ const isMemberOfChild = computed(() => {
 
   return false;
 });
-
-const isGhost = computed(
-  /**
-   * Returns `true` if the active objective is to be considered a "ghost"
-   * objective.
-   */
-  () =>
-    objectives.value.length &&
-    objective.value &&
-    !objectives.value.find((o) => o.id === objective.value.id)
-);
 
 function keyResultLinkProps(keyResult) {
   return {
@@ -151,7 +156,7 @@ function keyResultLinkProps(keyResult) {
       {{ $t('archived.heading') }}
     </PktAlert>
 
-    <PktAlert v-if="isGhost && !isOwnedByActiveItem" skin="warning" compact>
+    <PktAlert v-if="showLiftWarning" skin="warning" compact>
       <i18n-t keypath="objective.movedWarning" tag="p" scope="global">
         <template #activeItem>
           {{ item.name }}

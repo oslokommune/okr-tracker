@@ -59,6 +59,12 @@ async function activate(event, rootHandler) {
   }
   await rootHandler(event);
 }
+
+const commonTagProps = {
+  size: 'small',
+  textStyle: 'normal-text',
+  iconName: 'bullseye',
+};
 </script>
 
 <template>
@@ -92,20 +98,15 @@ async function activate(event, rootHandler) {
             @click.stop="$emit('toggle', $event.target.checked)"
           />
           <div class="objective-link-card__title">
+            <PktTag v-if="isInheritedObjective" v-bind="commonTagProps" skin="blue-light">
+              {{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}
+            </PktTag>
             <PktTag
-              :skin="
-                isExactActive || active || isInheritedObjective ? 'blue-light' : 'grey'
-              "
-              size="small"
-              text-style="normal-text"
-              icon-name="bullseye"
+              v-else
+              v-bind="commonTagProps"
+              :skin="isExactActive || active ? 'blue-light' : 'grey'"
             >
-              <template v-if="isInheritedObjective">
-                {{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}
-              </template>
-              <template v-else>
-                {{ $t('general.objective') }}
-              </template>
+              {{ $t('general.objective') }}
             </PktTag>
           </div>
         </div>
