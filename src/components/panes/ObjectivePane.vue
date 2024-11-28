@@ -26,6 +26,8 @@ const {
   objective,
   objectivePromise,
   isLoading: objectiveIsLoading,
+  isInheritedObjective,
+  hasOwnKeyResult,
   keyResults,
   keyResultsIsLoading,
 } = storeToRefs(useActiveObjectiveStore());
@@ -62,16 +64,10 @@ watch(
     // Ensure that the objective is completely resovled
     await objectivePromise.value;
 
-    // The objective is not owned by the currently active item (lifted)
-    const isExternal = objective.value.parent.id !== item.value.id;
-
-    if (!keyResultsIsLoading.value && isExternal) {
-      // Show the lifted object warning if no key results
-      // are owned by the currently active item
-      showLiftWarning.value = !keyResults.value.some(
-        (kr) => kr.parent.id === item.value.id
-      );
-    }
+    // Show the "lifted" object warning if the object is inherited and no
+    // key results are owned by the currently active item
+    showLiftWarning.value =
+      isInheritedObjective.value && !keyResultsIsLoading.value && !hasOwnKeyResult.value;
   },
   { deep: true }
 );

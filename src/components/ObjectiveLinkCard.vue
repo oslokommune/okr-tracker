@@ -1,4 +1,5 @@
 <script setup>
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useActiveItemStore } from '@/store/activeItem';
 import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';
@@ -51,8 +52,6 @@ const {
   hasOwnKeyResult,
 } = useObjective(props.objectiveId);
 
-await objectivePromise.value;
-
 async function activate(event, rootHandler) {
   if (props.beforeNavigate) {
     await props.beforeNavigate(event);
@@ -60,11 +59,20 @@ async function activate(event, rootHandler) {
   await rootHandler(event);
 }
 
+const card = ref(null);
+const isGhost = computed(
+  () => objective.value.archived || (isInheritedObjective.value && !hasOwnKeyResult.value)
+);
+
 const commonTagProps = {
   size: 'small',
   textStyle: 'normal-text',
   iconName: 'bullseye',
 };
+
+defineExpose({ ref: card, isGhost });
+
+await objectivePromise.value;
 </script>
 
 <template>
@@ -75,12 +83,13 @@ const commonTagProps = {
     custom
   >
     <a
+      ref="card"
       :class="[
         'objective-link-card',
         {
           'objective-link-card--active': isExactActive || active,
           'objective-link-card--checked': checked,
-          'objective-link-card--dashed': dashed,
+          'objective-link-card--dashed': props.dashed || isGhost,
           'objective-link-card--dimmed': dimmed,
         },
       ]"

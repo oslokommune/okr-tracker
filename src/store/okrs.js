@@ -1,9 +1,10 @@
 import { computed, ref } from 'vue';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { useCollection } from 'vuefire';
 import { useRoute } from 'vue-router';
 import { collection, query, where } from 'firebase/firestore';
 import { useLocalStorage } from '@vueuse/core';
+import { useActiveObjectiveStore } from '@/store/activeObjective';
 import { db } from '@/config/firebaseConfig';
 import { DEFAULT_OKR_PERIOD, getPeriods } from '@/config/periods';
 import { PeriodSerializer } from '@/util/period';
@@ -19,6 +20,8 @@ export const useOkrsStore = defineStore('okrs', () => {
   });
 
   // Objectives
+  const { objective: activeObjective } = storeToRefs(useActiveObjectiveStore());
+
   const isOkrsView = computed(() =>
     ['ItemHome', 'ObjectiveHome', 'KeyResultHome'].includes(route.name)
   );
@@ -55,21 +58,33 @@ export const useOkrsStore = defineStore('okrs', () => {
     () => _objectivesIsLoading.value || _objectiveContributionsIsLoading.value
   );
 
-  const objectives = computed(() => [
-    // Objectives where the currently active item is parent
-    ..._objectives.value,
-    // Also include external objectives
-    ..._objectiveContributions.value
-      .filter((oc) => {
-        return (
-          // Filter out archived objectives ...
-          !oc.objective.archived &&
-          // ... and those that aren't external.
-          !_objectives.value.map((o) => o.id).includes(oc.objective.id)
-        );
-      })
-      .map((oc) => oc.objective),
-  ]);
+  const objectives = computed(() => {
+    const allObjectives = [
+      // Objectives where the currently active item is parent
+      ..._objectives.value,
+      // Also include external objectives
+      ..._objectiveContributions.value
+        .filter((oc) => {
+          return (
+            // Filter out archived objectives ...
+            !oc.objective.archived &&
+            // ... and those that aren't external.
+            !_objectives.value.map((o) => o.id).includes(oc.objective.id)
+          );
+        })
+        .map((oc) => oc.objective),
+    ];
+
+    // Include any active objective - either lifted or archived - as ghost until dismissed
+    if (
+      activeObjective.value &&
+      !allObjectives.find((o) => o.id === activeObjective.value.id)
+    ) {
+      allObjectives.push(activeObjective.value);
+    }
+
+    return allObjectives;
+  });
 
   // Workbench
   const _workbenchObjectivesIds = ref([]);

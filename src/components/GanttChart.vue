@@ -2,6 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { useMagicKeys } from '@vueuse/core';
 import { useOkrsStore } from '@/store/okrs';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
 import { useGanttChart } from '@/composables/gantt';
@@ -16,21 +17,6 @@ const { addWorkbenchObjective, removeWorkbenchObjective, clearWorkbenchObjective
   okrsStore;
 const { objective: activeObjective } = storeToRefs(useActiveObjectiveStore());
 
-const ganttObjectives = computed(() => {
-  const timelineObjectives = [...objectives.value];
-
-  // Keep currently active objective as a "ghost" until dismissed after
-  // it's lifted or archived
-  if (
-    activeObjective.value &&
-    !timelineObjectives.find((o) => o.id === activeObjective.value.id)
-  ) {
-    timelineObjectives.push(activeObjective.value);
-  }
-
-  return timelineObjectives;
-});
-
 const {
   objectiveGroups,
   objectivesInPeriod,
@@ -42,10 +28,12 @@ const {
   tickStyle,
   objectiveStyle,
   startDrag,
-} = useGanttChart(period, isLoading, ganttObjectives);
+} = useGanttChart(period, isLoading, objectives);
 
+const objectiveCards = ref([]);
 const todayAnchor = ref(null);
 const periodAnchor = ref(null);
+const { meta, altKey } = useMagicKeys();
 
 watch(period, async () => {
   await nextTick();
@@ -64,6 +52,10 @@ watch(isLoading, async () => {
 
 watch(activeObjective, scrollToObjective, { immediate: true });
 
+const showWorkbenchToggles = computed(
+  () => meta.value || altKey.value || workbenchObjectives.value.length > 0
+);
+
 function isActive(objective) {
   return activeObjective.value && activeObjective.value.id === objective.id;
 }
@@ -72,30 +64,31 @@ function isChecked(objective) {
   return workbenchObjectives.value.map((o) => o.id).includes(objective.id);
 }
 
-function isGhostObjective(objective) {
-  return !objectives.value.find((o) => o.id === objective.id);
+function isCheckable(objective) {
+  const objectiveCard = objectiveCards.value.find(
+    (card) => card.ref.getAttribute('data-id') === objective.id
+  );
+  return !objectiveCard?.isGhost && showWorkbenchToggles.value;
 }
 
 function selectObjective(objective) {
-  // If the workspace is empty, and another objective is currently active,
-  // replace the objective pane with the workspace pane and add both objectives
-  if (
-    !workbenchObjectives.value.length &&
-    activeObjective.value &&
-    objective.id !== activeObjective.value.id
-  ) {
-    // Close currently active objective if next objective is selected for
+  // If adding to an empty workbench, replace any active objective with
+  // the workbench pane
+  if (!workbenchObjectives.value.length && activeObjective.value) {
+    // Also add currently active objective if next objective is selected for
     // the workbench
     const activeObjectiveId = activeObjective.value.id;
-    router.push({ name: 'ItemHome' });
+    router.replace({ name: 'ItemHome' });
 
-    // Add both objectives to the workbench using `setTimeout` to give the
-    // browser a chance to "catch up" while toggling panes
-    setTimeout(async () => {
-      await Promise.all([activeObjectiveId, objective.id].map(addWorkbenchObjective));
-      await scrollToObjective(objective);
-    });
-    return;
+    if (objective.id !== activeObjective.value.id) {
+      // Add both objectives to the workbench using `setTimeout` to give the
+      // browser a chance to "catch up" while toggling panes
+      setTimeout(async () => {
+        await Promise.all([activeObjectiveId, objective.id].map(addWorkbenchObjective));
+        await scrollToObjective(objective);
+      });
+      return;
+    }
   }
 
   // Add selected objective to the workbench
@@ -131,20 +124,17 @@ function unselectObjective(objective) {
 
 function beforeObjectiveNavigate(objective) {
   return async (event) => {
-    const modifierKey = event.metaKey || event.altKey;
+    if (isCheckable(objective)) {
+      // Prevent default link navigation when selecting/unselecting
+      // objectives for the workbench
+      event.preventDefault();
 
-    if (!modifierKey && !workbenchObjectives.value.length) {
-      return;
+      // Toggle workbench objective
+      toggleObjective(
+        !workbenchObjectives.value.find((o) => o.id === objective.id),
+        objective
+      );
     }
-
-    // Prevent default link navigation when selecting/unselecting
-    // objectives for the workbench
-    event.preventDefault();
-
-    toggleObjective(
-      !workbenchObjectives.value.find((o) => o.id === objective.id),
-      objective
-    );
   };
 }
 
@@ -280,14 +270,12 @@ async function periodObjectivesToWorkbench() {
           <template v-for="o in group.objectives" :key="o.objective.id">
             <Suspense @resolve="onObjectiveMounted(o.objective)">
               <ObjectiveLinkCard
+                ref="objectiveCards"
                 :objective-id="o.objective.id"
                 :tabindex="o.tabindex"
                 :style="objectiveStyle(o)"
-                :checkable="
-                  !isGhostObjective(o.objective) && workbenchObjectives.length > 0
-                "
+                :checkable="isCheckable(o.objective)"
                 :checked="isChecked(o.objective)"
-                :dashed="isGhostObjective(o.objective)"
                 :dimmed="
                   !inCurrentPeriod(o.objective) &&
                   !isActive(o.objective) &&
