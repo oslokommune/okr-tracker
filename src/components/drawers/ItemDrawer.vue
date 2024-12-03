@@ -205,6 +205,7 @@ async function restore() {
               value-prop="id"
               :tag-label="(o) => o.displayName || o.id"
               :option-label="(o) => (o.displayName ? `${o.displayName} (${o.id})` : o.id)"
+              :track-by="['displayName', 'id']"
               :store-object="true"
               :options="users"
             />
