@@ -48,7 +48,7 @@ export function useMenuItem(props, element, emit) {
         focusNext();
       } else if (e.key === 'ArrowLeft' && !isVertical) {
         focusPrev();
-      } else if (e.key === 'Escape') {
+      } else if (e.key === 'Escape' && isDropdown.value) {
         close();
       }
     },
@@ -110,6 +110,7 @@ export function useMenuItem(props, element, emit) {
     {
       immediate: false,
       allowOutsideClick: true,
+      escapeDeactivates: false,
       delayInitialFocus: true,
     }
   );
@@ -118,7 +119,7 @@ export function useMenuItem(props, element, emit) {
     await nextTick();
     isOpen.value = true;
     setTimeout(() => {
-      if (element.value) {
+      if (element.value && isOpen.value) {
         activateFocusTrap();
       }
     }, 1000);
@@ -127,9 +128,6 @@ export function useMenuItem(props, element, emit) {
   function close() {
     deactivateFocusTrap();
     isOpen.value = false;
-    if (closeParent) {
-      closeParent();
-    }
   }
 
   async function toggle() {

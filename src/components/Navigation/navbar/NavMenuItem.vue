@@ -101,7 +101,7 @@ provide('closeNavMenuDropdown', close);
         />
       </div>
 
-      <div v-if="isOpen" class="nav-menu-item__content">
+      <div v-if="isOpen" class="nav-menu-item__content" @keyup.esc="close">
         <slot :close="close" />
       </div>
     </template>
