@@ -45,6 +45,10 @@ export function useGanttChart(period, loading, objectives) {
        * first.
        */
       .sort((a, b) => startDate(a) - startDate(b))
+      /*
+       * Lastly, sort by created date to maintain a consistent order.
+       */
+      .sort((a, b) => a.created.toDate().getTime() - b.created.toDate().getTime())
   );
 
   /**

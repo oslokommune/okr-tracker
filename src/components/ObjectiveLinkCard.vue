@@ -1,4 +1,5 @@
 <script setup>
+import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useActiveItemStore } from '@/store/activeItem';
 import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';
@@ -51,14 +52,27 @@ const {
   hasOwnKeyResult,
 } = useObjective(props.objectiveId);
 
-await objectivePromise.value;
-
 async function activate(event, rootHandler) {
   if (props.beforeNavigate) {
     await props.beforeNavigate(event);
   }
   await rootHandler(event);
 }
+
+const card = ref(null);
+const isGhost = computed(
+  () => objective.value.archived || (isInheritedObjective.value && !hasOwnKeyResult.value)
+);
+
+const commonTagProps = {
+  size: 'small',
+  textStyle: 'normal-text',
+  iconName: 'bullseye',
+};
+
+defineExpose({ ref: card, isGhost });
+
+await objectivePromise.value;
 </script>
 
 <template>
@@ -69,12 +83,13 @@ async function activate(event, rootHandler) {
     custom
   >
     <a
+      ref="card"
       :class="[
         'objective-link-card',
         {
           'objective-link-card--active': isExactActive || active,
           'objective-link-card--checked': checked,
-          'objective-link-card--dashed': dashed,
+          'objective-link-card--dashed': props.dashed || isGhost,
           'objective-link-card--dimmed': dimmed,
         },
       ]"
@@ -92,20 +107,15 @@ async function activate(event, rootHandler) {
             @click.stop="$emit('toggle', $event.target.checked)"
           />
           <div class="objective-link-card__title">
+            <PktTag v-if="isInheritedObjective" v-bind="commonTagProps" skin="blue-light">
+              {{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}
+            </PktTag>
             <PktTag
-              :skin="
-                isExactActive || active || isInheritedObjective ? 'blue-light' : 'grey'
-              "
-              size="small"
-              text-style="normal-text"
-              icon-name="bullseye"
+              v-else
+              v-bind="commonTagProps"
+              :skin="isExactActive || active ? 'blue-light' : 'grey'"
             >
-              <template v-if="isInheritedObjective">
-                {{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}
-              </template>
-              <template v-else>
-                {{ $t('general.objective') }}
-              </template>
+              {{ $t('general.objective') }}
             </PktTag>
           </div>
         </div>
