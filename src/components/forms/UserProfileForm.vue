@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { FormSection, BtnSave } from '@/components/generic/form';
 import { jobPositions } from '@/config/jobPositions';
@@ -36,19 +36,15 @@ const languageOptions = computed(() =>
   }))
 );
 
-watch(
-  props.user,
-  () => {
-    const { displayName, position, preferences } = props.user;
-    const { lang } = preferences;
-    formData.value = {
-      displayName,
-      position,
-      lang,
-    };
-  },
-  { immediate: true }
-);
+watchEffect(() => {
+  const { displayName, position, preferences } = props.user;
+  const { lang } = preferences;
+  formData.value = {
+    displayName,
+    position,
+    lang,
+  };
+});
 </script>
 
 <template>
