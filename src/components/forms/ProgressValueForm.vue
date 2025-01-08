@@ -4,7 +4,7 @@ import { BtnDelete, BtnSave } from '@/components/generic/form';
 
 const props = defineProps({
   value: {
-    type: Number,
+    type: [String, Number],
     required: false,
     default: null,
   },

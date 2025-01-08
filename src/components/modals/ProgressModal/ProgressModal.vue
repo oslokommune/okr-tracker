@@ -26,7 +26,7 @@ const { thisRecord, loading, saveRecord, deleteRecord, close } = useProgressModa
     </template>
 
     <ProgressValueForm
-      v-model:value.number="thisRecord.value"
+      v-model:value="thisRecord.value"
       v-model:comment="thisRecord.comment"
       v-model:timestamp="thisRecord.timestamp"
       :loading="loading"
