@@ -27,3 +27,11 @@ export function uniqueBy(arr, key) {
 
   return Object.values(res);
 }
+
+/**
+ * Return `true` if string matches a valid number.
+ */
+export function isNumber(val) {
+  const regex = /^-?(0|[1-9]\d*)((\.|,)\d+)?$/;
+  return regex.test(val);
+}

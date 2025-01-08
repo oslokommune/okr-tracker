@@ -13,6 +13,7 @@ import {
 import CustomSelect from '@/components/generic/form/CustomSelect.vue';
 import DatePicker from '@/components/generic/form/DatePicker.vue';
 import RadioGroup from '@/components/generic/form/RadioGroup.vue';
+import NumberInput from '@/components/generic/form/NumberInput.vue';
 
 defineOptions({
   inheritAttrs: false,
@@ -87,20 +88,20 @@ const props = defineProps({
 const attrs = useAttrs();
 const formIsValidated = inject('formIsValidated', false);
 
+const validationRules = computed(() => {
+  if (props.type === 'number') {
+    return props.rules ? `number|${props.rules}` : 'number';
+  }
+  return props.rules;
+});
+
 const {
   value: fieldValue,
   errorMessage,
-  handleChange: changeHandler,
-} = useField(props.name, props.rules, {
+  handleChange,
+} = useField(props.name, validationRules, {
   syncVModel: true,
 });
-
-function handleChange(value) {
-  if (props.type === 'number') {
-    value = value ? parseFloat(value) : null;
-  }
-  return changeHandler(value);
-}
 
 const innerValue = computed({
   get() {
@@ -143,6 +144,8 @@ const component = computed(() => {
     };
   } else if (props.inputType === 'select') {
     config.type = PktSelect;
+  } else if (props.type === 'number') {
+    config.type = NumberInput;
   } else if (props.inputType === 'custom-select') {
     config.type = CustomSelect;
   } else if (props.inputType === 'radio-group') {

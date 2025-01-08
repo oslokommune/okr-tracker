@@ -135,6 +135,7 @@
     "min_value": "Must be {0} or more",
     "min": "Must be at least {0} characters",
     "numeric": "May only contain numeric characters",
+    "number": "Must be a valid number",
     "oneOf": "Not a valid value",
     "regex": "Format is invalid",
     "required_if": "Field is required",
