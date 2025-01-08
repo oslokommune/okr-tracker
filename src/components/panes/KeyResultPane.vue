@@ -308,6 +308,7 @@ async function deleteProgressRecord(id, modalCloseHandler) {
     <ProgressModal
       v-if="showValueModal"
       :record="chosenProgressRecord"
+      :unit="keyResult.unit"
       @create-record="createProgressRecord"
       @update-record="updateProgressRecord"
       @delete-record="deleteProgressRecord"

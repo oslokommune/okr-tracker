@@ -9,6 +9,11 @@ const props = defineProps({
     required: false,
     default: null,
   },
+  unit: {
+    type: String,
+    required: false,
+    default: null,
+  },
 });
 
 const emit = defineEmits(['create-record', 'update-record', 'delete-record', 'close']);
@@ -32,6 +37,7 @@ const { thisRecord, loading, saveRecord, deleteRecord, close } = useProgressModa
       :loading="loading"
       :enable-delete="!!record"
       :enable-time="true"
+      :value-suffix="unit"
       @submit="saveRecord"
       @delete="deleteRecord"
     />
