@@ -38,6 +38,10 @@ const recordValue = computed({
       return null;
     }
 
+    if (typeof val !== 'number') {
+      return val;
+    }
+
     if (kpiIsPercentage.value) {
       val *= 100;
     }
@@ -46,11 +50,13 @@ const recordValue = computed({
   },
   set(value) {
     thisRecord.value.value =
-      value && kpiIsPercentage.value ? parseFloat(value.toFixed(6)) / 100 : value;
+      value && typeof value === 'number' && kpiIsPercentage.value
+        ? parseFloat(value.toFixed(6)) / 100
+        : value;
   },
 });
 const displayValue = computed(() =>
-  thisRecord.value.value !== null
+  recordValue.value && typeof recordValue.value === 'number'
     ? formatKPIValue(props.kpi, thisRecord.value.value)
     : null
 );
@@ -95,7 +101,7 @@ async function checkExistingMeasurement(timestamp) {
     </template>
 
     <ProgressValueForm
-      v-model:value.number="recordValue"
+      v-model:value="recordValue"
       v-model:comment="thisRecord.comment"
       v-model:timestamp="thisRecord.timestamp"
       :loading="loading"

@@ -135,6 +135,7 @@
     "min": "Må være minst {0} tegn",
     "min_value": "Må være {0} eller mer",
     "numeric": "Kan bare inneholde nummer",
+    "number": "Må være et gyldig tall",
     "regex": "Formatering er ugyldig",
     "required": "Må fylles ut",
     "required_if": "Må fylles ut",

@@ -67,7 +67,7 @@ watch(activeGoal, (goal) => {
 
 const formattedValue = computed(() => {
   const { value } = formData.value;
-  return value
+  return value && typeof value === 'number'
     ? formatKPIValue(props.kpi, typePercentage.value ? value / 100 : value)
     : null;
 });

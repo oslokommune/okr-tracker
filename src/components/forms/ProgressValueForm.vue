@@ -4,7 +4,7 @@ import { BtnDelete, BtnSave } from '@/components/generic/form';
 
 const props = defineProps({
   value: {
-    type: Number,
+    type: [String, Number],
     required: false,
     default: null,
   },
@@ -48,6 +48,11 @@ const props = defineProps({
     required: false,
     default: null,
   },
+  valueSuffix: {
+    type: String,
+    required: false,
+    default: null,
+  },
 });
 
 defineEmits(['update:value', 'update:comment', 'update:timestamp', 'submit', 'delete']);
@@ -71,6 +76,7 @@ const datePickerConfig = computed(() => ({
             name="value"
             rules="required"
             :label="$t('widget.history.value')"
+            :suffix="valueSuffix"
             :model-value="value"
             :preview-value="displayValue ? displayValue : null"
             @update:model-value="$emit('update:value', $event)"
@@ -133,6 +139,7 @@ const datePickerConfig = computed(() => ({
   }
 
   :deep(input[name='value']) {
+    height: 3rem;
     font-size: 1.5rem;
   }
 
