@@ -234,7 +234,7 @@ function keyResultLinkProps(keyResult) {
         <WidgetWeights
           v-if="keyResults.length"
           :objective="objective"
-          :key-results="keyResults"
+          :key-results="orderedKeyResults"
         />
         <WidgetObjectiveDetails :objective="objective" />
       </div>

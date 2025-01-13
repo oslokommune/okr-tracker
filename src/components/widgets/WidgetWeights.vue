@@ -18,7 +18,7 @@ const props = defineProps({
 const scale = scaleLinear();
 
 watch(
-  props.keyResults,
+  () => props.keyResults,
   (keyResults) => {
     const maxValue = max([0, max(keyResults, ({ weight }) => weight)]);
     scale.domain([0, maxValue]);
@@ -27,7 +27,7 @@ watch(
 );
 
 function getHeight(weight) {
-  return `${this.scale(weight) * 100}%`;
+  return `${scale(weight) * 100}%`;
 }
 
 function getKeyResultRoute(id) {
@@ -44,9 +44,9 @@ function getKeyResultRoute(id) {
         v-tooltip.bottom="name"
         :to="getKeyResultRoute(id)"
         class="bar"
-        :style="{ height: getHeight(weight) }"
       >
-        {{ weight }}
+        <div class="bar__inner" :style="{ height: getHeight(weight) }"></div>
+        <div class="bar__label">{{ weight }}</div>
       </RouterLink>
     </div>
   </WidgetWrapper>
@@ -60,27 +60,34 @@ function getKeyResultRoute(id) {
   grid-template-columns: repeat(auto-fit, minmax(1rem, 3rem));
   width: 100%;
   height: 6rem;
-  margin-top: 1rem;
 }
 
 .bar {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-self: end;
   justify-content: flex-end;
-  padding-bottom: 0.15rem;
+  height: 100%;
   color: var(--color-text);
   font-weight: 500;
   font-size: 0.85rem;
   text-align: center;
   text-decoration: none;
-  background: var(--color-secondary-light);
-  border: 1px solid var(--color-secondary-light);
+  background-color: var(--pkt-color-surface-strong-gray);
 
-  &:hover {
-    color: var(--color-text-secondary);
-    background: var(--color-hover);
-    border: 1px solid var(--color-hover);
+  &__inner {
+    background: var(--pkt-color-brand-blue-300);
+  }
+
+  &__label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  &:hover &__inner {
+    background: var(--pkt-color-brand-blue-500);
   }
 }
 </style>
