@@ -89,7 +89,8 @@ onMounted(async () => {
   await keyResultPromise.value;
 
   if (keyResult.value) {
-    const { name, description, parent } = keyResult.value;
+    const { name, description, parent, unit, startValue, targetValue, weight } =
+      keyResult.value;
 
     formData.value.name = name;
     formData.value.description = description;
@@ -97,6 +98,10 @@ onMounted(async () => {
       label: parent.name,
       value: parent.path,
     };
+    formData.value.unit = unit;
+    formData.value.startValue = startValue;
+    formData.value.targetValue = targetValue;
+    formData.value.weight = weight;
   }
 });
 
