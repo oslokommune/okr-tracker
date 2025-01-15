@@ -38,10 +38,14 @@ async function save() {
 </script>
 
 <template>
-  <div class="p-size-16">
-    <slot name="back"></slot>
+  <slot name="back"></slot>
 
-    <FormSection class="mt-size-24">
+  <div class="add-users mt-size-16">
+    <h2 class="pkt-txt-22 mb-size-16">
+      {{ $t('admin.users.registerUsersButton') }}
+    </h2>
+
+    <FormSection>
       <FormComponent
         v-model="emails"
         input-type="textarea"
@@ -61,3 +65,10 @@ async function save() {
     </FormSection>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.add-users {
+  padding: 1rem;
+  background: var(--color-gray-light);
+}
+</style>

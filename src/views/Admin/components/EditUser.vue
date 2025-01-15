@@ -84,10 +84,12 @@ async function remove() {
 </script>
 
 <template>
-  <div class="p-size-16">
-    <slot name="back"></slot>
+  <slot name="back"></slot>
 
-    <h2 class="title-2 mt-size-24">{{ $t('admin.users.edit') }}</h2>
+  <div class="edit-user mt-size-16">
+    <h2 class="pkt-txt-22 mb-size-16">
+      {{ $t('admin.users.edit') }}
+    </h2>
 
     <FormSection v-if="user">
       <FormComponent
@@ -137,3 +139,10 @@ async function remove() {
     </FormSection>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.edit-user {
+  padding: 1rem;
+  background: var(--color-gray-light);
+}
+</style>

@@ -37,11 +37,11 @@ const { results: searchResults } = useFuse(userQuery, users, {
 </script>
 
 <template>
-  <div>
-    <h2 class="title-2">{{ $t('admin.users.users') }}</h2>
+  <div class="user-list">
+    <h2 class="user-list__title">{{ $t('admin.users.users') }}</h2>
 
-    <div v-if="!selectedUser && !viewAddUsers" class="users">
-      <div class="search">
+    <div v-if="!selectedUser && !viewAddUsers" class="user-list__body">
+      <div v-if="users.length > 10">
         <input
           v-model="userQuery"
           class="pkt-input pkt-input--fullwidth"
@@ -50,22 +50,20 @@ const { results: searchResults } = useFuse(userQuery, users, {
         />
       </div>
 
-      <div class="users__list">
+      <div class="user-list__list">
         <button
           v-for="{ item: user } in searchResults"
           :key="user.id"
-          class="users__list-item pkt-txt-14-medium"
+          class="user-list__button pkt-txt-16-medium"
           @click="selectedUser = user"
         >
-          <PktIcon class="icon" :name="isAdmin(user) ? 'cogwheel' : 'user'" />
-          <span class="users__list-item-name">
-            {{ user.displayName || user.id }}
-          </span>
-          <PktIcon class="icon" name="chevron-right" />
+          <PktIcon :name="isAdmin(user) ? 'cogwheel' : 'user'" />
+          <span>{{ user.displayName || user.id }}</span>
+          <PktIcon name="chevron-right" />
         </button>
       </div>
 
-      <div class="users__footer">
+      <div class="user-list__footer">
         <PktButton
           skin="secondary"
           icon-name="plus-sign"
@@ -84,7 +82,12 @@ const { results: searchResults } = useFuse(userQuery, users, {
     >
       <template #back>
         <div>
-          <PktButton skin="secondary" @on-click="selectedUser = null">
+          <PktButton
+            skin="tertiary"
+            icon-name="chevron-left"
+            variant="icon-left"
+            @on-click="selectedUser = null"
+          >
             {{ $t('admin.users.backToUsers') }}
           </PktButton>
         </div>
@@ -93,74 +96,84 @@ const { results: searchResults } = useFuse(userQuery, users, {
 
     <AddUsers v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
-        <div>
-          <PktButton skin="secondary" @on-click="viewAddUsers = false">
-            {{ $t('admin.users.backToUsers') }}
-          </PktButton>
-        </div>
+        <PktButton
+          skin="tertiary"
+          icon-name="chevron-left"
+          variant="icon-left"
+          @on-click="viewAddUsers = false"
+        >
+          {{ $t('admin.users.backToUsers') }}
+        </PktButton>
       </template>
     </AddUsers>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.users,
-.selected-user,
-.add-users {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-gray-light);
-}
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-.add-users,
-.users {
-  height: 32rem;
-}
+.user-list {
+  &__title {
+    @include get-text('pkt-txt-18-medium');
+    margin-bottom: 0.75rem;
 
-.users__list {
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-}
-
-.users__list-item {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  color: var(--color-text);
-  background: none;
-  border: 0;
-  border-bottom: 2px solid var(--color-border);
-  cursor: pointer;
-
-  &:hover .users__list-item-name {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-20-medium');
+    }
   }
-}
 
-.users__list-item-name {
-  flex: 1 0 auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-align: left;
-  text-overflow: ellipsis;
-}
+  &__body {
+    display: flex;
+    flex-direction: column;
+    height: 32rem;
+    background: var(--color-gray-light);
+  }
 
-.users__footer {
-  margin-top: auto;
-  padding: 1rem;
-  font-size: 0.79rem;
+  &__list {
+    flex: 1;
+    overflow: auto;
+  }
 
-  .pkt-btn {
-    justify-content: center;
+  &__button {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
     width: 100%;
-  }
-}
+    padding: 0.5rem 1rem;
+    color: var(--color-text);
+    background: none;
+    border: 0;
+    border-bottom: 2px solid var(--color-border);
+    cursor: pointer;
 
-.icon {
-  height: 1rem;
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.3em;
+    }
+
+    .pkt-icon {
+      height: 1rem;
+    }
+
+    span {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding: 1rem;
+
+    .pkt-btn {
+      justify-content: center;
+      width: 100%;
+    }
+  }
 }
 </style>

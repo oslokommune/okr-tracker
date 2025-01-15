@@ -53,16 +53,16 @@ function rejectRequest(request) {
           <PktButton
             :disabled="loading"
             skin="secondary"
-            data-cy="request-accept"
-            @onClick="acceptRequest(request)"
+            size="small"
+            @on-click="acceptRequest(request)"
           >
             {{ $t('btn.acceptRequest') }}
           </PktButton>
           <PktButton
             :disabled="loading"
             skin="secondary"
-            data-cy="request-reject"
-            @onClick="rejectRequest(request)"
+            size="small"
+            @on-click="rejectRequest(request)"
           >
             {{ $t('btn.rejectRequest') }}
           </PktButton>
@@ -73,15 +73,21 @@ function rejectRequest(request) {
 </template>
 
 <style lang="scss" scoped>
-.access-requests__list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 0 0 1.5rem;
-}
+.access-requests {
+  :deep(.pkt-alert__title) {
+    word-break: break-all;
+  }
 
-.access-requests__actions {
-  display: flex;
-  gap: 0.5rem;
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
 }
 </style>
