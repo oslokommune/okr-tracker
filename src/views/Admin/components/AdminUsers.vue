@@ -1,15 +1,14 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { useCollection } from 'vuefire';
-import { collection, query } from 'firebase/firestore';
+import { ref } from 'vue';
 import { useFuse } from '@vueuse/integrations/useFuse';
-import { db } from '@/config/firebaseConfig';
 import { PktButton } from '@oslokommune/punkt-vue';
+import { storeToRefs } from 'pinia';
+import { useAdminStore } from '@/store/admin';
 import isAdmin from '@/util/user';
 import AddUsers from './AddUsers.vue';
 import EditUser from './EditUser.vue';
 
-const users = useCollection(computed(() => query(collection(db, 'users'))));
+const { users } = storeToRefs(useAdminStore());
 
 const userQuery = ref('');
 const selectedUser = ref(null);

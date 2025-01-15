@@ -26,7 +26,7 @@ const breadcrumbs = computed(() => [
 
 const departmentOptions = computed(() =>
   departments.value
-    .filter((o) => isSuperAdmin.value || user.value.admin.includes(o.id))
+    .filter((d) => !d.archived && (isSuperAdmin.value || user.value.admin.includes(d.id)))
     .map(({ id, name, organization }) => ({ id, name, organization_id: organization.id }))
 );
 
