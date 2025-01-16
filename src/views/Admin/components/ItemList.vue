@@ -1,11 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { useCollection } from 'vuefire';
-import { collection, orderBy, query, where } from 'firebase/firestore';
 import { storeToRefs } from 'pinia';
 import { useFuse } from '@vueuse/integrations/useFuse';
-import { db } from '@/config/firebaseConfig';
 import { useAuthStore } from '@/store/auth';
+import { useAdminStore } from '@/store/admin';
 import ArchivedItemModal from './ArchivedItemModal.vue';
 
 const props = defineProps({
@@ -21,7 +19,8 @@ const props = defineProps({
   },
 });
 
-const { user, isSuperAdmin } = storeToRefs(useAuthStore());
+const { isSuperAdmin } = storeToRefs(useAuthStore());
+const { organizations, departments, products } = storeToRefs(useAdminStore());
 
 const templateConfig = {
   organizations: {
@@ -47,35 +46,24 @@ const templateConfig = {
   },
 }[props.collection];
 
-const items = useCollection(
-  computed(() =>
-    query(
-      collection(db, props.collection),
-      where('archived', 'in', [false, props.includeArchived]),
-      orderBy('archived', 'asc'),
-      orderBy('slug', 'asc')
-    )
-  ),
-  { ssrKey: `items_${props.collection}` }
-);
-
-const filteredItems = computed(() => {
-  if (isSuperAdmin.value) {
-    // Return all items for super admins
-    return items.value;
-  }
+const items = computed(() => {
+  let _items = [];
   if (props.collection === 'organizations') {
-    // Return organizations of which the user is an admin
-    return items.value.filter((i) => user.value.admin.includes(i.id));
+    _items = organizations.value;
+  } else if (props.collection === 'departments') {
+    _items = departments.value;
+  } else if (props.collection === 'products') {
+    _items = products.value;
   }
-  // Return items where the user is an admin of the parent organization
-  return items.value.filter((i) => user.value.admin.includes(i.organization.id));
+  return _items.filter(
+    (i) => i.slug && [false, props.includeArchived].includes(i.archived)
+  );
 });
 
 const selectedItem = ref(null);
 const itemQuery = ref('');
 
-const { results: searchResults } = useFuse(itemQuery, filteredItems, {
+const { results: searchResults } = useFuse(itemQuery, items, {
   fuseOptions: {
     threshold: 0.5,
     keys: [
@@ -92,6 +80,10 @@ const { results: searchResults } = useFuse(itemQuery, filteredItems, {
   matchAllWhenSearchEmpty: true,
 });
 
+const canCreateItem = computed(
+  () => isSuperAdmin.value || props.collection !== 'organizations'
+);
+
 const itemRoute = (slug) => ({
   name: 'ItemAbout',
   params: { slug },
@@ -100,42 +92,44 @@ const itemRoute = (slug) => ({
 </script>
 
 <template>
-  <div>
-    <h2 class="title-2">{{ $t(templateConfig.title) }}</h2>
+  <div class="item-list">
+    <h2 class="item-list__title">{{ $t(templateConfig.title) }}</h2>
 
-    <div class="col">
-      <div v-if="filteredItems.length > 3" class="search">
+    <div class="item-list__body">
+      <div v-if="items.length > 10">
         <input
           v-model="itemQuery"
           class="pkt-input pkt-input--fullwidth"
           type="text"
-          :placeholder="
-            $t(templateConfig.queryPlaceholder, { count: filteredItems.length })
-          "
+          :placeholder="$t(templateConfig.queryPlaceholder, { count: items.length })"
         />
       </div>
 
-      <div class="col__body">
-        <div v-for="{ item } in searchResults" :key="item.id" class="col__row">
+      <div class="item-list__list">
+        <template v-for="{ item } in searchResults" :key="item.id">
           <RouterLink
             v-if="!item.archived"
-            class="col__link pkt-txt-16-medium"
+            class="item-list__link pkt-txt-16-medium"
             :to="itemRoute(item.slug)"
           >
-            <PktIcon class="icon" :name="templateConfig.itemIcon" />
-            <span class="col__text">{{ item.name }}</span>
-            <PktIcon class="icon" name="chevron-right" />
+            <PktIcon :name="templateConfig.itemIcon" />
+            <span>{{ item.name }}</span>
+            <PktIcon name="chevron-right" />
           </RouterLink>
 
-          <div v-else class="col__link pkt-txt-16-medium" @click="selectedItem = item">
-            <PktIcon class="icon" :name="templateConfig.itemIcon" />
-            <span class="col__text">{{ item.name }}</span>
-            <PktIcon class="icon" name="archive" />
+          <div
+            v-else
+            class="item-list__link pkt-txt-16-medium"
+            @click="selectedItem = item"
+          >
+            <PktIcon :name="templateConfig.itemIcon" />
+            <span>{{ item.name }}</span>
+            <PktIcon name="archive" />
           </div>
-        </div>
+        </template>
       </div>
 
-      <div v-if="isSuperAdmin" class="col__footer">
+      <div v-if="canCreateItem" class="item-list__footer">
         <RouterLink
           class="pkt-btn pkt-btn--secondary pkt-btn--icon-left"
           :to="templateConfig.createRoute"
@@ -155,57 +149,67 @@ const itemRoute = (slug) => ({
 </template>
 
 <style lang="scss" scoped>
-.col {
-  display: flex;
-  flex-direction: column;
-  height: 32rem;
-  background: var(--color-gray-light);
-}
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-.col__body {
-  flex: 1;
-  overflow: auto;
-}
+.item-list {
+  &__title {
+    @include get-text('pkt-txt-18-medium');
+    margin-bottom: 0.75rem;
 
-.col__header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: var(--color-grayscale-10);
-}
-
-.col__footer {
-  margin-top: auto;
-  padding: 1rem;
-
-  .pkt-btn {
-    justify-content: center;
-    width: 100%;
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-20-medium');
+    }
   }
-}
 
-.col__link {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  color: var(--color-text);
-  text-decoration: none;
-  border-bottom: 2px solid var(--color-border);
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
+  &__body {
+    display: flex;
+    flex-direction: column;
+    height: 32rem;
+    background: var(--color-gray-light);
   }
-}
 
-.col__text {
-  flex: 1 0 auto;
-}
+  &__list {
+    flex: 1;
+    overflow: auto;
+  }
 
-.icon {
-  height: 1rem;
+  &__link {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-border);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.3em;
+    }
+
+    .pkt-icon {
+      height: 1rem;
+    }
+
+    span {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding: 1rem;
+
+    .pkt-btn {
+      justify-content: center;
+      width: 100%;
+    }
+  }
 }
 </style>
