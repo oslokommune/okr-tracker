@@ -1,6 +1,7 @@
 import { dateShort, periodDates } from '@/util';
 import CONTRIBUTOR_TAG_COLORS from '@/config/colors';
 import simpleHash from '@/util/hash';
+import i18n from '@/locale/i18n';
 
 /**
  * Return a nicely formatted period range for `objective`'s period.
@@ -40,7 +41,7 @@ export function compareKeyResults(a, b) {
     return 1;
   }
   // Otherwise fall back to ordering by name.
-  return a.name.localeCompare(b.name);
+  return a.name.localeCompare(b.name, i18n.global.locale.value);
 }
 
 /**

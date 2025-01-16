@@ -2,13 +2,15 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { startOfDay } from 'date-fns';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/auth';
 import { periodDates, uniqueBy } from '@/util';
-import i18n from '@/locale/i18n';
 import { PktButton } from '@oslokommune/punkt-vue';
 import ItemTag from '@/components/ItemTag.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
+
+const i18n = useI18n();
 
 const props = defineProps({
   objective: {
@@ -30,7 +32,7 @@ const contributors = computed(() =>
   uniqueBy(
     props.keyResults.map((kr) => kr.parent).filter((item) => item.name),
     'id'
-  ).sort((a, b) => a.name.localeCompare(b.name, i18n.locale))
+  ).sort((a, b) => a.name.localeCompare(b.name, i18n.locale.value))
 );
 
 const period = computed(() => {

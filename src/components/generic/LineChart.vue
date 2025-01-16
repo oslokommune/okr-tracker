@@ -12,10 +12,12 @@ import {
   TooltipComponent,
 } from 'echarts/components';
 import { SVGRenderer } from 'echarts/renderers';
-import i18n from '@/locale/i18n';
+import { useI18n } from 'vue-i18n';
 import { dateShort } from '@/util';
 import { getComputedStyleVariable, LOCALE_NO } from '@/util/chart';
 import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
+
+const i18n = useI18n();
 
 use([
   GridComponent,
@@ -67,7 +69,7 @@ const props = defineProps({
 
 const isMounted = ref(false);
 const initOptions = {
-  locale: i18n.locale === 'nb-NO' ? 'NO' : 'EN',
+  locale: i18n.locale.value === 'nb-NO' ? 'NO' : 'EN',
 };
 
 const gridOptions = computed(() => {

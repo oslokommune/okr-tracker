@@ -22,9 +22,9 @@ export function buildOrganizationTree(organization, departments, products) {
             path: product.path,
             ...product,
           }))
-          .sort((a, b) => a.name.localeCompare(b.name, i18n.locale)),
+          .sort((a, b) => a.name.localeCompare(b.name, i18n.global.locale.value)),
       }))
-      .sort((a, b) => a.name.localeCompare(b.name, i18n.locale)),
+      .sort((a, b) => a.name.localeCompare(b.name, i18n.global.locale.value)),
   };
 }
 
