@@ -20,6 +20,7 @@ import FormComponent from '@/components/generic/form/FormComponent.vue';
 import { firebaseApp, auth } from './config/firebaseConfig';
 import configureFormValidation from './config/validation';
 
+import 'vue-toast-notification/dist/theme-sugar.css';
 import './styles/main.scss';
 
 const app = createApp(App);
