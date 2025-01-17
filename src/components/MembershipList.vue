@@ -1,5 +1,8 @@
 <script setup>
 import { computed, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const i18n = useI18n();
 
 const props = defineProps({
   organizations: {
@@ -23,21 +26,21 @@ const membershipGroups = computed(() =>
   [
     {
       id: 'organizations',
-      items: props.organizations,
+      items: sortItems(props.organizations),
     },
     {
       id: 'departments',
-      items: props.departments,
+      items: sortItems(props.departments),
     },
     {
       id: 'products',
-      items: props.products,
+      items: sortItems(props.products),
     },
   ].filter((g) => g.items.length > 0)
 );
 
 function sortItems(items) {
-  return items.sort((a, b) => a.name.localeCompare(b.name));
+  return items.slice().sort((a, b) => a.name.localeCompare(b.name, i18n.locale.value));
 }
 
 function icon(type) {
@@ -70,7 +73,7 @@ function wrapNavigate(handler, event) {
     >
       <h3 class="title-3">{{ $t(`general.${group.id}`) }}</h3>
       <ul>
-        <li v-for="{ id, slug, name } in sortItems(group.items)" :key="id">
+        <li v-for="{ id, slug, name } in group.items" :key="id">
           <RouterLink
             v-slot="{ href, navigate }"
             :to="{ name: 'ItemHome', params: { slug } }"

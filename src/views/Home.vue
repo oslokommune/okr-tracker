@@ -18,7 +18,10 @@ useHead({ title: () => organization.value?.name });
 
 function sortByLocale(arr) {
   return arr.sort((a, b) =>
-    a.name.trim().toUpperCase().localeCompare(b.name.trim().toUpperCase(), i18n.locale)
+    a.name
+      .trim()
+      .toUpperCase()
+      .localeCompare(b.name.trim().toUpperCase(), i18n.locale.value)
   );
 }
 </script>

@@ -250,6 +250,6 @@ export function compareKPIs(itemId) {
       return 1;
     }
     // Otherwise fall back to ordering by name.
-    return a.name.localeCompare(b.name);
+    return a.name.localeCompare(b.name, i18n.global.locale.value);
   };
 }

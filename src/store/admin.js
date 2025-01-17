@@ -2,19 +2,26 @@ import { computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useCollection } from 'vuefire';
 import { collection, orderBy, query } from 'firebase/firestore';
+import { useI18n } from 'vue-i18n';
 import { db } from '@/config/firebaseConfig';
 import { useAuthStore } from '@/store/auth';
 
 export const useAdminStore = defineStore('admin', () => {
+  const i18n = useI18n();
   const authStore = useAuthStore();
 
   // Users
-  const users = useCollection(
-    computed(
-      () =>
-        authStore.isAdmin && query(collection(db, 'users'), orderBy('displayName', 'asc'))
-    ),
+  const _users = useCollection(
+    computed(() => authStore.isAdmin && query(collection(db, 'users'))),
     { ssrKey: 'users' }
+  );
+  const users = computed(() =>
+    _users.value.slice().sort((a, b) => {
+      return (a.displayName || a.email).localeCompare(
+        b.displayName || b.email,
+        i18n.locale.value
+      );
+    })
   );
 
   // Items
@@ -36,7 +43,10 @@ export const useAdminStore = defineStore('admin', () => {
     return authStore.user.admin.includes(item.id);
   };
 
-  const filterItems = (items) => items.filter((i) => isItemAdmin(i));
+  const filterItems = (items) =>
+    items
+      .filter((i) => isItemAdmin(i))
+      .sort((a, b) => a.name.localeCompare(b.name, i18n.locale.value));
 
   const _organizations = useCollection(
     computed(() => itemQuery('organizations')),
