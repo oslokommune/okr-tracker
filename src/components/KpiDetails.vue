@@ -88,7 +88,7 @@ async function deleteProgressRecord(id, modalCloseHandler) {
       :html="kpi.description"
     />
 
-    <PktAlert v-if="kpi.archived" skin="warning" class="mb-size-24">
+    <PktAlert v-if="kpi.archived" skin="warning" class="kpi-details__archived">
       {{ $t('kpi.archived') }}
     </PktAlert>
 
@@ -140,5 +140,10 @@ async function deleteProgressRecord(id, modalCloseHandler) {
       @include get-text('pkt-txt-22');
     }
   }
+}
+
+.kpi-details__archived {
+  display: block;
+  margin-bottom: 1rem;
 }
 </style>

@@ -229,7 +229,7 @@ function copyFieldText() {
 
   &__copy-button {
     position: absolute;
-    top: 2.5rem;
+    top: 3rem;
     right: 0.25rem;
     width: 2.5rem;
     height: 2.5rem;

@@ -20,17 +20,17 @@ export function useTrackerUser(userId) {
 
   const organizations = useCollection(
     computed(() => userRef.value && membershipQuery('organizations', userRef.value)),
-    { maxRefDepth: 0, ssrKey: `user_${userId}_organizations` }
+    { ssrKey: `user_${userId}_organizations` }
   );
 
   const departments = useCollection(
     computed(() => userRef.value && membershipQuery('departments', userRef.value)),
-    { maxRefDepth: 0, ssrKey: `user_${userId}_departments` }
+    { ssrKey: `user_${userId}_departments` }
   );
 
   const products = useCollection(
     computed(() => userRef.value && membershipQuery('products', userRef.value)),
-    { maxRefDepth: 0, ssrKey: `user_${userId}_products` }
+    { ssrKey: `user_${userId}_products` }
   );
 
   return {

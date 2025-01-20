@@ -70,12 +70,14 @@ export function useObjective(objectiveId) {
 
   const objectiveOwner = computed(() => objective.value && objective.value.parent);
   const objectivePeriod = computed(() => {
-    const { startDate, endDate, period } = objective.value;
-    if (startDate && endDate) {
-      return { startDate: startDate.toDate(), endDate: endDate.toDate() };
-    }
-    if (period) {
-      return { startDate: period.startDate.toDate(), endDate: period.endDate.toDate() };
+    if (objective.value) {
+      const { startDate, endDate, period } = objective.value;
+      if (startDate && endDate) {
+        return { startDate: startDate.toDate(), endDate: endDate.toDate() };
+      }
+      if (period) {
+        return { startDate: period.startDate.toDate(), endDate: period.endDate.toDate() };
+      }
     }
     return null;
   });
@@ -121,8 +123,8 @@ export function useObjective(objectiveId) {
   /**
    * Return true if `item` has own key result attached to this objective.
    */
-  const hasOwnKeyResult = computed(() =>
-    contributors.value.map((c) => c.id).includes(item.value.id)
+  const hasOwnKeyResult = computed(
+    () => item.value && contributors.value.map((c) => c.id).includes(item.value.id)
   );
 
   return {

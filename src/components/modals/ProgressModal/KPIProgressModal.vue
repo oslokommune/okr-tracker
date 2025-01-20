@@ -159,10 +159,6 @@ async function checkExistingMeasurement(timestamp) {
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-:deep(.modal__footer) {
-  display: block;
-}
-
 :deep(.api-example) {
   textarea {
     @include get-text('pkt-txt-12');
