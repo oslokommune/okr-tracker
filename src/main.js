@@ -4,7 +4,6 @@ import { createHead } from '@unhead/vue';
 import {
   VueFire,
   VueFireAuthOptionsFromAuth,
-  VueFireFirestoreOptionsAPI,
   globalFirestoreOptions,
   firestoreDefaultConverter,
 } from 'vuefire';
@@ -35,20 +34,16 @@ app.use(VueFire, {
   firebaseApp,
   modules: [
     // https://vuefire.vuejs.org/guide/auth.html
+    // https://vuefire.vuejs.org/api/modules/vuefire.html#VueFireAuthOptionsFromAuth
     VueFireAuthOptionsFromAuth({ auth }),
-    // https://vuefire.vuejs.org/guide/getting-started.html#Options-API
-    // https://vuefire.vuejs.org/guide/options-api-realtime-data.html
-    VueFireFirestoreOptionsAPI({
-      // Maximum depth to bind nested refs.
-      maxRefDepth: 1,
-      // Keep same behavior as VueFire 2.x for now.
-      // https://vuefire.vuejs.org/cookbook/migration-v2-v3.html
-      reset: true,
-      wait: false,
-    }),
   ],
 });
+
+// Firestore global options
 // https://vuefire.vuejs.org/guide/global-options.html
+// https://vuefire.vuejs.org/cookbook/migration-v2-v3.html#Default-changes-to-reset-and-wait
+globalFirestoreOptions.maxRefDepth = 1;
+globalFirestoreOptions.wait = true;
 globalFirestoreOptions.reset = true;
 globalFirestoreOptions.converter = {
   toFirestore: firestoreDefaultConverter.toFirestore,
