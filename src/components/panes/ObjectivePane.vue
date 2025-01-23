@@ -90,6 +90,10 @@ const orderedKeyResults = computed({
 });
 
 const isMemberOfChild = computed(() => {
+  if (!objective.value || !organizationTree.value) {
+    return false;
+  }
+
   const { id: parentId } = objective.value.parent;
   const { id: organizationId, children: departments } = organizationTree.value;
 
