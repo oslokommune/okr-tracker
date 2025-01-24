@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [5.0.0] 2025-01-24
 
 This release introduces a significant update to the project, upgrading to Vue 3
 and transitioning to Pinia for state management, along with updated versions of
