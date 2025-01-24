@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+This release introduces a significant update to the project, upgrading to Vue 3
+and transitioning to Pinia for state management, along with updated versions of
+Vue Router and VueFire. Several components have been rewritten or refactored,
+deprecated packages have been replaced, and better integration of the Punkt
+Design System has been implemented. Some bugs have been ironed out while new
+issues may have been introduced due to the scope of changes.
+
+### Changed
+
+- Migration to Vue 3, leveraging the Composition API.
+- Integration of Pinia as the new state management library.
+- Updated versions of other core libraries: Vue Router and VueFire.
+- Improved integration and utilization of the Punkt Design System.
+
+### Security
+
+- Deprecated and outdated packages have been replaced by newer alternatives.
+- Updated dependencies to address potential security vulnerabilities and
+  ensure compliance with newer standards.
+
 ## [4.2.2] 2024-11-07
 
 ### Changed
