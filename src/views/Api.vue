@@ -1,24 +1,27 @@
-<template>
-  <page-layout breakpoint="tablet-big">
-    <div id="swagger-ui"></div>
-  </page-layout>
-</template>
-
-<script>
+<script setup>
+import { onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
 import { SwaggerUIBundle } from 'swagger-ui-dist';
 import 'swagger-ui-dist/swagger-ui.css';
 
-export default {
-  name: 'Api',
+const i18n = useI18n();
 
-  mounted() {
-    SwaggerUIBundle({
-      url: './openapi.yaml',
-      dom_id: '#swagger-ui',
-    });
-  },
-};
+useHead({ title: i18n.t('general.api') });
+
+onMounted(() => {
+  SwaggerUIBundle({
+    url: './openapi.yaml',
+    dom_id: '#swagger-ui',
+  });
+});
 </script>
+
+<template>
+  <PageLayout breakpoint="tablet-big">
+    <div id="swagger-ui"></div>
+  </PageLayout>
+</template>
 
 <style lang="scss">
 pre > code {

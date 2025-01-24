@@ -1,36 +1,28 @@
+<script setup>
+import { watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useTrackerStore } from '@/store/tracker';
+import SiteHeader from './Navigation/SiteHeader.vue';
+
+const { loading } = storeToRefs(useTrackerStore());
+
+watchEffect(() => {
+  // Remove initial app loader
+  if (!loading.value && document.querySelector('#spinner')) {
+    document.querySelector('#spinner').remove();
+  }
+});
+</script>
+
 <template>
-  <div class="app-wrapper">
-    <site-header />
+  <div v-if="!loading" class="app-wrapper">
+    <SiteHeader />
 
-    <v-spinner v-if="loading" />
-
-    <div v-else class="router-view-wrapper">
-      <router-view></router-view>
+    <div class="router-view-wrapper">
+      <RouterView />
     </div>
   </div>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import SiteHeader from './Navigation/SiteHeader.vue';
-
-export default {
-  name: 'AppLayout',
-  components: {
-    SiteHeader,
-  },
-
-  computed: {
-    ...mapState(['loading']),
-  },
-
-  created() {
-    if (document.querySelector('#spinner')) {
-      document.querySelector('#spinner').remove();
-    }
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .app-wrapper {

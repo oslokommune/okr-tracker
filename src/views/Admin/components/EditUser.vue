@@ -1,12 +1,99 @@
+<script setup>
+import { computed, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { useAuthStore } from '@/store/auth';
+import { useTrackerStore } from '@/store/tracker';
+import { useTrackerUser } from '@/composables/user';
+import User from '@/db/User';
+import { BtnSave, BtnDelete } from '@/components/generic/form';
+
+const toast = useToast();
+const i18n = useI18n();
+
+const props = defineProps({
+  userId: {
+    type: String,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['close']);
+
+const { organizations } = storeToRefs(useTrackerStore());
+const { user: currentUser, isSuperAdmin } = storeToRefs(useAuthStore());
+const { user } = useTrackerUser(props.userId);
+const isCurrentUser = computed(
+  () => user.value && currentUser.value && user.value.id === currentUser.value.id
+);
+const formData = ref(null);
+const isLoading = ref(false);
+
+watch(
+  user,
+  () => {
+    if (user.value) {
+      const { id, displayName, admin, superAdmin } = user.value;
+
+      formData.value = {
+        id,
+        displayName,
+        admin:
+          admin && admin.length
+            ? admin
+                .filter((oid) => organizations.value.map((o) => o.id).includes(oid))
+                .map((oid) => ({
+                  id: oid,
+                  name: organizations.value.find((o) => o.id === oid).name,
+                }))
+            : [],
+        superAdmin: superAdmin || false,
+      };
+    }
+  },
+  { immediate: true }
+);
+
+async function update() {
+  isLoading.value = true;
+  try {
+    await User.update(user.value, {
+      ...formData.value,
+      admin: formData.value.admin.map((org) => org.id),
+    });
+    toast.success(i18n.t('toaster.savedChanges'));
+  } catch {
+    toast.error(i18n.t('toaster.error.save'));
+  }
+  isLoading.value = false;
+}
+
+async function remove() {
+  isLoading.value = true;
+  const { displayName } = user.value;
+  try {
+    await User.remove(user.value);
+    toast.success(i18n.t('toaster.delete.user', { user: displayName }));
+    emit('close');
+  } catch {
+    toast.error(i18n.t('toaster.error.user', { user: displayName }));
+  }
+  isLoading.value = false;
+}
+</script>
+
 <template>
-  <div v-if="thisUser" class="selected-user">
-    <slot name="back"></slot>
+  <slot name="back"></slot>
 
-    <h2 class="title-2">{{ $t('admin.users.edit') }}</h2>
+  <div class="edit-user mt-size-16">
+    <h2 class="pkt-txt-22 mb-size-16">
+      {{ $t('admin.users.edit') }}
+    </h2>
 
-    <form-section>
-      <form-component
-        v-model="thisUser.id"
+    <FormSection v-if="user">
+      <FormComponent
+        v-model="formData.id"
         input-type="input"
         name="id"
         :label="$t('fields.email')"
@@ -15,143 +102,47 @@
         :disabled="true"
       />
 
-      <form-component
-        v-model="thisUser.displayName"
+      <FormComponent
+        v-model="formData.displayName"
         input-type="input"
-        name="name"
+        name="displayName"
         :label="$t('fields.displayName')"
         rules="required"
         type="text"
       />
 
-      <toggle-button
-        v-model="thisUser.superAdmin"
-        name="superadmin"
-        :label="$t('general.superAdmin')"
-        :disabled="user.email === selectedUser.email || !user.superAdmin"
+      <FormComponent
+        v-model="formData.admin"
+        input-type="custom-select"
+        select-mode="tags"
+        name="admin"
+        :disabled="!isSuperAdmin"
+        :label="$t('general.admin')"
+        value-prop="id"
+        label-prop="name"
+        :store-object="true"
+        :options="organizations.map(({ id, name }) => ({ id, name }))"
       />
 
-      <div class="pkt-form-group">
-        <span class="pkt-form-label" for="admin">
-          {{ $t('general.admin') }}
-          <span class="pkt-badge">{{ $t('validation.optional') }}</span>
-        </span>
-        <v-select
-          id="admin"
-          v-model="thisUser.admin"
-          multiple
-          :options="organizations"
-          :get-option-label="(option) => option.name"
-          :disabled="!user.superAdmin"
-        >
-        </v-select>
-      </div>
+      <FormComponent
+        v-model="formData.superAdmin"
+        input-type="switch"
+        name="superadmin"
+        :label="$t('general.superAdmin')"
+        :disabled="isCurrentUser || !isSuperAdmin"
+      />
 
-      <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-delete
-          :disabled="user.email === selectedUser.email || loading"
-          @click="remove(selectedUser)"
-        />
-        <btn-save
-          :disabled="submitDisabled || loading"
-          data-cy="btn-createOrg"
-          @click="handleSubmit(save)"
-        />
+      <template #actions="{ submit, disabled }">
+        <BtnDelete :disabled="isCurrentUser || isLoading" @on-click="remove" />
+        <BtnSave :disabled="disabled || isLoading" @on-click="submit(update)" />
       </template>
-    </form-section>
+    </FormSection>
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-import User from '@/db/User';
-import { db } from '@/config/firebaseConfig';
-import { FormSection, BtnSave, BtnDelete, ToggleButton } from '@/components/generic/form';
-
-export default {
-  name: 'EditUser',
-  components: { FormSection, BtnSave, BtnDelete, ToggleButton },
-
-  props: {
-    selectedUser: {
-      required: true,
-      type: Object,
-    },
-  },
-
-  data: () => ({
-    thisUser: null,
-    loading: false,
-  }),
-
-  computed: {
-    ...mapState(['user', 'organizations', 'users']),
-  },
-
-  watch: {
-    selectedUser: {
-      immediate: true,
-      async handler() {
-        this.image = null;
-        this.thisUser = {
-          ...this.selectedUser,
-          superAdmin: this.selectedUser.superAdmin || false,
-        };
-
-        if (this.selectedUser.admin?.length > 0) {
-          const orgs = [];
-          this.selectedUser.admin.forEach((org) =>
-            orgs.push(db.collection('organizations').doc(org).get())
-          );
-          const dataArr = await Promise.all(orgs);
-          this.thisUser.admin = dataArr.map((org) => ({
-            ...org.data(),
-            id: org.id,
-          }));
-        }
-      },
-    },
-  },
-
-  methods: {
-    async remove(user) {
-      this.loading = true;
-      try {
-        await User.remove(user);
-        this.$toasted.show(this.$t('toaster.delete.user', { user: user.displayName }));
-        this.$emit('close');
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.user', { user: user.displayName }));
-      }
-      this.loading = false;
-    },
-
-    async save() {
-      this.loading = true;
-      try {
-        const saveUser = { ...this.thisUser };
-        if (this.thisUser.admin?.length > 0) {
-          saveUser.admin = saveUser.admin.map((org) => org.id);
-        }
-        await User.update(saveUser);
-        this.$toasted.show(this.$t('toaster.savedChanges'));
-      } catch (e) {
-        console.log(e);
-        this.$toasted.error(this.$t('toaster.error.save'));
-      }
-
-      this.loading = false;
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
-.selected-user {
+.edit-user {
   padding: 1rem;
-
-  > h2.title-2 {
-    margin-top: 1.5rem;
-  }
+  background: var(--color-gray-light);
 }
 </style>

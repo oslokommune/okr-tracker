@@ -1,112 +1,93 @@
+<script setup>
+import { ref } from 'vue';
+import { useCollection } from 'vuefire';
+import { collection } from 'firebase/firestore';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { db } from '@/config/firebaseConfig';
+import api from '@/util/api';
+
+const i18n = useI18n();
+const toast = useToast();
+
+const accessRequests = useCollection(collection(db, 'requestAccess'));
+const loading = ref(false);
+
+async function handleAccessRequest(method, path, accessRequest) {
+  loading.value = true;
+  const { email } = accessRequest;
+
+  try {
+    const { message } = await api(path, { method });
+    toast.success(i18n.t(message, { user: email }) || message);
+  } catch (error) {
+    toast.error(i18n.t(error.message, { user: email }) || error.message);
+  }
+
+  loading.value = false;
+}
+
+function acceptRequest(request) {
+  handleAccessRequest('post', `/accessRequests/${request.id}/accept`, request);
+}
+
+function rejectRequest(request) {
+  handleAccessRequest('delete', `/accessRequests/${request.id}`, request);
+}
+</script>
+
 <template>
-  <div v-if="accessRequest.length" class="access-requests">
-    <h2 class="title-2">{{ $t('accessRequests.heading') }}</h2>
+  <div v-if="accessRequests.length" class="access-requests">
+    <h2 class="title-2">
+      {{ $t('accessRequests.heading') }} ({{ accessRequests.length }})
+    </h2>
 
     <div class="access-requests__list">
-      <pkt-alert
-        v-for="request in accessRequest"
+      <PktAlert
+        v-for="request in accessRequests"
         :key="request.id"
         :title="request.email"
       >
         <div class="access-requests__actions">
-          <pkt-button
-            :disabled="isProcessingAccessRequest"
+          <PktButton
+            :disabled="loading"
             skin="secondary"
-            data-cy="request-accept"
-            @onClick="acceptRequest(request)"
+            size="small"
+            @on-click="acceptRequest(request)"
           >
             {{ $t('btn.acceptRequest') }}
-          </pkt-button>
-          <pkt-button
-            :disabled="isProcessingAccessRequest"
+          </PktButton>
+          <PktButton
+            :disabled="loading"
             skin="secondary"
-            data-cy="request-reject"
-            @onClick="rejectRequest(request)"
+            size="small"
+            @on-click="rejectRequest(request)"
           >
             {{ $t('btn.rejectRequest') }}
-          </pkt-button>
+          </PktButton>
         </div>
-      </pkt-alert>
+      </PktAlert>
     </div>
   </div>
 </template>
 
-<script>
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
-import { db } from '@/config/firebaseConfig';
-import api from '@/util/api';
-import { showToastMessage } from '@/util/toastUtils';
-// eslint-disable-next-line import/no-relative-packages
-import AccessRequestCollection from '../../../../functions/backend/utils/collectionUtils/AccessRequestCollection.js';
-
-const accessRequestCollection = new AccessRequestCollection(db);
-
-export default {
-  name: 'AdminAccessRequests',
-
-  components: {
-    PktAlert,
-    PktButton,
-  },
-
-  data: () => ({
-    accessRequest: [],
-    isProcessingAccessRequest: false,
-  }),
-
-  firestore: {
-    accessRequest: accessRequestCollection.getCollection(),
-  },
-
-  methods: {
-    showToastMessage(message, accessRequest, toastType) {
-      showToastMessage({
-        msg: message,
-        msgVars: { user: accessRequest.email },
-        type: toastType,
-      });
-    },
-    async handleAccessRequest(method, path, accessRequest) {
-      this.isProcessingAccessRequest = true;
-
-      try {
-        const { message } = await api(path, { method });
-        this.showToastMessage(message, accessRequest, 'success');
-      } catch (error) {
-        this.showToastMessage(error.message, accessRequest, 'error');
-      }
-
-      this.isProcessingAccessRequest = false;
-    },
-    acceptRequest(accessRequest) {
-      this.handleAccessRequest(
-        'post',
-        `/accessRequests/${accessRequest.id}/accept`,
-        accessRequest
-      );
-    },
-
-    rejectRequest(accessRequest) {
-      this.handleAccessRequest(
-        'delete',
-        `/accessRequests/${accessRequest.id}`,
-        accessRequest
-      );
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
-.access-requests__list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 0 0 1.5rem;
-}
+.access-requests {
+  :deep(.pkt-alert__title) {
+    word-break: break-all;
+  }
 
-.access-requests__actions {
-  display: flex;
-  gap: 0.5rem;
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
 }
 </style>

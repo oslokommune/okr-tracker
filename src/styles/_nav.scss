@@ -4,9 +4,7 @@
 $-module-name: 'nav';
 $-base-height: 3rem;
 $-base-width: 15rem;
-// TODO: Border color should be changed to `--color-gray``
-// as soon as new background color is implemented.
-$-border-color: var(--color-grayscale-10);
+$-border-color: var(--pkt-color-border-gray);
 
 @mixin -menu-item {
   position: relative;
@@ -46,14 +44,18 @@ $-border-color: var(--color-grayscale-10);
   align-items: stretch;
   height: $-base-height;
   list-style-type: none;
-  background-color: var(--color-white);
+
+  > .#{$-module-name}-menu {
+    margin-left: 1rem;
+  }
 
   &--vertical {
     flex-direction: column;
-    width: $-base-width;
+    min-width: $-base-width;
     height: auto;
 
-    > .#{$-module-name}-menu-item {
+    > .#{$-module-name}-menu-item,
+    > .#{$-module-name}-menu-switch {
       height: $-base-height;
 
       &--dropdown {
@@ -84,6 +86,7 @@ $-border-color: var(--color-grayscale-10);
     }
 
     &--active {
+      color: var(--pkt-color-text-action-active) !important;
       font-weight: 500;
     }
   }
@@ -99,7 +102,7 @@ $-border-color: var(--color-grayscale-10);
   }
 
   &__content {
-    background-color: inherit;
+    background-color: var(--color-white);
     border: 1px solid $-border-color;
 
     > .#{$-module-name}-menu--vertical {
@@ -109,8 +112,15 @@ $-border-color: var(--color-grayscale-10);
 
   &--open > .#{$-module-name}-menu-item__inner,
   > .#{$-module-name}-menu-item__inner:hover {
+    color: var(--pkt-color-text-action-active) !important;
     background-color: var(--color-gray-light);
     cursor: pointer;
+    --fg-color: var(--pkt-color-text-action-active);
+  }
+
+  > div.#{$-module-name}-menu-item__inner:focus-visible {
+    box-shadow: 0px 0px 0px 0.125rem var(--pkt-color-text-action-active),
+      0px 0px 0px 0.375rem var(--pkt-color-border-states-focus);
   }
 
   &--dropdown {
@@ -165,11 +175,21 @@ $-border-color: var(--color-grayscale-10);
   }
 }
 
+.#{$-module-name}-menu-switch {
+  @include -menu-item;
+
+  > .#{$-module-name}-menu-switch__inner:hover {
+    color: var(--pkt-color-text-action-active);
+    background-color: var(--color-gray-light);
+    cursor: pointer;
+  }
+}
+
+
 .#{$-module-name}-menu-text {
   @include -menu-item;
 
   &__inner {
-    gap: 0.25em;
     padding: 0 1em;
   }
 

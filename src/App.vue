@@ -1,37 +1,33 @@
-<template>
-  <div class="app">
-    <app-layout />
-  </div>
-</template>
-
-<script>
-import { mapActions } from 'vuex';
-import { auth } from '@/config/firebaseConfig';
-
+<script setup>
+import { watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useHead } from '@unhead/vue';
+import { useI18n } from 'vue-i18n';
+import { useTrackerStore } from '@/store/tracker';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import AppLayout from './components/AppLayout.vue';
 
-export default {
-  name: 'App',
+const i18n = useI18n();
 
-  components: {
-    AppLayout,
+const { homeOrganization, owner } = storeToRefs(useTrackerStore());
+const activeOrganizationStore = useActiveOrganizationStore();
+const { organization } = storeToRefs(activeOrganizationStore);
+
+useHead({
+  title: owner.value,
+  titleTemplate: (title) => `${title} | ${i18n.t('general.project')}`,
+});
+
+watch(
+  homeOrganization,
+  () => {
+    // Set active organization to home organization if not otherwise set
+    if (homeOrganization.value && !organization.value) {
+      activeOrganizationStore.setOrganization(homeOrganization.value.id);
+    }
   },
-
-  computed: {
-    isDev() {
-      return import.meta.env.NODE_ENV !== 'production';
-    },
-  },
-
-  methods: {
-    ...mapActions(['reset_state']),
-
-    async signOut() {
-      await auth.signOut();
-      await this.reset_state();
-    },
-  },
-};
+  { immediate: true }
+);
 
 // Using a class on body to determine how to style focus states
 document.body.addEventListener('mousedown', () => {
@@ -49,3 +45,9 @@ document.body.addEventListener('keydown', () => {
  */
 window.noZensmooth = true;
 </script>
+
+<template>
+  <div class="app">
+    <AppLayout />
+  </div>
+</template>

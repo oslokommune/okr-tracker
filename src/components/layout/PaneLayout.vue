@@ -1,38 +1,12 @@
 <template>
-  <div class="pane-layout">
-    <template v-for="(pane, i) in $slots.default">
-      <transition
-        :key="`pane${i}`"
-        name="slide-fade"
-        @enter="onTransitionEvent('pane-enter', $event)"
-        @leave="onTransitionEvent('pane-leave', $event)"
-      >
-        <v-nodes v-if="pane.data" :vnodes="pane" />
-      </transition>
+  <div v-if="$slots.default" class="pane-layout">
+    <template v-for="(pane, i) in $slots.default()" :key="`pane${i}`">
+      <Transition name="slide-fade">
+        <component :is="pane" />
+      </Transition>
     </template>
   </div>
 </template>
-
-<script>
-import paneEvents from './paneEvents';
-
-export default {
-  name: 'PaneLayout',
-
-  components: {
-    VNodes: {
-      functional: true,
-      render: (h, ctx) => ctx.props.vnodes,
-    },
-  },
-
-  methods: {
-    onTransitionEvent(name, e) {
-      paneEvents.$emit(name, e);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;

@@ -1,4 +1,11 @@
-import { db, auth, serverTimestamp } from '@/config/firebaseConfig';
+import {
+  doc,
+  collection,
+  deleteDoc,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore';
+import { db, auth } from '@/config/firebaseConfig';
 import props from './props';
 import {
   validateCreateProps,
@@ -7,7 +14,7 @@ import {
   updateDocument,
 } from '../common';
 
-const collection = db.collection('apiClients');
+const apiClientsCollection = collection(db, 'apiClients');
 
 const create = async (data) => {
   data = {
@@ -17,7 +24,7 @@ const create = async (data) => {
   if (!validateCreateProps(props, data)) {
     throw new Error('Invalid data');
   }
-  return createDocument(collection, data);
+  return createDocument(apiClientsCollection, data);
 };
 
 const update = async (clientRef, data) => {
@@ -45,7 +52,7 @@ const remove = async (clientRef) => {
     throw new Error('Missing client reference');
   }
   try {
-    return clientRef.delete();
+    return deleteDoc(clientRef);
   } catch (error) {
     throw new Error(`Could not delete client ${clientRef.id}`);
   }
@@ -64,7 +71,7 @@ const createSecret = async (clientRef) => {
     const hashedSecret = hashArray
       .map((byte) => byte.toString(16).padStart(2, '0'))
       .join('');
-    await createDocument(clientRef.collection('secrets'), {
+    await createDocument(collection(clientRef, 'secrets'), {
       secret: hashedSecret,
     });
     return secret;
@@ -79,9 +86,9 @@ const rotateSecret = async (clientRef) => {
   }
   try {
     const secret = await createSecret(clientRef);
-    await clientRef.update({
+    await updateDoc(clientRef, {
       rotated: serverTimestamp(),
-      rotatedBy: db.collection('users').doc(auth.currentUser.email),
+      rotatedBy: doc(db, 'users', auth.currentUser.email),
     });
     return secret;
   } catch (error) {
@@ -91,7 +98,7 @@ const rotateSecret = async (clientRef) => {
 };
 
 export default {
-  collection,
+  apiClientsCollection,
   create,
   update,
   archive,

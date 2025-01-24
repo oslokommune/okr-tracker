@@ -1,31 +1,23 @@
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
 .details {
   display: flex;
   flex-direction: column;
-}
 
-.details__item {
-  margin: 0.5rem 0;
-  line-height: 1.2rem;
-}
+  &__item {
+    @include get-text('pkt-txt-14');
+    margin: 0.5rem 0;
+    line-height: 1.2rem;
 
-.details__item-body {
-  display: flex;
-}
+    &-title {
+      @include get-text('pkt-txt-14-medium');
+      padding-bottom: 0.25rem;
+    }
 
-.details__item-heading {
-  padding-bottom: 0.2rem;
-}
-
-.details__item-value {
-  padding-bottom: 0.5rem;
-}
-
-.details__item-icon {
-  flex-shrink: 0;
-  align-self: flex-start;
-  width: 1.5rem;
-  margin-top: 0.1rem;
-  margin-left: 0.15rem;
+    &-value {
+      padding-bottom: 0.5rem;
+    }
+  }
 }
 
 .widgets {

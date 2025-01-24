@@ -1,9 +1,52 @@
-<template>
-  <div class="add-users">
-    <slot name="back"></slot>
+<script setup>
+import { ref } from 'vue';
+import { email } from '@vee-validate/rules';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
+import User from '@/db/User';
+import { BtnSave } from '@/components/generic/form';
 
-    <form-section>
-      <form-component
+const toast = useToast();
+const i18n = useI18n();
+
+const emit = defineEmits(['close']);
+
+const emails = ref('');
+const isLoading = ref(false);
+
+async function save() {
+  isLoading.value = true;
+  const list = emails.value.trim().split('\n').filter(Boolean).filter(email);
+
+  if (!list.length) {
+    toast.error(i18n.t('toaster.error.email'));
+    isLoading.value = false;
+    return;
+  }
+
+  try {
+    await User.addUsers(list);
+    toast.success(i18n.t('toaster.add.users', list.length, { count: list.length }));
+    emit('close');
+  } catch (error) {
+    toast.error(i18n.t('toaster.error.users', list.length));
+    throw new Error(error);
+  }
+
+  isLoading.value = false;
+}
+</script>
+
+<template>
+  <slot name="back"></slot>
+
+  <div class="add-users mt-size-16">
+    <h2 class="pkt-txt-22 mb-size-16">
+      {{ $t('admin.users.registerUsersButton') }}
+    </h2>
+
+    <FormSection>
+      <FormComponent
         v-model="emails"
         input-type="textarea"
         name="emails"
@@ -11,66 +54,21 @@
         :label="$t('admin.users.registerUsersText')"
         class="add-users__input"
       />
-      <template #actions="{ handleSubmit, submitDisabled }">
-        <btn-save
-          :disabled="submitDisabled || loading"
+
+      <template #actions="{ submit, disabled }">
+        <BtnSave
+          :disabled="disabled || isLoading"
           :text="$t('admin.users.registerUsersButton')"
-          @click="handleSubmit(save)"
+          @on-click="submit(save)"
         />
       </template>
-    </form-section>
+    </FormSection>
   </div>
 </template>
 
-<script>
-import User from '@/db/User';
-import { BtnSave, FormSection } from '@/components/generic/form';
-import { validateEmail } from '@/util';
-
-export default {
-  name: 'AddUsers',
-
-  components: {
-    BtnSave,
-    FormSection,
-  },
-
-  data: () => ({
-    emails: '',
-    loading: false,
-  }),
-
-  methods: {
-    async save() {
-      this.loading = true;
-      const list = this.emails.trim().split('\n').filter(Boolean).filter(validateEmail);
-
-      if (!list.length) {
-        this.$toasted.error(this.$t('toaster.error.email'));
-        this.loading = false;
-        return;
-      }
-
-      try {
-        await User.addUsers(list);
-        this.$emit('close');
-        this.$toasted.show(
-          this.$tc('toaster.add.users', list.length, { count: list.length })
-        );
-      } catch (error) {
-        this.$toasted.error(this.$tc('toaster.error.users', list.length));
-        throw new Error(error);
-      }
-
-      this.loading = false;
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
 .add-users {
-  gap: 1rem;
   padding: 1rem;
+  background: var(--color-gray-light);
 }
 </style>

@@ -1,12 +1,147 @@
+<script setup>
+import { computed, nextTick, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { doc, writeBatch } from 'firebase/firestore';
+import { db } from '@/config/firebaseConfig';
+import metadata from '@/db/common/util/metadata';
+import { useAuthStore } from '@/store/auth';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
+import { useActiveItemStore } from '@/store/activeItem';
+import { useActiveObjectiveStore } from '@/store/activeObjective';
+import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import { compareKeyResults } from '@/util/okr';
+import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
+import PaneWrapper from '@/components/panes/PaneWrapper.vue';
+import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
+import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
+import EmptyState from '@/components/EmptyState.vue';
+import SortableList from '@/components/SortableList.vue';
+import KeyResultLinkCard from '@/components/KeyResultLinkCard.vue';
+import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
+
+const { user, hasEditRights } = storeToRefs(useAuthStore());
+const { organizationTree } = storeToRefs(useActiveOrganizationStore());
+const { item } = storeToRefs(useActiveItemStore());
+const {
+  objective,
+  objectivePromise,
+  isLoading: objectiveIsLoading,
+  isInheritedObjective,
+  hasOwnKeyResult,
+  keyResults,
+  keyResultsIsLoading,
+} = storeToRefs(useActiveObjectiveStore());
+
+const pane = ref(null);
+const showLiftWarning = ref(false);
+const renderKeyResults = ref(false);
+const renderWidgets = ref(false);
+
+const breadcrumbs = computed(() => [
+  { text: item.value.name, href: { name: 'ItemHome' } },
+  { text: objective.value.name },
+]);
+
+watch(
+  () => objective.value,
+  async (to, from) => {
+    if (to?.id !== from?.id) {
+      // Reset and scroll to the top of the pane when the currently active
+      // objective changes.
+      showLiftWarning.value = false;
+      renderKeyResults.value = false;
+      renderWidgets.value = false;
+      await nextTick();
+      pane.value.$el.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  [objective, keyResults, keyResultsIsLoading],
+  async () => {
+    // Ensure that the objective is completely resovled
+    await objectivePromise.value;
+
+    // Show the "lifted" object warning if the object is inherited and no
+    // key results are owned by the currently active item
+    showLiftWarning.value =
+      isInheritedObjective.value && !keyResultsIsLoading.value && !hasOwnKeyResult.value;
+  },
+  { deep: true }
+);
+
+const orderedKeyResults = computed({
+  get() {
+    return keyResults.value.map((kr) => kr).sort(compareKeyResults);
+  },
+  async set(keyResultList) {
+    const batch = writeBatch(db);
+
+    keyResultList.forEach((kr, i) => {
+      if (kr.order !== i) {
+        batch.update(doc(db, kr.path), { order: i, ...metadata.edited() });
+      }
+    });
+
+    await batch.commit();
+  },
+});
+
+const isMemberOfChild = computed(() => {
+  if (!objective.value || !organizationTree.value) {
+    return false;
+  }
+
+  const { id: parentId } = objective.value.parent;
+  const { id: organizationId, children: departments } = organizationTree.value;
+
+  // Check if objective parent is the currently active organization
+  // and the current user is a member of any immediate child departments.
+  if (parentId === organizationId) {
+    return departments.some((department) =>
+      department.team.map(({ id }) => id).includes(user.value.id)
+    );
+  }
+
+  // Check if objective parent is a department and the current user
+  // is a member of any immediate child products.
+  const department = departments.find((d) => d.id === parentId);
+
+  if (department) {
+    return department.children.some((product) =>
+      product.team.map(({ id }) => id).includes(user.value.id)
+    );
+  }
+
+  return false;
+});
+
+function keyResultLinkProps(keyResult) {
+  return {
+    route: {
+      name: 'KeyResultHome',
+      params: { objectiveId: objective.id, keyResultId: keyResult.id },
+    },
+    title: keyResult.name,
+    progression: keyResult.progression,
+    owner: keyResult.parent?.name ? keyResult.parent : null,
+    draggable: hasEditRights.value,
+  };
+}
+</script>
+
 <template>
-  <pane-wrapper
+  <PaneWrapper
     ref="pane"
     class="objective-pane"
     closable
     @close="$router.push({ name: 'ItemHome' })"
   >
     <template #title>
-      <pkt-breadcrumbs
+      <PktBreadcrumbs
+        v-if="objective"
         class="pkt-hide-laptop-up"
         navigation-type="router"
         :breadcrumbs="breadcrumbs"
@@ -17,227 +152,102 @@
       {{ $t('general.objective') }}
     </h1>
 
-    <pkt-alert v-if="isGhost" skin="warning">
-      <i18n path="objective.movedWarning" tag="p">
+    <PktAlert v-if="objective && objective.archived" skin="warning" compact>
+      {{ $t('archived.heading') }}
+    </PktAlert>
+
+    <PktAlert v-if="showLiftWarning" skin="warning" compact>
+      <i18n-t keypath="objective.movedWarning" tag="p" scope="global">
         <template #activeItem>
-          {{ activeItem.name }}
+          {{ item.name }}
         </template>
         <template #ownerLink>
-          <router-link v-if="activeObjective.parent?.slug" :to="liftedObjectiveRoute">{{
-            activeObjective.parent.name
-          }}</router-link>
+          <RouterLink
+            v-if="objective.parent?.slug"
+            :to="{
+              name: 'ObjectiveHome',
+              params: {
+                slug: objective.parent.slug,
+                objectiveId: objective.id,
+              },
+            }"
+          >
+            {{ objective.parent.name }}
+          </RouterLink>
         </template>
-      </i18n>
-    </pkt-alert>
+      </i18n-t>
+    </PktAlert>
 
-    <objective-details-card
-      :objective="activeObjective"
-      :key-results="keyResults"
-      @edit-objective="$emit('edit-objective')"
-    />
+    <FadeTransition :duration="100" @after-enter="renderKeyResults = true">
+      <ObjectiveDetailsCard
+        v-if="!objectiveIsLoading && objective"
+        :objective="objective"
+        :key-results="keyResults"
+        @edit-objective="$emit('edit-objective')"
+      />
+    </FadeTransition>
 
-    <div class="objective-pane__key-results">
-      <div class="objective-pane__key-results-header">
-        <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
-        <pkt-button
-          v-if="hasEditRights || isMemberOfChild"
-          :text="$t('general.keyResult')"
-          :aria-label="$t('btn.addKeyResult')"
-          skin="primary"
-          size="small"
-          variant="icon-left"
-          icon-name="plus-sign"
-          @onClick="$emit('add-key-result')"
-        />
-      </div>
+    <FadeTransition :duration="100" @after-enter="renderWidgets = true">
+      <div v-if="renderKeyResults" class="objective-pane__key-results">
+        <div class="objective-pane__key-results-header">
+          <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
+          <PktButton
+            v-if="hasEditRights || isMemberOfChild"
+            :text="$t('general.keyResult')"
+            :aria-label="$t('btn.addKeyResult')"
+            skin="primary"
+            size="small"
+            variant="icon-left"
+            icon-name="plus-sign"
+            @on-click="$emit('add-key-result')"
+          />
+        </div>
 
-      <div v-if="loadingKeyResults">
-        <loading-small />
-        {{ $t('general.loading') }}
-      </div>
-
-      <draggable
-        v-else-if="hasEditRights && keyResults.length"
-        v-model="orderedKeyResults"
-        class="objective-pane__key-results-list"
-        animation="300"
-        handle=".drag-icon"
-      >
-        <transition-group>
-          <key-result-link-card
+        <SortableList
+          v-if="hasEditRights && keyResults.length"
+          v-model="orderedKeyResults"
+          class="objective-pane__key-results-list"
+          handle=".drag-icon"
+        >
+          <KeyResultLinkCard
             v-for="keyResult in orderedKeyResults"
             :key="keyResult.id"
-            :route="{
-              name: 'KeyResultHome',
-              params: { objectiveId: activeObjective.id, keyResultId: keyResult.id },
-            }"
-            :title="keyResult.name"
-            :progression="keyResult.progression"
-            :owner="keyResult.parent?.name ? keyResult.parent : null"
-            :draggable="true"
-            :active="activeKeyResult && activeKeyResult.id === keyResult.id"
+            v-bind="keyResultLinkProps(keyResult)"
           />
-        </transition-group>
-      </draggable>
+        </SortableList>
 
-      <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
-        <key-result-link-card
-          v-for="keyResult in orderedKeyResults"
-          :key="keyResult.id"
-          :route="{
-            name: 'KeyResultHome',
-            params: { objectiveId: activeObjective.id, keyResultId: keyResult.id },
-          }"
-          :title="keyResult.name"
-          :progression="keyResult.progression"
-          :owner="keyResult.parent?.name ? keyResult.parent : null"
-          :active="activeKeyResult && activeKeyResult.id === keyResult.id"
+        <div v-else-if="keyResults.length" class="objective-pane__key-results-list">
+          <KeyResultLinkCard
+            v-for="keyResult in orderedKeyResults"
+            :key="keyResult.id"
+            v-bind="keyResultLinkProps(keyResult)"
+          />
+        </div>
+
+        <EmptyState
+          v-else
+          :heading="$t('empty.noKeyResults.heading')"
+          :body="$t('empty.noKeyResults.body')"
+          skin="dim"
         />
       </div>
+    </FadeTransition>
 
-      <empty-state
-        v-else
-        :heading="$t('empty.noKeyResults.heading')"
-        :body="$t('empty.noKeyResults.body')"
-      />
-    </div>
-
-    <div class="objective-pane__widgets">
-      <widget-weights v-if="keyResults.length" :objective="activeObjective" />
-      <widget-objective-details />
-    </div>
-  </pane-wrapper>
+    <FadeTransition :duration="150">
+      <div v-if="objective && renderWidgets" class="objective-pane__widgets">
+        <WidgetWeights
+          v-if="keyResults.length"
+          :objective="objective"
+          :key-results="orderedKeyResults"
+        />
+        <WidgetObjectiveDetails :objective="objective" />
+      </div>
+    </FadeTransition>
+  </PaneWrapper>
 </template>
-
-<script>
-import { mapGetters, mapState } from 'vuex';
-import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue2';
-import draggable from 'vuedraggable';
-import { compareKeyResults } from '@/util/okr';
-import { db } from '@/config/firebaseConfig';
-import KeyResult from '@/db/KeyResult';
-import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
-import PaneWrapper from '@/components/panes/PaneWrapper.vue';
-import LoadingSmall from '@/components/LoadingSmall.vue';
-import WidgetObjectiveDetails from '@/components/widgets/WidgetObjectiveDetails.vue';
-import WidgetWeights from '@/components/widgets/WidgetWeights.vue';
-import EmptyState from '@/components/EmptyState.vue';
-import KeyResultLinkCard from '@/components/KeyResultLinkCard.vue';
-
-export default {
-  name: 'ObjectivePane',
-
-  components: {
-    draggable,
-    PaneWrapper,
-    EmptyState,
-    ObjectiveDetailsCard,
-    KeyResultLinkCard,
-    LoadingSmall,
-    PktAlert,
-    PktBreadcrumbs,
-    PktButton,
-    WidgetWeights,
-    WidgetObjectiveDetails,
-  },
-
-  data: () => ({
-    loadingKeyResults: false,
-    keyResults: [],
-  }),
-
-  computed: {
-    ...mapState(['activeItem', 'user', 'departments', 'products']),
-    ...mapState('okrs', ['activeObjective', 'activeKeyResult']),
-    ...mapGetters(['hasEditRights']),
-    ...mapGetters('okrs', ['objectivesWithID']),
-
-    breadcrumbs() {
-      return [
-        { text: this.activeItem.name, href: { name: 'ItemHome' } },
-        { text: this.activeObjective.name },
-      ];
-    },
-
-    orderedKeyResults: {
-      get() {
-        return this.keyResults.map((kr) => kr).sort(compareKeyResults);
-      },
-      set(keyResults) {
-        keyResults.forEach((kr, i) => {
-          if (kr.order !== i) {
-            KeyResult.update(kr.id, { order: i });
-          }
-        });
-      },
-    },
-
-    isMemberOfChild() {
-      const { department, organization, id: parentId } = this.activeObjective.parent;
-
-      if (!organization && !department) {
-        return this.departments.some(
-          (dep) =>
-            dep.organization.id === parentId &&
-            dep.team.map(({ id }) => id).includes(this.user.id)
-        );
-      }
-
-      if (organization && !department) {
-        return this.products.some(
-          (product) =>
-            product.department.id === parentId &&
-            product.team.map(({ id }) => id).includes(this.user.id)
-        );
-      }
-
-      return false;
-    },
-
-    /**
-     * Returns `true` if `this.activeObjective` is to be considered a "ghost"
-     * objective.
-     */
-    isGhost() {
-      return !this.objectivesWithID.find((o) => o.id === this.activeObjective.id);
-    },
-
-    liftedObjectiveRoute() {
-      return {
-        name: 'ObjectiveHome',
-        params: {
-          objectiveId: this.activeObjective.id,
-          slug: this.activeObjective.parent.slug,
-        },
-      };
-    },
-  },
-
-  watch: {
-    activeObjective: {
-      immediate: true,
-      async handler(objective) {
-        this.$nextTick(() => {
-          this.$refs.pane.$el.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        this.loadingKeyResults = true;
-        const objectiveRef = await db.doc(`objectives/${objective.id}`);
-        const keyResults = await db
-          .collection('keyResults')
-          .where('archived', '==', false)
-          .where('objective', '==', objectiveRef)
-          .orderBy('name');
-        await this.$bind('keyResults', keyResults);
-        this.loadingKeyResults = false;
-      },
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
-@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
 .objective-pane {
   background-color: var(--color-gray-light);
@@ -259,7 +269,7 @@ export default {
         margin: 0 1.5rem 0 2rem;
       }
 
-      & .key-result-link-card {
+      & :deep(.key-result-link-card) {
         position: relative;
         margin-top: 1rem;
 
@@ -288,14 +298,19 @@ export default {
         }
       }
 
-      ::v-deep & .sortable-ghost {
-        background: var(--color-grayscale-10);
+      & :deep(.sortable-drag) {
+        &::before,
+        &::after {
+          border-color: transparent;
+        }
+      }
+
+      & :deep(.sortable-ghost) {
+        background-color: var(--color-grayscale-10);
         border-color: var(--color-grayscale-10);
 
         & .key-result-link-card__inner * {
-          color: var(--color-grayscale-10);
-          background: var(--color-grayscale-10) !important;
-          border-color: var(--color-grayscale-10);
+          visibility: hidden;
         }
       }
     }
@@ -304,30 +319,32 @@ export default {
   &__widgets {
     margin-top: 2rem;
 
-    ::v-deep .widget {
+    :deep(.widget) {
       padding: 0;
       border: 0;
-
-      h3 {
-        @include get-text('pkt-txt-16');
-      }
     }
   }
 }
 
-.empty {
-  background-color: transparent;
-}
-
-::v-deep .pkt-breadcrumbs {
+.pkt-breadcrumbs {
   display: flex;
 
-  &--mobile {
+  :deep(.pkt-breadcrumbs--mobile) {
     width: 100%;
 
     .pkt-breadcrumbs__text {
       white-space: nowrap;
     }
   }
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transition: none;
 }
 </style>

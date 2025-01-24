@@ -1,7 +1,31 @@
+<script setup>
+import { ref } from 'vue';
+import { marked } from 'marked';
+import dompurify from 'dompurify';
+import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
+import { tableOfContent } from '@/util';
+import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
+
+marked.setOptions({ smartypants: true });
+
+const i18n = useI18n();
+
+useHead({ title: i18n.t('general.help') });
+
+const markdown = ref('');
+const toc = ref([]);
+
+fetch('./help.md').then(async (response) => {
+  markdown.value = dompurify.sanitize(marked(await response.text()));
+  toc.value = tableOfContent(markdown.value);
+});
+</script>
+
 <template>
-  <page-layout v-if="markdown" sidebar-position="left" :sidebar-grid="false">
+  <PageLayout v-if="markdown" sidebar-position="left" :sidebar-grid="false">
     <template #sidebar>
-      <widget>
+      <WidgetWrapper>
         <ol v-if="toc" class="toc help__toc">
           <h2 class="title-1">{{ $t('help.toc') }}</h2>
           <li v-for="levelOne in toc.children" :key="levelOne.id">
@@ -18,54 +42,16 @@
             </ol>
           </li>
         </ol>
-      </widget>
+      </WidgetWrapper>
     </template>
 
     <template #default>
-      <widget>
+      <WidgetWrapper>
         <div class="md" v-html="markdown"></div>
-      </widget>
+      </WidgetWrapper>
     </template>
-  </page-layout>
+  </PageLayout>
 </template>
-
-<script>
-import { marked } from 'marked';
-import dompurify from 'dompurify';
-import { tableOfContent as toc } from '@/util';
-import i18n from '@/locale/i18n';
-import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
-
-marked.setOptions({
-  smartypants: true,
-});
-
-export default {
-  name: 'Help',
-
-  components: {
-    Widget: WidgetWrapper,
-  },
-
-  data: () => ({
-    markdown: '',
-    toc: [],
-  }),
-
-  metaInfo() {
-    return {
-      title: `${i18n.t('general.help')} | ${i18n.t('general.project')}`,
-    };
-  },
-
-  async created() {
-    fetch('./help.md').then(async (response) => {
-      this.markdown = dompurify.sanitize(marked(await response.text()));
-      this.toc = toc(this.markdown);
-    });
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
@@ -90,7 +76,7 @@ main {
   margin-top: 0;
 }
 
-::v-deep code {
+:deep(code) {
   @include get-text('pkt-txt-14');
   padding: 0 0.3em;
   font-family: 'Monaco', monospace;

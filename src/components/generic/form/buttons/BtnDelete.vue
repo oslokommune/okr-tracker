@@ -1,79 +1,114 @@
-<template>
-  <v-popover ref="popover" offset="0" placement="top" :disabled="$attrs?.disabled">
-    <pkt-button
-      v-bind="$attrs"
-      skin="tertiary"
-      :text="text"
-      :variant="variant"
-      :icon-name="iconName"
-    />
+<script setup>
+import { computed, nextTick, ref } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+import { PktButton } from '@oslokommune/punkt-vue';
+import i18n from '@/locale/i18n';
 
-    <template v-if="!$attrs?.disabled" slot="popover">
-      <div data-mode="dark">
-        <p v-if="confirmHelp" class="mb-size-16">{{ confirmHelp }}</p>
-        <pkt-button
-          type="button"
-          skin="secondary"
-          :size="$attrs?.size || 'medium'"
-          :text="confirmText"
-          @onClick="confirm"
-        />
-      </div>
-    </template>
-  </v-popover>
-</template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue2';
-import { VPopover } from 'v-tooltip';
-
-export default {
-  name: 'BtnDelete',
-
-  components: {
-    PktButton,
-    VPopover,
+const props = defineProps({
+  text: {
+    type: String,
+    required: false,
+    default: i18n.global.t('btn.delete'),
   },
+  tooltipText: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  confirmText: {
+    type: String,
+    required: false,
+    default: i18n.global.t('btn.confirmDelete'),
+  },
+  confirmHelp: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  variant: {
+    type: String,
+    required: false,
+    default: 'icon-left',
+  },
+  iconName: {
+    type: String,
+    required: false,
+    default: 'trash-can',
+  },
+});
 
+defineOptions({
   inheritAttrs: false,
+});
 
-  props: {
-    text: {
-      type: String,
-      required: false,
-      default() {
-        return this.$t('btn.delete');
-      },
-    },
-    confirmText: {
-      type: String,
-      required: false,
-      default() {
-        return this.$t('btn.confirmDelete');
-      },
-    },
-    confirmHelp: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    variant: {
-      type: String,
-      required: false,
-      default: 'icon-left',
-    },
-    iconName: {
-      type: String,
-      required: false,
-      default: 'trash-can',
-    },
-  },
+const emit = defineEmits(['onClick']);
 
-  methods: {
-    confirm(e) {
-      this.$emit('click', e);
-      this.$refs.popover.hide();
-    },
-  },
-};
+const popover = ref(null);
+const popoverContent = ref(null);
+const isShown = computed(() => popover.value && popover.value.state.isShown);
+const tooltipContent = computed(() =>
+  props.tooltipText && !isShown.value ? props.tooltipText : null
+);
+
+const { activate: activateFocusTrap, deactivate: deactivateFocusTrap } = useFocusTrap(
+  popoverContent,
+  {
+    allowOutsideClick: true,
+    initialFocus: false,
+    escapeDeactivates: false,
+  }
+);
+
+async function onShow() {
+  await nextTick();
+  activateFocusTrap();
+}
+
+function onHide() {
+  deactivateFocusTrap();
+}
+
+function confirm(e, hide) {
+  emit('onClick', e);
+  hide();
+}
 </script>
+
+<template>
+  <span>
+    <Tooltip
+      ref="popover"
+      interactive
+      trigger="click"
+      placement="top"
+      :on-show="onShow"
+      :on-hide="onHide"
+      @keydown.esc="onHide"
+    >
+      <template #default>
+        <PktButton
+          v-tooltip="{ content: tooltipContent, hideOnClick: true, reactive: true }"
+          v-bind="$attrs"
+          skin="tertiary"
+          :text="text"
+          :variant="variant"
+          :icon-name="iconName"
+        />
+      </template>
+
+      <template #content="{ hide }">
+        <div ref="popoverContent" data-mode="dark" @keydown.esc.stop="hide">
+          <p v-if="confirmHelp">{{ confirmHelp }}</p>
+          <PktButton
+            type="button"
+            skin="secondary"
+            class="my-size-8"
+            :size="$attrs?.size || 'medium'"
+            :text="confirmText"
+            @on-click="confirm($event, hide)"
+          />
+        </div>
+      </template>
+    </Tooltip>
+  </span>
+</template>

@@ -1,24 +1,31 @@
-import { arrayRemove, arrayUnion, db } from '@/config/firebaseConfig';
+import {
+  arrayRemove,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { db } from '@/config/firebaseConfig';
 import preferences from './defaultPreferences';
 import { updateDocument } from '../common';
-
-const collectionReference = db.collection('users');
-
-export const getAllUserIds = () =>
-  collectionReference.get().then(({ docs }) => docs.map(({ id }) => id));
-export const getUserFromId = (id) => collectionReference.doc(id).get();
 
 export const create = async (user) => {
   if (!user.email) {
     throw new Error('Invalid email');
   }
 
-  const { exists } = await collectionReference.doc(user.id).get();
-  if (exists) {
+  const userRef = doc(db, 'users', user.id);
+
+  if ((await getDoc(userRef)).exists()) {
     throw new Error(`User ${user.id} already exists!`);
   }
 
-  await collectionReference.doc(user.id).set({
+  await setDoc(userRef, {
     ...user,
     admin: [],
     preferences,
@@ -31,25 +38,25 @@ export const remove = async (user) => {
   }
 
   try {
-    const docRef = collectionReference.doc(user.id);
+    const userRef = doc(db, 'users', user.id);
     return Promise.all([
-      removeFromTeams(db.collection('organizations'), docRef),
-      removeFromTeams(db.collection('departments'), docRef),
-      removeFromTeams(db.collection('products'), docRef),
-      docRef.delete(),
+      removeFromTeams(collection(db, 'organizations'), userRef),
+      removeFromTeams(collection(db, 'departments'), userRef),
+      removeFromTeams(collection(db, 'products'), userRef),
+      deleteDoc(userRef),
     ]);
   } catch (error) {
     throw new Error(`Could not delete user ${user.id}`);
   }
 };
 
-export const update = async (user) => {
+export const update = async (user, data) => {
   if (!user) {
     throw new Error('Missing user');
   }
 
   try {
-    return updateDocument(collectionReference.doc(user.id), user);
+    return updateDocument(doc(db, 'users', user.id), data);
   } catch (error) {
     throw new Error(`Could not update user ${user.id}`);
   }
@@ -68,14 +75,16 @@ export const addUsers = async (userList) => {
   }
 };
 
-async function removeFromTeams(collectionRef, docRef) {
+async function removeFromTeams(collectionRef, userRef) {
   try {
-    const items = await collectionRef.where('team', 'array-contains', docRef).get();
+    const items = await getDocs(
+      query(collectionRef, where('team', 'array-contains', userRef))
+    );
 
     return Promise.all(
       items.docs.map(({ ref }) =>
-        ref.update({
-          team: arrayRemove(docRef),
+        updateDoc(ref, {
+          team: arrayRemove(userRef),
         })
       )
     );
@@ -83,32 +92,3 @@ async function removeFromTeams(collectionRef, docRef) {
     throw new Error(error.message);
   }
 }
-
-export const replaceFromTeams = async (oldDocId, newDocId) => {
-  try {
-    const oldDocRef = collectionReference.doc(oldDocId);
-    const newDocRef = collectionReference.doc(newDocId);
-    const products = await db
-      .collection('products')
-      .where('team', 'array-contains', oldDocRef)
-      .get();
-
-    await Promise.all(
-      products.docs.map(({ ref }) =>
-        ref.update({
-          team: arrayRemove(oldDocRef),
-        })
-      )
-    );
-
-    return Promise.all(
-      products.docs.map(({ ref }) =>
-        ref.update({
-          team: arrayUnion(newDocRef),
-        })
-      )
-    );
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};

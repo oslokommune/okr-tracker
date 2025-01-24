@@ -10,8 +10,6 @@ export { formatISOShort } from './format';
 export { numberLocale } from './format';
 export { default as findSlugAndRedirect } from './findSlugAndRedirect';
 export { default as tableOfContent } from './tableOfContent';
-export { default as toastArchiveAndRevert } from './toastUtils';
-export { default as validateEmail } from './validateEmail';
 export { default as periodObjectFromDates } from './period';
 
 /**
@@ -28,4 +26,12 @@ export function uniqueBy(arr, key) {
   });
 
   return Object.values(res);
+}
+
+/**
+ * Return `true` if string matches a valid number.
+ */
+export function isNumber(val) {
+  const regex = /^-?(0|[1-9]\d*)((\.|,)\d+)?$/;
+  return regex.test(val);
 }

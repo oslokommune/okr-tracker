@@ -1,105 +1,92 @@
+<script setup>
+import { computed, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { FormSection, BtnSave } from '@/components/generic/form';
+import { jobPositions } from '@/config/jobPositions';
+
+const i18n = useI18n();
+
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
+  },
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+defineEmits(['save']);
+
+const formData = ref(null);
+
+const positionOptions = computed(() =>
+  jobPositions.map((position) => ({
+    position,
+    label: i18n.t(`user.position.${position}`),
+  }))
+);
+
+const languageOptions = computed(() =>
+  Object.keys(i18n.messages.value).map((language) => ({
+    language,
+    label: i18n.t(`languages.${language}`),
+  }))
+);
+
+watchEffect(() => {
+  const { displayName, position, preferences } = props.user;
+  const { lang } = preferences;
+  formData.value = {
+    displayName,
+    position,
+    lang,
+  };
+});
+</script>
+
 <template>
-  <form-section>
-    <form-component
-      v-model="localUser.displayName"
-      input-type="input"
+  <FormSection>
+    <FormComponent
+      v-model="formData.displayName"
       name="name"
       :label="$t('fields.name')"
       rules="required"
     />
 
-    <form-component
-      v-model="localUser.position"
-      input-type="select"
+    <FormComponent
+      v-model="formData.position"
+      input-type="custom-select"
       name="position"
       :label="$t('user.position.title')"
       rules="required"
-      select-label="label"
-      :select-options="positionOptions"
-      :select-reduce="(option) => option.position"
-      type="text"
+      value-prop="position"
+      label-prop="label"
+      :options="positionOptions"
+      :can-clear="false"
+      append-to-body
     />
 
-    <form-component
-      v-model="localUser.preferences.lang"
-      input-type="select"
+    <FormComponent
+      v-model="formData.lang"
+      input-type="custom-select"
       name="language"
       :label="$t('user.language')"
       rules="required"
-      select-label="label"
-      :select-options="languageOptions"
-      :select-reduce="(option) => option.language"
-      type="text"
+      value-prop="language"
+      label-prop="label"
+      :options="languageOptions"
+      :can-clear="false"
+      append-to-body
     />
 
-    <template #actions="{ handleSubmit, submitDisabled }">
-      <btn-save :disabled="submitDisabled || loading" @click="handleSubmit(submitForm)" />
+    <template #actions="{ submit, disabled }">
+      <BtnSave
+        :disabled="disabled || loading"
+        @on-click="submit(() => $emit('save', formData))"
+      />
     </template>
-  </form-section>
+  </FormSection>
 </template>
-
-<script>
-import { FormSection, BtnSave } from '@/components/generic/form';
-import { jobPositions } from '@/config/jobPositions';
-
-export default {
-  name: 'UserProfileForm',
-
-  components: {
-    FormSection,
-    BtnSave,
-  },
-
-  props: {
-    user: {
-      required: true,
-      type: Object,
-    },
-    loading: {
-      required: false,
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  data: () => ({
-    localUser: null,
-    jobPositions,
-  }),
-
-  computed: {
-    positionOptions() {
-      return this.jobPositions.map((position) => ({
-        position,
-        label: this.$t(`user.position.${position}`),
-      }));
-    },
-    languages() {
-      return Object.keys(this.$i18n.messages);
-    },
-    languageOptions() {
-      return this.languages.map((language) => ({
-        language,
-        label: this.$t(`languages.${language}`),
-      }));
-    },
-  },
-
-  watch: {
-    user: {
-      immediate: true,
-      handler() {
-        if (this.user) {
-          this.localUser = { ...this.user, id: this.user.id };
-        }
-      },
-    },
-  },
-
-  methods: {
-    submitForm() {
-      this.$emit('save', this.localUser);
-    },
-  },
-};
-</script>

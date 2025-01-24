@@ -1,0 +1,14 @@
+<svg id="spinner" data-category="animations" width="88" height="88" viewBox="0 0 88 88"
+  xmlns="http://www.w3.org/2000/svg">
+  <path fill="var(--ring-color, #e6e6e6)" fill-rule="evenodd" clip-rule="evenodd"
+    d="M88 44C88 68.3005 68.3005 88 44 88C19.6995 88 0 68.3005 0 44C0 19.6995 19.6995 0 44 0C68.3005 0 88 19.6995 88 44ZM8.8 44C8.8 63.4404 24.5596 79.2 44 79.2C63.4404 79.2 79.2 63.4404 79.2 44C79.2 24.5596 63.4404 8.8 44 8.8C24.5596 8.8 8.8 24.5596 8.8 44Z"></path>
+  <path fill="var(--spinner-color, #6FE9FF)"
+    d="M0 44C1.02018e-06 32.3305 4.6357 21.1389 12.8873 12.8873C21.1389 4.6357 32.3305 -1.39158e-07 44 0L44 8.8C34.6644 8.8 25.7111 12.5086 19.1098 19.1098C12.5086 25.7111 8.8 34.6644 8.8 44L0 44Z"
+    transform-origin="center">
+    <animateTransform attributeName="transform" type="rotate" dur="1s" values="0 0 0;360 0 0"
+      repeatCount="indefinite"></animateTransform>
+    <animate attributeName="fill" attributeType="XML" begin="0s" dur="1s"
+      values="#6FE9FF; #43F8B6;  #F9C66B;  #FF8274; #6FE9FF;" keyTimes="0; 0.25; 0.5; 0.75; 1"
+      repeatCount="indefinite"></animate>
+  </path>
+</svg>

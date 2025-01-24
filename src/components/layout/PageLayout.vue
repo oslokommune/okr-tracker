@@ -1,3 +1,38 @@
+<script setup>
+defineProps({
+  breakpoint: {
+    type: String,
+    default: 'desktop',
+    validator: (value) =>
+      ['phablet', 'tablet', 'tablet-big', 'laptop', 'desktop', 'full'].includes(value),
+  },
+
+  sidebarPosition: {
+    type: String,
+    default: 'right',
+    validator: (value) => ['left', 'right'].includes(value),
+  },
+
+  sidebarCols: {
+    type: Number,
+    default: 3,
+    validator: (value) => value <= 12,
+  },
+
+  sidebarBreakpoint: {
+    type: String,
+    default: 'tablet-big',
+    validator: (value) =>
+      ['phablet', 'tablet', 'tablet-big', 'laptop', 'desktop', 'full'].includes(value),
+  },
+
+  sidebarGrid: {
+    type: Boolean,
+    default: true,
+  },
+});
+</script>
+
 <template>
   <div class="page">
     <header v-if="$slots.header" class="page__header">
@@ -39,45 +74,6 @@
     </footer>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'PageLayout',
-
-  props: {
-    breakpoint: {
-      type: String,
-      default: 'desktop',
-      validator: (value) =>
-        ['phablet', 'tablet', 'tablet-big', 'laptop', 'desktop', 'full'].includes(value),
-    },
-
-    sidebarPosition: {
-      type: String,
-      default: 'right',
-      validator: (value) => ['left', 'right'].includes(value),
-    },
-
-    sidebarCols: {
-      type: Number,
-      default: 3,
-      validator: (value) => value <= 12,
-    },
-
-    sidebarBreakpoint: {
-      type: String,
-      default: 'tablet-big',
-      validator: (value) =>
-        ['phablet', 'tablet', 'tablet-big', 'laptop', 'desktop', 'full'].includes(value),
-    },
-
-    sidebarGrid: {
-      type: Boolean,
-      default: true,
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;

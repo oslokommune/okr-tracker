@@ -23,13 +23,13 @@ export function getPeriods() {
 
   return {
     quarter: {
-      label: `${i18n.t('period.thisQuarter')} (Q${currentQuarter} ${currentYear})`,
+      label: `${i18n.global.t('period.thisQuarter')} (Q${currentQuarter} ${currentYear})`,
       key: 'quarter',
       startDate: startOfQuarter(currentDate),
       endDate: endOfQuarter(currentDate),
     },
     prevquarter: {
-      label: `${i18n.t('period.previousQuarter')} (Q${getQuarter(
+      label: `${i18n.global.t('period.previousQuarter')} (Q${getQuarter(
         prevQuarterDate
       )} ${prevQuarterDate.getFullYear()})`,
       key: 'prevquarter',
@@ -37,19 +37,19 @@ export function getPeriods() {
       endDate: endOfQuarter(prevQuarterDate),
     },
     sixmonths: {
-      label: i18n.t('period.sixmonths'),
+      label: i18n.global.t('period.sixmonths'),
       key: 'sixmonths',
       startDate: sixMonthsBack,
       endDate,
     },
     year: {
-      label: i18n.t('period.year'),
+      label: i18n.global.t('period.year'),
       key: 'year',
       startDate: new Date(currentYear, 0, 1),
       endDate,
     },
     all: {
-      label: i18n.t('period.all'),
+      label: i18n.global.t('period.all'),
       key: 'all',
       startDate: false,
       endDate,

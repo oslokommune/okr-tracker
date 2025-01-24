@@ -1,3 +1,4 @@
+import { getDoc } from 'firebase/firestore';
 import router from '@/router';
 
 /**
@@ -10,7 +11,7 @@ export default function findSlugAndRedirect(reference) {
 
   setTimeout(async () => {
     try {
-      const { slug } = await reference.get().then((snapshot) => snapshot.data());
+      const { slug } = (await getDoc(reference)).data();
 
       if (!slug) {
         return router.push({ name: 'Home' });

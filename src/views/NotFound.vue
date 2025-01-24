@@ -1,21 +1,11 @@
-<template>
-  <not-found-page back-to="Home" />
-</template>
-
-<script>
-import i18n from '@/locale/i18n';
+<script setup>
+import { useTitle } from '@vueuse/core';
 import NotFoundPage from '@/components/pages/NotFoundPage.vue';
 
-export default {
-  name: 'NotFound',
-  components: {
-    NotFoundPage,
-  },
-
-  metaInfo() {
-    return {
-      title: `${i18n.t('notFound.title')} | ${i18n.t('general.project')}`,
-    };
-  },
-};
+const title = useTitle();
+title.value = 'Not Found';
 </script>
+
+<template>
+  <NotFoundPage :back-to="{ name: 'Home' }" />
+</template>

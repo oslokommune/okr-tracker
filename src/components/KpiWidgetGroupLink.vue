@@ -1,45 +1,36 @@
+<script setup>
+import { storeToRefs } from 'pinia';
+import { useKpisStore } from '@/store/kpis';
+import WidgetKpiCard from '@/components/widgets/WidgetKpiCard.vue';
+
+defineProps({
+  kpiId: {
+    type: String,
+    required: true,
+  },
+  compact: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const { period } = storeToRefs(useKpisStore());
+</script>
+
 <template>
-  <router-link
-    :key="kpi.id"
+  <RouterLink
+    :key="kpiId"
     :to="{
       name: 'ItemMeasurements',
-      params: { ...$route.params, kpiId: kpi.id },
-      query: { resultIndicatorPeriod: selectedPeriod?.key },
+      params: { ...$route.params, kpiId },
+      query: { resultIndicatorPeriod: period?.key },
     }"
     class="kpi-widget-group-link"
   >
-    <widget-kpi-card :kpi="kpi" :compact="compact" />
-  </router-link>
+    <WidgetKpiCard :kpi-id="kpiId" :compact="compact" />
+  </RouterLink>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import WidgetKpiCard from '@/components/widgets/WidgetKpiCard/WidgetKpiCard.vue';
-
-export default {
-  name: 'KpiWidgetGroupLink',
-
-  components: {
-    WidgetKpiCard,
-  },
-
-  props: {
-    kpi: {
-      type: Object,
-      required: true,
-    },
-    compact: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
-  computed: {
-    ...mapState('kpis', ['selectedPeriod']),
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
@@ -55,8 +46,8 @@ export default {
       border-color: var(--color-white);
     }
 
-    ::v-deep .widget__header h3,
-    ::v-deep .period-trend-tag__value {
+    :deep(.widget__header h3),
+    :deep(.period-trend-tag__value) {
       color: var(--color-hover);
     }
   }
@@ -66,20 +57,18 @@ export default {
       background: var(--color-gray-light);
       border-color: var(--color-gray);
 
-      ::v-deep {
-        .widget__header h3,
-        .period-trend-tag__value {
-          color: var(--color-hover);
-        }
+      :deep(.widget__header h3),
+      :deep(.period-trend-tag__value) {
+        color: var(--color-hover);
+      }
 
-        .period-trend-tag__trend {
-          &:before {
-            border-left-color: var(--color-gray-light);
-          }
-          &:after {
-            border-top-color: var(--color-gray-light);
-            border-bottom-color: var(--color-gray-light);
-          }
+      :deep(.period-trend-tag__trend) {
+        &:before {
+          border-left-color: var(--color-gray-light);
+        }
+        &:after {
+          border-top-color: var(--color-gray-light);
+          border-bottom-color: var(--color-gray-light);
         }
       }
     }

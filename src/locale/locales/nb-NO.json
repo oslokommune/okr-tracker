@@ -1,14 +1,8 @@
 {
-  "403": {
-    "title": "Ingen tilgang",
-    "body": "Du har ikke tilgang til denne siden.",
-    "linkText": "Gå tilbake til forsiden"
-  },
   "notFound": {
     "title": "Siden finnes ikke",
     "body": "Denne siden ser ikke ut til å eksistere.",
     "linkText": "Gå tilbake til forsiden",
-    "linkTextAlt": "Gå tilbake til {page}",
     "objectiveHeading": "Målet finnes ikke",
     "objectiveBody": "Dette målet ser ikke ut til å eksistere.",
     "keyResultHeading": "Nøkkelresultatet finnes ikke",
@@ -18,9 +12,10 @@
   },
   "kpi": {
     "currentValue": "Nåværende verdi",
-    "latestValueTitle": "Siste verdi per {formattedDate}",
+    "latestValue": "Siste verdi",
     "progress": "Progresjon",
     "value": "Målepunkt",
+    "valueCount": "Antall målepunkter",
     "newValue": "Legg til målepunkt",
     "editValue": "Endre målepunkt",
     "description": "Beskrivelse",
@@ -74,7 +69,8 @@
       }
     },
     "help": {
-      "apiProgress": "Nye målepunkt kan også registreres via {apiLink}-kall, for eksempel ved bruk av curl som vist nedenfor.",
+      "apiHelpTitle": "Hvordan kan jeg registrere målepunkt maskinelt via API?",
+      "apiProgress": "Nye målepunkt kan også registreres via API-kall, for eksempel ved bruk av curl som vist nedenfor. Les mer i vår {apiLink}.",
       "resultIndicatorWarning": "Resultatindikatorer regnes som indikatorer på virksomhetens effekt og måloppnåelse, og bør derfor være avklart med virksomhetens ledelse før opprettelse."
     },
     "goals": {
@@ -114,34 +110,36 @@
     "preferredTrend": "Ønsket trend",
     "updateFrequency": "Oppdateringshyppighet",
     "language": "Språk",
-    "kpiType": "Type"
+    "kpiType": "Type",
+    "example": "Eksempel"
   },
   "validation": {
     "alpha": "Kan bare inneholde bokstaver",
     "alpha_dash": "Kan bare inneholde alfanumeriske tegn, samt bindestrek og understrek",
     "alpha_num": "Kan bare inneholde alfanumeriske tegn",
     "alpha_spaces": "Kan bare inneholde alfanumeriske tegn og mellomrom",
-    "between": "Må være imellom {min} og {max}",
+    "between": "Må være imellom {0} og {1}",
     "confirmed": "Kan ikke bekreftes",
-    "digits": "Må være numerisk og inneholde nøyaktig {length} siffer",
-    "dimensions": "Må være {width} ganger {height} piksler",
+    "digits": "Må være numerisk og inneholde nøyaktig {0} siffer",
+    "dimensions": "Må være {0} ganger {1} piksler",
     "email": "Må være en gyldig e-postadresse",
     "excluded": "Må være en gyldig verdi",
     "ext": "Må være en gyldig fil",
     "image": "Må være et bilde",
     "integer": "Må være et heltall",
-    "length": "Må være {length} langt",
+    "length": "Må være {0} langt",
     "oneOf": "Må være en gyldig verdi",
-    "max": "Kan ikke være lengre enn {length} tegn",
-    "max_value": "Må være {max} eller mindre",
+    "max": "Kan ikke være lengre enn {0} tegn",
+    "max_value": "Må være {0} eller mindre",
     "mimes": "Må ha en gyldig filtype",
-    "min": "Må være minst {length} tegn",
-    "min_value": "Må være {min} eller mer",
+    "min": "Må være minst {0} tegn",
+    "min_value": "Må være {0} eller mer",
     "numeric": "Kan bare inneholde nummer",
+    "number": "Må være et gyldig tall",
     "regex": "Formatering er ugyldig",
     "required": "Må fylles ut",
     "required_if": "Må fylles ut",
-    "size": "Må være mindre enn {size}KB",
+    "size": "Må være mindre enn {0}KB",
     "double": "Må være en gyldig desimal",
     "positiveNotZero": "Ugyldig verdi",
     "decimal": "Må være tall",
@@ -201,11 +199,14 @@
     "shortcuts": "Snarveier",
     "graph": "Graf",
     "error": "Feil",
-    "unknown": "ukjent"
+    "unknown": "ukjent",
+    "noResults": "Ingen treff"
   },
   "home": {
     "welcome": "Velkommen til {appName}!",
-    "changeOrganization": "Bytt virksomhet"
+    "organization": "Virksomhet",
+    "changeOrganization": "Bytt virksomhet",
+    "myOrganization": "Min virksomhet"
   },
   "about": {
     "about": "Om",
@@ -249,6 +250,7 @@
     "confirmDelete": "Bekreft sletting",
     "reset": "Nullstill",
     "showMore": "Vis alle",
+    "showLess": "Vis færre",
     "syncData": "Synkroniser data",
     "moreDetails": "Flere detaljer",
     "archiveObjective": "Arkiver mål",
@@ -263,36 +265,38 @@
     "google": "Logg inn med Google",
     "email": "E-post",
     "password": "Passord",
-    "loading": "Logger deg inn, vennligst vent",
+    "loading": "Logger deg inn, vennligst vent...",
     "error": {
       "notRegistered": "Kontoen du forsøkte å logge inn med er ikke registrert.",
       "providerError": "Klarte ikke å logge inn. Kontakt systemadministrator hvis feilen vedvarer.",
       "wrongPassword": "Passordet er feil.",
-      "userNotFound": "Kunne ikke finne bruker"
+      "userNotFound": "Kunne ikke finne bruker.",
+      "userAbort": "Forespørselen ble avbrutt. Prøv igjen."
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },
   "toaster": {
     "welcome": "Velkommen {user}",
     "add": {
-      "users": "Lagt til en bruker | {count} brukere",
+      "users": "La til en bruker | La til {count} brukere",
       "product": "Opprettet nytt produkt. Vennligst vent, du blir sendt videre om 5 sekunder",
-      "objective": "Lagt til nytt mål for {period}",
+      "objective": "La til nytt mål for {period}",
       "department": "Opprettet nytt produktområde. Vennligst vent, du blir sendt videre om 5 sekunder",
-      "keyResult": "Lagt til nytt nøkkelresultat",
+      "keyResult": "La til nytt nøkkelresultat",
       "period": "Opprettet ny periode",
       "organization": "Opprettet ny organisasjon. Vennligst vent, du blir sendt videre om 5 sekunder",
       "kpi": "Opprettet ny måling",
-      "progress": "Lagt til ny verdi"
+      "progress": "La til ny verdi"
     },
     "delete": {
       "user": "Slettet bruker {user}",
-      "permanently": "Slettet dokumentet permanent",
+      "permanently": "Slettet «{name}»",
       "object": "Arkiverte «{name}»",
       "progress": "Slettet målepunkt"
     },
     "update": {
-      "progress": "Oppdaterte målepunkt"
+      "progress": "Oppdaterte målepunkt",
+      "profile": "Brukerprofil oppdatert"
     },
     "action": {
       "regret": "Angre",
@@ -318,7 +322,7 @@
     },
     "savedChanges": "Lagret endringer",
     "deleted": "Slettet",
-    "restored": "Gjenopprettet",
+    "restored": "Gjenopprettet «{name}»",
     "request": {
       "noEmail": "Forespørselen feilet. E-post mangler.",
       "requested": "Forespørsel om tilgang sendt til admin",
@@ -342,9 +346,6 @@
     "newValue": "Ny verdi",
     "editValue": "Endre verdi",
     "registeredValues": "Registrerte verdier",
-    "registerProgression": {
-      "value": "Verdi"
-    },
     "commentPlaceholder": "Dette er en kommentar...",
     "updateValue": "Oppdater verdi",
     "dateAndTime": "Dato og tid",
@@ -388,14 +389,9 @@
     "progressionTitle": "Samlet progresjon for valgte mål i listen:"
   },
   "tooltip": {
-    "openMenu": "Åpne meny",
-    "keyResultValue": "Skriv inn ny måleverdi",
     "changeView": "Visning: {view}",
     "editProgress": "Endre målepunkt",
     "deleteProgress": "Slett målepunkt",
-    "isMember": "Medlem av team",
-    "emptyPeriod": "Ingen aktiv periode",
-    "periodEnd": "Du har ikke lov å gjøre endringer etter perioden er avsluttet",
     "copyToClipboard": "Kopier til utklippstavlen"
   },
   "admin": {
@@ -441,18 +437,15 @@
       "delete": "Slett måling"
     },
     "department": {
-      "picture": "Bilde",
       "create": "Opprett nytt produktområde",
       "parentOrganisation": "Tilhører organisasjon",
-      "search": "Søk {count} organisasjoner"
-    },
-    "organization": {
-      "picture": "Bilde",
-      "create": "Opprett ny organisasjon",
       "search": "Søk {count} produktområder"
     },
+    "organization": {
+      "create": "Opprett ny organisasjon",
+      "search": "Søk {count} organisasjoner"
+    },
     "product": {
-      "picture": "Bilde",
       "create": "Opprett nytt produkt",
       "parentDepartment": "Tilhører produktområde",
       "search": "Søk {count} produkter"
@@ -490,7 +483,6 @@
   },
   "view": {
     "details": "Detaljer",
-    "timeline": "Tidslinje",
     "list": "Liste"
   },
   "keyResultsPage": {
@@ -524,10 +516,6 @@
     "noObjectives": {
       "heading": "Her var det visst helt tomt!",
       "body": "Det ser ut som at det mangler noen mål og nøkkelresultater her ..."
-    },
-    "noObjectivesInPeriod": {
-      "heading": "Ingen mål i valgt periode",
-      "body": "Vi fant ingen mål registrert innenfor den valgte perioden."
     }
   },
   "archived": {
@@ -542,13 +530,6 @@
     "restoreText": "Savner du det, er det bare å gjenopprette det."
   },
   "widget": {
-    "progression": {
-      "period": "Progresjon for periode",
-      "objective": "Progresjon for mål",
-      "done": "Fullført",
-      "today": "I dag",
-      "notStarted": "Ikke startet"
-    },
     "history": {
       "title": "Historikk",
       "value": "Verdi",
@@ -557,9 +538,7 @@
       "actions": "Handlinger",
       "time": "Tidspunkt",
       "changedBy": "Sist endret av",
-      "showComment": "Vis kommentar",
       "showComments": "Vis kommentarer",
-      "hideComments": "Skjul kommentarer",
       "empty": {
         "heading": "Ingen historikk"
       },
@@ -638,7 +617,6 @@
   },
   "integration": {
     "info": "Vårt API tilbyr funksjonalitet for blant annet å oppdatere nøkkelresultater og/eller målinger maskinelt. For å ta i bruk API-et må man opprette en klient. For hver klient genereres en klient-ID og en hemmelighet som legges inn i headeren til kallet ({clientIdHeader}, {clientSecretHeader}). Dette kommer i tillegg til en egen API-nøkkel ({apiKeyHeader}). Det anbefales å opprette en separat klient for hver enkelt applikasjon man kobler på API-et. Dette gjør det blant annet enklere å holde styr på hvilke hemmeligheter som er i bruk.",
-    "placeholderTitle": "Ny klient",
     "clientId": "Klient ID",
     "clientSecret": "Hemmelighet",
     "action": {

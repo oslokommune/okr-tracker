@@ -1,3 +1,4 @@
+import { updateDoc } from 'firebase/firestore';
 import metadata from '../util/metadata';
 
 /**
@@ -12,7 +13,7 @@ export default async function updateDocument(document, data) {
   data = { ...data, ...metadata.edited() };
 
   try {
-    return document.update(data);
+    return updateDoc(document, data);
   } catch (error) {
     console.log(error, document);
     throw new Error('Could not save changes', error);

@@ -1,5 +1,84 @@
+<script setup>
+import { computed, ref } from 'vue';
+import ClappingHands from '@/components/graphics/ClappingHands.vue';
+import SliderContainer from '@/components/drawers/SliderContainer.vue';
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  pageCount: {
+    type: Number,
+    required: false,
+    default: 1,
+  },
+});
+
+const container = ref(null);
+const pageIndex = ref(1);
+const skin = ref(null);
+const isDone = ref(false);
+const isSuccess = computed(() => isDone.value && skin.value === 'success');
+
+function next(success) {
+  if (success !== false && pageIndex.value < props.pageCount) {
+    pageIndex.value += 1;
+  } else {
+    pageIndex.value = props.pageCount + 1;
+    isDone.value = true;
+    skin.value = success !== false ? 'success' : 'error';
+  }
+}
+
+function prev() {
+  if (pageIndex.value > 1) {
+    pageIndex.value -= 1;
+  }
+}
+
+function reset() {
+  isDone.value = false;
+  skin.value = null;
+  pageIndex.value = 1;
+}
+
+function close() {
+  container.value.close();
+}
+
+function cancel() {
+  close();
+}
+
+const slotProps = computed(() => ({
+  pageCount: props.pageCount,
+  pageIndex: pageIndex.value,
+  isDone: isDone.value,
+  isSuccess: isSuccess.value,
+  next,
+  prev,
+  reset,
+  cancel,
+  close,
+}));
+
+defineExpose({
+  pageCount: props.pageCount,
+  pageIndex,
+  isDone,
+  isSuccess,
+  next,
+  prev,
+  reset,
+  cancel,
+});
+</script>
+
 <template>
-  <slider-container
+  <SliderContainer
+    ref="container"
     :visible="visible"
     :class="[
       'paged-drawer',
@@ -7,7 +86,6 @@
       skin ? `paged-drawer--${skin}` : null,
     ]"
     :allow-click-outside="isDone"
-    @close="$emit('close')"
   >
     <template #header>
       <span
@@ -28,93 +106,11 @@
 
     <template #footer>
       <slot name="footer" v-bind="slotProps">
-        <clapping-hands v-if="isDone && isSuccess" class="paged-drawer__graphic" />
+        <ClappingHands v-if="isDone && isSuccess" class="paged-drawer__graphic" />
       </slot>
     </template>
-  </slider-container>
+  </SliderContainer>
 </template>
-
-<script>
-import ClappingHands from '@/components/ClappingHands.vue';
-import SliderContainer from '@/components/drawers/SliderContainer.vue';
-
-export default {
-  name: 'PagedDrawerWrapper',
-
-  components: {
-    SliderContainer,
-    ClappingHands,
-  },
-
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
-    pageCount: {
-      type: Number,
-      required: false,
-      default: 1,
-    },
-  },
-
-  data: () => ({
-    pageIndex: 1,
-    skin: null,
-    isDone: false,
-  }),
-
-  computed: {
-    slotProps() {
-      return {
-        pageIndex: this.pageIndex,
-        pageCount: this.pageCount,
-        isDone: this.isDone,
-        isSuccess: this.isSuccess,
-        next: this.next,
-        prev: this.prev,
-        reset: this.reset,
-      };
-    },
-
-    isSuccess() {
-      return this.isDone && this.skin === 'success';
-    },
-  },
-
-  methods: {
-    next(success) {
-      if (success !== false && this.pageIndex < this.pageCount) {
-        this.pageIndex += 1;
-      } else {
-        this.pageIndex = this.pageCount + 1;
-        this.isDone = true;
-        this.skin = success !== false ? 'success' : 'error';
-      }
-    },
-
-    prev() {
-      if (this.pageIndex > 1) {
-        this.pageIndex -= 1;
-      }
-    },
-
-    goToPage(pageIndex) {
-      if (pageIndex !== this.pageIndex && pageIndex >= 1 && pageIndex <= this.pageCount) {
-        this.pageIndex = pageIndex;
-      }
-    },
-
-    reset() {
-      this.isDone = false;
-      this.skin = null;
-      this.pageIndex = 1;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
@@ -122,17 +118,17 @@ export default {
 
 .paged-drawer {
   &--done {
-    ::v-deep .sliderContainer__footer {
+    :deep(.sliderContainer__footer) {
       margin: auto -2.5rem -2.5rem;
     }
   }
   &--done#{&}--success {
-    ::v-deep .sliderContainer {
+    :deep(.sliderContainer) {
       background-color: var(--color-green-light);
     }
   }
   &--done#{&}--error {
-    ::v-deep .sliderContainer {
+    :deep(.sliderContainer) {
       background-color: var(--color-red-30);
     }
   }

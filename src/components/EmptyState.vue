@@ -1,3 +1,29 @@
+<script setup>
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
+
+defineProps({
+  heading: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  body: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  skin: {
+    type: String,
+    default: 'info',
+    validator: (value) => ['info', 'success', 'warning', 'error', 'dim'].includes(value),
+  },
+  showGraphic: {
+    type: Boolean,
+    default: true,
+  },
+});
+</script>
+
 <template>
   <div :class="['empty', `empty--${skin}`]">
     <div class="empty__wrapper">
@@ -10,47 +36,10 @@
     </div>
 
     <div v-if="showGraphic" class="empty__footer">
-      <buildings-graphic :skin="skin" class="empty__graphic" />
+      <BuildingsGraphic :skin="skin" class="empty__graphic" />
     </div>
   </div>
 </template>
-
-<script>
-import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
-
-export default {
-  name: 'EmptyState',
-
-  components: {
-    BuildingsGraphic,
-  },
-
-  props: {
-    heading: {
-      type: String,
-      required: false,
-      default: '',
-    },
-
-    body: {
-      type: String,
-      required: false,
-      default: '',
-    },
-
-    skin: {
-      type: String,
-      default: 'info',
-      validator: (value) => ['info', 'success', 'warning', 'error'].includes(value),
-    },
-
-    showGraphic: {
-      type: Boolean,
-      default: true,
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use 'sass:map';

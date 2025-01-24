@@ -1,3 +1,4 @@
+import { addDoc } from 'firebase/firestore';
 import metadata from '../util/metadata';
 
 /**
@@ -12,7 +13,7 @@ export default async function createDocument(collection, data) {
   data = { ...data, ...metadata.created() };
 
   try {
-    return collection.add(data);
+    return addDoc(collection, data);
   } catch (error) {
     throw new Error('Could not create document', error);
   }

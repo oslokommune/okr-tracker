@@ -1,3 +1,13 @@
+<script setup>
+defineProps({
+  skin: {
+    type: String,
+    default: 'info',
+    validator: (value) => ['info', 'success', 'warning', 'error', 'dim'].includes(value),
+  },
+});
+</script>
+
 <template>
   <svg
     :class="['buildings', `buildings--${skin}`]"
@@ -648,26 +658,12 @@
   </svg>
 </template>
 
-<script>
-export default {
-  name: 'BuildingsGraphic',
-
-  props: {
-    skin: {
-      type: String,
-      default: 'info',
-      validator: (value) => ['info', 'success', 'warning', 'error'].includes(value),
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
 .buildings {
   &--info {
-    --shade-color: var(--color-beige-light);
-    --foreground-color: var(--color-blue-light);
-    --detail-color: var(--color-blue-dark);
+    --shade-color: var(--pkt-color-surface-strong-gray);
+    --foreground-color: var(--pkt-color-surface-strong-blue);
+    --detail-color: var(--pkt-color-surface-strong-dark-blue);
   }
 
   &--success {
@@ -686,6 +682,12 @@ export default {
     --shade-color: var(--color-red-30);
     --foreground-color: var(--color-red);
     --detail-color: var(--color-grayscale-50);
+  }
+
+  &--dim {
+    --shade-color: var(--pkt-color-grays-gray-200);
+    --foreground-color: var(--pkt-color-grays-gray-100);
+    --detail-color: var(--pkt-color-grays-gray-300);
   }
 }
 </style>

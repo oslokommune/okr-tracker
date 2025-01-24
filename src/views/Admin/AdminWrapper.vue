@@ -1,22 +1,12 @@
-<template>
-  <router-view></router-view>
-</template>
+<script setup>
+import { useHead } from '@unhead/vue';
+import { useI18n } from 'vue-i18n';
 
-<script>
-import { mapState } from 'vuex';
-import isAdmin from '@/util/user';
+const { t } = useI18n();
 
-export default {
-  name: 'AdminWrapper',
-
-  computed: {
-    ...mapState(['user']),
-  },
-
-  created() {
-    if (!isAdmin(this.user)) {
-      this.$router.push({ name: 'Home' });
-    }
-  },
-};
+useHead({ title: t('general.admin') });
 </script>
+
+<template>
+  <RouterView />
+</template>

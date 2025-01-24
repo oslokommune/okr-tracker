@@ -1,6 +1,6 @@
 import i18n from '@/locale/i18n';
 import { numberLocale } from '@/util';
-import { db } from '@/config/firebaseConfig';
+import { where, limit } from 'firebase/firestore';
 
 /**
  * Return a list of available KPI data display formats.
@@ -9,11 +9,11 @@ export function kpiFormats() {
   return [
     {
       id: 'integer',
-      label: i18n.t('kpi.formats.integer'),
+      label: i18n.global.t('kpi.formats.integer'),
     },
     {
       id: 'percentage',
-      label: i18n.t('kpi.formats.percentage'),
+      label: i18n.global.t('kpi.formats.percentage'),
     },
   ];
 }
@@ -25,11 +25,11 @@ export function kpiStartValues() {
   return [
     {
       id: 'zero',
-      label: i18n.t('kpi.startValues.zero'),
+      label: i18n.global.t('kpi.startValues.zero'),
     },
     {
       id: 'min',
-      label: i18n.t('kpi.startValues.min'),
+      label: i18n.global.t('kpi.startValues.min'),
     },
   ];
 }
@@ -41,15 +41,15 @@ export function kpiTrendOptions() {
   return [
     {
       id: 'increase',
-      label: i18n.t('kpi.trendOptions.increase'),
+      label: i18n.global.t('kpi.trendOptions.increase'),
     },
     {
       id: 'decrease',
-      label: i18n.t('kpi.trendOptions.decrease'),
+      label: i18n.global.t('kpi.trendOptions.decrease'),
     },
     {
       id: 'neutral',
-      label: i18n.t('kpi.trendOptions.neutral'),
+      label: i18n.global.t('kpi.trendOptions.neutral'),
     },
   ];
 }
@@ -61,18 +61,18 @@ export function kpiTypes() {
   return [
     {
       id: 'plain',
-      label: i18n.t('kpi.types.plain.label'),
-      description: i18n.t('kpi.types.plain.description'),
+      label: i18n.global.t('kpi.types.plain.label'),
+      description: i18n.global.t('kpi.types.plain.description'),
     },
     {
       id: 'keyfig',
-      label: i18n.t('kpi.types.keyFigure.label'),
-      description: i18n.t('kpi.types.keyFigure.description'),
+      label: i18n.global.t('kpi.types.keyFigure.label'),
+      description: i18n.global.t('kpi.types.keyFigure.description'),
     },
     {
       id: 'ri',
-      label: i18n.t('kpi.types.resultIndicator.label'),
-      description: i18n.t('kpi.types.resultIndicator.description'),
+      label: i18n.global.t('kpi.types.resultIndicator.label'),
+      description: i18n.global.t('kpi.types.resultIndicator.description'),
     },
   ];
 }
@@ -87,7 +87,7 @@ export function kpiUpdateFrequencies() {
   return ['daily', 'weekly', 'monthly', 'quarterly', 'annual', 'irregular'].map(
     (frequency) => ({
       id: frequency,
-      label: i18n.t(`kpi.updateFrequency.frequencies.${frequency}`),
+      label: i18n.global.t(`kpi.updateFrequency.frequencies.${frequency}`),
     })
   );
 }
@@ -180,24 +180,28 @@ export function getCachedKPIProgress(kpi, startDate, endDate) {
 }
 
 /**
- * Return KPI progress collection query.
+ * Return KPI progress collection query constraints.
  *
- * `kpi` is the KPI document to build a collection query for.
  * `startDate` is the start date to filter by (inclusive).
  * `endDate` is the end date to filter by (inclusive).
+ * `limit` is the max number of records to return.
  */
-export function getKPIProgressQuery(kpi, startDate, endDate) {
-  let query = db.collection(`kpis/${kpi.id}/progress`);
+export function getKPIProgressConstraints(startDate, endDate, recordLimit) {
+  const queryConstraints = [];
 
   if (startDate) {
-    query = query.where('timestamp', '>=', startDate);
+    queryConstraints.push(where('timestamp', '>=', startDate));
   }
 
   if (endDate) {
-    query = query.where('timestamp', '<=', endDate);
+    queryConstraints.push(where('timestamp', '<=', endDate));
   }
 
-  return query.orderBy('timestamp', 'desc');
+  if (recordLimit) {
+    queryConstraints.push(limit(recordLimit));
+  }
+
+  return queryConstraints;
 }
 
 /**
@@ -219,8 +223,6 @@ export function filterDuplicatedProgressValues(progressCollection) {
   });
 }
 
-const _kpiOrder = ['ri', 'keyfig', 'plain'];
-
 /**
  * Return a function for comparing two KPIs for sorting.
  *
@@ -236,11 +238,7 @@ const _kpiOrder = ['ri', 'keyfig', 'plain'];
  */
 export function compareKPIs(itemId) {
   return (a, b) => {
-    // First sort by KPI type.
-    if (a.kpiType !== b.kpiType) {
-      return _kpiOrder.indexOf(a.kpiType) - _kpiOrder.indexOf(b.kpiType);
-    }
-    // Then sort by order only if both have one.
+    // Sort by order only if both have one.
     if ('order' in a && itemId in a.order && 'order' in b && itemId in b.order) {
       return a.order[itemId] - b.order[itemId];
     }
@@ -252,6 +250,6 @@ export function compareKPIs(itemId) {
       return 1;
     }
     // Otherwise fall back to ordering by name.
-    return a.name.localeCompare(b.name);
+    return a.name.localeCompare(b.name, i18n.global.locale.value);
   };
 }

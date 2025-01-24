@@ -1,98 +1,86 @@
-<template>
-  <page-layout breakpoint="phablet">
-    <div class="card">
-      <div class="back">
-        <router-link :to="{ name: 'Login' }">
-          {{ $t('login.backToLogin') }}
-        </router-link>
-      </div>
-      <h2 class="title-1">{{ $t('login.requestAccess') }}</h2>
-
-      <form-section>
-        <form-component
-          v-model="email"
-          input-type="input"
-          name="email"
-          :label="$t('login.email')"
-          rules="required"
-          type="email"
-        />
-
-        <template #actions="{ handleSubmit, submitDisabled }">
-          <btn-save
-            variant="label-only"
-            :disabled="submitDisabled || loading"
-            :text="$t('login.requestButton')"
-            @click="handleSubmit(send)"
-          />
-        </template>
-      </form-section>
-    </div>
-  </page-layout>
-</template>
-
-<script>
-import { mapMutations } from 'vuex';
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useToast } from 'vue-toast-notification';
 import api from '@/util/api';
-import { showToastMessage } from '@/util/toastUtils';
-import { FormSection, BtnSave } from '@/components/generic/form';
+import { PktAlert, PktBackLink } from '@oslokommune/punkt-vue';
+import { BtnSave } from '@/components/generic/form';
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 
-export default {
-  name: 'RequestAccess',
+const router = useRouter();
+const i18n = useI18n();
+const toast = useToast();
 
-  components: {
-    FormSection,
-    BtnSave,
-  },
+const loading = ref(false);
+const errorMessage = ref(null);
 
-  data: () => ({
-    email: '',
-    loading: false,
-  }),
-
-  mounted() {
-    this.SET_LOGIN_ERROR(null);
-  },
-
-  methods: {
-    ...mapMutations(['SET_LOGIN_ERROR']),
-    async send() {
-      this.loading = true;
-      try {
-        const { message } = await api(`/accessRequests/create`, {
-          method: 'post',
-          body: {
-            email: this.email,
-          },
-        });
-
-        showToastMessage({
-          msg: message,
-          msgVars: { user: this.email },
-          type: 'success',
-        });
-
-        await this.$router.push({
-          name: 'Login',
-          query: { redirectFrom: '/' },
-        });
-      } catch (error) {
-        showToastMessage({
-          msg: error.message,
-          msgVars: { user: this.email },
-          type: 'error',
-        });
-      }
-
-      this.email = '';
-      this.loading = false;
-    },
-  },
-};
+async function requestAccess({ email }, resetForm) {
+  loading.value = true;
+  try {
+    const { message } = await api(`/accessRequests/create`, {
+      method: 'post',
+      body: { email },
+    });
+    toast.success(i18n.t(message, { user: email }));
+    await router.push({ name: 'Login' });
+  } catch (error) {
+    toast.error(i18n.t(error.message, { user: email }));
+    resetForm();
+  }
+  loading.value = false;
+}
 </script>
 
+<template>
+  <PageLayout breakpoint="phablet">
+    <RouterLink v-slot="{ href }" :to="{ name: 'Login' }" custom>
+      <PktBackLink :href="href" :text="$t('login.backToLogin')" class="mb-size-22" />
+    </RouterLink>
+
+    <h1 class="title-1">{{ $t('login.requestAccess') }}</h1>
+
+    <PktAlert v-if="errorMessage" skin="error" class="mb-size-32">
+      {{ errorMessage }}
+    </PktAlert>
+
+    <FormSection>
+      <FormComponent
+        input-type="input"
+        name="email"
+        :label="$t('login.email')"
+        rules="required|email"
+        type="email"
+      />
+
+      <template #actions="{ submit, reset, disabled }">
+        <BtnSave
+          variant="label-only"
+          :disabled="disabled || loading"
+          :text="$t('login.requestButton')"
+          size="small"
+          @on-click="submit((values) => requestAccess(values, reset))"
+        />
+      </template>
+    </FormSection>
+
+    <template #footer>
+      <BuildingsGraphic skin="dim" />
+    </template>
+  </PageLayout>
+</template>
+
 <style lang="scss" scoped>
-.back {
-  margin-bottom: 1.5rem;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+
+.page {
+  background-color: var(--pkt-color-background-subtle);
+
+  @include bp('tablet-up') {
+    :deep(.page__main) {
+      padding: 1.5rem;
+      background: var(--pkt-color-background-default);
+    }
+  }
 }
 </style>

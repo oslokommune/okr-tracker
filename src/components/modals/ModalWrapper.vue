@@ -1,102 +1,108 @@
+<script setup>
+import { nextTick, onMounted, ref } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+import { PktButton } from '@oslokommune/punkt-vue';
+
+const props = defineProps({
+  title: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  icon: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  variant: {
+    type: String,
+    required: false,
+    default: 'normal',
+    validator: (value) => ['normal', 'wide'].includes(value),
+  },
+  initialFocus: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+});
+
+const emit = defineEmits(['open', 'close']);
+
+const isOpen = ref(false);
+const modalOverlay = ref(null);
+const modal = ref(null);
+const modalContent = ref(null);
+
+const { activate: activateFocusTrap, deactivate: deactivateFocusTrap } = useFocusTrap(
+  [modalContent, modal],
+  {
+    allowOutsideClick: true,
+    initialFocus: props.initialFocus,
+  }
+);
+
+onMounted(async () => {
+  isOpen.value = true;
+});
+
+async function onOpen() {
+  await nextTick();
+  activateFocusTrap();
+  emit('open');
+}
+
+function close() {
+  deactivateFocusTrap();
+  emit('close');
+}
+</script>
+
 <template>
-  <div ref="modalOverlay" class="overlay" @keydown.esc="close">
-    <div :class="['modal', `modal--${variant}`]">
-      <div class="modal__header">
-        <h1 class="pkt-txt-18-medium">
-          <slot name="header" />
-        </h1>
-        <pkt-button
-          ref="closeButton"
-          size="small"
-          variant="icon-only"
-          icon-name="close"
-          skin="tertiary"
-          @onClick="close"
-        />
-      </div>
+  <Teleport to="body">
+    <Transition name="modal-fade" @after-enter="onOpen">
+      <div v-if="isOpen" ref="modalOverlay" class="overlay" @keydown.esc="close">
+        <div ref="modal" :class="['modal', `modal--${variant}`]">
+          <div class="modal__header">
+            <PktIcon v-if="icon" :name="icon" />
+            <h1 class="pkt-txt-18-medium">
+              <slot name="header">{{ title }}</slot>
+            </h1>
+            <PktButton
+              ref="closeButton"
+              size="small"
+              variant="icon-only"
+              icon-name="close"
+              skin="tertiary"
+              @click.stop="close"
+            />
+          </div>
 
-      <div ref="modalContent" class="modal__content">
-        <slot />
-      </div>
+          <div ref="modalContent" class="modal__content">
+            <slot />
+          </div>
 
-      <div v-if="$slots.footer" class="modal__footer">
-        <slot name="footer" />
-      </div>
+          <div v-if="$slots.footer" class="modal__footer">
+            <slot name="footer" />
+          </div>
 
-      <div v-if="$slots.subfooter" class="modal__subfooter">
-        <slot name="subfooter" />
+          <div v-if="$slots.subfooter" class="modal__subfooter">
+            <slot name="subfooter" />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </Transition>
+  </Teleport>
 </template>
 
-<script>
-import { focusable } from 'tabbable';
-import * as focusTrap from 'focus-trap';
-import { PktButton } from '@oslokommune/punkt-vue2';
+<style lang="scss" scoped>
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
 
-export default {
-  name: 'ModalWrapper',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    variant: {
-      type: String,
-      required: false,
-      default: 'normal',
-      validator: (value) => ['normal', 'wide'].includes(value),
-    },
-
-    initialFocus: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-
-    clickOutside: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
-  data: () => ({
-    focusTrap: null,
-  }),
-
-  mounted() {
-    this.$nextTick(this.createFocusTrap);
-  },
-
-  beforeDestroy() {
-    if (this.focusTrap) {
-      this.focusTrap.deactivate();
-      this.focusTrap = null;
-    }
-  },
-
-  methods: {
-    close() {
-      this.$emit('close');
-    },
-
-    createFocusTrap() {
-      this.focusTrap = focusTrap.createFocusTrap(this.$refs.modalOverlay, {
-        initialFocus: this.initialFocus,
-        onActivate: this.initialFocus ? this.setInitialFocus : null,
-        allowOutsideClick: true,
-      });
-      this.focusTrap.activate();
-    },
-
-    setInitialFocus() {
-      const focusableElement =
-        focusable(this.$refs.modalContent)[0] || this.$refs.closeButton;
-      focusableElement.focus();
-    },
-  },
-};
-</script>
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: 0.25s ease all;
+}
+</style>

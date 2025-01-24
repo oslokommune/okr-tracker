@@ -1,3 +1,24 @@
+<script setup>
+import { provide } from 'vue';
+
+const props = defineProps({
+  vertical: {
+    type: Boolean,
+    default: false,
+  },
+  tabs: {
+    type: Boolean,
+    default: false,
+  },
+  toggles: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+provide('isVerticalMenu', props.vertical);
+</script>
+
 <template>
   <ul
     :class="[
@@ -11,24 +32,3 @@
     <slot />
   </ul>
 </template>
-
-<script>
-export default {
-  name: 'NavMenu',
-
-  props: {
-    vertical: {
-      type: Boolean,
-      default: false,
-    },
-    tabs: {
-      type: Boolean,
-      default: false,
-    },
-    toggles: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
-</script>

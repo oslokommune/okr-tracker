@@ -1,138 +1,129 @@
-<template>
-  <widget>
-    <div class="progressStatistics">
-      <div>
-        <span class="progressStatistics__title pkt-txt-14">
-          <template v-if="latestProgressRecord">
-            {{
-              $t('kpi.latestValueTitle', {
-                formattedDate: formatDate(latestProgressRecord.timestamp),
-              })
-            }}
-          </template>
-          <template v-else>
-            {{ $t('kpi.currentValue') }}
-          </template>
-        </span>
-        <div>
-          <span class="progressStatistics__value pkt-txt-20-medium">
-            {{ formattedKpiValue }}
-          </span>
-        </div>
-      </div>
-
-      <div v-if="goal">
-        <span class="progressStatistics__title pkt-txt-14">
-          {{
-            $t('kpi.goals.goalTitle', {
-              formattedDateRange: formatDateRange(goal.fromDate, goal.toDate),
-            })
-          }}
-        </span>
-        <div>
-          <span class="progressStatistics__value pkt-txt-20-medium">
-            {{ formatKPIValue(kpi, goal.value) }}
-            <span v-if="isGoalReached" class="check-icon">
-              <pkt-icon name="check-medium" />
-            </span>
-          </span>
-        </div>
-      </div>
-    </div>
-  </widget>
-</template>
-
-<script>
-import { mapState } from 'vuex';
+<script setup>
+import { computed, toValue } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { periodDates, dateLongCompact } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
+import { useActiveKpiStore } from '@/store/activeKpi';
 import WidgetWrapper from './WidgetWrapper.vue';
 
-export default {
-  name: 'WidgetKpiProgressStats',
+const i18n = useI18n();
 
-  components: {
-    Widget: WidgetWrapper,
-  },
+const { kpi, progress, period, goals } = storeToRefs(useActiveKpiStore());
 
-  props: {
-    kpi: {
-      type: Object,
-      required: true,
+const firstProgressRecord = computed(() =>
+  progress.value.length ? progress.value[progress.value.length - 1] : null
+);
+const latestProgressRecord = computed(() =>
+  progress.value.length ? progress.value[0] : null
+);
+
+const latestGoal = computed(() => {
+  // Firebase doesn't support equality filtering on more than one field at
+  // a time, so do the rest of the filtering client side.
+  const { startDate, endDate } = period.value;
+
+  const filteredGoals = goals.value.filter(
+    (goal) =>
+      goal.value && goal.toDate.toDate() > startDate && goal.fromDate.toDate() < endDate
+  );
+
+  // We don't enforce non-overlapping goals (yet?), but if anyone has set
+  // overlapping goals, just pick the one with the closest end date.
+  return filteredGoals.length ? filteredGoals[0] : null;
+});
+
+const isGoalReached = computed(() => {
+  const goal = toValue(latestGoal);
+
+  if (!goal || !goal.value || !progress.value.length) {
+    return null;
+  }
+  const fromDate = goal.fromDate.toDate();
+  const toDate = goal.toDate.toDate();
+
+  const progressRecordsInGoalPeriod = progress.value.filter((record) => {
+    const recordDate = record.timestamp.toDate();
+    return recordDate >= fromDate && recordDate <= toDate;
+  });
+
+  if (!progressRecordsInGoalPeriod.length) {
+    return false;
+  }
+
+  const record = progressRecordsInGoalPeriod[0];
+  return record.value >= goal.value;
+});
+
+function formatDate(date) {
+  return dateLongCompact(date instanceof Date ? date : date.toDate());
+}
+
+function formatDateRange(startDate, endDate) {
+  return periodDates({ startDate, endDate }, dateLongCompact);
+}
+
+const valueCountDateRange = computed(() => {
+  if (progress.value.length > 1) {
+    return formatDateRange(
+      firstProgressRecord.value.timestamp,
+      latestProgressRecord.value.timestamp
+    );
+  }
+  if (progress.value.length === 1) {
+    return formatDate(latestProgressRecord.value.timestamp);
+  }
+  return null;
+});
+
+const stats = computed(() =>
+  [
+    {
+      title: i18n.t('kpi.latestValue'),
+      subtitle: latestProgressRecord.value
+        ? formatDate(latestProgressRecord.value.timestamp)
+        : null,
+      value: latestProgressRecord.value
+        ? formatKPIValue(kpi.value, latestProgressRecord.value.value)
+        : '–––',
     },
-    progress: {
-      type: Array,
-      default: () => [],
+    {
+      title: i18n.t('kpi.valueCount'),
+      subtitle: valueCountDateRange.value,
+      value: progress.value.length,
     },
-    goals: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
-  },
-
-  computed: {
-    ...mapState('kpis', ['selectedPeriod']),
-
-    formattedKpiValue() {
-      return this.latestProgressRecord
-        ? formatKPIValue(this.kpi, this.latestProgressRecord.value)
-        : formatKPIValue(this.kpi);
-    },
-
-    latestProgressRecord() {
-      return this.progress.length ? this.progress[0] : null;
-    },
-
-    goal() {
-      // Firebase doesn't support equality filtering on more than one field at
-      // a time, so do the rest of the filtering client side.
-      const { startDate, endDate } = this.selectedPeriod;
-
-      const goals = this.goals.filter(
-        (goal) => goal.toDate.toDate() > startDate && goal.fromDate.toDate() < endDate
-      );
-
-      // We don't enforce non-overlapping goals (yet?), but if anyone has set
-      // overlapping goals, just pick the one with the closest end date.
-      return goals ? goals[0] : null;
-    },
-
-    isGoalReached() {
-      if (!this.goal || !this.goal.value || !this.progress.length) {
-        return null;
-      }
-
-      const fromDate = this.goal.fromDate.toDate();
-      const toDate = this.goal.toDate.toDate();
-
-      const progressRecordsInGoalPeriod = this.progress.filter((record) => {
-        const recordDate = record.timestamp.toDate();
-        return recordDate >= fromDate && recordDate <= toDate;
-      });
-
-      if (!progressRecordsInGoalPeriod.length) {
-        return false;
-      }
-
-      const record = progressRecordsInGoalPeriod[0];
-      return record.value >= this.goal.value;
-    },
-  },
-
-  methods: {
-    formatKPIValue,
-
-    formatDate(date) {
-      return dateLongCompact(date instanceof Date ? date : date.toDate());
-    },
-
-    formatDateRange(startDate, endDate) {
-      return periodDates({ startDate, endDate }, dateLongCompact);
-    },
-  },
-};
+    latestGoal.value
+      ? {
+          title: i18n.t('kpi.goals.goal'),
+          subtitle: formatDateRange(latestGoal.value.fromDate, latestGoal.value.toDate),
+          value: formatKPIValue(kpi.value, latestGoal.value.value),
+          checkmark: isGoalReached.value,
+        }
+      : null,
+  ].filter((s) => !!s)
+);
 </script>
+
+<template>
+  <WidgetWrapper>
+    <div class="progressStatistics">
+      <div
+        v-for="{ title, subtitle, value, checkmark } in stats"
+        :key="title"
+        class="progressStatistics__stat"
+      >
+        <span class="pkt-txt-14-medium">{{ title }}</span>
+        <span class="pkt-txt-12">
+          <template v-if="subtitle">{{ subtitle }}</template>
+        </span>
+        <span class="pkt-txt-20-medium">
+          {{ value }}
+          <PktIcon v-if="checkmark" name="check-medium" />
+        </span>
+      </div>
+    </div>
+  </WidgetWrapper>
+</template>
 
 <style lang="scss" scoped>
 .progressStatistics {
@@ -145,28 +136,28 @@ export default {
     }
   }
 
-  > div {
+  &__stat {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-  }
 
-  &__title {
-    color: var(--color-dark-blue);
-  }
+    > span:nth-child(2) {
+      min-height: 1.25rem;
+      color: var(--pkt-color-grays-gray-500);
+    }
 
-  &__value {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
+    > span:nth-child(3) {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
 
-    .check-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      line-height: 1.25rem;
-      text-align: center;
-      background-color: var(--color-green-light);
-      border-radius: 50%;
+      .pkt-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        line-height: 1.25rem;
+        text-align: center;
+        background-color: var(--color-green-light);
+        border-radius: 50%;
+      }
     }
   }
 }

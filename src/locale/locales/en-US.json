@@ -1,9 +1,4 @@
 {
-  "403": {
-    "title": "Forbidden",
-    "body": "You do not have access to this page.",
-    "linkText": "Go back to the front page"
-  },
   "notFound": {
     "title": "Page not found",
     "body": "This page doesn't seem to exist.",
@@ -18,9 +13,10 @@
   },
   "kpi": {
     "currentValue": "Current value",
-    "latestValueTitle": "Latest value per {formattedDate}",
+    "latestValue": "Latest value",
     "progress": "Progress",
     "value": "Value",
+    "valueCount": "Value count",
     "newValue": "New value",
     "editValue": "Edit value",
     "description": "Description",
@@ -74,7 +70,8 @@
       }
     },
     "help": {
-      "apiProgress": "New measurements can be registered with {apiLink} calls, for instance by using curl as shown below.",
+      "apiHelpTitle": "How can I register measurements automatically via API?",
+      "apiProgress": "New measurements can be registered with API calls, for instance by using curl as shown below. Read more in our {apiLink}.",
       "resultIndicatorWarning": "Result indicators are considered indicators of the organization's effect and target achievement, and should therefore be clarified with the organization's management before creation."
     },
     "goals": {
@@ -114,34 +111,36 @@
     "preferredTrend": "Trend",
     "updateFrequency": "Update frequency",
     "language": "Language",
-    "kpiType": "Type"
+    "kpiType": "Type",
+    "example": "Example"
   },
   "validation": {
     "alpha": "May only contain alphabetic characters",
     "alpha_num": "May only contain alpha-numeric characters",
     "alpha_dash": "My contain alpha-numeric characters as well as dashes and underscores",
     "alpha_spaces": "May only contain alphabetic characters as well as spaces",
-    "between": "Must be between {min} and {max}",
+    "between": "Must be between {0} and {1}",
     "confirmed": "Field confirmation does not match",
-    "digits": "Must be numeric and exactly contain {length} digits",
-    "dimensions": "Must be {width} pixels by {height} pixels",
+    "digits": "Must be numeric and exactly contain {0} digits",
+    "dimensions": "Must be {0} pixels by {1} pixels",
     "email": "Must be a valid email",
     "excluded": "Not a valid value",
     "ext": "Not a valid file",
     "image": "Must be an image",
     "integer": "Must be an integer",
-    "length": "Must be {length} long",
-    "max_value": "Must be {max} or less",
-    "max": "May not be greater than {length} characters",
+    "length": "Must be {0} long",
+    "max_value": "Must be {0} or less",
+    "max": "May not be greater than {0} characters",
     "mimes": "Must have a valid file type",
-    "min_value": "Must be {min} or more",
-    "min": "Must be at least {length} characters",
+    "min_value": "Must be {0} or more",
+    "min": "Must be at least {0} characters",
     "numeric": "May only contain numeric characters",
+    "number": "Must be a valid number",
     "oneOf": "Not a valid value",
     "regex": "Format is invalid",
     "required_if": "Field is required",
     "required": "Field is required",
-    "size": "Must be less than {size}KB",
+    "size": "Must be less than {0}KB",
     "double": "Must be a valid decimal",
     "positiveNotZero": "Must be a valid value",
     "decimal": "Must be a decimal",
@@ -201,11 +200,14 @@
     "shortcuts": "Shortcuts",
     "graph": "Graph",
     "error": "Error",
-    "unknown": "unknown"
+    "unknown": "unknown",
+    "noResults": "No results found"
   },
   "home": {
     "welcome": "Welcome to {appName}!",
-    "changeOrganization": "Change organization"
+    "organization": "Organization",
+    "changeOrganization": "Change organization",
+    "myOrganization": "My organization"
   },
   "about": {
     "about": "About",
@@ -249,6 +251,7 @@
     "confirmDelete": "Confirm delete",
     "reset": "Reset",
     "showMore": "Show all",
+    "showLess": "Show less",
     "syncData": "Synchronize data",
     "moreDetails": "More details",
     "archiveObjective": "Archive objective",
@@ -263,12 +266,13 @@
     "google": "Sign in with Google",
     "email": "Email",
     "password": "Password",
-    "loading": "We are signing you in, please wait",
+    "loading": "We are signing you in, please wait...",
     "error": {
       "notRegistered": "Your account is not registered",
       "providerError": "Could not sign in. Please contact system administrator if the error persists.",
       "wrongPassword": "Wrong password.",
-      "userNotFound": "Could not find user."
+      "userNotFound": "Could not find user.",
+      "userAbort": "Login request aborted. Please try again."
     },
     "loginWithUsername": "Sign in with username"
   },
@@ -287,12 +291,13 @@
     },
     "delete": {
       "user": "Deleted user {user}",
-      "permanently": "Deleted permanently",
+      "permanently": "Deleted «{name}»",
       "object": "Archived «{name}»",
       "progress": "Deleted value"
     },
     "update": {
-      "progress": "Updated value"
+      "progress": "Updated value",
+      "profile": "User profile updated"
     },
     "action": {
       "regret": "Undo",
@@ -342,9 +347,6 @@
     "newValue": "New value",
     "editValue": "Edit value",
     "registeredValues": "Registered values",
-    "registerProgression": {
-      "value": "Value"
-    },
     "commentPlaceholder": "This is a comment...",
     "updateValue": "Update value",
     "dateAndTime": "Date and time",
@@ -388,14 +390,9 @@
     "progressionTitle": "Overall progression based on selected objectives:"
   },
   "tooltip": {
-    "openMenu": "Open menu",
-    "keyResultValue": "Insert new value",
     "changeView": "View: {view}",
     "editProgress": "Edit value",
     "deleteProgress": "Delete value",
-    "isMember": "Member of team",
-    "emptyPeriod": "No active period",
-    "periodEnd": "You are not allowed to edit after a period has ended",
     "copyToClipboard": "Copy to the clipboard"
   },
   "admin": {
@@ -441,18 +438,15 @@
       "delete": "Delete measurement"
     },
     "department": {
-      "picture": "Image",
       "create": "Create new department",
       "parentOrganisation": "Related organization",
-      "search": "Search {count} organizations"
-    },
-    "organization": {
-      "picture": "Image",
-      "create": "Create new organization",
       "search": "Search {count} departments"
     },
+    "organization": {
+      "create": "Create new organization",
+      "search": "Search {count} organizations"
+    },
     "product": {
-      "picture": "Image",
       "create": "Create new product",
       "parentDepartment": "Related department",
       "search": "Search {count} products"
@@ -490,7 +484,6 @@
   },
   "view": {
     "details": "Details",
-    "timeline": "Timeline",
     "list": "List"
   },
   "keyResultsPage": {
@@ -524,10 +517,6 @@
     "noObjectives": {
       "heading": "No objectives here!",
       "body": "It looks like there are no objectives and key results here ..."
-    },
-    "noObjectivesInPeriod": {
-      "heading": "No objectives in selected period",
-      "body": "No objectives registered within the selected period."
     }
   },
   "archived": {
@@ -542,13 +531,6 @@
     "restoreText": "If you miss it, just restore it."
   },
   "widget": {
-    "progression": {
-      "period": "Progress for period",
-      "objective": "Progress for objective",
-      "done": "Completed",
-      "today": "Today",
-      "notStarted": "Not started"
-    },
     "history": {
       "title": "History",
       "value": "Value",
@@ -557,9 +539,7 @@
       "actions": "Actions",
       "time": "Time",
       "changedBy": "Last edited by",
-      "showComment": "View comment",
       "showComments": "Show comments",
-      "hideComments": "Hide comments",
       "empty": {
         "heading": "No history"
       },
@@ -638,7 +618,6 @@
   },
   "integration": {
     "info": "Our API offers endpoints to automate updating of key results and measurements. In order to make use of the API, an API client must be created. For each client, a unique ID and secret is generated which must be added as request headers ({clientIdHeader}, {clientSecretHeader}) to each API call. This in addition to a separate API key ({apiKeyHeader}). It is recommended to create a separate client for each application that integrates with the API. This makes it easier to keep track of each application and secrets in use.",
-    "placeholderTitle": "New client",
     "clientId": "Client ID",
     "clientSecret": "Secret",
     "action": {

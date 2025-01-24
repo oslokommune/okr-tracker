@@ -7,13 +7,13 @@
 @use 'nav';
 @use 'modal';
 @use 'tooltip';
+@use 'toast';
 
 @use '@oslokommune/punkt-css/dist/scss/pkt';
 
 @use 'forms';
 @use 'markdown';
 @use 'titles';
-@use 'vSelect';
 
 @function hexToRGB($hex) {
   @return red($hex), green($hex), blue($hex);
@@ -69,7 +69,6 @@ body.using-mouse :not([class^='pkt-'], [class*=' pkt-']):focus {
 .md table {
   width: 100%;
   margin: 1rem 0 1rem;
-  border-bottom: 1px solid var(--color-border);
 
   th {
     font-weight: 500;
@@ -108,7 +107,8 @@ body.using-mouse :not([class^='pkt-'], [class*=' pkt-']):focus {
 }
 
 :root {
-  // Colors that are going to be added in Punkt soon.
+  // Colors that are going to be added in Punkt soon. These
+  // are used in `src/config/colors.js`.
   --color-blue-40: #336084;
   --color-blue-dark-15: #b8ccd9;
   --color-blue-dark-40: #4b5283;

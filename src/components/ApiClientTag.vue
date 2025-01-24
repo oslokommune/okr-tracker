@@ -1,91 +1,87 @@
-<template>
-  <span v-tooltip="tooltip" class="api-client-tag">
-    <pkt-icon v-if="icon" :name="icon" />
-    <span>{{ formattedTagText }}</span>
-  </span>
-</template>
-
-<script>
+<script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { format, formatDistanceStrict } from 'date-fns';
 import { dateTimeShort } from '@/util';
 
-export default {
-  name: 'ApiClientTag',
-
-  props: {
-    icon: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    i18nKey: {
-      type: String,
-      required: true,
-    },
-    timestamp: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-    user: {
-      type: [Object, String],
-      required: false,
-      default: null,
-    },
-    timeAsDistance: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+const props = defineProps({
+  icon: {
+    type: String,
+    required: false,
+    default: null,
   },
-
-  data: () => ({
-    timerId: null,
-    now: null,
-  }),
-
-  computed: {
-    formattedTagText() {
-      return this.$t(this.i18nKey, {
-        when: this.datetime,
-        name: this.userName,
-      });
-    },
-    datetime() {
-      if (!this.timestamp) {
-        return this.$t('general.unknown');
-      }
-      if (this.timeAsDistance && this.now) {
-        return formatDistanceStrict(this.timestamp.toDate(), this.now, {
-          addSuffix: true,
-        });
-      }
-      return dateTimeShort(this.timestamp.toDate());
-    },
-    userName() {
-      return this.user?.displayName || this.user?.id || this.$t('general.unknown');
-    },
-    tooltip() {
-      return this.timestamp && this.timeAsDistance
-        ? format(this.timestamp.toDate(), 'P - ppp')
-        : false;
-    },
+  i18nKey: {
+    type: String,
+    required: true,
   },
-
-  mounted() {
-    if (this.timeAsDistance) {
-      this.now = new Date();
-      this.timerId = setInterval(() => {
-        this.now = new Date();
-      }, 1000);
-    }
+  timestamp: {
+    type: Object,
+    required: false,
+    default: null,
   },
-
-  beforeDestroy() {
-    clearInterval(this.timerId);
+  user: {
+    type: [Object, String],
+    required: false,
+    default: null,
   },
-};
+  timeAsDistance: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const i18n = useI18n();
+
+const timerId = ref(null);
+const now = ref(null);
+
+const userName = computed(
+  () => props.user?.displayName || props.user?.id || i18n.t('general.unknown')
+);
+
+const datetime = computed(() => {
+  if (!props.timestamp) {
+    return i18n.t('general.unknown');
+  }
+  if (props.timeAsDistance && now.value) {
+    return formatDistanceStrict(props.timestamp.toDate(), now.value, {
+      addSuffix: true,
+    });
+  }
+  return dateTimeShort(props.timestamp.toDate());
+});
+
+const formattedTagText = computed(() =>
+  i18n.t(props.i18nKey, { when: datetime.value, name: userName.value })
+);
+
+const tooltip = computed(() =>
+  props.timestamp && props.timeAsDistance
+    ? format(props.timestamp.toDate(), 'P - ppp')
+    : false
+);
+
+onMounted(() => {
+  if (props.timeAsDistance) {
+    now.value = new Date();
+    timerId.value = setInterval(() => {
+      now.value = new Date();
+    }, 1000);
+  }
+});
+
+onBeforeUnmount(() => {
+  clearInterval(timerId.value);
+});
 </script>
+
+<template>
+  <span v-tooltip="tooltip" class="api-client-tag">
+    <PktIcon v-if="icon" :name="icon" />
+    <span>{{ formattedTagText }}</span>
+  </span>
+</template>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;

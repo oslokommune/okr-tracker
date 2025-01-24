@@ -1,133 +1,59 @@
+<script setup>
+import { ref } from 'vue';
+import { dateLong } from '@/util';
+import { formattedPeriod } from '@/util/okr';
+import UserLink from '@/components/UserLink.vue';
+import ProfileModal from '@/components/modals/ProfileModal.vue';
+import WidgetWrapper from './WidgetWrapper.vue';
+
+defineProps({
+  objective: {
+    type: Object,
+    required: true,
+  },
+});
+
+const chosenProfileId = ref(null);
+const formatDate = (date) => dateLong(date.toDate());
+</script>
+
 <template>
-  <widget v-if="activeObjective" :title="$t('general.details')" size="small" collapsable>
+  <WidgetWrapper v-if="objective" :title="$t('general.details')" size="small" collapsable>
     <div class="details">
-      <div v-if="formattedPeriod(activeObjective)" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('objective.period') }}</h3>
-        <div class="details__item-body">
-          <div class="details__item-value">
-            {{ formattedPeriod(activeObjective) }}
-          </div>
+      <div v-if="formattedPeriod(objective)" class="details__item">
+        <h3 class="details__item-title">{{ $t('objective.period') }}</h3>
+        <div class="details__item-value">{{ formattedPeriod(objective) }}</div>
+      </div>
+
+      <div v-if="objective.created" class="details__item">
+        <h3 class="details__item-title">{{ $t('objective.created') }}</h3>
+        <div class="details__item-value">{{ formatDate(objective.created) }}</div>
+      </div>
+
+      <div v-if="objective.createdBy" class="details__item">
+        <h3 class="details__item-title">{{ $t('objective.createdBy') }}</h3>
+        <div class="details__item-value">
+          <UserLink :user="objective.createdBy" @activate="chosenProfileId = $event" />
         </div>
       </div>
 
-      <div v-if="activeObjective.created" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('objective.created') }}</h3>
-        <div class="details__item-body">
-          <div class="details__item-value">{{ formatDate(activeObjective.created) }}</div>
-        </div>
+      <div v-if="objective.edited" class="details__item">
+        <h3 class="details__item-title">{{ $t('objective.edited') }}</h3>
+        <div class="details__item-value">{{ formatDate(objective.edited) }}</div>
       </div>
 
-      <div v-if="activeObjective.createdBy" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('objective.createdBy') }}</h3>
-
-        <div class="details__item-body">
-          <div class="details__item-value">
-            <div class="details__item-value user">
-              <a
-                v-if="activeObjective.createdBy.id"
-                @click="openProfileModal(activeObjective.createdBy.id)"
-              >
-                <span>{{ createdBy }}</span>
-              </a>
-              <span v-else>{{ activeObjective.createdBy }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="activeObjective.edited" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('objective.edited') }}</h3>
-        <div class="details__item-body">
-          <div class="details__item-value">{{ formatDate(activeObjective.edited) }}</div>
-        </div>
-      </div>
-
-      <div v-if="activeObjective.editedBy" class="details__item">
-        <h3 class="title-3 details__item-heading">{{ $t('objective.editedBy') }}</h3>
-
-        <div class="details__item-body">
-          <div class="details__item-value user">
-            <a
-              v-if="activeObjective.editedBy.id"
-              @click="openProfileModal(activeObjective.editedBy.id)"
-            >
-              <span>{{ editedBy }}</span>
-            </a>
-            <span v-else>{{ activeObjective.editedBy }}</span>
-          </div>
+      <div v-if="objective.editedBy" class="details__item">
+        <h3 class="details__item-title">{{ $t('objective.editedBy') }}</h3>
+        <div class="details__item-value">
+          <UserLink :user="objective.editedBy" @activate="chosenProfileId = $event" />
         </div>
       </div>
     </div>
 
-    <profile-modal
-      v-if="showProfileModal"
-      :id="chosenProfileId"
-      @close="closeProfileModal"
+    <ProfileModal
+      v-if="!!chosenProfileId"
+      :user-id="chosenProfileId"
+      @close="chosenProfileId = null"
     />
-  </widget>
+  </WidgetWrapper>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-import { dateLong } from '@/util';
-import { formattedPeriod } from '@/util/okr';
-import ProfileModal from '@/components/modals/ProfileModal.vue';
-import Widget from './WidgetWrapper.vue';
-
-export default {
-  name: 'WidgetObjectiveDetails',
-
-  components: {
-    Widget,
-    ProfileModal,
-  },
-
-  data: () => ({
-    showProfileModal: false,
-    chosenProfileId: null,
-  }),
-
-  computed: {
-    ...mapState('okrs', ['activeObjective']),
-    createdBy() {
-      return (
-        this.activeObjective.createdBy.displayName || this.activeObjective.createdBy.id
-      );
-    },
-    editedBy() {
-      return (
-        this.activeObjective.editedBy.displayName || this.activeObjective.editedBy.id
-      );
-    },
-  },
-
-  methods: {
-    formattedPeriod,
-
-    formatDate(date) {
-      return dateLong(date.toDate());
-    },
-
-    openProfileModal(profileId) {
-      this.showProfileModal = true;
-      this.chosenProfileId = profileId;
-    },
-
-    closeProfileModal() {
-      this.showProfileModal = false;
-      this.chosenProfileId = null;
-    },
-  },
-};
-</script>
-
-<style lang="scss" scoped>
-.user {
-  padding: 0.2rem;
-  cursor: pointer;
-
-  &:hover {
-    background: rgba(var(--color-grayscale-50-rgb), 0.1);
-  }
-}
-</style>

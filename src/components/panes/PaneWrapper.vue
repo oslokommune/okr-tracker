@@ -1,3 +1,18 @@
+<script setup>
+import { PktButton } from '@oslokommune/punkt-vue';
+
+defineProps({
+  title: {
+    type: String,
+    default: null,
+  },
+  closable: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
+
 <template>
   <div class="pane">
     <div class="pane__inner">
@@ -10,14 +25,14 @@
 
         <div class="pane__actions">
           <slot name="actions" />
-          <pkt-button
+          <PktButton
             v-if="closable"
             v-tooltip="$t('btn.close')"
             variant="icon-only"
             skin="tertiary"
             size="medium"
             icon-name="close"
-            @onClick="$emit('close')"
+            @on-click="$emit('close')"
           />
         </div>
       </div>
@@ -28,29 +43,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue2';
-
-export default {
-  name: 'PaneWrapper',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    title: {
-      type: String,
-      default: null,
-    },
-    closable: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .pane {

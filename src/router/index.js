@@ -1,12 +1,13 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-
+import { createRouter, createWebHistory, START_LOCATION } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { getCurrentUser } from 'vuefire';
+import { useTrackerStore } from '@/store/tracker';
+import { useAuthStore } from '@/store/auth';
 import Admin from '@/views/Admin/Admin.vue';
 import AdminWrapper from '@/views/Admin/AdminWrapper.vue';
 import CreateDepartment from '@/views/Admin/CreateDepartment.vue';
 import CreateOrganization from '@/views/Admin/CreateOrganization.vue';
 import CreateProduct from '@/views/Admin/CreateProduct.vue';
-import Forbidden from '@/views/Forbidden.vue';
 import Help from '@/views/Help.vue';
 import Home from '@/views/Home.vue';
 import ItemAbout from '@/views/Item/ItemAbout.vue';
@@ -17,16 +18,11 @@ import Login from '@/views/Login.vue';
 import NotFound from '@/views/NotFound.vue';
 import RequestAccess from '@/views/RequestAccess.vue';
 
-import * as routerGuards from './router-guards';
-
-Vue.use(Router);
-
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    beforeEnter: routerGuards.home,
   },
   {
     path: '/api',
@@ -37,22 +33,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    beforeEnter: routerGuards.login,
+    meta: { requiresAuth: false },
   },
   {
     path: '/request-access',
-    name: 'request-access',
+    name: 'RequestAccess',
     component: RequestAccess,
-    beforeEnter: routerGuards.requestAccess,
-  },
-  {
-    path: '/403',
-    name: 'Forbidden',
-    component: Forbidden,
+    meta: { requiresAuth: false },
   },
   {
     path: '/admin',
-    beforeEnter: routerGuards.admin,
+    meta: { requiresAdmin: true },
     component: AdminWrapper,
     children: [
       {
@@ -81,11 +72,11 @@ const routes = [
     path: '/help',
     name: 'Help',
     component: Help,
+    meta: { requiresAuth: false },
   },
   {
     path: '/:slug',
     component: ItemWrapper,
-    beforeEnter: routerGuards.itemCommon,
     children: [
       {
         path: '',
@@ -95,17 +86,16 @@ const routes = [
         path: 'okr',
         name: 'ItemHome',
         component: ItemOKRs,
-        beforeEnter: routerGuards.itemOKRs,
-        beforeRouteUpdate: routerGuards.itemOKRs,
         children: [
           {
             path: 'o/:objectiveId',
             name: 'ObjectiveHome',
+            component: ItemOKRs,
           },
           {
             path: 'o/:objectiveId/k/:keyResultId',
             name: 'KeyResultHome',
-            beforeEnter: routerGuards.keyResultHome,
+            component: ItemOKRs,
           },
         ],
       },
@@ -113,7 +103,6 @@ const routes = [
         path: 'measurements/:kpiId?',
         name: 'ItemMeasurements',
         component: ItemMeasurements,
-        beforeEnter: routerGuards.itemMeasurements,
       },
       {
         path: 'about',
@@ -124,7 +113,6 @@ const routes = [
         path: 'integrations',
         name: 'ItemIntegrations',
         component: () => import('@/views/Item/ItemIntegrations.vue'),
-        beforeEnter: routerGuards.itemIntegrations,
       },
       /*
        * Redirect old paths for objective and key result details.
@@ -154,16 +142,59 @@ const routes = [
     ],
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
+    meta: { requiresAuth: false },
   },
 ];
 
-const router = new Router({
-  mode: 'history',
-  base: import.meta.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore();
+  const requiresAdmin = to.matched.some((r) => r.meta.requiresAdmin === true);
+  const requiresAuth =
+    requiresAdmin || to.matched.some((r) => r.meta.requiresAuth !== false);
+
+  await getCurrentUser();
+
+  const { userPromise, isLoggedIn, isAdmin } = storeToRefs(authStore);
+
+  // Ensure that the user is fully loaded
+  await userPromise.value;
+
+  if (to.name === 'Login') {
+    if (isLoggedIn.value) {
+      const { redirectFrom } = to.query;
+      next(redirectFrom ? { path: redirectFrom } : { name: 'Home' });
+    } else {
+      next();
+    }
+  } else if (requiresAuth) {
+    if (isLoggedIn.value) {
+      if (requiresAdmin && !isAdmin.value) {
+        next({ name: 'Home' });
+      } else {
+        next();
+      }
+    } else {
+      next({ name: 'Login', query: { redirectFrom: to.fullPath } });
+    }
+  } else {
+    next();
+  }
+});
+
+router.afterEach((to, from) => {
+  // Initial navigation
+  if (from === START_LOCATION) {
+    const { loading } = storeToRefs(useTrackerStore());
+    loading.value = false;
+  }
 });
 
 export default router;

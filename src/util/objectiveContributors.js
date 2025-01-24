@@ -1,60 +1,61 @@
+import { doc, collection, query, where, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
-import getActiveItemType from '@/util/getActiveItemType';
 import ObjectiveContributors from '@/db/ObjectiveContributors';
 
 async function getKeyResultOwners(objectiveId) {
-  const objectiveRef = await db.doc(`objectives/${objectiveId}`);
-  const keyResults = await db
-    .collection('keyResults')
-    .where('objective', '==', objectiveRef)
-    .where('archived', '==', false)
-    .get()
+  const objectiveRef = doc(db, 'objectives', objectiveId);
+  const keyResults = await getDocs(
+    query(
+      collection(db, 'keyResults'),
+      where('objective', '==', objectiveRef),
+      where('archived', '==', false)
+    )
+  )
     .then((snapshot) => snapshot.docs)
     .then((docs) => docs.map((d) => d.data()));
 
   const keyResultNames = await Promise.all(
     keyResults.map(async (owner) => {
       return {
-        ref: await owner.parent.get(),
-        name: await owner.parent.get().then((snapshot) => snapshot.data().name),
+        ref: owner.parent,
+        name: (await getDoc(owner.parent)).data().name,
       };
     })
   );
+
   return keyResultNames;
 }
 
 async function getObjectiveContributors(objectiveId) {
-  const objectiveRef = await db.doc(`objectives/${objectiveId}`);
-  const objectiveContributors = await db
-    .collection('objectiveContributors')
-    .where('objective', '==', objectiveRef)
-    .where('archived', '==', false)
-    .get()
+  const objectiveRef = doc(db, 'objectives', objectiveId);
+  const objectiveContributors = await getDocs(
+    query(
+      collection(db, 'objectiveContributors'),
+      where('objective', '==', objectiveRef),
+      where('archived', '==', false)
+    )
+  )
     .then((snapshot) => snapshot.docs)
     .then((docs) => docs.map((d) => d.data()));
 
   const contributors = await Promise.all(
-    objectiveContributors.map(async (con) => {
+    objectiveContributors.map(async (contributor) => {
       return {
-        ref: await con.item.get(),
-        name: await con.item.get().then((snapshot) => snapshot.data().name),
+        ref: contributor.item,
+        name: (await getDoc(contributor.item)).data().name,
       };
     })
   );
   return contributors;
 }
 
-function createObjectiveContributor(item, objectiveId) {
-  const itemType = getActiveItemType(item.data());
-  const itemRef = db.doc(`${itemType}s/${item.id}`);
-  const objectiveRef = db.doc(`objectives/${objectiveId}`);
+function createObjectiveContributor(itemRef, objectiveId) {
+  const objectiveRef = doc(db, 'objectives', objectiveId);
   ObjectiveContributors.create(itemRef, objectiveRef);
 }
 
-function removeObjectiveContributor(item, objectiveId) {
-  const itemType = getActiveItemType(item.data());
-  const itemRef = db.doc(`${itemType}s/${item.id}`);
-  const objectiveRef = db.doc(`objectives/${objectiveId}`);
+function removeObjectiveContributor(itemRef, objectiveId) {
+  const objectiveRef = doc(db, 'objectives', objectiveId);
   return ObjectiveContributors.remove(itemRef, objectiveRef);
 }
 

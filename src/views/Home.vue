@@ -1,69 +1,77 @@
+<script setup>
+import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { useHead } from '@unhead/vue';
+import { useTrackerStore } from '@/store/tracker';
+import { useActiveOrganizationStore } from '@/store/activeOrganization';
+import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
+import OrganizationCard from '@/components/Navigation/header/OrganizationCard.vue';
+import ItemLinkCard from '@/components/ItemLinkCard.vue';
+
+const i18n = useI18n();
+
+const { owner, organizations } = storeToRefs(useTrackerStore());
+const activeOrganizationStore = useActiveOrganizationStore();
+const { organization, organizationTree } = storeToRefs(activeOrganizationStore);
+
+useHead({ title: () => organization.value?.name });
+
+function sortByLocale(arr) {
+  return arr.sort((a, b) =>
+    a.name
+      .trim()
+      .toUpperCase()
+      .localeCompare(b.name.trim().toUpperCase(), i18n.locale.value)
+  );
+}
+</script>
+
 <template>
-  <page-layout :breakpoint="activeOrganization ? 'tablet-big' : 'phablet'">
-    <template v-if="activeOrganization" #header>
-      <pkt-button
-        size="small"
-        skin="secondary"
-        variant="icon-left"
-        icon-name="chevron-left"
-        :text="$t('home.changeOrganization')"
-        @onClick="setActiveOrganization(null)"
-      />
+  <PageLayout :breakpoint="organization ? 'tablet-big' : 'phablet'">
+    <template v-if="organization" #header>
+      <OrganizationCard />
     </template>
 
     <template #default>
-      <div
-        :class="[
-          'home-page',
-          activeOrganization ? null : ['mt-size-32', 'mt-size-64--tablet-up'],
-        ]"
-      >
-        <template v-if="!activeOrganization">
-          <div>
-            <h1 class="home-page__title">
+      <div class="home-page">
+        <template v-if="!organization">
+          <div class="home-page__title">
+            <h1>
               {{ $t('home.welcome', { appName: $t('general.appName') }) }}
             </h1>
-            <span class="pkt-txt-20">{{ appOwner }}</span>
+            <span v-if="owner">{{ owner }}</span>
           </div>
 
           <div v-if="organizations.length" class="home-page__organizations">
-            <pkt-linkcard
-              v-for="organization in sortItemsByName(organizations)"
-              :key="organization.id"
-              href="#"
-              :title="organization.name"
-              skin="normal"
+            <ItemLinkCard
+              v-for="item in sortByLocale(organizations)"
+              :key="item.id"
+              :title="item.name"
+              :text="item.missionStatement"
               icon-name="organization"
-              @click.native="setActiveOrganization(organization.id)"
-            >
-              {{ organization.missionStatement }}
-            </pkt-linkcard>
+              size="medium"
+              @click="activeOrganizationStore.setOrganization(item.id)"
+            />
           </div>
         </template>
 
         <template v-else>
-          <router-link
-            :to="{ name: 'ItemHome', params: { slug: activeOrganization.slug } }"
-            class="home-page__title pkt-link"
-          >
-            <pkt-icon name="chevron-right" class="pkt-link__icon" />
-            {{ activeOrganization.name }}
-          </router-link>
-          <p
-            v-if="activeOrganization.missionStatement"
-            :class="[
-              'home-page__text',
-              'mb-size-16',
-              'mx-size-0',
-              'mx-size-104--tablet-big-up',
-            ]"
-          >
-            {{ activeOrganization.missionStatement }}
-          </p>
+          <div class="home-page__organization">
+            <ItemLinkCard
+              :route="{ name: 'ItemHome', params: { slug: organization.slug } }"
+              :title="organization.name"
+              size="large"
+              centered
+            />
+            <p>{{ organization.missionStatement }}</p>
+          </div>
 
-          <div class="home-page__departments pkt-grid">
+          <div
+            v-if="organizationTree && organizationTree.children.length"
+            class="pkt-grid"
+          >
             <div
-              v-for="department in sortItemsByName(organizationChildren)"
+              v-for="department in sortByLocale(organizationTree.children)"
               :key="department.id"
               :class="[
                 'pkt-cell',
@@ -73,31 +81,23 @@
               ]"
             >
               <div>
-                <router-link
-                  v-slot="{ href }"
-                  :to="{ name: 'ItemHome', params: { slug: department.slug } }"
-                  custom
-                >
-                  <pkt-linkcard
-                    :href="href"
-                    :title="department.name"
-                    skin="normal"
-                    icon-name="chevron-right"
-                  />
-                </router-link>
+                <ItemLinkCard
+                  :route="{ name: 'ItemHome', params: { slug: department.slug } }"
+                  :title="department.name"
+                  size="medium"
+                />
+
                 <div
                   v-if="department.children.length"
-                  class="home-page__products py-size-20 px-size-32"
+                  class="py-size-8 px-size-16--tablet-up"
                 >
-                  <router-link
-                    v-for="product in sortItemsByName(department.children)"
+                  <ItemLinkCard
+                    v-for="product in sortByLocale(department.children)"
                     :key="product.id"
-                    :to="{ name: 'ItemHome', params: { slug: product.slug } }"
-                    class="pkt-link"
-                  >
-                    <pkt-icon class="pkt-link__icon" name="chevron-right" />
-                    {{ product.name }}
-                  </router-link>
+                    :route="{ name: 'ItemHome', params: { slug: product.slug } }"
+                    :title="product.name"
+                    transparent
+                  />
                 </div>
               </div>
             </div>
@@ -107,50 +107,10 @@
     </template>
 
     <template #footer>
-      <buildings-graphic class="home-page__graphic" skin="success" />
+      <BuildingsGraphic class="home-page__graphic" skin="info" />
     </template>
-  </page-layout>
+  </PageLayout>
 </template>
-
-<script>
-import i18n from '@/locale/i18n';
-import { mapGetters, mapState, mapActions } from 'vuex';
-import { PktButton, PktLinkcard } from '@oslokommune/punkt-vue2';
-import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
-
-export default {
-  name: 'Home',
-
-  components: {
-    BuildingsGraphic,
-    PktButton,
-    PktLinkcard,
-  },
-
-  computed: {
-    ...mapState(['organizations']),
-    ...mapGetters(['tree', 'activeOrganization']),
-
-    appOwner() {
-      return import.meta.env.VITE_ORGANIZATION;
-    },
-
-    organizationChildren() {
-      return (
-        this.tree.find((org) => org.id === this.activeOrganization.id)?.children || []
-      );
-    },
-  },
-
-  methods: {
-    ...mapActions(['setActiveOrganization']),
-
-    sortItemsByName(items) {
-      return items.slice().sort((a, b) => a.name.localeCompare(b.name, i18n.locale));
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use 'sass:map';
@@ -161,13 +121,15 @@ export default {
 .page {
   background-color: var(--color-blue-light);
 
-  ::v-deep .page__container {
-    // Use same padding for the container as Punkt grid gap.
-    // https://github.com/oslokommune/punkt/blob/main/packages/css/src/scss/base/_grid.scss
-    padding: 1rem;
+  :deep(.page__header) {
+    padding-bottom: 0;
+  }
+
+  :deep(.page__container) {
+    padding: 1.5rem 1rem;
 
     @include bp('tablet-up') {
-      padding: 0 2rem;
+      padding: 3rem;
     }
   }
 }
@@ -175,23 +137,36 @@ export default {
 .home-page {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
-  text-align: center;
 
   @include bp('tablet-up') {
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   &__title {
-    @include get-text('pkt-txt-28-medium');
+    text-align: center;
 
-    @include bp('tablet-up') {
-      @include get-text('pkt-txt-30-medium');
+    h1 {
+      margin-bottom: 0.5rem;
+
+      @include get-text('pkt-txt-20-medium');
+
+      @include bp('phablet-up') {
+        @include get-text('pkt-txt-28-medium');
+      }
+
+      @include bp('tablet-up') {
+        @include get-text('pkt-txt-30-medium');
+      }
     }
 
-    @include bp('laptop-up') {
-      @include get-text('pkt-txt-36-medium');
+    span {
+      @include get-text('pkt-txt-16');
+
+      @include bp('phablet-up') {
+        @include get-text('pkt-txt-20');
+      }
     }
   }
 
@@ -210,64 +185,34 @@ export default {
     width: 100%;
   }
 
-  &__departments {
-    ::v-deep .pkt-linkcard {
-      height: 100%;
+  &__organization {
+    @include bp('phablet-up') {
+      width: 80%;
+      margin-bottom: 1rem;
     }
-  }
 
-  &__products {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    @include bp('tablet-up') {
+      width: 60%;
+    }
 
-    .pkt-link {
-      @include get-text('pkt-txt-18-medium');
+    p {
+      @include get-text('pkt-txt-14');
+      margin-top: 1rem;
+      text-align: center;
 
-      .pkt-link__icon {
-        width: 1.125rem;
-        height: 1.125rem;
+      @include bp('phablet-up') {
+        @include get-text('pkt-txt-16');
       }
     }
   }
-
-  &__graphic {
-    display: block;
-  }
 }
 
-.pkt-link {
-  text-decoration: none;
+.organization-card {
+  margin: -0.5rem -0.45rem 0 -0.45rem;
+  background-color: var(--pkt-color-surface-subtle-light-blue);
 
-  &.pkt-txt-40-medium {
-    .pkt-link__icon {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-  }
-}
-
-::v-deep .pkt-linkcard {
-  width: 100%;
-  padding: map.get(variables.$spacing, 'size-16');
-  background-color: var(--color-white);
-
-  &__title {
-    @include get-text('pkt-txt-18-medium');
-    margin-bottom: 0;
-
-    @include bp('laptop-up') {
-      @include get-text('pkt-txt-20-medium');
-    }
-  }
-
-  &__text:not(:empty) {
-    margin-top: 0.5rem;
-  }
-
-  .pkt-link__icon {
-    width: 1.25rem;
-    height: 1.25rem;
+  @include bp('phablet-up') {
+    width: 20rem;
   }
 }
 </style>

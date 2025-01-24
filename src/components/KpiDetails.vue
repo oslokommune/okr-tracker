@@ -1,48 +1,120 @@
+<script setup>
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useToast } from 'vue-toast-notification';
+import { useI18n } from 'vue-i18n';
+import { useAuthStore } from '@/store/auth';
+import { useActiveKpiStore } from '@/store/activeKpi';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
+import HTMLOutput from '@/components/HTMLOutput.vue';
+import Progress from '@/db/Kpi/Progress';
+import ProgressModal from '@/components/modals/ProgressModal/KPIProgressModal.vue';
+import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
+import WidgetKpiProgressHistory from '@/components/widgets/WidgetKpiProgressHistory.vue';
+import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
+
+const i18n = useI18n();
+const toast = useToast();
+
+const { hasEditRights } = storeToRefs(useAuthStore());
+const { kpi } = storeToRefs(useActiveKpiStore());
+
+const showValueModal = ref(false);
+const chosenProgressRecord = ref(null);
+const showEditGoalsModal = ref(false);
+
+function openValueModal(record) {
+  showValueModal.value = true;
+  chosenProgressRecord.value = record;
+}
+
+function closeValueModal() {
+  showValueModal.value = false;
+  chosenProgressRecord.value = null;
+}
+
+async function createProgressRecord(data, modalCloseHandler) {
+  try {
+    await Progress.update(kpi.value.id, data);
+    toast.success(i18n.t('toaster.add.progress'));
+  } catch (e) {
+    toast.error(i18n.t('toaster.error.addProgress'));
+  } finally {
+    modalCloseHandler();
+  }
+}
+
+async function updateProgressRecord(id, data, modalCloseHandler) {
+  try {
+    await Progress.update(kpi.value.id, data, id);
+    toast.success(i18n.t('toaster.update.progress'));
+  } catch (e) {
+    toast.error(i18n.t('toaster.error.updateProgress'));
+  } finally {
+    modalCloseHandler();
+  }
+}
+
+async function deleteProgressRecord(id, modalCloseHandler) {
+  try {
+    await Progress.remove(kpi.value.id, id);
+    toast.success(i18n.t('toaster.delete.progress'));
+    modalCloseHandler();
+  } catch {
+    toast.error(i18n.t('toaster.error.deleteProgress'));
+  }
+}
+</script>
+
 <template>
   <div class="kpi-details">
     <header class="kpi-details__header">
       <h2>{{ kpi.name }}</h2>
-      <pkt-button
+      <PktButton
         v-if="hasEditRights"
-        v-tooltip="$t('admin.measurement.change')"
+        v-tooltip="{ content: $t('admin.measurement.change'), placement: 'left' }"
         skin="tertiary"
         variant="icon-only"
         size="medium"
         icon-name="edit"
-        @onClick="$emit('edit-kpi')"
+        @on-click="$emit('edit-kpi')"
       />
     </header>
 
-    <HTML-output
+    <HTMLOutput
       v-if="kpi.description"
       class="mb-size-32 pkt-txt-16-light"
       :html="kpi.description"
     />
 
-    <widget-kpi-progress-graph
-      :kpi="kpi"
-      :progress="progress"
-      :goals="goals"
+    <PktAlert v-if="kpi.archived" skin="warning" class="kpi-details__archived">
+      {{ $t('kpi.archived') }}
+    </PktAlert>
+
+    <WidgetKpiProgressGraph
       @add-value="showValueModal = true"
       @set-goals="showEditGoalsModal = true"
     />
 
-    <widget-kpi-progress-stats :kpi="kpi" :progress="progress" :goals="goals" />
+    <WidgetKpiProgressStats />
 
-    <widget-kpi-progress-history
-      :kpi="kpi"
-      @update-record="updateProgressRecord"
+    <WidgetKpiProgressHistory
+      @edit-record="openValueModal"
       @delete-record="deleteProgressRecord"
     />
 
-    <progress-modal
+    <ProgressModal
       v-if="hasEditRights && showValueModal"
       :kpi="kpi"
+      :record="chosenProgressRecord"
       @create-record="createProgressRecord"
-      @close="showValueModal = false"
+      @update-record="updateProgressRecord"
+      @delete-record="deleteProgressRecord"
+      @close="closeValueModal"
     />
 
-    <edit-goals-modal
+    <EditGoalsModal
       v-if="hasEditRights && showEditGoalsModal"
       :kpi="kpi"
       @close="showEditGoalsModal = false"
@@ -50,136 +122,8 @@
   </div>
 </template>
 
-<script>
-import { mapState, mapGetters } from 'vuex';
-import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue2';
-import {
-  filterDuplicatedProgressValues,
-  getCachedKPIProgress,
-  getKPIProgressQuery,
-} from '@/util/kpiHelpers';
-import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
-import HTMLOutput from '@/components/HTMLOutput.vue';
-import Progress from '@/db/Kpi/Progress';
-import ProgressModal from '@/components/modals/KPIProgressModal.vue';
-import WidgetKpiProgressGraph from '@/components/widgets/WidgetKpiProgressGraph.vue';
-import WidgetKpiProgressHistory from '@/components/widgets/WidgetProgressHistory/WidgetKpiProgressHistory.vue';
-import WidgetKpiProgressStats from '@/components/widgets/WidgetKpiProgressStats.vue';
-
-export default {
-  name: 'KpiDetails',
-
-  components: {
-    PktButton,
-    ProgressModal,
-    HTMLOutput,
-    EditGoalsModal,
-    WidgetKpiProgressGraph,
-    WidgetKpiProgressHistory,
-    WidgetKpiProgressStats,
-  },
-
-  props: {
-    kpi: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  data: () => ({
-    progressCollection: [],
-    goals: [],
-    showValueModal: false,
-    showEditGoalsModal: false,
-  }),
-
-  computed: {
-    ...mapState('kpis', ['selectedPeriod']),
-    ...mapGetters(['hasEditRights']),
-
-    progress() {
-      return filterDuplicatedProgressValues(this.progressCollection);
-    },
-  },
-
-  watch: {
-    kpi: {
-      immediate: true,
-      handler() {
-        this.setProgress();
-        this.setGoals();
-      },
-    },
-    selectedPeriod: {
-      immediate: false,
-      handler: 'setProgress',
-    },
-  },
-
-  methods: {
-    async setProgress() {
-      const { startDate, endDate } = this.selectedPeriod;
-      this.progressCollection = getCachedKPIProgress(this.kpi, startDate, endDate);
-
-      if (!this.progressCollection.length) {
-        const query = getKPIProgressQuery(this.kpi, startDate, endDate);
-        await this.$bind('progressCollection', query);
-      }
-    },
-
-    async setGoals() {
-      await this.$bind(
-        'goals',
-        db
-          .collection(`kpis/${this.kpi.id}/goals`)
-          .where('archived', '==', false)
-          .orderBy('toDate', 'desc')
-      );
-    },
-
-    async createProgressRecord(data, modalCloseHandler) {
-      try {
-        await Progress.update(this.kpi.id, data);
-        this.$toasted.show(this.$t('toaster.add.progress'));
-      } catch (e) {
-        this.$toasted.error(this.$t('toaster.error.addProgress'));
-      } finally {
-        modalCloseHandler();
-      }
-    },
-
-    async updateProgressRecord(id, data, modalCloseHandler) {
-      try {
-        await Progress.update(this.kpi.id, data, id);
-        this.$toasted.show(this.$t('toaster.update.progress'));
-      } catch (e) {
-        this.$toasted.error(this.$t('toaster.error.updateProgress'));
-      } finally {
-        modalCloseHandler();
-      }
-    },
-
-    async deleteProgressRecord(id) {
-      try {
-        await Progress.remove(this.kpi.id, id);
-        this.$toasted.show(this.$t('toaster.delete.progress'));
-      } catch {
-        this.$toasted.error(this.$t('toaster.error.deleteProgress'));
-      }
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-
-@include bp('laptop-up') {
-  .kpi-details {
-    margin-left: 3rem;
-  }
-}
 
 .kpi-details__header {
   display: flex;
@@ -196,5 +140,10 @@ export default {
       @include get-text('pkt-txt-22');
     }
   }
+}
+
+.kpi-details__archived {
+  display: block;
+  margin-bottom: 1rem;
 }
 </style>

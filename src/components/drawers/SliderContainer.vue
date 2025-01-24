@@ -1,87 +1,106 @@
+<script setup>
+import { ref, nextTick, watch } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+import { PktButton } from '@oslokommune/punkt-vue';
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
+  allowClickOutside: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+});
+
+const emit = defineEmits(['open', 'close']);
+
+const container = ref(null);
+const content = ref(null);
+const header = ref(null);
+const footer = ref(null);
+const isVisible = ref(false);
+
+const { activate: activateFocusTrap, deactivate: deactivateFocusTrap } = useFocusTrap(
+  [content, footer, header, container],
+  {
+    allowOutsideClick: true,
+    initialFocus: true,
+    escapeDeactivates: false,
+  }
+);
+
+watch(
+  () => props.visible,
+  () => {
+    isVisible.value = props.visible;
+  },
+  { immediate: true }
+);
+
+async function onEnter() {
+  await nextTick();
+  activateFocusTrap();
+  emit('open');
+}
+
+function close() {
+  isVisible.value = false;
+  deactivateFocusTrap();
+}
+
+function clickOutside() {
+  if (props.allowClickOutside) {
+    close();
+  }
+}
+
+defineExpose({ close });
+</script>
+
 <template>
-  <div>
-    <transition name="fade" mode="out-in">
+  <div ref="container">
+    <Transition name="fade" mode="out-in">
       <div v-if="isVisible" class="overlay" @click.self="clickOutside"></div>
-    </transition>
-    <transition name="slide" @after-leave="$emit('close')">
+    </Transition>
+
+    <Transition
+      name="slide"
+      mode="out-in"
+      @after-enter="onEnter"
+      @after-leave="$emit('close')"
+    >
       <aside v-if="isVisible" class="sliderContainer">
         <div class="sliderContainer__closeButtonContainer">
-          <pkt-button
+          <PktButton
             skin="tertiary"
             variant="icon-only"
             icon-name="close"
-            @onClick="close"
+            @on-click="close"
           />
         </div>
 
         <div class="sliderContainer__inner">
-          <header v-if="$slots.header" class="sliderContainer__header">
+          <header v-if="$slots.header" ref="header" class="sliderContainer__header">
             <slot name="header" />
           </header>
 
-          <div class="sliderContainer__content">
+          <div ref="content" class="sliderContainer__content">
             <slot name="default" />
           </div>
 
-          <footer v-if="$slots.footer" class="sliderContainer__footer">
+          <footer v-if="$slots.footer" ref="footer" class="sliderContainer__footer">
             <slot name="footer" />
           </footer>
         </div>
       </aside>
-    </transition>
+    </Transition>
   </div>
 </template>
-
-<script>
-import { PktButton } from '@oslokommune/punkt-vue2';
-
-export default {
-  name: 'SliderContainer',
-
-  components: {
-    PktButton,
-  },
-
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-
-    allowClickOutside: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-  },
-
-  data: () => ({
-    isVisible: false,
-  }),
-
-  watch: {
-    visible: {
-      immediate: true,
-      handler() {
-        this.isVisible = this.visible;
-      },
-    },
-  },
-
-  methods: {
-    clickOutside() {
-      if (this.allowClickOutside) {
-        this.close();
-      }
-    },
-
-    close() {
-      this.isVisible = false;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
@@ -141,7 +160,7 @@ export default {
     transition: opacity 0.25s ease-out;
   }
 
-  &-enter,
+  &-enter-from,
   &-leave-to {
     opacity: 0;
   }
@@ -153,7 +172,7 @@ export default {
     transition: right 0.25s ease-in-out;
   }
 
-  &-enter,
+  &-enter-from,
   &-leave-to {
     right: -504px;
   }

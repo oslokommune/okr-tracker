@@ -1,3 +1,40 @@
+<script setup>
+import { useToast } from 'vue-toast-notification';
+import { useI18n } from 'vue-i18n';
+import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { BtnDelete } from '@/components/generic/form';
+import ApiClientTag from '@/components/ApiClientTag.vue';
+
+const toast = useToast();
+const i18n = useI18n();
+
+defineProps({
+  client: {
+    type: Object,
+    required: true,
+  },
+  visibleSecret: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+function copyCredential(elementId) {
+  const inputElement = document.getElementById(elementId);
+  if (inputElement) {
+    navigator.clipboard.writeText(inputElement.value).then(() => {
+      toast.success(i18n.t('toaster.action.copiedToClipboard'));
+    });
+  }
+}
+</script>
+
 <template>
   <div class="api-client-card">
     <pkt-icon name="crane" class="api-client-card__icon pkt-show-tablet-up" />
@@ -6,28 +43,22 @@
       <header class="api-client-card__title">
         <span class="pkt-txt-18-medium">{{ client.name }}</span>
         <div class="api-client-card__actions">
-          <pkt-button
-            v-tooltip="{
-              hideOnTargetClick: true,
-              content: $t('integration.action.edit'),
-            }"
+          <PktButton
+            v-tooltip="$t('integration.action.edit')"
             size="small"
             skin="tertiary"
             variant="icon-only"
             icon-name="edit"
             :disabled="loading"
-            @onClick="$emit('edit', client)"
+            @click="$emit('edit', client)"
           />
-          <btn-delete
-            v-tooltip="{
-              hideOnTargetClick: true,
-              content: $t('integration.action.delete'),
-            }"
+          <BtnDelete
             size="small"
+            :tooltip-text="$t('integration.action.delete')"
             :confirm-help="$t('integration.warning.delete')"
             variant="icon-only"
             :disabled="loading"
-            @click="$emit('delete', client)"
+            @on-click="$emit('delete', client)"
           />
         </div>
       </header>
@@ -36,7 +67,7 @@
         <div class="api-client-card__credentials mb-size-16">
           <div class="api-client-card__credential">
             <label :for="`${client.id}_clientId`">
-              <pkt-icon name="cogwheel" /> {{ $t('integration.clientId') }}
+              <PktIcon name="cogwheel" /> {{ $t('integration.clientId') }}
             </label>
             <div>
               <input
@@ -45,16 +76,13 @@
                 :value="client.clientId"
                 :readonly="true"
               />
-              <pkt-button
-                v-tooltip="{
-                  hideOnTargetClick: true,
-                  content: $t('tooltip.copyToClipboard'),
-                }"
+              <PktButton
+                v-tooltip="$t('tooltip.copyToClipboard')"
                 size="small"
                 skin="tertiary"
                 variant="icon-only"
                 icon-name="copy"
-                @onClick="copyCredential(`${client.id}_clientId`)"
+                @on-click="copyCredential(`${client.id}_clientId`)"
               />
             </div>
           </div>
@@ -68,7 +96,7 @@
             ]"
           >
             <label :for="`${client.id}_clientSecret`">
-              <pkt-icon name="lock-locked" /> {{ $t('integration.clientSecret') }}
+              <PktIcon name="lock-locked" /> {{ $t('integration.clientSecret') }}
             </label>
             <div>
               <input
@@ -78,58 +106,52 @@
                 :readonly="true"
                 :disabled="!visibleSecret"
               />
-              <pkt-button
+              <PktButton
                 v-if="visibleSecret"
-                v-tooltip="{
-                  hideOnTargetClick: true,
-                  content: $t('tooltip.copyToClipboard'),
-                }"
+                v-tooltip="$t('tooltip.copyToClipboard')"
                 size="small"
                 skin="tertiary"
                 variant="icon-only"
                 icon-name="copy"
-                @onClick="copyCredential(`${client.id}_clientSecret`)"
+                @on-click="copyCredential(`${client.id}_clientSecret`)"
               />
-              <btn-delete
+              <BtnDelete
                 v-else
-                v-tooltip="{
-                  hideOnTargetClick: true,
-                  content: $t('integration.action.rotate'),
-                }"
                 size="small"
+                :tooltip-text="$t('integration.action.rotate')"
                 :confirm-text="$t('integration.action.confirmRotate')"
                 :confirm-help="$t('integration.warning.rotate')"
                 variant="icon-only"
                 icon-name="arrow-circle"
                 :disabled="loading"
-                @click="$emit('rotate', client)"
+                @on-click="$emit('rotate', client)"
               />
             </div>
           </div>
         </div>
 
-        <pkt-alert v-if="visibleSecret" skin="warning" class="mb-size-16">
-          <i18n path="integration.warning.secret" tag="p">
+        <PktAlert v-if="visibleSecret" skin="warning" class="mb-size-16">
+          <i18n-t keypath="integration.warning.secret" tag="p" scope="global">
             <template #closeLink>
-              <a href="#" @click="$emit('hide-secret')">{{
+              <a @click="$emit('hide-secret')">{{
                 $t('integration.warning.secretCloseText')
               }}</a>
             </template>
-          </i18n>
-        </pkt-alert>
+          </i18n-t>
+        </PktAlert>
 
         <div v-if="client.description" class="api-client-card__description">
           {{ client.description }}
         </div>
 
         <div class="api-client-card__tags">
-          <api-client-tag
+          <ApiClientTag
             icon="edit"
             :i18n-key="`integration.tag.${client.edited ? 'edited' : 'created'}`"
             :timestamp="client.edited ? client.edited : client.created"
             :user="client.edited ? client.editedBy : client.createdBy"
           />
-          <api-client-tag
+          <ApiClientTag
             v-if="client.rotated"
             icon="arrow-circle"
             i18n-key="integration.tag.lastRotated"
@@ -137,7 +159,7 @@
             :user="client.rotatedBy"
             time-as-distance
           />
-          <api-client-tag
+          <ApiClientTag
             icon="heart"
             :i18n-key="`integration.tag.${client.used ? 'lastActivity' : 'noActivity'}`"
             :timestamp="client.used"
@@ -148,51 +170,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue2';
-import { BtnDelete } from '@/components/generic/form';
-import ApiClientTag from '@/components/ApiClientTag.vue';
-
-export default {
-  name: 'ApiClientCard',
-
-  components: {
-    PktAlert,
-    PktButton,
-    BtnDelete,
-    ApiClientTag,
-  },
-
-  props: {
-    client: {
-      type: Object,
-      required: true,
-    },
-    visibleSecret: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
-  methods: {
-    copyCredential(elementId) {
-      const inputElement = document.getElementById(elementId);
-      if (inputElement) {
-        navigator.clipboard.writeText(inputElement.value).then(() => {
-          this.$toasted.show(this.$t('toaster.action.copiedToClipboard'));
-        });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;

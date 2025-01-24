@@ -1,0 +1,45 @@
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
+
+.v-toast {
+  gap: 0.5rem;
+
+  &__item {
+    --pkt-color-alert-bc: var(--pkt-color-border-blue);
+    --pkt-color-alert-bg: var(--pkt-color-surface-default-light-blue);
+    --pkt-color-alert-txt: var(--pkt-color-text-body-dark);
+
+    &--success {
+      --pkt-color-alert-bc: var(--pkt-color-border-green);
+      --pkt-color-alert-bg: var(--pkt-color-surface-default-light-green);
+    }
+
+    &--warning {
+      --pkt-color-alert-bc: var(--pkt-color-border-yellow);
+      --pkt-color-alert-bg: var(--pkt-color-surface-default-yellow);
+    }
+
+    &--error {
+      --pkt-color-alert-bc: var(--pkt-color-border-red);
+      --pkt-color-alert-bg: var(--pkt-color-surface-default-faded-red);
+    }
+    
+    min-height: auto;
+    margin: 0;
+    padding: 0.75rem 1rem !important;
+    color: var(--pkt-color-alert-txt);
+    background-color: var(--pkt-color-alert-bg);
+    border-left: .25rem solid var(--pkt-color-alert-bc);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  &__text {
+    padding: 0 !important;
+    @include get-text('pkt-txt-16');
+  }
+
+  &__icon {
+    display: none !important;
+    margin: 0 !important;
+  }
+}

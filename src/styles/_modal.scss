@@ -50,6 +50,10 @@
     align-items: center;
     margin-bottom: 0.5rem;
 
+    .pkt-icon {
+      width: 1.5rem;
+    }
+
     .pkt-btn {
       align-self: flex-start;
     }
@@ -61,8 +65,6 @@
   }
 
   &__footer {
-    display: flex;
-    justify-content: flex-end;
     margin-top: 1.5rem;
   }
 }

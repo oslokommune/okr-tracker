@@ -1,189 +1,179 @@
-<template>
-  <div>
-    <h2 class="title-2">{{ $t('admin.users.users') }}</h2>
+<script setup>
+import { ref } from 'vue';
+import { useFuse } from '@vueuse/integrations/useFuse';
+import { PktButton } from '@oslokommune/punkt-vue';
+import { storeToRefs } from 'pinia';
+import { useAdminStore } from '@/store/admin';
+import isAdmin from '@/util/user';
+import AddUsers from './AddUsers.vue';
+import EditUser from './EditUser.vue';
 
-    <div v-if="!selectedUser && !viewAddUsers" class="users">
-      <div class="search">
+const { users } = storeToRefs(useAdminStore());
+
+const userQuery = ref('');
+const selectedUser = ref(null);
+const viewAddUsers = ref(false);
+
+const { results: searchResults } = useFuse(userQuery, users, {
+  fuseOptions: {
+    threshold: 0.5,
+    keys: [
+      {
+        name: 'id',
+        weight: 0.25,
+      },
+      {
+        name: 'email',
+        weight: 0.25,
+      },
+      {
+        name: 'displayName',
+        weight: 0.5,
+      },
+    ],
+  },
+  matchAllWhenSearchEmpty: true,
+});
+</script>
+
+<template>
+  <div class="user-list">
+    <h2 class="user-list__title">{{ $t('admin.users.users') }}</h2>
+
+    <div v-if="!selectedUser && !viewAddUsers" class="user-list__body">
+      <div v-if="users.length > 10">
         <input
-          v-model="query"
-          class="pkt-form-input"
+          v-model="userQuery"
+          class="pkt-input pkt-input--fullwidth"
           type="text"
           :placeholder="$t('admin.users.search', { count: users.length })"
         />
       </div>
 
-      <div class="users__list">
+      <div class="user-list__list">
         <button
-          v-for="user in filteredUsers"
+          v-for="{ item: user } in searchResults"
           :key="user.id"
-          class="users__list-item pkt-txt-14-medium"
+          class="user-list__button pkt-txt-16-medium"
           @click="selectedUser = user"
         >
-          <pkt-icon class="icon" :name="isAdmin(user) ? 'cogwheel' : 'user'" />
-          <span class="users__list-item-name">
-            {{ user.displayName || user.id }}
-          </span>
-          <pkt-icon class="icon" name="chevron-right" />
+          <PktIcon :name="isAdmin(user) ? 'cogwheel' : 'user'" />
+          <span>{{ user.displayName || user.id }}</span>
+          <PktIcon name="chevron-right" />
         </button>
       </div>
-      <div class="users__footer">
-        <pkt-button skin="secondary" @onClick="viewAddUsers = true">
+
+      <div class="user-list__footer">
+        <PktButton
+          skin="secondary"
+          icon-name="plus-sign"
+          variant="icon-left"
+          @on-click="viewAddUsers = true"
+        >
           {{ $t('admin.users.addUsers') }}
-        </pkt-button>
+        </PktButton>
       </div>
     </div>
 
-    <edit-user
+    <EditUser
       v-if="selectedUser && !viewAddUsers"
-      :selected-user="selectedUser"
+      :user-id="selectedUser.id"
       @close="selectedUser = null"
     >
       <template #back>
         <div>
-          <pkt-button skin="secondary" @onClick="selectedUser = null">
+          <PktButton
+            skin="tertiary"
+            icon-name="chevron-left"
+            variant="icon-left"
+            @on-click="selectedUser = null"
+          >
             {{ $t('admin.users.backToUsers') }}
-          </pkt-button>
+          </PktButton>
         </div>
       </template>
-    </edit-user>
-    <add-users v-if="viewAddUsers" @close="viewAddUsers = false">
+    </EditUser>
+
+    <AddUsers v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
-        <div>
-          <pkt-button skin="secondary" @onClick="viewAddUsers = false">
-            {{ $t('admin.users.backToUsers') }}
-          </pkt-button>
-        </div>
+        <PktButton
+          skin="tertiary"
+          icon-name="chevron-left"
+          variant="icon-left"
+          @on-click="viewAddUsers = false"
+        >
+          {{ $t('admin.users.backToUsers') }}
+        </PktButton>
       </template>
-    </add-users>
+    </AddUsers>
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-import Fuse from 'fuse.js';
-import { PktButton } from '@oslokommune/punkt-vue2';
-import isAdmin from '@/util/user';
-import AddUsers from './AddUsers.vue';
-import EditUser from './EditUser.vue';
-
-const fuseSettings = {
-  threshold: 0.5,
-  keys: [
-    {
-      name: 'id',
-      weight: 0.25,
-    },
-    {
-      name: 'email',
-      weight: 0.25,
-    },
-    {
-      name: 'displayName',
-      weight: 0.5,
-    },
-  ],
-};
-
-export default {
-  name: 'AdminUsers',
-
-  components: {
-    EditUser,
-    AddUsers,
-    PktButton,
-  },
-
-  data: () => ({
-    query: '',
-    selectedUser: null,
-    viewAddUsers: false,
-    filteredUsers: [],
-    fuse: null,
-  }),
-
-  computed: {
-    ...mapState(['users']),
-  },
-
-  watch: {
-    users: {
-      immediate: true,
-      handler() {
-        this.filteredUsers = this.users;
-        this.fuse = new Fuse(this.filteredUsers, fuseSettings);
-      },
-    },
-    query(str) {
-      if (str.length < 1) {
-        this.filteredUsers = this.users;
-      } else {
-        this.filteredUsers = this.fuse.search(str).map(({ item }) => item);
-      }
-    },
-  },
-
-  methods: { isAdmin },
-};
-</script>
-
 <style lang="scss" scoped>
-.users,
-.selected-user,
-.add-users {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-gray-light);
-}
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
+@use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-.add-users,
-.users {
-  height: 32rem;
-}
+.user-list {
+  &__title {
+    @include get-text('pkt-txt-18-medium');
+    margin-bottom: 0.75rem;
 
-.users__list {
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-}
-
-.users__list-item {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  color: var(--color-text);
-  background: none;
-  border: 0;
-  border-bottom: 2px solid var(--color-border);
-  cursor: pointer;
-
-  &:hover .users__list-item-name {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
+    @include bp('tablet-up') {
+      @include get-text('pkt-txt-20-medium');
+    }
   }
-}
 
-.users__list-item-name {
-  flex: 1 0 auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-align: left;
-  text-overflow: ellipsis;
-}
+  &__body {
+    display: flex;
+    flex-direction: column;
+    height: 32rem;
+    background: var(--color-gray-light);
+  }
 
-.users__footer {
-  margin-top: auto;
-  padding: 1rem;
-  font-size: 0.79rem;
+  &__list {
+    flex: 1;
+    overflow: auto;
+  }
 
-  .pkt-btn {
-    justify-content: center;
+  &__button {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
     width: 100%;
-  }
-}
+    padding: 0.5rem 1rem;
+    color: var(--color-text);
+    background: none;
+    border: 0;
+    border-bottom: 2px solid var(--color-border);
+    cursor: pointer;
 
-.icon {
-  height: 1rem;
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.3em;
+    }
+
+    .pkt-icon {
+      height: 1rem;
+    }
+
+    span {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding: 1rem;
+
+    .pkt-btn {
+      justify-content: center;
+      width: 100%;
+    }
+  }
 }
 </style>
