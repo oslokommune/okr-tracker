@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Security
+
 - Updated dependencies to address potential security vulnerabilities.
 
 ## [5.0.0] 2025-01-24
