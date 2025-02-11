@@ -65,7 +65,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/compiler-sfc": "^3.4.29",
     "env-cmd": "^10.1.0",
-    "esbuild": "^0.15.14",
+    "esbuild": "^0.25.0",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
