@@ -51,7 +51,7 @@
     "vue": "^3.4.29",
     "vue-echarts": "^7.0.3",
     "vue-flatpickr-component": "^11.0.5",
-    "vue-i18n": "^9.13.1",
+    "vue-i18n": "^9.14.3",
     "vue-router": "^4.3.3",
     "vue-tippy": "^6.4.4",
     "vue-toast-notification": "^3.1.2",
