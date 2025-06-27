@@ -28,6 +28,7 @@ export const jobPositions = [
   'serviceDesigner',
   'storyteller',
   'teamLead',
+  'productLead',
   'techLead',
   'other',
 ];
@@ -56,6 +57,7 @@ export const displayOrder = [
   'director',
   'departmentDirector',
   'productOwner',
+  'productLead',
   'teamLead',
   'techLead',
   'designLead',

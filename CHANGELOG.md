@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+Added role product lead, kept team lead for backwards compatibility
+
 ### Security
 
 - Updated dependencies to address potential security vulnerabilities.
