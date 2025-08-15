@@ -207,6 +207,8 @@ export const useAuthStore = defineStore('auth', () => {
         authenticationError.value = 4;
       } else if (error.code === 'auth/popup-closed-by-user') {
         authenticationError.value = 5;
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        authenticationError.value = 6;
       } else {
         authenticationError.value = 2;
       }

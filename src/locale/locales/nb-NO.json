@@ -271,7 +271,8 @@
       "providerError": "Klarte ikke å logge inn. Kontakt systemadministrator hvis feilen vedvarer.",
       "wrongPassword": "Passordet er feil.",
       "userNotFound": "Kunne ikke finne bruker.",
-      "userAbort": "Forespørselen ble avbrutt. Prøv igjen."
+      "userAbort": "Forespørselen ble avbrutt. Prøv igjen.",
+      "accountExists": "Kontoen finnes allerede, men med et annet passord."
     },
     "loginWithUsername": "Logg inn med brukernavn"
   },

@@ -32,6 +32,8 @@ const authenticationErrorMessage = computed(() => {
       return i18n.t('login.error.userNotFound');
     case 5:
       return i18n.t('login.error.userAbort');
+    case 6:
+      return i18n.t('login.error.accountExists');
     default:
       return null;
   }
