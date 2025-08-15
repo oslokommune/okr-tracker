@@ -268,11 +268,12 @@
     "password": "Password",
     "loading": "We are signing you in, please wait...",
     "error": {
-      "notRegistered": "Your account is not registered",
+      "notRegistered": "Your account is not registered.",
       "providerError": "Could not sign in. Please contact system administrator if the error persists.",
       "wrongPassword": "Wrong password.",
       "userNotFound": "Could not find user.",
-      "userAbort": "Login request aborted. Please try again."
+      "userAbort": "Login request aborted. Please try again.",
+      "accountExists": "The account already exists, but with a different credential."
     },
     "loginWithUsername": "Sign in with username"
   },
