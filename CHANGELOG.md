@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- Improved login error messages.
+
 ### Security
 
 - Updated dependencies to address potential security vulnerabilities.
