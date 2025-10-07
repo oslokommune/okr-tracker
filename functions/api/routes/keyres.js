@@ -1,13 +1,15 @@
 import express from 'express';
 import validator from 'express-validator';
-
 import { getFirestore } from 'firebase-admin/firestore';
-import { checkApiAuth } from '../helpers.js';
+
+import { checkApiAuth, updateKeyresProgressionValue } from '../helpers.js';
 import {
+  clientSecretValidator,
   commentValidator,
+  dateValidator,
   idValidator,
   progressValidator,
-  clientSecretValidator,
+  valueValidator,
 } from '../validators.js';
 import validateRules from '../validateRules.js';
 
@@ -55,7 +57,7 @@ router.post(
       });
       await ref.update({ valid: true, error: false });
 
-      res.send(`Updated Key result (${id}) with progress: ${progress}`);
+      res.send(`Updated key result (${id}) with progress: ${progress}`);
     } catch (e) {
       console.error('ERROR: ', e.message);
       if (keyRes && keyRes.ref) {
@@ -79,7 +81,7 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     const { exists, ref } = keyRes;
 
     if (!exists) {
-      res.status(404).send(`Could not find Key Result with ID: ${id}`);
+      res.status(404).send(`Could not find key result with ID: ${id}`);
       return;
     }
 
@@ -148,8 +150,49 @@ router.get('/:id', param('id').trim().escape(), async (req, res) => {
     }
   } catch (e) {
     console.error('ERROR: ', e.message);
-    res.status(500).send(`Cannot get Key result (${id}}`);
+    res.status(500).send(`Cannot get key result (${id}}`);
   }
 });
+
+router.put(
+  '/:id/values/:date',
+  clientSecretValidator,
+  idValidator,
+  dateValidator,
+  valueValidator,
+  commentValidator,
+  validateRules,
+  async (req, res) => {
+    const { id, date, value, comment } = req.matchedData;
+    const db = getFirestore();
+
+    try {
+      const keyRes = await db.collection('keyResults').doc(id).get();
+
+      const { exists, ref } = keyRes;
+
+      if (!exists) {
+        res.status(404).json({ message: `Could not find key result with ID: ${id}` });
+        return;
+      }
+
+      const { parent } = keyRes.data();
+
+      if (!(await checkApiAuth(parent, req, res))) {
+        return;
+      }
+
+      const data = { value, ...(comment ? { comment } : {}) };
+      await updateKeyresProgressionValue(ref, date, data);
+
+      res.json({
+        message: `Updated key result ${id} with value ${value}`,
+      });
+    } catch (e) {
+      console.error('ERROR: ', e.message);
+      res.status(500).json({ message: 'Could not update key result progression value' });
+    }
+  }
+);
 
 export default router;

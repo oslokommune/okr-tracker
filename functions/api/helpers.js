@@ -107,6 +107,53 @@ export async function updateKPIProgressionValue(kpiRef, date, data) {
 }
 
 /**
+ * Update a key result progression collection with at most one value each
+ * day. Delete any pre-existing values for the specified `date`.
+ *
+ * `keyresRef` is the reference to the key result to update. `date` specifies
+ * which date the value is for. `data` is the progression data to set.
+ */
+export async function updateKeyresProgressionValue(keyresRef, date, data) {
+  date = startOfDay(date);
+
+  const progressCollectionRef = keyresRef.collection('progress');
+
+  const valuesSnapshot = await progressCollectionRef
+    .orderBy('timestamp', 'desc')
+    .where('timestamp', '>=', date)
+    .where('timestamp', '<=', endOfDay(date))
+    .get();
+
+  data = {
+    ...data,
+    timestamp: setHours(date, 12),
+    created: new Date(),
+    createdBy: 'API',
+  };
+
+  if (!valuesSnapshot.empty) {
+    const { created, createdBy } = valuesSnapshot.docs[0].data();
+
+    data = {
+      ...data,
+      created: created || null,
+      createdBy: createdBy || null,
+      edited: new Date(),
+      editedBy: 'API',
+    };
+
+    // Clean out existing values registered for this date
+    const batch = getFirestore().batch();
+    valuesSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+  }
+
+  await progressCollectionRef.add(data);
+}
+
+/**
  * Fetch latest progression measurement and update the KPI object
  * accordingly. If no value is found, delete relevant fields.
  *

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Added a new API endpoint for updating key result progression values, similar
+  to the existing endpoint for measurements.
+
 ### Changed
 
 - Improved login error messages.
