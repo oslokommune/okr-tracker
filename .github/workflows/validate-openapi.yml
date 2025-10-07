@@ -18,9 +18,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Validate OpenAPI definition
-        uses: char0n/swagger-editor-validate@65266f9d3147e446b96af879fd317ce6079529ea # v1.3.2
+        uses: swaggerexpert/swagger-editor-validate@264fd875d3c6e1bf65da1f0a63e095cbe41ffef3 # v1.5.1
         with:
           definition-file: public/openapi.yaml
