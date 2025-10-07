@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   title: OKR Tracker API
   description: API for updating KPIs and key results.
-  version: 2.1.0
+  version: 2.2.0
   contact:
     name: Dataspeilet
     url: https://okr.oslo.systems
@@ -264,6 +264,55 @@ paths:
           schema:
             type: string
             example: "Updated Key result (${id}) with progress: ${progress}"
+        400:
+          $ref: '#/responses/BadRequest'
+        404:
+          $ref: '#/responses/NotFound'
+        500:
+          $ref: '#/responses/Unavailable'
+  /keyres/{id}/values/{date}:
+    parameters:
+      - name: id
+        in: path
+        description: Key result ID
+        required: true
+        type: string
+      - name: date
+        in: path
+        description: Date
+        required: true
+        type: string
+        format: date
+    put:
+      summary: Create or update key result progression value.
+      operationId: updateKeyresProgressionValue
+      security:
+        - apiKey: []
+          apiClientId: []
+          apiClientSecret: []
+      parameters:
+        - name: value
+          in: body
+          required: true
+          description: Progression value
+          schema:
+            type: object
+            properties:
+              value:
+                type: number
+              comment:
+                type: string
+            example:
+              value: 123
+              comment: We performed beyond all expectations
+      responses:
+        200:
+          description: A successful response
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
         400:
           $ref: '#/responses/BadRequest'
         404:
