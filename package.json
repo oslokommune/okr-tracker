@@ -58,7 +58,7 @@
     "vuefire": "^3.2.1"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.16.5",
+    "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-env": "^7.16.5",
     "@firebase/rules-unit-testing": "^4.0.1",
     "@oslokommune/punkt-css": "^12.17.1",
