@@ -10,7 +10,7 @@ const props = defineProps({
   },
 });
 
-const model = defineModel();
+const model = defineModel({ type: Boolean });
 
 const icon = computed(() => (model.value ? 'alert-success' : 'placeholder-icon'));
 
