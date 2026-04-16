@@ -25,7 +25,7 @@
   "dependencies": {
     "@oslokommune/punkt-elements": "^12.18.1",
     "@oslokommune/punkt-vue": "^12.18.1",
-    "@unhead/vue": "^2.1.12",
+    "@unhead/vue": "^2.1.13",
     "@vee-validate/rules": "^4.13.2",
     "@vueform/multiselect": "^2.6.9",
     "@vueuse/core": "^11.0.3",
