@@ -64,7 +64,6 @@
     "@oslokommune/punkt-css": "^12.17.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/compiler-sfc": "^3.4.29",
-    "env-cmd": "^10.1.0",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
