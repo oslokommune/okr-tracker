@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Changed
+
+- Upgraded from Vite 6 to Vite 8.
+
 ### Security
 
 - Updated dependencies to address potential security vulnerabilities.
