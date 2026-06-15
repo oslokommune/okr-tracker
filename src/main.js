@@ -8,7 +8,7 @@ import {
   firestoreDefaultConverter,
 } from 'vuefire';
 import VueTippy from 'vue-tippy';
-import ToastPlugin from 'vue-toast-notification';
+import { ToastPlugin } from 'vue-toast-notification';
 import { PktIcon } from '@oslokommune/punkt-vue';
 import App from '@/App.vue';
 import router from '@/router';
