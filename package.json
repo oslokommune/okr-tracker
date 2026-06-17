@@ -91,6 +91,8 @@
   "overrides": {
     "gaxios": {
       "uuid": "^11.1.1"
-    }
+    },
+    "@opentelemetry/core": "^2.8.0",
+    "js-yaml": "^4.2.0"
   }
 }
