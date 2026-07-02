@@ -75,14 +75,6 @@ function addedBy(record) {
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
 
-@mixin table-cell-desktop-up {
-  display: none;
-
-  @include bp('desktop-up') {
-    display: table-cell;
-  }
-}
-
 .key-result-values-list__table {
   border-spacing: 0 0.5rem;
 
