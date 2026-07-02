@@ -15,10 +15,6 @@
 @use 'markdown';
 @use 'titles';
 
-@function hexToRGB($hex) {
-  @return red($hex), green($hex), blue($hex);
-}
-
 html,
 body,
 .app {
@@ -118,13 +114,6 @@ body.using-mouse :not([class^='pkt-'], [class*=' pkt-']):focus {
   --color-red-20: #fad0cb;
   --color-yellow-70: #966a1c;
   --color-yellow-80: #774c01;
-
-  // Colors in RGB value - add more if needed. SCSS rgba() function
-  // can read hex numbers with CSS Variables.
-  --color-red-rgb: #{hexToRGB(#ff8274)};
-  --color-yellow-rgb: #{hexToRGB(#f9c66b)};
-  --color-grayscale-50-rgb: #{hexToRGB(#808080)};
-  --color-grayscale-80-rgb: #{hexToRGB(#333333)};
 
   --color-text: var(--color-blue-dark);
   --color-text-secondary: var(--color-white);
