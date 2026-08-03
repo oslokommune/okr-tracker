@@ -321,13 +321,13 @@ Now copy the new folder to your local machine, we are going to do this from our 
 
 ```bash
 cd functions
-gsutil -m cp -r gs://okr-tracker-production.appspot.com/<backup-folder-name> .
+gcloud storage cp -r gs://okr-tracker-production.appspot.com/<backup-folder-name> .
 ```
 
 If you already have automated backups of your production data, you don't need to export the production data, only import it. For this application our backup folder is not part of the Firebase storage bucket:
 
 ```bash
-gsutil -m cp -r gs://okr-tracker-backup/<YYYY-MM-DD>
+gcloud storage cp -r gs://okr-tracker-backup/<YYYY-MM-DD> .
 ```
 
 ## Import production data
