@@ -20,7 +20,7 @@
     "export_mock_data": "firebase emulators:export ./mock_data"
   },
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "dependencies": {
     "@oslokommune/punkt-elements": "^12.18.1",
