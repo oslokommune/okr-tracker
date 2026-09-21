@@ -40,7 +40,7 @@ If you would like to check out how the application works, you can go to the demo
 
 ## Project requirements
 
-- Node 20.x
+- Node 22.x
 - Firebase 10.x
 - Firebase tools >9.x
 - Firebase Blaze plan - Pay as you go
