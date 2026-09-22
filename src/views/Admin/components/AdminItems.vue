@@ -1,6 +1,6 @@
 <script setup>
 import { useLocalStorage } from '@vueuse/core';
-import { PktCheckbox } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
 import ItemList from './ItemList.vue';
 
 const showArchived = useLocalStorage('admin-show-archived-items', false);
@@ -29,11 +29,12 @@ const showArchived = useLocalStorage('admin-show-archived-items', false);
     </div>
 
     <div class="my-size-24">
-      <PktCheckbox
+      <pkt-checkbox
         id="showArchived"
-        v-model="showArchived"
-        is-switch
+        isSwitch
+        :checked="showArchived"
         :label="$t('admin.objects.showArchived')"
+        @value-change="showArchived = $event.detail"
       />
     </div>
   </div>

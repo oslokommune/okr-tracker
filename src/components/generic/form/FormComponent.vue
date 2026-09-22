@@ -1,15 +1,13 @@
 <script setup>
-import { computed, inject, useAttrs, onMounted } from 'vue';
+import { computed, inject, unref, useAttrs, onMounted } from 'vue';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
-import {
-  PktButton,
-  PktCheckbox,
-  PktSelect,
-  PktTextarea,
-  PktTextinput,
-} from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
+import '@oslokommune/punkt-elements/dist/pkt-select.js';
+import '@oslokommune/punkt-elements/dist/pkt-textarea.js';
+import '@oslokommune/punkt-elements/dist/pkt-textinput.js';
 import CustomSelect from '@/components/generic/form/CustomSelect.vue';
 import DatePicker from '@/components/generic/form/DatePicker.vue';
 import RadioGroup from '@/components/generic/form/RadioGroup.vue';
@@ -103,18 +101,39 @@ const {
   syncVModel: true,
 });
 
+// The component rendering the field: either a Punkt Elements tag name or one
+// of our own wrapper components.
+const fieldComponent = computed(() => {
+  switch (props.inputType) {
+    case 'date':
+      return DatePicker;
+    case 'custom-select':
+      return CustomSelect;
+    case 'radio-group':
+      return RadioGroup;
+    case 'textarea':
+      return 'pkt-textarea';
+    case 'select':
+      return 'pkt-select';
+    case 'switch':
+      return 'pkt-checkbox';
+    default:
+      return props.type === 'number' ? NumberInput : 'pkt-textinput';
+  }
+});
+
+const isTextField = computed(() =>
+  ['pkt-textinput', 'pkt-textarea', 'pkt-select'].includes(fieldComponent.value)
+);
+
 const innerValue = computed({
   get() {
     let value = fieldValue.value;
     if (value === null || value === undefined) {
       value = attrs.value;
     }
-    // Punkt inputs only accepts `String` as type for `modelValue`.
-    if (
-      value !== null &&
-      value !== undefined &&
-      ['PktSelect', 'PktTextinput', 'PktTextarea'].includes(component.value.type.name)
-    ) {
+    // Punkt text fields only accept `String` as value.
+    if (value !== null && value !== undefined && isTextField.value) {
       value = String(value);
     }
     return value;
@@ -128,38 +147,6 @@ onMounted(() => {
   handleChange(innerValue.value || props.modelValue);
 });
 
-const component = computed(() => {
-  const { class: _, ...rest } = attrs;
-  const config = { type: PktTextinput, props: rest };
-
-  if (props.inputType === 'date') {
-    config.type = DatePicker;
-  } else if (props.inputType === 'textarea') {
-    config.type = PktTextarea;
-  } else if (props.inputType === 'switch') {
-    config.type = PktCheckbox;
-    config.props = {
-      isSwitch: true,
-      ...config.props,
-    };
-  } else if (props.inputType === 'select') {
-    config.type = PktSelect;
-  } else if (props.type === 'number') {
-    config.type = NumberInput;
-  } else if (props.inputType === 'custom-select') {
-    config.type = CustomSelect;
-  } else if (props.inputType === 'radio-group') {
-    config.type = RadioGroup;
-  } else {
-    config.props = {
-      type: props.type,
-      ...config.props,
-    };
-  }
-
-  return config;
-});
-
 const isRequired = computed(() => {
   if (props.rules) {
     if (typeof props.rules === 'string') {
@@ -170,6 +157,68 @@ const isRequired = computed(() => {
     }
   }
   return false;
+});
+
+// Props and listeners for the field component. Punkt Elements expose `value`
+// (or `checked`) and DOM events, while our own components use `v-model`.
+const fieldProps = computed(() => {
+  const { class: _, ...rest } = attrs;
+  const common = {
+    ...rest,
+    id: props.name,
+    name: props.name,
+    label: props.label,
+    optionalTag: props.showOptionalTag && !isRequired.value,
+    hasError: unref(formIsValidated) && !!errorMessage.value,
+    errorMessage: errorMessage.value,
+    fullwidth: props.fullwidth,
+  };
+
+  switch (fieldComponent.value) {
+    case 'pkt-textinput':
+      return {
+        ...common,
+        type: props.type,
+        value: innerValue.value,
+        onInput: (event) => {
+          innerValue.value = event.target.value;
+        },
+      };
+    case 'pkt-textarea':
+      return {
+        ...common,
+        value: innerValue.value,
+        onInput: (event) => {
+          innerValue.value = event.target.value;
+        },
+      };
+    case 'pkt-select':
+      return {
+        ...common,
+        value: innerValue.value,
+        onChange: (event) => {
+          innerValue.value = event.target.value;
+        },
+      };
+    case 'pkt-checkbox':
+      return {
+        ...common,
+        optionalTag: false,
+        isSwitch: true,
+        checked: !!innerValue.value,
+        onValueChange: (event) => {
+          innerValue.value = event.detail;
+        },
+      };
+    default:
+      return {
+        ...common,
+        modelValue: innerValue.value,
+        'onUpdate:modelValue': (value) => {
+          innerValue.value = value;
+        },
+      };
+  }
 });
 
 function copyFieldText() {
@@ -185,18 +234,7 @@ function copyFieldText() {
   <div
     :class="['form-component', { 'form-component--copiable': copyButton }, $attrs.class]"
   >
-    <component
-      :is="component.type"
-      v-bind="component.props"
-      :id="name"
-      v-model="innerValue"
-      :label="label"
-      :name="name"
-      :optional-tag="showOptionalTag && !isRequired"
-      :has-error="formIsValidated && !!errorMessage"
-      :error-message="errorMessage"
-      :fullwidth="fullwidth"
-    >
+    <component :is="fieldComponent" v-bind="fieldProps">
       <slot />
     </component>
 

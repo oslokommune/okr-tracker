@@ -4,7 +4,16 @@ import path from 'path';
 import { version } from './package.json';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          // Punkt Elements are web components.
+          isCustomElement: (tag) => tag.startsWith('pkt-'),
+        },
+      },
+    }),
+  ],
   base: '/',
   publicDir: 'public',
   server: {

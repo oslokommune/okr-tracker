@@ -249,6 +249,8 @@ async function archive() {
     button {
       display: flex;
       justify-content: center;
+      // Punkt buttons are `fit-content` by default; stretch to the list width.
+      width: 100%;
       margin-top: auto;
       border-top: 2px solid var(--color-border);
     }

@@ -22,7 +22,8 @@ import {
   getKPIProgressConstraints,
 } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
-import { PktButton, PktCheckbox, PktLoader } from '@oslokommune/punkt-vue';
+import { PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
 import EmptyState from '@/components/EmptyState.vue';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
 import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
@@ -106,12 +107,13 @@ function toggleListLimit() {
 <template>
   <WidgetWrapper :title="$t('widget.history.title')" class="progress-history">
     <template #title-actions>
-      <PktCheckbox
+      <pkt-checkbox
         id="showComments"
-        v-model="showComments"
         class="pkt-input-check--small"
-        is-switch
+        isSwitch
+        :checked="showComments"
         :label="$t('widget.history.showComments')"
+        @value-change="showComments = $event.detail"
       />
       <div class="separator"></div>
       <PktButton

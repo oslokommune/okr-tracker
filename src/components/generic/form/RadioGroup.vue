@@ -1,5 +1,6 @@
 <script setup>
-import { PktRadiobutton, PktInputWrapper } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-input-wrapper.js';
+import '@oslokommune/punkt-elements/dist/pkt-radiobutton.js';
 
 defineProps({
   modelValue: {
@@ -34,32 +35,34 @@ defineProps({
     default: null,
   },
 });
+
+defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <PktInputWrapper
+  <pkt-input-wrapper
+    :forId="name"
     :label="label"
-    :for-id="name"
-    :optional-tag="optionalTag"
-    :has-error="hasError"
-    :error-message="errorMessage"
-    has-fieldset
+    :optionalTag="optionalTag"
+    :hasError="hasError"
+    :errorMessage="errorMessage"
+    :hasFieldset="true"
   >
-    <PktRadiobutton
+    <pkt-radiobutton
       v-for="option in options"
       :id="option.id"
       :key="option.id"
-      :value="option.id"
-      :model-value="modelValue"
-      :label="option.label"
-      :check-helptext="option.helptext"
       :name="name"
+      :value="option.id"
+      :label="option.label"
+      :checkHelptext="option.helptext"
+      :checked="modelValue === option.id"
       :class="{
         'pkt-input-check--fullwidth': $attrs.fullwidth,
       }"
-      @update:model-value="$emit('update:modelValue', $event)"
+      @value-change="$event.detail && $emit('update:modelValue', option.id)"
     />
-  </PktInputWrapper>
+  </pkt-input-wrapper>
 </template>
 
 <style lang="scss" scoped>

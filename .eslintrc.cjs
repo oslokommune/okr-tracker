@@ -53,6 +53,8 @@ module.exports = {
       },
     ],
     'vue/v-on-event-hyphenation': ['warn', 'always', { ignore: ['onClick'] }],
+    // Punkt Elements (web components) expose camelCase properties.
+    'vue/attribute-hyphenation': ['warn', 'always', { ignoreTags: ['/^pkt-/'] }],
     'vue/require-explicit-emits': 'off',
     'func-names': 'off',
     'no-restricted-syntax': 'off',

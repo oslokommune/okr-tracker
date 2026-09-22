@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import Multiselect from '@vueform/multiselect';
-import { PktInputWrapper } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-input-wrapper.js';
 
 defineOptions({
   inheritAttrs: false,
@@ -97,13 +97,13 @@ function getTagLabel(option) {
 </script>
 
 <template>
-  <PktInputWrapper
-    :for-id="$attrs.id"
+  <pkt-input-wrapper
+    :forId="$attrs.id"
     :label="$attrs.label"
     :helptext="helptext"
-    :optional-tag="optionalTag"
-    :has-error="hasError"
-    :error-message="errorMessage"
+    :optionalTag="optionalTag"
+    :hasError="hasError"
+    :errorMessage="errorMessage"
   >
     <Multiselect
       v-bind="$attrs"
@@ -142,5 +142,5 @@ function getTagLabel(option) {
         </span>
       </template>
     </Multiselect>
-  </PktInputWrapper>
+  </pkt-input-wrapper>
 </template>
