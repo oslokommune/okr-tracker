@@ -138,24 +138,37 @@ const datePickerConfig = computed(() => ({
     gap: 1.5rem;
   }
 
-  :deep(input[name='value']) {
+  :deep(pkt-textinput#value .pkt-input) {
     height: 3rem;
     font-size: 1.5rem;
   }
 
-  :deep(textarea[name='comment']) {
+  :deep(pkt-textarea#comment .pkt-input) {
     resize: vertical;
   }
 }
 
+// Let the comment field fill the remaining height of the left column by
+// making every wrapper between the group and the textarea a growing flex
+// column.
 :deep(.progress-form__comment-group) {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
 
   .form-component,
+  pkt-textarea,
+  pkt-input-wrapper,
   .pkt-inputwrapper,
-  .pkt-inputwrapper__label,
+  .pkt-inputwrapper__fieldset {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-self: stretch;
+  }
+
   .pkt-input {
-    height: 100%;
+    flex-grow: 1;
   }
 }
 </style>

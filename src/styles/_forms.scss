@@ -11,6 +11,14 @@
   }
 }
 
+// Backport of the Punkt CSS 16.27.0 fix "Fiks tag i label og alert i
+// input-wrapper" (oslokommune/punkt#3523), which centers the optional/required
+// tag vertically next to the label text. Remove once Punkt is upgraded past
+// that version.
+.pkt-inputwrapper__label {
+  align-items: center;
+}
+
 // Custom select input component, based on `vueform/multiselect`.
 //  @oslokommune/punkt-css/dist/scss/elements/_input.scss
 //  https://github.com/vueform/multiselect?tab=readme-ov-file#styling

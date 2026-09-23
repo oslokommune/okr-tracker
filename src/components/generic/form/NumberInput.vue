@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { PktTextinput } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-textinput.js';
 import { isNumber } from '@/util';
 
 const props = defineProps({
@@ -34,5 +34,9 @@ const innerValue = computed({
 </script>
 
 <template>
-  <PktTextinput v-model="innerValue" type="text" />
+  <pkt-textinput
+    type="text"
+    :value="innerValue"
+    @input="innerValue = $event.target.value"
+  />
 </template>

@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import FlatPickr from 'vue-flatpickr-component';
-import { PktInputWrapper } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-input-wrapper.js';
 import 'flatpickr/dist/flatpickr.css';
 
 defineOptions({
@@ -87,12 +87,12 @@ function onClose(dates) {
 </script>
 
 <template>
-  <PktInputWrapper
-    :for-id="$attrs.id"
+  <pkt-input-wrapper
+    :forId="$attrs.id"
     :label="$attrs.label"
-    :optional-tag="optionalTag"
-    :has-error="hasError"
-    :error-message="errorMessage"
+    :optionalTag="optionalTag"
+    :hasError="hasError"
+    :errorMessage="errorMessage"
     :disabled="$attrs.disabled"
   >
     <div
@@ -117,7 +117,7 @@ function onClose(dates) {
 
       <PktIcon v-if="!config.inline" class="pkt-input-icon" name="calendar" />
     </div>
-  </PktInputWrapper>
+  </pkt-input-wrapper>
 </template>
 
 <style lang="scss" scoped>

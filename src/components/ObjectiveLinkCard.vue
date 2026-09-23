@@ -2,7 +2,8 @@
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useActiveItemStore } from '@/store/activeItem';
-import { PktCheckbox, PktTag } from '@oslokommune/punkt-vue';
+import { PktTag } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
 import { useObjective } from '@/composables/objective';
 import ProgressBar from '@/components/ProgressBar.vue';
 import ItemTag from '@/components/ItemTag.vue';
@@ -99,12 +100,13 @@ await objectivePromise.value;
     >
       <div class="objective-link-card__inner">
         <div class="objective-link-card__heading">
-          <PktCheckbox
+          <pkt-checkbox
             v-if="checkable"
             :id="`check_${objective.id}`"
             class="objective-link-card__checkbox"
-            :default-checked="checked"
-            @click.stop="$emit('toggle', $event.target.checked)"
+            :checked="checked"
+            @click.stop
+            @value-change="$emit('toggle', $event.detail)"
           />
           <div class="objective-link-card__title">
             <PktTag v-if="isInheritedObjective" v-bind="commonTagProps" skin="blue-light">
