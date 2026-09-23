@@ -61,7 +61,7 @@ const currentView = computed(() => {
 
 <template>
   <NavMenu v-if="views.length" class="view-toggle-menu" toggles>
-    <NavMenuText class="pkt-show-phablet-up">
+    <NavMenuText class="pkt-show-tablet-up">
       <span class="view-toggle-menu__label">{{ $t('general.view') }}:</span>
       {{ currentView }}
     </NavMenuText>

@@ -42,10 +42,8 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-@use 'sass:map';
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/typography' as *;
-@use '@oslokommune/punkt-css/dist/scss/abstracts/variables';
 
 $-empty-state-skins: (
   info: var(--color-blue-10),
@@ -66,7 +64,7 @@ $-empty-state-skins: (
     flex-direction: column;
     gap: 1rem;
     justify-content: center;
-    max-width: map.get(variables.$breakpoints, 'phablet');
+    max-width: 36rem;
     margin-right: auto;
     margin-left: auto;
     padding: 2rem 1.5rem;

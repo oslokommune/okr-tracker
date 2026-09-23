@@ -32,7 +32,7 @@
   scrollbar-width: none; /* Hide scrollbar styles Firefox */
   -webkit-overflow-scrolling: touch;
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     height: auto;
   }
 

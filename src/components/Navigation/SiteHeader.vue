@@ -207,7 +207,7 @@ const showToolbar = computed(() => {
   &__toolbar {
     justify-content: space-between;
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       @include get-text('pkt-txt-14');
     }
   }

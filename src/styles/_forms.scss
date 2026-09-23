@@ -96,15 +96,12 @@
     margin: 0;
     padding: 0.5rem 1rem;
 
-    > span:not(.multiselect-tags-search-copy) {
-      line-height: 0;
-    }
-
     .pkt-tag {
       margin: 0;
 
       > span {
         margin-left: 0.5rem;
+        line-height: 0;
         cursor: pointer;
       }
 

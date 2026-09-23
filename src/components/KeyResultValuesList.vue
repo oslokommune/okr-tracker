@@ -98,7 +98,7 @@ function addedBy(record) {
     }
 
     &:nth-child(2) {
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         min-width: 10rem;
       }
     }

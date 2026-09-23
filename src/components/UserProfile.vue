@@ -113,7 +113,7 @@ async function save(data) {
     flex: 1 1 50%;
   }
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     flex-direction: row;
     gap: 4rem;
   }

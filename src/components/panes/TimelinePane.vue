@@ -13,10 +13,10 @@ const { item } = storeToRefs(useActiveItemStore());
 <template>
   <PaneWrapper class="timeline-pane">
     <template #title>
-      <h1 class="pkt-txt-16-medium pkt-hide-phablet-up">
+      <h1 class="pkt-txt-16-medium pkt-hide-tablet-up">
         {{ $t('general.OKRsLong') }}
       </h1>
-      <h1 class="pkt-txt-18-medium pkt-show-phablet-up pkt-hide-tablet-big-up">
+      <h1 class="pkt-txt-18-medium pkt-show-tablet-up pkt-hide-tablet-big-up">
         {{ $t('general.OKRsLong') }}
       </h1>
       <h1 class="pkt-txt-18-medium pkt-show-tablet-big-up">

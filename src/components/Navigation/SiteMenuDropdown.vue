@@ -93,7 +93,7 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
   height: $-dropdown-max-height;
   line-height: 2;
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     width: 25rem;
     height: auto;
     max-height: $-dropdown-max-height;

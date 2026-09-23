@@ -117,7 +117,7 @@ defineExpose({ close });
   height: 100vh;
   background-color: var(--color-white);
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     width: calc(100vw - 4rem);
   }
 
@@ -125,7 +125,7 @@ defineExpose({ close });
     margin: 0.5rem;
     text-align: right;
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       margin: 1rem 1rem 0;
     }
 
@@ -144,7 +144,7 @@ defineExpose({ close });
     padding-top: 0;
     overflow-y: auto;
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       padding: 2.5rem;
     }
   }

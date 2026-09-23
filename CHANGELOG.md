@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Node.js 22 is now the default runtime for all Cloud Functions and when running
   the app locally.
+- Upgraded from Punkt 12 to Punkt 18.
 
 ### Removed
 

@@ -161,7 +161,7 @@ function progressLabelStyle(progression) {
     text-align: center;
     @include get-text('pkt-txt-12-medium');
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       display: block;
     }
 

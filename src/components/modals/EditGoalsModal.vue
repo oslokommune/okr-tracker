@@ -234,7 +234,7 @@ async function archive() {
   flex-direction: column;
   gap: 1rem;
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     flex-direction: row;
     gap: 1.5rem;
   }
@@ -271,7 +271,7 @@ async function archive() {
     height: 15rem;
     overflow-y: scroll;
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       height: 23rem;
     }
   }
