@@ -3,7 +3,8 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useHead } from '@unhead/vue';
-import { PktAlert, PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import { PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import { useAuthStore } from '@/store/auth';
 import { BtnSave } from '@/components/generic/form';
@@ -53,18 +54,15 @@ async function loginWithProvider(provider) {
       <PktLoader :message="$t('login.loading')" size="large" variant="blue" inline />
     </div>
 
-    <PktAlert
-      v-else-if="authenticationError"
-      skin="error"
-      :close-alert="true"
-      class="mb-size-32"
-    >
-      {{ authenticationErrorMessage }}
+    <pkt-alert v-else-if="authenticationError" skin="error" closeAlert class="mb-size-32">
+      <div>
+        {{ authenticationErrorMessage }}
 
-      <RouterLink v-if="authenticationError === 1" :to="{ name: 'RequestAccess' }">
-        {{ $t('login.requestAccess') }}
-      </RouterLink>
-    </PktAlert>
+        <RouterLink v-if="authenticationError === 1" :to="{ name: 'RequestAccess' }">
+          {{ $t('login.requestAccess') }}
+        </RouterLink>
+      </div>
+    </pkt-alert>
 
     <FormSection v-if="showForm" class="login__form">
       <FormComponent

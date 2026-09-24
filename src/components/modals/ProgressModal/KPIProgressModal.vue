@@ -1,7 +1,8 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { endOfDay } from 'date-fns';
-import { PktAccordion, PktAccordionItem, PktAlert } from '@oslokommune/punkt-vue';
+import { PktAccordion, PktAccordionItem } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import Progress from '@/db/Kpi/Progress';
@@ -112,14 +113,14 @@ async function checkExistingMeasurement(timestamp) {
       @submit="saveRecord"
       @delete="deleteRecord"
     >
-      <PktAlert v-if="existingValueForDate" skin="warning" class="mb-size-24">
+      <pkt-alert v-if="existingValueForDate" skin="warning" class="mb-size-24">
         {{
           $t('widget.history.overwriteWarning', {
             date: dateShort(existingValueForDate.timestamp.toDate()),
             value: formatKPIValue(kpi, existingValueForDate.value),
           })
         }}
-      </PktAlert>
+      </pkt-alert>
     </ProgressValueForm>
 
     <template #footer>

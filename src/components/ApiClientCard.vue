@@ -1,7 +1,8 @@
 <script setup>
 import { useToast } from 'vue-toast-notification';
 import { useI18n } from 'vue-i18n';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnDelete } from '@/components/generic/form';
 import ApiClientTag from '@/components/ApiClientTag.vue';
 
@@ -130,7 +131,7 @@ function copyCredential(elementId) {
           </div>
         </div>
 
-        <PktAlert v-if="visibleSecret" skin="warning" class="mb-size-16">
+        <pkt-alert v-if="visibleSecret" skin="warning" class="mb-size-16">
           <i18n-t keypath="integration.warning.secret" tag="p" scope="global">
             <template #closeLink>
               <a @click="$emit('hide-secret')">{{
@@ -138,7 +139,7 @@ function copyCredential(elementId) {
               }}</a>
             </template>
           </i18n-t>
-        </PktAlert>
+        </pkt-alert>
 
         <div v-if="client.description" class="api-client-card__description">
           {{ client.description }}

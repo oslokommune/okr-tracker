@@ -11,7 +11,8 @@ import { useActiveItemStore } from '@/store/activeItem';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { Organization, Department, Product } from '@/db/models';
 import { db } from '@/config/firebaseConfig';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -136,13 +137,13 @@ async function restore() {
               rules="required"
             />
 
-            <PktAlert
+            <pkt-alert
               v-if="values.name && values.name !== item.name"
               skin="info"
-              :compact="true"
+              size="small"
             >
               {{ $t('admin.item.slugChangeInfo', { name: item.name }) }}
-            </PktAlert>
+            </pkt-alert>
 
             <FormComponent
               input-type="textarea"
@@ -210,20 +211,22 @@ async function restore() {
               :options="users"
             />
 
-            <PktAlert v-if="item.secret" skin="warning" class="mb-size-32">
-              <div class="mb-size-8">
-                {{ $t('integration.warning.deprecation') }}
+            <pkt-alert v-if="item.secret" skin="warning" class="mb-size-32">
+              <div>
+                <div class="mb-size-8">
+                  {{ $t('integration.warning.deprecation') }}
+                </div>
+                <FormComponent
+                  name="secret"
+                  label="Secret"
+                  :show-optional-tag="false"
+                  :copy-button="true"
+                  :value="item.secret"
+                  :disabled="true"
+                  :readonly="true"
+                />
               </div>
-              <FormComponent
-                name="secret"
-                label="Secret"
-                :show-optional-tag="false"
-                :copy-button="true"
-                :value="item.secret"
-                :disabled="true"
-                :readonly="true"
-              />
-            </PktAlert>
+            </pkt-alert>
           </template>
         </template>
 

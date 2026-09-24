@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
 import { Organization, Department, Product } from '@/db/models';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnCancel } from '@/components/generic/form';
 import ModalWrapper from '@/components/modals/ModalWrapper.vue';
 
@@ -79,9 +80,9 @@ function close() {
   <ModalWrapper :icon="itemIcon" :title="item.name" :initial-focus="false" @close="close">
     <p class="mb-size-16 pkt-txt-18">{{ item.missionStatement }}</p>
 
-    <PktAlert skin="warning" compact>
+    <pkt-alert skin="warning" size="small">
       {{ $t(`archived.body.${itemType}`) }} {{ $t('archived.restoreText') }}
-    </PktAlert>
+    </pkt-alert>
 
     <FormSection class="mt-size-16">
       <template #actions="{ submit, disabled }">

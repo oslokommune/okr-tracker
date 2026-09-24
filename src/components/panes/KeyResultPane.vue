@@ -14,7 +14,8 @@ import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
-import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LineChart from '@/components/generic/LineChart.vue';
 // import WidgetKeyResultNotes from '@/components/widgets/WidgetKeyResultNotes.vue';
@@ -220,9 +221,9 @@ async function deleteProgressRecord(id, modalCloseHandler) {
       {{ $t('general.keyResult') }}
     </h1>
 
-    <PktAlert v-if="keyResult && keyResult.archived" skin="warning" compact>
+    <pkt-alert v-if="keyResult && keyResult.archived" skin="warning" size="small">
       {{ $t('archived.heading') }}
-    </PktAlert>
+    </pkt-alert>
 
     <FadeTransition :duration="100" @after-enter="renderProgressValues = true">
       <div v-if="!keyResultIsLoading && keyResult" class="key-result-pane__details">
