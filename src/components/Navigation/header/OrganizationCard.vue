@@ -6,7 +6,6 @@ import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { useTrackerStore } from '@/store/tracker';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
-import { PktIcon } from '@oslokommune/punkt-vue';
 import { NavMenu, NavMenuItem, NavMenuSwitch } from '../navbar';
 
 const router = useRouter();
@@ -109,12 +108,12 @@ onClickOutside(
       @keyup.up="keyUp"
       @keyup.esc.capture.stop="close"
     >
-      <PktIcon name="organization" class="pkt-icon--medium" />
+      <pkt-icon name="organization" class="pkt-icon--medium" />
       <div>
         <div class="organization-card__label">{{ $t('home.organization') }}</div>
         <div class="organization-card__name">{{ organization.name }}</div>
       </div>
-      <PktIcon
+      <pkt-icon
         class="organization-card__toggle pkt-icon--medium"
         :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'"
       />

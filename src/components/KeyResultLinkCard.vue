@@ -49,7 +49,7 @@ defineProps({
           <span class="key-result-link-card__title pkt-txt-14">
             {{ title }}
           </span>
-          <PktIcon v-if="draggable" class="drag-icon" name="drag" />
+          <pkt-icon v-if="draggable" class="drag-icon" name="drag" />
         </div>
 
         <div>

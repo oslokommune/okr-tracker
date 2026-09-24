@@ -9,7 +9,7 @@ import {
 } from 'vuefire';
 import VueTippy from 'vue-tippy';
 import { ToastPlugin } from 'vue-toast-notification';
-import { PktIcon } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-icon.js';
 import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/locale/i18n';
@@ -94,7 +94,6 @@ configureFormValidation();
 app.component('PageLayout', PageLayout);
 app.component('FormSection', FormSection);
 app.component('FormComponent', FormComponent);
-app.component('PktIcon', PktIcon);
 
 app.mount('#app');
 

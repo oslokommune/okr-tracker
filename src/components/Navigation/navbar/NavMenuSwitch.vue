@@ -33,7 +33,7 @@ function toggle() {
       v-on="listeners"
     >
       <Transition name="fade" mode="out-in">
-        <PktIcon :key="new Date().getTime()" class="nav-menu-item__icon" :name="icon" />
+        <pkt-icon :key="new Date().getTime()" class="nav-menu-item__icon" :name="icon" />
       </Transition>
       <span v-if="text" class="">{{ text }}</span>
     </div>

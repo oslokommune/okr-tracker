@@ -154,7 +154,7 @@ function hideSecret() {
       <h1 class="pkt-txt-24-medium">{{ $t('general.integrations') }}</h1>
       <RouterLink :to="{ name: 'Api' }" target="_blank">
         {{ $t('general.api') }}
-        <PktIcon name="chevron-right" />
+        <pkt-icon name="chevron-right" />
       </RouterLink>
     </header>
 

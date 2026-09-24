@@ -57,9 +57,9 @@ const { results: searchResults } = useFuse(userQuery, users, {
           class="user-list__button pkt-txt-16-medium"
           @click="selectedUser = user"
         >
-          <PktIcon :name="isAdmin(user) ? 'cogwheel' : 'user'" />
+          <pkt-icon :name="isAdmin(user) ? 'cogwheel' : 'user'" />
           <span>{{ user.displayName || user.id }}</span>
-          <PktIcon name="chevron-right" />
+          <pkt-icon name="chevron-right" />
         </button>
       </div>
 

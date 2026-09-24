@@ -119,7 +119,7 @@ const showToolbar = computed(() => {
           class="site-menu__item"
         >
           <template #text>
-            <PktIcon class="nav-menu-item__icon" name="bullseye" />
+            <pkt-icon class="nav-menu-item__icon" name="bullseye" />
             <span class="pkt-show-tablet-up">{{ siteMenuLabel }}</span>
           </template>
           <template #default>
@@ -127,7 +127,7 @@ const showToolbar = computed(() => {
           </template>
         </NavMenuItem>
         <NavMenuText v-else strong>
-          <PktIcon class="nav-menu-item__icon" name="bullseye" />
+          <pkt-icon class="nav-menu-item__icon" name="bullseye" />
           <span>{{ siteMenuLabel }}</span>
         </NavMenuText>
       </NavMenu>
@@ -145,7 +145,7 @@ const showToolbar = computed(() => {
             :aria="{ label: itemMenuTab.label || itemMenuTab.tooltip }"
           >
             <template #text>
-              <PktIcon
+              <pkt-icon
                 v-if="itemMenuTab.icon"
                 class="nav-menu-item__icon"
                 :name="itemMenuTab.icon"
