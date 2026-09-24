@@ -64,7 +64,7 @@ function close() {
       <div v-if="isOpen" ref="modalOverlay" class="overlay" @keydown.esc="close">
         <div ref="modal" :class="['modal', `modal--${variant}`]">
           <div class="modal__header">
-            <PktIcon v-if="icon" :name="icon" />
+            <pkt-icon v-if="icon" :name="icon" />
             <h1 class="pkt-txt-18-medium">
               <slot name="header">{{ title }}</slot>
             </h1>

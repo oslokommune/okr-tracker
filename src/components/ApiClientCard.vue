@@ -67,7 +67,7 @@ function copyCredential(elementId) {
         <div class="api-client-card__credentials mb-size-16">
           <div class="api-client-card__credential">
             <label :for="`${client.id}_clientId`">
-              <PktIcon name="cogwheel" /> {{ $t('integration.clientId') }}
+              <pkt-icon name="cogwheel" /> {{ $t('integration.clientId') }}
             </label>
             <div>
               <input
@@ -96,7 +96,7 @@ function copyCredential(elementId) {
             ]"
           >
             <label :for="`${client.id}_clientSecret`">
-              <PktIcon name="lock-locked" /> {{ $t('integration.clientSecret') }}
+              <pkt-icon name="lock-locked" /> {{ $t('integration.clientSecret') }}
             </label>
             <div>
               <input

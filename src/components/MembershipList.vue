@@ -85,7 +85,7 @@ function wrapNavigate(handler, event) {
               tabindex="0"
               @click="wrapNavigate(navigate, $event)"
             >
-              <PktIcon class="pkt-link__icon" :name="icon(group.id)" />
+              <pkt-icon class="pkt-link__icon" :name="icon(group.id)" />
               {{ name }}
             </a>
           </RouterLink>

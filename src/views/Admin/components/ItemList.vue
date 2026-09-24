@@ -112,9 +112,9 @@ const itemRoute = (slug) => ({
             class="item-list__link pkt-txt-16-medium"
             :to="itemRoute(item.slug)"
           >
-            <PktIcon :name="templateConfig.itemIcon" />
+            <pkt-icon :name="templateConfig.itemIcon" />
             <span>{{ item.name }}</span>
-            <PktIcon name="chevron-right" />
+            <pkt-icon name="chevron-right" />
           </RouterLink>
 
           <div
@@ -122,9 +122,9 @@ const itemRoute = (slug) => ({
             class="item-list__link pkt-txt-16-medium"
             @click="selectedItem = item"
           >
-            <PktIcon :name="templateConfig.itemIcon" />
+            <pkt-icon :name="templateConfig.itemIcon" />
             <span>{{ item.name }}</span>
-            <PktIcon name="archive" />
+            <pkt-icon name="archive" />
           </div>
         </template>
       </div>
@@ -134,7 +134,7 @@ const itemRoute = (slug) => ({
           class="pkt-btn pkt-btn--secondary pkt-btn--icon-left"
           :to="templateConfig.createRoute"
         >
-          <PktIcon name="plus-sign" class="pkt-btn__icon pkt-show-tablet-big-up" />
+          <pkt-icon name="plus-sign" class="pkt-btn__icon pkt-show-tablet-big-up" />
           <span class="pkt-btn__text">{{ $t(templateConfig.createLabel) }}</span>
         </RouterLink>
       </div>

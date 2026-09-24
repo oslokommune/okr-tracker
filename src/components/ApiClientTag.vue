@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
 
 <template>
   <span v-tooltip="tooltip" class="api-client-tag">
-    <PktIcon v-if="icon" :name="icon" />
+    <pkt-icon v-if="icon" :name="icon" />
     <span>{{ formattedTagText }}</span>
   </span>
 </template>

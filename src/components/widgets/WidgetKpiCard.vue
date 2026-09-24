@@ -59,7 +59,7 @@ const chartOptions = computed(() => ({
     :class="['kpi-card-widget', { 'kpi-card-widget--compact': compact }]"
   >
     <template v-if="hasEditRights" #title-actions>
-      <PktIcon class="drag-icon" name="drag" />
+      <pkt-icon class="drag-icon" name="drag" />
     </template>
 
     <div class="kpi-card-widget__inner">

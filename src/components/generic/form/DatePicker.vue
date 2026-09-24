@@ -115,7 +115,7 @@ function onClose(dates) {
         @on-close="onClose"
       />
 
-      <PktIcon v-if="!config.inline" class="pkt-input-icon" name="calendar" />
+      <pkt-icon v-if="!config.inline" class="pkt-input-icon" name="calendar" />
     </div>
   </pkt-input-wrapper>
 </template>

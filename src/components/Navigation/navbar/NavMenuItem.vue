@@ -75,7 +75,7 @@ provide('closeNavMenuDropdown', close);
         v-on="listeners"
       >
         <slot name="text">
-          <PktIcon v-if="icon" class="nav-menu-item__icon" :name="icon" />
+          <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
           <span v-if="text" class="nav-menu-item__text">{{ text }}</span>
         </slot>
       </a>
@@ -91,10 +91,10 @@ provide('closeNavMenuDropdown', close);
         v-on="listeners"
       >
         <slot name="text">
-          <PktIcon v-if="icon" class="nav-menu-item__icon" :name="icon" />
+          <pkt-icon v-if="icon" class="nav-menu-item__icon" :name="icon" />
           <span v-if="text" class="nav-menu-item__text">{{ text }}</span>
         </slot>
-        <PktIcon
+        <pkt-icon
           v-if="dropdown"
           class="nav-menu-item__toggle"
           :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'"

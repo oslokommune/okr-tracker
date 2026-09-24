@@ -64,9 +64,9 @@ const componentProps = computed(() => {
     ]"
     tabindex="0"
   >
-    <PktIcon v-if="!centered" class="item-linkcard__icon" :name="iconName" />
+    <pkt-icon v-if="!centered" class="item-linkcard__icon" :name="iconName" />
     <div class="item-linkcard__title">
-      <PktIcon v-if="centered" class="item-linkcard__icon" :name="iconName" />
+      <pkt-icon v-if="centered" class="item-linkcard__icon" :name="iconName" />
       <span>{{ title }}</span>
     </div>
     <div v-if="text" class="item-linkcard__text">

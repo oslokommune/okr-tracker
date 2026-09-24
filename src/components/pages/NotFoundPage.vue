@@ -29,7 +29,7 @@ defineProps({
 <template>
   <EmptyPage :heading="heading" :body="body" skin="warning">
     <RouterLink v-if="backTo" :to="backTo" class="pkt-link">
-      <PktIcon class="pkt-link__icon" name="chevron-left" />
+      <pkt-icon class="pkt-link__icon" name="chevron-left" />
       {{ backText }}
     </RouterLink>
   </EmptyPage>

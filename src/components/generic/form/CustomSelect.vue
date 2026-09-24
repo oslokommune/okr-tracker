@@ -119,13 +119,13 @@ function getTagLabel(option) {
     >
       <template #caret="{ isOpen }">
         <div :class="['multiselect__toggle', { 'multiselect__toggle--open': isOpen }]">
-          <PktIcon :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'" />
+          <pkt-icon :name="isOpen ? 'chevron-thin-up' : 'chevron-thin-down'" />
         </div>
       </template>
 
       <template #clear="{ clear }">
         <div class="multiselect__clear" @mousedown="clear">
-          <PktIcon name="close" />
+          <pkt-icon name="close" />
         </div>
       </template>
 
@@ -137,7 +137,7 @@ function getTagLabel(option) {
         <span class="pkt-tag pkt-tag--small">
           {{ getTagLabel(option) }}
           <span v-if="!disabled" @click="handleTagRemove(option, $event)">
-            <PktIcon class="pkt-tag__close-btn" name="close" />
+            <pkt-icon class="pkt-tag__close-btn" name="close" />
           </span>
         </span>
       </template>

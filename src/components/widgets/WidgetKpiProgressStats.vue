@@ -118,7 +118,7 @@ const stats = computed(() =>
         </span>
         <span class="pkt-txt-20-medium">
           {{ value }}
-          <PktIcon v-if="checkmark" name="check-medium" />
+          <pkt-icon v-if="checkmark" name="check-medium" />
         </span>
       </div>
     </div>
