@@ -14,7 +14,9 @@ import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
-import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-breadcrumbs.js';
+import { useRouterBreadcrumbs } from '@/composables/breadcrumbs';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import LineChart from '@/components/generic/LineChart.vue';
@@ -45,7 +47,7 @@ const {
 const renderProgressValues = ref(false);
 const renderWidgets = ref(false);
 
-const breadcrumbs = computed(() => [
+const { breadcrumbs, navigate } = useRouterBreadcrumbs(() => [
   { text: item.value.name, href: { name: 'ItemHome' } },
   {
     text: objective.value.name,
@@ -209,11 +211,11 @@ async function deleteProgressRecord(id, modalCloseHandler) {
     @close="router.push({ name: 'ObjectiveHome', params: { objectiveId: objective.id } })"
   >
     <template #title>
-      <PktBreadcrumbs
+      <pkt-breadcrumbs
         v-if="objective && keyResult"
         class="pkt-hide-laptop-up"
-        navigation-type="router"
         :breadcrumbs="breadcrumbs"
+        @navigate="navigate"
       />
     </template>
 
@@ -370,8 +372,10 @@ async function deleteProgressRecord(id, modalCloseHandler) {
   }
 }
 
-.pkt-breadcrumbs {
-  display: flex;
+pkt-breadcrumbs {
+  :deep(.pkt-breadcrumbs) {
+    display: flex;
+  }
 
   :deep(.pkt-breadcrumbs--mobile) {
     width: 100%;

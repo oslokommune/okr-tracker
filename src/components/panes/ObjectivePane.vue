@@ -8,7 +8,9 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
-import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-breadcrumbs.js';
+import { useRouterBreadcrumbs } from '@/composables/breadcrumbs';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { compareKeyResults } from '@/util/okr';
 import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
@@ -38,7 +40,7 @@ const showLiftWarning = ref(false);
 const renderKeyResults = ref(false);
 const renderWidgets = ref(false);
 
-const breadcrumbs = computed(() => [
+const { breadcrumbs, navigate } = useRouterBreadcrumbs(() => [
   { text: item.value.name, href: { name: 'ItemHome' } },
   { text: objective.value.name },
 ]);
@@ -141,11 +143,11 @@ function keyResultLinkProps(keyResult) {
     @close="$router.push({ name: 'ItemHome' })"
   >
     <template #title>
-      <PktBreadcrumbs
+      <pkt-breadcrumbs
         v-if="objective"
         class="pkt-hide-laptop-up"
-        navigation-type="router"
         :breadcrumbs="breadcrumbs"
+        @navigate="navigate"
       />
     </template>
 
@@ -327,8 +329,10 @@ function keyResultLinkProps(keyResult) {
   }
 }
 
-.pkt-breadcrumbs {
-  display: flex;
+pkt-breadcrumbs {
+  :deep(.pkt-breadcrumbs) {
+    display: flex;
+  }
 
   :deep(.pkt-breadcrumbs--mobile) {
     width: 100%;
