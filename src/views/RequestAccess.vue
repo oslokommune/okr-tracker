@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
 import api from '@/util/api';
-import { PktAlert, PktBackLink } from '@oslokommune/punkt-vue';
+import { PktBackLink } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnSave } from '@/components/generic/form';
 import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 
@@ -40,9 +41,9 @@ async function requestAccess({ email }, resetForm) {
 
     <h1 class="title-1">{{ $t('login.requestAccess') }}</h1>
 
-    <PktAlert v-if="errorMessage" skin="error" class="mb-size-32">
+    <pkt-alert v-if="errorMessage" skin="error" class="mb-size-32">
       {{ errorMessage }}
-    </PktAlert>
+    </pkt-alert>
 
     <FormSection>
       <FormComponent

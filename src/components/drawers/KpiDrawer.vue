@@ -13,7 +13,8 @@ import {
   kpiUpdateFrequencies,
 } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -178,9 +179,9 @@ async function restore() {
           />
 
           <FadeTransition>
-            <PktAlert v-if="formData.kpiType === 'ri'">
+            <pkt-alert v-if="formData.kpiType === 'ri'">
               {{ $t('kpi.help.resultIndicatorWarning') }}
-            </PktAlert>
+            </pkt-alert>
           </FadeTransition>
         </template>
 

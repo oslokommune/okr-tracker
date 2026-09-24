@@ -5,7 +5,8 @@ import { useToast } from 'vue-toast-notification';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/auth';
 import { useActiveKpiStore } from '@/store/activeKpi';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import Progress from '@/db/Kpi/Progress';
@@ -88,9 +89,9 @@ async function deleteProgressRecord(id, modalCloseHandler) {
       :html="kpi.description"
     />
 
-    <PktAlert v-if="kpi.archived" skin="warning" class="kpi-details__archived">
+    <pkt-alert v-if="kpi.archived" skin="warning" class="kpi-details__archived">
       {{ $t('kpi.archived') }}
-    </PktAlert>
+    </pkt-alert>
 
     <WidgetKpiProgressGraph
       @add-value="showValueModal = true"

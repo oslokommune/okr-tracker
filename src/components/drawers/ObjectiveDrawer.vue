@@ -12,7 +12,8 @@ import Objective from '@/db/Objective';
 import { db } from '@/config/firebaseConfig';
 import syncObjectiveContributors from '@/util/objectiveContributors';
 import { BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
-import { PktAlert, PktButton } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
 import PeriodShortcut from '@/components/period/PeriodShortcut.vue';
@@ -344,16 +345,18 @@ async function restore() {
           rules="required"
         />
 
-        <PktAlert v-if="hasNewOwner" skin="info">
-          <p>{{ $t('admin.objective.level.liftWarning1') }}</p>
-          <p v-if="!hasParentEditRights">
-            {{
-              $t('admin.objective.level.liftWarning2', {
-                newOwner: potentionalOwner.name,
-              })
-            }}
-          </p>
-        </PktAlert>
+        <pkt-alert v-if="hasNewOwner" skin="info">
+          <div>
+            <p>{{ $t('admin.objective.level.liftWarning1') }}</p>
+            <p v-if="!hasParentEditRights">
+              {{
+                $t('admin.objective.level.liftWarning2', {
+                  newOwner: potentionalOwner.name,
+                })
+              }}
+            </p>
+          </div>
+        </pkt-alert>
 
         <template #actions="{ submit, disabled }">
           <BtnCancel :disabled="isLoading || isArchived" @on-click="cancel" />

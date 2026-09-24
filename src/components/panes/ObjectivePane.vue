@@ -8,7 +8,8 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
-import { PktAlert, PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import { PktBreadcrumbs, PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { compareKeyResults } from '@/util/okr';
 import ObjectiveDetailsCard from '@/components/ObjectiveDetailsCard.vue';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
@@ -152,11 +153,11 @@ function keyResultLinkProps(keyResult) {
       {{ $t('general.objective') }}
     </h1>
 
-    <PktAlert v-if="objective && objective.archived" skin="warning" compact>
+    <pkt-alert v-if="objective && objective.archived" skin="warning" size="small">
       {{ $t('archived.heading') }}
-    </PktAlert>
+    </pkt-alert>
 
-    <PktAlert v-if="showLiftWarning" skin="warning" compact>
+    <pkt-alert v-if="showLiftWarning" skin="warning" size="small">
       <i18n-t keypath="objective.movedWarning" tag="p" scope="global">
         <template #activeItem>
           {{ item.name }}
@@ -176,7 +177,7 @@ function keyResultLinkProps(keyResult) {
           </RouterLink>
         </template>
       </i18n-t>
-    </PktAlert>
+    </pkt-alert>
 
     <FadeTransition :duration="100" @after-enter="renderKeyResults = true">
       <ObjectiveDetailsCard
