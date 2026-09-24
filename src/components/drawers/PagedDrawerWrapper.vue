@@ -136,7 +136,7 @@ defineExpose({
   &__title {
     @include get-text('pkt-txt-22-medium');
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       @include get-text('pkt-txt-30-medium');
     }
   }

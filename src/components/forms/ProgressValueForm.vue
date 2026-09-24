@@ -126,7 +126,7 @@ const datePickerConfig = computed(() => ({
 
 <style lang="scss" scoped>
 .progress-form {
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     display: flex;
     gap: 1.5rem;
   }

@@ -78,10 +78,7 @@ function kpiCreated(newKpi) {
 <template>
   <div ref="page" class="measurements-page">
     <div v-if="kpis.length" class="measurements-page__header">
-      <h1 class="pkt-txt-16-medium pkt-hide-phablet-up">
-        {{ $t('general.KPIs') }}
-      </h1>
-      <h1 class="pkt-txt-18-medium pkt-show-phablet-up pkt-hide-tablet-up">
+      <h1 class="pkt-txt-16-medium pkt-hide-tablet-up">
         {{ $t('general.KPIs') }}
       </h1>
       <h1 class="pkt-txt-18-medium pkt-show-tablet-up">

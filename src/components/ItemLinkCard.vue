@@ -137,7 +137,7 @@ const componentProps = computed(() => {
     #{$self}__title {
       @include get-text('pkt-txt-18-medium');
 
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         @include get-text('pkt-txt-22-medium');
 
         .pkt-icon {
@@ -155,7 +155,7 @@ const componentProps = computed(() => {
     }
 
     #{$self}__text {
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         @include get-text('pkt-txt-16');
       }
 

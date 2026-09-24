@@ -23,8 +23,8 @@
     "node": "22"
   },
   "dependencies": {
-    "@oslokommune/punkt-elements": "^13.22.0",
-    "@oslokommune/punkt-vue": "^13.22.0",
+    "@oslokommune/punkt-elements": "^18.9.7",
+    "@oslokommune/punkt-vue": "^18.9.7",
     "@unhead/vue": "^2.1.13",
     "@vee-validate/rules": "^4.13.2",
     "@vueform/multiselect": "^2.6.9",
@@ -61,7 +61,7 @@
     "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-env": "^7.16.5",
     "@firebase/rules-unit-testing": "^4.0.1",
-    "@oslokommune/punkt-css": "^13.22.0",
+    "@oslokommune/punkt-css": "^18.9.6",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/compiler-sfc": "^3.4.29",
     "eslint": "^8.44.0",

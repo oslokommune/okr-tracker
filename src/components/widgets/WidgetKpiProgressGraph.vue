@@ -189,7 +189,7 @@ function getEndDate({ endDate }, values) {
 .progress-graph {
   height: 300px;
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     height: 400px;
   }
 

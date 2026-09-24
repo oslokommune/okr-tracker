@@ -67,7 +67,7 @@ defineProps({
     min-width: 0;
     padding: 1rem 0;
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       padding-left: 1rem;
     }
 
@@ -89,7 +89,7 @@ defineProps({
     gap: 1rem;
     padding: 0 1rem 3rem;
 
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       padding-right: 1.5rem;
       padding-left: 1.5rem;
     }

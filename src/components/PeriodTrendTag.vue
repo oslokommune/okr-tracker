@@ -113,7 +113,7 @@ function formatDate(date) {
   font-weight: 400;
   white-space: nowrap;
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     @include get-text('pkt-txt-24');
   }
 

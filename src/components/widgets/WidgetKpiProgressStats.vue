@@ -130,8 +130,8 @@ const stats = computed(() =>
   display: grid;
   gap: 2rem;
 
-  @each $bp-name, $cols in ('phablet-up': 2, 'tablet-up': 3) {
-    @include bp('#{$bp-name}') {
+  @each $min-width, $cols in (36rem: 2, 48rem: 3) {
+    @include bp-up($min-width) {
       grid-template-columns: repeat(#{$cols}, 1fr);
     }
   }

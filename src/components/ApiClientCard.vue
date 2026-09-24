@@ -259,7 +259,7 @@ function copyCredential(elementId) {
       outline: 0;
       @include get-text('pkt-txt-14-medium');
 
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         @include get-text('pkt-txt-16-medium');
       }
 

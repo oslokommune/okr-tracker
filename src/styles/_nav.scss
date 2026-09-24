@@ -12,7 +12,7 @@ $-border-color: var(--pkt-color-border-gray);
   font-size: 0.75em;
   background-color: inherit;
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     font-size: 1em;
   }
 

@@ -76,7 +76,7 @@ function sortByLocale(arr) {
               :class="[
                 'pkt-cell',
                 'pkt-cell--span12',
-                'pkt-cell--span6-phablet-up',
+                'pkt-cell--span6-tablet-up',
                 'pkt-cell--span4-laptop-up',
               ]"
             >
@@ -152,7 +152,7 @@ function sortByLocale(arr) {
 
       @include get-text('pkt-txt-20-medium');
 
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         @include get-text('pkt-txt-28-medium');
       }
 
@@ -164,7 +164,7 @@ function sortByLocale(arr) {
     span {
       @include get-text('pkt-txt-16');
 
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         @include get-text('pkt-txt-20');
       }
     }
@@ -186,7 +186,7 @@ function sortByLocale(arr) {
   }
 
   &__organization {
-    @include bp('phablet-up') {
+    @include bp-up(36rem) {
       width: 80%;
       margin-bottom: 1rem;
     }
@@ -200,7 +200,7 @@ function sortByLocale(arr) {
       margin-top: 1rem;
       text-align: center;
 
-      @include bp('phablet-up') {
+      @include bp-up(36rem) {
         @include get-text('pkt-txt-16');
       }
     }
@@ -211,7 +211,7 @@ function sortByLocale(arr) {
   margin: -0.5rem -0.45rem 0 -0.45rem;
   background-color: var(--pkt-color-surface-subtle-light-blue);
 
-  @include bp('phablet-up') {
+  @include bp-up(36rem) {
     width: 20rem;
   }
 }
