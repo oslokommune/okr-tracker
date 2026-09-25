@@ -2,8 +2,8 @@
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useActiveItemStore } from '@/store/activeItem';
-import { PktTag } from '@oslokommune/punkt-vue';
 import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
+import '@oslokommune/punkt-elements/dist/pkt-tag.js';
 import { useObjective } from '@/composables/objective';
 import ProgressBar from '@/components/ProgressBar.vue';
 import ItemTag from '@/components/ItemTag.vue';
@@ -109,16 +109,20 @@ await objectivePromise.value;
             @value-change="$emit('toggle', $event.detail)"
           />
           <div class="objective-link-card__title">
-            <PktTag v-if="isInheritedObjective" v-bind="commonTagProps" skin="blue-light">
-              {{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}
-            </PktTag>
-            <PktTag
+            <pkt-tag
+              v-if="isInheritedObjective"
+              v-bind="commonTagProps"
+              skin="blue-light"
+            >
+              <span>{{ $t('general.objectiveBy', { owner: objectiveOwner.name }) }}</span>
+            </pkt-tag>
+            <pkt-tag
               v-else
               v-bind="commonTagProps"
-              :skin="isExactActive || active ? 'blue-light' : 'grey'"
+              :skin="isExactActive || active ? 'blue-light' : 'gray'"
             >
-              {{ $t('general.objective') }}
-            </PktTag>
+              <span>{{ $t('general.objective') }}</span>
+            </pkt-tag>
           </div>
         </div>
 

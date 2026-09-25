@@ -4,8 +4,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
 import api from '@/util/api';
-import { PktBackLink } from '@oslokommune/punkt-vue';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
+import '@oslokommune/punkt-elements/dist/pkt-backlink.js';
 import { BtnSave } from '@/components/generic/form';
 import BuildingsGraphic from '@/components/graphics/BuildingsGraphic.vue';
 
@@ -35,8 +35,13 @@ async function requestAccess({ email }, resetForm) {
 
 <template>
   <PageLayout breakpoint="phablet">
-    <RouterLink v-slot="{ href }" :to="{ name: 'Login' }" custom>
-      <PktBackLink :href="href" :text="$t('login.backToLogin')" class="mb-size-22" />
+    <RouterLink v-slot="{ href, navigate }" :to="{ name: 'Login' }" custom>
+      <pkt-backlink
+        :href="href"
+        :text="$t('login.backToLogin')"
+        class="mb-size-22"
+        @click="navigate"
+      />
     </RouterLink>
 
     <h1 class="title-1">{{ $t('login.requestAccess') }}</h1>

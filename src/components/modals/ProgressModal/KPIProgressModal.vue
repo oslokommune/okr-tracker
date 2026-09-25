@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { endOfDay } from 'date-fns';
-import { PktAccordion, PktAccordionItem } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-accordion.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { dateShort } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
@@ -124,35 +124,37 @@ async function checkExistingMeasurement(timestamp) {
     </ProgressValueForm>
 
     <template #footer>
-      <PktAccordion :compact="true" skin="borderless">
-        <PktAccordionItem id="api" :title="$t('kpi.help.apiHelpTitle')">
-          <i18n-t
-            keypath="kpi.help.apiProgress"
-            tag="p"
-            class="mb-size-16"
-            scope="global"
-          >
-            <template #apiLink>
-              <RouterLink :to="{ name: 'Api' }" target="_blank">
-                <span>{{ $t('general.api') }}</span>
-              </RouterLink>
-            </template>
-          </i18n-t>
+      <pkt-accordion compact skin="borderless">
+        <pkt-accordion-item id="api" :title="$t('kpi.help.apiHelpTitle')">
+          <div>
+            <i18n-t
+              keypath="kpi.help.apiProgress"
+              tag="p"
+              class="mb-size-16"
+              scope="global"
+            >
+              <template #apiLink>
+                <RouterLink :to="{ name: 'Api' }" target="_blank">
+                  <span>{{ $t('general.api') }}</span>
+                </RouterLink>
+              </template>
+            </i18n-t>
 
-          <FormComponent
-            input-type="textarea"
-            name="api-example"
-            :rows="5"
-            :readonly="true"
-            :label="$t('fields.example')"
-            :copy-button="true"
-            :fullwidth="true"
-            :show-optional-tag="false"
-            :value="apiExample"
-            class="api-example"
-          />
-        </PktAccordionItem>
-      </PktAccordion>
+            <FormComponent
+              input-type="textarea"
+              name="api-example"
+              :rows="5"
+              :readonly="true"
+              :label="$t('fields.example')"
+              :copy-button="true"
+              :fullwidth="true"
+              :show-optional-tag="false"
+              :value="apiExample"
+              class="api-example"
+            />
+          </div>
+        </pkt-accordion-item>
+      </pkt-accordion>
     </template>
   </ModalWrapper>
 </template>
