@@ -10,7 +10,8 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveItemStore } from '@/store/activeItem';
 import { db } from '@/config/firebaseConfig';
 import ApiClient from '@/db/ApiClient';
-import { PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-loader.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import ApiClientCard from '@/components/ApiClientCard.vue';
 import ApiClientModal from '@/components/modals/ApiClientModal.vue';
@@ -172,7 +173,7 @@ function hideSecret() {
     </i18n-t>
 
     <div v-if="clientsIsLoading" class="integrations-page__loading">
-      <PktLoader :message="$t('general.loading')" size="large" :delay="250" inline />
+      <pkt-loader :message="$t('general.loading')" size="large" :delay="250" inline />
     </div>
 
     <pkt-alert v-if="clientsLoadError" skin="error">

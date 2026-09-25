@@ -22,7 +22,8 @@ import {
   getKPIProgressConstraints,
 } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
-import { PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-loader.js';
 import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
 import EmptyState from '@/components/EmptyState.vue';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
@@ -184,7 +185,7 @@ function toggleListLimit() {
     </FadeTransition>
 
     <div v-if="isLoading" class="progress-history__loading">
-      <PktLoader
+      <pkt-loader
         :message="$t('general.loading')"
         size="large"
         variant="blue"
