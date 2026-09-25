@@ -3,7 +3,8 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useHead } from '@unhead/vue';
-import { PktButton, PktLoader } from '@oslokommune/punkt-vue';
+import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-loader.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
 import { useAuthStore } from '@/store/auth';
@@ -51,7 +52,7 @@ async function loginWithProvider(provider) {
     <h1 class="title-1">{{ $t('login.login') }}</h1>
 
     <div v-if="isAuthenticating && authenticationError === null" class="login__loading">
-      <PktLoader :message="$t('login.loading')" size="large" variant="blue" inline />
+      <pkt-loader :message="$t('login.loading')" size="large" variant="blue" inline />
     </div>
 
     <pkt-alert v-else-if="authenticationError" skin="error" closeAlert class="mb-size-32">
