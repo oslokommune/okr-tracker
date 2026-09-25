@@ -6,7 +6,7 @@ import { Timestamp } from 'firebase/firestore';
 import { max, min } from 'd3-array';
 import { useAuthStore } from '@/store/auth';
 import { useActiveKpiStore } from '@/store/activeKpi';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import { periodDates } from '@/util';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
@@ -127,40 +127,40 @@ function getEndDate({ endDate }, values) {
   <WidgetWrapper :title="$t('kpi.progress')">
     <template #title-actions>
       <template v-if="hasEditRights">
-        <PktButton
+        <pkt-button
           size="small"
           skin="primary"
           variant="icon-left"
-          icon-name="plus-sign"
+          iconName="plus-sign"
           :aria-label="$t('kpi.newValue')"
-          @on-click="$emit('add-value')"
+          @click="$emit('add-value')"
         >
-          {{ $t('kpi.value') }}
-        </PktButton>
-        <PktButton
+          <span>{{ $t('kpi.value') }}</span>
+        </pkt-button>
+        <pkt-button
           size="small"
           skin="tertiary"
           variant="icon-left"
-          icon-name="bullseye"
+          iconName="bullseye"
           :aria-label="$t('kpi.goals.set')"
-          @on-click="$emit('set-goals')"
+          @click="$emit('set-goals')"
         >
-          {{ $t('kpi.goals.set') }}
-        </PktButton>
+          <span>{{ $t('kpi.goals.set') }}</span>
+        </pkt-button>
         <div class="separator"></div>
       </template>
-      <PktButton
+      <pkt-button
         v-if="progress.length"
         v-tooltip="$t('dashboard.downloadOptions.png')"
         size="small"
         skin="tertiary"
         variant="icon-left"
-        icon-name="download"
+        iconName="download"
         :aria-label="$t('dashboard.downloadOptions.png')"
-        @on-click="download"
+        @click="download"
       >
-        {{ $t('btn.download') }}
-      </PktButton>
+        <span>{{ $t('btn.download') }}</span>
+      </pkt-button>
     </template>
 
     <div ref="container">

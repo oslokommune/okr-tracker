@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { dateTimeShort } from '@/util';
 import { formatValue } from '@/util/keyResultProgress';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import ListTransition from '@/components/generic/transitions/ListTransition.vue';
 
 const props = defineProps({
@@ -55,15 +55,17 @@ function addedBy(record) {
             <p v-if="record.comment" :class="{ 'mr-size-40': canEdit }">
               {{ record.comment }}
             </p>
-            <PktButton
+            <pkt-button
               v-if="canEdit"
               v-tooltip.left="$t('tooltip.editProgress')"
               size="small"
               skin="tertiary"
               variant="icon-only"
-              icon-name="edit"
-              @on-click="$emit('edit-value', record)"
-            />
+              iconName="edit"
+              @click="$emit('edit-value', record)"
+            >
+              <span>{{ $t('tooltip.editProgress') }}</span>
+            </pkt-button>
           </td>
         </tr>
       </ListTransition>
@@ -108,7 +110,7 @@ function addedBy(record) {
       width: 100%;
       white-space: pre-line;
 
-      .pkt-btn {
+      pkt-button {
         position: absolute;
         top: 0.5rem;
         right: 0.5rem;

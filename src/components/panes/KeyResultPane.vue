@@ -14,7 +14,7 @@ import { db } from '@/config/firebaseConfig';
 import Progress from '@/db/Progress';
 import { getKeyResultProgressDetails } from '@/util/keyResultProgress';
 import { getComputedStyleVariable, DEFAULT_SERIES_OPTIONS } from '@/util/chart';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-breadcrumbs.js';
 import { useRouterBreadcrumbs } from '@/composables/breadcrumbs';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
@@ -232,15 +232,17 @@ async function deleteProgressRecord(id, modalCloseHandler) {
         <div class="key-result-pane__header">
           <h2 class="pkt-txt-18-medium">{{ keyResult.name }}</h2>
 
-          <PktButton
+          <pkt-button
             v-if="canEdit"
             v-tooltip="$t('btn.updateKeyResult')"
             skin="tertiary"
             size="small"
             variant="icon-only"
-            icon-name="edit"
-            @on-click="$emit('edit-key-result')"
-          />
+            iconName="edit"
+            @click="$emit('edit-key-result')"
+          >
+            <span>{{ $t('btn.updateKeyResult') }}</span>
+          </pkt-button>
         </div>
 
         <HTMLOutput
@@ -251,15 +253,16 @@ async function deleteProgressRecord(id, modalCloseHandler) {
 
         <div class="key-result-pane__progression">
           <h4 class="pkt-txt-14-medium">{{ $t('keyResult.progression') }}</h4>
-          <PktButton
+          <pkt-button
             v-if="canEdit"
-            :text="$t('widget.history.value')"
             skin="primary"
             size="small"
             variant="icon-left"
-            icon-name="plus-sign"
-            @on-click="openValueModal(null)"
-          />
+            iconName="plus-sign"
+            @click="openValueModal(null)"
+          >
+            <span>{{ $t('widget.history.value') }}</span>
+          </pkt-button>
         </div>
 
         <LineChart
@@ -338,7 +341,7 @@ async function deleteProgressRecord(id, modalCloseHandler) {
     justify-content: space-between;
     text-wrap: balance;
 
-    .pkt-btn {
+    pkt-button {
       margin: -0.5rem -0.5rem 0 0;
     }
   }

@@ -3,7 +3,7 @@ import { computed, inject, unref, useAttrs, onMounted } from 'vue';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
 import '@oslokommune/punkt-elements/dist/pkt-select.js';
 import '@oslokommune/punkt-elements/dist/pkt-textarea.js';
@@ -243,15 +243,17 @@ function copyFieldText() {
       {{ previewValue }}
     </div>
 
-    <PktButton
+    <pkt-button
       v-if="copyButton"
       v-tooltip.left="$t('tooltip.copyToClipboard')"
       skin="tertiary"
       variant="icon-only"
-      icon-name="copy"
+      iconName="copy"
       class="form-component__copy-button"
-      @on-click="copyFieldText"
-    />
+      @click="copyFieldText"
+    >
+      <span>{{ $t('tooltip.copyToClipboard') }}</span>
+    </pkt-button>
   </div>
 </template>
 
@@ -267,11 +269,14 @@ function copyFieldText() {
 
   &__copy-button {
     position: absolute;
-    top: 3rem;
+    top: 2.5rem;
     right: 0.25rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0 0.5rem;
+
+    :deep(.pkt-btn) {
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0 0.5rem;
+    }
   }
 
   &__preview {

@@ -61,7 +61,7 @@ function close() {
       />
 
       <template #actions="{ submit, disabled }">
-        <BtnSave :disabled="disabled" @on-click="submit(save)" />
+        <BtnSave :disabled="disabled" @click="submit(save)" />
       </template>
     </FormSection>
   </ModalWrapper>

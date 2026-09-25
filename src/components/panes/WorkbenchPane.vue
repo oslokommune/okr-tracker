@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { useOkrsStore } from '@/store/okrs';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import ObjectiveLinkCard from '@/components/ObjectiveLinkCard.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
@@ -64,15 +64,17 @@ function removeObjective(objectiveId) {
           />
         </Suspense>
 
-        <PktButton
+        <pkt-button
           v-tooltip.bottom="$t('btn.remove')"
           class="workbench-pane__remove-button"
           size="small"
           variant="icon-only"
-          icon-name="minus-circle"
+          iconName="minus-circle"
           skin="tertiary"
-          @on-click="removeObjective(objective.id)"
-        />
+          @click="removeObjective(objective.id)"
+        >
+          <span>{{ $t('btn.remove') }}</span>
+        </pkt-button>
       </div>
     </ListTransition>
   </PaneWrapper>
@@ -98,11 +100,14 @@ function removeObjective(objectiveId) {
     position: absolute;
     top: -1rem;
     right: -1rem;
-    height: 2rem;
-    padding: 0 0.25rem !important;
-    color: var(--color-grayscale-40);
-    background-color: var(--color-white);
-    border-radius: 50%;
+
+    :deep(.pkt-btn) {
+      height: 2rem;
+      padding: 0 0.25rem !important;
+      color: var(--color-grayscale-40);
+      background-color: var(--color-white);
+      border-radius: 50%;
+    }
   }
 }
 </style>

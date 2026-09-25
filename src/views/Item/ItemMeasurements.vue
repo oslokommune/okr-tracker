@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useKpisStore } from '@/store/kpis';
 import { useActiveKpiStore } from '@/store/activeKpi';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import EmptyPage from '@/components/pages/EmptyPage.vue';
 import KpiDetails from '@/components/KpiDetails.vue';
 import KpiDrawer from '@/components/drawers/KpiDrawer.vue';
@@ -87,15 +87,16 @@ function kpiCreated(newKpi) {
     </div>
 
     <div v-if="hasEditRights && kpis.length" class="measurements-page__actions">
-      <PktButton
-        :text="$t('general.KPI')"
+      <pkt-button
         :aria-label="$t('admin.measurement.new')"
         skin="primary"
         size="small"
         variant="icon-left"
-        icon-name="plus-sign"
-        @on-click="openKpiDrawer(false)"
-      />
+        iconName="plus-sign"
+        @click="openKpiDrawer(false)"
+      >
+        <span>{{ $t('general.KPI') }}</span>
+      </pkt-button>
     </div>
 
     <PageLayout
@@ -136,13 +137,14 @@ function kpiCreated(newKpi) {
       :body="$t(hasEditRights ? 'empty.noKPIs.adminBody' : 'empty.noKPIs.body')"
     >
       <div v-if="hasEditRights" data-mode="dark">
-        <PktButton
-          :text="$t('empty.noKPIs.buttonText')"
+        <pkt-button
           skin="primary"
           variant="icon-left"
-          icon-name="plus-sign"
-          @on-click="openKpiDrawer(false)"
-        />
+          iconName="plus-sign"
+          @click="openKpiDrawer(false)"
+        >
+          <span>{{ $t('empty.noKPIs.buttonText') }}</span>
+        </pkt-button>
       </div>
     </EmptyPage>
 

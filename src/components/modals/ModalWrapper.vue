@@ -1,7 +1,7 @@
 <script setup>
 import { nextTick, onMounted, ref } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
 const props = defineProps({
   title: {
@@ -68,14 +68,15 @@ function close() {
             <h1 class="pkt-txt-18-medium">
               <slot name="header">{{ title }}</slot>
             </h1>
-            <PktButton
-              ref="closeButton"
+            <pkt-button
               size="small"
               variant="icon-only"
-              icon-name="close"
+              iconName="close"
               skin="tertiary"
               @click.stop="close"
-            />
+            >
+              <span>{{ $t('btn.close') }}</span>
+            </pkt-button>
           </div>
 
           <div ref="modalContent" class="modal__content">

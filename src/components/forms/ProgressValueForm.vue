@@ -114,11 +114,11 @@ const datePickerConfig = computed(() => ({
       <BtnDelete
         v-if="enableDelete"
         :disabled="disabled || loading"
-        @on-click="$emit('delete')"
+        @confirm="$emit('delete')"
       />
       <BtnSave
         :disabled="disabled || loading"
-        @on-click="submit((values) => $emit('submit', values))"
+        @click="submit((values) => $emit('submit', values))"
       />
     </template>
   </FormSection>

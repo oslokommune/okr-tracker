@@ -1,7 +1,7 @@
 <script setup>
 import { useToast } from 'vue-toast-notification';
 import { useI18n } from 'vue-i18n';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnDelete } from '@/components/generic/form';
 import ApiClientTag from '@/components/ApiClientTag.vue';
@@ -44,22 +44,24 @@ function copyCredential(elementId) {
       <header class="api-client-card__title">
         <span class="pkt-txt-18-medium">{{ client.name }}</span>
         <div class="api-client-card__actions">
-          <PktButton
+          <pkt-button
             v-tooltip="$t('integration.action.edit')"
             size="small"
             skin="tertiary"
             variant="icon-only"
-            icon-name="edit"
+            iconName="edit"
             :disabled="loading"
             @click="$emit('edit', client)"
-          />
+          >
+            <span>{{ $t('integration.action.edit') }}</span>
+          </pkt-button>
           <BtnDelete
             size="small"
             :tooltip-text="$t('integration.action.delete')"
             :confirm-help="$t('integration.warning.delete')"
             variant="icon-only"
             :disabled="loading"
-            @on-click="$emit('delete', client)"
+            @confirm="$emit('delete', client)"
           />
         </div>
       </header>
@@ -77,14 +79,16 @@ function copyCredential(elementId) {
                 :value="client.clientId"
                 :readonly="true"
               />
-              <PktButton
+              <pkt-button
                 v-tooltip="$t('tooltip.copyToClipboard')"
                 size="small"
                 skin="tertiary"
                 variant="icon-only"
-                icon-name="copy"
-                @on-click="copyCredential(`${client.id}_clientId`)"
-              />
+                iconName="copy"
+                @click="copyCredential(`${client.id}_clientId`)"
+              >
+                <span>{{ $t('tooltip.copyToClipboard') }}</span>
+              </pkt-button>
             </div>
           </div>
 
@@ -107,15 +111,17 @@ function copyCredential(elementId) {
                 :readonly="true"
                 :disabled="!visibleSecret"
               />
-              <PktButton
+              <pkt-button
                 v-if="visibleSecret"
                 v-tooltip="$t('tooltip.copyToClipboard')"
                 size="small"
                 skin="tertiary"
                 variant="icon-only"
-                icon-name="copy"
-                @on-click="copyCredential(`${client.id}_clientSecret`)"
-              />
+                iconName="copy"
+                @click="copyCredential(`${client.id}_clientSecret`)"
+              >
+                <span>{{ $t('tooltip.copyToClipboard') }}</span>
+              </pkt-button>
               <BtnDelete
                 v-else
                 size="small"
@@ -125,7 +131,7 @@ function copyCredential(elementId) {
                 variant="icon-only"
                 icon-name="arrow-circle"
                 :disabled="loading"
-                @on-click="$emit('rotate', client)"
+                @confirm="$emit('rotate', client)"
               />
             </div>
           </div>
@@ -269,7 +275,7 @@ function copyCredential(elementId) {
       }
     }
 
-    button:hover {
+    :deep(.pkt-btn:hover) {
       background-color: transparent;
       border-color: transparent;
     }

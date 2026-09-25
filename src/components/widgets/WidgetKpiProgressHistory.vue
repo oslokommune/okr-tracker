@@ -22,7 +22,7 @@ import {
   getKPIProgressConstraints,
 } from '@/util/kpiHelpers';
 import downloadFile from '@/util/downloadFile';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-loader.js';
 import '@oslokommune/punkt-elements/dist/pkt-checkbox.js';
 import EmptyState from '@/components/EmptyState.vue';
@@ -117,17 +117,17 @@ function toggleListLimit() {
         @value-change="showComments = $event.detail"
       />
       <div class="separator"></div>
-      <PktButton
+      <pkt-button
         v-tooltip="$t('dashboard.downloadOptions.csv')"
         size="small"
         skin="tertiary"
         variant="icon-left"
-        icon-name="download"
+        iconName="download"
         :disabled="isLoading || isExporting"
-        @on-click="download"
+        @click="download"
       >
-        {{ $t('btn.download') }}
-      </PktButton>
+        <span>{{ $t('btn.download') }}</span>
+      </pkt-button>
     </template>
 
     <FadeTransition>
@@ -161,14 +161,16 @@ function toggleListLimit() {
               </td>
               <td v-if="hasEditRights">
                 <div class="record__actions">
-                  <PktButton
+                  <pkt-button
                     v-tooltip.left="$t('tooltip.editProgress')"
                     size="small"
                     skin="tertiary"
                     variant="icon-only"
-                    icon-name="edit"
-                    @on-click="$emit('edit-record', record)"
-                  />
+                    iconName="edit"
+                    @click="$emit('edit-record', record)"
+                  >
+                    <span>{{ $t('tooltip.editProgress') }}</span>
+                  </pkt-button>
                 </div>
               </td>
             </tr>
@@ -195,14 +197,14 @@ function toggleListLimit() {
     </div>
 
     <div class="progress-history__footer">
-      <PktButton
+      <pkt-button
         v-if="!isLoading && isLimited"
         skin="secondary"
         size="small"
-        @on-click="toggleListLimit"
+        @click="toggleListLimit"
       >
-        {{ $t(listLimit ? 'btn.showMore' : 'btn.showLess') }}
-      </PktButton>
+        <span>{{ $t(listLimit ? 'btn.showMore' : 'btn.showLess') }}</span>
+      </pkt-button>
     </div>
 
     <ProfileModal

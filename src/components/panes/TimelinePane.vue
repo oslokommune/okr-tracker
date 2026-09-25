@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/auth';
 import { useActiveItemStore } from '@/store/activeItem';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import PaneWrapper from '@/components/panes/PaneWrapper.vue';
 import GanttChart from '@/components/GanttChart.vue';
 
@@ -25,16 +25,17 @@ const { item } = storeToRefs(useActiveItemStore());
     </template>
 
     <template #actions>
-      <PktButton
+      <pkt-button
         v-if="hasEditRights"
-        :text="$t('general.objective')"
         :aria-label="$t('btn.createObjective')"
         skin="primary"
         size="small"
         variant="icon-left"
-        icon-name="plus-sign"
-        @on-click="$emit('add-objective')"
-      />
+        iconName="plus-sign"
+        @click="$emit('add-objective')"
+      >
+        <span>{{ $t('general.objective') }}</span>
+      </pkt-button>
     </template>
 
     <GanttChart />

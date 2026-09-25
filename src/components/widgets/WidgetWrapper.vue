@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
 const props = defineProps({
   title: {
@@ -53,15 +53,17 @@ function toggle() {
         </div>
       </template>
 
-      <PktButton
+      <pkt-button
         v-if="collapsable"
         v-tooltip="show ? $t('btn.minimize') : $t('btn.expand')"
         class="widget__toggle"
         size="small"
         skin="tertiary"
         variant="icon-only"
-        :icon-name="show ? 'chevron-thin-up' : 'chevron-thin-down'"
-      />
+        :iconName="show ? 'chevron-thin-up' : 'chevron-thin-down'"
+      >
+        <span>{{ show ? $t('btn.minimize') : $t('btn.expand') }}</span>
+      </pkt-button>
     </header>
 
     <div v-if="$slots.default && show" class="widget__body">

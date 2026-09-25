@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/auth';
 import { useOkrsStore } from '@/store/okrs';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
 import { useActiveKeyResultStore } from '@/store/activeKeyResult';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import PaneLayout from '@/components/layout/PaneLayout.vue';
 import EmptyPage from '@/components/pages/EmptyPage.vue';
 import TimelinePane from '@/components/panes/TimelinePane.vue';
@@ -134,13 +134,14 @@ function onKeyResultCreated(keyResultRef) {
       :body="$t('empty.noObjectives.body')"
     >
       <div v-if="hasEditRights" data-mode="dark">
-        <PktButton
-          :text="$t('btn.createObjective')"
+        <pkt-button
           skin="primary"
           variant="icon-left"
-          icon-name="plus-sign"
-          @on-click="openObjectiveDrawer(false)"
-        />
+          iconName="plus-sign"
+          @click="openObjectiveDrawer(false)"
+        >
+          <span>{{ $t('btn.createObjective') }}</span>
+        </pkt-button>
       </div>
     </EmptyPage>
 

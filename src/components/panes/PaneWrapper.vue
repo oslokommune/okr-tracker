@@ -1,5 +1,5 @@
 <script setup>
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
 defineProps({
   title: {
@@ -25,15 +25,17 @@ defineProps({
 
         <div class="pane__actions">
           <slot name="actions" />
-          <PktButton
+          <pkt-button
             v-if="closable"
             v-tooltip="$t('btn.close')"
             variant="icon-only"
             skin="tertiary"
             size="medium"
-            icon-name="close"
-            @on-click="$emit('close')"
-          />
+            iconName="close"
+            @click="$emit('close')"
+          >
+            <span>{{ $t('btn.close') }}</span>
+          </pkt-button>
         </div>
       </div>
 

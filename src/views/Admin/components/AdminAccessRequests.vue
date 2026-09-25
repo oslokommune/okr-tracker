@@ -4,7 +4,7 @@ import { useCollection } from 'vuefire';
 import { collection } from 'firebase/firestore';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { db } from '@/config/firebaseConfig';
 import api from '@/util/api';
@@ -51,22 +51,22 @@ function rejectRequest(request) {
         :title="request.email"
       >
         <div class="access-requests__actions">
-          <PktButton
+          <pkt-button
             :disabled="loading"
             skin="secondary"
             size="small"
-            @on-click="acceptRequest(request)"
+            @click="acceptRequest(request)"
           >
-            {{ $t('btn.acceptRequest') }}
-          </PktButton>
-          <PktButton
+            <span>{{ $t('btn.acceptRequest') }}</span>
+          </pkt-button>
+          <pkt-button
             :disabled="loading"
             skin="secondary"
             size="small"
-            @on-click="rejectRequest(request)"
+            @click="rejectRequest(request)"
           >
-            {{ $t('btn.rejectRequest') }}
-          </PktButton>
+            <span>{{ $t('btn.rejectRequest') }}</span>
+          </pkt-button>
         </div>
       </pkt-alert>
     </div>

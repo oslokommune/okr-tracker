@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { useToast } from 'vue-toast-notification';
 import { useI18n } from 'vue-i18n';
 import KeyResult from '@/db/KeyResult';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import { BtnSave } from '@/components/generic/form';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import WidgetWrapper from '@/components/widgets/WidgetWrapper.vue';
@@ -54,10 +54,10 @@ async function save(values) {
         />
 
         <template #actions="{ submit, disabled }">
-          <BtnSave :disabled="isLoading || disabled" @on-click="submit(save)" />
-          <PktButton skin="tertiary" @on-click="editNotes = false">
-            {{ $t('btn.close') }}
-          </PktButton>
+          <BtnSave :disabled="isLoading || disabled" @click="submit(save)" />
+          <pkt-button skin="tertiary" @click="editNotes = false">
+            <span>{{ $t('btn.close') }}</span>
+          </pkt-button>
         </template>
       </FormSection>
 
@@ -65,14 +65,16 @@ async function save(values) {
         <HTMLOutput v-if="notes" :html="notes" />
         <em v-else>{{ $t('keyResultPage.notes.empty') }}</em>
 
-        <PktButton
+        <pkt-button
           v-tooltip="$t('btn.editNotes')"
           size="small"
           skin="tertiary"
           variant="icon-only"
-          icon-name="edit"
-          @on-click="editNotes = !editNotes"
-        />
+          iconName="edit"
+          @click="editNotes = !editNotes"
+        >
+          <span>{{ $t('btn.editNotes') }}</span>
+        </pkt-button>
       </div>
     </div>
   </WidgetWrapper>
@@ -91,7 +93,7 @@ async function save(values) {
     display: flex;
     gap: 1rem;
 
-    .pkt-btn {
+    pkt-button {
       margin-left: auto;
     }
   }

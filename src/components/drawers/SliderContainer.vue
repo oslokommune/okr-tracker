@@ -1,7 +1,7 @@
 <script setup>
 import { ref, nextTick, watch } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
 const props = defineProps({
   visible: {
@@ -76,12 +76,9 @@ defineExpose({ close });
     >
       <aside v-if="isVisible" class="sliderContainer">
         <div class="sliderContainer__closeButtonContainer">
-          <PktButton
-            skin="tertiary"
-            variant="icon-only"
-            icon-name="close"
-            @on-click="close"
-          />
+          <pkt-button skin="tertiary" variant="icon-only" iconName="close" @click="close">
+            <span>{{ $t('btn.close') }}</span>
+          </pkt-button>
         </div>
 
         <div class="sliderContainer__inner">

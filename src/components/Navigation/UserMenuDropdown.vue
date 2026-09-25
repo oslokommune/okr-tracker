@@ -3,7 +3,7 @@ import { computed, inject } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/auth';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import UserProfile from '@/components/UserProfile.vue';
 
 const i18n = useI18n();
@@ -65,14 +65,15 @@ function wrapNavigate(handler, event) {
         </ul>
       </div>
 
-      <PktButton
+      <pkt-button
         size="small"
         skin="tertiary"
         variant="icon-left"
-        icon-name="exit"
-        :text="$t('general.signOut')"
-        @on-click="signOut"
-      />
+        iconName="exit"
+        @click="signOut"
+      >
+        <span>{{ $t('general.signOut') }}</span>
+      </pkt-button>
     </div>
 
     <div class="user-menu-dropdown__body">
@@ -124,7 +125,7 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     padding: 1.5rem;
     background-color: var(--color-yellow);
 
-    .pkt-btn {
+    :deep(.pkt-btn) {
       &:hover {
         background-color: var(--color-yellow-50);
         border-color: var(--color-yellow-50);

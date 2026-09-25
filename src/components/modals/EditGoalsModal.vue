@@ -8,7 +8,7 @@ import { endOfYear, startOfYear } from 'date-fns';
 import { db } from '@/config/firebaseConfig';
 import Goal from '@/db/Kpi/Goal';
 import { periodDates } from '@/util';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import { FormSection, BtnDelete, BtnSave } from '@/components/generic/form';
 import { formatKPIValue } from '@/util/kpiHelpers';
 import FadeTransition from '@/components/generic/transitions/FadeTransition.vue';
@@ -159,15 +159,16 @@ async function archive() {
             </a>
           </li>
         </ul>
-        <PktButton
+        <pkt-button
+          full-width
           skin="tertiary"
           variant="icon-left"
-          icon-name="plus-sign"
+          iconName="plus-sign"
           :disabled="goalsIsLoading || formIsDisabled"
-          @on-click="addGoal"
+          @click="addGoal"
         >
-          {{ $t('kpi.goals.new') }}
-        </PktButton>
+          <span>{{ $t('kpi.goals.new') }}</span>
+        </pkt-button>
       </div>
 
       <div class="goal-form__right">
@@ -206,11 +207,8 @@ async function archive() {
             />
 
             <template #actions="{ submit, disabled }">
-              <BtnDelete :disabled="formIsDisabled" @on-click="archive" />
-              <BtnSave
-                :disabled="disabled || formIsDisabled"
-                @on-click="submit(update)"
-              />
+              <BtnDelete :disabled="formIsDisabled" @confirm="archive" />
+              <BtnSave :disabled="disabled || formIsDisabled" @click="submit(update)" />
             </template>
           </FormSection>
         </FadeTransition>
@@ -246,12 +244,12 @@ async function archive() {
     height: 100%;
     border: 2px solid var(--color-border);
 
-    button {
-      display: flex;
-      justify-content: center;
-      // Punkt buttons are `fit-content` by default; stretch to the list width.
-      width: 100%;
+    pkt-button {
       margin-top: auto;
+    }
+
+    :deep(.pkt-btn) {
+      justify-content: center;
       border-top: 2px solid var(--color-border);
     }
 
