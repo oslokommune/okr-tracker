@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useHead } from '@unhead/vue';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-loader.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { loginProviderGoogle, loginProviderMS } from '@/config/firebaseConfig';
@@ -87,7 +87,7 @@ async function loginWithProvider(provider) {
           variant="label-only"
           :disabled="disabled || isAuthenticating"
           :text="$t('login.login')"
-          @on-click="submit(({ email, password }) => signInWithEmail(email, password))"
+          @click="submit(({ email, password }) => signInWithEmail(email, password))"
         />
       </template>
     </FormSection>
@@ -96,37 +96,40 @@ async function loginWithProvider(provider) {
       v-if="!isAuthenticating || authenticationError !== null"
       class="login__providers"
     >
-      <PktButton
+      <pkt-button
         v-if="authenticationProviders.includes('microsoft')"
+        full-width
         size="small"
-        @on-click="loginWithProvider(loginProviderMS)"
+        @click="loginWithProvider(loginProviderMS)"
       >
-        {{ $t('login.microsoft') }}
-      </PktButton>
+        <span>{{ $t('login.microsoft') }}</span>
+      </pkt-button>
 
-      <PktButton
+      <pkt-button
         v-if="authenticationProviders.includes('google')"
+        full-width
         size="small"
-        @on-click="loginWithProvider(loginProviderGoogle)"
+        @click="loginWithProvider(loginProviderGoogle)"
       >
-        {{ $t('login.google') }}
-      </PktButton>
+        <span>{{ $t('login.google') }}</span>
+      </pkt-button>
 
-      <PktButton
+      <pkt-button
         v-if="authenticationProviders.includes('email')"
+        full-width
         size="small"
         skin="secondary"
-        @on-click="showForm = true"
+        @click="showForm = true"
       >
-        {{ $t('login.loginWithUsername') }}
-      </PktButton>
+        <span>{{ $t('login.loginWithUsername') }}</span>
+      </pkt-button>
 
       <div class="login__sep">{{ $t('general.or') }}</div>
 
       <RouterLink :to="{ name: 'RequestAccess' }">
-        <PktButton skin="secondary" size="small">
-          {{ $t('login.requestAccess') }}
-        </PktButton>
+        <pkt-button full-width skin="secondary" size="small">
+          <span>{{ $t('login.requestAccess') }}</span>
+        </pkt-button>
       </RouterLink>
     </div>
 
@@ -161,8 +164,8 @@ async function loginWithProvider(provider) {
   gap: 0.5rem 0.5rem;
   margin-top: 2rem;
 
-  button {
-    width: 100%;
+  a {
+    text-decoration: none;
   }
 }
 

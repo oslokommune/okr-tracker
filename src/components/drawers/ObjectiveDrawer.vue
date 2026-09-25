@@ -12,7 +12,7 @@ import Objective from '@/db/Objective';
 import { db } from '@/config/firebaseConfig';
 import syncObjectiveContributors from '@/util/objectiveContributors';
 import { BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -359,12 +359,12 @@ async function restore() {
         </pkt-alert>
 
         <template #actions="{ submit, disabled }">
-          <BtnCancel :disabled="isLoading || isArchived" @on-click="cancel" />
+          <BtnCancel :disabled="isLoading || isArchived" @click="cancel" />
           <BtnSave
             :text="isEditMode ? $t('btn.updateObjective') : $t('btn.createObjective')"
             variant="label-only"
             :disabled="disabled || isLoading || isArchived"
-            @on-click="submit(save)"
+            @click="submit(save)"
           />
         </template>
       </FormSection>
@@ -373,21 +373,21 @@ async function restore() {
     <template #done="{ isSuccess, reset, close }">
       <div class="button-row button-row--left">
         <template v-if="!isSuccess">
-          <PktButton skin="secondary" @on-click="reset">
-            {{ $t('btn.back') }}
-          </PktButton>
+          <pkt-button skin="secondary" @click="reset">
+            <span>{{ $t('btn.back') }}</span>
+          </pkt-button>
         </template>
         <template v-else-if="objective">
-          <PktButton skin="tertiary" @on-click="close">
-            {{ $t('btn.close') }}
-          </PktButton>
-          <PktButton
+          <pkt-button skin="tertiary" @click="close">
+            <span>{{ $t('btn.close') }}</span>
+          </pkt-button>
+          <pkt-button
             v-if="objective.id"
             skin="secondary"
-            @on-click="$emit('add-key-result')"
+            @click="$emit('add-key-result')"
           >
-            {{ $t('btn.createKeyResult') }}
-          </PktButton>
+            <span>{{ $t('btn.createKeyResult') }}</span>
+          </pkt-button>
         </template>
       </div>
     </template>
@@ -399,7 +399,7 @@ async function restore() {
           <BtnDelete
             :disabled="isLoading"
             :text="$t('admin.objective.delete')"
-            @on-click="archive"
+            @confirm="archive"
           />
         </div>
       </template>

@@ -9,10 +9,15 @@ All notable changes to this project will be documented in this file. The format 
 - Node.js 22 is now the default runtime for all Cloud Functions and when running
   the app locally.
 - Upgraded from Punkt 12 to Punkt 18.
+- Migrated away from Punkt's Vue package to Punkt Elements.
 
 ### Removed
 
 - Dropped support for Node.js 20 and below.
+
+### Security
+
+- Updated dependencies to address potential security vulnerabilities.
 
 ## [5.1.3] 2026-09-02
 

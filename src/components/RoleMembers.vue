@@ -1,5 +1,5 @@
 <script setup>
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
 defineProps({
   role: {
@@ -24,16 +24,16 @@ function getDisplayName(member) {
     </h3>
     <div class="role-group__members-list">
       <span v-for="member in membersWithRole" :key="member.id" class="role-group__member">
-        <PktButton size="small" skin="tertiary" @click="$emit('open-modal', member.id)">
-          {{ getDisplayName(member) }}
-        </PktButton>
+        <pkt-button size="small" skin="tertiary" @click="$emit('open-modal', member.id)">
+          <span>{{ getDisplayName(member) }}</span>
+        </pkt-button>
       </span>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.pkt-btn--small {
+:deep(.pkt-btn--small) {
   font-size: 18px;
 }
 </style>

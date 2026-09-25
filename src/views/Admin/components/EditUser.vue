@@ -133,8 +133,8 @@ async function remove() {
       />
 
       <template #actions="{ submit, disabled }">
-        <BtnDelete :disabled="isCurrentUser || isLoading" @on-click="remove" />
-        <BtnSave :disabled="disabled || isLoading" @on-click="submit(update)" />
+        <BtnDelete :disabled="isCurrentUser || isLoading" @confirm="remove" />
+        <BtnSave :disabled="disabled || isLoading" @click="submit(update)" />
       </template>
     </FormSection>
   </div>

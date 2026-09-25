@@ -11,7 +11,7 @@ import { useActiveItemStore } from '@/store/activeItem';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { Organization, Department, Product } from '@/db/models';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
@@ -231,20 +231,22 @@ async function restore() {
         </template>
 
         <template #actions="{ submit, disabled }">
-          <PktButton
+          <pkt-button
             v-if="pageIndex === 1"
-            :text="$t('btn.cancel')"
             skin="tertiary"
             :disabled="loading || item.archived"
             @click="cancel"
-          />
-          <PktButton
+          >
+            <span>{{ $t('btn.cancel') }}</span>
+          </pkt-button>
+          <pkt-button
             v-else
-            :text="$t('btn.back')"
             skin="tertiary"
             :disabled="loading || item.archived"
             @click="prev"
-          />
+          >
+            <span>{{ $t('btn.back') }}</span>
+          </pkt-button>
           <BtnSave
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
             :disabled="disabled || loading || item.archived"
@@ -266,7 +268,7 @@ async function restore() {
           <BtnDelete
             :disabled="loading"
             :text="$t('admin.item.delete', { name: item.name })"
-            @on-click="archive"
+            @confirm="archive"
           />
         </div>
       </template>

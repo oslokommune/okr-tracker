@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toast-notification';
 import { Organization, Department, Product } from '@/db/models';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnCancel } from '@/components/generic/form';
 import ModalWrapper from '@/components/modals/ModalWrapper.vue';
@@ -86,14 +86,15 @@ function close() {
 
     <FormSection class="mt-size-16">
       <template #actions="{ submit, disabled }">
-        <BtnCancel :disabled="disabled || isLoading" @on-click="close" />
-        <PktButton
+        <BtnCancel :disabled="disabled || isLoading" @click="close" />
+        <pkt-button
           :disabled="disabled || isLoading"
-          icon-name="arrow-circle"
+          iconName="arrow-circle"
           variant="icon-left"
-          :text="$t('btn.restore')"
-          @on-click="submit(restore)"
-        />
+          @click="submit(restore)"
+        >
+          <span>{{ $t('btn.restore') }}</span>
+        </pkt-button>
       </template>
     </FormSection>
   </ModalWrapper>

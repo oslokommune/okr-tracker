@@ -10,7 +10,7 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveItemStore } from '@/store/activeItem';
 import { db } from '@/config/firebaseConfig';
 import ApiClient from '@/db/ApiClient';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-loader.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import ApiClientCard from '@/components/ApiClientCard.vue';
@@ -182,15 +182,15 @@ function hideSecret() {
 
     <template v-else-if="apiClients.length">
       <div class="mb-size-32">
-        <PktButton
+        <pkt-button
           skin="primary"
           size="small"
           variant="icon-left"
-          icon-name="plus-sign"
+          iconName="plus-sign"
           @click="openClientModal(null)"
         >
-          {{ $t('integration.action.add') }}
-        </PktButton>
+          <span>{{ $t('integration.action.add') }}</span>
+        </pkt-button>
       </div>
 
       <ListTransition>
@@ -215,14 +215,14 @@ function hideSecret() {
       :body="$t('integration.empty.body')"
     >
       <div data-mode="dark">
-        <PktButton
+        <pkt-button
           skin="primary"
           variant="icon-left"
-          icon-name="plus-sign"
+          iconName="plus-sign"
           @click="openClientModal(null)"
         >
-          {{ $t('integration.action.add') }}
-        </PktButton>
+          <span>{{ $t('integration.action.add') }}</span>
+        </pkt-button>
       </div>
     </EmptyState>
 

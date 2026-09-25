@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { formattedPeriod } from '@/util/okr';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
 const props = defineProps({
   label: {
@@ -32,16 +32,17 @@ const period = computed(() => {
 </script>
 
 <template>
-  <PktButton
+  <pkt-button
     :class="['period-shortcut', { 'period-shortcut--active': active }]"
     skin="secondary"
-    @on-click="$emit('click', $event)"
   >
-    <div class="pkt-txt-14-medium">{{ label }}</div>
-    <div v-if="period" class="pkt-txt-14-light">
-      {{ period }}
-    </div>
-  </PktButton>
+    <span>
+      <div class="pkt-txt-14-medium">{{ label }}</div>
+      <div v-if="period" class="pkt-txt-14-light">
+        {{ period }}
+      </div>
+    </span>
+  </pkt-button>
 </template>
 
 <style lang="scss" scoped>
@@ -49,9 +50,11 @@ const period = computed(() => {
   --pkt-color-button-background-normal: var(--color-gray);
   --pkt-color-button-border-normal: var(--color-gray);
 
-  height: auto;
-  padding: 0.5rem 1rem;
-  white-space: nowrap;
+  :deep(.pkt-btn) {
+    height: auto;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+  }
 
   &--active {
     --pkt-color-button-background-normal: var(--color-blue-light);

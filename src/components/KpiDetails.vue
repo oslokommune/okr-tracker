@@ -5,7 +5,7 @@ import { useToast } from 'vue-toast-notification';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/auth';
 import { useActiveKpiStore } from '@/store/activeKpi';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import EditGoalsModal from '@/components/modals/EditGoalsModal.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
@@ -72,15 +72,17 @@ async function deleteProgressRecord(id, modalCloseHandler) {
   <div class="kpi-details">
     <header class="kpi-details__header">
       <h2>{{ kpi.name }}</h2>
-      <PktButton
+      <pkt-button
         v-if="hasEditRights"
         v-tooltip="{ content: $t('admin.measurement.change'), placement: 'left' }"
         skin="tertiary"
         variant="icon-only"
         size="medium"
-        icon-name="edit"
-        @on-click="$emit('edit-kpi')"
-      />
+        iconName="edit"
+        @click="$emit('edit-kpi')"
+      >
+        <span>{{ $t('admin.measurement.change') }}</span>
+      </pkt-button>
     </header>
 
     <HTMLOutput

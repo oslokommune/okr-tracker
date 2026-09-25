@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@oslokommune/punkt-elements": "^18.9.7",
-    "@oslokommune/punkt-vue": "^18.9.7",
     "@unhead/vue": "^2.1.13",
     "@vee-validate/rules": "^4.13.2",
     "@vueform/multiselect": "^2.6.9",

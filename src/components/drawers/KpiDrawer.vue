@@ -13,7 +13,7 @@ import {
   kpiUpdateFrequencies,
 } from '@/util/kpiHelpers';
 import Kpi from '@/db/Kpi';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 import { BtnSave, BtnDelete } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
@@ -234,25 +234,27 @@ async function restore() {
         </template>
 
         <template #actions="{ submit, disabled }">
-          <PktButton
+          <pkt-button
             v-if="pageIndex === 1"
-            :text="$t('btn.cancel')"
             skin="tertiary"
             :disabled="isLoading || isArchived"
-            @click.capture.stop="cancel"
-          />
-          <PktButton
+            @click="cancel"
+          >
+            <span>{{ $t('btn.cancel') }}</span>
+          </pkt-button>
+          <pkt-button
             v-else
-            :text="$t('btn.back')"
             skin="tertiary"
             :disabled="isLoading || isArchived"
-            @click.capture.stop="prev"
-          />
+            @click="prev"
+          >
+            <span>{{ $t('btn.back') }}</span>
+          </pkt-button>
           <BtnSave
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
             :disabled="disabled || isLoading || isArchived"
             variant="label-only"
-            @click.capture.stop="submit(save)"
+            @click="submit(save)"
           />
         </template>
       </FormSection>
@@ -269,7 +271,7 @@ async function restore() {
           <BtnDelete
             :disabled="isLoading"
             :text="$t('admin.measurement.delete')"
-            @on-click="archive"
+            @confirm="archive"
           />
         </div>
       </template>

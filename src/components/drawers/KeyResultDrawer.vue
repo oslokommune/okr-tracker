@@ -11,7 +11,7 @@ import { useActiveObjectiveStore } from '@/store/activeObjective';
 import { useKeyResult } from '@/composables/keyResult';
 import KeyResult from '@/db/KeyResult';
 import { db } from '@/config/firebaseConfig';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import { BtnSave, BtnDelete, BtnCancel } from '@/components/generic/form';
 import ArchivedRestore from '@/components/ArchivedRestore.vue';
 import PagedDrawerWrapper from '@/components/drawers/PagedDrawerWrapper.vue';
@@ -279,20 +279,21 @@ async function restore() {
           <BtnCancel
             v-if="pageIndex === 1"
             :disabled="isLoading || isArchived"
-            @on-click="cancel"
+            @click="cancel"
           />
-          <PktButton
+          <pkt-button
             v-else
-            :text="$t('btn.back')"
             skin="tertiary"
             :disabled="isLoading || isArchived"
-            @on-click="prev"
-          />
+            @click="prev"
+          >
+            <span>{{ $t('btn.back') }}</span>
+          </pkt-button>
           <BtnSave
             :text="pageIndex === pageCount ? $t('btn.complete') : $t('btn.continue')"
             :disabled="disabled || isLoading || isArchived"
             variant="label-only"
-            @on-click="submit(save)"
+            @click="submit(save)"
           />
         </template>
       </FormSection>
@@ -301,9 +302,9 @@ async function restore() {
     <template #done="{ isSuccess, reset }">
       <div class="button-row button-row--left">
         <template v-if="!isSuccess">
-          <PktButton skin="secondary" @on-click="reset">
-            {{ $t('btn.back') }}
-          </PktButton>
+          <pkt-button skin="secondary" @click="reset">
+            <span>{{ $t('btn.back') }}</span>
+          </pkt-button>
         </template>
       </div>
     </template>
@@ -315,7 +316,7 @@ async function restore() {
           <BtnDelete
             :disabled="isLoading"
             :text="$t('admin.keyResult.delete')"
-            @on-click="archive"
+            @confirm="archive"
           />
         </div>
       </template>

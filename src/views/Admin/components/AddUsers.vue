@@ -59,7 +59,7 @@ async function save() {
         <BtnSave
           :disabled="disabled || isLoading"
           :text="$t('admin.users.registerUsersButton')"
-          @on-click="submit(save)"
+          @click="submit(save)"
         />
       </template>
     </FormSection>

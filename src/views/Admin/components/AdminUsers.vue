@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useFuse } from '@vueuse/integrations/useFuse';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import { storeToRefs } from 'pinia';
 import { useAdminStore } from '@/store/admin';
 import isAdmin from '@/util/user';
@@ -64,14 +64,15 @@ const { results: searchResults } = useFuse(userQuery, users, {
       </div>
 
       <div class="user-list__footer">
-        <PktButton
+        <pkt-button
+          full-width
           skin="secondary"
-          icon-name="plus-sign"
+          iconName="plus-sign"
           variant="icon-left"
-          @on-click="viewAddUsers = true"
+          @click="viewAddUsers = true"
         >
-          {{ $t('admin.users.addUsers') }}
-        </PktButton>
+          <span>{{ $t('admin.users.addUsers') }}</span>
+        </pkt-button>
       </div>
     </div>
 
@@ -82,28 +83,28 @@ const { results: searchResults } = useFuse(userQuery, users, {
     >
       <template #back>
         <div>
-          <PktButton
+          <pkt-button
             skin="tertiary"
-            icon-name="chevron-left"
+            iconName="chevron-left"
             variant="icon-left"
-            @on-click="selectedUser = null"
+            @click="selectedUser = null"
           >
-            {{ $t('admin.users.backToUsers') }}
-          </PktButton>
+            <span>{{ $t('admin.users.backToUsers') }}</span>
+          </pkt-button>
         </div>
       </template>
     </EditUser>
 
     <AddUsers v-if="viewAddUsers" @close="viewAddUsers = false">
       <template #back>
-        <PktButton
+        <pkt-button
           skin="tertiary"
-          icon-name="chevron-left"
+          iconName="chevron-left"
           variant="icon-left"
-          @on-click="viewAddUsers = false"
+          @click="viewAddUsers = false"
         >
-          {{ $t('admin.users.backToUsers') }}
-        </PktButton>
+          <span>{{ $t('admin.users.backToUsers') }}</span>
+        </pkt-button>
       </template>
     </AddUsers>
   </div>
@@ -170,9 +171,8 @@ const { results: searchResults } = useFuse(userQuery, users, {
     margin-top: auto;
     padding: 1rem;
 
-    .pkt-btn {
+    :deep(.pkt-btn) {
       justify-content: center;
-      width: 100%;
     }
   }
 }

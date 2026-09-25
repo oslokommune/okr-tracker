@@ -1,7 +1,7 @@
 <script setup>
 import { computed, nextTick, ref } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import i18n from '@/locale/i18n';
 
 const props = defineProps({
@@ -41,7 +41,7 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const emit = defineEmits(['onClick']);
+const emit = defineEmits(['confirm']);
 
 const popover = ref(null);
 const popoverContent = ref(null);
@@ -69,7 +69,7 @@ function onHide() {
 }
 
 function confirm(e, hide) {
-  emit('onClick', e);
+  emit('confirm', e);
   hide();
 }
 </script>
@@ -86,27 +86,29 @@ function confirm(e, hide) {
       @keydown.esc="onHide"
     >
       <template #default>
-        <PktButton
+        <pkt-button
           v-tooltip="{ content: tooltipContent, hideOnClick: true, reactive: true }"
           v-bind="$attrs"
           skin="tertiary"
-          :text="text"
           :variant="variant"
-          :icon-name="iconName"
-        />
+          :iconName="iconName"
+        >
+          <span>{{ text }}</span>
+        </pkt-button>
       </template>
 
       <template #content="{ hide }">
         <div ref="popoverContent" data-mode="dark" @keydown.esc.stop="hide">
           <p v-if="confirmHelp">{{ confirmHelp }}</p>
-          <PktButton
+          <pkt-button
             type="button"
             skin="secondary"
             class="my-size-8"
             :size="$attrs?.size || 'medium'"
-            :text="confirmText"
-            @on-click="confirm($event, hide)"
-          />
+            @click="confirm($event, hide)"
+          >
+            <span>{{ confirmText }}</span>
+          </pkt-button>
         </div>
       </template>
     </Tooltip>

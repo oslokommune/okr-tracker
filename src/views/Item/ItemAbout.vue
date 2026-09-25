@@ -12,7 +12,7 @@ import {
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useAuthStore } from '@/store/auth';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import HTMLOutput from '@/components/HTMLOutput.vue';
 import ItemDrawer from '@/components/drawers/ItemDrawer.vue';
 import ProfileModal from '@/components/modals/ProfileModal.vue';
@@ -113,15 +113,17 @@ function sortByDisplayOrder(roles) {
   <PageLayout breakpoint="tablet-big" class="about-page">
     <header class="about-page__header">
       <h1 class="pkt-txt-54">{{ item.name }}</h1>
-      <PktButton
+      <pkt-button
         v-if="hasEditRights"
         v-tooltip="$t('admin.item.change', { name: item.name })"
         skin="tertiary"
         size="small"
         variant="icon-only"
-        icon-name="edit"
-        @on-click="showItemDrawer = true"
-      />
+        iconName="edit"
+        @click="showItemDrawer = true"
+      >
+        <span>{{ $t('admin.item.change', { name: item.name }) }}</span>
+      </pkt-button>
     </header>
 
     <section>

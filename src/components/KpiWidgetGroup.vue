@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas';
 import { doc, writeBatch } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import metadata from '@/db/common/util/metadata';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import downloadFile from '@/util/downloadFile';
 import { periodDates } from '@/util';
 import { compareKPIs } from '@/util/kpiHelpers';
@@ -92,16 +92,16 @@ async function download() {
         <span v-else class="pkt-txt-14">
           {{ $t('general.period') }}: {{ period.label }}
         </span>
-        <PktButton
+        <pkt-button
           v-if="!rendering && kpis.length"
           size="small"
           skin="tertiary"
           variant="icon-left"
-          icon-name="download"
-          @on-click="download"
+          iconName="download"
+          @click="download"
         >
-          {{ $t('btn.download') }}
-        </PktButton>
+          <span>{{ $t('btn.download') }}</span>
+        </pkt-button>
       </template>
     </div>
 

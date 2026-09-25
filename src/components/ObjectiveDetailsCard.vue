@@ -5,7 +5,7 @@ import { startOfDay } from 'date-fns';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/store/auth';
 import { periodDates, uniqueBy } from '@/util';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import ItemTag from '@/components/ItemTag.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import HTMLOutput from '@/components/HTMLOutput.vue';
@@ -86,15 +86,17 @@ const canEdit = computed(
     <div class="objective-details__header">
       <h2>{{ objective.name }}</h2>
 
-      <PktButton
+      <pkt-button
         v-if="canEdit"
         v-tooltip="$t('btn.updateObjective')"
         skin="tertiary"
         variant="icon-only"
         size="small"
-        icon-name="edit"
-        @on-click="$emit('edit-objective')"
-      />
+        iconName="edit"
+        @click="$emit('edit-objective')"
+      >
+        <span>{{ $t('btn.updateObjective') }}</span>
+      </pkt-button>
     </div>
 
     <HTMLOutput
@@ -159,7 +161,7 @@ const canEdit = computed(
       @include get-text('pkt-txt-18-medium');
     }
 
-    .pkt-btn {
+    pkt-button {
       margin: -0.5rem -0.5rem 0 0;
     }
   }

@@ -65,7 +65,7 @@ async function requestAccess({ email }, resetForm) {
           :disabled="disabled || loading"
           :text="$t('login.requestButton')"
           size="small"
-          @on-click="submit((values) => requestAccess(values, reset))"
+          @click="submit((values) => requestAccess(values, reset))"
         />
       </template>
     </FormSection>

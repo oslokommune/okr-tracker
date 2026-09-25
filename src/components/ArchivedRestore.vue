@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/auth';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
 
 defineProps({
@@ -32,15 +32,15 @@ const { hasEditRights } = storeToRefs(useAuthStore());
         {{ $t(`archived.body.${objectType}`) }} {{ $t('archived.restoreText') }}
       </p>
 
-      <PktButton
+      <pkt-button
         v-if="hasEditRights"
         skin="secondary"
         variant="icon-left"
-        icon-name="arrow-circle"
-        @on-click="restore"
+        iconName="arrow-circle"
+        @click="restore"
       >
-        {{ $t('btn.restore') }}
-      </PktButton>
+        <span>{{ $t('btn.restore') }}</span>
+      </pkt-button>
     </div>
   </pkt-alert>
 </template>
@@ -50,7 +50,7 @@ const { hasEditRights } = storeToRefs(useAuthStore());
   display: flex;
   flex-direction: column;
 
-  .pkt-btn {
+  pkt-button {
     align-self: end;
     margin-top: 1rem;
   }

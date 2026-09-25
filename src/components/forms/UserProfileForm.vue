@@ -85,7 +85,7 @@ watchEffect(() => {
     <template #actions="{ submit, disabled }">
       <BtnSave
         :disabled="disabled || loading"
-        @on-click="submit(() => $emit('save', formData))"
+        @click="submit(() => $emit('save', formData))"
       />
     </template>
   </FormSection>

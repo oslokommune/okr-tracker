@@ -1,5 +1,5 @@
 <script setup>
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import i18n from '@/locale/i18n';
 
 defineProps({
@@ -17,11 +17,7 @@ defineProps({
 </script>
 
 <template>
-  <PktButton
-    v-bind="$attrs"
-    skin="primary"
-    :text="text"
-    :variant="variant"
-    icon-name="save"
-  />
+  <pkt-button v-bind="$attrs" skin="primary" :variant="variant" iconName="save">
+    <span>{{ text }}</span>
+  </pkt-button>
 </template>

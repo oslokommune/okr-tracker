@@ -104,7 +104,7 @@ async function save(values) {
           <BtnSave
             :text="$t('btn.create')"
             :disabled="disabled || loading"
-            @on-click="submit(save)"
+            @click="submit(save)"
           />
         </template>
       </FormSection>

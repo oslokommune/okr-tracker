@@ -8,7 +8,7 @@ import { useAuthStore } from '@/store/auth';
 import { useActiveOrganizationStore } from '@/store/activeOrganization';
 import { useActiveItemStore } from '@/store/activeItem';
 import { useActiveObjectiveStore } from '@/store/activeObjective';
-import { PktButton } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-button.js';
 import '@oslokommune/punkt-elements/dist/pkt-breadcrumbs.js';
 import { useRouterBreadcrumbs } from '@/composables/breadcrumbs';
 import '@oslokommune/punkt-elements/dist/pkt-alert.js';
@@ -194,16 +194,17 @@ function keyResultLinkProps(keyResult) {
       <div v-if="renderKeyResults" class="objective-pane__key-results">
         <div class="objective-pane__key-results-header">
           <h3 class="pkt-txt-16-medium">{{ $t('general.keyResults') }}</h3>
-          <PktButton
+          <pkt-button
             v-if="hasEditRights || isMemberOfChild"
-            :text="$t('general.keyResult')"
             :aria-label="$t('btn.addKeyResult')"
             skin="primary"
             size="small"
             variant="icon-left"
-            icon-name="plus-sign"
-            @on-click="$emit('add-key-result')"
-          />
+            iconName="plus-sign"
+            @click="$emit('add-key-result')"
+          >
+            <span>{{ $t('general.keyResult') }}</span>
+          </pkt-button>
         </div>
 
         <SortableList
