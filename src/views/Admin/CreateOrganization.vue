@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { doc } from 'firebase/firestore';
 import { useI18n } from 'vue-i18n';
@@ -8,7 +8,8 @@ import Organization from '@/db/Organization';
 import { db } from '@/config/firebaseConfig';
 import { useAdminStore } from '@/store/admin';
 import { findSlugAndRedirect } from '@/util';
-import { PktBreadcrumbs } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-breadcrumbs.js';
+import { useRouterBreadcrumbs } from '@/composables/breadcrumbs';
 import { BtnSave } from '@/components/generic/form';
 
 const toast = useToast();
@@ -17,7 +18,7 @@ const i18n = useI18n();
 const { users } = storeToRefs(useAdminStore());
 const loading = ref(false);
 
-const breadcrumbs = computed(() => [
+const { breadcrumbs, navigate } = useRouterBreadcrumbs(() => [
   { text: i18n.t('general.admin'), href: { name: 'Admin' } },
   { text: i18n.t('admin.organization.create') },
 ]);
@@ -44,7 +45,7 @@ async function save(values) {
 <template>
   <PageLayout breakpoint="tablet">
     <template #header>
-      <PktBreadcrumbs navigation-type="router" :breadcrumbs="breadcrumbs" />
+      <pkt-breadcrumbs :breadcrumbs="breadcrumbs" @navigate="navigate" />
     </template>
 
     <div class="card">

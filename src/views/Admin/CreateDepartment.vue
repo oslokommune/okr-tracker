@@ -9,7 +9,8 @@ import { db } from '@/config/firebaseConfig';
 import { findSlugAndRedirect } from '@/util';
 import { useAuthStore } from '@/store/auth';
 import { useAdminStore } from '@/store/admin';
-import { PktBreadcrumbs } from '@oslokommune/punkt-vue';
+import '@oslokommune/punkt-elements/dist/pkt-breadcrumbs.js';
+import { useRouterBreadcrumbs } from '@/composables/breadcrumbs';
 import { BtnSave } from '@/components/generic/form';
 
 const toast = useToast();
@@ -19,7 +20,7 @@ const { user, isSuperAdmin } = storeToRefs(useAuthStore());
 const { organizations, users } = storeToRefs(useAdminStore());
 const loading = ref(false);
 
-const breadcrumbs = computed(() => [
+const { breadcrumbs, navigate } = useRouterBreadcrumbs(() => [
   { text: i18n.t('general.admin'), href: { name: 'Admin' } },
   { text: i18n.t('admin.department.create') },
 ]);
@@ -53,7 +54,7 @@ async function save(values) {
 <template>
   <PageLayout breakpoint="tablet">
     <template #header>
-      <PktBreadcrumbs navigation-type="router" :breadcrumbs="breadcrumbs" />
+      <pkt-breadcrumbs :breadcrumbs="breadcrumbs" @navigate="navigate" />
     </template>
 
     <div class="card">
