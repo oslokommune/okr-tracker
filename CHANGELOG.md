@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Modal windows are now draggable.
+
 ### Changed
 
 - Node.js 22 is now the default runtime for all Cloud Functions and when running

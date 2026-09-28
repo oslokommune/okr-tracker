@@ -1,5 +1,6 @@
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
+import { useDraggable, useMediaQuery } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import '@oslokommune/punkt-elements/dist/pkt-button.js';
 
@@ -32,7 +33,28 @@ const emit = defineEmits(['open', 'close']);
 const isOpen = ref(false);
 const modalOverlay = ref(null);
 const modal = ref(null);
+const modalHeader = ref(null);
 const modalContent = ref(null);
+
+// Let the modal be dragged by its header, including the padding around it, on
+// larger screens. It stays centered by the overlay's flexbox until the first
+// move, then follows the pointer.
+const isDraggable = useMediaQuery('(min-width: 36rem)');
+const moved = ref(false);
+const isMoved = computed(() => moved.value && isDraggable.value);
+const { style: dragStyle } = useDraggable(modal, {
+  containerElement: modalOverlay,
+  preventDefault: true,
+  disabled: () => !isDraggable.value,
+  onStart: (_, { target, clientY }) =>
+    !target.closest('pkt-button') &&
+    (modalHeader.value.contains(target) ||
+      (target === modal.value &&
+        clientY <= modalHeader.value.getBoundingClientRect().bottom)),
+  onMove: () => {
+    moved.value = true;
+  },
+});
 
 const { activate: activateFocusTrap, deactivate: deactivateFocusTrap } = useFocusTrap(
   [modalContent, modal],
@@ -62,8 +84,12 @@ function close() {
   <Teleport to="body">
     <Transition name="modal-fade" @after-enter="onOpen">
       <div v-if="isOpen" ref="modalOverlay" class="overlay" @keydown.esc="close">
-        <div ref="modal" :class="['modal', `modal--${variant}`]">
-          <div class="modal__header">
+        <div
+          ref="modal"
+          :class="['modal', `modal--${variant}`, { 'modal--moved': isMoved }]"
+          :style="isMoved ? dragStyle : null"
+        >
+          <div ref="modalHeader" class="modal__header">
             <pkt-icon v-if="icon" :name="icon" />
             <h1 class="pkt-txt-18-medium">
               <slot name="header">{{ title }}</slot>

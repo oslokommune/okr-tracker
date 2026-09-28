@@ -40,6 +40,10 @@
     max-width: 750px;
   }
 
+  &--moved {
+    position: absolute;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -49,6 +53,7 @@
     gap: 1rem;
     align-items: center;
     margin-bottom: 0.5rem;
+    user-select: none;
 
     .pkt-icon {
       width: 1.5rem;
