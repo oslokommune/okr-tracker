@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-mutable-exports */
-import { initializeApp, cert } from 'firebase-admin/app';
-import functions from 'firebase-functions';
+import { initializeApp } from 'firebase-admin/app';
 import handleKpiProgress from './kpi/progress/index.js';
 import handleKpiGoals from './kpi/goals/index.js';
 
@@ -9,9 +8,7 @@ import api from './api/index.js';
 import internal from './backend/index.js';
 
 // Initialize the app to get everything started
-initializeApp({
-  credential: cert(functions.config().service_account),
-});
+initializeApp();
 
 // /**
 //  * Functions for backup and restoring the Firestore database

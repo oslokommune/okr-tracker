@@ -3,8 +3,6 @@ import functions from 'firebase-functions';
 import config from './config.js';
 
 const { GoogleAuth } = auth;
-const storageBucketName =
-  process.env.BACKUP_STORAGE_BUCKET || functions.config().storage.bucket;
 
 export const automatedBackups = functions
   .region(config.region)
@@ -16,6 +14,14 @@ export const automatedRestore = functions
   .region(config.region)
   .pubsub.topic('restore-backup')
   .onPublish(restoreBackup);
+
+function getBucketName() {
+  const bucket = process.env.BACKUP_STORAGE_BUCKET;
+  if (!bucket) {
+    throw new Error('BACKUP_STORAGE_BUCKET is not set in `functions/.env`');
+  }
+  return bucket;
+}
 
 async function restoreBackup() {
   const gAuth = new GoogleAuth({
@@ -32,7 +38,7 @@ async function restoreBackup() {
 
   const projectId = await gAuth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):importDocuments`;
-  const backupRoute = `gs://${storageBucketName}/${path}`;
+  const backupRoute = `gs://${getBucketName()}/${path}`;
 
   return client
     .request({
@@ -61,7 +67,7 @@ async function generateBackup() {
 
   const projectId = await gAuth.getProjectId();
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default):exportDocuments`;
-  const backupRoute = `gs://${storageBucketName}/${path}`;
+  const backupRoute = `gs://${getBucketName()}/${path}`;
 
   return client
     .request({
