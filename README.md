@@ -6,6 +6,7 @@
   - [Clone and install](#clone-and-install)
   - [Set up new instance](#set-up-new-instance)
     - [Create Firebase project](#create-firebase-project)
+      - [Cloud Functions configuration](#cloud-functions-configuration)
       - [Enable Google Auth in Firebase](#enable-google-auth-in-firebase)
     - [Environment variables](#environment-variables)
     - [Link project](#link-project)
@@ -65,29 +66,25 @@ Follow this guide to set up a new clean instance of the OKR-tracker. Please read
 
 - Create a [Google Firebase](https://firebase.google.com) project.
 - [Initialize the project](https://firebase.google.com/docs/cli#initialize_a_firebase_project) with Firebase CLI
-- Create a Google service account
-  - From the **Project Overview**, select **Service accounts**
-  - Click **Generate new private key**
 
-```bash
-firebase functions:config:set
-  service_account="<service account private key json-file>"
-  storage.bucket="<your-storage-bucket-name>"
-```
+The Cloud Functions authenticate using the project's default service account,
+so no private key needs to be configured.
 
-Cat the whole service account private key json file into the environment key `service_account`.
+#### Cloud Functions configuration
 
-```bash
-
-zsh
-firebase functions:config:set service_account="$(cat origo-okr-tracker-private-key.json)"
-
-sh
-firebase functions:config:set service_account="${cat origo-okr-tracker-private-key.json}"
+The Cloud Functions read their configuration from a `functions/.env` file
+([read more](https://firebase.google.com/docs/functions/config-env)). Create
+the file with the following content:
 
 ```
+BACKUP_STORAGE_BUCKET=<your-storage-bucket-name>
+```
 
-**Note: The private key string needs to have actual line breaks as opposed to `\\n` because of an issue with how Firebase stores environment variables. [Read more](https://github.com/firebase/firebase-tools/issues/371).**
+This is the storage bucket used for [automated backups](#automated-backup-with-cloud-functions).
+
+If you deploy to multiple Firebase projects (e.g. a test and a production
+environment), use one `functions/.env.<project-id>` file per project instead.
+The Firebase CLI loads the file matching the currently active project.
 
 #### Enable Google Auth in Firebase
 
@@ -134,12 +131,6 @@ firebase use --add
 ### Run locally
 
 The local development environment uses [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite) for Firestore and Cloud Functions. There is no need to do anything, only run the development script and everything is set up with a local user through Google auth.
-
-Retrieve current Firebase environment configuration. This is needed for certain cloud functions to function locally.
-
-```bash
-firebase functions:config:get > ./functions/.runtimeconfig.json
-```
 
 Start Firebase emulators, import mock data and run the development server:
 
@@ -365,7 +356,7 @@ TLDR:
 - Navigate to **Google Cloud Console** and choose your project
 - Navigate to IAM & Admin - Your App Engine Service account needs the **Cloud Datastore Import Export Admin** role
 - Navigate to **Storage** – Create a storage bucket – Give it a rule to delete storage that is >14 days old
-- Run the command `firebase functions:config:set storage.bucket="<your-storage-bucket-name>"`
+- Set `BACKUP_STORAGE_BUCKET=<your-storage-bucket-name>` in `functions/.env`
 
 ### Automated Restore with Cloud Functions
 
@@ -401,14 +392,12 @@ If there are some problems running the project locally, or you get an infinite s
 
 1. "No such file or directory, scandir storage_export/metadata"
    1. You need to create two directories under `mock_data/storage_export` - `blobs` and `metadata`
-2. It looks like you're trying to access functions.config().service_account but there is no value there
-   1. Check if you have set the config key for service_account correctly. Read the readme again and se how you need to cat the private-key file correctly
-3. Missing permissions required for functions deploy. You must have permission iam.serviceAccounts.ActAs on service account
+2. Missing permissions required for functions deploy. You must have permission iam.serviceAccounts.ActAs on service account
    1. Open the [Google Cloud Console](https://console.cloud.google.com/) (check that you are in the correct project).
    2. Go to IAM & Admin -> Service Accounts
    3. Find the service account and click on it
    4. Click on the "Permissions" panel, then click `Grant Access`
    5. Add your IAM member email address. For the role, select Service Accounts -> Service Account User
    6. Click Save
-4. Cannot read property `bucket` of underfined
-   1. Set the config key `storage.bucket`. Please read the readme again
+3. Automated backups fail with an invalid bucket
+   1. Set `BACKUP_STORAGE_BUCKET` in `functions/.env`. Please read the readme again

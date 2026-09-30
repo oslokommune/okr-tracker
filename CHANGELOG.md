@@ -12,6 +12,11 @@ All notable changes to this project will be documented in this file. The format 
 
 - Node.js 22 is now the default runtime for all Cloud Functions and when running
   the app locally.
+- Cloud Functions now read their configuration from `functions/.env` instead of
+  the deprecated `functions.config()`. The backup storage bucket is configured
+  with `BACKUP_STORAGE_BUCKET`.
+- Cloud Functions no longer require a service account private key. They
+  authenticate using the project's default service account.
 - Upgraded from Punkt 12 to Punkt 18.
 - Migrated away from Punkt's Vue package to Punkt Elements.
 

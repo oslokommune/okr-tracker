@@ -1,6 +1,7 @@
-node_modules/
-.runtimeconfig-prod.json
+.env*
 .runtimeconfig-dev.json
+.runtimeconfig-prod.json
 .runtimeconfig.json
-origo-okr-tracker-private-key.json
+node_modules/
 okr-tracker-production-private-key.json
+origo-okr-tracker-private-key.json
