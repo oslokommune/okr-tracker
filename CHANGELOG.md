@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file. The format 
   authenticate using the project's default service account.
 - Upgraded from Punkt 12 to Punkt 18.
 - Migrated away from Punkt's Vue package to Punkt Elements.
+- Upgraded to Firebase 12.
 
 ### Removed
 
