@@ -1,4 +1,4 @@
-import functions from 'firebase-functions';
+import functions from 'firebase-functions/v1';
 
 import express from 'express';
 import rateLimit from 'express-rate-limit';

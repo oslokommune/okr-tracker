@@ -1,5 +1,5 @@
 import { getFirestore } from 'firebase-admin/firestore';
-import functions from 'firebase-functions';
+import functions from 'firebase-functions/v1';
 import config from '../config.js';
 
 const auditOnCreateGenerator = ({ docPath, collectionRef, documentType }) =>
