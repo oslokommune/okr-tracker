@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file. The format 
 - Upgraded from Punkt 12 to Punkt 18.
 - Migrated away from Punkt's Vue package to Punkt Elements.
 - Upgraded to Firebase 12.
+- Upgraded to Firebase Admin SDK 13 and Firebase Functions SDK 6.
 
 ### Removed
 
