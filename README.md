@@ -41,7 +41,7 @@ If you would like to check out how the application works, you can go to the demo
 
 ## Project requirements
 
-- Node.js 22
+- Node.js 24
 - Firebase Blaze plan - Pay as you go
 
 ## Clone and install

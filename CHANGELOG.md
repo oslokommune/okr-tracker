@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
-- Node.js 22 is now the default runtime for all Cloud Functions and when running
+- Node.js 24 is now the default runtime for all Cloud Functions and when running
   the app locally.
 - Cloud Functions now read their configuration from `functions/.env` instead of
   the deprecated `functions.config()`. The backup storage bucket is configured
