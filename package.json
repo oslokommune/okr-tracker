@@ -47,7 +47,7 @@
     "sortablejs": "^1.15.2",
     "swagger-ui-dist": "^4.17.0",
     "vee-validate": "^4.13.2",
-    "vue": "^3.4.29",
+    "vue": "^3.5.43",
     "vue-echarts": "^8.0.1",
     "vue-flatpickr-component": "^11.0.5",
     "vue-i18n": "^9.14.5",
