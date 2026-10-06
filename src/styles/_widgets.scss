@@ -22,8 +22,8 @@
 
 .widgets {
   display: grid;
-  grid-auto-rows: min-content;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-auto-rows: min-content;
   gap: 1rem;
   margin-bottom: 1rem;
 

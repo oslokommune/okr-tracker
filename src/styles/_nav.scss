@@ -1,4 +1,4 @@
-@use "sass:selector";
+@use 'sass:selector';
 @use '@oslokommune/punkt-css/dist/scss/abstracts/mixins/breakpoints' as *;
 
 $-module-name: 'nav';
@@ -22,8 +22,8 @@ $-border-color: var(--pkt-color-border-gray);
     align-items: center;
     height: 100%;
     padding: 0 1em;
-    color: var(--color-blue-dark);
     font-weight: 400;
+    color: var(--color-blue-dark);
   }
 }
 
@@ -79,15 +79,16 @@ $-border-color: var(--pkt-color-border-gray);
     @at-root a#{&} {
       text-decoration: none;
 
-      &:hover, &:visited {
+      &:hover,
+      &:visited {
         color: var(--color-text);
         text-decoration: none;
       }
     }
 
     &--active {
-      color: var(--pkt-color-text-action-active) !important;
       font-weight: 500;
+      color: var(--pkt-color-text-action-active) !important;
     }
   }
 
@@ -113,8 +114,8 @@ $-border-color: var(--pkt-color-border-gray);
   &--open > .#{$-module-name}-menu-item__inner,
   > .#{$-module-name}-menu-item__inner:hover {
     color: var(--pkt-color-text-action-active) !important;
-    background-color: var(--color-gray-light);
     cursor: pointer;
+    background-color: var(--color-gray-light);
     --fg-color: var(--pkt-color-text-action-active);
   }
 
@@ -138,8 +139,8 @@ $-border-color: var(--pkt-color-border-gray);
       bottom: 0;
       left: 0;
       height: 0.25em;
-      background-color: var(--color-active-light);
       content: '';
+      background-color: var(--color-active-light);
     }
   }
 
@@ -180,11 +181,10 @@ $-border-color: var(--pkt-color-border-gray);
 
   > .#{$-module-name}-menu-switch__inner:hover {
     color: var(--pkt-color-text-action-active);
-    background-color: var(--color-gray-light);
     cursor: pointer;
+    background-color: var(--color-gray-light);
   }
 }
-
 
 .#{$-module-name}-menu-text {
   @include -menu-item;

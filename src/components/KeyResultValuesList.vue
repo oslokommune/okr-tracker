@@ -88,9 +88,9 @@ function addedBy(record) {
 
   td {
     padding: 1rem;
+    vertical-align: top;
     text-align: left;
     text-wrap: balance;
-    vertical-align: top;
     background-color: var(--color-white);
     @include get-text('pkt-txt-14-light');
 

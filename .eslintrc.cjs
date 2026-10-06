@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   env: {
+    browser: true,
     node: true,
     jest: true,
   },
@@ -14,7 +15,7 @@ module.exports = {
     Use the recommended rule preset for `eslint-plugin-vue`.
     https://eslint.vuejs.org/rules/
     */
-    'plugin:vue/vue3-recommended',
+    'plugin:vue/recommended',
     /*
     Use as the last extension in order to override conflicting ESLint rules.
     https://github.com/prettier/eslint-plugin-prettier

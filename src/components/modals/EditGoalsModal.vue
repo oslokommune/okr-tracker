@@ -239,8 +239,8 @@ async function archive() {
 
   &__left {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
+    flex-direction: column;
     height: 100%;
     border: 2px solid var(--color-border);
 
@@ -277,8 +277,8 @@ async function archive() {
   &__goal {
     padding: 0.5rem 0.75rem;
     text-decoration: none;
-    border-bottom: 2px solid var(--color-border);
     cursor: pointer;
+    border-bottom: 2px solid var(--color-border);
 
     &--selected {
       background: var(--color-gray-light);

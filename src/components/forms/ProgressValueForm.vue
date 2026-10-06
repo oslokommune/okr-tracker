@@ -133,8 +133,8 @@ const datePickerConfig = computed(() => ({
 
   &__left {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
+    flex-direction: column;
     gap: 1.5rem;
   }
 
@@ -153,8 +153,8 @@ const datePickerConfig = computed(() => ({
 // column.
 :deep(.progress-form__comment-group) {
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
+  flex-direction: column;
 
   .form-component,
   pkt-textarea,
@@ -162,8 +162,8 @@ const datePickerConfig = computed(() => ({
   .pkt-inputwrapper,
   .pkt-inputwrapper__fieldset {
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
+    flex-direction: column;
     align-self: stretch;
   }
 

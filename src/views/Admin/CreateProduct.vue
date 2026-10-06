@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { doc } from 'firebase/firestore';
 import { useI18n } from 'vue-i18n';
@@ -15,6 +16,7 @@ import { BtnSave } from '@/components/generic/form';
 
 const toast = useToast();
 const i18n = useI18n();
+const router = useRouter();
 
 const { user, isSuperAdmin } = storeToRefs(useAuthStore());
 const { users, departments } = storeToRefs(useAdminStore());
@@ -51,7 +53,7 @@ async function save(values) {
       archived: false,
       team: team?.map(({ id }) => doc(db, 'users', id)) || [],
     });
-    await findSlugAndRedirect(productRef);
+    await findSlugAndRedirect(productRef, router);
     toast.success(i18n.t('toaster.add.product'));
   } catch {
     toast.error(i18n.t('toaster.error.product'));

@@ -291,8 +291,8 @@ function keyResultLinkProps(keyResult) {
             top: 0;
             left: -2rem;
             height: 50%;
-            border-bottom: 2px solid var(--color-grayscale-10);
             content: '';
+            border-bottom: 2px solid var(--color-grayscale-10);
           }
           &:not(:last-child)::after {
             top: 50%;

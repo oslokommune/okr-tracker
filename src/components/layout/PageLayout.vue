@@ -80,8 +80,8 @@ defineProps({
 
 .page {
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
+  flex-direction: column;
 
   &__header {
     padding: 1.5rem;

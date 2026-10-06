@@ -181,8 +181,8 @@ const itemRoute = (slug) => ({
     padding: 0.5rem 1rem;
     color: var(--color-text);
     text-decoration: none;
-    border-bottom: 2px solid var(--color-border);
     cursor: pointer;
+    border-bottom: 2px solid var(--color-border);
 
     &:hover {
       text-decoration: underline;
@@ -197,14 +197,14 @@ const itemRoute = (slug) => ({
     span {
       flex: 1;
       overflow: hidden;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
   &__footer {
-    margin-top: auto;
     padding: 1rem;
+    margin-top: auto;
 
     .pkt-btn {
       justify-content: center;

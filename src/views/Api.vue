@@ -25,8 +25,8 @@ onMounted(() => {
 
 <style lang="scss">
 pre > code {
-  margin: 0;
   padding: 0;
+  margin: 0;
   background: none;
 }
 </style>
