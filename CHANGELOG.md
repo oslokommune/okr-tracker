@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [5.2.0] 2026-10-06
 
 ### Added
 
@@ -19,8 +19,8 @@ All notable changes to this project will be documented in this file. The format 
   authenticate using the project's default service account.
 - Upgraded from Punkt 12 to Punkt 18.
 - Migrated away from Punkt's Vue package to Punkt Elements.
-- Upgraded to Firebase 12.
-- Upgraded to Firebase Admin SDK 13 and Firebase Functions SDK 6.
+- Upgraded to Firebase SDK 12, Firebase Admin SDK 13, and Firebase Functions
+  SDK 6.
 
 ### Removed
 
