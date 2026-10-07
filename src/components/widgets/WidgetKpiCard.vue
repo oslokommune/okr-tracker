@@ -147,13 +147,13 @@ const chartOptions = computed(() => ({
     }
 
     &__trend {
-      flex-basis: 50%;
       flex-shrink: 0;
+      flex-basis: 50%;
     }
 
     &__graph {
-      flex-basis: 20%;
       flex-shrink: 0;
+      flex-basis: 20%;
       min-width: auto;
       height: 5rem;
     }
@@ -185,7 +185,7 @@ const chartOptions = computed(() => ({
 }
 
 .no-data {
-  color: var(--color-grayscale-60);
   font-style: italic;
+  color: var(--color-grayscale-60);
 }
 </style>

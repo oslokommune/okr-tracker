@@ -109,8 +109,8 @@ $-dropdown-max-height: calc(100vh - 3.5rem);
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    margin-top: auto;
     padding: 1rem;
+    margin-top: auto;
     opacity: 0.25;
 
     img {

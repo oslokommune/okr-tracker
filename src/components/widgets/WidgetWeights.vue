@@ -56,8 +56,8 @@ function getKeyResultRoute(id) {
 .scales {
   position: relative;
   display: grid;
-  grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fit, minmax(1rem, 3rem));
+  gap: 0.5rem;
   width: 100%;
   height: 6rem;
 }
@@ -69,9 +69,9 @@ function getKeyResultRoute(id) {
   align-self: end;
   justify-content: flex-end;
   height: 100%;
-  color: var(--color-text);
-  font-weight: 500;
   font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
   text-align: center;
   text-decoration: none;
   background-color: var(--pkt-color-surface-strong-gray);

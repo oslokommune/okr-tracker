@@ -66,9 +66,9 @@ defineProps({
   display: block;
   color: var(--color-text);
   text-decoration: none;
+  cursor: pointer;
   background-color: var(--color-white);
   border: 2px solid rgba(42, 40, 89, 0.25); // blue-dark, 25%
-  cursor: pointer;
 
   &:hover {
     color: var(--color-hover);

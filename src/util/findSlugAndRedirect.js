@@ -1,12 +1,12 @@
 import { getDoc } from 'firebase/firestore';
-import router from '@/router';
 
 /**
  * Finds the slug for the provided document and redirects to it.
  * Uses a delay in order for the Cloud function to set the slug first.
  * @param {FirestoreDocumentReference} reference
+ * @param {Router} router
  */
-export default function findSlugAndRedirect(reference) {
+export default function findSlugAndRedirect(reference, router) {
   const delay = 5000;
 
   setTimeout(async () => {

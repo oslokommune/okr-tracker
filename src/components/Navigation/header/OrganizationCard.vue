@@ -144,12 +144,12 @@ onClickOutside(
     gap: 0.75rem;
     align-items: center;
     padding: 1rem;
-    border: 2px solid transparent;
     cursor: pointer;
+    border: 2px solid transparent;
 
     &:focus-visible {
-      border-color: var(--pkt-color-button-border-focus);
       outline: 4px solid var(--pkt-color-border-states-focus);
+      border-color: var(--pkt-color-button-border-focus);
     }
   }
 
@@ -168,8 +168,8 @@ onClickOutside(
 
   &__label {
     @include get-text('pkt-txt-12-medium');
-    color: var(--pkt-color-grays-gray-600);
     line-height: 1rem;
+    color: var(--pkt-color-grays-gray-600);
   }
 
   &__name {

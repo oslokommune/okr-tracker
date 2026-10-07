@@ -143,10 +143,10 @@ const { results: searchResults } = useFuse(userQuery, users, {
     width: 100%;
     padding: 0.5rem 1rem;
     color: var(--color-text);
+    cursor: pointer;
     background: none;
     border: 0;
     border-bottom: 2px solid var(--color-border);
-    cursor: pointer;
 
     &:hover {
       text-decoration: underline;
@@ -161,15 +161,15 @@ const { results: searchResults } = useFuse(userQuery, users, {
     span {
       flex: 1;
       overflow: hidden;
-      white-space: nowrap;
-      text-align: left;
       text-overflow: ellipsis;
+      text-align: left;
+      white-space: nowrap;
     }
   }
 
   &__footer {
-    margin-top: auto;
     padding: 1rem;
+    margin-top: auto;
 
     :deep(.pkt-btn) {
       justify-content: center;

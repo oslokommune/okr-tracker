@@ -245,18 +245,18 @@ See the [Firebase documentation](https://firebase.google.com/docs/hosting/github
 
 ## Lint and fix
 
-[ESlint](https://eslint.org) (including [Prettier](https://prettier.io/) configured to be executed as a linter rule) and [Stylelint](https://stylelint.io) are used for code formatting and linting. See configuration in the following files:
+[ESlint](https://eslint.org) (including [Prettier](https://prettier.io/) configured to be executed as a linter rule) and [Stylelint](https://stylelint.io) are used for code formatting and linting. The style scripts also run Prettier on the SCSS files, which ESLint does not cover. See configuration in the following files:
 
 ```
-./.eslintrc.js
-./.prettierrc.js
-./.stylelintrc.js
+./.eslintrc.cjs
+./.prettierrc.cjs
+./.stylelintrc.cjs
 ```
 
 ```bash
 npm run lint            # Run linter
 npm run lint:fix        # Fix lint issues
-npm run lint:style      # Run style linter
+npm run lint:style      # Run style linter and Prettier check on SCSS
 npm run lint:style:fix  # Fix lint issues found in styles
 ```
 

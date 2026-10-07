@@ -6,7 +6,6 @@ import SliderContainer from '@/components/drawers/SliderContainer.vue';
 const props = defineProps({
   visible: {
     type: Boolean,
-    required: true,
     default: false,
   },
   pageCount: {

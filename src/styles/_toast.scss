@@ -22,13 +22,13 @@
       --pkt-color-alert-bc: var(--pkt-color-border-red);
       --pkt-color-alert-bg: var(--pkt-color-surface-default-faded-red);
     }
-    
+
     min-height: auto;
-    margin: 0;
     padding: 0.75rem 1rem !important;
+    margin: 0;
     color: var(--pkt-color-alert-txt);
     background-color: var(--pkt-color-alert-bg);
-    border-left: .25rem solid var(--pkt-color-alert-bc);
+    border-left: 0.25rem solid var(--pkt-color-alert-bc);
     border-radius: 0;
     box-shadow: none;
   }

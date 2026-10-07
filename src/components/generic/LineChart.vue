@@ -239,10 +239,10 @@ function customTooltip(params) {
       display: -webkit-box;
       max-height: 100%;
       overflow: hidden;
-      white-space: normal;
       text-overflow: ellipsis;
-      -webkit-box-orient: vertical;
       -webkit-line-clamp: 10;
+      white-space: normal;
+      -webkit-box-orient: vertical;
     }
 
     &--compact {

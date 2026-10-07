@@ -6,7 +6,6 @@ import '@oslokommune/punkt-elements/dist/pkt-button.js';
 const props = defineProps({
   visible: {
     type: Boolean,
-    required: true,
     default: false,
   },
 

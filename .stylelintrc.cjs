@@ -16,28 +16,11 @@ module.exports = {
     */
     'stylelint-config-recommended-vue',
     /*
-    Turns off all CSS and SCSS rules that are unnecessary or might
-    conflict with Prettier.
-    https://github.com/prettier/stylelint-config-prettier-scss
+    Orders property declarations the way Bootstrap does (positioning, box
+    model, typography, visual), via `stylelint-order`.
+    https://github.com/stormwarning/stylelint-config-recess-order
     */
-    'stylelint-config-prettier-scss',
-    /*
-    Stylelint config for "rational" ordering of property declarations.
-    https://github.com/Allohamora/stylelint-config-rational-order
-    */
-    'stylelint-config-rational-order-fix',
-  ],
-  plugins: [
-    /*
-    Collection of SCSS specific linting rules for Stylelint.
-    https://github.com/stylelint-scss/stylelint-scss
-    */
-    'stylelint-scss',
-    /*
-    Plugin pack of order-related linting rules for Stylelint.
-    https://github.com/hudochenkov/stylelint-order
-    */
-    'stylelint-order',
+    'stylelint-config-recess-order',
   ],
   rules: {
     'color-hex-length': 'long',

@@ -26,10 +26,9 @@
   max-height: 100%;
   padding: 2rem 1.5rem;
   overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar styles Firefox */
   background: var(--color-white);
   box-shadow: 0 5px 30px -10px rgba(black, 0.2);
-
-  scrollbar-width: none; /* Hide scrollbar styles Firefox */
   -webkit-overflow-scrolling: touch;
 
   @include bp-up(36rem) {

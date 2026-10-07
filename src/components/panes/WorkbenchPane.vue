@@ -86,8 +86,8 @@ function removeObjective(objectiveId) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin: 1rem 0;
     padding: 1.5rem;
+    margin: 1rem 0;
     background-color: var(--pkt-color-background-subtle);
   }
 

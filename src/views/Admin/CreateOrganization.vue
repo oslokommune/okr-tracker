@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { doc } from 'firebase/firestore';
 import { useI18n } from 'vue-i18n';
@@ -14,6 +15,7 @@ import { BtnSave } from '@/components/generic/form';
 
 const toast = useToast();
 const i18n = useI18n();
+const router = useRouter();
 
 const { users } = storeToRefs(useAdminStore());
 const loading = ref(false);
@@ -33,7 +35,7 @@ async function save(values) {
       archived: false,
       team: team?.map(({ id }) => doc(db, 'users', id)) || [],
     });
-    await findSlugAndRedirect(orgRef);
+    await findSlugAndRedirect(orgRef, router);
     toast.success(i18n.t('toaster.add.organization'));
   } catch {
     toast.error(i18n.t('toaster.error.organization'));

@@ -83,8 +83,8 @@ function toggle() {
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  margin-bottom: 1rem;
   padding: 1.5rem;
+  margin-bottom: 1rem;
   border: 2px solid var(--color-border);
 
   &__header {

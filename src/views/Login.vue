@@ -171,8 +171,8 @@ async function loginWithProvider(provider) {
 
 .login__sep {
   padding: 0.5rem 0;
-  color: var(--pkt-color-grays-gray-500);
   font-style: italic;
+  color: var(--pkt-color-grays-gray-500);
   text-align: center;
 }
 

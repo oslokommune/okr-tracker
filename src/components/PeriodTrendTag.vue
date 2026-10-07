@@ -136,9 +136,9 @@ function formatDate(date) {
     position: relative;
     order: 0;
     padding: 0 1.5em;
-    color: var(--color-blue-dark);
     font-size: 0.75em;
     line-height: 2;
+    color: var(--color-blue-dark);
     background: var(--pkt-color-surface-default-light-blue);
 
     &--positive {
@@ -155,10 +155,10 @@ function formatDate(date) {
       top: 0;
       width: 0;
       height: 100%;
+      content: '';
       border-color: transparent;
       border-style: solid;
       border-width: 1em 0 1em 0.76em;
-      content: '';
     }
 
     &:before {

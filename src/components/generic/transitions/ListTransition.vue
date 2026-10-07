@@ -13,8 +13,8 @@
 
 .list-enter-from,
 .list-leave-to {
-  transform: translateX(30px);
   opacity: 0;
+  transform: translateX(30px);
 }
 
 .list-leave-active {

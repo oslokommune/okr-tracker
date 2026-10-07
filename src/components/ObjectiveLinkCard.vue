@@ -150,9 +150,9 @@ await objectivePromise.value;
   display: block;
   color: var(--color-text);
   text-decoration: none;
+  cursor: pointer;
   background-color: var(--color-white);
   border: 2px solid rgba(42, 40, 89, 0.25); // blue-dark, 25%
-  cursor: pointer;
 
   &:hover {
     color: var(--color-hover);
@@ -183,8 +183,8 @@ await objectivePromise.value;
     display: flex;
     gap: 0.25rem;
     align-items: center;
-    color: var(--color-grayscale-60);
     line-height: 0.75rem;
+    color: var(--color-grayscale-60);
     --fg-color: var(--color-grayscale-60);
 
     :deep(.pkt-tag) {

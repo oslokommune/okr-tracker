@@ -65,9 +65,9 @@ $-empty-state-skins: (
     gap: 1rem;
     justify-content: center;
     max-width: 36rem;
+    padding: 2rem 1.5rem;
     margin-right: auto;
     margin-left: auto;
-    padding: 2rem 1.5rem;
     text-align: center;
 
     @include bp('tablet-up') {

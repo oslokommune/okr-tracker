@@ -324,8 +324,8 @@ async function periodObjectivesToWorkbench() {
   display: inline-block;
   min-width: 100%;
   padding-top: 1.5rem;
-  background-color: var(--color-white);
   cursor: col-resize;
+  background-color: var(--color-white);
 }
 
 .months {
@@ -400,8 +400,8 @@ async function periodObjectivesToWorkbench() {
     top: 3.125rem;
     left: calc(50% - 0.1rem);
     height: 1.125rem;
-    border-left: var(--tick-width) solid var(--color-active);
     content: '';
+    border-left: var(--tick-width) solid var(--color-active);
   }
 }
 
@@ -453,13 +453,13 @@ async function periodObjectivesToWorkbench() {
     z-index: 1;
     width: 1rem;
     height: 100%;
+    content: '';
     background: linear-gradient(
       90deg,
       transparent 0%,
       var(--card-bg-color) 75%,
       var(--card-bg-color) 100%
     );
-    content: '';
   }
 }
 

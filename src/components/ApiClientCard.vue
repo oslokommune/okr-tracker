@@ -230,8 +230,8 @@ function copyCredential(elementId) {
 
   &__credential {
     width: 100%;
-    margin-right: auto;
     padding: 1rem;
+    margin-right: auto;
     background-color: var(--color-gray);
 
     &--new {
@@ -261,9 +261,9 @@ function copyCredential(elementId) {
       box-sizing: content-box;
       min-width: 36ch;
       font-family: monospace;
+      outline: 0;
       background-color: transparent;
       border: 0;
-      outline: 0;
       @include get-text('pkt-txt-14-medium');
 
       @include bp-up(36rem) {

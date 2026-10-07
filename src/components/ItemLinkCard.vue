@@ -91,8 +91,8 @@ const componentProps = computed(() => {
   border: 2px solid transparent;
 
   &:focus {
-    border-color: var(--pkt-color-button-border-focus);
     outline: 4px solid var(--pkt-color-border-states-focus);
+    border-color: var(--pkt-color-button-border-focus);
   }
 
   &__icon {
