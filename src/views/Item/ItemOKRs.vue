@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watchPostEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/auth';
@@ -49,7 +49,11 @@ const newestObjective = computed(() => {
   })[0];
 });
 
-watchEffect(() => {
+// Evaluate after the flush, so that the stores have reacted to the route
+// change before the loading state is inspected. Otherwise a requested
+// objective or key result may briefly appear as not found, unmounting the
+// panes.
+watchPostEffect(() => {
   const { objectiveId, keyResultId } = route.params;
 
   if (
