@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
-import { version } from './package.json';
+import pkg from './package.json' with { type: 'json' };
 
 export default defineConfig({
   plugins: [
@@ -21,13 +21,13 @@ export default defineConfig({
   },
   define: {
     // eslint-disable-next-line prettier/prettier
-    '__APP_VERSION__': JSON.stringify(version),
+    '__APP_VERSION__': JSON.stringify(pkg.version),
   },
   resolve: {
     alias: [
       {
         find: '@',
-        replacement: path.resolve(__dirname, 'src'),
+        replacement: path.resolve(import.meta.dirname, 'src'),
       },
     ],
   },
