@@ -81,7 +81,7 @@
     "stylelint-config-recommended-scss": "^17.0.1",
     "stylelint-config-recommended-vue": "^2.0.0",
     "stylelint-order": "^8.1.1",
-    "vite": "^8.0.16",
+    "vite": "^8.3.5",
     "vue-eslint-parser": "^10.4.1"
   },
   "resolutions": {
