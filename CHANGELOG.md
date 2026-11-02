@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - Fixed a bug that would sometimes leave an objective without its key results
   and reset the horizontal scroll position in the Gantt chart.
+- Fixed a bug that would cause editing modals to be closed when the underlying
+  item was updated elsewhere.
 
 ## [5.2.0] 2026-10-06
 

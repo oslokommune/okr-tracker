@@ -17,13 +17,15 @@ export function useKpi(kpiId) {
   const { hasEditRights } = storeToRefs(useAuthStore());
   const { period } = storeToRefs(useKpisStore());
 
+  const itemPath = computed(() => item.value?.path);
+
   // KPI
   const _kpiId = toRef(kpiId);
   const kpiRef = computed({
     get() {
       return (
         _kpiId.value &&
-        item.value &&
+        itemPath.value &&
         doc(db, 'kpis', _kpiId.value).withConverter({
           fromFirestore: (snapshot) => {
             const data = firestoreDefaultConverter.fromFirestore(snapshot);
