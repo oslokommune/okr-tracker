@@ -13,13 +13,15 @@ export function useObjective(objectiveId) {
   );
   const { hasEditRights } = storeToRefs(useAuthStore());
 
+  const itemPath = computed(() => item.value?.path);
+
   // Objective
   const _objectiveId = toRef(objectiveId);
   const objectiveRef = computed({
     get() {
       return (
         _objectiveId.value &&
-        item.value &&
+        itemPath.value &&
         doc(db, 'objectives', _objectiveId.value).withConverter({
           fromFirestore: (snapshot, options) => {
             const objective = globalFirestoreOptions.converter.fromFirestore(

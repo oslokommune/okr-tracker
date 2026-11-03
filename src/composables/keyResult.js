@@ -12,6 +12,8 @@ export function useKeyResult(keyResultId) {
   const { hasEditRights } = storeToRefs(useAuthStore());
   const { objective } = storeToRefs(useActiveObjectiveStore());
 
+  const itemPath = computed(() => item.value?.path);
+
   // Key result
   const _keyResultId = toRef(keyResultId);
 
@@ -19,7 +21,7 @@ export function useKeyResult(keyResultId) {
     get() {
       return (
         _keyResultId.value &&
-        item.value &&
+        itemPath.value &&
         doc(db, 'keyResults', _keyResultId.value).withConverter({
           fromFirestore: (snapshot, options) => {
             const keyResult = globalFirestoreOptions.converter.fromFirestore(
