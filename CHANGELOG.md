@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [UNRELEASED]
 
+### Added
+
+- Added a button for creating another key result after creating a key result,
+  making it quicker to create multiple key results in succession.
+
 ### Fixed
 
 - Fixed a bug that would sometimes leave an objective without its key results
