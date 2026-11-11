@@ -34,6 +34,7 @@ const { keyResult: activeKeyResult, isLoading: activeKeyResultIsLoading } = stor
 const showObjectiveDrawer = ref(false);
 const drawerEditMode = ref(false);
 const showKeyResultDrawer = ref(false);
+const keyResultDrawerKey = ref(0);
 const notFoundState = ref(false);
 
 const newestObjective = computed(() => {
@@ -75,6 +76,9 @@ function openKeyResultDrawer(edit) {
   showObjectiveDrawer.value = false;
   drawerEditMode.value = edit;
   showKeyResultDrawer.value = true;
+  // Remount the drawer so that it starts fresh when it is already open, e.g.
+  // when creating another key result right after creating one.
+  keyResultDrawerKey.value += 1;
 }
 
 function onObjectiveCreated(objectiveRef) {
@@ -160,8 +164,10 @@ function onKeyResultCreated(keyResultRef) {
 
     <KeyResultDrawer
       v-if="activeObjective && showKeyResultDrawer"
+      :key="keyResultDrawerKey"
       :key-result-id="drawerEditMode ? activeKeyResult.id : null"
       @create="onKeyResultCreated"
+      @add-key-result="openKeyResultDrawer(false)"
       @close="showKeyResultDrawer = false"
     />
   </div>

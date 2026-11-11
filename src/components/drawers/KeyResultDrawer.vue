@@ -28,7 +28,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['create', 'update', 'archive', 'restore']);
+const emit = defineEmits(['create', 'update', 'archive', 'restore', 'add-key-result']);
 
 const { user, isAdminOfCurrentItemOrganization, isSuperAdmin } = storeToRefs(
   useAuthStore()
@@ -299,11 +299,23 @@ async function restore() {
       </FormSection>
     </template>
 
-    <template #done="{ isSuccess, reset }">
+    <template #done="{ isSuccess, reset, close }">
       <div class="button-row button-row--left">
         <template v-if="!isSuccess">
           <pkt-button skin="secondary" @click="reset">
             <span>{{ $t('btn.back') }}</span>
+          </pkt-button>
+        </template>
+        <template v-else>
+          <pkt-button skin="tertiary" @click="close">
+            <span>{{ $t('btn.close') }}</span>
+          </pkt-button>
+          <pkt-button
+            v-if="!isEditMode"
+            skin="secondary"
+            @click="$emit('add-key-result')"
+          >
+            <span>{{ $t('btn.createAnotherKeyResult') }}</span>
           </pkt-button>
         </template>
       </div>

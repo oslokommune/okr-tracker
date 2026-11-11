@@ -238,6 +238,7 @@
     "createObjective": "Create objective",
     "updateObjective": "Update objective",
     "createKeyResult": "Create key result",
+    "createAnotherKeyResult": "Create another key result",
     "updateKeyResult": "Update key result",
     "addKeyResult": "Add new key results",
     "addKeyResults": "Add key results",
