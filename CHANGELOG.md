@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file. The format 
 - Fixed a bug that would cause editing modals to be closed when the underlying
   item was updated elsewhere.
 
+### Security
+
+- Updated dependencies to address potential security vulnerabilities.
+
 ## [5.2.0] 2026-10-06
 
 ### Added
